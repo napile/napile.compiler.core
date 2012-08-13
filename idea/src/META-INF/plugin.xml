@@ -1,0 +1,187 @@
+<idea-plugin version="2" url="http://kotlin.jetbrains.org">
+	<id>org.napile.napile4idea</id>
+
+	<name>Napile</name>
+	<description>Napile language support</description>
+	<version>@snapshot@</version>
+	<vendor url="http://napile.org">napile.org</vendor>
+
+	<project-components>
+		<component>
+			<implementation-class>org.jetbrains.jet.plugin.compiler.JetCompilerManager</implementation-class>
+		</component>
+
+		<component>
+			<implementation-class>org.jetbrains.jet.plugin.highlighter.DeclarationHintSupport</implementation-class>
+		</component>
+		<component>
+			<implementation-class>org.jetbrains.jet.plugin.OutdatedKotlinRuntimeNotification</implementation-class>
+		</component>
+	</project-components>
+
+	<actions>
+		<action id="Napile.NewFile" class="org.jetbrains.jet.plugin.actions.NewKotlinFileAction">
+			<add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
+		</action>
+
+		<action id="ShowJetExpressionType" class="org.jetbrains.jet.plugin.actions.ShowExpressionTypeAction" text="Show Expression Type">
+			<keyboard-shortcut keymap="$default" first-keystroke="control shift Q"/>
+			<add-to-group group-id="CodeMenu" anchor="last"/>
+		</action>
+		<action id="CopyAsDiagnosticTest" class="org.jetbrains.jet.plugin.actions.CopyAsDiagnosticTestAction" text="Copy Current File As Diagnostic Test">
+			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift T"/>
+			<add-to-group group-id="CodeMenu" anchor="last"/>
+		</action>
+		<action id="ConvertJavaToKotlin" class="org.jetbrains.jet.plugin.actions.JavaToKotlinAction" text="Convert Java File to Kotlin File">
+			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift J"/>
+			<add-to-group group-id="CodeMenu" anchor="last"/>
+		</action>
+		<action id="ToggleJetErrorReporting" class="org.jetbrains.jet.plugin.actions.ToggleErrorReportingAction" text="Error Reporting Enabled">
+			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift E"/>
+			<add-to-group group-id="CodeMenu" anchor="last"/>
+		</action>
+
+
+	</actions>
+
+	<extensions defaultExtensionNs="com.intellij">
+		<applicationService serviceInterface="org.jetbrains.jet.lang.psi.stubs.elements.StubIndexService" serviceImplementation="org.jetbrains.jet.plugin.stubindex.StubIndexServiceImpl"/>
+
+		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.JetFilesProvider" serviceImplementation="org.jetbrains.jet.plugin.project.PluginJetFilesProvider"/>
+
+		<projectService serviceInterface="org.jetbrains.jet.lang.parsing.JetScriptDefinitionProvider" serviceImplementation="org.jetbrains.jet.lang.parsing.JetScriptDefinitionProvider"/>
+
+		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.java.extAnnotations.ExternalAnnotationsProvider" serviceImplementation="org.jetbrains.jet.plugin.extAnnotations.IdeaExternalAnnotationsProvider"/>
+
+		<projectService serviceInterface="org.jetbrains.jet.plugin.caches.JetShortNamesCache" serviceImplementation="org.jetbrains.jet.plugin.caches.JetShortNamesCache" />
+
+		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.NapileClassResolver" serviceImplementation="org.jetbrains.jet.lang.resolve.NapileClassResolver" />
+
+		<errorHandler implementation="org.jetbrains.jet.plugin.reporter.KotlinReportSubmitter"/>
+
+		<internalFileTemplate name="Kotlin Class"/>
+		<internalFileTemplate name="Kotlin Enum"/>
+
+		<gotoSymbolContributor implementation="org.jetbrains.jet.plugin.caches.JetGotoSymbolContributor"/>
+		<gotoClassContributor implementation="org.jetbrains.jet.plugin.caches.JetGotoClassContributor"/>
+		<lang.importOptimizer language="jet" implementationClass="org.jetbrains.jet.plugin.editor.importOptimizer.JetImportOptimizer"/>
+
+		<fileTypeFactory implementation="org.jetbrains.jet.plugin.JetFileFactory"/>
+
+		<lang.syntaxHighlighterFactory key="jet" implementationClass="org.jetbrains.jet.plugin.highlighter.JetSyntaxHighlighterFactory"/>
+		<lang.braceMatcher language="jet" implementationClass="org.jetbrains.jet.plugin.JetPairMatcher"/>
+		<lang.parserDefinition language="jet" implementationClass="org.jetbrains.jet.lang.parsing.JetParserDefinition"/>
+		<lang.commenter language="jet" implementationClass="org.jetbrains.jet.plugin.JetCommenter"/>
+		<lang.psiStructureViewFactory language="jet" implementationClass="org.jetbrains.jet.plugin.structureView.JetStructureViewFactory"/>
+		<lang.foldingBuilder language="jet" implementationClass="org.jetbrains.jet.plugin.JetFoldingBuilder"/>
+		<lang.formatter language="jet" implementationClass="org.jetbrains.jet.plugin.formatter.JetFormattingModelBuilder"/>
+		<lang.findUsagesProvider language="jet" implementationClass="org.jetbrains.jet.plugin.findUsages.JetFindUsagesProvider"/>
+		<lang.refactoringSupport language="jet" implementationClass="org.jetbrains.jet.plugin.refactoring.JetRefactoringSupportProvider"/>
+		<quoteHandler fileType="Kotlin" className="org.jetbrains.jet.plugin.editor.KotlinQuoteHandler"/>
+		<refactoring.moveHandler implementation="org.jetbrains.jet.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler"/>
+		<refactoring.copyHandler implementation="org.jetbrains.jet.plugin.refactoring.copy.JetCopyClassHandler"/>
+		<treeStructureProvider implementation="org.jetbrains.jet.plugin.projectView.JetProjectViewProvider"/>
+
+		<colorSettingsPage implementation="org.jetbrains.jet.plugin.highlighter.JetColorSettingsPage"/>
+
+		<codeStyleSettingsProvider implementation="org.jetbrains.jet.plugin.formatter.JetCodeStyleSettingsProvider"/>
+		<langCodeStyleSettingsProvider implementation="org.jetbrains.jet.plugin.formatter.JetLanguageCodeStyleSettingsProvider"/>
+
+		<templateParameterTraversalPolicy implementation="org.jetbrains.jet.plugin.completion.JetTemplateParameterTraversalPolicy"/>
+
+		<codeInsight.parameterInfo language="jet" implementationClass="org.jetbrains.jet.plugin.parameterInfo.JetFunctionParameterInfoHandler"/>
+
+		<codeInsight.gotoSuper language="jet" implementationClass="org.jetbrains.jet.plugin.codeInsight.GotoSuperActionHandler"/>
+		<typeDeclarationProvider implementation="org.jetbrains.jet.plugin.codeInsight.JetTypeDeclarationProvider"/>
+
+		<completion.contributor language="jet" id="JetKeywordCompletionContributor" order="first" implementationClass="org.jetbrains.jet.plugin.completion.JetKeywordCompletionContributor"/>
+
+		<completion.contributor language="jet" id="JetPackagesContributor" order="after JetKeywordCompletionContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetPackagesContributor"/>
+
+		<completion.contributor language="jet" id="JetExtensionFunctionReceiverContributor" order="after JetPackagesContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetExtensionReceiverTypeContributor"/>
+
+		<completion.contributor language="jet" id="JetClassCompletionContributor" order="after JetExtensionFunctionReceiverContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetClassCompletionContributor"/>
+
+		<completion.contributor language="jet" id="JetCompletionContributor" order="after JetClassCompletionContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetCompletionContributor"/>
+
+		<completion.contributor language="jet" implementationClass="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplateCompletionContributor" id="liveTemplates" order="first"/>
+
+		<completion.confidence language="jet" implementationClass="com.intellij.codeInsight.completion.UnfocusedNameIdentifier"/>
+		<completion.confidence language="jet" implementationClass="org.jetbrains.jet.plugin.completion.confidence.UnfocusedPossibleFunctionParameter"/>
+		<completion.confidence language="jet" implementationClass="com.intellij.codeInsight.completion.AlwaysFocusLookup" order="last"/>
+
+		<completion.skip implementation="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplateCompletionContributor$Skipper" id="skipLiveTemplate"/>
+
+		<psi.referenceContributor language="jet" order="after JetCompletionContributor" implementation="org.jetbrains.jet.plugin.references.JetReferenceContributor"/>
+
+		<renamePsiElementProcessor implementation="org.jetbrains.jet.plugin.refactoring.rename.RenameJetClassProcessor"/>
+		<renamePsiElementProcessor implementation="org.jetbrains.jet.plugin.refactoring.rename.RenameKotlinFunctionProcessor"/>
+
+		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Generic"/>
+		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Namespace"/>
+		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Statement"/>
+		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Class"/>
+		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Expression"/>
+		<defaultLiveTemplatesProvider implementation="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplatesProvider"/>
+		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetAnyVariableMacro"/>
+		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetFunctionParametersMacro"/>
+		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetAnonymousSuperMacro"/>
+		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetIterableVariableMacro"/>
+		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetSuggestVariableNameMacro"/>
+
+		<annotator language="jet" implementationClass="org.jetbrains.jet.plugin.highlighter.JetPsiChecker"/>
+		<annotator language="jet" implementationClass="org.jetbrains.jet.plugin.highlighter.DebugInfoAnnotator"/>
+
+		<extendWordSelectionHandler implementation="org.jetbrains.jet.plugin.editor.wordSelection.JetStatementGroupSelectioner"/>
+		<extendWordSelectionHandler implementation="org.jetbrains.jet.plugin.editor.wordSelection.JetCodeBlockSelectioner"/>
+		<extendWordSelectionHandler implementation="org.jetbrains.jet.plugin.editor.wordSelection.JetListSelectioner"/>
+		<typedHandler implementation="org.jetbrains.jet.plugin.editor.KotlinTypedHandler"/>
+
+		<copyPastePostProcessor implementation="org.jetbrains.jet.plugin.conversion.copy.JavaCopyPastePostProcessor"/>
+		<lang.documentationProvider language="JAVA" implementationClass="org.jetbrains.jet.plugin.JetQuickDocumentationProvider" order="first"/>
+		<documentationProvider implementation="org.jetbrains.jet.plugin.JetQuickDocumentationProvider"/>
+
+		<codeInsight.lineMarkerProvider language="jet" implementationClass="org.jetbrains.jet.plugin.highlighter.JetLineMarkerProvider"/>
+		<iconProvider implementation="org.jetbrains.jet.plugin.JetIconProvider"/>
+		<itemPresentationProvider implementationClass="org.jetbrains.jet.plugin.presentation.JetFunctionPresenter" forClass="org.jetbrains.jet.lang.psi.JetNamedFunction"/>
+		<itemPresentationProvider implementationClass="org.jetbrains.jet.plugin.presentation.JetClassPresenter" forClass="org.jetbrains.jet.lang.psi.JetClass"/>
+		<elementDescriptionProvider implementation="org.jetbrains.jet.plugin.findUsages.JetElementDescriptionProvider"/>
+		<findUsagesHandlerFactory implementation="org.jetbrains.jet.plugin.findUsages.KotlinFindUsagesHandlerFactory"/>
+
+		<codeInsight.implementMethod language="jet" implementationClass="org.jetbrains.jet.plugin.codeInsight.ImplementMethodsHandler"/>
+		<codeInsight.overrideMethod language="jet" implementationClass="org.jetbrains.jet.plugin.codeInsight.OverrideMethodsHandler"/>
+
+		<stubElementTypeHolder class="org.jetbrains.jet.lang.psi.stubs.elements.JetStubElementTypes"/>
+		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetShortClassNameIndex"/>
+		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetFullClassNameIndex"/>
+		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetShortFunctionNameIndex"/>
+		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetExtensionFunctionNameIndex"/>
+		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetAllShortFunctionNameIndex"/>
+		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetSuperClassIndex"/>
+		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetTopLevelFunctionsFqnNameIndex"/>
+		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetTopLevelPropertiesFqnNameIndex"/>
+
+
+		<editorNotificationProvider implementation="org.jetbrains.jet.plugin.quickfix.ConfigureKotlinLibraryNotificationProvider"/>
+		<editorNotificationProvider implementation="org.jetbrains.jet.plugin.quickfix.AbsentJdkAnnotationsNotifications"/>
+
+		<referencesSearch implementation="org.jetbrains.jet.plugin.search.KotlinReferencesSearcher"/>
+		<directClassInheritorsSearch implementation="org.jetbrains.jet.plugin.search.DirectClassInheritorsSearch"/>
+
+		<definitionsSearch implementation="org.jetbrains.jet.plugin.search.impl.ClassImplementationsSearch"/>
+
+		<toolWindow id="Kotlin" factoryClass="org.jetbrains.jet.plugin.internal.KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/jet/plugin/icons/kotlin_13.png"/>
+
+		<applicationService serviceInterface="org.jetbrains.jet.plugin.editor.JetEditorOptions" serviceImplementation="org.jetbrains.jet.plugin.editor.JetEditorOptions"/>
+		<exportable serviceInterface="org.jetbrains.jet.plugin.editor.JetEditorOptions"/>
+		<editorAppearanceConfigurable instance="org.jetbrains.jet.plugin.editor.JetSettingEditorConfigurable"/>
+
+		<intentionAction>
+			<className>org.jetbrains.jet.plugin.intentions.SpecifyTypeExplicitlyAction</className>
+			<category>Kotlin</category>
+		</intentionAction>
+
+		<project.converterProvider implementation="org.jetbrains.jet.plugin.converters.JetRunConfigurationSettingsFormatConverterProvider"/>
+
+	</extensions>
+</idea-plugin>

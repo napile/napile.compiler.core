@@ -1,0 +1,8 @@
+import foo.Intf
+
+class Impl(): Intf {
+
+    public override fun getFooBar(): String? {
+        throw UnsupportedOperationException()
+    }
+}

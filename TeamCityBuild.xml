@@ -1,0 +1,117 @@
+<project name="Jet CI Steps" default="none">
+	<import file="build.xml" optional="false"/>
+
+	<property name="build.number" value="snapshot"/>
+	<property name="jdk16.home" value="${java.home}"/>
+	<property name="fail.on.plugin.verifier.error" value="true"/>
+
+	<property name="artifact.output.path" value="${basedir}/out/artifacts"/>
+	<property name="plugin.xml" value="idea/src/META-INF/plugin.xml"/>
+	<property name="plugin.xml.bk" value="${plugin.xml}.bk"/>
+	<property name="plugin.xml.versioned" value="${plugin.xml}.versioned"/>
+
+	<property name="compiler.version.java" value="compiler/cli/src/org/jetbrains/jet/cli/common/CompilerVersion.java"/>
+	<property name="compiler.version.java.bk" value="${compiler.version.java}.bk"/>
+	<property name="compiler.version.java.versioned" value="${compiler.version.java}.versioned"/>
+
+	<property name="plugin.verifier" value="${basedir}/dependencies/plugin-verifier.jar"/>
+	<property name="plugin.zip" value="${artifact.output.path}/kotlin-plugin-${build.number}.zip"/>
+
+	<macrodef name="echoprop">
+		<attribute name="prop"/>
+		<sequential>
+			<echo>@{prop}=${@{prop}}</echo>
+		</sequential>
+	</macrodef>
+
+	<echoprop prop="os.name"/>
+	<echoprop prop="os.version"/>
+	<echoprop prop="os.arch"/>
+	<echoprop prop="java.home"/>
+	<echoprop prop="java.vendor"/>
+	<echoprop prop="java.version"/>
+	<echoprop prop="user.name"/>
+	<echoprop prop="user.home"/>
+	<echoprop prop="user.dir"/>
+
+	<target name="cleanupArtifacts">
+		<delete dir="${artifact.output.path}" includes="*"/>
+	</target>
+
+	<macrodef name="substituteVersionInFile">
+		<attribute name="target.file"/>
+		<attribute name="test.string"/>
+		<attribute name="target.file.bk" default="@{target.file}.bk"/>
+		<attribute name="target.file.versioned" default="@{target.file}.versioned"/>
+		<attribute name="token.key" default="snapshot"/>
+		<attribute name="version" default="${build.number}"/>
+		<sequential>
+			<!-- Create backup. Backup will be restored after build end. This will allow to rebuild project without renew
+			   plugin.xml from repository. -->
+			<copy file="@{target.file}" tofile="@{target.file}.bk"/>
+
+			<!-- Check that version has correct pattern for substitution -->
+			<copy todir="">
+				<fileset file="@{target.file.bk}">
+					<contains text="@{test.string}"/>
+				</fileset>
+				<filterchain>
+					<replacetokens>
+						<token key="@{token.key}" value="@{version}"/>
+					</replacetokens>
+				</filterchain>
+				<mergemapper to="@{target.file.versioned}"/>
+			</copy>
+
+			<!-- If file doesn't exist - there's a problem with original plugin.xml. Probably there's a bad pattern used for version -->
+			<copy file="@{target.file.versioned}" tofile="@{target.file}" overwrite="true"/>
+
+			<delete file="@{target.file.versioned}" quiet="true"/>
+		</sequential>
+	</macrodef>
+
+	<target name="writeVersionToTemplateFiles">
+		<substituteVersionInFile target.file="${plugin.xml}" target.file.bk="${plugin.xml.bk}" target.file.versioned="${plugin.xml.versioned}" test.string="&lt;version&gt;@snapshot@&lt;/version&gt;"/>
+
+		<substituteVersionInFile target.file="${compiler.version.java}" target.file.bk="${compiler.version.java.bk}" target.file.versioned="${compiler.version.java.versioned}"
+								 test.string="public static final String VERSION = &quot;@snapshot@&quot;;"/>
+	</target>
+
+	<target name="revertTemplateFiles">
+		<copy file="${plugin.xml.bk}" tofile="${plugin.xml}" overwrite="true"/>
+		<delete file="${plugin.xml.bk}" quiet="true"/>
+
+		<copy file="${compiler.version.java.bk}" tofile="${compiler.version.java}" overwrite="true"/>
+		<delete file="${compiler.version.java.bk}" quiet="true"/>
+	</target>
+
+	<target name="pre_build" depends="writeVersionToTemplateFiles, cleanupArtifacts"></target>
+
+	<target name="zipArtifact">
+		<zip destfile="${plugin.zip}">
+			<zipfileset prefix="Kotlin" dir="${artifact.output.path}/Kotlin"/>
+		</zip>
+		<delete dir="${artifact.output.path}/Kotlin" quiet="true"/>
+	</target>
+
+	<target name="verifyPlugin">
+		<!--
+				disabled plugin-verifier for now, waiting
+				for better plugin dependencies handling in it
+			-->
+		<!--
+			<java fork="true" failonerror="${fail.on.plugin.verifier.error}" jar="${plugin.verifier}">
+				<arg value="-r" />
+				<arg value="${jdk16.home}" />
+				<arg value="${plugin.zip}" />
+				<arg value="${basedir}/ideaSDK" />
+			</java>
+			-->
+	</target>
+
+	<target name="post_build" depends="zipArtifact, revertTemplateFiles, verifyPlugin"/>
+
+	<target name="none">
+		<fail message="Either specify pre_build or post_build"/>
+	</target>
+</project>

@@ -1,0 +1,6 @@
+package jet
+
+/**
+ * Nothing has no instances
+ */
+class Nothing local () {}
