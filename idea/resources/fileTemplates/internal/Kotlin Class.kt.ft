@@ -2,6 +2,6 @@
 
 #end
 #parse("File Header.java")
-public class ${NAME}
+class ${NAME}
 {
 }
