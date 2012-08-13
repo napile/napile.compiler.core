@@ -18,11 +18,7 @@ package org.napile.asmNew.firstTests;
 
 import java.io.StringWriter;
 
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
-import org.napile.asm.tree.members.AnnotationNode;
 import org.napile.asm.tree.members.ClassNode;
-import org.napile.asm.tree.members.types.ClassTypeNode;
-import org.napile.asmNew.Modifier;
 import org.napile.asmNew.writters.XmlVisitor;
 
 /**
@@ -33,10 +29,7 @@ public class XmlTest
 {
 	public static void main(String... arg)
 	{
-		ClassNode classNode = new ClassNode();
-		classNode.visit(Modifier.list(Modifier.ABSTRACT), NapileLangPackage.INT, null);
-
-		classNode.visitSuper(new ClassTypeNode(NapileLangPackage.ANY).addTypeParameter(new ClassTypeNode(NapileLangPackage.BOOL, true).addAnnotation(new AnnotationNode(NapileLangPackage.STRING))));
+		ClassNode classNode = NodeUtil.createTestNode();
 
 		XmlVisitor xmlVisitor = new XmlVisitor();
 		classNode.accept(xmlVisitor, null);

@@ -16,27 +16,25 @@
 
 package org.napile.asmNew.firstTests;
 
-import java.io.StringWriter;
-
+import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
+import org.napile.asm.tree.members.AnnotationNode;
 import org.napile.asm.tree.members.ClassNode;
-import org.napile.asmNew.writters.ShortTextVisitor;
+import org.napile.asm.tree.members.types.ClassTypeNode;
+import org.napile.asmNew.Modifier;
 
 /**
  * @author VISTALL
- * @date 22:46/13.08.12
+ * @date 1:12/14.08.12
  */
-public class ShortTest
+public class NodeUtil
 {
-	public static void main(String... arg)
+	static ClassNode createTestNode()
 	{
-		ClassNode classNode = NodeUtil.createTestNode();
+		ClassNode classNode = new ClassNode();
+		classNode.visit(Modifier.list(Modifier.ABSTRACT), NapileLangPackage.INT, null);
 
-		ShortTextVisitor xmlVisitor = new ShortTextVisitor();
-		classNode.accept(xmlVisitor, null);
+		classNode.visitSuper(new ClassTypeNode(NapileLangPackage.ANY).addTypeParameter(new ClassTypeNode(NapileLangPackage.BOOL, true).addAnnotation(new AnnotationNode(NapileLangPackage.STRING))));
 
-		StringWriter writer = new StringWriter();
-		xmlVisitor.write(writer);
-
-		System.out.println(writer);
+		return classNode;
 	}
 }
