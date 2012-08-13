@@ -2,16 +2,17 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/compiler/backend/backend.iml" filepath="$PROJECT_DIR$/compiler/backend/backend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/compiler/cli/cli.iml" filepath="$PROJECT_DIR$/compiler/cli/cli.iml" />
-      <module fileurl="file://$PROJECT_DIR$/compiler/frontend/frontend.iml" filepath="$PROJECT_DIR$/compiler/frontend/frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/asm/asm.iml" filepath="$PROJECT_DIR$/compiler/asm/asm.iml" group="compiler" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/backend/backend.iml" filepath="$PROJECT_DIR$/compiler/backend/backend.iml" group="compiler" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/cli/cli.iml" filepath="$PROJECT_DIR$/compiler/cli/cli.iml" group="compiler" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/frontend/frontend.iml" filepath="$PROJECT_DIR$/compiler/frontend/frontend.iml" group="compiler" />
       <module fileurl="file://$PROJECT_DIR$/idea/idea.iml" filepath="$PROJECT_DIR$/idea/idea.iml" />
       <module fileurl="file://$PROJECT_DIR$/idea_runner/idea_runner.iml" filepath="$PROJECT_DIR$/idea_runner/idea_runner.iml" />
       <module fileurl="file://$PROJECT_DIR$/injector-generator/injector-generator.iml" filepath="$PROJECT_DIR$/injector-generator/injector-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/j2k/j2k.iml" filepath="$PROJECT_DIR$/j2k/j2k.iml" />
       <module fileurl="file://$PROJECT_DIR$/j2k/tests/j2k-tests.iml" filepath="$PROJECT_DIR$/j2k/tests/j2k-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/napile.compiler.iml" filepath="$PROJECT_DIR$/napile.compiler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/compiler/util/util.iml" filepath="$PROJECT_DIR$/compiler/util/util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/util/util.iml" filepath="$PROJECT_DIR$/compiler/util/util.iml" group="compiler" />
     </modules>
   </component>
 </project>
