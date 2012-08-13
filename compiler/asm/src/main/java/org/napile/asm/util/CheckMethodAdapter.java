@@ -46,7 +46,7 @@ import org.napile.asm.Label;
 import org.napile.asm.MethodVisitor;
 import org.napile.asm.Opcodes;
 import org.napile.asm.Type;
-import org.napile.asm.tree.MethodNode;
+import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.analysis.Analyzer;
 import org.napile.asm.tree.analysis.BasicValue;
 import org.napile.asm.tree.analysis.BasicVerifier;

@@ -131,7 +131,7 @@ public class TypeUtils
 	{
 		if(types.isEmpty())
 		{
-			return NapileLangPackage.ANY.getTypeSafe(jetScope, true);
+			return getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY, true);
 		}
 
 		if(types.size() == 1)
@@ -153,7 +153,7 @@ public class TypeUtils
 
 		if(nothingTypePresent)
 		{
-			return NapileLangPackage.NULL.getTypeSafe(jetScope, allNullable);
+			return getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, allNullable);
 		}
 
 		// Now we remove types that have subtypes in the list

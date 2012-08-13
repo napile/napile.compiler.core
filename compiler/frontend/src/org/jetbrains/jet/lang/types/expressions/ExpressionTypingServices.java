@@ -64,6 +64,7 @@ import org.jetbrains.jet.lang.types.CommonSupertypes;
 import org.jetbrains.jet.lang.types.ErrorUtils;
 import org.jetbrains.jet.lang.types.JetType;
 import org.jetbrains.jet.lang.types.JetTypeInfo;
+import org.jetbrains.jet.lang.types.TypeUtils;
 import org.jetbrains.jet.lang.types.lang.JetStandardClasses;
 import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
 import org.jetbrains.jet.lexer.JetTokens;
@@ -174,7 +175,7 @@ public class ExpressionTypingServices
 	{
 		Map<JetExpression, JetType> typeMap = collectReturnedExpressionsWithTypes(trace, outerScope, function, functionDescriptor);
 		Collection<JetType> types = typeMap.values();
-		return types.isEmpty() ? NapileLangPackage.NULL.getTypeSafe(outerScope, false) : CommonSupertypes.commonSupertype(types);
+		return types.isEmpty() ? TypeUtils.getTypeOfClassOrErrorType(outerScope, NapileLangPackage.NULL, false) : CommonSupertypes.commonSupertype(types);
 	}
 
 

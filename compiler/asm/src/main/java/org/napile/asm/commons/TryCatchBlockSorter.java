@@ -35,7 +35,7 @@ import java.util.Comparator;
 
 import org.napile.asm.MethodVisitor;
 import org.napile.asm.Opcodes;
-import org.napile.asm.tree.MethodNode;
+import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.TryCatchBlockNode;
 
 /**

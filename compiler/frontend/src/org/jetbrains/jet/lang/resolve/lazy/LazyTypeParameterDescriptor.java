@@ -179,7 +179,7 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 			assert upperBounds.size() > 0 : "Upper bound list is empty in " + getName();
 			upperBoundsAsType = TypeUtils.intersect(JetTypeChecker.INSTANCE, upperBounds, TypeUtils.getChainedScope(upperBounds));
 			if(upperBoundsAsType == null)
-				upperBoundsAsType = NapileLangPackage.NULL.getTypeSafe(TypeUtils.getChainedScope(upperBounds), false);
+				upperBoundsAsType = TypeUtils.getTypeOfClassOrErrorType(TypeUtils.getChainedScope(upperBounds), NapileLangPackage.NULL, false);
 		}
 		return upperBoundsAsType;
 	}
@@ -195,7 +195,7 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 	@Override
 	public JetType getLowerBoundsAsType()
 	{
-		return NapileLangPackage.NULL.getTypeSafe(TypeUtils.getChainedScope(upperBounds), false);
+		return TypeUtils.getTypeOfClassOrErrorType(TypeUtils.getChainedScope(upperBounds), NapileLangPackage.NULL, false);
 	}
 
 	@NotNull

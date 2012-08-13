@@ -37,7 +37,6 @@ import org.jetbrains.jet.lang.resolve.name.FqName;
 import org.jetbrains.jet.lang.types.ErrorUtils;
 import org.jetbrains.jet.lang.types.JetType;
 import org.jetbrains.jet.lang.types.TypeUtils;
-import org.jetbrains.jet.plugin.JetPluginUtil;
 import org.jetbrains.jet.plugin.references.JetPsiReference;
 import org.jetbrains.jet.util.QualifiedNamesUtil;
 import com.intellij.openapi.editor.Document;

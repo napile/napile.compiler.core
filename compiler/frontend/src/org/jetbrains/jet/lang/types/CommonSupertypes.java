@@ -69,7 +69,7 @@ public class CommonSupertypes
 
 		// Everything deleted => it's Nothing or Nothing?
 		if(typeSet.isEmpty())
-			return NapileLangPackage.NULL.getTypeSafe(jetScope, nullable);
+			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, nullable);
 
 		if(typeSet.size() == 1)
 		{

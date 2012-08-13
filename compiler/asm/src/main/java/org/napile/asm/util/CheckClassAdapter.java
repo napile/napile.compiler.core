@@ -29,29 +29,21 @@
  */
 package org.napile.asm.util;
 
-import java.io.FileInputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.napile.asm.AnnotationVisitor;
 import org.napile.asm.Attribute;
-import org.napile.asm.ClassReader;
 import org.napile.asm.ClassVisitor;
 import org.napile.asm.FieldVisitor;
 import org.napile.asm.Label;
 import org.napile.asm.MethodVisitor;
 import org.napile.asm.Opcodes;
-import org.napile.asm.Type;
-import org.napile.asm.tree.ClassNode;
-import org.napile.asm.tree.MethodNode;
+import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.analysis.Analyzer;
 import org.napile.asm.tree.analysis.BasicValue;
 import org.napile.asm.tree.analysis.Frame;
-import org.napile.asm.tree.analysis.SimpleVerifier;
 
 /**
  * A {@link ClassVisitor} that checks that its methods are properly used. More
@@ -159,100 +151,6 @@ public class CheckClassAdapter extends ClassVisitor
 	 */
 	private boolean checkDataFlow;
 
-	/**
-	 * Checks a given class. <p> Usage: CheckClassAdapter &lt;binary
-	 * class name or class file name&gt;
-	 *
-	 * @param args the command line arguments.
-	 * @throws Exception if the class cannot be found, or if an IO exception
-	 *                   occurs.
-	 */
-	public static void main(final String[] args) throws Exception
-	{
-		if(args.length != 1)
-		{
-			System.err.println("Verifies the given class.");
-			System.err.println("Usage: CheckClassAdapter " + "<fully qualified class name or class file name>");
-			return;
-		}
-		ClassReader cr;
-		if(args[0].endsWith(".class"))
-		{
-			cr = new ClassReader(new FileInputStream(args[0]));
-		}
-		else
-		{
-			cr = new ClassReader(args[0]);
-		}
-
-		verify(cr, false, new PrintWriter(System.err));
-	}
-
-	/**
-	 * Checks a given class.
-	 *
-	 * @param cr     a <code>ClassReader</code> that contains bytecode for the
-	 *               analysis.
-	 * @param loader a <code>ClassLoader</code> which will be used to load
-	 *               referenced classes. This is useful if you are verifiying multiple
-	 *               interdependent classes.
-	 * @param dump   true if bytecode should be printed out not only when errors
-	 *               are found.
-	 * @param pw     write where results going to be printed
-	 */
-	public static void verify(final ClassReader cr, final ClassLoader loader, final boolean dump, final PrintWriter pw)
-	{
-		ClassNode cn = new ClassNode();
-		cr.accept(new CheckClassAdapter(cn, false), ClassReader.SKIP_DEBUG);
-
-		Type syperType = cn.superName == null ? null : Type.getObjectType(cn.superName);
-		List<MethodNode> methods = cn.methods;
-
-		List<Type> interfaces = new ArrayList<Type>();
-		for(Iterator<String> i = cn.interfaces.iterator(); i.hasNext(); )
-		{
-			interfaces.add(Type.getObjectType(i.next().toString()));
-		}
-
-		for(int i = 0; i < methods.size(); ++i)
-		{
-			MethodNode method = methods.get(i);
-			SimpleVerifier verifier = new SimpleVerifier(Type.getObjectType(cn.name), syperType, interfaces, (cn.access & Opcodes.ACC_INTERFACE) != 0);
-			Analyzer<BasicValue> a = new Analyzer<BasicValue>(verifier);
-			if(loader != null)
-			{
-				verifier.setClassLoader(loader);
-			}
-			try
-			{
-				a.analyze(cn.name, method);
-				if(!dump)
-				{
-					continue;
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace(pw);
-			}
-			printAnalyzerResult(method, a, pw);
-		}
-		pw.flush();
-	}
-
-	/**
-	 * Checks a given class
-	 *
-	 * @param cr   a <code>ClassReader</code> that contains bytecode for the
-	 *             analysis.
-	 * @param dump true if bytecode should be printed out not only when errors
-	 *             are found.
-	 * @param pw   write where results going to be printed
-	 */
-	public static void verify(final ClassReader cr, final boolean dump, final PrintWriter pw)
-	{
-		verify(cr, null, dump, pw);
-	}
 
 	static void printAnalyzerResult(MethodNode method, Analyzer<BasicValue> a, final PrintWriter pw)
 	{

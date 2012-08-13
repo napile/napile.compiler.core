@@ -158,7 +158,7 @@ public class DescriptorResolver
 				return ErrorUtils.createErrorType("Supertype not specified");
 			}
 		}
-		return NapileLangPackage.ANY.getTypeSafe(jetScope, false);
+		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY, false);
 	}
 
 	public Collection<JetType> resolveDelegationSpecifiers(JetScope extensibleScope, List<JetDelegationSpecifier> delegationSpecifiers, @NotNull TypeResolver resolver, BindingTrace trace, boolean checkBounds)

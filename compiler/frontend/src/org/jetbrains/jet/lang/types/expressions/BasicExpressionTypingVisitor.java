@@ -689,7 +689,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				else
 				{
 					// supertypes may be empty when all the supertypes are error types (are not resolved, for example)
-					JetType type = supertypes.isEmpty() ? NapileLangPackage.ANY.getTypeSafe(context.scope, false) : supertypes.iterator().next();
+					JetType type = supertypes.isEmpty() ? TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, false) : supertypes.iterator().next();
 					result = substitutor.substitute(type, Variance.INVARIANT);
 				}
 			}
@@ -1175,7 +1175,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		else
 		{
 			DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(baseExpression, type, context.trace.getBindingContext());
-			dataFlowInfo = dataFlowInfo.disequate(value, new DataFlowValue(new Object(), NapileLangPackage.NULL.getTypeSafe(context.scope, true), false, Nullability.NULL));
+			dataFlowInfo = dataFlowInfo.disequate(value, new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, true), false, Nullability.NULL));
 		}
 		return JetTypeInfo.create(TypeUtils.makeNotNullable(type), dataFlowInfo);
 	}
@@ -1292,7 +1292,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				if(right != null)
 				{
 					ExpressionReceiver receiver = ExpressionTypingUtils.safeGetExpressionReceiver(facade, left, context.replaceScope(context.scope));
-					OverloadResolutionResults<FunctionDescriptor> resolutionResults = context.resolveExactSignature(receiver, name, Collections.singletonList(NapileLangPackage.ANY.getTypeSafe(context.scope, true)));
+					OverloadResolutionResults<FunctionDescriptor> resolutionResults = context.resolveExactSignature(receiver, name, Collections.singletonList(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, true)));
 					if(resolutionResults.isSuccess())
 					{
 						FunctionDescriptor equals = resolutionResults.getResultingCall().getResultingDescriptor();

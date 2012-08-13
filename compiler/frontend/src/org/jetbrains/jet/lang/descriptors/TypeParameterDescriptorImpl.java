@@ -141,7 +141,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 		checkUninitialized();
 
 		if(upperBounds.isEmpty())
-			doAddUpperBound(NapileLangPackage.ANY.getTypeSafe(jetScope, true));
+			doAddUpperBound(TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY, true));
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 
 			upperBoundsAsType = TypeUtils.intersect(JetTypeChecker.INSTANCE, upperBounds, jetScope);
 			if(upperBoundsAsType == null)
-				upperBoundsAsType = NapileLangPackage.NULL.getTypeSafe(jetScope, false);
+				upperBoundsAsType = TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, false);
 		}
 		return upperBoundsAsType;
 	}
@@ -176,7 +176,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	public Set<JetType> getLowerBounds()
 	{
 		//checkInitialized();
-		return Collections.singleton(NapileLangPackage.NULL.getTypeSafe(TypeUtils.getChainedScope(upperBounds), false));
+		return Collections.singleton(TypeUtils.getTypeOfClassOrErrorType(TypeUtils.getChainedScope(upperBounds), NapileLangPackage.NULL, false));
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	public JetType getLowerBoundsAsType()
 	{
 		checkInitialized();
-		return NapileLangPackage.NULL.getTypeSafe(TypeUtils.getChainedScope(upperBounds), false);
+		return TypeUtils.getTypeOfClassOrErrorType(TypeUtils.getChainedScope(upperBounds), NapileLangPackage.NULL, false);
 	}
 
 	@NotNull
@@ -254,7 +254,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 			final JetScope jetScope = TypeUtils.getChainedScope(classObjectUpperBounds);
 			classObjectBoundsAsType = TypeUtils.intersect(JetTypeChecker.INSTANCE, classObjectUpperBounds, jetScope);
 			if(classObjectBoundsAsType == null)
-				classObjectBoundsAsType = NapileLangPackage.NULL.getTypeSafe(jetScope, false);
+				classObjectBoundsAsType = TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, false);
 		}
 		return classObjectBoundsAsType;
 	}

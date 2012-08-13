@@ -50,7 +50,7 @@ import org.napile.asm.tree.JumpInsnNode;
 import org.napile.asm.tree.LabelNode;
 import org.napile.asm.tree.LocalVariableNode;
 import org.napile.asm.tree.LookupSwitchInsnNode;
-import org.napile.asm.tree.MethodNode;
+import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.TableSwitchInsnNode;
 import org.napile.asm.tree.TryCatchBlockNode;
 

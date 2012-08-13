@@ -62,10 +62,10 @@ public class DataFlowValueFactory
 		{
 			JetConstantExpression constantExpression = (JetConstantExpression) expression;
 			if(constantExpression.getNode().getElementType() == JetNodeTypes.NULL)
-				return new DataFlowValue(new Object(), NapileLangPackage.NULL.getTypeSafe(type.getMemberScope(), true), false, Nullability.NULL);
+				return new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(type.getMemberScope(), NapileLangPackage.NULL, true), false, Nullability.NULL);
 		}
 		if(TypeUtils.isEqualFqName(type, NapileLangPackage.NULL))
-			return new DataFlowValue(new Object(), NapileLangPackage.NULL.getTypeSafe(type.getMemberScope(), true), false, Nullability.NULL);
+			return new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(type.getMemberScope(), NapileLangPackage.NULL, true), false, Nullability.NULL);
 
 		Pair<Object, Boolean> result = getIdForStableIdentifier(expression, bindingContext, false);
 		return new DataFlowValue(result.first == null ? expression : result.first, type, result.second, getImmanentNullability(type));

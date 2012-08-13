@@ -602,7 +602,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			JetType throwableType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.THROWABLE, false);
 			facade.getTypeInfo(thrownExpression, context.replaceExpectedType(throwableType).replaceScope(context.scope));
 		}
-		return DataFlowUtils.checkType(NapileLangPackage.NULL.getTypeSafe(context.scope, false), expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, false), expression, context, context.dataFlowInfo);
 	}
 
 	@Override
@@ -679,20 +679,20 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 				context.trace.report(RETURN_TYPE_MISMATCH.on(expression, expectedType));
 			}
 		}
-		return DataFlowUtils.checkType(NapileLangPackage.NULL.getTypeSafe(context.scope, false), expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, false), expression, context, context.dataFlowInfo);
 	}
 
 	@Override
 	public JetTypeInfo visitBreakExpression(JetBreakExpression expression, ExpressionTypingContext context)
 	{
 		context.labelResolver.resolveLabel(expression, context);
-		return DataFlowUtils.checkType(NapileLangPackage.NULL.getTypeSafe(context.scope, false), expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, false), expression, context, context.dataFlowInfo);
 	}
 
 	@Override
 	public JetTypeInfo visitContinueExpression(JetContinueExpression expression, ExpressionTypingContext context)
 	{
 		context.labelResolver.resolveLabel(expression, context);
-		return DataFlowUtils.checkType(NapileLangPackage.NULL.getTypeSafe(context.scope, false), expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, false), expression, context, context.dataFlowInfo);
 	}
 }
