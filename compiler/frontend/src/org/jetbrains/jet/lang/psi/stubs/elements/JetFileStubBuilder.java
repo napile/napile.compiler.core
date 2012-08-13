@@ -22,6 +22,7 @@ import org.jetbrains.jet.lang.psi.stubs.impl.PsiJetFileStubImpl;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.stubs.DefaultStubBuilder;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.util.io.StringRef;
 
 /**
  * @author Nikolay Krasko
@@ -37,6 +38,6 @@ public class JetFileStubBuilder extends DefaultStubBuilder
 		}
 
 		JetFile jetFile = (JetFile) file;
-		return new PsiJetFileStubImpl(jetFile, jetFile.getPackageName(), jetFile.isScript());
+		return new PsiJetFileStubImpl(jetFile, StringRef.fromString(jetFile.getPackageName()));
 	}
 }

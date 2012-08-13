@@ -72,8 +72,6 @@ public class BodyResolver
 	@NotNull
 	private DescriptorResolver descriptorResolver;
 	@NotNull
-	private ScriptBodyResolver scriptBodyResolverResolver;
-	@NotNull
 	private ExpressionTypingServices expressionTypingServices;
 	@NotNull
 	private CallResolver callResolver;
@@ -94,12 +92,6 @@ public class BodyResolver
 	public void setDescriptorResolver(@NotNull DescriptorResolver descriptorResolver)
 	{
 		this.descriptorResolver = descriptorResolver;
-	}
-
-	@Inject
-	public void setScriptBodyResolverResolver(@NotNull ScriptBodyResolver scriptBodyResolverResolver)
-	{
-		this.scriptBodyResolverResolver = scriptBodyResolverResolver;
 	}
 
 	@Inject
@@ -145,8 +137,6 @@ public class BodyResolver
 		resolveAnonymousInitializers();
 
 		resolveFunctionBodies();
-
-		scriptBodyResolverResolver.resolveScriptBodies();
 
 		if(!topDownAnalysisParameters.isDeclaredLocally())
 		{

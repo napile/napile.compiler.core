@@ -22,17 +22,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.descriptors.ConstructorDescriptor;
 import org.jetbrains.jet.lang.descriptors.MutableClassDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
-import org.jetbrains.jet.lang.descriptors.ScriptDescriptor;
 import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
 import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetDeclaration;
 import org.jetbrains.jet.lang.psi.JetNamedFunction;
 import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
 import org.jetbrains.jet.lang.psi.JetProperty;
-import org.jetbrains.jet.lang.psi.JetScript;
 import org.jetbrains.jet.lang.psi.NapileConstructor;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
-import org.jetbrains.jet.lang.resolve.scopes.WritableScope;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -51,10 +48,6 @@ public interface BodiesResolveContext
 	Map<JetNamedFunction, SimpleFunctionDescriptor> getFunctions();
 
 	Map<JetDeclaration, JetScope> getDeclaringScopes();
-
-	Map<JetScript, ScriptDescriptor> getScripts();
-
-	Map<JetScript, WritableScope> getScriptScopes();
 
 	void setTopDownAnalysisParameters(TopDownAnalysisParameters parameters);
 

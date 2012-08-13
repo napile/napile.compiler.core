@@ -35,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
 import org.jetbrains.jet.lang.descriptors.FunctionDescriptor;
 import org.jetbrains.jet.lang.descriptors.FunctionDescriptorUtil;
-import org.jetbrains.jet.lang.descriptors.ScriptDescriptor;
 import org.jetbrains.jet.lang.diagnostics.Diagnostic;
 import org.jetbrains.jet.lang.psi.JetBinaryExpression;
 import org.jetbrains.jet.lang.psi.JetBlockExpression;
@@ -47,7 +46,6 @@ import org.jetbrains.jet.lang.psi.JetFunctionLiteralExpression;
 import org.jetbrains.jet.lang.psi.JetNamedFunction;
 import org.jetbrains.jet.lang.psi.JetQualifiedExpression;
 import org.jetbrains.jet.lang.psi.JetReturnExpression;
-import org.jetbrains.jet.lang.psi.JetScript;
 import org.jetbrains.jet.lang.psi.JetSimpleNameExpression;
 import org.jetbrains.jet.lang.psi.JetTreeVisitor;
 import org.jetbrains.jet.lang.resolve.BindingContext;
@@ -223,15 +221,7 @@ public class ExpressionTypingServices
 		List<JetElement> block = expression.getStatements();
 
 		DeclarationDescriptor containingDescriptor = outerScope.getContainingDeclaration();
-		if(containingDescriptor instanceof ScriptDescriptor)
-		{
-			if(!(expression.getParent() instanceof JetScript))
-			{
-				// top level script declarations should have ScriptDescriptor parent
-				// and lower level script declarations should be ScriptCodeDescriptor parent
-				containingDescriptor = ((ScriptDescriptor) containingDescriptor).getScriptCodeDescriptor();
-			}
-		}
+
 		WritableScope scope = new WritableScopeImpl(outerScope, containingDescriptor, new TraceBasedRedeclarationHandler(context.trace), "getBlockReturnedType");
 		scope.changeLockLevel(WritableScope.LockLevel.BOTH);
 
@@ -245,11 +235,6 @@ public class ExpressionTypingServices
 			r = getBlockReturnedTypeWithWritableScope(scope, block, coercionStrategyForLastExpression, context, trace);
 		}
 		scope.changeLockLevel(WritableScope.LockLevel.READING);
-
-		if(containingDescriptor instanceof ScriptDescriptor)
-		{
-			trace.record(BindingContext.SCRIPT_SCOPE, (ScriptDescriptor) containingDescriptor, scope);
-		}
 
 		return r;
 	}

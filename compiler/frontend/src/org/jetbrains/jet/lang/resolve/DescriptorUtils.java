@@ -35,7 +35,6 @@ import org.jetbrains.jet.lang.descriptors.FunctionDescriptor;
 import org.jetbrains.jet.lang.descriptors.Modality;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
 import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
-import org.jetbrains.jet.lang.descriptors.ScriptDescriptor;
 import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
 import org.jetbrains.jet.lang.descriptors.TypeParameterDescriptor;
 import org.jetbrains.jet.lang.descriptors.ValueParameterDescriptor;
@@ -145,11 +144,7 @@ public class DescriptorUtils
 			ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
 			return classDescriptor.getImplicitReceiver();
 		}
-		else if(containingDeclaration instanceof ScriptDescriptor)
-		{
-			ScriptDescriptor scriptDescriptor = (ScriptDescriptor) containingDeclaration;
-			return scriptDescriptor.getImplicitReceiver();
-		}
+
 		return NO_RECEIVER;
 	}
 

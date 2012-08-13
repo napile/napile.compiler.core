@@ -177,14 +177,7 @@ public class JetPsiUtil
 
 	public static FqName getFQName(JetFile file)
 	{
-		if(file.isScript())
-		{
-			return FqName.ROOT;
-		}
-		else
-		{
-			return getFQName(file.getNamespaceHeader());
-		}
+		return getFQName(file.getNamespaceHeader());
 	}
 
 	@Nullable

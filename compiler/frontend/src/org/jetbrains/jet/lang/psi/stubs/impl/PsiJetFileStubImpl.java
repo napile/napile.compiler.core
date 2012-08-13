@@ -28,32 +28,18 @@ import com.intellij.util.io.StringRef;
  */
 public class PsiJetFileStubImpl extends PsiFileStubImpl<JetFile> implements PsiJetFileStub
 {
-
 	private final StringRef packageName;
-	private final boolean isScript;
 
-	public PsiJetFileStubImpl(JetFile jetFile, StringRef packageName, boolean isScript)
+	public PsiJetFileStubImpl(JetFile jetFile, StringRef packageName)
 	{
 		super(jetFile);
 		this.packageName = packageName;
-		this.isScript = isScript;
-	}
-
-	public PsiJetFileStubImpl(JetFile jetFile, String packageName, boolean isScript)
-	{
-		this(jetFile, StringRef.fromString(packageName), isScript);
 	}
 
 	@Override
 	public String getPackageName()
 	{
 		return StringRef.toString(packageName);
-	}
-
-	@Override
-	public boolean isScript()
-	{
-		return isScript;
 	}
 
 	@Override

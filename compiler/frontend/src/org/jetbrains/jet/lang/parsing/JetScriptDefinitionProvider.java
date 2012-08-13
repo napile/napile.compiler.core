@@ -29,6 +29,7 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 
+@Deprecated
 public class JetScriptDefinitionProvider
 {
 	private final HashMap<String, JetScriptDefinition> scripts = new HashMap<String, JetScriptDefinition>();

@@ -68,11 +68,6 @@ public class JetVisitorVoid extends PsiElementVisitor
 		visitFile(file);
 	}
 
-	public void visitScript(JetScript script)
-	{
-		visitDeclaration(script);
-	}
-
 	public void visitImportDirective(JetImportDirective importDirective)
 	{
 		visitJetElement(importDirective);

@@ -20,17 +20,7 @@ package org.jetbrains.jet.di;
 import javax.annotation.PreDestroy;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.lang.resolve.AnnotationResolver;
-import org.jetbrains.jet.lang.resolve.BindingTrace;
-import org.jetbrains.jet.lang.resolve.BodyResolver;
-import org.jetbrains.jet.lang.resolve.ControlFlowAnalyzer;
-import org.jetbrains.jet.lang.resolve.DeclarationsChecker;
-import org.jetbrains.jet.lang.resolve.DescriptorResolver;
-import org.jetbrains.jet.lang.resolve.QualifiedExpressionResolver;
-import org.jetbrains.jet.lang.resolve.ScriptBodyResolver;
-import org.jetbrains.jet.lang.resolve.TopDownAnalysisContext;
-import org.jetbrains.jet.lang.resolve.TopDownAnalysisParameters;
-import org.jetbrains.jet.lang.resolve.TypeResolver;
+import org.jetbrains.jet.lang.resolve.*;
 import org.jetbrains.jet.lang.resolve.calls.CallResolver;
 import org.jetbrains.jet.lang.resolve.calls.OverloadingConflictResolver;
 import org.jetbrains.jet.lang.types.expressions.ExpressionTypingServices;
@@ -53,7 +43,6 @@ public class InjectorForBodyResolve
 	private OverloadingConflictResolver overloadingConflictResolver;
 	private ControlFlowAnalyzer controlFlowAnalyzer;
 	private DeclarationsChecker declarationsChecker;
-	private ScriptBodyResolver scriptBodyResolver;
 	private TopDownAnalysisContext topDownAnalysisContext;
 
 	public InjectorForBodyResolve(@NotNull Project project, @NotNull TopDownAnalysisParameters topDownAnalysisParameters, @NotNull BindingTrace bindingTrace)
@@ -71,7 +60,6 @@ public class InjectorForBodyResolve
 		this.overloadingConflictResolver = new OverloadingConflictResolver();
 		this.controlFlowAnalyzer = new ControlFlowAnalyzer();
 		this.declarationsChecker = new DeclarationsChecker();
-		this.scriptBodyResolver = new ScriptBodyResolver();
 		this.topDownAnalysisContext = new TopDownAnalysisContext();
 
 		this.bodyResolver.setCallResolver(callResolver);
@@ -79,7 +67,6 @@ public class InjectorForBodyResolve
 		this.bodyResolver.setDeclarationsChecker(declarationsChecker);
 		this.bodyResolver.setDescriptorResolver(descriptorResolver);
 		this.bodyResolver.setExpressionTypingServices(expressionTypingServices);
-		this.bodyResolver.setScriptBodyResolverResolver(scriptBodyResolver);
 		this.bodyResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
 		this.bodyResolver.setTrace(bindingTrace);
 
@@ -109,12 +96,7 @@ public class InjectorForBodyResolve
 
 		declarationsChecker.setTrace(bindingTrace);
 
-		scriptBodyResolver.setContext(topDownAnalysisContext);
-		scriptBodyResolver.setExpressionTypingServices(expressionTypingServices);
-		scriptBodyResolver.setTrace(bindingTrace);
-
 		topDownAnalysisContext.setTopDownAnalysisParameters(topDownAnalysisParameters);
-
 	}
 
 	@PreDestroy

@@ -30,12 +30,14 @@ import org.jetbrains.jet.plugin.JetLanguage;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
+import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 
@@ -67,7 +69,17 @@ public class JetParserDefinition implements ParserDefinition
 	@Override
 	public PsiParser createParser(Project project)
 	{
-		return new JetParser(project);
+		return new PsiParser()
+		{
+			@NotNull
+			@Override
+			public ASTNode parse(IElementType root, PsiBuilder builder)
+			{
+				JetParsing jetParsing = JetParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(builder));
+				jetParsing.parseFile();
+				return builder.getTreeBuilt();
+			}
+		};
 	}
 
 	@Override

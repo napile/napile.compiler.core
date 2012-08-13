@@ -35,8 +35,6 @@ public interface DeclarationDescriptorVisitor<R, D>
 
 	R visitConstructorDescriptor(ConstructorDescriptor constructorDescriptor, D data);
 
-	R visitScriptDescriptor(ScriptDescriptor scriptDescriptor, D data);
-
 	R visitLocalVariableDescriptor(LocalVariableDescriptor descriptor, D data);
 
 	R visitPropertyDescriptor(PropertyDescriptor descriptor, D data);

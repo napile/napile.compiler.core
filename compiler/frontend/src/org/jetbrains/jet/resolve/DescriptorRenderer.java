@@ -39,7 +39,6 @@ import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertyGetterDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertySetterDescriptor;
-import org.jetbrains.jet.lang.descriptors.ScriptDescriptor;
 import org.jetbrains.jet.lang.descriptors.TypeParameterDescriptor;
 import org.jetbrains.jet.lang.descriptors.ValueParameterDescriptor;
 import org.jetbrains.jet.lang.descriptors.VariableDescriptor;
@@ -632,12 +631,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			return null;
 		}
 
-		@Override
-		public Void visitScriptDescriptor(ScriptDescriptor scriptDescriptor, StringBuilder data)
-		{
-			renderName(scriptDescriptor, data);
-			return null;
-		}
 
 		@Override
 		public Void visitClassDescriptor(ClassDescriptor descriptor, StringBuilder builder)

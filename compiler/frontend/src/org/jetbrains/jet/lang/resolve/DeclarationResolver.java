@@ -54,8 +54,6 @@ public class DeclarationResolver
 	@NotNull
 	private DescriptorResolver descriptorResolver;
 	@NotNull
-	private ScriptHeaderResolver scriptHeaderResolver;
-	@NotNull
 	private BindingTrace trace;
 
 
@@ -88,13 +86,6 @@ public class DeclarationResolver
 	{
 		this.trace = trace;
 	}
-
-	@Inject
-	public void setScriptHeaderResolver(@NotNull ScriptHeaderResolver scriptHeaderResolver)
-	{
-		this.scriptHeaderResolver = scriptHeaderResolver;
-	}
-
 
 	public void process(@NotNull JetScope rootScope)
 	{
@@ -172,10 +163,6 @@ public class DeclarationResolver
 
 			resolveFunctionAndPropertyHeaders(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForInitializers(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getBuilder());
 		}
-
-		scriptHeaderResolver.resolveScriptDeclarations();
-
-		// TODO : Extensions
 	}
 
 	private void resolveFunctionAndPropertyHeaders(@NotNull List<JetDeclaration> declarations, final @NotNull JetScope scopeForFunctions, final @NotNull JetScope scopeForPropertyInitializers, final @NotNull JetScope scopeForPropertyAccessors, final @NotNull NamespaceLikeBuilder namespaceLike)

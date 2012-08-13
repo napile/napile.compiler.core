@@ -27,7 +27,6 @@ import org.jetbrains.jet.lang.descriptors.ConstructorDescriptor;
 import org.jetbrains.jet.lang.descriptors.MutableClassDescriptor;
 import org.jetbrains.jet.lang.descriptors.NamespaceDescriptorImpl;
 import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
-import org.jetbrains.jet.lang.descriptors.ScriptDescriptor;
 import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
 import org.jetbrains.jet.lang.descriptors.WithDeferredResolve;
 import org.jetbrains.jet.lang.psi.*;
@@ -60,9 +59,6 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	public final Map<JetDeclarationContainer, WithDeferredResolve> forDeferredResolver = Maps.newHashMap();
 
 	public final Map<JetDeclarationContainer, JetScope> normalScope = Maps.newHashMap();
-
-	private final Map<JetScript, ScriptDescriptor> scripts = Maps.newLinkedHashMap();
-	private final Map<JetScript, WritableScope> scriptScopes = Maps.newHashMap();
 
 	private StringBuilder debugOutput;
 
@@ -138,20 +134,6 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	public Map<JetFile, NamespaceDescriptorImpl> getNamespaceDescriptors()
 	{
 		return namespaceDescriptors;
-	}
-
-	@Override
-	@NotNull
-	public Map<JetScript, ScriptDescriptor> getScripts()
-	{
-		return scripts;
-	}
-
-	@Override
-	@NotNull
-	public Map<JetScript, WritableScope> getScriptScopes()
-	{
-		return scriptScopes;
 	}
 
 	public Map<JetParameter, PropertyDescriptor> getPrimaryConstructorParameterProperties()

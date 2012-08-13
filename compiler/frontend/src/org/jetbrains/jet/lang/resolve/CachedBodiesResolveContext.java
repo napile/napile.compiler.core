@@ -23,17 +23,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.descriptors.ConstructorDescriptor;
 import org.jetbrains.jet.lang.descriptors.MutableClassDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
-import org.jetbrains.jet.lang.descriptors.ScriptDescriptor;
 import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
 import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetDeclaration;
 import org.jetbrains.jet.lang.psi.JetNamedFunction;
 import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
 import org.jetbrains.jet.lang.psi.JetProperty;
-import org.jetbrains.jet.lang.psi.JetScript;
 import org.jetbrains.jet.lang.psi.NapileConstructor;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
-import org.jetbrains.jet.lang.resolve.scopes.WritableScope;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 
@@ -51,8 +48,6 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<JetProperty, PropertyDescriptor> properties;
 	private final Map<JetNamedFunction, SimpleFunctionDescriptor> functions;
 	private final Map<JetDeclaration, JetScope> declaringScopes;
-	private final Map<JetScript, ScriptDescriptor> scripts;
-	private final Map<JetScript, WritableScope> scriptScopes;
 
 	private
 	@NotNull
@@ -66,8 +61,6 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 		properties = Collections.unmodifiableMap(context.getProperties());
 		functions = Collections.unmodifiableMap(context.getFunctions());
 		declaringScopes = Collections.unmodifiableMap(context.getDeclaringScopes());
-		scripts = Collections.unmodifiableMap(context.getScripts());
-		scriptScopes = Collections.unmodifiableMap(context.getScriptScopes());
 
 		topDownAnalysisParameters = context.getTopDownAnalysisParameters();
 	}
@@ -106,18 +99,6 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	public Map<JetDeclaration, JetScope> getDeclaringScopes()
 	{
 		return declaringScopes;
-	}
-
-	@Override
-	public Map<JetScript, ScriptDescriptor> getScripts()
-	{
-		return scripts;
-	}
-
-	@Override
-	public Map<JetScript, WritableScope> getScriptScopes()
-	{
-		return scriptScopes;
 	}
 
 	@Override

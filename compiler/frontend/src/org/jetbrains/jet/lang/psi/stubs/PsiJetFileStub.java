@@ -25,6 +25,4 @@ import com.intellij.psi.stubs.PsiFileStub;
 public interface PsiJetFileStub extends PsiFileStub<JetFile>
 {
 	String getPackageName();
-
-	boolean isScript();
 }

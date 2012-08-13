@@ -18,7 +18,6 @@ package org.jetbrains.jet.lang.psi;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
@@ -83,25 +82,5 @@ abstract class JetNamedDeclarationNotStubbed extends JetDeclarationImpl implemen
 	{
 		PsiElement identifier = getNameIdentifier();
 		return identifier != null ? identifier.getTextRange().getStartOffset() : getTextRange().getStartOffset();
-	}
-
-	@Override
-	public boolean isScriptDeclaration()
-	{
-		return getScript() != null;
-	}
-
-	@Override
-	@Nullable
-	public JetScript getScript()
-	{
-		if(getParent() != null && getParent().getParent() instanceof JetScript)
-		{
-			return (JetScript) getParent().getParent();
-		}
-		else
-		{
-			return null;
-		}
 	}
 }

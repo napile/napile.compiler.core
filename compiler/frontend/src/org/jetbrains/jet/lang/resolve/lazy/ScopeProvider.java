@@ -103,18 +103,7 @@ public class ScopeProvider
 	{
 		List<JetImportDirective> fileImports = file.getImportDirectives();
 		List<JetImportDirective> importDirectives = Lists.newArrayList();
-		if(file.isScript())
-		{
-			JetScriptDefinition definition = JetScriptDefinitionProvider.getInstance(file.getProject()).findScriptDefinition(file);
-			List<ImportPath> imports = definition.getImports();
-			if(!imports.isEmpty())
-			{
-				for(ImportPath importPath : imports)
-				{
-					importDirectives.add(JetPsiFactory.createImportDirective(file.getProject(), importPath));
-				}
-			}
-		}
+
 		importDirectives.addAll(fileImports);
 		return importDirectives;
 	}

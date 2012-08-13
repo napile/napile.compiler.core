@@ -24,40 +24,21 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 
 public class JetParser implements PsiParser
 {
-
-	public static final String STD_SCRIPT_EXT = "." + JetParserDefinition.KTSCRIPT_FILE_SUFFIX;
-	private final JetScriptDefinitionProvider scriptDefinitionProvider;
-
 	public JetParser(Project project)
 	{
-		scriptDefinitionProvider = JetScriptDefinitionProvider.getInstance(project);
+
 	}
 
 	@Override
 	@NotNull
 	public ASTNode parse(IElementType iElementType, PsiBuilder psiBuilder)
 	{
-		throw new IllegalStateException("use another parse");
-	}
-
-	// we need this method because we need psiFile
-	@NotNull
-	public ASTNode parse(IElementType iElementType, PsiBuilder psiBuilder, PsiFile psiFile)
-	{
 		JetParsing jetParsing = JetParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(psiBuilder));
-		if(scriptDefinitionProvider != null && scriptDefinitionProvider.isScript(psiFile) || psiFile.getName().endsWith(STD_SCRIPT_EXT))
-		{
-			jetParsing.parseScript();
-		}
-		else
-		{
-			jetParsing.parseFile();
-		}
+		jetParsing.parseFile();
 		return psiBuilder.getTreeBuilt();
 	}
 }

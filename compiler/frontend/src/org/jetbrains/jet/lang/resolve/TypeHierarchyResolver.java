@@ -92,8 +92,6 @@ public class TypeHierarchyResolver
 	@NotNull
 	private DescriptorResolver descriptorResolver;
 	@NotNull
-	private ScriptHeaderResolver scriptHeaderResolver;
-	@NotNull
 	private NamespaceFactoryImpl namespaceFactory;
 	@NotNull
 	private BindingTrace trace;
@@ -117,12 +115,6 @@ public class TypeHierarchyResolver
 	public void setDescriptorResolver(@NotNull DescriptorResolver descriptorResolver)
 	{
 		this.descriptorResolver = descriptorResolver;
-	}
-
-	@Inject
-	public void setScriptHeaderResolver(@NotNull ScriptHeaderResolver scriptHeaderResolver)
-	{
-		this.scriptHeaderResolver = scriptHeaderResolver;
 	}
 
 	@Inject
@@ -245,11 +237,6 @@ public class TypeHierarchyResolver
 					WriteThroughScope namespaceScope = new WriteThroughScope(outerScope, namespaceDescriptor.getMemberScope(), new TraceBasedRedeclarationHandler(trace), "namespace");
 					namespaceScope.changeLockLevel(WritableScope.LockLevel.BOTH);
 					context.getNamespaceScopes().put(file, namespaceScope);
-
-					if(file.isScript())
-					{
-						scriptHeaderResolver.processScriptHierarchy(file.getScript(), namespaceScope);
-					}
 
 					prepareForDeferredCall(namespaceScope, namespaceDescriptor, file);
 				}

@@ -27,7 +27,6 @@ import org.jetbrains.jet.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.jetbrains.jet.lang.resolve.scopes.receivers.ExtensionReceiver;
 import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverDescriptorVisitor;
-import org.jetbrains.jet.lang.resolve.scopes.receivers.ScriptReceiver;
 import org.jetbrains.jet.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
 import org.jetbrains.jet.lang.resolve.scopes.receivers.TransientReceiver;
 import org.jetbrains.jet.lang.types.JetType;
@@ -72,12 +71,6 @@ public class AutoCastUtils
 			public List<ReceiverDescriptor> visitClassReceiver(ClassReceiver receiver, Object data)
 			{
 				return castThis(dataFlowInfo, receiver);
-			}
-
-			@Override
-			public List<ReceiverDescriptor> visitScriptReceiver(ScriptReceiver receiver, Object data)
-			{
-				return Collections.emptyList();
 			}
 
 			@Override

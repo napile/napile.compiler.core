@@ -18,18 +18,9 @@ package org.jetbrains.jet.lang.psi.stubs.elements;
 
 import java.io.IOException;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.lang.parsing.JetParser;
 import org.jetbrains.jet.lang.psi.stubs.PsiJetFileStub;
 import org.jetbrains.jet.lang.psi.stubs.impl.PsiJetFileStubImpl;
 import org.jetbrains.jet.plugin.JetLanguage;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.lang.LanguageParserDefinitions;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiBuilderFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBuilder;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -43,11 +34,11 @@ import com.intellij.util.io.StringRef;
  */
 public class JetFileElementType extends IStubFileElementType<PsiJetFileStub>
 {
-	public static final int STUB_VERSION = 17;
+	public static final int STUB_VERSION = 20;
 
 	public JetFileElementType()
 	{
-		super("jet.FILE", JetLanguage.INSTANCE);
+		super("napile.FILE", JetLanguage.INSTANCE);
 	}
 
 	@Override
@@ -65,32 +56,20 @@ public class JetFileElementType extends IStubFileElementType<PsiJetFileStub>
 	@Override
 	public String getExternalId()
 	{
-		return "jet.FILE";
+		return toString();
 	}
 
 	@Override
 	public void serialize(final PsiJetFileStub stub, final StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getPackageName());
-		dataStream.writeBoolean(stub.isScript());
 	}
 
 	@Override
 	public PsiJetFileStub deserialize(final StubInputStream dataStream, final StubElement parentStub) throws IOException
 	{
 		StringRef packName = dataStream.readName();
-		boolean isScript = dataStream.readBoolean();
-		return new PsiJetFileStubImpl(null, packName, isScript);
-	}
-
-	@Override
-	protected ASTNode doParseContents(@NotNull final ASTNode chameleon, @NotNull final PsiElement psi)
-	{
-		final Project project = psi.getProject();
-		Language languageForParser = getLanguageForParser(psi);
-		final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, languageForParser, chameleon.getChars());
-		final JetParser parser = (JetParser) LanguageParserDefinitions.INSTANCE.forLanguage(languageForParser).createParser(project);
-		return parser.parse(this, builder, psi.getContainingFile()).getFirstChildNode();
+		return new PsiJetFileStubImpl(null, packName);
 	}
 
 

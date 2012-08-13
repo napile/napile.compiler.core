@@ -70,10 +70,4 @@ public class JetFileType extends LanguageFileType
 	{
 		return myIcon.getValue();
 	}
-
-	@Override
-	public boolean isJVMDebuggingSupported()
-	{
-		return true;
-	}
 }

@@ -114,40 +114,6 @@ public class JetParsing extends AbstractJetParsing
 		fileMarker.done(JET_FILE);
 	}
 
-	void parseScript()
-	{
-		PsiBuilder.Marker fileMarker = mark();
-
-		PsiBuilder.Marker namespaceHeader = mark();
-		PsiBuilder.Marker firstEntry = mark();
-		parseModifierList(MODIFIER_LIST, true);
-
-		if(at(PACKAGE_KEYWORD))
-		{
-			advance(); // PACKAGE_KEYWORD
-
-			parseNamespaceName();
-
-			firstEntry.drop();
-			consumeIf(SEMICOLON);
-		}
-		else
-		{
-			firstEntry.rollbackTo();
-		}
-		namespaceHeader.done(NAMESPACE_HEADER);
-
-		PsiBuilder.Marker scriptMarker = mark();
-		parseImportDirectives();
-
-		PsiBuilder.Marker blockMarker = mark();
-
-		myExpressionParsing.parseStatements();
-
-		blockMarker.done(BLOCK);
-		scriptMarker.done(SCRIPT);
-		fileMarker.done(JET_FILE);
-	}
 
 	/*
 		 * toplevelObject[| import]*

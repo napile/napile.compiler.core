@@ -35,7 +35,6 @@ import org.jetbrains.jet.lang.psi.JetExpression;
 import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.psi.JetImportDirective;
 import org.jetbrains.jet.lang.psi.JetPsiUtil;
-import org.jetbrains.jet.lang.psi.JetScript;
 import org.jetbrains.jet.lang.psi.JetSimpleNameExpression;
 import org.jetbrains.jet.lang.resolve.lazy.ScopeProvider;
 import org.jetbrains.jet.lang.resolve.name.Name;
@@ -99,11 +98,6 @@ public class ImportsResolver
 		{
 			WritableScope namespaceScope = context.getNamespaceScopes().get(file);
 			processImportsInFile(onlyClasses, namespaceScope, ScopeProvider.getFileImports(file), rootScope);
-		}
-		for(JetScript script : context.getScripts().keySet())
-		{
-			WritableScope scriptScope = context.getScriptScopes().get(script);
-			processImportsInFile(onlyClasses, scriptScope, script.getImportDirectives(), rootScope);
 		}
 	}
 

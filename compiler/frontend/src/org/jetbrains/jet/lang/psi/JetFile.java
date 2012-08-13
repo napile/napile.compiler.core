@@ -100,30 +100,6 @@ public class JetFile extends PsiFileBase implements JetDeclarationContainer
 		return statement != null ? statement.getQualifiedName() : null;
 	}
 
-	@Nullable
-	public JetScript getScript()
-	{
-		return PsiTreeUtil.getChildOfType(this, JetScript.class);
-	}
-
-	public boolean isScript()
-	{
-		PsiJetFileStub stub = (PsiJetFileStub) getStub();
-		if(stub != null)
-		{
-			return stub.isScript();
-		}
-
-		return getScript() != null;
-	}
-
-	@NotNull
-	@Override
-	public String getName()
-	{
-		return super.getName(); // TODO
-	}
-
 	@Override
 	public void accept(@NotNull PsiElementVisitor visitor)
 	{

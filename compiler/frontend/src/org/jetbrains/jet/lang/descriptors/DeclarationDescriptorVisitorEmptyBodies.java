@@ -69,12 +69,6 @@ public class DeclarationDescriptorVisitorEmptyBodies<R, D> implements Declaratio
 	}
 
 	@Override
-	public R visitScriptDescriptor(ScriptDescriptor scriptDescriptor, D data)
-	{
-		return visitDeclarationDescriptor(scriptDescriptor, data);
-	}
-
-	@Override
 	public R visitLocalVariableDescriptor(LocalVariableDescriptor descriptor, D data)
 	{
 		return visitVariableDescriptor(descriptor, data);

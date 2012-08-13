@@ -182,11 +182,7 @@ public class TopDownAnalyzer
 		}
 		for(Map.Entry<JetFile, WritableScope> namespaceScope : context.getNamespaceScopes().entrySet())
 		{
-			// todo: this is hack in favor of REPL
-			if(!namespaceScope.getKey().isScript())
-			{
-				namespaceScope.getValue().changeLockLevel(WritableScope.LockLevel.READING);
-			}
+			namespaceScope.getValue().changeLockLevel(WritableScope.LockLevel.READING);
 		}
 	}
 
@@ -281,13 +277,4 @@ public class TopDownAnalyzer
 		// namespaces added to module explicitly in
 		doProcess(scope, new NamespaceLikeBuilderDummy(), files);
 	}
-
-
-	public void prepareForTheNextReplLine()
-	{
-		context.getScriptScopes().clear();
-		context.getScripts().clear();
-	}
 }
-
-
