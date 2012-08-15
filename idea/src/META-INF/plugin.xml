@@ -26,19 +26,19 @@
 
 		<action id="ShowJetExpressionType" class="org.jetbrains.jet.plugin.actions.ShowExpressionTypeAction" text="Show Expression Type">
 			<keyboard-shortcut keymap="$default" first-keystroke="control shift Q"/>
-			<add-to-group group-id="CodeMenu" anchor="last"/>
+			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
 		<action id="CopyAsDiagnosticTest" class="org.jetbrains.jet.plugin.actions.CopyAsDiagnosticTestAction" text="Copy Current File As Diagnostic Test">
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift T"/>
-			<add-to-group group-id="CodeMenu" anchor="last"/>
+			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
-		<action id="ConvertJavaToKotlin" class="org.jetbrains.jet.plugin.actions.JavaToKotlinAction" text="Convert Java File to Kotlin File">
+		<action id="ConvertJavaToNapile" class="org.jetbrains.jet.plugin.actions.JavaToKotlinAction" text="Convert Java File to Napile File">
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift J"/>
-			<add-to-group group-id="CodeMenu" anchor="last"/>
+			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
 		<action id="ToggleJetErrorReporting" class="org.jetbrains.jet.plugin.actions.ToggleErrorReportingAction" text="Error Reporting Enabled">
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift E"/>
-			<add-to-group group-id="CodeMenu" anchor="last"/>
+			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
 
 
@@ -166,7 +166,7 @@
 		<editorNotificationProvider implementation="org.jetbrains.jet.plugin.quickfix.AbsentJdkAnnotationsNotifications"/>
 
 		<referencesSearch implementation="org.jetbrains.jet.plugin.search.KotlinReferencesSearcher"/>
-		<directClassInheritorsSearch implementation="org.jetbrains.jet.plugin.search.DirectClassInheritorsSearch"/>
+		<!--<directClassInheritorsSearch implementation="org.jetbrains.jet.plugin.search.DirectClassInheritorsSearch"/>  -->
 
 		<definitionsSearch implementation="org.jetbrains.jet.plugin.search.impl.ClassImplementationsSearch"/>
 

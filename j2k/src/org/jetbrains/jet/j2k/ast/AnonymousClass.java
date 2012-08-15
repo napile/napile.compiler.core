@@ -29,7 +29,7 @@ public class AnonymousClass extends Class
 {
 	public AnonymousClass(Converter converter, List<Member> members)
 	{
-		super(converter, new IdentifierImpl("anonClass"), Collections.<String>emptySet(), Collections.<Element>emptyList(), Collections.<Type>emptyList(), Collections.<Expression>emptyList(), Collections.<Type>emptyList(), getMembers(members, converter));
+		super(converter, new IdentifierImpl("anonClass"), Collections.<String>emptySet(), Collections.<Element>emptyList(), Collections.<Type>emptyList(), Collections.<Type>emptyList(), getMembers(members, converter));
 	}
 
 	@NotNull

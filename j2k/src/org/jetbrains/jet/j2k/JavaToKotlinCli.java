@@ -101,14 +101,14 @@
 //  @NotNull
 //  private static String fileToKotlin(File f) throws IOException {
 //    final String javaCode = readJavaFileToString(f);
-//    return generateKotlinCode(JavaToKotlinTranslator.createFile(JavaToKotlinTranslator.setUpJavaCoreEnvironment(), javaCode));
+//    return generateKotlinCode(JavaToNapileTranslator.createFile(JavaToNapileTranslator.setUpJavaCoreEnvironment(), javaCode));
 //  }
 //
 //  @NotNull
 //  private static String generateKotlinCode(@Nullable PsiFile file) {
 //    if (file != null && file instanceof PsiJavaFile) {
-//      JavaToKotlinTranslator.setClassIdentifiers(file);
-//      return JavaToKotlinTranslator.prettify(Converter.fileToFile((PsiJavaFile) file).toKotlin());
+//      JavaToNapileTranslator.setClassIdentifiers(file);
+//      return JavaToNapileTranslator.prettify(Converter.fileToFile((PsiJavaFile) file).toKotlin());
 //    }
 //    return "";
 //  }

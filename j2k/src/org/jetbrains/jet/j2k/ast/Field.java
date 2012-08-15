@@ -64,14 +64,17 @@ public class Field extends Member
 	{
 		List<String> modifierList = new LinkedList<String>();
 
-		if(isAbstract())
-		{
-			modifierList.add(Modifier.ABSTRACT);
-		}
-
 		modifierList.add(accessModifier());
 
-		modifierList.add(isVal() ? "val" : "var");
+		if(isAbstract())
+			modifierList.add(Modifier.ABSTRACT);
+
+		if(myModifiers.contains(Modifier.FINAL))
+			modifierList.add(Modifier.FINAL);
+		if(myModifiers.contains(Modifier.STATIC))
+			modifierList.add(Modifier.STATIC);
+
+		modifierList.add("var");
 
 		if(modifierList.size() > 0)
 		{
@@ -79,11 +82,6 @@ public class Field extends Member
 		}
 
 		return EMPTY;
-	}
-
-	public boolean isVal()
-	{
-		return myModifiers.contains(Modifier.FINAL);
 	}
 
 	@Override
@@ -100,7 +98,7 @@ public class Field extends Member
 
 		if(myInitializer.isEmpty())
 		{
-			return declaration + (isVal() && !isStatic() && myWritingAccesses == 1 ? EMPTY : SPACE + EQUAL + SPACE + getDefaultInitializer(this));
+			return declaration + (myModifiers.contains(Modifier.FINAL) && !isStatic() && myWritingAccesses == 1 ? EMPTY : SPACE + EQUAL + SPACE + getDefaultInitializer(this));
 		}
 
 		return declaration + SPACE + EQUAL + SPACE + myInitializer.toKotlin();

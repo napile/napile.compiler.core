@@ -16,12 +16,14 @@
 
 package org.jetbrains.jet.j2k.visitors;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.j2k.Converter;
+import org.jetbrains.jet.j2k.ast.SuperConstructorCall;
 import com.intellij.psi.JavaRecursiveElementVisitor;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiExpressionList;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiMethodCallExpression;
 import com.intellij.psi.PsiReference;
@@ -33,39 +35,47 @@ import com.intellij.psi.PsiReference;
 public class SuperVisitor extends JavaRecursiveElementVisitor
 {
 	@NotNull
-	private final HashSet<PsiExpressionList> myResolvedSuperCallParameters;
+	private final List<SuperConstructorCall> superCall = new ArrayList<SuperConstructorCall>();
 
-	public SuperVisitor()
-	{
-		myResolvedSuperCallParameters = new HashSet<PsiExpressionList>();
-	}
+	private final Converter converter;
 
-	@NotNull
-	public HashSet<PsiExpressionList> getResolvedSuperCallParameters()
+	public SuperVisitor(Converter converter)
 	{
-		return myResolvedSuperCallParameters;
+		this.converter = converter;
 	}
 
 	@Override
 	public void visitMethodCallExpression(@NotNull PsiMethodCallExpression expression)
 	{
 		super.visitMethodCallExpression(expression);
-		if(isSuper(expression.getMethodExpression()))
-		{
-			myResolvedSuperCallParameters.add(expression.getArgumentList());
-		}
+
+		String call = getSuperCallName(expression);
+		if(call != null)
+			superCall.add(new SuperConstructorCall(call, converter.expressionsToExpressionList(expression.getArgumentList().getExpressions())));
 	}
 
-	static boolean isSuper(@NotNull PsiReference r)
+	static String getSuperCallName(@NotNull PsiMethodCallExpression expression)
 	{
-		if(r.getCanonicalText().equals("super"))
+		PsiReference reference = expression.getMethodExpression();
+
+		if(reference.getCanonicalText().equals("super"))
 		{
-			final PsiElement baseConstructor = r.resolve();
+			final PsiElement baseConstructor = reference.resolve();
 			if(baseConstructor != null && baseConstructor instanceof PsiMethod && ((PsiMethod) baseConstructor).isConstructor())
-			{
-				return true;
-			}
+				return ((PsiMethod) baseConstructor).getContainingClass().getName();
 		}
-		return false;
+		else if(reference.getCanonicalText().equals("this"))
+		{
+			final PsiElement baseConstructor = reference.resolve();
+			if(baseConstructor != null && baseConstructor instanceof PsiMethod && ((PsiMethod) baseConstructor).isConstructor())
+				return "this";
+		}
+		return null;
+	}
+
+	@NotNull
+	public List<SuperConstructorCall> getSuperCall()
+	{
+		return superCall;
 	}
 }

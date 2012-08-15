@@ -21,26 +21,20 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author ignatov
  */
-public abstract class Modifier
+public interface Modifier
 {
 	@NotNull
-	public static final String PUBLIC = "public";
+	String HERITABLE = "heritable";
 	@NotNull
-	public static final String PROTECTED = "protected";
+	String LOCAL = "local";
 	@NotNull
-	public static final String PRIVATE = "private";
+	String COVERED = "covered";
 	@NotNull
-	public static final String INTERNAL = "internal";
+	String STATIC = "static";
 	@NotNull
-	public static final String STATIC = "static";
+	String ABSTRACT = "abstract";
 	@NotNull
-	public static final String ABSTRACT = "abstract";
+	String FINAL = "final";
 	@NotNull
-	public static final String FINAL = "final";
-	@NotNull
-	public static final String OPEN = "open";
-	@NotNull
-	public static final String NOT_OPEN = "not open";
-	@NotNull
-	public static final String OVERRIDE = "override";
+	String OVERRIDE = "override";
 }

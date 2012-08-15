@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.j2k.Converter;
 import org.jetbrains.jet.j2k.visitors.ClassVisitor;
+import org.jetbrains.jet.plugin.JetFileType;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
@@ -184,7 +185,7 @@ public class JavaToKotlinActionUtil
 				}
 				final PsiManager manager = psiFile.getManager();
 				assert manager != null;
-				VirtualFile copy = virtualFile.copy(manager, virtualFile.getParent(), virtualFile.getNameWithoutExtension() + ".kt");
+				VirtualFile copy = virtualFile.copy(manager, virtualFile.getParent(), virtualFile.getNameWithoutExtension() + "." + JetFileType.INSTANCE.getDefaultExtension());
 				copy.setBinaryContent(CharsetToolkit.getUtf8Bytes(result));
 				return copy;
 			}
@@ -194,32 +195,5 @@ public class JavaToKotlinActionUtil
 			MessagesEx.error(psiFile.getProject(), ex.getMessage()).showLater();
 		}
 		return null;
-	}
-
-	static void renameFiles(@NotNull List<PsiFile> psiFiles)
-	{
-		for(final PsiFile f : psiFiles)
-		{
-			ApplicationManager.getApplication().runWriteAction(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					try
-					{
-						PsiManager manager = f.getManager();
-						VirtualFile vFile = f.getVirtualFile();
-						if(vFile != null)
-						{
-							vFile.copy(manager, vFile.getParent(), vFile.getNameWithoutExtension() + ".java.old");
-							vFile.delete(manager);
-						}
-					}
-					catch(IOException ignored)
-					{
-					}
-				}
-			});
-		}
 	}
 }

@@ -16,39 +16,35 @@
 
 package org.jetbrains.jet.j2k.ast;
 
-import java.util.Set;
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.j2k.util.AstUtil;
 
 /**
- * @author ignatov
+ * @author VISTALL
+ * @date 17:01/15.08.12
  */
-public abstract class Member extends Node implements IMember
+public class SuperConstructorCall extends Element
 {
-	Set<String> myModifiers;
+	private final String name;
+	private final List<Expression> expressions;
+
+	public SuperConstructorCall(String name, List<Expression> expressions)
+	{
+		this.name = name;
+		this.expressions = expressions;
+	}
 
 	@NotNull
-	String accessModifier()
+	@Override
+	public String toKotlin()
 	{
-		for(String m : myModifiers)
-		{
-			if(m.equals(Modifier.HERITABLE) || m.equals(Modifier.LOCAL) || m.equals(Modifier.COVERED))
-			{
-				return m;
-			}
-		}
-		return EMPTY;
+		return name + "(" + AstUtil.joinNodes(expressions, COMMA_WITH_SPACE) + ")";
 	}
 
-	@Override
-	public boolean isAbstract()
+	public boolean isThisCall()
 	{
-		return myModifiers.contains(Modifier.ABSTRACT);
-	}
-
-	@Override
-	public boolean isStatic()
-	{
-		return myModifiers.contains(Modifier.STATIC);
+		return name.equals("this");
 	}
 }

@@ -34,7 +34,6 @@ import static org.jetbrains.jet.lang.types.expressions.OperatorConventions.INT;
 import static org.jetbrains.jet.lang.types.expressions.OperatorConventions.LONG;
 import static org.jetbrains.jet.lang.types.expressions.OperatorConventions.SHORT;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,35 +44,9 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.j2k.ast.AnonymousClass;
-import org.jetbrains.jet.j2k.ast.AssignmentExpression;
-import org.jetbrains.jet.j2k.ast.Block;
-import org.jetbrains.jet.j2k.ast.CallChainExpression;
+import org.jetbrains.jet.j2k.ast.*;
 import org.jetbrains.jet.j2k.ast.Class;
-import org.jetbrains.jet.j2k.ast.ClassType;
-import org.jetbrains.jet.j2k.ast.Constructor;
-import org.jetbrains.jet.j2k.ast.DummyStringExpression;
-import org.jetbrains.jet.j2k.ast.Element;
 import org.jetbrains.jet.j2k.ast.Enum;
-import org.jetbrains.jet.j2k.ast.EnumConstant;
-import org.jetbrains.jet.j2k.ast.Expression;
-import org.jetbrains.jet.j2k.ast.Field;
-import org.jetbrains.jet.j2k.ast.File;
-import org.jetbrains.jet.j2k.ast.Function;
-import org.jetbrains.jet.j2k.ast.INode;
-import org.jetbrains.jet.j2k.ast.Identifier;
-import org.jetbrains.jet.j2k.ast.IdentifierImpl;
-import org.jetbrains.jet.j2k.ast.Import;
-import org.jetbrains.jet.j2k.ast.Initializer;
-import org.jetbrains.jet.j2k.ast.Member;
-import org.jetbrains.jet.j2k.ast.Modifier;
-import org.jetbrains.jet.j2k.ast.Node;
-import org.jetbrains.jet.j2k.ast.Parameter;
-import org.jetbrains.jet.j2k.ast.ParameterList;
-import org.jetbrains.jet.j2k.ast.Statement;
-import org.jetbrains.jet.j2k.ast.SureCallChainExpression;
-import org.jetbrains.jet.j2k.ast.Trait;
-import org.jetbrains.jet.j2k.ast.Type;
 import org.jetbrains.jet.j2k.util.AstUtil;
 import org.jetbrains.jet.j2k.visitors.Dispatcher;
 import org.jetbrains.jet.j2k.visitors.ElementVisitor;
@@ -87,33 +60,7 @@ import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.types.expressions.OperatorConventions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.intellij.psi.HierarchicalMethodSignature;
-import com.intellij.psi.PsiAnonymousClass;
-import com.intellij.psi.PsiCallExpression;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassInitializer;
-import com.intellij.psi.PsiClassType;
-import com.intellij.psi.PsiCodeBlock;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiEnumConstant;
-import com.intellij.psi.PsiExpression;
-import com.intellij.psi.PsiExpressionList;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiIdentifier;
-import com.intellij.psi.PsiImportList;
-import com.intellij.psi.PsiImportStatementBase;
-import com.intellij.psi.PsiJavaCodeReferenceElement;
-import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.PsiMember;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiMethodCallExpression;
-import com.intellij.psi.PsiModifier;
-import com.intellij.psi.PsiModifierList;
-import com.intellij.psi.PsiParameter;
-import com.intellij.psi.PsiPolyadicExpression;
-import com.intellij.psi.PsiReferenceExpression;
-import com.intellij.psi.PsiStatement;
-import com.intellij.psi.PsiType;
+import com.intellij.psi.*;
 
 /**
  * @author ignatov
@@ -288,153 +235,31 @@ public class Converter
 		return members;
 	}
 
-	@NotNull
-	private static List<Field> getFinalOrWithEmptyInitializer(@NotNull List<? extends Field> fields)
-	{
-		List<Field> result = new LinkedList<Field>();
-		for(Field f : fields)
-		{
-			if(f.isVal() || f.getInitializer().toKotlin().isEmpty())
-			{
-				result.add(f);
-			}
-		}
-		return result;
-	}
-
-	@NotNull
-	private static List<Parameter> createParametersFromFields(@NotNull List<? extends Field> fields)
-	{
-		List<Parameter> result = new LinkedList<Parameter>();
-		for(Field f : fields)
-		{
-			result.add(new Parameter(new IdentifierImpl("_" + f.getIdentifier().getName()), f.getType()));
-		}
-		return result;
-	}
-
-	@NotNull
-	private static List<Statement> createInitStatementsFromFields(@NotNull List<? extends Field> fields)
-	{
-		List<Statement> result = new LinkedList<Statement>();
-		for(Field f : fields)
-		{
-			final String identifierToKotlin = f.getIdentifier().toKotlin();
-			result.add(new DummyStringExpression(identifierToKotlin + " = " + "_" + identifierToKotlin));
-		}
-		return result;
-	}
-
-	@NotNull
-	private static String createPrimaryConstructorInvocation(@NotNull String s, @NotNull List<? extends Field> fields, @NotNull Map<String, String> initializers)
-	{
-		List<String> result = new LinkedList<String>();
-		for(Field f : fields)
-		{
-			final String id = f.getIdentifier().toKotlin();
-			result.add(initializers.get(id));
-		}
-		return s + "(" + AstUtil.join(result, ", ") + ")";
-	}
 
 	@NotNull
 	public Class classToClass(@NotNull PsiClass psiClass)
 	{
-		final Set<String> modifiers = modifiersListToModifiersSet(psiClass.getModifierList());
+		final Set<String> modifiers = modifiersListToModifiersSet(psiClass);
 		final List<Field> fields = fieldsToFieldList(psiClass.getFields(), psiClass);
 		final List<Element> typeParameters = elementsToElementList(psiClass.getTypeParameters());
 		final List<Type> implementsTypes = typesToNotNullableTypeList(psiClass.getImplementsListTypes());
 		final List<Type> extendsTypes = typesToNotNullableTypeList(psiClass.getExtendsListTypes());
 		final IdentifierImpl name = new IdentifierImpl(psiClass.getName());
-		final List<Expression> baseClassParams = new LinkedList<Expression>();
 
 		List<Member> members = getMembers(psiClass);
 
-		// we try to find super() call and generate class declaration like that: class A(name: String, i : Int) : Base(name)
-		final SuperVisitor visitor = new SuperVisitor();
-		psiClass.accept(visitor);
-		final Collection<PsiExpressionList> resolvedSuperCallParameters = visitor.getResolvedSuperCallParameters();
-		if(resolvedSuperCallParameters.size() == 1)
-		{
-			baseClassParams.addAll(expressionsToExpressionList(resolvedSuperCallParameters.toArray(new PsiExpressionList[1])[0].getExpressions()));
-		}
-
-		// we create primary constructor from all non final fields and fields without initializers
-		if(!psiClass.isEnum() &&
-				!psiClass.isInterface() &&
-				psiClass.getConstructors().length > 1 &&
-				getPrimaryConstructorForThisCase(psiClass) == null)
-		{
-			final List<Field> finalOrWithEmptyInitializer = getFinalOrWithEmptyInitializer(fields);
-			final Map<String, String> initializers = new HashMap<String, String>();
-
-			for(final Member m : members)
-			{
-				// and modify secondaries
-				if(m.getKind() == INode.Kind.CONSTRUCTOR)
-				{
-					Function f = (Function) m;
-					if(!((Constructor) f).isPrimary())
-					{
-						for(Field fo : finalOrWithEmptyInitializer)
-						{
-							String init = getDefaultInitializer(fo);
-							initializers.put(fo.getIdentifier().toKotlin(), init);
-						}
-
-						final List<Statement> newStatements = new LinkedList<Statement>();
-
-						for(Statement s : f.getBlock().getStatements())
-						{
-							boolean isRemoved = false;
-
-							if(s.getKind() == INode.Kind.ASSIGNMENT_EXPRESSION)
-							{
-								final AssignmentExpression assignmentExpression = (AssignmentExpression) s;
-								if(assignmentExpression.getLeft().getKind() == INode.Kind.CALL_CHAIN)
-								{
-									for(Field fo : finalOrWithEmptyInitializer)
-									{
-										final String id = fo.getIdentifier().toKotlin();
-										if(((CallChainExpression) assignmentExpression.getLeft()).getIdentifier().toKotlin().endsWith("." + id))
-										{
-											initializers.put(id, assignmentExpression.getRight().toKotlin());
-											isRemoved = true;
-										}
-									}
-								}
-							}
-							if(!isRemoved)
-							{
-								newStatements.add(s);
-							}
-						}
-
-						newStatements.add(0, new DummyStringExpression("val __ = " + createPrimaryConstructorInvocation(name.toKotlin(), finalOrWithEmptyInitializer, initializers)));
-
-						f.setBlock(new Block(newStatements));
-					}
-				}
-			}
-
-			members.add(new Constructor(Identifier.EMPTY_IDENTIFIER, Collections.<String>emptySet(), new ClassType(name), Collections.<Element>emptyList(), new ParameterList(createParametersFromFields(finalOrWithEmptyInitializer)), new Block(createInitStatementsFromFields(finalOrWithEmptyInitializer)), true));
-		}
-
 		if(psiClass.isInterface())
-		{
-			return new Trait(this, name, modifiers, typeParameters, extendsTypes, Collections.<Expression>emptyList(), implementsTypes, members);
-		}
-		if(psiClass.isEnum())
-		{
+			modifiers.add(Modifier.ABSTRACT);
+		else if(psiClass.isEnum())
 			return new Enum(this, name, modifiers, typeParameters, Collections.<Type>emptyList(), Collections.<Expression>emptyList(), implementsTypes, members);
-		}
-		return new Class(this, name, modifiers, typeParameters, extendsTypes, baseClassParams, implementsTypes, members);
+
+		return new Class(this, name, modifiers, typeParameters, extendsTypes, implementsTypes, members);
 	}
 
 	@NotNull
 	private Initializer initializerToInitializer(@NotNull PsiClassInitializer i)
 	{
-		return new Initializer(blockToBlock(i.getBody(), true), modifiersListToModifiersSet(i.getModifierList()));
+		return new Initializer(blockToBlock(i.getBody(), true), modifiersListToModifiersSet(i));
 	}
 
 	@NotNull
@@ -471,7 +296,7 @@ public class Converter
 	@NotNull
 	private Field fieldToField(@NotNull PsiField field, PsiClass psiClass)
 	{
-		Set<String> modifiers = modifiersListToModifiersSet(field.getModifierList());
+		Set<String> modifiers = modifiersListToModifiersSet(field);
 		if(field instanceof PsiEnumConstant) // TODO: remove instanceof
 		{
 			return new EnumConstant(new IdentifierImpl(field.getName()), // TODO
@@ -490,27 +315,6 @@ public class Converter
 		return tv.getPrimaryConstructor();
 	}
 
-	public static boolean isConstructorPrimary(@NotNull PsiMethod constructor)
-	{
-		if(constructor.getParent() instanceof PsiClass)
-		{
-			final PsiClass parent = (PsiClass) constructor.getParent();
-			if(parent.getConstructors().length == 1)
-			{
-				return true;
-			}
-			else
-			{
-				PsiMethod c = getPrimaryConstructorForThisCase(parent); // TODO: move up to classToClass() method
-				if(c != null && c.hashCode() == constructor.hashCode())
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	@NotNull
 	private static List<Statement> removeEmpty(@NotNull List<Statement> statements)
 	{
@@ -526,13 +330,13 @@ public class Converter
 	}
 
 	@NotNull
-	private Function methodToFunction(@NotNull PsiMethod method)
+	private Method methodToFunction(@NotNull PsiMethod method)
 	{
 		return methodToFunction(method, true);
 	}
 
 	@NotNull
-	private Function methodToFunction(@NotNull PsiMethod method, boolean notEmpty)
+	private Method methodToFunction(@NotNull PsiMethod method, boolean notEmpty)
 	{
 		if(isOverrideObjectDirect(method))
 		{
@@ -551,7 +355,7 @@ public class Converter
 		final Element params = createFunctionParameters(method);
 		final List<Element> typeParameters = elementsToElementList(method.getTypeParameters());
 
-		final Set<String> modifiers = modifiersListToModifiersSet(method.getModifierList());
+		final Set<String> modifiers = modifiersListToModifiersSet(method);
 		if(isOverrideAnyMethodExceptMethodsFromObject(method))
 		{
 			modifiers.add(Modifier.OVERRIDE);
@@ -560,17 +364,26 @@ public class Converter
 		{
 			modifiers.remove(Modifier.ABSTRACT);
 		}
-		if(isNotOpenMethod(method))
-		{
-			modifiers.add(Modifier.NOT_OPEN);
-		}
 
 		if(method.isConstructor())
-		{ // TODO: simplify
-			boolean isPrimary = isConstructorPrimary(method);
-			return new Constructor(identifier, modifiers, returnType, typeParameters, params, new Block(removeEmpty(body.getStatements()), false), isPrimary);
+		{
+			PsiClass owner = method.getContainingClass();
+			assert owner != null;
+
+			PsiClassType[] types = owner.getImplementsListTypes();
+
+			final SuperVisitor visitor = new SuperVisitor(this);
+			method.accept(visitor);
+
+			List<SuperConstructorCall> list = visitor.getSuperCall();
+			// if class has interfaces and is not 'this' call place to super call
+			if(!list.isEmpty() && !list.get(0).isThisCall())
+				for(PsiClassType type : types)
+					list.add(new SuperConstructorCall(type.getCanonicalText(), Collections.<Expression>emptyList()));
+
+			return new Constructor(identifier, modifiers, returnType, typeParameters, params, new Block(removeEmpty(body.getStatements()), false), list);
 		}
-		return new Function(identifier, modifiers, returnType, typeParameters, params, body);
+		return new Method(identifier, modifiers, returnType, typeParameters, params, body);
 	}
 
 	@NotNull
@@ -582,19 +395,6 @@ public class Converter
 			result.add(new Parameter(new IdentifierImpl(parameter.getName()), typeToType(parameter.getType(), ConverterUtil.isAnnotatedAsNotNull(parameter.getModifierList())), ConverterUtil.isReadOnly(parameter, method.getBody())));
 		}
 		return new ParameterList(result);
-	}
-
-	private static boolean isNotOpenMethod(@NotNull final PsiMethod method)
-	{
-		if(method.getParent() instanceof PsiClass)
-		{
-			final PsiModifierList parentModifierList = ((PsiClass) method.getParent()).getModifierList();
-			if((parentModifierList != null && parentModifierList.hasExplicitModifier(Modifier.FINAL)) || ((PsiClass) method.getParent()).isEnum())
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private boolean isOverrideAnyMethodExceptMethodsFromObject(@NotNull PsiMethod method)
@@ -843,26 +643,24 @@ public class Converter
 	}
 
 	@NotNull
-	public static Set<String> modifiersListToModifiersSet(@Nullable PsiModifierList modifierList)
+	public static Set<String> modifiersListToModifiersSet(@NotNull PsiModifierListOwner modifierList)
 	{
 		Set<String> modifiersSet = new HashSet<String>();
-		if(modifierList != null)
-		{
-			if(modifierList.hasExplicitModifier(PsiModifier.ABSTRACT))
-				modifiersSet.add(Modifier.ABSTRACT);
-			if(modifierList.hasModifierProperty(PsiModifier.FINAL))
-				modifiersSet.add(Modifier.FINAL);
-			if(modifierList.hasModifierProperty(PsiModifier.STATIC))
-				modifiersSet.add(Modifier.STATIC);
-			if(modifierList.hasExplicitModifier(PsiModifier.PUBLIC))
-				modifiersSet.add(Modifier.PUBLIC);
-			if(modifierList.hasExplicitModifier(PsiModifier.PROTECTED))
-				modifiersSet.add(Modifier.PROTECTED);
-			if(modifierList.hasExplicitModifier(PsiModifier.PACKAGE_LOCAL))
-				modifiersSet.add(Modifier.INTERNAL);
-			if(modifierList.hasExplicitModifier(PsiModifier.PRIVATE))
-				modifiersSet.add(Modifier.PRIVATE);
-		}
+		if(modifierList.hasModifierProperty(PsiModifier.ABSTRACT))
+			modifiersSet.add(Modifier.ABSTRACT);
+		if(modifierList.hasModifierProperty(PsiModifier.FINAL))
+			modifiersSet.add(Modifier.FINAL);
+		if(modifierList.hasModifierProperty(PsiModifier.STATIC))
+			modifiersSet.add(Modifier.STATIC);
+		if(modifierList.hasModifierProperty(PsiModifier.PUBLIC))
+		{/*nothing*/}
+		if(modifierList.hasModifierProperty(PsiModifier.PROTECTED))
+			modifiersSet.add(Modifier.HERITABLE);
+		if(modifierList.hasModifierProperty(PsiModifier.PACKAGE_LOCAL))
+			modifiersSet.add(Modifier.COVERED);
+		if(modifierList.hasModifierProperty(PsiModifier.PRIVATE))
+			modifiersSet.add(Modifier.LOCAL);
+
 		return modifiersSet;
 	}
 
@@ -1008,7 +806,7 @@ public class Converter
 	//  @NotNull
 	//  private static String applyConversion(Expression expression, String conversion) {
 	//    if (conversion.isEmpty())
-	//      return expression.toKotlin();
+	//      return expression.()tlin();
 	//    return "(" + expression.toKotlin() + ")" + conversion;
 	//  }
 

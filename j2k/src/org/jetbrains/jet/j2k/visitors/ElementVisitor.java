@@ -76,7 +76,7 @@ public class ElementVisitor extends JavaElementVisitor implements J2KVisitor
 		super.visitLocalVariable(variable);
 
 		myResult = new LocalVariable(new IdentifierImpl(variable.getName()), // TODO
-				modifiersListToModifiersSet(variable.getModifierList()), getConverter().typeToType(variable.getType(), isAnnotatedAsNotNull(variable.getModifierList())), getConverter().createSureCallOnlyForChain(variable.getInitializer(), variable.getType()));
+				modifiersListToModifiersSet(variable), getConverter().typeToType(variable.getType(), isAnnotatedAsNotNull(variable.getModifierList())), getConverter().createSureCallOnlyForChain(variable.getInitializer(), variable.getType()));
 	}
 
 	@Override

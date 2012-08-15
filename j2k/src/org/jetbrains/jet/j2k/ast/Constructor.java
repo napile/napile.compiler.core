@@ -20,35 +20,19 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.j2k.util.AstUtil;
 
 /**
  * @author ignatov
  */
-public class Constructor extends Function
+public class Constructor extends Method
 {
-	private final boolean myIsPrimary;
+	private final List<SuperConstructorCall> superConstructorCalls;
 
-	public Constructor(Identifier identifier, Set<String> modifiers, Type type, List<Element> typeParameters, Element params, Block block, boolean isPrimary)
+	public Constructor(Identifier identifier, Set<String> modifiers, Type type, List<Element> typeParameters, Element params, Block block, List<SuperConstructorCall> superConstructorCalls)
 	{
 		super(identifier, modifiers, type, typeParameters, params, block);
-		myIsPrimary = isPrimary;
-	}
-
-	@NotNull
-	public String primarySignatureToKotlin()
-	{
-		return "(" + myParams.toKotlin() + ")";
-	}
-
-	@NotNull
-	public String primaryBodyToKotlin()
-	{
-		return myBlock.toKotlin();
-	}
-
-	public boolean isPrimary()
-	{
-		return myIsPrimary;
+		this.superConstructorCalls = superConstructorCalls;
 	}
 
 	@NotNull
@@ -56,5 +40,19 @@ public class Constructor extends Function
 	public Kind getKind()
 	{
 		return Kind.CONSTRUCTOR;
+	}
+
+	@NotNull
+	@Override
+	public String toKotlin()
+	{
+		return modifiersToKotlin() +
+				"this" +
+				typeParametersToKotlin() +
+				"(" +
+				myParams.toKotlin() +
+				")" +
+				(superConstructorCalls.isEmpty() ? EMPTY : (SPACE + COLON + SPACE + AstUtil.joinNodes(superConstructorCalls, COMMA_WITH_SPACE))) +
+				myBlock.toKotlin();
 	}
 }

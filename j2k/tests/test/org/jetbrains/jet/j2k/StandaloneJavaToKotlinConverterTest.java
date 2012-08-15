@@ -38,7 +38,7 @@ public class StandaloneJavaToKotlinConverterTest extends TestCase
 	private final String myDataPath;
 	private final String myName;
 	@NotNull
-	private final static JavaCoreProjectEnvironment myJavaCoreEnvironment = JavaToKotlinTranslator.setUpJavaCoreEnvironment();
+	private final static JavaCoreProjectEnvironment myJavaCoreEnvironment = JavaToNapileTranslator.setUpJavaCoreEnvironment();
 
 	public StandaloneJavaToKotlinConverterTest(String dataPath, String name)
 	{
@@ -137,13 +137,13 @@ public class StandaloneJavaToKotlinConverterTest extends TestCase
 	@NotNull
 	private static String fileToFileWithCompatibilityImport(@NotNull String text)
 	{
-		return JavaToKotlinTranslator.generateKotlinCodeWithCompatibilityImport(text);
+		return JavaToNapileTranslator.generateKotlinCodeWithCompatibilityImport(text);
 	}
 
 	@NotNull
 	private String fileToKotlin(Converter converter, @NotNull String text)
 	{
-		return generateKotlinCode(converter, JavaToKotlinTranslator.createFile(myJavaCoreEnvironment, text));
+		return generateKotlinCode(converter, JavaToNapileTranslator.createFile(myJavaCoreEnvironment, text));
 	}
 
 	@NotNull
@@ -151,7 +151,7 @@ public class StandaloneJavaToKotlinConverterTest extends TestCase
 	{
 		if(file != null && file instanceof PsiJavaFile)
 		{
-			JavaToKotlinTranslator.setClassIdentifiers(converter, file);
+			JavaToNapileTranslator.setClassIdentifiers(converter, file);
 			return prettify(converter.elementToKotlin(file));
 		}
 		return "";

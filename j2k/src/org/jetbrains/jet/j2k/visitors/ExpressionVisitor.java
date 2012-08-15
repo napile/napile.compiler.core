@@ -16,7 +16,6 @@
 
 package org.jetbrains.jet.j2k.visitors;
 
-import static org.jetbrains.jet.j2k.Converter.isConstructorPrimary;
 import static org.jetbrains.jet.j2k.visitors.TypeVisitor.JAVA_LANG_CHARACTER;
 import static org.jetbrains.jet.j2k.visitors.TypeVisitor.JAVA_LANG_DOUBLE;
 import static org.jetbrains.jet.j2k.visitors.TypeVisitor.JAVA_LANG_FLOAT;
@@ -308,7 +307,7 @@ public class ExpressionVisitor extends StatementVisitor
 	public void visitMethodCallExpression(@NotNull PsiMethodCallExpression expression)
 	{
 		super.visitMethodCallExpression(expression);
-		if(!SuperVisitor.isSuper(expression.getMethodExpression()) || !isInsidePrimaryConstructor(expression))
+		if(!isInsideConstructor(expression))
 		{
 			myResult = // TODO: not resolved
 					new MethodCallExpression(getConverter().expressionToExpression(expression.getMethodExpression()), getConverter().expressionsToExpressionList(expression.getArgumentList().getExpressions()), getConverter().createConversions(expression), getConverter().typeToType(expression.getType()).isNullable(), getConverter().typesToTypeList(expression.getTypeArguments()));
@@ -348,7 +347,7 @@ public class ExpressionVisitor extends StatementVisitor
 		final boolean isNotConvertedClass = classReference != null && !getConverter().getClassIdentifiers().contains(classReference.getQualifiedName());
 		PsiExpressionList argumentList = expression.getArgumentList();
 		PsiExpression[] arguments = argumentList != null ? argumentList.getExpressions() : new PsiExpression[]{};
-		if(constructor == null || isConstructorPrimary(constructor) || isNotConvertedClass)
+		if(constructor == null || isNotConvertedClass)
 		{
 			return new NewClassExpression(getConverter().expressionToExpression(expression.getQualifier()), getConverter().elementToElement(classReference), getConverter().expressionsToExpressionList(arguments), getConverter().createConversions(expression), anonymousClass != null ? getConverter().anonymousClassToAnonymousClass(anonymousClass) : null);
 		}
@@ -404,8 +403,7 @@ public class ExpressionVisitor extends StatementVisitor
 		super.visitReferenceExpression(expression);
 
 		final boolean isFieldReference = isFieldReference(expression, getContainingClass(expression));
-		final boolean insideSecondaryConstructor = isInsideSecondaryConstructor(expression);
-		final boolean hasReceiver = isFieldReference && insideSecondaryConstructor;
+		final boolean hasReceiver = isFieldReference;
 		final boolean isThis = isThisExpression(expression);
 		final boolean isNullable = getConverter().typeToType(expression.getType()).isNullable();
 		final String className = getClassNameWithConstructor(expression);
@@ -417,10 +415,7 @@ public class ExpressionVisitor extends StatementVisitor
 		{
 			identifier = new CallChainExpression(new IdentifierImpl(__, false), new IdentifierImpl(expression.getReferenceName(), isNullable));
 		}
-		else if(insideSecondaryConstructor && isThis)
-		{
-			identifier = new IdentifierImpl("val __ = " + className); // TODO: hack
-		}
+
 
 		myResult = new CallChainExpression(getConverter().expressionToExpression(expression.getQualifierExpression()), identifier // TODO: if type exists so identifier is nullable
 		);
@@ -486,28 +481,15 @@ public class ExpressionVisitor extends StatementVisitor
 		return false;
 	}
 
-	private static boolean isInsideSecondaryConstructor(@NotNull PsiReferenceExpression expression)
-	{
-		PsiElement context = expression.getContext();
-		while(context != null)
-		{
-			if(context instanceof PsiMethod && ((PsiMethod) context).isConstructor())
-			{
-				return !isConstructorPrimary((PsiMethod) context);
-			}
-			context = context.getContext();
-		}
-		return false;
-	}
 
-	private static boolean isInsidePrimaryConstructor(@NotNull PsiExpression expression)
+	private static boolean isInsideConstructor(@NotNull PsiExpression expression)
 	{
 		PsiElement context = expression.getContext();
 		while(context != null)
 		{
 			if(context instanceof PsiMethod && ((PsiMethod) context).isConstructor())
 			{
-				return isConstructorPrimary((PsiMethod) context);
+				return true;
 			}
 			context = context.getContext();
 		}

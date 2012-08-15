@@ -29,7 +29,6 @@ public class JetFileFactory extends FileTypeFactory
 	@Override
 	public void createFileTypes(@NotNull FileTypeConsumer consumer)
 	{
-		// TODO: Remove unused extensions
-		consumer.consume(JetFileType.INSTANCE, "jet;jetl;jets;kt;kts;ktm");
+		consumer.consume(JetFileType.INSTANCE);
 	}
 }

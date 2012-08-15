@@ -35,7 +35,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 	public static final Icon IMPLEMENTING_MARK = IconLoader.getIcon("/gutter/implementingMethod.png");
 	protected static final Icon OVERRIDDEN_MARK = IconLoader.getIcon("/gutter/overridenMethod.png");
 
-	/*private static final Function<PsiElement, String> SUBCLASSED_CLASS_TOOLTIP_ADAPTER = new Function<PsiElement, String>()
+	/*private static final Method<PsiElement, String> SUBCLASSED_CLASS_TOOLTIP_ADAPTER = new Method<PsiElement, String>()
 	{
 		@Override
 		public String fun(PsiElement element)
@@ -106,7 +106,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 
 		// NOTE: Don't store descriptors in line markers because line markers are not deleted while editing other files and this can prevent
 		// clearing the whole BindingTrace.
-		return new LineMarkerInfo<PsiElement>(element, element.getTextOffset(), allOverriddenAbstract ? IMPLEMENTING_MARK : OVERRIDING_MARK, Pass.UPDATE_ALL, new Function<PsiElement, String>()
+		return new LineMarkerInfo<PsiElement>(element, element.getTextOffset(), allOverriddenAbstract ? IMPLEMENTING_MARK : OVERRIDING_MARK, Pass.UPDATE_ALL, new Method<PsiElement, String>()
 		{
 			@Override
 			public String fun(PsiElement element)

@@ -17,10 +17,8 @@
 package org.jetbrains.jet.plugin.actions;
 
 import static org.jetbrains.jet.plugin.actions.JavaToKotlinActionUtil.convertFiles;
-import static org.jetbrains.jet.plugin.actions.JavaToKotlinActionUtil.deleteFiles;
 import static org.jetbrains.jet.plugin.actions.JavaToKotlinActionUtil.getAllJavaFiles;
 import static org.jetbrains.jet.plugin.actions.JavaToKotlinActionUtil.reformatFiles;
-import static org.jetbrains.jet.plugin.actions.JavaToKotlinActionUtil.renameFiles;
 import static org.jetbrains.jet.plugin.actions.JavaToKotlinActionUtil.setClassIdentifiers;
 
 import java.util.List;
@@ -33,7 +31,6 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 
@@ -50,8 +47,6 @@ public class JavaToKotlinAction extends AnAction
 		final Project project = PlatformDataKeys.PROJECT.getData(e.getDataContext());
 		assert virtualFiles != null;
 		assert project != null;
-		int result = Messages.showYesNoCancelDialog(project, "Would you like to backup Java files?", "Backup", Messages.getQuestionIcon());
-		final boolean finalRemoveIt = needToRemoveFiles(result);
 		final List<PsiFile> allJavaFiles = getAllJavaFiles(virtualFiles, project);
 
 		converter.clearClassIdentifiers();
@@ -70,36 +65,14 @@ public class JavaToKotlinAction extends AnAction
 			public void run()
 			{
 				final List<VirtualFile> newFiles = convertFiles(converter, allJavaFilesNear);
-				if(finalRemoveIt)
-				{
-					deleteFiles(allJavaFilesNear);
-				}
-				else
-				{
-					renameFiles(allJavaFiles);
-				}
+
 				reformatFiles(newFiles, project);
 				for(VirtualFile vf : newFiles)
 				{
 					FileEditorManager.getInstance(project).openFile(vf, true);
 				}
 			}
-		}, "Convert files from Java to Kotlin", "group_id");
-	}
-
-	private static boolean needToRemoveFiles(int result)
-	{
-		boolean removeIt = false;
-		switch(result)
-		{
-			case 0:
-				removeIt = false;
-				break;
-			case 1:
-				removeIt = true;
-				break;
-		}
-		return removeIt;
+		}, "Convert files from Java to Napile", "group_id");
 	}
 
 	@Override

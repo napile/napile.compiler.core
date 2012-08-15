@@ -21,7 +21,7 @@
     <orderEntry type="module" module-name="backend" />
     <orderEntry type="module" module-name="frontend" />
     <orderEntry type="library" scope="PROVIDED" name="junit-plugin" level="project" />
-    <orderEntry type="module" module-name="j2k" />
+    <orderEntry type="module" module-name="java2napile" />
     <orderEntry type="module" module-name="cli" scope="TEST" />
   </component>
 </module>

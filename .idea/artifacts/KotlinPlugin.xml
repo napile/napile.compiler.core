@@ -9,7 +9,7 @@
             <element id="module-output" name="frontend" />
             <element id="module-output" name="idea" />
             <element id="module-output" name="util" />
-            <element id="module-output" name="j2k" />
+            <element id="module-output" name="java2napile" />
             <element id="module-output" name="frontend.core" />
           </element>
           <element id="library" level="project" name="javax.inject" />
