@@ -35,14 +35,10 @@ import org.jetbrains.jet.lang.diagnostics.Errors;
 import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetClassOrObject;
 import org.jetbrains.jet.lang.psi.JetDeclaration;
-import org.jetbrains.jet.lang.psi.JetDelegationSpecifier;
-import org.jetbrains.jet.lang.psi.JetDelegatorByExpressionSpecifier;
 import org.jetbrains.jet.lang.psi.JetProperty;
-import org.jetbrains.jet.lang.psi.JetTypeReference;
 import org.jetbrains.jet.lang.psi.NapileConstructor;
 import org.jetbrains.jet.lang.resolve.BindingContextUtils;
 import org.jetbrains.jet.lang.resolve.BindingTrace;
-import org.jetbrains.jet.lang.resolve.DelegationResolver;
 import org.jetbrains.jet.lang.resolve.DescriptorResolver;
 import org.jetbrains.jet.lang.resolve.OverrideResolver;
 import org.jetbrains.jet.lang.resolve.name.Name;
@@ -155,7 +151,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 		{
 			fromSupertypes.addAll(supertype.getMemberScope().getFunctions(name));
 		}
-		generateDelegatingDescriptors(name, MemberExtractor.EXTRACT_FUNCTIONS, result);
+
 		generateFakeOverrides(name, fromSupertypes, result, FunctionDescriptor.class);
 	}
 
@@ -199,26 +195,8 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 		{
 			fromSupertypes.addAll((Set) supertype.getMemberScope().getProperties(name));
 		}
-		generateDelegatingDescriptors(name, MemberExtractor.EXTRACT_PROPERTIES, result);
-		generateFakeOverrides(name, fromSupertypes, (Set) result, PropertyDescriptor.class);
-	}
 
-	private <T extends CallableMemberDescriptor> void generateDelegatingDescriptors(@NotNull Name name, @NotNull MemberExtractor<T> extractor, @NotNull Set<? super T> result)
-	{
-		for(JetDelegationSpecifier delegationSpecifier : declarationProvider.getOwnerInfo().getDelegationSpecifiers())
-		{
-			if(delegationSpecifier instanceof JetDelegatorByExpressionSpecifier)
-			{
-				JetDelegatorByExpressionSpecifier specifier = (JetDelegatorByExpressionSpecifier) delegationSpecifier;
-				JetTypeReference typeReference = specifier.getTypeReference();
-				if(typeReference != null)
-				{
-					JetType supertype = resolveSession.getInjector().getTypeResolver().resolveType(thisDescriptor.getScopeForClassHeaderResolution(), typeReference, resolveSession.getTrace(), false);
-					Collection<T> descriptors = DelegationResolver.generateDelegatedMembers(thisDescriptor, extractor.extract(supertype, name));
-					result.addAll(descriptors);
-				}
-			}
-		}
+		generateFakeOverrides(name, fromSupertypes, (Set) result, PropertyDescriptor.class);
 	}
 
 	@Override

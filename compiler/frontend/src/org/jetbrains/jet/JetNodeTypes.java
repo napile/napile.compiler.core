@@ -40,7 +40,6 @@ import org.jetbrains.jet.lang.psi.JetContainerNode;
 import org.jetbrains.jet.lang.psi.JetContinueExpression;
 import org.jetbrains.jet.lang.psi.JetDecomposerPattern;
 import org.jetbrains.jet.lang.psi.JetDelegationSpecifierList;
-import org.jetbrains.jet.lang.psi.JetDelegatorByExpressionSpecifier;
 import org.jetbrains.jet.lang.psi.JetDelegatorToSuperCall;
 import org.jetbrains.jet.lang.psi.JetDelegatorToSuperClass;
 import org.jetbrains.jet.lang.psi.JetDelegatorToThisCall;
@@ -130,7 +129,7 @@ public interface JetNodeTypes
 	IElementType TYPE_PARAMETER_LIST = JetStubElementTypes.TYPE_PARAMETER_LIST;
 	IElementType TYPE_PARAMETER = JetStubElementTypes.TYPE_PARAMETER;
 	JetNodeType DELEGATION_SPECIFIER_LIST = new JetNodeType("DELEGATION_SPECIFIER_LIST", JetDelegationSpecifierList.class);
-	JetNodeType DELEGATOR_BY = new JetNodeType("DELEGATOR_BY", JetDelegatorByExpressionSpecifier.class);
+
 	JetNodeType DELEGATOR_SUPER_CALL = new JetNodeType("DELEGATOR_SUPER_CALL", JetDelegatorToSuperCall.class);
 	JetNodeType DELEGATOR_SUPER_CLASS = new JetNodeType("DELEGATOR_SUPER_CLASS", JetDelegatorToSuperClass.class);
 	JetNodeType CONSTRUCTOR_CALLEE = new JetNodeType("CONSTRUCTOR_CALLEE", JetConstructorCalleeExpression.class);

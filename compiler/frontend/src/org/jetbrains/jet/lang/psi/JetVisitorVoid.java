@@ -133,11 +133,6 @@ public class JetVisitorVoid extends PsiElementVisitor
 		visitJetElement(specifier);
 	}
 
-	public void visitDelegationByExpressionSpecifier(JetDelegatorByExpressionSpecifier specifier)
-	{
-		visitDelegationSpecifier(specifier);
-	}
-
 	public void visitDelegationToSuperCallSpecifier(JetDelegatorToSuperCall call)
 	{
 		visitDelegationSpecifier(call);

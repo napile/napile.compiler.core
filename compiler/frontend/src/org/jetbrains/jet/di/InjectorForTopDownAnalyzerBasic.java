@@ -29,7 +29,6 @@ import org.jetbrains.jet.lang.resolve.BodyResolver;
 import org.jetbrains.jet.lang.resolve.ControlFlowAnalyzer;
 import org.jetbrains.jet.lang.resolve.DeclarationResolver;
 import org.jetbrains.jet.lang.resolve.DeclarationsChecker;
-import org.jetbrains.jet.lang.resolve.DelegationResolver;
 import org.jetbrains.jet.lang.resolve.DescriptorResolver;
 import org.jetbrains.jet.lang.resolve.ImportsResolver;
 import org.jetbrains.jet.lang.resolve.NamespaceFactoryImpl;
@@ -73,7 +72,6 @@ public class InjectorForTopDownAnalyzerBasic
 	private QualifiedExpressionResolver qualifiedExpressionResolver;
 	private OverloadingConflictResolver overloadingConflictResolver;
 	private ImportsResolver importsResolver;
-	private DelegationResolver delegationResolver;
 	private OverloadResolver overloadResolver;
 	private OverrideResolver overrideResolver;
 	private TypeHierarchyResolver typeHierarchyResolver;
@@ -102,7 +100,6 @@ public class InjectorForTopDownAnalyzerBasic
 		this.qualifiedExpressionResolver = new QualifiedExpressionResolver();
 		this.overloadingConflictResolver = new OverloadingConflictResolver();
 		this.importsResolver = new ImportsResolver();
-		this.delegationResolver = new DelegationResolver();
 		this.overloadResolver = new OverloadResolver();
 		this.overrideResolver = new OverrideResolver();
 		this.typeHierarchyResolver = new TypeHierarchyResolver();
@@ -110,7 +107,7 @@ public class InjectorForTopDownAnalyzerBasic
 		this.topDownAnalyzer.setBodyResolver(bodyResolver);
 		this.topDownAnalyzer.setContext(topDownAnalysisContext);
 		this.topDownAnalyzer.setDeclarationResolver(declarationResolver);
-		this.topDownAnalyzer.setDelegationResolver(delegationResolver);
+
 		this.topDownAnalyzer.setModuleDescriptor(moduleDescriptor);
 		this.topDownAnalyzer.setNamespaceFactory(namespaceFactory);
 		this.topDownAnalyzer.setOverloadResolver(overloadResolver);
@@ -169,9 +166,6 @@ public class InjectorForTopDownAnalyzerBasic
 		importsResolver.setContext(topDownAnalysisContext);
 		importsResolver.setQualifiedExpressionResolver(qualifiedExpressionResolver);
 		importsResolver.setTrace(bindingTrace);
-
-		delegationResolver.setContext(topDownAnalysisContext);
-		delegationResolver.setTrace(bindingTrace);
 
 		overloadResolver.setContext(topDownAnalysisContext);
 		overloadResolver.setTrace(bindingTrace);

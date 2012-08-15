@@ -50,7 +50,6 @@ import org.jetbrains.jet.lang.psi.JetDeclaration;
 import org.jetbrains.jet.lang.psi.JetDeclarationWithBody;
 import org.jetbrains.jet.lang.psi.JetDecomposerPattern;
 import org.jetbrains.jet.lang.psi.JetDelegationSpecifier;
-import org.jetbrains.jet.lang.psi.JetDelegatorByExpressionSpecifier;
 import org.jetbrains.jet.lang.psi.JetDelegatorToSuperCall;
 import org.jetbrains.jet.lang.psi.JetDoWhileExpression;
 import org.jetbrains.jet.lang.psi.JetElement;
@@ -1192,12 +1191,6 @@ public class JetControlFlowProcessor
 			{
 				value(valueArgument.getArgumentExpression(), inCondition);
 			}
-		}
-
-		@Override
-		public void visitDelegationByExpressionSpecifier(JetDelegatorByExpressionSpecifier specifier)
-		{
-			value(specifier.getDelegateExpression(), inCondition);
 		}
 
 		@Override

@@ -153,7 +153,6 @@ public class DefaultErrorMessages
 		MAP.put(SUPERTYPE_NOT_INITIALIZED_DEFAULT, "Constructor invocation should be explicitly specified");
 		MAP.put(SECONDARY_CONSTRUCTOR_BUT_NO_PRIMARY, "A secondary constructor may appear only in a class that has a primary constructor");
 		MAP.put(SECONDARY_CONSTRUCTOR_NO_INITIALIZER_LIST, "Secondary constructors must have an initializer list");
-		MAP.put(BY_IN_SECONDARY_CONSTRUCTOR, "'by'-clause is only supported for primary constructors");
 		MAP.put(INITIALIZER_WITH_NO_ARGUMENTS, "Constructor arguments required");
 		MAP.put(MANY_CALLS_TO_THIS, "Only one call to 'this(...)' is allowed");
 		MAP.put(NOTHING_TO_OVERRIDE, "''{0}'' overrides nothing", NAME);

@@ -62,8 +62,6 @@ public class TopDownAnalyzer
 	@NotNull
 	private TypeHierarchyResolver typeHierarchyResolver;
 	@NotNull
-	private DelegationResolver delegationResolver;
-	@NotNull
 	private OverrideResolver overrideResolver;
 	@NotNull
 	private OverloadResolver overloadResolver;
@@ -90,12 +88,6 @@ public class TopDownAnalyzer
 	public void setTypeHierarchyResolver(@NotNull TypeHierarchyResolver typeHierarchyResolver)
 	{
 		this.typeHierarchyResolver = typeHierarchyResolver;
-	}
-
-	@Inject
-	public void setDelegationResolver(@NotNull DelegationResolver delegationResolver)
-	{
-		this.delegationResolver = delegationResolver;
 	}
 
 	@Inject
@@ -154,7 +146,6 @@ public class TopDownAnalyzer
 
 		typeHierarchyResolver.process(outerScope, owner, declarations);
 		declarationResolver.process(outerScope);
-		delegationResolver.process();
 		overrideResolver.process();
 
 		lockScopes();

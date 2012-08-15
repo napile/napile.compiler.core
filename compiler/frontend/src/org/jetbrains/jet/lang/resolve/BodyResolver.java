@@ -21,7 +21,6 @@ import static org.jetbrains.jet.lang.diagnostics.Errors.FINAL_SUPERTYPE;
 import static org.jetbrains.jet.lang.diagnostics.Errors.SUPERTYPE_APPEARS_TWICE;
 import static org.jetbrains.jet.lang.diagnostics.Errors.SUPERTYPE_NOT_INITIALIZED;
 import static org.jetbrains.jet.lang.diagnostics.Errors.SUPERTYPE_NOT_INITIALIZED_DEFAULT;
-import static org.jetbrains.jet.lang.diagnostics.Errors.TYPE_MISMATCH;
 import static org.jetbrains.jet.lang.resolve.BindingContext.DEFERRED_TYPE;
 import static org.jetbrains.jet.lang.types.TypeUtils.NO_EXPECTED_TYPE;
 
@@ -49,7 +48,6 @@ import org.jetbrains.jet.lang.types.ErrorUtils;
 import org.jetbrains.jet.lang.types.JetType;
 import org.jetbrains.jet.lang.types.TypeConstructor;
 import org.jetbrains.jet.lang.types.TypeUtils;
-import org.jetbrains.jet.lang.types.checker.JetTypeChecker;
 import org.jetbrains.jet.lang.types.expressions.ExpressionTypingServices;
 import org.jetbrains.jet.lexer.JetTokens;
 import org.jetbrains.jet.util.Box;
@@ -180,24 +178,6 @@ public class BodyResolver
 				if(supertype == null)
 					return;
 				supertypes.put(typeReference, supertype);
-			}
-
-			@Override
-			public void visitDelegationByExpressionSpecifier(JetDelegatorByExpressionSpecifier specifier)
-			{
-				JetType supertype = trace.getBindingContext().get(BindingContext.TYPE, specifier.getTypeReference());
-				recordSupertype(specifier.getTypeReference(), supertype);
-
-				JetExpression delegateExpression = specifier.getDelegateExpression();
-				if(delegateExpression != null)
-				{
-					JetScope scope = scopeForConstructor == null ? descriptor.getScopeForMemberResolution() : scopeForConstructor;
-					JetType type = typeInferrer.getType(scope, delegateExpression, NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
-					if(type != null && supertype != null && !JetTypeChecker.INSTANCE.isSubtypeOf(type, supertype))
-					{
-						trace.report(TYPE_MISMATCH.on(delegateExpression, supertype, type));
-					}
-				}
 			}
 
 			@Override

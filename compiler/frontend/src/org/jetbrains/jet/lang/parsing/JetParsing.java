@@ -1135,7 +1135,8 @@ public class JetParsing extends AbstractJetParsing
 		{
 			advance(); // COLON
 
-			parseInitializerList();
+			parseDelegationSpecifierList();
+			//parseInitializerList();
 		}
 
 		if(at(LBRACE))

@@ -65,7 +65,6 @@ import org.jetbrains.jet.lang.psi.JetDeclaration;
 import org.jetbrains.jet.lang.psi.JetDeclarationWithBody;
 import org.jetbrains.jet.lang.psi.JetDelegationSpecifier;
 import org.jetbrains.jet.lang.psi.JetDelegationSpecifierList;
-import org.jetbrains.jet.lang.psi.JetDelegatorByExpressionSpecifier;
 import org.jetbrains.jet.lang.psi.JetDelegatorToSuperClass;
 import org.jetbrains.jet.lang.psi.JetElement;
 import org.jetbrains.jet.lang.psi.JetEscapeStringTemplateEntry;
@@ -187,7 +186,6 @@ public interface Errors
 	SimpleDiagnosticFactory<JetDelegatorToSuperClass> SUPERTYPE_NOT_INITIALIZED_DEFAULT = SimpleDiagnosticFactory.create(ERROR);
 	SimpleDiagnosticFactory<PsiElement> SECONDARY_CONSTRUCTOR_BUT_NO_PRIMARY = SimpleDiagnosticFactory.create(ERROR);
 	SimpleDiagnosticFactory<PsiElement> SECONDARY_CONSTRUCTOR_NO_INITIALIZER_LIST = SimpleDiagnosticFactory.create(ERROR);
-	SimpleDiagnosticFactory<JetDelegatorByExpressionSpecifier> BY_IN_SECONDARY_CONSTRUCTOR = SimpleDiagnosticFactory.create(ERROR);
 	SimpleDiagnosticFactory<JetDelegatorToSuperClass> INITIALIZER_WITH_NO_ARGUMENTS = SimpleDiagnosticFactory.create(ERROR);
 	SimpleDiagnosticFactory<JetDelegationSpecifier> MANY_CALLS_TO_THIS = SimpleDiagnosticFactory.create(ERROR);
 	DiagnosticFactory1<JetModifierListOwner, CallableMemberDescriptor> NOTHING_TO_OVERRIDE = DiagnosticFactory1.create(ERROR, OVERRIDE_MODIFIER);
