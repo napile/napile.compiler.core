@@ -35,7 +35,7 @@ public class JetFileType extends LanguageFileType
 		@Override
 		protected Icon compute()
 		{
-			return IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/kotlin_file.png");
+			return IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
 		}
 	};
 
@@ -55,14 +55,14 @@ public class JetFileType extends LanguageFileType
 	@NotNull
 	public String getDescription()
 	{
-		return getName();
+		return "Napile source file";
 	}
 
 	@Override
 	@NotNull
 	public String getDefaultExtension()
 	{
-		return "kt";
+		return "ns";
 	}
 
 	@Override

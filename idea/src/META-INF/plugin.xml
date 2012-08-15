@@ -57,27 +57,25 @@
 
 		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.NapileClassResolver" serviceImplementation="org.jetbrains.jet.lang.resolve.NapileClassResolver" />
 
-		<errorHandler implementation="org.jetbrains.jet.plugin.reporter.KotlinReportSubmitter"/>
-
 		<internalFileTemplate name="Kotlin Class"/>
 		<internalFileTemplate name="Kotlin Enum"/>
 
 		<gotoSymbolContributor implementation="org.jetbrains.jet.plugin.caches.JetGotoSymbolContributor"/>
 		<gotoClassContributor implementation="org.jetbrains.jet.plugin.caches.JetGotoClassContributor"/>
-		<lang.importOptimizer language="jet" implementationClass="org.jetbrains.jet.plugin.editor.importOptimizer.JetImportOptimizer"/>
+		<lang.importOptimizer language="NAPILE" implementationClass="org.jetbrains.jet.plugin.editor.importOptimizer.JetImportOptimizer"/>
 
 		<fileTypeFactory implementation="org.jetbrains.jet.plugin.JetFileFactory"/>
 
-		<lang.syntaxHighlighterFactory key="jet" implementationClass="org.jetbrains.jet.plugin.highlighter.JetSyntaxHighlighterFactory"/>
-		<lang.braceMatcher language="jet" implementationClass="org.jetbrains.jet.plugin.JetPairMatcher"/>
-		<lang.parserDefinition language="jet" implementationClass="org.jetbrains.jet.lang.parsing.JetParserDefinition"/>
-		<lang.commenter language="jet" implementationClass="org.jetbrains.jet.plugin.JetCommenter"/>
-		<lang.psiStructureViewFactory language="jet" implementationClass="org.jetbrains.jet.plugin.structureView.JetStructureViewFactory"/>
-		<lang.foldingBuilder language="jet" implementationClass="org.jetbrains.jet.plugin.JetFoldingBuilder"/>
-		<lang.formatter language="jet" implementationClass="org.jetbrains.jet.plugin.formatter.JetFormattingModelBuilder"/>
-		<lang.findUsagesProvider language="jet" implementationClass="org.jetbrains.jet.plugin.findUsages.JetFindUsagesProvider"/>
-		<lang.refactoringSupport language="jet" implementationClass="org.jetbrains.jet.plugin.refactoring.JetRefactoringSupportProvider"/>
-		<quoteHandler fileType="Kotlin" className="org.jetbrains.jet.plugin.editor.KotlinQuoteHandler"/>
+		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.JetSyntaxHighlighterFactory"/>
+		<lang.braceMatcher language="NAPILE" implementationClass="org.jetbrains.jet.plugin.JetPairMatcher"/>
+		<lang.parserDefinition language="NAPILE" implementationClass="org.jetbrains.jet.lang.parsing.JetParserDefinition"/>
+		<lang.commenter language="NAPILE" implementationClass="org.jetbrains.jet.plugin.JetCommenter"/>
+		<lang.psiStructureViewFactory language="NAPILE" implementationClass="org.jetbrains.jet.plugin.structureView.JetStructureViewFactory"/>
+		<lang.foldingBuilder language="NAPILE" implementationClass="org.jetbrains.jet.plugin.JetFoldingBuilder"/>
+		<lang.formatter language="NAPILE" implementationClass="org.jetbrains.jet.plugin.formatter.JetFormattingModelBuilder"/>
+		<lang.findUsagesProvider language="NAPILE" implementationClass="org.jetbrains.jet.plugin.findUsages.JetFindUsagesProvider"/>
+		<lang.refactoringSupport language="NAPILE" implementationClass="org.jetbrains.jet.plugin.refactoring.JetRefactoringSupportProvider"/>
+		<quoteHandler fileType="NAPILE" className="org.jetbrains.jet.plugin.editor.KotlinQuoteHandler"/>
 		<refactoring.moveHandler implementation="org.jetbrains.jet.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler"/>
 		<refactoring.copyHandler implementation="org.jetbrains.jet.plugin.refactoring.copy.JetCopyClassHandler"/>
 		<treeStructureProvider implementation="org.jetbrains.jet.plugin.projectView.JetProjectViewProvider"/>
@@ -89,30 +87,30 @@
 
 		<templateParameterTraversalPolicy implementation="org.jetbrains.jet.plugin.completion.JetTemplateParameterTraversalPolicy"/>
 
-		<codeInsight.parameterInfo language="jet" implementationClass="org.jetbrains.jet.plugin.parameterInfo.JetFunctionParameterInfoHandler"/>
+		<codeInsight.parameterInfo language="NAPILE" implementationClass="org.jetbrains.jet.plugin.parameterInfo.JetFunctionParameterInfoHandler"/>
 
-		<codeInsight.gotoSuper language="jet" implementationClass="org.jetbrains.jet.plugin.codeInsight.GotoSuperActionHandler"/>
+		<codeInsight.gotoSuper language="NAPILE" implementationClass="org.jetbrains.jet.plugin.codeInsight.GotoSuperActionHandler"/>
 		<typeDeclarationProvider implementation="org.jetbrains.jet.plugin.codeInsight.JetTypeDeclarationProvider"/>
 
-		<completion.contributor language="jet" id="JetKeywordCompletionContributor" order="first" implementationClass="org.jetbrains.jet.plugin.completion.JetKeywordCompletionContributor"/>
+		<completion.contributor language="NAPILE" id="JetKeywordCompletionContributor" order="first" implementationClass="org.jetbrains.jet.plugin.completion.JetKeywordCompletionContributor"/>
 
-		<completion.contributor language="jet" id="JetPackagesContributor" order="after JetKeywordCompletionContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetPackagesContributor"/>
+		<completion.contributor language="NAPILE" id="JetPackagesContributor" order="after JetKeywordCompletionContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetPackagesContributor"/>
 
-		<completion.contributor language="jet" id="JetExtensionFunctionReceiverContributor" order="after JetPackagesContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetExtensionReceiverTypeContributor"/>
+		<completion.contributor language="NAPILE" id="JetExtensionFunctionReceiverContributor" order="after JetPackagesContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetExtensionReceiverTypeContributor"/>
 
-		<completion.contributor language="jet" id="JetClassCompletionContributor" order="after JetExtensionFunctionReceiverContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetClassCompletionContributor"/>
+		<completion.contributor language="NAPILE" id="JetClassCompletionContributor" order="after JetExtensionFunctionReceiverContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetClassCompletionContributor"/>
 
-		<completion.contributor language="jet" id="JetCompletionContributor" order="after JetClassCompletionContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetCompletionContributor"/>
+		<completion.contributor language="NAPILE" id="JetCompletionContributor" order="after JetClassCompletionContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetCompletionContributor"/>
 
-		<completion.contributor language="jet" implementationClass="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplateCompletionContributor" id="liveTemplates" order="first"/>
+		<completion.contributor language="NAPILE" implementationClass="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplateCompletionContributor" id="liveTemplates" order="first"/>
 
-		<completion.confidence language="jet" implementationClass="com.intellij.codeInsight.completion.UnfocusedNameIdentifier"/>
-		<completion.confidence language="jet" implementationClass="org.jetbrains.jet.plugin.completion.confidence.UnfocusedPossibleFunctionParameter"/>
-		<completion.confidence language="jet" implementationClass="com.intellij.codeInsight.completion.AlwaysFocusLookup" order="last"/>
+		<completion.confidence language="NAPILE" implementationClass="com.intellij.codeInsight.completion.UnfocusedNameIdentifier"/>
+		<completion.confidence language="NAPILE" implementationClass="org.jetbrains.jet.plugin.completion.confidence.UnfocusedPossibleFunctionParameter"/>
+		<completion.confidence language="NAPILE" implementationClass="com.intellij.codeInsight.completion.AlwaysFocusLookup" order="last"/>
 
 		<completion.skip implementation="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplateCompletionContributor$Skipper" id="skipLiveTemplate"/>
 
-		<psi.referenceContributor language="jet" order="after JetCompletionContributor" implementation="org.jetbrains.jet.plugin.references.JetReferenceContributor"/>
+		<psi.referenceContributor language="NAPILE" order="after JetCompletionContributor" implementation="org.jetbrains.jet.plugin.references.JetReferenceContributor"/>
 
 		<renamePsiElementProcessor implementation="org.jetbrains.jet.plugin.refactoring.rename.RenameJetClassProcessor"/>
 		<renamePsiElementProcessor implementation="org.jetbrains.jet.plugin.refactoring.rename.RenameKotlinFunctionProcessor"/>
@@ -129,8 +127,8 @@
 		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetIterableVariableMacro"/>
 		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetSuggestVariableNameMacro"/>
 
-		<annotator language="jet" implementationClass="org.jetbrains.jet.plugin.highlighter.JetPsiChecker"/>
-		<annotator language="jet" implementationClass="org.jetbrains.jet.plugin.highlighter.DebugInfoAnnotator"/>
+		<annotator language="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.JetPsiChecker"/>
+		<annotator language="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.DebugInfoAnnotator"/>
 
 		<extendWordSelectionHandler implementation="org.jetbrains.jet.plugin.editor.wordSelection.JetStatementGroupSelectioner"/>
 		<extendWordSelectionHandler implementation="org.jetbrains.jet.plugin.editor.wordSelection.JetCodeBlockSelectioner"/>
@@ -141,15 +139,15 @@
 		<lang.documentationProvider language="JAVA" implementationClass="org.jetbrains.jet.plugin.JetQuickDocumentationProvider" order="first"/>
 		<documentationProvider implementation="org.jetbrains.jet.plugin.JetQuickDocumentationProvider"/>
 
-		<codeInsight.lineMarkerProvider language="jet" implementationClass="org.jetbrains.jet.plugin.highlighter.JetLineMarkerProvider"/>
+		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.JetLineMarkerProvider"/>
 		<iconProvider implementation="org.jetbrains.jet.plugin.JetIconProvider"/>
 		<itemPresentationProvider implementationClass="org.jetbrains.jet.plugin.presentation.JetFunctionPresenter" forClass="org.jetbrains.jet.lang.psi.JetNamedFunction"/>
 		<itemPresentationProvider implementationClass="org.jetbrains.jet.plugin.presentation.JetClassPresenter" forClass="org.jetbrains.jet.lang.psi.JetClass"/>
 		<elementDescriptionProvider implementation="org.jetbrains.jet.plugin.findUsages.JetElementDescriptionProvider"/>
 		<findUsagesHandlerFactory implementation="org.jetbrains.jet.plugin.findUsages.KotlinFindUsagesHandlerFactory"/>
 
-		<codeInsight.implementMethod language="jet" implementationClass="org.jetbrains.jet.plugin.codeInsight.ImplementMethodsHandler"/>
-		<codeInsight.overrideMethod language="jet" implementationClass="org.jetbrains.jet.plugin.codeInsight.OverrideMethodsHandler"/>
+		<codeInsight.implementMethod language="NAPILE" implementationClass="org.jetbrains.jet.plugin.codeInsight.ImplementMethodsHandler"/>
+		<codeInsight.overrideMethod language="NAPILE" implementationClass="org.jetbrains.jet.plugin.codeInsight.OverrideMethodsHandler"/>
 
 		<stubElementTypeHolder class="org.jetbrains.jet.lang.psi.stubs.elements.JetStubElementTypes"/>
 		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetShortClassNameIndex"/>
@@ -170,7 +168,7 @@
 
 		<definitionsSearch implementation="org.jetbrains.jet.plugin.search.impl.ClassImplementationsSearch"/>
 
-		<toolWindow id="Kotlin" factoryClass="org.jetbrains.jet.plugin.internal.KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/jet/plugin/icons/kotlin_13.png"/>
+		<toolWindow id="Napile" factoryClass="org.jetbrains.jet.plugin.internal.KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/jet/plugin/icons/kotlin_13.png"/>
 
 		<applicationService serviceInterface="org.jetbrains.jet.plugin.editor.JetEditorOptions" serviceImplementation="org.jetbrains.jet.plugin.editor.JetEditorOptions"/>
 		<exportable serviceInterface="org.jetbrains.jet.plugin.editor.JetEditorOptions"/>
@@ -178,7 +176,7 @@
 
 		<intentionAction>
 			<className>org.jetbrains.jet.plugin.intentions.SpecifyTypeExplicitlyAction</className>
-			<category>Kotlin</category>
+			<category>Napile</category>
 		</intentionAction>
 
 		<project.converterProvider implementation="org.jetbrains.jet.plugin.converters.JetRunConfigurationSettingsFormatConverterProvider"/>

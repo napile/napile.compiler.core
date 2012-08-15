@@ -13,22 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.napile.asmNew.visitors;
-
-import org.napile.asm.tree.members.AnnotationNode;
-import org.napile.asm.tree.members.ClassNode;
-import org.napile.asm.tree.members.types.ClassTypeNode;
-
-/**
- * @author VISTALL
- * @date 22:20/13.08.12
- */
-public interface AsmVisitor<A2>
-{
-	void visitAnnotationNode(AnnotationNode annotationNode, A2 a2);
-
-	void visitClassNode(ClassNode classNode, A2 a2);
-
-	void visitClassTypeNode(ClassTypeNode classTypeNode, A2 a2);
-}

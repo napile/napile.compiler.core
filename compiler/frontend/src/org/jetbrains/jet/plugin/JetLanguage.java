@@ -24,11 +24,11 @@ import com.intellij.lang.Language;
 public class JetLanguage extends Language
 {
 	public static JetLanguage INSTANCE = new JetLanguage();
-	public static String NAME = "Kotlin";
+	public static String NAME = "Napile";
 
 	private JetLanguage()
 	{
-		super("jet");
+		super("NAPILE");
 	}
 
 	@Override
