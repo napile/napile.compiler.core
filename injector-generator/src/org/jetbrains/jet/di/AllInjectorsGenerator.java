@@ -18,7 +18,6 @@ package org.jetbrains.jet.di;
 
 import java.io.IOException;
 
-import org.jetbrains.jet.lang.BuiltinsScopeExtensionMode;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
 import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.resolve.AnnotationResolver;

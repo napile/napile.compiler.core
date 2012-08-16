@@ -20,25 +20,8 @@ package org.jetbrains.jet.di;
 import javax.annotation.PreDestroy;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.lang.BuiltinsScopeExtensionMode;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
-import org.jetbrains.jet.lang.resolve.AnnotationResolver;
-import org.jetbrains.jet.lang.resolve.BindingTrace;
-import org.jetbrains.jet.lang.resolve.BodyResolver;
-import org.jetbrains.jet.lang.resolve.ControlFlowAnalyzer;
-import org.jetbrains.jet.lang.resolve.DeclarationResolver;
-import org.jetbrains.jet.lang.resolve.DeclarationsChecker;
-import org.jetbrains.jet.lang.resolve.DescriptorResolver;
-import org.jetbrains.jet.lang.resolve.ImportsResolver;
-import org.jetbrains.jet.lang.resolve.NamespaceFactoryImpl;
-import org.jetbrains.jet.lang.resolve.OverloadResolver;
-import org.jetbrains.jet.lang.resolve.OverrideResolver;
-import org.jetbrains.jet.lang.resolve.QualifiedExpressionResolver;
-import org.jetbrains.jet.lang.resolve.TopDownAnalysisContext;
-import org.jetbrains.jet.lang.resolve.TopDownAnalysisParameters;
-import org.jetbrains.jet.lang.resolve.TopDownAnalyzer;
-import org.jetbrains.jet.lang.resolve.TypeHierarchyResolver;
-import org.jetbrains.jet.lang.resolve.TypeResolver;
+import org.jetbrains.jet.lang.resolve.*;
 import org.jetbrains.jet.lang.resolve.calls.CallResolver;
 import org.jetbrains.jet.lang.resolve.calls.OverloadingConflictResolver;
 import org.jetbrains.jet.lang.types.DependencyClassByQualifiedNameResolverDummyImpl;
@@ -59,7 +42,6 @@ public class InjectorForTopDownAnalyzerBasic
 	private final TopDownAnalysisParameters topDownAnalysisParameters;
 	private final BindingTrace bindingTrace;
 	private final ModuleDescriptor moduleDescriptor;
-	private final BuiltinsScopeExtensionMode builtinsScopeExtensionMode;
 	private DependencyClassByQualifiedNameResolverDummyImpl dependencyClassByQualifiedNameResolverDummy;
 	private NamespaceFactoryImpl namespaceFactory;
 	private DeclarationResolver declarationResolver;
@@ -74,7 +56,7 @@ public class InjectorForTopDownAnalyzerBasic
 	private OverrideResolver overrideResolver;
 	private TypeHierarchyResolver typeHierarchyResolver;
 
-	public InjectorForTopDownAnalyzerBasic(@NotNull Project project, @NotNull TopDownAnalysisParameters topDownAnalysisParameters, @NotNull BindingTrace bindingTrace, @NotNull ModuleDescriptor moduleDescriptor, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode)
+	public InjectorForTopDownAnalyzerBasic(@NotNull Project project, @NotNull TopDownAnalysisParameters topDownAnalysisParameters, @NotNull BindingTrace bindingTrace, @NotNull ModuleDescriptor moduleDescriptor)
 	{
 		this.topDownAnalyzer = new TopDownAnalyzer();
 		this.topDownAnalysisContext = new TopDownAnalysisContext();
@@ -86,7 +68,6 @@ public class InjectorForTopDownAnalyzerBasic
 		this.topDownAnalysisParameters = topDownAnalysisParameters;
 		this.bindingTrace = bindingTrace;
 		this.moduleDescriptor = moduleDescriptor;
-		this.builtinsScopeExtensionMode = builtinsScopeExtensionMode;
 		this.dependencyClassByQualifiedNameResolverDummy = new DependencyClassByQualifiedNameResolverDummyImpl();
 		this.namespaceFactory = new NamespaceFactoryImpl();
 		this.declarationResolver = new DeclarationResolver();

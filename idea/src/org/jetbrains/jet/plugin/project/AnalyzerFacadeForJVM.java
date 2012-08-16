@@ -25,7 +25,6 @@ import org.jetbrains.jet.analyzer.AnalyzeExhaust;
 import org.jetbrains.jet.analyzer.AnalyzerFacade;
 import org.jetbrains.jet.analyzer.AnalyzerFacadeForEverything;
 import org.jetbrains.jet.di.InjectorForTopDownAnalyzerBasic;
-import org.jetbrains.jet.lang.BuiltinsScopeExtensionMode;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
 import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.resolve.AnalyzerScriptParameter;
@@ -58,7 +57,7 @@ public enum AnalyzerFacadeForJVM implements AnalyzerFacade
 	@NotNull
 	public AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<JetFile> files, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<PsiFile> filesToAnalyzeCompletely)
 	{
-		return analyzeFilesWithJavaIntegration(project, files, scriptParameters, filesToAnalyzeCompletely, BuiltinsScopeExtensionMode.ALL, true);
+		return analyzeFilesWithJavaIntegration(project, files, scriptParameters, filesToAnalyzeCompletely, true);
 	}
 
 	@NotNull
@@ -68,42 +67,42 @@ public enum AnalyzerFacadeForJVM implements AnalyzerFacade
 		return AnalyzerFacadeForEverything.analyzeBodiesInFilesWithJavaIntegration(project, scriptParameters, filesForBodiesResolve, headersTraceContext, bodiesResolveContext);
 	}
 
-	public static AnalyzeExhaust analyzeOneFileWithJavaIntegrationAndCheckForErrors(JetFile file, List<AnalyzerScriptParameter> scriptParameters, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode)
+	public static AnalyzeExhaust analyzeOneFileWithJavaIntegrationAndCheckForErrors(JetFile file, List<AnalyzerScriptParameter> scriptParameters)
 	{
 		AnalyzingUtils.checkForSyntacticErrors(file);
 
-		AnalyzeExhaust analyzeExhaust = analyzeOneFileWithJavaIntegration(file, scriptParameters, builtinsScopeExtensionMode);
+		AnalyzeExhaust analyzeExhaust = analyzeOneFileWithJavaIntegration(file, scriptParameters);
 
 		AnalyzingUtils.throwExceptionOnErrors(analyzeExhaust.getBindingContext());
 
 		return analyzeExhaust;
 	}
 
-	public static AnalyzeExhaust analyzeOneFileWithJavaIntegration(JetFile file, List<AnalyzerScriptParameter> scriptParameters, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode)
+	public static AnalyzeExhaust analyzeOneFileWithJavaIntegration(JetFile file, List<AnalyzerScriptParameter> scriptParameters)
 	{
-		return analyzeFilesWithJavaIntegration(file.getProject(), Collections.singleton(file), scriptParameters, Predicates.<PsiFile>alwaysTrue(), builtinsScopeExtensionMode);
+		return analyzeFilesWithJavaIntegration(file.getProject(), Collections.singleton(file), scriptParameters, Predicates.<PsiFile>alwaysTrue());
 	}
 
-	public static AnalyzeExhaust analyzeFilesWithJavaIntegrationAndCheckForErrors(Project project, Collection<JetFile> files, List<AnalyzerScriptParameter> scriptParameters, Predicate<PsiFile> filesToAnalyzeCompletely, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode)
+	public static AnalyzeExhaust analyzeFilesWithJavaIntegrationAndCheckForErrors(Project project, Collection<JetFile> files, List<AnalyzerScriptParameter> scriptParameters, Predicate<PsiFile> filesToAnalyzeCompletely)
 	{
 		for(JetFile file : files)
 		{
 			AnalyzingUtils.checkForSyntacticErrors(file);
 		}
 
-		AnalyzeExhaust analyzeExhaust = analyzeFilesWithJavaIntegration(project, files, scriptParameters, filesToAnalyzeCompletely, builtinsScopeExtensionMode, false);
+		AnalyzeExhaust analyzeExhaust = analyzeFilesWithJavaIntegration(project, files, scriptParameters, filesToAnalyzeCompletely, false);
 
 		AnalyzingUtils.throwExceptionOnErrors(analyzeExhaust.getBindingContext());
 
 		return analyzeExhaust;
 	}
 
-	public static AnalyzeExhaust analyzeFilesWithJavaIntegration(Project project, Collection<JetFile> files, List<AnalyzerScriptParameter> scriptParameters, Predicate<PsiFile> filesToAnalyzeCompletely, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode)
+	public static AnalyzeExhaust analyzeFilesWithJavaIntegration(Project project, Collection<JetFile> files, List<AnalyzerScriptParameter> scriptParameters, Predicate<PsiFile> filesToAnalyzeCompletely)
 	{
-		return analyzeFilesWithJavaIntegration(project, files, scriptParameters, filesToAnalyzeCompletely, builtinsScopeExtensionMode, false);
+		return analyzeFilesWithJavaIntegration(project, files, scriptParameters, filesToAnalyzeCompletely, false);
 	}
 
-	public static AnalyzeExhaust analyzeFilesWithJavaIntegration(Project project, Collection<JetFile> files, List<AnalyzerScriptParameter> scriptParameters, Predicate<PsiFile> filesToAnalyzeCompletely, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode, boolean storeContextForBodiesResolve)
+	public static AnalyzeExhaust analyzeFilesWithJavaIntegration(Project project, Collection<JetFile> files, List<AnalyzerScriptParameter> scriptParameters, Predicate<PsiFile> filesToAnalyzeCompletely, boolean storeContextForBodiesResolve)
 	{
 		BindingTraceContext bindingTraceContext = new BindingTraceContext();
 
@@ -111,7 +110,7 @@ public enum AnalyzerFacadeForJVM implements AnalyzerFacade
 
 		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false, false, scriptParameters);
 
-		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceContext), owner, builtinsScopeExtensionMode);
+		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceContext), owner);
 		try
 		{
 			injector.getTopDownAnalyzer().analyzeFiles(files, scriptParameters);
@@ -124,12 +123,12 @@ public enum AnalyzerFacadeForJVM implements AnalyzerFacade
 		}
 	}
 
-	public static AnalyzeExhaust shallowAnalyzeFiles(Collection<JetFile> files, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode)
+	public static AnalyzeExhaust shallowAnalyzeFiles(Collection<JetFile> files)
 	{
 		assert files.size() > 0;
 
 		Project project = files.iterator().next().getProject();
 
-		return analyzeFilesWithJavaIntegration(project, files, Collections.<AnalyzerScriptParameter>emptyList(), Predicates.<PsiFile>alwaysFalse(), builtinsScopeExtensionMode);
+		return analyzeFilesWithJavaIntegration(project, files, Collections.<AnalyzerScriptParameter>emptyList(), Predicates.<PsiFile>alwaysFalse());
 	}
 }
