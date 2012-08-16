@@ -86,7 +86,7 @@ public class ScopeProvider
 
 		List<JetImportDirective> importDirectives = getFileImports(file);
 
-		ImportsResolver.processImportsInFile(true, writableScope, importDirectives, rootPackageDescriptor.getMemberScope(), resolveSession.getModuleConfiguration(), resolveSession.getTrace(), resolveSession.getInjector().getQualifiedExpressionResolver());
+		ImportsResolver.processImportsInFile(true, writableScope, importDirectives, rootPackageDescriptor.getMemberScope(), resolveSession.getTrace(), resolveSession.getInjector().getQualifiedExpressionResolver(), file.getProject());
 
 		writableScope.importScope(packageDescriptor.getMemberScope());
 

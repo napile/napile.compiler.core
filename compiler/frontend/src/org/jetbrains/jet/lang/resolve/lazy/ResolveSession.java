@@ -22,7 +22,6 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.di.InjectorForLazyResolve;
-import org.jetbrains.jet.lang.ModuleConfiguration;
 import org.jetbrains.jet.lang.descriptors.CallableDescriptor;
 import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
 import org.jetbrains.jet.lang.descriptors.ClassifierDescriptor;
@@ -88,24 +87,22 @@ public class ResolveSession
 
 
 	private final InjectorForLazyResolve injector;
-	private final ModuleConfiguration moduleConfiguration;
 
 	private final Map<JetEnumEntry, ClassDescriptor> enumEntryClassDescriptorCache = Maps.newHashMap();
 	private final Function<FqName, Name> classifierAliases;
 
-	public ResolveSession(@NotNull Project project, @NotNull ModuleDescriptor rootDescriptor, @NotNull ModuleConfiguration moduleConfiguration, @NotNull DeclarationProviderFactory declarationProviderFactory)
+	public ResolveSession(@NotNull Project project, @NotNull ModuleDescriptor rootDescriptor, @NotNull DeclarationProviderFactory declarationProviderFactory)
 	{
-		this(project, rootDescriptor, moduleConfiguration, declarationProviderFactory, NO_ALIASES, Predicates.<FqNameUnsafe>alwaysFalse());
+		this(project, rootDescriptor, declarationProviderFactory, NO_ALIASES, Predicates.<FqNameUnsafe>alwaysFalse());
 	}
 
 	@Deprecated // Internal use only
-	public ResolveSession(@NotNull Project project, @NotNull ModuleDescriptor rootDescriptor, @NotNull ModuleConfiguration moduleConfiguration, @NotNull DeclarationProviderFactory declarationProviderFactory, @NotNull Function<FqName, Name> classifierAliases, @NotNull Predicate<FqNameUnsafe> specialClasses)
+	public ResolveSession(@NotNull Project project, @NotNull ModuleDescriptor rootDescriptor, @NotNull DeclarationProviderFactory declarationProviderFactory, @NotNull Function<FqName, Name> classifierAliases, @NotNull Predicate<FqNameUnsafe> specialClasses)
 	{
 		this.classifierAliases = classifierAliases;
 		this.specialClasses = specialClasses;
 		this.injector = new InjectorForLazyResolve(project, this, trace);
 		this.module = rootDescriptor;
-		this.moduleConfiguration = moduleConfiguration;
 		PackageMemberDeclarationProvider provider = declarationProviderFactory.getPackageMemberDeclarationProvider(FqName.ROOT);
 		assert provider != null : "No declaration provider for root package in " + rootDescriptor;
 		this.rootPackage = new LazyPackageDescriptor(rootDescriptor, FqNameUnsafe.ROOT_NAME, this, provider);
@@ -123,12 +120,6 @@ public class ResolveSession
 	/*package*/ boolean isClassSpecial(@NotNull FqNameUnsafe fqName)
 	{
 		return specialClasses.apply(fqName);
-	}
-
-	@NotNull
-	public ModuleConfiguration getModuleConfiguration()
-	{
-		return moduleConfiguration;
 	}
 
 	@Nullable

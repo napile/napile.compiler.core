@@ -19,10 +19,16 @@
  */
 package org.jetbrains.jet.plugin;
 
+import org.jetbrains.jet.lang.resolve.ImportPath;
 import com.intellij.lang.Language;
 
 public class JetLanguage extends Language
 {
+	public static final ImportPath[] DEFAULT_IMPORTS = new ImportPath[]
+	{
+		new ImportPath("napile.lang.*")
+	};
+
 	public static JetLanguage INSTANCE = new JetLanguage();
 	public static String NAME = "Napile";
 

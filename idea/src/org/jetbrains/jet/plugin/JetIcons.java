@@ -36,7 +36,7 @@ public interface JetIcons
 
 	Icon FILE = IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
 	Icon OBJECT = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/object.png");
-	Icon TRAIT = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/trait.png");
+
 	Icon FUNCTION = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/function.png");
 	Icon EXTENSION_FUNCTION = PlatformIcons.FUNCTION_ICON;
 	Icon LAMBDA = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/lambda.png");

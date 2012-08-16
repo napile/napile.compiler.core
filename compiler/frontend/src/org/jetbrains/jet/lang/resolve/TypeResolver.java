@@ -33,18 +33,7 @@ import org.jetbrains.jet.lang.descriptors.ClassifierDescriptor;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
 import org.jetbrains.jet.lang.descriptors.TypeParameterDescriptor;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
-import org.jetbrains.jet.lang.psi.JetElement;
-import org.jetbrains.jet.lang.psi.JetFunctionType;
-import org.jetbrains.jet.lang.psi.JetNullableType;
-import org.jetbrains.jet.lang.psi.JetParameter;
-import org.jetbrains.jet.lang.psi.JetProjectionKind;
-import org.jetbrains.jet.lang.psi.JetSimpleNameExpression;
-import org.jetbrains.jet.lang.psi.JetTupleType;
-import org.jetbrains.jet.lang.psi.JetTypeElement;
-import org.jetbrains.jet.lang.psi.JetTypeProjection;
-import org.jetbrains.jet.lang.psi.JetTypeReference;
-import org.jetbrains.jet.lang.psi.JetUserType;
-import org.jetbrains.jet.lang.psi.JetVisitorVoid;
+import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.resolve.scopes.LazyScopeAdapter;
 import org.jetbrains.jet.lang.types.ErrorUtils;
@@ -237,9 +226,9 @@ public class TypeResolver
 				}
 
 				@Override
-				public void visitJetElement(JetElement element)
+				public void visitSelfType(JetSelfType type)
 				{
-					trace.report(UNSUPPORTED.on(element, "Self-types are not supported yet"));
+					trace.report(UNSUPPORTED.on(type, "Self-types are not supported yet"));
 					//                    throw new IllegalArgumentException("Unsupported type: " + element);
 				}
 			});

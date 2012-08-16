@@ -26,7 +26,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.lang.ModuleConfiguration;
 import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
 import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
@@ -34,14 +33,17 @@ import org.jetbrains.jet.lang.descriptors.VariableDescriptor;
 import org.jetbrains.jet.lang.psi.JetExpression;
 import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.psi.JetImportDirective;
+import org.jetbrains.jet.lang.psi.JetPsiFactory;
 import org.jetbrains.jet.lang.psi.JetPsiUtil;
 import org.jetbrains.jet.lang.psi.JetSimpleNameExpression;
 import org.jetbrains.jet.lang.resolve.lazy.ScopeProvider;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.resolve.scopes.WritableScope;
+import org.jetbrains.jet.plugin.JetLanguage;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.intellij.openapi.project.Project;
 
 /**
  * @author abreslav
@@ -52,11 +54,11 @@ public class ImportsResolver
 	@NotNull
 	private TopDownAnalysisContext context;
 	@NotNull
-	private ModuleConfiguration configuration;
-	@NotNull
 	private QualifiedExpressionResolver qualifiedExpressionResolver;
 	@NotNull
 	private BindingTrace trace;
+	@NotNull
+	private Project project;
 
 	@Inject
 	public void setContext(@NotNull TopDownAnalysisContext context)
@@ -65,9 +67,9 @@ public class ImportsResolver
 	}
 
 	@Inject
-	public void setConfiguration(@NotNull ModuleConfiguration configuration)
+	public void setProject(@NotNull Project project)
 	{
-		this.configuration = configuration;
+		this.project = project;
 	}
 
 	@Inject
@@ -103,10 +105,10 @@ public class ImportsResolver
 
 	private void processImportsInFile(boolean classes, WritableScope scope, List<JetImportDirective> directives, JetScope rootScope)
 	{
-		processImportsInFile(classes, scope, directives, rootScope, configuration, trace, qualifiedExpressionResolver);
+		processImportsInFile(classes, scope, directives, rootScope, trace, qualifiedExpressionResolver, project);
 	}
 
-	public static void processImportsInFile(boolean onlyClasses, @NotNull WritableScope namespaceScope, @NotNull List<JetImportDirective> importDirectives, @NotNull JetScope rootScope, @NotNull ModuleConfiguration configuration, @NotNull BindingTrace trace, @NotNull QualifiedExpressionResolver qualifiedExpressionResolver)
+	public static void processImportsInFile(boolean onlyClasses, @NotNull WritableScope namespaceScope, @NotNull List<JetImportDirective> importDirectives, @NotNull JetScope rootScope, @NotNull BindingTrace trace, @NotNull QualifiedExpressionResolver qualifiedExpressionResolver, @NotNull Project project)
 	{
 
 		Importer.DelayedImporter delayedImporter = new Importer.DelayedImporter(namespaceScope);
@@ -116,7 +118,9 @@ public class ImportsResolver
 		}
 		Map<JetImportDirective, DeclarationDescriptor> resolvedDirectives = Maps.newHashMap();
 		Collection<JetImportDirective> defaultImportDirectives = Lists.newArrayList();
-		configuration.addDefaultImports(defaultImportDirectives);
+		for(ImportPath path : JetLanguage.DEFAULT_IMPORTS)
+			defaultImportDirectives.add(JetPsiFactory.createImportDirective(project, path));
+
 		for(JetImportDirective defaultImportDirective : defaultImportDirectives)
 		{
 			TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(trace); //not to trace errors of default imports

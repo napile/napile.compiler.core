@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.DefaultModuleConfiguration;
 import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
 import org.jetbrains.jet.lang.psi.JetFile;
@@ -37,6 +36,7 @@ import org.jetbrains.jet.lang.resolve.name.FqName;
 import org.jetbrains.jet.lang.types.ErrorUtils;
 import org.jetbrains.jet.lang.types.JetType;
 import org.jetbrains.jet.lang.types.TypeUtils;
+import org.jetbrains.jet.plugin.JetLanguage;
 import org.jetbrains.jet.plugin.references.JetPsiReference;
 import org.jetbrains.jet.util.QualifiedNamesUtil;
 import com.intellij.openapi.editor.Document;
@@ -160,15 +160,15 @@ public class ImportInsertHelper
 			return true;
 		}
 
-		if(isImportedWithKotlinDefault(importPath))
+		if(isDefaultImport(importPath))
 			return true;
 
 		return false;
 	}
 
-	public static boolean isImportedWithKotlinDefault(ImportPath importPath)
+	public static boolean isDefaultImport(ImportPath importPath)
 	{
-		for(ImportPath defaultJetImport : DefaultModuleConfiguration.DEFAULT_JET_IMPORTS)
+		for(ImportPath defaultJetImport : JetLanguage.DEFAULT_IMPORTS)
 		{
 			if(QualifiedNamesUtil.isImported(defaultJetImport, importPath))
 			{

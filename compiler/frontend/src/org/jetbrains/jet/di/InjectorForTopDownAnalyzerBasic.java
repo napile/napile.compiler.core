@@ -21,7 +21,6 @@ import javax.annotation.PreDestroy;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.BuiltinsScopeExtensionMode;
-import org.jetbrains.jet.lang.DefaultModuleConfiguration;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
 import org.jetbrains.jet.lang.resolve.AnnotationResolver;
 import org.jetbrains.jet.lang.resolve.BindingTrace;
@@ -60,7 +59,6 @@ public class InjectorForTopDownAnalyzerBasic
 	private final TopDownAnalysisParameters topDownAnalysisParameters;
 	private final BindingTrace bindingTrace;
 	private final ModuleDescriptor moduleDescriptor;
-	private final DefaultModuleConfiguration defaultModuleConfiguration;
 	private final BuiltinsScopeExtensionMode builtinsScopeExtensionMode;
 	private DependencyClassByQualifiedNameResolverDummyImpl dependencyClassByQualifiedNameResolverDummy;
 	private NamespaceFactoryImpl namespaceFactory;
@@ -76,7 +74,7 @@ public class InjectorForTopDownAnalyzerBasic
 	private OverrideResolver overrideResolver;
 	private TypeHierarchyResolver typeHierarchyResolver;
 
-	public InjectorForTopDownAnalyzerBasic(@NotNull Project project, @NotNull TopDownAnalysisParameters topDownAnalysisParameters, @NotNull BindingTrace bindingTrace, @NotNull ModuleDescriptor moduleDescriptor, @NotNull DefaultModuleConfiguration defaultModuleConfiguration, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode)
+	public InjectorForTopDownAnalyzerBasic(@NotNull Project project, @NotNull TopDownAnalysisParameters topDownAnalysisParameters, @NotNull BindingTrace bindingTrace, @NotNull ModuleDescriptor moduleDescriptor, @NotNull BuiltinsScopeExtensionMode builtinsScopeExtensionMode)
 	{
 		this.topDownAnalyzer = new TopDownAnalyzer();
 		this.topDownAnalysisContext = new TopDownAnalysisContext();
@@ -88,7 +86,6 @@ public class InjectorForTopDownAnalyzerBasic
 		this.topDownAnalysisParameters = topDownAnalysisParameters;
 		this.bindingTrace = bindingTrace;
 		this.moduleDescriptor = moduleDescriptor;
-		this.defaultModuleConfiguration = defaultModuleConfiguration;
 		this.builtinsScopeExtensionMode = builtinsScopeExtensionMode;
 		this.dependencyClassByQualifiedNameResolverDummy = new DependencyClassByQualifiedNameResolverDummyImpl();
 		this.namespaceFactory = new NamespaceFactoryImpl();
@@ -135,7 +132,6 @@ public class InjectorForTopDownAnalyzerBasic
 		this.descriptorResolver.setExpressionTypingServices(expressionTypingServices);
 		this.descriptorResolver.setTypeResolver(typeResolver);
 
-		namespaceFactory.setConfiguration(defaultModuleConfiguration);
 		namespaceFactory.setModuleDescriptor(moduleDescriptor);
 		namespaceFactory.setTrace(bindingTrace);
 
@@ -162,7 +158,7 @@ public class InjectorForTopDownAnalyzerBasic
 		typeResolver.setDescriptorResolver(descriptorResolver);
 		typeResolver.setQualifiedExpressionResolver(qualifiedExpressionResolver);
 
-		importsResolver.setConfiguration(defaultModuleConfiguration);
+		importsResolver.setProject(project);
 		importsResolver.setContext(topDownAnalysisContext);
 		importsResolver.setQualifiedExpressionResolver(qualifiedExpressionResolver);
 		importsResolver.setTrace(bindingTrace);
@@ -179,9 +175,6 @@ public class InjectorForTopDownAnalyzerBasic
 		typeHierarchyResolver.setImportsResolver(importsResolver);
 		typeHierarchyResolver.setNamespaceFactory(namespaceFactory);
 		typeHierarchyResolver.setTrace(bindingTrace);
-
-		defaultModuleConfiguration.setProject(project);
-		defaultModuleConfiguration.setBuiltinsScopeExtensionMode(builtinsScopeExtensionMode);
 	}
 
 	@PreDestroy

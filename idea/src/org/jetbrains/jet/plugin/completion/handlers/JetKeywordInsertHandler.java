@@ -35,7 +35,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 public class JetKeywordInsertHandler implements InsertHandler<LookupElement>
 {
 
-	private final static Set<String> NO_SPACE_AFTER = Sets.newHashSet(JetTokens.THIS_KEYWORD.toString(), JetTokens.SUPER_KEYWORD.toString(), JetTokens.CAPITALIZED_THIS_KEYWORD.toString(), JetTokens.THIS_KEYWORD.toString(), JetTokens.FALSE_KEYWORD.toString(), JetTokens.NULL_KEYWORD.toString(), JetTokens.BREAK_KEYWORD.toString(), JetTokens.CONTINUE_KEYWORD.toString());
+	private final static Set<String> NO_SPACE_AFTER = Sets.newHashSet(JetTokens.THIS_KEYWORD.toString(), JetTokens.SUPER_KEYWORD.toString(), JetTokens.THIS_KEYWORD.toString(), JetTokens.FALSE_KEYWORD.toString(), JetTokens.NULL_KEYWORD.toString(), JetTokens.BREAK_KEYWORD.toString(), JetTokens.CONTINUE_KEYWORD.toString());
 
 	@Override
 	public void handleInsert(InsertionContext context, LookupElement item)

@@ -73,7 +73,7 @@ public class JetExplicitlyImportedWeigher extends LookupElementWeigher
 					}
 					else
 					{
-						if(ImportInsertHelper.isImportedWithKotlinDefault(importPath))
+						if(ImportInsertHelper.isDefaultImport(importPath))
 						{
 							return MyResult.kotlinDefaultImport;
 						}

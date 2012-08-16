@@ -28,7 +28,6 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.ModuleConfiguration;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
 import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
 import org.jetbrains.jet.lang.descriptors.NamespaceDescriptorImpl;
@@ -54,10 +53,8 @@ import com.intellij.psi.PsiElement;
  */
 public class NamespaceFactoryImpl implements NamespaceFactory
 {
-
 	private ModuleDescriptor moduleDescriptor;
 	private BindingTrace trace;
-	private ModuleConfiguration configuration;
 
 	@Inject
 	public void setModuleDescriptor(ModuleDescriptor moduleDescriptor)
@@ -69,12 +66,6 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 	public void setTrace(BindingTrace trace)
 	{
 		this.trace = trace;
-	}
-
-	@Inject
-	public void setConfiguration(ModuleConfiguration configuration)
-	{
-		this.configuration = configuration;
 	}
 
 	@NotNull
@@ -193,8 +184,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 
 		namespaceDescriptor.initialize(scope);
 		scope.changeLockLevel(WritableScope.LockLevel.BOTH);
-		//
-		configuration.extendNamespaceScope(trace, namespaceDescriptor, scope);
+
 		owner.addNamespace(namespaceDescriptor);
 		if(expression != null)
 		{

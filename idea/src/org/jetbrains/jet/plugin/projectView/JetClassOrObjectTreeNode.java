@@ -22,15 +22,17 @@ import static org.jetbrains.jet.plugin.projectView.JetProjectViewUtil.getClassOr
 import java.util.Collection;
 
 import org.jetbrains.jet.lang.psi.JetClassOrObject;
-import org.jetbrains.jet.lang.psi.JetFile;
-import org.jetbrains.jet.plugin.JetIconProvider;
+import org.jetbrains.jet.lang.psi.JetTypeParameter;
+import org.jetbrains.jet.lang.psi.JetTypeParameterListOwner;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.projectView.impl.nodes.AbstractPsiBasedNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.Function;
 
 /**
  * User: Alefas
@@ -55,34 +57,31 @@ public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<JetClassOrObj
 		return getClassOrObjectChildren(getValue(), getProject(), getSettings());
 	}
 
-	private void update(AbstractTreeNode node)
-	{
-		ProjectView.getInstance(getProject()).getCurrentProjectViewPane().getTreeBuilder().addSubtreeToUpdateByElement(node);
-	}
-
 	@Override
 	protected void updateImpl(PresentationData data)
 	{
 		JetClassOrObject classOrObject = getValue();
 		if(classOrObject != null)
 		{
-			data.setPresentableText(classOrObject.getName());
-
-			AbstractTreeNode parent = getParent();
-			if(JetIconProvider.getMainClass((JetFile) classOrObject.getContainingFile()) != null)
+			if(classOrObject instanceof JetTypeParameterListOwner && !((JetTypeParameterListOwner) classOrObject).getTypeParameters().isEmpty())
 			{
-				if(parent instanceof JetFileTreeNode)
+				StringBuilder builder = new StringBuilder(classOrObject.getName());
+				builder.append("<");
+				builder.append(StringUtil.join(((JetTypeParameterListOwner) classOrObject).getTypeParameters(), new Function<JetTypeParameter, String>()
 				{
-					update(parent.getParent());
-				}
+					@Override
+					public String fun(JetTypeParameter jetTypeParameter)
+					{
+						return jetTypeParameter.getName();
+					}
+				}, ", "));
+				builder.append(">");
+				data.setPresentableText(builder.toString());
 			}
 			else
-			{
-				if(!(parent instanceof JetClassOrObjectTreeNode) && !(parent instanceof JetFileTreeNode))
-				{
-					update(parent);
-				}
-			}
+				data.setPresentableText(classOrObject.getName());
+
+			ProjectView.getInstance(getProject()).getCurrentProjectViewPane().getTreeBuilder().addSubtreeToUpdateByElement(data);
 		}
 	}
 

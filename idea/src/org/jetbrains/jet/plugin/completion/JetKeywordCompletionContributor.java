@@ -16,59 +16,14 @@
 
 package org.jetbrains.jet.plugin.completion;
 
-import static org.jetbrains.jet.lexer.JetTokens.ABSTRACT_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.AS_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.BREAK_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.BY_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.CAPITALIZED_THIS_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.CATCH_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.CONTINUE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.ELSE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.FALSE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.FINALLY_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.FINAL_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.GET_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.HERITABLE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.IDENTIFIER;
-import static org.jetbrains.jet.lexer.JetTokens.IMPORT_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.INLINE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.INTERNAL_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.IN_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.IS_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.NULL_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.OBJECT_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.OUT_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.OVERRIDE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.PACKAGE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.LOCAL_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.COVERED_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.RETURN_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.SET_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.SUPER_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.THIS_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.THROW_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.TRUE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.TRY_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.TYPE_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.VARARG_KEYWORD;
-import static org.jetbrains.jet.lexer.JetTokens.WHERE_KEYWORD;
+import static org.jetbrains.jet.lexer.JetTokens.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.lang.psi.JetBlockExpression;
-import org.jetbrains.jet.lang.psi.JetClassBody;
-import org.jetbrains.jet.lang.psi.JetConstantExpression;
-import org.jetbrains.jet.lang.psi.JetFile;
-import org.jetbrains.jet.lang.psi.NapileMethod;
-import org.jetbrains.jet.lang.psi.JetLiteralStringTemplateEntry;
-import org.jetbrains.jet.lang.psi.JetParameterList;
-import org.jetbrains.jet.lang.psi.JetProperty;
-import org.jetbrains.jet.lang.psi.JetReferenceExpression;
-import org.jetbrains.jet.lang.psi.JetTypeParameterList;
-import org.jetbrains.jet.lang.psi.JetWhenExpression;
+import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lexer.JetToken;
 import org.jetbrains.jet.lexer.JetTokens;
 import org.jetbrains.jet.plugin.completion.handlers.JetFunctionInsertHandler;
@@ -384,7 +339,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 
 		registerScopeKeywordsCompletion(new InClassBodyFilter(), ABSTRACT_KEYWORD, FINAL_KEYWORD, GET_KEYWORD, INLINE_KEYWORD, INTERNAL_KEYWORD, OVERRIDE_KEYWORD, LOCAL_KEYWORD, COVERED_KEYWORD, HERITABLE_KEYWORD, SET_KEYWORD, TYPE_KEYWORD);
 
-		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), AS_KEYWORD, BREAK_KEYWORD, BY_KEYWORD, CATCH_KEYWORD, CONTINUE_KEYWORD, ELSE_KEYWORD, FALSE_KEYWORD, FINALLY_KEYWORD, GET_KEYWORD, IN_KEYWORD, INLINE_KEYWORD, INTERNAL_KEYWORD, IS_KEYWORD, NULL_KEYWORD, OBJECT_KEYWORD, LOCAL_KEYWORD, COVERED_KEYWORD, HERITABLE_KEYWORD, RETURN_KEYWORD, SET_KEYWORD, SUPER_KEYWORD, CAPITALIZED_THIS_KEYWORD, THIS_KEYWORD, THROW_KEYWORD, TRUE_KEYWORD, TRY_KEYWORD, TYPE_KEYWORD, VARARG_KEYWORD, WHERE_KEYWORD);
+		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), AS_KEYWORD, BREAK_KEYWORD, BY_KEYWORD, CATCH_KEYWORD, CONTINUE_KEYWORD, ELSE_KEYWORD, FALSE_KEYWORD, FINALLY_KEYWORD, GET_KEYWORD, IN_KEYWORD, INLINE_KEYWORD, INTERNAL_KEYWORD, IS_KEYWORD, NULL_KEYWORD, OBJECT_KEYWORD, LOCAL_KEYWORD, COVERED_KEYWORD, HERITABLE_KEYWORD, RETURN_KEYWORD, SET_KEYWORD, SUPER_KEYWORD, THIS_KEYWORD, THROW_KEYWORD, TRUE_KEYWORD, TRY_KEYWORD, TYPE_KEYWORD, VARARG_KEYWORD, WHERE_KEYWORD);
 
 		registerScopeKeywordsCompletion(new InPropertyBodyFilter(), ELSE_KEYWORD, FALSE_KEYWORD, NULL_KEYWORD, THIS_KEYWORD, TRUE_KEYWORD);
 

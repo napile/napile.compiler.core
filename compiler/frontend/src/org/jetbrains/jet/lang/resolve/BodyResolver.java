@@ -209,6 +209,9 @@ public class BodyResolver
 			@Override
 			public void visitDelegationToSuperClassSpecifier(JetDelegatorToSuperClass specifier)
 			{
+				if(descriptor.getKind() == ClassKind.CLASS || descriptor.getKind() == ClassKind.ENUM_CLASS)
+					return;
+
 				JetTypeReference typeReference = specifier.getTypeReference();
 				JetType supertype = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
 				recordSupertype(typeReference, supertype);

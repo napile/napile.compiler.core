@@ -56,7 +56,7 @@ public class JetParsing extends AbstractJetParsing
 	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(WHERE_KEYWORD, LPAR, COLON, LBRACE, GT);
 	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(COLON, EQ, COMMA, RPAR);
 	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(DOT, EOL_OR_SEMICOLON);
-	/*package*/ static final TokenSet TYPE_REF_FIRST = TokenSet.create(LBRACKET, IDENTIFIER, METH_KEYWORD, LPAR, CAPITALIZED_THIS_KEYWORD, HASH);
+	/*package*/ static final TokenSet TYPE_REF_FIRST = TokenSet.create(LBRACKET, IDENTIFIER, METH_KEYWORD, LPAR, THIS_KEYWORD, HASH);
 	private static final TokenSet RECEIVER_TYPE_TERMINATORS = TokenSet.create(DOT, SAFE_ACCESS);
 
 	static JetParsing createForTopLevel(SemanticWhitespaceAwarePsiBuilder builder)
@@ -607,8 +607,7 @@ public class JetParsing extends AbstractJetParsing
 		 * classBody
 		 *   : ("{" memberDeclaration "}")?
 		 *   ;
-		 */
-    /*package*/ void parseClassBody()
+		 */	/*package*/ void parseClassBody()
 	{
 		PsiBuilder.Marker body = mark();
 
@@ -1241,7 +1240,7 @@ public class JetParsing extends AbstractJetParsing
 	/*
 		 * delegationSpecifier{","}
 		 */
-    /*package*/ void parseDelegationSpecifierList()
+	void parseDelegationSpecifierList()
 	{
 		PsiBuilder.Marker list = mark();
 
@@ -1282,8 +1281,17 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker reference = mark();
 		parseTypeRef();
 
-		reference.drop();
-		delegator.done(DELEGATOR_SUPER_CLASS);
+		if(at(LPAR))
+		{
+			reference.done(CONSTRUCTOR_CALLEE);
+			myExpressionParsing.parseValueArgumentList();
+			delegator.done(DELEGATOR_SUPER_CALL);
+		}
+		else
+		{
+			reference.drop();
+			delegator.done(DELEGATOR_SUPER_CLASS);
+		}
 	}
 
 	/*
@@ -1517,7 +1525,7 @@ public class JetParsing extends AbstractJetParsing
 				parseFunctionType();
 			}
 		}
-		else if(at(CAPITALIZED_THIS_KEYWORD))
+		else if(at(THIS_KEYWORD))
 		{
 			parseSelfType();
 		}
@@ -1621,10 +1629,10 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private void parseSelfType()
 	{
-		assert _at(CAPITALIZED_THIS_KEYWORD);
+		assert _at(THIS_KEYWORD);
 
 		PsiBuilder.Marker type = mark();
-		advance(); // CAPITALIZED_THIS_KEYWORD
+		advance(); // THIS_KEYWORD
 		type.done(SELF_TYPE);
 	}
 

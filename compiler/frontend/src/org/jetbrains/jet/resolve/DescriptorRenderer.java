@@ -498,9 +498,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				case FINAL:
 					keyword = "final";
 					break;
-				case OPEN:
-					keyword = "open";
-					break;
 				case ABSTRACT:
 					keyword = "abstract";
 					break;
@@ -513,7 +510,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderVisibility(descriptor.getVisibility(), builder);
 			renderModality(descriptor.getModality(), builder);
-			builder.append(renderKeyword("fun")).append(" ");
+			builder.append(renderKeyword(JetTokens.METH_KEYWORD.getValue())).append(" ");
 			if(renderTypeParameters(descriptor.getTypeParameters(), builder))
 			{
 				builder.append(" ");

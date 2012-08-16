@@ -27,7 +27,6 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.di.InjectorForTopDownAnalyzerBasic;
 import org.jetbrains.jet.lang.BuiltinsScopeExtensionMode;
-import org.jetbrains.jet.lang.DefaultModuleConfiguration;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
 import org.jetbrains.jet.lang.descriptors.MutableClassDescriptor;
@@ -181,7 +180,7 @@ public class TopDownAnalyzer
 	{
 
 		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.<PsiFile>alwaysFalse(), true, false, Collections.<AnalyzerScriptParameter>emptyList());
-		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), JetStandardClasses.FAKE_STANDARD_CLASSES_MODULE, new DefaultModuleConfiguration(), BuiltinsScopeExtensionMode.ALL);
+		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), JetStandardClasses.FAKE_STANDARD_CLASSES_MODULE, BuiltinsScopeExtensionMode.ALL);
 
 		injector.getTopDownAnalyzer().doProcessStandardLibraryNamespace(outerScope, standardLibraryNamespace, files);
 	}
@@ -206,7 +205,7 @@ public class TopDownAnalyzer
 
 		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.equalTo(object.getContainingFile()), false, true, Collections.<AnalyzerScriptParameter>emptyList());
 
-		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), moduleDescriptor, new DefaultModuleConfiguration(), BuiltinsScopeExtensionMode.ALL);
+		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), moduleDescriptor, BuiltinsScopeExtensionMode.ALL);
 
 		injector.getTopDownAnalyzer().doProcess(outerScope, new NamespaceLikeBuilder()
 		{
