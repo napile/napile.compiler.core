@@ -73,8 +73,6 @@ public interface JetTokens
 	JetKeywordToken WHILE_KEYWORD = JetKeywordToken.keyword("while");
 	JetKeywordToken DO_KEYWORD = JetKeywordToken.keyword("do");
 	JetKeywordToken WHEN_KEYWORD = JetKeywordToken.keyword("when");
-	@Deprecated
-	JetKeywordToken TRAIT_KEYWORD = JetKeywordToken.keyword("trait");
 
 	JetToken AS_SAFE = JetKeywordToken.keyword("AS_SAFE");//new JetToken("as?");
 

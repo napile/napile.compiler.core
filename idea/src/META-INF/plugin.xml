@@ -1,7 +1,7 @@
-<idea-plugin version="2" url="http://kotlin.jetbrains.org">
-	<id>org.napile.napile4idea</id>
+<idea-plugin version="2">
+	<id>org.napile.idea.lang</id>
 
-	<name>Napile</name>
+	<name>napile : Language Support</name>
 	<description>Napile language support</description>
 	<version>@snapshot@</version>
 	<vendor url="http://napile.org">napile.org</vendor>
