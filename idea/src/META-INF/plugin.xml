@@ -55,8 +55,8 @@
 
 		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.NapileClassResolver" serviceImplementation="org.jetbrains.jet.lang.resolve.NapileClassResolver" />
 
-		<internalFileTemplate name="Kotlin Class"/>
-		<internalFileTemplate name="Kotlin Enum"/>
+		<internalFileTemplate name="Napile Class"/>
+		<internalFileTemplate name="Napile Enum"/>
 
 		<gotoSymbolContributor implementation="org.jetbrains.jet.plugin.caches.JetGotoSymbolContributor"/>
 		<gotoClassContributor implementation="org.jetbrains.jet.plugin.caches.JetGotoClassContributor"/>
