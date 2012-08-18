@@ -26,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.descriptors.CallableMemberDescriptor;
 import org.jetbrains.jet.lang.descriptors.ClassKind;
 import org.jetbrains.jet.lang.descriptors.ConstructorDescriptor;
-import org.jetbrains.jet.lang.descriptors.ConstructorDescriptorImpl;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
 import org.jetbrains.jet.lang.descriptors.FunctionDescriptor;
 import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
@@ -248,7 +247,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 					JetClass jetClass = (JetClass) classOrObject;
 					for(NapileConstructor constructor : jetClass.getConstructors())
 					{
-						ConstructorDescriptorImpl constructorDescriptor = resolveSession.getInjector().getDescriptorResolver().resolveConstructorDescriptor(thisDescriptor.getScopeForClassHeaderResolution(), thisDescriptor, constructor, resolveSession.getTrace());
+						ConstructorDescriptor constructorDescriptor = resolveSession.getInjector().getDescriptorResolver().resolveConstructorDescriptor(thisDescriptor.getScopeForClassHeaderResolution(), thisDescriptor, constructor, resolveSession.getTrace());
 
 						constructorDescriptors.put(constructor, constructorDescriptor);
 
@@ -257,7 +256,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 				}
 				else
 				{
-					ConstructorDescriptorImpl constructor = DescriptorResolver.createConstructorForObject(classOrObject, thisDescriptor, resolveSession.getTrace());
+					ConstructorDescriptor constructor = DescriptorResolver.createConstructorForObject(classOrObject, thisDescriptor, resolveSession.getTrace());
 					setDeferredReturnType(constructor);
 				}
 			}
@@ -265,7 +264,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 		return constructorDescriptors;
 	}
 
-	private void setDeferredReturnType(@NotNull ConstructorDescriptorImpl descriptor)
+	private void setDeferredReturnType(@NotNull ConstructorDescriptor descriptor)
 	{
 		descriptor.setReturnType(DeferredType.create(resolveSession.getTrace(), new LazyValue<JetType>()
 		{

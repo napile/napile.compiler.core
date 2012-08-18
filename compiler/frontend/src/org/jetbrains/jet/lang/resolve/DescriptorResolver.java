@@ -333,9 +333,9 @@ public class DescriptorResolver
 		return typeParameterDescriptor;
 	}
 
-	public static ConstructorDescriptorImpl createConstructorForObject(@Nullable PsiElement object, @NotNull ClassDescriptor classDescriptor, @NotNull BindingTrace trace)
+	public static ConstructorDescriptor createConstructorForObject(@Nullable PsiElement object, @NotNull ClassDescriptor classDescriptor, @NotNull BindingTrace trace)
 	{
-		ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(classDescriptor, Collections.<AnnotationDescriptor>emptyList());
+		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList());
 
 		// TODO : make the constructor private?
 		// TODO check set classDescriptor.getVisibility()
@@ -866,10 +866,10 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public ConstructorDescriptorImpl resolveConstructorDescriptor(@NotNull JetScope scope, @NotNull ClassDescriptor classDescriptor, @NotNull NapileConstructor constructor, BindingTrace trace)
+	public ConstructorDescriptor resolveConstructorDescriptor(@NotNull JetScope scope, @NotNull ClassDescriptor classDescriptor, @NotNull NapileConstructor constructor, BindingTrace trace)
 	{
 		JetModifierList modifierList = constructor.getModifierList();
-		ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(classDescriptor, annotationResolver.resolveAnnotations(scope, modifierList, trace));
+		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, annotationResolver.resolveAnnotations(scope, modifierList, trace));
 		trace.record(BindingContext.CONSTRUCTOR, constructor, constructorDescriptor);
 		WritableScopeImpl parameterScope = new WritableScopeImpl(scope, constructorDescriptor, new TraceBasedRedeclarationHandler(trace), "Scope with value parameters of a constructor");
 		parameterScope.changeLockLevel(WritableScope.LockLevel.BOTH);

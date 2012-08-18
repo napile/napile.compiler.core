@@ -24,18 +24,11 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.cfg.JetFlowInformationProvider;
+import org.jetbrains.jet.lang.descriptors.ConstructorDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertyAccessorDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
 import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
-import org.jetbrains.jet.lang.psi.JetClass;
-import org.jetbrains.jet.lang.psi.JetClassOrObject;
-import org.jetbrains.jet.lang.psi.JetDeclaration;
-import org.jetbrains.jet.lang.psi.JetDeclarationWithBody;
-import org.jetbrains.jet.lang.psi.JetExpression;
-import org.jetbrains.jet.lang.psi.JetNamedFunction;
-import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
-import org.jetbrains.jet.lang.psi.JetProperty;
-import org.jetbrains.jet.lang.psi.JetPropertyAccessor;
+import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.types.JetType;
 
 /**
@@ -66,12 +59,14 @@ public class ControlFlowAnalyzer
 				continue;
 			checkClassOrObject(aClass);
 		}
+
 		for(JetObjectDeclaration objectDeclaration : bodiesResolveContext.getObjects().keySet())
 		{
 			if(!bodiesResolveContext.completeAnalysisNeeded(objectDeclaration))
 				continue;
 			checkClassOrObject(objectDeclaration);
 		}
+
 		for(Map.Entry<JetNamedFunction, SimpleFunctionDescriptor> entry : bodiesResolveContext.getFunctions().entrySet())
 		{
 			JetNamedFunction function = entry.getKey();
@@ -81,6 +76,16 @@ public class ControlFlowAnalyzer
 			final JetType expectedReturnType = !function.hasBlockBody() && !function.hasDeclaredReturnType() ? NO_EXPECTED_TYPE : functionDescriptor.getReturnType();
 			checkFunction(function, expectedReturnType);
 		}
+
+		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
+		{
+			NapileConstructor constructor = entry.getKey();
+			if(!bodiesResolveContext.completeAnalysisNeeded(constructor))
+				continue;
+
+			checkFunction(constructor, NO_EXPECTED_TYPE);
+		}
+
 		for(Map.Entry<JetProperty, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
 		{
 			JetProperty property = entry.getKey();

@@ -16,39 +16,99 @@
 
 package org.jetbrains.jet.lang.descriptors;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
+import org.jetbrains.jet.lang.resolve.DescriptorUtils;
 import org.jetbrains.jet.lang.resolve.name.Name;
-import org.jetbrains.jet.lang.types.JetType;
+import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 /**
  * @author abreslav
  */
-public interface ConstructorDescriptor extends FunctionDescriptor
+public class ConstructorDescriptor extends FunctionDescriptorImpl
 {
-	/**
-	 * @throws UnsupportedOperationException -- no type parameters supported for constructors
-	 */
-	@NotNull
-	@Override
-	List<TypeParameterDescriptor> getTypeParameters();
+	private static final Name NAME = Name.special("<init>");
 
-	/**
-	 * @throws UnsupportedOperationException -- return type is not stored for constructors
-	 */
+	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations)
+	{
+		super(containingDeclaration, annotations, NAME, Kind.DECLARATION);
+	}
+
+	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations)
+	{
+		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION);
+	}
+
+	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, Visibility visibility)
+	{
+		return initialize(typeParameters, unsubstitutedValueParameters, visibility, false);
+	}
+
+	//isStatic - for java only
+	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, Visibility visibility, boolean isStatic)
+	{
+		super.initialize(null, isStatic ? ReceiverDescriptor.NO_RECEIVER : getExpectedThisObject(getContainingDeclaration()), typeParameters, unsubstitutedValueParameters, null, Modality.FINAL, visibility);
+		return this;
+	}
+
 	@NotNull
-	@Override
-	JetType getReturnType();
+	private static ReceiverDescriptor getExpectedThisObject(@NotNull ClassDescriptor descriptor)
+	{
+		DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
+		return DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration);
+	}
 
 	@NotNull
 	@Override
-	ClassDescriptor getContainingDeclaration();
+	public ClassDescriptor getContainingDeclaration()
+	{
+		return (ClassDescriptor) super.getContainingDeclaration();
+	}
 
-	/**
-	 * @return "&lt;init&gt;" -- name is not stored for constructors
-	 */
 	@NotNull
 	@Override
-	Name getName();
+	public ConstructorDescriptor getOriginal()
+	{
+		return (ConstructorDescriptor) super.getOriginal();
+	}
+
+	@Override
+	public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)
+	{
+		return visitor.visitConstructorDescriptor(this, data);
+	}
+
+	@NotNull
+	@Override
+	public Set<? extends FunctionDescriptor> getOverriddenDescriptors()
+	{
+		return Collections.emptySet();
+	}
+
+	@Override
+	public void addOverriddenDescriptor(@NotNull CallableMemberDescriptor overriddenFunction)
+	{
+		throw new UnsupportedOperationException("Constructors cannot override anything");
+	}
+
+	@Override
+	protected FunctionDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
+	{
+		if(kind != Kind.DECLARATION)
+		{
+			throw new IllegalStateException();
+		}
+		return new ConstructorDescriptor((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList());//TODO annotation list
+	}
+
+	@NotNull
+	@Override
+	public ConstructorDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
+	{
+		throw new UnsupportedOperationException("Constructors should not be copied for overriding");
+	}
 }

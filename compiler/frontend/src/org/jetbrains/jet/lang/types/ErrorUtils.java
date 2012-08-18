@@ -193,16 +193,6 @@ public class ErrorUtils
 		return function;
 	}
 
-	public static ConstructorDescriptor createErrorConstructor(int typeParameterCount, List<JetType> positionedValueParameterTypes)
-	{
-		ConstructorDescriptorImpl r = new ConstructorDescriptorImpl(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList());
-		r.initialize(Collections.<TypeParameterDescriptor>emptyList(), // TODO
-				Collections.<ValueParameterDescriptor>emptyList(), // TODO
-				Visibilities.INTERNAL);
-		r.setReturnType(createErrorType("<ERROR RETURN TYPE>"));
-		return r;
-	}
-
 	private static final JetType ERROR_PARAMETER_TYPE = createErrorType("<ERROR VALUE_PARAMETER TYPE>");
 
 	private static List<ValueParameterDescriptor> getValueParameters(FunctionDescriptor functionDescriptor, List<JetType> argumentTypes)

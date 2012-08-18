@@ -37,17 +37,7 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.ClassKind;
-import org.jetbrains.jet.lang.descriptors.ConstructorDescriptorImpl;
-import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
-import org.jetbrains.jet.lang.descriptors.Modality;
-import org.jetbrains.jet.lang.descriptors.MutableClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.MutableClassDescriptorLite;
-import org.jetbrains.jet.lang.descriptors.NamespaceDescriptorImpl;
-import org.jetbrains.jet.lang.descriptors.NamespaceLikeBuilder;
-import org.jetbrains.jet.lang.descriptors.TypeParameterDescriptor;
-import org.jetbrains.jet.lang.descriptors.WithDeferredResolve;
+import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
@@ -316,7 +306,7 @@ public class TypeHierarchyResolver
 						classObjectDescriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(klass.getModifierList()));
 						classObjectDescriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
 						classObjectDescriptor.createTypeConstructor();
-						ConstructorDescriptorImpl primaryConstructorForObject = createConstructorForObject(klass, classObjectDescriptor);
+						ConstructorDescriptor primaryConstructorForObject = createConstructorForObject(klass, classObjectDescriptor);
 						primaryConstructorForObject.setReturnType(classObjectDescriptor.getDefaultType());
 						mutableClassDescriptor.getBuilder().setClassObjectDescriptor(classObjectDescriptor);
 					}
@@ -351,9 +341,9 @@ public class TypeHierarchyResolver
 					return mutableClassDescriptor;
 				}
 
-				private ConstructorDescriptorImpl createConstructorForObject(@NotNull JetDelegationSpecifierListOwner object, MutableClassDescriptor mutableClassDescriptor)
+				private ConstructorDescriptor createConstructorForObject(@NotNull JetDelegationSpecifierListOwner object, MutableClassDescriptor mutableClassDescriptor)
 				{
-					ConstructorDescriptorImpl constructorDescriptor = DescriptorResolver.createConstructorForObject(object, mutableClassDescriptor, trace);
+					ConstructorDescriptor constructorDescriptor = DescriptorResolver.createConstructorForObject(object, mutableClassDescriptor, trace);
 					mutableClassDescriptor.addConstructor(object, constructorDescriptor, trace);
 					return constructorDescriptor;
 				}

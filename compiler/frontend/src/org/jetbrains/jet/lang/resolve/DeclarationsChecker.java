@@ -56,17 +56,7 @@ import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertyGetterDescriptor;
 import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
 import org.jetbrains.jet.lang.diagnostics.Errors;
-import org.jetbrains.jet.lang.psi.JetClass;
-import org.jetbrains.jet.lang.psi.JetDelegationSpecifier;
-import org.jetbrains.jet.lang.psi.JetExpression;
-import org.jetbrains.jet.lang.psi.NapileMethod;
-import org.jetbrains.jet.lang.psi.JetModifierList;
-import org.jetbrains.jet.lang.psi.JetNamedDeclaration;
-import org.jetbrains.jet.lang.psi.JetNamedFunction;
-import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
-import org.jetbrains.jet.lang.psi.JetProperty;
-import org.jetbrains.jet.lang.psi.JetPropertyAccessor;
-import org.jetbrains.jet.lang.psi.JetTypeReference;
+import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.types.DeferredType;
 import org.jetbrains.jet.lang.types.JetType;
 import org.jetbrains.jet.lexer.JetKeywordToken;
@@ -106,8 +96,7 @@ public class DeclarationsChecker
 			checkModifiers(aClass.getModifierList(), classDescriptor);
 		}
 
-		Map<JetObjectDeclaration, MutableClassDescriptor> objects = bodiesResolveContext.getObjects();
-		for(Map.Entry<JetObjectDeclaration, MutableClassDescriptor> entry : objects.entrySet())
+		for(Map.Entry<JetObjectDeclaration, MutableClassDescriptor> entry : bodiesResolveContext.getObjects().entrySet())
 		{
 			JetObjectDeclaration objectDeclaration = entry.getKey();
 			MutableClassDescriptor objectDescriptor = entry.getValue();
@@ -117,8 +106,7 @@ public class DeclarationsChecker
 			checkObject(objectDeclaration, objectDescriptor);
 		}
 
-		Map<JetNamedFunction, SimpleFunctionDescriptor> functions = bodiesResolveContext.getFunctions();
-		for(Map.Entry<JetNamedFunction, SimpleFunctionDescriptor> entry : functions.entrySet())
+		for(Map.Entry<JetNamedFunction, SimpleFunctionDescriptor> entry : bodiesResolveContext.getFunctions().entrySet())
 		{
 			JetNamedFunction function = entry.getKey();
 			SimpleFunctionDescriptor functionDescriptor = entry.getValue();
@@ -129,8 +117,18 @@ public class DeclarationsChecker
 			checkModifiers(function.getModifierList(), functionDescriptor);
 		}
 
-		Map<JetProperty, PropertyDescriptor> properties = bodiesResolveContext.getProperties();
-		for(Map.Entry<JetProperty, PropertyDescriptor> entry : properties.entrySet())
+		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
+		{
+			NapileConstructor constructor = entry.getKey();
+			ConstructorDescriptor constructorDescriptor = entry.getValue();
+
+			if(!bodiesResolveContext.completeAnalysisNeeded(constructor))
+				continue;
+			checkConstructor(constructor, constructorDescriptor);
+			checkModifiers(constructor.getModifierList(), constructorDescriptor);
+		}
+
+		for(Map.Entry<JetProperty, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
 		{
 			JetProperty property = entry.getKey();
 			PropertyDescriptor propertyDescriptor = entry.getValue();
@@ -312,6 +310,11 @@ public class DeclarationsChecker
 		{
 			trace.report(NON_MEMBER_FUNCTION_NO_BODY.on(function, functionDescriptor));
 		}
+	}
+
+	private void checkConstructor(NapileConstructor constructor, ConstructorDescriptor constructorDescriptor)
+	{
+		//TODO [VISTALL]
 	}
 
 	private void checkAccessors(JetProperty property, PropertyDescriptor propertyDescriptor)

@@ -86,7 +86,7 @@ public class JetStandardClasses
 	static
 	{
 		ClassDescriptorImpl nothing = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Nothing"));
-		ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(nothing, Collections.<AnnotationDescriptor>emptyList());
+		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(nothing, Collections.<AnnotationDescriptor>emptyList());
 		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PRIVATE);
 		NOTHING_CLASS = nothing.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), new AbstractCollection<JetType>()
 		{
@@ -120,7 +120,7 @@ public class JetStandardClasses
 	static
 	{
 		ClassDescriptorImpl any = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.identifier("Any"));
-		ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(any, Collections.<AnnotationDescriptor>emptyList());
+		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(any, Collections.<AnnotationDescriptor>emptyList());
 		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PUBLIC);
 		ANY = any.initialize(false, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptySet(), JetScope.EMPTY, Collections.<JetDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
 		ANY_TYPE = new JetTypeImpl(ANY.getTypeConstructor(), new JetScopeImpl()
@@ -184,7 +184,7 @@ public class JetStandardClasses
 			}
 			writableScope.changeLockLevel(WritableScope.LockLevel.READING);
 
-			ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(classDescriptor, Collections.<AnnotationDescriptor>emptyList());
+			ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList());
 
 			TUPLE[i] = classDescriptor.initialize(true, typeParameters, Collections.singleton(getAnyType()), writableScope, Collections.<JetDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
 			TUPLE_CONSTRUCTORS.add(TUPLE[i].getTypeConstructor());
@@ -213,7 +213,7 @@ public class JetStandardClasses
 			SimpleFunctionDescriptorImpl invoke = new SimpleFunctionDescriptorImpl(function, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION);
 			WritableScope scopeForInvoke = createScopeForInvokeFunction(function, invoke);
 			List<TypeParameterDescriptor> typeParameters = createTypeParameters(0, i, function);
-			ConstructorDescriptorImpl constructorDescriptorForFunction = new ConstructorDescriptorImpl(function, Collections.<AnnotationDescriptor>emptyList());
+			ConstructorDescriptor constructorDescriptorForFunction = new ConstructorDescriptor(function, Collections.<AnnotationDescriptor>emptyList());
 			FUNCTION[i] = function.initialize(false, typeParameters, Collections.singleton(getAnyType()), scopeForInvoke,Collections.<JetDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
 			FUNCTION_TYPE_CONSTRUCTORS.add(FUNCTION[i].getTypeConstructor());
 			FunctionDescriptorUtil.initializeFromFunctionType(invoke, function.getDefaultType(), new ClassReceiver(FUNCTION[i]), Modality.ABSTRACT, Visibilities.PUBLIC);
@@ -227,7 +227,7 @@ public class JetStandardClasses
 			List<TypeParameterDescriptor> parameters = createTypeParameters(1, i, receiverFunction);
 			parameters.add(0, TypeParameterDescriptorImpl.createWithDefaultBound(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), false, Variance.IN_VARIANCE, Name.identifier("T"), 0));
 
-			ConstructorDescriptorImpl constructorDescriptorForReceiverFunction = new ConstructorDescriptorImpl(function, Collections.<AnnotationDescriptor>emptyList());
+			ConstructorDescriptor constructorDescriptorForReceiverFunction = new ConstructorDescriptor(function, Collections.<AnnotationDescriptor>emptyList());
 			RECEIVER_FUNCTION[i] = receiverFunction.initialize(false, parameters, Collections.singleton(getAnyType()), scopeForInvokeWithReceiver, Collections.<JetDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
 			RECEIVER_FUNCTION_TYPE_CONSTRUCTORS.add(RECEIVER_FUNCTION[i].getTypeConstructor());
 			FunctionDescriptorUtil.initializeFromFunctionType(invokeWithReceiver, receiverFunction.getDefaultType(), new ClassReceiver(RECEIVER_FUNCTION[i]), Modality.ABSTRACT, Visibilities.PUBLIC);

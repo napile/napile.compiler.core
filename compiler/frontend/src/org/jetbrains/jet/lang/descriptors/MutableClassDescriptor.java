@@ -78,7 +78,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite implement
 		constructors.put(constructor, constructorDescriptor);
 		if(defaultType != null)
 		{
-			((ConstructorDescriptorImpl) constructorDescriptor).setReturnType(getDefaultType());
+			constructorDescriptor.setReturnType(getDefaultType());
 		}
 	}
 
@@ -146,9 +146,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite implement
 	{
 		super.createTypeConstructor();
 		for(FunctionDescriptor functionDescriptor : getConstructors().values())
-		{
-			((ConstructorDescriptorImpl) functionDescriptor).setReturnType(getDefaultType());
-		}
+			((ConstructorDescriptor) functionDescriptor).setReturnType(getDefaultType());
 		scopeForMemberResolution.setImplicitReceiver(new ClassReceiver(this));
 	}
 
