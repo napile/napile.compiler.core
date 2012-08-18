@@ -78,8 +78,6 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey ABSTRACT_CLASS = TextAttributesKey.createTextAttributesKey("KOTLIN_ABSTRACT_CLASS", CodeInsightColors.ABSTRACT_CLASS_NAME_ATTRIBUTES.getDefaultAttributes());
 
-	public static final TextAttributesKey TRAIT = TextAttributesKey.createTextAttributesKey("KOTLIN_TRAIT", CodeInsightColors.INTERFACE_NAME_ATTRIBUTES.getDefaultAttributes());
-
 	public static final TextAttributesKey ANNOTATION = TextAttributesKey.createTextAttributesKey("KOTLIN_ANNOTATION", CodeInsightColors.ANNOTATION_NAME_ATTRIBUTES.getDefaultAttributes());
 
 	public static final TextAttributesKey MUTABLE_VARIABLE = TextAttributesKey.createTextAttributesKey("KOTLIN_MUTABLE_VARIABLE", new TextAttributes(null, null, Color.BLACK, EffectType.LINE_UNDERSCORE, 0));

@@ -16,15 +16,42 @@
 
 package org.jetbrains.jet.plugin.highlighter;
 
+import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.lang.descriptors.CallableMemberDescriptor;
+import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
+import org.jetbrains.jet.lang.descriptors.Modality;
+import org.jetbrains.jet.lang.psi.JetFile;
+import org.jetbrains.jet.lang.psi.JetNamedFunction;
+import org.jetbrains.jet.lang.psi.JetProperty;
+import org.jetbrains.jet.lang.resolve.BindingContext;
+import org.jetbrains.jet.lang.resolve.BindingContextUtils;
+import org.jetbrains.jet.plugin.codeInsight.JetFunctionPsiElementCellRenderer;
+import org.jetbrains.jet.plugin.project.WholeProjectAnalyzerFacade;
+import org.jetbrains.jet.resolve.DescriptorRenderer;
+import com.google.common.collect.Lists;
+import com.intellij.codeHighlighting.Pass;
+import com.intellij.codeInsight.daemon.GutterIconNavigationHandler;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
+import com.intellij.codeInsight.hint.HintUtil;
+import com.intellij.codeInsight.navigation.NavigationUtil;
+import com.intellij.openapi.project.DumbService;
+import com.intellij.openapi.ui.popup.JBPopup;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.util.PsiUtilCore;
+import com.intellij.ui.awt.RelativePoint;
+import com.intellij.util.Function;
+import com.intellij.util.PsiNavigateUtil;
 
 /**
  * @author abreslav
@@ -75,9 +102,9 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 	};    */
 
 	@Override
-	public LineMarkerInfo getLineMarkerInfo(final PsiElement element)
+	public LineMarkerInfo getLineMarkerInfo(@NotNull final PsiElement element)
 	{
-		/*JetFile file = (JetFile) element.getContainingFile();
+		JetFile file = (JetFile) element.getContainingFile();
 		if(file == null)
 			return null;
 
@@ -106,7 +133,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 
 		// NOTE: Don't store descriptors in line markers because line markers are not deleted while editing other files and this can prevent
 		// clearing the whole BindingTrace.
-		return new LineMarkerInfo<PsiElement>(element, element.getTextOffset(), allOverriddenAbstract ? IMPLEMENTING_MARK : OVERRIDING_MARK, Pass.UPDATE_ALL, new Method<PsiElement, String>()
+		return new LineMarkerInfo<PsiElement>(element, element.getTextOffset(), allOverriddenAbstract ? IMPLEMENTING_MARK : OVERRIDING_MARK, Pass.UPDATE_ALL, new Function<PsiElement, String>()
 		{
 			@Override
 			public String fun(PsiElement element)
@@ -120,12 +147,10 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 			{
 				iconNavigatorHandler(event, elt);
 			}
-		}
-		);  */
-		return null;
+		});
 	}
 
-	/*private static void iconNavigatorHandler(MouseEvent event, PsiElement elt)
+	private static void iconNavigatorHandler(MouseEvent event, PsiElement elt)
 	{
 		JetFile file = (JetFile) elt.getContainingFile();
 		assert file != null;
@@ -225,21 +250,19 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 		}
 
 		return builder.toString();
-	}       */
+	}
 
 	@Override
 	public void collectSlowLineMarkers(List<PsiElement> elements, Collection<LineMarkerInfo> result)
 	{
-		/*if(elements.isEmpty() || DumbService.getInstance(elements.get(0).getProject()).isDumb())
+		if(elements.isEmpty() || DumbService.getInstance(elements.get(0).getProject()).isDumb())
 		{
 			return;
 		}
-		for(PsiElement element : elements)
+		/*for(PsiElement element : elements)
 		{
 			if(element instanceof JetClass)
-			{
 				collectInheritingClasses((JetClass) element, result);
-			}
 		}  */
 	}
 

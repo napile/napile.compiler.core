@@ -58,13 +58,6 @@
 		<untar src="dependencies/download/apache-ant-1.7.0-bin.tar.gz" dest="dependencies" compression="gzip"/>
 		<move file="dependencies/apache-ant-1.7.0" tofile="dependencies/ant"/>
 
-		<!-- dx.jar -->
-		<get src="http://repository.jetbrains.com/remote-repos/com/google/android/tools/dx/1.7/dx-1.7.jar" dest="dependencies/download/dx-1.7.jar" usetimestamp="true"/>
-		<copy file="dependencies/download/dx-1.7.jar" tofile="dependencies/dx.jar" overwrite="true"/>
-
-		<get src="http://repository.jetbrains.com/remote-repos/com/google/android/tools/dx/1.7/dx-1.7-sources.jar" dest="dependencies/download/dx-1.7-sources.jar" usetimestamp="true"/>
-		<copy file="dependencies/download/dx-1.7-sources.jar" tofile="dependencies/dx-sources.jar" overwrite="true"/>
-
 		<!-- jline -->
 		<get src="http://repository.jetbrains.com/remote-repos/jline/jline/2.6/jline-2.6.jar" dest="dependencies/download/jline-2.6.jar" usetimestamp="true"/>
 		<copy file="dependencies/download/jline-2.6.jar" tofile="dependencies/jline.jar" overwrite="true"/>

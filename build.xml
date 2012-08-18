@@ -25,7 +25,6 @@
 		<fileset dir="${basedir}/dependencies" includes="jline.jar"/>
 		<fileset dir="${basedir}/dependencies" includes="jansi.jar"/>
 		<fileset dir="${basedir}/dependencies" includes="jetbrains-asm-util-4.0.jar"/>
-		<fileset dir="${basedir}/js/js.translator/lib" includes="*.jar"/>
 	</path>
 
 	<dirset id="compilerSources.dirset" dir="${basedir}/">
@@ -38,8 +37,6 @@
 		<include name="compiler/jet.as.java.psi/src"/>
 
 		<include name="runtime/src"/>
-
-		<include name="js/js.translator/src"/>
 	</dirset>
 
 	<path id="compilerSources.path">
@@ -111,7 +108,6 @@
 					<fileset dir="compiler/util/src"/>
 					<fileset dir="compiler/jet.as.java.psi/src"/>
 					<fileset dir="runtime/src"/>
-					<fileset dir="js/js.translator/src"/>
 					<zipfileset file="${kotlin-home}/build.txt" prefix="META-INF"/>
 
 					<manifest>
@@ -141,52 +137,6 @@
 		</if>
 	</target>
 
-	<target name="jslib">
-		<jar jarfile="${kotlin-home}/lib/kotlin-jslib.jar">
-			<fileset dir="${basedir}/js/js.libraries/src">
-				<include name="core/**"/>
-				<include name="jquery/**"/>
-				<include name="dom/**"/>
-				<include name="html5/**"/>
-			</fileset>
-			<zipfileset file="${kotlin-home}/build.txt" prefix="META-INF"/>
-		</jar>
-		<java classname="com.google.javascript.jscomp.CommandLineRunner" failonerror="true">
-			<classpath>
-				<pathelement location="${basedir}/js/js.translator/lib/closure-compiler.jar"/>
-			</classpath>
-			<arg value="--formatting"/>
-			<arg value="PRETTY_PRINT"/>
-			<arg value="--language_in"/>
-			<arg value="ECMASCRIPT5_STRICT"/>
-			<arg value="--compilation_level"/>
-			<arg value="SIMPLE_OPTIMIZATIONS"/>
-			<arg value="--js"/>
-			<arg value="${basedir}/js/js.translator/testFiles/kotlin_lib_ecma5.js"/>
-			<arg value="--js"/>
-			<arg value="${basedir}/js/js.translator/testFiles/kotlin_lib.js"/>
-			<arg value="--js_output_file"/>
-			<arg value="${kotlin-home}/lib/kotlinEcma5.js"/>
-		</java>
-		<java classname="com.google.javascript.jscomp.CommandLineRunner" failonerror="true">
-			<classpath>
-				<pathelement location="${basedir}/js/js.translator/lib/closure-compiler.jar"/>
-			</classpath>
-			<arg value="--formatting"/>
-			<arg value="PRETTY_PRINT"/>
-			<arg value="--language_in"/>
-			<arg value="ECMASCRIPT3"/>
-			<arg value="--compilation_level"/>
-			<arg value="SIMPLE_OPTIMIZATIONS"/>
-			<arg value="--js"/>
-			<arg value="${basedir}/js/js.translator/testFiles/kotlin_lib_ecma3.js"/>
-			<arg value="--js"/>
-			<arg value="${basedir}/js/js.translator/testFiles/kotlin_lib.js"/>
-			<arg value="--js_output_file"/>
-			<arg value="${kotlin-home}/lib/kotlinLib.js"/>
-		</java>
-	</target>
-
 	<target name="compiler">
 		<taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="${basedir}/dependencies/jarjar.jar"/>
 		<taskdef resource="proguard/ant/task.properties" classpath="${basedir}/dependencies/proguard.jar"/>
@@ -207,7 +157,6 @@
 			<zipgroupfileset dir="${basedir}/ideaSDK/core" includes="*.jar"/>
 			<zipgroupfileset dir="${basedir}/ideaSDK/lib" includes="jna-utils.jar"/>
 			<zipgroupfileset dir="${basedir}/ideaSDK/lib" includes="oromatcher.jar"/>
-			<zipgroupfileset dir="${basedir}/js/js.translator/lib" includes="*.jar"/>
 			<zipgroupfileset dir="${basedir}/dependencies" includes="jline.jar"/>
 			<zipgroupfileset dir="${basedir}/dependencies" includes="jansi.jar"/>
 			<zipgroupfileset dir="${basedir}/dependencies" includes="jetbrains-asm-util-4.0.jar"/>
@@ -306,10 +255,6 @@
                     }
 
                     -keep class org.jetbrains.annotations.** {
-                        public protected *;
-                    }
-
-                    -keep class org.jetbrains.k2js.** {
                         public protected *;
                     }
 
@@ -467,7 +412,7 @@
 			-->
 	</target>
 
-	<target name="dist" depends="init,prepareDist,injectorsGenerator,generateInjectors,compiler,compilerSources,antTools,jdkAnnotations,runtime,lang,jslib"/>
+	<target name="dist" depends="init,prepareDist,injectorsGenerator,generateInjectors,compiler,compilerSources,antTools,jdkAnnotations,runtime,lang"/>
 
 	<target name="zip" depends="dist">
 		<zip destfile="${output}/${output.name}.zip">

@@ -144,7 +144,6 @@ public class JetColorSettingsPage implements ColorSettingsPage
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.class"), JetHighlightingColors.CLASS),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.type.parameter"), JetHighlightingColors.TYPE_PARAMETER),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.abstract.class"), JetHighlightingColors.ABSTRACT_CLASS),
-				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.trait"), JetHighlightingColors.TRAIT),
 				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.annotation"), JetHighlightingColors.ANNOTATION),
 
 				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.var"), JetHighlightingColors.MUTABLE_VARIABLE),
