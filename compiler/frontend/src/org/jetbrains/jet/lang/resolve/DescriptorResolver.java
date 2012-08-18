@@ -739,9 +739,11 @@ public class DescriptorResolver
 		if(modifierList == null)
 			return Visibilities.PUBLIC;
 		if(modifierList.hasModifier(JetTokens.LOCAL_KEYWORD))
-			return Visibilities.PRIVATE;
+			return Visibilities.LOCAL;
 		if(modifierList.hasModifier(JetTokens.COVERED_KEYWORD))
-			return Visibilities.PROTECTED;
+			return Visibilities.COVERED;
+		if(modifierList.hasModifier(JetTokens.HERITABLE_KEYWORD))
+			return Visibilities.HERITABLE;
 		return Visibilities.PUBLIC;
 	}
 

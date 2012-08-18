@@ -22,6 +22,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.resolve.DescriptorUtils;
+import org.jetbrains.jet.lang.resolve.name.FqNameUnsafe;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -30,7 +31,7 @@ import com.google.common.collect.Sets;
  */
 public class Visibilities
 {
-	public static final Visibility PRIVATE = new Visibility("private", false)
+	public static final Visibility LOCAL = new Visibility("local", false)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -57,7 +58,29 @@ public class Visibilities
 		}
 	};
 
-	public static final Visibility PROTECTED = new Visibility("protected", true)
+	public static final Visibility COVERED = new Visibility("covered", true)
+	{
+		@Override
+		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
+		{
+			ClassDescriptor classDescriptor = DescriptorUtils.getParentOfType(what, ClassDescriptor.class);
+			if(classDescriptor == null)
+				return false;
+
+			ClassDescriptor fromClass = DescriptorUtils.getParentOfType(from, ClassDescriptor.class, false);
+			if(fromClass == null)
+				return false;
+
+			FqNameUnsafe p1 = DescriptorUtils.getFQName(classDescriptor).parent();
+			FqNameUnsafe p2 = DescriptorUtils.getFQName(fromClass).parent();
+			if(p1.isRoot() && p2.isRoot())
+				return true;
+
+			return p2.getFqName().startsWith(p1.getFqName());
+		}
+	};
+
+	public static final Visibility HERITABLE = new Visibility("heritable", true)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -77,7 +100,6 @@ public class Visibilities
 		}
 	};
 
-
 	public static final Visibility PUBLIC = new Visibility("public", true)
 	{
 		@Override
@@ -87,7 +109,8 @@ public class Visibilities
 		}
 	};
 
-	public static final Visibility LOCAL = new Visibility("local", false)
+	@Deprecated
+	public static final Visibility LOCAL2 = new Visibility("local", false)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -96,6 +119,7 @@ public class Visibilities
 		}
 	};
 
+	@Deprecated
 	public static final Visibility INHERITED = new Visibility("inherited", false)
 	{
 		@Override
@@ -115,7 +139,7 @@ public class Visibilities
 		}
 	};
 
-	public static final Set<Visibility> INTERNAL_VISIBILITIES = Sets.newHashSet(PRIVATE, LOCAL);
+	public static final Set<Visibility> INTERNAL_VISIBILITIES = Sets.newHashSet(LOCAL, LOCAL2);
 
 	private Visibilities()
 	{
@@ -126,7 +150,7 @@ public class Visibilities
 		DeclarationDescriptorWithVisibility parent = what;
 		while(parent != null)
 		{
-			if(parent.getVisibility() == LOCAL)
+			if(parent.getVisibility() == LOCAL2)
 			{
 				return true;
 			}
@@ -143,8 +167,9 @@ public class Visibilities
 
 	static
 	{
-		ORDERED_VISIBILITIES.put(PRIVATE, 0);
-		ORDERED_VISIBILITIES.put(PROTECTED, 1);
+		ORDERED_VISIBILITIES.put(LOCAL, 0);
+		ORDERED_VISIBILITIES.put(COVERED, 1);
+		ORDERED_VISIBILITIES.put(HERITABLE, 1);
 		ORDERED_VISIBILITIES.put(PUBLIC, 2);
 	}
 

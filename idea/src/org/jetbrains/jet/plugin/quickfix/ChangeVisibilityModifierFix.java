@@ -122,11 +122,7 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<JetModifierL
 			return null;
 		}
 		JetKeywordToken modifier = null;
-		if(maxVisibility == Visibilities.PUBLIC)
-		{
-			modifier = JetTokens.PUBLIC_KEYWORD;
-		}
-		else if(maxVisibility == Visibilities.PROTECTED)
+		if(maxVisibility == Visibilities.COVERED)
 		{
 			modifier = JetTokens.COVERED_KEYWORD;
 		}

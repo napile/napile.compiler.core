@@ -87,7 +87,7 @@ public class JetStandardClasses
 	{
 		ClassDescriptorImpl nothing = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Nothing"));
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(nothing, Collections.<AnnotationDescriptor>emptyList());
-		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PRIVATE);
+		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.LOCAL);
 		NOTHING_CLASS = nothing.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), new AbstractCollection<JetType>()
 		{
 			@Override

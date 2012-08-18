@@ -163,7 +163,7 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 	@Override
 	public Visibility getVisibility()
 	{
-		return Visibilities.LOCAL;
+		return Visibilities.LOCAL2;
 	}
 
 	@NotNull

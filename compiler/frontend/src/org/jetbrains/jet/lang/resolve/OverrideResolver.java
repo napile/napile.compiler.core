@@ -16,52 +16,16 @@
 
 package org.jetbrains.jet.lang.resolve;
 
-import static org.jetbrains.jet.lang.diagnostics.Errors.ABSTRACT_MEMBER_NOT_IMPLEMENTED;
-import static org.jetbrains.jet.lang.diagnostics.Errors.CANNOT_CHANGE_ACCESS_PRIVILEGE;
-import static org.jetbrains.jet.lang.diagnostics.Errors.CANNOT_INFER_VISIBILITY;
-import static org.jetbrains.jet.lang.diagnostics.Errors.CANNOT_OVERRIDE_INVISIBLE_MEMBER;
-import static org.jetbrains.jet.lang.diagnostics.Errors.CANNOT_WEAKEN_ACCESS_PRIVILEGE;
-import static org.jetbrains.jet.lang.diagnostics.Errors.DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE;
-import static org.jetbrains.jet.lang.diagnostics.Errors.DIFFERENT_NAMES_FOR_THE_SAME_PARAMETER_IN_SUPERTYPES;
-import static org.jetbrains.jet.lang.diagnostics.Errors.MANY_IMPL_MEMBER_NOT_IMPLEMENTED;
-import static org.jetbrains.jet.lang.diagnostics.Errors.MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES;
-import static org.jetbrains.jet.lang.diagnostics.Errors.MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES_WHEN_NO_EXPLICIT_OVERRIDE;
-import static org.jetbrains.jet.lang.diagnostics.Errors.NOTHING_TO_OVERRIDE;
-import static org.jetbrains.jet.lang.diagnostics.Errors.OVERRIDING_FINAL_MEMBER;
-import static org.jetbrains.jet.lang.diagnostics.Errors.PARAMETER_NAME_CHANGED_ON_OVERRIDE;
-import static org.jetbrains.jet.lang.diagnostics.Errors.RETURN_TYPE_MISMATCH_ON_OVERRIDE;
-import static org.jetbrains.jet.lang.diagnostics.Errors.VAR_OVERRIDDEN_BY_VAL;
-import static org.jetbrains.jet.lang.diagnostics.Errors.VIRTUAL_MEMBER_HIDDEN;
+import static org.jetbrains.jet.lang.diagnostics.Errors.*;
 import static org.jetbrains.jet.lang.resolve.OverridingUtil.OverrideCompatibilityInfo.Result.OVERRIDABLE;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.descriptors.CallableMemberDescriptor;
-import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.ClassifierDescriptor;
-import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
-import org.jetbrains.jet.lang.descriptors.FunctionDescriptorImpl;
-import org.jetbrains.jet.lang.descriptors.Modality;
-import org.jetbrains.jet.lang.descriptors.MutableClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.PropertyAccessorDescriptor;
-import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
-import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
-import org.jetbrains.jet.lang.descriptors.ValueParameterDescriptor;
-import org.jetbrains.jet.lang.descriptors.Visibilities;
-import org.jetbrains.jet.lang.descriptors.Visibility;
+import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.diagnostics.Errors;
 import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetClassOrObject;
@@ -78,6 +42,7 @@ import org.jetbrains.jet.lang.types.JetType;
 import org.jetbrains.jet.lang.types.checker.JetTypeChecker;
 import org.jetbrains.jet.lexer.JetTokens;
 import org.jetbrains.jet.util.CommonSuppliers;
+import org.omg.CORBA.INTERNAL;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;

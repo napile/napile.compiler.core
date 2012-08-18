@@ -312,7 +312,7 @@ public class CallResolver
 				FunctionDescriptorImpl functionDescriptor = new ExpressionAsFunctionDescriptor(context.scope.getContainingDeclaration(), Name.special("<for expression " +
 						calleeExpression.getText() +
 						">"));
-				FunctionDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, NO_RECEIVER, Modality.FINAL, Visibilities.LOCAL);
+				FunctionDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, NO_RECEIVER, Modality.FINAL, Visibilities.LOCAL2);
 				ResolutionCandidate<CallableDescriptor> resolutionCandidate = ResolutionCandidate.<CallableDescriptor>create(functionDescriptor, JetPsiUtil.isSafeCall(context.call));
 				resolutionCandidate.setReceiverArgument(context.call.getExplicitReceiver());
 				resolutionCandidate.setExplicitReceiverKind(ExplicitReceiverKind.RECEIVER_ARGUMENT);
