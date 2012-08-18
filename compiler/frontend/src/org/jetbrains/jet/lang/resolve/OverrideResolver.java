@@ -791,7 +791,7 @@ public class OverrideResolver
 	{
 		if(descriptors.isEmpty())
 		{
-			return Visibilities.INTERNAL;
+			return Visibilities.PUBLIC;
 		}
 		Visibility maxVisibility = null;
 		for(CallableMemberDescriptor descriptor : descriptors)

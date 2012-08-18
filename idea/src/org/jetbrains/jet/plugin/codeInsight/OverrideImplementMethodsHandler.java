@@ -334,7 +334,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	private static String displayableVisibility(MemberDescriptor descriptor)
 	{
 		Visibility visibility = descriptor.getVisibility();
-		return visibility != Visibilities.INTERNAL ? visibility.toString() + " " : "";
+		return visibility != Visibilities.PUBLIC ? visibility.toString() + " " : "";
 	}
 
 	private MemberChooser<DescriptorClassMember> showOverrideImplementChooser(Project project, DescriptorClassMember[] members)

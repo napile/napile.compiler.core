@@ -148,8 +148,7 @@ public interface JetTokens
 	JetKeywordToken LOCAL_KEYWORD = JetKeywordToken.softKeyword("local");
 	@Deprecated
 	JetKeywordToken PUBLIC_KEYWORD = JetKeywordToken.softKeyword("public");
-	@Deprecated
-	JetKeywordToken INTERNAL_KEYWORD = JetKeywordToken.softKeyword("internal");
+
 	JetKeywordToken COVERED_KEYWORD = JetKeywordToken.softKeyword("covered");
 	JetKeywordToken HERITABLE_KEYWORD = JetKeywordToken.softKeyword("heritable");
 	JetKeywordToken CATCH_KEYWORD = JetKeywordToken.softKeyword("catch");

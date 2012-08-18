@@ -464,7 +464,7 @@ public class JetParsing extends AbstractJetParsing
 
 	/*
 		 * class
-		 *   : modifiers ("class" | "trait") SimpleName
+		 *   : modifiers "class" SimpleName
 		 *       typeParameters?
 		 *         modifiers ("(" primaryConstructorParameter{","} ")")?
 		 *       (":" attributes delegationSpecifier{","})?

@@ -339,7 +339,7 @@ public class DescriptorResolver
 
 		// TODO : make the constructor private?
 		// TODO check set classDescriptor.getVisibility()
-		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.INTERNAL);
+		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PUBLIC);
 
 		if(object != null)
 		{
@@ -742,8 +742,6 @@ public class DescriptorResolver
 			return Visibilities.PRIVATE;
 		if(modifierList.hasModifier(JetTokens.COVERED_KEYWORD))
 			return Visibilities.PROTECTED;
-		if(modifierList.hasModifier(JetTokens.INTERNAL_KEYWORD))
-			return Visibilities.INTERNAL;
 		return Visibilities.PUBLIC;
 	}
 

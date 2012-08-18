@@ -76,10 +76,8 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<JetModifierL
 			return;
 		JetKeywordToken modifier = findVisibilityChangeTo((JetFile) file);
 		JetToken[] modifiersThanCanBeReplaced = new JetKeywordToken[]{
-				JetTokens.PUBLIC_KEYWORD,
 				JetTokens.LOCAL_KEYWORD,
-				JetTokens.COVERED_KEYWORD,
-				JetTokens.INTERNAL_KEYWORD
+				JetTokens.COVERED_KEYWORD
 		};
 		element.replace(AddModifierFix.addModifier(element, modifier, modifiersThanCanBeReplaced, project, true));
 	}
@@ -132,10 +130,7 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<JetModifierL
 		{
 			modifier = JetTokens.COVERED_KEYWORD;
 		}
-		else if(maxVisibility == Visibilities.INTERNAL)
-		{
-			modifier = JetTokens.INTERNAL_KEYWORD;
-		}
+
 		return modifier;
 	}
 

@@ -77,17 +77,6 @@ public class Visibilities
 		}
 	};
 
-	public static final Visibility INTERNAL = new Visibility("internal", false)
-	{
-		@Override
-		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
-		{
-			ModuleDescriptor parentModule = DescriptorUtils.getParentOfType(what, ModuleDescriptor.class, false);
-			ModuleDescriptor fromModule = DescriptorUtils.getParentOfType(from, ModuleDescriptor.class, false);
-			assert parentModule != null && fromModule != null;
-			return parentModule.equals(fromModule);
-		}
-	};
 
 	public static final Visibility PUBLIC = new Visibility("public", true)
 	{
@@ -126,7 +115,7 @@ public class Visibilities
 		}
 	};
 
-	public static final Set<Visibility> INTERNAL_VISIBILITIES = Sets.newHashSet(PRIVATE, INTERNAL, LOCAL);
+	public static final Set<Visibility> INTERNAL_VISIBILITIES = Sets.newHashSet(PRIVATE, LOCAL);
 
 	private Visibilities()
 	{
@@ -155,7 +144,6 @@ public class Visibilities
 	static
 	{
 		ORDERED_VISIBILITIES.put(PRIVATE, 0);
-		ORDERED_VISIBILITIES.put(INTERNAL, 1);
 		ORDERED_VISIBILITIES.put(PROTECTED, 1);
 		ORDERED_VISIBILITIES.put(PUBLIC, 2);
 	}

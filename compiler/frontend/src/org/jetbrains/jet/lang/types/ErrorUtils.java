@@ -33,6 +33,7 @@ import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.jetbrains.jet.lang.types.error.ErrorSimpleFunctionDescriptorImpl;
+import org.omg.CORBA.INTERNAL;
 
 /**
  * @author abreslav
@@ -180,7 +181,7 @@ public class ErrorUtils
 	}
 
 	private static final JetType ERROR_PROPERTY_TYPE = createErrorType("<ERROR PROPERTY TYPE>");
-	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibilities.INTERNAL, true, false, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION);
+	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibilities.PUBLIC, true, false, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION);
 	private static final Set<VariableDescriptor> ERROR_PROPERTY_GROUP = Collections.singleton(ERROR_PROPERTY);
 
 	private static SimpleFunctionDescriptor createErrorFunction(ErrorScope ownerScope)
@@ -188,7 +189,7 @@ public class ErrorUtils
 		ErrorSimpleFunctionDescriptorImpl function = new ErrorSimpleFunctionDescriptorImpl(ownerScope);
 		function.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
 				Collections.<ValueParameterDescriptor>emptyList(), // TODO
-				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibilities.INTERNAL,
+				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibilities.PUBLIC,
                 /*isInline = */ false);
 		return function;
 	}

@@ -250,7 +250,7 @@ public class PositioningStrategies
 		@Override
 		public List<TextRange> mark(@NotNull JetModifierListOwner element)
 		{
-			List<JetKeywordToken> visibilityTokens = Lists.newArrayList(JetTokens.LOCAL_KEYWORD, JetTokens.COVERED_KEYWORD, JetTokens.HERITABLE_KEYWORD, JetTokens.INTERNAL_KEYWORD);
+			List<JetKeywordToken> visibilityTokens = Lists.newArrayList(JetTokens.LOCAL_KEYWORD, JetTokens.COVERED_KEYWORD, JetTokens.HERITABLE_KEYWORD);
 			List<TextRange> result = Lists.newArrayList();
 			for(JetKeywordToken token : visibilityTokens)
 			{
