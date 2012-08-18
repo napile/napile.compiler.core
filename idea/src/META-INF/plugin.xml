@@ -134,7 +134,6 @@
 		<typedHandler implementation="org.jetbrains.jet.plugin.editor.KotlinTypedHandler"/>
 
 		<copyPastePostProcessor implementation="org.jetbrains.jet.plugin.conversion.copy.JavaCopyPastePostProcessor"/>
-		<lang.documentationProvider language="JAVA" implementationClass="org.jetbrains.jet.plugin.JetQuickDocumentationProvider" order="first"/>
 		<documentationProvider implementation="org.jetbrains.jet.plugin.JetQuickDocumentationProvider"/>
 
 		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.JetLineMarkerProvider"/>
