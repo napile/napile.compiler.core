@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,17 @@ package org.jetbrains.jet.plugin;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
+import org.jetbrains.jet.lang.psi.JetDeclaration;
+import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.psi.JetReferenceExpression;
 import org.jetbrains.jet.lang.resolve.BindingContext;
 import org.jetbrains.jet.lang.resolve.BindingContextUtils;
+import org.jetbrains.jet.plugin.project.WholeProjectAnalyzerFacade;
 import org.jetbrains.jet.resolve.DescriptorRenderer;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.lang.java.JavaDocumentationProvider;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author abreslav
@@ -35,7 +39,7 @@ public class JetQuickDocumentationProvider extends AbstractDocumentationProvider
 	private static String getText(PsiElement element, PsiElement originalElement, boolean mergeKotlinAndJava)
 	{
 		JetReferenceExpression ref;
-		/*if(originalElement instanceof JetReferenceExpression)
+		if(originalElement instanceof JetReferenceExpression)
 		{
 			ref = (JetReferenceExpression) originalElement;
 		}
@@ -70,7 +74,7 @@ public class JetQuickDocumentationProvider extends AbstractDocumentationProvider
 				}
 			}
 			return "Unresolved";
-		}    */
+		}
 		return null;
 	}
 
