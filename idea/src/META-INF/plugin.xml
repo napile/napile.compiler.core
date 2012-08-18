@@ -49,8 +49,6 @@
 
 		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.JetFilesProvider" serviceImplementation="org.jetbrains.jet.plugin.project.PluginJetFilesProvider"/>
 
-		<projectService serviceInterface="org.jetbrains.jet.lang.parsing.JetScriptDefinitionProvider" serviceImplementation="org.jetbrains.jet.lang.parsing.JetScriptDefinitionProvider"/>
-
 		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.java.extAnnotations.ExternalAnnotationsProvider" serviceImplementation="org.jetbrains.jet.plugin.extAnnotations.IdeaExternalAnnotationsProvider"/>
 
 		<projectService serviceInterface="org.jetbrains.jet.plugin.caches.JetShortNamesCache" serviceImplementation="org.jetbrains.jet.plugin.caches.JetShortNamesCache" />

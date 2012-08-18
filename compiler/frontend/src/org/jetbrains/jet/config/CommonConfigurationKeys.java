@@ -18,8 +18,6 @@ package org.jetbrains.jet.config;
 
 import java.util.List;
 
-import org.jetbrains.jet.lang.parsing.JetScriptDefinition;
-
 /**
  * @author Evgeny Gerashchenko
  * @since 7/9/12
@@ -31,6 +29,4 @@ public class CommonConfigurationKeys
 	}
 
 	public static final CompilerConfigurationKey<List<String>> SOURCE_ROOTS_KEY = CompilerConfigurationKey.create("source roots");
-
-	public static final CompilerConfigurationKey<List<JetScriptDefinition>> SCRIPT_DEFINITIONS_KEY = CompilerConfigurationKey.create("script definitions");
 }
