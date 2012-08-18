@@ -45,4 +45,11 @@ abstract class JetDeclarationImpl extends JetExpressionImpl implements JetDeclar
 		JetModifierList modifierList = getModifierList();
 		return modifierList != null && modifierList.hasModifier(modifier);
 	}
+
+	@Override
+	public ASTNode getModifierNode(JetToken token)
+	{
+		JetModifierList modifierList = getModifierList();
+		return modifierList == null ? null : modifierList.getModifierNode(token);
+	}
 }

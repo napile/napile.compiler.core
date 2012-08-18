@@ -18,6 +18,7 @@ package org.jetbrains.jet.lang.psi;
 
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lexer.JetToken;
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -29,4 +30,6 @@ public interface JetModifierListOwner extends PsiElement
 	JetModifierList getModifierList();
 
 	boolean hasModifier(JetToken modifier);
+
+	ASTNode getModifierNode(JetToken token);
 }

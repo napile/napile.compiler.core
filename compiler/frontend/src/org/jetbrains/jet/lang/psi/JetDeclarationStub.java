@@ -52,4 +52,11 @@ abstract class JetDeclarationStub<T extends StubElement> extends JetElementImplS
 		JetModifierList modifierList = getModifierList();
 		return modifierList != null && modifierList.hasModifier(modifier);
 	}
+
+	@Override
+	public ASTNode getModifierNode(JetToken jetToken)
+	{
+		JetModifierList modifierList = getModifierList();
+		return modifierList == null ? null : modifierList.getModifierNode(jetToken);
+	}
 }

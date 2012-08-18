@@ -47,6 +47,13 @@ public class JetTypeProjection extends JetElementImpl implements JetModifierList
 		return modifierList != null && modifierList.hasModifier(modifier);
 	}
 
+	@Override
+	public ASTNode getModifierNode(JetToken token)
+	{
+		JetModifierList modifierList = getModifierList();
+		return modifierList == null ? null : modifierList.getModifierNode(token);
+	}
+
 	@NotNull
 	public JetProjectionKind getProjectionKind()
 	{

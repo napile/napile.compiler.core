@@ -273,6 +273,9 @@ public class DefaultErrorMessages
 		MAP.put(SUPERTYPE_APPEARS_TWICE, "A supertype appears twice");
 		MAP.put(FINAL_SUPERTYPE, "This type is final, so it cannot be inherited from");
 
+		MAP.put(MISSED_SUPER_CALL, "Missed super call for ''{0}''", RENDER_TYPE);
+		MAP.put(INVALID_SUPER_CALL, "Invalid super call");
+
 		MAP.put(ILLEGAL_SELECTOR, "Expression ''{0}'' cannot be a selector (occur after a dot)", TO_STRING);
 
 		MAP.put(VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION, "A type annotation is required on a value parameter");

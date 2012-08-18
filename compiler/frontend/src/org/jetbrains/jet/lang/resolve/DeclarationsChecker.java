@@ -16,26 +16,11 @@
 
 package org.jetbrains.jet.lang.resolve;
 
-import static org.jetbrains.jet.lang.diagnostics.Errors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS;
-import static org.jetbrains.jet.lang.diagnostics.Errors.ABSTRACT_FUNCTION_WITH_BODY;
-import static org.jetbrains.jet.lang.diagnostics.Errors.ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS;
-import static org.jetbrains.jet.lang.diagnostics.Errors.ABSTRACT_PROPERTY_NOT_IN_CLASS;
-import static org.jetbrains.jet.lang.diagnostics.Errors.ABSTRACT_PROPERTY_WITH_GETTER;
-import static org.jetbrains.jet.lang.diagnostics.Errors.ABSTRACT_PROPERTY_WITH_INITIALIZER;
-import static org.jetbrains.jet.lang.diagnostics.Errors.ABSTRACT_PROPERTY_WITH_SETTER;
-import static org.jetbrains.jet.lang.diagnostics.Errors.ENUM_ENTRY_ILLEGAL_TYPE;
-import static org.jetbrains.jet.lang.diagnostics.Errors.ENUM_ENTRY_SHOULD_BE_INITIALIZED;
-import static org.jetbrains.jet.lang.diagnostics.Errors.MUST_BE_INITIALIZED;
-import static org.jetbrains.jet.lang.diagnostics.Errors.MUST_BE_INITIALIZED_OR_BE_ABSTRACT;
-import static org.jetbrains.jet.lang.diagnostics.Errors.NON_ABSTRACT_FUNCTION_WITH_NO_BODY;
-import static org.jetbrains.jet.lang.diagnostics.Errors.NON_MEMBER_ABSTRACT_FUNCTION;
-import static org.jetbrains.jet.lang.diagnostics.Errors.NON_MEMBER_FUNCTION_NO_BODY;
-import static org.jetbrains.jet.lang.diagnostics.Errors.PROPERTY_INITIALIZER_NO_BACKING_FIELD;
-import static org.jetbrains.jet.lang.diagnostics.Errors.PROPERTY_WITH_NO_TYPE_NO_INITIALIZER;
-import static org.jetbrains.jet.lang.diagnostics.Errors.PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE;
+import static org.jetbrains.jet.lang.diagnostics.Errors.*;
 import static org.jetbrains.jet.lang.resolve.BindingContext.TYPE;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,18 +28,7 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.descriptors.CallableMemberDescriptor;
-import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.ClassDescriptorFromSource;
-import org.jetbrains.jet.lang.descriptors.ClassKind;
-import org.jetbrains.jet.lang.descriptors.ConstructorDescriptor;
-import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
-import org.jetbrains.jet.lang.descriptors.Modality;
-import org.jetbrains.jet.lang.descriptors.MutableClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
-import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
-import org.jetbrains.jet.lang.descriptors.PropertyGetterDescriptor;
-import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
+import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.diagnostics.Errors;
 import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.types.DeferredType;
@@ -67,6 +41,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Pair;
+import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author svtk
@@ -282,39 +257,63 @@ public class DeclarationsChecker
 		DeclarationDescriptor containingDescriptor = functionDescriptor.getContainingDeclaration();
 		boolean hasAbstractModifier = function.hasModifier(JetTokens.ABSTRACT_KEYWORD);
 		checkDeclaredTypeInPublicMember(function, functionDescriptor);
-		if(containingDescriptor instanceof ClassDescriptor)
+
+		ClassDescriptor classDescriptor = (ClassDescriptor) containingDescriptor;
+		boolean inEnum = classDescriptor.getKind() == ClassKind.ENUM_CLASS;
+		boolean inAbstractClass = classDescriptor.getModality() == Modality.ABSTRACT;
+		if(hasAbstractModifier && !inAbstractClass && !inEnum)
 		{
-			ClassDescriptor classDescriptor = (ClassDescriptor) containingDescriptor;
-			boolean inEnum = classDescriptor.getKind() == ClassKind.ENUM_CLASS;
-			boolean inAbstractClass = classDescriptor.getModality() == Modality.ABSTRACT;
-			if(hasAbstractModifier && !inAbstractClass && !inEnum)
-			{
-				JetClass classElement = (JetClass) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
-				trace.report(ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(function, functionDescriptor.getName().getName(), classDescriptor));
-			}
-			if(function.getBodyExpression() != null && hasAbstractModifier)
-			{
-				trace.report(ABSTRACT_FUNCTION_WITH_BODY.on(function, functionDescriptor));
-			}
-			if(function.getBodyExpression() == null && !hasAbstractModifier)
-			{
-				trace.report(NON_ABSTRACT_FUNCTION_WITH_NO_BODY.on(function, functionDescriptor));
-			}
-			return;
+			JetClass classElement = (JetClass) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
+			trace.report(ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(function, functionDescriptor.getName().getName(), classDescriptor));
 		}
-		if(hasAbstractModifier)
+		if(function.getBodyExpression() != null && hasAbstractModifier)
 		{
-			trace.report(NON_MEMBER_ABSTRACT_FUNCTION.on(function, functionDescriptor));
+			trace.report(ABSTRACT_FUNCTION_WITH_BODY.on(function, functionDescriptor));
 		}
 		if(function.getBodyExpression() == null && !hasAbstractModifier)
 		{
-			trace.report(NON_MEMBER_FUNCTION_NO_BODY.on(function, functionDescriptor));
+			trace.report(NON_ABSTRACT_FUNCTION_WITH_NO_BODY.on(function, functionDescriptor));
 		}
 	}
 
 	private void checkConstructor(NapileConstructor constructor, ConstructorDescriptor constructorDescriptor)
 	{
-		//TODO [VISTALL]
+		ASTNode abstractModifier = constructor.getModifierNode(JetTokens.ABSTRACT_KEYWORD);
+		if(abstractModifier != null)
+			trace.report(ILLEGAL_MODIFIER.on(abstractModifier.getPsi(), JetTokens.ABSTRACT_KEYWORD));
+
+		JetClass parent = PsiTreeUtil.getParentOfType(constructor, JetClass.class);
+
+		assert parent != null;
+
+		//TODO [VISTALL] rework for this(a : Int) : this()
+		Map<JetTypeReference, JetType> classSpecifiers = makeTypeList(parent.getDelegationSpecifiers());
+		Map<JetTypeReference, JetType> constructorSpecifiers = makeTypeList(constructor.getDelegationSpecifiers());
+
+		for(Map.Entry<JetTypeReference, JetType> classEntry : classSpecifiers.entrySet())
+		{
+			if(!constructorSpecifiers.values().contains(classEntry.getValue()))
+				trace.report(MISSED_SUPER_CALL.on(constructor.getNameNode().getPsi(), classEntry.getValue()));
+		}
+
+		for(Map.Entry<JetTypeReference, JetType> constructorEntry : constructorSpecifiers.entrySet())
+		{
+			if(!classSpecifiers.values().contains(constructorEntry.getValue()))
+				trace.report(INVALID_SUPER_CALL.on(constructorEntry.getKey()));
+		}
+	}
+
+	@NotNull
+	private Map<JetTypeReference, JetType> makeTypeList(@NotNull List<JetDelegationSpecifier> list)
+	{
+		Map<JetTypeReference, JetType> types = new LinkedHashMap<JetTypeReference, JetType>(list.size());
+		for(JetDelegationSpecifier delegationSpecifier : list)
+		{
+			JetType type = trace.get(BindingContext.TYPE, delegationSpecifier.getTypeReference());
+			types.put(delegationSpecifier.getTypeReference(), type);
+		}
+
+		return types;
 	}
 
 	private void checkAccessors(JetProperty property, PropertyDescriptor propertyDescriptor)
@@ -328,7 +327,7 @@ public class DeclarationsChecker
 		JetModifierList getterModifierList = getter != null ? getter.getModifierList() : null;
 		if(getterModifierList != null && getterDescriptor != null)
 		{
-			Map<JetKeywordToken, ASTNode> nodes = getNodesCorrespondingToModifiers(getterModifierList, Sets.newHashSet(JetTokens.PUBLIC_KEYWORD, JetTokens.COVERED_KEYWORD, JetTokens.LOCAL_KEYWORD, JetTokens.INTERNAL_KEYWORD));
+			Map<JetKeywordToken, ASTNode> nodes = getNodesCorrespondingToModifiers(getterModifierList, Sets.newHashSet(JetTokens.COVERED_KEYWORD, JetTokens.LOCAL_KEYWORD));
 			if(getterDescriptor.getVisibility() != propertyDescriptor.getVisibility())
 			{
 				for(ASTNode node : nodes.values())
