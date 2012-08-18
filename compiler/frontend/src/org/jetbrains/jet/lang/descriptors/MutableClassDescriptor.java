@@ -16,11 +16,14 @@
 
 package org.jetbrains.jet.lang.descriptors;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jet.lang.psi.JetDelegationSpecifierListOwner;
 import org.jetbrains.jet.lang.resolve.AbstractScopeAdapter;
 import org.jetbrains.jet.lang.resolve.BindingTrace;
 import org.jetbrains.jet.lang.resolve.name.Name;
@@ -37,7 +40,7 @@ import com.google.common.collect.Sets;
  */
 public class MutableClassDescriptor extends MutableClassDescriptorLite implements ClassDescriptorFromSource
 {
-	private final Set<ConstructorDescriptor> constructors = Sets.newLinkedHashSet();
+	private final Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructors = new LinkedHashMap<JetDelegationSpecifierListOwner, ConstructorDescriptor>();
 
 	private final Set<CallableMemberDescriptor> declaredCallableMembers = Sets.newHashSet();
 	private final Set<CallableMemberDescriptor> allCallableMembers = Sets.newHashSet(); // includes fake overrides
@@ -66,13 +69,13 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite implement
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	public void addConstructor(@NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace trace)
+	public void addConstructor(@NotNull JetDelegationSpecifierListOwner constructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace trace)
 	{
 		if(constructorDescriptor.getContainingDeclaration() != this)
 		{
 			throw new IllegalStateException("invalid containing declaration of constructor");
 		}
-		constructors.add(constructorDescriptor);
+		constructors.put(constructor, constructorDescriptor);
 		if(defaultType != null)
 		{
 			((ConstructorDescriptorImpl) constructorDescriptor).setReturnType(getDefaultType());
@@ -81,7 +84,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite implement
 
 	@NotNull
 	@Override
-	public Set<ConstructorDescriptor> getConstructors()
+	public Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
 	{
 		return constructors;
 	}
@@ -142,7 +145,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite implement
 	public void createTypeConstructor()
 	{
 		super.createTypeConstructor();
-		for(FunctionDescriptor functionDescriptor : getConstructors())
+		for(FunctionDescriptor functionDescriptor : getConstructors().values())
 		{
 			((ConstructorDescriptorImpl) functionDescriptor).setReturnType(getDefaultType());
 		}

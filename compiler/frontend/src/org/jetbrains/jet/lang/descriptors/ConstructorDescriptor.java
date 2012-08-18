@@ -51,6 +51,4 @@ public interface ConstructorDescriptor extends FunctionDescriptor
 	@NotNull
 	@Override
 	Name getName();
-
-	boolean isPrimary();
 }

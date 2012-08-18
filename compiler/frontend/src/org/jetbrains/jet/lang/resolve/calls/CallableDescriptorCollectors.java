@@ -87,7 +87,7 @@ public class CallableDescriptorCollectors
 			if(classifier instanceof ClassDescriptor && !ErrorUtils.isError(classifier.getTypeConstructor()))
 			{
 				ClassDescriptor classDescriptor = (ClassDescriptor) classifier;
-				functions.addAll(classDescriptor.getConstructors());
+				functions.addAll(classDescriptor.getConstructors().values());
 			}
 		}
 	};

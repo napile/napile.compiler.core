@@ -168,7 +168,7 @@
 
 		<definitionsSearch implementation="org.jetbrains.jet.plugin.search.impl.ClassImplementationsSearch"/>
 
-		<toolWindow id="Napile" factoryClass="org.jetbrains.jet.plugin.internal.KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/jet/plugin/icons/kotlin_13.png"/>
+		<!--<toolWindow id="Napile" factoryClass="org.jetbrains.jet.plugin.internal.KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/jet/plugin/icons/kotlin_13.png"/> -->
 
 		<applicationService serviceInterface="org.jetbrains.jet.plugin.editor.JetEditorOptions" serviceImplementation="org.jetbrains.jet.plugin.editor.JetEditorOptions"/>
 		<exportable serviceInterface="org.jetbrains.jet.plugin.editor.JetEditorOptions"/>

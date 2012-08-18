@@ -48,21 +48,7 @@ import org.jetbrains.jet.lang.descriptors.NamespaceDescriptorImpl;
 import org.jetbrains.jet.lang.descriptors.NamespaceLikeBuilder;
 import org.jetbrains.jet.lang.descriptors.TypeParameterDescriptor;
 import org.jetbrains.jet.lang.descriptors.WithDeferredResolve;
-import org.jetbrains.jet.lang.psi.JetClass;
-import org.jetbrains.jet.lang.psi.JetClassObject;
-import org.jetbrains.jet.lang.psi.JetClassOrObject;
-import org.jetbrains.jet.lang.psi.JetDeclarationContainer;
-import org.jetbrains.jet.lang.psi.JetDelegationSpecifier;
-import org.jetbrains.jet.lang.psi.JetDelegationSpecifierList;
-import org.jetbrains.jet.lang.psi.JetEnumEntry;
-import org.jetbrains.jet.lang.psi.JetFile;
-import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
-import org.jetbrains.jet.lang.psi.JetPsiUtil;
-import org.jetbrains.jet.lang.psi.JetTypeConstraint;
-import org.jetbrains.jet.lang.psi.JetTypeParameter;
-import org.jetbrains.jet.lang.psi.JetTypeReference;
-import org.jetbrains.jet.lang.psi.JetTypedef;
-import org.jetbrains.jet.lang.psi.JetVisitorVoid;
+import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.resolve.scopes.RedeclarationHandler;
@@ -330,7 +316,7 @@ public class TypeHierarchyResolver
 						classObjectDescriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(klass.getModifierList()));
 						classObjectDescriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
 						classObjectDescriptor.createTypeConstructor();
-						ConstructorDescriptorImpl primaryConstructorForObject = createPrimaryConstructorForObject(null, classObjectDescriptor);
+						ConstructorDescriptorImpl primaryConstructorForObject = createConstructorForObject(klass, classObjectDescriptor);
 						primaryConstructorForObject.setReturnType(classObjectDescriptor.getDefaultType());
 						mutableClassDescriptor.getBuilder().setClassObjectDescriptor(classObjectDescriptor);
 					}
@@ -345,7 +331,7 @@ public class TypeHierarchyResolver
 
 					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
 
-					createPrimaryConstructorForObject(declaration, mutableClassDescriptor);
+					createConstructorForObject(declaration, mutableClassDescriptor);
 					owner.addObjectDescriptor(mutableClassDescriptor);
 					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
 					return mutableClassDescriptor;
@@ -359,16 +345,16 @@ public class TypeHierarchyResolver
 					prepareForDeferredCall(mutableClassDescriptor.getScopeForMemberResolution(), mutableClassDescriptor, declaration);
 
 					// ??? - is enum entry object?
-					createPrimaryConstructorForObject(declaration, mutableClassDescriptor);
+					createConstructorForObject(declaration, mutableClassDescriptor);
 					owner.addObjectDescriptor(mutableClassDescriptor);
 					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
 					return mutableClassDescriptor;
 				}
 
-				private ConstructorDescriptorImpl createPrimaryConstructorForObject(@Nullable PsiElement object, MutableClassDescriptor mutableClassDescriptor)
+				private ConstructorDescriptorImpl createConstructorForObject(@NotNull JetDelegationSpecifierListOwner object, MutableClassDescriptor mutableClassDescriptor)
 				{
 					ConstructorDescriptorImpl constructorDescriptor = DescriptorResolver.createConstructorForObject(object, mutableClassDescriptor, trace);
-					mutableClassDescriptor.addConstructor(constructorDescriptor, trace);
+					mutableClassDescriptor.addConstructor(object, constructorDescriptor, trace);
 					return constructorDescriptor;
 				}
 

@@ -16,11 +16,12 @@
 
 package org.jetbrains.jet.lang.descriptors;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jet.lang.psi.JetDelegationSpecifierListOwner;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.jetbrains.jet.lang.types.JetType;
@@ -40,7 +41,7 @@ public interface ClassDescriptor extends ClassifierDescriptor, MemberDescriptor,
 	JetScope getUnsubstitutedInnerClassesScope();
 
 	@NotNull
-	Collection<ConstructorDescriptor> getConstructors();
+	Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors();
 
 	@Override
 	@NotNull

@@ -28,7 +28,7 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileConstructor extends JetDeclarationImpl implements JetDeclarationWithBody, JetStatementExpression
+public class NapileConstructor extends JetDeclarationImpl implements JetDeclarationWithBody, JetStatementExpression, JetDelegationSpecifierListOwner
 {
 	public NapileConstructor(@NotNull ASTNode node)
 	{
@@ -62,17 +62,19 @@ public class NapileConstructor extends JetDeclarationImpl implements JetDeclarat
 		return list != null ? list.getParameters() : Collections.<JetParameter>emptyList();
 	}
 
+	@Override
 	@Nullable
-	public JetInitializerList getInitializerList()
+	public JetDelegationSpecifierList getDelegationSpecifierList()
 	{
-		return (JetInitializerList) findChildByType(JetNodeTypes.INITIALIZER_LIST);
+		return (JetDelegationSpecifierList) findChildByType(JetNodeTypes.DELEGATION_SPECIFIER_LIST);
 	}
 
 	@NotNull
-	public List<JetDelegationSpecifier> getInitializers()
+	@Override
+	public List<JetDelegationSpecifier> getDelegationSpecifiers()
 	{
-		JetInitializerList list = getInitializerList();
-		return list != null ? list.getInitializers() : Collections.<JetDelegationSpecifier>emptyList();
+		JetDelegationSpecifierList list = getDelegationSpecifierList();
+		return list != null ? list.getDelegationSpecifiers() : Collections.<JetDelegationSpecifier>emptyList();
 	}
 
 	@Override

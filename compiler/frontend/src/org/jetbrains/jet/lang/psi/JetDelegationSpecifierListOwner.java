@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,28 +20,16 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.resolve.name.FqName;
-import org.jetbrains.jet.lang.resolve.name.Name;
-import com.intellij.psi.PsiNameIdentifierOwner;
 
 /**
- * @author max
+ * @author VISTALL
+ * @date 3:30/18.08.12
  */
-public interface JetClassOrObject extends PsiNameIdentifierOwner, JetDeclarationContainer, JetModifierListOwner, JetDelegationSpecifierListOwner
+public interface JetDelegationSpecifierListOwner extends JetElement
 {
-	JetClassOrObject[] EMPTY_ARRAY = new JetClassOrObject[0];
+	@Nullable
+	JetDelegationSpecifierList getDelegationSpecifierList();
 
 	@NotNull
-	List<JetClassInitializer> getAnonymousInitializers();
-
-	@Nullable
-	Name getNameAsName();
-
-	FqName getFqName();
-
-	@Nullable
-	JetObjectDeclarationName getNameAsDeclaration();
-
-	@Nullable
-	JetClassBody getBody();
+	List<JetDelegationSpecifier> getDelegationSpecifiers();
 }

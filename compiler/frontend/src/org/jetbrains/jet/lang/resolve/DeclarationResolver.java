@@ -289,8 +289,8 @@ public class DeclarationResolver
 
 	private void processConstructor(MutableClassDescriptor classDescriptor, NapileConstructor constructor)
 	{
-		ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveSecondaryConstructorDescriptor(classDescriptor.getScopeForMemberResolution(), classDescriptor, constructor, trace);
-		classDescriptor.addConstructor(constructorDescriptor, trace);
+		ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveConstructorDescriptor(classDescriptor.getScopeForMemberResolution(), classDescriptor, constructor, trace);
+		classDescriptor.addConstructor(constructor, constructorDescriptor, trace);
 		context.getConstructors().put(constructor, constructorDescriptor);
 		context.getDeclaringScopes().put(constructor, classDescriptor.getScopeForMemberLookup());
 	}

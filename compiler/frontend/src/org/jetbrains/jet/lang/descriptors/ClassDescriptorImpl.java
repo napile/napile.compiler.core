@@ -19,11 +19,10 @@ package org.jetbrains.jet.lang.descriptors;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
+import org.jetbrains.jet.lang.psi.JetDelegationSpecifierListOwner;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.resolve.scopes.SubstitutingScope;
@@ -45,7 +44,7 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 	private TypeConstructor typeConstructor;
 
 	private JetScope memberDeclarations;
-	private Set<ConstructorDescriptor> constructors;
+	private Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructors;
 	private ConstructorDescriptor primaryConstructor;
 	private ReceiverDescriptor implicitReceiver;
 	private final Modality modality;
@@ -56,7 +55,7 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 		this.modality = modality;
 	}
 
-	public final ClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<JetType> supertypes, @NotNull JetScope memberDeclarations, @NotNull Set<ConstructorDescriptor> constructors, @Nullable ConstructorDescriptor primaryConstructor)
+	public final ClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<JetType> supertypes, @NotNull JetScope memberDeclarations, @NotNull Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructors)
 	{
 		this.typeConstructor = new TypeConstructorImpl(this, getAnnotations(), sealed, getName().getName(), typeParameters, supertypes);
 		this.memberDeclarations = memberDeclarations;
@@ -99,7 +98,7 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 
 	@NotNull
 	@Override
-	public Collection<ConstructorDescriptor> getConstructors()
+	public Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
 	{
 		return constructors;
 	}

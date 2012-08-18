@@ -93,7 +93,7 @@ class AnonymousTemplateEditingListener extends TemplateEditingAdapter
 				PsiDocumentManager.getInstance(psiFile.getProject()).getDocument(psiFile).insertString(placeToInsert, "()");
 
 				boolean hasConstructorsParameters = false;
-				for(ConstructorDescriptor cd : classDescriptor.getConstructors())
+				for(ConstructorDescriptor cd : classDescriptor.getConstructors().values())
 				{
 					// TODO check for visibility
 					hasConstructorsParameters |= cd.getValueParameters().size() != 0;

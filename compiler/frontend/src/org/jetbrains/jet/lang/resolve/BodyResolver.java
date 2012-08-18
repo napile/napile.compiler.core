@@ -152,23 +152,22 @@ public class BodyResolver
 	private void resolveDelegationSpecifierLists()
 	{
 		// TODO : Make sure the same thing is not initialized twice
-		for(Map.Entry<JetClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
+		for(Map.Entry<JetClass, MutableClassDescriptor> classEntry : context.getClasses().entrySet())
 		{
-			resolveDelegationSpecifierList(entry.getKey(), entry.getValue());
+			MutableClassDescriptor descriptor = classEntry.getValue();
+
+			for(Map.Entry<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructorEntry : descriptor.getConstructors().entrySet())
+				resolveDelegationSpecifierList(constructorEntry.getKey(), constructorEntry.getValue(), classEntry.getValue().getScopeForSupertypeResolution());
 		}
+
 		for(Map.Entry<JetObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
-		{
-			resolveDelegationSpecifierList(entry.getKey(), entry.getValue());
-		}
+			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
 	}
 
-	private void resolveDelegationSpecifierList(final JetClassOrObject jetClass, final MutableClassDescriptor descriptor)
+	private void resolveDelegationSpecifierList(final JetDelegationSpecifierListOwner jetElement, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull JetScope jetScope)
 	{
-		if(!context.completeAnalysisNeeded(jetClass))
+		if(!context.completeAnalysisNeeded(jetElement))
 			return;
-		final ConstructorDescriptor primaryConstructor = descriptor.getUnsubstitutedPrimaryConstructor();
-		final JetScope scopeForConstructor = primaryConstructor == null ? null : FunctionDescriptorUtil.getFunctionInnerScope(descriptor.getScopeForSupertypeResolution(), primaryConstructor, trace);
-		final ExpressionTypingServices typeInferrer = expressionTypingServices; // TODO : flow
 
 		final Map<JetTypeReference, JetType> supertypes = Maps.newLinkedHashMap();
 		JetVisitorVoid visitor = new JetVisitorVoid()
@@ -189,12 +188,8 @@ public class BodyResolver
 				JetTypeReference typeReference = call.getTypeReference();
 				if(typeReference == null)
 					return;
-				if(descriptor.getUnsubstitutedPrimaryConstructor() == null)
-				{
-					recordSupertype(typeReference, trace.getBindingContext().get(BindingContext.TYPE, typeReference));
-					return;
-				}
-				OverloadResolutionResults<FunctionDescriptor> results = callResolver.resolveFunctionCall(trace, scopeForConstructor, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+
+				OverloadResolutionResults<FunctionDescriptor> results = callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 				if(results.isSuccess())
 				{
 					JetType supertype = results.getResultingDescriptor().getReturnType();
@@ -209,9 +204,6 @@ public class BodyResolver
 			@Override
 			public void visitDelegationToSuperClassSpecifier(JetDelegatorToSuperClass specifier)
 			{
-				if(descriptor.getKind() == ClassKind.CLASS || descriptor.getKind() == ClassKind.ENUM_CLASS)
-					return;
-
 				JetTypeReference typeReference = specifier.getTypeReference();
 				JetType supertype = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
 				recordSupertype(typeReference, supertype);
@@ -223,13 +215,10 @@ public class BodyResolver
 				if(!classDescriptor.getConstructors().isEmpty() && !ErrorUtils.isError(classDescriptor.getTypeConstructor()) )
 				{
 					boolean hasConstructorWithoutParams = false;
-					for(ConstructorDescriptor constructor : classDescriptor.getConstructors())
-					{
+					for(ConstructorDescriptor constructor : classDescriptor.getConstructors().values())
 						if(constructor.getValueParameters().isEmpty())
-						{
 							hasConstructorWithoutParams = true;
-						}
-					}
+
 					if(!hasConstructorWithoutParams)
 					{
 						trace.report(SUPERTYPE_NOT_INITIALIZED.on(specifier));
@@ -254,23 +243,18 @@ public class BodyResolver
 			}
 		};
 
-		for(JetDelegationSpecifier delegationSpecifier : jetClass.getDelegationSpecifiers())
-		{
+		for(JetDelegationSpecifier delegationSpecifier : jetElement.getDelegationSpecifiers())
 			delegationSpecifier.accept(visitor);
-		}
-
 
 		Set<TypeConstructor> parentEnum = Collections.emptySet();
-		if(jetClass instanceof JetEnumEntry)
-		{
-			parentEnum = Collections.singleton(((ClassDescriptor) descriptor.getContainingDeclaration().getContainingDeclaration()).getTypeConstructor());
-		}
+		if(jetElement instanceof JetEnumEntry)
+			parentEnum = Collections.singleton(((ClassDescriptor) declarationDescriptor.getContainingDeclaration().getContainingDeclaration()).getTypeConstructor());
 
-		checkSupertypeList(descriptor, supertypes, parentEnum);
+		checkSupertypeList(supertypes, parentEnum);
 	}
 
 	// allowedFinalSupertypes typically contains a enum type of which supertypeOwner is an entry
-	private void checkSupertypeList(@NotNull MutableClassDescriptor supertypeOwner, @NotNull Map<JetTypeReference, JetType> supertypes, Set<TypeConstructor> allowedFinalSupertypes)
+	private void checkSupertypeList(@NotNull Map<JetTypeReference, JetType> supertypes, Set<TypeConstructor> allowedFinalSupertypes)
 	{
 		Set<TypeConstructor> typeConstructors = Sets.newHashSet();
 		boolean classAppeared = false;

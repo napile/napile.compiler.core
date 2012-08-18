@@ -18,7 +18,8 @@ package org.jetbrains.jet.lang.resolve.lazy;
 
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,7 @@ import org.jetbrains.jet.lang.diagnostics.Errors;
 import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetClassOrObject;
 import org.jetbrains.jet.lang.psi.JetDeclaration;
+import org.jetbrains.jet.lang.psi.JetDelegationSpecifierListOwner;
 import org.jetbrains.jet.lang.psi.JetProperty;
 import org.jetbrains.jet.lang.psi.NapileConstructor;
 import org.jetbrains.jet.lang.resolve.BindingContextUtils;
@@ -83,7 +85,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 		Collection<T> extract(@NotNull JetType extractFrom, @NotNull Name name);
 	}
 
-	private Set<ConstructorDescriptor> constructorDescriptors = null;
+	private Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructorDescriptors = null;
 
 	public LazyClassMemberScope(@NotNull ResolveSession resolveSession, @NotNull ClassMemberDeclarationProvider declarationProvider, @NotNull LazyClassDescriptor thisClass)
 	{
@@ -233,11 +235,11 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 	}
 
 	@NotNull
-	public Set<ConstructorDescriptor> getConstructors()
+	public Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
 	{
 		if(constructorDescriptors == null)
 		{
-			constructorDescriptors = new HashSet<ConstructorDescriptor>();
+			constructorDescriptors = new LinkedHashMap<JetDelegationSpecifierListOwner, ConstructorDescriptor>();
 			if(EnumSet.of(ClassKind.CLASS, ClassKind.OBJECT, ClassKind.ENUM_CLASS).contains(thisDescriptor.getKind()))
 			{
 				JetClassOrObject classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
@@ -246,9 +248,9 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 					JetClass jetClass = (JetClass) classOrObject;
 					for(NapileConstructor constructor : jetClass.getConstructors())
 					{
-						ConstructorDescriptorImpl constructorDescriptor = resolveSession.getInjector().getDescriptorResolver().resolveSecondaryConstructorDescriptor(thisDescriptor.getScopeForClassHeaderResolution(), thisDescriptor, constructor, resolveSession.getTrace());
+						ConstructorDescriptorImpl constructorDescriptor = resolveSession.getInjector().getDescriptorResolver().resolveConstructorDescriptor(thisDescriptor.getScopeForClassHeaderResolution(), thisDescriptor, constructor, resolveSession.getTrace());
 
-						constructorDescriptors.add(constructorDescriptor);
+						constructorDescriptors.put(constructor, constructorDescriptor);
 
 						setDeferredReturnType(constructorDescriptor);
 					}

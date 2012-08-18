@@ -67,20 +67,7 @@ import org.jetbrains.jet.lang.descriptors.ValueParameterDescriptor;
 import org.jetbrains.jet.lang.descriptors.VariableDescriptor;
 import org.jetbrains.jet.lang.descriptors.Visibilities;
 import org.jetbrains.jet.lang.diagnostics.Errors;
-import org.jetbrains.jet.lang.psi.Call;
-import org.jetbrains.jet.lang.psi.CallKey;
-import org.jetbrains.jet.lang.psi.JetConstructorCalleeExpression;
-import org.jetbrains.jet.lang.psi.JetExpression;
-import org.jetbrains.jet.lang.psi.JetProjectionKind;
-import org.jetbrains.jet.lang.psi.JetPsiUtil;
-import org.jetbrains.jet.lang.psi.JetReferenceExpression;
-import org.jetbrains.jet.lang.psi.JetSimpleNameExpression;
-import org.jetbrains.jet.lang.psi.JetSuperExpression;
-import org.jetbrains.jet.lang.psi.JetThisReferenceExpression;
-import org.jetbrains.jet.lang.psi.JetTypeProjection;
-import org.jetbrains.jet.lang.psi.JetTypeReference;
-import org.jetbrains.jet.lang.psi.JetValueArgumentList;
-import org.jetbrains.jet.lang.psi.ValueArgument;
+import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.resolve.BindingContext;
 import org.jetbrains.jet.lang.resolve.BindingTrace;
 import org.jetbrains.jet.lang.resolve.BindingTraceContext;
@@ -268,13 +255,13 @@ public class CallResolver
 				if(declarationDescriptor instanceof ClassDescriptor)
 				{
 					ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
-					Collection<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
+					Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructors = classDescriptor.getConstructors();
 					if(constructors.isEmpty())
 					{
 						context.trace.report(NO_CONSTRUCTOR.on(reportAbsenceOn));
 						return checkArgumentTypesAndFail(context);
 					}
-					Collection<ResolutionCandidate<CallableDescriptor>> candidates = TaskPrioritizer.<CallableDescriptor>convertWithImpliedThis(context.scope, Collections.<ReceiverDescriptor>singletonList(NO_RECEIVER), constructors);
+					Collection<ResolutionCandidate<CallableDescriptor>> candidates = TaskPrioritizer.<CallableDescriptor>convertWithImpliedThis(context.scope, Collections.<ReceiverDescriptor>singletonList(NO_RECEIVER), constructors.values());
 					for(ResolutionCandidate<CallableDescriptor> candidate : candidates)
 					{
 						candidate.setSafeCall(JetPsiUtil.isSafeCall(context.call));
@@ -298,13 +285,13 @@ public class CallResolver
 				assert containingDeclaration instanceof ClassDescriptor;
 				ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
 
-				Collection<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
+				Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructors = classDescriptor.getConstructors();
 				if(constructors.isEmpty())
 				{
 					context.trace.report(NO_CONSTRUCTOR.on(reportAbsenceOn));
 					return checkArgumentTypesAndFail(context);
 				}
-				List<ResolutionCandidate<CallableDescriptor>> candidates = ResolutionCandidate.<CallableDescriptor>convertCollection(constructors, JetPsiUtil.isSafeCall(context.call));
+				List<ResolutionCandidate<CallableDescriptor>> candidates = ResolutionCandidate.<CallableDescriptor>convertCollection(constructors.values(), JetPsiUtil.isSafeCall(context.call));
 				prioritizedTasks = Collections.singletonList(new ResolutionTask<CallableDescriptor, FunctionDescriptor>(candidates, functionReference, context)); // !! DataFlowInfo.EMPTY
 			}
 			else if(calleeExpression != null)

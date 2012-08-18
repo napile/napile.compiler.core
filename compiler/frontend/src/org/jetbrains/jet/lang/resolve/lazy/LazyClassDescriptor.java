@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +31,7 @@ import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
 import org.jetbrains.jet.lang.psi.JetClassObject;
 import org.jetbrains.jet.lang.psi.JetClassOrObject;
+import org.jetbrains.jet.lang.psi.JetDelegationSpecifierListOwner;
 import org.jetbrains.jet.lang.psi.JetEnumEntry;
 import org.jetbrains.jet.lang.psi.JetModifierList;
 import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
@@ -198,7 +200,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase implements ClassDes
 
 	@NotNull
 	@Override
-	public Collection<ConstructorDescriptor> getConstructors()
+	public Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
 	{
 		return unsubstitutedMemberScope.getConstructors();
 	}

@@ -31,21 +31,16 @@ import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverDescriptor;
  */
 public class ConstructorDescriptorImpl extends FunctionDescriptorImpl implements ConstructorDescriptor
 {
-
-	private final boolean isPrimary;
-
 	private static final Name NAME = Name.special("<init>");
 
-	public ConstructorDescriptorImpl(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean isPrimary)
+	public ConstructorDescriptorImpl(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations)
 	{
 		super(containingDeclaration, annotations, NAME, Kind.DECLARATION);
-		this.isPrimary = isPrimary;
 	}
 
-	public ConstructorDescriptorImpl(@NotNull ClassDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations, boolean isPrimary)
+	public ConstructorDescriptorImpl(@NotNull ClassDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations)
 	{
 		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION);
-		this.isPrimary = isPrimary;
 	}
 
 	public ConstructorDescriptorImpl initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, Visibility visibility)
@@ -87,12 +82,6 @@ public class ConstructorDescriptorImpl extends FunctionDescriptorImpl implements
 		return visitor.visitConstructorDescriptor(this, data);
 	}
 
-	@Override
-	public boolean isPrimary()
-	{
-		return isPrimary;
-	}
-
 	@NotNull
 	@Override
 	public Set<? extends FunctionDescriptor> getOverriddenDescriptors()
@@ -113,8 +102,8 @@ public class ConstructorDescriptorImpl extends FunctionDescriptorImpl implements
 		{
 			throw new IllegalStateException();
 		}
-		return new ConstructorDescriptorImpl((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList(), // TODO
-				isPrimary);
+		return new ConstructorDescriptorImpl((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList() // TODO
+		);
 	}
 
 	@NotNull

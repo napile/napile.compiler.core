@@ -56,7 +56,6 @@ import org.jetbrains.jet.util.lazy.LazyValue;
 import org.jetbrains.jet.util.lazy.LazyValueWithDefault;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -336,7 +335,7 @@ public class DescriptorResolver
 
 	public static ConstructorDescriptorImpl createConstructorForObject(@Nullable PsiElement object, @NotNull ClassDescriptor classDescriptor, @NotNull BindingTrace trace)
 	{
-		ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), true);
+		ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(classDescriptor, Collections.<AnnotationDescriptor>emptyList());
 
 		// TODO : make the constructor private?
 		// TODO check set classDescriptor.getVisibility()
@@ -867,49 +866,17 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public ConstructorDescriptorImpl resolveSecondaryConstructorDescriptor(@NotNull JetScope scope, @NotNull ClassDescriptor classDescriptor, @NotNull NapileConstructor constructor, BindingTrace trace)
+	public ConstructorDescriptorImpl resolveConstructorDescriptor(@NotNull JetScope scope, @NotNull ClassDescriptor classDescriptor, @NotNull NapileConstructor constructor, BindingTrace trace)
 	{
-		return createConstructorDescriptor(scope, classDescriptor, false, constructor.getModifierList(), constructor, classDescriptor.getTypeConstructor().getParameters(), constructor.getValueParameters(), trace);
-	}
-
-	@NotNull
-	private ConstructorDescriptorImpl createConstructorDescriptor(@NotNull JetScope scope, @NotNull ClassDescriptor classDescriptor, boolean isPrimary, @Nullable JetModifierList modifierList, @NotNull JetDeclaration declarationToTrace, List<TypeParameterDescriptor> typeParameters, @NotNull List<JetParameter> valueParameters, BindingTrace trace)
-	{
-		ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(classDescriptor, annotationResolver.resolveAnnotations(scope, modifierList, trace), isPrimary);
-		trace.record(BindingContext.CONSTRUCTOR, declarationToTrace, constructorDescriptor);
+		JetModifierList modifierList = constructor.getModifierList();
+		ConstructorDescriptorImpl constructorDescriptor = new ConstructorDescriptorImpl(classDescriptor, annotationResolver.resolveAnnotations(scope, modifierList, trace));
+		trace.record(BindingContext.CONSTRUCTOR, constructor, constructorDescriptor);
 		WritableScopeImpl parameterScope = new WritableScopeImpl(scope, constructorDescriptor, new TraceBasedRedeclarationHandler(trace), "Scope with value parameters of a constructor");
 		parameterScope.changeLockLevel(WritableScope.LockLevel.BOTH);
-		return constructorDescriptor.initialize(typeParameters, resolveValueParameters(constructorDescriptor, parameterScope, valueParameters, trace), resolveVisibilityFromModifiers(modifierList));
-	}
 
-	@NotNull
-	public PropertyDescriptor resolvePrimaryConstructorParameterToAProperty(@NotNull ClassDescriptor classDescriptor, @NotNull ValueParameterDescriptor valueParameter, @NotNull JetScope scope, @NotNull JetParameter parameter, BindingTrace trace)
-	{
-		JetType type = resolveParameterType(scope, parameter, trace);
-		Name name = parameter.getNameAsName();
-		boolean isMutable = parameter.isMutable();
-		JetModifierList modifierList = parameter.getModifierList();
+		resolveDelegationSpecifiers(scope, constructor.getDelegationSpecifiers(), typeResolver, trace, true);
 
-		if(modifierList != null)
-		{
-			ASTNode abstractNode = modifierList.getModifierNode(JetTokens.ABSTRACT_KEYWORD);
-			if(abstractNode != null)
-			{
-				trace.report(ABSTRACT_PROPERTY_IN_PRIMARY_CONSTRUCTOR_PARAMETERS.on(parameter));
-			}
-		}
-
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(classDescriptor, valueParameter.getAnnotations(), resolveModalityFromModifiers(parameter.getModifierList(), Modality.FINAL), resolveVisibilityFromModifiers(parameter.getModifierList()), isMutable, false, name == null ? Name.special("<no name>") : name, CallableMemberDescriptor.Kind.DECLARATION);
-		propertyDescriptor.setType(type, Collections.<TypeParameterDescriptor>emptyList(), DescriptorUtils.getExpectedThisObjectIfNeeded(classDescriptor), ReceiverDescriptor.NO_RECEIVER);
-
-		PropertyGetterDescriptor getter = createDefaultGetter(propertyDescriptor);
-		PropertySetterDescriptor setter = propertyDescriptor.isVar() ? createDefaultSetter(propertyDescriptor) : null;
-
-		propertyDescriptor.initialize(getter, setter);
-		getter.initialize(propertyDescriptor.getType());
-
-		trace.record(BindingContext.PRIMARY_CONSTRUCTOR_PARAMETER, parameter, propertyDescriptor);
-		return propertyDescriptor;
+		return constructorDescriptor.initialize(classDescriptor.getTypeConstructor().getParameters(), resolveValueParameters(constructorDescriptor, parameterScope, constructor.getValueParameters(), trace), resolveVisibilityFromModifiers(modifierList));
 	}
 
 	public static void checkBounds(@NotNull JetTypeReference typeReference, @NotNull JetType type, BindingTrace trace)

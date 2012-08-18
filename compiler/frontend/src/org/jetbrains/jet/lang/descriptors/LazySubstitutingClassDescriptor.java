@@ -17,10 +17,13 @@
 package org.jetbrains.jet.lang.descriptors;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
+import org.jetbrains.jet.lang.psi.JetDelegationSpecifierListOwner;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.resolve.scopes.SubstitutingScope;
@@ -124,14 +127,12 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 
 	@NotNull
 	@Override
-	public Collection<ConstructorDescriptor> getConstructors()
+	public Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
 	{
-		Collection<ConstructorDescriptor> r = Lists.newArrayList();
-		for(ConstructorDescriptor constructor : original.getConstructors())
-		{
-			r.add((ConstructorDescriptor) constructor.substitute(getSubstitutor()));
-		}
-		return r;
+		Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> map = new LinkedHashMap<JetDelegationSpecifierListOwner, ConstructorDescriptor>(original.getConstructors().size());
+		for(Map.Entry<JetDelegationSpecifierListOwner, ConstructorDescriptor> entry : original.getConstructors().entrySet())
+			map.put(entry.getKey(), (ConstructorDescriptor) entry.getValue().substitute(getSubstitutor()));
+		return map;
 	}
 
 	@Override
