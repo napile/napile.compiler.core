@@ -21,8 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.jetbrains.jet.lang.psi.JetClassOrObject;
-import org.jetbrains.jet.lang.psi.JetDeclaration;
+import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetFile;
 import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.projectView.impl.nodes.PsiFileNode;
@@ -51,17 +50,13 @@ public class JetFileTreeNode extends PsiFileNode
 
 		if(getSettings().isShowMembers())
 		{
-			List<JetDeclaration> declarations = file.getDeclarations();
+			List<JetClass> declarations = file.getDeclarations();
 
-			for(JetDeclaration declaration : declarations)
+			for(JetClass declaration : declarations)
 			{
-				if(declaration instanceof JetClassOrObject)
+				if(declaration != null)
 				{
-					result.add(new JetClassOrObjectTreeNode(file.getProject(), (JetClassOrObject) declaration, getSettings()));
-				}
-				else if(getSettings().isShowMembers())
-				{
-					result.add(new JetDeclarationTreeNode(getProject(), declaration, getSettings()));
+					result.add(new JetClassOrObjectTreeNode(file.getProject(), declaration, getSettings()));
 				}
 			}
 		}

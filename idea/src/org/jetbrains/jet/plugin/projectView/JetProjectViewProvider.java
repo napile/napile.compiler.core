@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetClassBody;
 import org.jetbrains.jet.lang.psi.JetClassOrObject;
 import org.jetbrains.jet.lang.psi.JetDeclaration;
@@ -61,7 +62,7 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 			if(childValue instanceof JetFile)
 			{
 				JetFile file = (JetFile) childValue;
-				List<JetDeclaration> declarations = file.getDeclarations();
+				List<JetClass> declarations = file.getDeclarations();
 
 				JetClassOrObject mainClass = JetIconProvider.getMainClass(file);
 				if(mainClass != null && declarations.size() == 1)
@@ -109,9 +110,9 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 
 		if(current instanceof JetFile)
 		{
-			List<JetDeclaration> declarations = ((JetFile) current).getDeclarations();
+			List<JetClass> declarations = ((JetFile) current).getDeclarations();
 			String nameWithoutExtension = virtualFile != null ? virtualFile.getNameWithoutExtension() : file.getName();
-			if(declarations.size() == 1 && declarations.get(0) instanceof JetClassOrObject &&
+			if(declarations.size() == 1 && declarations.get(0) != null &&
 					nameWithoutExtension.equals(declarations.get(0).getName()))
 			{
 				current = declarations.get(0);

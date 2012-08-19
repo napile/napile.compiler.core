@@ -16,13 +16,11 @@
 
 package org.jetbrains.jet.plugin;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.psi.JetDeclaration;
-import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.psi.JetNamedFunction;
 import org.jetbrains.jet.lang.psi.JetParameter;
 import org.jetbrains.jet.lang.psi.JetTypeReference;
@@ -58,19 +56,6 @@ public class JetMainDetector
 		return false;
 	}
 
-	@Nullable
-	public static JetNamedFunction getMainFunction(@NotNull Collection<JetFile> files)
-	{
-		for(JetFile file : files)
-		{
-			JetNamedFunction mainFunction = findMainFunction(file.getDeclarations());
-			if(mainFunction != null)
-			{
-				return mainFunction;
-			}
-		}
-		return null;
-	}
 
 	@Nullable
 	private static JetNamedFunction findMainFunction(@NotNull List<JetDeclaration> declarations)

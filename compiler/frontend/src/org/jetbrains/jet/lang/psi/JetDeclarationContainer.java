@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Nikolay Krasko
  */
-public interface JetDeclarationContainer
+public interface JetDeclarationContainer<T extends JetDeclaration>
 {
 	@NotNull
-	List<JetDeclaration> getDeclarations();
+	List<T> getDeclarations();
 }

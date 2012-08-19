@@ -22,27 +22,12 @@ import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.psi.JetClass;
-import org.jetbrains.jet.lang.psi.JetClassObject;
-import org.jetbrains.jet.lang.psi.JetClassOrObject;
-import org.jetbrains.jet.lang.psi.JetDeclaration;
-import org.jetbrains.jet.lang.psi.JetEnumEntry;
-import org.jetbrains.jet.lang.psi.JetFile;
-import org.jetbrains.jet.lang.psi.JetModifierListOwner;
-import org.jetbrains.jet.lang.psi.JetNamedDeclaration;
-import org.jetbrains.jet.lang.psi.JetNamedFunction;
-import org.jetbrains.jet.lang.psi.JetNamespaceHeader;
-import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
-import org.jetbrains.jet.lang.psi.JetParameter;
-import org.jetbrains.jet.lang.psi.JetParameterList;
-import org.jetbrains.jet.lang.psi.JetProperty;
-import org.jetbrains.jet.lang.psi.NapileMethod;
+import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lexer.JetTokens;
 import com.intellij.ide.IconProvider;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Iconable;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.ui.LayeredIcon;
@@ -118,21 +103,16 @@ public class JetIconProvider extends IconProvider
 	@Nullable
 	public static JetClassOrObject getMainClass(@NotNull JetFile file)
 	{
-		List<JetDeclaration> classes = ContainerUtil.filter(file.getDeclarations(), new Condition<JetDeclaration>()
+		List<JetClass> classes = ContainerUtil.filter(file.getDeclarations(), new Condition<JetClass>()
 		{
 			@Override
-			public boolean value(JetDeclaration jetDeclaration)
+			public boolean value(JetClass jetDeclaration)
 			{
 				return jetDeclaration instanceof JetClassOrObject;
 			}
 		});
 		if(classes.size() == 1)
-		{
-			if(StringUtil.getPackageName(file.getName()).equals(classes.get(0).getName()))
-			{
-				return (JetClassOrObject) classes.get(0);
-			}
-		}
+			return classes.get(0);
 		return null;
 	}
 

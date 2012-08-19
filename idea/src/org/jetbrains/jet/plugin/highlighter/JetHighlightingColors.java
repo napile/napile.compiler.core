@@ -90,7 +90,7 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey INSTANCE_PROPERTY = TextAttributesKey.createTextAttributesKey("KOTLIN_INSTANCE_PROPERTY", CodeInsightColors.INSTANCE_FIELD_ATTRIBUTES.getDefaultAttributes());
 
-	public static final TextAttributesKey NAMESPACE_PROPERTY = TextAttributesKey.createTextAttributesKey("KOTLIN_NAMESPACE_PROPERTY", CodeInsightColors.STATIC_FIELD_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey STATIC_PROPERTY = TextAttributesKey.createTextAttributesKey("KOTLIN_NAMESPACE_PROPERTY", CodeInsightColors.STATIC_FIELD_ATTRIBUTES.getDefaultAttributes());
 
 	public static final TextAttributesKey PROPERTY_WITH_BACKING_FIELD = TextAttributesKey.createTextAttributesKey("KOTLIN_PROPERTY_WITH_BACKING_FIELD", new TextAttributes(null, new Color(0xf5d7ef), null, null, 0));
 

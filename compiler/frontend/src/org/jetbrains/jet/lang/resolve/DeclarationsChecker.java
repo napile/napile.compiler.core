@@ -278,9 +278,7 @@ public class DeclarationsChecker
 
 	private void checkConstructor(NapileConstructor constructor, ConstructorDescriptor constructorDescriptor)
 	{
-		ASTNode abstractModifier = constructor.getModifierNode(JetTokens.ABSTRACT_KEYWORD);
-		if(abstractModifier != null)
-			trace.report(ILLEGAL_MODIFIER.on(abstractModifier.getPsi(), JetTokens.ABSTRACT_KEYWORD));
+		checkIllegalInThisContextModifiers(constructor.getModifierList(), Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD, JetTokens.OVERRIDE_KEYWORD, JetTokens.STATIC_KEYWORD));
 
 		JetClass parent = PsiTreeUtil.getParentOfType(constructor, JetClass.class);
 

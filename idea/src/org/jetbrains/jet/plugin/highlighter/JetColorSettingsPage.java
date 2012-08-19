@@ -153,7 +153,7 @@ public class JetColorSettingsPage implements ColorSettingsPage
 				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.captured.variable"), JetHighlightingColors.WRAPPED_INTO_REF),
 
 				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.instance.property"), JetHighlightingColors.INSTANCE_PROPERTY),
-				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.namespace.property"), JetHighlightingColors.NAMESPACE_PROPERTY),
+				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.namespace.property"), JetHighlightingColors.STATIC_PROPERTY),
 				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.property.with.backing"), JetHighlightingColors.PROPERTY_WITH_BACKING_FIELD),
 				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.backing.field.access"), JetHighlightingColors.BACKING_FIELD_ACCESS),
 				new AttributesDescriptor(JetBundle.message("options.jet.attribute.descriptor.extension.property"), JetHighlightingColors.EXTENSION_PROPERTY),

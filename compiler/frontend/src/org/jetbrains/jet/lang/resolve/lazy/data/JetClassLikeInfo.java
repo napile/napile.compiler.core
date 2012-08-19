@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.descriptors.ClassKind;
 import org.jetbrains.jet.lang.psi.JetClassObject;
 import org.jetbrains.jet.lang.psi.JetClassOrObject;
+import org.jetbrains.jet.lang.psi.JetDeclaration;
 import org.jetbrains.jet.lang.psi.JetDeclarationContainer;
 import org.jetbrains.jet.lang.psi.JetDelegationSpecifier;
 import org.jetbrains.jet.lang.psi.JetModifierList;
@@ -33,7 +34,7 @@ import com.intellij.psi.PsiElement;
 /**
  * @author abreslav
  */
-public interface JetClassLikeInfo extends JetDeclarationContainer
+public interface JetClassLikeInfo extends JetDeclarationContainer<JetDeclaration>
 {
 
 	@NotNull

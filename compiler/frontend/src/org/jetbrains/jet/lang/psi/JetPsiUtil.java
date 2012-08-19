@@ -354,7 +354,7 @@ public class JetPsiUtil
 	{
 		CheckUtil.checkWritable(clazz);
 		JetFile file = (JetFile) clazz.getContainingFile();
-		List<JetDeclaration> declarations = file.getDeclarations();
+		List<JetClass> declarations = file.getDeclarations();
 		if(declarations.size() == 1)
 		{
 			file.delete();

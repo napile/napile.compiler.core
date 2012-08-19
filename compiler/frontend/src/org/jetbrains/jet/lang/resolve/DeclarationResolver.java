@@ -165,7 +165,7 @@ public class DeclarationResolver
 		}
 	}
 
-	private void resolveFunctionAndPropertyHeaders(@NotNull List<JetDeclaration> declarations, final @NotNull JetScope scopeForFunctions, final @NotNull JetScope scopeForPropertyInitializers, final @NotNull JetScope scopeForPropertyAccessors, final @NotNull NamespaceLikeBuilder namespaceLike)
+	private void resolveFunctionAndPropertyHeaders(@NotNull List<? extends JetDeclaration> declarations, final @NotNull JetScope scopeForFunctions, final @NotNull JetScope scopeForPropertyInitializers, final @NotNull JetScope scopeForPropertyAccessors, final @NotNull NamespaceLikeBuilder namespaceLike)
 	{
 		for(JetDeclaration declaration : declarations)
 		{

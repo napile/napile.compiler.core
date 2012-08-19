@@ -34,7 +34,7 @@ import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 
-public class JetFile extends PsiFileBase implements JetDeclarationContainer
+public class JetFile extends PsiFileBase implements JetDeclarationContainer<JetClass>
 {
 	public JetFile(FileViewProvider viewProvider)
 	{
@@ -56,9 +56,9 @@ public class JetFile extends PsiFileBase implements JetDeclarationContainer
 
 	@NotNull
 	@Override
-	public List<JetDeclaration> getDeclarations()
+	public List<JetClass> getDeclarations()
 	{
-		return PsiTreeUtil.getChildrenOfTypeAsList(this, JetDeclaration.class);
+		return PsiTreeUtil.getChildrenOfTypeAsList(this, JetClass.class);
 	}
 
 	public List<JetImportDirective> getImportDirectives()

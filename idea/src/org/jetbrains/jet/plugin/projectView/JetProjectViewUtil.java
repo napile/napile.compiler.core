@@ -45,7 +45,7 @@ public final class JetProjectViewUtil
 		if(classOrObject != null && settings.isShowMembers())
 		{
 			Collection<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>();
-			List<JetDeclaration> declarations = classOrObject.getDeclarations();
+			List<? extends JetDeclaration> declarations = classOrObject.getDeclarations();
 			for(JetDeclaration declaration : declarations)
 			{
 				if(declaration instanceof JetClassOrObject)

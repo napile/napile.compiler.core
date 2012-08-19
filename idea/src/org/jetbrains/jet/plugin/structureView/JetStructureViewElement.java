@@ -34,7 +34,6 @@ import org.jetbrains.jet.lang.psi.JetClassOrObject;
 import org.jetbrains.jet.lang.psi.JetDeclaration;
 import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
-import org.jetbrains.jet.lang.psi.JetParameter;
 import org.jetbrains.jet.lang.resolve.BindingContext;
 import org.jetbrains.jet.lang.resolve.DescriptorUtils;
 import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -205,7 +204,7 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		return text;
 	}
 
-	private TreeElement[] wrapDeclarations(List<JetDeclaration> declarations)
+	private TreeElement[] wrapDeclarations(List<? extends JetDeclaration> declarations)
 	{
 		TreeElement[] result = new TreeElement[declarations.size()];
 		for(int i = 0; i < declarations.size(); i++)

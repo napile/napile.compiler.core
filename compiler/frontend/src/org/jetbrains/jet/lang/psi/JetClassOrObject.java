@@ -27,7 +27,7 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 /**
  * @author max
  */
-public interface JetClassOrObject extends PsiNameIdentifierOwner, JetDeclarationContainer, JetModifierListOwner, JetDelegationSpecifierListOwner
+public interface JetClassOrObject extends PsiNameIdentifierOwner, JetDeclarationContainer<JetDeclaration>, JetModifierListOwner, JetDelegationSpecifierListOwner
 {
 	JetClassOrObject[] EMPTY_ARRAY = new JetClassOrObject[0];
 

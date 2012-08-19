@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetClassOrObject;
-import org.jetbrains.jet.lang.psi.JetDeclaration;
 import org.jetbrains.jet.lang.psi.JetFile;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
@@ -40,10 +40,10 @@ public class JetMoveFilesOrDirectoriesHandler extends MoveFilesOrDirectoriesHand
 		if(!(clazz.getParent() instanceof JetFile))
 			return false;
 		JetFile file = (JetFile) clazz.getContainingFile();
-		List<JetDeclaration> declarations = file.getDeclarations();
-		for(JetDeclaration declaration : declarations)
+		List<JetClass> declarations = file.getDeclarations();
+		for(JetClass declaration : declarations)
 		{
-			if(declaration instanceof JetClassOrObject && declaration != clazz)
+			if(declaration != null && declaration != clazz)
 				return false;
 		}
 		return true;
