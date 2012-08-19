@@ -51,7 +51,7 @@ abstract class TestCaseBuilder
 
 	public static String getHomeDirectory()
 	{
-		return new File(PathManager.getResourceRoot(TestCaseBuilder.class, "/org/jetbrains/jet/TestCaseBuilder.class")).getParentFile().getParentFile().getParent();
+		return new File(PathManager.getResourceRoot(TestCaseBuilder.class, "/org/jetbrains/idea/TestCaseBuilder.class")).getParentFile().getParentFile().getParent();
 	}
 
 	public interface NamedTestFactory

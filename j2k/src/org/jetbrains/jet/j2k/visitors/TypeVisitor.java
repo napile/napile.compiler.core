@@ -33,7 +33,7 @@ import org.jetbrains.jet.j2k.ast.StarProjectionType;
 import org.jetbrains.jet.j2k.ast.Type;
 import org.jetbrains.jet.j2k.ast.VarArg;
 import org.jetbrains.jet.j2k.util.AstUtil;
-import org.jetbrains.jet.lang.types.lang.JetStandardClasses;
+import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import com.intellij.psi.PsiArrayType;
 import com.intellij.psi.PsiCapturedWildcardType;
 import com.intellij.psi.PsiClass;

@@ -18,26 +18,26 @@ package org.jetbrains.jet.di;
 
 import java.io.IOException;
 
-import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
-import org.jetbrains.jet.lang.psi.JetFile;
-import org.jetbrains.jet.lang.resolve.AnnotationResolver;
-import org.jetbrains.jet.lang.resolve.BindingContext;
-import org.jetbrains.jet.lang.resolve.BindingTrace;
-import org.jetbrains.jet.lang.resolve.BodyResolver;
-import org.jetbrains.jet.lang.resolve.ControlFlowAnalyzer;
-import org.jetbrains.jet.lang.resolve.DeclarationsChecker;
-import org.jetbrains.jet.lang.resolve.DescriptorResolver;
-import org.jetbrains.jet.lang.resolve.NamespaceFactoryImpl;
-import org.jetbrains.jet.lang.resolve.QualifiedExpressionResolver;
-import org.jetbrains.jet.lang.resolve.TopDownAnalysisContext;
-import org.jetbrains.jet.lang.resolve.TopDownAnalysisParameters;
-import org.jetbrains.jet.lang.resolve.TopDownAnalyzer;
-import org.jetbrains.jet.lang.resolve.TypeResolver;
-import org.jetbrains.jet.lang.resolve.calls.CallResolver;
-import org.jetbrains.jet.lang.resolve.lazy.ResolveSession;
-import org.jetbrains.jet.lang.resolve.lazy.ScopeProvider;
-import org.jetbrains.jet.lang.types.DependencyClassByQualifiedNameResolverDummyImpl;
-import org.jetbrains.jet.lang.types.expressions.ExpressionTypingServices;
+import org.napile.compiler.lang.descriptors.ModuleDescriptor;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.resolve.AnnotationResolver;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BodyResolver;
+import org.napile.compiler.lang.resolve.ControlFlowAnalyzer;
+import org.napile.compiler.lang.resolve.DeclarationsChecker;
+import org.napile.compiler.lang.resolve.DescriptorResolver;
+import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
+import org.napile.compiler.lang.resolve.QualifiedExpressionResolver;
+import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
+import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
+import org.napile.compiler.lang.resolve.TopDownAnalyzer;
+import org.napile.compiler.lang.resolve.TypeResolver;
+import org.napile.compiler.lang.resolve.calls.CallResolver;
+import org.napile.compiler.lang.resolve.lazy.ResolveSession;
+import org.napile.compiler.lang.resolve.lazy.ScopeProvider;
+import org.napile.compiler.lang.types.DependencyClassByQualifiedNameResolverDummyImpl;
+import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import com.intellij.openapi.project.Project;
 
 /**
@@ -75,7 +75,7 @@ public class AllInjectorsGenerator
 		generator.addPublicField(ScopeProvider.class);
 		generator.addPublicField(AnnotationResolver.class);
 		generator.addPublicField(QualifiedExpressionResolver.class);
-		generator.generate("compiler/frontend/src", "org.jetbrains.jet.di", "InjectorForLazyResolve");
+		generator.generate("compiler/frontend/src", "org.jetbrains.idea.di", "InjectorForLazyResolve");
 	}
 
 	private static void generateInjectorForTopDownAnalyzerBasic() throws IOException
@@ -86,7 +86,7 @@ public class AllInjectorsGenerator
 		generator.addParameter(BuiltinsScopeExtensionMode.class);
 		generator.addField(DependencyClassByQualifiedNameResolverDummyImpl.class);
 		generator.addField(NamespaceFactoryImpl.class);
-		generator.generate("compiler/frontend/src", "org.jetbrains.jet.di", "InjectorForTopDownAnalyzerBasic");
+		generator.generate("compiler/frontend/src", "org.jetbrains.idea.di", "InjectorForTopDownAnalyzerBasic");
 	}
 
 
@@ -100,7 +100,7 @@ public class AllInjectorsGenerator
 		generator.addPublicParameter(ModuleDescriptor.class);
 		generator.addParameter(BuiltinsScopeExtensionMode.class);
 
-		generator.generate("compiler/frontend.java/src", "org.jetbrains.jet.di", "InjectorForJavaDescriptorResolver");
+		generator.generate("compiler/frontend.java/src", "org.jetbrains.idea.di", "InjectorForJavaDescriptorResolver");
 	}
 
 	private static void generateInjectorForTopDownAnalyzerCommon(DependencyInjectorGenerator generator)
@@ -130,7 +130,7 @@ public class AllInjectorsGenerator
 		// Parameters
 		generator.addPublicParameter(Project.class);
 
-		generator.generate("compiler/frontend/src", "org.jetbrains.jet.di", "InjectorForMacros");
+		generator.generate("compiler/frontend/src", "org.jetbrains.idea.di", "InjectorForMacros");
 	}
 
 	private static void generateTestInjector() throws IOException
@@ -146,7 +146,7 @@ public class AllInjectorsGenerator
 		// Parameters
 		generator.addPublicParameter(Project.class);
 
-		generator.generate("compiler/tests", "org.jetbrains.jet.di", "InjectorForTests");
+		generator.generate("compiler/tests", "org.jetbrains.idea.di", "InjectorForTests");
 	}
 
 	private static void generateInjectorForJavaSemanticServices() throws IOException
@@ -154,31 +154,31 @@ public class AllInjectorsGenerator
 		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
 
 		// Fields
-		generator.addField(true, BindingTrace.class, null, new GivenExpression("new org.jetbrains.jet.lang.resolve.BindingTraceContext()"));
-		generator.addField(false, ModuleDescriptor.class, null, new GivenExpression("new org.jetbrains.jet.lang.descriptors.ModuleDescriptor(" + "org.jetbrains.jet.lang.resolve.name.Name.special(\"<dummy>\"))"));
+		generator.addField(true, BindingTrace.class, null, new GivenExpression("new org.jetbrains.idea.lang.resolve.BindingTraceContext()"));
+		generator.addField(false, ModuleDescriptor.class, null, new GivenExpression("new org.jetbrains.idea.lang.descriptors.ModuleDescriptor(" + "org.jetbrains.idea.lang.resolve.name.Name.special(\"<dummy>\"))"));
 		generator.addParameter(BuiltinsScopeExtensionMode.class);
 
 		// Parameters
 		generator.addPublicParameter(Project.class);
 
-		generator.generate("compiler/frontend.java/src", "org.jetbrains.jet.di", "InjectorForJavaSemanticServices");
+		generator.generate("compiler/frontend.java/src", "org.jetbrains.idea.di", "InjectorForJavaSemanticServices");
 	}
 
 	private static void generateInjectorForJvmCodegen() throws IOException
 	{
 		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
 		generator.addParameter(BindingContext.class);
-		generator.addParameter(DiType.listOf(JetFile.class));
+		generator.addParameter(DiType.listOf(NapileFile.class));
 		generator.addParameter(Project.class);
-		generator.generate("compiler/backend/src", "org.jetbrains.jet.di", "InjectorForJvmCodegen");
+		generator.generate("compiler/backend/src", "org.jetbrains.idea.di", "InjectorForJvmCodegen");
 	}
 
 	private static void generateInjectorForJetTypeMapper() throws IOException
 	{
 		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
 		generator.addParameter(BindingContext.class);
-		generator.addParameter(DiType.listOf(JetFile.class));
-		generator.generate("compiler/backend/src", "org.jetbrains.jet.di", "InjectorForJetTypeMapper");
+		generator.addParameter(DiType.listOf(NapileFile.class));
+		generator.generate("compiler/backend/src", "org.jetbrains.idea.di", "InjectorForJetTypeMapper");
 	}
 
 	private static void generateInjectorForBodyResolve() throws IOException
@@ -191,6 +191,6 @@ public class AllInjectorsGenerator
 		generator.addPublicParameter(Project.class);
 		generator.addPublicParameter(TopDownAnalysisParameters.class);
 		generator.addPublicParameter(BindingTrace.class);
-		generator.generate("compiler/frontend/src", "org.jetbrains.jet.di", "InjectorForBodyResolve");
+		generator.generate("compiler/frontend/src", "org.jetbrains.idea.di", "InjectorForBodyResolve");
 	}
 }

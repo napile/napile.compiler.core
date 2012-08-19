@@ -25,23 +25,23 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.descriptors.CallableDescriptor;
-import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
-import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
-import org.jetbrains.jet.lang.psi.JetExpression;
-import org.jetbrains.jet.lang.psi.JetImportDirective;
-import org.jetbrains.jet.lang.psi.JetNamespaceHeader;
-import org.jetbrains.jet.lang.psi.JetSimpleNameExpression;
-import org.jetbrains.jet.lang.resolve.BindingContext;
-import org.jetbrains.jet.lang.resolve.calls.autocasts.AutoCastServiceImpl;
-import org.jetbrains.jet.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.jetbrains.jet.lang.resolve.scopes.JetScope;
-import org.jetbrains.jet.lang.resolve.scopes.JetScopeUtils;
-import org.jetbrains.jet.lang.resolve.scopes.receivers.ExpressionReceiver;
-import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.jetbrains.jet.lang.types.JetType;
-import org.jetbrains.jet.lang.types.NamespaceType;
-import org.jetbrains.jet.lang.types.expressions.ExpressionTypingUtils;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileImportDirective;
+import org.napile.compiler.lang.psi.NapileNamespaceHeader;
+import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.calls.autocasts.AutoCastServiceImpl;
+import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.JetScopeUtils;
+import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
+import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NamespaceType;
+import org.napile.compiler.lang.types.expressions.ExpressionTypingUtils;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -58,9 +58,9 @@ public final class TipsManager
 	}
 
 	@NotNull
-	public static Collection<DeclarationDescriptor> getReferenceVariants(JetSimpleNameExpression expression, BindingContext context)
+	public static Collection<DeclarationDescriptor> getReferenceVariants(NapileSimpleNameExpression expression, BindingContext context)
 	{
-		JetExpression receiverExpression = expression.getReceiverExpression();
+		NapileExpression receiverExpression = expression.getReceiverExpression();
 		if(receiverExpression != null)
 		{
 			// Process as call expression
@@ -101,12 +101,12 @@ public final class TipsManager
 		}
 	}
 
-	public static Collection<DeclarationDescriptor> getVariantsNoReceiver(JetExpression expression, BindingContext context)
+	public static Collection<DeclarationDescriptor> getVariantsNoReceiver(NapileExpression expression, BindingContext context)
 	{
 		JetScope resolutionScope = context.get(BindingContext.RESOLUTION_SCOPE, expression);
 		if(resolutionScope != null)
 		{
-			if(expression.getParent() instanceof JetImportDirective || expression.getParent() instanceof JetNamespaceHeader)
+			if(expression.getParent() instanceof NapileImportDirective || expression.getParent() instanceof NapileNamespaceHeader)
 			{
 				return excludeNonPackageDescriptors(resolutionScope.getAllDescriptors());
 			}
@@ -131,7 +131,7 @@ public final class TipsManager
 	}
 
 	@NotNull
-	public static Collection<DeclarationDescriptor> getReferenceVariants(JetNamespaceHeader expression, BindingContext context)
+	public static Collection<DeclarationDescriptor> getReferenceVariants(NapileNamespaceHeader expression, BindingContext context)
 	{
 		JetScope resolutionScope = context.get(BindingContext.RESOLUTION_SCOPE, expression);
 		if(resolutionScope != null)

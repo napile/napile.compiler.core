@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.j2k.util.AstUtil;
-import org.jetbrains.jet.lang.types.expressions.OperatorConventions;
+import org.napile.compiler.lang.types.expressions.OperatorConventions;
 
 /**
  * @author ignatov

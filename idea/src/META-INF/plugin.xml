@@ -8,35 +8,32 @@
 
 	<project-components>
 		<component>
-			<implementation-class>org.jetbrains.jet.plugin.compiler.JetCompilerManager</implementation-class>
+			<implementation-class>org.napile.idea.plugin.compiler.JetCompilerManager</implementation-class>
 		</component>
 
-		<component>
-			<implementation-class>org.jetbrains.jet.plugin.highlighter.DeclarationHintSupport</implementation-class>
-		</component>
-		<component>
-			<implementation-class>org.jetbrains.jet.plugin.OutdatedKotlinRuntimeNotification</implementation-class>
-		</component>
+		<!--<component>
+			<implementation-class>DeclarationHintSupport</implementation-class>
+		</component> -->
 	</project-components>
 
 	<actions>
-		<action id="Napile.NewFile" class="org.jetbrains.jet.plugin.actions.NewKotlinFileAction">
+		<action id="Napile.NewFile" class="org.napile.idea.plugin.actions.NewKotlinFileAction">
 			<add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
 		</action>
 
-		<action id="ShowJetExpressionType" class="org.jetbrains.jet.plugin.actions.ShowExpressionTypeAction" text="Show Expression Type">
+		<action id="ShowJetExpressionType" class="org.napile.idea.plugin.actions.ShowExpressionTypeAction" text="Show Expression Type">
 			<keyboard-shortcut keymap="$default" first-keystroke="control shift Q"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
-		<action id="CopyAsDiagnosticTest" class="org.jetbrains.jet.plugin.actions.CopyAsDiagnosticTestAction" text="Copy Current File As Diagnostic Test">
+		<action id="CopyAsDiagnosticTest" class="org.napile.idea.plugin.actions.CopyAsDiagnosticTestAction" text="Copy Current File As Diagnostic Test">
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift T"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
-		<action id="ConvertJavaToNapile" class="org.jetbrains.jet.plugin.actions.JavaToKotlinAction" text="Convert Java File to Napile File">
+		<action id="ConvertJavaToNapile" class="org.napile.idea.plugin.actions.JavaToKotlinAction" text="Convert Java File to Napile File">
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift J"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
-		<action id="ToggleJetErrorReporting" class="org.jetbrains.jet.plugin.actions.ToggleErrorReportingAction" text="Error Reporting Enabled">
+		<action id="ToggleJetErrorReporting" class="org.napile.idea.plugin.actions.ToggleErrorReportingAction" text="Error Reporting Enabled">
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift E"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
@@ -45,140 +42,135 @@
 	</actions>
 
 	<extensions defaultExtensionNs="com.intellij">
-		<applicationService serviceInterface="org.jetbrains.jet.lang.psi.stubs.elements.StubIndexService" serviceImplementation="org.jetbrains.jet.plugin.stubindex.StubIndexServiceImpl"/>
+		<applicationService serviceInterface="org.napile.compiler.lang.psi.stubs.elements.StubIndexService" serviceImplementation="org.napile.idea.plugin.stubindex.StubIndexServiceImpl"/>
 
-		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.JetFilesProvider" serviceImplementation="org.jetbrains.jet.plugin.project.PluginJetFilesProvider"/>
+		<projectService serviceInterface="org.napile.compiler.lang.resolve.JetFilesProvider" serviceImplementation="org.napile.idea.plugin.project.PluginJetFilesProvider"/>
 
-		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.java.extAnnotations.ExternalAnnotationsProvider" serviceImplementation="org.jetbrains.jet.plugin.extAnnotations.IdeaExternalAnnotationsProvider"/>
+		<projectService serviceInterface="org.napile.idea.plugin.caches.JetShortNamesCache" serviceImplementation="org.napile.idea.plugin.caches.JetShortNamesCache" />
 
-		<projectService serviceInterface="org.jetbrains.jet.plugin.caches.JetShortNamesCache" serviceImplementation="org.jetbrains.jet.plugin.caches.JetShortNamesCache" />
-
-		<projectService serviceInterface="org.jetbrains.jet.lang.resolve.NapileClassResolver" serviceImplementation="org.jetbrains.jet.lang.resolve.NapileClassResolver" />
+		<projectService serviceInterface="org.napile.compiler.lang.resolve.NapileClassResolver" serviceImplementation="org.napile.compiler.lang.resolve.NapileClassResolver" />
 
 		<internalFileTemplate name="Napile Class"/>
 		<internalFileTemplate name="Napile Enum"/>
 
-		<gotoSymbolContributor implementation="org.jetbrains.jet.plugin.caches.JetGotoSymbolContributor"/>
-		<gotoClassContributor implementation="org.jetbrains.jet.plugin.caches.JetGotoClassContributor"/>
-		<lang.importOptimizer language="NAPILE" implementationClass="org.jetbrains.jet.plugin.editor.importOptimizer.JetImportOptimizer"/>
+		<gotoSymbolContributor implementation="org.napile.idea.plugin.caches.JetGotoSymbolContributor"/>
+		<gotoClassContributor implementation="org.napile.idea.plugin.caches.JetGotoClassContributor"/>
+		<lang.importOptimizer language="NAPILE" implementationClass="org.napile.idea.plugin.editor.importOptimizer.JetImportOptimizer"/>
 
-		<fileTypeFactory implementation="org.jetbrains.jet.plugin.JetFileFactory"/>
+		<fileTypeFactory implementation="org.napile.idea.plugin.JetFileFactory"/>
 
-		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.JetSyntaxHighlighterFactory"/>
-		<lang.braceMatcher language="NAPILE" implementationClass="org.jetbrains.jet.plugin.JetPairMatcher"/>
-		<lang.parserDefinition language="NAPILE" implementationClass="org.jetbrains.jet.lang.parsing.JetParserDefinition"/>
-		<lang.commenter language="NAPILE" implementationClass="org.jetbrains.jet.plugin.JetCommenter"/>
-		<lang.psiStructureViewFactory language="NAPILE" implementationClass="org.jetbrains.jet.plugin.structureView.JetStructureViewFactory"/>
-		<lang.foldingBuilder language="NAPILE" implementationClass="org.jetbrains.jet.plugin.JetFoldingBuilder"/>
-		<lang.formatter language="NAPILE" implementationClass="org.jetbrains.jet.plugin.formatter.JetFormattingModelBuilder"/>
-		<lang.findUsagesProvider language="NAPILE" implementationClass="org.jetbrains.jet.plugin.findUsages.JetFindUsagesProvider"/>
-		<lang.refactoringSupport language="NAPILE" implementationClass="org.jetbrains.jet.plugin.refactoring.JetRefactoringSupportProvider"/>
-		<quoteHandler fileType="NAPILE" className="org.jetbrains.jet.plugin.editor.KotlinQuoteHandler"/>
-		<refactoring.moveHandler implementation="org.jetbrains.jet.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler"/>
-		<refactoring.copyHandler implementation="org.jetbrains.jet.plugin.refactoring.copy.JetCopyClassHandler"/>
-		<treeStructureProvider implementation="org.jetbrains.jet.plugin.projectView.JetProjectViewProvider"/>
+		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetSyntaxHighlighterFactory"/>
+		<lang.braceMatcher language="NAPILE" implementationClass="org.napile.idea.plugin.JetPairMatcher"/>
+		<lang.parserDefinition language="NAPILE" implementationClass="org.napile.compiler.lang.parsing.JetParserDefinition"/>
+		<lang.commenter language="NAPILE" implementationClass="org.napile.idea.plugin.JetCommenter"/>
+		<lang.psiStructureViewFactory language="NAPILE" implementationClass="org.napile.idea.plugin.structureView.JetStructureViewFactory"/>
+		<lang.foldingBuilder language="NAPILE" implementationClass="org.napile.idea.plugin.JetFoldingBuilder"/>
+		<lang.formatter language="NAPILE" implementationClass="org.napile.idea.plugin.formatter.JetFormattingModelBuilder"/>
+		<lang.findUsagesProvider language="NAPILE" implementationClass="org.napile.idea.plugin.findUsages.JetFindUsagesProvider"/>
+		<lang.refactoringSupport language="NAPILE" implementationClass="org.napile.idea.plugin.refactoring.JetRefactoringSupportProvider"/>
+		<quoteHandler fileType="NAPILE" className="org.napile.idea.plugin.editor.KotlinQuoteHandler"/>
+		<refactoring.moveHandler implementation="org.napile.idea.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler"/>
+		<refactoring.copyHandler implementation="org.napile.idea.plugin.refactoring.copy.JetCopyClassHandler"/>
+		<treeStructureProvider implementation="org.napile.idea.plugin.projectView.JetProjectViewProvider"/>
 
-		<colorSettingsPage implementation="org.jetbrains.jet.plugin.highlighter.JetColorSettingsPage"/>
+		<colorSettingsPage implementation="org.napile.idea.plugin.highlighter.JetColorSettingsPage"/>
 
-		<codeStyleSettingsProvider implementation="org.jetbrains.jet.plugin.formatter.JetCodeStyleSettingsProvider"/>
-		<langCodeStyleSettingsProvider implementation="org.jetbrains.jet.plugin.formatter.JetLanguageCodeStyleSettingsProvider"/>
+		<codeStyleSettingsProvider implementation="org.napile.idea.plugin.formatter.JetCodeStyleSettingsProvider"/>
+		<langCodeStyleSettingsProvider implementation="org.napile.idea.plugin.formatter.JetLanguageCodeStyleSettingsProvider"/>
 
-		<templateParameterTraversalPolicy implementation="org.jetbrains.jet.plugin.completion.JetTemplateParameterTraversalPolicy"/>
+		<templateParameterTraversalPolicy implementation="org.napile.idea.plugin.completion.JetTemplateParameterTraversalPolicy"/>
 
-		<codeInsight.parameterInfo language="NAPILE" implementationClass="org.jetbrains.jet.plugin.parameterInfo.JetFunctionParameterInfoHandler"/>
+		<codeInsight.parameterInfo language="NAPILE" implementationClass="org.napile.idea.plugin.parameterInfo.JetFunctionParameterInfoHandler"/>
 
-		<codeInsight.gotoSuper language="NAPILE" implementationClass="org.jetbrains.jet.plugin.codeInsight.GotoSuperActionHandler"/>
-		<typeDeclarationProvider implementation="org.jetbrains.jet.plugin.codeInsight.JetTypeDeclarationProvider"/>
+		<codeInsight.gotoSuper language="NAPILE" implementationClass="org.napile.idea.plugin.codeInsight.GotoSuperActionHandler"/>
+		<typeDeclarationProvider implementation="org.napile.idea.plugin.codeInsight.JetTypeDeclarationProvider"/>
 
-		<completion.contributor language="NAPILE" id="JetKeywordCompletionContributor" order="first" implementationClass="org.jetbrains.jet.plugin.completion.JetKeywordCompletionContributor"/>
+		<completion.contributor language="NAPILE" id="JetKeywordCompletionContributor" order="first" implementationClass="org.napile.idea.plugin.completion.JetKeywordCompletionContributor"/>
 
-		<completion.contributor language="NAPILE" id="JetPackagesContributor" order="after JetKeywordCompletionContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetPackagesContributor"/>
+		<completion.contributor language="NAPILE" id="JetPackagesContributor" order="after JetKeywordCompletionContributor" implementationClass="org.napile.idea.plugin.completion.JetPackagesContributor"/>
 
-		<completion.contributor language="NAPILE" id="JetExtensionFunctionReceiverContributor" order="after JetPackagesContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetExtensionReceiverTypeContributor"/>
+		<completion.contributor language="NAPILE" id="JetExtensionFunctionReceiverContributor" order="after JetPackagesContributor" implementationClass="org.napile.idea.plugin.completion.JetExtensionReceiverTypeContributor"/>
 
-		<completion.contributor language="NAPILE" id="JetClassCompletionContributor" order="after JetExtensionFunctionReceiverContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetClassCompletionContributor"/>
+		<completion.contributor language="NAPILE" id="JetClassCompletionContributor" order="after JetExtensionFunctionReceiverContributor" implementationClass="org.napile.idea.plugin.completion.JetClassCompletionContributor"/>
 
-		<completion.contributor language="NAPILE" id="JetCompletionContributor" order="after JetClassCompletionContributor" implementationClass="org.jetbrains.jet.plugin.completion.JetCompletionContributor"/>
+		<completion.contributor language="NAPILE" id="JetCompletionContributor" order="after JetClassCompletionContributor" implementationClass="org.napile.idea.plugin.completion.JetCompletionContributor"/>
 
-		<completion.contributor language="NAPILE" implementationClass="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplateCompletionContributor" id="liveTemplates" order="first"/>
+		<completion.contributor language="NAPILE" implementationClass="org.napile.idea.plugin.liveTemplates.JetLiveTemplateCompletionContributor" id="liveTemplates" order="first"/>
 
 		<completion.confidence language="NAPILE" implementationClass="com.intellij.codeInsight.completion.UnfocusedNameIdentifier"/>
-		<completion.confidence language="NAPILE" implementationClass="org.jetbrains.jet.plugin.completion.confidence.UnfocusedPossibleFunctionParameter"/>
+		<completion.confidence language="NAPILE" implementationClass="org.napile.idea.plugin.completion.confidence.UnfocusedPossibleFunctionParameter"/>
 		<completion.confidence language="NAPILE" implementationClass="com.intellij.codeInsight.completion.AlwaysFocusLookup" order="last"/>
 
-		<completion.skip implementation="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplateCompletionContributor$Skipper" id="skipLiveTemplate"/>
+		<completion.skip implementation="org.napile.idea.plugin.liveTemplates.JetLiveTemplateCompletionContributor$Skipper" id="skipLiveTemplate"/>
 
-		<psi.referenceContributor language="NAPILE" order="after JetCompletionContributor" implementation="org.jetbrains.jet.plugin.references.JetReferenceContributor"/>
+		<psi.referenceContributor language="NAPILE" order="after JetCompletionContributor" implementation="org.napile.idea.plugin.references.JetReferenceContributor"/>
 
-		<renamePsiElementProcessor implementation="org.jetbrains.jet.plugin.refactoring.rename.RenameJetClassProcessor"/>
-		<renamePsiElementProcessor implementation="org.jetbrains.jet.plugin.refactoring.rename.RenameKotlinFunctionProcessor"/>
+		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameJetClassProcessor"/>
+		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameKotlinFunctionProcessor"/>
 
-		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Generic"/>
-		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Namespace"/>
-		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Statement"/>
-		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Class"/>
-		<liveTemplateContext implementation="org.jetbrains.jet.plugin.liveTemplates.JetTemplateContextType$Expression"/>
-		<defaultLiveTemplatesProvider implementation="org.jetbrains.jet.plugin.liveTemplates.JetLiveTemplatesProvider"/>
-		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetAnyVariableMacro"/>
-		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetFunctionParametersMacro"/>
-		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetAnonymousSuperMacro"/>
-		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetIterableVariableMacro"/>
-		<liveTemplateMacro implementation="org.jetbrains.jet.plugin.liveTemplates.macro.JetSuggestVariableNameMacro"/>
+		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Generic"/>
+		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Namespace"/>
+		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Statement"/>
+		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Class"/>
+		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Expression"/>
+		<defaultLiveTemplatesProvider implementation="org.napile.idea.plugin.liveTemplates.JetLiveTemplatesProvider"/>
+		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetAnyVariableMacro"/>
+		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetFunctionParametersMacro"/>
+		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetAnonymousSuperMacro"/>
+		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetIterableVariableMacro"/>
+		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetSuggestVariableNameMacro"/>
 
-		<annotator language="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.JetPsiChecker"/>
-		<annotator language="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.DebugInfoAnnotator"/>
+		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>
+		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.DebugInfoAnnotator"/>
 
-		<extendWordSelectionHandler implementation="org.jetbrains.jet.plugin.editor.wordSelection.JetStatementGroupSelectioner"/>
-		<extendWordSelectionHandler implementation="org.jetbrains.jet.plugin.editor.wordSelection.JetCodeBlockSelectioner"/>
-		<extendWordSelectionHandler implementation="org.jetbrains.jet.plugin.editor.wordSelection.JetListSelectioner"/>
-		<typedHandler implementation="org.jetbrains.jet.plugin.editor.KotlinTypedHandler"/>
+		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetStatementGroupSelectioner"/>
+		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetCodeBlockSelectioner"/>
+		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetListSelectioner"/>
+		<typedHandler implementation="org.napile.idea.plugin.editor.KotlinTypedHandler"/>
 
-		<copyPastePostProcessor implementation="org.jetbrains.jet.plugin.conversion.copy.JavaCopyPastePostProcessor"/>
-		<documentationProvider implementation="org.jetbrains.jet.plugin.JetQuickDocumentationProvider"/>
+		<copyPastePostProcessor implementation="org.napile.idea.plugin.conversion.copy.JavaCopyPastePostProcessor"/>
+		<documentationProvider implementation="org.napile.idea.plugin.JetQuickDocumentationProvider"/>
 
-		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.jetbrains.jet.plugin.highlighter.JetLineMarkerProvider"/>
-		<iconProvider implementation="org.jetbrains.jet.plugin.JetIconProvider"/>
-		<itemPresentationProvider implementationClass="org.jetbrains.jet.plugin.presentation.JetFunctionPresenter" forClass="org.jetbrains.jet.lang.psi.JetNamedFunction"/>
-		<itemPresentationProvider implementationClass="org.jetbrains.jet.plugin.presentation.JetClassPresenter" forClass="org.jetbrains.jet.lang.psi.JetClass"/>
-		<elementDescriptionProvider implementation="org.jetbrains.jet.plugin.findUsages.JetElementDescriptionProvider"/>
-		<findUsagesHandlerFactory implementation="org.jetbrains.jet.plugin.findUsages.KotlinFindUsagesHandlerFactory"/>
+		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetLineMarkerProvider"/>
+		<iconProvider implementation="org.napile.idea.plugin.JetIconProvider"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetFunctionPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedFunction"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetClassPresenter" forClass="org.napile.compiler.lang.psi.NapileClass"/>
+		<elementDescriptionProvider implementation="org.napile.idea.plugin.findUsages.JetElementDescriptionProvider"/>
+		<findUsagesHandlerFactory implementation="org.napile.idea.plugin.findUsages.KotlinFindUsagesHandlerFactory"/>
 
-		<codeInsight.implementMethod language="NAPILE" implementationClass="org.jetbrains.jet.plugin.codeInsight.ImplementMethodsHandler"/>
-		<codeInsight.overrideMethod language="NAPILE" implementationClass="org.jetbrains.jet.plugin.codeInsight.OverrideMethodsHandler"/>
+		<codeInsight.implementMethod language="NAPILE" implementationClass="org.napile.idea.plugin.codeInsight.ImplementMethodsHandler"/>
+		<codeInsight.overrideMethod language="NAPILE" implementationClass="org.napile.idea.plugin.codeInsight.OverrideMethodsHandler"/>
 
-		<problemFileHighlightFilter implementation="org.jetbrains.jet.plugin.codeInsight.problems.DefaultProblemFileHighlightFilter" />
+		<problemFileHighlightFilter implementation="org.napile.idea.plugin.codeInsight.problems.DefaultProblemFileHighlightFilter" />
 
-		<stubElementTypeHolder class="org.jetbrains.jet.lang.psi.stubs.elements.JetStubElementTypes"/>
-		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetShortClassNameIndex"/>
-		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetFullClassNameIndex"/>
-		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetShortFunctionNameIndex"/>
-		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetExtensionFunctionNameIndex"/>
-		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetAllShortFunctionNameIndex"/>
-		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetSuperClassIndex"/>
-		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetTopLevelFunctionsFqnNameIndex"/>
-		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetTopLevelPropertiesFqnNameIndex"/>
+		<stubElementTypeHolder class="org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetShortClassNameIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetFullClassNameIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetShortFunctionNameIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetExtensionFunctionNameIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetAllShortFunctionNameIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetSuperClassIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetTopLevelFunctionsFqnNameIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetTopLevelPropertiesFqnNameIndex"/>
 
 
-		<editorNotificationProvider implementation="org.jetbrains.jet.plugin.quickfix.ConfigureKotlinLibraryNotificationProvider"/>
-		<editorNotificationProvider implementation="org.jetbrains.jet.plugin.quickfix.AbsentJdkAnnotationsNotifications"/>
+		<referencesSearch implementation="org.napile.idea.plugin.search.KotlinReferencesSearcher"/>
+		<!--<directClassInheritorsSearch implementation="DirectClassInheritorsSearch"/>  -->
 
-		<referencesSearch implementation="org.jetbrains.jet.plugin.search.KotlinReferencesSearcher"/>
-		<!--<directClassInheritorsSearch implementation="org.jetbrains.jet.plugin.search.DirectClassInheritorsSearch"/>  -->
+		<definitionsSearch implementation="org.napile.idea.plugin.search.impl.ClassImplementationsSearch"/>
 
-		<definitionsSearch implementation="org.jetbrains.jet.plugin.search.impl.ClassImplementationsSearch"/>
+		<!--<toolWindow id="Napile" factoryClass="KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/idea/plugin/icons/kotlin_13.png"/> -->
 
-		<!--<toolWindow id="Napile" factoryClass="org.jetbrains.jet.plugin.internal.KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/jet/plugin/icons/kotlin_13.png"/> -->
-
-		<applicationService serviceInterface="org.jetbrains.jet.plugin.editor.JetEditorOptions" serviceImplementation="org.jetbrains.jet.plugin.editor.JetEditorOptions"/>
-		<exportable serviceInterface="org.jetbrains.jet.plugin.editor.JetEditorOptions"/>
-		<editorAppearanceConfigurable instance="org.jetbrains.jet.plugin.editor.JetSettingEditorConfigurable"/>
+		<applicationService serviceInterface="org.napile.idea.plugin.editor.JetEditorOptions" serviceImplementation="org.napile.idea.plugin.editor.JetEditorOptions"/>
+		<exportable serviceInterface="org.napile.idea.plugin.editor.JetEditorOptions"/>
+		<editorAppearanceConfigurable instance="org.napile.idea.plugin.editor.JetSettingEditorConfigurable"/>
 
 		<intentionAction>
-			<className>org.jetbrains.jet.plugin.intentions.SpecifyTypeExplicitlyAction</className>
+			<className>org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction</className>
 			<category>Napile</category>
 		</intentionAction>
 
-		<project.converterProvider implementation="org.jetbrains.jet.plugin.converters.JetRunConfigurationSettingsFormatConverterProvider"/>
+		<project.converterProvider implementation="org.napile.idea.plugin.converters.JetRunConfigurationSettingsFormatConverterProvider"/>
 
 	</extensions>
 </idea-plugin>

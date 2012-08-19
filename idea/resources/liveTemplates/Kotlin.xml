@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templateSet group="Kotlin">
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.main" name="main" toReformat="true" toShortenFQNames="true" value="fun main(args : Array&lt;String&gt;) {&#10;  $END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.main" name="main" toReformat="true" toShortenFQNames="true" value="fun main(args : Array&lt;String&gt;) {&#10;  $END$&#10;}">
 		<context>
 			<option name="KOTLIN_NAMESPACE" value="true"/>
 		</context>
@@ -24,13 +24,13 @@
 			<option name="KOTLIN_STATEMENT" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.soutp" name="soutp" toReformat="true" toShortenFQNames="true" value="println($FORMAT$)">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.soutp" name="soutp" toReformat="true" toShortenFQNames="true" value="println($FORMAT$)">
 		<variable alwaysStopAt="false" defaultValue="" expression="groovyScript(&quot;'\&quot;' + _1.collect { it + ' = [${' + it + '}]'}.join(', ') + '\&quot;'&quot;, functionParameters())" name="FORMAT"/>
 		<context>
 			<option name="KOTLIN_STATEMENT" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.iter" name="iter" toReformat="true" toShortenFQNames="true" value="for ($VAR$ in $ITERABLE$) {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.iter" name="iter" toReformat="true" toShortenFQNames="true" value="for ($VAR$ in $ITERABLE$) {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="&quot;iterable&quot;" expression="kotlinIterableVariable()" name="ITERABLE"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;i&quot;" expression="kotlinSuggestVariableName()" name="VAR"/>
 		<context>
@@ -38,7 +38,7 @@
 		</context>
 	</template>
 
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.void" name="void" toReformat="true" toShortenFQNames="true" value="fun $NAME$($PARAMS$) {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.void" name="void" toReformat="true" toShortenFQNames="true" value="fun $NAME$($PARAMS$) {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="" expression="" name="NAME"/>
 		<variable alwaysStopAt="true" defaultValue="" expression="" name="PARAMS"/>
 		<context>
@@ -47,7 +47,7 @@
 			<option name="KOTLIN_NAMESPACE" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.fun0" name="fun0" toReformat="true" toShortenFQNames="true" value="fun $NAME$() : $RETURN$ {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.fun0" name="fun0" toReformat="true" toShortenFQNames="true" value="fun $NAME$() : $RETURN$ {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="" expression="" name="NAME"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;Unit&quot;" expression="" name="RETURN"/>
 		<context>
@@ -56,7 +56,7 @@
 			<option name="KOTLIN_NAMESPACE" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.fun1" name="fun1" toReformat="true" toShortenFQNames="true" value="fun $NAME$($PARAM1$ : $PARAM1TYPE$) : $RETURN$ {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.fun1" name="fun1" toReformat="true" toShortenFQNames="true" value="fun $NAME$($PARAM1$ : $PARAM1TYPE$) : $RETURN$ {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="" expression="" name="NAME"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;x&quot;" expression="" name="PARAM1"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;Any&quot;" expression="" name="PARAM1TYPE"/>
@@ -67,7 +67,7 @@
 			<option name="KOTLIN_NAMESPACE" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.fun2" name="fun2" toReformat="true" toShortenFQNames="true"
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.fun2" name="fun2" toReformat="true" toShortenFQNames="true"
 			  value="fun $NAME$($PARAM1$ : $PARAM1TYPE$, $PARAM2$ : $PARAM2TYPE$) : $RETURN$ {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="" expression="" name="NAME"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;x&quot;" expression="" name="PARAM1"/>
@@ -82,7 +82,7 @@
 		</context>
 	</template>
 
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.interface" name="interface" toReformat="true" toShortenFQNames="true" value="trait $NAME$ {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.interface" name="interface" toReformat="true" toShortenFQNames="true" value="trait $NAME$ {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="" expression="" name="NAME"/>
 		<context>
 			<option name="KOTLIN_STATEMENT" value="true"/>
@@ -90,7 +90,7 @@
 			<option name="KOTLIN_NAMESPACE" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.singleton" name="singleton" toReformat="true" toShortenFQNames="true" value="object $NAME$ {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.singleton" name="singleton" toReformat="true" toShortenFQNames="true" value="object $NAME$ {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="" expression="" name="NAME"/>
 		<context>
 			<option name="KOTLIN_STATEMENT" value="true"/>
@@ -99,7 +99,7 @@
 		</context>
 	</template>
 
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.closure" name="closure" toReformat="true" toShortenFQNames="true" value="{$PARAM$ -> $PARAM_COPY$}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.closure" name="closure" toReformat="true" toShortenFQNames="true" value="{$PARAM$ -> $PARAM_COPY$}">
 		<variable alwaysStopAt="true" defaultValue="&quot;x&quot;" expression="" name="PARAM"/>
 		<variable alwaysStopAt="true" defaultValue="" expression="PARAM" name="PARAM_COPY"/>
 		<context>
@@ -107,7 +107,7 @@
 			<option name="KOTLIN_EXPRESSION" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.anonymous" name="anonymous" toReformat="true" toShortenFQNames="true" value="object : $SUPERTYPE$ {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.anonymous" name="anonymous" toReformat="true" toShortenFQNames="true" value="object : $SUPERTYPE$ {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="&quot;Object&quot;" expression="anonymousSuper()" name="SUPERTYPE"/>
 		<context>
 			<option name="KOTLIN_STATEMENT" value="true"/>
@@ -115,7 +115,7 @@
 		</context>
 	</template>
 
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.exfun" name="exfun" toReformat="true" toShortenFQNames="true" value="fun $RECEIVER$.$NAME$($PARAMS$) : $RETURN$ {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.exfun" name="exfun" toReformat="true" toShortenFQNames="true" value="fun $RECEIVER$.$NAME$($PARAMS$) : $RETURN$ {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="&quot;Any&quot;" expression="" name="RECEIVER"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;f&quot;" expression="" name="NAME"/>
 		<variable alwaysStopAt="true" defaultValue="" expression="" name="PARAMS"/>
@@ -125,7 +125,7 @@
 			<option name="KOTLIN_NAMESPACE" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.exval" name="exval" toReformat="true" toShortenFQNames="true" value="val $RECEIVER$.$NAME$ : $TYPE$&#10;get() {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.exval" name="exval" toReformat="true" toShortenFQNames="true" value="val $RECEIVER$.$NAME$ : $TYPE$&#10;get() {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="&quot;Any&quot;" expression="" name="RECEIVER"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;v&quot;" expression="" name="NAME"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;Any&quot;" expression="" name="TYPE"/>
@@ -134,7 +134,7 @@
 			<option name="KOTLIN_NAMESPACE" value="true"/>
 		</context>
 	</template>
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.exvar" name="exvar" toReformat="true" toShortenFQNames="true"
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.exvar" name="exvar" toReformat="true" toShortenFQNames="true"
 			  value="var $RECEIVER$.$NAME$ : $TYPE$&#10;get() {&#10;$END$&#10;}&#10;set(value) {&#10; &#10;}">
 		<variable alwaysStopAt="true" defaultValue="&quot;Any&quot;" expression="" name="RECEIVER"/>
 		<variable alwaysStopAt="true" defaultValue="&quot;v&quot;" expression="" name="NAME"/>
@@ -149,14 +149,14 @@
 	<!-- Synonyms -->
 
 	<!-- Synonym for main -->
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.main" name="psvm" toReformat="true" toShortenFQNames="true" value="fun main(args : Array&lt;String&gt;) {&#10;  $END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.main" name="psvm" toReformat="true" toShortenFQNames="true" value="fun main(args : Array&lt;String&gt;) {&#10;  $END$&#10;}">
 		<context>
 			<option name="KOTLIN_NAMESPACE" value="true"/>
 		</context>
 	</template>
 
 	<!-- Synonym for anonymous -->
-	<template resource-bundle="org.jetbrains.jet.plugin.JetBundle" key="livetemplate.description.anonymous" name="object" id="kt-object" toReformat="true" toShortenFQNames="true" value="object : $SUPERTYPE$ {&#10;$END$&#10;}">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.anonymous" name="object" id="kt-object" toReformat="true" toShortenFQNames="true" value="object : $SUPERTYPE$ {&#10;$END$&#10;}">
 		<variable alwaysStopAt="true" defaultValue="&quot;Object&quot;" expression="anonymousSuper()" name="SUPERTYPE"/>
 		<context>
 			<option name="KOTLIN_STATEMENT" value="true"/>

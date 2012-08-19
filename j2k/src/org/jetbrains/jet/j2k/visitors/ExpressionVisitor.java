@@ -54,7 +54,7 @@ import org.jetbrains.jet.j2k.ast.SuperExpression;
 import org.jetbrains.jet.j2k.ast.ThisExpression;
 import org.jetbrains.jet.j2k.ast.Type;
 import org.jetbrains.jet.j2k.ast.TypeCastExpression;
-import org.jetbrains.jet.lang.types.expressions.OperatorConventions;
+import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import com.intellij.psi.JavaTokenType;
 import com.intellij.psi.PsiAnonymousClass;
 import com.intellij.psi.PsiArrayAccessExpression;
