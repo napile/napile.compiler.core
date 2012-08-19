@@ -258,8 +258,8 @@ public class DescriptorResolver
 		Modality modality = resolveModalityFromModifiers(function.getModifierList(), getDefaultModality(containingDescriptor, hasBody));
 		Visibility visibility = resolveVisibilityFromModifiers(function.getModifierList());
 		JetModifierList modifierList = function.getModifierList();
-		boolean isInline = (modifierList != null) && modifierList.hasModifier(JetTokens.INLINE_KEYWORD);
-		functionDescriptor.initialize(receiverType, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, valueParameterDescriptors, returnType, modality, visibility, isInline);
+
+		functionDescriptor.initialize(receiverType, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, valueParameterDescriptors, returnType, modality, visibility);
 
 		BindingContextUtils.recordFunctionDeclarationToDescriptor(trace, function, functionDescriptor);
 		return functionDescriptor;

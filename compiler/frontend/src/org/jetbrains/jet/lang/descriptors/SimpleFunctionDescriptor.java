@@ -19,7 +19,7 @@ package org.jetbrains.jet.lang.descriptors;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Simple functions are the ones with 'fun' keyword and function literals
+ * Simple functions are the ones with 'meth' keyword and function literals
  *
  * @author Stepan Koltsov
  */
@@ -33,6 +33,4 @@ public interface SimpleFunctionDescriptor extends FunctionDescriptor
 	@NotNull
 	@Override
 	SimpleFunctionDescriptor getOriginal();
-
-	boolean isInline();
 }

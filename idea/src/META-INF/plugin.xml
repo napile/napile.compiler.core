@@ -146,6 +146,8 @@
 		<codeInsight.implementMethod language="NAPILE" implementationClass="org.jetbrains.jet.plugin.codeInsight.ImplementMethodsHandler"/>
 		<codeInsight.overrideMethod language="NAPILE" implementationClass="org.jetbrains.jet.plugin.codeInsight.OverrideMethodsHandler"/>
 
+		<problemFileHighlightFilter implementation="org.jetbrains.jet.plugin.codeInsight.problems.DefaultProblemFileHighlightFilter" />
+
 		<stubElementTypeHolder class="org.jetbrains.jet.lang.psi.stubs.elements.JetStubElementTypes"/>
 		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetShortClassNameIndex"/>
 		<stubIndex implementation="org.jetbrains.jet.plugin.stubindex.JetFullClassNameIndex"/>

@@ -188,8 +188,8 @@ public class ErrorUtils
 		ErrorSimpleFunctionDescriptorImpl function = new ErrorSimpleFunctionDescriptorImpl(ownerScope);
 		function.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
 				Collections.<ValueParameterDescriptor>emptyList(), // TODO
-				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibilities.PUBLIC,
-                /*isInline = */ false);
+				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibilities.PUBLIC
+                /*isInline = */);
 		return function;
 	}
 
