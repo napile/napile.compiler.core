@@ -36,12 +36,12 @@ public class SimpleFunctionDescriptorImpl extends FunctionDescriptorImpl impleme
 
 	public SimpleFunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind)
 	{
-		super(containingDeclaration, annotations, name, kind);
+		super(containingDeclaration, annotations, name, kind, false);
 	}
 
 	private SimpleFunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull SimpleFunctionDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind)
 	{
-		super(containingDeclaration, original, annotations, name, kind);
+		super(containingDeclaration, original, annotations, name, kind, false);
 	}
 
 	public SimpleFunctionDescriptorImpl initialize(@Nullable JetType receiverParameterType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility, boolean isInline)

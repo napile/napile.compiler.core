@@ -100,8 +100,9 @@ public class LazyClassDescriptor extends ClassDescriptorBase implements ClassDes
 	private JetScope scopeForPropertyInitializerResolution;
 
 
-	public LazyClassDescriptor(@NotNull ResolveSession resolveSession, @NotNull DeclarationDescriptor containingDeclaration, @NotNull Name name, @NotNull JetClassLikeInfo classLikeInfo)
+	public LazyClassDescriptor(@NotNull ResolveSession resolveSession, @NotNull DeclarationDescriptor containingDeclaration, @NotNull Name name, @NotNull JetClassLikeInfo classLikeInfo, boolean isStatic)
 	{
+		super(isStatic);
 		this.resolveSession = resolveSession;
 
 		if(classLikeInfo.getCorrespondingClassOrObject() != null)
@@ -256,7 +257,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase implements ClassDes
 			if(classObjectInfo != null)
 			{
 				Name classObjectName = getKind() == ClassKind.ENUM_CLASS ? Name.special("<class-object-for-" + getName() + ">") : JetPsiUtil.NO_NAME_PROVIDED;
-				classObjectDescriptor = new LazyClassDescriptor(resolveSession, this, classObjectName, classObjectInfo);
+				classObjectDescriptor = new LazyClassDescriptor(resolveSession, this, classObjectName, classObjectInfo, false);
 			}
 			classObjectDescriptorResolved = true;
 		}

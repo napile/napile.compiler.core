@@ -556,7 +556,7 @@ public class DescriptorResolver
 	public PropertyDescriptor resolveObjectDeclarationAsPropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetClassOrObject objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		JetModifierList modifierList = objectDeclaration.getModifierList();
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), false, true, JetPsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION);
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), false, true, JetPsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
 		propertyDescriptor.setType(classDescriptor.getDefaultType(), Collections.<TypeParameterDescriptor>emptyList(), DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), ReceiverDescriptor.NO_RECEIVER);
 		propertyDescriptor.initialize(createDefaultGetter(propertyDescriptor), null);
 		JetObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();
@@ -603,7 +603,7 @@ public class DescriptorResolver
 
 		boolean hasBody = hasBody(property);
 		Modality defaultModality = getDefaultModality(containingDeclaration, hasBody);
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), defaultModality), resolveVisibilityFromModifiers(property.getModifierList()), isVar, false, JetPsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION);
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), defaultModality), resolveVisibilityFromModifiers(property.getModifierList()), isVar, false, JetPsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD));
 
 		List<TypeParameterDescriptorImpl> typeParameterDescriptors;
 		JetScope scopeWithTypeParameters;

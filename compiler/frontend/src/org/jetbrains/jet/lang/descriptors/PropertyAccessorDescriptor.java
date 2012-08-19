@@ -32,15 +32,15 @@ import com.google.common.collect.Sets;
  */
 public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNonRootImpl implements FunctionDescriptor, MemberDescriptor
 {
-
 	private final boolean hasBody;
 	private final boolean isDefault;
+	private final boolean isStatic;
 	private final Modality modality;
 	private final PropertyDescriptor correspondingProperty;
 	private final Kind kind;
 	private Visibility visibility;
 
-	public PropertyAccessorDescriptor(@NotNull Modality modality, @NotNull Visibility visibility, @NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, boolean hasBody, boolean isDefault, Kind kind)
+	public PropertyAccessorDescriptor(@NotNull Modality modality, @NotNull Visibility visibility, @NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, boolean hasBody, boolean isDefault, Kind kind, boolean isStatic)
 	{
 		super(correspondingProperty.getContainingDeclaration(), annotations, name);
 		this.modality = modality;
@@ -49,11 +49,18 @@ public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNo
 		this.hasBody = hasBody;
 		this.isDefault = isDefault;
 		this.kind = kind;
+		this.isStatic = isStatic;
 	}
 
 	public boolean hasBody()
 	{
 		return hasBody;
+	}
+
+	@Override
+	public boolean isStatic()
+	{
+		return isStatic;
 	}
 
 	public boolean isDefault()

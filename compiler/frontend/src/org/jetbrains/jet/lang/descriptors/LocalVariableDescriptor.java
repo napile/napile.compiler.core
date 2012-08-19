@@ -34,7 +34,7 @@ public class LocalVariableDescriptor extends VariableDescriptorImpl
 
 	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, boolean mutable)
 	{
-		super(containingDeclaration, annotations, name, type);
+		super(containingDeclaration, annotations, name, type, false);
 		isVar = mutable;
 	}
 

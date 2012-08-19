@@ -50,22 +50,25 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 
 	protected Modality modality;
 	protected Visibility visibility;
+	private final boolean isStatic;
 	protected final Set<FunctionDescriptor> overriddenFunctions = Sets.newLinkedHashSet(); // LinkedHashSet is essential here
 	private final FunctionDescriptor original;
 	private final Kind kind;
 
-	protected FunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind)
+	protected FunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name);
 		this.original = this;
 		this.kind = kind;
+		this.isStatic = isStatic;
 	}
 
-	protected FunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull FunctionDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind)
+	protected FunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull FunctionDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name);
 		this.original = original;
 		this.kind = kind;
+		this.isStatic = isStatic;
 	}
 
 	protected FunctionDescriptorImpl initialize(@Nullable JetType receiverParameterType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
@@ -149,6 +152,12 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 	public Visibility getVisibility()
 	{
 		return visibility;
+	}
+
+	@Override
+	public boolean isStatic()
+	{
+		return isStatic;
 	}
 
 	@Override

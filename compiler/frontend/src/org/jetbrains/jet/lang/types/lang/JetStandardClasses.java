@@ -85,7 +85,7 @@ public class JetStandardClasses
 
 	static
 	{
-		ClassDescriptorImpl nothing = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Nothing"));
+		ClassDescriptorImpl nothing = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Nothing"), false);
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(nothing, Collections.<AnnotationDescriptor>emptyList());
 		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.LOCAL);
 		NOTHING_CLASS = nothing.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), new AbstractCollection<JetType>()
@@ -119,7 +119,7 @@ public class JetStandardClasses
 
 	static
 	{
-		ClassDescriptorImpl any = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.identifier("Any"));
+		ClassDescriptorImpl any = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.identifier("Any"), false);
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(any, Collections.<AnnotationDescriptor>emptyList());
 		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PUBLIC);
 		ANY = any.initialize(false, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptySet(), JetScope.EMPTY, Collections.<JetDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
@@ -165,14 +165,14 @@ public class JetStandardClasses
 		{
 			List<TypeParameterDescriptor> typeParameters = Lists.newArrayList();
 			List<ValueParameterDescriptor> constructorValueParameters = Lists.newArrayList();
-			ClassDescriptorImpl classDescriptor = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Tuple" + i));
+			ClassDescriptorImpl classDescriptor = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Tuple" + i), false);
 			WritableScopeImpl writableScope = new WritableScopeImpl(JetScope.EMPTY, classDescriptor, RedeclarationHandler.THROW_EXCEPTION, "tuples");
 			for(int j = 0; j < i; j++)
 			{
 				TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createWithDefaultBound(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), false, Variance.OUT_VARIANCE, Name.identifier("T" + (j + 1)), j);
 				typeParameters.add(typeParameterDescriptor);
 
-				PropertyDescriptor propertyDescriptor = new PropertyDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibilities.PUBLIC, false, false, Name.identifier("_" + (j + 1)), CallableMemberDescriptor.Kind.DECLARATION);
+				PropertyDescriptor propertyDescriptor = new PropertyDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibilities.PUBLIC, false, false, Name.identifier("_" + (j + 1)), CallableMemberDescriptor.Kind.DECLARATION, false);
 				propertyDescriptor.setType(typeParameterDescriptor.getDefaultType(), Collections.<TypeParameterDescriptorImpl>emptyList(), classDescriptor.getImplicitReceiver(), ReceiverDescriptor.NO_RECEIVER);
 				PropertyGetterDescriptor getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibilities.PUBLIC, false, true, CallableMemberDescriptor.Kind.DECLARATION);
 				getterDescriptor.initialize(typeParameterDescriptor.getDefaultType());
@@ -208,7 +208,7 @@ public class JetStandardClasses
 	{
 		for(int i = 0; i <= MAX_FUNCTION_ORDER; i++)
 		{
-			ClassDescriptorImpl function = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("Function" + i));
+			ClassDescriptorImpl function = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("Function" + i), false);
 
 			SimpleFunctionDescriptorImpl invoke = new SimpleFunctionDescriptorImpl(function, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION);
 			WritableScope scopeForInvoke = createScopeForInvokeFunction(function, invoke);
@@ -221,7 +221,7 @@ public class JetStandardClasses
 			constructorDescriptorForFunction.initialize(function.getTypeConstructor().getParameters(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PUBLIC);
 			constructorDescriptorForFunction.setReturnType(function.getDefaultType());
 
-			ClassDescriptorImpl receiverFunction = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("ExtensionFunction" + i));
+			ClassDescriptorImpl receiverFunction = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("ExtensionFunction" + i), false);
 			SimpleFunctionDescriptorImpl invokeWithReceiver = new SimpleFunctionDescriptorImpl(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION);
 			WritableScope scopeForInvokeWithReceiver = createScopeForInvokeFunction(receiverFunction, invokeWithReceiver);
 			List<TypeParameterDescriptor> parameters = createTypeParameters(1, i, receiverFunction);

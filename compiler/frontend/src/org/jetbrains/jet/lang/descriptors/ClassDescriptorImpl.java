@@ -45,14 +45,16 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 
 	private JetScope memberDeclarations;
 	private Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructors;
-	private ConstructorDescriptor primaryConstructor;
+
 	private ReceiverDescriptor implicitReceiver;
 	private final Modality modality;
+	private final boolean isStatic;
 
-	public ClassDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Name name)
+	public ClassDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Name name, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name);
 		this.modality = modality;
+		this.isStatic = isStatic;
 	}
 
 	public final ClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<JetType> supertypes, @NotNull JetScope memberDeclarations, @NotNull Map<JetDelegationSpecifierListOwner, ConstructorDescriptor> constructors)
@@ -60,13 +62,14 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 		this.typeConstructor = new TypeConstructorImpl(this, getAnnotations(), sealed, getName().getName(), typeParameters, supertypes);
 		this.memberDeclarations = memberDeclarations;
 		this.constructors = constructors;
-		this.primaryConstructor = primaryConstructor;
+
 		return this;
 	}
 
-	public void setPrimaryConstructor(@NotNull ConstructorDescriptor primaryConstructor)
+	@Override
+	public boolean isStatic()
 	{
-		this.primaryConstructor = primaryConstructor;
+		return isStatic;
 	}
 
 	@Override
@@ -144,7 +147,7 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 	@Override
 	public ConstructorDescriptor getUnsubstitutedPrimaryConstructor()
 	{
-		return primaryConstructor;
+		return null;
 	}
 
 	@Override

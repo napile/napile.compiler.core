@@ -33,7 +33,7 @@ public class ExpressionAsFunctionDescriptor extends FunctionDescriptorImpl
 {
 	public ExpressionAsFunctionDescriptor(DeclarationDescriptor containingDeclaration, Name name)
 	{
-		super(containingDeclaration, Collections.<AnnotationDescriptor>emptyList(), name, Kind.DECLARATION);
+		super(containingDeclaration, Collections.<AnnotationDescriptor>emptyList(), name, Kind.DECLARATION, false);
 	}
 
 	@Override

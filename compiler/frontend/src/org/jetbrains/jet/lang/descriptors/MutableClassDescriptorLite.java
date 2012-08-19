@@ -66,8 +66,9 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	private Name name;
 	private final DeclarationDescriptor containingDeclaration;
 
-	public MutableClassDescriptorLite(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ClassKind kind)
+	public MutableClassDescriptorLite(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ClassKind kind, boolean isStatic)
 	{
+		super(isStatic);
 		this.containingDeclaration = containingDeclaration;
 		this.kind = kind;
 	}

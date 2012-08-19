@@ -48,7 +48,7 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 
 	public ValueParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, boolean isVar, @NotNull JetType outType, boolean declaresDefaultValue, @Nullable JetType varargElementType)
 	{
-		super(containingDeclaration, annotations, name, outType);
+		super(containingDeclaration, annotations, name, outType, false);
 		this.original = this;
 		this.index = index;
 		this.declaresDefaultValue = declaresDefaultValue;
@@ -58,7 +58,7 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 
 	public ValueParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ValueParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, boolean isVar, @NotNull JetType outType, @Nullable JetType varargElementType)
 	{
-		super(containingDeclaration, annotations, original.getName(), outType);
+		super(containingDeclaration, annotations, original.getName(), outType, false);
 		this.original = original;
 		this.index = original.getIndex();
 		this.declaresDefaultValue = original.declaresDefaultValue();

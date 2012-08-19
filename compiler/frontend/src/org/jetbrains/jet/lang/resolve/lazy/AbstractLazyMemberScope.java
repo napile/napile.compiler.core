@@ -88,7 +88,7 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 		if(object != classOrObjectDeclaration instanceof JetObjectDeclaration)
 			return null;
 
-		ClassDescriptor classDescriptor = new LazyClassDescriptor(resolveSession, thisDescriptor, name, JetClassInfoUtil.createClassLikeInfo(classOrObjectDeclaration));
+		ClassDescriptor classDescriptor = new LazyClassDescriptor(resolveSession, thisDescriptor, name, JetClassInfoUtil.createClassLikeInfo(classOrObjectDeclaration), false);
 
 		classDescriptors.put(name, classDescriptor);
 		if(!object)

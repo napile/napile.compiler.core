@@ -33,17 +33,19 @@ import org.jetbrains.jet.lang.types.JetType;
 public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRootImpl implements VariableDescriptor
 {
 	private JetType outType;
+	protected final boolean isStatic;
 
-	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType)
+	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name);
 
 		this.outType = outType;
+		this.isStatic = isStatic;
 	}
 
-	protected VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name)
+	protected VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, boolean isStatic)
 	{
-		this(containingDeclaration, annotations, name, null);
+		this(containingDeclaration, annotations, name, null, isStatic);
 	}
 
 	@NotNull

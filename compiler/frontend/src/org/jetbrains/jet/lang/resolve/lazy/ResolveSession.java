@@ -29,22 +29,7 @@ import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
 import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
 import org.jetbrains.jet.lang.descriptors.TypeParameterDescriptor;
-import org.jetbrains.jet.lang.psi.JetClass;
-import org.jetbrains.jet.lang.psi.JetClassBody;
-import org.jetbrains.jet.lang.psi.JetClassObject;
-import org.jetbrains.jet.lang.psi.JetClassOrObject;
-import org.jetbrains.jet.lang.psi.JetDeclaration;
-import org.jetbrains.jet.lang.psi.JetElement;
-import org.jetbrains.jet.lang.psi.JetEnumEntry;
-import org.jetbrains.jet.lang.psi.JetFile;
-import org.jetbrains.jet.lang.psi.JetNamedFunction;
-import org.jetbrains.jet.lang.psi.JetObjectDeclaration;
-import org.jetbrains.jet.lang.psi.JetObjectDeclarationName;
-import org.jetbrains.jet.lang.psi.JetParameter;
-import org.jetbrains.jet.lang.psi.JetProperty;
-import org.jetbrains.jet.lang.psi.JetTypeParameter;
-import org.jetbrains.jet.lang.psi.JetTypeParameterListOwner;
-import org.jetbrains.jet.lang.psi.JetVisitor;
+import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.resolve.BindingContext;
 import org.jetbrains.jet.lang.resolve.BindingTrace;
 import org.jetbrains.jet.lang.resolve.BindingTraceContext;
@@ -181,7 +166,7 @@ public class ResolveSession
 		}
 
 		DeclarationDescriptor containingDeclaration = getInjector().getScopeProvider().getResolutionScopeForDeclaration(jetEnumEntry).getContainingDeclaration();
-		LazyClassDescriptor newClassDescriptor = new LazyClassDescriptor(this, containingDeclaration, jetEnumEntry.getNameAsName(), JetClassInfoUtil.createClassLikeInfo(jetEnumEntry));
+		LazyClassDescriptor newClassDescriptor = new LazyClassDescriptor(this, containingDeclaration, jetEnumEntry.getNameAsName(), JetClassInfoUtil.createClassLikeInfo(jetEnumEntry), false);
 		enumEntryClassDescriptorCache.put(jetEnumEntry, newClassDescriptor);
 		return newClassDescriptor;
 	}
@@ -314,23 +299,6 @@ public class ResolveSession
 				JetScope scopeForDeclaration = getInjector().getScopeProvider().getResolutionScopeForDeclaration(function);
 				scopeForDeclaration.getFunctions(function.getNameAsName());
 				return getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, function);
-			}
-
-			@Override
-			public DeclarationDescriptor visitParameter(JetParameter parameter, Void data)
-			{
-				PsiElement grandFather = parameter.getParent().getParent();
-				if(grandFather instanceof JetClass)
-				{
-					JetClass jetClass = (JetClass) grandFather;
-					// This is a primary constructor parameter
-					if(parameter.getValOrVarNode() != null)
-					{
-						getClassDescriptor(jetClass).getDefaultType().getMemberScope().getProperties(parameter.getNameAsName());
-						return getBindingContext().get(BindingContext.PRIMARY_CONSTRUCTOR_PARAMETER, parameter);
-					}
-				}
-				return super.visitParameter(parameter, data);
 			}
 
 			@Override

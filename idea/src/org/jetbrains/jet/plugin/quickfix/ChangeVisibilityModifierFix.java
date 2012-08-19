@@ -24,7 +24,6 @@ import org.jetbrains.jet.lang.descriptors.Visibility;
 import org.jetbrains.jet.lang.diagnostics.Diagnostic;
 import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.psi.JetModifierListOwner;
-import org.jetbrains.jet.lang.psi.JetParameter;
 import org.jetbrains.jet.lang.resolve.BindingContext;
 import org.jetbrains.jet.lexer.JetKeywordToken;
 import org.jetbrains.jet.lexer.JetToken;
@@ -86,14 +85,8 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<JetModifierL
 	{
 		BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(file);
 		DeclarationDescriptor descriptor;
-		if(element instanceof JetParameter)
-		{
-			descriptor = bindingContext.get(BindingContext.PRIMARY_CONSTRUCTOR_PARAMETER, element);
-		}
-		else
-		{
-			descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
-		}
+		descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
+
 		if(!(descriptor instanceof CallableMemberDescriptor))
 			return null;
 

@@ -48,12 +48,13 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 	private TypeSubstitutor newSubstitutor;
 	private List<TypeParameterDescriptor> typeParameters;
 	private TypeConstructor typeConstructor;
-	private JetType superclassType;
+	private final boolean isStatic;
 
-	public LazySubstitutingClassDescriptor(ClassDescriptor descriptor, TypeSubstitutor substitutor)
+	public LazySubstitutingClassDescriptor(ClassDescriptor descriptor, TypeSubstitutor substitutor, boolean isStatic)
 	{
 		this.original = descriptor;
 		this.originalSubstitutor = substitutor;
+		this.isStatic = isStatic;
 	}
 
 	private TypeSubstitutor getSubstitutor()
@@ -168,7 +169,7 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 	{
 		if(substitutor.isEmpty())
 			return this;
-		return new LazySubstitutingClassDescriptor(this, TypeSubstitutor.create(substitutor.getSubstitution(), getSubstitutor().getSubstitution()));
+		return new LazySubstitutingClassDescriptor(this, TypeSubstitutor.create(substitutor.getSubstitution(), getSubstitutor().getSubstitution()), false);
 	}
 
 	@Override
@@ -227,5 +228,11 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 	public JetScope getUnsubstitutedInnerClassesScope()
 	{
 		return original.getUnsubstitutedInnerClassesScope();
+	}
+
+	@Override
+	public boolean isStatic()
+	{
+		return isStatic;
 	}
 }

@@ -35,12 +35,12 @@ public class ConstructorDescriptor extends FunctionDescriptorImpl
 
 	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations)
 	{
-		super(containingDeclaration, annotations, NAME, Kind.DECLARATION);
+		super(containingDeclaration, annotations, NAME, Kind.DECLARATION, false);
 	}
 
 	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations)
 	{
-		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION);
+		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION, false);
 	}
 
 	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, Visibility visibility)
@@ -110,5 +110,11 @@ public class ConstructorDescriptor extends FunctionDescriptorImpl
 	public ConstructorDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
 	{
 		throw new UnsupportedOperationException("Constructors should not be copied for overriding");
+	}
+
+	@Override
+	public boolean isStatic()
+	{
+		return false;
 	}
 }

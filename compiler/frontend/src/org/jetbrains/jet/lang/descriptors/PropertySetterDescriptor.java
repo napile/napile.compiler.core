@@ -44,7 +44,7 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 
 	public PropertySetterDescriptor(@NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean hasBody, boolean isDefault, @NotNull Kind kind, @Nullable PropertySetterDescriptor original)
 	{
-		super(modality, visibility, correspondingProperty, annotations, Name.special("<set-" + correspondingProperty.getName() + ">"), hasBody, isDefault, kind);
+		super(modality, visibility, correspondingProperty, annotations, Name.special("<set-" + correspondingProperty.getName() + ">"), hasBody, isDefault, kind, false);
 		this.original = original != null ? original : this;
 	}
 

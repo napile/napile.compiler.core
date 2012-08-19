@@ -29,4 +29,6 @@ public interface MemberDescriptor extends DeclarationDescriptorNonRoot, Declarat
 	@Override
 	@NotNull
 	Visibility getVisibility();
+
+	boolean isStatic();
 }

@@ -18,10 +18,8 @@ package org.jetbrains.jet.plugin.highlighter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
-import org.jetbrains.jet.lang.descriptors.NamespaceDescriptor;
 import org.jetbrains.jet.lang.descriptors.PropertyDescriptor;
 import org.jetbrains.jet.lang.descriptors.VariableDescriptor;
-import org.jetbrains.jet.lang.psi.JetParameter;
 import org.jetbrains.jet.lang.psi.JetProperty;
 import org.jetbrains.jet.lang.psi.JetSimpleNameExpression;
 import org.jetbrains.jet.lang.psi.JetThisExpression;
@@ -74,26 +72,9 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		super.visitProperty(property);
 	}
 
-	@Override
-	public void visitParameter(@NotNull JetParameter parameter)
-	{
-		PsiElement nameIdentifier = parameter.getNameIdentifier();
-		if(nameIdentifier == null)
-			return;
-		PropertyDescriptor propertyDescriptor = bindingContext.get(BindingContext.PRIMARY_CONSTRUCTOR_PARAMETER, parameter);
-		if(propertyDescriptor != null)
-		{
-			Boolean backingFieldRequired = bindingContext.get(BindingContext.BACKING_FIELD_REQUIRED, propertyDescriptor);
-			highlightProperty(nameIdentifier, propertyDescriptor, Boolean.TRUE.equals(backingFieldRequired));
-		}
-
-		super.visitParameter(parameter);
-	}
-
 	private void highlightProperty(@NotNull PsiElement elementToHighlight, @NotNull PropertyDescriptor descriptor, boolean withBackingField)
 	{
-		boolean namespace = descriptor.getContainingDeclaration() instanceof NamespaceDescriptor;
-		JetPsiChecker.highlightName(holder, elementToHighlight, namespace ? JetHighlightingColors.STATIC_PROPERTY : JetHighlightingColors.INSTANCE_PROPERTY);
+		JetPsiChecker.highlightName(holder, elementToHighlight, descriptor.isStatic() ? JetHighlightingColors.STATIC_PROPERTY : JetHighlightingColors.INSTANCE_PROPERTY);
 		if(descriptor.getReceiverParameter() != ReceiverDescriptor.NO_RECEIVER)
 		{
 			JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.EXTENSION_PROPERTY);

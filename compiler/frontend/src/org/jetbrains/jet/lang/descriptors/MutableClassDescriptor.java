@@ -54,7 +54,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite implement
 
 	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope outerScope, ClassKind kind, Name name)
 	{
-		super(containingDeclaration, kind);
+		super(containingDeclaration, kind, false);
 
 		RedeclarationHandler redeclarationHandler = RedeclarationHandler.DO_NOTHING;
 

@@ -39,6 +39,19 @@ public abstract class ClassDescriptorBase implements ClassDescriptor
 
 	protected abstract JetScope getScopeForMemberLookup();
 
+	private final boolean isStatic;
+
+	protected ClassDescriptorBase(boolean isStatic)
+	{
+		this.isStatic = isStatic;
+	}
+
+	@Override
+	public boolean isStatic()
+	{
+		return isStatic;
+	}
+
 	@NotNull
 	@Override
 	public JetScope getMemberScope(List<TypeProjection> typeArguments)
@@ -65,7 +78,7 @@ public abstract class ClassDescriptorBase implements ClassDescriptor
 		{
 			return this;
 		}
-		return new LazySubstitutingClassDescriptor(this, substitutor);
+		return new LazySubstitutingClassDescriptor(this, substitutor, false);
 	}
 
 	@NotNull

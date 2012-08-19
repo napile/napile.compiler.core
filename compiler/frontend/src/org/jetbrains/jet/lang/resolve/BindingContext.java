@@ -216,7 +216,6 @@ public interface BindingContext
 	WritableSlice<JetPropertyAccessor, PropertyAccessorDescriptor> PROPERTY_ACCESSOR = Slices.<JetPropertyAccessor, PropertyAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 
 	// normalize value to getOriginal(value)
-	WritableSlice<PsiElement, PropertyDescriptor> PRIMARY_CONSTRUCTOR_PARAMETER = Slices.<PsiElement, PropertyDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<JetObjectDeclarationName, PropertyDescriptor> OBJECT_DECLARATION = Slices.<JetObjectDeclarationName, PropertyDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 
 	WritableSlice[] DECLARATIONS_TO_DESCRIPTORS = new WritableSlice[]{
@@ -228,7 +227,6 @@ public interface BindingContext
 			VARIABLE,
 			VALUE_PARAMETER,
 			PROPERTY_ACCESSOR,
-			PRIMARY_CONSTRUCTOR_PARAMETER,
 			OBJECT_DECLARATION
 	};
 
