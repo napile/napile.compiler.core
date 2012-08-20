@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.resolve;
 
 import static org.napile.compiler.lang.resolve.BindingContext.CONSTRUCTOR;
+import static org.napile.compiler.lang.diagnostics.Errors.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

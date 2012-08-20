@@ -16,6 +16,8 @@
 
 package org.napile.compiler.lang.resolve;
 
+import static org.napile.compiler.lang.diagnostics.Errors.*;
+
 import java.util.*;
 
 import javax.inject.Inject;

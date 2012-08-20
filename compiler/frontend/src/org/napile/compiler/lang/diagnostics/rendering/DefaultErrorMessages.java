@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.diagnostics.rendering;
 
+import static org.napile.compiler.lang.diagnostics.Errors.*;
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.AMBIGUOUS_CALLS;
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.ELEMENT_TEXT;
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.NAME;
