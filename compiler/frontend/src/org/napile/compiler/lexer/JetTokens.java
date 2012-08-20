@@ -155,8 +155,6 @@ public interface JetTokens
 	NapileKeywordToken CATCH_KEYWORD = NapileKeywordToken.softKeyword("catch");
 	NapileKeywordToken OUT_KEYWORD = NapileKeywordToken.softKeyword("out");
 	NapileKeywordToken VARARG_KEYWORD = NapileKeywordToken.softKeyword("vararg");
-	@Deprecated
-	NapileKeywordToken INLINE_KEYWORD = NapileKeywordToken.softKeyword("inline");
 	NapileKeywordToken REIFIED_KEYWORD = NapileKeywordToken.softKeyword("reified");
 
 	NapileKeywordToken FINALLY_KEYWORD = NapileKeywordToken.softKeyword("finally");

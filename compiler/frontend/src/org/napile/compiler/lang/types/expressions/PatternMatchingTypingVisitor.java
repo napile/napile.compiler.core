@@ -279,7 +279,7 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 				for(int i = 0, entriesSize = entries.size(); i < entriesSize; i++)
 				{
 					NapileTuplePatternEntry entry = entries.get(i);
-					JetType type = subjectType.getArguments().get(i).getType();
+					JetType type = subjectType.getArguments().get(i);
 
 					// TODO : is a name always allowed, ie for tuple patterns, not decomposer arg lists?
 					ASTNode nameLabelNode = entry.getNameLabelNode();

@@ -43,10 +43,8 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
@@ -97,7 +95,7 @@ public class DescriptorResolver
 		int index = 0;
 		for(NapileTypeParameter typeParameter : classElement.getTypeParameters())
 		{
-			TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(descriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(JetTokens.REIFIED_KEYWORD), typeParameter.getVariance(), NapilePsiUtil.safeName(typeParameter.getName()), index);
+			TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(descriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(JetTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
 			trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
 			typeParameters.add(typeParameterDescriptor);
 			index++;
@@ -179,18 +177,6 @@ public class DescriptorResolver
 					NapileNullableType nullableType = (NapileNullableType) typeElement;
 					trace.report(NULLABLE_SUPERTYPE.on(nullableType));
 					typeElement = nullableType.getInnerType();
-				}
-				if(typeElement instanceof NapileUserType)
-				{
-					NapileUserType userType = (NapileUserType) typeElement;
-					List<NapileTypeProjection> typeArguments = userType.getTypeArguments();
-					for(NapileTypeProjection typeArgument : typeArguments)
-					{
-						if(typeArgument.getProjectionKind() != NapileProjectionKind.NONE)
-						{
-							trace.report(PROJECTION_IN_IMMEDIATE_ARGUMENT_TO_SUPERTYPE.on(typeArgument));
-						}
-					}
 				}
 			}
 			else
@@ -321,7 +307,7 @@ public class DescriptorResolver
 		//        JetType bound = extendsBound == null
 		//                ? JetStandardClasses.getDefaultBound()
 		//                : typeResolver.resolveType(extensibleScope, extendsBound);
-		TypeParameterDescriptorImpl typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(containingDescriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(JetTokens.REIFIED_KEYWORD), typeParameter.getVariance(), NapilePsiUtil.safeName(typeParameter.getName()), index);
+		TypeParameterDescriptorImpl typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(containingDescriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(JetTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
 		//        typeParameterDescriptor.addUpperBound(bound);
 		extensibleScope.addTypeParameterDescriptor(typeParameterDescriptor);
 		trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
@@ -884,10 +870,10 @@ public class DescriptorResolver
 			return;
 
 		List<TypeParameterDescriptor> parameters = type.getConstructor().getParameters();
-		List<TypeProjection> arguments = type.getArguments();
+		List<JetType> arguments = type.getArguments();
 		assert parameters.size() == arguments.size();
 
-		List<NapileTypeReference> jetTypeArguments = typeElement.getTypeArgumentsAsTypes();
+		List<NapileTypeReference> jetTypeArguments = typeElement.getTypeArguments();
 		assert jetTypeArguments.size() == arguments.size() : typeElement.getText();
 
 		TypeSubstitutor substitutor = TypeSubstitutor.create(type);
@@ -898,7 +884,7 @@ public class DescriptorResolver
 			if(jetTypeArgument == null)
 				continue;
 
-			JetType typeArgument = arguments.get(i).getType();
+			JetType typeArgument = arguments.get(i);
 			checkBounds(jetTypeArgument, typeArgument, trace);
 
 			TypeParameterDescriptor typeParameterDescriptor = parameters.get(i);
@@ -910,7 +896,7 @@ public class DescriptorResolver
 	{
 		for(JetType bound : typeParameterDescriptor.getUpperBounds())
 		{
-			JetType substitutedBound = substitutor.safeSubstitute(bound, Variance.INVARIANT);
+			JetType substitutedBound = substitutor.safeSubstitute(bound);
 			if(!JetTypeChecker.INSTANCE.isSubtypeOf(typeArgument, substitutedBound))
 			{
 				trace.report(UPPER_BOUND_VIOLATED.on(jetTypeArgument, substitutedBound, typeArgument));

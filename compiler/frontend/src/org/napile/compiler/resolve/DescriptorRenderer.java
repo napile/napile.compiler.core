@@ -50,8 +50,6 @@ import org.jetbrains.jet.lang.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.TypeProjection;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 
@@ -217,7 +215,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		if(!type.getArguments().isEmpty())
 		{
 			sb.append("<");
-			appendTypeProjections(sb, type.getArguments(), shortNamesOnly);
+			appendTypes(sb, type.getArguments(), shortNamesOnly);
 			sb.append(">");
 		}
 		if(type.isNullable())
@@ -232,23 +230,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		for(Iterator<JetType> iterator = types.iterator(); iterator.hasNext(); )
 		{
 			result.append(renderType(iterator.next(), shortNamesOnly));
-			if(iterator.hasNext())
-			{
-				result.append(", ");
-			}
-		}
-	}
-
-	private void appendTypeProjections(StringBuilder result, List<TypeProjection> typeProjections, boolean shortNamesOnly)
-	{
-		for(Iterator<TypeProjection> iterator = typeProjections.iterator(); iterator.hasNext(); )
-		{
-			TypeProjection typeProjection = iterator.next();
-			if(typeProjection.getProjectionKind() != Variance.INVARIANT)
-			{
-				result.append(typeProjection.getProjectionKind()).append(" ");
-			}
-			result.append(renderType(typeProjection.getType(), shortNamesOnly));
 			if(iterator.hasNext())
 			{
 				result.append(", ");
@@ -282,7 +263,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 
 		sb.append("(");
-		appendTypeProjections(sb, JetStandardClasses.getParameterTypeProjectionsFromFunctionType(type), shortNamesOnly);
+		appendTypes(sb, JetStandardClasses.getParameterTypeProjectionsFromFunctionType(type), shortNamesOnly);
 		sb.append(") -> ");
 		sb.append(renderType(JetStandardClasses.getReturnTypeFromFunctionType(type), shortNamesOnly));
 
@@ -707,15 +688,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 		protected void renderTypeParameter(TypeParameterDescriptor descriptor, StringBuilder builder, boolean topLevel)
 		{
-			if(!descriptor.isReified())
-			{
-				String variance = descriptor.getVariance().toString();
-				if(!variance.isEmpty())
-				{
-					builder.append(renderKeyword(variance)).append(" ");
-				}
-			}
-			else
+			if(descriptor.isReified())
 			{
 				builder.append(renderKeyword("reified")).append(" ");
 			}

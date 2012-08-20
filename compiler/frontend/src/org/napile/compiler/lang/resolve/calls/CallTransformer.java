@@ -149,7 +149,7 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 
 				@NotNull
 				@Override
-				public List<NapileTypeProjection> getTypeArguments()
+				public List<NapileTypeReference> getTypeArguments()
 				{
 					return Collections.emptyList();
 				}

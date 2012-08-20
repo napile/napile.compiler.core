@@ -1659,23 +1659,8 @@ public class JetParsing extends AbstractJetParsing
 
 		while(true)
 		{
-			PsiBuilder.Marker projection = mark();
+			parseTypeRef(extraRecoverySet);
 
-			//            TokenSet lookFor = TokenSet.create(IDENTIFIER);
-			//            TokenSet stopAt = TokenSet.create(COMMA, COLON, GT);
-			//            parseModifierListWithShortAnnotations(MODIFIER_LIST, lookFor, stopAt);
-			// Currently we do not allow annotations
-			parseModifierList(MODIFIER_LIST, false);
-
-			if(at(JetTokens.MUL))
-			{
-				advance(); // MUL
-			}
-			else
-			{
-				parseTypeRef(extraRecoverySet);
-			}
-			projection.done(TYPE_PROJECTION);
 			if(!at(JetTokens.COMMA))
 				break;
 			advance(); // COMMA

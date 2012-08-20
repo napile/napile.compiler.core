@@ -24,7 +24,7 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 
 /**
  * @author abreslav
- * @see org.napile.compiler.lang.types.checker.JetTypeChecker#isSubtypeOf(JetType, JetType)
+ * @see JetTypeChecker#isSubtypeOf(JetType, JetType)
  */
 public interface JetType extends Annotated
 {
@@ -32,7 +32,7 @@ public interface JetType extends Annotated
 	TypeConstructor getConstructor();
 
 	@NotNull
-	List<TypeProjection> getArguments();
+	List<JetType> getArguments();
 
 	boolean isNullable();
 

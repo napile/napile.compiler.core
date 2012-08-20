@@ -30,40 +30,24 @@ public class PsiJetTypeParameterStubImpl extends StubBase<NapileTypeParameter> i
 {
 	private final StringRef name;
 	private final StringRef extendBoundTypeText;
-	private final boolean isInVariance;
-	private final boolean isOutVariance;
 
-	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, StringRef name, StringRef extendBoundTypeText, boolean isInVariance, boolean isOutVariance)
+	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, StringRef name, StringRef extendBoundTypeText)
 	{
 		super(parent, type);
 
 		this.name = name;
 		this.extendBoundTypeText = extendBoundTypeText;
-		this.isInVariance = isInVariance;
-		this.isOutVariance = isOutVariance;
 	}
 
-	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, String name, String extendBoundTypeText, boolean isInVariance, boolean isOutVariance)
+	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, String name, String extendBoundTypeText)
 	{
-		this(type, parent, StringRef.fromString(name), StringRef.fromString(extendBoundTypeText), isInVariance, isOutVariance);
+		this(type, parent, StringRef.fromString(name), StringRef.fromString(extendBoundTypeText));
 	}
 
 	@Override
 	public String getExtendBoundTypeText()
 	{
 		return StringRef.toString(extendBoundTypeText);
-	}
-
-	@Override
-	public boolean isInVariance()
-	{
-		return isInVariance;
-	}
-
-	@Override
-	public boolean isOutVariance()
-	{
-		return isOutVariance;
 	}
 
 	@Override
@@ -77,16 +61,6 @@ public class PsiJetTypeParameterStubImpl extends StubBase<NapileTypeParameter> i
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("PsiJetTypeParameterStubImpl[");
-
-		if(isInVariance())
-		{
-			builder.append("in ");
-		}
-
-		if(isOutVariance())
-		{
-			builder.append("out ");
-		}
 
 		builder.append("name=").append(getName());
 		builder.append(" extendText=").append(getExtendBoundTypeText());

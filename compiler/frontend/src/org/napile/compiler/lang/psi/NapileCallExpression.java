@@ -64,6 +64,7 @@ public class NapileCallExpression extends NapileExpressionImpl implements Napile
 	}
 
 	@Nullable
+	@Override
 	public NapileTypeArgumentList getTypeArgumentList()
 	{
 		return (NapileTypeArgumentList) findChildByType(NapileNodeTypes.TYPE_ARGUMENT_LIST);
@@ -116,10 +117,11 @@ public class NapileCallExpression extends NapileExpressionImpl implements Napile
 		return list != null ? list.getArguments() : Collections.<NapileValueArgument>emptyList();
 	}
 
+	@Override
 	@NotNull
-	public List<NapileTypeProjection> getTypeArguments()
+	public List<NapileTypeReference> getTypeArguments()
 	{
 		NapileTypeArgumentList list = getTypeArgumentList();
-		return list != null ? list.getArguments() : Collections.<NapileTypeProjection>emptyList();
+		return list != null ? list.getArguments() : Collections.<NapileTypeReference>emptyList();
 	}
 }

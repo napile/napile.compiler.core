@@ -37,17 +37,16 @@ public class TypeSubstitutor
 
 	public static class MapToTypeSubstitutionAdapter implements TypeSubstitution
 	{
-		private final
 		@NotNull
-		Map<TypeConstructor, TypeProjection> substitutionContext;
+		private final Map<TypeConstructor, JetType> substitutionContext;
 
-		public MapToTypeSubstitutionAdapter(@NotNull Map<TypeConstructor, TypeProjection> substitutionContext)
+		public MapToTypeSubstitutionAdapter(@NotNull Map<TypeConstructor, JetType> substitutionContext)
 		{
 			this.substitutionContext = substitutionContext;
 		}
 
 		@Override
-		public TypeProjection get(TypeConstructor key)
+		public JetType get(TypeConstructor key)
 		{
 			return substitutionContext.get(key);
 		}
@@ -88,15 +87,15 @@ public class TypeSubstitutor
 	/**
 	 * No assertion for immediate recursion
 	 */
-	public static TypeSubstitutor createUnsafe(@NotNull Map<TypeConstructor, TypeProjection> substitutionContext)
+	public static TypeSubstitutor createUnsafe(@NotNull Map<TypeConstructor, JetType> substitutionContext)
 	{
-		Map<TypeConstructor, TypeProjection> cleanContext = SubstitutionUtils.removeTrivialSubstitutions(substitutionContext);
+		Map<TypeConstructor, JetType> cleanContext = substitutionContext;
 		return create(new MapToTypeSubstitutionAdapter(cleanContext));
 	}
 
-	public static TypeSubstitutor create(@NotNull Map<TypeConstructor, TypeProjection> substitutionContext)
+	public static TypeSubstitutor create(@NotNull Map<TypeConstructor, JetType> substitutionContext)
 	{
-		Map<TypeConstructor, TypeProjection> cleanContext = SubstitutionUtils.removeTrivialSubstitutions(substitutionContext);
+		Map<TypeConstructor, JetType> cleanContext = substitutionContext;
 		//SubstitutionUtils.assertNotImmediatelyRecursive(cleanContext);
 		return createUnsafe(cleanContext);
 	}
@@ -134,7 +133,7 @@ public class TypeSubstitutor
 	}
 
 	@NotNull
-	public JetType safeSubstitute(@NotNull JetType type, @NotNull Variance howThisTypeIsUsed)
+	public JetType safeSubstitute(@NotNull JetType type)
 	{
 		if(isEmpty())
 		{
@@ -143,7 +142,7 @@ public class TypeSubstitutor
 
 		try
 		{
-			return unsafeSubstitute(new TypeProjection(howThisTypeIsUsed, type), 0).getType();
+			return unsafeSubstitute(type, 0);
 		}
 		catch(SubstitutionException e)
 		{
@@ -152,7 +151,7 @@ public class TypeSubstitutor
 	}
 
 	@Nullable
-	public JetType substitute(@NotNull JetType type, @NotNull Variance howThisTypeIsUsed)
+	public JetType substitute(@NotNull JetType type)
 	{
 		if(isEmpty())
 		{
@@ -161,7 +160,7 @@ public class TypeSubstitutor
 
 		try
 		{
-			return unsafeSubstitute(new TypeProjection(howThisTypeIsUsed, type), 0).getType();
+			return unsafeSubstitute(type, 0);
 		}
 		catch(SubstitutionException e)
 		{
@@ -170,103 +169,51 @@ public class TypeSubstitutor
 	}
 
 	@NotNull
-	private TypeProjection unsafeSubstitute(@NotNull TypeProjection originalProjection, int recursionDepth) throws SubstitutionException
+	private JetType unsafeSubstitute(@NotNull JetType type, int recursionDepth) throws SubstitutionException
 	{
-		assertRecursionDepth(recursionDepth, originalProjection, substitution);
+		assertRecursionDepth(recursionDepth, type, substitution);
 		// The type is within the substitution range, i.e. T or T?
-		JetType type = originalProjection.getType();
-		if(JetStandardClasses.isNothing(type) || ErrorUtils.isErrorType(type))
-			return originalProjection;
 
-		TypeProjection replacement = substitution.get(type.getConstructor());
+		if(JetStandardClasses.isNothing(type) || ErrorUtils.isErrorType(type))
+			return type;
+
+		JetType replacement = substitution.get(type.getConstructor());
 
 		if(replacement != null)
 		{
-			// It must be a type parameter: only they can be directly substituted for
-			TypeParameterDescriptor typeParameter = (TypeParameterDescriptor) type.getConstructor().getDeclarationDescriptor();
+			boolean resultingIsNullable = type.isNullable() || replacement.isNullable();
 
-			switch(conflictType(originalProjection.getProjectionKind(), replacement.getProjectionKind()))
-			{
-				case OUT_IN_IN_POSITION:
-					throw new SubstitutionException("Out-projection in in-position");
-				case IN_IN_OUT_POSITION:
-					replacement = SubstitutionUtils.makeStarProjection(typeParameter);
-					break;
-			}
-			boolean resultingIsNullable = type.isNullable() || replacement.getType().isNullable();
-			JetType substitutedType = TypeUtils.makeNullableAsSpecified(replacement.getType(), resultingIsNullable);
-			Variance resultingProjectionKind = combine(originalProjection.getProjectionKind(), replacement.getProjectionKind());
-
-			return new TypeProjection(resultingProjectionKind, substitutedType);
+			return TypeUtils.makeNullableAsSpecified(replacement, resultingIsNullable);
 		}
 		else
 		{
 			// The type is not within the substitution range, i.e. Foo, Bar<T> etc.
-			List<TypeProjection> substitutedArguments = substituteTypeArguments(type.getConstructor().getParameters(), type.getArguments(), recursionDepth);
+			List<JetType> substitutedArguments = substituteTypeArguments(type.getConstructor().getParameters(), type.getArguments(), recursionDepth);
 
 			JetType substitutedType = new JetTypeImpl(type.getAnnotations(),   // Old annotations. This is questionable
 					type.getConstructor(),   // The same constructor
 					type.isNullable(),       // Same nullability
 					substitutedArguments, new SubstitutingScope(type.getMemberScope(), this));
-			return new TypeProjection(originalProjection.getProjectionKind(), substitutedType);
+			return substitutedType;
 		}
 	}
 
-	private List<TypeProjection> substituteTypeArguments(List<TypeParameterDescriptor> typeParameters, List<TypeProjection> typeArguments, int recursionDepth) throws SubstitutionException
+	private List<JetType> substituteTypeArguments(List<TypeParameterDescriptor> typeParameters, List<JetType> typeArguments, int recursionDepth) throws SubstitutionException
 	{
-		List<TypeProjection> substitutedArguments = Lists.newArrayList();
+		List<JetType> substitutedArguments = Lists.newArrayList();
 		for(int i = 0; i < typeParameters.size(); i++)
 		{
 			TypeParameterDescriptor typeParameter = typeParameters.get(i);
-			TypeProjection typeArgument = typeArguments.get(i);
+			JetType typeArgument = typeArguments.get(i);
 
-			TypeProjection substitutedTypeArgument = unsafeSubstitute(typeArgument, recursionDepth + 1);
-
-			switch(conflictType(typeParameter.getVariance(), substitutedTypeArgument.getProjectionKind()))
-			{
-				case OUT_IN_IN_POSITION:
-					substitutedTypeArgument = new TypeProjection(Variance.IN_VARIANCE, typeParameter.getLowerBoundsAsType());
-					break;
-				case IN_IN_OUT_POSITION:
-					substitutedTypeArgument = SubstitutionUtils.makeStarProjection(typeParameter);
-					break;
-			}
+			JetType substitutedTypeArgument = unsafeSubstitute(typeArgument, recursionDepth + 1);
 
 			substitutedArguments.add(substitutedTypeArgument);
 		}
 		return substitutedArguments;
 	}
 
-	private static Variance combine(Variance typeParameterVariance, Variance projectionKind)
-	{
-		if(typeParameterVariance == Variance.INVARIANT)
-			return projectionKind;
-		if(projectionKind == Variance.INVARIANT)
-			return typeParameterVariance;
-		return typeParameterVariance.superpose(projectionKind);
-	}
-
-	private enum VarianceConflictType
-	{
-		NO_CONFLICT,
-		IN_IN_OUT_POSITION,
-		OUT_IN_IN_POSITION;
-	}
-
-	private static VarianceConflictType conflictType(Variance position, Variance argument)
-	{
-		if(position == Variance.IN_VARIANCE && argument == Variance.OUT_VARIANCE)
-		{
-			return VarianceConflictType.OUT_IN_IN_POSITION;
-		}
-		if(position == Variance.OUT_VARIANCE && argument == Variance.IN_VARIANCE)
-		{
-			return VarianceConflictType.IN_IN_OUT_POSITION;
-		}
-		return VarianceConflictType.NO_CONFLICT;
-	}
-
-	private static void assertRecursionDepth(int recursionDepth, TypeProjection projection, TypeSubstitution substitution)
+	private static void assertRecursionDepth(int recursionDepth, JetType projection, TypeSubstitution substitution)
 	{
 		if(recursionDepth > MAX_RECURSION_DEPTH)
 		{

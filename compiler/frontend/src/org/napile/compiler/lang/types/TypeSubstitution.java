@@ -26,7 +26,7 @@ public interface TypeSubstitution
 	TypeSubstitution EMPTY = new TypeSubstitution()
 	{
 		@Override
-		public TypeProjection get(TypeConstructor key)
+		public JetType get(TypeConstructor key)
 		{
 			return null;
 		}
@@ -45,7 +45,7 @@ public interface TypeSubstitution
 	};
 
 	@Nullable
-	TypeProjection get(TypeConstructor key);
+	JetType get(TypeConstructor key);
 
 	boolean isEmpty();
 }

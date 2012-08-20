@@ -56,7 +56,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
 import com.intellij.openapi.project.Project;
@@ -255,7 +254,7 @@ public class ExpressionTypingUtils
 		ConstraintSystem constraintSystem = new ConstraintSystemImpl();
 		for(TypeParameterDescriptor typeParameterDescriptor : receiverArgument.getTypeParameters())
 		{
-			constraintSystem.registerTypeVariable(typeParameterDescriptor, Variance.INVARIANT);
+			constraintSystem.registerTypeVariable(typeParameterDescriptor);
 		}
 
 		ReceiverDescriptor receiverParameter = receiverArgument.getReceiverParameter();

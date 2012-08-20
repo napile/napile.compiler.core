@@ -33,7 +33,6 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.TypeProjection;
 
 /**
  * @author svtk
@@ -56,7 +55,7 @@ public class WhenChecker
 			return false;
 		ClassDescriptor classObjectDescriptor = classDescriptor.getClassObjectDescriptor();
 		assert classObjectDescriptor != null;
-		JetScope memberScope = classObjectDescriptor.getMemberScope(Collections.<TypeProjection>emptyList());
+		JetScope memberScope = classObjectDescriptor.getMemberScope(Collections.<JetType>emptyList());
 		Collection<ClassDescriptor> objectDescriptors = memberScope.getObjectDescriptors();
 		boolean isExhaust = true;
 		boolean notEmpty = false;

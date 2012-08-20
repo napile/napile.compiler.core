@@ -20,7 +20,6 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.Variance;
 
 /**
  * @author svtk
@@ -35,9 +34,6 @@ public interface TypeConstraints
 
 	@NotNull
 	Set<JetType> getExactBounds();
-
-	@NotNull
-	Variance getVarianceOfPosition();
 
 	boolean isEmpty();
 }

@@ -32,7 +32,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
 import org.napile.compiler.lang.types.DescriptorSubstitutor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.Variance;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -204,7 +203,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);
 
 		JetType originalOutType = getType();
-		JetType outType = substitutor.substitute(originalOutType, Variance.OUT_VARIANCE);
+		JetType outType = substitutor.substitute(originalOutType);
 		if(outType == null)
 		{
 			return null; // TODO : tell the user that the property was projected out
@@ -213,7 +212,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		ReceiverDescriptor substitutedExpectedThisObject;
 		if(expectedThisObject.exists())
 		{
-			JetType substitutedExpectedThisObjectType = substitutor.substitute(getExpectedThisObject().getType(), Variance.INVARIANT);
+			JetType substitutedExpectedThisObjectType = substitutor.substitute(getExpectedThisObject().getType());
 			substitutedExpectedThisObject = new TransientReceiver(substitutedExpectedThisObjectType);
 		}
 		else
@@ -224,7 +223,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		JetType substitutedReceiverType;
 		if(receiver.exists())
 		{
-			substitutedReceiverType = substitutor.substitute(receiver.getType(), Variance.IN_VARIANCE);
+			substitutedReceiverType = substitutor.substitute(receiver.getType());
 			if(substitutedReceiverType == null)
 				return null;
 		}
@@ -239,7 +238,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		if(newGetter != null)
 		{
 			JetType returnType = getter.getReturnType();
-			newGetter.initialize(returnType != null ? substitutor.substitute(returnType, Variance.OUT_VARIANCE) : null);
+			newGetter.initialize(returnType != null ? substitutor.substitute(returnType) : null);
 		}
 		PropertySetterDescriptor newSetter = setter == null ? null : new PropertySetterDescriptor(substitutedDescriptor, Lists.newArrayList(setter.getAnnotations()), DescriptorUtils.convertModality(setter.getModality(), false), setter.getVisibility(), setter.hasBody(), setter.isDefault(), kind, setter.getOriginal());
 		if(newSetter != null)

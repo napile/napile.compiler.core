@@ -49,7 +49,6 @@ import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -95,9 +94,9 @@ public class DescriptorUtils
 
 			@NotNull
 			@Override
-			public JetType safeSubstitute(@NotNull JetType type, @NotNull Variance howThisTypeIsUsed)
+			public JetType safeSubstitute(@NotNull JetType type)
 			{
-				JetType substituted = substitute(type, howThisTypeIsUsed);
+				JetType substituted = substitute(type);
 				if(substituted == null)
 				{
 					return ErrorUtils.createErrorType("Substitution failed");
@@ -107,22 +106,9 @@ public class DescriptorUtils
 
 			@Nullable
 			@Override
-			public JetType substitute(@NotNull JetType type, @NotNull Variance howThisTypeIsUsed)
+			public JetType substitute(@NotNull JetType type)
 			{
-				TypeParameterDescriptor typeParameterDescriptor = typeConstructors.get(type.getConstructor());
-				if(typeParameterDescriptor != null)
-				{
-					switch(howThisTypeIsUsed)
-					{
-						case INVARIANT:
-							return type;
-						case IN_VARIANCE:
-							throw new UnsupportedOperationException(); // TODO : lower bounds
-						case OUT_VARIANCE:
-							return typeParameterDescriptor.getDefaultType();
-					}
-				}
-				return super.substitute(type, howThisTypeIsUsed);
+				return super.substitute(type);
 			}
 		});
 	}

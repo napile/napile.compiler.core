@@ -31,11 +31,11 @@ public class CompositeTypeSubstitution implements TypeSubstitution
 	}
 
 	@Override
-	public TypeProjection get(TypeConstructor key)
+	public JetType get(TypeConstructor key)
 	{
 		for(TypeSubstitution substitution : inner)
 		{
-			TypeProjection value = substitution.get(key);
+			JetType value = substitution.get(key);
 			if(value != null)
 				return value;
 		}

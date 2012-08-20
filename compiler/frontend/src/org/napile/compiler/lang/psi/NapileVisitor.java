@@ -434,11 +434,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitTypeElement(nullableType, data);
 	}
 
-	public R visitTypeProjection(NapileTypeProjection typeProjection, D data)
-	{
-		return visitJetElement(typeProjection, data);
-	}
-
 	public R visitWhenEntry(NapileWhenEntry jetWhenEntry, D data)
 	{
 		return visitJetElement(jetWhenEntry, data);

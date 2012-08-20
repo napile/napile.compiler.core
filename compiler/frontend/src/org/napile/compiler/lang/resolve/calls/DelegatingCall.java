@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileTypeArgumentList;
-import org.napile.compiler.lang.psi.NapileTypeProjection;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileValueArgumentList;
 import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -94,7 +94,7 @@ public class DelegatingCall implements Call
 
 	@Override
 	@NotNull
-	public List<NapileTypeProjection> getTypeArguments()
+	public List<NapileTypeReference> getTypeArguments()
 	{
 		return delegate.getTypeArguments();
 	}

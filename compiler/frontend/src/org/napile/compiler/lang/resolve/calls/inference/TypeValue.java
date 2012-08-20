@@ -21,7 +21,6 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.Variance;
 import com.google.common.collect.Sets;
 
 /**
@@ -32,15 +31,13 @@ public class TypeValue implements BoundsOwner
 	private final Set<TypeValue> upperBounds = Sets.newLinkedHashSet();
 	private final Set<TypeValue> lowerBounds = Sets.newLinkedHashSet();
 
-	private final Variance positionVariance;
 	private final TypeParameterDescriptor typeParameterDescriptor; // Null for known types
 	private final JetType originalType;
 	private JetType value; // For an unknown - the value found by constraint resolution, for a known - just it's value
 
 	// Unknown type
-	public TypeValue(@NotNull TypeParameterDescriptor typeParameterDescriptor, @NotNull Variance positionVariance)
+	public TypeValue(@NotNull TypeParameterDescriptor typeParameterDescriptor)
 	{
-		this.positionVariance = positionVariance;
 		this.typeParameterDescriptor = typeParameterDescriptor;
 		this.originalType = typeParameterDescriptor.getDefaultType();
 	}
@@ -48,7 +45,6 @@ public class TypeValue implements BoundsOwner
 	// Known type
 	public TypeValue(@NotNull JetType knownType)
 	{
-		this.positionVariance = null;
 		this.typeParameterDescriptor = null;
 		this.originalType = knownType;
 		this.value = knownType;
@@ -62,12 +58,6 @@ public class TypeValue implements BoundsOwner
 	public TypeParameterDescriptor getTypeParameterDescriptor()
 	{
 		return typeParameterDescriptor;
-	}
-
-	@NotNull
-	public Variance getPositionVariance()
-	{
-		return positionVariance;
 	}
 
 	@Override

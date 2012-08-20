@@ -431,11 +431,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitTypeElement(nullableType);
 	}
 
-	public void visitTypeProjection(NapileTypeProjection typeProjection)
-	{
-		visitJetElement(typeProjection);
-	}
-
 	public void visitWhenEntry(NapileWhenEntry jetWhenEntry)
 	{
 		visitJetElement(jetWhenEntry);

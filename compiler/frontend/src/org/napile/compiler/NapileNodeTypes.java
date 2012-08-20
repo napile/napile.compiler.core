@@ -72,7 +72,6 @@ public interface NapileNodeTypes
 	NapileNodeType FUNCTION_TYPE = new NapileNodeType("FUNCTION_TYPE", NapileFunctionType.class);
 	NapileNodeType SELF_TYPE = new NapileNodeType("SELF_TYPE", NapileSelfType.class);
 	NapileNodeType NULLABLE_TYPE = new NapileNodeType("NULLABLE_TYPE", NapileNullableType.class);
-	NapileNodeType TYPE_PROJECTION = new NapileNodeType("TYPE_PROJECTION", NapileTypeProjection.class);
 
 	// TODO: review
 	NapileNodeType PROPERTY_ACCESSOR = new NapileNodeType("PROPERTY_ACCESSOR", NapilePropertyAccessor.class);

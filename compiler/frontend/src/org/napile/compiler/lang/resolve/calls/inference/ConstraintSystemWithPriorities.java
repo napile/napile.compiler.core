@@ -31,11 +31,9 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.checker.TypeCheckingProcedure;
 import org.napile.compiler.lang.types.checker.TypingConstraints;
@@ -57,23 +55,22 @@ public class ConstraintSystemWithPriorities
 		}
 	};
 
-	public static TypeSubstitutor makeConstantSubstitutor(Collection<TypeParameterDescriptor> typeParameterDescriptors, JetType type)
+	public static TypeSubstitutor makeConstantSubstitutor(Collection<TypeParameterDescriptor> typeParameterDescriptors, final JetType type)
 	{
 		final Set<TypeConstructor> constructors = Sets.newHashSet();
 		for(TypeParameterDescriptor typeParameterDescriptor : typeParameterDescriptors)
 		{
 			constructors.add(typeParameterDescriptor.getTypeConstructor());
 		}
-		final TypeProjection projection = new TypeProjection(type);
 
 		return TypeSubstitutor.create(new TypeSubstitution()
 		{
 			@Override
-			public TypeProjection get(TypeConstructor key)
+			public JetType get(TypeConstructor key)
 			{
 				if(constructors.contains(key))
 				{
-					return projection;
+					return type;
 				}
 				return null;
 			}
@@ -137,10 +134,10 @@ public class ConstraintSystemWithPriorities
 		return typeValue;
 	}
 
-	public void registerTypeVariable(@NotNull TypeParameterDescriptor typeParameterDescriptor, @NotNull Variance positionVariance)
+	public void registerTypeVariable(@NotNull TypeParameterDescriptor typeParameterDescriptor)
 	{
 		assert !unknownTypes.containsKey(typeParameterDescriptor);
-		TypeValue typeValue = new TypeValue(typeParameterDescriptor, positionVariance);
+		TypeValue typeValue = new TypeValue(typeParameterDescriptor);
 		unknownTypes.put(typeParameterDescriptor, typeValue);
 		unsolvedUnknowns.add(typeValue);
 	}
@@ -403,10 +400,10 @@ public class ConstraintSystemWithPriorities
 
 		for(SubtypingConstraint constraint : constraintsToEnsureAfterInference)
 		{
-			JetType substitutedSubtype = solution.getSubstitutor().substitute(constraint.getSubtype(), Variance.INVARIANT); // TODO
+			JetType substitutedSubtype = solution.getSubstitutor().substitute(constraint.getSubtype()); // TODO
 			if(substitutedSubtype == null)
 				continue;
-			JetType substitutedSupertype = solution.getSubstitutor().substitute(constraint.getSupertype(), Variance.INVARIANT); // TODO
+			JetType substitutedSupertype = solution.getSubstitutor().substitute(constraint.getSupertype()); // TODO
 			if(substitutedSupertype == null)
 				continue;
 
@@ -446,47 +443,37 @@ public class ConstraintSystemWithPriorities
 			beingComputed.add(unknown);
 			try
 			{
-				if(unknown.getPositionVariance() == Variance.IN_VARIANCE)
+				Set<TypeValue> lowerBounds = unknown.getLowerBounds();
+				Set<TypeValue> upperBounds = unknown.getUpperBounds();
+				if(!lowerBounds.isEmpty())
 				{
-					// maximal solution
-					throw new UnsupportedOperationException();
+					Set<JetType> types = getTypes(lowerBounds);
+
+					JetType commonSupertype = CommonSupertypes.commonSupertype(types);
+					for(TypeValue upperBound : upperBounds)
+					{
+						if(!typeChecker.isSubtypeOf(commonSupertype, upperBound.getType()))
+						{
+							return false;
+						}
+					}
+
+					listener.log("minimal solution from lower bounds for ", this, " is ", commonSupertype);
+					assignValueTo(unknown, commonSupertype);
+				}
+				else if(!upperBounds.isEmpty())
+				{
+					Set<JetType> types = getTypes(upperBounds);
+					JetType intersect = TypeUtils.intersect(typeChecker, types, jetScope);
+
+					if(intersect == null)
+						return false;
+
+					assignValueTo(unknown, intersect);
 				}
 				else
 				{
-					// minimal solution
-
-					Set<TypeValue> lowerBounds = unknown.getLowerBounds();
-					Set<TypeValue> upperBounds = unknown.getUpperBounds();
-					if(!lowerBounds.isEmpty())
-					{
-						Set<JetType> types = getTypes(lowerBounds);
-
-						JetType commonSupertype = CommonSupertypes.commonSupertype(types);
-						for(TypeValue upperBound : upperBounds)
-						{
-							if(!typeChecker.isSubtypeOf(commonSupertype, upperBound.getType()))
-							{
-								return false;
-							}
-						}
-
-						listener.log("minimal solution from lower bounds for ", this, " is ", commonSupertype);
-						assignValueTo(unknown, commonSupertype);
-					}
-					else if(!upperBounds.isEmpty())
-					{
-						Set<JetType> types = getTypes(upperBounds);
-						JetType intersect = TypeUtils.intersect(typeChecker, types, jetScope);
-
-						if(intersect == null)
-							return false;
-
-						assignValueTo(unknown, intersect);
-					}
-					else
-					{
-						return false; // No bounds to compute the value from
-					}
+					return false; // No bounds to compute the value from
 				}
 			}
 			finally
@@ -536,10 +523,10 @@ public class ConstraintSystemWithPriorities
 		try
 		{
 			JetType resultingType = typeValue.getType();
-			JetType type = solution.getSubstitutor().substitute(resultingType, Variance.INVARIANT); // TODO
+			JetType type = solution.getSubstitutor().substitute(resultingType); // TODO
 			for(TypeValue upperBound : typeValue.getUpperBounds())
 			{
-				JetType boundingType = solution.getSubstitutor().substitute(upperBound.getType(), Variance.INVARIANT);
+				JetType boundingType = solution.getSubstitutor().substitute(upperBound.getType());
 				if(!typeChecker.isSubtypeOf(type, boundingType))
 				{ // TODO
 					solution.registerError("Constraint violation: " + type + " is not a subtype of " + boundingType);
@@ -548,7 +535,7 @@ public class ConstraintSystemWithPriorities
 			}
 			for(TypeValue lowerBound : typeValue.getLowerBounds())
 			{
-				JetType boundingType = solution.getSubstitutor().substitute(lowerBound.getType(), Variance.INVARIANT);
+				JetType boundingType = solution.getSubstitutor().substitute(lowerBound.getType());
 				if(!typeChecker.isSubtypeOf(boundingType, type))
 				{
 					solution.registerError("Constraint violation: " + boundingType + " is not a subtype of " + type);
@@ -591,7 +578,7 @@ public class ConstraintSystemWithPriorities
 		private final TypeSubstitutor typeSubstitutor = TypeSubstitutor.create(new TypeSubstitution()
 		{
 			@Override
-			public TypeProjection get(TypeConstructor key)
+			public JetType get(TypeConstructor key)
 			{
 				DeclarationDescriptor declarationDescriptor = key.getDeclarationDescriptor();
 				if(declarationDescriptor instanceof TypeParameterDescriptor)
@@ -606,11 +593,10 @@ public class ConstraintSystemWithPriorities
 					{
 						return null;
 					}
-					TypeProjection typeProjection = new TypeProjection(value);
 
-					listener.log(descriptor, " |-> ", typeProjection);
+					listener.log(descriptor, " |-> ", value);
 
-					return typeProjection;
+					return value;
 				}
 				return null;
 			}

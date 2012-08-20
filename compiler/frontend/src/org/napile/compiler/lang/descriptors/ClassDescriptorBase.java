@@ -25,7 +25,6 @@ import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 
@@ -54,14 +53,14 @@ public abstract class ClassDescriptorBase implements ClassDescriptor
 
 	@NotNull
 	@Override
-	public JetScope getMemberScope(List<TypeProjection> typeArguments)
+	public JetScope getMemberScope(List<JetType> typeArguments)
 	{
 		assert typeArguments.size() == getTypeConstructor().getParameters().size();
 		if(typeArguments.isEmpty())
 			return getScopeForMemberLookup();
 
 		List<TypeParameterDescriptor> typeParameters = getTypeConstructor().getParameters();
-		Map<TypeConstructor, TypeProjection> substitutionContext = SubstitutionUtils.buildSubstitutionContext(typeParameters, typeArguments);
+		Map<TypeConstructor, JetType> substitutionContext = SubstitutionUtils.buildSubstitutionContext(typeParameters, typeArguments);
 
 		// Unsafe substitutor is OK, because no recursion can hurt us upon a trivial substitution:
 		// all the types are written explicitly in the code already, they can not get infinite.

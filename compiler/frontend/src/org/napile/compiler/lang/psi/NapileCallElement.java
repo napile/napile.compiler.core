@@ -40,7 +40,7 @@ public interface NapileCallElement extends PsiElement
 	List<NapileExpression> getFunctionLiteralArguments();
 
 	@NotNull
-	List<NapileTypeProjection> getTypeArguments();
+	List<NapileTypeReference> getTypeArguments();
 
 	@Nullable
 	NapileTypeArgumentList getTypeArgumentList();

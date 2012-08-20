@@ -34,10 +34,8 @@ import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 
 /**
@@ -49,7 +47,7 @@ public class FunctionDescriptorUtil
 	{
 
 		@Override
-		public TypeProjection get(TypeConstructor key)
+		public JetType get(TypeConstructor key)
 		{
 			return null;
 		}
@@ -67,12 +65,12 @@ public class FunctionDescriptorUtil
 		}
 	});
 
-	public static Map<TypeConstructor, TypeProjection> createSubstitutionContext(@NotNull FunctionDescriptor functionDescriptor, List<JetType> typeArguments)
+	public static Map<TypeConstructor, JetType> createSubstitutionContext(@NotNull FunctionDescriptor functionDescriptor, List<JetType> typeArguments)
 	{
 		if(functionDescriptor.getTypeParameters().isEmpty())
 			return Collections.emptyMap();
 
-		Map<TypeConstructor, TypeProjection> result = new HashMap<TypeConstructor, TypeProjection>();
+		Map<TypeConstructor, JetType> result = new HashMap<TypeConstructor, JetType>();
 
 		int typeArgumentsSize = typeArguments.size();
 		List<TypeParameterDescriptor> typeParameters = functionDescriptor.getTypeParameters();
@@ -81,7 +79,7 @@ public class FunctionDescriptorUtil
 		{
 			TypeParameterDescriptor typeParameterDescriptor = typeParameters.get(i);
 			JetType typeArgument = typeArguments.get(i);
-			result.put(typeParameterDescriptor.getTypeConstructor(), new TypeProjection(typeArgument));
+			result.put(typeParameterDescriptor.getTypeConstructor(), typeArgument);
 		}
 		return result;
 	}
@@ -95,9 +93,9 @@ public class FunctionDescriptorUtil
 		{
 			ValueParameterDescriptor unsubstitutedValueParameter = unsubstitutedValueParameters.get(i);
 			// TODO : Lazy?
-			JetType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType(), Variance.IN_VARIANCE);
+			JetType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType());
 			JetType varargElementType = unsubstitutedValueParameter.getVarargElementType();
-			JetType substituteVarargElementType = varargElementType == null ? null : substitutor.substitute(varargElementType, Variance.IN_VARIANCE);
+			JetType substituteVarargElementType = varargElementType == null ? null : substitutor.substitute(varargElementType);
 			if(substitutedType == null)
 				return null;
 			result.add(new ValueParameterDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.isVar(), substitutedType, substituteVarargElementType));
@@ -108,13 +106,13 @@ public class FunctionDescriptorUtil
 	@Nullable
 	public static JetType getSubstitutedReturnType(@NotNull FunctionDescriptor functionDescriptor, TypeSubstitutor substitutor)
 	{
-		return substitutor.substitute(functionDescriptor.getReturnType(), Variance.OUT_VARIANCE);
+		return substitutor.substitute(functionDescriptor.getReturnType());
 	}
 
 	@Nullable
 	public static FunctionDescriptor substituteFunctionDescriptor(@NotNull List<JetType> typeArguments, @NotNull FunctionDescriptor functionDescriptor)
 	{
-		Map<TypeConstructor, TypeProjection> substitutionContext = createSubstitutionContext(functionDescriptor, typeArguments);
+		Map<TypeConstructor, JetType> substitutionContext = createSubstitutionContext(functionDescriptor, typeArguments);
 		return functionDescriptor.substitute(TypeSubstitutor.create(substitutionContext));
 	}
 

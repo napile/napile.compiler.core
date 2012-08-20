@@ -62,7 +62,6 @@ public interface Errors
 	SimpleDiagnosticFactory<PsiElement> TRAIT_CAN_NOT_BE_FINAL = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReturnExpression> RETURN_NOT_ALLOWED = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileTypeProjection> PROJECTION_IN_IMMEDIATE_ARGUMENT_TO_SUPERTYPE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.PROJECTION_MODIFIER);
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> LABEL_NAME_CLASH = SimpleDiagnosticFactory.create(Severity.WARNING);
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> EXPRESSION_EXPECTED_NAMESPACE_FOUND = SimpleDiagnosticFactory.create(Severity.ERROR);
 
@@ -113,7 +112,6 @@ public interface Errors
 
 	SimpleDiagnosticFactory<NapileNamedDeclaration> PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
-	SimpleDiagnosticFactory<NapileTypeProjection> PROJECTION_ON_NON_CLASS_TYPE_ARGUMENT = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.PROJECTION_MODIFIER);
 	SimpleDiagnosticFactory<NapileDelegatorToSuperClass> SUPERTYPE_NOT_INITIALIZED = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileDelegatorToSuperClass> SUPERTYPE_NOT_INITIALIZED_DEFAULT = SimpleDiagnosticFactory.create(Severity.ERROR);
 

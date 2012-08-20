@@ -247,16 +247,6 @@ public class PositioningStrategies
 		}
 	};
 
-	public static PositioningStrategy<NapileTypeProjection> PROJECTION_MODIFIER = new PositioningStrategy<NapileTypeProjection>()
-	{
-		@NotNull
-		@Override
-		public List<TextRange> mark(@NotNull NapileTypeProjection element)
-		{
-			return markNode(element.getProjectionNode());
-		}
-	};
-
 	public static PositioningStrategy<NapileParameter> PARAMETER_DEFAULT_VALUE = new PositioningStrategy<NapileParameter>()
 	{
 		@NotNull

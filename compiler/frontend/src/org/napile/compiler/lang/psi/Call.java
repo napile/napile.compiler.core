@@ -53,7 +53,7 @@ public interface Call
 	List<NapileExpression> getFunctionLiteralArguments();
 
 	@NotNull
-	List<NapileTypeProjection> getTypeArguments();
+	List<NapileTypeReference> getTypeArguments();
 
 	@Nullable
 	NapileTypeArgumentList getTypeArgumentList();

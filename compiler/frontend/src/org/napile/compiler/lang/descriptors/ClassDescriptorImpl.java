@@ -32,7 +32,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructorImpl;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 
@@ -81,14 +80,14 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 
 	@Override
 	@NotNull
-	public JetScope getMemberScope(List<TypeProjection> typeArguments)
+	public JetScope getMemberScope(List<JetType> typeArguments)
 	{
 		assert typeArguments.size() == typeConstructor.getParameters().size() : typeArguments;
 		if(typeConstructor.getParameters().isEmpty())
 		{
 			return memberDeclarations;
 		}
-		Map<TypeConstructor, TypeProjection> substitutionContext = SubstitutionUtils.buildSubstitutionContext(typeConstructor.getParameters(), typeArguments);
+		Map<TypeConstructor, JetType> substitutionContext = SubstitutionUtils.buildSubstitutionContext(typeConstructor.getParameters(), typeArguments);
 		return new SubstitutingScope(memberDeclarations, TypeSubstitutor.create(substitutionContext));
 	}
 

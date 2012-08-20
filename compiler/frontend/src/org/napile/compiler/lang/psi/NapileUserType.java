@@ -23,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.JetTokens;
-import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -59,23 +58,11 @@ public class NapileUserType extends NapileTypeElement
 	}
 
 	@NotNull
-	public List<NapileTypeProjection> getTypeArguments()
-	{
-		// TODO: empty elements in PSI
-		NapileTypeArgumentList typeArgumentList = getTypeArgumentList();
-		return typeArgumentList == null ? Collections.<NapileTypeProjection>emptyList() : typeArgumentList.getArguments();
-	}
-
-	@NotNull
 	@Override
-	public List<NapileTypeReference> getTypeArgumentsAsTypes()
+	public List<NapileTypeReference> getTypeArguments()
 	{
-		List<NapileTypeReference> result = Lists.newArrayList();
-		for(NapileTypeProjection projection : getTypeArguments())
-		{
-			result.add(projection.getTypeReference());
-		}
-		return result;
+		NapileTypeArgumentList typeArgumentList = getTypeArgumentList();
+		return typeArgumentList == null ? Collections.<NapileTypeReference>emptyList() : typeArgumentList.getArguments();
 	}
 
 	@Nullable

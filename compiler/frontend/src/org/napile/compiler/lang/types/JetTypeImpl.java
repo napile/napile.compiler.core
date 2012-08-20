@@ -34,11 +34,11 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 {
 
 	private final TypeConstructor constructor;
-	private final List<TypeProjection> arguments;
+	private final List<JetType> arguments;
 	private final boolean nullable;
 	private JetScope memberScope;
 
-	public JetTypeImpl(List<AnnotationDescriptor> annotations, TypeConstructor constructor, boolean nullable, @NotNull List<TypeProjection> arguments, JetScope memberScope)
+	public JetTypeImpl(List<AnnotationDescriptor> annotations, TypeConstructor constructor, boolean nullable, @NotNull List<JetType> arguments, JetScope memberScope)
 	{
 		super(annotations);
 
@@ -55,12 +55,12 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 
 	public JetTypeImpl(TypeConstructor constructor, JetScope memberScope)
 	{
-		this(Collections.<AnnotationDescriptor>emptyList(), constructor, false, Collections.<TypeProjection>emptyList(), memberScope);
+		this(Collections.<AnnotationDescriptor>emptyList(), constructor, false, Collections.<JetType>emptyList(), memberScope);
 	}
 
 	public JetTypeImpl(@NotNull ClassDescriptor classDescriptor)
 	{
-		this(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<TypeProjection>emptyList(), classDescriptor.getMemberScope(Collections.<TypeProjection>emptyList()));
+		this(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>emptyList(), classDescriptor.getMemberScope(Collections.<JetType>emptyList()));
 	}
 
 	@NotNull
@@ -72,7 +72,7 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 
 	@NotNull
 	@Override
-	public List<TypeProjection> getArguments()
+	public List<JetType> getArguments()
 	{
 		return arguments;
 	}
@@ -104,9 +104,9 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 	private StringBuilder argumentsToString()
 	{
 		StringBuilder stringBuilder = new StringBuilder();
-		for(Iterator<TypeProjection> iterator = arguments.iterator(); iterator.hasNext(); )
+		for(Iterator<JetType> iterator = arguments.iterator(); iterator.hasNext(); )
 		{
-			TypeProjection argument = iterator.next();
+			JetType argument = iterator.next();
 			stringBuilder.append(argument);
 			if(iterator.hasNext())
 			{

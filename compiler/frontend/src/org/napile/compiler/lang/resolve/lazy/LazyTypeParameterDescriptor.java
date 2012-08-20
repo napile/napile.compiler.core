@@ -40,7 +40,6 @@ import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
@@ -59,7 +58,6 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 	private final ResolveSession resolveSession;
 
 	private final SmartPsiElementPointer<NapileTypeParameter> jetTypeParameterSmartPsiElementPointer;
-	private final Variance variance;
 	private final int index;
 	private final LazyClassDescriptor containingDeclaration;
 	private final Name name;
@@ -79,7 +77,6 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 		this.resolveSession = resolveSession;
 		// TODO: different smart pointer implementations in IDE and compiler
 		this.jetTypeParameterSmartPsiElementPointer = new IdentitySmartPointer<NapileTypeParameter>(jetTypeParameter);
-		this.variance = jetTypeParameter.getVariance();
 		this.containingDeclaration = containingDeclaration;
 		this.index = index;
 		this.name = jetTypeParameter.getNameAsName();
@@ -90,12 +87,6 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 	public boolean isReified()
 	{
 		return reified;
-	}
-
-	@Override
-	public Variance getVariance()
-	{
-		return variance;
 	}
 
 	@NotNull

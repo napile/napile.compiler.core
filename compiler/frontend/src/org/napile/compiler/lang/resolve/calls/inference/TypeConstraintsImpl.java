@@ -20,7 +20,6 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.Variance;
 import com.google.common.collect.Sets;
 
 /**
@@ -28,26 +27,19 @@ import com.google.common.collect.Sets;
  */
 public class TypeConstraintsImpl implements TypeConstraints
 {
-	private final Variance varianceOfPosition;
 	private final Set<JetType> upperBounds = Sets.newLinkedHashSet();
 	private final Set<JetType> lowerBounds = Sets.newLinkedHashSet();
 	private final Set<JetType> exactBounds = Sets.newLinkedHashSet();
 
-	public TypeConstraintsImpl(Variance varianceOfPosition)
+	public TypeConstraintsImpl()
 	{
-		this.varianceOfPosition = varianceOfPosition;
+
 	}
 
-	@NotNull
-	@Override
-	public Variance getVarianceOfPosition()
+	public void addBound(@NotNull JetType type)
 	{
-		return varianceOfPosition;
-	}
-
-	public void addBound(@NotNull ConstraintKind constraintKind, @NotNull JetType type)
-	{
-		switch(constraintKind)
+		//TODO [VISTALL]
+		/*switch(constraintKind)
 		{
 			case SUPER_TYPE:
 				lowerBounds.add(type);
@@ -57,7 +49,7 @@ public class TypeConstraintsImpl implements TypeConstraints
 				break;
 			case EQUAL:
 				exactBounds.add(type);
-		}
+		}    */
 	}
 
 	@Override
@@ -89,7 +81,7 @@ public class TypeConstraintsImpl implements TypeConstraints
 
 	/*package*/ TypeConstraintsImpl copy()
 	{
-		TypeConstraintsImpl typeConstraints = new TypeConstraintsImpl(varianceOfPosition);
+		TypeConstraintsImpl typeConstraints = new TypeConstraintsImpl();
 		for(JetType upperBound : upperBounds)
 		{
 			typeConstraints.upperBounds.add(upperBound);
@@ -103,28 +95,5 @@ public class TypeConstraintsImpl implements TypeConstraints
 			typeConstraints.exactBounds.add(exactBound);
 		}
 		return typeConstraints;
-	}
-
-	public static enum ConstraintKind
-	{
-		SUB_TYPE, SUPER_TYPE, EQUAL;
-
-		@NotNull
-		static ConstraintKind fromVariance(@NotNull Variance variance)
-		{
-			ConstraintKind constraintKind = null;
-			switch(variance)
-			{
-				case INVARIANT:
-					constraintKind = EQUAL;
-					break;
-				case OUT_VARIANCE:
-					constraintKind = SUPER_TYPE;
-					break;
-				case IN_VARIANCE:
-					constraintKind = SUB_TYPE;
-			}
-			return constraintKind;
-		}
 	}
 }

@@ -32,7 +32,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
 import org.napile.compiler.lang.types.DescriptorSubstitutor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.Variance;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -219,7 +218,7 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 		JetType substitutedReceiverParameterType = null;
 		if(receiverParameter.exists())
 		{
-			substitutedReceiverParameterType = substitutor.substitute(getReceiverParameter().getType(), Variance.IN_VARIANCE);
+			substitutedReceiverParameterType = substitutor.substitute(getReceiverParameter().getType());
 			if(substitutedReceiverParameterType == null)
 			{
 				return null;
@@ -229,7 +228,7 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 		ReceiverDescriptor substitutedExpectedThis = NO_RECEIVER;
 		if(expectedThisObject.exists())
 		{
-			JetType substitutedType = substitutor.substitute(expectedThisObject.getType(), Variance.INVARIANT);
+			JetType substitutedType = substitutor.substitute(expectedThisObject.getType());
 			if(substitutedType == null)
 			{
 				return null;

@@ -32,5 +32,5 @@ public abstract class NapileTypeElement extends NapileElementImpl
 	}
 
 	@NotNull
-	public abstract List<NapileTypeReference> getTypeArgumentsAsTypes();
+	public abstract List<NapileTypeReference> getTypeArguments();
 }

@@ -34,9 +34,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -287,17 +285,17 @@ public class OverridingUtil
 	{
 		List<TypeParameterDescriptor> superTypeParameters = superDescriptor.getTypeParameters();
 		List<TypeParameterDescriptor> subTypeParameters = subDescriptor.getTypeParameters();
-		Map<TypeConstructor, TypeProjection> substitutionContext = Maps.newHashMap();
+		Map<TypeConstructor, JetType> substitutionContext = Maps.newHashMap();
 		for(int i = 0, typeParametersSize = superTypeParameters.size(); i < typeParametersSize; i++)
 		{
 			TypeParameterDescriptor superTypeParameter = superTypeParameters.get(i);
 			TypeParameterDescriptor subTypeParameter = subTypeParameters.get(i);
-			substitutionContext.put(superTypeParameter.getTypeConstructor(), new TypeProjection(subTypeParameter.getDefaultType()));
+			substitutionContext.put(superTypeParameter.getTypeConstructor(), subTypeParameter.getDefaultType());
 		}
 
 		// This code compares return types, but they are not a part of the signature, so this code does not belong here
 		TypeSubstitutor typeSubstitutor = TypeSubstitutor.create(substitutionContext);
-		JetType substitutedSuperReturnType = typeSubstitutor.substitute(superDescriptor.getReturnType(), Variance.OUT_VARIANCE);
+		JetType substitutedSuperReturnType = typeSubstitutor.substitute(superDescriptor.getReturnType());
 		assert substitutedSuperReturnType != null;
 		if(!typeChecker.isSubtypeOf(subDescriptor.getReturnType(), substitutedSuperReturnType))
 		{

@@ -73,7 +73,7 @@ public class DeferredType implements JetType
 
 	@Override
 	@NotNull
-	public List<TypeProjection> getArguments()
+	public List<JetType> getArguments()
 	{
 		return getActualType().getArguments();
 	}

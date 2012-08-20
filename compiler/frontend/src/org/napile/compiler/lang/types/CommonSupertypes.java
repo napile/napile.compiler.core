@@ -16,29 +16,16 @@
 
 package org.napile.compiler.lang.types;
 
-import static org.napile.compiler.lang.types.Variance.IN_VARIANCE;
-import static org.napile.compiler.lang.types.Variance.OUT_VARIANCE;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
 
 /**
  * @author abreslav
@@ -188,15 +175,13 @@ public class CommonSupertypes
 		}
 
 		List<TypeParameterDescriptor> parameters = constructor.getParameters();
-		List<TypeProjection> newProjections = new ArrayList<TypeProjection>();
+		List<JetType> newProjections = new ArrayList<JetType>();
 		for(int i = 0, parametersSize = parameters.size(); i < parametersSize; i++)
 		{
 			TypeParameterDescriptor parameterDescriptor = parameters.get(i);
-			Set<TypeProjection> typeProjections = new HashSet<TypeProjection>();
+			Set<JetType> typeProjections = new HashSet<JetType>();
 			for(JetType type : types)
-			{
 				typeProjections.add(type.getArguments().get(i));
-			}
 			newProjections.add(computeSupertypeProjection(parameterDescriptor, typeProjections));
 		}
 
@@ -217,82 +202,14 @@ public class CommonSupertypes
 	}
 
 	@NotNull
-	private static TypeProjection computeSupertypeProjection(@NotNull TypeParameterDescriptor parameterDescriptor, @NotNull Set<TypeProjection> typeProjections)
+	private static JetType computeSupertypeProjection(@NotNull TypeParameterDescriptor parameterDescriptor, @NotNull Set<JetType> typeProjections)
 	{
 		if(typeProjections.size() == 1)
 		{
 			return typeProjections.iterator().next();
 		}
 
-		Set<JetType> ins = new HashSet<JetType>();
-		Set<JetType> outs = new HashSet<JetType>();
-
-		Variance variance = parameterDescriptor.getVariance();
-		switch(variance)
-		{
-			case INVARIANT:
-				// Nothing
-				break;
-			case IN_VARIANCE:
-				outs = null;
-				break;
-			case OUT_VARIANCE:
-				ins = null;
-				break;
-		}
-
-		for(TypeProjection projection : typeProjections)
-		{
-			Variance projectionKind = projection.getProjectionKind();
-			if(projectionKind.allowsInPosition())
-			{
-				if(ins != null)
-				{
-					ins.add(projection.getType());
-				}
-			}
-			else
-			{
-				ins = null;
-			}
-
-			if(projectionKind.allowsOutPosition())
-			{
-				if(outs != null)
-				{
-					outs.add(projection.getType());
-				}
-			}
-			else
-			{
-				outs = null;
-			}
-		}
-
-		if(ins != null)
-		{
-			JetType intersection = TypeUtils.intersect(JetTypeChecker.INSTANCE, ins, TypeUtils.getChainedScope(ins));
-			if(intersection == null)
-			{
-				if(outs != null)
-				{
-					return new TypeProjection(OUT_VARIANCE, commonSupertype(outs));
-				}
-				return new TypeProjection(OUT_VARIANCE, commonSupertype(parameterDescriptor.getUpperBounds()));
-			}
-			Variance projectionKind = variance == IN_VARIANCE ? Variance.INVARIANT : IN_VARIANCE;
-			return new TypeProjection(projectionKind, intersection);
-		}
-		else if(outs != null)
-		{
-			Variance projectionKind = variance == OUT_VARIANCE ? Variance.INVARIANT : OUT_VARIANCE;
-			return new TypeProjection(projectionKind, commonSupertype(outs));
-		}
-		else
-		{
-			Variance projectionKind = variance == OUT_VARIANCE ? Variance.INVARIANT : OUT_VARIANCE;
-			return new TypeProjection(projectionKind, commonSupertype(parameterDescriptor.getUpperBounds()));
-		}
+		return commonSupertype(parameterDescriptor.getUpperBounds());
 	}
 
 	private static void markAll(@NotNull TypeConstructor typeConstructor, @NotNull Set<TypeConstructor> markerSet)
@@ -326,7 +243,7 @@ public class CommonSupertypes
 			{
 				continue;
 			}
-			JetType substitutedSupertype = substitutor.safeSubstitute(supertype, Variance.INVARIANT);
+			JetType substitutedSupertype = substitutor.safeSubstitute(supertype);
 			dfs(substitutedSupertype, visited, handler);
 		}
 		handler.afterChildren(current);

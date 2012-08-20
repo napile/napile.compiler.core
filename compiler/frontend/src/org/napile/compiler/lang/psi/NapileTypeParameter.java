@@ -21,8 +21,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
-import org.napile.compiler.lang.types.Variance;
-import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.ArrayFactory;
@@ -63,30 +61,6 @@ public class NapileTypeParameter extends NapileNamedDeclarationStub<PsiJetTypePa
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitTypeParameter(this, data);
-	}
-
-	@NotNull
-	public Variance getVariance()
-	{
-		PsiJetTypeParameterStub stub = getStub();
-		if(stub != null)
-		{
-			if(stub.isOutVariance())
-				return Variance.OUT_VARIANCE;
-			if(stub.isInVariance())
-				return Variance.IN_VARIANCE;
-			return Variance.INVARIANT;
-		}
-
-		NapileModifierList modifierList = getModifierList();
-		if(modifierList == null)
-			return Variance.INVARIANT;
-
-		if(modifierList.hasModifier(JetTokens.OUT_KEYWORD))
-			return Variance.OUT_VARIANCE;
-		if(modifierList.hasModifier(JetTokens.IN_KEYWORD))
-			return Variance.IN_VARIANCE;
-		return Variance.INVARIANT;
 	}
 
 	@Nullable

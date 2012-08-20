@@ -20,16 +20,13 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 
 /**
  * @author abreslav
  */
 public class JetTypeChecker
 {
-
 	public static final JetTypeChecker INSTANCE = new JetTypeChecker();
-	public static final HashBiMap<TypeConstructor, TypeConstructor> EMPTY_AXIOMS = HashBiMap.create();
 
 	private JetTypeChecker()
 	{
@@ -37,7 +34,6 @@ public class JetTypeChecker
 
 	public boolean isSubtypeOf(@NotNull JetType subtype, @NotNull JetType supertype)
 	{
-		//        return new TypeCheckingProcedure().run(subtype, supertype);
 		return TYPE_CHECKER.isSubtypeOf(subtype, supertype);
 	}
 

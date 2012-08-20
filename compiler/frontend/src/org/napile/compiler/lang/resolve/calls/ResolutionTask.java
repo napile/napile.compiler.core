@@ -59,7 +59,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import org.napile.compiler.lexer.NapileToken;
 import org.napile.compiler.lexer.JetTokens;
@@ -316,7 +315,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 				assert returnType != null;
 				if(successfulWithoutExpectedTypeConstraint)
 				{
-					returnType = systemWithoutExpectedTypeConstraint.getResultingSubstitutor().substitute(returnType, Variance.INVARIANT);
+					returnType = systemWithoutExpectedTypeConstraint.getResultingSubstitutor().substitute(returnType);
 					assert returnType != null;
 				}
 				trace.report(TYPE_INFERENCE_EXPECTED_TYPE_MISMATCH.on(reference, returnType, data.expectedType));

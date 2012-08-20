@@ -38,7 +38,6 @@ import org.napile.compiler.lang.resolve.calls.inference.ConstraintsUtil;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import com.google.common.base.Predicate;
@@ -301,7 +300,7 @@ public class Renderers
 
 		JetType type = ConstraintsUtil.getValue(inferenceErrorData.constraintSystem.getTypeConstraints(typeParameterDescriptor));
 		JetType upperBound = typeParameterDescriptor.getUpperBoundsAsType();
-		JetType substitute = inferenceErrorData.constraintSystem.getResultingSubstitutor().substitute(upperBound, Variance.INVARIANT);
+		JetType substitute = inferenceErrorData.constraintSystem.getResultingSubstitutor().substitute(upperBound);
 
 		result.text(newText().normal(" is not satisfied: inferred type ").error(type).normal(" is not a subtype of ").strong(substitute));
 		return result;

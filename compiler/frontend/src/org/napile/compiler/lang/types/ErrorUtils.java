@@ -227,9 +227,9 @@ public class ErrorUtils
 		return new ErrorTypeImpl(new TypeConstructorImpl(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), false, debugName, Collections.<TypeParameterDescriptorImpl>emptyList(), Collections.<JetType>emptyList()), memberScope);
 	}
 
-	public static JetType createWrongVarianceErrorType(TypeProjection value)
+	public static JetType createWrongVarianceErrorType(JetType value)
 	{
-		return createErrorType(value + " is not allowed here", value.getType().getMemberScope());
+		return createErrorType(value + " is not allowed here", value.getMemberScope());
 	}
 
 	public static ClassifierDescriptor getErrorClass()
@@ -258,9 +258,9 @@ public class ErrorUtils
 			return false;
 		if(isErrorType(type))
 			return true;
-		for(TypeProjection projection : type.getArguments())
+		for(JetType projection : type.getArguments())
 		{
-			if(containsErrorType(projection.getType()))
+			if(containsErrorType(projection))
 				return true;
 		}
 		return false;
@@ -293,7 +293,7 @@ public class ErrorUtils
 
 		@NotNull
 		@Override
-		public List<TypeProjection> getArguments()
+		public List<JetType> getArguments()
 		{
 			return Collections.emptyList();
 		}

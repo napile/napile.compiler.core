@@ -81,7 +81,7 @@ public class NapileDelegatorToSuperCall extends NapileDelegationSpecifier implem
 
 	@NotNull
 	@Override
-	public List<NapileTypeProjection> getTypeArguments()
+	public List<NapileTypeReference> getTypeArguments()
 	{
 		NapileTypeArgumentList typeArgumentList = getTypeArgumentList();
 		if(typeArgumentList == null)

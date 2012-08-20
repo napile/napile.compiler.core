@@ -161,7 +161,7 @@ public class CallMaker
 
 		@NotNull
 		@Override
-		public List<NapileTypeProjection> getTypeArguments()
+		public List<NapileTypeReference> getTypeArguments()
 		{
 			return Collections.emptyList();
 		}
@@ -297,7 +297,7 @@ public class CallMaker
 			}
 
 			@NotNull
-			public List<NapileTypeProjection> getTypeArguments()
+			public List<NapileTypeReference> getTypeArguments()
 			{
 				return callElement.getTypeArguments();
 			}

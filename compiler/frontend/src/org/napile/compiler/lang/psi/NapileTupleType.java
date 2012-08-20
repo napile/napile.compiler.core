@@ -34,9 +34,9 @@ public class NapileTupleType extends NapileTypeElement
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getTypeArgumentsAsTypes()
+	public List<NapileTypeReference> getTypeArguments()
 	{
-		return getComponentTypeRefs();
+		return findChildrenByType(NapileNodeTypes.TYPE_REFERENCE);
 	}
 
 	@Override
@@ -49,11 +49,5 @@ public class NapileTupleType extends NapileTypeElement
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitTupleType(this, data);
-	}
-
-	@NotNull
-	public List<NapileTypeReference> getComponentTypeRefs()
-	{
-		return findChildrenByType(NapileNodeTypes.TYPE_REFERENCE);
 	}
 }

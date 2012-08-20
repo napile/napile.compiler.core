@@ -24,7 +24,6 @@ import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetTypeParameterStubImpl;
-import org.napile.compiler.lang.types.Variance;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -58,7 +57,7 @@ public class JetTypeParameterElementType extends JetStubElementType<PsiJetTypePa
 	public PsiJetTypeParameterStub createStub(@NotNull NapileTypeParameter psi, StubElement parentStub)
 	{
 		NapileTypeReference extendsBound = psi.getExtendsBound();
-		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, psi.getName(), extendsBound != null ? extendsBound.getText() : null, psi.getVariance() == Variance.IN_VARIANCE, psi.getVariance() == Variance.OUT_VARIANCE);
+		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, psi.getName(), extendsBound != null ? extendsBound.getText() : null);
 	}
 
 	@Override
@@ -66,8 +65,6 @@ public class JetTypeParameterElementType extends JetStubElementType<PsiJetTypePa
 	{
 		dataStream.writeName(stub.getName());
 		dataStream.writeName(stub.getExtendBoundTypeText());
-		dataStream.writeBoolean(stub.isInVariance());
-		dataStream.writeBoolean(stub.isOutVariance());
 	}
 
 	@Override
@@ -75,10 +72,8 @@ public class JetTypeParameterElementType extends JetStubElementType<PsiJetTypePa
 	{
 		StringRef name = dataStream.readName();
 		StringRef extendBoundTypeText = dataStream.readName();
-		boolean isInVariance = dataStream.readBoolean();
-		boolean isOutVariance = dataStream.readBoolean();
 
-		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, name, extendBoundTypeText, isInVariance, isOutVariance);
+		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, name, extendBoundTypeText);
 	}
 
 	@Override

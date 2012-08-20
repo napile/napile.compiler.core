@@ -47,9 +47,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -169,7 +167,7 @@ public class JetStandardClasses
 			WritableScopeImpl writableScope = new WritableScopeImpl(JetScope.EMPTY, classDescriptor, RedeclarationHandler.THROW_EXCEPTION, "tuples");
 			for(int j = 0; j < i; j++)
 			{
-				TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createWithDefaultBound(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), false, Variance.OUT_VARIANCE, Name.identifier("T" + (j + 1)), j);
+				TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createWithDefaultBound(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), false, Name.identifier("T" + (j + 1)), j);
 				typeParameters.add(typeParameterDescriptor);
 
 				PropertyDescriptor propertyDescriptor = new PropertyDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibilities.PUBLIC, false, false, Name.identifier("_" + (j + 1)), CallableMemberDescriptor.Kind.DECLARATION, false);
@@ -225,7 +223,7 @@ public class JetStandardClasses
 			SimpleFunctionDescriptorImpl invokeWithReceiver = new SimpleFunctionDescriptorImpl(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION, false);
 			WritableScope scopeForInvokeWithReceiver = createScopeForInvokeFunction(receiverFunction, invokeWithReceiver);
 			List<TypeParameterDescriptor> parameters = createTypeParameters(1, i, receiverFunction);
-			parameters.add(0, TypeParameterDescriptorImpl.createWithDefaultBound(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), false, Variance.IN_VARIANCE, Name.identifier("T"), 0));
+			parameters.add(0, TypeParameterDescriptorImpl.createWithDefaultBound(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), false, Name.identifier("T"), 0));
 
 			ConstructorDescriptor constructorDescriptorForReceiverFunction = new ConstructorDescriptor(function, Collections.<AnnotationDescriptor>emptyList());
 			RECEIVER_FUNCTION[i] = receiverFunction.initialize(false, parameters, Collections.singleton(getAnyType()), scopeForInvokeWithReceiver, Collections.<NapileDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
@@ -250,9 +248,9 @@ public class JetStandardClasses
 		List<TypeParameterDescriptor> parameters = new ArrayList<TypeParameterDescriptor>();
 		for(int j = 0; j < parameterCount; j++)
 		{
-			parameters.add(TypeParameterDescriptorImpl.createWithDefaultBound(function, Collections.<AnnotationDescriptor>emptyList(), false, Variance.IN_VARIANCE, Name.identifier("P" + (j + 1)), baseIndex + j));
+			parameters.add(TypeParameterDescriptorImpl.createWithDefaultBound(function, Collections.<AnnotationDescriptor>emptyList(), false, Name.identifier("P" + (j + 1)), baseIndex + j));
 		}
-		parameters.add(TypeParameterDescriptorImpl.createWithDefaultBound(function, Collections.<AnnotationDescriptor>emptyList(), false, Variance.OUT_VARIANCE, Name.identifier("R"), baseIndex + parameterCount));
+		parameters.add(TypeParameterDescriptorImpl.createWithDefaultBound(function, Collections.<AnnotationDescriptor>emptyList(), false, Name.identifier("R"), baseIndex + parameterCount));
 		return parameters;
 	}
 
@@ -400,8 +398,7 @@ public class JetStandardClasses
 			return getUnitType();
 		}
 		ClassDescriptor tuple = getTuple(arguments.size());
-		List<TypeProjection> typeArguments = toProjections(arguments);
-		return new JetTypeImpl(annotations, tuple.getTypeConstructor(), false, typeArguments, tuple.getMemberScope(typeArguments));
+		return new JetTypeImpl(annotations, tuple.getTypeConstructor(), false, arguments, tuple.getMemberScope(arguments));
 	}
 
 	public static JetType getTupleType(List<JetType> arguments)
@@ -423,9 +420,9 @@ public class JetStandardClasses
 	{
 		assert isTupleType(type);
 		List<JetType> result = Lists.newArrayList();
-		for(TypeProjection typeProjection : type.getArguments())
+		for(JetType typeProjection : type.getArguments())
 		{
-			result.add(typeProjection.getType());
+			result.add(typeProjection);
 		}
 		return result;
 	}
@@ -442,16 +439,6 @@ public class JetStandardClasses
 		return getLabeledTupleType(Collections.<AnnotationDescriptor>emptyList(), arguments);
 	}
 
-	private static List<TypeProjection> toProjections(List<JetType> arguments)
-	{
-		List<TypeProjection> result = new ArrayList<TypeProjection>();
-		for(JetType argument : arguments)
-		{
-			result.add(new TypeProjection(Variance.OUT_VARIANCE, argument));
-		}
-		return result;
-	}
-
 	private static List<JetType> toTypes(List<ValueParameterDescriptor> labeledEntries)
 	{
 		List<JetType> result = new ArrayList<JetType>();
@@ -465,25 +452,20 @@ public class JetStandardClasses
 	// TODO : labeled version?
 	public static JetType getFunctionType(List<AnnotationDescriptor> annotations, @Nullable JetType receiverType, @NotNull List<JetType> parameterTypes, @NotNull JetType returnType)
 	{
-		List<TypeProjection> arguments = new ArrayList<TypeProjection>();
+		List<JetType> arguments = new ArrayList<JetType>();
 		if(receiverType != null)
 		{
-			arguments.add(defaultProjection(receiverType));
+			arguments.add(receiverType);
 		}
 		for(JetType parameterType : parameterTypes)
 		{
-			arguments.add(defaultProjection(parameterType));
+			arguments.add(parameterType);
 		}
-		arguments.add(defaultProjection(returnType));
+		arguments.add(returnType);
 		int size = parameterTypes.size();
 		ClassDescriptor classDescriptor = receiverType == null ? FUNCTION[size] : RECEIVER_FUNCTION[size];
 		TypeConstructor constructor = classDescriptor.getTypeConstructor();
 		return new JetTypeImpl(annotations, constructor, false, arguments, classDescriptor.getMemberScope(arguments));
-	}
-
-	private static TypeProjection defaultProjection(JetType returnType)
-	{
-		return new TypeProjection(Variance.INVARIANT, returnType);
 	}
 
 	public static boolean isFunctionType(@NotNull JetType type)
@@ -502,7 +484,7 @@ public class JetStandardClasses
 		assert isFunctionType(type) : type;
 		if(RECEIVER_FUNCTION_TYPE_CONSTRUCTORS.contains(type.getConstructor()))
 		{
-			return type.getArguments().get(0).getType();
+			return type.getArguments().get(0);
 		}
 		return null;
 	}
@@ -512,24 +494,24 @@ public class JetStandardClasses
 	{
 		assert isFunctionType(type);
 		List<ValueParameterDescriptor> valueParameters = Lists.newArrayList();
-		List<TypeProjection> parameterTypes = getParameterTypeProjectionsFromFunctionType(type);
+		List<JetType> parameterTypes = getParameterTypeProjectionsFromFunctionType(type);
 		for(int i = 0; i < parameterTypes.size(); i++)
 		{
-			TypeProjection parameterType = parameterTypes.get(i);
-			ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(functionDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("p" + (i + 1)), false, parameterType.getType(), false, null);
+			JetType parameterType = parameterTypes.get(i);
+			ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(functionDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("p" + (i + 1)), false, parameterType, false, null);
 			valueParameters.add(valueParameterDescriptor);
 		}
 		return valueParameters;
 	}
 
 	@NotNull
-	public static List<TypeProjection> getParameterTypeProjectionsFromFunctionType(@NotNull JetType type)
+	public static List<JetType> getParameterTypeProjectionsFromFunctionType(@NotNull JetType type)
 	{
 		assert isFunctionType(type);
-		List<TypeProjection> arguments = type.getArguments();
+		List<JetType> arguments = type.getArguments();
 		int first = RECEIVER_FUNCTION_TYPE_CONSTRUCTORS.contains(type.getConstructor()) ? 1 : 0;
 		int last = arguments.size() - 2;
-		List<TypeProjection> parameterTypes = Lists.newArrayList();
+		List<JetType> parameterTypes = Lists.newArrayList();
 		for(int i = first; i <= last; i++)
 		{
 			parameterTypes.add(arguments.get(i));
@@ -541,8 +523,8 @@ public class JetStandardClasses
 	public static JetType getReturnTypeFromFunctionType(@NotNull JetType type)
 	{
 		assert isFunctionType(type);
-		List<TypeProjection> arguments = type.getArguments();
-		return arguments.get(arguments.size() - 1).getType();
+		List<JetType> arguments = type.getArguments();
+		return arguments.get(arguments.size() - 1);
 	}
 
 	@NotNull

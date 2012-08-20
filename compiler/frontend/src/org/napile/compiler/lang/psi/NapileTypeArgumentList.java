@@ -44,8 +44,8 @@ public class NapileTypeArgumentList extends NapileElementImpl
 		return visitor.visitTypeArgumentList(this, data);
 	}
 
-	public List<NapileTypeProjection> getArguments()
+	public List<NapileTypeReference> getArguments()
 	{
-		return findChildrenByType(NapileNodeTypes.TYPE_PROJECTION);
+		return findChildrenByType(NapileNodeTypes.TYPE_REFERENCE);
 	}
 }

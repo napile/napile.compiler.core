@@ -29,10 +29,8 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructorImpl;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
@@ -45,22 +43,22 @@ import com.google.common.collect.Sets;
  */
 public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImpl implements TypeParameterDescriptor
 {
-	public static TypeParameterDescriptor createWithDefaultBound(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Variance variance, @NotNull Name name, int index)
+	public static TypeParameterDescriptor createWithDefaultBound(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
 	{
-		TypeParameterDescriptorImpl typeParameterDescriptor = createForFurtherModification(containingDeclaration, annotations, reified, variance, name, index);
+		TypeParameterDescriptorImpl typeParameterDescriptor = createForFurtherModification(containingDeclaration, annotations, reified, name, index);
 		typeParameterDescriptor.addUpperBound(JetStandardClasses.getDefaultBound());
 		typeParameterDescriptor.setInitialized();
 		return typeParameterDescriptor;
 	}
 
-	public static TypeParameterDescriptorImpl createForFurtherModification(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Variance variance, @NotNull Name name, int index)
+	public static TypeParameterDescriptorImpl createForFurtherModification(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
 	{
-		return new TypeParameterDescriptorImpl(containingDeclaration, annotations, reified, variance, name, index);
+		return new TypeParameterDescriptorImpl(containingDeclaration, annotations, reified, name, index);
 	}
 
 	// 0-based
 	private final int index;
-	private final Variance variance;
+
 	private final Set<JetType> upperBounds;
 	private JetType upperBoundsAsType;
 	private final TypeConstructor typeConstructor;
@@ -72,11 +70,10 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 
 	private boolean initialized = false;
 
-	private TypeParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Variance variance, @NotNull Name name, int index)
+	private TypeParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
 	{
 		super(containingDeclaration, annotations, name);
 		this.index = index;
-		this.variance = variance;
 		this.upperBounds = Sets.newLinkedHashSet();
 		this.reified = reified;
 		// TODO: Should we actually pass the annotations on to the type constructor?
@@ -116,13 +113,6 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	{
 		checkInitialized();
 		return reified;
-	}
-
-	@Override
-	public Variance getVariance()
-	{
-		checkInitialized();
-		return variance;
 	}
 
 	public void addUpperBound(@NotNull JetType bound)
@@ -230,7 +220,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 		//checkInitialized();
 		if(defaultType == null)
 		{
-			defaultType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), getTypeConstructor(), TypeUtils.hasNullableLowerBound(this), Collections.<TypeProjection>emptyList(), new LazyScopeAdapter(new LazyValue<JetScope>()
+			defaultType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), getTypeConstructor(), TypeUtils.hasNullableLowerBound(this), Collections.<JetType>emptyList(), new LazyScopeAdapter(new LazyValue<JetScope>()
 			{
 				@Override
 				protected JetScope compute()

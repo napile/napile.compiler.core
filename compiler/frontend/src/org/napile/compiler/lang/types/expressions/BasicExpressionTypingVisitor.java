@@ -128,10 +128,8 @@ import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
@@ -431,11 +429,11 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 
 		{
-			Multimap<TypeConstructor, TypeProjection> typeSubstitutionMap = SubstitutionUtils.buildDeepSubstitutionMultimap(targetType);
+			Multimap<TypeConstructor, JetType> typeSubstitutionMap = SubstitutionUtils.buildDeepSubstitutionMultimap(targetType);
 
 			for(int i = 0; i < actualType.getConstructor().getParameters().size(); ++i)
 			{
-				TypeProjection actualTypeParameter = actualType.getArguments().get(i);
+				JetType actualTypeParameter = actualType.getArguments().get(i);
 				TypeParameterDescriptor subjectTypeParameterDescriptor = actualType.getConstructor().getParameters().get(i);
 
 				if(subjectTypeParameterDescriptor.isReified())
@@ -443,11 +441,11 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					continue;
 				}
 
-				Collection<TypeProjection> subst = typeSubstitutionMap.get(subjectTypeParameterDescriptor.getTypeConstructor());
-				for(TypeProjection proj : subst)
+				Collection<JetType> subst = typeSubstitutionMap.get(subjectTypeParameterDescriptor.getTypeConstructor());
+				for(JetType proj : subst)
 				{
 					//if (!proj.getType().equals(actualTypeParameter.getType())) {
-					if(!typeChecker.isSubtypeOf(actualTypeParameter.getType(), proj.getType()))
+					if(!typeChecker.isSubtypeOf(actualTypeParameter, proj))
 					{
 						return true;
 					}
@@ -458,7 +456,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			JetType targetTypeClerared = TypeUtils.makeUnsubstitutedType((ClassDescriptor) targetType.getConstructor().getDeclarationDescriptor(), null);
 
-			Multimap<TypeConstructor, TypeProjection> clearTypeSubstitutionMap = SubstitutionUtils.buildDeepSubstitutionMultimap(targetTypeClerared);
+			Multimap<TypeConstructor, JetType> clearTypeSubstitutionMap = SubstitutionUtils.buildDeepSubstitutionMultimap(targetTypeClerared);
 
 			Set<JetType> clearSubstituted = new HashSet<JetType>();
 
@@ -466,25 +464,19 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			{
 				TypeParameterDescriptor subjectTypeParameterDescriptor = actualType.getConstructor().getParameters().get(i);
 
-				Collection<TypeProjection> subst = clearTypeSubstitutionMap.get(subjectTypeParameterDescriptor.getTypeConstructor());
-				for(TypeProjection proj : subst)
+				Collection<JetType> subst = clearTypeSubstitutionMap.get(subjectTypeParameterDescriptor.getTypeConstructor());
+				for(JetType proj : subst)
 				{
-					clearSubstituted.add(proj.getType());
+					clearSubstituted.add(proj);
 				}
 			}
 
 			for(int i = 0; i < targetType.getConstructor().getParameters().size(); ++i)
 			{
 				TypeParameterDescriptor typeParameter = targetType.getConstructor().getParameters().get(i);
-				TypeProjection typeProjection = targetType.getArguments().get(i);
+				JetType typeProjection = targetType.getArguments().get(i);
 
 				if(typeParameter.isReified())
-				{
-					continue;
-				}
-
-				// "is List<*>"
-				if(typeProjection.equals(SubstitutionUtils.makeStarProjection(typeParameter)))
 				{
 					continue;
 				}
@@ -521,7 +513,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@NotNull
-	private List<JetType> checkArgumentTypes(@NotNull List<JetType> argumentTypes, @NotNull List<NapileExpression> arguments, @NotNull List<TypeProjection> expectedArgumentTypes, @NotNull ExpressionTypingContext context)
+	private List<JetType> checkArgumentTypes(@NotNull List<JetType> argumentTypes, @NotNull List<NapileExpression> arguments, @NotNull List<JetType> expectedArgumentTypes, @NotNull ExpressionTypingContext context)
 	{
 		if(arguments.size() == 0 || argumentTypes.size() != arguments.size() || expectedArgumentTypes.size() != arguments.size())
 		{
@@ -530,7 +522,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		List<JetType> result = Lists.newArrayListWithCapacity(arguments.size());
 		for(int i = 0, argumentTypesSize = argumentTypes.size(); i < argumentTypesSize; i++)
 		{
-			result.add(DataFlowUtils.checkType(argumentTypes.get(i), arguments.get(i), context.replaceExpectedType(expectedArgumentTypes.get(i).getType())));
+			result.add(DataFlowUtils.checkType(argumentTypes.get(i), arguments.get(i), context.replaceExpectedType(expectedArgumentTypes.get(i))));
 		}
 		return result;
 	}
@@ -622,7 +614,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					{
 						if(declaredSupertype.getConstructor().equals(superclass.getTypeConstructor()))
 						{
-							result = substitutor.safeSubstitute(declaredSupertype, Variance.INVARIANT);
+							result = substitutor.safeSubstitute(declaredSupertype);
 							break;
 						}
 					}
@@ -649,7 +641,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				{
 					// supertypes may be empty when all the supertypes are error types (are not resolved, for example)
 					JetType type = supertypes.isEmpty() ? TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, false) : supertypes.iterator().next();
-					result = substitutor.substitute(type, Variance.INVARIANT);
+					result = substitutor.substitute(type);
 				}
 			}
 			if(result != null)

@@ -75,7 +75,7 @@ public class NapileDelegatorToThisCall extends NapileDelegationSpecifier impleme
 
 	@NotNull
 	@Override
-	public List<NapileTypeProjection> getTypeArguments()
+	public List<NapileTypeReference> getTypeArguments()
 	{
 		return Collections.emptyList();
 	}

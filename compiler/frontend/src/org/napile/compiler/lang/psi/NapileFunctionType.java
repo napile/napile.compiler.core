@@ -45,7 +45,7 @@ public class NapileFunctionType extends NapileTypeElement
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getTypeArgumentsAsTypes()
+	public List<NapileTypeReference> getTypeArguments()
 	{
 		ArrayList<NapileTypeReference> result = Lists.newArrayList();
 		NapileTypeReference receiverTypeRef = getReceiverTypeRef();

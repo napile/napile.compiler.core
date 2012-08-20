@@ -855,7 +855,7 @@ public class JetControlFlowProcessor
 			//                }
 			//            }
 
-			for(NapileTypeProjection typeArgument : expression.getTypeArguments())
+			for(NapileTypeReference typeArgument : expression.getTypeArguments())
 			{
 				value(typeArgument, false);
 			}
@@ -1076,12 +1076,6 @@ public class JetControlFlowProcessor
 				}
 			}
 			builder.read(expression);
-		}
-
-		@Override
-		public void visitTypeProjection(NapileTypeProjection typeProjection)
-		{
-			// TODO : Support Type Arguments. Class object may be initialized at this point");
 		}
 
 		@Override

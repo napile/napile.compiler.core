@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
@@ -43,7 +44,6 @@ import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileUserType;
-import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -346,7 +346,7 @@ public class QualifiedExpressionResolver
 				@Override
 				public boolean apply(@Nullable DeclarationDescriptor descriptor)
 				{
-					return (descriptor instanceof ClassifierDescriptor) || (descriptor instanceof NamespaceDescriptor);
+					return descriptor instanceof ClassifierDescriptor || descriptor instanceof NamespaceDescriptor;
 				}
 			});
 		}

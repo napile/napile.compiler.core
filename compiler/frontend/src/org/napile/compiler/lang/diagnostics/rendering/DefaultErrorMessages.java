@@ -101,12 +101,11 @@ public class DefaultErrorMessages
 		MAP.put(TRAIT_CAN_NOT_BE_FINAL, "Trait cannot be final");
 		MAP.put(TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM, "Type checking has run into a recursive problem. Easiest workaround: specify types of your declarations explicitly"); // TODO: message
 		MAP.put(RETURN_NOT_ALLOWED, "'return' is not allowed here");
-		MAP.put(PROJECTION_IN_IMMEDIATE_ARGUMENT_TO_SUPERTYPE, "Projections are not allowed for immediate arguments of a supertype");
 		MAP.put(LABEL_NAME_CLASH, "There is more than one label with such a name in this scope");
 		MAP.put(EXPRESSION_EXPECTED_NAMESPACE_FOUND, "Expression expected, but a namespace name found");
 
 		MAP.put(CANNOT_IMPORT_FROM_ELEMENT, "Cannot import from ''{0}''", NAME);
-		MAP.put(CANNOT_BE_IMPORTED, "Cannot import ''{0}'', functions and properties can be imported only from packages", NAME);
+		MAP.put(CANNOT_BE_IMPORTED, "Cannot import ''{0}'', need static methods or properties", NAME);
 		MAP.put(USELESS_HIDDEN_IMPORT, "Useless import, it is hidden further");
 		MAP.put(USELESS_SIMPLE_IMPORT, "Useless import, does nothing");
 
@@ -150,7 +149,6 @@ public class DefaultErrorMessages
 
 		MAP.put(PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE, "Public or protected member should have specified type");
 
-		MAP.put(PROJECTION_ON_NON_CLASS_TYPE_ARGUMENT, "Projections are not allowed on type arguments of functions and properties");
 		MAP.put(SUPERTYPE_NOT_INITIALIZED, "This type has a constructor, and thus must be initialized here");
 		MAP.put(SUPERTYPE_NOT_INITIALIZED_DEFAULT, "Constructor invocation should be explicitly specified");
 		MAP.put(INITIALIZER_WITH_NO_ARGUMENTS, "Constructor arguments required");

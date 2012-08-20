@@ -64,7 +64,7 @@ public class TypeUtils
 
 		@NotNull
 		@Override
-		public List<TypeProjection> getArguments()
+		public List<JetType> getArguments()
 		{
 			throw new UnsupportedOperationException(); // TODO
 		}
@@ -207,7 +207,7 @@ public class TypeUtils
 			i++;
 		}
 
-		return new JetTypeImpl(noAnnotations, constructor, allNullable, Collections.<TypeProjection>emptyList(), new ChainedScope(null, scopes)); // TODO : check intersectibility, don't use a chanied scope
+		return new JetTypeImpl(noAnnotations, constructor, allNullable, Collections.<JetType>emptyList(), new ChainedScope(null, scopes)); // TODO : check intersectibility, don't use a chanied scope
 	}
 
 	private static class TypeUnifier
@@ -215,12 +215,10 @@ public class TypeUtils
 		private static class TypeParameterUsage
 		{
 			private final TypeParameterDescriptor typeParameterDescriptor;
-			private final Variance howTheTypeParameterIsUsed;
 
-			public TypeParameterUsage(TypeParameterDescriptor typeParameterDescriptor, Variance howTheTypeParameterIsUsed)
+			public TypeParameterUsage(TypeParameterDescriptor typeParameterDescriptor)
 			{
 				this.typeParameterDescriptor = typeParameterDescriptor;
-				this.howTheTypeParameterIsUsed = howTheTypeParameterIsUsed;
 			}
 		}
 
@@ -233,26 +231,21 @@ public class TypeUtils
 		{
 			ConstraintSystemWithPriorities constraintSystem = new ConstraintSystemWithPriorities(ConstraintResolutionListener.DO_NOTHING);
 			// T -> how T is used
-			final Map<TypeParameterDescriptor, Variance> parameters = Maps.newHashMap();
+			final List<TypeParameterDescriptor> parameters = Lists.newArrayList();
 			Processor<TypeParameterUsage> processor = new Processor<TypeParameterUsage>()
 			{
 				@Override
 				public boolean process(TypeParameterUsage parameterUsage)
 				{
-					Variance howTheTypeIsUsedBefore = parameters.get(parameterUsage.typeParameterDescriptor);
-					if(howTheTypeIsUsedBefore == null)
-					{
-						howTheTypeIsUsedBefore = Variance.INVARIANT;
-					}
-					parameters.put(parameterUsage.typeParameterDescriptor, parameterUsage.howTheTypeParameterIsUsed.superpose(howTheTypeIsUsedBefore));
+					parameters.add(parameterUsage.typeParameterDescriptor);
 					return true;
 				}
 			};
-			processAllTypeParameters(withParameters, Variance.INVARIANT, processor);
-			processAllTypeParameters(expected, Variance.INVARIANT, processor);
-			for(Map.Entry<TypeParameterDescriptor, Variance> entry : parameters.entrySet())
+			processAllTypeParameters(withParameters, processor);
+			processAllTypeParameters(expected, processor);
+			for(TypeParameterDescriptor entry : parameters)
 			{
-				constraintSystem.registerTypeVariable(entry.getKey(), entry.getValue());
+				constraintSystem.registerTypeVariable(entry);
 			}
 			constraintSystem.addSubtypingConstraint(ConstraintType.VALUE_ARGUMENT.assertSubtyping(withParameters, expected));
 
@@ -260,16 +253,16 @@ public class TypeUtils
 			return solution.getStatus().isSuccessful();
 		}
 
-		private static void processAllTypeParameters(JetType type, Variance howThiTypeIsUsed, Processor<TypeParameterUsage> result)
+		private static void processAllTypeParameters(JetType type, Processor<TypeParameterUsage> result)
 		{
 			ClassifierDescriptor descriptor = type.getConstructor().getDeclarationDescriptor();
 			if(descriptor instanceof TypeParameterDescriptor)
 			{
-				result.process(new TypeParameterUsage((TypeParameterDescriptor) descriptor, howThiTypeIsUsed));
+				result.process(new TypeParameterUsage((TypeParameterDescriptor) descriptor));
 			}
-			for(TypeProjection projection : type.getArguments())
+			for(JetType projection : type.getArguments())
 			{
-				processAllTypeParameters(projection.getType(), projection.getProjectionKind(), result);
+				processAllTypeParameters(projection, result);
 			}
 		}
 	}
@@ -286,15 +279,15 @@ public class TypeUtils
 		}
 
 		List<TypeParameterDescriptor> parameters = type.getConstructor().getParameters();
-		List<TypeProjection> arguments = type.getArguments();
+		List<JetType> arguments = type.getArguments();
 		for(int i = 0, parametersSize = parameters.size(); i < parametersSize; i++)
 		{
 			TypeParameterDescriptor parameterDescriptor = parameters.get(i);
-			TypeProjection typeProjection = arguments.get(i);
-			Variance projectionKind = typeProjection.getProjectionKind();
-			JetType argument = typeProjection.getType();
+			JetType typeProjection = arguments.get(i);
 
-			switch(parameterDescriptor.getVariance())
+			JetType argument = typeProjection;
+
+		/*	switch(parameterDescriptor.getVariance())
 			{
 				case INVARIANT:
 					switch(projectionKind)
@@ -351,7 +344,7 @@ public class TypeUtils
 						}
 					}
 					break;
-			}
+			}  */
 		}
 		return false;
 	}
@@ -387,17 +380,17 @@ public class TypeUtils
 		{
 			return ErrorUtils.createErrorType("Unsubstituted type for " + classDescriptor);
 		}
-		List<TypeProjection> arguments = getDefaultTypeProjections(classDescriptor.getTypeConstructor().getParameters());
+		List<JetType> arguments = getDefaultTypeProjections(classDescriptor.getTypeConstructor().getParameters());
 		return new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, arguments, unsubstitutedMemberScope);
 	}
 
 	@NotNull
-	public static List<TypeProjection> getDefaultTypeProjections(List<TypeParameterDescriptor> parameters)
+	public static List<JetType> getDefaultTypeProjections(List<TypeParameterDescriptor> parameters)
 	{
-		List<TypeProjection> result = new ArrayList<TypeProjection>();
+		List<JetType> result = new ArrayList<JetType>(parameters.size());
 		for(TypeParameterDescriptor parameterDescriptor : parameters)
 		{
-			result.add(new TypeProjection(parameterDescriptor.getDefaultType()));
+			result.add(parameterDescriptor.getDefaultType());
 		}
 		return result;
 	}
@@ -418,7 +411,7 @@ public class TypeUtils
 		TypeSubstitutor substitutor = TypeSubstitutor.create(type);
 		for(JetType supertype : type.getConstructor().getSupertypes())
 		{
-			result.add(substitutor.substitute(supertype, Variance.INVARIANT));
+			result.add(substitutor.substitute(supertype));
 		}
 	}
 
@@ -493,16 +486,15 @@ public class TypeUtils
 			throw new IllegalArgumentException("type parameter counts do not match: " + clazz + ", " + actualTypeParameters);
 		}
 
-		Map<TypeConstructor, TypeProjection> substitutions = Maps.newHashMap();
+		Map<TypeConstructor, JetType> substitutions = Maps.newHashMap();
 
 		for(int i = 0; i < clazzTypeParameters.size(); ++i)
 		{
 			TypeConstructor typeConstructor = clazzTypeParameters.get(i).getTypeConstructor();
-			TypeProjection typeProjection = new TypeProjection(actualTypeParameters.get(i));
-			substitutions.put(typeConstructor, typeProjection);
+			substitutions.put(typeConstructor, actualTypeParameters.get(i));
 		}
 
-		return TypeSubstitutor.create(substitutions).substitute(clazz.getDefaultType(), Variance.INVARIANT);
+		return TypeSubstitutor.create(substitutions).substitute(clazz.getDefaultType());
 	}
 
 	private static void addAllClassDescriptors(@NotNull JetType type, @NotNull Set<ClassDescriptor> set)
@@ -512,9 +504,9 @@ public class TypeUtils
 		{
 			set.add(cd);
 		}
-		for(TypeProjection projection : type.getArguments())
+		for(JetType projection : type.getArguments())
 		{
-			addAllClassDescriptors(projection.getType(), set);
+			addAllClassDescriptors(projection, set);
 		}
 	}
 
@@ -535,9 +527,9 @@ public class TypeUtils
 	{
 		if(value.getConstructor() == key)
 			return true;
-		for(TypeProjection projection : value.getArguments())
+		for(JetType projection : value.getArguments())
 		{
-			if(typeConstructorUsedInType(key, projection.getType()))
+			if(typeConstructorUsedInType(key, projection))
 			{
 				return true;
 			}
@@ -562,9 +554,9 @@ public class TypeUtils
 	{
 		if(typeParameterConstructors.contains(type.getConstructor()))
 			return true;
-		for(TypeProjection typeProjection : type.getArguments())
+		for(JetType typeProjection : type.getArguments())
 		{
-			if(dependsOnTypeParameterConstructors(typeProjection.getType(), typeParameterConstructors))
+			if(dependsOnTypeParameterConstructors(typeProjection, typeParameterConstructors))
 			{
 				return true;
 			}
@@ -579,7 +571,7 @@ public class TypeUtils
 		if(!(classifierDescriptor instanceof ClassDescriptor))
 			return ErrorUtils.createErrorType(name.getFqName());
 		else
-			return new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classifierDescriptor.getTypeConstructor(), nullable, Collections.<TypeProjection>emptyList(), ((ClassDescriptor)classifierDescriptor).getMemberScope(Collections.<TypeProjection>emptyList()));
+			return new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classifierDescriptor.getTypeConstructor(), nullable, Collections.<JetType>emptyList(), ((ClassDescriptor)classifierDescriptor).getMemberScope(Collections.<JetType>emptyList()));
 	}
 
 	public static boolean isEqualFqName(@NotNull JetType jetType, @NotNull FqName name)

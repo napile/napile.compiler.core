@@ -39,12 +39,9 @@ import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeImpl;
-import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.util.lazy.LazyValue;
 
@@ -115,7 +112,7 @@ public class TypeResolver
 					ClassifierDescriptor classifierDescriptor = resolveClass(scope, type, trace);
 					if(classifierDescriptor == null)
 					{
-						resolveTypeProjections(scope, ErrorUtils.createErrorType("No type").getConstructor(), type.getTypeArguments(), trace, checkBounds);
+						resolveTypes(scope, type.getTypeArguments(), trace, checkBounds);
 						return;
 					}
 
@@ -132,10 +129,10 @@ public class TypeResolver
 						}
 						else
 						{
-							result[0] = new JetTypeImpl(annotations, typeParameterDescriptor.getTypeConstructor(), nullable || TypeUtils.hasNullableLowerBound(typeParameterDescriptor), Collections.<TypeProjection>emptyList(), scopeForTypeParameter);
+							result[0] = new JetTypeImpl(annotations, typeParameterDescriptor.getTypeConstructor(), nullable || TypeUtils.hasNullableLowerBound(typeParameterDescriptor), Collections.<JetType>emptyList(), scopeForTypeParameter);
 						}
 
-						resolveTypeProjections(scope, ErrorUtils.createErrorType("No type").getConstructor(), type.getTypeArguments(), trace, checkBounds);
+						resolveTypes(scope, type.getTypeArguments(), trace, checkBounds);
 					}
 					else if(classifierDescriptor instanceof ClassDescriptor)
 					{
@@ -143,7 +140,7 @@ public class TypeResolver
 
 						trace.record(BindingContext.REFERENCE_TARGET, referenceExpression, classifierDescriptor);
 						TypeConstructor typeConstructor = classifierDescriptor.getTypeConstructor();
-						List<TypeProjection> arguments = resolveTypeProjections(scope, typeConstructor, type.getTypeArguments(), trace, checkBounds);
+						List<JetType> arguments = resolveTypes(scope, type.getTypeArguments(), trace, checkBounds);
 						List<TypeParameterDescriptor> parameters = typeConstructor.getParameters();
 						int expectedArgumentCount = parameters.size();
 						int actualArgumentCount = arguments.size();
@@ -173,8 +170,8 @@ public class TypeResolver
 									for(int i = 0, parametersSize = parameters.size(); i < parametersSize; i++)
 									{
 										TypeParameterDescriptor parameter = parameters.get(i);
-										JetType argument = arguments.get(i).getType();
-										NapileTypeReference typeReference = type.getTypeArguments().get(i).getTypeReference();
+										JetType argument = arguments.get(i);
+										NapileTypeReference typeReference = type.getTypeArguments().get(i);
 
 										if(typeReference != null)
 										{
@@ -197,7 +194,7 @@ public class TypeResolver
 				public void visitTupleType(NapileTupleType type)
 				{
 					// TODO labels
-					result[0] = JetStandardClasses.getTupleType(resolveTypes(scope, type.getComponentTypeRefs(), trace, checkBounds));
+					result[0] = JetStandardClasses.getTupleType(resolveTypes(scope, type.getTypeArguments(), trace, checkBounds));
 				}
 
 				@Override
@@ -269,53 +266,6 @@ public class TypeResolver
 		for(NapileTypeReference argumentElement : argumentElements)
 		{
 			arguments.add(resolveType(scope, argumentElement, trace, checkBounds));
-		}
-		return arguments;
-	}
-
-	@NotNull
-	private List<TypeProjection> resolveTypeProjections(JetScope scope, TypeConstructor constructor, List<NapileTypeProjection> argumentElements, BindingTrace trace, boolean checkBounds)
-	{
-		final List<TypeProjection> arguments = new ArrayList<TypeProjection>();
-		for(int i = 0, argumentElementsSize = argumentElements.size(); i < argumentElementsSize; i++)
-		{
-			NapileTypeProjection argumentElement = argumentElements.get(i);
-
-			NapileProjectionKind projectionKind = argumentElement.getProjectionKind();
-			JetType type;
-			if(projectionKind == NapileProjectionKind.STAR)
-			{
-				List<TypeParameterDescriptor> parameters = constructor.getParameters();
-				if(parameters.size() > i)
-				{
-					TypeParameterDescriptor parameterDescriptor = parameters.get(i);
-					arguments.add(SubstitutionUtils.makeStarProjection(parameterDescriptor));
-				}
-				else
-				{
-					arguments.add(new TypeProjection(Variance.OUT_VARIANCE, ErrorUtils.createErrorType("*")));
-				}
-			}
-			else
-			{
-				// TODO : handle the Foo<in *> case
-				type = resolveType(scope, argumentElement.getTypeReference(), trace, checkBounds);
-				Variance kind = null;
-				switch(projectionKind)
-				{
-					case IN:
-						kind = Variance.IN_VARIANCE;
-						break;
-					case OUT:
-						kind = Variance.OUT_VARIANCE;
-						break;
-					case NONE:
-						kind = Variance.INVARIANT;
-						break;
-				}
-				assert kind != null;
-				arguments.add(new TypeProjection(kind, type));
-			}
 		}
 		return arguments;
 	}

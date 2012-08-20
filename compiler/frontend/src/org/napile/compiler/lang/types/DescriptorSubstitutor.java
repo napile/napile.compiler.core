@@ -34,12 +34,12 @@ public class DescriptorSubstitutor
 	@NotNull
 	public static TypeSubstitutor substituteTypeParameters(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull final TypeSubstitutor originalSubstitutor, @NotNull DeclarationDescriptor newContainingDeclaration, @NotNull List<TypeParameterDescriptor> result)
 	{
-		final Map<TypeConstructor, TypeProjection> mutableSubstitution = Maps.newHashMap();
+		final Map<TypeConstructor, JetType> mutableSubstitution = Maps.newHashMap();
 		TypeSubstitutor substitutor = TypeSubstitutor.create(new TypeSubstitution()
 		{
 
 			@Override
-			public TypeProjection get(TypeConstructor key)
+			public JetType get(TypeConstructor key)
 			{
 				if(originalSubstitutor.inRange(key))
 				{
@@ -67,14 +67,14 @@ public class DescriptorSubstitutor
 
 		for(TypeParameterDescriptor descriptor : typeParameters)
 		{
-			TypeParameterDescriptorImpl substituted = TypeParameterDescriptorImpl.createForFurtherModification(newContainingDeclaration, descriptor.getAnnotations(), descriptor.isReified(), descriptor.getVariance(), descriptor.getName(), descriptor.getIndex());
+			TypeParameterDescriptorImpl substituted = TypeParameterDescriptorImpl.createForFurtherModification(newContainingDeclaration, descriptor.getAnnotations(), descriptor.isReified(), descriptor.getName(), descriptor.getIndex());
 			substituted.setInitialized();
 
-			mutableSubstitution.put(descriptor.getTypeConstructor(), new TypeProjection(substituted.getDefaultType()));
+			mutableSubstitution.put(descriptor.getTypeConstructor(), substituted.getDefaultType());
 
 			for(JetType upperBound : descriptor.getUpperBounds())
 			{
-				substituted.getUpperBounds().add(substitutor.substitute(upperBound, Variance.INVARIANT));
+				substituted.getUpperBounds().add(substitutor.substitute(upperBound));
 			}
 
 			result.add(substituted);

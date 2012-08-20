@@ -29,11 +29,9 @@ import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.TypeCheckingProcedure;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
@@ -56,15 +54,15 @@ public class ConstraintSystemImpl implements ConstraintSystem
 	public ConstraintSystemImpl()
 	{
 		this.resultingSubstitutor = createTypeSubstitutorWithDefaultForUnknownTypeParameter(null);
-		this.currentSubstitutor = createTypeSubstitutorWithDefaultForUnknownTypeParameter(new TypeProjection(DONT_CARE));
+		this.currentSubstitutor = createTypeSubstitutorWithDefaultForUnknownTypeParameter(DONT_CARE);
 	}
 
-	private TypeSubstitutor createTypeSubstitutorWithDefaultForUnknownTypeParameter(@Nullable final TypeProjection defaultTypeProjection)
+	private TypeSubstitutor createTypeSubstitutorWithDefaultForUnknownTypeParameter(@Nullable final JetType defaultTypeProjection)
 	{
 		return TypeSubstitutor.create(new TypeSubstitution()
 		{
 			@Override
-			public TypeProjection get(TypeConstructor key)
+			public JetType get(TypeConstructor key)
 			{
 				DeclarationDescriptor declarationDescriptor = key.getDeclarationDescriptor();
 				if(declarationDescriptor instanceof TypeParameterDescriptor)
@@ -74,7 +72,7 @@ public class ConstraintSystemImpl implements ConstraintSystem
 					JetType value = ConstraintsUtil.getValue(getTypeConstraints(descriptor));
 					if(value != null && !TypeUtils.dependsOnTypeParameterConstructors(value, Collections.singleton(DONT_CARE.getConstructor())))
 					{
-						return new TypeProjection(value);
+						return value;
 					}
 					if(typeParameterConstraints.containsKey(descriptor))
 					{
@@ -123,9 +121,9 @@ public class ConstraintSystemImpl implements ConstraintSystem
 	}
 
 	@Override
-	public void registerTypeVariable(@NotNull TypeParameterDescriptor typeVariable, @NotNull Variance positionVariance)
+	public void registerTypeVariable(@NotNull TypeParameterDescriptor typeVariable)
 	{
-		typeParameterConstraints.put(typeVariable, new TypeConstraintsImpl(positionVariance));
+		typeParameterConstraints.put(typeVariable, new TypeConstraintsImpl());
 	}
 
 	@Override
@@ -165,16 +163,16 @@ public class ConstraintSystemImpl implements ConstraintSystem
 	@Override
 	public void addSubtypingConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition)
 	{
-		addConstraint(TypeConstraintsImpl.ConstraintKind.SUB_TYPE, subjectType, constrainingType, constraintPosition);
+		addConstraint(subjectType, constrainingType, constraintPosition);
 	}
 
 	@Override
 	public void addSupertypeConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition)
 	{
-		addConstraint(TypeConstraintsImpl.ConstraintKind.SUPER_TYPE, subjectType, constrainingType, constraintPosition);
+		addConstraint(subjectType, constrainingType, constraintPosition);
 	}
 
-	private void addConstraint(@NotNull TypeConstraintsImpl.ConstraintKind constraintKind, @NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition)
+	private void addConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition)
 	{
 
 		if(constrainingType == null || (ErrorUtils.isErrorType(constrainingType) && constrainingType != DONT_CARE))
@@ -209,7 +207,7 @@ public class ConstraintSystemImpl implements ConstraintSystem
 				{
 					constrainingType = TypeUtils.makeNotNullable(constrainingType);
 				}
-				typeConstraints.addBound(constraintKind, constrainingType);
+				typeConstraints.addBound(constrainingType);
 				return;
 			}
 		}
@@ -222,41 +220,22 @@ public class ConstraintSystemImpl implements ConstraintSystem
 			errorConstraintPositions.add(constraintPosition);
 			return;
 		}
-		switch(constraintKind)
-		{
-			case SUPER_TYPE:
-			{
-				JetType correspondingSupertype = TypeCheckingProcedure.findCorrespondingSupertype(constrainingType, subjectType);
-				if(correspondingSupertype != null)
-				{
-					constrainingType = correspondingSupertype;
-				}
-				break;
-			}
-			case SUB_TYPE:
-			{
-				JetType correspondingSupertype = TypeCheckingProcedure.findCorrespondingSupertype(subjectType, constrainingType);
-				if(correspondingSupertype != null)
-				{
-					subjectType = correspondingSupertype;
-				}
-			}
-			case EQUAL: //nothing
-		}
+
+		JetType correspondingSupertype = TypeCheckingProcedure.findCorrespondingSupertype(subjectType, constrainingType);
+		if(correspondingSupertype != null)
+			subjectType = correspondingSupertype;
+
 		if(constrainingType.getConstructor() != subjectType.getConstructor())
 		{
 			errorConstraintPositions.add(constraintPosition);
 			return;
 		}
 		TypeConstructor typeConstructor = subjectType.getConstructor();
-		List<TypeProjection> subjectArguments = subjectType.getArguments();
-		List<TypeProjection> constrainingArguments = constrainingType.getArguments();
+		List<JetType> subjectArguments = subjectType.getArguments();
+		List<JetType> constrainingArguments = constrainingType.getArguments();
 		List<TypeParameterDescriptor> parameters = typeConstructor.getParameters();
 		for(int i = 0; i < subjectArguments.size(); i++)
-		{
-			//todo constrainingArguments.get(i).getType() -> type projections
-			addConstraint(TypeConstraintsImpl.ConstraintKind.fromVariance(parameters.get(i).getVariance()), subjectArguments.get(i).getType(), constrainingArguments.get(i).getType(), constraintPosition);
-		}
+			addConstraint(subjectArguments.get(i), constrainingArguments.get(i), constraintPosition);
 	}
 
 	@NotNull

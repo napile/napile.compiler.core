@@ -25,8 +25,4 @@ import com.intellij.psi.stubs.NamedStub;
 public interface PsiJetTypeParameterStub extends NamedStub<NapileTypeParameter>
 {
 	String getExtendBoundTypeText();
-
-	boolean isInVariance();
-
-	boolean isOutVariance();
 }

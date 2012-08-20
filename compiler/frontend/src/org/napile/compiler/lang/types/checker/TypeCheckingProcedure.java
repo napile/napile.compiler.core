@@ -16,24 +16,17 @@
 
 package org.napile.compiler.lang.types.checker;
 
-import static org.napile.compiler.lang.types.Variance.INVARIANT;
-import static org.napile.compiler.lang.types.Variance.IN_VARIANCE;
-import static org.napile.compiler.lang.types.Variance.OUT_VARIANCE;
-
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
 
 /**
  * @author abreslav
@@ -56,22 +49,10 @@ public class TypeCheckingProcedure
 			JetType correspondingSupertype = findCorrespondingSupertype(immediateSupertype, supertype);
 			if(correspondingSupertype != null)
 			{
-				return TypeSubstitutor.create(subtype).safeSubstitute(correspondingSupertype, Variance.INVARIANT);
+				return TypeSubstitutor.create(subtype).safeSubstitute(correspondingSupertype);
 			}
 		}
 		return null;
-	}
-
-	private static JetType getOutType(TypeParameterDescriptor parameter, TypeProjection argument)
-	{
-		boolean isOutProjected = argument.getProjectionKind() == IN_VARIANCE || parameter.getVariance() == IN_VARIANCE;
-		return isOutProjected ? parameter.getUpperBoundsAsType() : argument.getType();
-	}
-
-	private static JetType getInType(TypeParameterDescriptor parameter, TypeProjection argument)
-	{
-		boolean isOutProjected = argument.getProjectionKind() == OUT_VARIANCE || parameter.getVariance() == OUT_VARIANCE;
-		return isOutProjected ? JetStandardClasses.getNothingType() : argument.getType();
 	}
 
 	private final TypingConstraints constraints;
@@ -102,8 +83,8 @@ public class TypeCheckingProcedure
 			return false;
 		}
 
-		List<TypeProjection> type1Arguments = type1.getArguments();
-		List<TypeProjection> type2Arguments = type2.getArguments();
+		List<JetType> type1Arguments = type1.getArguments();
+		List<JetType> type2Arguments = type2.getArguments();
 		if(type1Arguments.size() != type2Arguments.size())
 		{
 			return false;
@@ -112,15 +93,11 @@ public class TypeCheckingProcedure
 		for(int i = 0; i < type1Arguments.size(); i++)
 		{
 			TypeParameterDescriptor typeParameter1 = constructor1.getParameters().get(i);
-			TypeProjection typeProjection1 = type1Arguments.get(i);
+			JetType typeProjection1 = type1Arguments.get(i);
 			TypeParameterDescriptor typeParameter2 = constructor2.getParameters().get(i);
-			TypeProjection typeProjection2 = type2Arguments.get(i);
-			if(getEffectiveProjectionKind(typeParameter1, typeProjection1) != getEffectiveProjectionKind(typeParameter2, typeProjection2))
-			{
-				return false;
-			}
+			JetType typeProjection2 = type2Arguments.get(i);
 
-			if(!constraints.assertEqualTypes(typeProjection1.getType(), typeProjection2.getType(), this))
+			if(!constraints.assertEqualTypes(typeProjection1, typeProjection2, this))
 			{
 				return false;
 			}
@@ -128,64 +105,6 @@ public class TypeCheckingProcedure
 		return true;
 	}
 
-	private enum EnrichedProjectionKind
-	{
-		IN, OUT, INV, STAR;
-
-		@NotNull
-		public static EnrichedProjectionKind fromVariance(@NotNull Variance variance)
-		{
-			switch(variance)
-			{
-				case INVARIANT:
-					return INV;
-				case IN_VARIANCE:
-					return IN;
-				case OUT_VARIANCE:
-					return OUT;
-			}
-			throw new IllegalStateException("Unknown variance");
-		}
-	}
-
-	// If class C<out T> then C<T> and C<out T> mean the same
-	// out * out = out
-	// out * in  = *
-	// out * inv = out
-	//
-	// in * out  = *
-	// in * in   = in
-	// in * inv  = in
-	//
-	// inv * out = out
-	// inv * in  = out
-	// inv * inv = inv
-	private EnrichedProjectionKind getEffectiveProjectionKind(@NotNull TypeParameterDescriptor typeParameter, @NotNull TypeProjection typeArgument)
-	{
-		Variance a = typeParameter.getVariance();
-		Variance b = typeArgument.getProjectionKind();
-
-		// If they are not both invariant, let's make b not invariant for sure
-		if(b == INVARIANT)
-		{
-			Variance t = a;
-			a = b;
-			b = t;
-		}
-
-		// Opposites yield STAR
-		if(a == IN_VARIANCE && b == OUT_VARIANCE)
-		{
-			return EnrichedProjectionKind.STAR;
-		}
-		if(a == OUT_VARIANCE && b == IN_VARIANCE)
-		{
-			return EnrichedProjectionKind.STAR;
-		}
-
-		// If they are not opposite, return b, because b is either equal to a or b is in/out and a is inv
-		return EnrichedProjectionKind.fromVariance(b);
-	}
 
 	public boolean isSubtypeOf(@NotNull JetType subtype, @NotNull JetType supertype)
 	{
@@ -215,36 +134,19 @@ public class TypeCheckingProcedure
 		TypeConstructor constructor = subtype.getConstructor();
 		assert constructor.equals(supertype.getConstructor()) : constructor + " is not " + supertype.getConstructor();
 
-		List<TypeProjection> subArguments = subtype.getArguments();
-		List<TypeProjection> superArguments = supertype.getArguments();
+		List<JetType> subArguments = subtype.getArguments();
+		List<JetType> superArguments = supertype.getArguments();
 		List<TypeParameterDescriptor> parameters = constructor.getParameters();
 		for(int i = 0; i < parameters.size(); i++)
 		{
-			TypeParameterDescriptor parameter = parameters.get(i);
+			JetType subArgument = subArguments.get(i);
 
+			JetType superArgument = superArguments.get(i);
 
-			TypeProjection subArgument = subArguments.get(i);
-			JetType subIn = getInType(parameter, subArgument);
-			JetType subOut = getOutType(parameter, subArgument);
-
-			TypeProjection superArgument = superArguments.get(i);
-			JetType superIn = getInType(parameter, superArgument);
-			JetType superOut = getOutType(parameter, superArgument);
-
-			if(parameter.getVariance() == INVARIANT &&
-					subArgument.getProjectionKind() == INVARIANT &&
-					superArgument.getProjectionKind() == INVARIANT)
-			{
-				if(!constraints.assertEqualTypes(subArgument.getType(), superArgument.getType(), this))
-					return false;
-			}
-			else
-			{
-				if(!constraints.assertSubtype(subOut, superOut, this))
-					return false;
-				if(!constraints.assertSubtype(superIn, subIn, this))
-					return false;
-			}
+			if(superArgument.isNullable() && !subArgument.isNullable())
+				return false;
+			if(!isSubtypeOf(subArgument, superArgument))
+				return false;
 		}
 		return true;
 	}

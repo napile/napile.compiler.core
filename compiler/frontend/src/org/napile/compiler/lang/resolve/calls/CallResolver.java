@@ -20,7 +20,6 @@ import static org.napile.compiler.lang.diagnostics.Errors.AUTOCAST_IMPOSSIBLE;
 import static org.napile.compiler.lang.diagnostics.Errors.CALLEE_NOT_A_FUNCTION;
 import static org.napile.compiler.lang.diagnostics.Errors.NOT_A_CLASS;
 import static org.napile.compiler.lang.diagnostics.Errors.NO_CONSTRUCTOR;
-import static org.napile.compiler.lang.diagnostics.Errors.PROJECTION_ON_NON_CLASS_TYPE_ARGUMENT;
 import static org.napile.compiler.lang.diagnostics.Errors.SUPER_IS_NOT_AN_EXPRESSION;
 import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
 import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
@@ -45,10 +44,10 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
@@ -64,7 +63,6 @@ import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemImpl;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemWithPriorities;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintsUtil;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
-import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -72,10 +70,8 @@ import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.Variance;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
@@ -720,7 +716,7 @@ public class CallResolver
 			checkUnmappedArgumentTypes(context.toBasic(), unmappedArguments);
 		}
 
-		List<NapileTypeProjection> jetTypeArguments = context.call.getTypeArguments();
+		List<NapileTypeReference> jetTypeArguments = context.call.getTypeArguments();
 		if(jetTypeArguments.isEmpty())
 		{
 			if(!candidate.getTypeParameters().isEmpty())
@@ -738,29 +734,16 @@ public class CallResolver
 			// Explicit type arguments passed
 
 			List<JetType> typeArguments = new ArrayList<JetType>();
-			for(NapileTypeProjection projection : jetTypeArguments)
-			{
-				if(projection.getProjectionKind() != NapileProjectionKind.NONE)
-				{
-					context.trace.report(PROJECTION_ON_NON_CLASS_TYPE_ARGUMENT.on(projection));
-				}
-				NapileTypeReference typeReference = projection.getTypeReference();
-				if(typeReference != null)
-				{
-					typeArguments.add(typeResolver.resolveType(context.scope, typeReference, context.trace, true));
-				}
-				else
-				{
-					typeArguments.add(ErrorUtils.createErrorType("Star projection in a call"));
-				}
-			}
+			for(NapileTypeReference typeReference : jetTypeArguments)
+				typeArguments.add(typeResolver.resolveType(context.scope, typeReference, context.trace, true));
+
 			int expectedTypeArgumentCount = candidate.getTypeParameters().size();
 			if(expectedTypeArgumentCount == jetTypeArguments.size())
 			{
 
 				checkGenericBoundsInAFunctionCall(jetTypeArguments, typeArguments, candidate, context.trace);
 
-				Map<TypeConstructor, TypeProjection> substitutionContext = FunctionDescriptorUtil.createSubstitutionContext((FunctionDescriptor) candidate, typeArguments);
+				Map<TypeConstructor, JetType> substitutionContext = FunctionDescriptorUtil.createSubstitutionContext((FunctionDescriptor) candidate, typeArguments);
 				candidateCall.setResultingSubstitutor(TypeSubstitutor.create(substitutionContext));
 
 				List<TypeParameterDescriptor> typeParameters = candidateCall.getCandidateDescriptor().getTypeParameters();
@@ -813,7 +796,7 @@ public class CallResolver
 
 		for(TypeParameterDescriptor typeParameterDescriptor : candidateWithFreshVariables.getTypeParameters())
 		{
-			constraintsSystem.registerTypeVariable(typeParameterDescriptor, Variance.INVARIANT); // TODO: variance of the occurrences
+			constraintsSystem.registerTypeVariable(typeParameterDescriptor); // TODO: variance of the occurrences
 		}
 
 		TypeSubstitutor substituteDontCare = ConstraintSystemWithPriorities.makeConstantSubstitutor(candidateWithFreshVariables.getTypeParameters(), ConstraintSystemImpl.DONT_CARE);
@@ -886,7 +869,7 @@ public class CallResolver
 		JetType effectiveExpectedType = getEffectiveExpectedType(valueParameterDescriptor, valueArgument);
 		TemporaryBindingTrace traceForUnknown = TemporaryBindingTrace.create(context.trace);
 		NapileExpression argumentExpression = valueArgument.getArgumentExpression();
-		JetType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(valueParameterDescriptor.getType(), Variance.INVARIANT), context.dataFlowInfo, traceForUnknown) : null;
+		JetType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(valueParameterDescriptor.getType()), context.dataFlowInfo, traceForUnknown) : null;
 		constraintSystem.addSupertypeConstraint(effectiveExpectedType, type, ConstraintPosition.getValueParameterPosition(valueParameterDescriptor.getIndex()));
 		//todo no return
 		if(type == null || ErrorUtils.isErrorType(type))
@@ -935,18 +918,8 @@ public class CallResolver
 			expressionTypingServices.getType(context.scope, expression, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace);
 		}
 
-		for(NapileTypeProjection typeProjection : context.call.getTypeArguments())
-		{
-			NapileTypeReference typeReference = typeProjection.getTypeReference();
-			if(typeReference == null)
-			{
-				context.trace.report(Errors.PROJECTION_ON_NON_CLASS_TYPE_ARGUMENT.on(typeProjection));
-			}
-			else
-			{
-				typeResolver.resolveType(context.scope, typeReference, context.trace, true);
-			}
-		}
+		for(NapileTypeReference typeReference : context.call.getTypeArguments())
+			typeResolver.resolveType(context.scope, typeReference, context.trace, true);
 	}
 
 	private void checkUnmappedArgumentTypes(BasicResolutionContext context, Set<ValueArgument> unmappedArguments)
@@ -1274,23 +1247,23 @@ public class CallResolver
 		}
 	}
 
-	private void checkGenericBoundsInAFunctionCall(List<NapileTypeProjection> jetTypeArguments, List<JetType> typeArguments, CallableDescriptor functionDescriptor, BindingTrace trace)
+	private void checkGenericBoundsInAFunctionCall(List<NapileTypeReference> jetTypeArguments, List<JetType> typeArguments, CallableDescriptor functionDescriptor, BindingTrace trace)
 	{
-		Map<TypeConstructor, TypeProjection> context = Maps.newHashMap();
+		Map<TypeConstructor, JetType> context = Maps.newHashMap();
 
 		List<TypeParameterDescriptor> typeParameters = functionDescriptor.getOriginal().getTypeParameters();
 		for(int i = 0, typeParametersSize = typeParameters.size(); i < typeParametersSize; i++)
 		{
 			TypeParameterDescriptor typeParameter = typeParameters.get(i);
 			JetType typeArgument = typeArguments.get(i);
-			context.put(typeParameter.getTypeConstructor(), new TypeProjection(typeArgument));
+			context.put(typeParameter.getTypeConstructor(), typeArgument);
 		}
 		TypeSubstitutor substitutor = TypeSubstitutor.create(context);
 		for(int i = 0, typeParametersSize = typeParameters.size(); i < typeParametersSize; i++)
 		{
 			TypeParameterDescriptor typeParameterDescriptor = typeParameters.get(i);
 			JetType typeArgument = typeArguments.get(i);
-			NapileTypeReference typeReference = jetTypeArguments.get(i).getTypeReference();
+			NapileTypeReference typeReference = jetTypeArguments.get(i);
 			if(typeReference != null)
 			{
 				descriptorResolver.checkBounds(typeReference, typeArgument, typeParameterDescriptor, substitutor, trace);

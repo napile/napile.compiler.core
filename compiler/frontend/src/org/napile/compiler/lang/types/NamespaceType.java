@@ -62,7 +62,7 @@ public class NamespaceType implements JetType
 
 	@NotNull
 	@Override
-	public List<TypeProjection> getArguments()
+	public List<JetType> getArguments()
 	{
 		throwException();
 		return null;

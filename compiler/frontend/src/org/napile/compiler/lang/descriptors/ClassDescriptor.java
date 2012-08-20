@@ -25,7 +25,6 @@ import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -35,7 +34,7 @@ public interface ClassDescriptor extends ClassifierDescriptor, MemberDescriptor,
 {
 
 	@NotNull
-	JetScope getMemberScope(List<TypeProjection> typeArguments);
+	JetScope getMemberScope(List<JetType> typeArguments);
 
 	@NotNull
 	JetScope getUnsubstitutedInnerClassesScope();

@@ -34,7 +34,7 @@ public class NapileSelfType extends NapileTypeElement
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getTypeArgumentsAsTypes()
+	public List<NapileTypeReference> getTypeArguments()
 	{
 		return Collections.emptyList();
 	}

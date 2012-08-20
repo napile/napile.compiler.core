@@ -32,9 +32,7 @@ import org.napile.compiler.lang.types.DescriptorSubstitutor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructorImpl;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.Variance;
 import com.google.common.collect.Lists;
 
 /**
@@ -91,7 +89,7 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 			Collection<JetType> supertypes = Lists.newArrayList();
 			for(JetType supertype : originalTypeConstructor.getSupertypes())
 			{
-				supertypes.add(substitutor.substitute(supertype, Variance.INVARIANT));
+				supertypes.add(substitutor.substitute(supertype));
 			}
 
 			typeConstructor = new TypeConstructorImpl(this, originalTypeConstructor.getAnnotations(), originalTypeConstructor.isSealed(), originalTypeConstructor.toString(), typeParameters, supertypes);
@@ -102,7 +100,7 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 
 	@NotNull
 	@Override
-	public JetScope getMemberScope(List<TypeProjection> typeArguments)
+	public JetScope getMemberScope(List<JetType> typeArguments)
 	{
 		JetScope memberScope = original.getMemberScope(typeArguments);
 		if(originalSubstitutor.isEmpty())

@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.Variance;
 
 /**
  * @author abreslav
@@ -30,8 +29,6 @@ import org.napile.compiler.lang.types.Variance;
 public interface TypeParameterDescriptor extends ClassifierDescriptor
 {
 	boolean isReified();
-
-	Variance getVariance();
 
 	@NotNull
 	Set<JetType> getUpperBounds();

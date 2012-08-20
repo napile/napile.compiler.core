@@ -23,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.Variance;
 
 /**
  * @author svtk
@@ -34,7 +33,7 @@ public interface ConstraintSystem
 	/**
 	 * Registers a variable in a constraint system.
 	 */
-	void registerTypeVariable(@NotNull TypeParameterDescriptor typeVariable, @NotNull Variance positionVariance);
+	void registerTypeVariable(@NotNull TypeParameterDescriptor typeVariable);
 
 	/**
 	 * Returns a set of all registered type variables.

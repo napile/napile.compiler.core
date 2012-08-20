@@ -45,7 +45,6 @@ import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeProjection;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lexer.JetTokens;
 import com.google.common.collect.Lists;
@@ -542,10 +541,10 @@ public class TypeHierarchyResolver
 	{
 		for(MutableClassDescriptor mutableClassDescriptor : topologicalOrder)
 		{
-			Multimap<TypeConstructor, TypeProjection> multimap = SubstitutionUtils.buildDeepSubstitutionMultimap(mutableClassDescriptor.getDefaultType());
-			for(Map.Entry<TypeConstructor, Collection<TypeProjection>> entry : multimap.asMap().entrySet())
+			Multimap<TypeConstructor, JetType> multimap = SubstitutionUtils.buildDeepSubstitutionMultimap(mutableClassDescriptor.getDefaultType());
+			for(Map.Entry<TypeConstructor, Collection<JetType>> entry : multimap.asMap().entrySet())
 			{
-				Collection<TypeProjection> projections = entry.getValue();
+				Collection<JetType> projections = entry.getValue();
 				if(projections.size() > 1)
 				{
 					TypeConstructor typeConstructor = entry.getKey();
@@ -555,11 +554,11 @@ public class TypeHierarchyResolver
 
 					// Immediate arguments of supertypes cannot be projected
 					Set<JetType> conflictingTypes = Sets.newLinkedHashSet();
-					for(TypeProjection projection : projections)
+					for(JetType projection : projections)
 					{
-						conflictingTypes.add(projection.getType());
+						conflictingTypes.add(projection);
 					}
-					switch(typeParameterDescriptor.getVariance())
+					/*switch(typeParameterDescriptor.getVariance())
 					{
 						case INVARIANT:
 							// Leave conflicting types as is
@@ -572,7 +571,7 @@ public class TypeHierarchyResolver
 							// Filter out those who have subtypes in this set (common subtype)
 							Filter.REMOVE_IF_SUBTYPE_IN_THE_SET.proceed(conflictingTypes);
 							break;
-					}
+					}  */
 
 					if(conflictingTypes.size() > 1)
 					{
