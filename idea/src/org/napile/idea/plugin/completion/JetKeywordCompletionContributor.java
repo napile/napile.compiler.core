@@ -344,8 +344,6 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 
 		registerScopeKeywordsCompletion(new InPropertyBodyFilter(), ELSE_KEYWORD, FALSE_KEYWORD, NULL_KEYWORD, THIS_KEYWORD, TRUE_KEYWORD);
 
-		registerScopeKeywordsCompletion(new InParametersFilter(), OUT_KEYWORD);
-
 		// templates
 		registerScopeKeywordsCompletion(new InWhenFilter(), WHEN_ENTRY_TEMPLATE);
 		registerScopeKeywordsCompletion(new InTopFilter(), CLASS_TEMPLATE, ENUM_CLASS_TEMPLATE);
