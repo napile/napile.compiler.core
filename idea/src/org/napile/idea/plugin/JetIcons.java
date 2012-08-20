@@ -35,16 +35,14 @@ public interface JetIcons
 	Icon C_HERITABLE = IconLoader.getIcon("/org/napile/icons/gutter/c_heritable.png");
 
 	Icon FILE = IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
-	Icon OBJECT = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/object.png");
+	Icon OBJECT = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/object.png");
 
-	Icon FUNCTION = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/function.png");
+	Icon FUNCTION = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/function.png");
 	Icon EXTENSION_FUNCTION = PlatformIcons.FUNCTION_ICON;
-	Icon LAMBDA = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/lambda.png");
-	Icon VAR = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/variable.png");
-	Icon VAL = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/value.png");
-	Icon PARAMETER = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/parameter.png");
-	Icon FIELD_VAL = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/field_value.png");
-	Icon FIELD_VAR = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/field_variable.png");
 
-	Icon LAUNCH = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/kotlin_launch_configuration.png");
+	Icon VAR = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/variable.png");
+	Icon VAL = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/value.png");
+	Icon PARAMETER = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/parameter.png");
+	Icon FIELD_VAL = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/field_value.png");
+	Icon FIELD_VAR = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/field_variable.png");
 }
