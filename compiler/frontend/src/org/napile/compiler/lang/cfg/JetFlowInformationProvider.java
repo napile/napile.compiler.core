@@ -25,41 +25,26 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.cfg.PseudocodeVariablesData.VariableInitState;
 import org.napile.compiler.lang.cfg.PseudocodeVariablesData.VariableUseState;
-import org.napile.compiler.lang.cfg.pseudocode.AbstractJumpInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.Instruction;
-import org.napile.compiler.lang.cfg.pseudocode.InstructionVisitor;
-import org.napile.compiler.lang.cfg.pseudocode.JetElementInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.LocalDeclarationInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.NondeterministicJumpInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.Pseudocode;
-import org.napile.compiler.lang.cfg.pseudocode.PseudocodeUtil;
-import org.napile.compiler.lang.cfg.pseudocode.ReadUnitValueInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.ReadValueInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.ReturnNoValueInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.ReturnValueInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.SubroutineExitInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.UnconditionalJumpInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.VariableDeclarationInstruction;
-import org.napile.compiler.lang.cfg.pseudocode.WriteValueInstruction;
+import org.napile.compiler.lang.cfg.pseudocode.*;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.plugin.JetMainDetector;
-import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.types.TypeUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
@@ -659,5 +644,44 @@ public class JetFlowInformationProvider
 				}
 			}
 		});
+	}
+
+	public void checkInstanceCallsFromStaticBody()
+	{
+		assert pseudocode != null;
+		PseudocodeTraverser.traverse(pseudocode, true, new PseudocodeTraverser.InstructionAnalyzeStrategy()
+		{
+			@Override
+			public void execute(@NotNull Instruction instruction)
+			{
+				if(instruction instanceof WriteValueInstruction)
+				{
+					PsiElement element = ((WriteValueInstruction) instruction).getElement();
+
+					PsiElement left = element instanceof NapileBinaryExpression ? ((NapileBinaryExpression) element).getLeft() : null;
+					if(left instanceof NapileReferenceExpression)
+						checkNonStaticDeclaration((NapileReferenceExpression) left);
+				}
+				else if(instruction instanceof ReadValueInstruction)
+				{
+					NapileReferenceExpression referenceExpression = ((ReadValueInstruction) instruction).getElement() instanceof NapileReferenceExpression ? (NapileReferenceExpression) ((ReadValueInstruction) instruction).getElement() : null;
+					if(referenceExpression == null)
+						return;
+
+					checkNonStaticDeclaration(referenceExpression);
+				}
+			}
+		});
+	}
+
+	private void checkNonStaticDeclaration(@NotNull NapileReferenceExpression referenceExpression)
+	{
+		DeclarationDescriptor descriptor = trace.get(BindingContext.REFERENCE_TARGET, referenceExpression);
+		if(descriptor == null)
+			return;
+
+		DeclarationDescriptor owner = descriptor.getContainingDeclaration();
+		if(owner instanceof ClassDescriptor && descriptor instanceof DeclarationDescriptorWithVisibility && !((DeclarationDescriptorWithVisibility) descriptor).isStatic())
+			trace.report(Errors.ILLEGAL_CALL.on(referenceExpression));
 	}
 }

@@ -32,6 +32,8 @@ public interface JetIcons
 	Icon ENUM = IconLoader.getIcon("/org/napile/icons/nodes/enum.png");
 	Icon ABSTRACT_CLASS = IconLoader.getIcon("/org/napile/icons/nodes/abstractClass.png");
 
+	Icon CONSTRUCTOR = PlatformIcons.METHOD_ICON; //TODO [VISTALL] new icon
+
 	Icon C_HERITABLE = IconLoader.getIcon("/org/napile/icons/gutter/c_heritable.png");
 
 	Icon FILE = IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");

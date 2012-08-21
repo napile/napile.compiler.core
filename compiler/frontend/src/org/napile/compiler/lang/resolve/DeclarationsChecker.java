@@ -25,14 +25,14 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.lexer.JetTokens;
-import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.psi.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -314,9 +314,8 @@ public class DeclarationsChecker
 	private void checkAccessors(NapileProperty property, PropertyDescriptor propertyDescriptor)
 	{
 		for(NapilePropertyAccessor accessor : property.getAccessors())
-		{
 			checkIllegalInThisContextModifiers(accessor.getModifierList(), Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD, JetTokens.OVERRIDE_KEYWORD));
-		}
+
 		NapilePropertyAccessor getter = property.getGetter();
 		PropertyGetterDescriptor getterDescriptor = propertyDescriptor.getGetter();
 		NapileModifierList getterModifierList = getter != null ? getter.getModifierList() : null;

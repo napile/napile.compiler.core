@@ -65,6 +65,8 @@ public class JetIconProvider extends IconProvider
 			if(((NapileMethod) psiElement).getReceiverTypeRef() != null)
 				icon = JetIcons.EXTENSION_FUNCTION;
 		}
+		else if(psiElement instanceof NapileConstructor)
+			icon = JetIcons.CONSTRUCTOR;
 		else if(psiElement instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) psiElement;

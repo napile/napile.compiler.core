@@ -172,7 +172,7 @@ public class JetStandardClasses
 
 				PropertyDescriptor propertyDescriptor = new PropertyDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibilities.PUBLIC, false, false, Name.identifier("_" + (j + 1)), CallableMemberDescriptor.Kind.DECLARATION, false);
 				propertyDescriptor.setType(typeParameterDescriptor.getDefaultType(), Collections.<TypeParameterDescriptorImpl>emptyList(), classDescriptor.getImplicitReceiver(), ReceiverDescriptor.NO_RECEIVER);
-				PropertyGetterDescriptor getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibilities.PUBLIC, false, true, CallableMemberDescriptor.Kind.DECLARATION);
+				PropertyGetterDescriptor getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibilities.PUBLIC, false, true, CallableMemberDescriptor.Kind.DECLARATION, false);
 				getterDescriptor.initialize(typeParameterDescriptor.getDefaultType());
 				propertyDescriptor.initialize(getterDescriptor, null);
 				writableScope.addPropertyDescriptor(propertyDescriptor);

@@ -20,19 +20,14 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.psi.PsiElement;
 
 /**
  * @author abreslav
  */
-public interface NapileDeclarationWithBody extends PsiElement
+public interface NapileDeclarationWithBody extends NapileDeclaration
 {
-
 	@Nullable
 	NapileExpression getBodyExpression();
-
-	@Nullable
-	String getName();
 
 	boolean hasBlockBody();
 

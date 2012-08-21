@@ -29,6 +29,7 @@ import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.lexer.JetTokens;
 
 /**
  * @author svtk
@@ -130,5 +131,9 @@ public class ControlFlowAnalyzer
 		flowInformationProvider.markUnusedVariables();
 
 		flowInformationProvider.markUnusedLiteralsInBlock();
+
+		NapileModifierList modifierList = function.getModifierList();
+		if(modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD))
+			flowInformationProvider.checkInstanceCallsFromStaticBody();
 	}
 }

@@ -36,14 +36,14 @@ public class PropertyGetterDescriptor extends PropertyAccessorDescriptor
 	@NotNull
 	private final PropertyGetterDescriptor original;
 
-	public PropertyGetterDescriptor(@NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean hasBody, boolean isDefault, @NotNull Kind kind)
+	public PropertyGetterDescriptor(@NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean hasBody, boolean isDefault, @NotNull Kind kind, boolean isStatic)
 	{
-		this(correspondingProperty, annotations, modality, visibility, hasBody, isDefault, kind, null);
+		this(correspondingProperty, annotations, modality, visibility, hasBody, isDefault, kind, null, isStatic);
 	}
 
-	public PropertyGetterDescriptor(@NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean hasBody, boolean isDefault, @NotNull Kind kind, @Nullable PropertyGetterDescriptor original)
+	public PropertyGetterDescriptor(@NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean hasBody, boolean isDefault, @NotNull Kind kind, @Nullable PropertyGetterDescriptor original, boolean isStatic)
 	{
-		super(modality, visibility, correspondingProperty, annotations, Name.special("<get-" + correspondingProperty.getName() + ">"), hasBody, isDefault, kind, false);
+		super(modality, visibility, correspondingProperty, annotations, Name.special("<get-" + correspondingProperty.getName() + ">"), hasBody, isDefault, kind, isStatic);
 		this.original = original != null ? original : this;
 	}
 

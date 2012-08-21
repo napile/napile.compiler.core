@@ -19,7 +19,9 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -80,5 +82,24 @@ public class NapileFunctionLiteralExpression extends NapileExpressionImpl implem
 	public NapileElement asElement()
 	{
 		return this;
+	}
+
+	@Nullable
+	@Override
+	public NapileModifierList getModifierList()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean hasModifier(NapileToken modifier)
+	{
+		return false;
+	}
+
+	@Override
+	public ASTNode getModifierNode(NapileToken token)
+	{
+		return null;
 	}
 }

@@ -106,4 +106,11 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 	{
 		return getNode().findChildByType(JetTokens.THIS_KEYWORD);
 	}
+
+	@Override
+	@NotNull
+	public String getName()
+	{
+		return "this";  // JetDeclarationTreeNode not show node if name is null
+	}
 }

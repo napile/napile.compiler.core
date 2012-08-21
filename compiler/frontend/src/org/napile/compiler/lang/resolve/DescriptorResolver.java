@@ -738,7 +738,7 @@ public class DescriptorResolver
 			List<AnnotationDescriptor> annotations = annotationResolver.resolveAnnotations(scope, setter.getModifierList(), trace);
 			NapileParameter parameter = setter.getParameter();
 
-			setterDescriptor = new PropertySetterDescriptor(propertyDescriptor, annotations, resolveModalityFromModifiers(setter.getModifierList(), propertyDescriptor.getModality()), resolveVisibilityFromModifiers(setter.getModifierList()), setter.getBodyExpression() != null, false, CallableMemberDescriptor.Kind.DECLARATION);
+			setterDescriptor = new PropertySetterDescriptor(propertyDescriptor, annotations, resolveModalityFromModifiers(setter.getModifierList(), propertyDescriptor.getModality()), resolveVisibilityFromModifiers(setter.getModifierList()), setter.getBodyExpression() != null, false, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
 			if(parameter != null)
 			{
 
@@ -801,7 +801,7 @@ public class DescriptorResolver
 	private PropertySetterDescriptor createDefaultSetter(PropertyDescriptor propertyDescriptor)
 	{
 		PropertySetterDescriptor setterDescriptor;
-		setterDescriptor = new PropertySetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), propertyDescriptor.getModality(), propertyDescriptor.getVisibility(), false, true, CallableMemberDescriptor.Kind.DECLARATION);
+		setterDescriptor = new PropertySetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), propertyDescriptor.getModality(), propertyDescriptor.getVisibility(), false, true, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
 		setterDescriptor.initializeDefault();
 		return setterDescriptor;
 	}
@@ -827,7 +827,7 @@ public class DescriptorResolver
 				}
 			}
 
-			getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, annotations, resolveModalityFromModifiers(getter.getModifierList(), propertyDescriptor.getModality()), resolveVisibilityFromModifiers(getter.getModifierList()), getter.getBodyExpression() != null, false, CallableMemberDescriptor.Kind.DECLARATION);
+			getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, annotations, resolveModalityFromModifiers(getter.getModifierList(), propertyDescriptor.getModality()), resolveVisibilityFromModifiers(getter.getModifierList()), getter.getBodyExpression() != null, false, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
 			getterDescriptor.initialize(returnType);
 			trace.record(BindingContext.PROPERTY_ACCESSOR, getter, getterDescriptor);
 		}
@@ -842,7 +842,7 @@ public class DescriptorResolver
 	public static PropertyGetterDescriptor createDefaultGetter(PropertyDescriptor propertyDescriptor)
 	{
 		PropertyGetterDescriptor getterDescriptor;
-		getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), propertyDescriptor.getModality(), propertyDescriptor.getVisibility(), false, true, CallableMemberDescriptor.Kind.DECLARATION);
+		getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), propertyDescriptor.getModality(), propertyDescriptor.getVisibility(), false, true, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
 		return getterDescriptor;
 	}
 
