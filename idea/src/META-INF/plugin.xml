@@ -89,10 +89,6 @@
 
 		<completion.contributor language="NAPILE" id="JetPackagesContributor" order="after JetKeywordCompletionContributor" implementationClass="org.napile.idea.plugin.completion.JetPackagesContributor"/>
 
-		<completion.contributor language="NAPILE" id="JetExtensionFunctionReceiverContributor" order="after JetPackagesContributor" implementationClass="org.napile.idea.plugin.completion.JetExtensionReceiverTypeContributor"/>
-
-		<completion.contributor language="NAPILE" id="JetClassCompletionContributor" order="after JetExtensionFunctionReceiverContributor" implementationClass="org.napile.idea.plugin.completion.JetClassCompletionContributor"/>
-
 		<completion.contributor language="NAPILE" id="JetCompletionContributor" order="after JetClassCompletionContributor" implementationClass="org.napile.idea.plugin.completion.JetCompletionContributor"/>
 
 		<completion.contributor language="NAPILE" implementationClass="org.napile.idea.plugin.liveTemplates.JetLiveTemplateCompletionContributor" id="liveTemplates" order="first"/>

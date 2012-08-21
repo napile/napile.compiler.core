@@ -1,10 +1,10 @@
 <component name="ArtifactManager">
-  <artifact name="KotlinPlugin">
+  <artifact name="idea.napile-lang">
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="root">
-      <element id="directory" name="Kotlin">
+      <element id="directory" name="Napile">
         <element id="directory" name="lib">
-          <element id="archive" name="kotlin-plugin.jar">
+          <element id="archive" name="idea.napile-lang.jar">
             <element id="module-output" name="backend" />
             <element id="module-output" name="frontend" />
             <element id="module-output" name="idea" />
@@ -14,7 +14,7 @@
           </element>
           <element id="library" level="project" name="javax.inject" />
         </element>
-        <element id="directory" name="kotlinc">
+        <element id="directory" name="napilec">
           <element id="dir-copy" path="$PROJECT_DIR$/dist/kotlinc" />
         </element>
       </element>

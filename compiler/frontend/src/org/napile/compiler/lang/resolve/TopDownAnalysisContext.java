@@ -29,17 +29,16 @@ import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.descriptors.WithDeferredResolve;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileParameter;
-import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDeclarationContainer;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Maps;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -58,7 +57,6 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
 	private final Map<NapileNamedFunction, SimpleFunctionDescriptor> functions = Maps.newLinkedHashMap();
 	private final Map<NapileProperty, PropertyDescriptor> properties = Maps.newLinkedHashMap();
-	private final Map<NapileParameter, PropertyDescriptor> primaryConstructorParameterProperties = Maps.newHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
 
 	// File scopes - package scope extended with imports
@@ -144,11 +142,6 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 		return namespaceDescriptors;
 	}
 
-	public Map<NapileParameter, PropertyDescriptor> getPrimaryConstructorParameterProperties()
-	{
-		return primaryConstructorParameterProperties;
-	}
-
 	@Override
 	public Map<NapileConstructor, ConstructorDescriptor> getConstructors()
 	{
@@ -180,7 +173,6 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 			members = Maps.newHashMap();
 			members.putAll(functions);
 			members.putAll(properties);
-			members.putAll(primaryConstructorParameterProperties);
 		}
 		return members;
 	}

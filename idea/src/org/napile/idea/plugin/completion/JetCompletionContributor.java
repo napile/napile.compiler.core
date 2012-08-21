@@ -57,7 +57,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.Consumer;
 import com.intellij.util.ProcessingContext;
 
 /**
@@ -130,7 +129,7 @@ public class JetCompletionContributor extends CompletionContributor
 		{
 			if(session.customInvocationCount > 0)
 			{
-				addClasses(parameters, result, session);
+
 			}
 			else
 			{
@@ -169,7 +168,6 @@ public class JetCompletionContributor extends CompletionContributor
 
 		if(shouldRunTopLevelCompletion(parameters, session))
 		{
-			addClasses(parameters, result, session);
 			addJetTopLevelFunctions(jetReference.getExpression(), result, position, session);
 		}
 
@@ -249,20 +247,6 @@ public class JetCompletionContributor extends CompletionContributor
 		}
 	}
 
-	/**
-	 * Jet classes will be added as java completions for unification
-	 */
-	private static void addClasses(@NotNull CompletionParameters parameters, @NotNull final CompletionResultSet result, @NotNull final CompletionSession session)
-	{
-		JetClassCompletionContributor.addClasses(parameters, result, new Consumer<LookupElement>()
-		{
-			@Override
-			public void consume(@NotNull LookupElement element)
-			{
-				addCompletionToResult(result, element, session);
-			}
-		});
-	}
 
 	private static boolean shouldRunTypeCompletionOnly(PsiElement position, JetSimpleNameReference jetReference)
 	{

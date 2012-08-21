@@ -22,7 +22,7 @@
     <ConfigurationWrapper RunnerId="Run" />
     <method>
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="KotlinPlugin" />
+        <artifact name="idea.napile-lang" />
       </option>
     </method>
   </configuration>
