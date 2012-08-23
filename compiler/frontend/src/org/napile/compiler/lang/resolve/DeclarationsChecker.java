@@ -444,9 +444,10 @@ public class DeclarationsChecker
 		if(classDescriptor.getKind() != ClassKind.ENUM_ENTRY)
 			return;
 
-		DeclarationDescriptor declaration = classDescriptor.getContainingDeclaration().getContainingDeclaration();
+		//TODO [VISTALL]
+		/*DeclarationDescriptor declaration = classDescriptor.getContainingDeclaration().getContainingDeclaration();
 		assert declaration instanceof ClassDescriptor;
-		ClassDescriptorFromSource enumClass = (ClassDescriptorFromSource) declaration;
+		ClassDescriptor enumClass = (ClassDescriptor) declaration;
 		assert enumClass.getKind() == ClassKind.ENUM_CLASS;
 
 		List<NapileDelegationSpecifier> delegationSpecifiers = aClass.getDelegationSpecifiers();
@@ -472,6 +473,6 @@ public class DeclarationsChecker
 					}
 				}
 			}
-		}
+		}*/
 	}
 }

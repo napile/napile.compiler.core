@@ -16,24 +16,7 @@
 
 package org.napile.compiler.lang.resolve.calls;
 
-import static org.napile.compiler.lang.diagnostics.Errors.CREATING_AN_INSTANCE_OF_ABSTRACT_CLASS;
-import static org.napile.compiler.lang.diagnostics.Errors.DANGLING_FUNCTION_LITERAL_ARGUMENT_SUSPECTED;
-import static org.napile.compiler.lang.diagnostics.Errors.INVISIBLE_MEMBER;
-import static org.napile.compiler.lang.diagnostics.Errors.MISSING_RECEIVER;
-import static org.napile.compiler.lang.diagnostics.Errors.NONE_APPLICABLE;
-import static org.napile.compiler.lang.diagnostics.Errors.NO_RECEIVER_ADMITTED;
-import static org.napile.compiler.lang.diagnostics.Errors.NO_VALUE_FOR_PARAMETER;
-import static org.napile.compiler.lang.diagnostics.Errors.OVERLOAD_RESOLUTION_AMBIGUITY;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_EXPECTED_TYPE_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_NO_INFORMATION_FOR_PARAMETER;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_TYPE_CONSTRUCTOR_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.UNNECESSARY_SAFE_CALL;
-import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
-import static org.napile.compiler.lang.diagnostics.Errors.UNSAFE_CALL;
-import static org.napile.compiler.lang.diagnostics.Errors.UNSAFE_INFIX_CALL;
-import static org.napile.compiler.lang.diagnostics.Errors.WRONG_NUMBER_OF_TYPE_ARGUMENTS;
+import static org.napile.compiler.lang.diagnostics.Errors.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -297,6 +280,12 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		public void invisibleMember(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
 		{
 			trace.report(INVISIBLE_MEMBER.on(call.getCallElement(), descriptor, descriptor.getContainingDeclaration()));
+		}
+
+		@Override
+		public void instanceCallFromStatic(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
+		{
+			trace.report(INSTANCE_CALL_FROM_STATIC_CONTEXT.on(call.getCallElement()));
 		}
 
 		@Override

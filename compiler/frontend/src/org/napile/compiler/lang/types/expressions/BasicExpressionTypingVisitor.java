@@ -75,16 +75,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
-import org.napile.compiler.lang.descriptors.MemberDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -684,6 +675,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			else
 			{
 				thisReceiver = context.scope.getImplicitReceiver();
+				if(context.scope.getContainingDeclaration() instanceof DeclarationDescriptorWithVisibility)
+					thisReceiver = ReceiverDescriptor.NO_RECEIVER;
 			}
 			if(thisReceiver instanceof ThisReceiverDescriptor)
 			{

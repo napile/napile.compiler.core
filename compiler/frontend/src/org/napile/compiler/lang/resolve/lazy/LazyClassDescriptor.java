@@ -64,7 +64,7 @@ import com.google.common.collect.Lists;
 /**
  * @author abreslav
  */
-public class LazyClassDescriptor extends ClassDescriptorBase implements ClassDescriptorFromSource
+public class LazyClassDescriptor extends ClassDescriptorBase
 {
 
 	private static final Predicate<Object> ONLY_ENUM_ENTIRES = Predicates.instanceOf(NapileEnumEntry.class);
@@ -97,7 +97,6 @@ public class LazyClassDescriptor extends ClassDescriptorBase implements ClassDes
 
 	private JetScope scopeForClassHeaderResolution;
 	private JetScope scopeForMemberDeclarationResolution;
-	private JetScope scopeForPropertyInitializerResolution;
 
 
 	public LazyClassDescriptor(@NotNull ResolveSession resolveSession, @NotNull DeclarationDescriptor containingDeclaration, @NotNull Name name, @NotNull NapileClassLikeInfo classLikeInfo, boolean isStatic)
@@ -179,24 +178,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase implements ClassDes
 
 	public JetScope getScopeForPropertyInitializerResolution()
 	{
-		ConstructorDescriptor primaryConstructor = getUnsubstitutedPrimaryConstructor();
-		if(primaryConstructor == null)
-			return getScopeForMemberDeclarationResolution();
-
-		if(scopeForPropertyInitializerResolution == null)
-		{
-			WritableScopeImpl scope = new WritableScopeImpl(getScopeForMemberDeclarationResolution(), this, RedeclarationHandler.DO_NOTHING, "Property Initializer Resolution");
-
-			List<ValueParameterDescriptor> parameters = primaryConstructor.getValueParameters();
-			for(ValueParameterDescriptor valueParameterDescriptor : parameters)
-			{
-				scope.addVariableDescriptor(valueParameterDescriptor);
-			}
-
-			scope.changeLockLevel(WritableScope.LockLevel.READING);
-			scopeForPropertyInitializerResolution = scope;
-		}
-		return scopeForPropertyInitializerResolution;
+		return getScopeForMemberDeclarationResolution();
 	}
 
 	@NotNull
@@ -204,12 +186,6 @@ public class LazyClassDescriptor extends ClassDescriptorBase implements ClassDes
 	public Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
 	{
 		return unsubstitutedMemberScope.getConstructors();
-	}
-
-	@Override
-	public ConstructorDescriptor getUnsubstitutedPrimaryConstructor()
-	{
-		return null;
 	}
 
 	@NotNull

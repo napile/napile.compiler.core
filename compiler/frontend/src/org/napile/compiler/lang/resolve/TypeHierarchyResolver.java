@@ -37,9 +37,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
-import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
@@ -217,7 +217,7 @@ public class TypeHierarchyResolver
 				@Override
 				public void visitClass(NapileClass klass)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, getClassKind(klass), NapilePsiUtil.safeName(klass.getName()));
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, getClassKind(klass), NapilePsiUtil.safeName(klass.getName()), NapilePsiUtil.isStatic(klass));
 					context.getClasses().put(klass, mutableClassDescriptor);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(klass), mutableClassDescriptor);
 
@@ -298,7 +298,7 @@ public class TypeHierarchyResolver
 				{
 					if(klass.hasModifier(JetTokens.ENUM_KEYWORD))
 					{
-						MutableClassDescriptor classObjectDescriptor = new MutableClassDescriptor(mutableClassDescriptor, outerScope, ClassKind.OBJECT, Name.special("<class-object-for-" + klass.getName() + ">"));
+						MutableClassDescriptor classObjectDescriptor = new MutableClassDescriptor(mutableClassDescriptor, outerScope, ClassKind.OBJECT, Name.special("<class-object-for-" + klass.getName() + ">"), NapilePsiUtil.isStatic(klass));
 						classObjectDescriptor.setModality(Modality.FINAL);
 						classObjectDescriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(klass.getModifierList()));
 						classObjectDescriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
@@ -311,7 +311,7 @@ public class TypeHierarchyResolver
 
 				private MutableClassDescriptor createClassDescriptorForObject(@NotNull NapileObjectDeclaration declaration, @NotNull NamespaceLikeBuilder owner, JetScope scope)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), scope, ClassKind.OBJECT, NapilePsiUtil.safeName(declaration.getName()));
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), scope, ClassKind.OBJECT, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
 					context.getObjects().put(declaration, mutableClassDescriptor);
 
 					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
@@ -326,7 +326,7 @@ public class TypeHierarchyResolver
 
 				private MutableClassDescriptor createClassDescriptorForEnumEntry(@NotNull NapileEnumEntry declaration, @NotNull NamespaceLikeBuilder owner)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), getStaticScope(declaration, owner), ClassKind.ENUM_ENTRY, NapilePsiUtil.safeName(declaration.getName()));
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), getStaticScope(declaration, owner), ClassKind.ENUM_ENTRY, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
 					context.getClasses().put(declaration, mutableClassDescriptor);
 
 					prepareForDeferredCall(mutableClassDescriptor.getScopeForMemberResolution(), mutableClassDescriptor, declaration);

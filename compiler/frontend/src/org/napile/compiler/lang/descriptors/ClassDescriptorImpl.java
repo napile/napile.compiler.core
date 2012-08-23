@@ -38,7 +38,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 /**
  * @author abreslav
  */
-public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implements ClassDescriptorFromSource
+public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implements ClassDescriptor
 {
 	private TypeConstructor typeConstructor;
 
@@ -141,12 +141,6 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 	public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitClassDescriptor(this, data);
-	}
-
-	@Override
-	public ConstructorDescriptor getUnsubstitutedPrimaryConstructor()
-	{
-		return null;
 	}
 
 	@Override

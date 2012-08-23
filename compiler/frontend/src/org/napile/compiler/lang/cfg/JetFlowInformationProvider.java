@@ -645,43 +645,4 @@ public class JetFlowInformationProvider
 			}
 		});
 	}
-
-	public void checkInstanceCallsFromStaticBody()
-	{
-		assert pseudocode != null;
-		PseudocodeTraverser.traverse(pseudocode, true, new PseudocodeTraverser.InstructionAnalyzeStrategy()
-		{
-			@Override
-			public void execute(@NotNull Instruction instruction)
-			{
-				if(instruction instanceof WriteValueInstruction)
-				{
-					PsiElement element = ((WriteValueInstruction) instruction).getElement();
-
-					PsiElement left = element instanceof NapileBinaryExpression ? ((NapileBinaryExpression) element).getLeft() : null;
-					if(left instanceof NapileReferenceExpression)
-						checkNonStaticDeclaration((NapileReferenceExpression) left);
-				}
-				else if(instruction instanceof ReadValueInstruction)
-				{
-					NapileReferenceExpression referenceExpression = ((ReadValueInstruction) instruction).getElement() instanceof NapileReferenceExpression ? (NapileReferenceExpression) ((ReadValueInstruction) instruction).getElement() : null;
-					if(referenceExpression == null)
-						return;
-
-					checkNonStaticDeclaration(referenceExpression);
-				}
-			}
-		});
-	}
-
-	private void checkNonStaticDeclaration(@NotNull NapileReferenceExpression referenceExpression)
-	{
-		DeclarationDescriptor descriptor = trace.get(BindingContext.REFERENCE_TARGET, referenceExpression);
-		if(descriptor == null)
-			return;
-
-		DeclarationDescriptor owner = descriptor.getContainingDeclaration();
-		if(owner instanceof ClassDescriptor && descriptor instanceof DeclarationDescriptorWithVisibility && !((DeclarationDescriptorWithVisibility) descriptor).isStatic())
-			trace.report(Errors.ILLEGAL_CALL.on(referenceExpression));
-	}
 }

@@ -430,4 +430,13 @@ public class NapilePsiUtil
 		}
 		return true;
 	}
+
+	public static boolean isStatic(@NotNull NapileModifierListOwner owner)
+	{
+		if(owner instanceof NapileClass)
+			if(owner.getParent() instanceof NapileFile)
+				return true;
+		NapileModifierList modifierList = owner.getModifierList();
+		return modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD);
+	}
 }

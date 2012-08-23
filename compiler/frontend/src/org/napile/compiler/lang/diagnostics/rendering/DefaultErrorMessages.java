@@ -98,7 +98,7 @@ public class DefaultErrorMessages
 
 		MAP.put(REDUNDANT_MODIFIER, "Modifier ''{0}'' is redundant because ''{1}'' is present", TO_STRING, TO_STRING);
 		MAP.put(REDUNDANT_MODIFIER_IN_GETTER, "Visibility modifiers are redundant in getter");
-		MAP.put(TRAIT_CAN_NOT_BE_FINAL, "Trait cannot be final");
+
 		MAP.put(TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM, "Type checking has run into a recursive problem. Easiest workaround: specify types of your declarations explicitly"); // TODO: message
 		MAP.put(RETURN_NOT_ALLOWED, "'return' is not allowed here");
 		MAP.put(LABEL_NAME_CLASH, "There is more than one label with such a name in this scope");
@@ -133,7 +133,7 @@ public class DefaultErrorMessages
 
 		MAP.put(PACKAGE_MEMBER_CANNOT_BE_HERITABLE, "Package member cannot be 'heritable'");
 
-		MAP.put(ILLEGAL_CALL, "Illegal call");
+		MAP.put(INSTANCE_CALL_FROM_STATIC_CONTEXT, "Instance call from static context");
 
 		MAP.put(GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY, "Getter visibility must be the same as property visibility");
 		MAP.put(MUST_BE_INITIALIZED, "Property must be initialized");
@@ -186,7 +186,6 @@ public class DefaultErrorMessages
 
 		MAP.put(MANY_CLASS_OBJECTS, "Only one class object is allowed per class");
 		MAP.put(CLASS_OBJECT_NOT_ALLOWED, "A class object is not allowed here");
-		MAP.put(DELEGATION_NOT_TO_TRAIT, "Only traits can be delegated to");
 		MAP.put(NO_CONSTRUCTOR, "This class does not have a constructor");
 		MAP.put(NOT_A_CLASS, "Not a class");
 		MAP.put(ILLEGAL_ESCAPE_SEQUENCE, "Illegal escape sequence");

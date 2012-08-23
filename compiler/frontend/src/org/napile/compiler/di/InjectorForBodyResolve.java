@@ -43,7 +43,6 @@ public class InjectorForBodyResolve
 	private OverloadingConflictResolver overloadingConflictResolver;
 	private ControlFlowAnalyzer controlFlowAnalyzer;
 	private DeclarationsChecker declarationsChecker;
-	private StaticCallChecker staticCallChecker;
 	private TopDownAnalysisContext topDownAnalysisContext;
 
 	public InjectorForBodyResolve(@NotNull Project project, @NotNull TopDownAnalysisParameters topDownAnalysisParameters, @NotNull BindingTrace bindingTrace)
@@ -61,7 +60,6 @@ public class InjectorForBodyResolve
 		this.overloadingConflictResolver = new OverloadingConflictResolver();
 		this.controlFlowAnalyzer = new ControlFlowAnalyzer();
 		this.declarationsChecker = new DeclarationsChecker();
-		this.staticCallChecker = new StaticCallChecker();
 		this.topDownAnalysisContext = new TopDownAnalysisContext();
 
 		this.bodyResolver.setCallResolver(callResolver);
@@ -70,7 +68,6 @@ public class InjectorForBodyResolve
 		this.bodyResolver.setDescriptorResolver(descriptorResolver);
 		this.bodyResolver.setExpressionTypingServices(expressionTypingServices);
 		this.bodyResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
-		this.bodyResolver.setStaticCallChecker(staticCallChecker);
 		this.bodyResolver.setTrace(bindingTrace);
 
 		callResolver.setDescriptorResolver(descriptorResolver);
@@ -98,8 +95,6 @@ public class InjectorForBodyResolve
 		controlFlowAnalyzer.setTrace(bindingTrace);
 
 		declarationsChecker.setTrace(bindingTrace);
-
-		staticCallChecker.setTrace(bindingTrace);
 
 		topDownAnalysisContext.setTopDownAnalysisParameters(topDownAnalysisParameters);
 	}

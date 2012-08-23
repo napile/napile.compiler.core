@@ -16,47 +16,8 @@
 
 package org.napile.idea.plugin.quickfix;
 
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS;
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_FUNCTION_WITH_BODY;
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_MEMBER_NOT_IMPLEMENTED;
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS;
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_PROPERTY_IN_PRIMARY_CONSTRUCTOR_PARAMETERS;
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_PROPERTY_NOT_IN_CLASS;
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_PROPERTY_WITH_GETTER;
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_PROPERTY_WITH_INITIALIZER;
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_PROPERTY_WITH_SETTER;
-import static org.napile.compiler.lang.diagnostics.Errors.CANNOT_CHANGE_ACCESS_PRIVILEGE;
-import static org.napile.compiler.lang.diagnostics.Errors.CANNOT_WEAKEN_ACCESS_PRIVILEGE;
-import static org.napile.compiler.lang.diagnostics.Errors.FUNCTION_CALL_EXPECTED;
-import static org.napile.compiler.lang.diagnostics.Errors.GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY;
-import static org.napile.compiler.lang.diagnostics.Errors.ILLEGAL_MODIFIER;
-import static org.napile.compiler.lang.diagnostics.Errors.INITIALIZATION_USING_BACKING_FIELD_CUSTOM_SETTER;
-import static org.napile.compiler.lang.diagnostics.Errors.INITIALIZATION_USING_BACKING_FIELD_OPEN_SETTER;
-import static org.napile.compiler.lang.diagnostics.Errors.MANY_IMPL_MEMBER_NOT_IMPLEMENTED;
-import static org.napile.compiler.lang.diagnostics.Errors.MUST_BE_INITIALIZED_OR_BE_ABSTRACT;
-import static org.napile.compiler.lang.diagnostics.Errors.NON_ABSTRACT_FUNCTION_WITH_NO_BODY;
-import static org.napile.compiler.lang.diagnostics.Errors.NON_MEMBER_ABSTRACT_FUNCTION;
-import static org.napile.compiler.lang.diagnostics.Errors.NON_MEMBER_FUNCTION_NO_BODY;
-import static org.napile.compiler.lang.diagnostics.Errors.NOTHING_TO_OVERRIDE;
-import static org.napile.compiler.lang.diagnostics.Errors.PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE;
-import static org.napile.compiler.lang.diagnostics.Errors.REDUNDANT_MODIFIER;
-import static org.napile.compiler.lang.diagnostics.Errors.REDUNDANT_MODIFIER_IN_GETTER;
-import static org.napile.compiler.lang.diagnostics.Errors.SUPERTYPE_NOT_INITIALIZED_DEFAULT;
-import static org.napile.compiler.lang.diagnostics.Errors.TRAIT_CAN_NOT_BE_FINAL;
-import static org.napile.compiler.lang.diagnostics.Errors.UNNECESSARY_NOT_NULL_ASSERTION;
-import static org.napile.compiler.lang.diagnostics.Errors.UNNECESSARY_SAFE_CALL;
-import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
-import static org.napile.compiler.lang.diagnostics.Errors.UNSAFE_CALL;
-import static org.napile.compiler.lang.diagnostics.Errors.USELESS_CAST;
-import static org.napile.compiler.lang.diagnostics.Errors.USELESS_CAST_STATIC_ASSERT_IS_FINE;
-import static org.napile.compiler.lang.diagnostics.Errors.USELESS_ELVIS;
-import static org.napile.compiler.lang.diagnostics.Errors.VAL_REASSIGNMENT;
-import static org.napile.compiler.lang.diagnostics.Errors.VAL_WITH_SETTER;
-import static org.napile.compiler.lang.diagnostics.Errors.VIRTUAL_MEMBER_HIDDEN;
-import static org.napile.compiler.lang.diagnostics.Errors.WRONG_GETTER_RETURN_TYPE;
-import static org.napile.compiler.lang.diagnostics.Errors.WRONG_SETTER_PARAMETER_TYPE;
+import static org.napile.compiler.lang.diagnostics.Errors.*;
 import static org.napile.compiler.lexer.JetTokens.ABSTRACT_KEYWORD;
-import static org.napile.compiler.lexer.JetTokens.FINAL_KEYWORD;
 import static org.napile.compiler.lexer.JetTokens.OVERRIDE_KEYWORD;
 
 import java.util.Collection;
@@ -143,7 +104,6 @@ public class QuickFixes
 
 		JetIntentionActionFactory removeRedundantModifierFactory = RemoveModifierFix.createRemoveModifierFactory(true);
 		factories.put(REDUNDANT_MODIFIER, removeRedundantModifierFactory);
-		factories.put(TRAIT_CAN_NOT_BE_FINAL, RemoveModifierFix.createRemoveModifierFromListOwnerFactory(FINAL_KEYWORD));
 
 		JetIntentionActionFactory removeModifierFactory = RemoveModifierFix.createRemoveModifierFactory();
 		factories.put(GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY, removeModifierFactory);

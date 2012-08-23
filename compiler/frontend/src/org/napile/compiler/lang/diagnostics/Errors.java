@@ -59,7 +59,7 @@ public interface Errors
 	DiagnosticFactory2<PsiElement, NapileKeywordToken, NapileKeywordToken> REDUNDANT_MODIFIER = DiagnosticFactory2.create(Severity.WARNING);
 
 	SimpleDiagnosticFactory<PsiElement> REDUNDANT_MODIFIER_IN_GETTER = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<PsiElement> TRAIT_CAN_NOT_BE_FINAL = SimpleDiagnosticFactory.create(Severity.ERROR);
+
 	SimpleDiagnosticFactory<NapileExpression> TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReturnExpression> RETURN_NOT_ALLOWED = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> LABEL_NAME_CLASH = SimpleDiagnosticFactory.create(Severity.WARNING);
@@ -96,7 +96,7 @@ public interface Errors
 
 	SimpleDiagnosticFactory<PsiElement> GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY = SimpleDiagnosticFactory.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<PsiElement> ILLEGAL_CALL = SimpleDiagnosticFactory.create(Severity.ERROR);
+	SimpleDiagnosticFactory<PsiElement> INSTANCE_CALL_FROM_STATIC_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileProperty> MUST_BE_INITIALIZED = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 	SimpleDiagnosticFactory<NapileProperty> MUST_BE_INITIALIZED_OR_BE_ABSTRACT = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
@@ -149,7 +149,7 @@ public interface Errors
 
 	SimpleDiagnosticFactory<NapileClassObject> MANY_CLASS_OBJECTS = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileClassObject> CLASS_OBJECT_NOT_ALLOWED = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileTypeReference> DELEGATION_NOT_TO_TRAIT = SimpleDiagnosticFactory.create(Severity.ERROR);
+
 	SimpleDiagnosticFactory<PsiElement> NO_CONSTRUCTOR = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> NOT_A_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileEscapeStringTemplateEntry> ILLEGAL_ESCAPE_SEQUENCE = SimpleDiagnosticFactory.create(Severity.ERROR);

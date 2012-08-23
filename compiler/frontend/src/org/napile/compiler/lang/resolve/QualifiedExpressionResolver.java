@@ -145,7 +145,6 @@ public class QualifiedExpressionResolver
 
 	private boolean canImportMembersFrom(@NotNull DeclarationDescriptor descriptor, @NotNull NapileSimpleNameExpression reference, @NotNull BindingTrace trace, boolean onlyClasses)
 	{
-
 		assert !onlyClasses;
 		if(descriptor instanceof NamespaceDescriptor)
 		{
@@ -366,9 +365,8 @@ public class QualifiedExpressionResolver
 					@Override
 					public boolean apply(@Nullable DeclarationDescriptor descriptor)
 					{
-						return (descriptor instanceof NamespaceDescriptor) ||
-								(descriptor instanceof ClassifierDescriptor) ||
-								(descriptor instanceof VariableDescriptor && ((VariableDescriptor) descriptor).isObjectDeclaration());
+						boolean isStatic = descriptor instanceof DeclarationDescriptorWithVisibility && ((DeclarationDescriptorWithVisibility) descriptor).isStatic();
+						return descriptor instanceof NamespaceDescriptor || isStatic;
 					}
 				}));
 			}

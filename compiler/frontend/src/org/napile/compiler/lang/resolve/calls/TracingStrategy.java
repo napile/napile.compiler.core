@@ -119,6 +119,11 @@ import org.napile.compiler.lang.types.JetType;
 		}
 
 		@Override
+		public void instanceCallFromStatic(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
+		{
+		}
+
+		@Override
 		public void typeInferenceFailed(@NotNull BindingTrace trace, @NotNull InferenceErrorData inferenceErrorData, @NotNull ConstraintSystem systemWithoutExpectedTypeConstraint)
 		{
 		}
@@ -160,6 +165,8 @@ import org.napile.compiler.lang.types.JetType;
 	void danglingFunctionLiteralArgumentSuspected(@NotNull BindingTrace trace, @NotNull List<NapileExpression> functionLiteralArguments);
 
 	void invisibleMember(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor);
+
+	void instanceCallFromStatic(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor);
 
 	void typeInferenceFailed(@NotNull BindingTrace trace, @NotNull InferenceErrorData inferenceErrorData, @NotNull ConstraintSystem systemWithoutExpectedTypeConstraint);
 

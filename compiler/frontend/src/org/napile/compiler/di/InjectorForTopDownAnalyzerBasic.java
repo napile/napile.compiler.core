@@ -38,7 +38,6 @@ public class InjectorForTopDownAnalyzerBasic
 	private ControlFlowAnalyzer controlFlowAnalyzer;
 	private DeclarationsChecker declarationsChecker;
 	private DescriptorResolver descriptorResolver;
-	private StaticCallChecker staticCallChecker;
 	private final Project project;
 	private final TopDownAnalysisParameters topDownAnalysisParameters;
 	private final BindingTrace bindingTrace;
@@ -65,7 +64,6 @@ public class InjectorForTopDownAnalyzerBasic
 		this.controlFlowAnalyzer = new ControlFlowAnalyzer();
 		this.declarationsChecker = new DeclarationsChecker();
 		this.descriptorResolver = new DescriptorResolver();
-		this.staticCallChecker = new StaticCallChecker();
 		this.project = project;
 		this.topDownAnalysisParameters = topDownAnalysisParameters;
 		this.bindingTrace = bindingTrace;
@@ -101,7 +99,6 @@ public class InjectorForTopDownAnalyzerBasic
 		this.bodyResolver.setCallResolver(callResolver);
 		this.bodyResolver.setControlFlowAnalyzer(controlFlowAnalyzer);
 		this.bodyResolver.setDeclarationsChecker(declarationsChecker);
-		this.bodyResolver.setStaticCallChecker(staticCallChecker);
 		this.bodyResolver.setDescriptorResolver(descriptorResolver);
 		this.bodyResolver.setExpressionTypingServices(expressionTypingServices);
 		this.bodyResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
@@ -111,8 +108,6 @@ public class InjectorForTopDownAnalyzerBasic
 		this.controlFlowAnalyzer.setTrace(bindingTrace);
 
 		this.declarationsChecker.setTrace(bindingTrace);
-
-		this.staticCallChecker.setTrace(bindingTrace);
 
 		this.descriptorResolver.setAnnotationResolver(annotationResolver);
 		this.descriptorResolver.setExpressionTypingServices(expressionTypingServices);

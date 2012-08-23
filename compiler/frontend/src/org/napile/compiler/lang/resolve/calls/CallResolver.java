@@ -689,6 +689,37 @@ public class CallResolver
 			return;
 		}
 
+		boolean isStatic = context.scope.getContainingDeclaration() instanceof DeclarationDescriptorWithVisibility && ((DeclarationDescriptorWithVisibility) context.scope.getContainingDeclaration()).isStatic();
+		// static body
+		if(isStatic)
+		{
+			ReceiverDescriptor thisRef = candidateCall.getThisObject();
+			loop:
+			{
+				if(thisRef instanceof ExpressionReceiver)
+				{
+					// fix for
+					//
+					// var myVar = 1
+					// static meth test()
+					// {
+					//    myVar = 1   // fail
+					//    this.myVar = 1  // fail
+					// }
+
+					if(!(((ExpressionReceiver) thisRef).getExpression() instanceof NapileThisExpression))
+						break loop;
+				}
+
+				if(!candidate.isStatic())
+				{
+					candidateCall.addStatus(ResolutionStatus.OTHER_ERROR);
+					context.tracing.instanceCallFromStatic(context.trace, candidate);
+					return;
+				}
+			}
+		}
+
 		if(!Visibilities.isVisible(candidate, context.scope.getContainingDeclaration()))
 		{
 			candidateCall.addStatus(ResolutionStatus.OTHER_ERROR);

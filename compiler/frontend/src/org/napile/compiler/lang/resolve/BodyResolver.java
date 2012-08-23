@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.resolve;
 
-import static org.napile.compiler.lang.diagnostics.Errors.ANONYMOUS_INITIALIZER_WITHOUT_CONSTRUCTOR;
 import static org.napile.compiler.lang.diagnostics.Errors.FINAL_SUPERTYPE;
 import static org.napile.compiler.lang.diagnostics.Errors.SUPERTYPE_APPEARS_TWICE;
 import static org.napile.compiler.lang.diagnostics.Errors.SUPERTYPE_NOT_INITIALIZED;
@@ -33,6 +32,7 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -51,7 +51,6 @@ import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 import org.napile.compiler.util.slicedmap.WritableSlice;
-import org.napile.compiler.lang.psi.*;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
@@ -78,8 +77,6 @@ public class BodyResolver
 	private ControlFlowAnalyzer controlFlowAnalyzer;
 	@NotNull
 	private DeclarationsChecker declarationsChecker;
-	@NotNull
-	private StaticCallChecker staticCallChecker;
 
 	@Inject
 	public void setTopDownAnalysisParameters(@NotNull TopDownAnalysisParameters topDownAnalysisParameters)
@@ -123,12 +120,6 @@ public class BodyResolver
 		this.declarationsChecker = declarationsChecker;
 	}
 
-	@Inject
-	public void setStaticCallChecker(@NotNull StaticCallChecker staticCallChecker)
-	{
-		this.staticCallChecker = staticCallChecker;
-	}
-
 	private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		// Initialize context
@@ -153,7 +144,6 @@ public class BodyResolver
 		resolveBehaviorDeclarationBodies(bodiesResolveContext);
 		controlFlowAnalyzer.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
-		staticCallChecker.process(bodiesResolveContext);
 	}
 
 	private void resolveDelegationSpecifierLists()
@@ -304,7 +294,9 @@ public class BodyResolver
 		if(!context.completeAnalysisNeeded(jetClassOrObject))
 			return;
 		List<NapileClassInitializer> anonymousInitializers = jetClassOrObject.getAnonymousInitializers();
-		if(classDescriptor.getUnsubstitutedPrimaryConstructor() != null)
+
+		//TODO [VISTALL] anonymous initializer
+	/*	if(classDescriptor.getUnsubstitutedPrimaryConstructor() != null)
 		{
 			ConstructorDescriptor primaryConstructor = classDescriptor.getUnsubstitutedPrimaryConstructor();
 			assert primaryConstructor != null;
@@ -320,7 +312,7 @@ public class BodyResolver
 			{
 				trace.report(ANONYMOUS_INITIALIZER_WITHOUT_CONSTRUCTOR.on(anonymousInitializer));
 			}
-		}
+		} */
 	}
 
 
@@ -346,12 +338,8 @@ public class BodyResolver
 				NapileExpression initializer = property.getInitializer();
 				if(initializer != null)
 				{
-					ConstructorDescriptor primaryConstructor = classDescriptor.getUnsubstitutedPrimaryConstructor();
-					if(primaryConstructor != null)
-					{
-						JetScope declaringScopeForPropertyInitializer = this.context.getDeclaringScopes().get(property);
-						resolvePropertyInitializer(property, propertyDescriptor, initializer, declaringScopeForPropertyInitializer);
-					}
+					JetScope declaringScopeForPropertyInitializer = this.context.getDeclaringScopes().get(property);
+					resolvePropertyInitializer(property, propertyDescriptor, initializer, declaringScopeForPropertyInitializer);
 				}
 
 				resolvePropertyAccessors(property, propertyDescriptor);

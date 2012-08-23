@@ -22,11 +22,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
 import org.napile.compiler.lang.resolve.AbstractScopeAdapter;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -38,7 +37,7 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public class MutableClassDescriptor extends MutableClassDescriptorLite implements ClassDescriptorFromSource
+public class MutableClassDescriptor extends MutableClassDescriptorLite
 {
 	private final Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> constructors = new LinkedHashMap<NapileDelegationSpecifierListOwner, ConstructorDescriptor>();
 
@@ -52,7 +51,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite implement
 	private final WritableScope scopeForSupertypeResolution;
 	private final WritableScope scopeForInitializers; //contains members + primary constructor value parameters + map for backing fields
 
-	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope outerScope, ClassKind kind, Name name)
+	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope outerScope, ClassKind kind, Name name, boolean isStatic)
 	{
 		super(containingDeclaration, kind, false);
 
@@ -88,14 +87,6 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite implement
 	{
 		return constructors;
 	}
-
-	@Override
-	@Nullable
-	public ConstructorDescriptor getUnsubstitutedPrimaryConstructor()
-	{
-		return null;//TODO [VISTALL]
-	}
-
 
 	@NotNull
 	public Set<SimpleFunctionDescriptor> getFunctions()
