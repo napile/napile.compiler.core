@@ -118,7 +118,7 @@ public class DescriptorResolver
 
 	public List<JetType> resolveSupertypes(@NotNull JetScope scope, @NotNull NapileClassOrObject jetClass, BindingTrace trace)
 	{
-		if(jetClass.getFqName().equals(NapileLangPackage.ANY))  // master object dont have super classes
+		if(NapileLangPackage.ANY.equals(jetClass.getFqName()))  // master object dont have super classes
 			return Collections.emptyList();
 
 		List<JetType> result = Lists.newArrayList();
