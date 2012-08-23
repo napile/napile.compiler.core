@@ -23,6 +23,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiInvalidElementAccessException;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
@@ -92,5 +93,11 @@ public class NapileElementImplStub<T extends StubElement> extends StubBasedPsiEl
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitJetElement(this, data);
+	}
+
+	@Override
+	public NapileFile getContainingFile() throws PsiInvalidElementAccessException
+	{
+		return (NapileFile) super.getContainingFile();
 	}
 }

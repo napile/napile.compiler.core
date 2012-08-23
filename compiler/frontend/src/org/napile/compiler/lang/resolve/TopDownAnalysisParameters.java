@@ -19,8 +19,8 @@ package org.napile.compiler.lang.resolve;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileFile;
 import com.google.common.base.Predicate;
-import com.intellij.psi.PsiFile;
 
 /**
  * Various junk that cannot be placed into context (yet).
@@ -30,13 +30,13 @@ import com.intellij.psi.PsiFile;
 public class TopDownAnalysisParameters
 {
 	@NotNull
-	private final Predicate<PsiFile> analyzeCompletely;
+	private final Predicate<NapileFile> analyzeCompletely;
 	private final boolean analyzingBootstrapLibrary;
 	private final boolean declaredLocally;
 	@NotNull
 	private final List<AnalyzerScriptParameter> scriptParameters;
 
-	public TopDownAnalysisParameters(@NotNull Predicate<PsiFile> analyzeCompletely, boolean analyzingBootstrapLibrary, boolean declaredLocally, @NotNull List<AnalyzerScriptParameter> scriptParameters)
+	public TopDownAnalysisParameters(@NotNull Predicate<NapileFile> analyzeCompletely, boolean analyzingBootstrapLibrary, boolean declaredLocally, @NotNull List<AnalyzerScriptParameter> scriptParameters)
 	{
 		this.analyzeCompletely = analyzeCompletely;
 		this.analyzingBootstrapLibrary = analyzingBootstrapLibrary;
@@ -45,7 +45,7 @@ public class TopDownAnalysisParameters
 	}
 
 	@NotNull
-	public Predicate<PsiFile> getAnalyzeCompletely()
+	public Predicate<NapileFile> getAnalyzeCompletely()
 	{
 		return analyzeCompletely;
 	}

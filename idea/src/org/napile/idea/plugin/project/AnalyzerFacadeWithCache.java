@@ -33,7 +33,6 @@ import com.google.common.base.Predicates;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.util.Key;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.PsiModificationTrackerImpl;
 import com.intellij.psi.util.CachedValue;
@@ -153,7 +152,7 @@ public final class AnalyzerFacadeWithCache
 				public Result<AnalyzeExhaust> compute()
 				{
 					// System.out.println("===============ReCache - OUT-OF-BLOCK==============");
-					AnalyzeExhaust exhaust = AnalyzerFacadeProvider.getAnalyzerFacadeForFile(fileToCache).analyzeFiles(fileToCache.getProject(), declarationProvider.fun(fileToCache), Collections.<AnalyzerScriptParameter>emptyList(), Predicates.<PsiFile>alwaysFalse());
+					AnalyzeExhaust exhaust = AnalyzerFacadeProvider.getAnalyzerFacadeForFile(fileToCache).analyzeFiles(fileToCache.getProject(), declarationProvider.fun(fileToCache), Collections.<AnalyzerScriptParameter>emptyList(), Predicates.<NapileFile>alwaysFalse());
 
 					return new Result<AnalyzeExhaust>(exhaust, PsiModificationTracker.OUT_OF_CODE_BLOCK_MODIFICATION_COUNT);
 				}

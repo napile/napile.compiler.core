@@ -216,6 +216,14 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 		return classObjectDescriptor == null ? null : classObjectDescriptor.getDefaultType();
 	}
 
+	@NotNull
+	@Override
+	public Collection<JetType> getSupertypes()
+	{
+		ClassDescriptor classObjectDescriptor = getClassObjectDescriptor();
+		return classObjectDescriptor == null ? Collections.<JetType>emptyList() : classObjectDescriptor.getSupertypes();
+	}
+
 	@Override
 	public boolean isClassObjectAValue()
 	{

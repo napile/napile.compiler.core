@@ -23,6 +23,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.PsiInvalidElementAccessException;
 
 /**
  * @author max
@@ -84,5 +85,11 @@ public class NapileElementImpl extends ASTWrapperPsiElement implements NapileEle
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitJetElement(this, data);
+	}
+
+	@Override
+	public NapileFile getContainingFile() throws PsiInvalidElementAccessException
+	{
+		return (NapileFile) super.getContainingFile();
 	}
 }

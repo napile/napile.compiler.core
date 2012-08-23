@@ -25,14 +25,14 @@ import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapileProperty;
-import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 
 /**
  * A storage for the part of {@see TopDownAnalysisContext} collected during headers analysis that will be used during resolution of
@@ -108,9 +108,9 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public boolean completeAnalysisNeeded(@NotNull PsiElement element)
+	public boolean completeAnalysisNeeded(@NotNull NapileElement element)
 	{
-		PsiFile containingFile = element.getContainingFile();
+		NapileFile containingFile = element.getContainingFile();
 		return containingFile != null && topDownAnalysisParameters.getAnalyzeCompletely().apply(containingFile);
 	}
 }

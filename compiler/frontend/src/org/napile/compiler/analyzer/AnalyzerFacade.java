@@ -26,7 +26,6 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import com.google.common.base.Predicate;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
 
 /**
  * @author Pavel Talanov
@@ -35,8 +34,8 @@ public interface AnalyzerFacade
 {
 
 	@NotNull
-	AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<PsiFile> filesToAnalyzeCompletely);
+	AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely);
 
 	@NotNull
-	AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<PsiFile> filesForBodiesResolve, @NotNull BindingTrace traceContext, @NotNull BodiesResolveContext bodiesResolveContext);
+	AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<NapileFile> filesForBodiesResolve, @NotNull BindingTrace traceContext, @NotNull BodiesResolveContext bodiesResolveContext);
 }

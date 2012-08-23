@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.descriptors;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -247,6 +248,13 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 				classObjectBoundsAsType = TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, false);
 		}
 		return classObjectBoundsAsType;
+	}
+
+	@NotNull
+	@Override
+	public Collection<JetType> getSupertypes()
+	{
+		return null;
 	}
 
 	@Override

@@ -263,6 +263,13 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 		return null;
 	}
 
+	@NotNull
+	@Override
+	public Collection<JetType> getSupertypes()
+	{
+		return null;
+	}
+
 	@Override
 	public boolean isClassObjectAValue()
 	{

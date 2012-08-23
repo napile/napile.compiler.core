@@ -17,13 +17,14 @@
 package org.napile.compiler.lang.descriptors;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
-import org.jetbrains.jet.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
@@ -116,6 +117,13 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 	public JetType getClassObjectType()
 	{
 		return null;
+	}
+
+	@NotNull
+	@Override
+	public Collection<JetType> getSupertypes()
+	{
+		return Collections.emptyList();
 	}
 
 	@Override

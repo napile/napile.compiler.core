@@ -210,6 +210,7 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 		return visibility;
 	}
 
+	@NotNull
 	public Collection<JetType> getSupertypes()
 	{
 		return supertypes;

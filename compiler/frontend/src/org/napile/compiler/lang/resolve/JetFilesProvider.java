@@ -24,13 +24,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.lang.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.jetbrains.jet.lang.resolve.name.FqName;
 import com.google.common.base.Predicate;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Function;
 
@@ -59,7 +58,7 @@ public abstract class JetFilesProvider
 	@NotNull
 	public abstract List<NapileFile> allInScope(GlobalSearchScope scope);
 
-	public static class SameJetFilePredicate implements Predicate<PsiFile>
+	public static class SameJetFilePredicate implements Predicate<NapileFile>
 	{
 		private final FqName name;
 
@@ -69,7 +68,7 @@ public abstract class JetFilesProvider
 		}
 
 		@Override
-		public boolean apply(PsiFile psiFile)
+		public boolean apply(NapileFile psiFile)
 		{
 			return NapilePsiUtil.getFQName((NapileFile) psiFile).equals(name);
 		}

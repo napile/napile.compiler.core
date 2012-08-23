@@ -18,23 +18,28 @@ package org.napile.idea.plugin.caches;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.lang.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.JetFilesProvider;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingUtils;
@@ -70,6 +75,27 @@ public class JetShortNamesCache
 	public JetShortNamesCache(Project project)
 	{
 		this.project = project;
+	}
+
+	@NotNull
+	public Map<NapileClassOrObject, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
+	{
+		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile()).getBindingContext();
+
+		JetFilesProvider jetFilesProvider = JetFilesProvider.getInstance(napileElement.getProject());
+
+		Map<NapileClassOrObject, ClassDescriptor> result = new HashMap<NapileClassOrObject, ClassDescriptor>();
+
+		for(NapileFile temp : jetFilesProvider.allInScope(globalSearchScope))
+		{
+			for(NapileClass napileClass : temp.getDeclarations())
+			{
+				DeclarationDescriptor declarationDescriptor = context.get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileClass);
+
+				result.put(napileClass, (ClassDescriptor) declarationDescriptor);
+			}
+		}
+		return result;
 	}
 
 	/**

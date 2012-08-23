@@ -18,6 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import com.intellij.psi.NavigatablePsiElement;
+import com.intellij.psi.PsiInvalidElementAccessException;
 
 /**
  * @author Nikolay Krasko
@@ -29,4 +30,7 @@ public interface NapileElement extends NavigatablePsiElement
 	void accept(@NotNull NapileVisitorVoid visitor);
 
 	<R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data);
+
+	@Override
+	NapileFile getContainingFile() throws PsiInvalidElementAccessException;
 }

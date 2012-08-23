@@ -176,6 +176,13 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 		return original.getClassObjectType();
 	}
 
+	@NotNull
+	@Override
+	public Collection<JetType> getSupertypes()
+	{
+		return original.getSupertypes();
+	}
+
 	@Override
 	public ClassDescriptor getClassObjectDescriptor()
 	{

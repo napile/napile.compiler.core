@@ -33,6 +33,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDeclarationContainer;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
@@ -40,8 +41,6 @@ import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Maps;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 
 /**
  * @author abreslav
@@ -109,9 +108,9 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public boolean completeAnalysisNeeded(@NotNull PsiElement element)
+	public boolean completeAnalysisNeeded(@NotNull NapileElement element)
 	{
-		PsiFile containingFile = element.getContainingFile();
+		NapileFile containingFile = element.getContainingFile();
 		boolean result = containingFile != null && topDownAnalysisParameters.getAnalyzeCompletely().apply(containingFile);
 		if(!result)
 		{

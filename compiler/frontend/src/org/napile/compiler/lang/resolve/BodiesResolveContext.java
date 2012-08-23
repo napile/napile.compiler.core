@@ -24,13 +24,13 @@ import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapileProperty;
-import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import com.intellij.psi.PsiElement;
 
 /**
  * @author Nikolay Krasko
@@ -51,5 +51,5 @@ public interface BodiesResolveContext
 
 	void setTopDownAnalysisParameters(TopDownAnalysisParameters parameters);
 
-	boolean completeAnalysisNeeded(@NotNull PsiElement element);
+	boolean completeAnalysisNeeded(@NotNull NapileElement element);
 }
