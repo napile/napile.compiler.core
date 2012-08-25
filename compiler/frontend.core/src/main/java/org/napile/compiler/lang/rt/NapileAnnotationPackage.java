@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.descriptors;
+package org.napile.compiler.lang.rt;
+
+import org.napile.compiler.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.Name;
 
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 12:26/25.08.12
  */
-public enum ClassKind
+public interface NapileAnnotationPackage
 {
-	CLASS,
-	ENUM_CLASS,
-	ENUM_ENTRY,
-	OBJECT
+	FqName PACKAGE = new FqName("napile.annotation");
+
+	FqName ANNOTATION = PACKAGE.child(Name.identifier("Annotation"));
 }

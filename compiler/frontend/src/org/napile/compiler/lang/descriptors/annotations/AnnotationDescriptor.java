@@ -19,7 +19,6 @@ package org.napile.compiler.lang.descriptors.annotations;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
 import org.napile.compiler.lang.types.JetType;
 
@@ -45,10 +44,6 @@ public class AnnotationDescriptor
 
 	public void setAnnotationType(@NotNull JetType annotationType)
 	{
-		if(false && !(annotationType.getConstructor().getDeclarationDescriptor() instanceof ClassDescriptor))
-		{
-			throw new IllegalStateException();
-		}
 		this.annotationType = annotationType;
 	}
 

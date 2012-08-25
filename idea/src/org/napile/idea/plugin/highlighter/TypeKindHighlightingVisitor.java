@@ -25,7 +25,9 @@ import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
+import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.rt.NapileAnnotationPackage;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
@@ -93,14 +95,11 @@ class TypeKindHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 	private void highlightClassByKind(@NotNull ClassDescriptor classDescriptor, @NotNull PsiElement whatToHighlight)
 	{
 		TextAttributesKey textAttributes;
-		switch(classDescriptor.getKind())
-		{
-			case ANNOTATION_CLASS_NEW:
-				textAttributes = JetHighlightingColors.ANNOTATION;
-				break;
-			default:
-				textAttributes = classDescriptor.getModality() == Modality.ABSTRACT ? JetHighlightingColors.ABSTRACT_CLASS : JetHighlightingColors.CLASS;
-		}
+		if(AnnotationUtils.hasAnnotation(classDescriptor, NapileAnnotationPackage.ANNOTATION))
+			textAttributes = JetHighlightingColors.ANNOTATION;
+		else
+			textAttributes = classDescriptor.getModality() == Modality.ABSTRACT ? JetHighlightingColors.ABSTRACT_CLASS : JetHighlightingColors.CLASS;
+
 		JetPsiChecker.highlightName(holder, whatToHighlight, textAttributes);
 	}
 }

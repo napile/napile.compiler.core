@@ -370,7 +370,7 @@ public class DescriptorUtils
 		for(JetType type : superclassTypes)
 		{
 			ClassDescriptor result = getClassDescriptorForType(type);
-			if(isNotAny(result))
+			if(JetStandardClasses.isNotAny(result))
 			{
 				superClassDescriptors.add(result);
 			}
@@ -384,11 +384,6 @@ public class DescriptorUtils
 		DeclarationDescriptor superClassDescriptor = type.getConstructor().getDeclarationDescriptor();
 		assert superClassDescriptor instanceof ClassDescriptor : "Superclass descriptor of a type should be of type ClassDescriptor";
 		return (ClassDescriptor) superClassDescriptor;
-	}
-
-	public static boolean isNotAny(@NotNull DeclarationDescriptor superClassDescriptor)
-	{
-		return !superClassDescriptor.equals(JetStandardClasses.getAny());
 	}
 
 	public static boolean inStaticContext(@NotNull DeclarationDescriptor descriptor)

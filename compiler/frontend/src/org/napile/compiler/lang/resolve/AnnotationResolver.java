@@ -25,14 +25,20 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileAnnotationEntry;
+import org.napile.compiler.lang.psi.NapileConstantExpression;
 import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
+import org.napile.compiler.lang.psi.NapileStringTemplateExpression;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -43,15 +49,8 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lang.psi.NapileAnnotationEntry;
-import org.napile.compiler.lang.psi.NapileConstantExpression;
-import org.napile.compiler.lang.psi.NapileModifierList;
-import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
-import org.napile.compiler.lang.psi.NapileStringTemplateExpression;
-import org.napile.compiler.lang.psi.NapileVisitor;
-import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import com.google.common.collect.Lists;
 
 /**
@@ -113,7 +112,7 @@ public class AnnotationResolver
 				{
 					ConstructorDescriptor constructor = (ConstructorDescriptor) descriptor;
 					ClassDescriptor classDescriptor = constructor.getContainingDeclaration();
-					if(classDescriptor.getKind() != ClassKind.ANNOTATION_CLASS_NEW)
+					if(!AnnotationUtils.isAnnotation(classDescriptor))
 					{
 						trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(entryElement, classDescriptor.getName().getName()));
 					}

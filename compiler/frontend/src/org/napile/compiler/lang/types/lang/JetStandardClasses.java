@@ -532,4 +532,9 @@ public class JetStandardClasses
 	{
 		return STANDARD_CLASSES.getAllDescriptors();
 	}
+
+	public static boolean isNotAny(@NotNull DeclarationDescriptor superClassDescriptor)
+	{
+		return !superClassDescriptor.equals(getAny());
+	}
 }
