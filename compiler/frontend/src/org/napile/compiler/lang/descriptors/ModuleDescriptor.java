@@ -21,7 +21,7 @@ import java.util.Collections;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**

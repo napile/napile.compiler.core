@@ -37,7 +37,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Pair;
 import com.intellij.util.containers.MultiMap;

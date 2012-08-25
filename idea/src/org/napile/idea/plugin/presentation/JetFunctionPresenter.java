@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileParameter;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.JetIconProvider;
 import org.napile.compiler.util.QualifiedNamesUtil;
 import com.google.common.base.Function;

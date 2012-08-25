@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 
 /**
  * @author abreslav

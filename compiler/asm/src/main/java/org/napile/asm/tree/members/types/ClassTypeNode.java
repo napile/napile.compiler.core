@@ -19,7 +19,7 @@ package org.napile.asm.tree.members.types;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.asm.tree.members.AnnotableNode;
 import org.napile.asmNew.visitors.AsmVisitor;
 import com.sun.istack.internal.NotNull;

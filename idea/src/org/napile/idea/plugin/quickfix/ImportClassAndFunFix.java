@@ -31,7 +31,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.ImportPath;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.actions.JetAddImportAction;
 import org.napile.idea.plugin.caches.JetShortNamesCache;

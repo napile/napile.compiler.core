@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
 import org.napile.compiler.lang.resolve.name.LabelName;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;

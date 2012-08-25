@@ -24,7 +24,7 @@ import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.stubs.PsiJetFileStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetFunctionStubImpl;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IndexSink;

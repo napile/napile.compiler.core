@@ -22,7 +22,7 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationArgumentVisito
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 
 /**
  * @author alex.tkachman

@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.resolve.NapileClassResolver;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.types.InheritorUtil;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.openapi.application.ApplicationManager;

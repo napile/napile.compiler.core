@@ -32,7 +32,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 
 /**
  * @author abreslav

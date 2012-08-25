@@ -26,7 +26,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.Pair;

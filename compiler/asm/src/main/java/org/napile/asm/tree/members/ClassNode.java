@@ -32,7 +32,7 @@ package org.napile.asm.tree.members;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.asm.AnnotationVisitor;
 import org.napile.asm.Attribute;
 import org.napile.asm.FieldVisitor;

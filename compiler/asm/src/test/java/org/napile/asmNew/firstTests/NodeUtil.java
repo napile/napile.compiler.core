@@ -16,7 +16,7 @@
 
 package org.napile.asmNew.firstTests;
 
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.asm.tree.members.AnnotationNode;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.types.ClassTypeNode;

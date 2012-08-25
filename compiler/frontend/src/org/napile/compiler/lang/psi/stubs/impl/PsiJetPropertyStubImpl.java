@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi.stubs.impl;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;

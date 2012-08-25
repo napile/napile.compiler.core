@@ -21,7 +21,7 @@ import org.napile.compiler.lang.resolve.lazy.ClassMemberDeclarationProvider;
 import org.napile.compiler.lang.resolve.lazy.DeclarationProviderFactory;
 import org.napile.compiler.lang.resolve.lazy.PackageMemberDeclarationProvider;
 import org.napile.compiler.lang.resolve.lazy.data.NapileClassLikeInfo;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 
 /**
  * @author Nikolay Krasko

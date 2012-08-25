@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.completion.handlers;
 
 import org.napile.compiler.lang.psi.NapileFile;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 import com.intellij.codeInsight.completion.InsertHandler;
 import com.intellij.codeInsight.completion.InsertionContext;

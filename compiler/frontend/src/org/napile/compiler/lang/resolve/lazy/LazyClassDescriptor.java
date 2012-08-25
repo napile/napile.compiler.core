@@ -43,7 +43,7 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.lazy.data.FilteringClassLikeInfo;
 import org.napile.compiler.lang.resolve.lazy.data.JetClassInfoUtil;
 import org.napile.compiler.lang.resolve.lazy.data.NapileClassLikeInfo;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.InnerClassesScopeWrapper;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;

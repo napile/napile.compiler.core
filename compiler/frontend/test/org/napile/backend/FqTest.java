@@ -16,7 +16,7 @@
 
 package org.napile.backend;
 
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 
 /**
  * @author VISTALL

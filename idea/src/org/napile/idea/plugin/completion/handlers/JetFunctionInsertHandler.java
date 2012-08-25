@@ -23,7 +23,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.completion.JetLookupObject;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 import com.intellij.codeInsight.AutoPopupController;

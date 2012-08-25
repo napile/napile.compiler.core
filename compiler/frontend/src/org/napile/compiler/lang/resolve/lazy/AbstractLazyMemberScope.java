@@ -35,7 +35,7 @@ import org.napile.compiler.lang.psi.NapileParameter;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.resolve.lazy.data.JetClassInfoUtil;
 import org.napile.compiler.lang.resolve.name.LabelName;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.psi.NapileClassOrObject;

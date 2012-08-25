@@ -19,8 +19,8 @@ package org.napile.compiler.lang.resolve.lazy;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.lang.resolve.name.FqName;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.Name;
 
 /**
  * @author abreslav

@@ -18,7 +18,7 @@ package org.napile.compiler.lang.resolve;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 
 /**
  * @author Stepan Koltsov

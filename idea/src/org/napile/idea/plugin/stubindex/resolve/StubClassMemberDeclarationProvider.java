@@ -23,7 +23,7 @@ import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.lazy.ClassMemberDeclarationProvider;
 import org.napile.compiler.lang.resolve.lazy.data.NapileClassLikeInfo;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 
 /**
  * @author Nikolay Krasko

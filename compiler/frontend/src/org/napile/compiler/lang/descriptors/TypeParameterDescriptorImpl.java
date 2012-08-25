@@ -23,7 +23,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
 import org.napile.compiler.lang.types.JetType;
@@ -34,7 +34,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.compiler.util.lazy.LazyValue;
 import com.google.common.collect.Sets;

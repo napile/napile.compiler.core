@@ -52,7 +52,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lang.psi.NapileElement;
 import com.google.common.collect.Lists;

@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.psi.stubs.NamedStub;
 
 /**

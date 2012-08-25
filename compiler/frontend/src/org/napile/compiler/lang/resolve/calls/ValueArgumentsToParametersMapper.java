@@ -42,7 +42,7 @@ import org.napile.compiler.lang.psi.NapileLabelQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.BindingContext;
 import com.google.common.collect.Maps;

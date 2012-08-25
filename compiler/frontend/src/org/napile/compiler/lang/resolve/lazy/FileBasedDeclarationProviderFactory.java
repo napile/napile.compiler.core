@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamespaceHeader;
 import org.napile.compiler.lang.resolve.lazy.data.NapileClassLikeInfo;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;

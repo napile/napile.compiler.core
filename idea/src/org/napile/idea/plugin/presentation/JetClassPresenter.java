@@ -20,7 +20,7 @@ import javax.swing.Icon;
 
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.JetIconProvider;
 import com.intellij.navigation.ColoredItemPresentation;
 import com.intellij.navigation.ItemPresentation;

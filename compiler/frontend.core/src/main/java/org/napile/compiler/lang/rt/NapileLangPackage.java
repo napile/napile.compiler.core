@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.jetbrains.jet.lang.types.lang.rt;
+package org.napile.compiler.lang.rt;
 
-import org.jetbrains.jet.lang.resolve.name.FqName;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.Name;
 
 /**
  * @author VISTALL

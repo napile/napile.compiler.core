@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.stubindex.JetShortClassNameIndex;
 import com.intellij.navigation.GotoClassContributor;
 import com.intellij.navigation.NavigationItem;

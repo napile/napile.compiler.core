@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.lazy.DeclarationProvider;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 
 /**
  * @author Nikolay Krasko

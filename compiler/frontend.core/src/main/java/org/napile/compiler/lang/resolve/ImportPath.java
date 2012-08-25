@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.resolve;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 
 /**
  * @author Nikolay Krasko

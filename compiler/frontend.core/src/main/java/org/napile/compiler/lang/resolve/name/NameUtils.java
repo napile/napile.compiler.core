@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jetbrains.jet.lang.resolve.name;
+package org.napile.compiler.lang.resolve.name;
 
 import org.jetbrains.annotations.NotNull;
 

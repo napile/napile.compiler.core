@@ -56,7 +56,7 @@ import org.jetbrains.jet.j2k.visitors.StatementVisitor;
 import org.jetbrains.jet.j2k.visitors.SuperVisitor;
 import org.jetbrains.jet.j2k.visitors.ThisVisitor;
 import org.jetbrains.jet.j2k.visitors.TypeVisitor;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;

@@ -22,7 +22,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.jetbrains.jet.lang.resolve.name.FqNameUnsafe;
+import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 

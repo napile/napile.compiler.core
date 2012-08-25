@@ -36,11 +36,11 @@ import org.napile.compiler.lang.resolve.calls.inference.ConstraintResolutionList
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemSolution;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemWithPriorities;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintType;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.scopes.ChainedScope;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;

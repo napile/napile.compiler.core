@@ -16,7 +16,7 @@
 
 package org.napile.asm.tree.members;
 
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.asmNew.visitors.AsmVisitor;
 import com.sun.istack.internal.NotNull;
 

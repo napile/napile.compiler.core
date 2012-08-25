@@ -21,7 +21,7 @@ import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetObjectStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
 import org.napile.compiler.lang.psi.stubs.elements.StubIndexService;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.psi.stubs.IndexSink;
 
 /**

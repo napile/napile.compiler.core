@@ -45,7 +45,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.jetbrains.jet.lang.types.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import com.intellij.codeInsight.hint.HintManager;

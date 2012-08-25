@@ -28,7 +28,7 @@ import org.napile.compiler.lang.psi.NapileDeclarationContainer;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.jetbrains.jet.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.psi.PsiElement;
 
 /**

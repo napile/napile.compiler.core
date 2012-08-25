@@ -18,7 +18,7 @@ package org.napile.compiler.lang.types.expressions;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lexer.NapileToken;
 import org.napile.compiler.lexer.JetTokens;
 import com.google.common.collect.ImmutableBiMap;
