@@ -24,7 +24,6 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassObject;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lexer.JetTokens;
 
 /**
  * @author abreslav
@@ -56,7 +55,7 @@ public class NapileClassInfo extends NapileClassOrObjectInfo<NapileClass>
 	{
 		if(element instanceof NapileEnumEntry)
 			return ClassKind.ENUM_ENTRY;
-		if(element.hasModifier(JetTokens.ENUM_KEYWORD))
+		if(element.isEnum())
 			return ClassKind.ENUM_CLASS;
 		return ClassKind.CLASS;
 	}

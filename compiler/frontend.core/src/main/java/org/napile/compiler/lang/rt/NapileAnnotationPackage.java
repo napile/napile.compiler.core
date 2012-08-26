@@ -28,4 +28,6 @@ public interface NapileAnnotationPackage
 	FqName PACKAGE = new FqName("napile.annotation");
 
 	FqName ANNOTATION = PACKAGE.child(Name.identifier("Annotation"));
+
+	FqName REPEATABLE = PACKAGE.child(Name.identifier("Repeatable"));
 }

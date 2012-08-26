@@ -42,6 +42,6 @@
 
 	<target name="lexer">
 		<echo message="${flex.base}"/>
-		<flex flexfile="${home}/src/org/jetbrains/jet/lexer/Jet.flex" destdir="${home}//src/org/jetbrains/jet/lexer/"/>
+		<flex flexfile="${home}/src/org/napile/compiler/lexer/Jet.flex" destdir="${home}//src/org/napile/compiler/lexer/"/>
 	</target>
 </project>

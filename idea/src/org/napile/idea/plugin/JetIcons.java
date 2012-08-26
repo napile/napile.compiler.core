@@ -29,6 +29,8 @@ public interface JetIcons
 	Icon SMALL_LOGO = IconLoader.getIcon("/org/jetbrains/idea/plugin/icons/kotlin.png");
 
 	Icon CLASS = IconLoader.getIcon("/org/napile/icons/nodes/class.png");
+	Icon ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotation.png");
+	Icon REPEATABLE_ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotationRepeatable.png");
 	Icon ENUM = IconLoader.getIcon("/org/napile/icons/nodes/enum.png");
 	Icon ABSTRACT_CLASS = IconLoader.getIcon("/org/napile/icons/nodes/abstractClass.png");
 

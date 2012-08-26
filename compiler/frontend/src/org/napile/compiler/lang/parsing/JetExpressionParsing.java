@@ -411,7 +411,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			if(!parseLocalDeclaration())
 			{
 				PsiBuilder.Marker expression = mark();
-				myJetParsing.parseAnnotations(false);
+				myJetParsing.parseAnnotations();
 				parsePrefixExpression();
 				expression.done(ANNOTATED_EXPRESSION);
 			}
@@ -1069,7 +1069,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker pattern = mark();
 
-		myJetParsing.parseAnnotations(false);
+		myJetParsing.parseAnnotations();
 
 		if(at(JetTokens.PACKAGE_KEYWORD) || at(JetTokens.IDENTIFIER) || at(JetTokens.METH_KEYWORD) || at(JetTokens.THIS_KEYWORD))
 		{
@@ -1295,10 +1295,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private boolean parseLocalDeclaration()
 	{
 		PsiBuilder.Marker decl = mark();
-		JetParsing.TokenDetector enumDetector = new JetParsing.TokenDetector(JetTokens.ENUM_KEYWORD);
-		myJetParsing.parseModifierList(MODIFIER_LIST, enumDetector, false);
 
-		IElementType declType = parseLocalDeclarationRest(enumDetector.isDetected());
+		myJetParsing.parseModifierList(MODIFIER_LIST);
+
+		IElementType declType = parseLocalDeclarationRest();
 
 		if(declType != null)
 		{
@@ -1664,13 +1664,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 *   : object
 		 *   ;
 		 */
-	private IElementType parseLocalDeclarationRest(boolean isEnum)
+	private IElementType parseLocalDeclarationRest()
 	{
 		IElementType keywordToken = tt();
 		IElementType declType = null;
-		if(keywordToken == JetTokens.CLASS_KEYWORD)
+		if(keywordToken == JetTokens.CLASS_KEYWORD || keywordToken == JetTokens.ENUM_KEYWORD)
 		{
-			declType = myJetParsing.parseClass(isEnum);
+			declType = myJetParsing.parseClass();
 		}
 		else if(keywordToken == JetTokens.METH_KEYWORD)
 		{

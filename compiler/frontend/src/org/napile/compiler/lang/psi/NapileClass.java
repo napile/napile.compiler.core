@@ -26,6 +26,7 @@ import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.lang.resolve.name.FqName;
+import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
@@ -50,6 +51,11 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 	public NapileClass(@NotNull final PsiJetClassStub stub)
 	{
 		super(stub, JetStubElementTypes.CLASS);
+	}
+
+	public boolean isEnum()
+	{
+		return findChildByType(JetTokens.ENUM_KEYWORD) != null;
 	}
 
 	@NotNull

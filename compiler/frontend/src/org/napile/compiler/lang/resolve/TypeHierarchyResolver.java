@@ -35,9 +35,9 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -46,7 +46,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lexer.JetTokens;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -296,7 +295,7 @@ public class TypeHierarchyResolver
 
 				private void createClassObjectForEnumClass(NapileClass klass, MutableClassDescriptor mutableClassDescriptor)
 				{
-					if(klass.hasModifier(JetTokens.ENUM_KEYWORD))
+					if(klass.isEnum())
 					{
 						MutableClassDescriptor classObjectDescriptor = new MutableClassDescriptor(mutableClassDescriptor, outerScope, ClassKind.OBJECT, Name.special("<class-object-for-" + klass.getName() + ">"), NapilePsiUtil.isStatic(klass));
 						classObjectDescriptor.setModality(Modality.FINAL);
@@ -361,9 +360,7 @@ public class TypeHierarchyResolver
 	@NotNull
 	private static ClassKind getClassKind(@NotNull NapileClass napileClass)
 	{
-		if(napileClass.hasModifier(JetTokens.ENUM_KEYWORD))
-			return ClassKind.ENUM_CLASS;
-		return ClassKind.CLASS;
+		return napileClass.isEnum() ? ClassKind.ENUM_CLASS : ClassKind.CLASS;
 	}
 
 	private void createTypeConstructors()

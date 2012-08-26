@@ -100,7 +100,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 	private static final String WHEN_ENTRY_TEMPLATE = "<#<condition>#> -> <#<value>#>";
 	private static final String WHILE_TEMPLATE = "while (<#<condition>#>) {\n<#<body>#>\n}";
 	private static final String DO_WHILE_TEMPLATE = "do {\n<#<body>#>\n} while (<#<condition>#>)";
-	private static final String ENUM_CLASS_TEMPLATE = "enum class <#<name>#> {\n<#<body>#>\n}";
+	private static final String ENUM_TEMPLATE = "enum <#<name>#> {\n<#<body>#>\n}";
 
 	private static class CommentFilter implements ElementFilter
 	{
@@ -346,9 +346,9 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 
 		// templates
 		registerScopeKeywordsCompletion(new InWhenFilter(), WHEN_ENTRY_TEMPLATE);
-		registerScopeKeywordsCompletion(new InTopFilter(), CLASS_TEMPLATE, ENUM_CLASS_TEMPLATE);
-		registerScopeKeywordsCompletion(new InClassBodyFilter(), METH_TEMPLATE, METH_NO_RETURN_TEMPLATE, VAL_WITH_TYPE_TEMPLATE, VAL_WITH_GETTER_TEMPLATE, VAR_WITH_TYPE_TEMPLATE, VAR_WITH_GETTER_AND_SETTER_TEMPLATE, CLASS_TEMPLATE, CLASS_OBJECT_TEMPLATE, ENUM_CLASS_TEMPLATE);
-		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), IF_TEMPLATE, IF_ELSE_TEMPLATE, IF_ELSE_ONELINE_TEMPLATE, METH_TEMPLATE, VAL_SIMPLE_TEMPLATE, VAR_SIMPLE_TEMPLATE, CLASS_TEMPLATE, FOR_TEMPLATE, WHEN_TEMPLATE, WHILE_TEMPLATE, DO_WHILE_TEMPLATE, ENUM_CLASS_TEMPLATE);
+		registerScopeKeywordsCompletion(new InTopFilter(), CLASS_TEMPLATE, ENUM_TEMPLATE);
+		registerScopeKeywordsCompletion(new InClassBodyFilter(), METH_TEMPLATE, METH_NO_RETURN_TEMPLATE, VAL_WITH_TYPE_TEMPLATE, VAL_WITH_GETTER_TEMPLATE, VAR_WITH_TYPE_TEMPLATE, VAR_WITH_GETTER_AND_SETTER_TEMPLATE, CLASS_TEMPLATE, CLASS_OBJECT_TEMPLATE, ENUM_TEMPLATE);
+		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), IF_TEMPLATE, IF_ELSE_TEMPLATE, IF_ELSE_ONELINE_TEMPLATE, METH_TEMPLATE, VAL_SIMPLE_TEMPLATE, VAR_SIMPLE_TEMPLATE, CLASS_TEMPLATE, FOR_TEMPLATE, WHEN_TEMPLATE, WHILE_TEMPLATE, DO_WHILE_TEMPLATE, ENUM_TEMPLATE);
 		registerScopeKeywordsCompletion(new InPropertyBodyFilter(), IF_ELSE_ONELINE_TEMPLATE, WHEN_TEMPLATE);
 		registerScopeKeywordsCompletion(new AfterClassInClassBodyFilter(), false, CLASS_OBJECT_WITHOUT_CLASS_TEMPLATE);
 	}

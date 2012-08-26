@@ -1,11 +1,11 @@
-package org.jetbrains.jet.lexer;
+package org.napile.compiler.lexer;;
 
 import java.util.*;
 import com.intellij.lexer.*;
 import com.intellij.psi.*;
 import com.intellij.psi.tree.IElementType;
 
-import org.jetbrains.jet.lexer.JetTokens;
+import org.napile.compiler.lexer.JetTokens;
 
 %%
 
@@ -238,6 +238,7 @@ LONG_TEMPLATE_ENTRY_END=\}
 "while"      { return JetTokens.WHILE_KEYWORD ;}
 "break"      { return JetTokens.BREAK_KEYWORD ;}
 "class"      { return JetTokens.CLASS_KEYWORD ;}
+"enum"      { return JetTokens.ENUM_KEYWORD ;}
 "throw"      { return JetTokens.THROW_KEYWORD ;}
 "false"      { return JetTokens.FALSE_KEYWORD ;}
 "super"      { return JetTokens.SUPER_KEYWORD ;}

@@ -300,8 +300,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker decl = mark();
 
-		TokenDetector detector = new TokenDetector(JetTokens.ENUM_KEYWORD);
-		parseModifierList(MODIFIER_LIST, detector, true);
+		parseModifierList(MODIFIER_LIST);
 
 		IElementType keywordToken = tt();
 		IElementType declType = null;
@@ -309,10 +308,8 @@ public class JetParsing extends AbstractJetParsing
 		//            declType = parseNamespaceBlock();
 		//        }
 		//        else
-		if(keywordToken == JetTokens.CLASS_KEYWORD)
-		{
-			declType = parseClass(detector.isDetected());
-		}
+		if(keywordToken == JetTokens.CLASS_KEYWORD || keywordToken == JetTokens.ENUM_KEYWORD)
+			declType = parseClass();
 
 		if(declType == null)
 		{
@@ -330,7 +327,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	boolean parseModifierList(NapileNodeType nodeType, boolean allowShortAnnotations)
 	{
-		return parseModifierList(nodeType, null, allowShortAnnotations);
+		return parseModifierList(nodeType);
 	}
 
 	/**
@@ -338,7 +335,7 @@ public class JetParsing extends AbstractJetParsing
 	 * <p/>
 	 * Feeds modifiers (not attributes) into the passed consumer, if it is not null
 	 */
-	boolean parseModifierList(NapileNodeType nodeType, @Nullable Consumer<IElementType> tokenConsumer, boolean allowShortAnnotations)
+	boolean parseModifierList(NapileNodeType nodeType)
 	{
 		PsiBuilder.Marker list = mark();
 		boolean empty = true;
@@ -346,13 +343,11 @@ public class JetParsing extends AbstractJetParsing
 		{
 			if(atSet(JetTokens.MODIFIER_KEYWORDS))
 			{
-				if(tokenConsumer != null)
-					tokenConsumer.consume(tt());
 				advance(); // MODIFIER
 			}
-			else if(at(JetTokens.LBRACKET) || (allowShortAnnotations && at(JetTokens.IDENTIFIER)))
+			else if(at(JetTokens.LBRACKET))
 			{
-				parseAnnotation(allowShortAnnotations);
+				parseAnnotation();
 			}
 			else
 			{
@@ -376,11 +371,11 @@ public class JetParsing extends AbstractJetParsing
 		 *   : annotation*
 		 *   ;
 		 */
-	void parseAnnotations(boolean allowShortAnnotations)
+	void parseAnnotations()
 	{
 		while(true)
 		{
-			if(!(parseAnnotation(allowShortAnnotations)))
+			if(!(parseAnnotation()))
 				break;
 		}
 	}
@@ -391,7 +386,7 @@ public class JetParsing extends AbstractJetParsing
 		 *   : annotationEntry
 		 *   ;
 		 */
-	private boolean parseAnnotation(boolean allowShortAnnotations)
+	private boolean parseAnnotation()
 	{
 		if(at(JetTokens.LBRACKET))
 		{
@@ -426,11 +421,6 @@ public class JetParsing extends AbstractJetParsing
 			myBuilder.restoreNewlinesState();
 
 			annotation.done(ANNOTATION);
-			return true;
-		}
-		else if(allowShortAnnotations && at(JetTokens.IDENTIFIER))
-		{
-			parseAnnotationEntry();
 			return true;
 		}
 		return false;
@@ -472,10 +462,11 @@ public class JetParsing extends AbstractJetParsing
 		 *       (classBody? | enumClassBody)
 		 *   ;
 		 */
-	IElementType parseClass(boolean enumClass)
+	IElementType parseClass()
 	{
-		assert _atSet(JetTokens.CLASS_KEYWORD);
-		advance(); // CLASS_KEYWORD or TRAIT_KEYWORD
+		boolean enumClass = tt() == JetTokens.ENUM_KEYWORD;
+
+		advance(); // CLASS_KEYWORD
 
 		if(!parseIdeTemplate())
 		{
@@ -534,8 +525,8 @@ public class JetParsing extends AbstractJetParsing
 
 				TokenSet constructorNameFollow = TokenSet.create(JetTokens.SEMICOLON, JetTokens.COLON, JetTokens.LPAR, JetTokens.LT, JetTokens.LBRACE);
 				int lastId = findLastBefore(ENUM_MEMBER_FIRST, constructorNameFollow, false);
-				TokenDetector enumDetector = new TokenDetector(JetTokens.ENUM_KEYWORD);
-				createTruncatedBuilder(lastId).parseModifierList(MODIFIER_LIST, enumDetector, false);
+
+				createTruncatedBuilder(lastId).parseModifierList(MODIFIER_LIST);
 
 				IElementType type;
 				if(at(JetTokens.IDENTIFIER))
@@ -545,7 +536,7 @@ public class JetParsing extends AbstractJetParsing
 				}
 				else
 				{
-					type = parseMemberDeclarationRest(enumDetector.isDetected());
+					type = parseMemberDeclarationRest();
 				}
 
 				if(type == null)
@@ -652,10 +643,9 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker decl = mark();
 
-		TokenDetector enumDetector = new TokenDetector(JetTokens.ENUM_KEYWORD);
-		parseModifierList(MODIFIER_LIST, enumDetector, true);
+		parseModifierList(MODIFIER_LIST);
 
-		IElementType declType = parseMemberDeclarationRest(enumDetector.isDetected());
+		IElementType declType = parseMemberDeclarationRest();
 
 		if(declType == null)
 		{
@@ -668,20 +658,17 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
-	private IElementType parseMemberDeclarationRest(boolean isEnum)
+	private IElementType parseMemberDeclarationRest()
 	{
 		IElementType keywordToken = tt();
 		IElementType declType = null;
-		if(keywordToken == JetTokens.CLASS_KEYWORD)
+		if(keywordToken == JetTokens.CLASS_KEYWORD || keywordToken == JetTokens.ENUM_KEYWORD)
 		{
+			// deprecated
 			if(lookahead(1) == JetTokens.OBJECT_KEYWORD)
-			{
 				declType = parseClassObject();
-			}
 			else
-			{
-				declType = parseClass(isEnum);
-			}
+				declType = parseClass();
 		}
 		else if(keywordToken == JetTokens.METH_KEYWORD)
 			declType = parseMethod();
@@ -786,7 +773,7 @@ public class JetParsing extends AbstractJetParsing
 	private void parseInitializer()
 	{
 		PsiBuilder.Marker initializer = mark();
-		parseAnnotations(false);
+		parseAnnotations();
 
 		IElementType type;
 		if(at(JetTokens.THIS_KEYWORD))
@@ -1159,7 +1146,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		if(lastDot == -1)
 		{ // There's no explicit receiver type specified
-			parseAnnotations(false);
+			parseAnnotations();
 
 			if(!parseIdeTemplate())
 			{
@@ -1276,7 +1263,7 @@ public class JetParsing extends AbstractJetParsing
 	private void parseDelegationSpecifier()
 	{
 		PsiBuilder.Marker delegator = mark();
-		parseAnnotations(false);
+		parseAnnotations();
 
 		PsiBuilder.Marker reference = mark();
 		parseTypeRef();
@@ -1391,7 +1378,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker constraint = mark();
 
-		parseAnnotations(false);
+		parseAnnotations();
 
 		if(at(JetTokens.CLASS_KEYWORD))
 		{
@@ -1480,7 +1467,7 @@ public class JetParsing extends AbstractJetParsing
 		// we don't support this case now
 		//        myBuilder.disableJoiningComplexTokens();
 		PsiBuilder.Marker typeRefMarker = mark();
-		parseAnnotations(false);
+		parseAnnotations();
 
 		if(at(JetTokens.IDENTIFIER) || at(JetTokens.PACKAGE_KEYWORD))
 		{
@@ -1933,31 +1920,5 @@ public class JetParsing extends AbstractJetParsing
 	protected JetParsing create(SemanticWhitespaceAwarePsiBuilder builder)
 	{
 		return createForTopLevel(builder);
-	}
-
-	/*package*/ static class TokenDetector implements Consumer<IElementType>
-	{
-
-		private boolean detected = false;
-		private final TokenSet tokens;
-
-		public TokenDetector(NapileKeywordToken token)
-		{
-			this.tokens = TokenSet.create(token);
-		}
-
-		@Override
-		public void consume(IElementType item)
-		{
-			if(tokens.contains(item))
-			{
-				detected = true;
-			}
-		}
-
-		public boolean isDetected()
-		{
-			return detected;
-		}
 	}
 }

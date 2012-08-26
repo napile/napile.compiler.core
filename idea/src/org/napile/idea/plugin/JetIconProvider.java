@@ -22,8 +22,14 @@ import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.analyzer.AnalyzeExhaust;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.resolve.AnnotationUtils;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.rt.NapileAnnotationPackage;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lang.psi.*;
+import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.IconProvider;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.IconLoader;
@@ -70,13 +76,24 @@ public class JetIconProvider extends IconProvider
 		else if(psiElement instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) psiElement;
-			icon = napileClass.hasModifier(JetTokens.ENUM_KEYWORD) ? PlatformIcons.ENUM_ICON : JetIcons.CLASS;
+
+			AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileClass.getContainingFile());
+			ClassDescriptor descriptor = (ClassDescriptor) analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileClass);
+
+			icon = napileClass.isEnum() ? JetIcons.ENUM : JetIcons.CLASS;
 
 			if(napileClass.hasModifier(JetTokens.ABSTRACT_KEYWORD))
 				icon = JetIcons.ABSTRACT_CLASS;
 
+			if(descriptor != null && AnnotationUtils.isAnnotation(descriptor))
+			{
+				icon = JetIcons.ANNOTATION;
+				if(AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.REPEATABLE))
+					icon = JetIcons.REPEATABLE_ANNOTATION;
+			}
+
 			if(napileClass instanceof NapileEnumEntry)
-				icon = PlatformIcons.ENUM_ICON;
+				icon = JetIcons.VAL;
 		}
 		else if(psiElement instanceof NapileObjectDeclaration || psiElement instanceof NapileClassObject)
 		{
