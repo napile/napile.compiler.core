@@ -114,8 +114,6 @@ public class ControlFlowAnalyzer
 
 	private void checkFunction(NapileDeclarationWithBody function, final @NotNull JetType expectedReturnType)
 	{
-		assert function instanceof NapileDeclaration;
-
 		NapileExpression bodyExpression = function.getBodyExpression();
 		if(bodyExpression == null)
 			return;

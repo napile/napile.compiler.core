@@ -44,6 +44,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
@@ -140,6 +141,8 @@ public class BodyResolver
 		resolveAnonymousInitializers();
 
 		resolveFunctionBodies();
+
+		resolveConstructorBodies();
 
 		if(!topDownAnalysisParameters.isDeclaredLocally())
 		{
@@ -469,6 +472,23 @@ public class BodyResolver
 			assert descriptor.getReturnType() != null;
 		}
 	}
+
+	private void resolveConstructorBodies()
+	{
+		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : this.context.getConstructors().entrySet())
+		{
+			NapileConstructor declaration = entry.getKey();
+			ConstructorDescriptor descriptor = entry.getValue();
+
+			JetScope declaringScope = this.context.getDeclaringScopes().get(declaration);
+			assert declaringScope != null;
+
+			descriptor.setReturnType(new JetTypeImpl(descriptor.getContainingDeclaration().getTypeConstructor(), declaringScope));
+
+			resolveFunctionBody(trace, declaration, descriptor, declaringScope);
+		}
+	}
+
 
 	private void resolveFunctionBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull FunctionDescriptor functionDescriptor, @NotNull JetScope declaringScope)
 	{
