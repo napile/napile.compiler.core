@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,29 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.types;
+package org.napile.compiler.lang.resolve;
+
+import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.resolve.name.FqName;
 
 /**
- * @author Stepan Koltsov
+ * @author VISTALL
+ * @date 15:27/26.08.12
  */
-public interface DependencyClassByQualifiedNameResolver
+public class AnnotationChecker
 {
+	@NotNull
+	private BindingTrace trace;
 
-	@Nullable
-	ClassDescriptor resolveClass(@NotNull FqName qualifiedName);
+	@Inject
+	public void setTrace(@NotNull BindingTrace trace)
+	{
+		this.trace = trace;
+	}
 
-	@Nullable
-	NamespaceDescriptor resolveNamespace(@NotNull FqName qualifiedName);
+	public void process(@NotNull BodiesResolveContext bodiesResolveContext)
+	{
+
+	}
 }

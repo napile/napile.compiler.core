@@ -77,6 +77,8 @@ public class BodyResolver
 	private ControlFlowAnalyzer controlFlowAnalyzer;
 	@NotNull
 	private DeclarationsChecker declarationsChecker;
+	@NotNull
+	private AnnotationChecker annotationChecker;
 
 	@Inject
 	public void setTopDownAnalysisParameters(@NotNull TopDownAnalysisParameters topDownAnalysisParameters)
@@ -118,6 +120,12 @@ public class BodyResolver
 	public void setDeclarationsChecker(@NotNull DeclarationsChecker declarationsChecker)
 	{
 		this.declarationsChecker = declarationsChecker;
+	}
+
+	@Inject
+	public void setAnnotationChecker(@NotNull AnnotationChecker annotationChecker)
+	{
+		this.annotationChecker = annotationChecker;
 	}
 
 	private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext bodiesResolveContext)
