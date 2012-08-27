@@ -53,19 +53,19 @@ public class NapileAnnotatedExpression extends NapileExpressionImpl
 		return findChildByClass(NapileExpression.class);
 	}
 
-	public List<NapileAnnotation> getAttributeAnnotations()
+	public List<NapileAnnotationList> getAttributeAnnotations()
 	{
-		return findChildrenByType(NapileNodeTypes.ANNOTATION);
+		return findChildrenByType(NapileNodeTypes.ANNOTATION_LIST);
 	}
 
 	public List<NapileAnnotationEntry> getAttributes()
 	{
 		List<NapileAnnotationEntry> answer = null;
-		for(NapileAnnotation annotation : getAttributeAnnotations())
+		for(NapileAnnotationList annotationList : getAttributeAnnotations())
 		{
 			if(answer == null)
 				answer = new ArrayList<NapileAnnotationEntry>();
-			answer.addAll(annotation.getEntries());
+			answer.addAll(annotationList.getEntries());
 		}
 		return answer != null ? answer : Collections.<NapileAnnotationEntry>emptyList();
 	}

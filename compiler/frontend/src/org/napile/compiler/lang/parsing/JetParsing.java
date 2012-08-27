@@ -49,7 +49,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
-	private static final TokenSet TOPLEVEL_OBJECT_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD);
+	private static final TokenSet TOPLEVEL_OBJECT_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD);
 	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.TYPE_KEYWORD, JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.IDENTIFIER);
 
 	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE), TOPLEVEL_OBJECT_FIRST);
@@ -420,7 +420,7 @@ public class JetParsing extends AbstractJetParsing
 			expect(JetTokens.RBRACKET, "Expecting ']' to close an attribute annotation");
 			myBuilder.restoreNewlinesState();
 
-			annotation.done(ANNOTATION);
+			annotation.done(ANNOTATION_LIST);
 			return true;
 		}
 		return false;
@@ -559,37 +559,21 @@ public class JetParsing extends AbstractJetParsing
 
 	/*
 		 * enumEntry
-		 *   : modifiers SimpleName typeParameters? primaryConstructorParameters? (":" initializer{","})? typeConstraints classBody?
+		 *   : modifiers typeParameters? valueArguments? typeConstraints classBody?
 		 *   ;
 		 */
 	private void parseEnumEntry()
 	{
 		assert _at(JetTokens.IDENTIFIER);
 
-		PsiBuilder.Marker nameAsDeclaration = mark();
-		advance(); // IDENTIFIER
-		nameAsDeclaration.done(OBJECT_DECLARATION_NAME);
+		advance();
 
-		boolean typeParametersDeclared = parseTypeParameterList(TokenSet.create(JetTokens.COLON, JetTokens.LPAR, JetTokens.SEMICOLON, JetTokens.LBRACE));
-
+		parseTypeParameterList(TokenSet.create());
 		if(at(JetTokens.LPAR))
-		{
-			parseValueParameterList(false, TokenSet.create(JetTokens.COLON, JetTokens.SEMICOLON, JetTokens.LBRACE));
-		}
-
-		if(at(JetTokens.COLON))
-		{
-			advance(); // COLON
-
-			parseInitializerList();
-		}
-
-		parseTypeConstraintsGuarded(typeParametersDeclared);
+			myExpressionParsing.parseValueArgumentList();
 
 		if(at(JetTokens.LBRACE))
-		{
 			parseClassBody();
-		}
 
 		consumeIf(JetTokens.SEMICOLON);
 	}

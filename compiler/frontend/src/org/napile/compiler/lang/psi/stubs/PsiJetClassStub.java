@@ -33,8 +33,6 @@ public interface PsiJetClassStub extends NamedStub<NapileClass>
 	@Nullable
 	String getQualifiedName();
 
-	boolean isEnumEntry();
-
 	@NotNull
 	List<String> getSuperNames();
 }

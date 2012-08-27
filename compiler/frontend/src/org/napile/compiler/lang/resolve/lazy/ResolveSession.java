@@ -29,11 +29,10 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
-import org.napile.compiler.lang.resolve.lazy.data.JetClassInfoUtil;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -139,7 +138,7 @@ public class ResolveSession
 		if(classOrObject instanceof NapileEnumEntry)
 		{
 			NapileEnumEntry enumEntry = (NapileEnumEntry) classOrObject;
-			return getEnumEntryClassDescriptor(enumEntry);
+			//return getEnumEntryClassDescriptor(enumEntry);
 		}
 		if(classOrObject.getParent() instanceof NapileClassObject)
 		{
@@ -156,7 +155,7 @@ public class ResolveSession
 		return (ClassDescriptor) classifier;
 	}
 
-	@NotNull
+	/*@NotNull
 	private ClassDescriptor getEnumEntryClassDescriptor(@NotNull NapileEnumEntry jetEnumEntry)
 	{
 		ClassDescriptor classDescriptor = enumEntryClassDescriptorCache.get(jetEnumEntry);
@@ -169,7 +168,7 @@ public class ResolveSession
 		LazyClassDescriptor newClassDescriptor = new LazyClassDescriptor(this, containingDeclaration, jetEnumEntry.getNameAsName(), JetClassInfoUtil.createClassLikeInfo(jetEnumEntry), false);
 		enumEntryClassDescriptorCache.put(jetEnumEntry, newClassDescriptor);
 		return newClassDescriptor;
-	}
+	}    */
 
 	/*package*/ LazyClassDescriptor getClassObjectDescriptor(NapileClassObject classObject)
 	{

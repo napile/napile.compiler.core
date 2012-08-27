@@ -28,7 +28,6 @@ import org.napile.compiler.lang.cfg.PseudocodeVariablesData.VariableUseState;
 import org.napile.compiler.lang.cfg.pseudocode.*;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;

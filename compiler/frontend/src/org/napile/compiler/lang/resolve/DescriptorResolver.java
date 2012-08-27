@@ -578,7 +578,6 @@ public class DescriptorResolver
 	@NotNull
 	public PropertyDescriptor resolvePropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileProperty property, BindingTrace trace)
 	{
-
 		NapileModifierList modifierList = property.getModifierList();
 		boolean isVar = property.isVar();
 
@@ -628,6 +627,11 @@ public class DescriptorResolver
 
 		trace.record(BindingContext.VARIABLE, property, propertyDescriptor);
 		return propertyDescriptor;
+	}
+
+	public PropertyDescriptor resolvePropertyDescriptorFromEnumEntry(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileEnumEntry enumEntry, BindingTrace trace)
+	{
+		return null;
 	}
 
 	/*package*/

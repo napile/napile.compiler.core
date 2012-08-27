@@ -183,13 +183,9 @@ public class DeclarationResolver
 					context.getProperties().put(property, propertyDescriptor);
 					context.getDeclaringScopes().put(property, scopeForPropertyInitializers);
 					if(property.getGetter() != null)
-					{
 						context.getDeclaringScopes().put(property.getGetter(), scopeForPropertyAccessors);
-					}
 					if(property.getSetter() != null)
-					{
 						context.getDeclaringScopes().put(property.getSetter(), scopeForPropertyAccessors);
-					}
 				}
 
 				@Override
@@ -203,12 +199,17 @@ public class DeclarationResolver
 				@Override
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
+					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptorFromEnumEntry(ownerDescription, scopeForPropertyInitializers, enumEntry, trace);
+
+					//context.getProperties().put(property, propertyDescriptor);
+					//context.getDeclaringScopes().put(enumEntry, scopeForPropertyInitializers);
+
 					//if(enumEntry.getPrimaryConstructorParameterList() == null)
 					{
 						// FIX: Bad cast
 						//MutableClassDescriptorLite classObjectDescriptor = ((MutableClassDescriptorLite) ownerDescription).getClassObjectDescriptor();
 						//assert classObjectDescriptor != null;
-						PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, enumEntry, context.getClasses().get(enumEntry), trace);
+						//PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, enumEntry, context.getClasses().get(enumEntry), trace);
 					//	ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
 					//	classObjectDescriptor.getBuilder().addPropertyDescriptor(propertyDescriptor);
 					}

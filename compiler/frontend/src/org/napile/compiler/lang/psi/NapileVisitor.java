@@ -90,9 +90,9 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitJetElement(list, data);
 	}
 
-	public R visitAnnotation(NapileAnnotation annotation, D data)
+	public R visitAnnotationList(NapileAnnotationList annotationList, D data)
 	{
-		return visitJetElement(annotation, data);
+		return visitJetElement(annotationList, data);
 	}
 
 	public R visitAnnotationEntry(NapileAnnotationEntry annotationEntry, D data)
@@ -112,7 +112,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 
 	public R visitEnumEntry(NapileEnumEntry enumEntry, D data)
 	{
-		return visitClass(enumEntry, data);
+		return visitJetElement(enumEntry, data);
 	}
 
 	public R visitParameterList(NapileParameterList list, D data)

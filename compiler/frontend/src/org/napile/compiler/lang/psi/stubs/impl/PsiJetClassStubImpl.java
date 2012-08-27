@@ -38,20 +38,18 @@ public class PsiJetClassStubImpl extends StubBase<NapileClass> implements PsiJet
 	private final StringRef qualifiedName;
 	private final StringRef name;
 	private final StringRef[] superNames;
-	private final boolean isEnumEntry;
 
-	public PsiJetClassStubImpl(JetClassElementType type, StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames, boolean isEnumEntry)
+	public PsiJetClassStubImpl(JetClassElementType type, StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames)
 	{
-		this(type, parent, StringRef.fromString(qualifiedName), StringRef.fromString(name), wrapStrings(superNames), isEnumEntry);
+		this(type, parent, StringRef.fromString(qualifiedName), StringRef.fromString(name), wrapStrings(superNames));
 	}
 
-	public PsiJetClassStubImpl(JetClassElementType type, StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames, boolean isEnumEntry)
+	public PsiJetClassStubImpl(JetClassElementType type, StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames)
 	{
 		super(parent, type);
 		this.qualifiedName = qualifiedName;
 		this.name = name;
 		this.superNames = superNames;
-		this.isEnumEntry = isEnumEntry;
 	}
 
 	private static StringRef[] wrapStrings(List<String> names)
@@ -68,12 +66,6 @@ public class PsiJetClassStubImpl extends StubBase<NapileClass> implements PsiJet
 	public String getQualifiedName()
 	{
 		return StringRef.toString(qualifiedName);
-	}
-
-	@Override
-	public boolean isEnumEntry()
-	{
-		return isEnumEntry;
 	}
 
 	@Override
@@ -99,11 +91,6 @@ public class PsiJetClassStubImpl extends StubBase<NapileClass> implements PsiJet
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("PsiJetClassStubImpl[");
-
-		if(isEnumEntry())
-		{
-			builder.append("enumEntry ");
-		}
 
 		builder.append("name=").append(getName());
 		builder.append(" fqn=").append(getQualifiedName());

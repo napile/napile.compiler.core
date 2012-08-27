@@ -170,8 +170,8 @@ public class AnnotationResolver
 
 
 			// @Override
-			//            public CompileTimeConstant visitAnnotation(NapileAnnotation annotation, Void nothing) {
-			//                super.visitAnnotation(annotation, null); // TODO
+			//            public CompileTimeConstant visitAnnotationList(NapileAnnotation annotation, Void nothing) {
+			//                super.visitAnnotationList(annotation, null); // TODO
 			//            }
 			//
 			//            @Override

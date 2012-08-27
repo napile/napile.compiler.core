@@ -88,9 +88,9 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitJetElement(list);
 	}
 
-	public void visitAnnotation(NapileAnnotation annotation)
+	public void visitAnnotationList(NapileAnnotationList annotationList)
 	{
-		visitJetElement(annotation);
+		visitJetElement(annotationList);
 	}
 
 	public void visitAnnotationEntry(NapileAnnotationEntry annotationEntry)
@@ -110,7 +110,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 
 	public void visitEnumEntry(NapileEnumEntry enumEntry)
 	{
-		visitClass(enumEntry);
+		visitJetElement(enumEntry);
 	}
 
 	public void visitParameterList(NapileParameterList list)

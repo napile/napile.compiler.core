@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,34 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.stubs.impl;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.stubs.NapilePsiEnumEntryStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
-import com.intellij.lang.ASTNode;
+import com.intellij.psi.stubs.StubBase;
+import com.intellij.psi.stubs.StubElement;
+import com.intellij.util.io.StringRef;
 
 /**
- * @author max
+ * @author VISTALL
+ * @date 21:41/27.08.12
  */
-public class NapileEnumEntry extends NapileNamedDeclarationStub<NapilePsiEnumEntryStub>
+public class NapilePsiEnumEntryStubImpl extends StubBase<NapileEnumEntry> implements NapilePsiEnumEntryStub
 {
-	public NapileEnumEntry(@NotNull ASTNode node)
+	private final StringRef stringRef;
+
+	public NapilePsiEnumEntryStubImpl(StubElement parent, StringRef stringRef)
 	{
-		super(node);
+		super(parent, JetStubElementTypes.ENUM_ENTRY);
+		this.stringRef = stringRef;
 	}
 
-	public NapileEnumEntry(@NotNull NapilePsiEnumEntryStub stub)
-	{
-		super(stub, JetStubElementTypes.ENUM_ENTRY);
-	}
-
+	@Nullable
 	@Override
-	public void accept(@NotNull NapileVisitorVoid visitor)
+	public String getName()
 	{
-		visitor.visitEnumEntry(this);
-	}
-
-	@Override
-	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
-	{
-		return visitor.visitEnumEntry(this, data);
+		return StringRef.toString(stringRef);
 	}
 }

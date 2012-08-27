@@ -240,7 +240,7 @@ public class TypeHierarchyResolver
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
 					// TODO: Bad casting
-					MutableClassDescriptorLite ownerClassDescriptor = (MutableClassDescriptorLite) owner.getOwnerForChildren();
+					/*MutableClassDescriptorLite ownerClassDescriptor = (MutableClassDescriptorLite) owner.getOwnerForChildren();
 					MutableClassDescriptorLite classObjectDescriptor = ownerClassDescriptor.getClassObjectDescriptor();
 
 					assert classObjectDescriptor != null : enumEntry.getParent().getText();
@@ -249,7 +249,7 @@ public class TypeHierarchyResolver
 						// Simple enum entry
 
 						createClassDescriptorForEnumEntry(enumEntry, classObjectDescriptor.getBuilder());
-					}
+					}    */
 					/*else //TODO [VISTALL]
 					{
 						// Advanced enum entry like "Cons<out T>(val head : T, val tail : List<T>) : List<T>(tail.size + 1)"
@@ -323,7 +323,7 @@ public class TypeHierarchyResolver
 					return mutableClassDescriptor;
 				}
 
-				private MutableClassDescriptor createClassDescriptorForEnumEntry(@NotNull NapileEnumEntry declaration, @NotNull NamespaceLikeBuilder owner)
+				/*private MutableClassDescriptor createClassDescriptorForEnumEntry(@NotNull NapileEnumEntry declaration, @NotNull NamespaceLikeBuilder owner)
 				{
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), getStaticScope(declaration, owner), ClassKind.ENUM_ENTRY, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
 					context.getClasses().put(declaration, mutableClassDescriptor);
@@ -335,7 +335,7 @@ public class TypeHierarchyResolver
 					owner.addObjectDescriptor(mutableClassDescriptor);
 					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
 					return mutableClassDescriptor;
-				}
+				}      */
 
 				private ConstructorDescriptor createConstructorForObject(@NotNull NapileDelegationSpecifierListOwner object, MutableClassDescriptor mutableClassDescriptor)
 				{

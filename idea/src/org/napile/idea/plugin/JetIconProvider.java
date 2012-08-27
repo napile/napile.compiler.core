@@ -91,14 +91,13 @@ public class JetIconProvider extends IconProvider
 				if(AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.REPEATABLE))
 					icon = JetIcons.REPEATABLE_ANNOTATION;
 			}
-
-			if(napileClass instanceof NapileEnumEntry)
-				icon = JetIcons.VAL;
 		}
 		else if(psiElement instanceof NapileObjectDeclaration || psiElement instanceof NapileClassObject)
 		{
 			icon = JetIcons.OBJECT;
 		}
+		else if(psiElement instanceof NapileEnumEntry)
+			icon = JetIcons.VAL;
 		else if(psiElement instanceof NapileParameter)
 		{
 			icon = JetIcons.PARAMETER;

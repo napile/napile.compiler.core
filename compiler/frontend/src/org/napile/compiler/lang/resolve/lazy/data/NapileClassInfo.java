@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassObject;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 
 /**
@@ -53,8 +52,6 @@ public class NapileClassInfo extends NapileClassOrObjectInfo<NapileClass>
 	@Override
 	public ClassKind getClassKind()
 	{
-		if(element instanceof NapileEnumEntry)
-			return ClassKind.ENUM_ENTRY;
 		if(element.isEnum())
 			return ClassKind.ENUM_CLASS;
 		return ClassKind.CLASS;

@@ -50,9 +50,9 @@ public class NapileTypeReference extends NapileElementImpl
 		return visitor.visitTypeReference(this, data);
 	}
 
-	public List<NapileAnnotation> getAttributeAnnotations()
+	public List<NapileAnnotationList> getAttributeAnnotations()
 	{
-		return findChildrenByType(NapileNodeTypes.ANNOTATION);
+		return findChildrenByType(NapileNodeTypes.ANNOTATION_LIST);
 	}
 
 	@Nullable
@@ -64,11 +64,11 @@ public class NapileTypeReference extends NapileElementImpl
 	public List<NapileAnnotationEntry> getAnnotations()
 	{
 		List<NapileAnnotationEntry> answer = null;
-		for(NapileAnnotation annotation : getAttributeAnnotations())
+		for(NapileAnnotationList annotationList : getAttributeAnnotations())
 		{
 			if(answer == null)
 				answer = new ArrayList<NapileAnnotationEntry>();
-			answer.addAll(annotation.getEntries());
+			answer.addAll(annotationList.getEntries());
 		}
 		return answer != null ? answer : Collections.<NapileAnnotationEntry>emptyList();
 	}

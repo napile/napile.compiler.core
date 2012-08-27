@@ -50,9 +50,9 @@ public class NapileModifierList extends NapileElementImpl
 	}
 
 	@NotNull
-	public List<NapileAnnotation> getAnnotations()
+	public List<NapileAnnotationList> getAnnotations()
 	{
-		return findChildrenByType(NapileNodeTypes.ANNOTATION);
+		return findChildrenByType(NapileNodeTypes.ANNOTATION_LIST);
 	}
 
 	@NotNull
@@ -60,11 +60,11 @@ public class NapileModifierList extends NapileElementImpl
 	{
 		List<NapileAnnotationEntry> entries = findChildrenByType(NapileNodeTypes.ANNOTATION_ENTRY);
 		List<NapileAnnotationEntry> answer = entries.isEmpty() ? null : Lists.newArrayList(entries);
-		for(NapileAnnotation annotation : getAnnotations())
+		for(NapileAnnotationList annotationList : getAnnotations())
 		{
 			if(answer == null)
 				answer = new ArrayList<NapileAnnotationEntry>();
-			answer.addAll(annotation.getEntries());
+			answer.addAll(annotationList.getEntries());
 		}
 		return answer != null ? answer : Collections.<NapileAnnotationEntry>emptyList();
 	}

@@ -22,7 +22,6 @@ import java.util.List;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetClassStubImpl;
@@ -48,21 +47,21 @@ public class JetClassElementType extends JetStubElementType<PsiJetClassStub, Nap
 	@Override
 	public NapileClass createPsi(@NotNull PsiJetClassStub stub)
 	{
-		return !stub.isEnumEntry() ? new NapileClass(stub) : new NapileEnumEntry(stub);
+		return new NapileClass(stub);
 	}
 
 	@Override
 	public NapileClass createPsiFromAst(@NotNull ASTNode node)
 	{
-		return node.getElementType() != JetStubElementTypes.ENUM_ENTRY ? new NapileClass(node) : new NapileEnumEntry(node);
+		return new NapileClass(node);
 	}
 
 	@Override
 	public PsiJetClassStub createStub(@NotNull NapileClass psi, StubElement parentStub)
 	{
 		FqName fqName = NapilePsiUtil.getFQName(psi);
-		boolean isEnumEntry = psi instanceof NapileEnumEntry;
-		return new PsiJetClassStubImpl(getStubType(isEnumEntry), parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames(), isEnumEntry);
+
+		return new PsiJetClassStubImpl(JetStubElementTypes.CLASS, parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames());
 	}
 
 	@Override
@@ -70,7 +69,6 @@ public class JetClassElementType extends JetStubElementType<PsiJetClassStub, Nap
 	{
 		dataStream.writeName(stub.getName());
 		dataStream.writeName(stub.getQualifiedName());
-		dataStream.writeBoolean(stub.isEnumEntry());
 
 		List<String> superNames = stub.getSuperNames();
 		dataStream.writeVarInt(superNames.size());
@@ -85,26 +83,18 @@ public class JetClassElementType extends JetStubElementType<PsiJetClassStub, Nap
 	{
 		StringRef name = dataStream.readName();
 		StringRef qualifiedName = dataStream.readName();
-		boolean isEnumEntry = dataStream.readBoolean();
 
 		int superCount = dataStream.readVarInt();
 		StringRef[] superNames = StringRef.createArray(superCount);
 		for(int i = 0; i < superCount; i++)
-		{
 			superNames[i] = dataStream.readName();
-		}
 
-		return new PsiJetClassStubImpl(getStubType(isEnumEntry), parentStub, qualifiedName, name, superNames, isEnumEntry);
+		return new PsiJetClassStubImpl(JetStubElementTypes.CLASS, parentStub, qualifiedName, name, superNames);
 	}
 
 	@Override
 	public void indexStub(PsiJetClassStub stub, IndexSink sink)
 	{
 		StubIndexServiceFactory.getInstance().indexClass(stub, sink);
-	}
-
-	private static JetClassElementType getStubType(boolean isEnumEntry)
-	{
-		return isEnumEntry ? JetStubElementTypes.ENUM_ENTRY : JetStubElementTypes.CLASS;
 	}
 }
