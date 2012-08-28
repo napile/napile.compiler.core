@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve;
+package org.napile.compiler.lang.resolve.processors;
 
 import static org.napile.compiler.lang.diagnostics.Errors.FINAL_SUPERTYPE;
 import static org.napile.compiler.lang.diagnostics.Errors.SUPERTYPE_APPEARS_TWICE;
@@ -33,6 +33,13 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BodiesResolveContext;
+import org.napile.compiler.lang.resolve.ControlFlowAnalyzer;
+import org.napile.compiler.lang.resolve.ObservableBindingTrace;
+import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
+import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -79,6 +86,8 @@ public class BodyResolver
 	private DeclarationsChecker declarationsChecker;
 	@NotNull
 	private AnnotationChecker annotationChecker;
+	@NotNull
+	private ModifiersChecker modifiersChecker;
 
 	@Inject
 	public void setTopDownAnalysisParameters(@NotNull TopDownAnalysisParameters topDownAnalysisParameters)
@@ -128,6 +137,12 @@ public class BodyResolver
 		this.annotationChecker = annotationChecker;
 	}
 
+	@Inject
+	public void setModifiersChecker(@NotNull ModifiersChecker modifiersChecker)
+	{
+		this.modifiersChecker = modifiersChecker;
+	}
+
 	private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		// Initialize context
@@ -152,7 +167,9 @@ public class BodyResolver
 	public void resolveBodies(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		resolveBehaviorDeclarationBodies(bodiesResolveContext);
+
 		controlFlowAnalyzer.process(bodiesResolveContext);
+		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
 	}
 

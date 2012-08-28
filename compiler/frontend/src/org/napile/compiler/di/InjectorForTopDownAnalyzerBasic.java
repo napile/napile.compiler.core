@@ -24,6 +24,15 @@ import org.napile.compiler.lang.descriptors.ModuleDescriptor;
 import org.napile.compiler.lang.resolve.*;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadingConflictResolver;
+import org.napile.compiler.lang.resolve.processors.AnnotationChecker;
+import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
+import org.napile.compiler.lang.resolve.processors.BodyResolver;
+import org.napile.compiler.lang.resolve.processors.DeclarationResolver;
+import org.napile.compiler.lang.resolve.processors.DeclarationsChecker;
+import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
+import org.napile.compiler.lang.resolve.processors.ModifiersChecker;
+import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
+import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import com.intellij.openapi.project.Project;
 
@@ -53,6 +62,7 @@ public class InjectorForTopDownAnalyzerBasic {
     private OverrideResolver overrideResolver;
     private TypeHierarchyResolver typeHierarchyResolver;
     private AnnotationChecker annotationChecker;
+    private ModifiersChecker modifiersChecker;
 
     public InjectorForTopDownAnalyzerBasic(
         @NotNull Project project,
@@ -83,6 +93,7 @@ public class InjectorForTopDownAnalyzerBasic {
         this.overrideResolver = new OverrideResolver();
         this.typeHierarchyResolver = new TypeHierarchyResolver();
         this.annotationChecker = new AnnotationChecker();
+        this.modifiersChecker = new ModifiersChecker();
 
         this.topDownAnalyzer.setBodyResolver(bodyResolver);
         this.topDownAnalyzer.setContext(topDownAnalysisContext);
@@ -103,12 +114,14 @@ public class InjectorForTopDownAnalyzerBasic {
         this.bodyResolver.setDeclarationsChecker(declarationsChecker);
         this.bodyResolver.setDescriptorResolver(descriptorResolver);
         this.bodyResolver.setExpressionTypingServices(expressionTypingServices);
+        this.bodyResolver.setModifiersChecker(modifiersChecker);
         this.bodyResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
         this.bodyResolver.setTrace(bindingTrace);
 
         this.controlFlowAnalyzer.setTopDownAnalysisParameters(topDownAnalysisParameters);
         this.controlFlowAnalyzer.setTrace(bindingTrace);
 
+        this.declarationsChecker.setModifiersChecker(modifiersChecker);
         this.declarationsChecker.setTrace(bindingTrace);
 
         this.descriptorResolver.setAnnotationResolver(annotationResolver);
@@ -160,6 +173,8 @@ public class InjectorForTopDownAnalyzerBasic {
         typeHierarchyResolver.setTrace(bindingTrace);
 
         annotationChecker.setTrace(bindingTrace);
+
+        modifiersChecker.setTrace(bindingTrace);
 
     }
 

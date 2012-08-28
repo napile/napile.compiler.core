@@ -23,7 +23,6 @@ public enum ClassKind
 {
 	CLASS,
 	ENUM_CLASS,
-	@Deprecated
 	ENUM_ENTRY,
 	OBJECT
 }

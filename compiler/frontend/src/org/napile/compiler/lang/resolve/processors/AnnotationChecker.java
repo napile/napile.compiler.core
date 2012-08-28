@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve;
+package org.napile.compiler.lang.resolve.processors;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BodiesResolveContext;
 
 /**
  * @author VISTALL
