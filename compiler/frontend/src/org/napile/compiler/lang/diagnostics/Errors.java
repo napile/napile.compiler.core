@@ -147,9 +147,6 @@ public interface Errors
 
 	SimpleDiagnosticFactory<NapileElement> UNREACHABLE_CODE = SimpleDiagnosticFactory.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileClassObject> MANY_CLASS_OBJECTS = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileClassObject> CLASS_OBJECT_NOT_ALLOWED = SimpleDiagnosticFactory.create(Severity.ERROR);
-
 	SimpleDiagnosticFactory<PsiElement> NO_CONSTRUCTOR = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> NOT_A_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileEscapeStringTemplateEntry> ILLEGAL_ESCAPE_SEQUENCE = SimpleDiagnosticFactory.create(Severity.ERROR);
@@ -186,6 +183,7 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> CAST_NEVER_SUCCEEDS = SimpleDiagnosticFactory.create(Severity.WARNING);
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> WRONG_SETTER_PARAMETER_TYPE = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> WRONG_GETTER_RETURN_TYPE = DiagnosticFactory2.create(Severity.ERROR);
+	@Deprecated
 	DiagnosticFactory1<NapileSimpleNameExpression, ClassifierDescriptor> NO_CLASS_OBJECT = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<PsiElement> NO_GENERICS_IN_SUPERTYPE_SPECIFIER = SimpleDiagnosticFactory.create(Severity.ERROR);
 

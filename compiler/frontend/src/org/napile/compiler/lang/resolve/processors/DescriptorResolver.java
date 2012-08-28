@@ -48,6 +48,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
@@ -325,7 +326,7 @@ public class DescriptorResolver
 
 		// TODO : make the constructor private?
 		// TODO check set classDescriptor.getVisibility()
-		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PUBLIC);
+		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibility.PUBLIC);
 
 		if(object != null)
 		{
@@ -440,16 +441,6 @@ public class DescriptorResolver
 				if(nameIdentifier != null)
 				{
 					trace.report(CONFLICTING_UPPER_BOUNDS.on(nameIdentifier, parameter));
-				}
-			}
-
-			JetType classObjectType = parameter.getClassObjectType();
-			if(classObjectType != null && JetStandardClasses.isNothing(classObjectType))
-			{
-				PsiElement nameIdentifier = typeParameters.get(parameter.getIndex()).getNameIdentifier();
-				if(nameIdentifier != null)
-				{
-					trace.report(CONFLICTING_CLASS_OBJECT_UPPER_BOUNDS.on(nameIdentifier, parameter));
 				}
 			}
 		}
@@ -634,9 +625,15 @@ public class DescriptorResolver
 		return propertyDescriptor;
 	}
 
-	public PropertyDescriptor resolvePropertyDescriptorFromEnumEntry(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileEnumEntry enumEntry, BindingTrace trace)
+	public EnumEntryDescriptor resolveEnumEntryDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileEnumEntry enumEntry, BindingTrace trace)
 	{
-		return null;
+		JetTypeImpl jetType = new JetTypeImpl(containingDeclaration);
+
+		EnumEntryDescriptor enumEntryDescriptor = new EnumEntryDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, enumEntry.getModifierList(), trace), enumEntry.getNameAsName(), jetType, true);
+
+		trace.record(BindingContext.VARIABLE, enumEntry, enumEntryDescriptor);
+
+		return enumEntryDescriptor;
 	}
 
 	/*package*/
@@ -727,14 +724,14 @@ public class DescriptorResolver
 	public static Visibility resolveVisibilityFromModifiers(@Nullable NapileModifierList modifierList)
 	{
 		if(modifierList == null)
-			return Visibilities.PUBLIC;
+			return Visibility.PUBLIC;
 		if(modifierList.hasModifier(JetTokens.LOCAL_KEYWORD))
-			return Visibilities.LOCAL;
+			return Visibility.LOCAL;
 		if(modifierList.hasModifier(JetTokens.COVERED_KEYWORD))
-			return Visibilities.COVERED;
+			return Visibility.COVERED;
 		if(modifierList.hasModifier(JetTokens.HERITABLE_KEYWORD))
-			return Visibilities.HERITABLE;
-		return Visibilities.PUBLIC;
+			return Visibility.HERITABLE;
+		return Visibility.PUBLIC;
 	}
 
 	@Nullable

@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
@@ -28,6 +29,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
@@ -46,6 +48,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileObjectDeclaration, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
 	private final Map<NapileProperty, PropertyDescriptor> properties;
+	private final Map<NapileEnumEntry, EnumEntryDescriptor> enumEntries;
 	private final Map<NapileNamedFunction, SimpleFunctionDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
@@ -60,6 +63,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 		constructors = Collections.unmodifiableMap(context.getConstructors());
 		properties = Collections.unmodifiableMap(context.getProperties());
 		functions = Collections.unmodifiableMap(context.getFunctions());
+		enumEntries = Collections.unmodifiableMap(context.getEnumEntries());
 		declaringScopes = Collections.unmodifiableMap(context.getDeclaringScopes());
 
 		topDownAnalysisParameters = context.getTopDownAnalysisParameters();
@@ -87,6 +91,12 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	public Map<NapileProperty, PropertyDescriptor> getProperties()
 	{
 		return properties;
+	}
+
+	@Override
+	public Map<NapileEnumEntry, EnumEntryDescriptor> getEnumEntries()
+	{
+		return enumEntries;
 	}
 
 	@Override

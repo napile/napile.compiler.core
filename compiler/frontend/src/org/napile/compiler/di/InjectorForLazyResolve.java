@@ -25,7 +25,7 @@ import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.resolve.lazy.ScopeProvider;
 import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
-import org.napile.compiler.lang.resolve.QualifiedExpressionResolver;
+import org.napile.compiler.lang.resolve.processors.QualifiedExpressionResolver;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadingConflictResolver;
 import org.jetbrains.annotations.NotNull;

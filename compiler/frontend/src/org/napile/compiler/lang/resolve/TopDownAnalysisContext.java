@@ -24,20 +24,13 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.descriptors.WithDeferredResolve;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileDeclarationContainer;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Maps;
@@ -56,6 +49,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
 	private final Map<NapileNamedFunction, SimpleFunctionDescriptor> functions = Maps.newLinkedHashMap();
 	private final Map<NapileProperty, PropertyDescriptor> properties = Maps.newLinkedHashMap();
+	private final Map<NapileEnumEntry, EnumEntryDescriptor> enumEntries = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
 
 	// File scopes - package scope extended with imports
@@ -154,6 +148,12 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
+	public Map<NapileEnumEntry, EnumEntryDescriptor> getEnumEntries()
+	{
+		return enumEntries;
+	}
+
+	@Override
 	public Map<NapileDeclaration, JetScope> getDeclaringScopes()
 	{
 		return declaringScopes;
@@ -172,6 +172,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 			members = Maps.newHashMap();
 			members.putAll(functions);
 			members.putAll(properties);
+			members.putAll(enumEntries);
 		}
 		return members;
 	}

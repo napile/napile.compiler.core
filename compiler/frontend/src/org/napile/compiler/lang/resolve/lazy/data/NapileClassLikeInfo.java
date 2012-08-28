@@ -21,7 +21,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassKind;
-import org.napile.compiler.lang.psi.NapileClassObject;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDeclarationContainer;
@@ -48,9 +47,6 @@ public interface NapileClassLikeInfo extends NapileDeclarationContainer<NapileDe
 
 	@Nullable
 	NapileModifierList getModifierList();
-
-	@Nullable
-	NapileClassObject getClassObject();
 
 	// This element is used to identify resolution scope for the class
 	@NotNull

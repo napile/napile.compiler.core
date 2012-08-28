@@ -34,7 +34,7 @@ import com.intellij.openapi.util.Pair;
 /**
  * @author svtk
  */
-/*package*/ interface Importer
+public interface Importer
 {
 
 	void addAllUnderImport(@NotNull DeclarationDescriptor descriptor);
@@ -85,11 +85,6 @@ import com.intellij.openapi.util.Pair;
 			{
 				ClassDescriptor classDescriptor = (ClassDescriptor) descriptor;
 				namespaceScope.importScope(classDescriptor.getUnsubstitutedInnerClassesScope());
-				ClassDescriptor classObjectDescriptor = classDescriptor.getClassObjectDescriptor();
-				if(classObjectDescriptor != null)
-				{
-					namespaceScope.importScope(classObjectDescriptor.getUnsubstitutedInnerClassesScope());
-				}
 			}
 		}
 

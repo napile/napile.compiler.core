@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
@@ -44,12 +45,12 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			return;
 		}
 		DeclarationDescriptor target = bindingContext.get(BindingContext.REFERENCE_TARGET, expression);
-		if(!(target instanceof PropertyDescriptor))
+		if(!(target instanceof VariableDescriptor))
 		{
 			return;
 		}
 
-		highlightProperty(expression, (PropertyDescriptor) target, false);
+		highlightProperty(expression, (VariableDescriptor) target, false);
 		if(expression.getReferencedNameElementType() == JetTokens.FIELD_IDENTIFIER)
 		{
 			JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.BACKING_FIELD_ACCESS);
@@ -66,13 +67,27 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		if(propertyDescriptor instanceof PropertyDescriptor)
 		{
 			Boolean backingFieldRequired = bindingContext.get(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) propertyDescriptor);
-			highlightProperty(nameIdentifier, (PropertyDescriptor) propertyDescriptor, Boolean.TRUE.equals(backingFieldRequired));
+			highlightProperty(nameIdentifier, propertyDescriptor, Boolean.TRUE.equals(backingFieldRequired));
 		}
 
 		super.visitProperty(property);
 	}
 
-	private void highlightProperty(@NotNull PsiElement elementToHighlight, @NotNull PropertyDescriptor descriptor, boolean withBackingField)
+	@Override
+	public void visitEnumEntry(@NotNull NapileEnumEntry enumEntry)
+	{
+		PsiElement nameIdentifier = enumEntry.getNameIdentifier();
+		if(nameIdentifier == null)
+			return;
+
+		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VARIABLE, enumEntry);
+		if(variableDescriptor != null)
+			highlightProperty(nameIdentifier, variableDescriptor, Boolean.FALSE);
+
+		super.visitEnumEntry(enumEntry);
+	}
+
+	private void highlightProperty(@NotNull PsiElement elementToHighlight, @NotNull VariableDescriptor descriptor, boolean withBackingField)
 	{
 		JetPsiChecker.highlightName(holder, elementToHighlight, descriptor.isStatic() ? JetHighlightingColors.STATIC_PROPERTY : JetHighlightingColors.INSTANCE_PROPERTY);
 		if(descriptor.getReceiverParameter() != ReceiverDescriptor.NO_RECEIVER)

@@ -53,9 +53,8 @@ public class WhenChecker
 		ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
 		if(classDescriptor.getKind() != ClassKind.ENUM_CLASS || classDescriptor.getModality().isOverridable())
 			return false;
-		ClassDescriptor classObjectDescriptor = classDescriptor.getClassObjectDescriptor();
-		assert classObjectDescriptor != null;
-		JetScope memberScope = classObjectDescriptor.getMemberScope(Collections.<JetType>emptyList());
+
+		JetScope memberScope = classDescriptor.getMemberScope(Collections.<JetType>emptyList());
 		Collection<ClassDescriptor> objectDescriptors = memberScope.getObjectDescriptors();
 		boolean isExhaust = true;
 		boolean notEmpty = false;

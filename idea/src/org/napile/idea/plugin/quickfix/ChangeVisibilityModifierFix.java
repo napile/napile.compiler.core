@@ -103,7 +103,7 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<NapileModifi
 			Integer compare = Visibilities.compare(maxVisibility, overriddenDescriptorVisibility);
 			if(compare == null)
 			{
-				maxVisibility = Visibilities.PUBLIC;
+				maxVisibility = Visibility.PUBLIC;
 			}
 			else if(compare < 0)
 			{
@@ -115,7 +115,7 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<NapileModifi
 			return null;
 		}
 		NapileKeywordToken modifier = null;
-		if(maxVisibility == Visibilities.COVERED)
+		if(maxVisibility == Visibility.COVERED)
 		{
 			modifier = JetTokens.COVERED_KEYWORD;
 		}

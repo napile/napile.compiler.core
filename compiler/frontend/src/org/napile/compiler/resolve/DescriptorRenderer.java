@@ -24,25 +24,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ClassKind;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptorVisitor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
-import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.ModuleDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyGetterDescriptor;
-import org.napile.compiler.lang.descriptors.PropertySetterDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.descriptors.Visibility;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.rendering.Renderer;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.name.FqName;
@@ -447,7 +429,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitPropertyDescriptor(PropertyDescriptor descriptor, StringBuilder builder)
 		{
-			renderVisibility(descriptor.getVisibility(), builder);
+			renderVisibility(descriptor, builder);
 			renderModality(descriptor.getModality(), builder);
 			String typeString = renderPropertyPrefixAndComputeTypeString(builder, descriptor.isVar(), descriptor.getTypeParameters(), descriptor.getReceiverParameter(), descriptor.getType());
 			renderName(descriptor, builder);
@@ -455,18 +437,25 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			return null;
 		}
 
-		private void renderVisibility(Visibility visibility, StringBuilder builder)
+		@Override
+		public Void visitEnumEntryDescriptor(EnumEntryDescriptor descriptor, StringBuilder data)
+		{
+			renderVisibility(descriptor, data);
+			renderModality(descriptor.getModality(), data);
+			String typeString = renderPropertyPrefixAndComputeTypeString(data, descriptor.isVar(), descriptor.getTypeParameters(), descriptor.getReceiverParameter(), descriptor.getType());
+			renderName(descriptor, data);
+			data.append(" : ").append(escape(typeString));
+			return null;
+		}
+
+		private void renderVisibility(DeclarationDescriptorWithVisibility visibility, StringBuilder builder)
 		{
 			if(!shouldRenderModifiers())
 				return;
-			if("package".equals(visibility.toString()))
-			{
-				builder.append("public/*package*/ ");
-			}
-			else
-			{
-				builder.append(renderKeyword(visibility.toString())).append(" ");
-			}
+
+			builder.append(renderKeyword(visibility.getVisibility().toString())).append(" ");
+			if(visibility.isStatic())
+				builder.append(renderKeyword("static")).append(" ");
 		}
 
 		private void renderModality(Modality modality, StringBuilder builder)
@@ -489,7 +478,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitFunctionDescriptor(FunctionDescriptor descriptor, StringBuilder builder)
 		{
-			renderVisibility(descriptor.getVisibility(), builder);
+			renderVisibility(descriptor, builder);
 			renderModality(descriptor.getModality(), builder);
 			builder.append(renderKeyword(JetTokens.METH_KEYWORD.getValue())).append(" ");
 			if(renderTypeParameters(descriptor.getTypeParameters(), builder))
@@ -553,7 +542,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitConstructorDescriptor(ConstructorDescriptor constructorDescriptor, StringBuilder builder)
 		{
-			renderVisibility(constructorDescriptor.getVisibility(), builder);
+			renderVisibility(constructorDescriptor, builder);
 
 			builder.append(renderKeyword("this"));
 
@@ -627,25 +616,11 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			return null;
 		}
 
-		private boolean isClassObjectDescriptor(ClassDescriptor descriptor)
-		{
-			if(descriptor.getKind() == ClassKind.OBJECT)
-			{
-				DeclarationDescriptor containing = descriptor.getContainingDeclaration();
-				if(containing instanceof ClassDescriptor)
-				{
-					return ((ClassDescriptor) containing).getClassObjectDescriptor() == descriptor;
-				}
-			}
-			return false;
-		}
 
 		public void renderClassDescriptor(ClassDescriptor descriptor, StringBuilder builder, String keyword)
 		{
-			if(!isClassObjectDescriptor(descriptor))
-			{
-				renderVisibility(descriptor.getVisibility(), builder);
-			}
+			renderVisibility(descriptor, builder);
+
 			if(descriptor.getKind() != ClassKind.OBJECT)
 			{
 				renderModality(descriptor.getModality(), builder);

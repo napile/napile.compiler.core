@@ -29,17 +29,15 @@ import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassInitializer;
-import org.napile.compiler.lang.psi.NapileClassObject;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
@@ -155,14 +153,6 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		{
 			return wrapDeclarations(((NapileClassOrObject) myElement).getDeclarations());
 		}
-		else if(myElement instanceof NapileClassObject)
-		{
-			NapileObjectDeclaration objectDeclaration = ((NapileClassObject) myElement).getObjectDeclaration();
-			if(objectDeclaration != null)
-			{
-				return wrapDeclarations(objectDeclaration.getDeclarations());
-			}
-		}
 
 		return new TreeElement[0];
 	}
@@ -195,10 +185,6 @@ public class JetStructureViewElement implements StructureViewTreeElement
 				return "<class initializer>";
 			}
 
-			if(myElement instanceof NapileClassObject)
-			{
-				return "<class object>";
-			}
 		}
 
 		return text;

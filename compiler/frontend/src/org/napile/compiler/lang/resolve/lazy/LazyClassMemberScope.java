@@ -16,10 +16,9 @@
 
 package org.napile.compiler.lang.resolve.lazy;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,9 +38,9 @@ import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
-import org.napile.compiler.lang.resolve.OverrideResolver;
+import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.compiler.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
@@ -83,7 +82,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 		Collection<T> extract(@NotNull JetType extractFrom, @NotNull Name name);
 	}
 
-	private List<ConstructorDescriptor> constructorDescriptors = null;
+	private Set<ConstructorDescriptor> constructorDescriptors = null;
 
 	public LazyClassMemberScope(@NotNull ResolveSession resolveSession, @NotNull ClassMemberDeclarationProvider declarationProvider, @NotNull LazyClassDescriptor thisClass)
 	{
@@ -233,11 +232,11 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 	}
 
 	@NotNull
-	public List<ConstructorDescriptor> getConstructors()
+	public Set<ConstructorDescriptor> getConstructors()
 	{
 		if(constructorDescriptors == null)
 		{
-			constructorDescriptors = new ArrayList<ConstructorDescriptor>();
+			constructorDescriptors = new HashSet<ConstructorDescriptor>();
 			if(EnumSet.of(ClassKind.CLASS, ClassKind.OBJECT, ClassKind.ENUM_CLASS).contains(thisDescriptor.getKind()))
 			{
 				NapileClassOrObject classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();

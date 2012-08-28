@@ -16,10 +16,8 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
-import static org.napile.compiler.lang.diagnostics.Errors.CLASS_OBJECT_NOT_ALLOWED;
 import static org.napile.compiler.lang.diagnostics.Errors.CYCLIC_INHERITANCE_HIERARCHY;
 import static org.napile.compiler.lang.diagnostics.Errors.INCONSISTENT_TYPE_PARAMETER_VALUES;
-import static org.napile.compiler.lang.diagnostics.Errors.MANY_CLASS_OBJECTS;
 import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
 
 import java.util.ArrayList;
@@ -44,8 +42,6 @@ import org.napile.compiler.lang.resolve.ImportsResolver;
 import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
-import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -278,32 +274,9 @@ public class TypeHierarchyResolver
 					trace.report(UNSUPPORTED.on(typedef, "TypeHierarchyResolver"));
 				}
 
-				@Override
-				public void visitClassObject(NapileClassObject classObject)
-				{
-					NapileObjectDeclaration objectDeclaration = classObject.getObjectDeclaration();
-					if(objectDeclaration != null)
-					{
-						MutableClassDescriptor classObjectDescriptor = createClassDescriptorForObject(objectDeclaration, owner, getStaticScope(classObject, owner));
-						NamespaceLikeBuilder.ClassObjectStatus status = owner.setClassObjectDescriptor(classObjectDescriptor);
-						switch(status)
-						{
-							case DUPLICATE:
-								trace.report(MANY_CLASS_OBJECTS.on(classObject));
-								break;
-							case NOT_ALLOWED:
-								trace.report(CLASS_OBJECT_NOT_ALLOWED.on(classObject));
-								break;
-							case OK:
-								// Everything is OK so no errors to trace.
-								break;
-						}
-					}
-				}
-
 				private void createClassObjectForEnumClass(NapileClass klass, MutableClassDescriptor mutableClassDescriptor)
 				{
-					if(klass.isEnum())
+					/*if(klass.isEnum())
 					{
 						MutableClassDescriptor classObjectDescriptor = new MutableClassDescriptor(mutableClassDescriptor, outerScope, ClassKind.OBJECT, Name.special("<class-object-for-" + klass.getName() + ">"), NapilePsiUtil.isStatic(klass));
 						classObjectDescriptor.setModality(Modality.FINAL);
@@ -313,7 +286,7 @@ public class TypeHierarchyResolver
 						ConstructorDescriptor primaryConstructorForObject = createConstructorForObject(klass, classObjectDescriptor);
 						primaryConstructorForObject.setReturnType(classObjectDescriptor.getDefaultType());
 						mutableClassDescriptor.getBuilder().setClassObjectDescriptor(classObjectDescriptor);
-					}
+					} */
 				}
 
 				private MutableClassDescriptor createClassDescriptorForObject(@NotNull NapileObjectDeclaration declaration, @NotNull NamespaceLikeBuilder owner, JetScope scope)

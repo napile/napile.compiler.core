@@ -184,8 +184,6 @@ public class DefaultErrorMessages
 
 		MAP.put(UNREACHABLE_CODE, "Unreachable code");
 
-		MAP.put(MANY_CLASS_OBJECTS, "Only one class object is allowed per class");
-		MAP.put(CLASS_OBJECT_NOT_ALLOWED, "A class object is not allowed here");
 		MAP.put(NO_CONSTRUCTOR, "This class does not have a constructor");
 		MAP.put(NOT_A_CLASS, "Not a class");
 		MAP.put(ILLEGAL_ESCAPE_SEQUENCE, "Illegal escape sequence");

@@ -16,9 +16,10 @@
 
 package org.napile.compiler.lang.descriptors;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
@@ -124,9 +125,9 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 
 	@NotNull
 	@Override
-	public List<ConstructorDescriptor> getConstructors()
+	public Set<ConstructorDescriptor> getConstructors()
 	{
-		List<ConstructorDescriptor> list = new ArrayList<ConstructorDescriptor>(original.getConstructors().size());
+		Set<ConstructorDescriptor> list = new HashSet<ConstructorDescriptor>(original.getConstructors().size());
 		for(ConstructorDescriptor constructorDescriptor : original.getConstructors())
 			list.add((ConstructorDescriptor) constructorDescriptor.substitute(getSubstitutor()));
 		return list;
@@ -168,23 +169,11 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 		return new LazySubstitutingClassDescriptor(this, TypeSubstitutor.create(substitutor.getSubstitution(), getSubstitutor().getSubstitution()), false);
 	}
 
-	@Override
-	public JetType getClassObjectType()
-	{
-		return original.getClassObjectType();
-	}
-
 	@NotNull
 	@Override
 	public Collection<JetType> getSupertypes()
 	{
 		return original.getSupertypes();
-	}
-
-	@Override
-	public ClassDescriptor getClassObjectDescriptor()
-	{
-		return original.getClassObjectDescriptor();
 	}
 
 	@NotNull
@@ -206,12 +195,6 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 	public Visibility getVisibility()
 	{
 		return original.getVisibility();
-	}
-
-	@Override
-	public boolean isClassObjectAValue()
-	{
-		return original.isClassObjectAValue();
 	}
 
 	@Override

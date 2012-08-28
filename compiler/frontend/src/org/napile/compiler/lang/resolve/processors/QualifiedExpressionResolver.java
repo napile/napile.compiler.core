@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve;
+package org.napile.compiler.lang.resolve.processors;
 
 import static org.napile.compiler.lang.diagnostics.Errors.CANNOT_BE_IMPORTED;
 import static org.napile.compiler.lang.diagnostics.Errors.CANNOT_IMPORT_FROM_ELEMENT;
@@ -28,6 +28,11 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.Importer;
+import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
@@ -221,18 +226,9 @@ public class QualifiedExpressionResolver
 		for(DeclarationDescriptor declarationDescriptor : declarationDescriptors)
 		{
 			if(declarationDescriptor instanceof NamespaceDescriptor)
-			{
 				addResult(results, lookupSimpleNameReference(selector, ((NamespaceDescriptor) declarationDescriptor).getMemberScope(), onlyClasses, true));
-			}
 			if(declarationDescriptor instanceof ClassDescriptor)
-			{
 				addResult(results, lookupSimpleNameReference(selector, getAppropriateScope((ClassDescriptor) declarationDescriptor, onlyClasses), onlyClasses, false));
-				ClassDescriptor classObjectDescriptor = ((ClassDescriptor) declarationDescriptor).getClassObjectDescriptor();
-				if(classObjectDescriptor != null)
-				{
-					addResult(results, lookupSimpleNameReference(selector, getAppropriateScope(classObjectDescriptor, onlyClasses), onlyClasses, false));
-				}
-			}
 		}
 		return filterAndStoreResolutionResult(results, selector, trace, scopeToCheckVisibility, onlyClasses, storeResult);
 	}

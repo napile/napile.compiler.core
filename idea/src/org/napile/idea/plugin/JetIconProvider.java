@@ -92,7 +92,7 @@ public class JetIconProvider extends IconProvider
 					icon = JetIcons.REPEATABLE_ANNOTATION;
 			}
 		}
-		else if(psiElement instanceof NapileObjectDeclaration || psiElement instanceof NapileClassObject)
+		else if(psiElement instanceof NapileObjectDeclaration)
 		{
 			icon = JetIcons.OBJECT;
 		}

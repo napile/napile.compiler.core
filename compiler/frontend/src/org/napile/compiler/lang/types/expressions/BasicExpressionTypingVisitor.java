@@ -16,40 +16,7 @@
 
 package org.napile.compiler.lang.types.expressions;
 
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_SUPER_CALL;
-import static org.napile.compiler.lang.diagnostics.Errors.AMBIGUOUS_SUPER;
-import static org.napile.compiler.lang.diagnostics.Errors.ASSIGNMENT_IN_EXPRESSION_CONTEXT;
-import static org.napile.compiler.lang.diagnostics.Errors.CAST_NEVER_SUCCEEDS;
-import static org.napile.compiler.lang.diagnostics.Errors.COMPARE_TO_TYPE_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.DECLARATION_IN_ILLEGAL_CONTEXT;
-import static org.napile.compiler.lang.diagnostics.Errors.EQUALITY_NOT_APPLICABLE;
-import static org.napile.compiler.lang.diagnostics.Errors.EQUALS_MISSING;
-import static org.napile.compiler.lang.diagnostics.Errors.ERROR_COMPILE_TIME_VALUE;
-import static org.napile.compiler.lang.diagnostics.Errors.EXPRESSION_EXPECTED_NAMESPACE_FOUND;
-import static org.napile.compiler.lang.diagnostics.Errors.FUNCTION_CALL_EXPECTED;
-import static org.napile.compiler.lang.diagnostics.Errors.FUNCTION_EXPECTED;
-import static org.napile.compiler.lang.diagnostics.Errors.ILLEGAL_ESCAPE_SEQUENCE;
-import static org.napile.compiler.lang.diagnostics.Errors.ILLEGAL_SELECTOR;
-import static org.napile.compiler.lang.diagnostics.Errors.INC_DEC_SHOULD_NOT_RETURN_UNIT;
-import static org.napile.compiler.lang.diagnostics.Errors.NAMESPACE_IS_NOT_AN_EXPRESSION;
-import static org.napile.compiler.lang.diagnostics.Errors.NOT_A_SUPERTYPE;
-import static org.napile.compiler.lang.diagnostics.Errors.NO_CLASS_OBJECT;
-import static org.napile.compiler.lang.diagnostics.Errors.NO_GET_METHOD;
-import static org.napile.compiler.lang.diagnostics.Errors.NO_SET_METHOD;
-import static org.napile.compiler.lang.diagnostics.Errors.NO_THIS;
-import static org.napile.compiler.lang.diagnostics.Errors.OVERLOAD_RESOLUTION_AMBIGUITY;
-import static org.napile.compiler.lang.diagnostics.Errors.RESULT_TYPE_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.SENSELESS_COMPARISON;
-import static org.napile.compiler.lang.diagnostics.Errors.SUPER_IS_NOT_AN_EXPRESSION;
-import static org.napile.compiler.lang.diagnostics.Errors.SUPER_NOT_AVAILABLE;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_ARGUMENTS_REDUNDANT_IN_SUPER_QUALIFIER;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.UNNECESSARY_NOT_NULL_ASSERTION;
-import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
-import static org.napile.compiler.lang.diagnostics.Errors.USELESS_CAST;
-import static org.napile.compiler.lang.diagnostics.Errors.USELESS_CAST_STATIC_ASSERT_IS_FINE;
-import static org.napile.compiler.lang.diagnostics.Errors.USELESS_ELVIS;
-import static org.napile.compiler.lang.diagnostics.Errors.VARIABLE_EXPECTED;
+import static org.napile.compiler.lang.diagnostics.Errors.*;
 import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
 import static org.napile.compiler.lang.resolve.BindingContext.INDEXED_LVALUE_GET;
 import static org.napile.compiler.lang.resolve.BindingContext.INDEXED_LVALUE_SET;
@@ -77,7 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -93,16 +60,7 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
 import org.napile.compiler.lang.resolve.calls.autocasts.Nullability;
-import org.napile.compiler.lang.resolve.constants.ByteValue;
-import org.napile.compiler.lang.resolve.constants.CharValue;
-import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
-import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
-import org.napile.compiler.lang.resolve.constants.DoubleValue;
-import org.napile.compiler.lang.resolve.constants.ErrorValue;
-import org.napile.compiler.lang.resolve.constants.FloatValue;
-import org.napile.compiler.lang.resolve.constants.IntValue;
-import org.napile.compiler.lang.resolve.constants.LongValue;
-import org.napile.compiler.lang.resolve.constants.ShortValue;
+import org.napile.compiler.lang.resolve.constants.*;
 import org.napile.compiler.lang.resolve.constants.StringValue;
 import org.napile.compiler.lang.resolve.name.LabelName;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -112,6 +70,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -123,9 +82,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lexer.JetTokens;
-import org.napile.compiler.lang.psi.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
@@ -158,27 +115,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	private JetType lookupNamespaceOrClassObject(NapileSimpleNameExpression expression, Name referencedName, ExpressionTypingContext context)
 	{
 		ClassifierDescriptor classifier = context.scope.getClassifier(referencedName);
-		if(classifier != null)
-		{
-			JetType classObjectType = classifier.getClassObjectType();
-			JetType result = null;
-			if(classObjectType != null)
-			{
-				if(context.namespacesAllowed || classifier.isClassObjectAValue())
-				{
-					result = classObjectType;
-				}
-				else
-				{
-					context.trace.report(NO_CLASS_OBJECT.on(expression, classifier));
-				}
-				context.trace.record(REFERENCE_TARGET, expression, classifier);
-				//if (result == null) {
-				//    return ErrorUtils.createErrorType("No class object in " + expression.getReferencedName());
-				//}
-				return DataFlowUtils.checkType(result, expression, context);
-			}
-		}
 		JetType[] result = new JetType[1];
 		TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(context.trace);
 		if(furtherNameLookup(expression, referencedName, result, context.replaceBindingTrace(temporaryTrace)))
@@ -189,7 +125,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		// To report NO_CLASS_OBJECT when no namespace found
 		if(classifier != null)
 		{
-			context.trace.report(NO_CLASS_OBJECT.on(expression, classifier));
+			//context.trace.report(NO_CLASS_OBJECT.on(expression, classifier));
 			context.trace.record(REFERENCE_TARGET, expression, classifier);
 			return classifier.getDefaultType();
 		}

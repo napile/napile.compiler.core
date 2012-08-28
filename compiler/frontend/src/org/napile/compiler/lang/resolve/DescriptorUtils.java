@@ -344,21 +344,6 @@ public class DescriptorUtils
 
 	public static boolean isClassObject(@NotNull DeclarationDescriptor descriptor)
 	{
-		if(descriptor instanceof ClassDescriptor)
-		{
-			ClassDescriptor classDescriptor = (ClassDescriptor) descriptor;
-			if(classDescriptor.getKind() == ClassKind.OBJECT)
-			{
-				if(classDescriptor.getContainingDeclaration() instanceof ClassDescriptor)
-				{
-					ClassDescriptor containingDeclaration = (ClassDescriptor) classDescriptor.getContainingDeclaration();
-					if(classDescriptor.getDefaultType().equals(containingDeclaration.getClassObjectType()))
-					{
-						return true;
-					}
-				}
-			}
-		}
 		return false;
 	}
 

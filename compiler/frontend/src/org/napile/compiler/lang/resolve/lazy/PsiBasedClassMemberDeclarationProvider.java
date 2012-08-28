@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.resolve.lazy;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.lazy.data.NapileClassLikeInfo;
 
@@ -45,16 +44,7 @@ public class PsiBasedClassMemberDeclarationProvider extends AbstractPsiBasedDecl
 	protected void doCreateIndex()
 	{
 		for(NapileDeclaration declaration : classInfo.getDeclarations())
-		{
-			if(declaration instanceof NapileClassObject)
-			{
-				// Do nothing, class object will be taken directly from the classInfo
-			}
-			else
-			{
-				putToIndex(declaration);
-			}
-		}
+			putToIndex(declaration);
 	}
 
 	@Override

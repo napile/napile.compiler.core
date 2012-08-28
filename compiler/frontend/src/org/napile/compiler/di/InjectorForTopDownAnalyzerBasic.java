@@ -24,15 +24,7 @@ import org.napile.compiler.lang.descriptors.ModuleDescriptor;
 import org.napile.compiler.lang.resolve.*;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadingConflictResolver;
-import org.napile.compiler.lang.resolve.processors.AnnotationChecker;
-import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
-import org.napile.compiler.lang.resolve.processors.BodyResolver;
-import org.napile.compiler.lang.resolve.processors.DeclarationResolver;
-import org.napile.compiler.lang.resolve.processors.DeclarationsChecker;
-import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
-import org.napile.compiler.lang.resolve.processors.ModifiersChecker;
-import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
-import org.napile.compiler.lang.resolve.processors.TypeResolver;
+import org.napile.compiler.lang.resolve.processors.*;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import com.intellij.openapi.project.Project;
 

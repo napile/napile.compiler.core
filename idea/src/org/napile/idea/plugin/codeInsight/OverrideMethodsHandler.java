@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.resolve.OverrideResolver;
+import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 
 /**
  * @author yole

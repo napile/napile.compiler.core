@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
@@ -43,7 +44,7 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 	private TypeConstructor typeConstructor;
 
 	private JetScope memberDeclarations;
-	private List<ConstructorDescriptor> constructors;
+	private Set<ConstructorDescriptor> constructors;
 
 	private ReceiverDescriptor implicitReceiver;
 	private final Modality modality;
@@ -56,7 +57,7 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 		this.isStatic = isStatic;
 	}
 
-	public final LightClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<JetType> supertypes, @NotNull JetScope memberDeclarations, @NotNull List<ConstructorDescriptor> constructors)
+	public final LightClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<JetType> supertypes, @NotNull JetScope memberDeclarations, @NotNull Set<ConstructorDescriptor> constructors)
 	{
 		this.typeConstructor = new TypeConstructorImpl(this, getAnnotations(), sealed, getName().getName(), typeParameters, supertypes);
 		this.memberDeclarations = memberDeclarations;
@@ -100,7 +101,7 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 
 	@NotNull
 	@Override
-	public List<ConstructorDescriptor> getConstructors()
+	public Set<ConstructorDescriptor> getConstructors()
 	{
 		return constructors;
 	}
@@ -112,12 +113,6 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 		throw new UnsupportedOperationException(); // TODO
 	}
 
-	@Override
-	public JetType getClassObjectType()
-	{
-		return null;
-	}
-
 	@NotNull
 	@Override
 	public Collection<JetType> getSupertypes()
@@ -125,23 +120,11 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 		return Collections.emptyList();
 	}
 
-	@Override
-	public ClassDescriptor getClassObjectDescriptor()
-	{
-		return null;
-	}
-
 	@NotNull
 	@Override
 	public ClassKind getKind()
 	{
 		return ClassKind.CLASS;
-	}
-
-	@Override
-	public boolean isClassObjectAValue()
-	{
-		return true;
 	}
 
 	@Override
@@ -161,7 +144,7 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 	@Override
 	public Visibility getVisibility()
 	{
-		return Visibilities.PUBLIC;
+		return Visibility.PUBLIC;
 	}
 
 	@NotNull

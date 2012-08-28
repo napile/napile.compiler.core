@@ -37,7 +37,6 @@ public interface NapileNodeTypes
 	IElementType OBJECT_DECLARATION = JetStubElementTypes.OBJECT_DECLARATION;
 	NapileNodeType OBJECT_DECLARATION_NAME = new NapileNodeType("OBJECT_DECLARATION_NAME", NapileObjectDeclarationName.class);
 
-	NapileNodeType CLASS_OBJECT = new NapileNodeType("CLASS_OBJECT", NapileClassObject.class);
 	NapileNodeType CONSTRUCTOR = new NapileNodeType("CONSTRUCTOR", NapileConstructor.class);
 	IElementType ENUM_ENTRY = JetStubElementTypes.ENUM_ENTRY;
 	NapileNodeType ANONYMOUS_INITIALIZER = new NapileNodeType("ANONYMOUS_INITIALIZER", NapileClassInitializer.class);

@@ -18,15 +18,7 @@ package org.napile.compiler.lang.resolve.calls.autocasts;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyGetterDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.descriptors.Visibilities;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -128,7 +120,7 @@ public class DataFlowValueFactory
 			if(declarationDescriptor instanceof ClassDescriptor)
 			{
 				ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
-				return Pair.create((Object) classDescriptor, classDescriptor.isClassObjectAValue());
+				return Pair.create((Object) classDescriptor, false);
 			}
 		}
 		else if(expression instanceof NapileThisExpression)
@@ -190,7 +182,7 @@ public class DataFlowValueFactory
 
 	private static boolean isInternal(@NotNull DeclarationDescriptorWithVisibility descriptor)
 	{
-		if(Visibilities.INTERNAL_VISIBILITIES.contains(descriptor.getVisibility()))
+		if(Visibility.INTERNAL_VISIBILITIES.contains(descriptor.getVisibility()))
 			return true;
 
 		DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();

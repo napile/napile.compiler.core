@@ -21,9 +21,9 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
-import org.napile.compiler.lang.psi.NapileClassObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileNamespaceHeader;
 import org.napile.compiler.lang.resolve.ImportsResolver;
 import org.napile.compiler.lang.resolve.name.FqName;
@@ -31,8 +31,6 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
-import org.napile.compiler.lang.psi.NapileImportDirective;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -118,17 +116,8 @@ public class ScopeProvider
 		{
 			NapileClassOrObject classOrObject = (NapileClassOrObject) parentDeclaration;
 			LazyClassDescriptor classDescriptor = (LazyClassDescriptor) resolveSession.getClassDescriptor(classOrObject);
-			if(jetDeclaration instanceof NapileEnumEntry)
-			{
-				return ((LazyClassDescriptor) classDescriptor.getClassObjectDescriptor()).getScopeForMemberDeclarationResolution();
-			}
+
 			return classDescriptor.getScopeForMemberDeclarationResolution();
-		}
-		else if(parentDeclaration instanceof NapileClassObject)
-		{
-			NapileClassObject classObject = (NapileClassObject) parentDeclaration;
-			LazyClassDescriptor classObjectDescriptor = resolveSession.getClassObjectDescriptor(classObject);
-			return classObjectDescriptor.getScopeForMemberDeclarationResolution();
 		}
 		else
 		{

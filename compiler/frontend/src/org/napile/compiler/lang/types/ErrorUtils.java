@@ -147,9 +147,9 @@ public class ErrorUtils
 	{
 		@NotNull
 		@Override
-		public List<ConstructorDescriptor> getConstructors()
+		public Set<ConstructorDescriptor> getConstructors()
 		{
-			return Collections.<ConstructorDescriptor>emptyList();
+			return Collections.<ConstructorDescriptor>emptySet();
 		}
 
 		@NotNull
@@ -169,7 +169,7 @@ public class ErrorUtils
 
 	static
 	{
-		ERROR_CLASS.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptyList(), createErrorScope("ERROR_CLASS"), Collections.<ConstructorDescriptor>emptyList());
+		ERROR_CLASS.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptyList(), createErrorScope("ERROR_CLASS"), Collections.<ConstructorDescriptor>emptySet());
 	}
 
 	public static JetScope createErrorScope(String debugMessage)
@@ -178,7 +178,7 @@ public class ErrorUtils
 	}
 
 	private static final JetType ERROR_PROPERTY_TYPE = createErrorType("<ERROR PROPERTY TYPE>");
-	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibilities.PUBLIC, true, false, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
+	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, true, false, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
 	private static final Set<VariableDescriptor> ERROR_PROPERTY_GROUP = Collections.singleton(ERROR_PROPERTY);
 
 	private static SimpleFunctionDescriptor createErrorFunction(ErrorScope ownerScope)
@@ -186,7 +186,7 @@ public class ErrorUtils
 		ErrorSimpleFunctionDescriptorImpl function = new ErrorSimpleFunctionDescriptorImpl(ownerScope);
 		function.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
 				Collections.<ValueParameterDescriptor>emptyList(), // TODO
-				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibilities.PUBLIC
+				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibility.PUBLIC
                 /*isInline = */);
 		return function;
 	}

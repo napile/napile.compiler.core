@@ -65,7 +65,6 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	private final TypeConstructor typeConstructor;
 	private JetType defaultType;
 	private final Set<JetType> classObjectUpperBounds = Sets.newLinkedHashSet();
-	private JetType classObjectBoundsAsType;
 
 	private final boolean reified;
 
@@ -233,34 +232,11 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 		return defaultType;
 	}
 
-	@Override
-	public JetType getClassObjectType()
-	{
-		checkInitialized();
-		if(classObjectUpperBounds.isEmpty())
-			return null;
-
-		if(classObjectBoundsAsType == null)
-		{
-			final JetScope jetScope = TypeUtils.getChainedScope(classObjectUpperBounds);
-			classObjectBoundsAsType = TypeUtils.intersect(JetTypeChecker.INSTANCE, classObjectUpperBounds, jetScope);
-			if(classObjectBoundsAsType == null)
-				classObjectBoundsAsType = TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, false);
-		}
-		return classObjectBoundsAsType;
-	}
-
 	@NotNull
 	@Override
 	public Collection<JetType> getSupertypes()
 	{
 		return null;
-	}
-
-	@Override
-	public boolean isClassObjectAValue()
-	{
-		return true;
 	}
 
 	public void addClassObjectBound(@NotNull JetType bound)

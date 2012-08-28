@@ -36,7 +36,6 @@ import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.resolve.scopes.InnerClassesScopeWrapper;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -140,10 +139,7 @@ public class ResolveSession
 			NapileEnumEntry enumEntry = (NapileEnumEntry) classOrObject;
 			//return getEnumEntryClassDescriptor(enumEntry);
 		}
-		if(classOrObject.getParent() instanceof NapileClassObject)
-		{
-			return getClassObjectDescriptor((NapileClassObject) classOrObject.getParent());
-		}
+
 		JetScope resolutionScope = getInjector().getScopeProvider().getResolutionScopeForDeclaration((NapileDeclaration) classOrObject);
 		Name name = classOrObject.getNameAsName();
 		assert name != null : "Name is null for " + classOrObject + " " + classOrObject.getText();
@@ -170,13 +166,13 @@ public class ResolveSession
 		return newClassDescriptor;
 	}    */
 
-	/*package*/ LazyClassDescriptor getClassObjectDescriptor(NapileClassObject classObject)
+	/* LazyClassDescriptor getClassObjectDescriptor(NapileClassObject classObject)
 	{
 		LazyClassDescriptor classDescriptor = (LazyClassDescriptor) getClassDescriptor(PsiTreeUtil.getParentOfType(classObject, NapileClass.class));
 		LazyClassDescriptor classObjectDescriptor = (LazyClassDescriptor) classDescriptor.getClassObjectDescriptor();
 		assert classObjectDescriptor != null : "Class object is declared, but is null for " + classDescriptor;
 		return classObjectDescriptor;
-	}
+	}            */
 
 	@NotNull
 	public BindingContext getBindingContext()
@@ -211,11 +207,6 @@ public class ResolveSession
 			return getEnclosingLazyClass(element).getScopeForMemberDeclarationResolution();
 		}
 
-		if(parent instanceof NapileClassObject)
-		{
-			return new InnerClassesScopeWrapper(getEnclosingLazyClass(element).getScopeForMemberDeclarationResolution());
-		}
-
 		throw new IllegalArgumentException("Unsupported PSI element: " + element);
 	}
 
@@ -243,19 +234,8 @@ public class ResolveSession
 			public DeclarationDescriptor visitObjectDeclaration(NapileObjectDeclaration declaration, Void data)
 			{
 				PsiElement parent = declaration.getParent();
-				if(parent instanceof NapileClassObject)
-				{
-					NapileClassObject jetClassObject = (NapileClassObject) parent;
-					return resolveToDescriptor(jetClassObject);
-				}
-				return getClassDescriptor(declaration);
-			}
 
-			@Override
-			public DeclarationDescriptor visitClassObject(NapileClassObject classObject, Void data)
-			{
-				DeclarationDescriptor containingDeclaration = getInjector().getScopeProvider().getResolutionScopeForDeclaration(classObject).getContainingDeclaration();
-				return ((ClassDescriptor) containingDeclaration).getClassObjectDescriptor();
+				return getClassDescriptor(declaration);
 			}
 
 			@Override

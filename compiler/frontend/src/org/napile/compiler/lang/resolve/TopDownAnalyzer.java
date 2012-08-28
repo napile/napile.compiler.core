@@ -34,6 +34,7 @@ import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
 import org.napile.compiler.lang.resolve.processors.DeclarationResolver;
+import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -235,14 +236,13 @@ public class TopDownAnalyzer
 			}
 
 			@Override
-			public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+			public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
 			{
 			}
 
 			@Override
-			public ClassObjectStatus setClassObjectDescriptor(@NotNull MutableClassDescriptorLite classObjectDescriptor)
+			public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 			{
-				return ClassObjectStatus.NOT_ALLOWED;
 			}
 		}, Collections.<PsiElement>singletonList(object));
 	}

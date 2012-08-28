@@ -74,12 +74,6 @@ public class NapileClassBody extends NapileElementImpl implements NapileDeclarat
 	}
 
 	@Nullable
-	public NapileClassObject getClassObject()
-	{
-		return (NapileClassObject) findChildByType(NapileNodeTypes.CLASS_OBJECT);
-	}
-
-	@Nullable
 	public PsiElement getRBrace()
 	{
 		final ASTNode[] children = getNode().getChildren(TokenSet.create(JetTokens.RBRACE));

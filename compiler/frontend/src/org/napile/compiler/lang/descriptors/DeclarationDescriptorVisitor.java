@@ -39,6 +39,8 @@ public interface DeclarationDescriptorVisitor<R, D>
 
 	R visitPropertyDescriptor(PropertyDescriptor descriptor, D data);
 
+	R visitEnumEntryDescriptor(EnumEntryDescriptor descriptor, D data);
+
 	R visitValueParameterDescriptor(ValueParameterDescriptor descriptor, D data);
 
 	R visitPropertyGetterDescriptor(PropertyGetterDescriptor descriptor, D data);

@@ -19,7 +19,6 @@ package org.napile.compiler.lang.descriptors;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 
@@ -34,11 +33,6 @@ public interface ClassifierDescriptor extends DeclarationDescriptorNonRoot
 	@NotNull
 	JetType getDefaultType();
 
-	@Nullable
-	JetType getClassObjectType();
-
 	@NotNull
 	Collection<JetType> getSupertypes();
-
-	boolean isClassObjectAValue();
 }

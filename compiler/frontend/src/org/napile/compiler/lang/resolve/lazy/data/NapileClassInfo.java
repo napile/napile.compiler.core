@@ -21,7 +21,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassObject;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 
 /**
@@ -33,12 +32,6 @@ public class NapileClassInfo extends NapileClassOrObjectInfo<NapileClass>
 	protected NapileClassInfo(@NotNull NapileClass classOrObject)
 	{
 		super(classOrObject);
-	}
-
-	@Override
-	public NapileClassObject getClassObject()
-	{
-		return element.getClassObject();
 	}
 
 	@NotNull

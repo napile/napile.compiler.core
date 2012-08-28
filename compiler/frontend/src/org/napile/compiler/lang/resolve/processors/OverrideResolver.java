@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve;
+package org.napile.compiler.lang.resolve.processors;
 
 import static org.napile.compiler.lang.diagnostics.Errors.*;
 
@@ -29,6 +29,11 @@ import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.OverridingUtil;
+import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
+import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -445,7 +450,7 @@ public class OverrideResolver
 		{
 			if(overridden.getModality() != Modality.ABSTRACT)
 			{
-				if(descriptor.getVisibility() != Visibilities.INVISIBLE_FAKE)
+				if(descriptor.getVisibility() != Visibility.INVISIBLE_FAKE)
 				{
 					nonAbstractManyImpl.add(overridden);
 				}
@@ -702,7 +707,7 @@ public class OverrideResolver
 	public static void resolveUnknownVisibilityForMember(@Nullable NapileDeclaration member, @NotNull CallableMemberDescriptor memberDescriptor, @NotNull BindingTrace trace)
 	{
 		resolveUnknownVisibilityForOverriddenDescriptors(memberDescriptor.getOverriddenDescriptors(), trace);
-		if(memberDescriptor.getVisibility() != Visibilities.INHERITED)
+		if(memberDescriptor.getVisibility() != Visibility.INHERITED)
 		{
 			return;
 		}
@@ -714,7 +719,7 @@ public class OverrideResolver
 			{
 				trace.report(CANNOT_INFER_VISIBILITY.on(member));
 			}
-			visibility = Visibilities.PUBLIC;
+			visibility = Visibility.PUBLIC;
 		}
 
 		if(memberDescriptor instanceof PropertyDescriptor)
@@ -740,7 +745,7 @@ public class OverrideResolver
 	{
 		for(CallableMemberDescriptor descriptor : descriptors)
 		{
-			if(descriptor.getVisibility() == Visibilities.INHERITED)
+			if(descriptor.getVisibility() == Visibility.INHERITED)
 			{
 				PsiElement element = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), descriptor);
 				NapileDeclaration declaration = (element instanceof NapileDeclaration) ? (NapileDeclaration) element : null;
@@ -754,13 +759,13 @@ public class OverrideResolver
 	{
 		if(descriptors.isEmpty())
 		{
-			return Visibilities.PUBLIC;
+			return Visibility.PUBLIC;
 		}
 		Visibility maxVisibility = null;
 		for(CallableMemberDescriptor descriptor : descriptors)
 		{
 			Visibility visibility = descriptor.getVisibility();
-			assert visibility != Visibilities.INHERITED;
+			assert visibility != Visibility.INHERITED;
 			if(maxVisibility == null)
 			{
 				maxVisibility = visibility;

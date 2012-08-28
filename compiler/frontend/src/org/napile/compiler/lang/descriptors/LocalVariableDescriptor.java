@@ -67,6 +67,6 @@ public class LocalVariableDescriptor extends VariableDescriptorImpl
 	@Override
 	public Visibility getVisibility()
 	{
-		return Visibilities.LOCAL2;
+		return Visibility.LOCAL2;
 	}
 }

@@ -30,8 +30,8 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptorLite;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
@@ -48,7 +48,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.psi.PsiElement;
 
@@ -107,7 +106,6 @@ public class DeclarationResolver
 		checkRedeclarationsInNamespaces();
 		checkRedeclarationsInInnerClassNames();
 	}
-
 
 	private void resolveAnnotations()
 	{
@@ -205,20 +203,13 @@ public class DeclarationResolver
 				@Override
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
-					//PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptorFromEnumEntry(ownerDescription, scopeForPropertyInitializers, enumEntry, trace);
+					EnumEntryDescriptor enumEntryDescriptor = descriptorResolver.resolveEnumEntryDescriptor(ownerDescription, scopeForFunctions, enumEntry, trace);
 
-					//context.getProperties().put(property, propertyDescriptor);
-					//context.getDeclaringScopes().put(enumEntry, scopeForPropertyInitializers);
+					ownerDescription.getBuilder().addEnumEntryDescriptor(enumEntryDescriptor);
 
-					//if(enumEntry.getPrimaryConstructorParameterList() == null)
-					{
-						// FIX: Bad cast
-						//MutableClassDescriptorLite classObjectDescriptor = ((MutableClassDescriptorLite) ownerDescription).getClassObjectDescriptor();
-						//assert classObjectDescriptor != null;
-						//PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, enumEntry, context.getClasses().get(enumEntry), trace);
-					//	ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
-					//	classObjectDescriptor.getBuilder().addPropertyDescriptor(propertyDescriptor);
-					}
+					context.getEnumEntries().put(enumEntry, enumEntryDescriptor);
+
+					context.getDeclaringScopes().put(enumEntry, scopeForFunctions);
 				}
 			});
 		}
@@ -295,17 +286,6 @@ public class DeclarationResolver
 		for(MutableClassDescriptor classDescriptor : context.getClasses().values())
 		{
 			Collection<DeclarationDescriptor> allDescriptors = classDescriptor.getScopeForMemberLookup().getOwnDeclaredDescriptors();
-
-			MutableClassDescriptorLite classObj = classDescriptor.getClassObjectDescriptor();
-			if(classObj != null)
-			{
-				Collection<DeclarationDescriptor> classObjDescriptors = classObj.getScopeForMemberLookup().getOwnDeclaredDescriptors();
-				if(!classObjDescriptors.isEmpty())
-				{
-					allDescriptors = Lists.newArrayList(allDescriptors);
-					allDescriptors.addAll(classObjDescriptors);
-				}
-			}
 
 			Multimap<Name, DeclarationDescriptor> descriptorMap = HashMultimap.create();
 			for(DeclarationDescriptor desc : allDescriptors)

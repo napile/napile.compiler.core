@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.InnerClassesScopeWrapper;
@@ -54,8 +53,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	private Modality modality;
 	private Visibility visibility;
 
-	private MutableClassDescriptorLite classObjectDescriptor;
-	private JetType classObjectType;
 	private final ClassKind kind;
 
 	private JetScope scopeForMemberLookup;
@@ -162,23 +159,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 		return scopeForMemberLookup;
 	}
 
-	@Override
-	public JetType getClassObjectType()
-	{
-		if(classObjectType == null && classObjectDescriptor != null)
-		{
-			classObjectType = classObjectDescriptor.getDefaultType();
-		}
-		return classObjectType;
-	}
-
-	@Override
-	public boolean isClassObjectAValue()
-	{
-		return true;
-	}
-
-
 	@NotNull
 	@Override
 	public ClassKind getKind()
@@ -214,14 +194,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	public Collection<JetType> getSupertypes()
 	{
 		return supertypes;
-	}
-
-
-	@Override
-	@Nullable
-	public MutableClassDescriptorLite getClassObjectDescriptor()
-	{
-		return classObjectDescriptor;
 	}
 
 
@@ -261,10 +233,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	public void lockScopes()
 	{
 		getScopeForMemberLookupAsWritableScope().changeLockLevel(WritableScope.LockLevel.READING);
-		if(classObjectDescriptor != null)
-		{
-			classObjectDescriptor.lockScopes();
-		}
 	}
 
 	@NotNull
@@ -348,27 +316,9 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 				}
 
 				@Override
-				public ClassObjectStatus setClassObjectDescriptor(@NotNull MutableClassDescriptorLite classObjectDescriptor)
+				public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
 				{
-					if(getKind() == ClassKind.OBJECT)
-					{
-						return ClassObjectStatus.NOT_ALLOWED;
-					}
-
-					if(MutableClassDescriptorLite.this.classObjectDescriptor != null)
-					{
-						return ClassObjectStatus.DUPLICATE;
-					}
-
-					if(!isStatic(MutableClassDescriptorLite.this.getContainingDeclaration()))
-					{
-						return ClassObjectStatus.NOT_ALLOWED;
-					}
-
-					assert classObjectDescriptor.getKind() == ClassKind.OBJECT;
-					MutableClassDescriptorLite.this.classObjectDescriptor = classObjectDescriptor;
-
-					return ClassObjectStatus.OK;
+					getScopeForMemberLookupAsWritableScope().addEnumEntryDescriptor(enumEntryDescriptor);
 				}
 			};
 		}

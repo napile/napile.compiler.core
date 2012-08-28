@@ -25,8 +25,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptorBase;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
@@ -36,21 +34,17 @@ import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileClassObject;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileModifierList;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.lazy.data.FilteringClassLikeInfo;
-import org.napile.compiler.lang.resolve.lazy.data.JetClassInfoUtil;
 import org.napile.compiler.lang.resolve.lazy.data.NapileClassLikeInfo;
 import org.napile.compiler.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
+import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.scopes.InnerClassesScopeWrapper;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
@@ -95,8 +89,6 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 
 	private ClassReceiver implicitReceiver;
 	private List<AnnotationDescriptor> annotations;
-	private ClassDescriptor classObjectDescriptor;
-	private boolean classObjectDescriptorResolved = false;
 
 	private final LazyClassMemberScope unsubstitutedMemberScope;
 	private final JetScope unsubstitutedInnerClassesScope;
@@ -189,7 +181,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 
 	@NotNull
 	@Override
-	public List<ConstructorDescriptor> getConstructors()
+	public Set<ConstructorDescriptor> getConstructors()
 	{
 		return unsubstitutedMemberScope.getConstructors();
 	}
@@ -215,69 +207,11 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 		return typeConstructor;
 	}
 
-	@Override
-	public JetType getClassObjectType()
-	{
-		ClassDescriptor classObjectDescriptor = getClassObjectDescriptor();
-		return classObjectDescriptor == null ? null : classObjectDescriptor.getDefaultType();
-	}
-
 	@NotNull
 	@Override
 	public Collection<JetType> getSupertypes()
 	{
-		ClassDescriptor classObjectDescriptor = getClassObjectDescriptor();
-		return classObjectDescriptor == null ? Collections.<JetType>emptyList() : classObjectDescriptor.getSupertypes();
-	}
-
-	@Override
-	public boolean isClassObjectAValue()
-	{
-		return true;
-	}
-
-	@Override
-	public ClassDescriptor getClassObjectDescriptor()
-	{
-		if(!classObjectDescriptorResolved)
-		{
-			NapileClassObject classObject = declarationProvider.getOwnerInfo().getClassObject();
-
-			NapileClassLikeInfo classObjectInfo = getClassObjectInfo(classObject);
-			if(classObjectInfo != null)
-			{
-				Name classObjectName = getKind() == ClassKind.ENUM_CLASS ? Name.special("<class-object-for-" + getName() + ">") : NapilePsiUtil.NO_NAME_PROVIDED;
-				classObjectDescriptor = new LazyClassDescriptor(resolveSession, this, classObjectName, classObjectInfo, false);
-			}
-			classObjectDescriptorResolved = true;
-		}
-		return classObjectDescriptor;
-	}
-
-	@Nullable
-	private NapileClassLikeInfo getClassObjectInfo(NapileClassObject classObject)
-	{
-		if(classObject != null)
-		{
-			if(!DescriptorUtils.inStaticContext(this))
-			{
-				return null;
-			}
-			NapileObjectDeclaration objectDeclaration = classObject.getObjectDeclaration();
-			if(objectDeclaration != null)
-			{
-				return JetClassInfoUtil.createClassLikeInfo(objectDeclaration);
-			}
-		}
-		else
-		{
-			if(getKind() == ClassKind.ENUM_CLASS)
-			{
-				// Enum classes always have class objects, and enum constants are their members
-				return onlyEnumEntries(originalClassInfo);
-			}
-		}
-		return null;
+		return Collections.<JetType>emptyList();
 	}
 
 	@NotNull

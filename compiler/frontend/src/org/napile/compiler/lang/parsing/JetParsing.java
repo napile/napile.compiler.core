@@ -647,13 +647,7 @@ public class JetParsing extends AbstractJetParsing
 		IElementType keywordToken = tt();
 		IElementType declType = null;
 		if(keywordToken == JetTokens.CLASS_KEYWORD || keywordToken == JetTokens.ENUM_KEYWORD)
-		{
-			// deprecated
-			if(lookahead(1) == JetTokens.OBJECT_KEYWORD)
-				declType = parseClassObject();
-			else
-				declType = parseClass();
-		}
+			declType = parseClass();
 		else if(keywordToken == JetTokens.METH_KEYWORD)
 			declType = parseMethod();
 		else if(keywordToken == JetTokens.THIS_KEYWORD)
@@ -783,24 +777,6 @@ public class JetParsing extends AbstractJetParsing
 		myExpressionParsing.parseValueArgumentList();
 
 		initializer.done(type);
-	}
-
-	/*
-		 * classObject
-		 *   : modifiers "class" object
-		 *   ;
-		 */
-	private NapileNodeType parseClassObject()
-	{
-		assert _at(JetTokens.CLASS_KEYWORD) && lookahead(1) == JetTokens.OBJECT_KEYWORD;
-
-		advance(); // CLASS_KEYWORD
-
-		final PsiBuilder.Marker objectDeclaration = mark();
-		parseObject(false, true);
-		objectDeclaration.done(OBJECT_DECLARATION);
-
-		return CLASS_OBJECT;
 	}
 
 	/*

@@ -231,7 +231,7 @@ public class CallResolver
 				if(declarationDescriptor instanceof ClassDescriptor)
 				{
 					ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
-					List<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
+					Set<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
 					if(constructors.isEmpty())
 					{
 						context.trace.report(NO_CONSTRUCTOR.on(reportAbsenceOn));
@@ -261,7 +261,7 @@ public class CallResolver
 				assert containingDeclaration instanceof ClassDescriptor;
 				ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
 
-				List<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
+				Set<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
 				if(constructors.isEmpty())
 				{
 					context.trace.report(NO_CONSTRUCTOR.on(reportAbsenceOn));
@@ -288,7 +288,7 @@ public class CallResolver
 				FunctionDescriptorImpl functionDescriptor = new ExpressionAsFunctionDescriptor(context.scope.getContainingDeclaration(), Name.special("<for expression " +
 						calleeExpression.getText() +
 						">"));
-				FunctionDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, ReceiverDescriptor.NO_RECEIVER, Modality.FINAL, Visibilities.LOCAL2);
+				FunctionDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, ReceiverDescriptor.NO_RECEIVER, Modality.FINAL, Visibility.LOCAL2);
 				ResolutionCandidate<CallableDescriptor> resolutionCandidate = ResolutionCandidate.<CallableDescriptor>create(functionDescriptor, NapilePsiUtil.isSafeCall(context.call));
 				resolutionCandidate.setReceiverArgument(context.call.getExplicitReceiver());
 				resolutionCandidate.setExplicitReceiverKind(ExplicitReceiverKind.RECEIVER_ARGUMENT);

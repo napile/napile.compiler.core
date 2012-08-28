@@ -135,15 +135,6 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 		return (NapileClassBody) findChildByType(NapileNodeTypes.CLASS_BODY);
 	}
 
-	@Nullable
-	public NapileClassObject getClassObject()
-	{
-		NapileClassBody body = getBody();
-		if(body == null)
-			return null;
-		return body.getClassObject();
-	}
-
 	public List<NapileProperty> getProperties()
 	{
 		NapileClassBody body = getBody();

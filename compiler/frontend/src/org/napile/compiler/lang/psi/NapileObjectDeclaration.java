@@ -118,10 +118,10 @@ public class NapileObjectDeclaration extends NapileNamedDeclarationStub<PsiJetOb
 		return (NapileModifierList) findChildByType(NapileNodeTypes.MODIFIER_LIST);
 	}
 
-
+	@Deprecated
 	private static boolean isClassObject(@NotNull PsiElement parent)
 	{
-		return parent.getNode().getElementType().equals(NapileNodeTypes.CLASS_OBJECT);
+		return false;
 	}
 
 	@Override

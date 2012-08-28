@@ -28,16 +28,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorImpl;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
-import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptorImpl;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptorImpl;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptorImpl;
-import org.napile.compiler.lang.descriptors.Visibilities;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileFunctionLiteral;
@@ -217,7 +208,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 			effectiveReceiverType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, receiverTypeRef, context.trace, true);
 		}
 		functionDescriptor.initialize(effectiveReceiverType, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), valueParameterDescriptors,
-                                      /*unsubstitutedReturnType = */ null, Modality.FINAL, Visibilities.LOCAL2
+                                      /*unsubstitutedReturnType = */ null, Modality.FINAL, Visibility.LOCAL2
                                       /*isInline = */);
 		context.trace.record(BindingContext.FUNCTION, expression, functionDescriptor);
 		BindingContextUtils.recordFunctionDeclarationToDescriptor(context.trace, expression, functionDescriptor);

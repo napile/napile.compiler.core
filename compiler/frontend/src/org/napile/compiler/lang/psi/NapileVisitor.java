@@ -39,11 +39,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitNamedDeclaration(klass, data);
 	}
 
-	public R visitClassObject(NapileClassObject classObject, D data)
-	{
-		return visitDeclaration(classObject, data);
-	}
-
 	public R visitConstructor(NapileConstructor constructor, D data)
 	{
 		return visitDeclaration(constructor, data);

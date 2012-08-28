@@ -16,32 +16,29 @@
 
 package org.napile.compiler.lang.descriptors;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.AbstractScopeAdapter;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import com.google.common.collect.Sets;
 
 /**
  * @author abreslav
  */
 public class MutableClassDescriptor extends MutableClassDescriptorLite
 {
-	private final List<ConstructorDescriptor> constructors = new ArrayList<ConstructorDescriptor>();
-
-	private final Set<CallableMemberDescriptor> declaredCallableMembers = Sets.newHashSet();
-	private final Set<CallableMemberDescriptor> allCallableMembers = Sets.newHashSet(); // includes fake overrides
-	private final Set<PropertyDescriptor> properties = Sets.newHashSet();
-	private final Set<SimpleFunctionDescriptor> functions = Sets.newHashSet();
+	private final Set<ConstructorDescriptor> constructors = new HashSet<ConstructorDescriptor>();
+	private final Set<CallableMemberDescriptor> declaredCallableMembers = new HashSet<CallableMemberDescriptor>();
+	private final Set<CallableMemberDescriptor> allCallableMembers = new HashSet<CallableMemberDescriptor>(); // includes fake overrides
+	private final Set<PropertyDescriptor> properties = new HashSet<PropertyDescriptor>();
+	private final Set<SimpleFunctionDescriptor> functions = new HashSet<SimpleFunctionDescriptor>();
+	private final Set<EnumEntryDescriptor> enumEntries = new HashSet<EnumEntryDescriptor>();
 
 	private final WritableScope scopeForMemberResolution;
 	// This scope contains type parameters but does not contain inner classes
@@ -77,7 +74,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 
 	@NotNull
 	@Override
-	public List<ConstructorDescriptor> getConstructors()
+	public Set<ConstructorDescriptor> getConstructors()
 	{
 		return constructors;
 	}
@@ -86,6 +83,12 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	public Set<SimpleFunctionDescriptor> getFunctions()
 	{
 		return functions;
+	}
+
+	@NotNull
+	public Set<EnumEntryDescriptor> getEnumEntries()
+	{
+		return enumEntries;
 	}
 
 	@NotNull
@@ -214,36 +217,6 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 					scopeForMemberResolution.addFunctionDescriptor(functionDescriptor);
 				}
 
-				@Override
-				public ClassObjectStatus setClassObjectDescriptor(@NotNull final MutableClassDescriptorLite classObjectDescriptor)
-				{
-					ClassObjectStatus r = superBuilder.setClassObjectDescriptor(classObjectDescriptor);
-					if(r != ClassObjectStatus.OK)
-					{
-						return r;
-					}
-
-					// Members of the class object are accessible from the class
-					// The scope must be lazy, because classObjectDescriptor may not by fully built yet
-					scopeForMemberResolution.importScope(new AbstractScopeAdapter()
-					{
-						@NotNull
-						@Override
-						protected JetScope getWorkerScope()
-						{
-							return classObjectDescriptor.getDefaultType().getMemberScope();
-						}
-
-						@NotNull
-						@Override
-						public ReceiverDescriptor getImplicitReceiver()
-						{
-							return classObjectDescriptor.getImplicitReceiver();
-						}
-					});
-
-					return ClassObjectStatus.OK;
-				}
 
 				@Override
 				public void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor)
@@ -259,11 +232,25 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 				}
 
 				@Override
+				public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
+				{
+					enumEntries.add(enumEntryDescriptor);
+
+					superBuilder.addEnumEntryDescriptor(enumEntryDescriptor);
+
+					scopeForMemberResolution.addEnumEntryDescriptor(enumEntryDescriptor);
+				}
+
+				@Override
 				public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 				{
 					addConstructor(constructorDescriptor);
 
 					superBuilder.addConstructorDescriptor(constructorDescriptor);
+
+					allCallableMembers.add(constructorDescriptor);
+
+					scopeForMemberResolution.addConstructorDescriptor(constructorDescriptor);
 				}
 			};
 		}

@@ -257,23 +257,11 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 		return defaultType;
 	}
 
-	@Override
-	public JetType getClassObjectType()
-	{
-		return null;
-	}
-
 	@NotNull
 	@Override
 	public Collection<JetType> getSupertypes()
 	{
-		return null;
-	}
-
-	@Override
-	public boolean isClassObjectAValue()
-	{
-		return false;
+		return Collections.emptySet();
 	}
 
 	@NotNull

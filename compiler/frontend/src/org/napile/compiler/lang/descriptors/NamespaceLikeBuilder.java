@@ -35,14 +35,7 @@ public interface NamespaceLikeBuilder
 
 	void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor);
 
+	void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor);
+
 	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
-
-	enum ClassObjectStatus
-	{
-		OK,
-		DUPLICATE,
-		NOT_ALLOWED
-	}
-
-	ClassObjectStatus setClassObjectDescriptor(@NotNull MutableClassDescriptorLite classObjectDescriptor);
 }

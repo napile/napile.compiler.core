@@ -21,7 +21,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.resolve.OverrideResolver;
+import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.idea.plugin.JetBundle;
 import com.google.common.collect.Sets;
 import com.intellij.codeInsight.intention.IntentionAction;

@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.napile.compiler.lang.psi.NapileClassObject;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import com.intellij.ide.projectView.ViewSettings;
@@ -51,10 +50,6 @@ public final class JetProjectViewUtil
 				if(declaration instanceof NapileClassOrObject)
 				{
 					result.add(new JetClassOrObjectTreeNode(project, (NapileClassOrObject) declaration, settings));
-				}
-				else if(declaration instanceof NapileClassObject)
-				{
-					result.add(new JetClassObjectTreeNode(project, (NapileClassObject) declaration, settings));
 				}
 				else
 				{

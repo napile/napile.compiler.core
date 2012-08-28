@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
@@ -27,6 +28,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapileProperty;
@@ -44,6 +46,8 @@ public interface BodiesResolveContext
 	Map<NapileObjectDeclaration, MutableClassDescriptor> getObjects();
 
 	Map<NapileProperty, PropertyDescriptor> getProperties();
+
+	Map<NapileEnumEntry, EnumEntryDescriptor> getEnumEntries();
 
 	Map<NapileNamedFunction, SimpleFunctionDescriptor> getFunctions();
 

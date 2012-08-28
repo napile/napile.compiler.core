@@ -33,7 +33,6 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
-import org.napile.compiler.lang.descriptors.Visibilities;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.psi.NapileClassBody;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
@@ -334,7 +333,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	private static String displayableVisibility(MemberDescriptor descriptor)
 	{
 		Visibility visibility = descriptor.getVisibility();
-		return visibility != Visibilities.PUBLIC ? visibility.toString() + " " : "";
+		return visibility != Visibility.PUBLIC ? visibility.toString() + " " : "";
 	}
 
 	private MemberChooser<DescriptorClassMember> showOverrideImplementChooser(Project project, DescriptorClassMember[] members)

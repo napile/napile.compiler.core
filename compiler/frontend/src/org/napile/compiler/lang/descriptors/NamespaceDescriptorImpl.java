@@ -101,6 +101,12 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 				}
 
 				@Override
+				public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
+				{
+					getMemberScope().addEnumEntryDescriptor(enumEntryDescriptor);
+				}
+
+				@Override
 				public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 				{
 					getMemberScope().addConstructorDescriptor(constructorDescriptor);
@@ -111,12 +117,6 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 				public DeclarationDescriptor getOwnerForChildren()
 				{
 					return NamespaceDescriptorImpl.this;
-				}
-
-				@Override
-				public ClassObjectStatus setClassObjectDescriptor(@NotNull MutableClassDescriptorLite classObjectDescriptor)
-				{
-					throw new IllegalStateException("Must be guaranteed not to happen by the parser");
 				}
 			};
 		}
