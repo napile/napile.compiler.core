@@ -32,6 +32,7 @@ import org.napile.compiler.lang.resolve.calls.OverloadingConflictResolver;
 import org.napile.compiler.lang.resolve.ControlFlowAnalyzer;
 import org.napile.compiler.lang.resolve.processors.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.ModifiersChecker;
+import org.napile.compiler.lang.resolve.processors.EnumEntryResolverAndChecker;
 import org.jetbrains.annotations.NotNull;
 import javax.annotation.PreDestroy;
 
@@ -53,6 +54,7 @@ public class InjectorForBodyResolve {
     private ControlFlowAnalyzer controlFlowAnalyzer;
     private DeclarationsChecker declarationsChecker;
     private ModifiersChecker modifiersChecker;
+    private EnumEntryResolverAndChecker enumEntryResolverAndChecker;
 
     public InjectorForBodyResolve(
         @NotNull Project project,
@@ -74,12 +76,14 @@ public class InjectorForBodyResolve {
         this.controlFlowAnalyzer = new ControlFlowAnalyzer();
         this.declarationsChecker = new DeclarationsChecker();
         this.modifiersChecker = new ModifiersChecker();
+        this.enumEntryResolverAndChecker = new EnumEntryResolverAndChecker();
 
         this.bodyResolver.setAnnotationChecker(annotationChecker);
         this.bodyResolver.setCallResolver(callResolver);
         this.bodyResolver.setControlFlowAnalyzer(controlFlowAnalyzer);
         this.bodyResolver.setDeclarationsChecker(declarationsChecker);
         this.bodyResolver.setDescriptorResolver(descriptorResolver);
+        this.bodyResolver.setEnumEntryResolverAndChecker(enumEntryResolverAndChecker);
         this.bodyResolver.setExpressionTypingServices(expressionTypingServices);
         this.bodyResolver.setModifiersChecker(modifiersChecker);
         this.bodyResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
@@ -115,6 +119,9 @@ public class InjectorForBodyResolve {
         declarationsChecker.setTrace(bindingTrace);
 
         modifiersChecker.setTrace(bindingTrace);
+
+        enumEntryResolverAndChecker.setCallResolver(callResolver);
+        enumEntryResolverAndChecker.setTrace(bindingTrace);
 
     }
 

@@ -627,7 +627,7 @@ public class DescriptorResolver
 
 	public EnumEntryDescriptor resolveEnumEntryDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileEnumEntry enumEntry, BindingTrace trace)
 	{
-		JetTypeImpl jetType = new JetTypeImpl(containingDeclaration);
+		JetTypeImpl jetType = new JetTypeImpl(containingDeclaration.getTypeConstructor(), scope);
 
 		EnumEntryDescriptor enumEntryDescriptor = new EnumEntryDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, enumEntry.getModifierList(), trace), enumEntry.getNameAsName(), jetType, true);
 

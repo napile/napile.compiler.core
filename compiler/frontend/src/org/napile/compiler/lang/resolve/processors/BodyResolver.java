@@ -88,6 +88,8 @@ public class BodyResolver
 	private AnnotationChecker annotationChecker;
 	@NotNull
 	private ModifiersChecker modifiersChecker;
+	@NotNull
+	private EnumEntryResolverAndChecker enumEntryResolverAndChecker;
 
 	@Inject
 	public void setTopDownAnalysisParameters(@NotNull TopDownAnalysisParameters topDownAnalysisParameters)
@@ -143,15 +145,21 @@ public class BodyResolver
 		this.modifiersChecker = modifiersChecker;
 	}
 
+	@Inject
+	public void setEnumEntryResolverAndChecker(@NotNull EnumEntryResolverAndChecker enumEntryResolverAndChecker)
+	{
+		this.enumEntryResolverAndChecker = enumEntryResolverAndChecker;
+	}
+
 	private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		// Initialize context
 		context = bodiesResolveContext;
 
 		resolveDelegationSpecifierLists();
-		resolveClassAnnotations();
 
 		resolvePropertyDeclarationBodies();
+
 		resolveAnonymousInitializers();
 
 		resolveFunctionBodies();
@@ -168,6 +176,7 @@ public class BodyResolver
 	{
 		resolveBehaviorDeclarationBodies(bodiesResolveContext);
 
+		enumEntryResolverAndChecker.process(bodiesResolveContext);
 		controlFlowAnalyzer.process(bodiesResolveContext);
 		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
@@ -300,10 +309,6 @@ public class BodyResolver
 				trace.report(FINAL_SUPERTYPE.on(typeReference));
 			}
 		}
-	}
-
-	private void resolveClassAnnotations()
-	{
 	}
 
 	private void resolveAnonymousInitializers()

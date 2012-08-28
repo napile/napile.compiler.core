@@ -570,7 +570,13 @@ public class JetParsing extends AbstractJetParsing
 
 		parseTypeArgumentList();
 		if(at(JetTokens.LPAR))
+		{
+			PsiBuilder.Marker callExpression = mark();
+
 			myExpressionParsing.parseValueArgumentList();
+
+			callExpression.done(CONSTRUCTOR_CALLEE);
+		}
 
 		if(at(JetTokens.LBRACE))
 			parseClassBody();

@@ -26,6 +26,7 @@ import org.napile.compiler.lang.psi.stubs.NapilePsiEnumEntryStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author max
@@ -108,14 +109,17 @@ public class NapileEnumEntry extends NapileNamedDeclarationStub<NapilePsiEnumEnt
 	@Override
 	public NapileExpression getCalleeExpression()
 	{
-		return null;
+		return (NapileExpression) findChildByType(NapileNodeTypes.CONSTRUCTOR_CALLEE);
 	}
 
 	@Override
 	@Nullable
 	public NapileValueArgumentList getValueArgumentList()
 	{
-		return (NapileValueArgumentList) findChildByType(NapileNodeTypes.VALUE_ARGUMENT_LIST);
+		NapileExpression expression = getCalleeExpression();
+		if(expression == null)
+			return null;
+		return PsiTreeUtil.findChildOfType(expression, NapileValueArgumentList.class);
 	}
 
 	@Override
