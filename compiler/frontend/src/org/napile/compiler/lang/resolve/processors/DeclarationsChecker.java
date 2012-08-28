@@ -298,7 +298,7 @@ public class DeclarationsChecker
 		for(Map.Entry<NapileTypeReference, JetType> classEntry : classSpecifiers.entrySet())
 		{
 			if(!constructorSpecifiers.values().contains(classEntry.getValue()))
-				trace.report(Errors.MISSED_SUPER_CALL.on(constructor.getNameNode().getPsi(), classEntry.getValue()));
+				trace.report(Errors.MISSED_SUPER_CALL.on(constructor.getNameIdentifier(), classEntry.getValue()));
 		}
 
 		for(Map.Entry<NapileTypeReference, JetType> constructorEntry : constructorSpecifiers.entrySet())

@@ -12,8 +12,8 @@
 		</component>
 
 		<!--<component>
-			<implementation-class>DeclarationHintSupport</implementation-class>
-		</component> -->
+			<implementation-class>org.napile.idea.plugin.highlighter.DeclarationHintSupport</implementation-class>
+		</component>        -->
 	</project-components>
 
 	<actions>
@@ -47,8 +47,6 @@
 		<projectService serviceInterface="org.napile.compiler.lang.resolve.JetFilesProvider" serviceImplementation="org.napile.idea.plugin.project.PluginJetFilesProvider"/>
 
 		<projectService serviceInterface="org.napile.idea.plugin.caches.JetShortNamesCache" serviceImplementation="org.napile.idea.plugin.caches.JetShortNamesCache" />
-
-		<projectService serviceInterface="org.napile.compiler.lang.resolve.NapileClassResolver" serviceImplementation="org.napile.compiler.lang.resolve.NapileClassResolver" />
 
 		<internalFileTemplate name="Napile Class"/>
 		<internalFileTemplate name="Napile Enum"/>
@@ -151,9 +149,6 @@
 
 
 		<referencesSearch implementation="org.napile.idea.plugin.search.KotlinReferencesSearcher"/>
-		<!--<directClassInheritorsSearch implementation="DirectClassInheritorsSearch"/>  -->
-
-		<definitionsSearch implementation="org.napile.idea.plugin.search.impl.ClassImplementationsSearch"/>
 
 		<!--<toolWindow id="Napile" factoryClass="KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/idea/plugin/icons/kotlin_13.png"/> -->
 

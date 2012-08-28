@@ -19,16 +19,20 @@ package org.napile.compiler.lang.psi;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author max
  */
-public class NapileConstructor extends NapileDeclarationImpl implements NapileDeclarationWithBody, NapileStatementExpression, NapileDelegationSpecifierListOwner
+public class NapileConstructor extends NapileDeclarationImpl implements NapileDeclarationWithBody, NapileStatementExpression, NapileDelegationSpecifierListOwner, NapileNamedDeclaration
 {
 	public NapileConstructor(@NotNull ASTNode node)
 	{
@@ -102,15 +106,37 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 		return this;
 	}
 
-	public ASTNode getNameNode()
-	{
-		return getNode().findChildByType(JetTokens.THIS_KEYWORD);
-	}
-
 	@Override
 	@NotNull
 	public String getName()
 	{
 		return "this";  // JetDeclarationTreeNode not show node if name is null
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
+		throw new IncorrectOperationException();
+	}
+
+	@NotNull
+	@Override
+	public Name getNameAsSafeName()
+	{
+		return Name.identifier(getName());
+	}
+
+	@Nullable
+	@Override
+	public Name getNameAsName()
+	{
+		return Name.identifier(getName());
+	}
+
+	@NotNull
+	@Override
+	public PsiElement getNameIdentifier()
+	{
+		return findNotNullChildByType(JetTokens.THIS_KEYWORD);
 	}
 }

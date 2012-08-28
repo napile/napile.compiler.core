@@ -82,7 +82,7 @@ public class JetShortNamesCache
 	{
 		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile()).getBindingContext();
 
-		JetFilesProvider jetFilesProvider = JetFilesProvider.getInstance(napileElement.getProject());
+		JetFilesProvider jetFilesProvider = JetFilesProvider.getInstance(project);
 
 		Map<NapileClassOrObject, ClassDescriptor> result = new HashMap<NapileClassOrObject, ClassDescriptor>();
 
