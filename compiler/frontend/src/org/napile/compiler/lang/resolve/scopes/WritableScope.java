@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
@@ -48,6 +49,8 @@ public interface WritableScope extends JetScope
 	void addVariableDescriptor(@NotNull VariableDescriptor variableDescriptor);
 
 	void addPropertyDescriptor(@NotNull VariableDescriptor propertyDescriptor);
+
+	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
 
 	void addFunctionDescriptor(@NotNull FunctionDescriptor functionDescriptor);
 

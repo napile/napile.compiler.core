@@ -568,7 +568,7 @@ public class JetParsing extends AbstractJetParsing
 
 		advance();
 
-		parseTypeParameterList(TokenSet.create());
+		parseTypeArgumentList();
 		if(at(JetTokens.LPAR))
 			myExpressionParsing.parseValueArgumentList();
 

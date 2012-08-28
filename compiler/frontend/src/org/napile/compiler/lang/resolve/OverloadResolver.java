@@ -122,12 +122,12 @@ public class OverloadResolver
 			if(containingDeclaration instanceof NamespaceDescriptor)
 			{
 				NamespaceDescriptor namespaceDescriptor = (NamespaceDescriptor) containingDeclaration;
-				inNamespaces.put(new Key(namespaceDescriptor, klass.getName()), klass.getConstructors().values());
+				inNamespaces.put(new Key(namespaceDescriptor, klass.getName()), klass.getConstructors());
 			}
 			else if(containingDeclaration instanceof ClassDescriptor)
 			{
 				ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
-				inClasses.put(classDescriptor, klass.getConstructors().values());
+				inClasses.put(classDescriptor, klass.getConstructors());
 			}
 			else if(!(containingDeclaration instanceof FunctionDescriptor))
 			{

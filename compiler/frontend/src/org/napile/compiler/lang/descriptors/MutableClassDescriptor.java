@@ -16,16 +16,13 @@
 
 package org.napile.compiler.lang.descriptors;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
 import org.napile.compiler.lang.resolve.AbstractScopeAdapter;
-import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -39,7 +36,7 @@ import com.google.common.collect.Sets;
  */
 public class MutableClassDescriptor extends MutableClassDescriptorLite
 {
-	private final Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> constructors = new LinkedHashMap<NapileDelegationSpecifierListOwner, ConstructorDescriptor>();
+	private final List<ConstructorDescriptor> constructors = new ArrayList<ConstructorDescriptor>();
 
 	private final Set<CallableMemberDescriptor> declaredCallableMembers = Sets.newHashSet();
 	private final Set<CallableMemberDescriptor> allCallableMembers = Sets.newHashSet(); // includes fake overrides
@@ -68,22 +65,19 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	public void addConstructor(@NotNull NapileDelegationSpecifierListOwner constructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace trace)
+	public void addConstructor(@NotNull ConstructorDescriptor constructorDescriptor)
 	{
 		if(constructorDescriptor.getContainingDeclaration() != this)
-		{
 			throw new IllegalStateException("invalid containing declaration of constructor");
-		}
-		constructors.put(constructor, constructorDescriptor);
+
+		constructors.add(constructorDescriptor);
 		if(defaultType != null)
-		{
 			constructorDescriptor.setReturnType(getDefaultType());
-		}
 	}
 
 	@NotNull
 	@Override
-	public Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
+	public List<ConstructorDescriptor> getConstructors()
 	{
 		return constructors;
 	}
@@ -136,7 +130,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	public void createTypeConstructor()
 	{
 		super.createTypeConstructor();
-		for(FunctionDescriptor functionDescriptor : getConstructors().values())
+		for(FunctionDescriptor functionDescriptor : getConstructors())
 			((ConstructorDescriptor) functionDescriptor).setReturnType(getDefaultType());
 		scopeForMemberResolution.setImplicitReceiver(new ClassReceiver(this));
 	}
@@ -262,6 +256,14 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 					}
 					allCallableMembers.add(propertyDescriptor);
 					scopeForMemberResolution.addPropertyDescriptor(propertyDescriptor);
+				}
+
+				@Override
+				public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+				{
+					addConstructor(constructorDescriptor);
+
+					superBuilder.addConstructorDescriptor(constructorDescriptor);
 				}
 			};
 		}

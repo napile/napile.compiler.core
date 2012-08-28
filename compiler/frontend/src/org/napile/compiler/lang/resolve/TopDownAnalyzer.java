@@ -25,18 +25,10 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.ModuleDescriptor;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptorLite;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
-import org.napile.compiler.lang.descriptors.NamespaceLikeBuilder;
-import org.napile.compiler.lang.descriptors.NamespaceLikeBuilderDummy;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -237,6 +229,11 @@ public class TopDownAnalyzer
 			public void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor)
 			{
 
+			}
+
+			@Override
+			public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+			{
 			}
 
 			@Override

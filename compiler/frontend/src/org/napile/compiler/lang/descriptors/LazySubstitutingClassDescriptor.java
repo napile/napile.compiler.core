@@ -16,14 +16,12 @@
 
 package org.napile.compiler.lang.descriptors;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
@@ -126,12 +124,12 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 
 	@NotNull
 	@Override
-	public Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
+	public List<ConstructorDescriptor> getConstructors()
 	{
-		Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> map = new LinkedHashMap<NapileDelegationSpecifierListOwner, ConstructorDescriptor>(original.getConstructors().size());
-		for(Map.Entry<NapileDelegationSpecifierListOwner, ConstructorDescriptor> entry : original.getConstructors().entrySet())
-			map.put(entry.getKey(), (ConstructorDescriptor) entry.getValue().substitute(getSubstitutor()));
-		return map;
+		List<ConstructorDescriptor> list = new ArrayList<ConstructorDescriptor>(original.getConstructors().size());
+		for(ConstructorDescriptor constructorDescriptor : original.getConstructors())
+			list.add((ConstructorDescriptor) constructorDescriptor.substitute(getSubstitutor()));
+		return list;
 	}
 
 	@Override

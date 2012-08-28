@@ -22,9 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
@@ -39,25 +38,25 @@ import org.napile.compiler.lang.types.TypeUtils;
 /**
  * @author abreslav
  */
-public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implements ClassDescriptor
+public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implements ClassDescriptor
 {
 	private TypeConstructor typeConstructor;
 
 	private JetScope memberDeclarations;
-	private Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> constructors;
+	private List<ConstructorDescriptor> constructors;
 
 	private ReceiverDescriptor implicitReceiver;
 	private final Modality modality;
 	private final boolean isStatic;
 
-	public ClassDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Name name, boolean isStatic)
+	public LightClassDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Name name, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name);
 		this.modality = modality;
 		this.isStatic = isStatic;
 	}
 
-	public final ClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<JetType> supertypes, @NotNull JetScope memberDeclarations, @NotNull Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> constructors)
+	public final LightClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<JetType> supertypes, @NotNull JetScope memberDeclarations, @NotNull List<ConstructorDescriptor> constructors)
 	{
 		this.typeConstructor = new TypeConstructorImpl(this, getAnnotations(), sealed, getName().getName(), typeParameters, supertypes);
 		this.memberDeclarations = memberDeclarations;
@@ -101,7 +100,7 @@ public class ClassDescriptorImpl extends DeclarationDescriptorNonRootImpl implem
 
 	@NotNull
 	@Override
-	public Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
+	public List<ConstructorDescriptor> getConstructors()
 	{
 		return constructors;
 	}

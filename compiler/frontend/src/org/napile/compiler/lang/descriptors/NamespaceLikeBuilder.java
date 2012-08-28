@@ -35,6 +35,8 @@ public interface NamespaceLikeBuilder
 
 	void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor);
 
+	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
+
 	enum ClassObjectStatus
 	{
 		OK,

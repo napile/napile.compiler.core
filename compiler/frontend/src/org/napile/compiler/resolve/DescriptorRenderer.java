@@ -555,11 +555,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderVisibility(constructorDescriptor.getVisibility(), builder);
 
-			builder.append(renderKeyword("ctor")).append(" ");
+			builder.append(renderKeyword("this"));
 
 			ClassDescriptor classDescriptor = constructorDescriptor.getContainingDeclaration();
-			builder.append(classDescriptor.getName());
-
 			renderTypeParameters(classDescriptor.getTypeConstructor().getParameters(), builder);
 			renderValueParameters(constructorDescriptor, builder);
 			return null;

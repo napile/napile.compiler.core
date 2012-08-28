@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
@@ -218,6 +219,14 @@ public class WriteThroughScope extends WritableScopeWithImports
 		checkMayWrite();
 
 		writableWorker.addPropertyDescriptor(propertyDescriptor);
+	}
+
+	@Override
+	public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+	{
+		checkMayWrite();
+
+		writableWorker.addConstructorDescriptor(constructorDescriptor);
 	}
 
 	@Override

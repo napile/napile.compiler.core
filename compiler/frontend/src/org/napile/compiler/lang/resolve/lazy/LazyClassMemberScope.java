@@ -16,10 +16,10 @@
 
 package org.napile.compiler.lang.resolve.lazy;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
@@ -34,10 +34,9 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
-import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorResolver;
@@ -84,7 +83,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 		Collection<T> extract(@NotNull JetType extractFrom, @NotNull Name name);
 	}
 
-	private Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> constructorDescriptors = null;
+	private List<ConstructorDescriptor> constructorDescriptors = null;
 
 	public LazyClassMemberScope(@NotNull ResolveSession resolveSession, @NotNull ClassMemberDeclarationProvider declarationProvider, @NotNull LazyClassDescriptor thisClass)
 	{
@@ -234,11 +233,11 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 	}
 
 	@NotNull
-	public Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
+	public List<ConstructorDescriptor> getConstructors()
 	{
 		if(constructorDescriptors == null)
 		{
-			constructorDescriptors = new LinkedHashMap<NapileDelegationSpecifierListOwner, ConstructorDescriptor>();
+			constructorDescriptors = new ArrayList<ConstructorDescriptor>();
 			if(EnumSet.of(ClassKind.CLASS, ClassKind.OBJECT, ClassKind.ENUM_CLASS).contains(thisDescriptor.getKind()))
 			{
 				NapileClassOrObject classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
@@ -249,7 +248,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 					{
 						ConstructorDescriptor constructorDescriptor = resolveSession.getInjector().getDescriptorResolver().resolveConstructorDescriptor(thisDescriptor.getScopeForClassHeaderResolution(), thisDescriptor, constructor, resolveSession.getTrace());
 
-						constructorDescriptors.put(constructor, constructorDescriptor);
+						constructorDescriptors.add(constructorDescriptor);
 
 						setDeferredReturnType(constructorDescriptor);
 					}

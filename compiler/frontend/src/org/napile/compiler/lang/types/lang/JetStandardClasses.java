@@ -29,9 +29,8 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
@@ -43,12 +42,12 @@ import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -83,7 +82,7 @@ public class JetStandardClasses
 
 	static
 	{
-		ClassDescriptorImpl nothing = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Nothing"), false);
+		LightClassDescriptorImpl nothing = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Nothing"), false);
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(nothing, Collections.<AnnotationDescriptor>emptyList());
 		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.LOCAL);
 		NOTHING_CLASS = nothing.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), new AbstractCollection<JetType>()
@@ -105,7 +104,7 @@ public class JetStandardClasses
 			{
 				throw new UnsupportedOperationException("Supertypes of Nothing do not constitute a valid collection");
 			}
-		}, JetScope.EMPTY, Collections.<NapileDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
+		}, JetScope.EMPTY, Collections.<ConstructorDescriptor>emptyList());
 		NOTHING_TYPE = new JetTypeImpl(getNothing());
 		constructorDescriptor.setReturnType(NOTHING_TYPE);
 	}
@@ -117,10 +116,10 @@ public class JetStandardClasses
 
 	static
 	{
-		ClassDescriptorImpl any = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.identifier("Any"), false);
+		LightClassDescriptorImpl any = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.identifier("Any"), false);
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(any, Collections.<AnnotationDescriptor>emptyList());
 		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PUBLIC);
-		ANY = any.initialize(false, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptySet(), JetScope.EMPTY, Collections.<NapileDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
+		ANY = any.initialize(false, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptySet(), JetScope.EMPTY, Collections.<ConstructorDescriptor>emptyList());
 		ANY_TYPE = new JetTypeImpl(ANY.getTypeConstructor(), new JetScopeImpl()
 		{
 			@NotNull
@@ -163,7 +162,7 @@ public class JetStandardClasses
 		{
 			List<TypeParameterDescriptor> typeParameters = Lists.newArrayList();
 			List<ValueParameterDescriptor> constructorValueParameters = Lists.newArrayList();
-			ClassDescriptorImpl classDescriptor = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Tuple" + i), false);
+			LightClassDescriptorImpl classDescriptor = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Tuple" + i), false);
 			WritableScopeImpl writableScope = new WritableScopeImpl(JetScope.EMPTY, classDescriptor, RedeclarationHandler.THROW_EXCEPTION, "tuples");
 			for(int j = 0; j < i; j++)
 			{
@@ -184,7 +183,7 @@ public class JetStandardClasses
 
 			ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList());
 
-			TUPLE[i] = classDescriptor.initialize(true, typeParameters, Collections.singleton(getAnyType()), writableScope, Collections.<NapileDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
+			TUPLE[i] = classDescriptor.initialize(true, typeParameters, Collections.singleton(getAnyType()), writableScope, Collections.<ConstructorDescriptor>emptyList());
 			TUPLE_CONSTRUCTORS.add(TUPLE[i].getTypeConstructor());
 
 			constructorDescriptor.initialize(classDescriptor.getTypeConstructor().getParameters(), constructorValueParameters, Visibilities.PUBLIC);
@@ -206,27 +205,27 @@ public class JetStandardClasses
 	{
 		for(int i = 0; i <= MAX_FUNCTION_ORDER; i++)
 		{
-			ClassDescriptorImpl function = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("Function" + i), false);
+			LightClassDescriptorImpl function = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("Function" + i), false);
 
 			SimpleFunctionDescriptorImpl invoke = new SimpleFunctionDescriptorImpl(function, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION, false);
 			WritableScope scopeForInvoke = createScopeForInvokeFunction(function, invoke);
 			List<TypeParameterDescriptor> typeParameters = createTypeParameters(0, i, function);
 			ConstructorDescriptor constructorDescriptorForFunction = new ConstructorDescriptor(function, Collections.<AnnotationDescriptor>emptyList());
-			FUNCTION[i] = function.initialize(false, typeParameters, Collections.singleton(getAnyType()), scopeForInvoke,Collections.<NapileDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
+			FUNCTION[i] = function.initialize(false, typeParameters, Collections.singleton(getAnyType()), scopeForInvoke, Collections.<ConstructorDescriptor>emptyList());
 			FUNCTION_TYPE_CONSTRUCTORS.add(FUNCTION[i].getTypeConstructor());
 			FunctionDescriptorUtil.initializeFromFunctionType(invoke, function.getDefaultType(), new ClassReceiver(FUNCTION[i]), Modality.ABSTRACT, Visibilities.PUBLIC);
 
 			constructorDescriptorForFunction.initialize(function.getTypeConstructor().getParameters(), Collections.<ValueParameterDescriptor>emptyList(), Visibilities.PUBLIC);
 			constructorDescriptorForFunction.setReturnType(function.getDefaultType());
 
-			ClassDescriptorImpl receiverFunction = new ClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("ExtensionFunction" + i), false);
+			LightClassDescriptorImpl receiverFunction = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("ExtensionFunction" + i), false);
 			SimpleFunctionDescriptorImpl invokeWithReceiver = new SimpleFunctionDescriptorImpl(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION, false);
 			WritableScope scopeForInvokeWithReceiver = createScopeForInvokeFunction(receiverFunction, invokeWithReceiver);
 			List<TypeParameterDescriptor> parameters = createTypeParameters(1, i, receiverFunction);
 			parameters.add(0, TypeParameterDescriptorImpl.createWithDefaultBound(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), false, Name.identifier("T"), 0));
 
 			ConstructorDescriptor constructorDescriptorForReceiverFunction = new ConstructorDescriptor(function, Collections.<AnnotationDescriptor>emptyList());
-			RECEIVER_FUNCTION[i] = receiverFunction.initialize(false, parameters, Collections.singleton(getAnyType()), scopeForInvokeWithReceiver, Collections.<NapileDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
+			RECEIVER_FUNCTION[i] = receiverFunction.initialize(false, parameters, Collections.singleton(getAnyType()), scopeForInvokeWithReceiver, Collections.<ConstructorDescriptor>emptyList());
 			RECEIVER_FUNCTION_TYPE_CONSTRUCTORS.add(RECEIVER_FUNCTION[i].getTypeConstructor());
 			FunctionDescriptorUtil.initializeFromFunctionType(invokeWithReceiver, receiverFunction.getDefaultType(), new ClassReceiver(RECEIVER_FUNCTION[i]), Modality.ABSTRACT, Visibilities.PUBLIC);
 
@@ -235,7 +234,7 @@ public class JetStandardClasses
 		}
 	}
 
-	private static WritableScope createScopeForInvokeFunction(ClassDescriptorImpl function, SimpleFunctionDescriptorImpl invoke)
+	private static WritableScope createScopeForInvokeFunction(LightClassDescriptorImpl function, SimpleFunctionDescriptorImpl invoke)
 	{
 		WritableScope scopeForInvoke = new WritableScopeImpl(STUB, function, RedeclarationHandler.THROW_EXCEPTION, "Scope for function type");
 		scopeForInvoke.addFunctionDescriptor(invoke);
@@ -243,7 +242,7 @@ public class JetStandardClasses
 		return scopeForInvoke;
 	}
 
-	private static List<TypeParameterDescriptor> createTypeParameters(int baseIndex, int parameterCount, ClassDescriptorImpl function)
+	private static List<TypeParameterDescriptor> createTypeParameters(int baseIndex, int parameterCount, LightClassDescriptorImpl function)
 	{
 		List<TypeParameterDescriptor> parameters = new ArrayList<TypeParameterDescriptor>();
 		for(int j = 0; j < parameterCount; j++)

@@ -20,16 +20,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
 import org.napile.compiler.lang.resolve.name.LabelName;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.error.ErrorSimpleFunctionDescriptorImpl;
@@ -145,13 +143,13 @@ public class ErrorUtils
 		}
 	}
 
-	private static final ClassDescriptorImpl ERROR_CLASS = new ClassDescriptorImpl(ERROR_MODULE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.special("<ERROR CLASS>"), false)
+	private static final LightClassDescriptorImpl ERROR_CLASS = new LightClassDescriptorImpl(ERROR_MODULE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.special("<ERROR CLASS>"), false)
 	{
 		@NotNull
 		@Override
-		public Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors()
+		public List<ConstructorDescriptor> getConstructors()
 		{
-			return Collections.<NapileDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap();
+			return Collections.<ConstructorDescriptor>emptyList();
 		}
 
 		@NotNull
@@ -171,7 +169,7 @@ public class ErrorUtils
 
 	static
 	{
-		ERROR_CLASS.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptyList(), createErrorScope("ERROR_CLASS"), Collections.<NapileDelegationSpecifierListOwner, ConstructorDescriptor>emptyMap());
+		ERROR_CLASS.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptyList(), createErrorScope("ERROR_CLASS"), Collections.<ConstructorDescriptor>emptyList());
 	}
 
 	public static JetScope createErrorScope(String debugMessage)

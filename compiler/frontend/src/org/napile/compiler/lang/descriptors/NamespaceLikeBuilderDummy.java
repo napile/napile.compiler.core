@@ -55,6 +55,12 @@ public class NamespaceLikeBuilderDummy implements NamespaceLikeBuilder
 	}
 
 	@Override
+	public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+	{
+		throw new IllegalStateException();
+	}
+
+	@Override
 	public ClassObjectStatus setClassObjectDescriptor(@NotNull MutableClassDescriptorLite classObjectDescriptor)
 	{
 		throw new IllegalStateException();

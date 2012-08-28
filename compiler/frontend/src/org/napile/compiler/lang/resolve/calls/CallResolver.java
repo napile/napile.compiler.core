@@ -231,13 +231,13 @@ public class CallResolver
 				if(declarationDescriptor instanceof ClassDescriptor)
 				{
 					ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
-					Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> constructors = classDescriptor.getConstructors();
+					List<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
 					if(constructors.isEmpty())
 					{
 						context.trace.report(NO_CONSTRUCTOR.on(reportAbsenceOn));
 						return checkArgumentTypesAndFail(context);
 					}
-					Collection<ResolutionCandidate<CallableDescriptor>> candidates = TaskPrioritizer.<CallableDescriptor>convertWithImpliedThis(context.scope, Collections.<ReceiverDescriptor>singletonList(ReceiverDescriptor.NO_RECEIVER), constructors.values());
+					Collection<ResolutionCandidate<CallableDescriptor>> candidates = TaskPrioritizer.<CallableDescriptor>convertWithImpliedThis(context.scope, Collections.<ReceiverDescriptor>singletonList(ReceiverDescriptor.NO_RECEIVER), constructors);
 					for(ResolutionCandidate<CallableDescriptor> candidate : candidates)
 					{
 						candidate.setSafeCall(NapilePsiUtil.isSafeCall(context.call));
@@ -261,13 +261,13 @@ public class CallResolver
 				assert containingDeclaration instanceof ClassDescriptor;
 				ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
 
-				Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> constructors = classDescriptor.getConstructors();
+				List<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
 				if(constructors.isEmpty())
 				{
 					context.trace.report(NO_CONSTRUCTOR.on(reportAbsenceOn));
 					return checkArgumentTypesAndFail(context);
 				}
-				List<ResolutionCandidate<CallableDescriptor>> candidates = ResolutionCandidate.<CallableDescriptor>convertCollection(constructors.values(), NapilePsiUtil.isSafeCall(context.call));
+				List<ResolutionCandidate<CallableDescriptor>> candidates = ResolutionCandidate.<CallableDescriptor>convertCollection(constructors, NapilePsiUtil.isSafeCall(context.call));
 				prioritizedTasks = Collections.singletonList(new ResolutionTask<CallableDescriptor, FunctionDescriptor>(candidates, functionReference, context)); // !! DataFlowInfo.EMPTY
 			}
 			else if(calleeExpression != null)

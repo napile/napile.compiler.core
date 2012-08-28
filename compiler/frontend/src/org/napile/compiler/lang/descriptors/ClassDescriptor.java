@@ -17,11 +17,9 @@
 package org.napile.compiler.lang.descriptors;
 
 import java.util.List;
-import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
@@ -40,7 +38,7 @@ public interface ClassDescriptor extends ClassifierDescriptor, MemberDescriptor,
 	JetScope getUnsubstitutedInnerClassesScope();
 
 	@NotNull
-	Map<NapileDelegationSpecifierListOwner, ConstructorDescriptor> getConstructors();
+	List<ConstructorDescriptor> getConstructors();
 
 	@Override
 	@NotNull

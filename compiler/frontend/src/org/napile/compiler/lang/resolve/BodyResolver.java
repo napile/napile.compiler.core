@@ -44,7 +44,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
@@ -159,14 +158,15 @@ public class BodyResolver
 
 	private void resolveDelegationSpecifierLists()
 	{
-		// TODO : Make sure the same thing is not initialized twice
 		for(Map.Entry<NapileClass, MutableClassDescriptor> classEntry : context.getClasses().entrySet())
-		{
-			MutableClassDescriptor descriptor = classEntry.getValue();
+			for(NapileConstructor napileConstructor : classEntry.getKey().getConstructors())
+			{
+				ConstructorDescriptor constructorDescriptor = (ConstructorDescriptor) trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileConstructor);
 
-			for(Map.Entry<NapileDelegationSpecifierListOwner, ConstructorDescriptor> constructorEntry : descriptor.getConstructors().entrySet())
-				resolveDelegationSpecifierList(constructorEntry.getKey(), constructorEntry.getValue(), classEntry.getValue().getScopeForSupertypeResolution());
-		}
+				assert constructorDescriptor != null;
+
+				resolveDelegationSpecifierList(napileConstructor, constructorDescriptor, classEntry.getValue().getScopeForSupertypeResolution());
+			}
 
 		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
 			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
@@ -223,7 +223,7 @@ public class BodyResolver
 				if(!classDescriptor.getConstructors().isEmpty() && !ErrorUtils.isError(classDescriptor.getTypeConstructor()) )
 				{
 					boolean hasConstructorWithoutParams = false;
-					for(ConstructorDescriptor constructor : classDescriptor.getConstructors().values())
+					for(ConstructorDescriptor constructor : classDescriptor.getConstructors())
 						if(constructor.getValueParameters().isEmpty())
 							hasConstructorWithoutParams = true;
 
@@ -482,8 +482,6 @@ public class BodyResolver
 
 			JetScope declaringScope = this.context.getDeclaringScopes().get(declaration);
 			assert declaringScope != null;
-
-			descriptor.setReturnType(new JetTypeImpl(descriptor.getContainingDeclaration().getTypeConstructor(), declaringScope));
 
 			resolveFunctionBody(trace, declaration, descriptor, declaringScope);
 		}

@@ -96,15 +96,15 @@ public class DeclarationResolver
 
 	public void process(@NotNull JetScope rootScope)
 	{
-		resolveAnnotationStubsOnClassesAndConstructors();
-		resolveFunctionAndPropertyHeaders();
+		resolveDeclarations();
+		resolveAnnotations();
 		importsResolver.processMembersImports(rootScope);
 		checkRedeclarationsInNamespaces();
 		checkRedeclarationsInInnerClassNames();
 	}
 
 
-	private void resolveAnnotationStubsOnClassesAndConstructors()
+	private void resolveAnnotations()
 	{
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
 		{
@@ -129,14 +129,14 @@ public class DeclarationResolver
 		}
 	}
 
-	private void resolveFunctionAndPropertyHeaders()
+	private void resolveDeclarations()
 	{
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
 		{
 			NapileClass napileClass = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveFunctionAndPropertyHeaders(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForInitializers(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveDeclarations(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForInitializers(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 
 		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
@@ -144,11 +144,10 @@ public class DeclarationResolver
 			NapileObjectDeclaration object = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveFunctionAndPropertyHeaders(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForInitializers(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForInitializers(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 	}
-
-	private void resolveFunctionAndPropertyHeaders(@NotNull List<? extends NapileDeclaration> declarations, final @NotNull JetScope scopeForFunctions, final @NotNull JetScope scopeForPropertyInitializers, final @NotNull JetScope scopeForPropertyAccessors, final @NotNull MutableClassDescriptor ownerDescription)
+	private void resolveDeclarations(@NotNull List<? extends NapileDeclaration> declarations, final @NotNull JetScope scopeForFunctions, final @NotNull JetScope scopeForPropertyInitializers, final @NotNull JetScope scopeForPropertyAccessors, final @NotNull MutableClassDescriptor ownerDescription)
 	{
 		for(NapileDeclaration declaration : declarations)
 		{
@@ -165,12 +164,14 @@ public class DeclarationResolver
 				}
 
 				@Override
-				public void visitConstructor(NapileConstructor function)
+				public void visitConstructor(NapileConstructor constructor)
 				{
-					ConstructorDescriptor napileConstructor = descriptorResolver.resolveConstructorDescriptor(scopeForFunctions, ownerDescription, function, trace);
+					ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveConstructorDescriptor(scopeForFunctions, ownerDescription, constructor, trace);
 
-					context.getConstructors().put(function, napileConstructor);
-					context.getDeclaringScopes().put(function, scopeForFunctions);
+					ownerDescription.getBuilder().addConstructorDescriptor(constructorDescriptor);
+
+					context.getConstructors().put(constructor, constructorDescriptor);
+					context.getDeclaringScopes().put(constructor, scopeForFunctions);
 				}
 
 				@Override
@@ -191,7 +192,7 @@ public class DeclarationResolver
 				@Override
 				public void visitObjectDeclaration(NapileObjectDeclaration declaration)
 				{
-					PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, declaration, context.getObjects().get(declaration), trace);
+					//PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, declaration, context.getObjects().get(declaration), trace);
 
 					//ownerDescription.addPropertyDescriptor(propertyDescriptor);
 				}
@@ -199,7 +200,7 @@ public class DeclarationResolver
 				@Override
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
-					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptorFromEnumEntry(ownerDescription, scopeForPropertyInitializers, enumEntry, trace);
+					//PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptorFromEnumEntry(ownerDescription, scopeForPropertyInitializers, enumEntry, trace);
 
 					//context.getProperties().put(property, propertyDescriptor);
 					//context.getDeclaringScopes().put(enumEntry, scopeForPropertyInitializers);

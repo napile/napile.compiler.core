@@ -493,7 +493,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 					if(classDescriptor.getName().equals(refName))
 					{
 						//todo: renamed classes?
-						for(ConstructorDescriptor constructorDescriptor : classDescriptor.getConstructors().values())
+						for(ConstructorDescriptor constructorDescriptor : classDescriptor.getConstructors())
 						{
 							if(placeDescriptor != null && !JetVisibilityChecker.isVisible(placeDescriptor, constructorDescriptor))
 							{

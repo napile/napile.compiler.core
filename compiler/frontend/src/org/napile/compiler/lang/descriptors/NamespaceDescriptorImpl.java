@@ -100,6 +100,12 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 					getMemberScope().addPropertyDescriptor(propertyDescriptor);
 				}
 
+				@Override
+				public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+				{
+					getMemberScope().addConstructorDescriptor(constructorDescriptor);
+				}
+
 				@NotNull
 				@Override
 				public DeclarationDescriptor getOwnerForChildren()

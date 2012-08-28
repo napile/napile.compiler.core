@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
@@ -256,6 +257,13 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	public void addPropertyDescriptor(@NotNull VariableDescriptor propertyDescriptor)
 	{
 		addVariableDescriptor(propertyDescriptor, true);
+	}
+
+	@Override
+	public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+	{
+		//allDescriptors.add(constructorDescriptor);
+		//addToDeclared(constructorDescriptor);
 	}
 
 	private void addVariableDescriptor(@NotNull VariableDescriptor variableDescriptor, boolean isProperty)

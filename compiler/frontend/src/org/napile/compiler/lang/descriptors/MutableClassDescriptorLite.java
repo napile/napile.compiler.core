@@ -342,6 +342,12 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 				}
 
 				@Override
+				public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+				{
+					getScopeForMemberLookupAsWritableScope().addConstructorDescriptor(constructorDescriptor);
+				}
+
+				@Override
 				public ClassObjectStatus setClassObjectDescriptor(@NotNull MutableClassDescriptorLite classObjectDescriptor)
 				{
 					if(getKind() == ClassKind.OBJECT)

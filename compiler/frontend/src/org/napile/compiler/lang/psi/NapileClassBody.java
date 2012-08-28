@@ -30,7 +30,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 /**
  * @author max
  */
-public class NapileClassBody extends NapileElementImpl implements NapileDeclarationContainer
+public class NapileClassBody extends NapileElementImpl implements NapileDeclarationContainer<NapileDeclaration>
 {
 	public NapileClassBody(@NotNull ASTNode node)
 	{

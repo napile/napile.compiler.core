@@ -340,7 +340,7 @@ public class TypeHierarchyResolver
 				private ConstructorDescriptor createConstructorForObject(@NotNull NapileDelegationSpecifierListOwner object, MutableClassDescriptor mutableClassDescriptor)
 				{
 					ConstructorDescriptor constructorDescriptor = DescriptorResolver.createConstructorForObject(object, mutableClassDescriptor, trace);
-					mutableClassDescriptor.addConstructor(object, constructorDescriptor, trace);
+					mutableClassDescriptor.addConstructor(constructorDescriptor);
 					return constructorDescriptor;
 				}
 
