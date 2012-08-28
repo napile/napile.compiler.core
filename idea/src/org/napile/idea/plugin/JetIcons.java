@@ -33,6 +33,7 @@ public interface JetIcons
 	Icon REPEATABLE_ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotationRepeatable.png");
 	Icon ENUM = IconLoader.getIcon("/org/napile/icons/nodes/enum.png");
 	Icon ABSTRACT_CLASS = IconLoader.getIcon("/org/napile/icons/nodes/abstractClass.png");
+	Icon TYPE_PARAMETER = IconLoader.getIcon("/org/napile/icons/nodes/typeparameter.png");
 
 	Icon CONSTRUCTOR = PlatformIcons.METHOD_ICON; //TODO [VISTALL] new icon
 

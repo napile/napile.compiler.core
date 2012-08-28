@@ -73,6 +73,8 @@ public class JetIconProvider extends IconProvider
 		}
 		else if(psiElement instanceof NapileConstructor)
 			icon = JetIcons.CONSTRUCTOR;
+		else if(psiElement instanceof NapileTypeParameter)
+			icon = JetIcons.TYPE_PARAMETER;
 		else if(psiElement instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) psiElement;
