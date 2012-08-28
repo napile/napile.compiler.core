@@ -171,6 +171,7 @@ public class BodyResolver
 		controlFlowAnalyzer.process(bodiesResolveContext);
 		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
+		annotationChecker.process(bodiesResolveContext);
 	}
 
 	private void resolveDelegationSpecifierLists()
