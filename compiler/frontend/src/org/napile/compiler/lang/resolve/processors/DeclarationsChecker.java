@@ -69,8 +69,7 @@ public class DeclarationsChecker
 
 	public void process(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
-		Map<NapileClass, MutableClassDescriptor> classes = bodiesResolveContext.getClasses();
-		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : classes.entrySet())
+		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : bodiesResolveContext.getClasses().entrySet())
 		{
 			NapileClass aClass = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
