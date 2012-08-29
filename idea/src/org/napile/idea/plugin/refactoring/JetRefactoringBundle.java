@@ -16,44 +16,28 @@
 
 package org.napile.idea.plugin.refactoring;
 
-import java.lang.ref.Reference;
-import java.lang.ref.SoftReference;
-import java.util.ResourceBundle;
-
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.PropertyKey;
-import com.intellij.CommonBundle;
+import com.intellij.AbstractBundle;
 
 /**
  * User: Alefas
  * Date: 25.01.12
  */
-public class JetRefactoringBundle
+public class JetRefactoringBundle extends AbstractBundle
 {
-	private static Reference<ResourceBundle> ourBundle;
+	private static final JetRefactoringBundle INSTANCE = new JetRefactoringBundle();
 
 	@NonNls
 	private static final String BUNDLE = "org.napile.idea.plugin.refactoring.JetRefactoringBundle";
 
 	private JetRefactoringBundle()
 	{
+		super(BUNDLE);
 	}
 
 	public static String message(@NonNls @PropertyKey(resourceBundle = BUNDLE) String key, Object... params)
 	{
-		return CommonBundle.message(getBundle(), key, params);
-	}
-
-	private static ResourceBundle getBundle()
-	{
-		ResourceBundle bundle = null;
-		if(ourBundle != null)
-			bundle = ourBundle.get();
-		if(bundle == null)
-		{
-			bundle = ResourceBundle.getBundle(BUNDLE);
-			ourBundle = new SoftReference<ResourceBundle>(bundle);
-		}
-		return bundle;
+		return INSTANCE.getMessage(key, params);
 	}
 }
