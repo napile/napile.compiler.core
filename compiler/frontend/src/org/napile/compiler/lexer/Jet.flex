@@ -244,7 +244,6 @@ LONG_TEMPLATE_ENTRY_END=\}
 "super"      { return JetTokens.SUPER_KEYWORD ;}
 "when"       { return JetTokens.WHEN_KEYWORD ;}
 "true"       { return JetTokens.TRUE_KEYWORD ;}
-"type"       { return JetTokens.TYPE_KEYWORD ;}
 "this"       { return JetTokens.THIS_KEYWORD ;}
 "null"       { return JetTokens.NULL_KEYWORD ;}
 "else"       { return JetTokens.ELSE_KEYWORD ;}

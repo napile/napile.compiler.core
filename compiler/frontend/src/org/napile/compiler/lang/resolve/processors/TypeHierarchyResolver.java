@@ -18,7 +18,6 @@ package org.napile.compiler.lang.resolve.processors;
 
 import static org.napile.compiler.lang.diagnostics.Errors.CYCLIC_INHERITANCE_HIERARCHY;
 import static org.napile.compiler.lang.diagnostics.Errors.INCONSISTENT_TYPE_PARAMETER_VALUES;
-import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -236,11 +235,6 @@ public class TypeHierarchyResolver
 					} */
 				}
 
-				@Override
-				public void visitTypedef(NapileTypedef typedef)
-				{
-					trace.report(UNSUPPORTED.on(typedef, "TypeHierarchyResolver"));
-				}
 
 				private void createClassObjectForEnumClass(NapileClass klass, MutableClassDescriptor mutableClassDescriptor)
 				{

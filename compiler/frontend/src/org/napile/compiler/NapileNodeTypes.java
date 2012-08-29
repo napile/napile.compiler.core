@@ -33,7 +33,6 @@ public interface NapileNodeTypes
 	IElementType METHOD = JetStubElementTypes.METHOD;
 	IElementType PROPERTY = JetStubElementTypes.PROPERTY;
 
-	NapileNodeType TYPEDEF = new NapileNodeType("TYPEDEF", NapileTypedef.class);
 	NapileNodeType ANONYM_CLASS = new NapileNodeType("ANONYM_CLASS", NapileAnonymClass.class);
 	NapileNodeType OBJECT_DECLARATION_NAME = new NapileNodeType("OBJECT_DECLARATION_NAME", NapileObjectDeclarationName.class);
 

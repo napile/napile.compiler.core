@@ -50,7 +50,7 @@ public class JetParsing extends AbstractJetParsing
 	}
 
 	private static final TokenSet TOPLEVEL_OBJECT_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD);
-	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.TYPE_KEYWORD, JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.IDENTIFIER);
+	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.IDENTIFIER);
 
 	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE), TOPLEVEL_OBJECT_FIRST);
 	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(JetTokens.WHERE_KEYWORD, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.GT);
@@ -738,33 +738,6 @@ public class JetParsing extends AbstractJetParsing
 		myExpressionParsing.parseValueArgumentList();
 
 		initializer.done(type);
-	}
-
-	/*
-		 * typedef
-		 *   : modifiers "type" SimpleName (typeParameters typeConstraints)? "=" type
-		 *   ;
-		 */
-	NapileNodeType parseTypeDef()
-	{
-		assert _at(JetTokens.TYPE_KEYWORD);
-
-		advance(); // TYPE_KEYWORD
-
-		expect(JetTokens.IDENTIFIER, "Type name expected", TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.EQ, JetTokens.SEMICOLON), TOPLEVEL_OBJECT_FIRST));
-
-		if(parseTypeParameterList(TYPE_PARAMETER_GT_RECOVERY_SET))
-		{
-			parseTypeConstraints();
-		}
-
-		expect(JetTokens.EQ, "Expecting '='", TokenSet.orSet(TOPLEVEL_OBJECT_FIRST, TokenSet.create(JetTokens.SEMICOLON)));
-
-		parseTypeRef();
-
-		consumeIf(JetTokens.SEMICOLON);
-
-		return TYPEDEF;
 	}
 
 	/*

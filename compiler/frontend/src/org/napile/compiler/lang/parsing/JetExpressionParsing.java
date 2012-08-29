@@ -128,7 +128,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		return builder.build();
 	}
 
-	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(JetTokens.INTEGER_LITERAL, JetTokens.FLOAT_LITERAL, JetTokens.CHARACTER_LITERAL, JetTokens.OPEN_QUOTE, JetTokens.PACKAGE_KEYWORD, JetTokens.AS_KEYWORD, JetTokens.TYPE_KEYWORD, JetTokens.CLASS_KEYWORD, JetTokens.THIS_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.FOR_KEYWORD, JetTokens.NULL_KEYWORD, JetTokens.TRUE_KEYWORD, JetTokens.FALSE_KEYWORD, JetTokens.IS_KEYWORD, JetTokens.THROW_KEYWORD, JetTokens.RETURN_KEYWORD, JetTokens.BREAK_KEYWORD, JetTokens.CONTINUE_KEYWORD, JetTokens.ANONYM_KEYWORD, JetTokens.IF_KEYWORD, JetTokens.TRY_KEYWORD, JetTokens.ELSE_KEYWORD, JetTokens.WHILE_KEYWORD, JetTokens.DO_KEYWORD, JetTokens.WHEN_KEYWORD, JetTokens.RBRACKET, JetTokens.RBRACE, JetTokens.RPAR, JetTokens.PLUSPLUS, JetTokens.MINUSMINUS, JetTokens.EXCLEXCL,
+	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(JetTokens.INTEGER_LITERAL, JetTokens.FLOAT_LITERAL, JetTokens.CHARACTER_LITERAL, JetTokens.OPEN_QUOTE, JetTokens.PACKAGE_KEYWORD, JetTokens.AS_KEYWORD, JetTokens.CLASS_KEYWORD, JetTokens.THIS_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.FOR_KEYWORD, JetTokens.NULL_KEYWORD, JetTokens.TRUE_KEYWORD, JetTokens.FALSE_KEYWORD, JetTokens.IS_KEYWORD, JetTokens.THROW_KEYWORD, JetTokens.RETURN_KEYWORD, JetTokens.BREAK_KEYWORD, JetTokens.CONTINUE_KEYWORD, JetTokens.ANONYM_KEYWORD, JetTokens.IF_KEYWORD, JetTokens.TRY_KEYWORD, JetTokens.ELSE_KEYWORD, JetTokens.WHILE_KEYWORD, JetTokens.DO_KEYWORD, JetTokens.WHEN_KEYWORD, JetTokens.RBRACKET, JetTokens.RBRACE, JetTokens.RPAR, JetTokens.PLUSPLUS, JetTokens.MINUSMINUS, JetTokens.EXCLEXCL,
 			//            MUL,
 			JetTokens.PLUS, JetTokens.MINUS, JetTokens.EXCL, JetTokens.DIV, JetTokens.PERC, JetTokens.LTEQ,
 			// TODO GTEQ,   foo<bar, baz>=x
@@ -174,7 +174,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private static final TokenSet STATEMENT_FIRST = TokenSet.orSet(EXPRESSION_FIRST, TokenSet.create(
 			// declaration
 			JetTokens.LBRACKET, // attribute
-			JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.CLASS_KEYWORD, JetTokens.TYPE_KEYWORD), JetTokens.MODIFIER_KEYWORDS);
+			JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.CLASS_KEYWORD), JetTokens.MODIFIER_KEYWORDS);
 
 	/*package*/ static final TokenSet EXPRESSION_FOLLOW = TokenSet.create(JetTokens.SEMICOLON, JetTokens.ARROW, JetTokens.COMMA, JetTokens.RBRACE, JetTokens.RPAR, JetTokens.RBRACKET, JetTokens.IDE_TEMPLATE_END);
 
@@ -690,7 +690,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			parseDoWhile();
 		}
-		else if(atSet(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.TYPE_KEYWORD))
+		else if(atSet(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD))
 		{
 			parseLocalDeclaration();
 		}

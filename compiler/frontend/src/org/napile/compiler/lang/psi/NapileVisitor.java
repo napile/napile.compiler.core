@@ -54,11 +54,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitNamedDeclaration(property, data);
 	}
 
-	public R visitTypedef(NapileTypedef typedef, D data)
-	{
-		return visitNamedDeclaration(typedef, data);
-	}
-
 	public R visitJetFile(NapileFile file, D data)
 	{
 		visitFile(file);

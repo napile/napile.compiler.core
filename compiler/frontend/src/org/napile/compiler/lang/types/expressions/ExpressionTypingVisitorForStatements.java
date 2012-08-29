@@ -169,12 +169,6 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitTypedef(NapileTypedef typedef, ExpressionTypingContext context)
-	{
-		return super.visitTypedef(typedef, context); // TODO
-	}
-
-	@Override
 	public JetTypeInfo visitDeclaration(NapileDeclaration dcl, ExpressionTypingContext context)
 	{
 		return DataFlowUtils.checkStatementType(dcl, context, context.dataFlowInfo);
