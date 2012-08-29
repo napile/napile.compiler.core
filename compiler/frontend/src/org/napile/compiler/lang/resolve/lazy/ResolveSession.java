@@ -231,7 +231,7 @@ public class ResolveSession
 			}
 
 			@Override
-			public DeclarationDescriptor visitObjectDeclaration(NapileAnonymClass declaration, Void data)
+			public DeclarationDescriptor visitAnonymClass(NapileAnonymClass declaration, Void data)
 			{
 				PsiElement parent = declaration.getParent();
 

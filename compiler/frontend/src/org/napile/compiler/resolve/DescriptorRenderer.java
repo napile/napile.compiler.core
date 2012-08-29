@@ -606,8 +606,8 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				case ENUM_CLASS:
 					keyword = "enum";
 					break;
-				case OBJECT:
-					keyword = "anonymous";
+				case ANONYM_CLASS:
+					keyword = "anonym";
 					break;
 				default:
 					keyword = "class";
@@ -621,12 +621,12 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderVisibility(descriptor, builder);
 
-			if(descriptor.getKind() != ClassKind.OBJECT)
+			if(descriptor.getKind() != ClassKind.ANONYM_CLASS)
 			{
 				renderModality(descriptor.getModality(), builder);
 			}
 			builder.append(renderKeyword(keyword));
-			if(descriptor.getKind() != ClassKind.OBJECT)
+			if(descriptor.getKind() != ClassKind.ANONYM_CLASS)
 			{
 				builder.append(" ");
 				renderName(descriptor, builder);

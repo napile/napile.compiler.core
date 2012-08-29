@@ -1065,7 +1065,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitObjectDeclaration(NapileAnonymClass objectDeclaration)
+		public void visitAnonymClass(NapileAnonymClass objectDeclaration)
 		{
 			visitClassOrObject(objectDeclaration);
 		}

@@ -232,10 +232,10 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 		if(constructorDescriptors == null)
 		{
 			constructorDescriptors = new HashSet<ConstructorDescriptor>();
-			if(EnumSet.of(ClassKind.CLASS, ClassKind.OBJECT, ClassKind.ENUM_CLASS).contains(thisDescriptor.getKind()))
+			if(EnumSet.of(ClassKind.CLASS, ClassKind.ANONYM_CLASS, ClassKind.ENUM_CLASS).contains(thisDescriptor.getKind()))
 			{
 				NapileLikeClass classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
-				if(thisDescriptor.getKind() != ClassKind.OBJECT)
+				if(thisDescriptor.getKind() != ClassKind.ANONYM_CLASS)
 				{
 					NapileClass napileClass = (NapileClass) classOrObject;
 					for(NapileConstructor constructor : napileClass.getConstructors())

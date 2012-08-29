@@ -183,17 +183,6 @@ public class NapilePsiUtil
 	@Nullable
 	public static FqName getFQName(NapileNamedDeclaration namedDeclaration)
 	{
-		if(namedDeclaration instanceof NapileObjectDeclarationName)
-		{
-			NapileAnonymClass objectDeclaration = PsiTreeUtil.getParentOfType(namedDeclaration, NapileAnonymClass.class);
-			if(objectDeclaration == null)
-			{
-				return null;
-			}
-
-			return getFQName(objectDeclaration);
-		}
-
 		Name name = namedDeclaration.getNameAsName();
 		if(name == null)
 		{

@@ -46,6 +46,6 @@ public class NapileObjectInfo extends NapileClassOrObjectInfo<NapileLikeClass>
 	@Override
 	public ClassKind getClassKind()
 	{
-		return ClassKind.OBJECT;
+		return ClassKind.ANONYM_CLASS;
 	}
 }

@@ -24,5 +24,5 @@ public enum ClassKind
 	CLASS,
 	ENUM_CLASS,
 	ENUM_ENTRY,
-	OBJECT
+	ANONYM_CLASS
 }

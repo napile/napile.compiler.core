@@ -18,7 +18,6 @@ package org.napile.compiler.lang.psi.stubs.elements;
 
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
-import org.napile.compiler.lang.psi.stubs.PsiJetObjectStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
 import com.intellij.psi.stubs.IndexSink;
 
@@ -39,12 +38,7 @@ public interface StubIndexService
 		}
 
 		@Override
-		public void indexFunction(PsiJetFunctionStub stub, IndexSink sink)
-		{
-		}
-
-		@Override
-		public void indexObject(PsiJetObjectStub stub, IndexSink sink)
+		public void indexMethod(PsiJetFunctionStub stub, IndexSink sink)
 		{
 		}
 
@@ -56,9 +50,7 @@ public interface StubIndexService
 
 	void indexClass(PsiJetClassStub stub, IndexSink sink);
 
-	void indexFunction(PsiJetFunctionStub stub, IndexSink sink);
-
-	void indexObject(PsiJetObjectStub stub, IndexSink sink);
+	void indexMethod(PsiJetFunctionStub stub, IndexSink sink);
 
 	void indexProperty(PsiJetPropertyStub stub, IndexSink sink);
 }

@@ -53,7 +53,7 @@ public class InnerClassesScopeWrapper extends AbstractScopeAdapter
 
 	private boolean isClass(DeclarationDescriptor descriptor)
 	{
-		return descriptor instanceof ClassDescriptor && ((ClassDescriptor) descriptor).getKind() != ClassKind.OBJECT;
+		return descriptor instanceof ClassDescriptor && ((ClassDescriptor) descriptor).getKind() != ClassKind.ANONYM_CLASS;
 	}
 
 	@Override

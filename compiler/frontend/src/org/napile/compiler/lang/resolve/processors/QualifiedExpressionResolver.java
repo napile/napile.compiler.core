@@ -155,7 +155,7 @@ public class QualifiedExpressionResolver
 		{
 			return true;
 		}
-		if(descriptor instanceof ClassDescriptor && ((ClassDescriptor) descriptor).getKind() != ClassKind.OBJECT)
+		if(descriptor instanceof ClassDescriptor && ((ClassDescriptor) descriptor).getKind() != ClassKind.ANONYM_CLASS)
 		{
 			return true;
 		}

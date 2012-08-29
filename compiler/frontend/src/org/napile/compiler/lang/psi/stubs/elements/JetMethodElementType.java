@@ -112,6 +112,6 @@ public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub,
 	@Override
 	public void indexStub(PsiJetFunctionStub stub, IndexSink sink)
 	{
-		StubIndexServiceFactory.getInstance().indexFunction(stub, sink);
+		StubIndexServiceFactory.getInstance().indexMethod(stub, sink);
 	}
 }

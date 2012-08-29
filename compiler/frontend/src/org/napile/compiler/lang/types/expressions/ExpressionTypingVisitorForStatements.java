@@ -92,7 +92,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitObjectDeclaration(NapileAnonymClass declaration, ExpressionTypingContext context)
+	public JetTypeInfo visitAnonymClass(NapileAnonymClass declaration, ExpressionTypingContext context)
 	{
 		TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), declaration);
 		ClassDescriptor classDescriptor = context.trace.getBindingContext().get(BindingContext.CLASS, declaration);

@@ -194,7 +194,7 @@ public class DeclarationResolver
 				}
 
 				@Override
-				public void visitObjectDeclaration(NapileAnonymClass declaration)
+				public void visitAnonymClass(NapileAnonymClass declaration)
 				{
 					//PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, declaration, context.getObjects().get(declaration), trace);
 

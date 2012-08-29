@@ -194,10 +194,18 @@ public class TypeHierarchyResolver
 				}
 
 				@Override
-				public void visitObjectDeclaration(NapileAnonymClass declaration)
+				public void visitAnonymClass(NapileAnonymClass declaration)
 				{
-					final MutableClassDescriptor objectDescriptor = createClassDescriptorForObject(declaration, owner, outerScope);
-					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(declaration), objectDescriptor);
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
+					context.getAnonymous().put(declaration, mutableClassDescriptor);
+
+					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
+
+					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
+
+					createConstructorForObject(declaration, mutableClassDescriptor);
+					owner.addObjectDescriptor(mutableClassDescriptor);
+					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
 				}
 
 				@Override
@@ -249,20 +257,6 @@ public class TypeHierarchyResolver
 					} */
 				}
 
-				private MutableClassDescriptor createClassDescriptorForObject(@NotNull NapileAnonymClass declaration, @NotNull NamespaceLikeBuilder owner, JetScope scope)
-				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), scope, ClassKind.OBJECT, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
-					context.getAnonymous().put(declaration, mutableClassDescriptor);
-
-					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
-
-					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
-
-					createConstructorForObject(declaration, mutableClassDescriptor);
-					owner.addObjectDescriptor(mutableClassDescriptor);
-					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
-					return mutableClassDescriptor;
-				}
 
 				/*private MutableClassDescriptor createClassDescriptorForEnumEntry(@NotNull NapileEnumEntry declaration, @NotNull NamespaceLikeBuilder owner)
 				{

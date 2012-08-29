@@ -23,105 +23,74 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lang.psi.stubs.PsiJetObjectStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author abreslav
  */
-public class NapileAnonymClass extends NapileNamedDeclarationStub<PsiJetObjectStub> implements NapileLikeClass
+public class NapileAnonymClass extends NapileElementImpl implements NapileLikeClass, NapileExpression, NapileNamedDeclaration
 {
+	private static final FqName FQ_NAME = new FqName("@anonym");
+
 	public NapileAnonymClass(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileAnonymClass(@NotNull PsiJetObjectStub stub)
-	{
-		super(stub, JetStubElementTypes.OBJECT_DECLARATION);
-	}
-
-	@NotNull
-	@Override
-	public IStubElementType getElementType()
-	{
-		return JetStubElementTypes.OBJECT_DECLARATION;
-	}
-
 	@Override
 	public String getName()
 	{
-		PsiJetObjectStub stub = getStub();
-		if(stub != null)
-		{
-			return stub.getName();
-		}
-
-		NapileObjectDeclarationName nameAsDeclaration = getNameAsDeclaration();
-		return nameAsDeclaration == null ? null : nameAsDeclaration.getName();
+		return "anonym";
 	}
 
-	/**
-	 * Could be null for anonymous objects and object declared inside functions
-	 *
-	 * @return
-	 */
 	@Override
 	public FqName getFqName()
 	{
-		PsiJetObjectStub stub = getStub();
-		if(stub != null)
-		{
-			return stub.getFQName();
-		}
-
-		return NapilePsiUtil.getFQName(this);
+		return FQ_NAME;
 	}
 
 	@Override
 	public PsiElement getNameIdentifier()
 	{
-		NapileObjectDeclarationName nameAsDeclaration = getNameAsDeclaration();
-		return nameAsDeclaration == null ? null : nameAsDeclaration.getNameIdentifier();
+		return null;
 	}
 
 	@Override
 	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
 	{
-		NapileObjectDeclarationName nameAsDeclaration = getNameAsDeclaration();
-		return nameAsDeclaration == null ? null : nameAsDeclaration.setName(name);
+		return null;
 	}
 
 	@Override
 	@Nullable
 	public NapileObjectDeclarationName getNameAsDeclaration()
 	{
-		return (NapileObjectDeclarationName) findChildByType(NapileNodeTypes.OBJECT_DECLARATION_NAME);
+		return null;
 	}
 
 	@Override
 	@Nullable
 	public NapileModifierList getModifierList()
 	{
-		PsiElement parent = getParent();
-		if(isClassObject(parent))
-		{
-			assert parent instanceof NapileDeclaration;
-			return ((NapileDeclaration) parent).getModifierList();
-		}
-		return (NapileModifierList) findChildByType(NapileNodeTypes.MODIFIER_LIST);
+		return null;
 	}
 
-	@Deprecated
-	private static boolean isClassObject(@NotNull PsiElement parent)
+	@Override
+	public boolean hasModifier(NapileToken modifier)
 	{
 		return false;
+	}
+
+	@Override
+	public ASTNode getModifierNode(NapileToken token)
+	{
+		return null;
 	}
 
 	@Override
@@ -150,6 +119,13 @@ public class NapileAnonymClass extends NapileNamedDeclarationStub<PsiJetObjectSt
 		return body.getAnonymousInitializers();
 	}
 
+	@Nullable
+	@Override
+	public Name getNameAsName()
+	{
+		return null;
+	}
+
 	@Override
 	public NapileClassBody getBody()
 	{
@@ -170,19 +146,19 @@ public class NapileAnonymClass extends NapileNamedDeclarationStub<PsiJetObjectSt
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitObjectDeclaration(this);
+		visitor.visitAnonymClass(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitObjectDeclaration(this, data);
+		return visitor.visitAnonymClass(this, data);
 	}
 
 	@NotNull
 	public PsiElement getObjectKeyword()
 	{
-		return findChildByType(JetTokens.ANONYM_KEYWORD);
+		return findNotNullChildByType(JetTokens.ANONYM_KEYWORD);
 	}
 
 	@Override
@@ -191,8 +167,10 @@ public class NapileAnonymClass extends NapileNamedDeclarationStub<PsiJetObjectSt
 		NapilePsiUtil.deleteClass(this);
 	}
 
-	//@Override
-	//public ItemPresentation getPresentation() {
-	//    return ItemPresentationProviders.getItemPresentation(this);
-	//}
+	@NotNull
+	@Override
+	public Name getNameAsSafeName()
+	{
+		throw new IllegalArgumentException();
+	}
 }

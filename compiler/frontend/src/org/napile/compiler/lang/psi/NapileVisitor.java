@@ -484,9 +484,9 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitPattern(pattern, data);
 	}
 
-	public R visitObjectDeclaration(NapileAnonymClass declaration, D data)
+	public R visitAnonymClass(NapileAnonymClass element, D data)
 	{
-		return visitNamedDeclaration(declaration, data);
+		return visitNamedDeclaration(element, data);
 	}
 
 	public R visitObjectDeclarationName(NapileObjectDeclarationName declarationName, D data)

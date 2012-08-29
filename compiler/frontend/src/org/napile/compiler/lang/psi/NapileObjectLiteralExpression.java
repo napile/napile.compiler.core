@@ -45,6 +45,6 @@ public class NapileObjectLiteralExpression extends NapileExpressionImpl
 	@NotNull
 	public NapileAnonymClass getObjectDeclaration()
 	{
-		return (NapileAnonymClass) findChildByType(NapileNodeTypes.OBJECT_DECLARATION);
+		return (NapileAnonymClass) findChildByType(NapileNodeTypes.ANONYM_CLASS);
 	}
 }

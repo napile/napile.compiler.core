@@ -81,7 +81,7 @@ public interface Importer
 			{
 				namespaceScope.importScope(((NamespaceDescriptor) descriptor).getMemberScope());
 			}
-			if(descriptor instanceof ClassDescriptor && ((ClassDescriptor) descriptor).getKind() != ClassKind.OBJECT)
+			if(descriptor instanceof ClassDescriptor && ((ClassDescriptor) descriptor).getKind() != ClassKind.ANONYM_CLASS)
 			{
 				ClassDescriptor classDescriptor = (ClassDescriptor) descriptor;
 				namespaceScope.importScope(classDescriptor.getStaticOuterScope());

@@ -118,7 +118,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 		this.typeConstructor = new LazyClassTypeConstructor();
 
 		this.kind = classLikeInfo.getClassKind();
-		if(kind == ClassKind.OBJECT)
+		if(kind == ClassKind.ANONYM_CLASS)
 		{
 			this.modality = Modality.FINAL;
 		}
@@ -401,7 +401,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 			@Override
 			public ClassKind getClassKind()
 			{
-				return ClassKind.OBJECT;
+				return ClassKind.ANONYM_CLASS;
 			}
 
 			@NotNull

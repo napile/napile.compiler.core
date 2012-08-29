@@ -272,7 +272,7 @@ public class DescriptorUtils
 		if(classifier instanceof ClassDescriptor)
 		{
 			ClassDescriptor clazz = (ClassDescriptor) classifier;
-			return clazz.getKind() == ClassKind.OBJECT || clazz.getKind() == ClassKind.ENUM_ENTRY;
+			return clazz.getKind() == ClassKind.ANONYM_CLASS || clazz.getKind() == ClassKind.ENUM_ENTRY;
 		}
 		else if(classifier instanceof TypeParameterDescriptor)
 		{
@@ -382,7 +382,7 @@ public class DescriptorUtils
 		{
 			ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
 
-			if(classDescriptor.getKind() == ClassKind.OBJECT)
+			if(classDescriptor.getKind() == ClassKind.ANONYM_CLASS)
 			{
 				return inStaticContext(classDescriptor.getContainingDeclaration());
 			}

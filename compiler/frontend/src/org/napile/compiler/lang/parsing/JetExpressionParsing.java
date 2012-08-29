@@ -56,7 +56,7 @@ import static org.napile.compiler.NapileNodeTypes.LOOP_PARAMETER;
 import static org.napile.compiler.NapileNodeTypes.LOOP_RANGE;
 import static org.napile.compiler.NapileNodeTypes.MODIFIER_LIST;
 import static org.napile.compiler.NapileNodeTypes.NULL;
-import static org.napile.compiler.NapileNodeTypes.OBJECT_DECLARATION;
+import static org.napile.compiler.NapileNodeTypes.ANONYM_CLASS;
 import static org.napile.compiler.NapileNodeTypes.OBJECT_LITERAL;
 import static org.napile.compiler.NapileNodeTypes.OPERATION_REFERENCE;
 import static org.napile.compiler.NapileNodeTypes.PARENTHESIZED;
@@ -2194,7 +2194,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		PsiBuilder.Marker literal = mark();
 		PsiBuilder.Marker declaration = mark();
 		myJetParsing.parseObject(); // Body is not optional because of foo(object : A, B)
-		declaration.done(OBJECT_DECLARATION);
+		declaration.done(ANONYM_CLASS);
 		literal.done(OBJECT_LITERAL);
 	}
 
