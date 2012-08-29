@@ -114,6 +114,7 @@ public class DescriptorResolver
 		trace.record(BindingContext.CLASS, classElement, descriptor);
 	}
 
+
 	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileClassOrObject jetClass, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
 	{
 		for(JetType supertype : resolveSupertypes(descriptor.getScopeForSupertypeResolution(), jetClass, trace))

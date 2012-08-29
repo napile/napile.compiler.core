@@ -139,7 +139,7 @@ public class DeclarationResolver
 			NapileClass napileClass = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveDeclarations(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveDeclarations(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 
 		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
@@ -147,10 +147,11 @@ public class DeclarationResolver
 			NapileObjectDeclaration object = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 	}
-	private void resolveDeclarations(@NotNull List<? extends NapileDeclaration> declarations, final @NotNull JetScope scopeForFunctions, final @NotNull JetScope scopeForPropertyInitializers, final @NotNull JetScope scopeForPropertyAccessors, final @NotNull MutableClassDescriptor ownerDescription)
+
+	private void resolveDeclarations(@NotNull List<? extends NapileDeclaration> declarations, final @NotNull JetScope scope, final @NotNull MutableClassDescriptor ownerDescription)
 	{
 		for(NapileDeclaration declaration : declarations)
 		{
@@ -159,37 +160,37 @@ public class DeclarationResolver
 				@Override
 				public void visitNamedFunction(NapileNamedFunction function)
 				{
-					SimpleFunctionDescriptor functionDescriptor = descriptorResolver.resolveFunctionDescriptor(ownerDescription, scopeForFunctions, function, trace);
+					SimpleFunctionDescriptor functionDescriptor = descriptorResolver.resolveFunctionDescriptor(ownerDescription, scope, function, trace);
 					ownerDescription.getBuilder().addFunctionDescriptor(functionDescriptor);
 
 					context.getFunctions().put(function, functionDescriptor);
-					context.getDeclaringScopes().put(function, scopeForFunctions);
+					context.getDeclaringScopes().put(function, scope);
 				}
 
 				@Override
 				public void visitConstructor(NapileConstructor constructor)
 				{
-					ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveConstructorDescriptor(scopeForFunctions, ownerDescription, constructor, trace);
+					ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveConstructorDescriptor(scope, ownerDescription, constructor, trace);
 
 					ownerDescription.getBuilder().addConstructorDescriptor(constructorDescriptor);
 
 					context.getConstructors().put(constructor, constructorDescriptor);
-					context.getDeclaringScopes().put(constructor, scopeForFunctions);
+					context.getDeclaringScopes().put(constructor, scope);
 				}
 
 				@Override
 				public void visitProperty(NapileProperty property)
 				{
-					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptor(ownerDescription, scopeForPropertyInitializers, property, trace);
+					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptor(ownerDescription, scope, property, trace);
 
 					ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
 
 					context.getProperties().put(property, propertyDescriptor);
-					context.getDeclaringScopes().put(property, scopeForPropertyInitializers);
+					context.getDeclaringScopes().put(property, scope);
 					if(property.getGetter() != null)
-						context.getDeclaringScopes().put(property.getGetter(), scopeForPropertyAccessors);
+						context.getDeclaringScopes().put(property.getGetter(), scope);
 					if(property.getSetter() != null)
-						context.getDeclaringScopes().put(property.getSetter(), scopeForPropertyAccessors);
+						context.getDeclaringScopes().put(property.getSetter(), scope);
 				}
 
 				@Override
@@ -203,13 +204,23 @@ public class DeclarationResolver
 				@Override
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
-					EnumEntryDescriptor enumEntryDescriptor = descriptorResolver.resolveEnumEntryDescriptor(ownerDescription, scopeForFunctions, enumEntry, trace);
+					EnumEntryDescriptor enumEntryDescriptor = descriptorResolver.resolveEnumEntryDescriptor(ownerDescription, scope, enumEntry, trace);
 
 					ownerDescription.getBuilder().addEnumEntryDescriptor(enumEntryDescriptor);
 
 					context.getEnumEntries().put(enumEntry, enumEntryDescriptor);
 
-					context.getDeclaringScopes().put(enumEntry, scopeForFunctions);
+					context.getDeclaringScopes().put(enumEntry, scope);
+
+					/*MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(enumEntryDescriptor, ownerDescription.getScopeForMemberLookup(), ClassKind.ENUM_ENTRY, enumEntry.getNameAsName(), true);
+					mutableClassDescriptor.setModality(Modality.OPEN);
+					mutableClassDescriptor.setTypeParameterDescriptors(ownerDescription.getTypeParameters());
+					mutableClassDescriptor.addSupertype(new JetTypeImpl(ownerDescription.getTypeConstructor(), scope));
+					mutableClassDescriptor.createTypeConstructor();
+
+					enumEntryDescriptor.setMutableClassDescriptor(mutableClassDescriptor);
+
+					resolveDeclarations(enumEntry.getDeclarations(), mutableClassDescriptor.getScopeForMemberLookup(), mutableClassDescriptor);  */
 				}
 			});
 		}

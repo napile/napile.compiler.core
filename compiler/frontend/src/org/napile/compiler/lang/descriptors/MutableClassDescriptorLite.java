@@ -123,7 +123,7 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	{
 		assert typeConstructor == null : typeConstructor;
 		this.typeConstructor = new TypeConstructorImpl(this, Collections.<AnnotationDescriptor>emptyList(), // TODO : pass annotations from the class?
-				!getModality().isOverridable(), getName().getName(), typeParameters, supertypes);
+				!getModality().isOverridable(), getName().getName(), getTypeParameters(), supertypes);
 	}
 
 	private WritableScope getScopeForMemberLookupAsWritableScope()
@@ -191,14 +191,14 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 
 	public void setTypeParameterDescriptors(List<TypeParameterDescriptor> typeParameters)
 	{
-		if(this.typeParameters != null)
+		if(this.getTypeParameters() != null)
 		{
 			throw new IllegalStateException();
 		}
-		this.typeParameters = new ArrayList<TypeParameterDescriptor>();
+		this.typeParameters = new ArrayList<TypeParameterDescriptor>(typeParameters.size());
 		for(TypeParameterDescriptor typeParameterDescriptor : typeParameters)
 		{
-			this.typeParameters.add(typeParameterDescriptor);
+			this.getTypeParameters().add(typeParameterDescriptor);
 		}
 	}
 
@@ -296,5 +296,10 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 		}
 
 		return builder;
+	}
+
+	public List<TypeParameterDescriptor> getTypeParameters()
+	{
+		return typeParameters;
 	}
 }

@@ -313,6 +313,7 @@ public class TypeHierarchyResolver
 			descriptorResolver.resolveMutableClassDescriptor(napileClass, descriptor, trace);
 			descriptor.createTypeConstructor();
 		}
+
 		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
 			NapileObjectDeclaration objectDeclaration = entry.getKey();
@@ -330,9 +331,11 @@ public class TypeHierarchyResolver
 		{
 			NapileClass napileClass = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
+
 			descriptorResolver.resolveGenericBounds(napileClass, descriptor.getScopeForSupertypeResolution(), (List) descriptor.getTypeConstructor().getParameters(), trace);
 			descriptorResolver.resolveSupertypesForMutableClassDescriptor(napileClass, descriptor, trace);
 		}
+
 		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
 			NapileClassOrObject jetClass = entry.getKey();
