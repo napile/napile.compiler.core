@@ -86,6 +86,7 @@ public class DeclarationsChecker
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(objectDeclaration))
 				continue;
+
 			checkObject(objectDeclaration, objectDescriptor);
 		}
 
@@ -97,7 +98,7 @@ public class DeclarationsChecker
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
 
-			checkFunction(function, functionDescriptor);
+			chechMethod(function, functionDescriptor);
 		}
 
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
@@ -258,7 +259,7 @@ public class DeclarationsChecker
 		}
 	}
 
-	protected void checkFunction(NapileNamedFunction function, SimpleMethodDescriptor functionDescriptor)
+	protected void chechMethod(NapileNamedFunction function, SimpleMethodDescriptor functionDescriptor)
 	{
 		DeclarationDescriptor containingDescriptor = functionDescriptor.getContainingDeclaration();
 		boolean hasAbstractModifier = function.hasModifier(JetTokens.ABSTRACT_KEYWORD);
