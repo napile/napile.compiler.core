@@ -179,11 +179,6 @@ public class NapileObjectDeclaration extends NapileNamedDeclarationStub<PsiJetOb
 		return visitor.visitObjectDeclaration(this, data);
 	}
 
-	public boolean isObjectLiteral()
-	{
-		return getNameAsDeclaration() == null;
-	}
-
 	@NotNull
 	public PsiElement getObjectKeyword()
 	{

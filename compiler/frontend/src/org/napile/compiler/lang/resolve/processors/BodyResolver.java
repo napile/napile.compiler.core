@@ -352,42 +352,10 @@ public class BodyResolver
 
 	private void resolvePropertyDeclarationBodies()
 	{
-
-		// Member properties
-		Set<NapileProperty> processed = Sets.newHashSet();
-		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
-		{
-			NapileClass napileClass = entry.getKey();
-			if(!context.completeAnalysisNeeded(napileClass))
-				continue;
-			MutableClassDescriptor classDescriptor = entry.getValue();
-
-			for(NapileProperty property : napileClass.getProperties())
-			{
-				final PropertyDescriptor propertyDescriptor = this.context.getProperties().get(property);
-				assert propertyDescriptor != null;
-
-				computeDeferredType(propertyDescriptor.getReturnType());
-
-				NapileExpression initializer = property.getInitializer();
-				if(initializer != null)
-				{
-					JetScope declaringScopeForPropertyInitializer = this.context.getDeclaringScopes().get(property);
-					resolvePropertyInitializer(property, propertyDescriptor, initializer, declaringScopeForPropertyInitializer);
-				}
-
-				resolvePropertyAccessors(property, propertyDescriptor);
-				processed.add(property);
-			}
-		}
-
-		// Top-level properties & properties of objects
 		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : this.context.getProperties().entrySet())
 		{
 			NapileProperty property = entry.getKey();
 			if(!context.completeAnalysisNeeded(property))
-				continue;
-			if(processed.contains(property))
 				continue;
 
 			final PropertyDescriptor propertyDescriptor = entry.getValue();
