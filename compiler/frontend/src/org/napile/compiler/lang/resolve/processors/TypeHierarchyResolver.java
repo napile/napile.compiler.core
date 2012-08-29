@@ -194,7 +194,7 @@ public class TypeHierarchyResolver
 				}
 
 				@Override
-				public void visitObjectDeclaration(NapileAnonymousClass declaration)
+				public void visitObjectDeclaration(NapileAnonymClass declaration)
 				{
 					final MutableClassDescriptor objectDescriptor = createClassDescriptorForObject(declaration, owner, outerScope);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(declaration), objectDescriptor);
@@ -249,10 +249,10 @@ public class TypeHierarchyResolver
 					} */
 				}
 
-				private MutableClassDescriptor createClassDescriptorForObject(@NotNull NapileAnonymousClass declaration, @NotNull NamespaceLikeBuilder owner, JetScope scope)
+				private MutableClassDescriptor createClassDescriptorForObject(@NotNull NapileAnonymClass declaration, @NotNull NamespaceLikeBuilder owner, JetScope scope)
 				{
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), scope, ClassKind.OBJECT, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
-					context.getObjects().put(declaration, mutableClassDescriptor);
+					context.getAnonymous().put(declaration, mutableClassDescriptor);
 
 					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
 
@@ -314,9 +314,9 @@ public class TypeHierarchyResolver
 			descriptor.createTypeConstructor();
 		}
 
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
-			NapileAnonymousClass objectDeclaration = entry.getKey();
+			NapileAnonymClass objectDeclaration = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 			descriptor.setModality(Modality.FINAL);
 			descriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(objectDeclaration.getModifierList()));
@@ -336,7 +336,7 @@ public class TypeHierarchyResolver
 			descriptorResolver.resolveSupertypesForMutableClassDescriptor(napileClass, descriptor, trace);
 		}
 
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
 			NapileLikeClass jetClass = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
@@ -354,7 +354,7 @@ public class TypeHierarchyResolver
 		{
 			topologicallySort(mutableClassDescriptor, visited, topologicalOrder);
 		}
-		for(MutableClassDescriptor mutableClassDescriptor : context.getObjects().values())
+		for(MutableClassDescriptor mutableClassDescriptor : context.getAnonymous().values())
 		{
 			topologicallySort(mutableClassDescriptor, visited, topologicalOrder);
 		}

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -169,7 +169,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 
 	@NotNull
 	@Override
-	public Collection<FunctionDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
 	{
 		checkMayRead();
 
@@ -177,7 +177,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 		{
 			return Collections.emptySet();
 		}
-		Set<FunctionDescriptor> result = Sets.newLinkedHashSet();
+		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
 		for(JetScope imported : getImports())
 		{
 			result.addAll(imported.getFunctions(name));
@@ -263,11 +263,11 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 	}
 
 	@Override
-	public void importFunctionAlias(@NotNull Name aliasName, @NotNull FunctionDescriptor functionDescriptor)
+	public void importFunctionAlias(@NotNull Name aliasName, @NotNull MethodDescriptor methodDescriptor)
 	{
 		checkMayWrite();
 
-		getCurrentIndividualImportScope().addFunctionAlias(aliasName, functionDescriptor);
+		getCurrentIndividualImportScope().addFunctionAlias(aliasName, methodDescriptor);
 	}
 
 	@Override

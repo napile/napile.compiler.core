@@ -35,14 +35,14 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author abreslav
  */
-public class NapileObjectDeclaration extends NapileNamedDeclarationStub<PsiJetObjectStub> implements NapileClassOrObject
+public class NapileAnonymClass extends NapileNamedDeclarationStub<PsiJetObjectStub> implements NapileLikeClass
 {
-	public NapileObjectDeclaration(@NotNull ASTNode node)
+	public NapileAnonymClass(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileObjectDeclaration(@NotNull PsiJetObjectStub stub)
+	public NapileAnonymClass(@NotNull PsiJetObjectStub stub)
 	{
 		super(stub, JetStubElementTypes.OBJECT_DECLARATION);
 	}
@@ -182,7 +182,7 @@ public class NapileObjectDeclaration extends NapileNamedDeclarationStub<PsiJetOb
 	@NotNull
 	public PsiElement getObjectKeyword()
 	{
-		return findChildByType(JetTokens.OBJECT_KEYWORD);
+		return findChildByType(JetTokens.ANONYM_KEYWORD);
 	}
 
 	@Override

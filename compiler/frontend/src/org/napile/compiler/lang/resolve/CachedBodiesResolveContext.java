@@ -24,8 +24,8 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
@@ -45,11 +45,11 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 public class CachedBodiesResolveContext implements BodiesResolveContext
 {
 	private final Map<NapileClass, MutableClassDescriptor> classes;
-	private final Map<NapileAnonymousClass, MutableClassDescriptor> objects;
+	private final Map<NapileAnonymClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
 	private final Map<NapileProperty, PropertyDescriptor> properties;
 	private final Map<NapileEnumEntry, EnumEntryDescriptor> enumEntries;
-	private final Map<NapileNamedFunction, SimpleFunctionDescriptor> functions;
+	private final Map<NapileNamedFunction, SimpleMethodDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
 	private
@@ -59,10 +59,10 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	public CachedBodiesResolveContext(TopDownAnalysisContext context)
 	{
 		classes = Collections.unmodifiableMap(context.getClasses());
-		objects = Collections.unmodifiableMap(context.getObjects());
+		objects = Collections.unmodifiableMap(context.getAnonymous());
 		constructors = Collections.unmodifiableMap(context.getConstructors());
 		properties = Collections.unmodifiableMap(context.getProperties());
-		functions = Collections.unmodifiableMap(context.getFunctions());
+		functions = Collections.unmodifiableMap(context.getMethods());
 		enumEntries = Collections.unmodifiableMap(context.getEnumEntries());
 		declaringScopes = Collections.unmodifiableMap(context.getDeclaringScopes());
 
@@ -76,7 +76,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileAnonymousClass, MutableClassDescriptor> getObjects()
+	public Map<NapileAnonymClass, MutableClassDescriptor> getAnonymous()
 	{
 		return objects;
 	}
@@ -100,7 +100,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileNamedFunction, SimpleFunctionDescriptor> getFunctions()
+	public Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods()
 	{
 		return functions;
 	}

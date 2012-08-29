@@ -30,7 +30,7 @@ import org.napile.compiler.lang.resolve.name.LabelName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.error.ErrorSimpleFunctionDescriptorImpl;
+import org.napile.compiler.lang.types.error.ErrorSimpleMethodDescriptorImpl;
 
 /**
  * @author abreslav
@@ -103,9 +103,9 @@ public class ErrorUtils
 
 		@NotNull
 		@Override
-		public Set<FunctionDescriptor> getFunctions(@NotNull Name name)
+		public Set<MethodDescriptor> getFunctions(@NotNull Name name)
 		{
-			return Collections.<FunctionDescriptor>singleton(createErrorFunction(this));
+			return Collections.<MethodDescriptor>singleton(createErrorFunction(this));
 		}
 
 		@NotNull
@@ -181,9 +181,9 @@ public class ErrorUtils
 	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, true, false, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
 	private static final Set<VariableDescriptor> ERROR_PROPERTY_GROUP = Collections.singleton(ERROR_PROPERTY);
 
-	private static SimpleFunctionDescriptor createErrorFunction(ErrorScope ownerScope)
+	private static SimpleMethodDescriptor createErrorFunction(ErrorScope ownerScope)
 	{
-		ErrorSimpleFunctionDescriptorImpl function = new ErrorSimpleFunctionDescriptorImpl(ownerScope);
+		ErrorSimpleMethodDescriptorImpl function = new ErrorSimpleMethodDescriptorImpl(ownerScope);
 		function.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
 				Collections.<ValueParameterDescriptor>emptyList(), // TODO
 				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibility.PUBLIC
@@ -193,12 +193,12 @@ public class ErrorUtils
 
 	private static final JetType ERROR_PARAMETER_TYPE = createErrorType("<ERROR VALUE_PARAMETER TYPE>");
 
-	private static List<ValueParameterDescriptor> getValueParameters(FunctionDescriptor functionDescriptor, List<JetType> argumentTypes)
+	private static List<ValueParameterDescriptor> getValueParameters(MethodDescriptor methodDescriptor, List<JetType> argumentTypes)
 	{
 		List<ValueParameterDescriptor> result = new ArrayList<ValueParameterDescriptor>();
 		for(int i = 0, argumentTypesSize = argumentTypes.size(); i < argumentTypesSize; i++)
 		{
-			result.add(new ValueParameterDescriptorImpl(functionDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR VALUE_PARAMETER>"), true, ERROR_PARAMETER_TYPE, false, null));
+			result.add(new ValueParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR VALUE_PARAMETER>"), true, ERROR_PARAMETER_TYPE, false, null));
 		}
 		return result;
 	}

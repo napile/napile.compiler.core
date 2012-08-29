@@ -16,32 +16,21 @@
 
 package org.napile.compiler.lang.descriptors;
 
-import java.util.Set;
-
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
- * @author abreslav
+ * Simple functions are the ones with 'meth' keyword and function literals
+ *
+ * @author Stepan Koltsov
  */
-public interface FunctionDescriptor extends CallableMemberDescriptor
+public interface SimpleMethodDescriptor extends MethodDescriptor
 {
-	@Override
-	@NotNull
-	DeclarationDescriptor getContainingDeclaration();
 
 	@NotNull
 	@Override
-	FunctionDescriptor getOriginal();
-
-	@Override
-	FunctionDescriptor substitute(TypeSubstitutor substitutor);
-
-	@Override
-	@NotNull
-	Set<? extends FunctionDescriptor> getOverriddenDescriptors();
+	SimpleMethodDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides);
 
 	@NotNull
 	@Override
-	FunctionDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides);
+	SimpleMethodDescriptor getOriginal();
 }

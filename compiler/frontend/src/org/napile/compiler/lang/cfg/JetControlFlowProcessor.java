@@ -797,7 +797,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitNamedFunction(NapileNamedFunction function)
+		public void visitNamedMethod(NapileNamedFunction function)
 		{
 			processLocalDeclaration(function);
 		}
@@ -1045,7 +1045,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitObjectLiteralExpression(NapileObjectLiteralExpression expression)
 		{
-			NapileAnonymousClass declaration = expression.getObjectDeclaration();
+			NapileAnonymClass declaration = expression.getObjectDeclaration();
 			value(declaration, inCondition);
 
 			List<NapileDeclaration> declarations = declaration.getDeclarations();
@@ -1065,7 +1065,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitObjectDeclaration(NapileAnonymousClass objectDeclaration)
+		public void visitObjectDeclaration(NapileAnonymClass objectDeclaration)
 		{
 			visitClassOrObject(objectDeclaration);
 		}

@@ -671,7 +671,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	void parseObject()
 	{
-		assert _at(JetTokens.ANONYMOUS_KEYWORD);
+		assert _at(JetTokens.ANONYM_KEYWORD);
 
 		advance(); // OBJECT_KEYWORD
 
@@ -1305,7 +1305,7 @@ public class JetParsing extends AbstractJetParsing
 		{
 			advance(); // CLASS_KEYWORD
 
-			expect(JetTokens.ANONYMOUS_KEYWORD, "Expecting 'object'", TYPE_REF_FIRST);
+			expect(JetTokens.ANONYM_KEYWORD, "Expecting 'object'", TYPE_REF_FIRST);
 		}
 
 		PsiBuilder.Marker reference = mark();

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.psi.NapileDeclaration;
@@ -103,7 +103,7 @@ public class OverrideResolver
 	{
 		Set<MutableClassDescriptor> ourClasses = new HashSet<MutableClassDescriptor>();
 		ourClasses.addAll(context.getClasses().values());
-		ourClasses.addAll(context.getObjects().values());
+		ourClasses.addAll(context.getAnonymous().values());
 
 		Set<ClassifierDescriptor> processed = new HashSet<ClassifierDescriptor>();
 
@@ -164,9 +164,9 @@ public class OverrideResolver
 					{
 						classDescriptor.getBuilder().addPropertyDescriptor((PropertyDescriptor) fakeOverride);
 					}
-					else if(fakeOverride instanceof SimpleFunctionDescriptor)
+					else if(fakeOverride instanceof SimpleMethodDescriptor)
 					{
-						classDescriptor.getBuilder().addFunctionDescriptor((SimpleFunctionDescriptor) fakeOverride);
+						classDescriptor.getBuilder().addMethodDescriptor((SimpleMethodDescriptor) fakeOverride);
 					}
 					else
 					{
@@ -351,7 +351,7 @@ public class OverrideResolver
 		List<CallableMemberDescriptor> r = Lists.newArrayList();
 		for(DeclarationDescriptor decl : scope.getAllDescriptors())
 		{
-			if(decl instanceof PropertyDescriptor || decl instanceof SimpleFunctionDescriptor)
+			if(decl instanceof PropertyDescriptor || decl instanceof SimpleMethodDescriptor)
 			{
 				r.add((CallableMemberDescriptor) decl);
 			}
@@ -365,7 +365,7 @@ public class OverrideResolver
 		{
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
 		}
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
 		}
@@ -393,12 +393,12 @@ public class OverrideResolver
 		{
 			nameIdentifier = klass.getNameIdentifier();
 		}
-		else if(klass instanceof NapileAnonymousClass)
+		else if(klass instanceof NapileAnonymClass)
 		{
 			nameIdentifier = klass.getNameIdentifier();
 			if(nameIdentifier == null)
 			{
-				nameIdentifier = ((NapileAnonymousClass) klass).getObjectKeyword();
+				nameIdentifier = ((NapileAnonymClass) klass).getObjectKeyword();
 			}
 		}
 		if(nameIdentifier == null)
@@ -616,7 +616,7 @@ public class OverrideResolver
 	private void checkParameterOverridesForAllClasses()
 	{
 		List<MutableClassDescriptor> allClasses = Lists.newArrayList(context.getClasses().values());
-		allClasses.addAll(context.getObjects().values());
+		allClasses.addAll(context.getAnonymous().values());
 		for(MutableClassDescriptor classDescriptor : allClasses)
 		{
 			Collection<CallableMemberDescriptor> members = classDescriptor.getAllCallableMembers();
@@ -730,9 +730,9 @@ public class OverrideResolver
 				resolveUnknownVisibilityForMember(null, accessor, trace);
 			}
 		}
-		else if(memberDescriptor instanceof FunctionDescriptorImpl)
+		else if(memberDescriptor instanceof MethodDescriptorImpl)
 		{
-			((FunctionDescriptorImpl) memberDescriptor).setVisibility(visibility);
+			((MethodDescriptorImpl) memberDescriptor).setVisibility(visibility);
 		}
 		else
 		{

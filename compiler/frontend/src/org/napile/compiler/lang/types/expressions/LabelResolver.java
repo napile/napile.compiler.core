@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileElement;
@@ -106,7 +106,7 @@ public class LabelResolver
 		{
 			DeclarationDescriptor declarationDescriptor = declarationsByLabel.iterator().next();
 			NapileElement element;
-			if(declarationDescriptor instanceof FunctionDescriptor || declarationDescriptor instanceof ClassDescriptor)
+			if(declarationDescriptor instanceof MethodDescriptor || declarationDescriptor instanceof ClassDescriptor)
 			{
 				element = (NapileElement) BindingContextUtils.descriptorToDeclaration(context.trace.getBindingContext(), declarationDescriptor);
 			}
@@ -171,10 +171,10 @@ public class LabelResolver
 				ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
 				thisReceiver = classDescriptor.getImplicitReceiver();
 			}
-			else if(declarationDescriptor instanceof FunctionDescriptor)
+			else if(declarationDescriptor instanceof MethodDescriptor)
 			{
-				FunctionDescriptor functionDescriptor = (FunctionDescriptor) declarationDescriptor;
-				thisReceiver = functionDescriptor.getReceiverParameter();
+				MethodDescriptor methodDescriptor = (MethodDescriptor) declarationDescriptor;
+				thisReceiver = methodDescriptor.getReceiverParameter();
 			}
 			else
 			{
@@ -191,9 +191,9 @@ public class LabelResolver
 			if(element instanceof NapileFunctionLiteralExpression)
 			{
 				DeclarationDescriptor declarationDescriptor = context.trace.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
-				if(declarationDescriptor instanceof FunctionDescriptor)
+				if(declarationDescriptor instanceof MethodDescriptor)
 				{
-					thisReceiver = ((FunctionDescriptor) declarationDescriptor).getReceiverParameter();
+					thisReceiver = ((MethodDescriptor) declarationDescriptor).getReceiverParameter();
 					if(thisReceiver.exists())
 					{
 						context.trace.record(LABEL_TARGET, targetLabel, element);

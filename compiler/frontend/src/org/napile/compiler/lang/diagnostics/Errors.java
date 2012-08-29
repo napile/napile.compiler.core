@@ -104,11 +104,11 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileExpression> PROPERTY_INITIALIZER_NO_BACKING_FIELD = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory2<NapileModifierListOwner, String, ClassDescriptor> ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	DiagnosticFactory2<NapileMethod, String, ClassDescriptor> ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
-	DiagnosticFactory1<NapileMethod, SimpleFunctionDescriptor> ABSTRACT_FUNCTION_WITH_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
-	DiagnosticFactory1<NapileMethod, SimpleFunctionDescriptor> NON_ABSTRACT_FUNCTION_WITH_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
-	DiagnosticFactory1<NapileModifierListOwner, SimpleFunctionDescriptor> NON_MEMBER_ABSTRACT_FUNCTION = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
+	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> ABSTRACT_FUNCTION_WITH_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
+	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> NON_ABSTRACT_FUNCTION_WITH_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	DiagnosticFactory1<NapileModifierListOwner, SimpleMethodDescriptor> NON_MEMBER_ABSTRACT_FUNCTION = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 
-	DiagnosticFactory1<NapileMethod, SimpleFunctionDescriptor> NON_MEMBER_FUNCTION_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> NON_MEMBER_FUNCTION_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
 	SimpleDiagnosticFactory<NapileNamedDeclaration> PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 

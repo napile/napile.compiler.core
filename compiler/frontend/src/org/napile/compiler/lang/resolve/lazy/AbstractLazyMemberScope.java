@@ -27,10 +27,10 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileParameter;
@@ -59,7 +59,7 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 	protected boolean allDescriptorsComputed = false;
 
 	private final Map<Name, ClassDescriptor> classDescriptors = Maps.newHashMap();
-	private final Map<Name, Set<FunctionDescriptor>> functionDescriptors = Maps.newHashMap();
+	private final Map<Name, Set<MethodDescriptor>> functionDescriptors = Maps.newHashMap();
 	private final Map<Name, Set<VariableDescriptor>> propertyDescriptors = Maps.newHashMap();
 
 	protected final List<DeclarationDescriptor> allDescriptors = Lists.newArrayList();
@@ -85,7 +85,7 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 		if(classOrObjectDeclaration == null)
 			return null;
 
-		if(object != classOrObjectDeclaration instanceof NapileAnonymousClass)
+		if(object != classOrObjectDeclaration instanceof NapileAnonymClass)
 			return null;
 
 		ClassDescriptor classDescriptor = new LazyClassDescriptor(resolveSession, thisDescriptor, name, JetClassInfoUtil.createClassLikeInfo(classOrObjectDeclaration), false);
@@ -114,9 +114,9 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 
 	@NotNull
 	@Override
-	public Set<FunctionDescriptor> getFunctions(@NotNull Name name)
+	public Set<MethodDescriptor> getFunctions(@NotNull Name name)
 	{
-		Set<FunctionDescriptor> known = functionDescriptors.get(name);
+		Set<MethodDescriptor> known = functionDescriptors.get(name);
 		if(known != null)
 			return known;
 
@@ -124,7 +124,7 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 		if(allDescriptorsComputed)
 			return Collections.emptySet();
 
-		Set<FunctionDescriptor> result = Sets.newLinkedHashSet();
+		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
 
 		Collection<NapileNamedFunction> declarations = declarationProvider.getFunctionDeclarations(name);
 		for(NapileNamedFunction functionDeclaration : declarations)
@@ -146,7 +146,7 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 	@NotNull
 	protected abstract JetScope getScopeForMemberDeclarationResolution(NapileDeclaration declaration);
 
-	protected abstract void getNonDeclaredFunctions(@NotNull Name name, @NotNull Set<FunctionDescriptor> result);
+	protected abstract void getNonDeclaredFunctions(@NotNull Name name, @NotNull Set<MethodDescriptor> result);
 
 	@NotNull
 	@Override
@@ -171,9 +171,9 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 
 		// Objects are also properties
 		NapileLikeClass classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
-		if(classOrObjectDeclaration instanceof NapileAnonymousClass)
+		if(classOrObjectDeclaration instanceof NapileAnonymClass)
 		{
-			NapileAnonymousClass objectDeclaration = (NapileAnonymousClass) classOrObjectDeclaration;
+			NapileAnonymClass objectDeclaration = (NapileAnonymClass) classOrObjectDeclaration;
 			ClassDescriptor classifier = getObjectDescriptor(name);
 			if(classifier == null)
 			{
@@ -249,7 +249,7 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 					getProperties(name);
 				}
 			}
-			else if(declaration instanceof NapileAnonymousClass)
+			else if(declaration instanceof NapileAnonymClass)
 			{
 				NapileLikeClass classOrObject = (NapileLikeClass) declaration;
 				Name name = classOrObject.getNameAsName();

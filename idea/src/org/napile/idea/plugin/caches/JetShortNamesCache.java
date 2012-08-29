@@ -29,8 +29,8 @@ import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -135,9 +135,9 @@ public class JetShortNamesCache
 
 	// TODO: Make it work for properties
 	@NotNull
-	public Collection<FunctionDescriptor> getTopLevelFunctionDescriptorsByName(@NotNull String name, @NotNull NapileSimpleNameExpression expression, @NotNull GlobalSearchScope scope)
+	public Collection<MethodDescriptor> getTopLevelFunctionDescriptorsByName(@NotNull String name, @NotNull NapileSimpleNameExpression expression, @NotNull GlobalSearchScope scope)
 	{
-		HashSet<FunctionDescriptor> result = new HashSet<FunctionDescriptor>();
+		HashSet<MethodDescriptor> result = new HashSet<MethodDescriptor>();
 
 		NapileFile jetFile = (NapileFile) expression.getContainingFile();
 		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(jetFile).getBindingContext();
@@ -151,7 +151,7 @@ public class JetShortNamesCache
 		Collection<NapileNamedFunction> jetNamedFunctions = JetShortFunctionNameIndex.getInstance().get(name, project, scope);
 		for(NapileNamedFunction jetNamedFunction : jetNamedFunctions)
 		{
-			SimpleFunctionDescriptor functionDescriptor = context.get(BindingContext.FUNCTION, jetNamedFunction);
+			SimpleMethodDescriptor functionDescriptor = context.get(BindingContext.FUNCTION, jetNamedFunction);
 			if(functionDescriptor != null)
 			{
 				result.add(functionDescriptor);

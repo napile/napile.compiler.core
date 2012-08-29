@@ -25,7 +25,7 @@ import org.napile.compiler.lang.cfg.JetFlowInformationProvider;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
@@ -59,17 +59,17 @@ public class ControlFlowAnalyzer
 			checkClassOrObject(aClass);
 		}
 
-		for(NapileAnonymousClass objectDeclaration : bodiesResolveContext.getObjects().keySet())
+		for(NapileAnonymClass objectDeclaration : bodiesResolveContext.getAnonymous().keySet())
 		{
 			if(!bodiesResolveContext.completeAnalysisNeeded(objectDeclaration))
 				continue;
 			checkClassOrObject(objectDeclaration);
 		}
 
-		for(Map.Entry<NapileNamedFunction, SimpleFunctionDescriptor> entry : bodiesResolveContext.getFunctions().entrySet())
+		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
 		{
 			NapileNamedFunction function = entry.getKey();
-			SimpleFunctionDescriptor functionDescriptor = entry.getValue();
+			SimpleMethodDescriptor functionDescriptor = entry.getValue();
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
 			final JetType expectedReturnType = !function.hasBlockBody() && !function.hasDeclaredReturnType() ? TypeUtils.NO_EXPECTED_TYPE : functionDescriptor.getReturnType();

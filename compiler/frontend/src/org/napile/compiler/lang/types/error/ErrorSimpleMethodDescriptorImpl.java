@@ -21,10 +21,10 @@ import java.util.Collections;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorImpl;
+import org.napile.compiler.lang.descriptors.MethodDescriptorImpl;
 import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptorImpl;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptorImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -32,27 +32,27 @@ import org.napile.compiler.lang.types.ErrorUtils;
 /**
  * @author Stepan Koltsov
  */
-public class ErrorSimpleFunctionDescriptorImpl extends SimpleFunctionDescriptorImpl
+public class ErrorSimpleMethodDescriptorImpl extends SimpleMethodDescriptorImpl
 {
 	// used for diagnostic only
 	@NotNull
 	private final ErrorUtils.ErrorScope ownerScope;
 
-	public ErrorSimpleFunctionDescriptorImpl(ErrorUtils.ErrorScope ownerScope)
+	public ErrorSimpleMethodDescriptorImpl(ErrorUtils.ErrorScope ownerScope)
 	{
 		super(ErrorUtils.getErrorClass(), Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR FUNCTION>"), Kind.DECLARATION, false);
 		this.ownerScope = ownerScope;
 	}
 
 	@Override
-	protected FunctionDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
+	protected MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
 	{
 		return this;
 	}
 
 	@NotNull
 	@Override
-	public SimpleFunctionDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
+	public SimpleMethodDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
 	{
 		return this;
 	}

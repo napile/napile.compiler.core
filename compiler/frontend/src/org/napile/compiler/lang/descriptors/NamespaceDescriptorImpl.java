@@ -89,7 +89,7 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 				}
 
 				@Override
-				public void addFunctionDescriptor(@NotNull SimpleFunctionDescriptor functionDescriptor)
+				public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
 				{
 					getMemberScope().addFunctionDescriptor(functionDescriptor);
 				}

@@ -28,7 +28,7 @@ import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.WithDeferredResolve;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -42,12 +42,12 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 {
 
 	private final Map<NapileClass, MutableClassDescriptor> classes = Maps.newLinkedHashMap();
-	private final Map<NapileAnonymousClass, MutableClassDescriptor> objects = Maps.newLinkedHashMap();
+	private final Map<NapileAnonymClass, MutableClassDescriptor> objects = Maps.newLinkedHashMap();
 	protected final Map<NapileFile, NamespaceDescriptorImpl> namespaceDescriptors = Maps.newHashMap();
 
 	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
-	private final Map<NapileNamedFunction, SimpleFunctionDescriptor> functions = Maps.newLinkedHashMap();
+	private final Map<NapileNamedFunction, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
 	private final Map<NapileProperty, PropertyDescriptor> properties = Maps.newLinkedHashMap();
 	private final Map<NapileEnumEntry, EnumEntryDescriptor> enumEntries = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
@@ -120,7 +120,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileAnonymousClass, MutableClassDescriptor> getObjects()
+	public Map<NapileAnonymClass, MutableClassDescriptor> getAnonymous()
 	{
 		return objects;
 	}
@@ -160,9 +160,9 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileNamedFunction, SimpleFunctionDescriptor> getFunctions()
+	public Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods()
 	{
-		return functions;
+		return methods;
 	}
 
 	public Map<NapileDeclaration, CallableMemberDescriptor> getMembers()
@@ -170,7 +170,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 		if(members == null)
 		{
 			members = Maps.newHashMap();
-			members.putAll(functions);
+			members.putAll(methods);
 			members.putAll(properties);
 			members.putAll(enumEntries);
 		}

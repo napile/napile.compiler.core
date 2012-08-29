@@ -195,7 +195,7 @@ public class BodyResolver
 				resolveDelegationSpecifierList(napileConstructor, constructorDescriptor, classEntry.getValue().getScopeForSupertypeResolution());
 			}
 
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
 	}
 
@@ -224,7 +224,7 @@ public class BodyResolver
 				if(typeReference == null)
 					return;
 
-				OverloadResolutionResults<FunctionDescriptor> results = callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+				OverloadResolutionResults<MethodDescriptor> results = callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 				if(results.isSuccess())
 				{
 					JetType supertype = results.getResultingDescriptor().getReturnType();
@@ -317,7 +317,7 @@ public class BodyResolver
 		{
 			resolveAnonymousInitializers(entry.getKey(), entry.getValue());
 		}
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
 			resolveAnonymousInitializers(entry.getKey(), entry.getValue());
 		}
@@ -448,10 +448,10 @@ public class BodyResolver
 
 	private void resolveFunctionBodies()
 	{
-		for(Map.Entry<NapileNamedFunction, SimpleFunctionDescriptor> entry : this.context.getFunctions().entrySet())
+		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
 		{
 			NapileNamedFunction declaration = entry.getKey();
-			SimpleFunctionDescriptor descriptor = entry.getValue();
+			SimpleMethodDescriptor descriptor = entry.getValue();
 
 			computeDeferredType(descriptor.getReturnType());
 
@@ -479,24 +479,24 @@ public class BodyResolver
 	}
 
 
-	private void resolveFunctionBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull FunctionDescriptor functionDescriptor, @NotNull JetScope declaringScope)
+	private void resolveFunctionBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull JetScope declaringScope)
 	{
 		if(!context.completeAnalysisNeeded(function))
 			return;
 
 		NapileExpression bodyExpression = function.getBodyExpression();
-		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(declaringScope, functionDescriptor, trace);
+		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(declaringScope, methodDescriptor, trace);
 		if(bodyExpression != null)
 		{
-			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, functionDescriptor, DataFlowInfo.EMPTY, null, trace);
+			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, methodDescriptor, DataFlowInfo.EMPTY, null, trace);
 		}
 
 		List<NapileParameter> valueParameters = function.getValueParameters();
-		List<ValueParameterDescriptor> valueParameterDescriptors = functionDescriptor.getValueParameters();
+		List<ValueParameterDescriptor> valueParameterDescriptors = methodDescriptor.getValueParameters();
 
 		checkDefaultParameterValues(valueParameters, valueParameterDescriptors, functionInnerScope);
 
-		assert functionDescriptor.getReturnType() != null;
+		assert methodDescriptor.getReturnType() != null;
 	}
 
 	private void checkDefaultParameterValues(List<NapileParameter> valueParameters, List<ValueParameterDescriptor> valueParameterDescriptors, JetScope declaringScope)

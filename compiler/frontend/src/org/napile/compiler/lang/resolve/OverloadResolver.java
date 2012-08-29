@@ -27,13 +27,13 @@ import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
@@ -79,7 +79,7 @@ public class OverloadResolver
 		{
 			checkOverloadsInAClass(entry.getValue(), entry.getKey(), inClasses.get(entry.getValue()));
 		}
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
 			checkOverloadsInAClass(entry.getValue(), entry.getKey(), inClasses.get(entry.getValue()));
 		}
@@ -129,7 +129,7 @@ public class OverloadResolver
 				ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
 				inClasses.put(classDescriptor, klass.getConstructors());
 			}
-			else if(!(containingDeclaration instanceof FunctionDescriptor))
+			else if(!(containingDeclaration instanceof MethodDescriptor))
 			{
 				throw new IllegalStateException();
 			}
@@ -143,7 +143,7 @@ public class OverloadResolver
 
 		MultiMap<Key, CallableMemberDescriptor> functionsByName = MultiMap.create();
 
-		for(SimpleFunctionDescriptor function : context.getFunctions().values())
+		for(SimpleMethodDescriptor function : context.getMethods().values())
 		{
 			DeclarationDescriptor containingDeclaration = function.getContainingDeclaration();
 			if(containingDeclaration instanceof NamespaceDescriptor)
@@ -181,7 +181,7 @@ public class OverloadResolver
 		{
 			return name;
 		}
-		if(jetClass instanceof NapileAnonymousClass)
+		if(jetClass instanceof NapileAnonymClass)
 		{
 			// must be class object
 			name = classDescriptor.getContainingDeclaration().getName().getName();

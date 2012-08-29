@@ -25,7 +25,7 @@ public interface DeclarationDescriptorVisitor<R, D>
 
 	R visitVariableDescriptor(VariableDescriptor descriptor, D data);
 
-	R visitFunctionDescriptor(FunctionDescriptor descriptor, D data);
+	R visitFunctionDescriptor(MethodDescriptor descriptor, D data);
 
 	R visitTypeParameterDescriptor(TypeParameterDescriptor descriptor, D data);
 

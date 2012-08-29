@@ -17,14 +17,14 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.psi.stubs.NamedStub;
 
 /**
  * @author Nikolay Krasko
  */
-public interface PsiJetObjectStub extends NamedStub<NapileAnonymousClass>
+public interface PsiJetObjectStub extends NamedStub<NapileAnonymClass>
 {
 	@Nullable
 	FqName getFQName();

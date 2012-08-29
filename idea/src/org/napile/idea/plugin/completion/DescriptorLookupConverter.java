@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -66,30 +66,30 @@ public final class DescriptorLookupConverter
 		String tailText = "";
 		boolean tailTextGrayed = true;
 
-		if(descriptor instanceof FunctionDescriptor)
+		if(descriptor instanceof MethodDescriptor)
 		{
-			FunctionDescriptor functionDescriptor = (FunctionDescriptor) descriptor;
-			JetType returnType = functionDescriptor.getReturnType();
+			MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
+			JetType returnType = methodDescriptor.getReturnType();
 			typeText = DescriptorRenderer.TEXT.renderType(returnType);
-			presentableText += DescriptorRenderer.TEXT.renderFunctionParameters(functionDescriptor);
+			presentableText += DescriptorRenderer.TEXT.renderFunctionParameters(methodDescriptor);
 
-			boolean extensionFunction = functionDescriptor.getReceiverParameter().exists();
+			boolean extensionFunction = methodDescriptor.getReceiverParameter().exists();
 			DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
 			if(containingDeclaration != null && extensionFunction)
 			{
-				tailText += " for " + DescriptorRenderer.TEXT.renderType(functionDescriptor.getReceiverParameter().getType());
+				tailText += " for " + DescriptorRenderer.TEXT.renderType(methodDescriptor.getReceiverParameter().getType());
 				tailText += " in " + DescriptorUtils.getFQName(containingDeclaration);
 			}
 
 			// TODO: A special case when it's impossible to resolve type parameters from arguments. Need '<' caret '>'
 			// TODO: Support omitting brackets for one argument functions
-			if(functionDescriptor.getValueParameters().isEmpty())
+			if(methodDescriptor.getValueParameters().isEmpty())
 			{
 				element = element.setInsertHandler(EMPTY_FUNCTION_HANDLER);
 			}
 			else
 			{
-				if(functionDescriptor.getValueParameters().size() == 1 && JetStandardClasses.isFunctionType(functionDescriptor.getValueParameters().get(0).getType()))
+				if(methodDescriptor.getValueParameters().size() == 1 && JetStandardClasses.isFunctionType(methodDescriptor.getValueParameters().get(0).getType()))
 				{
 					element = element.setInsertHandler(PARAMS_BRACES_FUNCTION_HANDLER);
 				}

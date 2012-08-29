@@ -160,7 +160,7 @@ public class TopDownAnalyzer
 		{
 			mutableClassDescriptor.lockScopes();
 		}
-		for(MutableClassDescriptor mutableClassDescriptor : context.getObjects().values())
+		for(MutableClassDescriptor mutableClassDescriptor : context.getAnonymous().values())
 		{
 			mutableClassDescriptor.lockScopes();
 		}
@@ -224,7 +224,7 @@ public class TopDownAnalyzer
 			}
 
 			@Override
-			public void addFunctionDescriptor(@NotNull SimpleFunctionDescriptor functionDescriptor)
+			public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
 			{
 				throw new UnsupportedOperationException();
 			}

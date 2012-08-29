@@ -41,7 +41,7 @@ import javax.swing.JPanel;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileElement;
@@ -312,7 +312,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 		builder.append(resultingDescriptor.getName());
 		renderTypeArguments(typeArguments, builder);
 
-		if(resultingDescriptor instanceof FunctionDescriptor)
+		if(resultingDescriptor instanceof MethodDescriptor)
 		{
 			renderValueArguments(valueArguments, builder);
 		}

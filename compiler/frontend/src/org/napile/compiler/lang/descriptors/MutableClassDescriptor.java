@@ -37,7 +37,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	private final Set<CallableMemberDescriptor> declaredCallableMembers = new HashSet<CallableMemberDescriptor>();
 	private final Set<CallableMemberDescriptor> allCallableMembers = new HashSet<CallableMemberDescriptor>(); // includes fake overrides
 	private final Set<PropertyDescriptor> properties = new HashSet<PropertyDescriptor>();
-	private final Set<SimpleFunctionDescriptor> functions = new HashSet<SimpleFunctionDescriptor>();
+	private final Set<SimpleMethodDescriptor> functions = new HashSet<SimpleMethodDescriptor>();
 	private final Set<EnumEntryDescriptor> enumEntries = new HashSet<EnumEntryDescriptor>();
 
 	private final WritableScope scopeForMemberResolution;
@@ -88,7 +88,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	}
 
 	@NotNull
-	public Set<SimpleFunctionDescriptor> getFunctions()
+	public Set<SimpleMethodDescriptor> getFunctions()
 	{
 		return functions;
 	}
@@ -141,8 +141,8 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	public void createTypeConstructor()
 	{
 		super.createTypeConstructor();
-		for(FunctionDescriptor functionDescriptor : getConstructors())
-			((ConstructorDescriptor) functionDescriptor).setReturnType(getDefaultType());
+		for(MethodDescriptor methodDescriptor : getConstructors())
+			((ConstructorDescriptor) methodDescriptor).setReturnType(getDefaultType());
 		scopeForMemberResolution.setImplicitReceiver(new ClassReceiver(this));
 	}
 
@@ -197,9 +197,9 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 				}
 
 				@Override
-				public void addFunctionDescriptor(@NotNull SimpleFunctionDescriptor functionDescriptor)
+				public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
 				{
-					superBuilder.addFunctionDescriptor(functionDescriptor);
+					superBuilder.addMethodDescriptor(functionDescriptor);
 					functions.add(functionDescriptor);
 					if(functionDescriptor.getKind() != CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
 					{

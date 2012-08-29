@@ -139,15 +139,15 @@ public class DescriptorUtils
 			return true;
 		}
 		DeclarationDescriptor parent = candidate.getContainingDeclaration();
-		if(!(parent instanceof FunctionDescriptor))
+		if(!(parent instanceof MethodDescriptor))
 		{
 			return false;
 		}
-		FunctionDescriptor functionDescriptor = (FunctionDescriptor) parent;
+		MethodDescriptor methodDescriptor = (MethodDescriptor) parent;
 		DeclarationDescriptor current = containerOfTheCurrentLocality;
 		while(current != null)
 		{
-			if(current == functionDescriptor)
+			if(current == methodDescriptor)
 			{
 				return true;
 			}
@@ -186,7 +186,7 @@ public class DescriptorUtils
 		return getFQName(containingDeclaration).child(descriptor.getName());
 	}
 
-	public static boolean isTopLevelFunction(@NotNull SimpleFunctionDescriptor functionDescriptor)
+	public static boolean isTopLevelFunction(@NotNull SimpleMethodDescriptor functionDescriptor)
 	{
 		return functionDescriptor.getContainingDeclaration() instanceof NamespaceDescriptor;
 	}
@@ -246,7 +246,7 @@ public class DescriptorUtils
 	}
 
 	@NotNull
-	public static JetType getFunctionExpectedReturnType(@NotNull FunctionDescriptor descriptor, @NotNull NapileElement function)
+	public static JetType getFunctionExpectedReturnType(@NotNull MethodDescriptor descriptor, @NotNull NapileElement function)
 	{
 		JetType expectedType;
 		if(function instanceof NapileMethod)

@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 
 /**
  * @author Stepan Koltsov
@@ -59,7 +59,7 @@ public class OverloadUtil
 		{
 			return 0;
 		}
-		else if(a instanceof SimpleFunctionDescriptor)
+		else if(a instanceof SimpleMethodDescriptor)
 		{
 			return 1;
 		}

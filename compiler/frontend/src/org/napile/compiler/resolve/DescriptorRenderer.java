@@ -280,10 +280,10 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return stringBuilder.toString();
 	}
 
-	public String renderFunctionParameters(@NotNull FunctionDescriptor functionDescriptor)
+	public String renderFunctionParameters(@NotNull MethodDescriptor methodDescriptor)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
-		renderValueParameters(functionDescriptor, stringBuilder);
+		renderValueParameters(methodDescriptor, stringBuilder);
 		return stringBuilder.toString();
 	}
 
@@ -330,7 +330,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return s;
 	}
 
-	protected void renderValueParameters(FunctionDescriptor descriptor, StringBuilder builder)
+	protected void renderValueParameters(MethodDescriptor descriptor, StringBuilder builder)
 	{
 		if(descriptor.getValueParameters().isEmpty())
 		{
@@ -476,7 +476,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 
 		@Override
-		public Void visitFunctionDescriptor(FunctionDescriptor descriptor, StringBuilder builder)
+		public Void visitFunctionDescriptor(MethodDescriptor descriptor, StringBuilder builder)
 		{
 			renderVisibility(descriptor, builder);
 			renderModality(descriptor.getModality(), builder);

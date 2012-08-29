@@ -26,7 +26,7 @@ import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
@@ -227,7 +227,7 @@ public class BindingContextUtils
 		return doGetDescriptorToDeclaration(context, clazz);
 	}
 
-	public static void recordFunctionDeclarationToDescriptor(@NotNull BindingTrace trace, @NotNull PsiElement psiElement, @NotNull SimpleFunctionDescriptor function)
+	public static void recordFunctionDeclarationToDescriptor(@NotNull BindingTrace trace, @NotNull PsiElement psiElement, @NotNull SimpleMethodDescriptor function)
 	{
 
 		if(function.getKind() != CallableMemberDescriptor.Kind.DECLARATION)

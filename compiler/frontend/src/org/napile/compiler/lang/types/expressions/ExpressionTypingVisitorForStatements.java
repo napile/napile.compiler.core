@@ -32,9 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
@@ -92,7 +92,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitObjectDeclaration(NapileAnonymousClass declaration, ExpressionTypingContext context)
+	public JetTypeInfo visitObjectDeclaration(NapileAnonymClass declaration, ExpressionTypingContext context)
 	{
 		TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), declaration);
 		ClassDescriptor classDescriptor = context.trace.getBindingContext().get(BindingContext.CLASS, declaration);
@@ -149,7 +149,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	@Override
 	public JetTypeInfo visitNamedFunction(NapileNamedFunction function, ExpressionTypingContext context)
 	{
-		SimpleFunctionDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveFunctionDescriptor(scope.getContainingDeclaration(), scope, function, context.trace);
+		SimpleMethodDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveFunctionDescriptor(scope.getContainingDeclaration(), scope, function, context.trace);
 		scope.addFunctionDescriptor(functionDescriptor);
 		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(context.scope, functionDescriptor, context.trace);
 		context.expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, functionDescriptor, context.dataFlowInfo, null, context.trace);
@@ -231,22 +231,22 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		// Check for '+='
 		Name name = OperatorConventions.ASSIGNMENT_OPERATIONS.get(operationType);
 		TemporaryBindingTrace assignmentOperationTrace = TemporaryBindingTrace.create(context.trace);
-		OverloadResolutionResults<FunctionDescriptor> assignmentOperationDescriptors = basic.getResolutionResultsForBinaryCall(scope, name, context.replaceBindingTrace(assignmentOperationTrace), expression, receiver);
+		OverloadResolutionResults<MethodDescriptor> assignmentOperationDescriptors = basic.getResolutionResultsForBinaryCall(scope, name, context.replaceBindingTrace(assignmentOperationTrace), expression, receiver);
 		JetType assignmentOperationType = OverloadResolutionResultsUtil.getResultType(assignmentOperationDescriptors);
 
 		// Check for '+'
 		Name counterpartName = OperatorConventions.BINARY_OPERATION_NAMES.get(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.get(operationType));
 		TemporaryBindingTrace binaryOperationTrace = TemporaryBindingTrace.create(context.trace);
-		OverloadResolutionResults<FunctionDescriptor> binaryOperationDescriptors = basic.getResolutionResultsForBinaryCall(scope, counterpartName, context.replaceBindingTrace(binaryOperationTrace), expression, receiver);
+		OverloadResolutionResults<MethodDescriptor> binaryOperationDescriptors = basic.getResolutionResultsForBinaryCall(scope, counterpartName, context.replaceBindingTrace(binaryOperationTrace), expression, receiver);
 		JetType binaryOperationType = OverloadResolutionResultsUtil.getResultType(binaryOperationDescriptors);
 
 		JetType type = assignmentOperationType != null ? assignmentOperationType : binaryOperationType;
 		if(assignmentOperationType != null && binaryOperationType != null)
 		{
-			OverloadResolutionResults<FunctionDescriptor> ambiguityResolutionResults = OverloadResolutionResultsUtil.ambiguity(assignmentOperationDescriptors, binaryOperationDescriptors);
+			OverloadResolutionResults<MethodDescriptor> ambiguityResolutionResults = OverloadResolutionResultsUtil.ambiguity(assignmentOperationDescriptors, binaryOperationDescriptors);
 			context.trace.report(ASSIGN_OPERATOR_AMBIGUITY.on(operationSign, ambiguityResolutionResults.getResultingCalls()));
 			Collection<DeclarationDescriptor> descriptors = Sets.newHashSet();
-			for(ResolvedCall<? extends FunctionDescriptor> call : ambiguityResolutionResults.getResultingCalls())
+			for(ResolvedCall<? extends MethodDescriptor> call : ambiguityResolutionResults.getResultingCalls())
 			{
 				descriptors.add(call.getResultingDescriptor());
 			}

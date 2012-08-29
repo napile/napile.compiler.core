@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.resolve.lazy.data;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 
@@ -34,9 +34,9 @@ public class JetClassInfoUtil
 			NapileClass napileClass = (NapileClass) classOrObject;
 			return new NapileClassInfo(napileClass);
 		}
-		if(classOrObject instanceof NapileAnonymousClass)
+		if(classOrObject instanceof NapileAnonymClass)
 		{
-			NapileAnonymousClass objectDeclaration = (NapileAnonymousClass) classOrObject;
+			NapileAnonymClass objectDeclaration = (NapileAnonymClass) classOrObject;
 			return new NapileObjectInfo(objectDeclaration);
 		}
 		throw new IllegalArgumentException("Unknown declaration type: " + classOrObject + classOrObject.getText());

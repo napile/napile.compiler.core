@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi.stubs.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.stubs.PsiJetObjectStub;
 import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.psi.stubs.IStubElementType;
@@ -29,7 +29,7 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetObjectStubImpl extends StubBase<NapileAnonymousClass> implements PsiJetObjectStub
+public class PsiJetObjectStubImpl extends StubBase<NapileAnonymClass> implements PsiJetObjectStub
 {
 	private final StringRef name;
 	private final FqName fqName;

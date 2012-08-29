@@ -729,17 +729,17 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Nullable
-	private FunctionDescriptor getFunctionDescriptor(@NotNull Call call, @NotNull NapileExpression callExpression, @NotNull ReceiverDescriptor receiver, @NotNull ExpressionTypingContext context, @NotNull boolean[] result)
+	private MethodDescriptor getFunctionDescriptor(@NotNull Call call, @NotNull NapileExpression callExpression, @NotNull ReceiverDescriptor receiver, @NotNull ExpressionTypingContext context, @NotNull boolean[] result)
 	{
 
-		OverloadResolutionResults<FunctionDescriptor> results = context.resolveFunctionCall(call);
+		OverloadResolutionResults<MethodDescriptor> results = context.resolveFunctionCall(call);
 		if(!results.isNothing())
 		{
 			checkSuper(receiver, results, context.trace, callExpression);
 			result[0] = true;
 			if(results.isSingleResult())
 			{
-				ResolvedCall<FunctionDescriptor> resultingCall = results.getResultingCall();
+				ResolvedCall<MethodDescriptor> resultingCall = results.getResultingCall();
 				if(resultingCall instanceof ResolvedCallWithTrace)
 				{
 					if(((ResolvedCallWithTrace) resultingCall).getStatus() == ResolutionStatus.TYPE_INFERENCE_ERROR)
@@ -835,13 +835,13 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		Call call = CallMaker.makeCall(nameExpression, receiver, callOperationNode, nameExpression, Collections.<ValueArgument>emptyList());
 		TemporaryBindingTrace traceForFunction = TemporaryBindingTrace.create(context.trace);
-		FunctionDescriptor functionDescriptor = getFunctionDescriptor(call, nameExpression, receiver, context, result);
+		MethodDescriptor methodDescriptor = getFunctionDescriptor(call, nameExpression, receiver, context, result);
 		if(result[0])
 		{
 			traceForFunction.commit();
-			boolean hasValueParameters = functionDescriptor == null || functionDescriptor.getValueParameters().size() > 0;
+			boolean hasValueParameters = methodDescriptor == null || methodDescriptor.getValueParameters().size() > 0;
 			context.trace.report(FUNCTION_CALL_EXPECTED.on(nameExpression, nameExpression, hasValueParameters));
-			type = functionDescriptor != null ? functionDescriptor.getReturnType() : null;
+			type = methodDescriptor != null ? methodDescriptor.getReturnType() : null;
 			return JetTypeInfo.create(type, context.dataFlowInfo);
 		}
 
@@ -857,21 +857,21 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		Call call = CallMaker.makeCall(receiver, callOperationNode, callExpression);
 
 		TemporaryBindingTrace traceForFunction = TemporaryBindingTrace.create(context.trace);
-		FunctionDescriptor functionDescriptor = getFunctionDescriptor(call, callExpression, receiver, context.replaceBindingTrace(traceForFunction), result);
+		MethodDescriptor methodDescriptor = getFunctionDescriptor(call, callExpression, receiver, context.replaceBindingTrace(traceForFunction), result);
 		if(result[0])
 		{
 			traceForFunction.commit();
 			if(callExpression.getValueArgumentList() == null && callExpression.getFunctionLiteralArguments().isEmpty())
 			{
 				// there are only type arguments
-				boolean hasValueParameters = functionDescriptor == null || functionDescriptor.getValueParameters().size() > 0;
+				boolean hasValueParameters = methodDescriptor == null || methodDescriptor.getValueParameters().size() > 0;
 				context.trace.report(FUNCTION_CALL_EXPECTED.on(callExpression, callExpression, hasValueParameters));
 			}
-			if(functionDescriptor == null)
+			if(methodDescriptor == null)
 			{
 				return JetTypeInfo.create(null, context.dataFlowInfo);
 			}
-			JetType type = functionDescriptor.getReturnType();
+			JetType type = methodDescriptor.getReturnType();
 
 			DataFlowInfo dataFlowInfo = context.dataFlowInfo;
 			NapileValueArgumentList argumentList = callExpression.getValueArgumentList();
@@ -984,7 +984,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		ExpressionReceiver receiver = new ExpressionReceiver(baseExpression, type);
 
 		// Resolve the operation reference
-		OverloadResolutionResults<FunctionDescriptor> resolutionResults = context.resolveCallWithGivenName(CallMaker.makeCall(receiver, expression), expression.getOperationReference(), name);
+		OverloadResolutionResults<MethodDescriptor> resolutionResults = context.resolveCallWithGivenName(CallMaker.makeCall(receiver, expression), expression.getOperationReference(), name);
 
 		if(!resolutionResults.isSuccess())
 		{
@@ -1172,10 +1172,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				if(right != null)
 				{
 					ExpressionReceiver receiver = ExpressionTypingUtils.safeGetExpressionReceiver(facade, left, context.replaceScope(context.scope));
-					OverloadResolutionResults<FunctionDescriptor> resolutionResults = context.resolveExactSignature(receiver, name, Collections.singletonList(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, true)));
+					OverloadResolutionResults<MethodDescriptor> resolutionResults = context.resolveExactSignature(receiver, name, Collections.singletonList(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, true)));
 					if(resolutionResults.isSuccess())
 					{
-						FunctionDescriptor equals = resolutionResults.getResultingCall().getResultingDescriptor();
+						MethodDescriptor equals = resolutionResults.getResultingCall().getResultingDescriptor();
 						context.trace.record(REFERENCE_TARGET, operationSign, equals);
 						context.trace.record(RESOLVED_CALL, operationSign, resolutionResults.getResultingCall());
 						if(ExpressionTypingUtils.ensureBooleanResult(operationSign, name, equals.getReturnType(), context))
@@ -1260,7 +1260,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	{
 		Name name = Name.identifier("contains");
 		ExpressionReceiver receiver = ExpressionTypingUtils.safeGetExpressionReceiver(facade, right, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
-		OverloadResolutionResults<FunctionDescriptor> resolutionResult = context.resolveCallWithGivenName(CallMaker.makeCallWithExpressions(callElement, receiver, null, operationSign, Collections.singletonList(left)), operationSign, name);
+		OverloadResolutionResults<MethodDescriptor> resolutionResult = context.resolveCallWithGivenName(CallMaker.makeCallWithExpressions(callElement, receiver, null, operationSign, Collections.singletonList(left)), operationSign, name);
 		JetType containsType = OverloadResolutionResultsUtil.getResultType(resolutionResult);
 		ExpressionTypingUtils.ensureBooleanResult(operationSign, name, containsType, context);
 		return resolutionResult.isSuccess();
@@ -1361,7 +1361,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@NotNull
-        /*package*/ OverloadResolutionResults<FunctionDescriptor> getResolutionResultsForBinaryCall(JetScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression, ExpressionReceiver receiver)
+        /*package*/ OverloadResolutionResults<MethodDescriptor> getResolutionResultsForBinaryCall(JetScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression, ExpressionReceiver receiver)
 	{
 		//        ExpressionReceiver receiver = safeGetExpressionReceiver(facade, binaryExpression.getLeft(), context.replaceScope(scope));
 		return context.replaceScope(scope).resolveCallWithGivenName(CallMaker.makeCall(receiver, binaryExpression), binaryExpression.getOperationReference(), name);
@@ -1480,7 +1480,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		ExpressionReceiver receiver = new ExpressionReceiver(arrayAccessExpression.getArrayExpression(), arrayType);
 		if(!isGet)
 			assert rightHandSide != null;
-		OverloadResolutionResults<FunctionDescriptor> functionResults = context.resolveCallWithGivenName(isGet ? CallMaker.makeArrayGetCall(receiver, arrayAccessExpression, Call.CallType.ARRAY_GET_METHOD) : CallMaker.makeArraySetCall(receiver, arrayAccessExpression, rightHandSide, Call.CallType.ARRAY_SET_METHOD), arrayAccessExpression, Name.identifier(isGet ? "get" : "set"));
+		OverloadResolutionResults<MethodDescriptor> functionResults = context.resolveCallWithGivenName(isGet ? CallMaker.makeArrayGetCall(receiver, arrayAccessExpression, Call.CallType.ARRAY_GET_METHOD) : CallMaker.makeArraySetCall(receiver, arrayAccessExpression, rightHandSide, Call.CallType.ARRAY_SET_METHOD), arrayAccessExpression, Name.identifier(isGet ? "get" : "set"));
 		if(!functionResults.isSuccess())
 		{
 			traceForResolveResult.report(isGet ? NO_GET_METHOD.on(arrayAccessExpression) : NO_SET_METHOD.on(arrayAccessExpression));

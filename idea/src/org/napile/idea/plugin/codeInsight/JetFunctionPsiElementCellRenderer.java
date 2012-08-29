@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.codeInsight;
 
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.resolve.DescriptorRenderer;
@@ -42,7 +42,7 @@ public class JetFunctionPsiElementCellRenderer extends DefaultPsiElementCellRend
 		if(element instanceof NapileNamedFunction)
 		{
 			NapileNamedFunction function = (NapileNamedFunction) element;
-			SimpleFunctionDescriptor fd = bindingContext.get(BindingContext.FUNCTION, function);
+			SimpleMethodDescriptor fd = bindingContext.get(BindingContext.FUNCTION, function);
 			assert fd != null;
 			return DescriptorRenderer.TEXT.render(fd);
 		}

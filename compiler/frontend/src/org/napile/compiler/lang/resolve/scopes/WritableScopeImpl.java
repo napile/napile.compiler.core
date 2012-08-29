@@ -57,7 +57,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	private Map<Name, PropertyDescriptor> propertyDescriptorsByFieldNames;
 
 	@Nullable
-	private SetMultimap<Name, FunctionDescriptor> functionGroups;
+	private SetMultimap<Name, MethodDescriptor> functionGroups;
 
 	@Nullable
 	private Map<Name, DeclarationDescriptor> variableClassOrNamespaceDescriptors;
@@ -116,12 +116,12 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
-	public void importFunctionAlias(@NotNull Name aliasName, @NotNull FunctionDescriptor functionDescriptor)
+	public void importFunctionAlias(@NotNull Name aliasName, @NotNull MethodDescriptor methodDescriptor)
 	{
 		checkMayWrite();
 
-		addFunctionDescriptor(functionDescriptor);
-		super.importFunctionAlias(aliasName, functionDescriptor);
+		addFunctionDescriptor(methodDescriptor);
+		super.importFunctionAlias(aliasName, methodDescriptor);
 	}
 
 	@Override
@@ -330,7 +330,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@NotNull
-	private SetMultimap<Name, FunctionDescriptor> getFunctionGroups()
+	private SetMultimap<Name, MethodDescriptor> getFunctionGroups()
 	{
 		if(functionGroups == null)
 		{
@@ -340,21 +340,21 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addFunctionDescriptor(@NotNull FunctionDescriptor functionDescriptor)
+	public void addFunctionDescriptor(@NotNull MethodDescriptor methodDescriptor)
 	{
 		checkMayWrite();
 
-		getFunctionGroups().put(functionDescriptor.getName(), functionDescriptor);
-		allDescriptors.add(functionDescriptor);
+		getFunctionGroups().put(methodDescriptor.getName(), methodDescriptor);
+		allDescriptors.add(methodDescriptor);
 	}
 
 	@Override
 	@NotNull
-	public Collection<FunctionDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
 	{
 		checkMayRead();
 
-		Set<FunctionDescriptor> result = Sets.newLinkedHashSet(getFunctionGroups().get(name));
+		Set<MethodDescriptor> result = Sets.newLinkedHashSet(getFunctionGroups().get(name));
 
 		result.addAll(getWorkerScope().getFunctions(name));
 
@@ -421,13 +421,13 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addFunctionAlias(@NotNull Name name, @NotNull FunctionDescriptor functionDescriptor)
+	public void addFunctionAlias(@NotNull Name name, @NotNull MethodDescriptor methodDescriptor)
 	{
 		checkMayWrite();
 
-		checkForRedeclaration(name, functionDescriptor);
-		getFunctionGroups().put(name, functionDescriptor);
-		allDescriptors.add(functionDescriptor);
+		checkForRedeclaration(name, methodDescriptor);
+		getFunctionGroups().put(name, methodDescriptor);
+		allDescriptors.add(methodDescriptor);
 	}
 
 	@Override

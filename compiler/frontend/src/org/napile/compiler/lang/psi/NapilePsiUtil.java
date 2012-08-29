@@ -185,7 +185,7 @@ public class NapilePsiUtil
 	{
 		if(namedDeclaration instanceof NapileObjectDeclarationName)
 		{
-			NapileAnonymousClass objectDeclaration = PsiTreeUtil.getParentOfType(namedDeclaration, NapileAnonymousClass.class);
+			NapileAnonymClass objectDeclaration = PsiTreeUtil.getParentOfType(namedDeclaration, NapileAnonymClass.class);
 			if(objectDeclaration == null)
 			{
 				return null;
@@ -212,7 +212,7 @@ public class NapilePsiUtil
 		{
 			firstPart = getFQName((NapileFile) parent);
 		}
-		else if(parent instanceof NapileNamedFunction || parent instanceof NapileClass || parent instanceof NapileAnonymousClass)
+		else if(parent instanceof NapileNamedFunction || parent instanceof NapileClass || parent instanceof NapileAnonymClass)
 		{
 			firstPart = getFQName((NapileNamedDeclaration) parent);
 		}

@@ -24,7 +24,7 @@ import org.jetbrains.jet.cli.jvm.compiler.TipsManager;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibilities;
@@ -239,9 +239,9 @@ public class JetCompletionContributor extends CompletionContributor
 		{
 			if(name.contains(actualPrefix))
 			{
-				for(FunctionDescriptor function : namesCache.getTopLevelFunctionDescriptorsByName(name, expression, scope))
+				for(MethodDescriptor method : namesCache.getTopLevelFunctionDescriptorsByName(name, expression, scope))
 				{
-					addCompletionToResult(result, DescriptorLookupConverter.createLookupElement(resolutionContext, function), session);
+					addCompletionToResult(result, DescriptorLookupConverter.createLookupElement(resolutionContext, method), session);
 				}
 			}
 		}

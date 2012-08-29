@@ -47,7 +47,7 @@ public class NapileTypeConstraint extends NapileElementImpl
 
 	public boolean isClassObjectContraint()
 	{
-		return findChildByType(JetTokens.CLASS_KEYWORD) != null && findChildByType(JetTokens.ANONYMOUS_KEYWORD) != null;
+		return findChildByType(JetTokens.CLASS_KEYWORD) != null && findChildByType(JetTokens.ANONYM_KEYWORD) != null;
 	}
 
 	@Nullable

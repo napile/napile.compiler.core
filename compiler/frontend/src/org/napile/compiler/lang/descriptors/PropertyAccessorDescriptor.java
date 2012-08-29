@@ -30,7 +30,7 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNonRootImpl implements FunctionDescriptor, MemberDescriptor
+public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNonRootImpl implements MethodDescriptor, MemberDescriptor
 {
 	private final boolean hasBody;
 	private final boolean isDefault;
@@ -80,7 +80,7 @@ public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNo
 
 	@NotNull
 	@Override
-	public FunctionDescriptor substitute(TypeSubstitutor substitutor)
+	public MethodDescriptor substitute(TypeSubstitutor substitutor)
 	{
 		throw new UnsupportedOperationException(); // TODO
 	}

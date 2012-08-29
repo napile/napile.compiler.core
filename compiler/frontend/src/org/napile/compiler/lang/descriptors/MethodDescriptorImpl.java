@@ -38,7 +38,7 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRootImpl implements FunctionDescriptor
+public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootImpl implements MethodDescriptor
 {
 
 	protected List<TypeParameterDescriptor> typeParameters;
@@ -50,11 +50,11 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 	protected Modality modality;
 	protected Visibility visibility;
 	private final boolean isStatic;
-	protected final Set<FunctionDescriptor> overriddenFunctions = Sets.newLinkedHashSet(); // LinkedHashSet is essential here
-	private final FunctionDescriptor original;
+	protected final Set<MethodDescriptor> overriddenMethods = Sets.newLinkedHashSet(); // LinkedHashSet is essential here
+	private final MethodDescriptor original;
 	private final Kind kind;
 
-	protected FunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
+	protected MethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name);
 		this.original = this;
@@ -62,7 +62,7 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 		this.isStatic = isStatic;
 	}
 
-	protected FunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull FunctionDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
+	protected MethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull MethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name);
 		this.original = original;
@@ -70,7 +70,7 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 		this.isStatic = isStatic;
 	}
 
-	public FunctionDescriptorImpl initialize(@Nullable JetType receiverParameterType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
+	public MethodDescriptorImpl initialize(@Nullable JetType receiverParameterType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
 	{
 		this.typeParameters = Lists.newArrayList(typeParameters);
 		this.unsubstitutedValueParameters = unsubstitutedValueParameters;
@@ -134,9 +134,9 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 
 	@NotNull
 	@Override
-	public Set<? extends FunctionDescriptor> getOverriddenDescriptors()
+	public Set<? extends MethodDescriptor> getOverriddenDescriptors()
 	{
-		return overriddenFunctions;
+		return overriddenMethods;
 	}
 
 	@NotNull
@@ -162,7 +162,7 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 	@Override
 	public void addOverriddenDescriptor(@NotNull CallableMemberDescriptor overriddenFunction)
 	{
-		overriddenFunctions.add((FunctionDescriptor) overriddenFunction);
+		overriddenMethods.add((MethodDescriptor) overriddenFunction);
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 
 	@NotNull
 	@Override
-	public FunctionDescriptor getOriginal()
+	public MethodDescriptor getOriginal()
 	{
 		return original == this ? this : original.getOriginal();
 	}
@@ -199,7 +199,7 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 	}
 
 	@Override
-	public final FunctionDescriptor substitute(TypeSubstitutor originalSubstitutor)
+	public final MethodDescriptor substitute(TypeSubstitutor originalSubstitutor)
 	{
 		if(originalSubstitutor.isEmpty())
 		{
@@ -208,9 +208,9 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 		return doSubstitute(originalSubstitutor, getContainingDeclaration(), modality, visibility, true, true, getKind());
 	}
 
-	protected FunctionDescriptor doSubstitute(TypeSubstitutor originalSubstitutor, DeclarationDescriptor newOwner, Modality newModality, Visibility newVisibility, boolean preserveOriginal, boolean copyOverrides, Kind kind)
+	protected MethodDescriptor doSubstitute(TypeSubstitutor originalSubstitutor, DeclarationDescriptor newOwner, Modality newModality, Visibility newVisibility, boolean preserveOriginal, boolean copyOverrides, Kind kind)
 	{
-		FunctionDescriptorImpl substitutedDescriptor = createSubstitutedCopy(newOwner, preserveOriginal, kind);
+		MethodDescriptorImpl substitutedDescriptor = createSubstitutedCopy(newOwner, preserveOriginal, kind);
 
 		List<TypeParameterDescriptor> substitutedTypeParameters = Lists.newArrayList();
 		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);
@@ -251,15 +251,15 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
 		substitutedDescriptor.initialize(substitutedReceiverParameterType, substitutedExpectedThis, substitutedTypeParameters, substitutedValueParameters, substitutedReturnType, newModality, newVisibility);
 		if(copyOverrides)
 		{
-			for(FunctionDescriptor overriddenFunction : overriddenFunctions)
+			for(MethodDescriptor overriddenMethod : overriddenMethods)
 			{
-				OverridingUtil.bindOverride(substitutedDescriptor, overriddenFunction.substitute(substitutor));
+				OverridingUtil.bindOverride(substitutedDescriptor, overriddenMethod.substitute(substitutor));
 			}
 		}
 		return substitutedDescriptor;
 	}
 
-	protected abstract FunctionDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind);
+	protected abstract MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind);
 
 	@Override
 	public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)

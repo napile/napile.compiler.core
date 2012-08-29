@@ -35,7 +35,7 @@ import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -115,9 +115,9 @@ public class DeclarationResolver
 			MutableClassDescriptor descriptor = entry.getValue();
 			resolveAnnotationsForClassOrObject(annotationResolver, napileClass, descriptor);
 		}
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
-			NapileAnonymousClass objectDeclaration = entry.getKey();
+			NapileAnonymClass objectDeclaration = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 			resolveAnnotationsForClassOrObject(annotationResolver, objectDeclaration, descriptor);
 		}
@@ -142,9 +142,9 @@ public class DeclarationResolver
 			resolveDeclarations(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
-			NapileAnonymousClass object = entry.getKey();
+			NapileAnonymClass object = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
 			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
@@ -158,12 +158,12 @@ public class DeclarationResolver
 			declaration.accept(new NapileVisitorVoid()
 			{
 				@Override
-				public void visitNamedFunction(NapileNamedFunction function)
+				public void visitNamedMethod(NapileNamedFunction function)
 				{
-					SimpleFunctionDescriptor functionDescriptor = descriptorResolver.resolveFunctionDescriptor(ownerDescription, scope, function, trace);
-					ownerDescription.getBuilder().addFunctionDescriptor(functionDescriptor);
+					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveFunctionDescriptor(ownerDescription, scope, function, trace);
+					ownerDescription.getBuilder().addMethodDescriptor(functionDescriptor);
 
-					context.getFunctions().put(function, functionDescriptor);
+					context.getMethods().put(function, functionDescriptor);
 					context.getDeclaringScopes().put(function, scope);
 				}
 
@@ -194,7 +194,7 @@ public class DeclarationResolver
 				}
 
 				@Override
-				public void visitObjectDeclaration(NapileAnonymousClass declaration)
+				public void visitObjectDeclaration(NapileAnonymClass declaration)
 				{
 					//PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, declaration, context.getObjects().get(declaration), trace);
 

@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
@@ -91,7 +91,7 @@ public class LazyPackageMemberScope extends AbstractLazyMemberScope<NamespaceDes
 	}
 
 	@Override
-	protected void getNonDeclaredFunctions(@NotNull Name name, @NotNull Set<FunctionDescriptor> result)
+	protected void getNonDeclaredFunctions(@NotNull Name name, @NotNull Set<MethodDescriptor> result)
 	{
 		// No extra functions
 	}

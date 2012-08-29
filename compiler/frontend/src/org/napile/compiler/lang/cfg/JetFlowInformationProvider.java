@@ -28,7 +28,7 @@ import org.napile.compiler.lang.cfg.PseudocodeVariablesData.VariableUseState;
 import org.napile.compiler.lang.cfg.pseudocode.*;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
@@ -338,9 +338,9 @@ public class JetFlowInformationProvider
 			if(operationReference != null)
 			{
 				DeclarationDescriptor descriptor = trace.get(BindingContext.REFERENCE_TARGET, operationReference);
-				if(descriptor instanceof FunctionDescriptor)
+				if(descriptor instanceof MethodDescriptor)
 				{
-					if(JetStandardClasses.isUnit(((FunctionDescriptor) descriptor).getReturnType()))
+					if(JetStandardClasses.isUnit(((MethodDescriptor) descriptor).getReturnType()))
 					{
 						hasReassignMethodReturningUnit = true;
 					}
@@ -352,7 +352,7 @@ public class JetFlowInformationProvider
 					{
 						for(DeclarationDescriptor referenceDescriptor : descriptors)
 						{
-							if(JetStandardClasses.isUnit(((FunctionDescriptor) referenceDescriptor).getReturnType()))
+							if(JetStandardClasses.isUnit(((MethodDescriptor) referenceDescriptor).getReturnType()))
 							{
 								hasReassignMethodReturningUnit = true;
 							}
@@ -578,11 +578,11 @@ public class JetFlowInformationProvider
 									if(psiElement instanceof NapileFunctionLiteral)
 										return;
 									DeclarationDescriptor descriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, psiElement);
-									assert descriptor instanceof FunctionDescriptor : psiElement.getText();
-									FunctionDescriptor functionDescriptor = (FunctionDescriptor) descriptor;
+									assert descriptor instanceof MethodDescriptor : psiElement.getText();
+									MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 									if(!isMain &&
-											!functionDescriptor.getModality().isOverridable() &&
-											functionDescriptor.getOverriddenDescriptors().isEmpty())
+											!methodDescriptor.getModality().isOverridable() &&
+											methodDescriptor.getOverriddenDescriptors().isEmpty())
 									{
 										trace.report(Errors.UNUSED_PARAMETER.on((NapileParameter) element, variableDescriptor));
 									}

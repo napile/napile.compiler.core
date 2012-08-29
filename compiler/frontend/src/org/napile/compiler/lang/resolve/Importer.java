@@ -23,7 +23,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -98,9 +98,9 @@ public interface Importer
 			{
 				namespaceScope.importNamespaceAlias(aliasName, (NamespaceDescriptor) descriptor);
 			}
-			else if(descriptor instanceof FunctionDescriptor)
+			else if(descriptor instanceof MethodDescriptor)
 			{
-				namespaceScope.importFunctionAlias(aliasName, (FunctionDescriptor) descriptor);
+				namespaceScope.importFunctionAlias(aliasName, (MethodDescriptor) descriptor);
 			}
 			else if(descriptor instanceof VariableDescriptor)
 			{

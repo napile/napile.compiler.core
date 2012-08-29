@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyGetterDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
@@ -76,10 +76,10 @@ public class ModifiersChecker
 			checkModifiers(aClass.getModifierList(), classDescriptor);
 		}
 
-		for(Map.Entry<NapileNamedFunction, SimpleFunctionDescriptor> entry : bodiesResolveContext.getFunctions().entrySet())
+		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
 		{
 			NapileNamedFunction function = entry.getKey();
-			SimpleFunctionDescriptor functionDescriptor = entry.getValue();
+			SimpleMethodDescriptor functionDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;

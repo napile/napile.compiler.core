@@ -153,26 +153,26 @@ public class CallResolver
 	}
 
 	@NotNull
-	public OverloadResolutionResults<FunctionDescriptor> resolveCallWithGivenName(@NotNull BasicResolutionContext context, @NotNull final NapileReferenceExpression functionReference, @NotNull Name name)
+	public OverloadResolutionResults<MethodDescriptor> resolveCallWithGivenName(@NotNull BasicResolutionContext context, @NotNull final NapileReferenceExpression functionReference, @NotNull Name name)
 	{
-		List<ResolutionTask<CallableDescriptor, FunctionDescriptor>> tasks = TaskPrioritizer.<CallableDescriptor, FunctionDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.FUNCTIONS_AND_VARIABLES);
+		List<ResolutionTask<CallableDescriptor, MethodDescriptor>> tasks = TaskPrioritizer.<CallableDescriptor, MethodDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.FUNCTIONS_AND_VARIABLES);
 		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, tasks, CallTransformer.FUNCTION_CALL_TRANSFORMER, functionReference);
 	}
 
 	@NotNull
-	public OverloadResolutionResults<FunctionDescriptor> resolveFunctionCall(@NotNull BindingTrace trace, @NotNull JetScope scope, @NotNull Call call, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo)
+	public OverloadResolutionResults<MethodDescriptor> resolveFunctionCall(@NotNull BindingTrace trace, @NotNull JetScope scope, @NotNull Call call, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo)
 	{
 
 		return resolveFunctionCall(BasicResolutionContext.create(trace, scope, call, expectedType, dataFlowInfo));
 	}
 
 	@NotNull
-	public OverloadResolutionResults<FunctionDescriptor> resolveFunctionCall(@NotNull BasicResolutionContext context)
+	public OverloadResolutionResults<MethodDescriptor> resolveFunctionCall(@NotNull BasicResolutionContext context)
 	{
 
 		ProgressIndicatorProvider.checkCanceled();
 
-		List<ResolutionTask<CallableDescriptor, FunctionDescriptor>> prioritizedTasks;
+		List<ResolutionTask<CallableDescriptor, MethodDescriptor>> prioritizedTasks;
 
 		NapileExpression calleeExpression = context.call.getCalleeExpression();
 		final NapileReferenceExpression functionReference;
@@ -185,7 +185,7 @@ public class CallResolver
 			if(name == null)
 				return checkArgumentTypesAndFail(context);
 
-			prioritizedTasks = TaskPrioritizer.<CallableDescriptor, FunctionDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.FUNCTIONS_AND_VARIABLES);
+			prioritizedTasks = TaskPrioritizer.<CallableDescriptor, MethodDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.FUNCTIONS_AND_VARIABLES);
 			ResolutionTask.DescriptorCheckStrategy abstractConstructorCheck = new ResolutionTask.DescriptorCheckStrategy()
 			{
 				@Override
@@ -253,7 +253,7 @@ public class CallResolver
 					{
 						candidate.setSafeCall(NapilePsiUtil.isSafeCall(context.call));
 					}
-					prioritizedTasks.add(new ResolutionTask<CallableDescriptor, FunctionDescriptor>(candidates, functionReference, context));  // !! DataFlowInfo.EMPTY
+					prioritizedTasks.add(new ResolutionTask<CallableDescriptor, MethodDescriptor>(candidates, functionReference, context));  // !! DataFlowInfo.EMPTY
 				}
 				else
 				{
@@ -279,7 +279,7 @@ public class CallResolver
 					return checkArgumentTypesAndFail(context);
 				}
 				List<ResolutionCandidate<CallableDescriptor>> candidates = ResolutionCandidate.<CallableDescriptor>convertCollection(constructors, NapilePsiUtil.isSafeCall(context.call));
-				prioritizedTasks = Collections.singletonList(new ResolutionTask<CallableDescriptor, FunctionDescriptor>(candidates, functionReference, context)); // !! DataFlowInfo.EMPTY
+				prioritizedTasks = Collections.singletonList(new ResolutionTask<CallableDescriptor, MethodDescriptor>(candidates, functionReference, context)); // !! DataFlowInfo.EMPTY
 			}
 			else if(calleeExpression != null)
 			{
@@ -296,7 +296,7 @@ public class CallResolver
 					return checkArgumentTypesAndFail(context);
 				}
 
-				FunctionDescriptorImpl functionDescriptor = new ExpressionAsFunctionDescriptor(context.scope.getContainingDeclaration(), Name.special("<for expression " +
+				MethodDescriptorImpl functionDescriptor = new ExpressionAsMethodDescriptor(context.scope.getContainingDeclaration(), Name.special("<for expression " +
 						calleeExpression.getText() +
 						">"));
 				FunctionDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, ReceiverDescriptor.NO_RECEIVER, Modality.FINAL, Visibility.LOCAL2);
@@ -309,7 +309,7 @@ public class CallResolver
 				// so we wrap what we have into a fake reference and pass it on (unwrap on the other end)
 				functionReference = new NapileFakeReference(calleeExpression);
 
-				prioritizedTasks = Collections.singletonList(new ResolutionTask<CallableDescriptor, FunctionDescriptor>(Collections.singleton(resolutionCandidate), functionReference, context));
+				prioritizedTasks = Collections.singletonList(new ResolutionTask<CallableDescriptor, MethodDescriptor>(Collections.singleton(resolutionCandidate), functionReference, context));
 			}
 			else
 			{
@@ -785,7 +785,7 @@ public class CallResolver
 
 				checkGenericBoundsInAFunctionCall(jetTypeArguments, typeArguments, candidate, context.trace);
 
-				Map<TypeConstructor, JetType> substitutionContext = FunctionDescriptorUtil.createSubstitutionContext((FunctionDescriptor) candidate, typeArguments);
+				Map<TypeConstructor, JetType> substitutionContext = FunctionDescriptorUtil.createSubstitutionContext((MethodDescriptor) candidate, typeArguments);
 				candidateCall.setResultingSubstitutor(TypeSubstitutor.create(substitutionContext));
 
 				List<TypeParameterDescriptor> typeParameters = candidateCall.getCandidateDescriptor().getTypeParameters();
@@ -1314,29 +1314,29 @@ public class CallResolver
 	}
 
 	@NotNull
-	public OverloadResolutionResults<FunctionDescriptor> resolveExactSignature(@NotNull JetScope scope, @NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull List<JetType> parameterTypes)
+	public OverloadResolutionResults<MethodDescriptor> resolveExactSignature(@NotNull JetScope scope, @NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull List<JetType> parameterTypes)
 	{
-		List<ResolutionCandidate<FunctionDescriptor>> candidates = findCandidatesByExactSignature(scope, receiver, name, parameterTypes);
+		List<ResolutionCandidate<MethodDescriptor>> candidates = findCandidatesByExactSignature(scope, receiver, name, parameterTypes);
 
 		BindingTraceContext trace = new BindingTraceContext();
 		TemporaryBindingTrace temporaryBindingTrace = TemporaryBindingTrace.create(trace);
-		Set<ResolvedCallWithTrace<FunctionDescriptor>> calls = Sets.newLinkedHashSet();
-		for(ResolutionCandidate<FunctionDescriptor> candidate : candidates)
+		Set<ResolvedCallWithTrace<MethodDescriptor>> calls = Sets.newLinkedHashSet();
+		for(ResolutionCandidate<MethodDescriptor> candidate : candidates)
 		{
-			ResolvedCallImpl<FunctionDescriptor> call = ResolvedCallImpl.create(candidate, temporaryBindingTrace);
+			ResolvedCallImpl<MethodDescriptor> call = ResolvedCallImpl.create(candidate, temporaryBindingTrace);
 			calls.add(call);
 		}
-		return computeResultAndReportErrors(trace, TracingStrategy.EMPTY, calls, Collections.<ResolvedCallWithTrace<FunctionDescriptor>>emptySet());
+		return computeResultAndReportErrors(trace, TracingStrategy.EMPTY, calls, Collections.<ResolvedCallWithTrace<MethodDescriptor>>emptySet());
 	}
 
-	private List<ResolutionCandidate<FunctionDescriptor>> findCandidatesByExactSignature(JetScope scope, ReceiverDescriptor receiver, Name name, List<JetType> parameterTypes)
+	private List<ResolutionCandidate<MethodDescriptor>> findCandidatesByExactSignature(JetScope scope, ReceiverDescriptor receiver, Name name, List<JetType> parameterTypes)
 	{
-		List<ResolutionCandidate<FunctionDescriptor>> result = Lists.newArrayList();
+		List<ResolutionCandidate<MethodDescriptor>> result = Lists.newArrayList();
 		if(receiver.exists())
 		{
-			Collection<ResolutionCandidate<FunctionDescriptor>> extensionFunctionDescriptors = ResolutionCandidate.convertCollection(scope.getFunctions(name), false);
-			List<ResolutionCandidate<FunctionDescriptor>> nonlocal = Lists.newArrayList();
-			List<ResolutionCandidate<FunctionDescriptor>> local = Lists.newArrayList();
+			Collection<ResolutionCandidate<MethodDescriptor>> extensionFunctionDescriptors = ResolutionCandidate.convertCollection(scope.getFunctions(name), false);
+			List<ResolutionCandidate<MethodDescriptor>> nonlocal = Lists.newArrayList();
+			List<ResolutionCandidate<MethodDescriptor>> local = Lists.newArrayList();
 			TaskPrioritizer.splitLexicallyLocalDescriptors(extensionFunctionDescriptors, scope.getContainingDeclaration(), local, nonlocal);
 
 
@@ -1345,7 +1345,7 @@ public class CallResolver
 				return result;
 			}
 
-			Collection<ResolutionCandidate<FunctionDescriptor>> functionDescriptors = ResolutionCandidate.convertCollection(receiver.getType().getMemberScope().getFunctions(name), false);
+			Collection<ResolutionCandidate<MethodDescriptor>> functionDescriptors = ResolutionCandidate.convertCollection(receiver.getType().getMemberScope().getFunctions(name), false);
 			if(lookupExactSignature(functionDescriptors, parameterTypes, result))
 			{
 				return result;
@@ -1360,17 +1360,17 @@ public class CallResolver
 		}
 	}
 
-	private static boolean lookupExactSignature(Collection<ResolutionCandidate<FunctionDescriptor>> candidates, List<JetType> parameterTypes, List<ResolutionCandidate<FunctionDescriptor>> result)
+	private static boolean lookupExactSignature(Collection<ResolutionCandidate<MethodDescriptor>> candidates, List<JetType> parameterTypes, List<ResolutionCandidate<MethodDescriptor>> result)
 	{
 		boolean found = false;
-		for(ResolutionCandidate<FunctionDescriptor> resolvedCall : candidates)
+		for(ResolutionCandidate<MethodDescriptor> resolvedCall : candidates)
 		{
-			FunctionDescriptor functionDescriptor = resolvedCall.getDescriptor();
-			if(functionDescriptor.getReceiverParameter().exists())
+			MethodDescriptor methodDescriptor = resolvedCall.getDescriptor();
+			if(methodDescriptor.getReceiverParameter().exists())
 				continue;
-			if(!functionDescriptor.getTypeParameters().isEmpty())
+			if(!methodDescriptor.getTypeParameters().isEmpty())
 				continue;
-			if(!checkValueParameters(functionDescriptor, parameterTypes))
+			if(!checkValueParameters(methodDescriptor, parameterTypes))
 				continue;
 			result.add(resolvedCall);
 			found = true;
@@ -1378,20 +1378,20 @@ public class CallResolver
 		return found;
 	}
 
-	private boolean findExtensionFunctions(Collection<ResolutionCandidate<FunctionDescriptor>> candidates, ReceiverDescriptor receiver, List<JetType> parameterTypes, List<ResolutionCandidate<FunctionDescriptor>> result)
+	private boolean findExtensionFunctions(Collection<ResolutionCandidate<MethodDescriptor>> candidates, ReceiverDescriptor receiver, List<JetType> parameterTypes, List<ResolutionCandidate<MethodDescriptor>> result)
 	{
 		boolean found = false;
-		for(ResolutionCandidate<FunctionDescriptor> candidate : candidates)
+		for(ResolutionCandidate<MethodDescriptor> candidate : candidates)
 		{
-			FunctionDescriptor functionDescriptor = candidate.getDescriptor();
-			ReceiverDescriptor functionReceiver = functionDescriptor.getReceiverParameter();
+			MethodDescriptor methodDescriptor = candidate.getDescriptor();
+			ReceiverDescriptor functionReceiver = methodDescriptor.getReceiverParameter();
 			if(!functionReceiver.exists())
 				continue;
-			if(!functionDescriptor.getTypeParameters().isEmpty())
+			if(!methodDescriptor.getTypeParameters().isEmpty())
 				continue;
 			if(!typeChecker.isSubtypeOf(receiver.getType(), functionReceiver.getType()))
 				continue;
-			if(!checkValueParameters(functionDescriptor, parameterTypes))
+			if(!checkValueParameters(methodDescriptor, parameterTypes))
 				continue;
 			result.add(candidate);
 			found = true;
@@ -1399,9 +1399,9 @@ public class CallResolver
 		return found;
 	}
 
-	private static boolean checkValueParameters(@NotNull FunctionDescriptor functionDescriptor, @NotNull List<JetType> parameterTypes)
+	private static boolean checkValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull List<JetType> parameterTypes)
 	{
-		List<ValueParameterDescriptor> valueParameters = functionDescriptor.getValueParameters();
+		List<ValueParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
 		if(valueParameters.size() != parameterTypes.size())
 			return false;
 		for(int i = 0; i < valueParameters.size(); i++)

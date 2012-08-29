@@ -207,7 +207,7 @@ public class JetStandardClasses
 		{
 			LightClassDescriptorImpl function = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("Function" + i), false);
 
-			SimpleFunctionDescriptorImpl invoke = new SimpleFunctionDescriptorImpl(function, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION, false);
+			SimpleMethodDescriptorImpl invoke = new SimpleMethodDescriptorImpl(function, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION, false);
 			WritableScope scopeForInvoke = createScopeForInvokeFunction(function, invoke);
 			List<TypeParameterDescriptor> typeParameters = createTypeParameters(0, i, function);
 			ConstructorDescriptor constructorDescriptorForFunction = new ConstructorDescriptor(function, Collections.<AnnotationDescriptor>emptyList());
@@ -219,7 +219,7 @@ public class JetStandardClasses
 			constructorDescriptorForFunction.setReturnType(function.getDefaultType());
 
 			LightClassDescriptorImpl receiverFunction = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("ExtensionFunction" + i), false);
-			SimpleFunctionDescriptorImpl invokeWithReceiver = new SimpleFunctionDescriptorImpl(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION, false);
+			SimpleMethodDescriptorImpl invokeWithReceiver = new SimpleMethodDescriptorImpl(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("invoke"), CallableMemberDescriptor.Kind.DECLARATION, false);
 			WritableScope scopeForInvokeWithReceiver = createScopeForInvokeFunction(receiverFunction, invokeWithReceiver);
 			List<TypeParameterDescriptor> parameters = createTypeParameters(1, i, receiverFunction);
 			parameters.add(0, TypeParameterDescriptorImpl.createWithDefaultBound(receiverFunction, Collections.<AnnotationDescriptor>emptyList(), false, Name.identifier("T"), 0));
@@ -234,7 +234,7 @@ public class JetStandardClasses
 		}
 	}
 
-	private static WritableScope createScopeForInvokeFunction(LightClassDescriptorImpl function, SimpleFunctionDescriptorImpl invoke)
+	private static WritableScope createScopeForInvokeFunction(LightClassDescriptorImpl function, SimpleMethodDescriptorImpl invoke)
 	{
 		WritableScope scopeForInvoke = new WritableScopeImpl(STUB, function, RedeclarationHandler.THROW_EXCEPTION, "Scope for function type");
 		scopeForInvoke.addFunctionDescriptor(invoke);
@@ -489,7 +489,7 @@ public class JetStandardClasses
 	}
 
 	@NotNull
-	public static List<ValueParameterDescriptor> getValueParameters(@NotNull FunctionDescriptor functionDescriptor, @NotNull JetType type)
+	public static List<ValueParameterDescriptor> getValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull JetType type)
 	{
 		assert isFunctionType(type);
 		List<ValueParameterDescriptor> valueParameters = Lists.newArrayList();
@@ -497,7 +497,7 @@ public class JetStandardClasses
 		for(int i = 0; i < parameterTypes.size(); i++)
 		{
 			JetType parameterType = parameterTypes.get(i);
-			ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(functionDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("p" + (i + 1)), false, parameterType, false, null);
+			ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("p" + (i + 1)), false, parameterType, false, null);
 			valueParameters.add(valueParameterDescriptor);
 		}
 		return valueParameters;

@@ -29,7 +29,7 @@ import org.jetbrains.jet.cli.jvm.compiler.TipsManager;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -243,13 +243,13 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		if(parameterOwner instanceof NapileValueArgumentList)
 		{
 			NapileValueArgumentList argumentList = (NapileValueArgumentList) parameterOwner;
-			if(descriptor instanceof FunctionDescriptor)
+			if(descriptor instanceof MethodDescriptor)
 			{
 				NapileFile file = (NapileFile) argumentList.getContainingFile();
 				BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(file);
-				FunctionDescriptor functionDescriptor = (FunctionDescriptor) descriptor;
+				MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 				StringBuilder builder = new StringBuilder();
-				List<ValueParameterDescriptor> valueParameters = functionDescriptor.getValueParameters();
+				List<ValueParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
 				List<NapileValueArgument> valueArguments = argumentList.getArguments();
 				int currentParameterIndex = context.getCurrentParameterIndex();
 				int boldStartOffset = -1;
@@ -280,7 +280,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 						DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, refExpression);
 						if(declarationDescriptor != null)
 						{
-							if(declarationDescriptor == functionDescriptor)
+							if(declarationDescriptor == methodDescriptor)
 							{
 								color = GREEN_BACKGROUND;
 							}
@@ -476,15 +476,15 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 			ArrayList<DeclarationDescriptor> itemsToShow = new ArrayList<DeclarationDescriptor>();
 			for(DeclarationDescriptor variant : variants)
 			{
-				if(variant instanceof FunctionDescriptor)
+				if(variant instanceof MethodDescriptor)
 				{
-					FunctionDescriptor functionDescriptor = (FunctionDescriptor) variant;
-					if(functionDescriptor.getName().equals(refName))
+					MethodDescriptor methodDescriptor = (MethodDescriptor) variant;
+					if(methodDescriptor.getName().equals(refName))
 					{
 						//todo: renamed functions?
-						if(placeDescriptor != null && !JetVisibilityChecker.isVisible(placeDescriptor, functionDescriptor))
+						if(placeDescriptor != null && !JetVisibilityChecker.isVisible(placeDescriptor, methodDescriptor))
 							continue;
-						itemsToShow.add(functionDescriptor);
+						itemsToShow.add(methodDescriptor);
 					}
 				}
 				else if(variant instanceof ClassDescriptor)

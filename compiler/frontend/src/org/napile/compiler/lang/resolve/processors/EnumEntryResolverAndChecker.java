@@ -23,7 +23,7 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
@@ -70,7 +70,7 @@ public class EnumEntryResolverAndChecker
 	{
 		ClassDescriptor classDescriptor = (ClassDescriptor) enumEntryDescriptor.getContainingDeclaration();
 
-		OverloadResolutionResults<FunctionDescriptor> call = callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, enumEntry), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+		OverloadResolutionResults<MethodDescriptor> call = callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, enumEntry), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 
 	}
 }

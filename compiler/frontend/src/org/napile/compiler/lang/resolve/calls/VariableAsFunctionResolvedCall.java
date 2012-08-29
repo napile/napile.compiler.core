@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -31,18 +31,18 @@ import org.napile.compiler.lang.types.JetType;
 /**
  * @author svtk
  */
-public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<FunctionDescriptor>
+public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<MethodDescriptor>
 {
-	private final ResolvedCallWithTrace<FunctionDescriptor> functionCall;
+	private final ResolvedCallWithTrace<MethodDescriptor> functionCall;
 	private final ResolvedCallWithTrace<VariableDescriptor> variableCall;
 
-	public VariableAsFunctionResolvedCall(@NotNull ResolvedCallWithTrace<FunctionDescriptor> functionCall, @NotNull ResolvedCallWithTrace<VariableDescriptor> variableCall)
+	public VariableAsFunctionResolvedCall(@NotNull ResolvedCallWithTrace<MethodDescriptor> functionCall, @NotNull ResolvedCallWithTrace<VariableDescriptor> variableCall)
 	{
 		this.functionCall = functionCall;
 		this.variableCall = variableCall;
 	}
 
-	public ResolvedCallWithTrace<FunctionDescriptor> getFunctionCall()
+	public ResolvedCallWithTrace<MethodDescriptor> getFunctionCall()
 	{
 		return functionCall;
 	}
@@ -54,14 +54,14 @@ public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<Fun
 
 	@NotNull
 	@Override
-	public FunctionDescriptor getCandidateDescriptor()
+	public MethodDescriptor getCandidateDescriptor()
 	{
 		return functionCall.getResultingDescriptor();
 	}
 
 	@NotNull
 	@Override
-	public FunctionDescriptor getResultingDescriptor()
+	public MethodDescriptor getResultingDescriptor()
 	{
 		return functionCall.getResultingDescriptor();
 	}

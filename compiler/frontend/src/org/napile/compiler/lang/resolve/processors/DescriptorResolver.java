@@ -195,10 +195,10 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public SimpleFunctionDescriptor resolveFunctionDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedFunction function, final BindingTrace trace)
+	public SimpleMethodDescriptor resolveFunctionDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedFunction function, final BindingTrace trace)
 	{
 		NapileModifierList modifierList = function.getModifierList();
-		final SimpleFunctionDescriptorImpl functionDescriptor = new SimpleFunctionDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, function.getModifierList(), trace), NapilePsiUtil.safeName(function.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD));
+		final SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, function.getModifierList(), trace), NapilePsiUtil.safeName(function.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD));
 		WritableScope innerScope = new WritableScopeImpl(scope, functionDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
 		innerScope.addLabeledDeclaration(functionDescriptor);
 
@@ -259,7 +259,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	private List<ValueParameterDescriptor> resolveValueParameters(FunctionDescriptor functionDescriptor, WritableScope parameterScope, List<NapileParameter> valueParameters, BindingTrace trace)
+	private List<ValueParameterDescriptor> resolveValueParameters(MethodDescriptor methodDescriptor, WritableScope parameterScope, List<NapileParameter> valueParameters, BindingTrace trace)
 	{
 		List<ValueParameterDescriptor> result = new ArrayList<ValueParameterDescriptor>();
 		for(int i = 0, valueParametersSize = valueParameters.size(); i < valueParametersSize; i++)
@@ -278,7 +278,7 @@ public class DescriptorResolver
 				type = typeResolver.resolveType(parameterScope, typeReference, trace, true);
 			}
 
-			ValueParameterDescriptor valueParameterDescriptor = resolveValueParameterDescriptor(parameterScope, functionDescriptor, valueParameter, i, type, trace);
+			ValueParameterDescriptor valueParameterDescriptor = resolveValueParameterDescriptor(parameterScope, methodDescriptor, valueParameter, i, type, trace);
 			parameterScope.addVariableDescriptor(valueParameterDescriptor);
 			result.add(valueParameterDescriptor);
 		}

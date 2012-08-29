@@ -81,11 +81,11 @@ public class WriteThroughScope extends WritableScopeWithImports
 
 	@Override
 	@NotNull
-	public Collection<FunctionDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
 	{
 		checkMayRead();
 
-		Set<FunctionDescriptor> result = Sets.newLinkedHashSet();
+		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
 
 		result.addAll(writableWorker.getFunctions(name));
 
@@ -230,11 +230,11 @@ public class WriteThroughScope extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addFunctionDescriptor(@NotNull FunctionDescriptor functionDescriptor)
+	public void addFunctionDescriptor(@NotNull MethodDescriptor methodDescriptor)
 	{
 		checkMayWrite();
 
-		writableWorker.addFunctionDescriptor(functionDescriptor);
+		writableWorker.addFunctionDescriptor(methodDescriptor);
 	}
 
 	@Override
@@ -286,11 +286,11 @@ public class WriteThroughScope extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addFunctionAlias(@NotNull Name name, @NotNull FunctionDescriptor functionDescriptor)
+	public void addFunctionAlias(@NotNull Name name, @NotNull MethodDescriptor methodDescriptor)
 	{
 		checkMayWrite();
 
-		writableWorker.addFunctionAlias(name, functionDescriptor);
+		writableWorker.addFunctionAlias(name, methodDescriptor);
 	}
 
 	@Override

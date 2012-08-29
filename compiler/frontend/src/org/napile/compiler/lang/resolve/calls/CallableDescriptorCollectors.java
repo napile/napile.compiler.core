@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -44,50 +44,50 @@ import com.google.common.collect.Sets;
 public class CallableDescriptorCollectors
 {
 
-	/*package*/ static CallableDescriptorCollector<FunctionDescriptor> FUNCTIONS = new CallableDescriptorCollector<FunctionDescriptor>()
+	/*package*/ static CallableDescriptorCollector<MethodDescriptor> FUNCTIONS = new CallableDescriptorCollector<MethodDescriptor>()
 	{
 
 		@NotNull
 		@Override
-		public Collection<FunctionDescriptor> getNonExtensionsByName(JetScope scope, Name name)
+		public Collection<MethodDescriptor> getNonExtensionsByName(JetScope scope, Name name)
 		{
-			Set<FunctionDescriptor> functions = Sets.newLinkedHashSet(scope.getFunctions(name));
-			for(Iterator<FunctionDescriptor> iterator = functions.iterator(); iterator.hasNext(); )
+			Set<MethodDescriptor> methods = Sets.newLinkedHashSet(scope.getFunctions(name));
+			for(Iterator<MethodDescriptor> iterator = methods.iterator(); iterator.hasNext(); )
 			{
-				FunctionDescriptor functionDescriptor = iterator.next();
-				if(functionDescriptor.getReceiverParameter().exists())
+				MethodDescriptor methodDescriptor = iterator.next();
+				if(methodDescriptor.getReceiverParameter().exists())
 				{
 					iterator.remove();
 				}
 			}
-			addConstructors(scope, name, functions);
-			return functions;
+			addConstructors(scope, name, methods);
+			return methods;
 		}
 
 		@NotNull
 		@Override
-		public Collection<FunctionDescriptor> getMembersByName(@NotNull JetType receiverType, Name name)
+		public Collection<MethodDescriptor> getMembersByName(@NotNull JetType receiverType, Name name)
 		{
 			JetScope receiverScope = receiverType.getMemberScope();
-			Set<FunctionDescriptor> members = Sets.newHashSet(receiverScope.getFunctions(name));
+			Set<MethodDescriptor> members = Sets.newHashSet(receiverScope.getFunctions(name));
 			addConstructors(receiverScope, name, members);
 			return members;
 		}
 
 		@NotNull
 		@Override
-		public Collection<FunctionDescriptor> getNonMembersByName(JetScope scope, Name name)
+		public Collection<MethodDescriptor> getNonMembersByName(JetScope scope, Name name)
 		{
 			return scope.getFunctions(name);
 		}
 
-		private void addConstructors(JetScope scope, Name name, Collection<FunctionDescriptor> functions)
+		private void addConstructors(JetScope scope, Name name, Collection<MethodDescriptor> methods)
 		{
 			ClassifierDescriptor classifier = scope.getClassifier(name);
 			if(classifier instanceof ClassDescriptor && !ErrorUtils.isError(classifier.getTypeConstructor()))
 			{
 				ClassDescriptor classDescriptor = (ClassDescriptor) classifier;
-				functions.addAll(classDescriptor.getConstructors());
+				methods.addAll(classDescriptor.getConstructors());
 			}
 		}
 	};

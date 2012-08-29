@@ -26,8 +26,8 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileElement;
@@ -370,13 +370,13 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 
 		// Make a fake call loopRange.iterator(), and try to resolve it
 		Name iterator = Name.identifier("iterator");
-		OverloadResolutionResults<FunctionDescriptor> iteratorResolutionResults = resolveFakeCall(loopRange, context, iterator);
+		OverloadResolutionResults<MethodDescriptor> iteratorResolutionResults = resolveFakeCall(loopRange, context, iterator);
 
 		// We allow the loop range to be null (nothing happens), so we make the receiver type non-null
 		if(!iteratorResolutionResults.isSuccess())
 		{
 			ExpressionReceiver nonNullReceiver = new ExpressionReceiver(loopRange.getExpression(), TypeUtils.makeNotNullable(loopRange.getType()));
-			OverloadResolutionResults<FunctionDescriptor> iteratorResolutionResultsWithNonNullReceiver = resolveFakeCall(nonNullReceiver, context, iterator);
+			OverloadResolutionResults<MethodDescriptor> iteratorResolutionResultsWithNonNullReceiver = resolveFakeCall(nonNullReceiver, context, iterator);
 			if(iteratorResolutionResultsWithNonNullReceiver.isSuccess())
 			{
 				iteratorResolutionResults = iteratorResolutionResultsWithNonNullReceiver;
@@ -385,13 +385,13 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 
 		if(iteratorResolutionResults.isSuccess())
 		{
-			FunctionDescriptor iteratorFunction = iteratorResolutionResults.getResultingCall().getResultingDescriptor();
+			MethodDescriptor iteratorMethod = iteratorResolutionResults.getResultingCall().getResultingDescriptor();
 
-			context.trace.record(BindingContext.LOOP_RANGE_ITERATOR, loopRangeExpression, iteratorFunction);
+			context.trace.record(BindingContext.LOOP_RANGE_ITERATOR, loopRangeExpression, iteratorMethod);
 
-			JetType iteratorType = iteratorFunction.getReturnType();
-			FunctionDescriptor hasNextFunction = checkHasNextFunctionSupport(loopRangeExpression, iteratorType, context);
-			boolean hasNextFunctionSupported = hasNextFunction != null;
+			JetType iteratorType = iteratorMethod.getReturnType();
+			MethodDescriptor hasNextMethod = checkHasNextFunctionSupport(loopRangeExpression, iteratorType, context);
+			boolean hasNextFunctionSupported = hasNextMethod != null;
 			VariableDescriptor hasNextProperty = checkHasNextPropertySupport(loopRangeExpression, iteratorType, context);
 			boolean hasNextPropertySupported = hasNextProperty != null;
 			if(hasNextFunctionSupported && hasNextPropertySupported && !ErrorUtils.isErrorType(iteratorType))
@@ -405,10 +405,10 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			}
 			else
 			{
-				context.trace.record(BindingContext.LOOP_RANGE_HAS_NEXT, loopRange.getExpression(), hasNextFunctionSupported ? hasNextFunction : hasNextProperty);
+				context.trace.record(BindingContext.LOOP_RANGE_HAS_NEXT, loopRange.getExpression(), hasNextFunctionSupported ? hasNextMethod : hasNextProperty);
 			}
 
-			OverloadResolutionResults<FunctionDescriptor> nextResolutionResults = context.resolveExactSignature(new TransientReceiver(iteratorType), Name.identifier("next"), Collections.<JetType>emptyList());
+			OverloadResolutionResults<MethodDescriptor> nextResolutionResults = context.resolveExactSignature(new TransientReceiver(iteratorType), Name.identifier("next"), Collections.<JetType>emptyList());
 			if(nextResolutionResults.isAmbiguity())
 			{
 				context.trace.report(Errors.NEXT_AMBIGUITY.on(loopRangeExpression));
@@ -419,9 +419,9 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			}
 			else
 			{
-				FunctionDescriptor nextFunction = nextResolutionResults.getResultingCall().getResultingDescriptor();
-				context.trace.record(BindingContext.LOOP_RANGE_NEXT, loopRange.getExpression(), nextFunction);
-				return nextFunction.getReturnType();
+				MethodDescriptor nextMethod = nextResolutionResults.getResultingCall().getResultingDescriptor();
+				context.trace.record(BindingContext.LOOP_RANGE_NEXT, loopRange.getExpression(), nextMethod);
+				return nextMethod.getReturnType();
 			}
 		}
 		else
@@ -443,7 +443,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		return null;
 	}
 
-	public static OverloadResolutionResults<FunctionDescriptor> resolveFakeCall(ExpressionReceiver receiver, ExpressionTypingContext context, Name name)
+	public static OverloadResolutionResults<MethodDescriptor> resolveFakeCall(ExpressionReceiver receiver, ExpressionTypingContext context, Name name)
 	{
 		NapileReferenceExpression fake = NapilePsiFactory.createSimpleName(context.expressionTypingServices.getProject(), "fake");
 		BindingTrace fakeTrace = new BindingTraceContext();
@@ -452,9 +452,9 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Nullable
-	private static FunctionDescriptor checkHasNextFunctionSupport(@NotNull NapileExpression loopRange, @NotNull JetType iteratorType, ExpressionTypingContext context)
+	private static MethodDescriptor checkHasNextFunctionSupport(@NotNull NapileExpression loopRange, @NotNull JetType iteratorType, ExpressionTypingContext context)
 	{
-		OverloadResolutionResults<FunctionDescriptor> hasNextResolutionResults = context.resolveExactSignature(new TransientReceiver(iteratorType), Name.identifier("hasNext"), Collections.<JetType>emptyList());
+		OverloadResolutionResults<MethodDescriptor> hasNextResolutionResults = context.resolveExactSignature(new TransientReceiver(iteratorType), Name.identifier("hasNext"), Collections.<JetType>emptyList());
 		if(hasNextResolutionResults.isAmbiguity())
 		{
 			context.trace.report(Errors.HAS_NEXT_FUNCTION_AMBIGUITY.on(loopRange));
@@ -577,27 +577,27 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		}
 		assert parentDeclaration != null;
 		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, parentDeclaration);
-		FunctionDescriptor containingFunctionDescriptor = DescriptorUtils.getParentOfType(declarationDescriptor, FunctionDescriptor.class, false);
+		MethodDescriptor containingMethodDescriptor = DescriptorUtils.getParentOfType(declarationDescriptor, MethodDescriptor.class, false);
 
 		if(expression.getTargetLabel() == null)
 		{
-			if(containingFunctionDescriptor != null)
+			if(containingMethodDescriptor != null)
 			{
-				PsiElement containingFunction = BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingFunctionDescriptor);
+				PsiElement containingFunction = BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor);
 				assert containingFunction != null;
 				if(containingFunction instanceof NapileFunctionLiteralExpression)
 				{
 					do
 					{
-						containingFunctionDescriptor = DescriptorUtils.getParentOfType(containingFunctionDescriptor, FunctionDescriptor.class);
-						containingFunction = containingFunctionDescriptor != null ? BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingFunctionDescriptor) : null;
+						containingMethodDescriptor = DescriptorUtils.getParentOfType(containingMethodDescriptor, MethodDescriptor.class);
+						containingFunction = containingMethodDescriptor != null ? BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor) : null;
 					}
 					while(containingFunction instanceof NapileFunctionLiteralExpression);
 					context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
 				}
-				if(containingFunctionDescriptor != null)
+				if(containingMethodDescriptor != null)
 				{
-					expectedType = DescriptorUtils.getFunctionExpectedReturnType(containingFunctionDescriptor, (NapileElement) containingFunction);
+					expectedType = DescriptorUtils.getFunctionExpectedReturnType(containingMethodDescriptor, (NapileElement) containingFunction);
 				}
 			}
 			else
@@ -607,11 +607,11 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		}
 		else if(element != null)
 		{
-			SimpleFunctionDescriptor functionDescriptor = context.trace.get(BindingContext.FUNCTION, element);
+			SimpleMethodDescriptor functionDescriptor = context.trace.get(BindingContext.FUNCTION, element);
 			if(functionDescriptor != null)
 			{
 				expectedType = DescriptorUtils.getFunctionExpectedReturnType(functionDescriptor, element);
-				if(functionDescriptor != containingFunctionDescriptor)
+				if(functionDescriptor != containingMethodDescriptor)
 				{
 					context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
 				}

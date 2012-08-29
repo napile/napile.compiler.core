@@ -43,7 +43,7 @@ public class NamespaceLikeBuilderDummy implements NamespaceLikeBuilder
 	}
 
 	@Override
-	public void addFunctionDescriptor(@NotNull SimpleFunctionDescriptor functionDescriptor)
+	public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
 	{
 		throw new IllegalStateException();
 	}

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
@@ -121,9 +121,9 @@ public class OverridingUtil
 	@NotNull
 	public static OverrideCompatibilityInfo isOverridableBy(@NotNull CallableDescriptor superDescriptor, @NotNull CallableDescriptor subDescriptor)
 	{
-		if(superDescriptor instanceof FunctionDescriptor)
+		if(superDescriptor instanceof MethodDescriptor)
 		{
-			if(!(subDescriptor instanceof FunctionDescriptor))
+			if(!(subDescriptor instanceof MethodDescriptor))
 				return OverrideCompatibilityInfo.memberKindMismatch();
 		}
 		else if(superDescriptor instanceof PropertyDescriptor)

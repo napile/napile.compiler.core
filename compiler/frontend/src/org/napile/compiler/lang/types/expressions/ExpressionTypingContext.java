@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.psi.NapilePattern;
@@ -149,13 +149,13 @@ public class ExpressionTypingContext
 	}
 
 	@NotNull
-	public OverloadResolutionResults<FunctionDescriptor> resolveCallWithGivenName(@NotNull Call call, @NotNull NapileReferenceExpression functionReference, @NotNull Name name)
+	public OverloadResolutionResults<MethodDescriptor> resolveCallWithGivenName(@NotNull Call call, @NotNull NapileReferenceExpression functionReference, @NotNull Name name)
 	{
 		return expressionTypingServices.getCallResolver().resolveCallWithGivenName(makeResolutionContext(call), functionReference, name);
 	}
 
 	@NotNull
-	public OverloadResolutionResults<FunctionDescriptor> resolveFunctionCall(@NotNull Call call)
+	public OverloadResolutionResults<MethodDescriptor> resolveFunctionCall(@NotNull Call call)
 	{
 		return expressionTypingServices.getCallResolver().resolveFunctionCall(makeResolutionContext(call));
 	}
@@ -168,7 +168,7 @@ public class ExpressionTypingContext
 	}
 
 	@NotNull
-	public OverloadResolutionResults<FunctionDescriptor> resolveExactSignature(@NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull List<JetType> parameterTypes)
+	public OverloadResolutionResults<MethodDescriptor> resolveExactSignature(@NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull List<JetType> parameterTypes)
 	{
 		return expressionTypingServices.getCallResolver().resolveExactSignature(scope, receiver, name, parameterTypes);
 	}

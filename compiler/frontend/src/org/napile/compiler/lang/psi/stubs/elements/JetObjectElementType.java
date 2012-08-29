@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.stubs.PsiJetObjectStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetObjectStubImpl;
 import org.napile.compiler.lang.resolve.name.FqName;
@@ -35,7 +35,7 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetObjectElementType extends JetStubElementType<PsiJetObjectStub, NapileAnonymousClass>
+public class JetObjectElementType extends JetStubElementType<PsiJetObjectStub, NapileAnonymClass>
 {
 	public JetObjectElementType(@NotNull @NonNls String debugName)
 	{
@@ -43,15 +43,15 @@ public class JetObjectElementType extends JetStubElementType<PsiJetObjectStub, N
 	}
 
 	@Override
-	public NapileAnonymousClass createPsiFromAst(@NotNull ASTNode node)
+	public NapileAnonymClass createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileAnonymousClass(node);
+		return new NapileAnonymClass(node);
 	}
 
 	@Override
-	public NapileAnonymousClass createPsi(@NotNull PsiJetObjectStub stub)
+	public NapileAnonymClass createPsi(@NotNull PsiJetObjectStub stub)
 	{
-		return new NapileAnonymousClass(stub);
+		return new NapileAnonymClass(stub);
 	}
 
 	@Override
@@ -60,9 +60,9 @@ public class JetObjectElementType extends JetStubElementType<PsiJetObjectStub, N
 		if(super.shouldCreateStub(node))
 		{
 			PsiElement psiElement = node.getPsi();
-			if(psiElement instanceof NapileAnonymousClass)
+			if(psiElement instanceof NapileAnonymClass)
 			{
-				NapileAnonymousClass objectDeclaration = (NapileAnonymousClass) psiElement;
+				NapileAnonymClass objectDeclaration = (NapileAnonymClass) psiElement;
 				return objectDeclaration.getName() != null;
 			}
 		}
@@ -71,7 +71,7 @@ public class JetObjectElementType extends JetStubElementType<PsiJetObjectStub, N
 	}
 
 	@Override
-	public PsiJetObjectStub createStub(@NotNull NapileAnonymousClass psi, @NotNull StubElement parentStub)
+	public PsiJetObjectStub createStub(@NotNull NapileAnonymClass psi, @NotNull StubElement parentStub)
 	{
 		String name = psi.getName();
 		assert name != null;

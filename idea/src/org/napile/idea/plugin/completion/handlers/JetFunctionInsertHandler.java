@@ -18,7 +18,7 @@ package org.napile.idea.plugin.completion.handlers;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
@@ -164,11 +164,11 @@ public class JetFunctionInsertHandler implements InsertHandler<LookupElement>
 				if(context.getFile() instanceof NapileFile && item.getObject() instanceof JetLookupObject)
 				{
 					final DeclarationDescriptor descriptor = ((JetLookupObject) item.getObject()).getDescriptor();
-					if(descriptor instanceof SimpleFunctionDescriptor)
+					if(descriptor instanceof SimpleMethodDescriptor)
 					{
 
 						final NapileFile file = (NapileFile) context.getFile();
-						final SimpleFunctionDescriptor functionDescriptor = (SimpleFunctionDescriptor) descriptor;
+						final SimpleMethodDescriptor functionDescriptor = (SimpleMethodDescriptor) descriptor;
 						// Don't insert import for qualified expression if don't try to insert extension function
 						if(PsiTreeUtil.getParentOfType(element, NapileQualifiedExpression.class) != null && !functionDescriptor.getReceiverParameter().exists())
 						{

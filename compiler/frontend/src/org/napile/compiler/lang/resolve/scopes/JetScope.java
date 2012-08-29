@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -72,7 +72,7 @@ public interface JetScope
 	VariableDescriptor getLocalVariable(@NotNull Name name);
 
 	@NotNull
-	Collection<FunctionDescriptor> getFunctions(@NotNull Name name);
+	Collection<MethodDescriptor> getFunctions(@NotNull Name name);
 
 	@NotNull
 	DeclarationDescriptor getContainingDeclaration();

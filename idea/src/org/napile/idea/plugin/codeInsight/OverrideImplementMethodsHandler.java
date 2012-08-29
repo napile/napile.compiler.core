@@ -23,17 +23,8 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MemberDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
-import org.napile.compiler.lang.descriptors.Visibility;
+import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClassBody;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileElement;
@@ -149,9 +140,9 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 		for(DescriptorClassMember selectedElement : selectedElements)
 		{
 			final DeclarationDescriptor descriptor = selectedElement.getDescriptor();
-			if(descriptor instanceof SimpleFunctionDescriptor)
+			if(descriptor instanceof SimpleMethodDescriptor)
 			{
-				overridingMembers.add(overrideFunction(file.getProject(), (SimpleFunctionDescriptor) descriptor));
+				overridingMembers.add(overrideFunction(file.getProject(), (SimpleMethodDescriptor) descriptor));
 			}
 			else if(descriptor instanceof PropertyDescriptor)
 			{
@@ -194,7 +185,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 		return DescriptorRenderer.TEXT.renderType(type);
 	}
 
-	private static NapileElement overrideFunction(Project project, SimpleFunctionDescriptor descriptor)
+	private static NapileElement overrideFunction(Project project, SimpleMethodDescriptor descriptor)
 	{
 		StringBuilder bodyBuilder = new StringBuilder();
 		bodyBuilder.append(displayableVisibility(descriptor));

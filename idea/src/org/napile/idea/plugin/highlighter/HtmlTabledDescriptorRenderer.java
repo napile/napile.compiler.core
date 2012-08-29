@@ -24,7 +24,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer;
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TableRenderer.DescriptorRow;
@@ -202,7 +202,7 @@ public class HtmlTabledDescriptorRenderer extends TabledDescriptorRenderer
 		}
 
 		@Override
-		protected void renderValueParameters(FunctionDescriptor descriptor, StringBuilder builder)
+		protected void renderValueParameters(MethodDescriptor descriptor, StringBuilder builder)
 		{
 			//todo comment
 			builder.append("</div></td>");

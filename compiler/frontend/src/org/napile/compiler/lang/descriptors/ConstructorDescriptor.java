@@ -29,7 +29,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 /**
  * @author abreslav
  */
-public class ConstructorDescriptor extends FunctionDescriptorImpl
+public class ConstructorDescriptor extends MethodDescriptorImpl
 {
 	private static final Name NAME = Name.special("<init>");
 
@@ -84,7 +84,7 @@ public class ConstructorDescriptor extends FunctionDescriptorImpl
 
 	@NotNull
 	@Override
-	public Set<? extends FunctionDescriptor> getOverriddenDescriptors()
+	public Set<? extends MethodDescriptor> getOverriddenDescriptors()
 	{
 		return Collections.emptySet();
 	}
@@ -96,7 +96,7 @@ public class ConstructorDescriptor extends FunctionDescriptorImpl
 	}
 
 	@Override
-	protected FunctionDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
+	protected MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
 	{
 		if(kind != Kind.DECLARATION)
 		{

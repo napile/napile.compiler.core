@@ -65,15 +65,15 @@ public class FunctionDescriptorUtil
 		}
 	});
 
-	public static Map<TypeConstructor, JetType> createSubstitutionContext(@NotNull FunctionDescriptor functionDescriptor, List<JetType> typeArguments)
+	public static Map<TypeConstructor, JetType> createSubstitutionContext(@NotNull MethodDescriptor methodDescriptor, List<JetType> typeArguments)
 	{
-		if(functionDescriptor.getTypeParameters().isEmpty())
+		if(methodDescriptor.getTypeParameters().isEmpty())
 			return Collections.emptyMap();
 
 		Map<TypeConstructor, JetType> result = new HashMap<TypeConstructor, JetType>();
 
 		int typeArgumentsSize = typeArguments.size();
-		List<TypeParameterDescriptor> typeParameters = functionDescriptor.getTypeParameters();
+		List<TypeParameterDescriptor> typeParameters = methodDescriptor.getTypeParameters();
 		assert typeArgumentsSize == typeParameters.size();
 		for(int i = 0; i < typeArgumentsSize; i++)
 		{
@@ -85,10 +85,10 @@ public class FunctionDescriptorUtil
 	}
 
 	@Nullable
-	public static List<ValueParameterDescriptor> getSubstitutedValueParameters(FunctionDescriptor substitutedDescriptor, @NotNull FunctionDescriptor functionDescriptor, @NotNull TypeSubstitutor substitutor)
+	public static List<ValueParameterDescriptor> getSubstitutedValueParameters(MethodDescriptor substitutedDescriptor, @NotNull MethodDescriptor methodDescriptor, @NotNull TypeSubstitutor substitutor)
 	{
 		List<ValueParameterDescriptor> result = new ArrayList<ValueParameterDescriptor>();
-		List<ValueParameterDescriptor> unsubstitutedValueParameters = functionDescriptor.getValueParameters();
+		List<ValueParameterDescriptor> unsubstitutedValueParameters = methodDescriptor.getValueParameters();
 		for(int i = 0, unsubstitutedValueParametersSize = unsubstitutedValueParameters.size(); i < unsubstitutedValueParametersSize; i++)
 		{
 			ValueParameterDescriptor unsubstitutedValueParameter = unsubstitutedValueParameters.get(i);
@@ -104,20 +104,20 @@ public class FunctionDescriptorUtil
 	}
 
 	@Nullable
-	public static JetType getSubstitutedReturnType(@NotNull FunctionDescriptor functionDescriptor, TypeSubstitutor substitutor)
+	public static JetType getSubstitutedReturnType(@NotNull MethodDescriptor methodDescriptor, TypeSubstitutor substitutor)
 	{
-		return substitutor.substitute(functionDescriptor.getReturnType());
+		return substitutor.substitute(methodDescriptor.getReturnType());
 	}
 
 	@Nullable
-	public static FunctionDescriptor substituteFunctionDescriptor(@NotNull List<JetType> typeArguments, @NotNull FunctionDescriptor functionDescriptor)
+	public static MethodDescriptor substituteFunctionDescriptor(@NotNull List<JetType> typeArguments, @NotNull MethodDescriptor methodDescriptor)
 	{
-		Map<TypeConstructor, JetType> substitutionContext = createSubstitutionContext(functionDescriptor, typeArguments);
-		return functionDescriptor.substitute(TypeSubstitutor.create(substitutionContext));
+		Map<TypeConstructor, JetType> substitutionContext = createSubstitutionContext(methodDescriptor, typeArguments);
+		return methodDescriptor.substitute(TypeSubstitutor.create(substitutionContext));
 	}
 
 	@NotNull
-	public static JetScope getFunctionInnerScope(@NotNull JetScope outerScope, @NotNull FunctionDescriptor descriptor, @NotNull BindingTrace trace)
+	public static JetScope getFunctionInnerScope(@NotNull JetScope outerScope, @NotNull MethodDescriptor descriptor, @NotNull BindingTrace trace)
 	{
 		WritableScope parameterScope = new WritableScopeImpl(outerScope, descriptor, new TraceBasedRedeclarationHandler(trace), "Function inner scope");
 		ReceiverDescriptor receiver = descriptor.getReceiverParameter();
@@ -138,7 +138,7 @@ public class FunctionDescriptorUtil
 		return parameterScope;
 	}
 
-	public static void initializeFromFunctionType(@NotNull FunctionDescriptorImpl functionDescriptor, @NotNull JetType functionType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Modality modality, @NotNull Visibility visibility)
+	public static void initializeFromFunctionType(@NotNull MethodDescriptorImpl functionDescriptor, @NotNull JetType functionType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Modality modality, @NotNull Visibility visibility)
 	{
 
 		assert JetStandardClasses.isFunctionType(functionType);
@@ -150,14 +150,14 @@ public class FunctionDescriptorUtil
 		return (D) candidate.substitute(MAKE_TYPE_PARAMETERS_FRESH);
 	}
 
-	public static FunctionDescriptor getInvokeFunction(@NotNull JetType functionType)
+	public static MethodDescriptor getInvokeFunction(@NotNull JetType functionType)
 	{
 		assert JetStandardClasses.isFunctionType(functionType);
 
 		ClassifierDescriptor classDescriptorForFunction = functionType.getConstructor().getDeclarationDescriptor();
 		assert classDescriptorForFunction instanceof ClassDescriptor;
-		Collection<FunctionDescriptor> invokeFunctions = ((ClassDescriptor) classDescriptorForFunction).getMemberScope(functionType.getArguments()).getFunctions(Name.identifier("invoke"));
-		assert invokeFunctions.size() == 1;
-		return invokeFunctions.iterator().next();
+		Collection<MethodDescriptor> invokeMethods = ((ClassDescriptor) classDescriptorForFunction).getMemberScope(functionType.getArguments()).getFunctions(Name.identifier("invoke"));
+		assert invokeMethods.size() == 1;
+		return invokeMethods.iterator().next();
 	}
 }

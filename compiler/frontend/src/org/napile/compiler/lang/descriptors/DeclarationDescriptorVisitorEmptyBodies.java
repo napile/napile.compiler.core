@@ -33,7 +33,7 @@ public class DeclarationDescriptorVisitorEmptyBodies<R, D> implements Declaratio
 	}
 
 	@Override
-	public R visitFunctionDescriptor(FunctionDescriptor descriptor, D data)
+	public R visitFunctionDescriptor(MethodDescriptor descriptor, D data)
 	{
 		return visitDeclarationDescriptor(descriptor, data);
 	}

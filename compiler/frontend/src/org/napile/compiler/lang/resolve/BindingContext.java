@@ -21,22 +21,8 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyAccessorDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyGetterDescriptor;
-import org.napile.compiler.lang.descriptors.PropertySetterDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -97,16 +83,16 @@ public interface BindingContext
 
 	WritableSlice<NapileReferenceExpression, Collection<? extends DeclarationDescriptor>> AMBIGUOUS_REFERENCE_TARGET = new BasicWritableSlice<NapileReferenceExpression, Collection<? extends DeclarationDescriptor>>(RewritePolicy.DO_NOTHING);
 
-	WritableSlice<CallKey, OverloadResolutionResults<FunctionDescriptor>> RESOLUTION_RESULTS_FOR_FUNCTION = Slices.createSimpleSlice();
+	WritableSlice<CallKey, OverloadResolutionResults<MethodDescriptor>> RESOLUTION_RESULTS_FOR_FUNCTION = Slices.createSimpleSlice();
 	WritableSlice<CallKey, OverloadResolutionResults<VariableDescriptor>> RESOLUTION_RESULTS_FOR_PROPERTY = Slices.createSimpleSlice();
 	WritableSlice<NapileExpression, DelegatingBindingTrace> TRACE_DELTAS_CACHE = Slices.createSimpleSlice();
 
-	WritableSlice<NapileExpression, FunctionDescriptor> LOOP_RANGE_ITERATOR = Slices.createSimpleSlice();
+	WritableSlice<NapileExpression, MethodDescriptor> LOOP_RANGE_ITERATOR = Slices.createSimpleSlice();
 	WritableSlice<NapileExpression, CallableDescriptor> LOOP_RANGE_HAS_NEXT = Slices.createSimpleSlice();
-	WritableSlice<NapileExpression, FunctionDescriptor> LOOP_RANGE_NEXT = Slices.createSimpleSlice();
+	WritableSlice<NapileExpression, MethodDescriptor> LOOP_RANGE_NEXT = Slices.createSimpleSlice();
 
-	WritableSlice<NapileExpression, ResolvedCall<FunctionDescriptor>> INDEXED_LVALUE_GET = Slices.createSimpleSlice();
-	WritableSlice<NapileExpression, ResolvedCall<FunctionDescriptor>> INDEXED_LVALUE_SET = Slices.createSimpleSlice();
+	WritableSlice<NapileExpression, ResolvedCall<MethodDescriptor>> INDEXED_LVALUE_GET = Slices.createSimpleSlice();
+	WritableSlice<NapileExpression, ResolvedCall<MethodDescriptor>> INDEXED_LVALUE_SET = Slices.createSimpleSlice();
 
 	WritableSlice<NapileExpression, JetType> AUTOCAST = Slices.createSimpleSlice();
 
@@ -196,9 +182,9 @@ public interface BindingContext
 	WritableSlice<PsiElement, ClassDescriptor> CLASS = Slices.<PsiElement, ClassDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapileTypeParameter, TypeParameterDescriptor> TYPE_PARAMETER = Slices.<NapileTypeParameter, TypeParameterDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	/**
-	 * @see BindingContextUtils#recordFunctionDeclarationToDescriptor(BindingTrace, PsiElement, SimpleFunctionDescriptor)}
+	 * @see BindingContextUtils#recordFunctionDeclarationToDescriptor(BindingTrace, PsiElement, org.napile.compiler.lang.descriptors.SimpleMethodDescriptor)}
 	 */
-	WritableSlice<PsiElement, SimpleFunctionDescriptor> FUNCTION = Slices.<PsiElement, SimpleFunctionDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, SimpleMethodDescriptor> FUNCTION = Slices.<PsiElement, SimpleMethodDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, ConstructorDescriptor> CONSTRUCTOR = Slices.<PsiElement, ConstructorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapileParameter, VariableDescriptor> VALUE_PARAMETER = Slices.<NapileParameter, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();

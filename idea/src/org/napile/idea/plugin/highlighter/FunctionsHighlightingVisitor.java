@@ -18,7 +18,7 @@ package org.napile.idea.plugin.highlighter;
 
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -38,7 +38,7 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 	}
 
 	@Override
-	public void visitNamedFunction(NapileNamedFunction function)
+	public void visitNamedMethod(NapileNamedFunction function)
 	{
 		PsiElement nameIdentifier = function.getNameIdentifier();
 		if(nameIdentifier != null)
@@ -46,7 +46,7 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.FUNCTION_DECLARATION);
 		}
 
-		super.visitNamedFunction(function);
+		super.visitNamedMethod(function);
 	}
 
 	@Override
@@ -82,9 +82,9 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 				{
 					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.CONSTRUCTOR_CALL);
 				}
-				else if(calleeDescriptor instanceof FunctionDescriptor)
+				else if(calleeDescriptor instanceof MethodDescriptor)
 				{
-					FunctionDescriptor fun = (FunctionDescriptor) calleeDescriptor;
+					MethodDescriptor fun = (MethodDescriptor) calleeDescriptor;
 					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.FUNCTION_CALL);
 					if(fun.getContainingDeclaration() instanceof NamespaceDescriptor)
 					{

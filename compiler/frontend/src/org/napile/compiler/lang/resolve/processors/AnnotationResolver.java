@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -105,10 +105,10 @@ public class AnnotationResolver
 
 	public void resolveAnnotationStub(@NotNull JetScope scope, @NotNull NapileAnnotationEntry entryElement, @NotNull AnnotationDescriptor annotationDescriptor, BindingTrace trace)
 	{
-		OverloadResolutionResults<FunctionDescriptor> results = callResolver.resolveFunctionCall(trace, scope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, entryElement), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+		OverloadResolutionResults<MethodDescriptor> results = callResolver.resolveFunctionCall(trace, scope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, entryElement), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 		if(results.isSuccess())
 		{
-			FunctionDescriptor descriptor = results.getResultingDescriptor();
+			MethodDescriptor descriptor = results.getResultingDescriptor();
 			if(!ErrorUtils.isError(descriptor))
 			{
 				if(descriptor instanceof ConstructorDescriptor)
@@ -138,7 +138,7 @@ public class AnnotationResolver
 		}
 	}
 
-	private void resolveArguments(@NotNull OverloadResolutionResults<FunctionDescriptor> results, @NotNull AnnotationDescriptor descriptor, BindingTrace trace)
+	private void resolveArguments(@NotNull OverloadResolutionResults<MethodDescriptor> results, @NotNull AnnotationDescriptor descriptor, BindingTrace trace)
 	{
 		List<CompileTimeConstant<?>> arguments = Lists.newArrayList();
 		for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> descriptorToArgument : results.getResultingCall().getValueArguments().entrySet())

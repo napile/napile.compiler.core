@@ -31,7 +31,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -80,9 +80,9 @@ public class DeclarationsChecker
 			checkClass(aClass, classDescriptor);
 		}
 
-		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : bodiesResolveContext.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : bodiesResolveContext.getAnonymous().entrySet())
 		{
-			NapileAnonymousClass objectDeclaration = entry.getKey();
+			NapileAnonymClass objectDeclaration = entry.getKey();
 			MutableClassDescriptor objectDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(objectDeclaration))
@@ -90,10 +90,10 @@ public class DeclarationsChecker
 			checkObject(objectDeclaration, objectDescriptor);
 		}
 
-		for(Map.Entry<NapileNamedFunction, SimpleFunctionDescriptor> entry : bodiesResolveContext.getFunctions().entrySet())
+		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
 		{
 			NapileNamedFunction function = entry.getKey();
-			SimpleFunctionDescriptor functionDescriptor = entry.getValue();
+			SimpleMethodDescriptor functionDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
@@ -129,7 +129,7 @@ public class DeclarationsChecker
 		checkEnum(aClass, classDescriptor);
 	}
 
-	private void checkObject(NapileAnonymousClass objectDeclaration, MutableClassDescriptor classDescriptor)
+	private void checkObject(NapileAnonymClass objectDeclaration, MutableClassDescriptor classDescriptor)
 	{
 		modifiersChecker.checkIllegalInThisContextModifiers(objectDeclaration.getModifierList(), Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.OVERRIDE_KEYWORD));
 	}
@@ -259,7 +259,7 @@ public class DeclarationsChecker
 		}
 	}
 
-	protected void checkFunction(NapileNamedFunction function, SimpleFunctionDescriptor functionDescriptor)
+	protected void checkFunction(NapileNamedFunction function, SimpleMethodDescriptor functionDescriptor)
 	{
 		DeclarationDescriptor containingDescriptor = functionDescriptor.getContainingDeclaration();
 		boolean hasAbstractModifier = function.hasModifier(JetTokens.ABSTRACT_KEYWORD);

@@ -26,37 +26,37 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 /**
  * @author Stepan Koltsov
  */
-public class SimpleFunctionDescriptorImpl extends FunctionDescriptorImpl implements SimpleFunctionDescriptor
+public class SimpleMethodDescriptorImpl extends MethodDescriptorImpl implements SimpleMethodDescriptor
 {
-	public SimpleFunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
+	public SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name, kind, isStatic);
 	}
 
-	private SimpleFunctionDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull SimpleFunctionDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
+	private SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull SimpleMethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
 	{
 		super(containingDeclaration, original, annotations, name, kind, isStatic);
 	}
 
 	@NotNull
 	@Override
-	public SimpleFunctionDescriptor getOriginal()
+	public SimpleMethodDescriptor getOriginal()
 	{
-		return (SimpleFunctionDescriptor) super.getOriginal();
+		return (SimpleMethodDescriptor) super.getOriginal();
 	}
 
 	@Override
-	protected FunctionDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
+	protected MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
 	{
 		if(preserveOriginal)
 		{
-			return new SimpleFunctionDescriptorImpl(newOwner, getOriginal(),
+			return new SimpleMethodDescriptorImpl(newOwner, getOriginal(),
 					// TODO : safeSubstitute
 					getAnnotations(), getName(), kind, false);
 		}
 		else
 		{
-			return new SimpleFunctionDescriptorImpl(newOwner,
+			return new SimpleMethodDescriptorImpl(newOwner,
 					// TODO : safeSubstitute
 					getAnnotations(), getName(), kind, false);
 		}
@@ -64,8 +64,8 @@ public class SimpleFunctionDescriptorImpl extends FunctionDescriptorImpl impleme
 
 	@NotNull
 	@Override
-	public SimpleFunctionDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
+	public SimpleMethodDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
 	{
-		return (SimpleFunctionDescriptorImpl) doSubstitute(TypeSubstitutor.EMPTY, newOwner, modality, makeInvisible ? Visibility.INVISIBLE_FAKE : visibility, false, copyOverrides, kind);
+		return (SimpleMethodDescriptorImpl) doSubstitute(TypeSubstitutor.EMPTY, newOwner, modality, makeInvisible ? Visibility.INVISIBLE_FAKE : visibility, false, copyOverrides, kind);
 	}
 }

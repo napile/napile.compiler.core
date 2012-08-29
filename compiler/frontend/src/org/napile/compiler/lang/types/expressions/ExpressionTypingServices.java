@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.*;
@@ -158,9 +158,9 @@ public class ExpressionTypingServices
 	}
 
 	@NotNull
-	public JetType inferFunctionReturnType(@NotNull JetScope outerScope, @NotNull NapileDeclarationWithBody function, @NotNull FunctionDescriptor functionDescriptor, @NotNull BindingTrace trace)
+	public JetType inferFunctionReturnType(@NotNull JetScope outerScope, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull BindingTrace trace)
 	{
-		Map<NapileExpression, JetType> typeMap = collectReturnedExpressionsWithTypes(trace, outerScope, function, functionDescriptor);
+		Map<NapileExpression, JetType> typeMap = collectReturnedExpressionsWithTypes(trace, outerScope, function, methodDescriptor);
 		Collection<JetType> types = typeMap.values();
 		return types.isEmpty() ? TypeUtils.getTypeOfClassOrErrorType(outerScope, NapileLangPackage.NULL, false) : CommonSupertypes.commonSupertype(types);
 	}
@@ -168,11 +168,11 @@ public class ExpressionTypingServices
 
 	/////////////////////////////////////////////////////////
 
-	public void checkFunctionReturnType(@NotNull JetScope functionInnerScope, @NotNull NapileDeclarationWithBody function, @NotNull FunctionDescriptor functionDescriptor, @NotNull DataFlowInfo dataFlowInfo, @Nullable JetType expectedReturnType, BindingTrace trace)
+	public void checkFunctionReturnType(@NotNull JetScope functionInnerScope, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull DataFlowInfo dataFlowInfo, @Nullable JetType expectedReturnType, BindingTrace trace)
 	{
 		if(expectedReturnType == null)
 		{
-			expectedReturnType = functionDescriptor.getReturnType();
+			expectedReturnType = methodDescriptor.getReturnType();
 			if(!function.hasBlockBody() && !function.hasDeclaredReturnType())
 			{
 				expectedReturnType = TypeUtils.NO_EXPECTED_TYPE;
@@ -227,11 +227,11 @@ public class ExpressionTypingServices
 		return r;
 	}
 
-	private Map<NapileExpression, JetType> collectReturnedExpressionsWithTypes(final @NotNull BindingTrace trace, JetScope outerScope, final NapileDeclarationWithBody function, FunctionDescriptor functionDescriptor)
+	private Map<NapileExpression, JetType> collectReturnedExpressionsWithTypes(final @NotNull BindingTrace trace, JetScope outerScope, final NapileDeclarationWithBody function, MethodDescriptor methodDescriptor)
 	{
 		NapileExpression bodyExpression = function.getBodyExpression();
 		assert bodyExpression != null;
-		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(outerScope, functionDescriptor, trace);
+		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(outerScope, methodDescriptor, trace);
 		expressionTypingFacade.getTypeInfo(bodyExpression, ExpressionTypingContext.newContext(this, trace, functionInnerScope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false), !function.hasBlockBody());
 		//todo function literals
 		final Collection<NapileExpression> returnedExpressions = Lists.newArrayList();

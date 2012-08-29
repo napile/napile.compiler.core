@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -194,9 +194,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		{
 			type = ((VariableDescriptor) descriptor).getType();
 		}
-		else if(descriptor instanceof SimpleFunctionDescriptor)
+		else if(descriptor instanceof SimpleMethodDescriptor)
 		{
-			type = ((SimpleFunctionDescriptor) descriptor).getReturnType();
+			type = ((SimpleMethodDescriptor) descriptor).getReturnType();
 		}
 		else
 		{

@@ -24,7 +24,7 @@ import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -204,20 +204,20 @@ public class JetStructureViewElement implements StructureViewTreeElement
 	{
 		StringBuilder textBuilder;
 
-		if(descriptor instanceof FunctionDescriptor)
+		if(descriptor instanceof MethodDescriptor)
 		{
 			textBuilder = new StringBuilder();
 
-			FunctionDescriptor functionDescriptor = (FunctionDescriptor) descriptor;
-			ReceiverDescriptor receiver = functionDescriptor.getReceiverParameter();
+			MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
+			ReceiverDescriptor receiver = methodDescriptor.getReceiverParameter();
 			if(receiver.exists())
 			{
 				textBuilder.append(DescriptorRenderer.TEXT.renderType(receiver.getType())).append(".");
 			}
 
-			textBuilder.append(functionDescriptor.getName());
+			textBuilder.append(methodDescriptor.getName());
 
-			String parametersString = StringUtil.join(functionDescriptor.getValueParameters(), new Function<ValueParameterDescriptor, String>()
+			String parametersString = StringUtil.join(methodDescriptor.getValueParameters(), new Function<ValueParameterDescriptor, String>()
 			{
 				@Override
 				public String fun(ValueParameterDescriptor valueParameterDescriptor)
@@ -229,7 +229,7 @@ public class JetStructureViewElement implements StructureViewTreeElement
 
 			textBuilder.append("(").append(parametersString).append(")");
 
-			JetType returnType = functionDescriptor.getReturnType();
+			JetType returnType = methodDescriptor.getReturnType();
 			textBuilder.append(":").append(DescriptorRenderer.TEXT.renderType(returnType));
 		}
 		else if(descriptor instanceof VariableDescriptor)

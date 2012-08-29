@@ -23,7 +23,7 @@ import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -55,7 +55,7 @@ public interface WritableScope extends JetScope
 
 	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
 
-	void addFunctionDescriptor(@NotNull FunctionDescriptor functionDescriptor);
+	void addFunctionDescriptor(@NotNull MethodDescriptor methodDescriptor);
 
 	void addTypeParameterDescriptor(@NotNull TypeParameterDescriptor typeParameterDescriptor);
 
@@ -67,7 +67,7 @@ public interface WritableScope extends JetScope
 
 	void addNamespaceAlias(@NotNull Name name, @NotNull NamespaceDescriptor namespaceDescriptor);
 
-	void addFunctionAlias(@NotNull Name name, @NotNull FunctionDescriptor functionDescriptor);
+	void addFunctionAlias(@NotNull Name name, @NotNull MethodDescriptor methodDescriptor);
 
 	void addVariableAlias(@NotNull Name name, @NotNull VariableDescriptor variableDescriptor);
 
@@ -87,7 +87,7 @@ public interface WritableScope extends JetScope
 
 	void importNamespaceAlias(@NotNull Name aliasName, @NotNull NamespaceDescriptor namespaceDescriptor);
 
-	void importFunctionAlias(@NotNull Name aliasName, @NotNull FunctionDescriptor functionDescriptor);
+	void importFunctionAlias(@NotNull Name aliasName, @NotNull MethodDescriptor methodDescriptor);
 
 	void importVariableAlias(@NotNull Name aliasName, @NotNull VariableDescriptor variableDescriptor);
 

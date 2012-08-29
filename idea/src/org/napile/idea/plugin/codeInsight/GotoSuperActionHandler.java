@@ -25,7 +25,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
@@ -105,7 +105,7 @@ public class GotoSuperActionHandler implements CodeInsightActionHandler
 			{
 				message = JetBundle.message("goto.super.property.chooser.title");
 			}
-			else if(descriptor instanceof SimpleFunctionDescriptor)
+			else if(descriptor instanceof SimpleMethodDescriptor)
 			{
 				message = JetBundle.message("goto.super.function.chooser.title");
 			}

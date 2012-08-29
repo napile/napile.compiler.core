@@ -20,8 +20,8 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorImpl;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptorImpl;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -29,22 +29,22 @@ import org.napile.compiler.lang.resolve.name.Name;
 /**
  * @author alex.tkachman
  */
-public class ExpressionAsFunctionDescriptor extends FunctionDescriptorImpl
+public class ExpressionAsMethodDescriptor extends MethodDescriptorImpl
 {
-	public ExpressionAsFunctionDescriptor(DeclarationDescriptor containingDeclaration, Name name)
+	public ExpressionAsMethodDescriptor(DeclarationDescriptor containingDeclaration, Name name)
 	{
 		super(containingDeclaration, Collections.<AnnotationDescriptor>emptyList(), name, Kind.DECLARATION, false);
 	}
 
 	@Override
-	protected FunctionDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
+	protected MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
 	{
 		throw new IllegalStateException();
 	}
 
 	@NotNull
 	@Override
-	public FunctionDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
+	public MethodDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
 	{
 		throw new IllegalStateException();
 	}

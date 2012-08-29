@@ -31,7 +31,7 @@ public interface NamespaceLikeBuilder
 
 	void addObjectDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor);
 
-	void addFunctionDescriptor(@NotNull SimpleFunctionDescriptor functionDescriptor);
+	void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor);
 
 	void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor);
 

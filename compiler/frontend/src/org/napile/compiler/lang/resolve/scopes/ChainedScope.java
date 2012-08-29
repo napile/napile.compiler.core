@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -127,14 +127,14 @@ public class ChainedScope implements JetScope
 
 	@NotNull
 	@Override
-	public Set<FunctionDescriptor> getFunctions(@NotNull Name name)
+	public Set<MethodDescriptor> getFunctions(@NotNull Name name)
 	{
 		if(scopeChain.length == 0)
 		{
 			return Collections.emptySet();
 		}
 
-		Set<FunctionDescriptor> result = Sets.newLinkedHashSet();
+		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
 		for(JetScope jetScope : scopeChain)
 		{
 			result.addAll(jetScope.getFunctions(name));

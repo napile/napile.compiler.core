@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
@@ -74,7 +74,7 @@ public class JetGotoClassContributor implements GotoClassContributor
 				if(fqName == null)
 					continue;
 
-				if(classOrObject instanceof NapileAnonymousClass)
+				if(classOrObject instanceof NapileAnonymClass)
 				{
 					// items.add((NapileObjectDeclaration) classOrObject);
 				}

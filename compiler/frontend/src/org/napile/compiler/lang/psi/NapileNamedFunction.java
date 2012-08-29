@@ -52,7 +52,7 @@ public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJet
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitNamedFunction(this);
+		visitor.visitNamedMethod(this);
 	}
 
 	@Override

@@ -26,7 +26,7 @@ import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -56,11 +56,11 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 
 	private interface MemberExtractor<T extends CallableMemberDescriptor>
 	{
-		MemberExtractor<FunctionDescriptor> EXTRACT_FUNCTIONS = new MemberExtractor<FunctionDescriptor>()
+		MemberExtractor<MethodDescriptor> EXTRACT_FUNCTIONS = new MemberExtractor<MethodDescriptor>()
 		{
 			@NotNull
 			@Override
-			public Collection<FunctionDescriptor> extract(@NotNull JetType extractFrom, @NotNull Name name)
+			public Collection<MethodDescriptor> extract(@NotNull JetType extractFrom, @NotNull Name name)
 			{
 				return extractFrom.getMemberScope().getFunctions(name);
 			}
@@ -123,30 +123,30 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 
 	@NotNull
 	@Override
-	public Set<FunctionDescriptor> getFunctions(@NotNull Name name)
+	public Set<MethodDescriptor> getFunctions(@NotNull Name name)
 	{
 		// TODO: this should be handled by lazy function descriptors
-		Set<FunctionDescriptor> functions = super.getFunctions(name);
-		for(FunctionDescriptor functionDescriptor : functions)
+		Set<MethodDescriptor> methods = super.getFunctions(name);
+		for(MethodDescriptor methodDescriptor : methods)
 		{
-			if(functionDescriptor.getKind() == CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
+			if(methodDescriptor.getKind() == CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
 				continue;
-			PsiElement element = BindingContextUtils.callableDescriptorToDeclaration(resolveSession.getTrace().getBindingContext(), functionDescriptor);
-			OverrideResolver.resolveUnknownVisibilityForMember((NapileDeclaration) element, functionDescriptor, resolveSession.getTrace());
+			PsiElement element = BindingContextUtils.callableDescriptorToDeclaration(resolveSession.getTrace().getBindingContext(), methodDescriptor);
+			OverrideResolver.resolveUnknownVisibilityForMember((NapileDeclaration) element, methodDescriptor, resolveSession.getTrace());
 		}
-		return functions;
+		return methods;
 	}
 
 	@Override
-	protected void getNonDeclaredFunctions(@NotNull Name name, @NotNull final Set<FunctionDescriptor> result)
+	protected void getNonDeclaredFunctions(@NotNull Name name, @NotNull final Set<MethodDescriptor> result)
 	{
-		Collection<FunctionDescriptor> fromSupertypes = Lists.newArrayList();
+		Collection<MethodDescriptor> fromSupertypes = Lists.newArrayList();
 		for(JetType supertype : thisDescriptor.getTypeConstructor().getSupertypes())
 		{
 			fromSupertypes.addAll(supertype.getMemberScope().getFunctions(name));
 		}
 
-		generateFakeOverrides(name, fromSupertypes, result, FunctionDescriptor.class);
+		generateFakeOverrides(name, fromSupertypes, result, MethodDescriptor.class);
 	}
 
 	@NotNull
@@ -200,7 +200,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 		{
 			for(DeclarationDescriptor descriptor : supertype.getMemberScope().getAllDescriptors())
 			{
-				if(descriptor instanceof FunctionDescriptor)
+				if(descriptor instanceof MethodDescriptor)
 				{
 					getFunctions(descriptor.getName());
 				}

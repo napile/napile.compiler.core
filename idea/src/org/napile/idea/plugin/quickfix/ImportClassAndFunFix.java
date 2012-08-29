@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -106,9 +106,9 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 	private static Collection<FqName> getJetTopLevelFunctions(@NotNull String referenceName, NapileSimpleNameExpression expression, @NotNull Project project)
 	{
 		JetShortNamesCache namesCache = JetShortNamesCache.getInstance(project);
-		Collection<FunctionDescriptor> topLevelFunctions = namesCache.getTopLevelFunctionDescriptorsByName(referenceName, expression, GlobalSearchScope.allScope(project));
+		Collection<MethodDescriptor> topLevelMethods = namesCache.getTopLevelFunctionDescriptorsByName(referenceName, expression, GlobalSearchScope.allScope(project));
 
-		return Sets.newHashSet(Collections2.transform(topLevelFunctions, new Function<DeclarationDescriptor, FqName>()
+		return Sets.newHashSet(Collections2.transform(topLevelMethods, new Function<DeclarationDescriptor, FqName>()
 		{
 			@Override
 			public FqName apply(@Nullable DeclarationDescriptor declarationDescriptor)
