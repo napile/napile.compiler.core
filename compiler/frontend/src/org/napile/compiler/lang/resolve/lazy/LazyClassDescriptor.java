@@ -45,7 +45,6 @@ import org.napile.compiler.lang.resolve.lazy.data.NapileClassLikeInfo;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
-import org.napile.compiler.lang.resolve.scopes.InnerClassesScopeWrapper;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -91,7 +90,8 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 	private List<AnnotationDescriptor> annotations;
 
 	private final LazyClassMemberScope unsubstitutedMemberScope;
-	private final JetScope unsubstitutedInnerClassesScope;
+
+	private final LazyClassMemberScope staticScope;
 
 	private JetScope scopeForClassHeaderResolution;
 	private JetScope scopeForMemberDeclarationResolution;
@@ -113,7 +113,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 		this.name = name;
 		this.containingDeclaration = containingDeclaration;
 		this.unsubstitutedMemberScope = new LazyClassMemberScope(resolveSession, declarationProvider, this);
-		this.unsubstitutedInnerClassesScope = new InnerClassesScopeWrapper(unsubstitutedMemberScope);
+		this.staticScope = new LazyClassMemberScope(resolveSession, declarationProvider, this);
 
 		this.typeConstructor = new LazyClassTypeConstructor();
 
@@ -139,9 +139,9 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 
 	@NotNull
 	@Override
-	public JetScope getUnsubstitutedInnerClassesScope()
+	public JetScope getStaticOuterScope()
 	{
-		return unsubstitutedInnerClassesScope;
+		return staticScope;
 	}
 
 	@NotNull
@@ -172,11 +172,6 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 			scopeForMemberDeclarationResolution = scope;
 		}
 		return scopeForMemberDeclarationResolution;
-	}
-
-	public JetScope getScopeForPropertyInitializerResolution()
-	{
-		return getScopeForMemberDeclarationResolution();
 	}
 
 	@NotNull

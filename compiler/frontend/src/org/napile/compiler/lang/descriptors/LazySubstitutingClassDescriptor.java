@@ -211,9 +211,9 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 
 	@NotNull
 	@Override
-	public JetScope getUnsubstitutedInnerClassesScope()
+	public JetScope getStaticOuterScope()
 	{
-		return original.getUnsubstitutedInnerClassesScope();
+		return original.getStaticOuterScope();
 	}
 
 	@Override

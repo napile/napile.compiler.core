@@ -24,7 +24,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.resolve.scopes.InnerClassesScopeWrapper;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
@@ -56,7 +55,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	private final ClassKind kind;
 
 	private JetScope scopeForMemberLookup;
-	private JetScope innerClassesScope;
 
 	private ClassReceiver implicitReceiver;
 
@@ -109,23 +107,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 		return this;
 	}
 
-	private static boolean isStatic(DeclarationDescriptor declarationDescriptor)
-	{
-		if(declarationDescriptor instanceof NamespaceDescriptor)
-		{
-			return true;
-		}
-		else if(declarationDescriptor instanceof ClassDescriptor)
-		{
-			ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
-			return classDescriptor.getKind() == ClassKind.OBJECT || classDescriptor.getKind() == ClassKind.ENUM_CLASS;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 	@NotNull
 	@Override
 	public TypeConstructor getTypeConstructor()
@@ -136,7 +117,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	public void setScopeForMemberLookup(JetScope scopeForMemberLookup)
 	{
 		this.scopeForMemberLookup = scopeForMemberLookup;
-		this.innerClassesScope = new InnerClassesScopeWrapper(scopeForMemberLookup);
 	}
 
 	public void createTypeConstructor()
@@ -194,14 +174,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	public Collection<JetType> getSupertypes()
 	{
 		return supertypes;
-	}
-
-
-	@NotNull
-	@Override
-	public JetScope getUnsubstitutedInnerClassesScope()
-	{
-		return innerClassesScope;
 	}
 
 

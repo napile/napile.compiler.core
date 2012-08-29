@@ -155,46 +155,6 @@ public class TypeHierarchyResolver
 		checkTypesInClassHeaders(); // Check bounds in the types used in generic bounds and supertype lists
 	}
 
-	/**
-	 * Use nearest class object scope or namespace scope
-	 *
-	 * @param declarationElement
-	 * @param owner
-	 * @return
-	 */
-	@SuppressWarnings("SuspiciousMethodCalls")
-	@NotNull
-	private JetScope getStaticScope(PsiElement declarationElement, @NotNull NamespaceLikeBuilder owner)
-	{
-		DeclarationDescriptor ownerDescriptor = owner.getOwnerForChildren();
-		if(ownerDescriptor instanceof NamespaceDescriptorImpl)
-		{
-			return context.getNamespaceScopes().get(declarationElement.getContainingFile());
-		}
-
-		if(ownerDescriptor instanceof MutableClassDescriptor)
-		{
-			MutableClassDescriptor classDescriptor = (MutableClassDescriptor) ownerDescriptor;
-			if(classDescriptor.getKind() == ClassKind.OBJECT)
-			{
-				return classDescriptor.getScopeForMemberResolution();
-			}
-
-			DeclarationDescriptor declaration = classDescriptor.getContainingDeclaration();
-			if(declaration instanceof NamespaceDescriptorImpl)
-			{
-				return getStaticScope(declarationElement, ((NamespaceDescriptorImpl) declaration).getBuilder());
-			}
-
-			if(declaration instanceof MutableClassDescriptorLite)
-			{
-				return getStaticScope(declarationElement, ((MutableClassDescriptorLite) declaration).getBuilder());
-			}
-		}
-
-		return null;
-	}
-
 	@Nullable
 	private Collection<NapileDeclarationContainer> collectNamespacesAndClassifiers(@NotNull final JetScope outerScope, @NotNull final NamespaceLikeBuilder owner, @NotNull Iterable<? extends PsiElement> declarations)
 	{

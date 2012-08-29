@@ -43,7 +43,8 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	private final WritableScope scopeForMemberResolution;
 	// This scope contains type parameters but does not contain inner classes
 	private final WritableScope scopeForSupertypeResolution;
-	private final WritableScope scopeForInitializers; //contains members + primary constructor value parameters + map for backing fields
+
+	private final WritableScope staticScope;
 
 	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope outerScope, ClassKind kind, Name name, boolean isStatic)
 	{
@@ -53,8 +54,8 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 
 		setScopeForMemberLookup(new WritableScopeImpl(JetScope.EMPTY, this, redeclarationHandler, "MemberLookup").changeLockLevel(WritableScope.LockLevel.BOTH));
 		this.scopeForSupertypeResolution = new WritableScopeImpl(outerScope, this, redeclarationHandler, "SupertypeResolution").changeLockLevel(WritableScope.LockLevel.BOTH);
+		this.staticScope = new WritableScopeImpl(outerScope, this, redeclarationHandler, "StatisScope").changeLockLevel(WritableScope.LockLevel.BOTH);
 		this.scopeForMemberResolution = new WritableScopeImpl(scopeForSupertypeResolution, this, redeclarationHandler, "MemberResolution").changeLockLevel(WritableScope.LockLevel.BOTH);
-		this.scopeForInitializers = new WritableScopeImpl(scopeForMemberResolution, containingDeclaration, RedeclarationHandler.DO_NOTHING, "Initializers").changeLockLevel(WritableScope.LockLevel.BOTH);
 
 		setName(name);
 	}
@@ -70,6 +71,13 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 		constructors.add(constructorDescriptor);
 		if(defaultType != null)
 			constructorDescriptor.setReturnType(getDefaultType());
+	}
+
+	@NotNull
+	@Override
+	public JetScope getStaticOuterScope()
+	{
+		return staticScope;
 	}
 
 	@NotNull
@@ -150,28 +158,12 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 		return scopeForMemberResolution;
 	}
 
-	private WritableScope getWritableScopeForInitializers()
-	{
-		if(scopeForInitializers == null)
-		{
-			throw new IllegalStateException("Scope for initializers queried before the primary constructor is set");
-		}
-		return scopeForInitializers;
-	}
-
-	@NotNull
-	public JetScope getScopeForInitializers()
-	{
-		return getWritableScopeForInitializers();
-	}
-
 	@Override
 	public void lockScopes()
 	{
 		super.lockScopes();
 		scopeForSupertypeResolution.changeLockLevel(WritableScope.LockLevel.READING);
 		scopeForMemberResolution.changeLockLevel(WritableScope.LockLevel.READING);
-		getWritableScopeForInitializers().changeLockLevel(WritableScope.LockLevel.READING);
 	}
 
 	private NamespaceLikeBuilder builder = null;
@@ -215,8 +207,9 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 					}
 					allCallableMembers.add(functionDescriptor);
 					scopeForMemberResolution.addFunctionDescriptor(functionDescriptor);
+					if(functionDescriptor.isStatic())
+						staticScope.addFunctionDescriptor(functionDescriptor);
 				}
-
 
 				@Override
 				public void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor)
@@ -224,11 +217,12 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 					superBuilder.addPropertyDescriptor(propertyDescriptor);
 					properties.add(propertyDescriptor);
 					if(propertyDescriptor.getKind() != CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
-					{
 						declaredCallableMembers.add(propertyDescriptor);
-					}
 					allCallableMembers.add(propertyDescriptor);
 					scopeForMemberResolution.addPropertyDescriptor(propertyDescriptor);
+
+					if(propertyDescriptor.isStatic())
+						staticScope.addPropertyDescriptor(propertyDescriptor);
 				}
 
 				@Override
@@ -239,6 +233,8 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 					superBuilder.addEnumEntryDescriptor(enumEntryDescriptor);
 
 					scopeForMemberResolution.addEnumEntryDescriptor(enumEntryDescriptor);
+
+					staticScope.addEnumEntryDescriptor(enumEntryDescriptor);
 				}
 
 				@Override
@@ -257,4 +253,5 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 
 		return builder;
 	}
+
 }

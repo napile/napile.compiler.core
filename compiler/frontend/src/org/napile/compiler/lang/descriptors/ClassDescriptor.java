@@ -35,9 +35,6 @@ public interface ClassDescriptor extends ClassifierDescriptor, MemberDescriptor,
 	JetScope getMemberScope(List<JetType> typeArguments);
 
 	@NotNull
-	JetScope getUnsubstitutedInnerClassesScope();
-
-	@NotNull
 	Set<ConstructorDescriptor> getConstructors();
 
 	@Override

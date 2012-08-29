@@ -259,6 +259,13 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 
 	@NotNull
 	@Override
+	public JetScope getStaticOuterScope()
+	{
+		return JetScope.EMPTY;
+	}
+
+	@NotNull
+	@Override
 	public Collection<JetType> getSupertypes()
 	{
 		return Collections.emptySet();

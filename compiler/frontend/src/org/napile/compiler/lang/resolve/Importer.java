@@ -84,7 +84,7 @@ public interface Importer
 			if(descriptor instanceof ClassDescriptor && ((ClassDescriptor) descriptor).getKind() != ClassKind.OBJECT)
 			{
 				ClassDescriptor classDescriptor = (ClassDescriptor) descriptor;
-				namespaceScope.importScope(classDescriptor.getUnsubstitutedInnerClassesScope());
+				namespaceScope.importScope(classDescriptor.getStaticOuterScope());
 			}
 		}
 

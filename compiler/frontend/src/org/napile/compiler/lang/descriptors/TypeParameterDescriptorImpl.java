@@ -234,9 +234,16 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 
 	@NotNull
 	@Override
+	public JetScope getStaticOuterScope()
+	{
+		return JetScope.EMPTY;
+	}
+
+	@NotNull
+	@Override
 	public Collection<JetType> getSupertypes()
 	{
-		return null;
+		return Collections.emptySet();
 	}
 
 	public void addClassObjectBound(@NotNull JetType bound)

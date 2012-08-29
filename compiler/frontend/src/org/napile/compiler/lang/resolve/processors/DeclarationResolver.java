@@ -139,7 +139,7 @@ public class DeclarationResolver
 			NapileClass napileClass = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveDeclarations(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForInitializers(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveDeclarations(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 
 		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
@@ -147,7 +147,7 @@ public class DeclarationResolver
 			NapileObjectDeclaration object = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForInitializers(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForMemberResolution(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 	}
 	private void resolveDeclarations(@NotNull List<? extends NapileDeclaration> declarations, final @NotNull JetScope scopeForFunctions, final @NotNull JetScope scopeForPropertyInitializers, final @NotNull JetScope scopeForPropertyAccessors, final @NotNull MutableClassDescriptor ownerDescription)

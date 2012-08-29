@@ -160,7 +160,7 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 
 	@NotNull
 	@Override
-	public JetScope getUnsubstitutedInnerClassesScope()
+	public JetScope getStaticOuterScope()
 	{
 		return JetScope.EMPTY;
 	}

@@ -89,7 +89,6 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 		final JetScope scope;
 		if(explicitReceiver.exists() && explicitReceiver.getType() instanceof NamespaceType)
 		{
-			// Receiver is a namespace
 			scope = explicitReceiver.getType().getMemberScope();
 			explicitReceiver = NO_RECEIVER;
 		}

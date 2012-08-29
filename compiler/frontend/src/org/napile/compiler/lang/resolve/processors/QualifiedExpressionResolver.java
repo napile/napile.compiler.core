@@ -228,15 +228,9 @@ public class QualifiedExpressionResolver
 			if(declarationDescriptor instanceof NamespaceDescriptor)
 				addResult(results, lookupSimpleNameReference(selector, ((NamespaceDescriptor) declarationDescriptor).getMemberScope(), onlyClasses, true));
 			if(declarationDescriptor instanceof ClassDescriptor)
-				addResult(results, lookupSimpleNameReference(selector, getAppropriateScope((ClassDescriptor) declarationDescriptor, onlyClasses), onlyClasses, false));
+				addResult(results, lookupSimpleNameReference(selector, ((ClassDescriptor) declarationDescriptor).getStaticOuterScope(), onlyClasses, false));
 		}
 		return filterAndStoreResolutionResult(results, selector, trace, scopeToCheckVisibility, onlyClasses, storeResult);
-	}
-
-	@NotNull
-	private JetScope getAppropriateScope(@NotNull ClassDescriptor classDescriptor, boolean onlyClasses)
-	{
-		return onlyClasses ? classDescriptor.getUnsubstitutedInnerClassesScope() : classDescriptor.getDefaultType().getMemberScope();
 	}
 
 	private void addResult(@NotNull Set<SuccessfulLookupResult> results, @NotNull LookupResult result)
@@ -277,29 +271,15 @@ public class QualifiedExpressionResolver
 
 		ClassifierDescriptor classifierDescriptor = outerScope.getClassifier(referencedName);
 		if(classifierDescriptor != null)
-		{
 			descriptors.add(classifierDescriptor);
-		}
 
-		if(onlyClasses)
-		{
-			ClassDescriptor objectDescriptor = outerScope.getObjectDescriptor(referencedName);
-			if(objectDescriptor != null)
-			{
-				descriptors.add(objectDescriptor);
-			}
-		}
-		else
-		{
-			descriptors.addAll(outerScope.getFunctions(referencedName));
-			descriptors.addAll(outerScope.getProperties(referencedName));
+		descriptors.addAll(outerScope.getFunctions(referencedName));
+		descriptors.addAll(outerScope.getProperties(referencedName));
 
-			VariableDescriptor localVariable = outerScope.getLocalVariable(referencedName);
-			if(localVariable != null)
-			{
-				descriptors.add(localVariable);
-			}
-		}
+		VariableDescriptor localVariable = outerScope.getLocalVariable(referencedName);
+		if(localVariable != null)
+			descriptors.add(localVariable);
+
 		return new SuccessfulLookupResult(descriptors, outerScope, namespaceLevel);
 	}
 
@@ -361,8 +341,7 @@ public class QualifiedExpressionResolver
 					@Override
 					public boolean apply(@Nullable DeclarationDescriptor descriptor)
 					{
-						boolean isStatic = descriptor instanceof DeclarationDescriptorWithVisibility && ((DeclarationDescriptorWithVisibility) descriptor).isStatic();
-						return descriptor instanceof NamespaceDescriptor || isStatic;
+						return descriptor instanceof NamespaceDescriptor || descriptor instanceof DeclarationDescriptorWithVisibility;
 					}
 				}));
 			}

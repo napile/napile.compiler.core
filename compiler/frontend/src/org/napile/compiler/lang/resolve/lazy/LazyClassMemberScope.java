@@ -35,12 +35,11 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
+import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
@@ -93,10 +92,6 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 	@Override
 	protected JetScope getScopeForMemberDeclarationResolution(NapileDeclaration declaration)
 	{
-		if(declaration instanceof NapileProperty)
-		{
-			return thisDescriptor.getScopeForPropertyInitializerResolution();
-		}
 		return thisDescriptor.getScopeForMemberDeclarationResolution();
 	}
 
