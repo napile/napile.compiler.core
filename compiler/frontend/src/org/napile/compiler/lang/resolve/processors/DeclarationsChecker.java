@@ -80,9 +80,9 @@ public class DeclarationsChecker
 			checkClass(aClass, classDescriptor);
 		}
 
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : bodiesResolveContext.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : bodiesResolveContext.getObjects().entrySet())
 		{
-			NapileObjectDeclaration objectDeclaration = entry.getKey();
+			NapileAnonymousClass objectDeclaration = entry.getKey();
 			MutableClassDescriptor objectDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(objectDeclaration))
@@ -129,7 +129,7 @@ public class DeclarationsChecker
 		checkEnum(aClass, classDescriptor);
 	}
 
-	private void checkObject(NapileObjectDeclaration objectDeclaration, MutableClassDescriptor classDescriptor)
+	private void checkObject(NapileAnonymousClass objectDeclaration, MutableClassDescriptor classDescriptor)
 	{
 		modifiersChecker.checkIllegalInThisContextModifiers(objectDeclaration.getModifierList(), Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.OVERRIDE_KEYWORD));
 	}

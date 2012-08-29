@@ -132,7 +132,7 @@ public class ResolveSession
 	}
 
 	@NotNull
-	public ClassDescriptor getClassDescriptor(@NotNull NapileClassOrObject classOrObject)
+	public ClassDescriptor getClassDescriptor(@NotNull NapileLikeClass classOrObject)
 	{
 		if(classOrObject instanceof NapileEnumEntry)
 		{
@@ -212,7 +212,7 @@ public class ResolveSession
 
 	private LazyClassDescriptor getEnclosingLazyClass(PsiElement element)
 	{
-		NapileClassOrObject classOrObject = PsiTreeUtil.getParentOfType(element.getParent(), NapileClassOrObject.class);
+		NapileLikeClass classOrObject = PsiTreeUtil.getParentOfType(element.getParent(), NapileLikeClass.class);
 		assert classOrObject != null : "Called for an element that is not a class member: " + element;
 		ClassDescriptor classDescriptor = getClassDescriptor(classOrObject);
 		assert classDescriptor instanceof LazyClassDescriptor : "Trying to resolve a member of a non-lazily loaded class: " + element;
@@ -231,7 +231,7 @@ public class ResolveSession
 			}
 
 			@Override
-			public DeclarationDescriptor visitObjectDeclaration(NapileObjectDeclaration declaration, Void data)
+			public DeclarationDescriptor visitObjectDeclaration(NapileAnonymousClass declaration, Void data)
 			{
 				PsiElement parent = declaration.getParent();
 

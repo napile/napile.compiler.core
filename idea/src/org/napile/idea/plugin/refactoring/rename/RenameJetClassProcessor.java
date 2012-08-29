@@ -19,7 +19,7 @@ package org.napile.idea.plugin.refactoring.rename;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -34,13 +34,13 @@ public class RenameJetClassProcessor extends RenamePsiElementProcessor
 	@Override
 	public boolean canProcessElement(@NotNull PsiElement element)
 	{
-		return element instanceof NapileClassOrObject;
+		return element instanceof NapileLikeClass;
 	}
 
 	@Override
 	public void prepareRenaming(PsiElement element, String newName, Map<PsiElement, String> allRenames)
 	{
-		NapileClassOrObject clazz = (NapileClassOrObject) element;
+		NapileLikeClass clazz = (NapileLikeClass) element;
 		NapileFile file = (NapileFile) clazz.getContainingFile();
 
 		VirtualFile virtualFile = file.getVirtualFile();

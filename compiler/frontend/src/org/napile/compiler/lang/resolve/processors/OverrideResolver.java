@@ -26,8 +26,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.psi.NapileAnonymousClass;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -43,7 +44,6 @@ import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.util.CommonSuppliers;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileProperty;
 import com.google.common.base.Predicate;
@@ -365,13 +365,13 @@ public class OverrideResolver
 		{
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
 		}
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
 		}
 	}
 
-	protected void checkOverridesInAClass(@NotNull MutableClassDescriptor classDescriptor, @NotNull NapileClassOrObject klass)
+	protected void checkOverridesInAClass(@NotNull MutableClassDescriptor classDescriptor, @NotNull NapileLikeClass klass)
 	{
 		if(topDownAnalysisParameters.isAnalyzingBootstrapLibrary())
 			return;
@@ -393,12 +393,12 @@ public class OverrideResolver
 		{
 			nameIdentifier = klass.getNameIdentifier();
 		}
-		else if(klass instanceof NapileObjectDeclaration)
+		else if(klass instanceof NapileAnonymousClass)
 		{
 			nameIdentifier = klass.getNameIdentifier();
 			if(nameIdentifier == null)
 			{
-				nameIdentifier = ((NapileObjectDeclaration) klass).getObjectKeyword();
+				nameIdentifier = ((NapileAnonymousClass) klass).getObjectKeyword();
 			}
 		}
 		if(nameIdentifier == null)
@@ -649,7 +649,7 @@ public class OverrideResolver
 		{
 			NapileParameter parameter = fakeOverride ? null : (NapileParameter) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), parameterFromSubclass);
 
-			NapileClassOrObject classElement = fakeOverride ? (NapileClassOrObject) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared.getContainingDeclaration()) : null;
+			NapileLikeClass classElement = fakeOverride ? (NapileLikeClass) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared.getContainingDeclaration()) : null;
 
 			if(parameterFromSubclass.declaresDefaultValue() && !fakeOverride)
 			{

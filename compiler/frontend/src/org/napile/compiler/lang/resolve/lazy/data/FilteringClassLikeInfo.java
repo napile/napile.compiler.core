@@ -21,7 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassKind;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
 import org.napile.compiler.lang.psi.NapileModifierList;
@@ -77,7 +77,7 @@ public class FilteringClassLikeInfo implements NapileClassLikeInfo
 
 	@Override
 	@Nullable
-	public NapileClassOrObject getCorrespondingClassOrObject()
+	public NapileLikeClass getCorrespondingClassOrObject()
 	{
 		return delegate.getCorrespondingClassOrObject();
 	}

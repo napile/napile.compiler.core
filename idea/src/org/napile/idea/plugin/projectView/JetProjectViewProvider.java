@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassBody;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.JetIconProvider;
@@ -64,7 +64,7 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 				NapileFile file = (NapileFile) childValue;
 				List<NapileClass> declarations = file.getDeclarations();
 
-				NapileClassOrObject mainClass = JetIconProvider.getMainClass(file);
+				NapileLikeClass mainClass = JetIconProvider.getMainClass(file);
 				if(mainClass != null && declarations.size() == 1)
 				{
 					result.add(new JetClassOrObjectTreeNode(file.getProject(), mainClass, settings));
@@ -136,7 +136,7 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 			else if(parent instanceof NapileClassBody)
 			{
 				parent = parent.getParent();
-				if(parent instanceof NapileClassOrObject)
+				if(parent instanceof NapileLikeClass)
 				{
 					return isSelectable(parent);
 				}

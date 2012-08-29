@@ -33,10 +33,10 @@ import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.psi.NapileAnonymousClass;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.resolve.name.Name;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Pair;
@@ -79,7 +79,7 @@ public class OverloadResolver
 		{
 			checkOverloadsInAClass(entry.getValue(), entry.getKey(), inClasses.get(entry.getValue()));
 		}
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
 			checkOverloadsInAClass(entry.getValue(), entry.getKey(), inClasses.get(entry.getValue()));
 		}
@@ -174,14 +174,14 @@ public class OverloadResolver
 		}
 	}
 
-	private String nameForErrorMessage(ClassDescriptor classDescriptor, NapileClassOrObject jetClass)
+	private String nameForErrorMessage(ClassDescriptor classDescriptor, NapileLikeClass jetClass)
 	{
 		String name = jetClass.getName();
 		if(name != null)
 		{
 			return name;
 		}
-		if(jetClass instanceof NapileObjectDeclaration)
+		if(jetClass instanceof NapileAnonymousClass)
 		{
 			// must be class object
 			name = classDescriptor.getContainingDeclaration().getName().getName();
@@ -191,7 +191,7 @@ public class OverloadResolver
 		return "<unknown>";
 	}
 
-	private void checkOverloadsInAClass(MutableClassDescriptor classDescriptor, NapileClassOrObject klass, Collection<ConstructorDescriptor> nestedClassConstructors)
+	private void checkOverloadsInAClass(MutableClassDescriptor classDescriptor, NapileLikeClass klass, Collection<ConstructorDescriptor> nestedClassConstructors)
 	{
 		MultiMap<Name, CallableMemberDescriptor> functionsByName = MultiMap.create();
 

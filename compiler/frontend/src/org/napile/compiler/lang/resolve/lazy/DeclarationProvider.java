@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileProperty;
@@ -41,5 +41,5 @@ public interface DeclarationProvider
 	Collection<NapileProperty> getPropertyDeclarations(@NotNull Name name);
 
 	@Nullable
-	NapileClassOrObject getClassOrObjectDeclaration(@NotNull Name name);
+	NapileLikeClass getClassOrObjectDeclaration(@NotNull Name name);
 }

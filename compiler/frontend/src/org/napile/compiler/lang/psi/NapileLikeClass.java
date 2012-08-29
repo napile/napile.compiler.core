@@ -27,9 +27,9 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 /**
  * @author max
  */
-public interface NapileClassOrObject extends PsiNameIdentifierOwner, NapileDeclarationContainer<NapileDeclaration>, NapileModifierListOwner, NapileDelegationSpecifierListOwner
+public interface NapileLikeClass extends PsiNameIdentifierOwner, NapileDeclarationContainer<NapileDeclaration>, NapileModifierListOwner, NapileDelegationSpecifierListOwner
 {
-	NapileClassOrObject[] EMPTY_ARRAY = new NapileClassOrObject[0];
+	NapileLikeClass[] EMPTY_ARRAY = new NapileLikeClass[0];
 
 	@NotNull
 	List<NapileClassInitializer> getAnonymousInitializers();

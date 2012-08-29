@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClassInitializer;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileParameter;
@@ -40,7 +40,7 @@ public abstract class AbstractPsiBasedDeclarationProvider implements Declaration
 	private final List<NapileDeclaration> allDeclarations = Lists.newArrayList();
 	private final Multimap<Name, NapileNamedFunction> functions = HashMultimap.create();
 	private final Multimap<Name, NapileProperty> properties = HashMultimap.create();
-	private final Map<Name, NapileClassOrObject> classesAndObjects = Maps.newHashMap();
+	private final Map<Name, NapileLikeClass> classesAndObjects = Maps.newHashMap();
 
 	private boolean indexCreated = false;
 
@@ -72,9 +72,9 @@ public abstract class AbstractPsiBasedDeclarationProvider implements Declaration
 			NapileProperty property = (NapileProperty) declaration;
 			properties.put(property.getNameAsName(), property);
 		}
-		else if(declaration instanceof NapileClassOrObject)
+		else if(declaration instanceof NapileLikeClass)
 		{
-			NapileClassOrObject classOrObject = (NapileClassOrObject) declaration;
+			NapileLikeClass classOrObject = (NapileLikeClass) declaration;
 			classesAndObjects.put(classOrObject.getNameAsName(), classOrObject);
 		}
 		else if(declaration instanceof NapileParameter)
@@ -111,7 +111,7 @@ public abstract class AbstractPsiBasedDeclarationProvider implements Declaration
 	}
 
 	@Override
-	public NapileClassOrObject getClassOrObjectDeclaration(@NotNull Name name)
+	public NapileLikeClass getClassOrObjectDeclaration(@NotNull Name name)
 	{
 		createIndex();
 		return classesAndObjects.get(name);

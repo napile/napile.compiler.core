@@ -58,7 +58,7 @@ public class JetIconProvider extends IconProvider
 		if(psiElement instanceof NapileFile)
 		{
 			NapileFile file = (NapileFile) psiElement;
-			NapileClassOrObject mainClass = getMainClass(file);
+			NapileLikeClass mainClass = getMainClass(file);
 			icon = mainClass != null && file.getDeclarations().size() == 1 ? getIcon(mainClass, flags) : JetIcons.FILE;
 		}
 		else if(psiElement instanceof NapileNamespaceHeader)
@@ -94,10 +94,6 @@ public class JetIconProvider extends IconProvider
 					icon = JetIcons.REPEATABLE_ANNOTATION;
 			}
 		}
-		else if(psiElement instanceof NapileObjectDeclaration)
-		{
-			icon = JetIcons.OBJECT;
-		}
 		else if(psiElement instanceof NapileEnumEntry)
 			icon = JetIcons.VAL;
 		else if(psiElement instanceof NapileParameter)
@@ -121,14 +117,14 @@ public class JetIconProvider extends IconProvider
 	}
 
 	@Nullable
-	public static NapileClassOrObject getMainClass(@NotNull NapileFile file)
+	public static NapileLikeClass getMainClass(@NotNull NapileFile file)
 	{
 		List<NapileClass> aClasses = ContainerUtil.filter(file.getDeclarations(), new Condition<NapileClass>()
 		{
 			@Override
 			public boolean value(NapileClass jetDeclaration)
 			{
-				return jetDeclaration instanceof NapileClassOrObject;
+				return jetDeclaration instanceof NapileLikeClass;
 			}
 		});
 		if(aClasses.size() == 1)

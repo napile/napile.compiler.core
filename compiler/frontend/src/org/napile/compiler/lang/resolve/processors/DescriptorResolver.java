@@ -115,7 +115,7 @@ public class DescriptorResolver
 	}
 
 
-	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileClassOrObject jetClass, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
+	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileLikeClass jetClass, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
 	{
 		for(JetType supertype : resolveSupertypes(descriptor.getScopeForSupertypeResolution(), jetClass, trace))
 		{
@@ -123,7 +123,7 @@ public class DescriptorResolver
 		}
 	}
 
-	public List<JetType> resolveSupertypes(@NotNull JetScope scope, @NotNull NapileClassOrObject jetClass, BindingTrace trace)
+	public List<JetType> resolveSupertypes(@NotNull JetScope scope, @NotNull NapileLikeClass jetClass, BindingTrace trace)
 	{
 		if(NapileLangPackage.ANY.equals(jetClass.getFqName()))  // master object dont have super classes
 			return Collections.emptyList();
@@ -145,12 +145,12 @@ public class DescriptorResolver
 		return result;
 	}
 
-	private JetType getDefaultSupertype(JetScope jetScope, NapileClassOrObject jetClass, BindingTrace trace)
+	private JetType getDefaultSupertype(JetScope jetScope, NapileLikeClass jetClass, BindingTrace trace)
 	{
 		// TODO : beautify
 		if(jetClass instanceof NapileEnumEntry)
 		{
-			NapileClassOrObject parent = PsiTreeUtil.getParentOfType(jetClass, NapileClassOrObject.class);
+			NapileLikeClass parent = PsiTreeUtil.getParentOfType(jetClass, NapileLikeClass.class);
 			ClassDescriptor parentDescriptor = trace.getBindingContext().get(BindingContext.CLASS, parent);
 			if(parentDescriptor.getTypeConstructor().getParameters().isEmpty())
 			{
@@ -517,7 +517,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptor resolveObjectDeclaration(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileClassOrObject objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
+	public VariableDescriptor resolveObjectDeclaration(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		boolean isProperty = (containingDeclaration instanceof NamespaceDescriptor) || (containingDeclaration instanceof ClassDescriptor);
 		if(isProperty)
@@ -531,7 +531,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public PropertyDescriptor resolveObjectDeclarationAsPropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileClassOrObject objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
+	public PropertyDescriptor resolveObjectDeclarationAsPropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		NapileModifierList modifierList = objectDeclaration.getModifierList();
 		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), false, true, NapilePsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
@@ -546,7 +546,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	private VariableDescriptor resolveObjectDeclarationAsLocalVariable(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileClassOrObject objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
+	private VariableDescriptor resolveObjectDeclarationAsLocalVariable(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		VariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(objectDeclaration.getModifierList(), trace), NapilePsiUtil.safeName(objectDeclaration.getName()), classDescriptor.getDefaultType(),						/*isVar =*/ false);
 		NapileObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();

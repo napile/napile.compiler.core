@@ -120,7 +120,7 @@ public class NapilePsiUtil
 		{
 			if(element instanceof NapileNamedFunction)
 				return (NapileNamedFunction) element;
-			if(element instanceof NapileClassOrObject || element instanceof NapileFile)
+			if(element instanceof NapileLikeClass || element instanceof NapileFile)
 				return null;
 			element = element.getParent();
 		}
@@ -185,7 +185,7 @@ public class NapilePsiUtil
 	{
 		if(namedDeclaration instanceof NapileObjectDeclarationName)
 		{
-			NapileObjectDeclaration objectDeclaration = PsiTreeUtil.getParentOfType(namedDeclaration, NapileObjectDeclaration.class);
+			NapileAnonymousClass objectDeclaration = PsiTreeUtil.getParentOfType(namedDeclaration, NapileAnonymousClass.class);
 			if(objectDeclaration == null)
 			{
 				return null;
@@ -212,7 +212,7 @@ public class NapilePsiUtil
 		{
 			firstPart = getFQName((NapileFile) parent);
 		}
-		else if(parent instanceof NapileNamedFunction || parent instanceof NapileClass || parent instanceof NapileObjectDeclaration)
+		else if(parent instanceof NapileNamedFunction || parent instanceof NapileClass || parent instanceof NapileAnonymousClass)
 		{
 			firstPart = getFQName((NapileNamedDeclaration) parent);
 		}
@@ -240,7 +240,7 @@ public class NapilePsiUtil
 	}
 
 	@NotNull
-	private static FqName makeFQName(@NotNull FqName prefix, @NotNull NapileClassOrObject jetClass)
+	private static FqName makeFQName(@NotNull FqName prefix, @NotNull NapileLikeClass jetClass)
 	{
 		return prefix.child(Name.identifier(jetClass.getName()));
 	}
@@ -350,7 +350,7 @@ public class NapilePsiUtil
 		return false;
 	}
 
-	public static void deleteClass(@NotNull NapileClassOrObject clazz)
+	public static void deleteClass(@NotNull NapileLikeClass clazz)
 	{
 		CheckUtil.checkWritable(clazz);
 		NapileFile file = (NapileFile) clazz.getContainingFile();

@@ -30,15 +30,15 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.psi.NapileAnonymousClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileParameter;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.resolve.lazy.data.JetClassInfoUtil;
 import org.napile.compiler.lang.resolve.name.LabelName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
@@ -81,11 +81,11 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 		if(allDescriptorsComputed)
 			return null;
 
-		NapileClassOrObject classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
+		NapileLikeClass classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
 		if(classOrObjectDeclaration == null)
 			return null;
 
-		if(object != classOrObjectDeclaration instanceof NapileObjectDeclaration)
+		if(object != classOrObjectDeclaration instanceof NapileAnonymousClass)
 			return null;
 
 		ClassDescriptor classDescriptor = new LazyClassDescriptor(resolveSession, thisDescriptor, name, JetClassInfoUtil.createClassLikeInfo(classOrObjectDeclaration), false);
@@ -170,10 +170,10 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 		}
 
 		// Objects are also properties
-		NapileClassOrObject classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
-		if(classOrObjectDeclaration instanceof NapileObjectDeclaration)
+		NapileLikeClass classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
+		if(classOrObjectDeclaration instanceof NapileAnonymousClass)
 		{
-			NapileObjectDeclaration objectDeclaration = (NapileObjectDeclaration) classOrObjectDeclaration;
+			NapileAnonymousClass objectDeclaration = (NapileAnonymousClass) classOrObjectDeclaration;
 			ClassDescriptor classifier = getObjectDescriptor(name);
 			if(classifier == null)
 			{
@@ -249,18 +249,18 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 					getProperties(name);
 				}
 			}
-			else if(declaration instanceof NapileObjectDeclaration)
+			else if(declaration instanceof NapileAnonymousClass)
 			{
-				NapileClassOrObject classOrObject = (NapileClassOrObject) declaration;
+				NapileLikeClass classOrObject = (NapileLikeClass) declaration;
 				Name name = classOrObject.getNameAsName();
 				if(name != null)
 				{
 					getProperties(name);
 				}
 			}
-			else if(declaration instanceof NapileClassOrObject)
+			else if(declaration instanceof NapileLikeClass)
 			{
-				NapileClassOrObject classOrObject = (NapileClassOrObject) declaration;
+				NapileLikeClass classOrObject = (NapileLikeClass) declaration;
 				Name name = classOrObject.getNameAsName();
 				if(name != null)
 				{

@@ -115,15 +115,15 @@ public class DeclarationResolver
 			MutableClassDescriptor descriptor = entry.getValue();
 			resolveAnnotationsForClassOrObject(annotationResolver, napileClass, descriptor);
 		}
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
-			NapileObjectDeclaration objectDeclaration = entry.getKey();
+			NapileAnonymousClass objectDeclaration = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 			resolveAnnotationsForClassOrObject(annotationResolver, objectDeclaration, descriptor);
 		}
 	}
 
-	private void resolveAnnotationsForClassOrObject(AnnotationResolver annotationResolver, NapileClassOrObject jetClass, MutableClassDescriptor descriptor)
+	private void resolveAnnotationsForClassOrObject(AnnotationResolver annotationResolver, NapileLikeClass jetClass, MutableClassDescriptor descriptor)
 	{
 		NapileModifierList modifierList = jetClass.getModifierList();
 		if(modifierList != null)
@@ -142,9 +142,9 @@ public class DeclarationResolver
 			resolveDeclarations(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
-			NapileObjectDeclaration object = entry.getKey();
+			NapileAnonymousClass object = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
 			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
@@ -194,7 +194,7 @@ public class DeclarationResolver
 				}
 
 				@Override
-				public void visitObjectDeclaration(NapileObjectDeclaration declaration)
+				public void visitObjectDeclaration(NapileAnonymousClass declaration)
 				{
 					//PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, declaration, context.getObjects().get(declaration), trace);
 

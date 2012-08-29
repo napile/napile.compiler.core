@@ -35,7 +35,7 @@ import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.psi.NapileClassBody;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
@@ -76,7 +76,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	}
 
 	@NotNull
-	public Set<CallableMemberDescriptor> collectMethodsToGenerate(@NotNull NapileClassOrObject classOrObject)
+	public Set<CallableMemberDescriptor> collectMethodsToGenerate(@NotNull NapileLikeClass classOrObject)
 	{
 		BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) classOrObject.getContainingFile()).getBindingContext();
 		final DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, classOrObject);
@@ -89,7 +89,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 
 	protected abstract Set<CallableMemberDescriptor> collectMethodsToGenerate(MutableClassDescriptor descriptor);
 
-	public static void generateMethods(Editor editor, NapileClassOrObject classOrObject, List<DescriptorClassMember> selectedElements)
+	public static void generateMethods(Editor editor, NapileLikeClass classOrObject, List<DescriptorClassMember> selectedElements)
 	{
 		final NapileClassBody body = classOrObject.getBody();
 		if(body == null)
@@ -356,7 +356,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 			return false;
 		}
 		final PsiElement elementAtCaret = file.findElementAt(editor.getCaretModel().getOffset());
-		final NapileClassOrObject classOrObject = PsiTreeUtil.getParentOfType(elementAtCaret, NapileClassOrObject.class);
+		final NapileLikeClass classOrObject = PsiTreeUtil.getParentOfType(elementAtCaret, NapileLikeClass.class);
 		return classOrObject != null;
 	}
 
@@ -365,7 +365,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	public void invoke(@NotNull final Project project, @NotNull final Editor editor, @NotNull PsiFile file, boolean implementAll)
 	{
 		final PsiElement elementAtCaret = file.findElementAt(editor.getCaretModel().getOffset());
-		final NapileClassOrObject classOrObject = PsiTreeUtil.getParentOfType(elementAtCaret, NapileClassOrObject.class);
+		final NapileLikeClass classOrObject = PsiTreeUtil.getParentOfType(elementAtCaret, NapileLikeClass.class);
 
 		assert classOrObject != null : "ClassObject should be checked in isValidFor method";
 

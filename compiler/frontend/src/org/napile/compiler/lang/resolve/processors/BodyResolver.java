@@ -195,7 +195,7 @@ public class BodyResolver
 				resolveDelegationSpecifierList(napileConstructor, constructorDescriptor, classEntry.getValue().getScopeForSupertypeResolution());
 			}
 
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
 			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
 	}
 
@@ -317,13 +317,13 @@ public class BodyResolver
 		{
 			resolveAnonymousInitializers(entry.getKey(), entry.getValue());
 		}
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
 			resolveAnonymousInitializers(entry.getKey(), entry.getValue());
 		}
 	}
 
-	private void resolveAnonymousInitializers(NapileClassOrObject jetClassOrObject, MutableClassDescriptor classDescriptor)
+	private void resolveAnonymousInitializers(NapileLikeClass jetClassOrObject, MutableClassDescriptor classDescriptor)
 	{
 		if(!context.completeAnalysisNeeded(jetClassOrObject))
 			return;

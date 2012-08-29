@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
@@ -39,7 +39,7 @@ public final class JetProjectViewUtil
 	{
 	}
 
-	public static Collection<AbstractTreeNode> getClassOrObjectChildren(NapileClassOrObject classOrObject, Project project, ViewSettings settings)
+	public static Collection<AbstractTreeNode> getClassOrObjectChildren(NapileLikeClass classOrObject, Project project, ViewSettings settings)
 	{
 		if(classOrObject != null && settings.isShowMembers())
 		{
@@ -47,9 +47,9 @@ public final class JetProjectViewUtil
 			List<? extends NapileDeclaration> declarations = classOrObject.getDeclarations();
 			for(NapileDeclaration declaration : declarations)
 			{
-				if(declaration instanceof NapileClassOrObject)
+				if(declaration instanceof NapileLikeClass)
 				{
-					result.add(new JetClassOrObjectTreeNode(project, (NapileClassOrObject) declaration, settings));
+					result.add(new JetClassOrObjectTreeNode(project, (NapileLikeClass) declaration, settings));
 				}
 				else
 				{

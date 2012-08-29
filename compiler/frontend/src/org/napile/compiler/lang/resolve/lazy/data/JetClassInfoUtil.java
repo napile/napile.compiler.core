@@ -17,9 +17,9 @@
 package org.napile.compiler.lang.resolve.lazy.data;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileAnonymousClass;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 
 /**
  * @author abreslav
@@ -27,16 +27,16 @@ import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 public class JetClassInfoUtil
 {
 
-	public static NapileClassLikeInfo createClassLikeInfo(@NotNull NapileClassOrObject classOrObject)
+	public static NapileClassLikeInfo createClassLikeInfo(@NotNull NapileLikeClass classOrObject)
 	{
 		if(classOrObject instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) classOrObject;
 			return new NapileClassInfo(napileClass);
 		}
-		if(classOrObject instanceof NapileObjectDeclaration)
+		if(classOrObject instanceof NapileAnonymousClass)
 		{
-			NapileObjectDeclaration objectDeclaration = (NapileObjectDeclaration) classOrObject;
+			NapileAnonymousClass objectDeclaration = (NapileAnonymousClass) classOrObject;
 			return new NapileObjectInfo(objectDeclaration);
 		}
 		throw new IllegalArgumentException("Unknown declaration type: " + classOrObject + classOrObject.getText());

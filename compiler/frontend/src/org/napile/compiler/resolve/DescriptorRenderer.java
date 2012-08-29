@@ -604,10 +604,10 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			switch(descriptor.getKind())
 			{
 				case ENUM_CLASS:
-					keyword = "enum class";
+					keyword = "enum";
 					break;
 				case OBJECT:
-					keyword = "object";
+					keyword = "anonymous";
 					break;
 				default:
 					keyword = "class";

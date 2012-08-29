@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassInitializer;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -149,9 +149,9 @@ public class JetStructureViewElement implements StructureViewTreeElement
 			declarations.addAll(napileClass.getDeclarations());
 			return wrapDeclarations(declarations);
 		}
-		else if(myElement instanceof NapileClassOrObject)
+		else if(myElement instanceof NapileLikeClass)
 		{
-			return wrapDeclarations(((NapileClassOrObject) myElement).getDeclarations());
+			return wrapDeclarations(((NapileLikeClass) myElement).getDeclarations());
 		}
 
 		return new TreeElement[0];

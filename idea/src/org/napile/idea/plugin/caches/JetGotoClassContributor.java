@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileAnonymousClass;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.stubindex.JetShortClassNameIndex;
@@ -64,9 +64,9 @@ public class JetGotoClassContributor implements GotoClassContributor
 		final GlobalSearchScope scope = GlobalSearchScope.allScope(project);
 
 		ArrayList<NavigationItem> items = new ArrayList<NavigationItem>();
-		Collection<NapileClassOrObject> classesOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
+		Collection<NapileLikeClass> classesOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
 
-		for(NapileClassOrObject classOrObject : classesOrObjects)
+		for(NapileLikeClass classOrObject : classesOrObjects)
 		{
 			if(classOrObject instanceof NapileNamedDeclaration)
 			{
@@ -74,7 +74,7 @@ public class JetGotoClassContributor implements GotoClassContributor
 				if(fqName == null)
 					continue;
 
-				if(classOrObject instanceof NapileObjectDeclaration)
+				if(classOrObject instanceof NapileAnonymousClass)
 				{
 					// items.add((NapileObjectDeclaration) classOrObject);
 				}

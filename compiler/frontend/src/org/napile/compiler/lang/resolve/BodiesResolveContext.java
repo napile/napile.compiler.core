@@ -24,13 +24,13 @@ import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.psi.NapileAnonymousClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 
@@ -43,7 +43,7 @@ public interface BodiesResolveContext
 
 	Map<NapileConstructor, ConstructorDescriptor> getConstructors();
 
-	Map<NapileObjectDeclaration, MutableClassDescriptor> getObjects();
+	Map<NapileAnonymousClass, MutableClassDescriptor> getObjects();
 
 	Map<NapileProperty, PropertyDescriptor> getProperties();
 

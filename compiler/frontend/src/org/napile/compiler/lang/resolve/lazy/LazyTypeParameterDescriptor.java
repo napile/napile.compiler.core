@@ -27,7 +27,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptorVisitor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileTypeConstraint;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
@@ -119,7 +119,7 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 	{
 		NapileTypeParameter jetTypeParameter = getElement();
 
-		NapileClassOrObject classOrObject = PsiTreeUtil.getParentOfType(jetTypeParameter, NapileClassOrObject.class);
+		NapileLikeClass classOrObject = PsiTreeUtil.getParentOfType(jetTypeParameter, NapileLikeClass.class);
 		if(classOrObject instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) classOrObject;

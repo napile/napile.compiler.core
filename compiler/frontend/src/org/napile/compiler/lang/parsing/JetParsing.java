@@ -660,18 +660,7 @@ public class JetParsing extends AbstractJetParsing
 			declType = parseConstructor();
 		else if(keywordToken == JetTokens.VAL_KEYWORD || keywordToken == JetTokens.VAR_KEYWORD)
 			declType = parseProperty();
-		else if(keywordToken == JetTokens.TYPE_KEYWORD)
-			declType = parseTypeDef();
-		else if(keywordToken == JetTokens.OBJECT_KEYWORD)
-		{
-			parseObject(true, true);
-			declType = OBJECT_DECLARATION;
-		}
-		else if(keywordToken == JetTokens.LBRACE)
-		{
-			parseBlock();
-			declType = ANONYMOUS_INITIALIZER;
-		}
+
 		return declType;
 	}
 
@@ -680,54 +669,20 @@ public class JetParsing extends AbstractJetParsing
 		 *   : "object" SimpleName? ":" delegationSpecifier{","}? classBody?
 		 *   ;
 		 */
-	void parseObject(boolean named, boolean optionalBody)
+	void parseObject()
 	{
-		assert _at(JetTokens.OBJECT_KEYWORD);
+		assert _at(JetTokens.ANONYMOUS_KEYWORD);
 
 		advance(); // OBJECT_KEYWORD
 
-		if(named)
+		if(at(JetTokens.COLON))
 		{
-			PsiBuilder.Marker propertyDeclaration = mark();
-			if(!parseIdeTemplate())
-			{
-				expect(JetTokens.IDENTIFIER, "Expecting object name", TokenSet.create(JetTokens.LBRACE));
-			}
-			propertyDeclaration.done(OBJECT_DECLARATION_NAME);
-		}
-		else
-		{
-			if(at(JetTokens.IDENTIFIER))
-			{
-				error("An object expression cannot bind a name");
-			}
+			advance(); // COLON
+			parseDelegationSpecifierList();
 		}
 
-		if(optionalBody)
-		{
-			if(at(JetTokens.COLON))
-			{
-				advance(); // COLON
-				parseDelegationSpecifierList();
-			}
-			if(at(JetTokens.LBRACE))
-			{
-				parseClassBody();
-			}
-		}
-		else
-		{
-			if(at(JetTokens.LBRACE))
-			{
-				parseClassBody();
-			}
-			else
-			{
-				expect(JetTokens.COLON, "Expecting ':'", TokenSet.create(JetTokens.IDENTIFIER, JetTokens.PACKAGE_KEYWORD));
-				parseDelegationSpecifierList();
-				parseClassBody();
-			}
-		}
+		if(at(JetTokens.LBRACE))
+			parseClassBody();
 	}
 
 	/*
@@ -1350,7 +1305,7 @@ public class JetParsing extends AbstractJetParsing
 		{
 			advance(); // CLASS_KEYWORD
 
-			expect(JetTokens.OBJECT_KEYWORD, "Expecting 'object'", TYPE_REF_FIRST);
+			expect(JetTokens.ANONYMOUS_KEYWORD, "Expecting 'object'", TYPE_REF_FIRST);
 		}
 
 		PsiBuilder.Marker reference = mark();

@@ -1,4 +1,4 @@
-package org.napile.compiler.lexer;;
+package org.napile.compiler.lexer;
 
 import java.util.*;
 import com.intellij.lexer.*;
@@ -234,11 +234,11 @@ LONG_TEMPLATE_ENTRY_END=\}
 "continue"   { return JetTokens.CONTINUE_KEYWORD ;}
 "package"    { return JetTokens.PACKAGE_KEYWORD ;}
 "return"     { return JetTokens.RETURN_KEYWORD ;}
-"object"     { return JetTokens.OBJECT_KEYWORD ;}
+"anonymous"  { return JetTokens.ANONYMOUS_KEYWORD ;}
 "while"      { return JetTokens.WHILE_KEYWORD ;}
 "break"      { return JetTokens.BREAK_KEYWORD ;}
 "class"      { return JetTokens.CLASS_KEYWORD ;}
-"enum"      { return JetTokens.ENUM_KEYWORD ;}
+"enum"       { return JetTokens.ENUM_KEYWORD ;}
 "throw"      { return JetTokens.THROW_KEYWORD ;}
 "false"      { return JetTokens.FALSE_KEYWORD ;}
 "super"      { return JetTokens.SUPER_KEYWORD ;}
@@ -251,9 +251,9 @@ LONG_TEMPLATE_ENTRY_END=\}
 "try"        { return JetTokens.TRY_KEYWORD ;}
 "val"        { return JetTokens.VAL_KEYWORD ;}
 "var"        { return JetTokens.VAR_KEYWORD ;}
-"meth"        { return JetTokens.METH_KEYWORD ;}
+"meth"       { return JetTokens.METH_KEYWORD ;}
 "for"        { return JetTokens.FOR_KEYWORD ;}
-//"new"        { return JetTokens.NEW_KEYWORD ;}
+//"new"      { return JetTokens.NEW_KEYWORD ;}
 "is"         { return JetTokens.IS_KEYWORD ;}
 "in"         { return JetTokens.IN_KEYWORD ;}
 "if"         { return JetTokens.IF_KEYWORD ;}

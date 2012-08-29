@@ -481,7 +481,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitPattern(pattern);
 	}
 
-	public void visitObjectDeclaration(NapileObjectDeclaration declaration)
+	public void visitObjectDeclaration(NapileAnonymousClass declaration)
 	{
 		visitNamedDeclaration(declaration);
 	}

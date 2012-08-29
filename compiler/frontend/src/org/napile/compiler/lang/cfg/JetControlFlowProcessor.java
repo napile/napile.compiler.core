@@ -1045,7 +1045,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitObjectLiteralExpression(NapileObjectLiteralExpression expression)
 		{
-			NapileObjectDeclaration declaration = expression.getObjectDeclaration();
+			NapileAnonymousClass declaration = expression.getObjectDeclaration();
 			value(declaration, inCondition);
 
 			List<NapileDeclaration> declarations = declaration.getDeclarations();
@@ -1065,7 +1065,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitObjectDeclaration(NapileObjectDeclaration objectDeclaration)
+		public void visitObjectDeclaration(NapileAnonymousClass objectDeclaration)
 		{
 			visitClassOrObject(objectDeclaration);
 		}
@@ -1090,7 +1090,7 @@ public class JetControlFlowProcessor
 			value(classInitializer.getBody(), inCondition);
 		}
 
-		private void visitClassOrObject(NapileClassOrObject classOrObject)
+		private void visitClassOrObject(NapileLikeClass classOrObject)
 		{
 			for(NapileDelegationSpecifier specifier : classOrObject.getDelegationSpecifiers())
 			{

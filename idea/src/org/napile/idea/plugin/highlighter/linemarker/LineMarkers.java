@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -79,8 +79,8 @@ public enum LineMarkers
 
 					List<NapileElement> result = new ArrayList<NapileElement>();
 
-					Map<NapileClassOrObject, ClassDescriptor> res = JetShortNamesCache.getInstance(napileClass.getProject()).getAllClassesAndDescriptors(napileClass, napileClass.getResolveScope());
-					for(Map.Entry<NapileClassOrObject, ClassDescriptor> entry : res.entrySet())
+					Map<NapileLikeClass, ClassDescriptor> res = JetShortNamesCache.getInstance(napileClass.getProject()).getAllClassesAndDescriptors(napileClass, napileClass.getResolveScope());
+					for(Map.Entry<NapileLikeClass, ClassDescriptor> entry : res.entrySet())
 					{
 						if(entry.getValue() == classDeclaration)
 							continue;

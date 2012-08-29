@@ -278,15 +278,15 @@ public interface Errors
 		}
 	});
 
-	DiagnosticFactory2<PsiElement, NapileClassOrObject, CallableMemberDescriptor> ABSTRACT_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
+	DiagnosticFactory2<PsiElement, NapileLikeClass, CallableMemberDescriptor> ABSTRACT_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
 
-	DiagnosticFactory2<PsiElement, NapileClassOrObject, CallableMemberDescriptor> MANY_IMPL_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
+	DiagnosticFactory2<PsiElement, NapileLikeClass, CallableMemberDescriptor> MANY_IMPL_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileParameter> DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.PARAMETER_DEFAULT_VALUE);
 	DiagnosticFactory1<NapileParameter, ValueParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES = DiagnosticFactory1.create(Severity.ERROR);
-	DiagnosticFactory1<NapileClassOrObject, ValueParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES_WHEN_NO_EXPLICIT_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
+	DiagnosticFactory1<NapileLikeClass, ValueParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES_WHEN_NO_EXPLICIT_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
 	DiagnosticFactory2<NapileParameter, ClassDescriptor, ValueParameterDescriptor> PARAMETER_NAME_CHANGED_ON_OVERRIDE = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
-	DiagnosticFactory2<NapileClassOrObject, Collection<? extends CallableMemberDescriptor>, Integer> DIFFERENT_NAMES_FOR_THE_SAME_PARAMETER_IN_SUPERTYPES = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
+	DiagnosticFactory2<NapileLikeClass, Collection<? extends CallableMemberDescriptor>, Integer> DIFFERENT_NAMES_FOR_THE_SAME_PARAMETER_IN_SUPERTYPES = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 
 	DiagnosticFactory2<NapileDeclaration, CallableMemberDescriptor, String> CONFLICTING_OVERLOADS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.DECLARATION);
 

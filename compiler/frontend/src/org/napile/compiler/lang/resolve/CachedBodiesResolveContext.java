@@ -25,6 +25,7 @@ import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
+import org.napile.compiler.lang.psi.NapileAnonymousClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
@@ -32,7 +33,6 @@ import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileObjectDeclaration;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 
@@ -45,7 +45,7 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 public class CachedBodiesResolveContext implements BodiesResolveContext
 {
 	private final Map<NapileClass, MutableClassDescriptor> classes;
-	private final Map<NapileObjectDeclaration, MutableClassDescriptor> objects;
+	private final Map<NapileAnonymousClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
 	private final Map<NapileProperty, PropertyDescriptor> properties;
 	private final Map<NapileEnumEntry, EnumEntryDescriptor> enumEntries;
@@ -76,7 +76,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileObjectDeclaration, MutableClassDescriptor> getObjects()
+	public Map<NapileAnonymousClass, MutableClassDescriptor> getObjects()
 	{
 		return objects;
 	}

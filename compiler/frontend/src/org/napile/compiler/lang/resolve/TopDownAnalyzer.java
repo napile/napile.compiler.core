@@ -26,10 +26,10 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
@@ -193,7 +193,7 @@ public class TopDownAnalyzer
 		doProcess(outerScope, standardLibraryNamespace.getBuilder(), toAnalyze);
 	}
 
-	public static void processClassOrObject(@NotNull Project project, @NotNull final BindingTrace trace, @NotNull JetScope outerScope, @NotNull final DeclarationDescriptor containingDeclaration, @NotNull NapileClassOrObject object)
+	public static void processClassOrObject(@NotNull Project project, @NotNull final BindingTrace trace, @NotNull JetScope outerScope, @NotNull final DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass object)
 	{
 		ModuleDescriptor moduleDescriptor = new ModuleDescriptor(Name.special("<dummy for object>"));
 

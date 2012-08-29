@@ -31,7 +31,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 /**
  * @author max
  */
-public class NapileEnumEntry extends NapileNamedDeclarationStub<NapilePsiEnumEntryStub> implements NapileClassOrObject, NapileCallElement
+public class NapileEnumEntry extends NapileNamedDeclarationStub<NapilePsiEnumEntryStub> implements NapileLikeClass, NapileCallElement
 {
 	public NapileEnumEntry(@NotNull ASTNode node)
 	{

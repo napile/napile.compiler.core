@@ -43,8 +43,8 @@ public class NapileObjectLiteralExpression extends NapileExpressionImpl
 	}
 
 	@NotNull
-	public NapileObjectDeclaration getObjectDeclaration()
+	public NapileAnonymousClass getObjectDeclaration()
 	{
-		return (NapileObjectDeclaration) findChildByType(NapileNodeTypes.OBJECT_DECLARATION);
+		return (NapileAnonymousClass) findChildByType(NapileNodeTypes.OBJECT_DECLARATION);
 	}
 }

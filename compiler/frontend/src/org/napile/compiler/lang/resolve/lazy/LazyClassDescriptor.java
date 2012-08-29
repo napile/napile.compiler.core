@@ -34,7 +34,7 @@ import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
@@ -309,7 +309,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 				}
 				else
 				{
-					NapileClassOrObject classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
+					NapileLikeClass classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
 					if(classOrObject == null)
 					{
 						this.supertypes = Collections.emptyList();
@@ -392,7 +392,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 		return new FilteringClassLikeInfo(classLikeInfo, ONLY_ENUM_ENTIRES)
 		{
 			@Override
-			public NapileClassOrObject getCorrespondingClassOrObject()
+			public NapileLikeClass getCorrespondingClassOrObject()
 			{
 				return null;
 			}

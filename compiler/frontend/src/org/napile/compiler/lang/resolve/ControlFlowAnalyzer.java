@@ -59,7 +59,7 @@ public class ControlFlowAnalyzer
 			checkClassOrObject(aClass);
 		}
 
-		for(NapileObjectDeclaration objectDeclaration : bodiesResolveContext.getObjects().keySet())
+		for(NapileAnonymousClass objectDeclaration : bodiesResolveContext.getObjects().keySet())
 		{
 			if(!bodiesResolveContext.completeAnalysisNeeded(objectDeclaration))
 				continue;
@@ -95,7 +95,7 @@ public class ControlFlowAnalyzer
 		}
 	}
 
-	private void checkClassOrObject(NapileClassOrObject klass)
+	private void checkClassOrObject(NapileLikeClass klass)
 	{
 		// A pseudocode of class initialization corresponds to a class
 		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider((NapileDeclaration) klass, trace);

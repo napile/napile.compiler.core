@@ -19,7 +19,7 @@ package org.napile.idea.plugin.stubindex;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
@@ -28,7 +28,7 @@ import com.intellij.psi.stubs.StubIndexKey;
 /**
  * @author Nikolay Krasko
  */
-public class JetFullClassNameIndex extends StringStubIndexExtension<NapileClassOrObject>
+public class JetFullClassNameIndex extends StringStubIndexExtension<NapileLikeClass>
 {
 	private static final JetFullClassNameIndex ourInstance = new JetFullClassNameIndex();
 
@@ -39,13 +39,13 @@ public class JetFullClassNameIndex extends StringStubIndexExtension<NapileClassO
 
 	@NotNull
 	@Override
-	public StubIndexKey<String, NapileClassOrObject> getKey()
+	public StubIndexKey<String, NapileLikeClass> getKey()
 	{
 		return JetIndexKeys.FQN_KEY;
 	}
 
 	@Override
-	public Collection<NapileClassOrObject> get(final String fqName, final Project project, @NotNull final GlobalSearchScope scope)
+	public Collection<NapileLikeClass> get(final String fqName, final Project project, @NotNull final GlobalSearchScope scope)
 	{
 		return super.get(fqName, project, new JetSourceFilterScope(scope));
 	}

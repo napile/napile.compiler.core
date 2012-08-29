@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
@@ -112,9 +112,9 @@ public class ScopeProvider
 		}
 
 		NapileDeclaration parentDeclaration = PsiTreeUtil.getParentOfType(jetDeclaration, NapileDeclaration.class);
-		if(parentDeclaration instanceof NapileClassOrObject)
+		if(parentDeclaration instanceof NapileLikeClass)
 		{
-			NapileClassOrObject classOrObject = (NapileClassOrObject) parentDeclaration;
+			NapileLikeClass classOrObject = (NapileLikeClass) parentDeclaration;
 			LazyClassDescriptor classDescriptor = (LazyClassDescriptor) resolveSession.getClassDescriptor(classOrObject);
 
 			return classDescriptor.getScopeForMemberDeclarationResolution();

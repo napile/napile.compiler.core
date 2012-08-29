@@ -32,7 +32,7 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -171,7 +171,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 	protected void getNonDeclaredProperties(@NotNull Name name, @NotNull final Set<VariableDescriptor> result)
 	{
 		// Enum entries
-		NapileClassOrObject classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
+		NapileLikeClass classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
 		/*if(classOrObjectDeclaration instanceof NapileEnumEntry)
 		{
 			// TODO: This code seems to be wrong, but it mimics the present behavior of eager resolve
@@ -234,7 +234,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 			constructorDescriptors = new HashSet<ConstructorDescriptor>();
 			if(EnumSet.of(ClassKind.CLASS, ClassKind.OBJECT, ClassKind.ENUM_CLASS).contains(thisDescriptor.getKind()))
 			{
-				NapileClassOrObject classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
+				NapileLikeClass classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
 				if(thisDescriptor.getKind() != ClassKind.OBJECT)
 				{
 					NapileClass napileClass = (NapileClass) classOrObject;

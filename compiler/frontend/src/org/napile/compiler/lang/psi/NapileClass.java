@@ -40,7 +40,7 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author max
  */
-public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStub> implements NapileClassOrObject
+public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStub> implements NapileLikeClass
 {
 
 	public NapileClass(@NotNull ASTNode node)
@@ -174,11 +174,11 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 		}
 
 		List<String> parts = new ArrayList<String>();
-		NapileClassOrObject current = this;
+		NapileLikeClass current = this;
 		while(current != null)
 		{
 			parts.add(current.getName());
-			current = PsiTreeUtil.getParentOfType(current, NapileClassOrObject.class);
+			current = PsiTreeUtil.getParentOfType(current, NapileLikeClass.class);
 		}
 		PsiFile file = getContainingFile();
 		if(!(file instanceof NapileFile))

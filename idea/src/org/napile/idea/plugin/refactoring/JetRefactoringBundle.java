@@ -33,7 +33,7 @@ public class JetRefactoringBundle
 	private static Reference<ResourceBundle> ourBundle;
 
 	@NonNls
-	private static final String BUNDLE = "org.napile.idea.plugin.JetRefactoringBundle";
+	private static final String BUNDLE = "org.napile.idea.plugin.refactoring.JetRefactoringBundle";
 
 	private JetRefactoringBundle()
 	{

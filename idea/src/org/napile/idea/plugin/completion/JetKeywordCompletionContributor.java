@@ -93,8 +93,6 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 	private static final String VAR_WITH_TYPE_TEMPLATE = "var <#<name>#> : <#<varType>#> = <#<initial>#>";
 	private static final String VAR_WITH_GETTER_AND_SETTER_TEMPLATE = "var <#<name>#> : <#<varType>#>\nget() {\n<#<body>#>\n}\nset(value) {\n<#<body>#>\n}";
 	private static final String CLASS_TEMPLATE = "class <#<name>#> {\n<#<body>#>\n}";
-	private static final String CLASS_OBJECT_TEMPLATE = "class object {\n<#<body>#>\n}";
-	private static final String CLASS_OBJECT_WITHOUT_CLASS_TEMPLATE = "object {\n<#<body>#>\n}";
 	private static final String FOR_TEMPLATE = "for (<#<i>#> in <#<elements>#>) {\n<#<body>#>\n}";
 	private static final String WHEN_TEMPLATE = "when (<#<expression>#>) {\n<#<condition>#> -> <#<value>#>\n" + "else -> <#<elseValue>#>\n}";
 	private static final String WHEN_ENTRY_TEMPLATE = "<#<condition>#> -> <#<value>#>";
@@ -340,17 +338,16 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 
 		registerScopeKeywordsCompletion(new InClassBodyFilter(), ABSTRACT_KEYWORD, STATIC_KEYWORD, FINAL_KEYWORD, GET_KEYWORD, OVERRIDE_KEYWORD, LOCAL_KEYWORD, COVERED_KEYWORD, HERITABLE_KEYWORD, SET_KEYWORD, TYPE_KEYWORD);
 
-		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), AS_KEYWORD, BREAK_KEYWORD, BY_KEYWORD, CATCH_KEYWORD, CONTINUE_KEYWORD, ELSE_KEYWORD, FALSE_KEYWORD, FINALLY_KEYWORD, GET_KEYWORD, IN_KEYWORD, IS_KEYWORD, NULL_KEYWORD, OBJECT_KEYWORD, LOCAL_KEYWORD, COVERED_KEYWORD, HERITABLE_KEYWORD, RETURN_KEYWORD, SET_KEYWORD, SUPER_KEYWORD, THIS_KEYWORD, THROW_KEYWORD, TRUE_KEYWORD, TRY_KEYWORD, TYPE_KEYWORD, VARARG_KEYWORD, WHERE_KEYWORD);
+		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), AS_KEYWORD, BREAK_KEYWORD, BY_KEYWORD, CATCH_KEYWORD, CONTINUE_KEYWORD, ELSE_KEYWORD, FALSE_KEYWORD, FINALLY_KEYWORD, GET_KEYWORD, IN_KEYWORD, IS_KEYWORD, NULL_KEYWORD, ANONYMOUS_KEYWORD, LOCAL_KEYWORD, COVERED_KEYWORD, HERITABLE_KEYWORD, RETURN_KEYWORD, SET_KEYWORD, SUPER_KEYWORD, THIS_KEYWORD, THROW_KEYWORD, TRUE_KEYWORD, TRY_KEYWORD, TYPE_KEYWORD, VARARG_KEYWORD, WHERE_KEYWORD);
 
 		registerScopeKeywordsCompletion(new InPropertyBodyFilter(), ELSE_KEYWORD, FALSE_KEYWORD, NULL_KEYWORD, THIS_KEYWORD, TRUE_KEYWORD);
 
 		// templates
 		registerScopeKeywordsCompletion(new InWhenFilter(), WHEN_ENTRY_TEMPLATE);
 		registerScopeKeywordsCompletion(new InTopFilter(), CLASS_TEMPLATE, ENUM_TEMPLATE);
-		registerScopeKeywordsCompletion(new InClassBodyFilter(), METH_TEMPLATE, METH_NO_RETURN_TEMPLATE, VAL_WITH_TYPE_TEMPLATE, VAL_WITH_GETTER_TEMPLATE, VAR_WITH_TYPE_TEMPLATE, VAR_WITH_GETTER_AND_SETTER_TEMPLATE, CLASS_TEMPLATE, CLASS_OBJECT_TEMPLATE, ENUM_TEMPLATE);
+		registerScopeKeywordsCompletion(new InClassBodyFilter(), METH_TEMPLATE, METH_NO_RETURN_TEMPLATE, VAL_WITH_TYPE_TEMPLATE, VAL_WITH_GETTER_TEMPLATE, VAR_WITH_TYPE_TEMPLATE, VAR_WITH_GETTER_AND_SETTER_TEMPLATE, CLASS_TEMPLATE, ENUM_TEMPLATE);
 		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), IF_TEMPLATE, IF_ELSE_TEMPLATE, IF_ELSE_ONELINE_TEMPLATE, METH_TEMPLATE, VAL_SIMPLE_TEMPLATE, VAR_SIMPLE_TEMPLATE, CLASS_TEMPLATE, FOR_TEMPLATE, WHEN_TEMPLATE, WHILE_TEMPLATE, DO_WHILE_TEMPLATE, ENUM_TEMPLATE);
 		registerScopeKeywordsCompletion(new InPropertyBodyFilter(), IF_ELSE_ONELINE_TEMPLATE, WHEN_TEMPLATE);
-		registerScopeKeywordsCompletion(new AfterClassInClassBodyFilter(), false, CLASS_OBJECT_WITHOUT_CLASS_TEMPLATE);
 	}
 
 	private void registerScopeKeywordsCompletion(final ElementFilter placeFilter, boolean notIdentifier, String... keywords)

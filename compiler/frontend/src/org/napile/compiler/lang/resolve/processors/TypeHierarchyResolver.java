@@ -194,7 +194,7 @@ public class TypeHierarchyResolver
 				}
 
 				@Override
-				public void visitObjectDeclaration(NapileObjectDeclaration declaration)
+				public void visitObjectDeclaration(NapileAnonymousClass declaration)
 				{
 					final MutableClassDescriptor objectDescriptor = createClassDescriptorForObject(declaration, owner, outerScope);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(declaration), objectDescriptor);
@@ -249,7 +249,7 @@ public class TypeHierarchyResolver
 					} */
 				}
 
-				private MutableClassDescriptor createClassDescriptorForObject(@NotNull NapileObjectDeclaration declaration, @NotNull NamespaceLikeBuilder owner, JetScope scope)
+				private MutableClassDescriptor createClassDescriptorForObject(@NotNull NapileAnonymousClass declaration, @NotNull NamespaceLikeBuilder owner, JetScope scope)
 				{
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), scope, ClassKind.OBJECT, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
 					context.getObjects().put(declaration, mutableClassDescriptor);
@@ -314,9 +314,9 @@ public class TypeHierarchyResolver
 			descriptor.createTypeConstructor();
 		}
 
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
-			NapileObjectDeclaration objectDeclaration = entry.getKey();
+			NapileAnonymousClass objectDeclaration = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 			descriptor.setModality(Modality.FINAL);
 			descriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(objectDeclaration.getModifierList()));
@@ -336,9 +336,9 @@ public class TypeHierarchyResolver
 			descriptorResolver.resolveSupertypesForMutableClassDescriptor(napileClass, descriptor, trace);
 		}
 
-		for(Map.Entry<NapileObjectDeclaration, MutableClassDescriptor> entry : context.getObjects().entrySet())
+		for(Map.Entry<NapileAnonymousClass, MutableClassDescriptor> entry : context.getObjects().entrySet())
 		{
-			NapileClassOrObject jetClass = entry.getKey();
+			NapileLikeClass jetClass = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 			descriptorResolver.resolveSupertypesForMutableClassDescriptor(jetClass, descriptor, trace);
 		}
@@ -441,9 +441,9 @@ public class TypeHierarchyResolver
 			PsiElement psiElement = BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
 
 			PsiElement elementToMark = null;
-			if(psiElement instanceof NapileClassOrObject)
+			if(psiElement instanceof NapileLikeClass)
 			{
-				NapileClassOrObject classOrObject = (NapileClassOrObject) psiElement;
+				NapileLikeClass classOrObject = (NapileLikeClass) psiElement;
 				for(NapileDelegationSpecifier delegationSpecifier : classOrObject.getDelegationSpecifiers())
 				{
 					NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
@@ -518,7 +518,7 @@ public class TypeHierarchyResolver
 					{
 						DeclarationDescriptor containingDeclaration = typeParameterDescriptor.getContainingDeclaration();
 						assert containingDeclaration instanceof ClassDescriptor : containingDeclaration;
-						NapileClassOrObject psiElement = (NapileClassOrObject) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), mutableClassDescriptor);
+						NapileLikeClass psiElement = (NapileLikeClass) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), mutableClassDescriptor);
 						NapileDelegationSpecifierList delegationSpecifierList = psiElement.getDelegationSpecifierList();
 						assert delegationSpecifierList != null;
 						//                        trace.getErrorHandler().genericError(delegationSpecifierList.getNode(), "Type parameter " + typeParameterDescriptor.getName() + " of " + containingDeclaration.getName() + " has inconsistent values: " + conflictingTypes);

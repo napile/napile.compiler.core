@@ -225,7 +225,7 @@ public class JetFlowInformationProvider
 	{
 		final Collection<VariableDescriptor> varWithUninitializedErrorGenerated = Sets.newHashSet();
 		final Collection<VariableDescriptor> varWithValReassignErrorGenerated = Sets.newHashSet();
-		final boolean processClassOrObject = subroutine instanceof NapileClassOrObject;
+		final boolean processClassOrObject = subroutine instanceof NapileLikeClass;
 
 		Map<Instruction, PseudocodeTraverser.Edges<Map<VariableDescriptor, VariableInitState>>> initializers = pseudocodeVariablesData.getVariableInitializers();
 		final Set<VariableDescriptor> declaredVariables = pseudocodeVariablesData.getDeclaredVariables(pseudocode);

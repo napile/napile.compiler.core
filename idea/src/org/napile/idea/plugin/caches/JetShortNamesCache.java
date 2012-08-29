@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
@@ -31,7 +32,6 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleFunctionDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassOrObject;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -78,13 +78,13 @@ public class JetShortNamesCache
 	}
 
 	@NotNull
-	public Map<NapileClassOrObject, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
+	public Map<NapileLikeClass, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
 	{
 		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile()).getBindingContext();
 
 		JetFilesProvider jetFilesProvider = JetFilesProvider.getInstance(project);
 
-		Map<NapileClassOrObject, ClassDescriptor> result = new HashMap<NapileClassOrObject, ClassDescriptor>();
+		Map<NapileLikeClass, ClassDescriptor> result = new HashMap<NapileLikeClass, ClassDescriptor>();
 
 		for(NapileFile temp : jetFilesProvider.allInScope(globalSearchScope))
 		{
@@ -112,11 +112,11 @@ public class JetShortNamesCache
 	 * Return class names form idea sources in given scope which should be visible as Java classes.
 	 */
 	@NotNull
-	public NapileClassOrObject[] getClassesByName(@NotNull @NonNls String name, @NotNull GlobalSearchScope scope)
+	public NapileLikeClass[] getClassesByName(@NotNull @NonNls String name, @NotNull GlobalSearchScope scope)
 	{
 		// Quick check for classes from getAllClassNames()
-		Collection<NapileClassOrObject> classOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
-		return classOrObjects.isEmpty() ? NapileClassOrObject.EMPTY_ARRAY : classOrObjects.toArray(NapileClassOrObject.EMPTY_ARRAY);
+		Collection<NapileLikeClass> classOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
+		return classOrObjects.isEmpty() ? NapileLikeClass.EMPTY_ARRAY : classOrObjects.toArray(NapileLikeClass.EMPTY_ARRAY);
 	}
 
 	/**

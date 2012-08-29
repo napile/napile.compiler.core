@@ -21,7 +21,7 @@ import static org.napile.idea.plugin.projectView.JetProjectViewUtil.getClassOrOb
 
 import java.util.Collection;
 
-import org.napile.compiler.lang.psi.NapileClassOrObject;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterListOwner;
 import com.intellij.ide.projectView.PresentationData;
@@ -38,9 +38,9 @@ import com.intellij.util.Function;
  * User: Alefas
  * Date: 15.02.12
  */
-public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileClassOrObject>
+public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileLikeClass>
 {
-	protected JetClassOrObjectTreeNode(Project project, NapileClassOrObject jetClassOrObject, ViewSettings viewSettings)
+	protected JetClassOrObjectTreeNode(Project project, NapileLikeClass jetClassOrObject, ViewSettings viewSettings)
 	{
 		super(project, jetClassOrObject, viewSettings);
 	}
@@ -60,7 +60,7 @@ public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileClassOr
 	@Override
 	protected void updateImpl(PresentationData data)
 	{
-		NapileClassOrObject classOrObject = getValue();
+		NapileLikeClass classOrObject = getValue();
 		if(classOrObject != null)
 		{
 			if(classOrObject instanceof NapileTypeParameterListOwner && !((NapileTypeParameterListOwner) classOrObject).getTypeParameters().isEmpty())
