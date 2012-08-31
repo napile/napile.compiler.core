@@ -56,12 +56,6 @@ public class EnumEntryDescriptor extends VariableDescriptorImpl implements Calla
 		return false;
 	}
 
-	@Override
-	public boolean isObjectDeclaration()
-	{
-		return false;
-	}
-
 	@NotNull
 	@Override
 	public Visibility getVisibility()

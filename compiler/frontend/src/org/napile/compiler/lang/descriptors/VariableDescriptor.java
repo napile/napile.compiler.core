@@ -37,6 +37,4 @@ public interface VariableDescriptor extends CallableDescriptor
 	VariableDescriptor substitute(TypeSubstitutor substitutor);
 
 	boolean isVar();
-
-	boolean isObjectDeclaration();
 }

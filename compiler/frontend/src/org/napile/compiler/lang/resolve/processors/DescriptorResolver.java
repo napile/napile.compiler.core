@@ -533,7 +533,7 @@ public class DescriptorResolver
 	public PropertyDescriptor resolveObjectDeclarationAsPropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		NapileModifierList modifierList = objectDeclaration.getModifierList();
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), false, true, NapilePsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), false, NapilePsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
 		propertyDescriptor.setType(classDescriptor.getDefaultType(), Collections.<TypeParameterDescriptor>emptyList(), DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), ReceiverDescriptor.NO_RECEIVER);
 		propertyDescriptor.initialize(createDefaultGetter(propertyDescriptor), null);
 		NapileObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();
@@ -579,7 +579,7 @@ public class DescriptorResolver
 
 		boolean hasBody = hasBody(property);
 		Modality defaultModality = Modality.OPEN;
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), defaultModality), resolveVisibilityFromModifiers(property.getModifierList()), isVar, false, NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD));
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), defaultModality), resolveVisibilityFromModifiers(property.getModifierList()), isVar, NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD));
 
 		List<TypeParameterDescriptorImpl> typeParameterDescriptors;
 		JetScope scopeWithTypeParameters;
