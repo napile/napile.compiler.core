@@ -148,6 +148,7 @@ public class InjectorForTopDownAnalyzerBasic {
         declarationResolver.setDescriptorResolver(descriptorResolver);
         declarationResolver.setImportsResolver(importsResolver);
         declarationResolver.setTrace(bindingTrace);
+        declarationResolver.setTypeResolver(typeResolver);
 
         annotationResolver.setCallResolver(callResolver);
         annotationResolver.setExpressionTypingServices(expressionTypingServices);
@@ -183,7 +184,6 @@ public class InjectorForTopDownAnalyzerBasic {
         typeHierarchyResolver.setImportsResolver(importsResolver);
         typeHierarchyResolver.setNamespaceFactory(namespaceFactory);
         typeHierarchyResolver.setTrace(bindingTrace);
-        typeHierarchyResolver.setTypeResolver(typeResolver);
 
         annotationChecker.setTrace(bindingTrace);
 

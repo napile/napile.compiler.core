@@ -101,12 +101,6 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 				}
 
 				@Override
-				public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
-				{
-					getMemberScope().addEnumEntryDescriptor(enumEntryDescriptor);
-				}
-
-				@Override
 				public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 				{
 					getMemberScope().addConstructorDescriptor(constructorDescriptor);

@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
@@ -48,7 +47,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
 	private final Map<NapileProperty, PropertyDescriptor> properties;
-	private final Map<NapileEnumEntry, EnumEntryDescriptor> enumEntries;
+	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries;
 	private final Map<NapileNamedFunction, SimpleMethodDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
@@ -94,7 +93,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileEnumEntry, EnumEntryDescriptor> getEnumEntries()
+	public Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries()
 	{
 		return enumEntries;
 	}

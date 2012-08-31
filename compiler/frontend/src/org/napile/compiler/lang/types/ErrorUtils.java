@@ -178,7 +178,7 @@ public class ErrorUtils
 	}
 
 	private static final JetType ERROR_PROPERTY_TYPE = createErrorType("<ERROR PROPERTY TYPE>");
-	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, true, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
+	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, PropertyKind.VAR, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
 	private static final Set<VariableDescriptor> ERROR_PROPERTY_GROUP = Collections.singleton(ERROR_PROPERTY);
 
 	private static SimpleMethodDescriptor createErrorFunction(ErrorScope ownerScope)
@@ -198,7 +198,7 @@ public class ErrorUtils
 		List<ValueParameterDescriptor> result = new ArrayList<ValueParameterDescriptor>();
 		for(int i = 0, argumentTypesSize = argumentTypes.size(); i < argumentTypesSize; i++)
 		{
-			result.add(new ValueParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR VALUE_PARAMETER>"), true, ERROR_PARAMETER_TYPE, false, null));
+			result.add(new ValueParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR VALUE_PARAMETER>"), PropertyKind.VAR, ERROR_PARAMETER_TYPE, false, null));
 		}
 		return result;
 	}

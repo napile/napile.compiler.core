@@ -96,8 +96,7 @@ public class OverrideResolver
 		Set<MutableClassDescriptor> ourClasses = new HashSet<MutableClassDescriptor>();
 		ourClasses.addAll(context.getClasses().values());
 		ourClasses.addAll(context.getAnonymous().values());
-		for(EnumEntryDescriptor enumEntryDescriptor : context.getEnumEntries().values())
-			ourClasses.add(enumEntryDescriptor.getClassDescriptor());
+		ourClasses.addAll(context.getEnumEntries().values());
 
 		Set<ClassifierDescriptor> processed = new HashSet<ClassifierDescriptor>();
 
@@ -359,8 +358,8 @@ public class OverrideResolver
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
-		for(Map.Entry<NapileEnumEntry, EnumEntryDescriptor> entry : context.getEnumEntries().entrySet())
-			checkOverridesInAClass(entry.getValue().getClassDescriptor(), entry.getKey());
+		for(Map.Entry<NapileEnumEntry, MutableClassDescriptor> entry : context.getEnumEntries().entrySet())
+			checkOverridesInAClass(entry.getValue(), entry.getKey());
 	}
 
 	protected void checkOverridesInAClass(@NotNull MutableClassDescriptor classDescriptor, @NotNull NapileLikeClass klass)
@@ -540,7 +539,7 @@ public class OverrideResolver
 						typeMismatchError = true;
 					}
 
-					if(checkPropertyKind(overridden, true) && checkPropertyKind(declared, false) && !kindMismatchError)
+					if(checkPropertyKind(overridden, PropertyKind.VAR) && checkPropertyKind(declared, PropertyKind.VAL) && !kindMismatchError)
 					{
 						trace.report(VAR_OVERRIDDEN_BY_VAL.on((NapileProperty) member, (PropertyDescriptor) declared, (PropertyDescriptor) overridden));
 						kindMismatchError = true;
@@ -686,12 +685,12 @@ public class OverrideResolver
 		}
 	}
 
-	private boolean checkPropertyKind(CallableMemberDescriptor descriptor, boolean isVar)
+	private boolean checkPropertyKind(CallableMemberDescriptor descriptor, PropertyKind propertyKind)
 	{
 		if(descriptor instanceof PropertyDescriptor)
 		{
 			PropertyDescriptor propertyDescriptor = (PropertyDescriptor) descriptor;
-			return propertyDescriptor.isVar() == isVar;
+			return propertyDescriptor.getPropertyKind() == propertyKind;
 		}
 		return false;
 	}

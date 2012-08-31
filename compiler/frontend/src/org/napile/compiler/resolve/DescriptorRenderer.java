@@ -398,20 +398,31 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 					type = varargElementType;
 				}
 			}
-			String typeString = renderPropertyPrefixAndComputeTypeString(builder, skipValVar ? null : descriptor.isVar(), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, type);
+			String typeString = renderPropertyPrefixAndComputeTypeString(builder, skipValVar ? null : descriptor.getPropertyKind(), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, type);
 			renderName(descriptor, builder);
 			builder.append(" : ").append(escape(typeString));
 			return null;
 		}
 
-		private String renderPropertyPrefixAndComputeTypeString(@NotNull StringBuilder builder, @Nullable Boolean isVar, @NotNull List<TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor receiver, @Nullable JetType outType)
+		private String renderPropertyPrefixAndComputeTypeString(@NotNull StringBuilder builder, @Nullable PropertyKind propertyKind, @NotNull List<TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor receiver, @Nullable JetType outType)
 		{
 			String typeString = lt() + "no type>";
 			if(outType != null)
 			{
-				if(isVar != null)
+				if(propertyKind != null)
 				{
-					builder.append(renderKeyword(isVar ? "var" : "val")).append(" ");
+					switch(propertyKind)
+					{
+						case VAR:
+							builder.append(JetTokens.VAR_KEYWORD.getValue());
+							break;
+						case VAL:
+							builder.append(JetTokens.VAL_KEYWORD.getValue());
+							break;
+						default:
+							break;
+					}
+					builder.append(" ");
 				}
 				typeString = renderType(outType);
 			}
@@ -431,20 +442,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderVisibility(descriptor, builder);
 			renderModality(descriptor.getModality(), builder);
-			String typeString = renderPropertyPrefixAndComputeTypeString(builder, descriptor.isVar(), descriptor.getTypeParameters(), descriptor.getReceiverParameter(), descriptor.getType());
+			String typeString = renderPropertyPrefixAndComputeTypeString(builder, descriptor.getPropertyKind(), descriptor.getTypeParameters(), descriptor.getReceiverParameter(), descriptor.getType());
 			renderName(descriptor, builder);
 			builder.append(" : ").append(escape(typeString));
-			return null;
-		}
-
-		@Override
-		public Void visitEnumEntryDescriptor(EnumEntryDescriptor descriptor, StringBuilder data)
-		{
-			renderVisibility(descriptor, data);
-			renderModality(descriptor.getModality(), data);
-			String typeString = renderPropertyPrefixAndComputeTypeString(data, descriptor.isVar(), descriptor.getTypeParameters(), descriptor.getReceiverParameter(), descriptor.getType());
-			renderName(descriptor, data);
-			data.append(" : ").append(escape(typeString));
 			return null;
 		}
 

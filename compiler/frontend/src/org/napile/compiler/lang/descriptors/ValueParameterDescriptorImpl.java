@@ -38,7 +38,7 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 	private final boolean declaresDefaultValue;
 
 	private final JetType varargElementType;
-	private final boolean isVar;
+	private final PropertyKind propertyKind;
 	private final int index;
 	private final ValueParameterDescriptor original;
 
@@ -46,24 +46,24 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 	private boolean overriddenDescriptorsLocked = false;
 	private final Set<? extends ValueParameterDescriptor> readOnlyOverriddenDescriptors = Collections.unmodifiableSet(overriddenDescriptors);
 
-	public ValueParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, boolean isVar, @NotNull JetType outType, boolean declaresDefaultValue, @Nullable JetType varargElementType)
+	public ValueParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, PropertyKind propertyKind, @NotNull JetType outType, boolean declaresDefaultValue, @Nullable JetType varargElementType)
 	{
 		super(containingDeclaration, annotations, name, outType, false);
 		this.original = this;
 		this.index = index;
 		this.declaresDefaultValue = declaresDefaultValue;
 		this.varargElementType = varargElementType;
-		this.isVar = isVar;
+		this.propertyKind = propertyKind;
 	}
 
-	public ValueParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ValueParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, boolean isVar, @NotNull JetType outType, @Nullable JetType varargElementType)
+	public ValueParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ValueParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, PropertyKind propertyKind, @NotNull JetType outType, @Nullable JetType varargElementType)
 	{
 		super(containingDeclaration, annotations, original.getName(), outType, false);
 		this.original = original;
 		this.index = original.getIndex();
 		this.declaresDefaultValue = original.declaresDefaultValue();
 		this.varargElementType = varargElementType;
-		this.isVar = isVar;
+		this.propertyKind = propertyKind;
 	}
 
 	@Override
@@ -140,17 +140,18 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 		return visitor.visitValueParameterDescriptor(this, data);
 	}
 
+	@NotNull
 	@Override
-	public boolean isVar()
+	public PropertyKind getPropertyKind()
 	{
-		return isVar;
+		return propertyKind;
 	}
 
 	@NotNull
 	@Override
 	public ValueParameterDescriptor copy(@NotNull DeclarationDescriptor newOwner)
 	{
-		return new ValueParameterDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), isVar, getType(), hasDefaultValue, varargElementType);
+		return new ValueParameterDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), propertyKind, getType(), hasDefaultValue, varargElementType);
 	}
 
 	@NotNull

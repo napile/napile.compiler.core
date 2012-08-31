@@ -290,7 +290,7 @@ public class DescriptorResolver
 		JetType varargElementType = null;
 		JetType variableType = type;
 
-		MutableValueParameterDescriptor valueParameterDescriptor = new ValueParameterDescriptorImpl(declarationDescriptor, index, annotationResolver.resolveAnnotations(scope, valueParameter.getModifierList(), trace), NapilePsiUtil.safeName(valueParameter.getName()), valueParameter.isMutable(), variableType, valueParameter.getDefaultValue() != null, varargElementType);
+		MutableValueParameterDescriptor valueParameterDescriptor = new ValueParameterDescriptorImpl(declarationDescriptor, index, annotationResolver.resolveAnnotations(scope, valueParameter.getModifierList(), trace), NapilePsiUtil.safeName(valueParameter.getName()), valueParameter.isMutable() ? PropertyKind.VAL : PropertyKind.VAR, variableType, valueParameter.getDefaultValue() != null, varargElementType);
 
 		trace.record(BindingContext.VALUE_PARAMETER, valueParameter, valueParameterDescriptor);
 		return valueParameterDescriptor;
@@ -492,7 +492,7 @@ public class DescriptorResolver
 
 	public VariableDescriptor resolveLocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileParameter parameter, @NotNull JetType type, BindingTrace trace)
 	{
-		VariableDescriptor variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(parameter.getModifierList(), trace), NapilePsiUtil.safeName(parameter.getName()), type, parameter.isMutable());
+		VariableDescriptor variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(parameter.getModifierList(), trace), NapilePsiUtil.safeName(parameter.getName()), type, parameter.isMutable() ? PropertyKind.VAR : PropertyKind.VAL);
 		trace.record(BindingContext.VALUE_PARAMETER, parameter, variableDescriptor);
 		return variableDescriptor;
 	}
@@ -510,7 +510,7 @@ public class DescriptorResolver
 	@NotNull
 	public VariableDescriptorImpl resolveLocalVariableDescriptorWithType(DeclarationDescriptor containingDeclaration, NapileProperty property, JetType type, BindingTrace trace)
 	{
-		VariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(property.getModifierList(), trace), NapilePsiUtil.safeName(property.getName()), type, property.isVar());
+		VariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(property.getModifierList(), trace), NapilePsiUtil.safeName(property.getName()), type, property.isVar() ? PropertyKind.VAR : PropertyKind.VAL);
 		trace.record(BindingContext.VARIABLE, property, variableDescriptor);
 		return variableDescriptor;
 	}
@@ -533,7 +533,7 @@ public class DescriptorResolver
 	public PropertyDescriptor resolveObjectDeclarationAsPropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		NapileModifierList modifierList = objectDeclaration.getModifierList();
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), false, NapilePsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), PropertyKind.VAL, NapilePsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
 		propertyDescriptor.setType(classDescriptor.getDefaultType(), Collections.<TypeParameterDescriptor>emptyList(), DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), ReceiverDescriptor.NO_RECEIVER);
 		propertyDescriptor.initialize(createDefaultGetter(propertyDescriptor), null);
 		NapileObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();
@@ -547,7 +547,7 @@ public class DescriptorResolver
 	@NotNull
 	private VariableDescriptor resolveObjectDeclarationAsLocalVariable(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
-		VariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(objectDeclaration.getModifierList(), trace), NapilePsiUtil.safeName(objectDeclaration.getName()), classDescriptor.getDefaultType(),						/*isVar =*/ false);
+		VariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(objectDeclaration.getModifierList(), trace), NapilePsiUtil.safeName(objectDeclaration.getName()), classDescriptor.getDefaultType(), PropertyKind.VAL);
 		NapileObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();
 		if(nameAsDeclaration != null)
 		{
@@ -575,11 +575,11 @@ public class DescriptorResolver
 	public PropertyDescriptor resolvePropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileProperty property, BindingTrace trace)
 	{
 		NapileModifierList modifierList = property.getModifierList();
-		boolean isVar = property.isVar();
+		PropertyKind propertyKind = property.isVar() ? PropertyKind.VAR : PropertyKind.VAL;
 
 		boolean hasBody = hasBody(property);
 		Modality defaultModality = Modality.OPEN;
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), defaultModality), resolveVisibilityFromModifiers(property.getModifierList()), isVar, NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD));
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), defaultModality), resolveVisibilityFromModifiers(property.getModifierList()), propertyKind, NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD));
 
 		List<TypeParameterDescriptorImpl> typeParameterDescriptors;
 		JetScope scopeWithTypeParameters;

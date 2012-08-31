@@ -43,7 +43,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 
 	private final Modality modality;
 	private Visibility visibility;
-	private final boolean isVar;
+	private final PropertyKind propertyKind;
 
 	private final Set<PropertyDescriptor> overriddenProperties = Sets.newLinkedHashSet(); // LinkedHashSet is essential here
 	private final PropertyDescriptor original;
@@ -55,10 +55,10 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 	private PropertyGetterDescriptor getter;
 	private PropertySetterDescriptor setter;
 
-	private PropertyDescriptor(@Nullable PropertyDescriptor original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean isVar, @NotNull Name name, @NotNull Kind kind, boolean isStatic)
+	private PropertyDescriptor(@Nullable PropertyDescriptor original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, PropertyKind propertyKind, @NotNull Name name, @NotNull Kind kind, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name, isStatic);
-		this.isVar = isVar;
+		this.propertyKind = propertyKind;
 
 		this.modality = modality;
 		this.visibility = visibility;
@@ -66,14 +66,14 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		this.kind = kind;
 	}
 
-	public PropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean isVar, @NotNull Name name, @NotNull Kind kind, boolean isStatic)
+	public PropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, PropertyKind propertyKind1, @NotNull Name name, @NotNull Kind kind, boolean isStatic)
 	{
-		this(null, containingDeclaration, annotations, modality, visibility, isVar, name, kind, isStatic);
+		this(null, containingDeclaration, annotations, modality, visibility, propertyKind1, name, kind, isStatic);
 	}
 
-	public PropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean isVar, @Nullable JetType receiverType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic)
+	public PropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, PropertyKind propertyKind1, @Nullable JetType receiverType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic)
 	{
-		this(containingDeclaration, annotations, modality, visibility, isVar, name, kind, isStatic);
+		this(containingDeclaration, annotations, modality, visibility, propertyKind1, name, kind, isStatic);
 		setType(outType, Collections.<TypeParameterDescriptor>emptyList(), expectedThisObject, receiverType);
 	}
 
@@ -132,10 +132,11 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		return getType();
 	}
 
+	@NotNull
 	@Override
-	public boolean isVar()
+	public PropertyKind getPropertyKind()
 	{
-		return isVar;
+		return propertyKind;
 	}
 
 	@NotNull
@@ -191,7 +192,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 
 	private PropertyDescriptor doSubstitute(TypeSubstitutor originalSubstitutor, DeclarationDescriptor newOwner, Modality newModality, Visibility newVisibility, boolean preserveOriginal, boolean copyOverrides, Kind kind)
 	{
-		PropertyDescriptor substitutedDescriptor = new PropertyDescriptor(preserveOriginal ? getOriginal() : this, newOwner, getAnnotations(), newModality, newVisibility, isVar(), getName(), kind, false);
+		PropertyDescriptor substitutedDescriptor = new PropertyDescriptor(preserveOriginal ? getOriginal() : this, newOwner, getAnnotations(), newModality, newVisibility, propertyKind, getName(), kind, false);
 
 		List<TypeParameterDescriptor> substitutedTypeParameters = Lists.newArrayList();
 		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);

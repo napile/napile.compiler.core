@@ -98,7 +98,7 @@ public class FunctionDescriptorUtil
 			JetType substituteVarargElementType = varargElementType == null ? null : substitutor.substitute(varargElementType);
 			if(substitutedType == null)
 				return null;
-			result.add(new ValueParameterDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.isVar(), substitutedType, substituteVarargElementType));
+			result.add(new ValueParameterDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.getPropertyKind(), substitutedType, substituteVarargElementType));
 		}
 		return result;
 	}

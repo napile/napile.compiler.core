@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,26 +16,13 @@
 
 package org.napile.compiler.lang.descriptors;
 
-import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.TypeSubstitutor;
-
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 7:04/31.08.12
  */
-public interface VariableDescriptor extends CallableDescriptor
+public enum PropertyKind
 {
-	@NotNull
-	JetType getType();
-
-	@Override
-	@SuppressWarnings({"NullableProblems"})
-	@NotNull
-	DeclarationDescriptor getContainingDeclaration();
-
-	@Override
-	VariableDescriptor substitute(TypeSubstitutor substitutor);
-
-	@NotNull
-	PropertyKind getPropertyKind();
+	VAR,
+	VAL,
+	ENUM_ENTRY
 }

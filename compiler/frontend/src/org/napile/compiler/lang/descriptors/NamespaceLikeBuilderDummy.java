@@ -55,12 +55,6 @@ public class NamespaceLikeBuilderDummy implements NamespaceLikeBuilder
 	}
 
 	@Override
-	public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
-	{
-		throw new IllegalStateException();
-	}
-
-	@Override
 	public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 	{
 		throw new IllegalStateException();

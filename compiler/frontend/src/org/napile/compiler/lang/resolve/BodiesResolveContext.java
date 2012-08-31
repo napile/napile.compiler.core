@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
@@ -41,13 +40,13 @@ public interface BodiesResolveContext
 {
 	Map<NapileClass, MutableClassDescriptor> getClasses();
 
-	Map<NapileConstructor, ConstructorDescriptor> getConstructors();
+	Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries();
 
 	Map<NapileAnonymClass, MutableClassDescriptor> getAnonymous();
 
-	Map<NapileProperty, PropertyDescriptor> getProperties();
+	Map<NapileConstructor, ConstructorDescriptor> getConstructors();
 
-	Map<NapileEnumEntry, EnumEntryDescriptor> getEnumEntries();
+	Map<NapileProperty, PropertyDescriptor> getProperties();
 
 	Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods();
 

@@ -214,14 +214,6 @@ public class WriteThroughScope extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
-	{
-		checkMayWrite();
-
-		writableWorker.addEnumEntryDescriptor(enumEntryDescriptor);
-	}
-
-	@Override
 	public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 	{
 		checkMayWrite();

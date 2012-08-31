@@ -21,7 +21,6 @@ import static org.napile.compiler.lang.diagnostics.Errors.INCONSISTENT_TYPE_PARA
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +33,6 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -48,7 +46,6 @@ import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
 import com.google.common.collect.Lists;
@@ -72,8 +69,6 @@ public class TypeHierarchyResolver
 	private NamespaceFactoryImpl namespaceFactory;
 	@NotNull
 	private BindingTrace trace;
-	@NotNull
-	private TypeResolver typeResolver;
 
 	// state
 	private LinkedList<MutableClassDescriptor> topologicalOrder;
@@ -106,12 +101,6 @@ public class TypeHierarchyResolver
 	public void setTrace(@NotNull BindingTrace trace)
 	{
 		this.trace = trace;
-	}
-
-	@Inject
-	public void setTypeResolver(@NotNull TypeResolver typeResolver)
-	{
-		this.typeResolver = typeResolver;
 	}
 
 	public void process(@NotNull JetScope outerScope, @NotNull NamespaceLikeBuilder owner, @NotNull Collection<? extends PsiElement> declarations)
@@ -215,24 +204,6 @@ public class TypeHierarchyResolver
 					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
 				}
 
-				@Override
-				public void visitEnumEntry(NapileEnumEntry enumEntry)
-				{
-					EnumEntryDescriptor enumEntryDescriptor = new EnumEntryDescriptor(owner.getOwnerForChildren(), NapilePsiUtil.safeName(enumEntry.getName()));
-
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(enumEntryDescriptor, outerScope, ClassKind.ENUM_ENTRY, NapilePsiUtil.safeName(enumEntry.getName()), true);
-
-					enumEntryDescriptor.setClassDescriptor(mutableClassDescriptor);
-
-					context.getEnumEntries().put(enumEntry, enumEntryDescriptor);
-
-					owner.addEnumEntryDescriptor(enumEntryDescriptor);
-
-					context.getDeclaringScopes().put(enumEntry, outerScope);
-
-					trace.record(BindingContext.VARIABLE, enumEntry, enumEntryDescriptor);
-				}
-
 				private ConstructorDescriptor createConstructorForObject(@NotNull NapileDelegationSpecifierListOwner object, MutableClassDescriptor mutableClassDescriptor)
 				{
 					ConstructorDescriptor constructorDescriptor = DescriptorResolver.createConstructorForObject(object, mutableClassDescriptor, trace);
@@ -277,25 +248,6 @@ public class TypeHierarchyResolver
 			descriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(objectDeclaration.getModifierList()));
 			descriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
 			descriptor.createTypeConstructor();
-		}
-
-		for(Map.Entry<NapileEnumEntry, EnumEntryDescriptor> entry : context.getEnumEntries().entrySet())
-		{
-			NapileEnumEntry enumEntry = entry.getKey();
-			EnumEntryDescriptor enumEntryDescriptor = entry.getValue();
-
-			JetScope scope = context.getDeclaringScopes().get(enumEntry);
-			ClassDescriptor ownerClassDescription = (ClassDescriptor) enumEntryDescriptor.getContainingDeclaration();
-			List<JetType> arguments = typeResolver.resolveTypes(scope, enumEntry.getTypeArguments(), trace, false);
-
-			MutableClassDescriptor mutableClassDescriptor = enumEntryDescriptor.getClassDescriptor();
-			mutableClassDescriptor.setModality(Modality.FINAL);
-			mutableClassDescriptor.setVisibility(Visibility.PUBLIC);
-			mutableClassDescriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>());
-			mutableClassDescriptor.addSupertype(new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), ownerClassDescription.getTypeConstructor(), false, arguments, context.getDeclaringScopes().get(enumEntry)));
-			mutableClassDescriptor.createTypeConstructor();
-
-			enumEntryDescriptor.setOutType(new JetTypeImpl(mutableClassDescriptor));
 		}
 	}
 

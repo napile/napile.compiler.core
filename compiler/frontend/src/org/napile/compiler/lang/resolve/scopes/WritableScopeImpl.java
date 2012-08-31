@@ -252,12 +252,6 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
-	{
-		addVariableDescriptor(enumEntryDescriptor, true);
-	}
-
-	@Override
 	public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 	{
 		//allDescriptors.add(constructorDescriptor);

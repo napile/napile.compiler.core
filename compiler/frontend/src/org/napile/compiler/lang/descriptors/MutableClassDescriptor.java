@@ -38,7 +38,6 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	private final Set<CallableMemberDescriptor> allCallableMembers = new HashSet<CallableMemberDescriptor>(); // includes fake overrides
 	private final Set<PropertyDescriptor> properties = new HashSet<PropertyDescriptor>();
 	private final Set<SimpleMethodDescriptor> functions = new HashSet<SimpleMethodDescriptor>();
-	private final Set<EnumEntryDescriptor> enumEntries = new HashSet<EnumEntryDescriptor>();
 
 	private final WritableScope scopeForMemberResolution;
 	// This scope contains type parameters but does not contain inner classes
@@ -91,12 +90,6 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	public Set<SimpleMethodDescriptor> getFunctions()
 	{
 		return functions;
-	}
-
-	@NotNull
-	public Set<EnumEntryDescriptor> getEnumEntries()
-	{
-		return enumEntries;
 	}
 
 	@NotNull
@@ -223,18 +216,6 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 
 					if(propertyDescriptor.isStatic())
 						staticScope.addPropertyDescriptor(propertyDescriptor);
-				}
-
-				@Override
-				public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
-				{
-					enumEntries.add(enumEntryDescriptor);
-
-					superBuilder.addEnumEntryDescriptor(enumEntryDescriptor);
-
-					scopeForMemberResolution.addEnumEntryDescriptor(enumEntryDescriptor);
-
-					staticScope.addEnumEntryDescriptor(enumEntryDescriptor);
 				}
 
 				@Override

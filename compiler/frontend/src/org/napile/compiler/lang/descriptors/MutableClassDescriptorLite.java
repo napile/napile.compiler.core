@@ -286,12 +286,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 				{
 					getScopeForMemberLookupAsWritableScope().addConstructorDescriptor(constructorDescriptor);
 				}
-
-				@Override
-				public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
-				{
-					getScopeForMemberLookupAsWritableScope().addEnumEntryDescriptor(enumEntryDescriptor);
-				}
 			};
 		}
 

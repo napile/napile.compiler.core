@@ -226,7 +226,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		if(functionTypeExpected && !hasDeclaredValueParameters && expectedValueParameters.size() == 1)
 		{
 			ValueParameterDescriptor valueParameterDescriptor = expectedValueParameters.get(0);
-			ValueParameterDescriptor it = new ValueParameterDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("it"), false, valueParameterDescriptor.getType(), valueParameterDescriptor.hasDefaultValue(), valueParameterDescriptor.getVarargElementType());
+			ValueParameterDescriptor it = new ValueParameterDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("it"), PropertyKind.VAL, valueParameterDescriptor.getType(), valueParameterDescriptor.hasDefaultValue(), valueParameterDescriptor.getVarargElementType());
 			valueParameterDescriptors.add(it);
 			context.trace.record(AUTO_CREATED_IT, it);
 		}

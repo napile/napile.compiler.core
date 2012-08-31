@@ -35,7 +35,5 @@ public interface NamespaceLikeBuilder
 
 	void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor);
 
-	void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor);
-
 	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
 }

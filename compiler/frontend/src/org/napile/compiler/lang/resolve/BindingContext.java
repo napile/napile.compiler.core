@@ -150,7 +150,7 @@ public interface BindingContext
 			{
 				return true;
 			}
-			else if(propertyDescriptor.isVar() && setter == null)
+			else if(propertyDescriptor.getPropertyKind() == PropertyKind.VAR && setter == null)
 			{
 				return true;
 			}

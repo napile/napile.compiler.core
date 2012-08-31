@@ -24,7 +24,6 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
@@ -49,7 +48,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
 	private final Map<NapileNamedFunction, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
 	private final Map<NapileProperty, PropertyDescriptor> properties = Maps.newLinkedHashMap();
-	private final Map<NapileEnumEntry, EnumEntryDescriptor> enumEntries = Maps.newLinkedHashMap();
+	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
 
 	// File scopes - package scope extended with imports
@@ -148,7 +147,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileEnumEntry, EnumEntryDescriptor> getEnumEntries()
+	public Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries()
 	{
 		return enumEntries;
 	}

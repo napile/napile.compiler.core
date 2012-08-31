@@ -156,7 +156,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	{
 		StringBuilder bodyBuilder = new StringBuilder();
 		bodyBuilder.append(displayableVisibility(descriptor)).append("override ");
-		if(descriptor.isVar())
+		if(descriptor.getPropertyKind() == PropertyKind.VAR)
 		{
 			bodyBuilder.append("var ");
 		}

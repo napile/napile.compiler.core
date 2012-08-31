@@ -169,14 +169,14 @@ public class JetStandardClasses
 				TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createWithDefaultBound(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), false, Name.identifier("T" + (j + 1)), j);
 				typeParameters.add(typeParameterDescriptor);
 
-				PropertyDescriptor propertyDescriptor = new PropertyDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibility.PUBLIC, false, Name.identifier("_" + (j + 1)), CallableMemberDescriptor.Kind.DECLARATION, false);
+				PropertyDescriptor propertyDescriptor = new PropertyDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibility.PUBLIC, PropertyKind.VAL, Name.identifier("_" + (j + 1)), CallableMemberDescriptor.Kind.DECLARATION, false);
 				propertyDescriptor.setType(typeParameterDescriptor.getDefaultType(), Collections.<TypeParameterDescriptorImpl>emptyList(), classDescriptor.getImplicitReceiver(), ReceiverDescriptor.NO_RECEIVER);
 				PropertyGetterDescriptor getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibility.PUBLIC, false, true, CallableMemberDescriptor.Kind.DECLARATION, false);
 				getterDescriptor.initialize(typeParameterDescriptor.getDefaultType());
 				propertyDescriptor.initialize(getterDescriptor, null);
 				writableScope.addPropertyDescriptor(propertyDescriptor);
 
-				ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(classDescriptor, j, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("_" + (j + 1)), false, typeParameterDescriptor.getDefaultType(), false, null);
+				ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(classDescriptor, j, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("_" + (j + 1)), PropertyKind.VAL, typeParameterDescriptor.getDefaultType(), false, null);
 				constructorValueParameters.add(valueParameterDescriptor);
 			}
 			writableScope.changeLockLevel(WritableScope.LockLevel.READING);
@@ -497,7 +497,7 @@ public class JetStandardClasses
 		for(int i = 0; i < parameterTypes.size(); i++)
 		{
 			JetType parameterType = parameterTypes.get(i);
-			ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("p" + (i + 1)), false, parameterType, false, null);
+			ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("p" + (i + 1)), PropertyKind.VAL, parameterType, false, null);
 			valueParameters.add(valueParameterDescriptor);
 		}
 		return valueParameters;

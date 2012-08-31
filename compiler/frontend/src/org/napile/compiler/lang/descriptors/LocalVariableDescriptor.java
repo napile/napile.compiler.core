@@ -30,12 +30,12 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  */
 public class LocalVariableDescriptor extends VariableDescriptorImpl
 {
-	private boolean isVar;
+	private final PropertyKind propertyKind;
 
-	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, boolean mutable)
+	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, PropertyKind propertyKind)
 	{
 		super(containingDeclaration, annotations, name, type, false);
-		isVar = mutable;
+		this.propertyKind = propertyKind;
 	}
 
 	@NotNull
@@ -51,10 +51,11 @@ public class LocalVariableDescriptor extends VariableDescriptorImpl
 		return visitor.visitLocalVariableDescriptor(this, data);
 	}
 
+	@NotNull
 	@Override
-	public boolean isVar()
+	public PropertyKind getPropertyKind()
 	{
-		return isVar;
+		return propertyKind;
 	}
 
 	@NotNull

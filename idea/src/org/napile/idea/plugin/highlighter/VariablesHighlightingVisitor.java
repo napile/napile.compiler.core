@@ -25,6 +25,7 @@ import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
+import org.napile.compiler.lang.descriptors.PropertyKind;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -106,14 +107,14 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		if(descriptor instanceof VariableDescriptor)
 		{
 			VariableDescriptor variableDescriptor = (VariableDescriptor) descriptor;
-			if(variableDescriptor.isVar())
+			if(variableDescriptor.getPropertyKind() == PropertyKind.VAR)
 			{
 				JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.MUTABLE_VARIABLE);
 			}
 
 			if(Boolean.TRUE.equals(bindingContext.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
 			{
-				String msg = ((VariableDescriptor) descriptor).isVar() ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
+				String msg = ((VariableDescriptor) descriptor).getPropertyKind() == PropertyKind.VAR ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
 				holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(JetHighlightingColors.WRAPPED_INTO_REF);
 			}
 

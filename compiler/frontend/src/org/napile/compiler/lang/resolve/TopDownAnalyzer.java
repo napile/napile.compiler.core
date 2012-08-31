@@ -236,11 +236,6 @@ public class TopDownAnalyzer
 			}
 
 			@Override
-			public void addEnumEntryDescriptor(@NotNull EnumEntryDescriptor enumEntryDescriptor)
-			{
-			}
-
-			@Override
 			public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 			{
 			}

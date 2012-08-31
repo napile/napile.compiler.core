@@ -31,6 +31,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PropertyKind;
 import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -321,7 +322,7 @@ public class JetFlowInformationProvider
 			hasBackingField = trace.get(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor);
 		}
 		if((isInitializedNotHere || !hasBackingField) &&
-				!variableDescriptor.isVar() &&
+				variableDescriptor.getPropertyKind() != PropertyKind.VAR &&
 				!varWithValReassignErrorGenerated.contains(variableDescriptor))
 		{
 			boolean hasReassignMethodReturningUnit = false;
@@ -384,7 +385,7 @@ public class JetFlowInformationProvider
 	{
 		if(variableDescriptor instanceof PropertyDescriptor && !enterInitState.isInitialized && exitInitState.isInitialized)
 		{
-			if(!variableDescriptor.isVar())
+			if(variableDescriptor.getPropertyKind() != PropertyKind.VAR)
 				return false;
 			if(!trace.get(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
 				return false;

@@ -18,6 +18,7 @@ package org.napile.compiler.lang.resolve.processors;
 
 import static org.napile.compiler.lang.diagnostics.Errors.REDECLARATION;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -26,15 +27,8 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -43,6 +37,8 @@ import org.napile.compiler.lang.resolve.ImportsResolver;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.types.JetTypeImpl;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -65,6 +61,8 @@ public class DeclarationResolver
 	private DescriptorResolver descriptorResolver;
 	@NotNull
 	private BindingTrace trace;
+	@NotNull
+	private TypeResolver typeResolver;
 
 
 	@Inject
@@ -95,6 +93,12 @@ public class DeclarationResolver
 	public void setTrace(@NotNull BindingTrace trace)
 	{
 		this.trace = trace;
+	}
+
+	@Inject
+	public void setTypeResolver(@NotNull TypeResolver typeResolver)
+	{
+		this.typeResolver = typeResolver;
 	}
 
 	public void process(@NotNull JetScope rootScope)
@@ -150,13 +154,12 @@ public class DeclarationResolver
 		}
 
 
-		for(Map.Entry<NapileEnumEntry, EnumEntryDescriptor> entry : context.getEnumEntries().entrySet())
+		for(Map.Entry<NapileEnumEntry, MutableClassDescriptor> entry : context.getEnumEntries().entrySet())
 		{
 			NapileEnumEntry enumEntry = entry.getKey();
-			EnumEntryDescriptor enumEntryDescriptor = entry.getValue();
+			MutableClassDescriptor enumEntryDescriptor = entry.getValue();
 
-			MutableClassDescriptor classDescriptor = enumEntryDescriptor.getClassDescriptor();
-			resolveInsideDeclarations(enumEntry, classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveInsideDeclarations(enumEntry, enumEntryDescriptor.getScopeForMemberResolution(), enumEntryDescriptor);
 		}
 	}
 
@@ -200,6 +203,28 @@ public class DeclarationResolver
 						context.getDeclaringScopes().put(property.getGetter(), scope);
 					if(property.getSetter() != null)
 						context.getDeclaringScopes().put(property.getSetter(), scope);
+				}
+
+				@Override
+				public void visitEnumEntry(NapileEnumEntry enumEntry)
+				{
+					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(ownerDescription, new ArrayList<AnnotationDescriptor>(), Modality.FINAL, Visibility.PUBLIC, PropertyKind.ENUM_ENTRY, NapilePsiUtil.safeName(enumEntry.getName()), CallableMemberDescriptor.Kind.DECLARATION, true);
+					trace.record(BindingContext.VARIABLE, enumEntry, propertyDescriptor);
+
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(ownerDescription, scope, ClassKind.ENUM_ENTRY, propertyDescriptor.getName(), true);
+					mutableClassDescriptor.setModality(Modality.FINAL);
+					mutableClassDescriptor.setVisibility(Visibility.PUBLIC);
+					mutableClassDescriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>());
+					mutableClassDescriptor.addSupertype(new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), ownerDescription.getTypeConstructor(), false, typeResolver.resolveTypes(scope, enumEntry.getTypeArguments(), trace, false), scope));
+					mutableClassDescriptor.createTypeConstructor();
+
+					propertyDescriptor.setType(new JetTypeImpl(mutableClassDescriptor), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, ReceiverDescriptor.NO_RECEIVER);
+					propertyDescriptor.initialize(null, null);
+
+					context.getEnumEntries().put(enumEntry, mutableClassDescriptor);
+
+					context.getDeclaringScopes().put(enumEntry, scope);
+					ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
 				}
 			});
 		}

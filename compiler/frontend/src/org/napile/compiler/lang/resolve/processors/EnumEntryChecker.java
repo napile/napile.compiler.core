@@ -21,7 +21,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -58,26 +59,28 @@ public class EnumEntryChecker
 
 	public void process(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
-		for(Map.Entry<NapileEnumEntry, EnumEntryDescriptor> entry : bodiesResolveContext.getEnumEntries().entrySet())
+		for(Map.Entry<NapileEnumEntry, MutableClassDescriptor> entry : bodiesResolveContext.getEnumEntries().entrySet())
 		{
 			JetScope jetScope =  bodiesResolveContext.getDeclaringScopes().get(entry.getKey());
 
-			checkConstructorCall(entry.getKey(), entry.getValue(), jetScope);
+			checkConstructorCall(entry.getKey(), jetScope);
 
 			checkTypeParameters(entry.getKey(), entry.getValue());
 		}
 	}
 
-	private void checkConstructorCall(NapileEnumEntry enumEntry, EnumEntryDescriptor enumEntryDescriptor, JetScope jetScope)
+	private void checkConstructorCall(NapileEnumEntry enumEntry, JetScope jetScope)
 	{
 		callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, enumEntry), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 		//TODO [VISTALL] else?
 	}
 
-	private void checkTypeParameters(NapileEnumEntry napileEnumEntry, EnumEntryDescriptor enumEntryDescriptor)
+	private void checkTypeParameters(NapileEnumEntry napileEnumEntry, MutableClassDescriptor enumEntryDescriptor)
 	{
+		ClassDescriptor ownerDescriptor = (ClassDescriptor) enumEntryDescriptor.getContainingDeclaration();
+
 		int selfTypeArguments = napileEnumEntry.getTypeArguments().size();
-		int parentTypeArguments = enumEntryDescriptor.getType().getConstructor().getParameters().size();
+		int parentTypeArguments = ownerDescriptor.getTypeConstructor().getParameters().size();
 
 		if(parentTypeArguments > 0 && selfTypeArguments == 0)
 			trace.report(Errors.WRONG_NUMBER_OF_TYPE_ARGUMENTS.on(napileEnumEntry, 0));
