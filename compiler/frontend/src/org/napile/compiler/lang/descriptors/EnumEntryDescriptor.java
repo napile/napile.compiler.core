@@ -16,15 +16,13 @@
 
 package org.napile.compiler.lang.descriptors;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -33,9 +31,11 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  */
 public class EnumEntryDescriptor extends VariableDescriptorImpl implements CallableMemberDescriptor
 {
-	public EnumEntryDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, boolean isStatic)
+	private MutableClassDescriptor classDescriptor;
+
+	public EnumEntryDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull Name name)
 	{
-		super(containingDeclaration, annotations, name, outType, isStatic);
+		super(containingDeclaration, new ArrayList<AnnotationDescriptor>(), name, null, true);
 	}
 
 	@Override
@@ -106,5 +106,15 @@ public class EnumEntryDescriptor extends VariableDescriptorImpl implements Calla
 	public Modality getModality()
 	{
 		return Modality.OPEN;
+	}
+
+	public MutableClassDescriptor getClassDescriptor()
+	{
+		return classDescriptor;
+	}
+
+	public void setClassDescriptor(MutableClassDescriptor classDescriptor)
+	{
+		this.classDescriptor = classDescriptor;
 	}
 }

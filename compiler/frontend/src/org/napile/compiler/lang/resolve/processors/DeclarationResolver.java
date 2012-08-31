@@ -149,6 +149,16 @@ public class DeclarationResolver
 
 			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
+
+
+		for(Map.Entry<NapileEnumEntry, EnumEntryDescriptor> entry : context.getEnumEntries().entrySet())
+		{
+			NapileEnumEntry enumEntry = entry.getKey();
+			EnumEntryDescriptor enumEntryDescriptor = entry.getValue();
+
+			MutableClassDescriptor classDescriptor = enumEntryDescriptor.getClassDescriptor();
+			resolveDeclarations(enumEntry.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+		}
 	}
 
 	private void resolveDeclarations(@NotNull List<? extends NapileDeclaration> declarations, final @NotNull JetScope scope, final @NotNull MutableClassDescriptor ownerDescription)
@@ -204,14 +214,6 @@ public class DeclarationResolver
 				@Override
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
-					EnumEntryDescriptor enumEntryDescriptor = descriptorResolver.resolveEnumEntryDescriptor(ownerDescription, scope, enumEntry, trace);
-
-					ownerDescription.getBuilder().addEnumEntryDescriptor(enumEntryDescriptor);
-
-					context.getEnumEntries().put(enumEntry, enumEntryDescriptor);
-
-					context.getDeclaringScopes().put(enumEntry, scope);
-
 					/*MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(enumEntryDescriptor, ownerDescription.getScopeForMemberLookup(), ClassKind.ENUM_ENTRY, enumEntry.getNameAsName(), true);
 					mutableClassDescriptor.setModality(Modality.OPEN);
 					mutableClassDescriptor.setTypeParameterDescriptors(ownerDescription.getTypeParameters());

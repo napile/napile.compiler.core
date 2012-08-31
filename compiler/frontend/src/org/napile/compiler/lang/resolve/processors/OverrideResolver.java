@@ -26,10 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileLikeClass;
-import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.OverridingUtil;
@@ -38,14 +35,9 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileParameter;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.util.CommonSuppliers;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileModifierList;
-import org.napile.compiler.lang.psi.NapileProperty;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -104,6 +96,8 @@ public class OverrideResolver
 		Set<MutableClassDescriptor> ourClasses = new HashSet<MutableClassDescriptor>();
 		ourClasses.addAll(context.getClasses().values());
 		ourClasses.addAll(context.getAnonymous().values());
+		for(EnumEntryDescriptor enumEntryDescriptor : context.getEnumEntries().values())
+			ourClasses.add(enumEntryDescriptor.getClassDescriptor());
 
 		Set<ClassifierDescriptor> processed = new HashSet<ClassifierDescriptor>();
 
@@ -362,13 +356,11 @@ public class OverrideResolver
 	private void checkOverrides()
 	{
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
-		{
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
-		}
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-		{
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
-		}
+		for(Map.Entry<NapileEnumEntry, EnumEntryDescriptor> entry : context.getEnumEntries().entrySet())
+			checkOverridesInAClass(entry.getValue().getClassDescriptor(), entry.getKey());
 	}
 
 	protected void checkOverridesInAClass(@NotNull MutableClassDescriptor classDescriptor, @NotNull NapileLikeClass klass)

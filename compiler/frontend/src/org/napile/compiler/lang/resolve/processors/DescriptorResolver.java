@@ -16,8 +16,8 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
-import static org.napile.compiler.lang.resolve.BindingContext.CONSTRUCTOR;
 import static org.napile.compiler.lang.diagnostics.Errors.*;
+import static org.napile.compiler.lang.resolve.BindingContext.CONSTRUCTOR;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,9 +29,10 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.DiagnosticUtils;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -39,22 +40,20 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExtensionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
@@ -343,7 +342,7 @@ public class DescriptorResolver
 		return constructorDescriptor;
 	}
 
-	final class UpperBoundCheckerTask
+	static final class UpperBoundCheckerTask
 	{
 		NapileTypeReference upperBound;
 		JetType upperBoundType;
@@ -624,17 +623,6 @@ public class DescriptorResolver
 
 		trace.record(BindingContext.VARIABLE, property, propertyDescriptor);
 		return propertyDescriptor;
-	}
-
-	public EnumEntryDescriptor resolveEnumEntryDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileEnumEntry enumEntry, BindingTrace trace)
-	{
-		JetTypeImpl jetType = new JetTypeImpl(containingDeclaration.getTypeConstructor(), scope);
-
-		EnumEntryDescriptor enumEntryDescriptor = new EnumEntryDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, enumEntry.getModifierList(), trace), enumEntry.getNameAsName(), jetType, true);
-
-		trace.record(BindingContext.VARIABLE, enumEntry, enumEntryDescriptor);
-
-		return enumEntryDescriptor;
 	}
 
 	/*package*/

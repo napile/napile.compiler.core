@@ -21,15 +21,13 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.EnumEntryDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
-import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -39,7 +37,7 @@ import org.napile.compiler.lang.types.TypeUtils;
  * @author VISTALL
  * @date 0:10/29.08.12
  */
-public class EnumEntryResolverAndChecker
+public class EnumEntryChecker
 {
 	@NotNull
 	private CallResolver callResolver;
@@ -62,15 +60,26 @@ public class EnumEntryResolverAndChecker
 	{
 		for(Map.Entry<NapileEnumEntry, EnumEntryDescriptor> entry : bodiesResolveContext.getEnumEntries().entrySet())
 		{
-			checkConstructorCall(entry.getKey(), entry.getValue(), bodiesResolveContext.getDeclaringScopes().get(entry.getKey()));
+			JetScope jetScope =  bodiesResolveContext.getDeclaringScopes().get(entry.getKey());
+
+			checkConstructorCall(entry.getKey(), entry.getValue(), jetScope);
+
+			checkTypeParameters(entry.getKey(), entry.getValue());
 		}
 	}
 
 	private void checkConstructorCall(NapileEnumEntry enumEntry, EnumEntryDescriptor enumEntryDescriptor, JetScope jetScope)
 	{
-		ClassDescriptor classDescriptor = (ClassDescriptor) enumEntryDescriptor.getContainingDeclaration();
+		callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, enumEntry), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+		//TODO [VISTALL] else?
+	}
 
-		OverloadResolutionResults<MethodDescriptor> call = callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, enumEntry), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+	private void checkTypeParameters(NapileEnumEntry napileEnumEntry, EnumEntryDescriptor enumEntryDescriptor)
+	{
+		int selfTypeArguments = napileEnumEntry.getTypeArguments().size();
+		int parentTypeArguments = enumEntryDescriptor.getType().getConstructor().getParameters().size();
 
+		if(parentTypeArguments > 0 && selfTypeArguments == 0)
+			trace.report(Errors.WRONG_NUMBER_OF_TYPE_ARGUMENTS.on(napileEnumEntry, 0));
 	}
 }

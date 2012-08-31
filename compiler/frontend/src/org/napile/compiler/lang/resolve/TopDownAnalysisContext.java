@@ -172,7 +172,6 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 			members = Maps.newHashMap();
 			members.putAll(methods);
 			members.putAll(properties);
-			members.putAll(enumEntries);
 		}
 		return members;
 	}

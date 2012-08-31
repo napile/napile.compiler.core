@@ -40,7 +40,7 @@ import org.napile.compiler.lang.resolve.OverloadResolver;
 import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
 import org.napile.compiler.lang.resolve.processors.AnnotationChecker;
-import org.napile.compiler.lang.resolve.processors.EnumEntryResolverAndChecker;
+import org.napile.compiler.lang.resolve.processors.EnumEntryChecker;
 import org.napile.compiler.lang.resolve.processors.ModifiersChecker;
 import org.jetbrains.annotations.NotNull;
 import javax.annotation.PreDestroy;
@@ -71,7 +71,7 @@ public class InjectorForTopDownAnalyzerBasic {
     private OverrideResolver overrideResolver;
     private TypeHierarchyResolver typeHierarchyResolver;
     private AnnotationChecker annotationChecker;
-    private EnumEntryResolverAndChecker enumEntryResolverAndChecker;
+    private EnumEntryChecker enumEntryChecker;
     private ModifiersChecker modifiersChecker;
 
     public InjectorForTopDownAnalyzerBasic(
@@ -103,7 +103,7 @@ public class InjectorForTopDownAnalyzerBasic {
         this.overrideResolver = new OverrideResolver();
         this.typeHierarchyResolver = new TypeHierarchyResolver();
         this.annotationChecker = new AnnotationChecker();
-        this.enumEntryResolverAndChecker = new EnumEntryResolverAndChecker();
+        this.enumEntryChecker = new EnumEntryChecker();
         this.modifiersChecker = new ModifiersChecker();
 
         this.topDownAnalyzer.setBodyResolver(bodyResolver);
@@ -124,7 +124,7 @@ public class InjectorForTopDownAnalyzerBasic {
         this.bodyResolver.setControlFlowAnalyzer(controlFlowAnalyzer);
         this.bodyResolver.setDeclarationsChecker(declarationsChecker);
         this.bodyResolver.setDescriptorResolver(descriptorResolver);
-        this.bodyResolver.setEnumEntryResolverAndChecker(enumEntryResolverAndChecker);
+        this.bodyResolver.setEnumEntryChecker(enumEntryChecker);
         this.bodyResolver.setExpressionTypingServices(expressionTypingServices);
         this.bodyResolver.setModifiersChecker(modifiersChecker);
         this.bodyResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
@@ -183,11 +183,12 @@ public class InjectorForTopDownAnalyzerBasic {
         typeHierarchyResolver.setImportsResolver(importsResolver);
         typeHierarchyResolver.setNamespaceFactory(namespaceFactory);
         typeHierarchyResolver.setTrace(bindingTrace);
+        typeHierarchyResolver.setTypeResolver(typeResolver);
 
         annotationChecker.setTrace(bindingTrace);
 
-        enumEntryResolverAndChecker.setCallResolver(callResolver);
-        enumEntryResolverAndChecker.setTrace(bindingTrace);
+        enumEntryChecker.setCallResolver(callResolver);
+        enumEntryChecker.setTrace(bindingTrace);
 
         modifiersChecker.setTrace(bindingTrace);
 

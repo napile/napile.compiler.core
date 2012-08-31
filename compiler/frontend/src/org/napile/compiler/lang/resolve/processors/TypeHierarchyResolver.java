@@ -21,6 +21,7 @@ import static org.napile.compiler.lang.diagnostics.Errors.INCONSISTENT_TYPE_PARA
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -46,9 +48,9 @@ import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -70,6 +72,8 @@ public class TypeHierarchyResolver
 	private NamespaceFactoryImpl namespaceFactory;
 	@NotNull
 	private BindingTrace trace;
+	@NotNull
+	private TypeResolver typeResolver;
 
 	// state
 	private LinkedList<MutableClassDescriptor> topologicalOrder;
@@ -102,6 +106,12 @@ public class TypeHierarchyResolver
 	public void setTrace(@NotNull BindingTrace trace)
 	{
 		this.trace = trace;
+	}
+
+	@Inject
+	public void setTypeResolver(@NotNull TypeResolver typeResolver)
+	{
+		this.typeResolver = typeResolver;
 	}
 
 	public void process(@NotNull JetScope outerScope, @NotNull NamespaceLikeBuilder owner, @NotNull Collection<? extends PsiElement> declarations)
@@ -183,8 +193,6 @@ public class TypeHierarchyResolver
 					context.getClasses().put(klass, mutableClassDescriptor);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(klass), mutableClassDescriptor);
 
-					createClassObjectForEnumClass(klass, mutableClassDescriptor);
-
 					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
 
 					prepareForDeferredCall(classScope, mutableClassDescriptor, klass);
@@ -210,61 +218,20 @@ public class TypeHierarchyResolver
 				@Override
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
-					// TODO: Bad casting
-					/*MutableClassDescriptorLite ownerClassDescriptor = (MutableClassDescriptorLite) owner.getOwnerForChildren();
-					MutableClassDescriptorLite classObjectDescriptor = ownerClassDescriptor.getClassObjectDescriptor();
+					EnumEntryDescriptor enumEntryDescriptor = new EnumEntryDescriptor(owner.getOwnerForChildren(), NapilePsiUtil.safeName(enumEntry.getName()));
 
-					assert classObjectDescriptor != null : enumEntry.getParent().getText();
-					//if(enumEntry.getPrimaryConstructorParameterList() == null)
-					{
-						// Simple enum entry
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(enumEntryDescriptor, outerScope, ClassKind.ENUM_ENTRY, NapilePsiUtil.safeName(enumEntry.getName()), true);
 
-						createClassDescriptorForEnumEntry(enumEntry, classObjectDescriptor.getBuilder());
-					}    */
-					/*else //TODO [VISTALL]
-					{
-						// Advanced enum entry like "Cons<out T>(val head : T, val tail : List<T>) : List<T>(tail.size + 1)"
-						MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(classObjectDescriptor, outerScope, ClassKind.ENUM_ENTRY, NapilePsiUtil.safeName(enumEntry.getName()));
-						context.getClasses().put(enumEntry, mutableClassDescriptor);
+					enumEntryDescriptor.setClassDescriptor(mutableClassDescriptor);
 
-						JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
+					context.getEnumEntries().put(enumEntry, enumEntryDescriptor);
 
-						prepareForDeferredCall(classScope, mutableClassDescriptor, enumEntry);
+					owner.addEnumEntryDescriptor(enumEntryDescriptor);
 
-						classObjectDescriptor.getBuilder().addObjectDescriptor(mutableClassDescriptor);
-					} */
+					context.getDeclaringScopes().put(enumEntry, outerScope);
+
+					trace.record(BindingContext.VARIABLE, enumEntry, enumEntryDescriptor);
 				}
-
-
-				private void createClassObjectForEnumClass(NapileClass klass, MutableClassDescriptor mutableClassDescriptor)
-				{
-					/*if(klass.isEnum())
-					{
-						MutableClassDescriptor classObjectDescriptor = new MutableClassDescriptor(mutableClassDescriptor, outerScope, ClassKind.OBJECT, Name.special("<class-object-for-" + klass.getName() + ">"), NapilePsiUtil.isStatic(klass));
-						classObjectDescriptor.setModality(Modality.FINAL);
-						classObjectDescriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(klass.getModifierList()));
-						classObjectDescriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
-						classObjectDescriptor.createTypeConstructor();
-						ConstructorDescriptor primaryConstructorForObject = createConstructorForObject(klass, classObjectDescriptor);
-						primaryConstructorForObject.setReturnType(classObjectDescriptor.getDefaultType());
-						mutableClassDescriptor.getBuilder().setClassObjectDescriptor(classObjectDescriptor);
-					} */
-				}
-
-
-				/*private MutableClassDescriptor createClassDescriptorForEnumEntry(@NotNull NapileEnumEntry declaration, @NotNull NamespaceLikeBuilder owner)
-				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), getStaticScope(declaration, owner), ClassKind.ENUM_ENTRY, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
-					context.getClasses().put(declaration, mutableClassDescriptor);
-
-					prepareForDeferredCall(mutableClassDescriptor.getScopeForMemberResolution(), mutableClassDescriptor, declaration);
-
-					// ??? - is enum entry object?
-					createConstructorForObject(declaration, mutableClassDescriptor);
-					owner.addObjectDescriptor(mutableClassDescriptor);
-					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
-					return mutableClassDescriptor;
-				}      */
 
 				private ConstructorDescriptor createConstructorForObject(@NotNull NapileDelegationSpecifierListOwner object, MutableClassDescriptor mutableClassDescriptor)
 				{
@@ -310,6 +277,25 @@ public class TypeHierarchyResolver
 			descriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(objectDeclaration.getModifierList()));
 			descriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
 			descriptor.createTypeConstructor();
+		}
+
+		for(Map.Entry<NapileEnumEntry, EnumEntryDescriptor> entry : context.getEnumEntries().entrySet())
+		{
+			NapileEnumEntry enumEntry = entry.getKey();
+			EnumEntryDescriptor enumEntryDescriptor = entry.getValue();
+
+			JetScope scope = context.getDeclaringScopes().get(enumEntry);
+			ClassDescriptor ownerClassDescription = (ClassDescriptor) enumEntryDescriptor.getContainingDeclaration();
+			List<JetType> arguments = typeResolver.resolveTypes(scope, enumEntry.getTypeArguments(), trace, false);
+
+			MutableClassDescriptor mutableClassDescriptor = enumEntryDescriptor.getClassDescriptor();
+			mutableClassDescriptor.setModality(Modality.FINAL);
+			mutableClassDescriptor.setVisibility(Visibility.PUBLIC);
+			mutableClassDescriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>());
+			mutableClassDescriptor.addSupertype(new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), ownerClassDescription.getTypeConstructor(), false, arguments, context.getDeclaringScopes().get(enumEntry)));
+			mutableClassDescriptor.createTypeConstructor();
+
+			enumEntryDescriptor.setOutType(new JetTypeImpl(mutableClassDescriptor));
 		}
 	}
 
@@ -390,7 +376,7 @@ public class TypeHierarchyResolver
 				ClassDescriptor subclassOfCurrent = currentPath.get(currentPath.size() - 1);
 				assert subclassOfCurrent instanceof MutableClassDescriptor;
 				// Disconnect the loop
-				for(Iterator<JetType> iterator = ((MutableClassDescriptor) subclassOfCurrent).getSupertypes().iterator(); iterator.hasNext(); )
+				for(Iterator<JetType> iterator = subclassOfCurrent.getSupertypes().iterator(); iterator.hasNext(); )
 				{
 					JetType type = iterator.next();
 					if(type.getConstructor() == currentClass.getTypeConstructor())
@@ -487,20 +473,6 @@ public class TypeHierarchyResolver
 					{
 						conflictingTypes.add(projection);
 					}
-					/*switch(typeParameterDescriptor.getVariance())
-					{
-						case INVARIANT:
-							// Leave conflicting types as is
-							break;
-						case IN_VARIANCE:
-							// Filter out those who have supertypes in this set (common supertype)
-							Filter.REMOVE_IF_SUPERTYPE_IN_THE_SET.proceed(conflictingTypes);
-							break;
-						case OUT_VARIANCE:
-							// Filter out those who have subtypes in this set (common subtype)
-							Filter.REMOVE_IF_SUBTYPE_IN_THE_SET.proceed(conflictingTypes);
-							break;
-					}  */
 
 					if(conflictingTypes.size() > 1)
 					{
@@ -515,45 +487,6 @@ public class TypeHierarchyResolver
 				}
 			}
 		}
-	}
-
-	private enum Filter
-	{
-		REMOVE_IF_SUBTYPE_IN_THE_SET
-				{
-					@Override
-					public boolean removeNeeded(JetType subject, JetType other)
-					{
-						return JetTypeChecker.INSTANCE.isSubtypeOf(other, subject);
-					}
-				},
-		REMOVE_IF_SUPERTYPE_IN_THE_SET
-				{
-					@Override
-					public boolean removeNeeded(JetType subject, JetType other)
-					{
-						return JetTypeChecker.INSTANCE.isSubtypeOf(subject, other);
-					}
-				};
-
-		private void proceed(Set<JetType> conflictingTypes)
-		{
-			for(Iterator<JetType> iterator = conflictingTypes.iterator(); iterator.hasNext(); )
-			{
-				JetType type = iterator.next();
-				for(JetType otherType : conflictingTypes)
-				{
-					boolean subtypeOf = removeNeeded(type, otherType);
-					if(type != otherType && subtypeOf)
-					{
-						iterator.remove();
-						break;
-					}
-				}
-			}
-		}
-
-		public abstract boolean removeNeeded(JetType subject, JetType other);
 	}
 
 	private void checkTypesInClassHeaders()

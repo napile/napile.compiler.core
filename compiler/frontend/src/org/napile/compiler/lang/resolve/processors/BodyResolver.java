@@ -89,7 +89,7 @@ public class BodyResolver
 	@NotNull
 	private ModifiersChecker modifiersChecker;
 	@NotNull
-	private EnumEntryResolverAndChecker enumEntryResolverAndChecker;
+	private EnumEntryChecker enumEntryChecker;
 
 	@Inject
 	public void setTopDownAnalysisParameters(@NotNull TopDownAnalysisParameters topDownAnalysisParameters)
@@ -146,9 +146,9 @@ public class BodyResolver
 	}
 
 	@Inject
-	public void setEnumEntryResolverAndChecker(@NotNull EnumEntryResolverAndChecker enumEntryResolverAndChecker)
+	public void setEnumEntryChecker(@NotNull EnumEntryChecker enumEntryChecker)
 	{
-		this.enumEntryResolverAndChecker = enumEntryResolverAndChecker;
+		this.enumEntryChecker = enumEntryChecker;
 	}
 
 	private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext bodiesResolveContext)
@@ -176,7 +176,7 @@ public class BodyResolver
 	{
 		resolveBehaviorDeclarationBodies(bodiesResolveContext);
 
-		enumEntryResolverAndChecker.process(bodiesResolveContext);
+		enumEntryChecker.process(bodiesResolveContext);
 		controlFlowAnalyzer.process(bodiesResolveContext);
 		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
