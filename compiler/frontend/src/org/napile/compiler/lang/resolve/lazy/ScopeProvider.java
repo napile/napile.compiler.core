@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileNamespaceHeader;
-import org.napile.compiler.lang.resolve.ImportsResolver;
+import org.napile.compiler.lang.resolve.processors.ImportsResolver;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;

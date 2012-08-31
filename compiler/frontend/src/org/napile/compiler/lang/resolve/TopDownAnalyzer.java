@@ -34,6 +34,7 @@ import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
 import org.napile.compiler.lang.resolve.processors.DeclarationResolver;
+import org.napile.compiler.lang.resolve.processors.OverloadResolver;
 import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -173,7 +174,7 @@ public class TopDownAnalyzer
 	public static void processStandardLibraryNamespace(@NotNull Project project, @NotNull BindingTrace trace, @NotNull WritableScope outerScope, @NotNull NamespaceDescriptorImpl standardLibraryNamespace, @NotNull List<NapileFile> files)
 	{
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.<NapileFile>alwaysFalse(), true, false, Collections.<AnalyzerScriptParameter>emptyList());
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.<NapileFile>alwaysFalse(), true, false);
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), JetStandardClasses.FAKE_STANDARD_CLASSES_MODULE);
 
 		injector.getTopDownAnalyzer().doProcessStandardLibraryNamespace(outerScope, standardLibraryNamespace, files);
@@ -197,7 +198,7 @@ public class TopDownAnalyzer
 	{
 		ModuleDescriptor moduleDescriptor = new ModuleDescriptor(Name.special("<dummy for object>"));
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.equalTo(object.getContainingFile()), false, true, Collections.<AnalyzerScriptParameter>emptyList());
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.equalTo(object.getContainingFile()), false, true);
 
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), moduleDescriptor);
 
@@ -242,7 +243,7 @@ public class TopDownAnalyzer
 		}, Collections.<PsiElement>singletonList(object));
 	}
 
-	public void analyzeFiles(@NotNull Collection<NapileFile> files, @NotNull List<AnalyzerScriptParameter> scriptParameters)
+	public void analyzeFiles(@NotNull Collection<NapileFile> files)
 	{
 		final WritableScope scope = new WritableScopeImpl(JetScope.EMPTY, moduleDescriptor, new TraceBasedRedeclarationHandler(trace), "Root scope in analyzeNamespace");
 

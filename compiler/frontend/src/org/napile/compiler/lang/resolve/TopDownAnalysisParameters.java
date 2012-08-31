@@ -16,8 +16,6 @@
 
 package org.napile.compiler.lang.resolve;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileFile;
 import com.google.common.base.Predicate;
@@ -33,15 +31,12 @@ public class TopDownAnalysisParameters
 	private final Predicate<NapileFile> analyzeCompletely;
 	private final boolean analyzingBootstrapLibrary;
 	private final boolean declaredLocally;
-	@NotNull
-	private final List<AnalyzerScriptParameter> scriptParameters;
 
-	public TopDownAnalysisParameters(@NotNull Predicate<NapileFile> analyzeCompletely, boolean analyzingBootstrapLibrary, boolean declaredLocally, @NotNull List<AnalyzerScriptParameter> scriptParameters)
+	public TopDownAnalysisParameters(@NotNull Predicate<NapileFile> analyzeCompletely, boolean analyzingBootstrapLibrary, boolean declaredLocally)
 	{
 		this.analyzeCompletely = analyzeCompletely;
 		this.analyzingBootstrapLibrary = analyzingBootstrapLibrary;
 		this.declaredLocally = declaredLocally;
-		this.scriptParameters = scriptParameters;
 	}
 
 	@NotNull
@@ -58,11 +53,5 @@ public class TopDownAnalysisParameters
 	public boolean isDeclaredLocally()
 	{
 		return declaredLocally;
-	}
-
-	@NotNull
-	public List<AnalyzerScriptParameter> getScriptParameters()
-	{
-		return scriptParameters;
 	}
 }

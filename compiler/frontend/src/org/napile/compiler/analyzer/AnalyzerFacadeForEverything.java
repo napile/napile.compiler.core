@@ -16,12 +16,9 @@
 
 package org.napile.compiler.analyzer;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.di.InjectorForBodyResolve;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.AnalyzerScriptParameter;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
@@ -39,10 +36,10 @@ public class AnalyzerFacadeForEverything
 	{
 	}
 
-	public static AnalyzeExhaust analyzeBodiesInFilesWithJavaIntegration(Project project, List<AnalyzerScriptParameter> scriptParameters, Predicate<NapileFile> filesToAnalyzeCompletely, @NotNull BindingTrace traceContext, @NotNull BodiesResolveContext bodiesResolveContext)
+	public static AnalyzeExhaust analyzeBodiesInFilesWithJavaIntegration(Project project, Predicate<NapileFile> filesToAnalyzeCompletely, @NotNull BindingTrace traceContext, @NotNull BodiesResolveContext bodiesResolveContext)
 	{
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false, false, scriptParameters);
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false, false);
 
 		bodiesResolveContext.setTopDownAnalysisParameters(topDownAnalysisParameters);
 

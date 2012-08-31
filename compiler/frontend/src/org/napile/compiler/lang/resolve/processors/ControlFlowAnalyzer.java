@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve;
+package org.napile.compiler.lang.resolve.processors;
 
 import java.util.Map;
 
@@ -27,6 +27,9 @@ import org.napile.compiler.lang.descriptors.PropertyAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BodiesResolveContext;
+import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 

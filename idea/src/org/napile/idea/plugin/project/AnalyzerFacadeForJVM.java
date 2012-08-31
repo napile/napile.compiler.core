@@ -17,7 +17,6 @@
 package org.napile.idea.plugin.project;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -27,7 +26,6 @@ import org.napile.compiler.analyzer.AnalyzerFacadeForEverything;
 import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.AnalyzerScriptParameter;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
@@ -51,30 +49,30 @@ public enum AnalyzerFacadeForJVM implements AnalyzerFacade
 
 	@Override
 	@NotNull
-	public AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely)
+	public AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely)
 	{
-		return analyzeFilesWithJavaIntegration(project, files, scriptParameters, filesToAnalyzeCompletely, true);
+		return analyzeFilesWithJavaIntegration(project, files, filesToAnalyzeCompletely, true);
 	}
 
 	@NotNull
 	@Override
-	public AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<NapileFile> filesForBodiesResolve, @NotNull BindingTrace headersTraceContext, @NotNull BodiesResolveContext bodiesResolveContext)
+	public AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull Predicate<NapileFile> filesForBodiesResolve, @NotNull BindingTrace headersTraceContext, @NotNull BodiesResolveContext bodiesResolveContext)
 	{
-		return AnalyzerFacadeForEverything.analyzeBodiesInFilesWithJavaIntegration(project, scriptParameters, filesForBodiesResolve, headersTraceContext, bodiesResolveContext);
+		return AnalyzerFacadeForEverything.analyzeBodiesInFilesWithJavaIntegration(project, filesForBodiesResolve, headersTraceContext, bodiesResolveContext);
 	}
 
-	public static AnalyzeExhaust analyzeFilesWithJavaIntegration(Project project, Collection<NapileFile> files, List<AnalyzerScriptParameter> scriptParameters, Predicate<NapileFile> filesToAnalyzeCompletely, boolean storeContextForBodiesResolve)
+	public static AnalyzeExhaust analyzeFilesWithJavaIntegration(Project project, Collection<NapileFile> files, Predicate<NapileFile> filesToAnalyzeCompletely, boolean storeContextForBodiesResolve)
 	{
 		BindingTraceContext bindingTraceContext = new BindingTraceContext();
 
 		final ModuleDescriptor owner = new ModuleDescriptor(Name.special("<module>"));
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false, false, scriptParameters);
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false, false);
 
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceContext), owner);
 		try
 		{
-			injector.getTopDownAnalyzer().analyzeFiles(files, scriptParameters);
+			injector.getTopDownAnalyzer().analyzeFiles(files);
 			BodiesResolveContext bodiesResolveContext = storeContextForBodiesResolve ? new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()) : null;
 			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), bodiesResolveContext);
 		}

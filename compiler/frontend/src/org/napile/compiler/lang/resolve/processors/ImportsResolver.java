@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve;
+package org.napile.compiler.lang.resolve.processors;
 
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +33,11 @@ import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.ImportPath;
+import org.napile.compiler.lang.resolve.Importer;
+import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
+import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.lazy.ScopeProvider;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.processors.QualifiedExpressionResolver;

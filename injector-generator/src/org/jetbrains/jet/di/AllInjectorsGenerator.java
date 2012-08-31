@@ -25,6 +25,7 @@ import org.napile.compiler.lang.resolve.lazy.ResolveSession;
 import org.napile.compiler.lang.resolve.lazy.ScopeProvider;
 import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
+import org.napile.compiler.lang.resolve.processors.ControlFlowAnalyzer;
 import org.napile.compiler.lang.resolve.processors.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.processors.QualifiedExpressionResolver;

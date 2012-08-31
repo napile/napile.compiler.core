@@ -24,7 +24,6 @@ import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.diagnostics.DiagnosticUtils;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.AnalyzerScriptParameter;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
@@ -100,7 +99,7 @@ public final class AnalyzerFacadeWithCache
 							assert context != null : "Headers resolver should prepare and stored information for bodies resolve";
 
 							// Need to resolve bodies in given file and all in the same package
-							AnalyzeExhaust exhaust = AnalyzerFacadeProvider.getAnalyzerFacadeForFile(file).analyzeBodiesInFiles(file.getProject(), Collections.<AnalyzerScriptParameter>emptyList(), new JetFilesProvider.SameJetFilePredicate(file), new DelegatingBindingTrace(analyzeExhaustHeaders.getBindingContext()), context);
+							AnalyzeExhaust exhaust = AnalyzerFacadeProvider.getAnalyzerFacadeForFile(file).analyzeBodiesInFiles(file.getProject(), new JetFilesProvider.SameJetFilePredicate(file), new DelegatingBindingTrace(analyzeExhaustHeaders.getBindingContext()), context);
 
 							return new Result<AnalyzeExhaust>(exhaust, PsiModificationTracker.MODIFICATION_COUNT);
 						}
@@ -152,7 +151,7 @@ public final class AnalyzerFacadeWithCache
 				public Result<AnalyzeExhaust> compute()
 				{
 					// System.out.println("===============ReCache - OUT-OF-BLOCK==============");
-					AnalyzeExhaust exhaust = AnalyzerFacadeProvider.getAnalyzerFacadeForFile(fileToCache).analyzeFiles(fileToCache.getProject(), declarationProvider.fun(fileToCache), Collections.<AnalyzerScriptParameter>emptyList(), Predicates.<NapileFile>alwaysFalse());
+					AnalyzeExhaust exhaust = AnalyzerFacadeProvider.getAnalyzerFacadeForFile(fileToCache).analyzeFiles(fileToCache.getProject(), declarationProvider.fun(fileToCache), Predicates.<NapileFile>alwaysFalse());
 
 					return new Result<AnalyzeExhaust>(exhaust, PsiModificationTracker.OUT_OF_CODE_BLOCK_MODIFICATION_COUNT);
 				}

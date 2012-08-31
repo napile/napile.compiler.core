@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve;
+package org.napile.compiler.lang.resolve.processors;
 
 import java.util.Collection;
 import java.util.Map;
@@ -37,6 +37,11 @@ import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.OverloadUtil;
+import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.name.Name;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Pair;

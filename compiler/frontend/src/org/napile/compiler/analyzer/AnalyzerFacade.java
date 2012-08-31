@@ -17,11 +17,9 @@
 package org.napile.compiler.analyzer;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.AnalyzerScriptParameter;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import com.google.common.base.Predicate;
@@ -34,8 +32,8 @@ public interface AnalyzerFacade
 {
 
 	@NotNull
-	AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely);
+	AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely);
 
 	@NotNull
-	AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull List<AnalyzerScriptParameter> scriptParameters, @NotNull Predicate<NapileFile> filesForBodiesResolve, @NotNull BindingTrace traceContext, @NotNull BodiesResolveContext bodiesResolveContext);
+	AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull Predicate<NapileFile> filesForBodiesResolve, @NotNull BindingTrace traceContext, @NotNull BodiesResolveContext bodiesResolveContext);
 }
