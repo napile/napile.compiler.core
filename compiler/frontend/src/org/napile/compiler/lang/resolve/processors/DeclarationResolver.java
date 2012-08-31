@@ -20,7 +20,6 @@ import static org.napile.compiler.lang.diagnostics.Errors.REDECLARATION;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -139,7 +138,7 @@ public class DeclarationResolver
 			NapileClass napileClass = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveDeclarations(napileClass.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveInsideDeclarations(napileClass, classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
@@ -147,7 +146,7 @@ public class DeclarationResolver
 			NapileAnonymClass object = entry.getKey();
 			MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveDeclarations(object.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveInsideDeclarations(object, classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 
 
@@ -157,13 +156,13 @@ public class DeclarationResolver
 			EnumEntryDescriptor enumEntryDescriptor = entry.getValue();
 
 			MutableClassDescriptor classDescriptor = enumEntryDescriptor.getClassDescriptor();
-			resolveDeclarations(enumEntry.getDeclarations(), classDescriptor.getScopeForMemberResolution(), classDescriptor);
+			resolveInsideDeclarations(enumEntry, classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 	}
 
-	private void resolveDeclarations(@NotNull List<? extends NapileDeclaration> declarations, final @NotNull JetScope scope, final @NotNull MutableClassDescriptor ownerDescription)
+	private void resolveInsideDeclarations(@NotNull NapileDeclarationContainer<NapileDeclaration> declarationOwner, final @NotNull JetScope scope, final @NotNull MutableClassDescriptor ownerDescription)
 	{
-		for(NapileDeclaration declaration : declarations)
+		for(NapileDeclaration declaration : declarationOwner.getDeclarations())
 		{
 			declaration.accept(new NapileVisitorVoid()
 			{
@@ -201,28 +200,6 @@ public class DeclarationResolver
 						context.getDeclaringScopes().put(property.getGetter(), scope);
 					if(property.getSetter() != null)
 						context.getDeclaringScopes().put(property.getSetter(), scope);
-				}
-
-				@Override
-				public void visitAnonymClass(NapileAnonymClass declaration)
-				{
-					//PropertyDescriptor propertyDescriptor = descriptorResolver.resolveObjectDeclarationAsPropertyDescriptor(ownerDescription, declaration, context.getObjects().get(declaration), trace);
-
-					//ownerDescription.addPropertyDescriptor(propertyDescriptor);
-				}
-
-				@Override
-				public void visitEnumEntry(NapileEnumEntry enumEntry)
-				{
-					/*MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(enumEntryDescriptor, ownerDescription.getScopeForMemberLookup(), ClassKind.ENUM_ENTRY, enumEntry.getNameAsName(), true);
-					mutableClassDescriptor.setModality(Modality.OPEN);
-					mutableClassDescriptor.setTypeParameterDescriptors(ownerDescription.getTypeParameters());
-					mutableClassDescriptor.addSupertype(new JetTypeImpl(ownerDescription.getTypeConstructor(), scope));
-					mutableClassDescriptor.createTypeConstructor();
-
-					enumEntryDescriptor.setMutableClassDescriptor(mutableClassDescriptor);
-
-					resolveDeclarations(enumEntry.getDeclarations(), mutableClassDescriptor.getScopeForMemberLookup(), mutableClassDescriptor);  */
 				}
 			});
 		}
