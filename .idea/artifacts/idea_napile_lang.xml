@@ -10,12 +10,12 @@
             <element id="module-output" name="idea" />
             <element id="module-output" name="util" />
             <element id="module-output" name="java2napile" />
-            <element id="module-output" name="frontend.core" />
+            <element id="module-output" name="cli" />
           </element>
           <element id="library" level="project" name="javax.inject" />
-        </element>
-        <element id="directory" name="napilec">
-          <element id="dir-copy" path="$PROJECT_DIR$/dist/kotlinc" />
+          <element id="library" level="project" name="napile.compiler-core" />
+          <element id="library" level="project" name="napile.asm" />
+          <element id="library" level="project" name="dom4j" />
         </element>
       </element>
     </root>

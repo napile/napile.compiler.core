@@ -19,21 +19,57 @@ package org.napile.compiler.analyzer;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
+import org.napile.compiler.lang.descriptors.ModuleDescriptor;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
+import org.napile.compiler.lang.resolve.CachedBodiesResolveContext;
+import org.napile.compiler.lang.resolve.ObservableBindingTrace;
+import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
+import org.napile.compiler.lang.resolve.name.Name;
 import com.google.common.base.Predicate;
 import com.intellij.openapi.project.Project;
 
 /**
  * @author Pavel Talanov
  */
-public interface AnalyzerFacade
+public class AnalyzerFacade
 {
+	private AnalyzerFacade()
+	{
+	}
 
 	@NotNull
-	AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely);
+	public static AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely)
+	{
+		return analyzeFilesWithJavaIntegration(project, files, filesToAnalyzeCompletely, true);
+	}
 
 	@NotNull
-	AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull Predicate<NapileFile> filesForBodiesResolve, @NotNull BindingTrace traceContext, @NotNull BodiesResolveContext bodiesResolveContext);
-}
+	public static AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull Predicate<NapileFile> filesForBodiesResolve, @NotNull BindingTrace headersTraceContext, @NotNull BodiesResolveContext bodiesResolveContext)
+	{
+		return AnalyzerFacadeForEverything.analyzeBodiesInFilesWithJavaIntegration(project, filesForBodiesResolve, headersTraceContext, bodiesResolveContext);
+	}
+
+	public static AnalyzeExhaust analyzeFilesWithJavaIntegration(Project project, Collection<NapileFile> files, Predicate<NapileFile> filesToAnalyzeCompletely, boolean storeContextForBodiesResolve)
+	{
+		BindingTraceContext bindingTraceContext = new BindingTraceContext();
+
+		final ModuleDescriptor owner = new ModuleDescriptor(Name.special("<module>"));
+
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false, false);
+
+		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceContext), owner);
+		try
+		{
+			injector.getTopDownAnalyzer().analyzeFiles(files);
+			BodiesResolveContext bodiesResolveContext = storeContextForBodiesResolve ? new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()) : null;
+			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), bodiesResolveContext);
+		}
+		finally
+		{
+			injector.destroy();
+		}
+	}}

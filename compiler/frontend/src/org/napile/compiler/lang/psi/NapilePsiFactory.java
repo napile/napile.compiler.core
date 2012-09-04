@@ -100,7 +100,7 @@ public class NapilePsiFactory
 	@NotNull
 	public static NapileFile createFile(Project project, String text)
 	{
-		return createFile(project, "dummy.idea", text);
+		return createFile(project, "dummy.ns", text);
 	}
 
 	@NotNull

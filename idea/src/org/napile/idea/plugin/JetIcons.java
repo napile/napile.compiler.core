@@ -41,12 +41,12 @@ public interface JetIcons
 
 	Icon FILE = IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
 
-	Icon FUNCTION = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/function.png");
+	Icon FUNCTION = IconLoader.getIcon("/org/jetbrains/compiler/plugin/icons/function.png");
 	Icon EXTENSION_FUNCTION = PlatformIcons.FUNCTION_ICON;
 
-	Icon VAR = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/variable.png");
-	Icon VAL = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/value.png");
-	Icon PARAMETER = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/parameter.png");
-	Icon FIELD_VAL = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/field_value.png");
-	Icon FIELD_VAR = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/field_variable.png");
+	Icon VAR = IconLoader.getIcon("/org/jetbrains/compiler/plugin/icons/variable.png");
+	Icon VAL = IconLoader.getIcon("/org/jetbrains/compiler/plugin/icons/value.png");
+	Icon PARAMETER = IconLoader.getIcon("/org/jetbrains/compiler/plugin/icons/parameter.png");
+	Icon FIELD_VAL = IconLoader.getIcon("/org/jetbrains/compiler/plugin/icons/field_value.png");
+	Icon FIELD_VAR = IconLoader.getIcon("/org/jetbrains/compiler/plugin/icons/field_variable.png");
 }

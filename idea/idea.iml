@@ -21,8 +21,8 @@
     <orderEntry type="module" module-name="frontend" />
     <orderEntry type="library" scope="PROVIDED" name="junit-plugin" level="project" />
     <orderEntry type="module" module-name="java2napile" />
-    <orderEntry type="module" module-name="cli" scope="TEST" />
     <orderEntry type="library" name="IDEA CE" level="project" />
+    <orderEntry type="module" module-name="cli" />
   </component>
 </module>
 

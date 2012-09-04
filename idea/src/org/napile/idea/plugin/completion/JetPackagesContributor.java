@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.completion;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.cli.jvm.compiler.TipsManager;
+import org.napile.compiler.cli.jvm.compiler.TipsManager;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamespaceHeader;
 import org.napile.compiler.lang.resolve.BindingContext;

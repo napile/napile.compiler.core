@@ -32,7 +32,6 @@ import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
@@ -180,10 +179,8 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 			parts.add(current.getName());
 			current = PsiTreeUtil.getParentOfType(current, NapileLikeClass.class);
 		}
-		PsiFile file = getContainingFile();
-		if(!(file instanceof NapileFile))
-			return null;
-		String fileQualifiedName = ((NapileFile) file).getNamespaceHeader().getQualifiedName();
+		NapileFile file = getContainingFile();
+		String fileQualifiedName = file.getNamespaceHeader().getQualifiedName();
 		if(!fileQualifiedName.isEmpty())
 		{
 			parts.add(fileQualifiedName);

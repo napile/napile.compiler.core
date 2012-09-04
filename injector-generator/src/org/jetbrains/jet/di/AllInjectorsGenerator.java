@@ -20,7 +20,12 @@ import java.io.IOException;
 
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.*;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
+import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
+import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
+import org.napile.compiler.lang.resolve.TopDownAnalyzer;
 import org.napile.compiler.lang.resolve.lazy.ResolveSession;
 import org.napile.compiler.lang.resolve.lazy.ScopeProvider;
 import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
@@ -48,7 +53,6 @@ public class AllInjectorsGenerator
 		generateMacroInjector();
 
 		generateInjectorForJvmCodegen();
-		generateInjectorForJetTypeMapper();
 		generateInjectorForLazyResolve();
 		generateInjectorForBodyResolve();
 	}
@@ -111,18 +115,12 @@ public class AllInjectorsGenerator
 	private static void generateInjectorForJvmCodegen() throws IOException
 	{
 		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
-		generator.addParameter(BindingContext.class);
+		generator.addParameter(BindingTrace.class);
 		generator.addParameter(DiType.listOf(NapileFile.class));
 		generator.addParameter(Project.class);
-		generator.generate("compiler/backend/src", "org.jetbrains.jet.di", "InjectorForJvmCodegen");
-	}
-
-	private static void generateInjectorForJetTypeMapper() throws IOException
-	{
-		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
-		generator.addParameter(BindingContext.class);
-		generator.addParameter(DiType.listOf(NapileFile.class));
-		generator.generate("compiler/backend/src", "org.jetbrains.jet.di", "InjectorForJetTypeMapper");
+		generator.addField(false, BindingContext.class, "bindingContext", new GivenExpression("bindingTrace.getBindingContext()"));
+		generator.addPublicParameter(BindingTrace.class);
+		generator.generate("compiler/backend/src", "org.napile.compiler.di", "InjectorForJvmCodegen");
 	}
 
 	private static void generateInjectorForBodyResolve() throws IOException

@@ -10,7 +10,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="intellij-core" level="project" />
     <orderEntry type="library" name="javax.inject" level="project" />
-    <orderEntry type="module" module-name="frontend.core" exported="" />
+    <orderEntry type="library" exported="" name="napile.compiler-core" level="project" />
+    <orderEntry type="library" exported="" name="napile.asm" level="project" />
+    <orderEntry type="library" name="dom4j" level="project" />
   </component>
 </module>
 

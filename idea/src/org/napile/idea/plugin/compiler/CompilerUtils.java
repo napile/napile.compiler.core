@@ -28,13 +28,8 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.ref.SoftReference;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -68,50 +63,6 @@ public final class CompilerUtils
 
 	private CompilerUtils()
 	{
-	}
-
-	public static List<File> kompilerClasspath(File kotlinHome, CompileContext context)
-	{
-		File libs = new File(kotlinHome, "lib");
-
-		if(!libs.exists() || libs.isFile())
-		{
-			context.addMessage(ERROR, "Broken compiler at '" + libs.getAbsolutePath() + "'. Make sure plugin is properly installed", "", -1, -1);
-			return Collections.emptyList();
-		}
-
-		ArrayList<File> answer = new ArrayList<File>();
-		answer.add(new File(libs, "kotlin-compiler.jar"));
-		return answer;
-	}
-
-	public static URLClassLoader getOrCreateClassLoader(File kotlinHome, CompileContext context)
-	{
-		URLClassLoader answer = ourClassLoaderRef.get();
-		if(answer == null)
-		{
-			answer = createClassloader(kotlinHome, context);
-			ourClassLoaderRef = new SoftReference<URLClassLoader>(answer);
-		}
-		return answer;
-	}
-
-	private static URLClassLoader createClassloader(File kotlinHome, CompileContext context)
-	{
-		List<File> jars = kompilerClasspath(kotlinHome, context);
-		URL[] urls = new URL[jars.size()];
-		for(int i = 0; i < urls.length; i++)
-		{
-			try
-			{
-				urls[i] = jars.get(i).toURI().toURL();
-			}
-			catch(MalformedURLException e)
-			{
-				throw new RuntimeException(e); // Checked exceptions are great! I love them, and I love brilliant library designers too!
-			}
-		}
-		return new URLClassLoader(urls, null);
 	}
 
 	static void handleProcessTermination(int exitCode, CompileContext compileContext)
@@ -191,25 +142,6 @@ public final class CompilerUtils
 		}
 	}
 
-	public static int getReturnCodeFromObject(Object rc) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException
-	{
-		if("org.jetbrains.idea.cli.common.ExitCode".equals(rc.getClass().getCanonicalName()))
-		{
-			return (Integer) rc.getClass().getMethod("getCode").invoke(rc);
-		}
-		else
-		{
-			throw new IllegalStateException("Unexpected return: " + rc);
-		}
-	}
-
-	public static Object invokeExecMethod(CompilerEnvironment environment, PrintStream out, CompileContext context, String[] arguments, String name) throws Exception
-	{
-		URLClassLoader loader = getOrCreateClassLoader(environment.getKotlinHome(), context);
-		Class<?> kompiler = Class.forName(name, true, loader);
-		Method exec = kompiler.getMethod("exec", PrintStream.class, String[].class);
-		return exec.invoke(kompiler.newInstance(), out, arguments);
-	}
 
 	private static class CompilerOutputSAXHandler extends DefaultHandler
 	{

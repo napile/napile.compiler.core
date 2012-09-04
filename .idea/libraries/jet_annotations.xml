@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jet-annotations">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/ideaSDK/core/annotations.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
