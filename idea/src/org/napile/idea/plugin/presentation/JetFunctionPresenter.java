@@ -34,6 +34,7 @@ import com.intellij.navigation.ColoredItemPresentation;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProvider;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.openapi.util.Iconable;
 
 /**
  * @author Nikolay Krasko
@@ -99,7 +100,7 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 			@Override
 			public Icon getIcon(boolean open)
 			{
-				return JetIconProvider.INSTANCE.getIcon(function, 0);
+				return JetIconProvider.INSTANCE.getIcon(function, Iconable.ICON_FLAG_VISIBILITY);
 			}
 		};
 	}

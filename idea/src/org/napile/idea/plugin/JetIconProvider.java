@@ -63,7 +63,7 @@ public class JetIconProvider extends IconProvider
 		}
 		else if(psiElement instanceof NapileNamespaceHeader)
 		{
-			icon = (flags & Iconable.ICON_FLAG_OPEN) != 0 ? PlatformIcons.PACKAGE_OPEN_ICON : PlatformIcons.PACKAGE_ICON;
+			icon = PlatformIcons.PACKAGE_ICON;
 		}
 		else if(psiElement instanceof NapileNamedFunction)
 		{
