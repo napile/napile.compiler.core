@@ -28,9 +28,8 @@ import org.napile.compiler.lang.parsing.JetParserDefinition;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.JetFilesProvider;
 import org.napile.compiler.plugin.JetFileType;
+import com.intellij.core.CoreApplicationEnvironment;
 import com.intellij.core.CoreJavaFileManager;
-import com.intellij.core.JavaCoreApplicationEnvironment;
-import com.intellij.core.JavaCoreProjectEnvironment;
 import com.intellij.mock.MockApplication;
 import com.intellij.mock.MockProject;
 import com.intellij.openapi.Disposable;
@@ -47,8 +46,8 @@ import com.intellij.psi.impl.file.impl.JavaFileManager;
 public class JetCoreEnvironment
 {
 
-	private final JavaCoreApplicationEnvironment applicationEnvironment;
-	private final JavaCoreProjectEnvironment projectEnvironment;
+	private final CoreApplicationEnvironment applicationEnvironment;
+	private final JetCoreProjectEnvironment projectEnvironment;
 	private final List<NapileFile> sourceFiles = new ArrayList<NapileFile>();
 
 	private final CompilerConfiguration configuration;
@@ -60,11 +59,11 @@ public class JetCoreEnvironment
 		this.configuration = configuration.copy();
 		this.configuration.setReadOnly(true);
 
-		this.applicationEnvironment = new JavaCoreApplicationEnvironment(parentDisposable);
+		this.applicationEnvironment = new CoreApplicationEnvironment(parentDisposable);
 		applicationEnvironment.registerFileType(JetFileType.INSTANCE, JetFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerParserDefinition(new JetParserDefinition());
 
-		projectEnvironment = new JavaCoreProjectEnvironment(parentDisposable, applicationEnvironment);
+		projectEnvironment = new JetCoreProjectEnvironment(parentDisposable, applicationEnvironment);
 
 		MockProject project = projectEnvironment.getProject();
 		project.registerService(JetFilesProvider.class, new CliJetFilesProvider(this));
