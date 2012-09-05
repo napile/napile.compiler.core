@@ -43,13 +43,16 @@ public class JetLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 		switch(settingsType)
 		{
 			case WRAPPING_AND_BRACES_SETTINGS:
-				return "public class ThisIsASampleClass {\n" +
-						"    private fun foo1(i1: Int,\n" +
+				return "class ThisIsASampleClass\n" +
+						"{\n" +
+						"    meth foo1(i1: Int,\n" +
 						"                     i2: Int,\n" +
-						"                     i3: Int) : Int {\n" +
+						"                     i3: Int) : Int " +
+						"    \n{\n" +
 						"        return 0\n" +
 						"    }\n" +
-						"    private fun foo2():Int {\n" +
+						"    meth foo2():Int " +
+						"    \n{\n" +
 						"        return foo1(12,\n" +
 						"                13,\n" +
 						"                14\n" +
@@ -57,12 +60,15 @@ public class JetLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 						"    }\n" +
 						"}";
 			default:
-				return "class Some {\n" +
-						"  fun foo() : Int {\n" +
+				return "class Some" +
+						"\n{\n" +
+						"  meth foo() : Int\n" +
+						"  {\n" +
 						"    val test : Int = 12\n" +
 						"    return test\n" +
 						"  }\n" +
-						"  private fun <T>foo2():Int where T : List<T> {\n" +
+						"  meth <T>foo2():Int where T : List<T>\n" +
+						"  {\n" +
 						"    return 0\n" +
 						"  }\n" +
 						"}";

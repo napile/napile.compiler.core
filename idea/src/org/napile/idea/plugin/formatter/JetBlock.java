@@ -283,7 +283,7 @@ public class JetBlock extends AbstractBlock
 
 			ASTIndentStrategy.forNode("For single statement in THEN and ELSE").in(NapileNodeTypes.THEN, NapileNodeTypes.ELSE).notForType(NapileNodeTypes.BLOCK).set(Indent.getNormalIndent()),
 
-			ASTIndentStrategy.forNode("Indent for parts").in(NapileNodeTypes.PROPERTY, NapileNodeTypes.METHOD).set(Indent.getContinuationWithoutFirstIndent()),
+			ASTIndentStrategy.forNode("Indent for parts").in(NapileNodeTypes.PROPERTY, NapileNodeTypes.METHOD, NapileNodeTypes.CONSTRUCTOR).set(Indent.getNoneIndent()),
 	};
 
 	@Nullable
