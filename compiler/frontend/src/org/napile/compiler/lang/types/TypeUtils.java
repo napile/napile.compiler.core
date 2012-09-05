@@ -39,8 +39,8 @@ import org.napile.compiler.lang.resolve.calls.inference.ConstraintType;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.scopes.ChainedScope;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -568,10 +568,16 @@ public class TypeUtils
 	public static JetType getTypeOfClassOrErrorType(@NotNull JetScope jetScope, @NotNull FqName name, boolean nullable)
 	{
 		ClassifierDescriptor classifierDescriptor = jetScope.getClassifier(name.shortName());
-		if(!(classifierDescriptor instanceof ClassDescriptor))
+		if(!(classifierDescriptor instanceof ClassDescriptor) || jetScope instanceof ErrorUtils.ErrorScope)
 			return ErrorUtils.createErrorType(name.getFqName());
 		else
-			return new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classifierDescriptor.getTypeConstructor(), nullable, Collections.<JetType>emptyList(), ((ClassDescriptor)classifierDescriptor).getMemberScope(Collections.<JetType>emptyList()));
+		{
+			jetScope = ((ClassDescriptor)classifierDescriptor).getMemberScope(Collections.<JetType>emptyList());
+			if(jetScope instanceof ErrorUtils.ErrorScope)
+				return ErrorUtils.createErrorType(name.getFqName());
+
+			return new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classifierDescriptor.getTypeConstructor(), nullable, Collections.<JetType>emptyList(), jetScope);
+		}
 	}
 
 	public static boolean isEqualFqName(@NotNull JetType jetType, @NotNull FqName name)
