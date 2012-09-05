@@ -122,23 +122,20 @@ public class JetCompiler implements TranslatingCompiler
 
 		String[] arguments = commandLineArguments(outputDir, moduleChunk, (CompileContextEx) compileContext, files);
 
-		CompilerUtils.OutputItemsCollectorImpl collector = new CompilerUtils.OutputItemsCollectorImpl(outputDir.getPath());
-		runCompiler(compileContext, arguments, collector);
-
-		outputSink.add(outputDir.getPath(), collector.getOutputs(), collector.getSources().toArray(VirtualFile.EMPTY_ARRAY));
+		runCompiler(compileContext, arguments);
 	}
 
-	private void runCompiler(CompileContext compileContext, String[] arguments, CompilerUtils.OutputItemsCollectorImpl collector)
+	private void runCompiler(CompileContext compileContext, String[] arguments)
 	{
 		if(RUN_OUT_OF_PROCESS)
-			runOutOfProcess(compileContext, collector, arguments);
+			runOutOfProcess(compileContext, arguments);
 		else
-			runInProcess(compileContext, collector, arguments);
+			runInProcess(compileContext,  arguments);
 	}
 
-	private static void runInProcess(final CompileContext compileContext, OutputItemsCollector collector, final String[] arguments)
+	private static void runInProcess(final CompileContext compileContext, final String[] arguments)
 	{
-		CompilerUtils.outputCompilerMessagesAndHandleExitCode(compileContext, collector, new Function1<PrintStream, Integer>()
+		CompilerUtils.outputCompilerMessagesAndHandleExitCode(compileContext, new Function1<PrintStream, Integer>()
 		{
 			@Override
 			public Integer invoke(PrintStream stream)
@@ -158,7 +155,7 @@ public class JetCompiler implements TranslatingCompiler
 		//strings.add("-classpath");
 		//strings.add(chunk.getCompilationClasspath());
 		//strings.add("-verbose");
-		//strings.add("-tags");
+		strings.add("-tags");
 
 		PathsList sourcesPath = new PathsList();
 		sourcesPath.addVirtualFiles(sources);
@@ -167,7 +164,7 @@ public class JetCompiler implements TranslatingCompiler
 		return ArrayUtil.toStringArray(strings);
 	}
 
-	private static void runOutOfProcess(final CompileContext compileContext, final OutputItemsCollector collector, String[] arguments)
+	private static void runOutOfProcess(final CompileContext compileContext, String[] arguments)
 	{
 		final SimpleJavaParameters params = new SimpleJavaParameters();
 		params.setJdk(new SimpleJavaSdkType().createJdk("tmp", SystemProperties.getJavaHome()));
@@ -194,7 +191,7 @@ public class JetCompiler implements TranslatingCompiler
 				@Override
 				public void run()
 				{
-					CompilerUtils.parseCompilerMessagesFromReader(compileContext, new InputStreamReader(process.getInputStream()), collector);
+					CompilerUtils.parseCompilerMessagesFromReader(compileContext, new InputStreamReader(process.getInputStream()));
 				}
 			});
 

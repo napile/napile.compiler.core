@@ -21,7 +21,6 @@ import static org.napile.compiler.cli.common.ExitCode.INTERNAL_ERROR;
 import static org.napile.compiler.cli.common.ExitCode.OK;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,24 +63,15 @@ public class K2JVMCompiler extends CLICompiler<K2JVMCompilerArguments>
 		CompilerConfiguration configuration = new CompilerConfiguration();
 		configuration.addAll(JVMConfigurationKeys.CLASSPATH_KEY, getClasspath(arguments));
 
-		if(arguments.getSourceDirs() != null)
+		for(String freeArg : arguments.freeArgs)
 		{
-			for(String source : arguments.getSourceDirs())
+			if(freeArg.contains(File.pathSeparator))
 			{
-				configuration.add(CommonConfigurationKeys.SOURCE_ROOTS_KEY, source);
-			}
-		}
-		else
-		{
-			if(arguments.src != null)
-			{
-				List<String> sourcePathsSplitByPathSeparator = Arrays.asList(arguments.src.split(StringUtil.escapeToRegexp(File.pathSeparator)));
+				List<String> sourcePathsSplitByPathSeparator = Arrays.asList(freeArg.split(StringUtil.escapeToRegexp(File.pathSeparator)));
 				configuration.addAll(CommonConfigurationKeys.SOURCE_ROOTS_KEY, sourcePathsSplitByPathSeparator);
 			}
-			for(String freeArg : arguments.freeArgs)
-			{
+			else
 				configuration.add(CommonConfigurationKeys.SOURCE_ROOTS_KEY, freeArg);
-			}
 		}
 
 		boolean builtins = arguments.builtins;
@@ -124,23 +114,6 @@ public class K2JVMCompiler extends CLICompiler<K2JVMCompilerArguments>
 	protected K2JVMCompilerArguments createArguments()
 	{
 		return new K2JVMCompilerArguments();
-	}
-
-	// TODO this method is here only to workaround KT-2498
-	@Override
-	protected void configureEnvironment(@NotNull CompilerConfiguration configuration, @NotNull K2JVMCompilerArguments arguments)
-	{
-		super.configureEnvironment(configuration, arguments);
-	}
-
-	//TODO: Hacked! Be sure that our kotlin stuff builds correctly before you remove.
-	// our compiler throws method not found error
-	// probably relates to KT-1863... well, may be not
-	@NotNull
-	@Override
-	public ExitCode exec(PrintStream errStream, K2JVMCompilerArguments arguments)
-	{
-		return super.exec(errStream, arguments);
 	}
 
 	@NotNull

@@ -70,14 +70,10 @@ public class JetCoreEnvironment
 		project.registerService(CoreJavaFileManager.class, (CoreJavaFileManager) ServiceManager.getService(project, JavaFileManager.class));
 
 		for(File path : configuration.getList(JVMConfigurationKeys.CLASSPATH_KEY))
-		{
 			addToClasspath(path);
-		}
 
 		for(String path : configuration.getList(CommonConfigurationKeys.SOURCE_ROOTS_KEY))
-		{
 			addSources(path);
-		}
 
 		initialized = true;
 	}

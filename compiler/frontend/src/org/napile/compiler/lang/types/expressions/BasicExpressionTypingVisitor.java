@@ -1168,17 +1168,16 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			JetType booleanType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.BOOL, false);
 			if(OperatorConventions.EQUALS_OPERATIONS.contains(operationType))
 			{
-				Name name = Name.identifier("equals");
 				if(right != null)
 				{
 					ExpressionReceiver receiver = ExpressionTypingUtils.safeGetExpressionReceiver(facade, left, context.replaceScope(context.scope));
-					OverloadResolutionResults<MethodDescriptor> resolutionResults = context.resolveExactSignature(receiver, name, Collections.singletonList(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, true)));
+					OverloadResolutionResults<MethodDescriptor> resolutionResults = context.resolveExactSignature(receiver, OperatorConventions.EQUALS, Collections.singletonList(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, true)));
 					if(resolutionResults.isSuccess())
 					{
 						MethodDescriptor equals = resolutionResults.getResultingCall().getResultingDescriptor();
 						context.trace.record(REFERENCE_TARGET, operationSign, equals);
 						context.trace.record(RESOLVED_CALL, operationSign, resolutionResults.getResultingCall());
-						if(ExpressionTypingUtils.ensureBooleanResult(operationSign, name, equals.getReturnType(), context))
+						if(ExpressionTypingUtils.ensureBooleanResult(operationSign, OperatorConventions.EQUALS, equals.getReturnType(), context))
 						{
 							ensureNonemptyIntersectionOfOperandTypes(expression, context);
 						}

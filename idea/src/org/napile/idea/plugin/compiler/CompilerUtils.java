@@ -22,15 +22,10 @@ import static com.intellij.openapi.compiler.CompilerMessageCategory.STATISTICS;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.ref.SoftReference;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -44,22 +39,17 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import com.google.common.collect.ImmutableMap;
-import com.intellij.compiler.impl.javaCompiler.OutputItemImpl;
 import com.intellij.openapi.compiler.CompileContext;
 import com.intellij.openapi.compiler.CompilerMessageCategory;
-import com.intellij.openapi.compiler.TranslatingCompiler;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author Pavel Talanov
  */
 public final class CompilerUtils
 {
-	private static SoftReference<URLClassLoader> ourClassLoaderRef = new SoftReference<URLClassLoader>(null);
-	static final Logger LOG = Logger.getInstance("#CompilerUtils");
+	private static final Logger LOG = Logger.getInstance(CompilerUtils.class);
 
 	private CompilerUtils()
 	{
@@ -73,7 +63,7 @@ public final class CompilerUtils
 		}
 	}
 
-	public static void parseCompilerMessagesFromReader(CompileContext compileContext, final Reader reader, OutputItemsCollector collector)
+	public static void parseCompilerMessagesFromReader(CompileContext compileContext, final Reader reader)
 	{
 		// Sometimes the compiler can't output valid XML
 		// Example: error in command line arguments passed to the compiler
@@ -109,7 +99,7 @@ public final class CompilerUtils
 		{
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
-			parser.parse(new InputSource(wrappingReader), new CompilerOutputSAXHandler(compileContext, collector));
+			parser.parse(new InputSource(wrappingReader), new CompilerOutputSAXHandler(compileContext));
 		}
 		catch(Throwable e)
 		{
@@ -149,7 +139,6 @@ public final class CompilerUtils
 				.build();
 
 		private final CompileContext compileContext;
-		private final OutputItemsCollector collector;
 
 		private final StringBuilder message = new StringBuilder();
 		private Stack<String> tags = new Stack<String>();
@@ -157,10 +146,9 @@ public final class CompilerUtils
 		private int line;
 		private int column;
 
-		public CompilerOutputSAXHandler(CompileContext compileContext, OutputItemsCollector collector)
+		public CompilerOutputSAXHandler(CompileContext compileContext)
 		{
 			this.compileContext = compileContext;
-			this.collector = collector;
 		}
 
 		@Override
@@ -219,7 +207,6 @@ public final class CompilerUtils
 			if(category == STATISTICS)
 			{
 				compileContext.getProgressIndicator().setText(text);
-				collector.learn(text);
 			}
 			else
 			{
@@ -245,55 +232,7 @@ public final class CompilerUtils
 		}
 	}
 
-	public static class OutputItemsCollectorImpl implements OutputItemsCollector
-	{
-		private static final String FOR_SOURCE_PREFIX = "For source: ";
-		private static final String EMITTING_PREFIX = "Emitting: ";
-		private final String outputPath;
-		private VirtualFile currentSource;
-		private List<TranslatingCompiler.OutputItem> answer = new ArrayList<TranslatingCompiler.OutputItem>();
-		private List<VirtualFile> sources = new ArrayList<VirtualFile>();
-
-		public OutputItemsCollectorImpl(String outputPath)
-		{
-			this.outputPath = outputPath;
-		}
-
-		@Override
-		public void learn(String message)
-		{
-			message = message.trim();
-			if(message.startsWith(FOR_SOURCE_PREFIX))
-			{
-				currentSource = LocalFileSystem.getInstance().findFileByPath(message.substring(FOR_SOURCE_PREFIX.length()));
-				if(currentSource != null)
-				{
-					sources.add(currentSource);
-				}
-			}
-			else if(message.startsWith(EMITTING_PREFIX))
-			{
-				if(currentSource != null)
-				{
-					OutputItemImpl item = new OutputItemImpl(outputPath + "/" + message.substring(EMITTING_PREFIX.length()), currentSource);
-					LocalFileSystem.getInstance().refreshAndFindFileByIoFile(new File(item.getOutputPath()));
-					answer.add(item);
-				}
-			}
-		}
-
-		public List<TranslatingCompiler.OutputItem> getOutputs()
-		{
-			return answer;
-		}
-
-		public List<VirtualFile> getSources()
-		{
-			return sources;
-		}
-	}
-
-	public static void outputCompilerMessagesAndHandleExitCode(@NotNull CompileContext context, @NotNull OutputItemsCollector collector, @NotNull Function1<PrintStream, Integer> compilerRun)
+	public static void outputCompilerMessagesAndHandleExitCode(@NotNull CompileContext context, @NotNull Function1<PrintStream, Integer> compilerRun)
 	{
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		PrintStream out = new PrintStream(outputStream);
@@ -301,7 +240,7 @@ public final class CompilerUtils
 		int exitCode = compilerRun.invoke(out);
 
 		BufferedReader reader = new BufferedReader(new StringReader(outputStream.toString()));
-		parseCompilerMessagesFromReader(context, reader, collector);
+		parseCompilerMessagesFromReader(context, reader);
 		handleProcessTermination(exitCode, context);
 	}
 }

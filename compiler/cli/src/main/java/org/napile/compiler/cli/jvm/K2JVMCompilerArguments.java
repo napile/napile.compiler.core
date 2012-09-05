@@ -17,8 +17,6 @@
  */
 package org.napile.compiler.cli.jvm;
 
-import java.util.List;
-
 import org.napile.compiler.cli.common.CompilerArguments;
 import com.sampullara.cli.Argument;
 
@@ -27,23 +25,6 @@ import com.sampullara.cli.Argument;
  */
 public class K2JVMCompilerArguments extends CompilerArguments
 {
-
-	// TODO ideally we'd unify this with 'src' to just having a single field that supports multiple files/dirs
-	private List<String> sourceDirs;
-
-	public List<String> getSourceDirs()
-	{
-		return sourceDirs;
-	}
-
-	public void setSourceDirs(List<String> sourceDirs)
-	{
-		this.sourceDirs = sourceDirs;
-	}
-
-	@Argument(value = "src", description = "source file or directory")
-	public String src;
-
 	@Argument(value = "classpath", description = "classpath to use when compiling")
 	public String classpath;
 
@@ -94,16 +75,6 @@ public class K2JVMCompilerArguments extends CompilerArguments
 	public void setOutputDir(String outputDir)
 	{
 		this.outputDir = outputDir;
-	}
-
-	public String getSrc()
-	{
-		return src;
-	}
-
-	public void setSrc(String src)
-	{
-		this.src = src;
 	}
 
 	@Override

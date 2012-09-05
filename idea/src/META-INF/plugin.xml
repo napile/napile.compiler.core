@@ -7,10 +7,6 @@
 	<vendor url="http://napile.org">napile.org</vendor>
 
 	<project-components>
-		<component>
-			<implementation-class>org.napile.idea.plugin.compiler.JetCompilerManager</implementation-class>
-		</component>
-
 		<!--<component>
 			<implementation-class>org.napile.idea.plugin.highlighter.DeclarationHintSupport</implementation-class>
 		</component>        -->
@@ -150,6 +146,7 @@
 
 		<referencesSearch implementation="org.napile.idea.plugin.search.KotlinReferencesSearcher"/>
 
+		<compiler implementation="org.napile.idea.plugin.compiler.JetCompiler" />
 		<!--<toolWindow id="Napile" factoryClass="KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/idea/plugin/icons/kotlin_13.png"/> -->
 
 		<applicationService serviceInterface="org.napile.idea.plugin.editor.JetEditorOptions" serviceImplementation="org.napile.idea.plugin.editor.JetEditorOptions"/>
@@ -160,8 +157,5 @@
 			<className>org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction</className>
 			<category>Napile</category>
 		</intentionAction>
-
-		<project.converterProvider implementation="org.napile.idea.plugin.converters.JetRunConfigurationSettingsFormatConverterProvider"/>
-
 	</extensions>
 </idea-plugin>
