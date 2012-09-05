@@ -57,7 +57,6 @@ import com.intellij.util.ArrayUtil;
 import com.intellij.util.containers.HashSet;
 
 /**
- * Will provide both java elements from idea context and some special declarations special to idea.
  * All those declaration are planned to be used in completion.
  *
  * @author Nikolay Krasko

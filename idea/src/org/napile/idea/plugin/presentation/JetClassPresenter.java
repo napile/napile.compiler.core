@@ -55,9 +55,7 @@ public class JetClassPresenter implements ItemPresentationProvider<NapileClass>
 			{
 				FqName name = NapilePsiUtil.getFQName(item);
 				if(name != null)
-				{
-					return name.toString();
-				}
+					return "(" + name.toString() + ")";
 
 				return "";
 			}

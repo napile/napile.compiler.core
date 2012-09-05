@@ -19,6 +19,7 @@ package org.napile.idea.plugin.caches;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -41,7 +42,9 @@ public class JetGotoClassContributor implements GotoClassContributor
 	@Override
 	public String getQualifiedName(NavigationItem item)
 	{
-		return "Hello";
+		if(item instanceof NapileLikeClass)
+			return ((NapileLikeClass) item).getFqName().toString();
+		return StringUtils.EMPTY;
 	}
 
 	@Override
