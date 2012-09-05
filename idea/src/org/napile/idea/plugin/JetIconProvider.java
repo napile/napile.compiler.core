@@ -24,14 +24,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.rt.NapileAnnotationPackage;
 import org.napile.compiler.lexer.JetTokens;
-import org.napile.compiler.lang.psi.*;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.IconProvider;
-import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.psi.PsiElement;
@@ -40,7 +39,6 @@ import com.intellij.ui.LayeredIcon;
 import com.intellij.ui.RowIcon;
 import com.intellij.util.BitUtil;
 import com.intellij.util.PlatformIcons;
-import com.intellij.util.containers.ContainerUtil;
 
 /**
  * @author yole
@@ -119,16 +117,9 @@ public class JetIconProvider extends IconProvider
 	@Nullable
 	public static NapileLikeClass getMainClass(@NotNull NapileFile file)
 	{
-		List<NapileClass> aClasses = ContainerUtil.filter(file.getDeclarations(), new Condition<NapileClass>()
-		{
-			@Override
-			public boolean value(NapileClass jetDeclaration)
-			{
-				return jetDeclaration instanceof NapileLikeClass;
-			}
-		});
-		if(aClasses.size() == 1)
-			return aClasses.get(0);
+		List<NapileClass> list = file.getDeclarations();
+		if(list.size() == 1)
+			return list.get(0);
 		return null;
 	}
 
