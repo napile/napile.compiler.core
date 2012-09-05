@@ -42,7 +42,10 @@ public class NewKotlinFileAction extends CreateFileFromTemplateAction
 	@Override
 	protected void buildDialog(Project project, PsiDirectory directory, CreateFileFromTemplateDialog.Builder builder)
 	{
-		builder.setTitle("Create New Class").addKind("Class", JetIcons.CLASS, "Napile Class").addKind("Enum", JetIcons.ENUM, "Napile Enum");
+		builder.setTitle("Create New Class").
+				addKind("Class", JetIcons.CLASS, "Napile Class").
+				addKind("Enum", JetIcons.ENUM, "Napile Enum").
+				addKind("Retell", JetIcons.RETELL, "Napile Retell");
 	}
 
 	@Override

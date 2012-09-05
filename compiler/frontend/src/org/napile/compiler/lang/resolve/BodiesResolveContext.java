@@ -31,6 +31,7 @@ import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 
 /**
@@ -47,6 +48,8 @@ public interface BodiesResolveContext
 	Map<NapileConstructor, ConstructorDescriptor> getConstructors();
 
 	Map<NapileProperty, PropertyDescriptor> getProperties();
+
+	Map<NapileRetellEntry, PropertyDescriptor> getRetellEntries();
 
 	Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods();
 

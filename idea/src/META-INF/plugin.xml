@@ -46,6 +46,7 @@
 
 		<internalFileTemplate name="Napile Class"/>
 		<internalFileTemplate name="Napile Enum"/>
+		<internalFileTemplate name="Napile Retell"/>
 
 		<gotoSymbolContributor implementation="org.napile.idea.plugin.caches.JetGotoSymbolContributor"/>
 		<gotoClassContributor implementation="org.napile.idea.plugin.caches.JetGotoClassContributor"/>

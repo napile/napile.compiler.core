@@ -49,10 +49,10 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
-	private static final TokenSet TOPLEVEL_OBJECT_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD);
+	private static final TokenSet CLASS_KEYWORDS = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD, JetTokens.RETELL_KEYWORD);
 	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.IDENTIFIER);
 
-	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE), TOPLEVEL_OBJECT_FIRST);
+	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE), CLASS_KEYWORDS);
 	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(JetTokens.WHERE_KEYWORD, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.GT);
 	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.COMMA, JetTokens.RPAR);
 	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(JetTokens.DOT, JetTokens.EOL_OR_SEMICOLON);
@@ -128,7 +128,7 @@ public class JetParsing extends AbstractJetParsing
 			}
 			else
 			{
-				parseTopLevelObject();
+				parseClassLike();
 			}
 		}
 	}
@@ -296,7 +296,7 @@ public class JetParsing extends AbstractJetParsing
 		 *   : object
 		 *   ;
 		 */
-	private void parseTopLevelObject()
+	private void parseClassLike()
 	{
 		PsiBuilder.Marker decl = mark();
 
@@ -304,11 +304,8 @@ public class JetParsing extends AbstractJetParsing
 
 		IElementType keywordToken = tt();
 		IElementType declType = null;
-		//        if (keywordToken == PACKAGE_KEYWORD) {
-		//            declType = parseNamespaceBlock();
-		//        }
-		//        else
-		if(keywordToken == JetTokens.CLASS_KEYWORD || keywordToken == JetTokens.ENUM_KEYWORD)
+
+		if(CLASS_KEYWORDS.contains(keywordToken))
 			declType = parseClass();
 
 		if(declType == null)
@@ -464,7 +461,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	IElementType parseClass()
 	{
-		boolean enumClass = tt() == JetTokens.ENUM_KEYWORD;
+		IElementType lastKeyword = tt();
 
 		advance(); // CLASS_KEYWORD
 
@@ -489,14 +486,12 @@ public class JetParsing extends AbstractJetParsing
 
 		if(at(JetTokens.LBRACE))
 		{
-			if(enumClass)
-			{
-				parseEnumClassBody();
-			}
+			if(lastKeyword == JetTokens.ENUM_KEYWORD)
+				parseEnumBody();
+			else if(lastKeyword == JetTokens.RETELL_KEYWORD)
+				parseRetellClassBody();
 			else
-			{
 				parseClassBody();
-			}
 		}
 
 		return CLASS;
@@ -507,7 +502,7 @@ public class JetParsing extends AbstractJetParsing
 		 *   : "{" enumEntry* "}"
 		 *   ;
 		 */
-	private void parseEnumClassBody()
+	private void parseEnumBody()
 	{
 		if(!at(JetTokens.LBRACE))
 			return;
@@ -551,7 +546,7 @@ public class JetParsing extends AbstractJetParsing
 			}
 		}
 
-		expect(JetTokens.RBRACE, "Expecting '}' to close enum class body");
+		expect(JetTokens.RBRACE, "Expecting '}' to close enum body");
 		myBuilder.restoreNewlinesState();
 
 		classBody.done(CLASS_BODY);
@@ -580,6 +575,59 @@ public class JetParsing extends AbstractJetParsing
 
 		if(at(JetTokens.LBRACE))
 			parseClassBody();
+
+		consumeIf(JetTokens.SEMICOLON);
+	}
+
+	private void parseRetellClassBody()
+	{
+		if(!at(JetTokens.LBRACE))
+			return;
+
+		PsiBuilder.Marker classBody = mark();
+
+		myBuilder.enableNewlines();
+		advance(); // LBRACE
+
+		if(!parseIdeTemplate())
+		{
+			while(!eof() && !at(JetTokens.RBRACE))
+			{
+				PsiBuilder.Marker entryMarker = mark();
+
+				if(at(JetTokens.IDENTIFIER))
+				{
+					parseRetellEntry();
+					entryMarker.done(RETELL_ENTRY);
+				}
+				else
+				{
+					errorAndAdvance("Expecting identifier");
+					entryMarker.drop();
+				}
+			}
+		}
+
+		expect(JetTokens.RBRACE, "Expecting '}' to close retell body");
+		myBuilder.restoreNewlinesState();
+
+		classBody.done(CLASS_BODY);
+	}
+
+	private void parseRetellEntry()
+	{
+		assert _at(JetTokens.IDENTIFIER);
+
+		advance();
+
+		if(at(JetTokens.EQ))
+		{
+			advance();
+
+			myExpressionParsing.parseExpression();
+		}
+		else
+			error("'=' Expected");
 
 		consumeIf(JetTokens.SEMICOLON);
 	}
@@ -652,7 +700,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		IElementType keywordToken = tt();
 		IElementType declType = null;
-		if(keywordToken == JetTokens.CLASS_KEYWORD || keywordToken == JetTokens.ENUM_KEYWORD)
+		if(CLASS_KEYWORDS.contains(keywordToken))
 			declType = parseClass();
 		else if(keywordToken == JetTokens.METH_KEYWORD)
 			declType = parseMethod();
@@ -1408,7 +1456,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			errorWithRecovery("Type expected", TokenSet.orSet(TOPLEVEL_OBJECT_FIRST, TokenSet.create(JetTokens.EQ, JetTokens.COMMA, JetTokens.GT, JetTokens.RBRACKET, JetTokens.DOT, JetTokens.RPAR, JetTokens.RBRACE, JetTokens.LBRACE, JetTokens.SEMICOLON), extraRecoverySet));
+			errorWithRecovery("Type expected", TokenSet.orSet(CLASS_KEYWORDS, TokenSet.create(JetTokens.EQ, JetTokens.COMMA, JetTokens.GT, JetTokens.RBRACKET, JetTokens.DOT, JetTokens.RPAR, JetTokens.RBRACE, JetTokens.LBRACE, JetTokens.SEMICOLON), extraRecoverySet));
 		}
 
 		while(at(JetTokens.QUEST))

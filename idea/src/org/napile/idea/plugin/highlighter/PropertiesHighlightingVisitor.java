@@ -22,6 +22,7 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -85,6 +86,20 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			highlightProperty(nameIdentifier, variableDescriptor, Boolean.FALSE);
 
 		super.visitEnumEntry(enumEntry);
+	}
+
+	@Override
+	public void visitRetellEntry(@NotNull NapileRetellEntry retellEntry)
+	{
+		PsiElement nameIdentifier = retellEntry.getNameIdentifier();
+		if(nameIdentifier == null)
+			return;
+
+		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VARIABLE, retellEntry);
+		if(variableDescriptor != null)
+			highlightProperty(nameIdentifier, variableDescriptor, Boolean.FALSE);
+
+		super.visitRetellEntry(retellEntry);
 	}
 
 	private void highlightProperty(@NotNull PsiElement elementToHighlight, @NotNull VariableDescriptor descriptor, boolean withBackingField)

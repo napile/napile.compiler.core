@@ -205,6 +205,17 @@ public class DeclarationResolver
 				}
 
 				@Override
+				public void visitRetellEntry(NapileRetellEntry retellEntry)
+				{
+					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptor(ownerDescription, scope, retellEntry, trace);
+
+					ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
+
+					context.getRetellEntries().put(retellEntry, propertyDescriptor);
+					context.getDeclaringScopes().put(retellEntry, scope);
+				}
+
+				@Override
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
 					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(ownerDescription, new ArrayList<AnnotationDescriptor>(), Modality.FINAL, Visibility.PUBLIC, PropertyKind.ENUM_ENTRY, NapilePsiUtil.safeName(enumEntry.getName()), CallableMemberDescriptor.Kind.DECLARATION, true);

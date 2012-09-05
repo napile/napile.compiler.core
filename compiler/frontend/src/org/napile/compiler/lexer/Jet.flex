@@ -237,8 +237,11 @@ LONG_TEMPLATE_ENTRY_END=\}
 "anonym"     { return JetTokens.ANONYM_KEYWORD ;}
 "while"      { return JetTokens.WHILE_KEYWORD ;}
 "break"      { return JetTokens.BREAK_KEYWORD ;}
+
 "class"      { return JetTokens.CLASS_KEYWORD ;}
 "enum"       { return JetTokens.ENUM_KEYWORD ;}
+"retell"       { return JetTokens.RETELL_KEYWORD ;}
+
 "throw"      { return JetTokens.THROW_KEYWORD ;}
 "false"      { return JetTokens.FALSE_KEYWORD ;}
 "super"      { return JetTokens.SUPER_KEYWORD ;}

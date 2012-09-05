@@ -625,6 +625,25 @@ public class DescriptorResolver
 		return propertyDescriptor;
 	}
 
+	@NotNull
+	public PropertyDescriptor resolvePropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileRetellEntry retellEntry, BindingTrace trace)
+	{
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, retellEntry.getModifierList(), trace), Modality.FINAL, Visibility.PUBLIC, PropertyKind.VAL, NapilePsiUtil.safeName(retellEntry.getName()), CallableMemberDescriptor.Kind.DECLARATION, true);
+
+		JetType entryType = null;
+		NapileExpression expression = retellEntry.getExpression();
+		if(expression != null)
+			entryType = expressionTypingServices.safeGetType(scope, expression, TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
+		else
+			entryType = ErrorUtils.createErrorType("Expression expected");
+
+		propertyDescriptor.setType(entryType, Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, ReceiverDescriptor.NO_RECEIVER);
+		propertyDescriptor.initialize(null, null);
+
+		trace.record(BindingContext.VARIABLE, retellEntry, propertyDescriptor);
+		return propertyDescriptor;
+	}
+
 	/*package*/
 	static boolean hasBody(NapileProperty property)
 	{

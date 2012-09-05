@@ -23,6 +23,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.lang.resolve.name.FqName;
@@ -33,6 +34,8 @@ import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 
@@ -41,6 +44,7 @@ import com.intellij.util.IncorrectOperationException;
  */
 public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStub> implements NapileLikeClass
 {
+	private static final TokenSet CLASS_DECL_KEYWORDS = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD, JetTokens.RETELL_KEYWORD);
 
 	public NapileClass(@NotNull ASTNode node)
 	{
@@ -52,6 +56,19 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 		super(stub, JetStubElementTypes.CLASS);
 	}
 
+	public ClassKind getKind()
+	{
+		PsiElement element = findNotNullChildByType(CLASS_DECL_KEYWORDS);
+		IElementType elementType = element.getNode().getElementType();
+		if(elementType == JetTokens.RETELL_KEYWORD)
+			return ClassKind.RETELL;
+		else if(element == JetTokens.ENUM_KEYWORD)
+			return ClassKind.ENUM_CLASS;
+		else
+			return ClassKind.CLASS;
+	}
+
+	@Deprecated
 	public boolean isEnum()
 	{
 		return findChildByType(JetTokens.ENUM_KEYWORD) != null;

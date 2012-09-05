@@ -24,15 +24,7 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 
 /**
@@ -47,6 +39,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
 	private final Map<NapileProperty, PropertyDescriptor> properties;
+	private final Map<NapileRetellEntry, PropertyDescriptor> retellEnties;
 	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries;
 	private final Map<NapileNamedFunction, SimpleMethodDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
@@ -61,6 +54,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 		objects = Collections.unmodifiableMap(context.getAnonymous());
 		constructors = Collections.unmodifiableMap(context.getConstructors());
 		properties = Collections.unmodifiableMap(context.getProperties());
+		retellEnties = Collections.unmodifiableMap(context.getRetellEntries());
 		functions = Collections.unmodifiableMap(context.getMethods());
 		enumEntries = Collections.unmodifiableMap(context.getEnumEntries());
 		declaringScopes = Collections.unmodifiableMap(context.getDeclaringScopes());
@@ -90,6 +84,12 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	public Map<NapileProperty, PropertyDescriptor> getProperties()
 	{
 		return properties;
+	}
+
+	@Override
+	public Map<NapileRetellEntry, PropertyDescriptor> getRetellEntries()
+	{
+		return retellEnties;
 	}
 
 	@Override

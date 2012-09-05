@@ -27,6 +27,7 @@ public interface JetStubElementTypes
 	JetMethodElementType METHOD = new JetMethodElementType("METHOD");
 	JetPropertyElementType PROPERTY = new JetPropertyElementType("PROPERTY");
 	NapileEnumEntryElementType ENUM_ENTRY = new NapileEnumEntryElementType("ENUM_ENTRY");
+	NapileRetellEntryElementType RETELL_ENTRY = new NapileRetellEntryElementType("RETELL_ENTRY");
 
 	JetParameterElementType VALUE_PARAMETER = new JetParameterElementType("VALUE_PARAMETER");
 	JetParameterListElementType VALUE_PARAMETER_LIST = new JetParameterListElementType("VALUE_PARAMETER_LIST");

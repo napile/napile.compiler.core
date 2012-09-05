@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.descriptors;
+package org.napile.compiler.lang.psi.stubs;
+
+import org.napile.compiler.lang.psi.NapileRetellEntry;
+import com.intellij.psi.stubs.NamedStub;
 
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 23:41/05.09.12
  */
-public enum ClassKind
+public interface NapilePsiRetellEntryStub extends NamedStub<NapileRetellEntry>
 {
-	CLASS,
-	RETELL,
-	ENUM_CLASS,
-	ENUM_ENTRY,
-	ANONYM_CLASS
 }

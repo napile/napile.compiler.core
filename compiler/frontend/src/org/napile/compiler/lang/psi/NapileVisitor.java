@@ -105,6 +105,11 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitJetElement(enumEntry, data);
 	}
 
+	public R visitRetellEntry(NapileRetellEntry retellEntry, D data)
+	{
+		return visitJetElement(retellEntry, data);
+	}
+
 	public R visitParameterList(NapileParameterList list, D data)
 	{
 		return visitJetElement(list, data);
