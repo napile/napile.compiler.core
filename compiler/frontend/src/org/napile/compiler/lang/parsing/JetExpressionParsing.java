@@ -1515,7 +1515,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		IElementType keywordToken = tt();
 		IElementType declType = null;
-		if(keywordToken == JetTokens.CLASS_KEYWORD || keywordToken == JetTokens.ENUM_KEYWORD)
+		if(JetParsing.CLASS_KEYWORDS.contains(keywordToken))
 		{
 			declType = myJetParsing.parseClass();
 		}

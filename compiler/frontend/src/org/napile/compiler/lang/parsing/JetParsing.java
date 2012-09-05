@@ -49,7 +49,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
-	private static final TokenSet CLASS_KEYWORDS = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD, JetTokens.RETELL_KEYWORD);
+	public static final TokenSet CLASS_KEYWORDS = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD, JetTokens.RETELL_KEYWORD);
 	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.IDENTIFIER);
 
 	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE), CLASS_KEYWORDS);
