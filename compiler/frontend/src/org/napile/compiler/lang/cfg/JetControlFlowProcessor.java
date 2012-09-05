@@ -156,41 +156,11 @@ public class JetControlFlowProcessor
 				// TODO
 			}
 
-			@Override
-			public void visitWildcardPattern(NapileWildcardPattern pattern)
-			{
-				// TODO
-			}
 
 			@Override
 			public void visitExpressionPattern(NapileExpressionPattern pattern)
 			{
 				value(pattern.getExpression(), inCondition);
-			}
-
-			@Override
-			public void visitTuplePattern(NapileTuplePattern pattern)
-			{
-				List<NapileTuplePatternEntry> entries = pattern.getEntries();
-				for(NapileTuplePatternEntry entry : entries)
-				{
-					NapilePattern entryPattern = entry.getPattern();
-					if(entryPattern != null)
-					{
-						entryPattern.accept(this);
-					}
-				}
-			}
-
-			@Override
-			public void visitDecomposerPattern(NapileDecomposerPattern pattern)
-			{
-				value(pattern.getDecomposerExpression(), inCondition);
-				NapileTuplePattern argumentList = pattern.getArgumentList();
-				if(argumentList != null)
-				{
-					argumentList.accept(this);
-				}
 			}
 
 			@Override
@@ -908,16 +878,6 @@ public class JetControlFlowProcessor
 		public void visitPropertyAccessor(NapilePropertyAccessor accessor)
 		{
 			processLocalDeclaration(accessor);
-		}
-
-		@Override
-		public void visitTupleExpression(NapileTupleExpression expression)
-		{
-			for(NapileExpression entry : expression.getEntries())
-			{
-				value(entry, false);
-			}
-			builder.read(expression);
 		}
 
 		@Override

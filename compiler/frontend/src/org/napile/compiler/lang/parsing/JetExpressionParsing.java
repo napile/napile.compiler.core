@@ -16,81 +16,7 @@
 
 package org.napile.compiler.lang.parsing;
 
-import static org.napile.compiler.NapileNodeTypes.ANNOTATED_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.ARRAY_ACCESS_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.BINARY_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.BINARY_WITH_PATTERN;
-import static org.napile.compiler.NapileNodeTypes.BINARY_WITH_TYPE;
-import static org.napile.compiler.NapileNodeTypes.BINDING_PATTERN;
-import static org.napile.compiler.NapileNodeTypes.BLOCK;
-import static org.napile.compiler.NapileNodeTypes.BODY;
-import static org.napile.compiler.NapileNodeTypes.BOOLEAN_CONSTANT;
-import static org.napile.compiler.NapileNodeTypes.BREAK;
-import static org.napile.compiler.NapileNodeTypes.CALL_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.CATCH;
-import static org.napile.compiler.NapileNodeTypes.CHARACTER_CONSTANT;
-import static org.napile.compiler.NapileNodeTypes.CONDITION;
-import static org.napile.compiler.NapileNodeTypes.CONTINUE;
-import static org.napile.compiler.NapileNodeTypes.DECOMPOSER_ARGUMENT;
-import static org.napile.compiler.NapileNodeTypes.DECOMPOSER_ARGUMENT_LIST;
-import static org.napile.compiler.NapileNodeTypes.DECOMPOSER_PATTERN;
-import static org.napile.compiler.NapileNodeTypes.DOT_QUALIFIED_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.DO_WHILE;
-import static org.napile.compiler.NapileNodeTypes.ELSE;
-import static org.napile.compiler.NapileNodeTypes.ESCAPE_STRING_TEMPLATE_ENTRY;
-import static org.napile.compiler.NapileNodeTypes.EXPRESSION_PATTERN;
-import static org.napile.compiler.NapileNodeTypes.FINALLY;
-import static org.napile.compiler.NapileNodeTypes.FLOAT_CONSTANT;
-import static org.napile.compiler.NapileNodeTypes.FOR;
-import static org.napile.compiler.NapileNodeTypes.FUNCTION_LITERAL;
-import static org.napile.compiler.NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.IF;
-import static org.napile.compiler.NapileNodeTypes.INDICES;
-import static org.napile.compiler.NapileNodeTypes.INTEGER_CONSTANT;
-import static org.napile.compiler.NapileNodeTypes.LABELED_TUPLE_ENTRY;
-import static org.napile.compiler.NapileNodeTypes.LABEL_QUALIFIER;
-import static org.napile.compiler.NapileNodeTypes.LABEL_REFERENCE;
-import static org.napile.compiler.NapileNodeTypes.LITERAL_STRING_TEMPLATE_ENTRY;
-import static org.napile.compiler.NapileNodeTypes.LONG_STRING_TEMPLATE_ENTRY;
-import static org.napile.compiler.NapileNodeTypes.LOOP_PARAMETER;
-import static org.napile.compiler.NapileNodeTypes.LOOP_RANGE;
-import static org.napile.compiler.NapileNodeTypes.MODIFIER_LIST;
-import static org.napile.compiler.NapileNodeTypes.NULL;
-import static org.napile.compiler.NapileNodeTypes.ANONYM_CLASS;
-import static org.napile.compiler.NapileNodeTypes.OBJECT_LITERAL;
-import static org.napile.compiler.NapileNodeTypes.OPERATION_REFERENCE;
-import static org.napile.compiler.NapileNodeTypes.PARENTHESIZED;
-import static org.napile.compiler.NapileNodeTypes.POSTFIX_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.PREFIX_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.PROPERTY;
-import static org.napile.compiler.NapileNodeTypes.REFERENCE_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.RETURN;
-import static org.napile.compiler.NapileNodeTypes.ROOT_NAMESPACE;
-import static org.napile.compiler.NapileNodeTypes.SAFE_ACCESS_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.SHORT_STRING_TEMPLATE_ENTRY;
-import static org.napile.compiler.NapileNodeTypes.STRING_TEMPLATE;
-import static org.napile.compiler.NapileNodeTypes.SUPER_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.THEN;
-import static org.napile.compiler.NapileNodeTypes.THIS_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.THROW;
-import static org.napile.compiler.NapileNodeTypes.TRY;
-import static org.napile.compiler.NapileNodeTypes.TUPLE;
-import static org.napile.compiler.NapileNodeTypes.TUPLE_PATTERN;
-import static org.napile.compiler.NapileNodeTypes.TUPLE_PATTERN_ENTRY;
-import static org.napile.compiler.NapileNodeTypes.TYPE_ARGUMENT_LIST;
-import static org.napile.compiler.NapileNodeTypes.TYPE_PATTERN;
-import static org.napile.compiler.NapileNodeTypes.VALUE_ARGUMENT;
-import static org.napile.compiler.NapileNodeTypes.VALUE_ARGUMENT_LIST;
-import static org.napile.compiler.NapileNodeTypes.VALUE_ARGUMENT_NAME;
-import static org.napile.compiler.NapileNodeTypes.VALUE_PARAMETER;
-import static org.napile.compiler.NapileNodeTypes.VALUE_PARAMETER_LIST;
-import static org.napile.compiler.NapileNodeTypes.WHEN;
-import static org.napile.compiler.NapileNodeTypes.WHEN_CONDITION_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.WHEN_CONDITION_IN_RANGE;
-import static org.napile.compiler.NapileNodeTypes.WHEN_CONDITION_IS_PATTERN;
-import static org.napile.compiler.NapileNodeTypes.WHEN_ENTRY;
-import static org.napile.compiler.NapileNodeTypes.WHILE;
-import static org.napile.compiler.NapileNodeTypes.WILDCARD_PATTERN;
+import static org.napile.compiler.NapileNodeTypes.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,8 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.lexer.NapileToken;
 import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileToken;
 import com.google.common.collect.ImmutableMap;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -630,10 +556,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			myJetParsing.parseIdeTemplate();
 		}
-		else if(at(JetTokens.HASH))
-		{
-			parseTupleExpression();
-		}
 		else if(at(JetTokens.PACKAGE_KEYWORD))
 		{
 			parseOneTokenExpression(ROOT_NAMESPACE);
@@ -1058,8 +980,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 *   : attributes pattern
 		 *   : type // '[a] T' is a type-pattern 'T' with an attribute '[a]', not a type-pattern '[a] T'
 		 *          // this makes sense because is-check may be different for a type with attributes
-		 *   : tuplePattern
-		 *   : decomposerPattern
 		 *   : constantPattern
 		 *   : bindingPattern
 		 *   : "*" // wildcard pattern
@@ -1075,46 +995,15 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			PsiBuilder.Marker rollbackMarker = mark();
 			parseBinaryExpression(Precedence.ELVIS);
-			if(at(JetTokens.HASH))
-			{
-				rollbackMarker.drop();
-				PsiBuilder.Marker list = mark();
-				parseTuplePattern(DECOMPOSER_ARGUMENT);
-				list.done(DECOMPOSER_ARGUMENT_LIST);
-				pattern.done(DECOMPOSER_PATTERN);
-			}
-			else
-			{
-				int expressionEndOffset = myBuilder.getCurrentOffset();
-				rollbackMarker.rollbackTo();
-				rollbackMarker = mark();
 
-				myJetParsing.parseTypeRef();
-				//                if (at(AT)) {
-				//                    errorAndAdvance("'@' is allowed only after a decomposer element, not after a type");
-				//                }
-				if(myBuilder.getCurrentOffset() < expressionEndOffset)
-				{
-					rollbackMarker.rollbackTo();
-					parseBinaryExpression(Precedence.ELVIS);
-					pattern.done(DECOMPOSER_PATTERN);
-				}
-				else
-				{
-					rollbackMarker.drop();
-					pattern.done(TYPE_PATTERN);
-				}
-			}
-		}
-		else if(at(JetTokens.HASH))
-		{
-			parseTuplePattern(TUPLE_PATTERN_ENTRY);
-			pattern.done(TUPLE_PATTERN);
-		}
-		else if(at(JetTokens.MUL))
-		{
-			advance(); // MUL
-			pattern.done(WILDCARD_PATTERN);
+			int expressionEndOffset = myBuilder.getCurrentOffset();
+			rollbackMarker.rollbackTo();
+			rollbackMarker = mark();
+
+			myJetParsing.parseTypeRef();
+
+			rollbackMarker.drop();
+			pattern.done(TYPE_PATTERN);
 		}
 		else if(at(JetTokens.VAL_KEYWORD))
 		{
@@ -1135,48 +1024,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 			errorUntil("Pattern expected", TokenSet.create(JetTokens.RBRACE, JetTokens.ARROW));
 			pattern.drop();
 		}
-	}
-
-	/*
-		 * tuplePattern
-		 *  : "#" "(" ((SimpleName "=")? pattern){","}? ")"
-		 *  ;
-		 */
-	private void parseTuplePattern(NapileNodeType entryType)
-	{
-
-		myBuilder.disableNewlines();
-		expect(JetTokens.HASH, "Expecting a tuple pattern of the form '#(...)'", getDecomposerExpressionFollow());
-		expect(JetTokens.LPAR, "Expecting a tuple pattern of the form '#(...)'", getDecomposerExpressionFollow());
-
-		if(!at(JetTokens.RPAR))
-		{
-			while(true)
-			{
-				while(at(JetTokens.COMMA))
-					errorAndAdvance("Expecting a pattern");
-				if(at(JetTokens.RPAR))
-				{
-					error("Expecting a pattern");
-					break;
-				}
-				PsiBuilder.Marker entry = mark();
-				if(at(JetTokens.IDENTIFIER) && lookahead(1) == JetTokens.EQ)
-				{
-					advance(); // IDENTIFIER
-					advance(); // EQ
-				}
-				parsePattern();
-				entry.done(entryType);
-				if(!at(JetTokens.COMMA))
-					break;
-
-				advance(); // COMMA
-			}
-		}
-
-		expect(JetTokens.RPAR, "Expecting ')'");
-		myBuilder.restoreNewlinesState();
 	}
 
 	/*
@@ -2020,57 +1867,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 		mark.done(PARENTHESIZED);
 	}
 
-	/*
-		 * tupleLiteral
-		 *   : "#" "(" (((SimpleName "=")? expression){","})? ")"
-		 *   ;
-		 */
-	private void parseTupleExpression()
-	{
-		assert _at(JetTokens.HASH);
-		PsiBuilder.Marker mark = mark();
-
-		advance(); // HASH
-		advance(); // LPAR
-		myBuilder.disableNewlines();
-		if(!at(JetTokens.RPAR))
-		{
-			while(true)
-			{
-				while(at(JetTokens.COMMA))
-				{
-					errorAndAdvance("Expecting a tuple entry (element)");
-				}
-
-				if(at(JetTokens.IDENTIFIER) && lookahead(1) == JetTokens.EQ)
-				{
-					PsiBuilder.Marker entry = mark();
-					advance(); // IDENTIFIER
-					advance(); // EQ
-					parseExpression();
-					entry.done(LABELED_TUPLE_ENTRY);
-				}
-				else
-				{
-					parseExpression();
-				}
-
-				if(!at(JetTokens.COMMA))
-					break;
-				advance(); // COMMA
-
-				if(at(JetTokens.RPAR))
-				{
-					error("Expecting a tuple entry (element)");
-					break;
-				}
-			}
-		}
-		expect(JetTokens.RPAR, "Expecting ')'");
-		myBuilder.restoreNewlinesState();
-
-		mark.done(TUPLE);
-	}
 
 	/*
 		 * "this" label?

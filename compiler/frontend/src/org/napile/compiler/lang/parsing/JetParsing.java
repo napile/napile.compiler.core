@@ -1367,10 +1367,6 @@ public class JetParsing extends AbstractJetParsing
 		{
 			parseUserType();
 		}
-		else if(at(JetTokens.HASH))
-		{
-			parseTupleType();
-		}
 		else if(at(JetTokens.LPAR))
 		{
 			PsiBuilder.Marker functionOrParenthesizedType = mark();
@@ -1564,60 +1560,6 @@ public class JetParsing extends AbstractJetParsing
 	{
 		int lastId = findLastBefore(lookFor, stopAt, false);
 		createTruncatedBuilder(lastId).parseModifierList(modifierList, true);
-	}
-
-	/*
-		 * tupleType
-		 *   : "#" "(" type{","}? ")"
-		 *   : "#" "(" parameter{","} ")" // tuple with named entries, the names do not affect assignment compatibility
-		 *   ;
-		 */
-	private void parseTupleType()
-	{
-		assert _at(JetTokens.HASH);
-
-		PsiBuilder.Marker tuple = mark();
-
-		myBuilder.disableNewlines();
-		advance(); // HASH
-		expect(JetTokens.LPAR, "Expecting a tuple type in the form of '#(...)");
-
-		if(!at(JetTokens.RPAR))
-		{
-			while(true)
-			{
-				if(at(JetTokens.COLON))
-				{
-					errorAndAdvance("Expecting a name for tuple entry");
-				}
-
-				if(at(JetTokens.IDENTIFIER) && lookahead(1) == JetTokens.COLON)
-				{
-					PsiBuilder.Marker labeledEntry = mark();
-					advance(); // IDENTIFIER
-					advance(); // COLON
-					parseTypeRef();
-					labeledEntry.done(LABELED_TUPLE_TYPE_ENTRY);
-				}
-				else if(TYPE_REF_FIRST.contains(tt()))
-				{
-					parseTypeRef();
-				}
-				else
-				{
-					error("Type expected");
-					break;
-				}
-				if(!at(JetTokens.COMMA))
-					break;
-				advance(); // COMMA
-			}
-		}
-
-		expect(JetTokens.RPAR, "Expecting ')");
-		myBuilder.restoreNewlinesState();
-
-		tuple.done(TUPLE_TYPE);
 	}
 
 	/*

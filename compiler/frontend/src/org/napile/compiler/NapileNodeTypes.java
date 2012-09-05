@@ -62,11 +62,8 @@ public interface NapileNodeTypes
 	NapileNodeType VALUE_ARGUMENT = new NapileNodeType("VALUE_ARGUMENT", NapileValueArgument.class);
 	NapileNodeType VALUE_ARGUMENT_NAME = new NapileNodeType("VALUE_ARGUMENT_NAME", NapileValueArgumentName.class);
 	NapileNodeType TYPE_REFERENCE = new NapileNodeType("TYPE_REFERENCE", NapileTypeReference.class);
-	NapileNodeType LABELED_TUPLE_ENTRY = new NapileNodeType("LABELED_TUPLE_ENTRY");
-	NapileNodeType LABELED_TUPLE_TYPE_ENTRY = new NapileNodeType("LABELED_TUPLE_TYPE_ENTRY");
 
 	NapileNodeType USER_TYPE = new NapileNodeType("USER_TYPE", NapileUserType.class);
-	NapileNodeType TUPLE_TYPE = new NapileNodeType("TUPLE_TYPE", NapileTupleType.class);
 	NapileNodeType FUNCTION_TYPE = new NapileNodeType("FUNCTION_TYPE", NapileFunctionType.class);
 	NapileNodeType SELF_TYPE = new NapileNodeType("SELF_TYPE", NapileSelfType.class);
 	NapileNodeType NULLABLE_TYPE = new NapileNodeType("NULLABLE_TYPE", NapileNullableType.class);
@@ -92,7 +89,6 @@ public interface NapileNodeTypes
 	NapileNodeType LITERAL_STRING_TEMPLATE_ENTRY = new NapileNodeType("LITERAL_STRING_TEMPLATE_ENTRY", NapileLiteralStringTemplateEntry.class);
 	NapileNodeType ESCAPE_STRING_TEMPLATE_ENTRY = new NapileNodeType("ESCAPE_STRING_TEMPLATE_ENTRY", NapileEscapeStringTemplateEntry.class);
 
-	NapileNodeType TUPLE = new NapileNodeType("TUPLE", NapileTupleExpression.class);
 	NapileNodeType PARENTHESIZED = new NapileNodeType("PARENTHESIZED", NapileParenthesizedExpression.class);
 	NapileNodeType RETURN = new NapileNodeType("RETURN", NapileReturnExpression.class);
 	NapileNodeType THROW = new NapileNodeType("THROW", NapileThrowExpression.class);
@@ -142,13 +138,7 @@ public interface NapileNodeTypes
 
 	NapileNodeType EXPRESSION_PATTERN = new NapileNodeType("EXPRESSION_PATTERN", NapileExpressionPattern.class);
 	NapileNodeType TYPE_PATTERN = new NapileNodeType("TYPE_PATTERN", NapileTypePattern.class);
-	NapileNodeType WILDCARD_PATTERN = new NapileNodeType("WILDCARD_PATTERN", NapileWildcardPattern.class);
 	NapileNodeType BINDING_PATTERN = new NapileNodeType("BINDING_PATTERN", NapileBindingPattern.class);
-	NapileNodeType TUPLE_PATTERN = new NapileNodeType("TUPLE_PATTERN", NapileTuplePattern.class);
-	NapileNodeType TUPLE_PATTERN_ENTRY = new NapileNodeType("TUPLE_PATTERN_ENTRY", NapileTuplePatternEntry.class);
-	NapileNodeType DECOMPOSER_PATTERN = new NapileNodeType("DECOMPOSER_PATTERN", NapileDecomposerPattern.class);
-	NapileNodeType DECOMPOSER_ARGUMENT_LIST = new NapileNodeType("DECOMPOSER_ARGUMENT_LIST", NapileTuplePattern.class);
-	NapileNodeType DECOMPOSER_ARGUMENT = TUPLE_PATTERN_ENTRY;
 
 	NapileNodeType WHEN = new NapileNodeType("WHEN", NapileWhenExpression.class);
 	NapileNodeType WHEN_ENTRY = new NapileNodeType("WHEN_ENTRY", NapileWhenEntry.class);

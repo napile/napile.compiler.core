@@ -31,7 +31,6 @@ import static org.napile.compiler.lang.types.expressions.OperatorConventions.INT
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.LONG;
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.SHORT;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -416,27 +415,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public JetTypeInfo visitTupleExpression(NapileTupleExpression expression, ExpressionTypingContext context)
-	{
-		List<NapileExpression> entries = expression.getEntries();
-		List<JetType> types = new ArrayList<JetType>();
-		for(NapileExpression entry : entries)
-		{
-			types.add(context.expressionTypingServices.safeGetType(context.scope, entry, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace)); // TODO
-		}
-		if(context.expectedType != TypeUtils.NO_EXPECTED_TYPE && JetStandardClasses.isTupleType(context.expectedType))
-		{
-			List<JetType> enrichedTypes = checkArgumentTypes(types, entries, context.expectedType.getArguments(), context);
-			if(enrichedTypes != types)
-			{
-				return JetTypeInfo.create(JetStandardClasses.getTupleType(enrichedTypes), context.dataFlowInfo);
-			}
-		}
-		// TODO : labels
-		return DataFlowUtils.checkType(JetStandardClasses.getTupleType(types), expression, context, context.dataFlowInfo);
 	}
 
 	@NotNull

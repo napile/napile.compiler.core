@@ -178,11 +178,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitExpression(expression);
 	}
 
-	public void visitTupleExpression(NapileTupleExpression expression)
-	{
-		visitExpression(expression);
-	}
-
 	public void visitPrefixExpression(NapilePrefixExpression expression)
 	{
 		visitUnaryExpression(expression);
@@ -386,11 +381,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitTypeElement(type);
 	}
 
-	public void visitTupleType(NapileTupleType type)
-	{
-		visitTypeElement(type);
-	}
-
 	public void visitFunctionType(NapileFunctionType type)
 	{
 		visitTypeElement(type);
@@ -451,17 +441,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitPattern(pattern);
 	}
 
-	public void visitWildcardPattern(NapileWildcardPattern pattern)
-	{
-		visitPattern(pattern);
-	}
-
 	public void visitExpressionPattern(NapileExpressionPattern pattern)
-	{
-		visitPattern(pattern);
-	}
-
-	public void visitTuplePattern(NapileTuplePattern pattern)
 	{
 		visitPattern(pattern);
 	}
@@ -469,11 +449,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 	private void visitPattern(NapilePattern pattern)
 	{
 		visitJetElement(pattern);
-	}
-
-	public void visitDecomposerPattern(NapileDecomposerPattern pattern)
-	{
-		visitPattern(pattern);
 	}
 
 	public void visitAnonymClass(NapileAnonymClass declaration)

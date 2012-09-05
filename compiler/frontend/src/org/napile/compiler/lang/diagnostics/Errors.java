@@ -247,7 +247,6 @@ public interface Errors
 
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> TYPE_MISMATCH_IN_FOR_LOOP = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory1<NapileElement, JetType> TYPE_MISMATCH_IN_CONDITION = DiagnosticFactory1.create(Severity.ERROR);
-	DiagnosticFactory2<NapileTuplePattern, JetType, Integer> TYPE_MISMATCH_IN_TUPLE_PATTERN = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> TYPE_MISMATCH_IN_BINDING_PATTERN = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory2<NapileElement, JetType, JetType> INCOMPATIBLE_TYPES = DiagnosticFactory2.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileWhenCondition> EXPECTED_CONDITION = SimpleDiagnosticFactory.create(Severity.ERROR);

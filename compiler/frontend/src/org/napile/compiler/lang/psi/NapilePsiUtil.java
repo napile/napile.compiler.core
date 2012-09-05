@@ -243,10 +243,6 @@ public class NapilePsiUtil
 			if(condition instanceof NapileWhenConditionIsPattern)
 			{
 				NapilePattern pattern = ((NapileWhenConditionIsPattern) condition).getPattern();
-				if(pattern instanceof NapileWildcardPattern)
-				{
-					return true;
-				}
 				if(pattern instanceof NapileBindingPattern)
 				{
 					NapileBindingPattern bindingPattern = (NapileBindingPattern) pattern;

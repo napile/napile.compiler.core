@@ -193,13 +193,6 @@ public class TypeResolver
 				}
 
 				@Override
-				public void visitTupleType(NapileTupleType type)
-				{
-					// TODO labels
-					result[0] = JetStandardClasses.getTupleType(resolveTypes(scope, type.getTypeArguments(), trace, checkBounds));
-				}
-
-				@Override
 				public void visitFunctionType(NapileFunctionType type)
 				{
 					NapileTypeReference receiverTypeRef = type.getReceiverTypeRef();

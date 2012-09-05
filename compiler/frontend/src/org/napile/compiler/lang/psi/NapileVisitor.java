@@ -180,11 +180,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitExpression(expression, data);
 	}
 
-	public R visitTupleExpression(NapileTupleExpression expression, D data)
-	{
-		return visitExpression(expression, data);
-	}
-
 	public R visitPrefixExpression(NapilePrefixExpression expression, D data)
 	{
 		return visitUnaryExpression(expression, data);
@@ -389,11 +384,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitTypeElement(type, data);
 	}
 
-	public R visitTupleType(NapileTupleType type, D data)
-	{
-		return visitTypeElement(type, data);
-	}
-
 	public R visitFunctionType(NapileFunctionType type, D data)
 	{
 		return visitTypeElement(type, data);
@@ -453,18 +443,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	{
 		return visitPattern(pattern, data);
 	}
-
-	public R visitWildcardPattern(NapileWildcardPattern pattern, D data)
-	{
-		return visitPattern(pattern, data);
-	}
-
 	public R visitExpressionPattern(NapileExpressionPattern pattern, D data)
-	{
-		return visitPattern(pattern, data);
-	}
-
-	public R visitTuplePattern(NapileTuplePattern pattern, D data)
 	{
 		return visitPattern(pattern, data);
 	}
@@ -472,11 +451,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	private R visitPattern(NapilePattern pattern, D data)
 	{
 		return visitJetElement(pattern, data);
-	}
-
-	public R visitDecomposerPattern(NapileDecomposerPattern pattern, D data)
-	{
-		return visitPattern(pattern, data);
 	}
 
 	public R visitAnonymClass(NapileAnonymClass element, D data)

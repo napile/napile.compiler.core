@@ -22,39 +22,31 @@ import static org.napile.compiler.lang.diagnostics.Errors.SENSELESS_NULL_IN_WHEN
 import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH_IN_BINDING_PATTERN;
 import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH_IN_CONDITION;
 import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH_IN_RANGE;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH_IN_TUPLE_PATTERN;
 import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
 import static org.napile.compiler.lang.types.expressions.ExpressionTypingUtils.newWritableScopeImpl;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
-import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
 import org.napile.compiler.lang.resolve.calls.autocasts.Nullability;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
-import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import com.google.common.collect.Sets;
-import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.Ref;
 
@@ -264,60 +256,6 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 				JetType type = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
 				checkTypeCompatibility(type, subjectType, typePattern);
 				result.set(Pair.create(context.dataFlowInfo.establishSubtyping(subjectVariables, type), context.dataFlowInfo));
-			}
-
-			@Override
-			public void visitTuplePattern(NapileTuplePattern pattern)
-			{
-				List<NapileTuplePatternEntry> entries = pattern.getEntries();
-				TypeConstructor typeConstructor = subjectType.getConstructor();
-				if(!JetStandardClasses.getTuple(entries.size()).getTypeConstructor().equals(typeConstructor) || typeConstructor.getParameters().size() != entries.size())
-				{
-					context.trace.report(TYPE_MISMATCH_IN_TUPLE_PATTERN.on(pattern, subjectType, entries.size()));
-					return;
-				}
-				for(int i = 0, entriesSize = entries.size(); i < entriesSize; i++)
-				{
-					NapileTuplePatternEntry entry = entries.get(i);
-					JetType type = subjectType.getArguments().get(i);
-
-					// TODO : is a name always allowed, ie for tuple patterns, not decomposer arg lists?
-					ASTNode nameLabelNode = entry.getNameLabelNode();
-					if(nameLabelNode != null)
-					{
-						//                                context.trace.getErrorHandler().genericError(nameLabelNode, "Unsupported [OperatorConventions]");
-						context.trace.report(UNSUPPORTED.on(nameLabelNode.getPsi(), getClass().getCanonicalName()));
-					}
-
-					NapilePattern entryPattern = entry.getPattern();
-					if(entryPattern != null)
-					{
-						Pair<DataFlowInfo, DataFlowInfo> dataFlowInfos = checkPatternType(entryPattern, type, false, scopeToExtend, context);
-						result.set(Pair.create(result.get().first.and(dataFlowInfos.first), context.dataFlowInfo));
-					}
-				}
-			}
-
-			@Override
-			public void visitDecomposerPattern(NapileDecomposerPattern pattern)
-			{
-				NapileExpression decomposerExpression = pattern.getDecomposerExpression();
-				if(decomposerExpression != null)
-				{
-					ReceiverDescriptor receiver = new TransientReceiver(subjectType);
-					JetType selectorReturnType = facade.getSelectorReturnTypeInfo(receiver, null, decomposerExpression, context).getType();
-
-					if(pattern.getArgumentList() != null)
-					{
-						result.set(checkPatternType(pattern.getArgumentList(), selectorReturnType == null ? ErrorUtils.createErrorType("No type") : selectorReturnType, false, scopeToExtend, context));
-					}
-				}
-			}
-
-			@Override
-			public void visitWildcardPattern(NapileWildcardPattern pattern)
-			{
-				// Nothing
 			}
 
 			@Override
