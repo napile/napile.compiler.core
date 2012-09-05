@@ -36,8 +36,8 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import org.napile.idea.plugin.refactoring.JetIntroduceHandlerBase;
@@ -45,7 +45,6 @@ import org.napile.idea.plugin.refactoring.JetNameSuggester;
 import org.napile.idea.plugin.refactoring.JetNameValidatorImpl;
 import org.napile.idea.plugin.refactoring.JetRefactoringBundle;
 import org.napile.idea.plugin.refactoring.JetRefactoringUtil;
-import org.napile.compiler.resolve.DescriptorRenderer;
 import com.intellij.codeInsight.PsiEquivalenceUtil;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.application.ApplicationManager;
@@ -164,11 +163,6 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 		if(expressionType instanceof NamespaceType)
 		{
 			showErrorHint(project, editor, JetRefactoringBundle.message("cannot.refactor.namespace.expression"));
-			return;
-		}
-		if(expressionType != null && JetTypeChecker.INSTANCE.equalTypes(JetStandardClasses.getTupleType(), expressionType))
-		{
-			showErrorHint(project, editor, JetRefactoringBundle.message("cannot.refactor.expression.has.unit.type"));
 			return;
 		}
 		if(expressionType == null && noTypeInference)

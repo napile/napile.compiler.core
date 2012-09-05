@@ -32,8 +32,6 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import com.intellij.codeInsight.unwrap.ScopeHighlighter;
 import com.intellij.openapi.editor.Editor;
@@ -126,9 +124,9 @@ public class JetRefactoringUtil
 				if(addExpression)
 				{
 					NapileExpression expression = (NapileExpression) element;
-					BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile((NapileFile) expression.getContainingFile());
+					BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(expression.getContainingFile());
 					JetType expressionType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression);
-					if(expressionType == null || !(expressionType instanceof NamespaceType) && !JetTypeChecker.INSTANCE.equalTypes(JetStandardClasses.getTupleType(), expressionType))
+					if(expressionType == null || !(expressionType instanceof NamespaceType))
 					{
 						expressions.add(expression);
 					}

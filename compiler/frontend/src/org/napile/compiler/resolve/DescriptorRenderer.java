@@ -138,10 +138,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			return escape(JetStandardClasses.UNIT_ALIAS + (type.isNullable() ? "?" : ""));
 		}
-		else if(JetStandardClasses.isTupleType(type))
-		{
-			return escape(renderTupleType(type, shortNamesOnly));
-		}
 		else if(JetStandardClasses.isFunctionType(type))
 		{
 			return escape(renderFunctionType(type, shortNamesOnly));
@@ -217,20 +213,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				result.append(", ");
 			}
 		}
-	}
-
-	protected String renderTupleType(JetType type, boolean shortNamesOnly)
-	{
-		StringBuilder sb = new StringBuilder("#(");
-		appendTypes(sb, JetStandardClasses.getTupleElementTypes(type), shortNamesOnly);
-		sb.append(")");
-
-		if(type.isNullable())
-		{
-			sb.append("?");
-		}
-
-		return sb.toString();
 	}
 
 	private String renderFunctionType(JetType type, boolean shortNamesOnly)
