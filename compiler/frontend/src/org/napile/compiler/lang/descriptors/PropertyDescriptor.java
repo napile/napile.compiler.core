@@ -238,7 +238,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		PropertySetterDescriptor newSetter = setter == null ? null : new PropertySetterDescriptor(substitutedDescriptor, Lists.newArrayList(setter.getAnnotations()), DescriptorUtils.convertModality(setter.getModality(), false), setter.getVisibility(), setter.hasBody(), setter.isDefault(), kind, setter.getOriginal(), false);
 		if(newSetter != null)
 		{
-			List<ValueParameterDescriptor> substitutedValueParameters = FunctionDescriptorUtil.getSubstitutedValueParameters(newSetter, setter, substitutor);
+			List<ParameterDescriptor> substitutedValueParameters = FunctionDescriptorUtil.getSubstitutedValueParameters(newSetter, setter, substitutor);
 			if(substitutedValueParameters == null)
 			{
 				return null;

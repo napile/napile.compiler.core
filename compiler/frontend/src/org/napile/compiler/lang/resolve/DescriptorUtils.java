@@ -134,7 +134,7 @@ public class DescriptorUtils
 	 */
 	public static boolean isLocal(DeclarationDescriptor containerOfTheCurrentLocality, DeclarationDescriptor candidate)
 	{
-		if(candidate instanceof ValueParameterDescriptor)
+		if(candidate instanceof ParameterDescriptor)
 		{
 			return true;
 		}

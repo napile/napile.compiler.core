@@ -29,25 +29,25 @@ import com.intellij.util.ArrayFactory;
 /**
  * @author max
  */
-public class NapileParameter extends NapileNamedDeclarationStub<PsiJetParameterStub>
+public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetParameterStub>
 {
-	public static final NapileParameter[] EMPTY_ARRAY = new NapileParameter[0];
+	public static final NapilePropertyParameter[] EMPTY_ARRAY = new NapilePropertyParameter[0];
 
-	public static final ArrayFactory<NapileParameter> ARRAY_FACTORY = new ArrayFactory<NapileParameter>()
+	public static final ArrayFactory<NapilePropertyParameter> ARRAY_FACTORY = new ArrayFactory<NapilePropertyParameter>()
 	{
 		@Override
-		public NapileParameter[] create(final int count)
+		public NapilePropertyParameter[] create(final int count)
 		{
-			return count == 0 ? EMPTY_ARRAY : new NapileParameter[count];
+			return count == 0 ? EMPTY_ARRAY : new NapilePropertyParameter[count];
 		}
 	};
 
-	public NapileParameter(@NotNull ASTNode node)
+	public NapilePropertyParameter(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileParameter(@NotNull PsiJetParameterStub stub, @NotNull IStubElementType nodeType)
+	public NapilePropertyParameter(@NotNull PsiJetParameterStub stub, @NotNull IStubElementType nodeType)
 	{
 		super(stub, nodeType);
 	}
@@ -62,13 +62,13 @@ public class NapileParameter extends NapileNamedDeclarationStub<PsiJetParameterS
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitParameter(this);
+		visitor.visitPropertyParameter(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitParameter(this, data);
+		return visitor.visitPropertyParameter(this, data);
 	}
 
 	@Nullable

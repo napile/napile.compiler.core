@@ -22,8 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileParameter;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 
 /**
  * @author yole
@@ -41,18 +39,7 @@ public class JetMainDetector
 
 	public static boolean isMain(@NotNull NapileNamedFunction function)
 	{
-		if("main".equals(function.getName()))
-		{
-			List<NapileParameter> parameters = function.getValueParameters();
-			if(parameters.size() == 1)
-			{
-				NapileTypeReference reference = parameters.get(0).getTypeReference();
-				if(reference != null && reference.getText().equals("Array<String>"))
-				{  // TODO correct check
-					return true;
-				}
-			}
-		}
+		//TODO [VISTALL] make it
 		return false;
 	}
 

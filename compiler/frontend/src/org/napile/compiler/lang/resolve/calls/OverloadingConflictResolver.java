@@ -25,7 +25,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -107,8 +107,8 @@ public class OverloadingConflictResolver
 				return false;
 		}
 
-		List<ValueParameterDescriptor> fParams = f.getValueParameters();
-		List<ValueParameterDescriptor> gParams = g.getValueParameters();
+		List<ParameterDescriptor> fParams = f.getValueParameters();
+		List<ParameterDescriptor> gParams = g.getValueParameters();
 
 		int fSize = fParams.size();
 		int gSize = gParams.size();
@@ -128,8 +128,8 @@ public class OverloadingConflictResolver
 
 			for(int i = 0; i < fSize; i++)
 			{
-				ValueParameterDescriptor fParam = fParams.get(i);
-				ValueParameterDescriptor gParam = gParams.get(i);
+				ParameterDescriptor fParam = fParams.get(i);
+				ParameterDescriptor gParam = gParams.get(i);
 
 				JetType fParamType = fParam.getType();
 				JetType gParamType = gParam.getType();
@@ -147,8 +147,8 @@ public class OverloadingConflictResolver
 			int minSize = Math.min(fSize, gSize);
 			for(int i = 0; i < minSize - 1; i++)
 			{
-				ValueParameterDescriptor fParam = fParams.get(i);
-				ValueParameterDescriptor gParam = gParams.get(i);
+				ParameterDescriptor fParam = fParams.get(i);
+				ParameterDescriptor gParam = gParams.get(i);
 
 				JetType fParamType = fParam.getType();
 				JetType gParamType = gParam.getType();
@@ -166,12 +166,12 @@ public class OverloadingConflictResolver
 			// here we check that typeof(a) < typeof(vg) and elementTypeOf(vf) < elementTypeOf(vg)
 			if(fSize < gSize)
 			{
-				ValueParameterDescriptor fParam = fParams.get(fSize - 1);
+				ParameterDescriptor fParam = fParams.get(fSize - 1);
 				JetType fParamType = fParam.getVarargElementType();
 				assert fParamType != null : "fIsVararg guarantees this";
 				for(int i = fSize - 1; i < gSize; i++)
 				{
-					ValueParameterDescriptor gParam = gParams.get(i);
+					ParameterDescriptor gParam = gParams.get(i);
 					if(!typeMoreSpecific(fParamType, gParam.getType()))
 					{
 						return false;
@@ -180,12 +180,12 @@ public class OverloadingConflictResolver
 			}
 			else
 			{
-				ValueParameterDescriptor gParam = gParams.get(gSize - 1);
+				ParameterDescriptor gParam = gParams.get(gSize - 1);
 				JetType gParamType = gParam.getVarargElementType();
 				assert gParamType != null : "gIsVararg guarantees this";
 				for(int i = gSize - 1; i < fSize; i++)
 				{
-					ValueParameterDescriptor fParam = fParams.get(i);
+					ParameterDescriptor fParam = fParams.get(i);
 					if(!typeMoreSpecific(fParam.getType(), gParamType))
 					{
 						return false;
@@ -209,7 +209,7 @@ public class OverloadingConflictResolver
 		return true;
 	}
 
-	private boolean isVariableArity(List<ValueParameterDescriptor> fParams)
+	private boolean isVariableArity(List<ParameterDescriptor> fParams)
 	{
 		int fSize = fParams.size();
 		return fSize > 0 && fParams.get(fSize - 1).getVarargElementType() != null;

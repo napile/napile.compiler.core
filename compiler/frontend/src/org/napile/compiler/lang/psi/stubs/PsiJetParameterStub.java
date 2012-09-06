@@ -17,13 +17,13 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import com.intellij.psi.stubs.NamedStub;
 
 /**
  * @author Nikolay Krasko
  */
-public interface PsiJetParameterStub extends NamedStub<NapileParameter>
+public interface PsiJetParameterStub extends NamedStub<NapilePropertyParameter>
 {
 	boolean isMutable();
 

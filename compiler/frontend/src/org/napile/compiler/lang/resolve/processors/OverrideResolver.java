@@ -636,9 +636,9 @@ public class OverrideResolver
 		// Then
 		//  a) p1 is not allowed to have a default value declared
 		//  b) p1 must have the same name as p2
-		for(ValueParameterDescriptor parameterFromSubclass : declared.getValueParameters())
+		for(ParameterDescriptor parameterFromSubclass : declared.getValueParameters())
 		{
-			NapileParameter parameter = fakeOverride ? null : (NapileParameter) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), parameterFromSubclass);
+			NapilePropertyParameter parameter = fakeOverride ? null : (NapilePropertyParameter) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), parameterFromSubclass);
 
 			NapileLikeClass classElement = fakeOverride ? (NapileLikeClass) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared.getContainingDeclaration()) : null;
 
@@ -648,7 +648,7 @@ public class OverrideResolver
 			}
 
 			boolean superWithDefault = false;
-			for(ValueParameterDescriptor parameterFromSuperclass : parameterFromSubclass.getOverriddenDescriptors())
+			for(ParameterDescriptor parameterFromSuperclass : parameterFromSubclass.getOverriddenDescriptors())
 			{
 				if(parameterFromSuperclass.declaresDefaultValue())
 				{

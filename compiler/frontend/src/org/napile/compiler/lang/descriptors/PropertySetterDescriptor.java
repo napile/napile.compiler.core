@@ -33,7 +33,7 @@ import org.napile.compiler.lang.types.lang.JetStandardClasses;
 public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 {
 
-	private ValueParameterDescriptor parameter;
+	private ParameterDescriptor parameter;
 	@NotNull
 	private final PropertySetterDescriptor original;
 
@@ -48,7 +48,7 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 		this.original = original != null ? original : this;
 	}
 
-	public void initialize(@NotNull ValueParameterDescriptor parameter)
+	public void initialize(@NotNull ParameterDescriptor parameter)
 	{
 		assert this.parameter == null;
 		this.parameter = parameter;
@@ -57,7 +57,7 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 	public void initializeDefault()
 	{
 		assert parameter == null;
-		parameter = new ValueParameterDescriptorImpl(this, 0, Collections.<AnnotationDescriptor>emptyList(), Name.special("<set-?>"), PropertyKind.VAR, getCorrespondingProperty().getReturnType(), false, null);
+		parameter = new PropertyParameterDescriptorImpl(this, 0, Collections.<AnnotationDescriptor>emptyList(), Name.special("<set-?>"), PropertyKind.VAR, getCorrespondingProperty().getReturnType(), false, null);
 	}
 
 	@NotNull
@@ -69,7 +69,7 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 
 	@NotNull
 	@Override
-	public List<ValueParameterDescriptor> getValueParameters()
+	public List<ParameterDescriptor> getValueParameters()
 	{
 		if(parameter == null)
 		{

@@ -30,7 +30,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -173,7 +173,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		return true;
 	}
 
-	private static String renderParameter(ValueParameterDescriptor descriptor, boolean named, BindingContext bindingContext)
+	private static String renderParameter(ParameterDescriptor descriptor, boolean named, BindingContext bindingContext)
 	{
 		StringBuilder builder = new StringBuilder();
 		if(named)
@@ -188,9 +188,9 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		{
 			PsiElement element = BindingContextUtils.descriptorToDeclaration(bindingContext, descriptor);
 			String defaultExpression = "?";
-			if(element instanceof NapileParameter)
+			if(element instanceof NapilePropertyParameter)
 			{
-				NapileParameter parameter = (NapileParameter) element;
+				NapilePropertyParameter parameter = (NapilePropertyParameter) element;
 				NapileExpression defaultValue = parameter.getDefaultValue();
 				if(defaultValue != null)
 				{
@@ -223,7 +223,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		return builder.toString();
 	}
 
-	private static JetType getActualParameterType(ValueParameterDescriptor descriptor)
+	private static JetType getActualParameterType(ParameterDescriptor descriptor)
 	{
 		JetType paramType = descriptor.getType();
 		if(descriptor.getVarargElementType() != null)
@@ -249,7 +249,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 				BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(file);
 				MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 				StringBuilder builder = new StringBuilder();
-				List<ValueParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
+				List<ParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
 				List<NapileValueArgument> valueArguments = argumentList.getArguments();
 				int currentParameterIndex = context.getCurrentParameterIndex();
 				int boldStartOffset = -1;
@@ -317,7 +317,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 							}
 							else
 							{
-								ValueParameterDescriptor param = valueParameters.get(i);
+								ParameterDescriptor param = valueParameters.get(i);
 								builder.append(renderParameter(param, false, bindingContext));
 								if(i < currentParameterIndex)
 								{
@@ -339,7 +339,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 						}
 						else
 						{
-							ValueParameterDescriptor param = valueParameters.get(i);
+							ParameterDescriptor param = valueParameters.get(i);
 							builder.append(renderParameter(param, false, bindingContext));
 						}
 					}
@@ -354,7 +354,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 								for(int j = 0; j < valueParameters.size(); ++j)
 								{
 									NapileSimpleNameExpression referenceExpression = argument.getArgumentName().getReferenceExpression();
-									ValueParameterDescriptor param = valueParameters.get(j);
+									ParameterDescriptor param = valueParameters.get(j);
 									if(referenceExpression != null && !usedIndexes[j] &&
 											param.getName().equals(referenceExpression.getReferencedNameAsName()))
 									{
@@ -391,7 +391,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 
 							for(int j = 0; j < valueParameters.size(); ++j)
 							{
-								ValueParameterDescriptor param = valueParameters.get(j);
+								ParameterDescriptor param = valueParameters.get(j);
 								if(!usedIndexes[j])
 								{
 									usedIndexes[j] = true;

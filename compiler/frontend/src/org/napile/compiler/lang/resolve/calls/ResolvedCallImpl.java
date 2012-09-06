@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -71,8 +71,8 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 	private final boolean isSafeCall;
 
 	private final Map<TypeParameterDescriptor, JetType> typeArguments = Maps.newLinkedHashMap();
-	private final Map<ValueParameterDescriptor, JetType> autoCasts = Maps.newHashMap();
-	private final Map<ValueParameterDescriptor, ResolvedValueArgument> valueArguments = Maps.newLinkedHashMap();
+	private final Map<ParameterDescriptor, JetType> autoCasts = Maps.newHashMap();
+	private final Map<ParameterDescriptor, ResolvedValueArgument> valueArguments = Maps.newLinkedHashMap();
 	private boolean someArgumentHasNoType = false;
 	private TemporaryBindingTrace trace;
 	private ResolutionStatus status = ResolutionStatus.UNKNOWN_STATUS;
@@ -138,17 +138,17 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 		resultingDescriptor = (D) candidateDescriptor.substitute(substitutor);
 		assert resultingDescriptor != null : candidateDescriptor;
 
-		Map<ValueParameterDescriptor, ValueParameterDescriptor> parameterMap = Maps.newHashMap();
-		for(ValueParameterDescriptor valueParameterDescriptor : resultingDescriptor.getValueParameters())
+		Map<ParameterDescriptor, ParameterDescriptor> parameterMap = Maps.newHashMap();
+		for(ParameterDescriptor parameterDescriptor : resultingDescriptor.getValueParameters())
 		{
-			parameterMap.put(valueParameterDescriptor.getOriginal(), valueParameterDescriptor);
+			parameterMap.put(parameterDescriptor.getOriginal(), parameterDescriptor);
 		}
 
-		Map<ValueParameterDescriptor, ResolvedValueArgument> originalValueArguments = Maps.newHashMap(valueArguments);
+		Map<ParameterDescriptor, ResolvedValueArgument> originalValueArguments = Maps.newHashMap(valueArguments);
 		valueArguments.clear();
-		for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> entry : originalValueArguments.entrySet())
+		for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : originalValueArguments.entrySet())
 		{
-			ValueParameterDescriptor substitutedVersion = parameterMap.get(entry.getKey().getOriginal());
+			ParameterDescriptor substitutedVersion = parameterMap.get(entry.getKey().getOriginal());
 			assert substitutedVersion != null : entry.getKey();
 			valueArguments.put(substitutedVersion, entry.getValue());
 		}
@@ -171,13 +171,13 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 		return constraintSystem;
 	}
 
-	public void recordValueArgument(@NotNull ValueParameterDescriptor valueParameter, @NotNull ResolvedValueArgument valueArgument)
+	public void recordValueArgument(@NotNull ParameterDescriptor valueParameter, @NotNull ResolvedValueArgument valueArgument)
 	{
 		assert !valueArguments.containsKey(valueParameter) : valueParameter + " -> " + valueArgument;
 		valueArguments.put(valueParameter, valueArgument);
 	}
 
-	public void autoCastValueArgument(@NotNull ValueParameterDescriptor parameter, @NotNull JetType target)
+	public void autoCastValueArgument(@NotNull ParameterDescriptor parameter, @NotNull JetType target)
 	{
 		assert !autoCasts.containsKey(parameter);
 		autoCasts.put(parameter, target);
@@ -206,7 +206,7 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 
 	@Override
 	@NotNull
-	public Map<ValueParameterDescriptor, ResolvedValueArgument> getValueArguments()
+	public Map<ParameterDescriptor, ResolvedValueArgument> getValueArguments()
 	{
 		return valueArguments;
 	}
@@ -221,7 +221,7 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 			arguments.add(null);
 		}
 
-		for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> entry : valueArguments.entrySet())
+		for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : valueArguments.entrySet())
 		{
 			if(arguments.set(entry.getKey().getIndex(), entry.getValue()) != null)
 			{

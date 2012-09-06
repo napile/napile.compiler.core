@@ -85,20 +85,20 @@ public class FunctionDescriptorUtil
 	}
 
 	@Nullable
-	public static List<ValueParameterDescriptor> getSubstitutedValueParameters(MethodDescriptor substitutedDescriptor, @NotNull MethodDescriptor methodDescriptor, @NotNull TypeSubstitutor substitutor)
+	public static List<ParameterDescriptor> getSubstitutedValueParameters(MethodDescriptor substitutedDescriptor, @NotNull MethodDescriptor methodDescriptor, @NotNull TypeSubstitutor substitutor)
 	{
-		List<ValueParameterDescriptor> result = new ArrayList<ValueParameterDescriptor>();
-		List<ValueParameterDescriptor> unsubstitutedValueParameters = methodDescriptor.getValueParameters();
+		List<ParameterDescriptor> result = new ArrayList<ParameterDescriptor>();
+		List<ParameterDescriptor> unsubstitutedValueParameters = methodDescriptor.getValueParameters();
 		for(int i = 0, unsubstitutedValueParametersSize = unsubstitutedValueParameters.size(); i < unsubstitutedValueParametersSize; i++)
 		{
-			ValueParameterDescriptor unsubstitutedValueParameter = unsubstitutedValueParameters.get(i);
+			ParameterDescriptor unsubstitutedValueParameter = unsubstitutedValueParameters.get(i);
 			// TODO : Lazy?
 			JetType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType());
 			JetType varargElementType = unsubstitutedValueParameter.getVarargElementType();
 			JetType substituteVarargElementType = varargElementType == null ? null : substitutor.substitute(varargElementType);
 			if(substitutedType == null)
 				return null;
-			result.add(new ValueParameterDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.getPropertyKind(), substitutedType, substituteVarargElementType));
+			result.add(new PropertyParameterDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.getPropertyKind(), substitutedType, substituteVarargElementType));
 		}
 		return result;
 	}
@@ -129,9 +129,9 @@ public class FunctionDescriptorUtil
 		{
 			parameterScope.addTypeParameterDescriptor(typeParameter);
 		}
-		for(ValueParameterDescriptor valueParameterDescriptor : descriptor.getValueParameters())
+		for(ParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
 		{
-			parameterScope.addVariableDescriptor(valueParameterDescriptor);
+			parameterScope.addVariableDescriptor(parameterDescriptor);
 		}
 		parameterScope.addLabeledDeclaration(descriptor);
 		parameterScope.changeLockLevel(WritableScope.LockLevel.READING);

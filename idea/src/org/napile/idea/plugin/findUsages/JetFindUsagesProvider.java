@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
@@ -63,7 +63,7 @@ public class JetFindUsagesProvider implements FindUsagesProvider
 		{
 			return "class";
 		}
-		if(psiElement instanceof NapileParameter)
+		if(psiElement instanceof NapilePropertyParameter)
 		{
 			return "parameter";
 		}

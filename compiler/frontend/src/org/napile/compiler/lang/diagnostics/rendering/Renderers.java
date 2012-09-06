@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.Named;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
@@ -220,13 +220,13 @@ public class Renderers
 
 			final Collection<ConstraintPosition> errorPositions = Sets.newHashSet();
 			List<JetType> valueArgumentTypes = Lists.newArrayList();
-			for(ValueParameterDescriptor valueParameterDescriptor : substitutedDescriptor.getValueParameters())
+			for(ParameterDescriptor parameterDescriptor : substitutedDescriptor.getValueParameters())
 			{
-				valueArgumentTypes.add(valueParameterDescriptor.getType());
-				JetType actualType = inferenceErrorData.valueArgumentsTypes.get(valueParameterDescriptor.getIndex());
-				if(!JetTypeChecker.INSTANCE.isSubtypeOf(actualType, valueParameterDescriptor.getType()))
+				valueArgumentTypes.add(parameterDescriptor.getType());
+				JetType actualType = inferenceErrorData.valueArgumentsTypes.get(parameterDescriptor.getIndex());
+				if(!JetTypeChecker.INSTANCE.isSubtypeOf(actualType, parameterDescriptor.getType()))
 				{
-					errorPositions.add(ConstraintPosition.getValueParameterPosition(valueParameterDescriptor.getIndex()));
+					errorPositions.add(ConstraintPosition.getValueParameterPosition(parameterDescriptor.getIndex()));
 				}
 			}
 

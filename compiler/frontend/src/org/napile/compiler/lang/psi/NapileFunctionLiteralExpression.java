@@ -54,7 +54,7 @@ public class NapileFunctionLiteralExpression extends NapileExpressionImpl implem
 
 	@NotNull
 	@Override
-	public List<NapileParameter> getValueParameters()
+	public List<NapileElement> getValueParameters()
 	{
 		return getFunctionLiteral().getValueParameters();
 	}

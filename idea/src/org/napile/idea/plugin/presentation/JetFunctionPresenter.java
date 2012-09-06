@@ -21,8 +21,9 @@ import java.util.Collection;
 import javax.swing.Icon;
 
 import org.apache.commons.lang.StringUtils;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.name.FqName;
@@ -57,14 +58,14 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 			{
 				StringBuilder presentation = new StringBuilder(function.getName());
 
-				Collection<String> paramsStrings = Collections2.transform(function.getValueParameters(), new Function<NapileParameter, String>()
+				Collection<String> paramsStrings = Collections2.transform(function.getValueParameters(), new Function<NapileElement, String>()
 				{
 					@Override
-					public String apply(NapileParameter parameter)
+					public String apply(NapileElement parameter)
 					{
-						if(parameter != null)
+						if(parameter instanceof NapilePropertyParameter)
 						{
-							NapileTypeReference reference = parameter.getTypeReference();
+							NapileTypeReference reference = ((NapilePropertyParameter) parameter).getTypeReference();
 							if(reference != null)
 							{
 								String text = reference.getText();

@@ -60,12 +60,12 @@ public class NapilePropertyAccessor extends NapileDeclarationImpl implements Nap
 	}
 
 	@Nullable
-	public NapileParameter getParameter()
+	public NapileElement getParameter()
 	{
 		NapileParameterList parameterList = (NapileParameterList) findChildByType(NapileNodeTypes.VALUE_PARAMETER_LIST);
 		if(parameterList == null)
 			return null;
-		List<NapileParameter> parameters = parameterList.getParameters();
+		List<NapileElement> parameters = parameterList.getParameters();
 		if(parameters.isEmpty())
 			return null;
 		return parameters.get(0);
@@ -73,9 +73,9 @@ public class NapilePropertyAccessor extends NapileDeclarationImpl implements Nap
 
 	@NotNull
 	@Override
-	public List<NapileParameter> getValueParameters()
+	public List<NapileElement> getValueParameters()
 	{
-		NapileParameter parameter = getParameter();
+		NapileElement parameter = getParameter();
 		if(parameter == null)
 		{
 			return Collections.emptyList();

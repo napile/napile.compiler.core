@@ -60,10 +60,10 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 
 	@Override
 	@NotNull
-	public List<NapileParameter> getValueParameters()
+	public List<NapileElement> getValueParameters()
 	{
 		NapileParameterList list = getParameterList();
-		return list != null ? list.getParameters() : Collections.<NapileParameter>emptyList();
+		return list != null ? list.getParameters() : Collections.<NapileElement>emptyList();
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileParameterList;
 import org.napile.compiler.lang.psi.NapileProperty;
@@ -90,9 +90,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 				removeTypeAnnotation(property);
 			}
 		}
-		else if(parent instanceof NapileParameter)
+		else if(parent instanceof NapilePropertyParameter)
 		{
-			NapileParameter parameter = (NapileParameter) parent;
+			NapilePropertyParameter parameter = (NapilePropertyParameter) parent;
 			if(parameter.getTypeReference() == null)
 			{
 				addTypeAnnotation(project, parameter, type);
@@ -144,9 +144,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		{
 			setText(JetBundle.message("specify.type.explicitly.add.return.type.action.name"));
 		}
-		else if(declaration instanceof NapileParameter && NapileNodeTypes.LOOP_PARAMETER == declaration.getNode().getElementType())
+		else if(declaration instanceof NapilePropertyParameter && NapileNodeTypes.LOOP_PARAMETER == declaration.getNode().getElementType())
 		{
-			if(((NapileParameter) declaration).getTypeReference() != null)
+			if(((NapilePropertyParameter) declaration).getTypeReference() != null)
 			{
 				setText(JetBundle.message("specify.type.explicitly.remove.action.name"));
 				return true;
@@ -255,7 +255,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		ReferenceToClassesShortening.compactReferenceToClasses(Collections.singletonList(function));
 	}
 
-	public static void addTypeAnnotation(Project project, NapileParameter parameter, @NotNull JetType exprType)
+	public static void addTypeAnnotation(Project project, NapilePropertyParameter parameter, @NotNull JetType exprType)
 	{
 		NapileTypeReference typeReference = NapilePsiFactory.createType(project, DescriptorRenderer.TEXT.renderType(exprType));
 		Pair<PsiElement, PsiElement> colon = NapilePsiFactory.createColon(project);
@@ -283,7 +283,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		removeTypeAnnotation(property, property.getPropertyTypeRef());
 	}
 
-	public static void removeTypeAnnotation(NapileParameter parameter)
+	public static void removeTypeAnnotation(NapilePropertyParameter parameter)
 	{
 		removeTypeAnnotation(parameter, parameter.getTypeReference());
 	}

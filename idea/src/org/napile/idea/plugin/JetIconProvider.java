@@ -101,10 +101,10 @@ public class JetIconProvider extends IconProvider
 		}
 		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry)
 			icon = JetIcons.VAL;
-		else if(psiElement instanceof NapileParameter)
+		else if(psiElement instanceof NapilePropertyParameter)
 		{
 			icon = JetIcons.PARAMETER;
-			NapileParameter parameter = (NapileParameter) psiElement;
+			NapilePropertyParameter parameter = (NapilePropertyParameter) psiElement;
 			if(parameter.getValOrVarNode() != null)
 			{
 				NapileParameterList parameterList = PsiTreeUtil.getParentOfType(psiElement, NapileParameterList.class);

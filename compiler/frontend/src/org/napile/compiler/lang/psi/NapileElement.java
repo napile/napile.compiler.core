@@ -19,12 +19,24 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.PsiInvalidElementAccessException;
+import com.intellij.util.ArrayFactory;
 
 /**
  * @author Nikolay Krasko
  */
 public interface NapileElement extends NavigatablePsiElement
 {
+	NapileElement[] EMPTY_ARRAY = new NapileElement[0];
+
+	ArrayFactory<NapileElement> ARRAY_FACTORY = new ArrayFactory<NapileElement>()
+	{
+		@Override
+		public NapileElement[] create(final int count)
+		{
+			return count == 0 ? EMPTY_ARRAY : new NapileElement[count];
+		}
+	};
+
 	<D> void acceptChildren(@NotNull NapileTreeVisitor<D> visitor, D data);
 
 	void accept(@NotNull NapileVisitorVoid visitor);

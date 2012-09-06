@@ -24,7 +24,7 @@ import org.napile.compiler.lang.psi.NapileClassInitializer;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.name.Name;
 import com.google.common.collect.HashMultimap;
@@ -77,7 +77,7 @@ public abstract class AbstractPsiBasedDeclarationProvider implements Declaration
 			NapileLikeClass classOrObject = (NapileLikeClass) declaration;
 			classesAndObjects.put(classOrObject.getNameAsName(), classOrObject);
 		}
-		else if(declaration instanceof NapileParameter)
+		else if(declaration instanceof NapilePropertyParameter)
 		{
 			// Do nothing, just put it into allDeclarations is enough
 		}

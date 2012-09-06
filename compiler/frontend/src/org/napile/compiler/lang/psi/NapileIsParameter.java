@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,37 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.NapileNodeTypes;
+import com.intellij.lang.ASTNode;
 
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 13:34/06.09.12
  */
-public interface NapileDeclarationWithBody extends NapileDeclaration
+public class NapileIsParameter extends NapileDeclarationImpl
 {
+	public NapileIsParameter(@NotNull ASTNode node)
+	{
+		super(node);
+	}
+
+	@Override
+	public void accept(@NotNull NapileVisitorVoid visitor)
+	{
+		visitor.visitIsParameter(this);
+	}
+
+	@Override
+	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
+	{
+		return visitor.visitIsParameter(this, data);
+	}
+
 	@Nullable
-	NapileExpression getBodyExpression();
-
-	boolean hasBlockBody();
-
-	boolean hasDeclaredReturnType();
-
-	@NotNull
-	NapileElement asElement();
-
-	@NotNull
-	List<NapileElement> getValueParameters();
+	public NapileSimpleNameExpression getReferenceExpression()
+	{
+		return (NapileSimpleNameExpression) findChildByType(NapileNodeTypes.REFERENCE_EXPRESSION);
+	}
 }
-

@@ -26,7 +26,7 @@ import org.napile.compiler.lang.types.JetType;
 /**
  * @author abreslav
  */
-public interface ValueParameterDescriptor extends VariableDescriptor, Annotated
+public interface ParameterDescriptor extends VariableDescriptor, Annotated
 {
 	/**
 	 * Returns the 0-based index of the value parameter in the parameter list of its containing function.
@@ -59,10 +59,10 @@ public interface ValueParameterDescriptor extends VariableDescriptor, Annotated
 
 	@NotNull
 	@Override
-	ValueParameterDescriptor getOriginal();
+	ParameterDescriptor getOriginal();
 
 	@NotNull
-	ValueParameterDescriptor copy(DeclarationDescriptor newOwner);
+	ParameterDescriptor copy(DeclarationDescriptor newOwner);
 
 	/**
 	 * Parameter p1 overrides p2 iff
@@ -71,7 +71,7 @@ public interface ValueParameterDescriptor extends VariableDescriptor, Annotated
 	 */
 	@NotNull
 	@Override
-	Set<? extends ValueParameterDescriptor> getOverriddenDescriptors();
+	Set<? extends ParameterDescriptor> getOverriddenDescriptors();
 
-	void addOverriddenDescriptor(@NotNull ValueParameterDescriptor overridden);
+	void addOverriddenDescriptor(@NotNull ParameterDescriptor overridden);
 }

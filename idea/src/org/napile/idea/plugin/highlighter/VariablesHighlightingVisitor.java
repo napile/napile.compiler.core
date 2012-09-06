@@ -26,11 +26,11 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyKind;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -54,9 +54,9 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		{
 			return;
 		}
-		if(target instanceof ValueParameterDescriptor)
+		if(target instanceof ParameterDescriptor)
 		{
-			ValueParameterDescriptor parameterDescriptor = (ValueParameterDescriptor) target;
+			ParameterDescriptor parameterDescriptor = (ParameterDescriptor) target;
 			if(Boolean.TRUE.equals(bindingContext.get(AUTO_CREATED_IT, parameterDescriptor)))
 			{
 				holder.createInfoAnnotation(expression, "Automatically declared based on the expected type").setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_DEFAULT_PARAMETER);
@@ -75,10 +75,10 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 	}
 
 	@Override
-	public void visitParameter(NapileParameter parameter)
+	public void visitPropertyParameter(NapilePropertyParameter parameter)
 	{
 		visitVariableDeclaration(parameter);
-		super.visitParameter(parameter);
+		super.visitPropertyParameter(parameter);
 	}
 
 	@Override
@@ -123,7 +123,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 				JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.LOCAL_VARIABLE);
 			}
 
-			if(descriptor instanceof ValueParameterDescriptor)
+			if(descriptor instanceof ParameterDescriptor)
 			{
 				JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.PARAMETER);
 			}

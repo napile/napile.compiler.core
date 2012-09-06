@@ -24,7 +24,7 @@ import org.napile.compiler.lang.cfg.pseudocode.Pseudocode;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapileThrowExpression;
 
@@ -97,7 +97,7 @@ public interface JetControlFlowBuilder
 
 	void write(@NotNull NapileElement assignment, @NotNull NapileElement lValue);
 
-	void declare(@NotNull NapileParameter parameter);
+	void declare(@NotNull NapilePropertyParameter parameter);
 
 	void declare(@NotNull NapileProperty property);
 

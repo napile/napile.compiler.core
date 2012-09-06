@@ -113,7 +113,7 @@ public class BindingContextUtils
 	public static VariableDescriptor extractVariableDescriptorIfAny(@NotNull BindingContext bindingContext, @Nullable NapileElement element, boolean onlyReference)
 	{
 		DeclarationDescriptor descriptor = null;
-		if(!onlyReference && (element instanceof NapileProperty || element instanceof NapileParameter))
+		if(!onlyReference && (element instanceof NapileProperty || element instanceof NapilePropertyParameter))
 		{
 			descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
 		}

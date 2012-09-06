@@ -20,16 +20,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.PsiJetParameterListStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author max
  */
 public class NapileParameterList extends NapileElementImplStub<PsiJetParameterListStub>
 {
+	private static final TokenSet PARAMETER_TYPES = TokenSet.create(JetStubElementTypes.VALUE_PARAMETER, NapileNodeTypes.IS_PARAMETER);
+
 	public NapileParameterList(@NotNull ASTNode node)
 	{
 		super(node);
@@ -59,8 +63,8 @@ public class NapileParameterList extends NapileElementImplStub<PsiJetParameterLi
 		return visitor.visitParameterList(this, data);
 	}
 
-	public List<NapileParameter> getParameters()
+	public List<NapileElement> getParameters()
 	{
-		return Arrays.asList(getStubOrPsiChildren(JetStubElementTypes.VALUE_PARAMETER, NapileParameter.ARRAY_FACTORY));
+		return Arrays.asList(getStubOrPsiChildren(PARAMETER_TYPES, NapileElement.ARRAY_FACTORY));
 	}
 }

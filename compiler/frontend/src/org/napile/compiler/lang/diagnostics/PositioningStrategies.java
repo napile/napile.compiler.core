@@ -247,11 +247,11 @@ public class PositioningStrategies
 		}
 	};
 
-	public static PositioningStrategy<NapileParameter> PARAMETER_DEFAULT_VALUE = new PositioningStrategy<NapileParameter>()
+	public static PositioningStrategy<NapilePropertyParameter> PARAMETER_DEFAULT_VALUE = new PositioningStrategy<NapilePropertyParameter>()
 	{
 		@NotNull
 		@Override
-		public List<TextRange> mark(@NotNull NapileParameter element)
+		public List<TextRange> mark(@NotNull NapilePropertyParameter element)
 		{
 			return markNode(element.getDefaultValue().getNode());
 		}

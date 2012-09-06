@@ -22,7 +22,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -89,7 +89,7 @@ public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<Met
 
 	@NotNull
 	@Override
-	public Map<ValueParameterDescriptor, ResolvedValueArgument> getValueArguments()
+	public Map<ParameterDescriptor, ResolvedValueArgument> getValueArguments()
 	{
 		return functionCall.getValueArguments();
 	}

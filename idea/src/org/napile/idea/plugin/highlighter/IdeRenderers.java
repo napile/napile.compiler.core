@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.DiagnosticWithParameters1;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -104,9 +104,9 @@ public class IdeRenderers
 	public static class NoneApplicableCallsRenderer implements Renderer<Collection<? extends ResolvedCall<? extends CallableDescriptor>>>
 	{
 		@Nullable
-		private static ValueParameterDescriptor findParameterByArgumentExpression(ResolvedCall<? extends CallableDescriptor> call, NapileValueArgument argument)
+		private static ParameterDescriptor findParameterByArgumentExpression(ResolvedCall<? extends CallableDescriptor> call, NapileValueArgument argument)
 		{
-			for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> entry : call.getValueArguments().entrySet())
+			for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : call.getValueArguments().entrySet())
 			{
 				for(ValueArgument va : entry.getValue().getArguments())
 				{
@@ -119,9 +119,9 @@ public class IdeRenderers
 			return null;
 		}
 
-		private static Set<ValueParameterDescriptor> getParametersToHighlight(ResolvedCall<? extends CallableDescriptor> call)
+		private static Set<ParameterDescriptor> getParametersToHighlight(ResolvedCall<? extends CallableDescriptor> call)
 		{
-			Set<ValueParameterDescriptor> parameters = new HashSet<ValueParameterDescriptor>();
+			Set<ParameterDescriptor> parameters = new HashSet<ParameterDescriptor>();
 			if(call instanceof ResolvedCallImpl)
 			{
 				Collection<Diagnostic> diagnostics = ((ResolvedCallImpl) call).getTrace().getBindingContext().getDiagnostics();
@@ -133,7 +133,7 @@ public class IdeRenderers
 					}
 					else if(diagnostic.getFactory() == Errors.NO_VALUE_FOR_PARAMETER)
 					{
-						ValueParameterDescriptor parameter = ((DiagnosticWithParameters1<PsiElement, ValueParameterDescriptor>) diagnostic).getA();
+						ParameterDescriptor parameter = ((DiagnosticWithParameters1<PsiElement, ParameterDescriptor>) diagnostic).getA();
 						parameters.add(parameter);
 					}
 					else
@@ -141,7 +141,7 @@ public class IdeRenderers
 						NapileValueArgument argument = PsiTreeUtil.getParentOfType(diagnostic.getPsiElement(), NapileValueArgument.class, false);
 						if(argument != null)
 						{
-							ValueParameterDescriptor parameter = findParameterByArgumentExpression(call, argument);
+							ParameterDescriptor parameter = findParameterByArgumentExpression(call, argument);
 							if(parameter != null)
 							{
 								parameters.add(parameter);
@@ -162,7 +162,7 @@ public class IdeRenderers
 			{
 				stringBuilder.append("<li>");
 				CallableDescriptor funDescriptor = call.getResultingDescriptor();
-				Set<ValueParameterDescriptor> parametersToHighlight = getParametersToHighlight(call);
+				Set<ParameterDescriptor> parametersToHighlight = getParametersToHighlight(call);
 
 				DescriptorRenderer htmlRenderer = DescriptorRenderer.HTML;
 				if(funDescriptor.getReceiverParameter() != ReceiverDescriptor.NO_RECEIVER)
@@ -171,7 +171,7 @@ public class IdeRenderers
 				}
 				stringBuilder.append(funDescriptor.getName()).append("(");
 				boolean first = true;
-				for(ValueParameterDescriptor parameter : funDescriptor.getValueParameters())
+				for(ParameterDescriptor parameter : funDescriptor.getValueParameters())
 				{
 					if(!first)
 					{

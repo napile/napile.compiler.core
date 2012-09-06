@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.idea.plugin.completion.JetLookupObject;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementWeigher;
@@ -54,7 +54,7 @@ class JetLocalPreferableWeigher extends LookupElementWeigher
 			DeclarationDescriptor descriptor = lookupObject.getDescriptor();
 			if(descriptor != null)
 			{
-				if(descriptor instanceof LocalVariableDescriptor || descriptor instanceof ValueParameterDescriptor)
+				if(descriptor instanceof LocalVariableDescriptor || descriptor instanceof ParameterDescriptor)
 				{
 					return MyResult.localOrParameter;
 				}

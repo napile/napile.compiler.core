@@ -1727,20 +1727,44 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker parameter = mark();
 
-		parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(JetTokens.IDENTIFIER), TokenSet.create(JetTokens.COMMA, JetTokens.RPAR, JetTokens.COLON));
-
-		if(at(JetTokens.VAR_KEYWORD) || at(JetTokens.VAL_KEYWORD))
+		if(at(JetTokens.IS_KEYWORD))
 		{
-			advance(); // VAR_KEYWORD | VAL_KEYWORD
-		}
+			advance();
 
-		if(!parseFunctionParameterRest() && rollbackOnFailure)
+			if(!at(JetTokens.IDENTIFIER))
+			{
+				if(rollbackOnFailure)
+				{
+					parameter.rollbackTo();
+					return false;
+				}
+
+				error("Reference expected");
+			}
+
+			PsiBuilder.Marker refMark = mark();
+			advance();
+			refMark.done(REFERENCE_EXPRESSION);
+
+			parameter.done(IS_PARAMETER);
+		}
+		else
 		{
-			parameter.rollbackTo();
-			return false;
-		}
+			parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(JetTokens.IDENTIFIER), TokenSet.create(JetTokens.COMMA, JetTokens.RPAR, JetTokens.COLON));
 
-		parameter.done(VALUE_PARAMETER);
+			if(at(JetTokens.VAR_KEYWORD) || at(JetTokens.VAL_KEYWORD))
+			{
+				advance(); // VAR_KEYWORD | VAL_KEYWORD
+			}
+
+			if(!parseFunctionParameterRest() && rollbackOnFailure)
+			{
+				parameter.rollbackTo();
+				return false;
+			}
+
+			parameter.done(VALUE_PARAMETER);
+		}
 		return true;
 	}
 

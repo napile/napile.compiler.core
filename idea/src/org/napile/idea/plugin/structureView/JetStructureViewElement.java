@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassInitializer;
@@ -217,10 +217,10 @@ public class JetStructureViewElement implements StructureViewTreeElement
 
 			textBuilder.append(methodDescriptor.getName());
 
-			String parametersString = StringUtil.join(methodDescriptor.getValueParameters(), new Function<ValueParameterDescriptor, String>()
+			String parametersString = StringUtil.join(methodDescriptor.getValueParameters(), new Function<ParameterDescriptor, String>()
 			{
 				@Override
-				public String fun(ValueParameterDescriptor valueParameterDescriptor)
+				public String fun(ParameterDescriptor valueParameterDescriptor)
 				{
 					return valueParameterDescriptor.getName() + ":" +
 							DescriptorRenderer.TEXT.renderType(valueParameterDescriptor.getType());

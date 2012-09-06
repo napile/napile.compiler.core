@@ -78,7 +78,7 @@ public class JetStandardClasses
 	{
 		LightClassDescriptorImpl nothing = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Name.identifier("Nothing"), false);
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(nothing, Collections.<AnnotationDescriptor>emptyList());
-		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibility.LOCAL);
+		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.LOCAL);
 		NOTHING_CLASS = nothing.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), new AbstractCollection<JetType>()
 		{
 			@Override
@@ -112,7 +112,7 @@ public class JetStandardClasses
 	{
 		LightClassDescriptorImpl any = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.identifier("Any"), false);
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(any, Collections.<AnnotationDescriptor>emptyList());
-		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibility.PUBLIC);
+		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
 		ANY = any.initialize(false, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptySet(), JetScope.EMPTY, Collections.<ConstructorDescriptor>emptySet());
 		ANY_TYPE = new JetTypeImpl(ANY.getTypeConstructor(), new JetScopeImpl()
 		{
@@ -166,7 +166,7 @@ public class JetStandardClasses
 			FUNCTION_TYPE_CONSTRUCTORS.add(FUNCTION[i].getTypeConstructor());
 			FunctionDescriptorUtil.initializeFromFunctionType(invoke, function.getDefaultType(), new ClassReceiver(FUNCTION[i]), Modality.ABSTRACT, Visibility.PUBLIC);
 
-			constructorDescriptorForFunction.initialize(function.getTypeConstructor().getParameters(), Collections.<ValueParameterDescriptor>emptyList(), Visibility.PUBLIC);
+			constructorDescriptorForFunction.initialize(function.getTypeConstructor().getParameters(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
 			constructorDescriptorForFunction.setReturnType(function.getDefaultType());
 
 			LightClassDescriptorImpl receiverFunction = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.ABSTRACT, Name.identifier("ExtensionFunction" + i), false);
@@ -180,7 +180,7 @@ public class JetStandardClasses
 			RECEIVER_FUNCTION_TYPE_CONSTRUCTORS.add(RECEIVER_FUNCTION[i].getTypeConstructor());
 			FunctionDescriptorUtil.initializeFromFunctionType(invokeWithReceiver, receiverFunction.getDefaultType(), new ClassReceiver(RECEIVER_FUNCTION[i]), Modality.ABSTRACT, Visibility.PUBLIC);
 
-			constructorDescriptorForReceiverFunction.initialize(receiverFunction.getTypeConstructor().getParameters(), Collections.<ValueParameterDescriptor>emptyList(), Visibility.PUBLIC);
+			constructorDescriptorForReceiverFunction.initialize(receiverFunction.getTypeConstructor().getParameters(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
 			constructorDescriptorForReceiverFunction.setReturnType(receiverFunction.getDefaultType());
 		}
 	}
@@ -214,7 +214,7 @@ public class JetStandardClasses
 	{
 		LightClassDescriptorImpl any = new LightClassDescriptorImpl(STANDARD_CLASSES_NAMESPACE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, UNIT_ALIAS, false);
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(any, Collections.<AnnotationDescriptor>emptyList());
-		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ValueParameterDescriptor>emptyList(), Visibility.PUBLIC);
+		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
 		UNIT = any.initialize(false, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptySet(), JetScope.EMPTY, Collections.<ConstructorDescriptor>emptySet());
 		UNIT_TYPE = new JetTypeImpl(UNIT.getTypeConstructor(), new JetScopeImpl()
 		{
@@ -360,10 +360,10 @@ public class JetStandardClasses
 		return !(type instanceof NamespaceType) && type.getConstructor() == UNIT_TYPE.getConstructor();
 	}
 
-	private static List<JetType> toTypes(List<ValueParameterDescriptor> labeledEntries)
+	private static List<JetType> toTypes(List<ParameterDescriptor> labeledEntries)
 	{
 		List<JetType> result = new ArrayList<JetType>();
-		for(ValueParameterDescriptor entry : labeledEntries)
+		for(ParameterDescriptor entry : labeledEntries)
 		{
 			result.add(entry.getType());
 		}
@@ -411,15 +411,15 @@ public class JetStandardClasses
 	}
 
 	@NotNull
-	public static List<ValueParameterDescriptor> getValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull JetType type)
+	public static List<ParameterDescriptor> getValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull JetType type)
 	{
 		assert isFunctionType(type);
-		List<ValueParameterDescriptor> valueParameters = Lists.newArrayList();
+		List<ParameterDescriptor> valueParameters = Lists.newArrayList();
 		List<JetType> parameterTypes = getParameterTypeProjectionsFromFunctionType(type);
 		for(int i = 0; i < parameterTypes.size(); i++)
 		{
 			JetType parameterType = parameterTypes.get(i);
-			ValueParameterDescriptorImpl valueParameterDescriptor = new ValueParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("p" + (i + 1)), PropertyKind.VAL, parameterType, false, null);
+			PropertyParameterDescriptorImpl valueParameterDescriptor = new PropertyParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("p" + (i + 1)), PropertyKind.VAL, parameterType, false, null);
 			valueParameters.add(valueParameterDescriptor);
 		}
 		return valueParameters;

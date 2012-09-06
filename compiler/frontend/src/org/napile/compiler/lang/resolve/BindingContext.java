@@ -108,7 +108,7 @@ public interface BindingContext
 	WritableSlice<NapileExpression, DataFlowInfo> NON_DEFAULT_EXPRESSION_DATA_FLOW = Slices.createSimpleSlice();
 
 	WritableSlice<NapileExpression, Boolean> VARIABLE_REASSIGNMENT = Slices.createSimpleSetSlice();
-	WritableSlice<ValueParameterDescriptor, Boolean> AUTO_CREATED_IT = Slices.createSimpleSetSlice();
+	WritableSlice<ParameterDescriptor, Boolean> AUTO_CREATED_IT = Slices.createSimpleSetSlice();
 	WritableSlice<NapileExpression, DeclarationDescriptor> VARIABLE_ASSIGNMENT = Slices.createSimpleSlice();
 
 	/**
@@ -137,9 +137,9 @@ public interface BindingContext
 			assert backingFieldRequired != null;
 			// TODO: user BindingContextAccessors
 			PsiElement declarationPsiElement = map.get(BindingContextUtils.DESCRIPTOR_TO_DECLARATION, propertyDescriptor);
-			if(declarationPsiElement instanceof NapileParameter)
+			if(declarationPsiElement instanceof NapilePropertyParameter)
 			{
-				NapileParameter jetParameter = (NapileParameter) declarationPsiElement;
+				NapilePropertyParameter jetParameter = (NapilePropertyParameter) declarationPsiElement;
 				return jetParameter.getValOrVarNode() != null || backingFieldRequired; // this part is unused because we do not allow access to constructor parameters in member bodies
 			}
 			if(propertyDescriptor.getModality() == Modality.ABSTRACT)
@@ -187,7 +187,7 @@ public interface BindingContext
 	WritableSlice<PsiElement, SimpleMethodDescriptor> FUNCTION = Slices.<PsiElement, SimpleMethodDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, ConstructorDescriptor> CONSTRUCTOR = Slices.<PsiElement, ConstructorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<NapileParameter, VariableDescriptor> VALUE_PARAMETER = Slices.<NapileParameter, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<NapilePropertyParameter, VariableDescriptor> VALUE_PARAMETER = Slices.<NapilePropertyParameter, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapilePropertyAccessor, PropertyAccessorDescriptor> PROPERTY_ACCESSOR = Slices.<NapilePropertyAccessor, PropertyAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 
 	// normalize value to getOriginal(value)
@@ -208,7 +208,7 @@ public interface BindingContext
 	ReadOnlySlice<PsiElement, DeclarationDescriptor> DECLARATION_TO_DESCRIPTOR = Slices.<PsiElement, DeclarationDescriptor>sliceBuilder().setFurtherLookupSlices(DECLARATIONS_TO_DESCRIPTORS).build();
 
 	WritableSlice<NapileReferenceExpression, PsiElement> LABEL_TARGET = Slices.<NapileReferenceExpression, PsiElement>sliceBuilder().build();
-	WritableSlice<NapileParameter, PropertyDescriptor> VALUE_PARAMETER_AS_PROPERTY = Slices.<NapileParameter, PropertyDescriptor>sliceBuilder().build();
+	WritableSlice<NapilePropertyParameter, PropertyDescriptor> VALUE_PARAMETER_AS_PROPERTY = Slices.<NapilePropertyParameter, PropertyDescriptor>sliceBuilder().build();
 
 	WritableSlice<FqName, ClassDescriptor> FQNAME_TO_CLASS_DESCRIPTOR = new BasicWritableSlice<FqName, ClassDescriptor>(RewritePolicy.DO_NOTHING, true);
 	WritableSlice<FqName, NamespaceDescriptor> FQNAME_TO_NAMESPACE_DESCRIPTOR = new BasicWritableSlice<FqName, NamespaceDescriptor>(RewritePolicy.DO_NOTHING);

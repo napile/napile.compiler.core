@@ -32,7 +32,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyKind;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
@@ -298,9 +298,9 @@ public class JetFlowInformationProvider
 		if(!isInitialized && !varWithUninitializedErrorGenerated.contains(variableDescriptor))
 		{
 			varWithUninitializedErrorGenerated.add(variableDescriptor);
-			if(variableDescriptor instanceof ValueParameterDescriptor)
+			if(variableDescriptor instanceof ParameterDescriptor)
 			{
-				trace.report(Errors.UNINITIALIZED_PARAMETER.on((NapileSimpleNameExpression) element, (ValueParameterDescriptor) variableDescriptor));
+				trace.report(Errors.UNINITIALIZED_PARAMETER.on((NapileSimpleNameExpression) element, (ParameterDescriptor) variableDescriptor));
 			}
 			else
 			{
@@ -570,7 +570,7 @@ public class JetFlowInformationProvider
 							{
 								trace.report(Errors.UNUSED_VARIABLE.on((NapileProperty) element, variableDescriptor));
 							}
-							else if(element instanceof NapileParameter)
+							else if(element instanceof NapilePropertyParameter)
 							{
 								PsiElement psiElement = element.getParent().getParent();
 								if(psiElement instanceof NapileMethod)
@@ -585,7 +585,7 @@ public class JetFlowInformationProvider
 											!methodDescriptor.getModality().isOverridable() &&
 											methodDescriptor.getOverriddenDescriptors().isEmpty())
 									{
-										trace.report(Errors.UNUSED_PARAMETER.on((NapileParameter) element, variableDescriptor));
+										trace.report(Errors.UNUSED_PARAMETER.on((NapilePropertyParameter) element, variableDescriptor));
 									}
 								}
 							}

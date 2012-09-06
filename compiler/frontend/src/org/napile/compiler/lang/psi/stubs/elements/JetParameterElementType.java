@@ -21,7 +21,7 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.stubs.PsiJetParameterStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetParameterStubImpl;
@@ -35,7 +35,7 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetParameterElementType extends JetStubElementType<PsiJetParameterStub, NapileParameter>
+public class JetParameterElementType extends JetStubElementType<PsiJetParameterStub, NapilePropertyParameter>
 {
 	public JetParameterElementType(@NotNull @NonNls String debugName)
 	{
@@ -43,19 +43,19 @@ public class JetParameterElementType extends JetStubElementType<PsiJetParameterS
 	}
 
 	@Override
-	public NapileParameter createPsiFromAst(@NotNull ASTNode node)
+	public NapilePropertyParameter createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileParameter(node);
+		return new NapilePropertyParameter(node);
 	}
 
 	@Override
-	public NapileParameter createPsi(@NotNull PsiJetParameterStub stub)
+	public NapilePropertyParameter createPsi(@NotNull PsiJetParameterStub stub)
 	{
-		return new NapileParameter(stub, JetStubElementTypes.VALUE_PARAMETER);
+		return new NapilePropertyParameter(stub, JetStubElementTypes.VALUE_PARAMETER);
 	}
 
 	@Override
-	public PsiJetParameterStub createStub(@NotNull NapileParameter psi, StubElement parentStub)
+	public PsiJetParameterStub createStub(@NotNull NapilePropertyParameter psi, StubElement parentStub)
 	{
 		NapileTypeReference typeReference = psi.getTypeReference();
 		NapileExpression defaultValue = psi.getDefaultValue();

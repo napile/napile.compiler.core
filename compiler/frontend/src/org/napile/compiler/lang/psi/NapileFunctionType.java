@@ -53,9 +53,10 @@ public class NapileFunctionType extends NapileTypeElement
 		{
 			result.add(receiverTypeRef);
 		}
-		for(NapileParameter jetParameter : getParameters())
+		for(NapileElement jetParameter : getParameters())
 		{
-			result.add(jetParameter.getTypeReference());
+			if(jetParameter instanceof NapilePropertyParameter)
+				result.add(((NapilePropertyParameter) jetParameter).getTypeReference());
 		}
 		NapileTypeReference returnTypeRef = getReturnTypeRef();
 		if(returnTypeRef != null)
@@ -84,10 +85,10 @@ public class NapileFunctionType extends NapileTypeElement
 	}
 
 	@NotNull
-	public List<NapileParameter> getParameters()
+	public List<NapileElement> getParameters()
 	{
 		NapileParameterList list = getParameterList();
-		return list != null ? list.getParameters() : Collections.<NapileParameter>emptyList();
+		return list != null ? list.getParameters() : Collections.<NapileElement>emptyList();
 	}
 
 	@Nullable

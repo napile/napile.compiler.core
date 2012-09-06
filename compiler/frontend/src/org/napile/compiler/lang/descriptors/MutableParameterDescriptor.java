@@ -22,7 +22,7 @@ import org.napile.compiler.lang.types.JetType;
 /**
  * @author abreslav
  */
-public interface MutableValueParameterDescriptor extends ValueParameterDescriptor
+public interface MutableParameterDescriptor extends ParameterDescriptor
 {
 	void setType(@NotNull JetType type);
 }

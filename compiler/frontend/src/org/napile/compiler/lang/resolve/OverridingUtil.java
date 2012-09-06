@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -153,9 +153,9 @@ public class OverridingUtil
 		{
 			parameters.add(receiverParameter.getType());
 		}
-		for(ValueParameterDescriptor valueParameterDescriptor : callableDescriptor.getValueParameters())
+		for(ParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
 		{
-			parameters.add(valueParameterDescriptor.getType());
+			parameters.add(parameterDescriptor.getType());
 		}
 		return parameters;
 	}
@@ -340,10 +340,10 @@ public class OverridingUtil
 	{
 		fromCurrent.addOverriddenDescriptor(fromSupertype);
 
-		for(ValueParameterDescriptor parameterFromCurrent : fromCurrent.getValueParameters())
+		for(ParameterDescriptor parameterFromCurrent : fromCurrent.getValueParameters())
 		{
 			assert parameterFromCurrent.getIndex() < fromSupertype.getValueParameters().size() : "An override relation between functions implies that they have the same number of value parameters";
-			ValueParameterDescriptor parameterFromSupertype = fromSupertype.getValueParameters().get(parameterFromCurrent.getIndex());
+			ParameterDescriptor parameterFromSupertype = fromSupertype.getValueParameters().get(parameterFromCurrent.getIndex());
 			parameterFromCurrent.addOverriddenDescriptor(parameterFromSupertype);
 		}
 	}

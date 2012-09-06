@@ -16,8 +16,6 @@
 
 package org.napile.compiler.lang.types.expressions;
 
-import static org.napile.compiler.lang.types.expressions.ExpressionTypingUtils.getExpressionReceiver;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,7 +28,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -45,6 +43,7 @@ import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -52,8 +51,6 @@ import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.compiler.lang.rt.NapileLangPackage;
-import org.napile.compiler.lang.psi.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -302,7 +299,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			return DataFlowUtils.illegalStatementType(expression, contextWithExpectedType, facade);
 
 		ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
-		NapileParameter loopParameter = expression.getLoopParameter();
+		NapilePropertyParameter loopParameter = expression.getLoopParameter();
 		NapileExpression loopRange = expression.getLoopRange();
 		JetType expectedParameterType = null;
 		if(loopRange != null)
@@ -508,13 +505,14 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		List<JetType> types = new ArrayList<JetType>();
 		for(NapileCatchClause catchClause : catchClauses)
 		{
-			NapileParameter catchParameter = catchClause.getCatchParameter();
+			NapileElement catchParameter = catchClause.getCatchParameter();
 			NapileExpression catchBody = catchClause.getCatchBody();
-			if(catchParameter != null)
+			if(catchParameter instanceof NapilePropertyParameter)
 			{
-				VariableDescriptor variableDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(context.scope.getContainingDeclaration(), context.scope, catchParameter, context.trace);
+				VariableDescriptor variableDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(context.scope.getContainingDeclaration(), context.scope, ((NapilePropertyParameter) catchParameter)
+						, context.trace);
 				JetType throwableType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.THROWABLE, false);
-				DataFlowUtils.checkType(variableDescriptor.getType(), catchParameter, context.replaceExpectedType(throwableType));
+				DataFlowUtils.checkType(variableDescriptor.getType(), ((NapilePropertyParameter) catchParameter), context.replaceExpectedType(throwableType));
 				if(catchBody != null)
 				{
 					WritableScope catchScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Catch scope");
@@ -571,7 +569,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		{
 			parentDeclaration = (NapileFunctionLiteralExpression) parentDeclaration.getParent();
 		}
-		if(parentDeclaration instanceof NapileParameter)
+		if(parentDeclaration instanceof NapilePropertyParameter)
 		{
 			context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
 		}

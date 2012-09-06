@@ -185,7 +185,7 @@ public class ErrorUtils
 	{
 		ErrorSimpleMethodDescriptorImpl function = new ErrorSimpleMethodDescriptorImpl(ownerScope);
 		function.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
-				Collections.<ValueParameterDescriptor>emptyList(), // TODO
+				Collections.<ParameterDescriptor>emptyList(), // TODO
 				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibility.PUBLIC
                 /*isInline = */);
 		return function;
@@ -193,12 +193,12 @@ public class ErrorUtils
 
 	private static final JetType ERROR_PARAMETER_TYPE = createErrorType("<ERROR VALUE_PARAMETER TYPE>");
 
-	private static List<ValueParameterDescriptor> getValueParameters(MethodDescriptor methodDescriptor, List<JetType> argumentTypes)
+	private static List<ParameterDescriptor> getValueParameters(MethodDescriptor methodDescriptor, List<JetType> argumentTypes)
 	{
-		List<ValueParameterDescriptor> result = new ArrayList<ValueParameterDescriptor>();
+		List<ParameterDescriptor> result = new ArrayList<ParameterDescriptor>();
 		for(int i = 0, argumentTypesSize = argumentTypes.size(); i < argumentTypesSize; i++)
 		{
-			result.add(new ValueParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR VALUE_PARAMETER>"), PropertyKind.VAR, ERROR_PARAMETER_TYPE, false, null));
+			result.add(new PropertyParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR VALUE_PARAMETER>"), PropertyKind.VAR, ERROR_PARAMETER_TYPE, false, null));
 		}
 		return result;
 	}

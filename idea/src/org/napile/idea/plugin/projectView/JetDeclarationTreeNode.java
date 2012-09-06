@@ -23,8 +23,10 @@ import java.util.List;
 import org.napile.compiler.lang.psi.NapileClassInitializer;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileIsParameter;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.idea.plugin.formatter.JetCodeStyleSettings;
@@ -98,23 +100,28 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 					text = receiverTypeRef.getText() + "." + text;
 				}
 				text += "(";
-				List<NapileParameter> parameters = function.getValueParameters();
-				for(NapileParameter parameter : parameters)
+				List<NapileElement> parameters = function.getValueParameters();
+				for(NapileElement parameter : parameters)
 				{
-					if(parameter.getName() != null)
+					if(parameter instanceof NapilePropertyParameter)
 					{
-						text += parameter.getName();
-						if(settings.SPACE_BEFORE_TYPE_COLON)
-							text += " ";
-						text += ":";
-						if(settings.SPACE_AFTER_TYPE_COLON)
-							text += " ";
+						if(parameter.getName() != null)
+						{
+							text += parameter.getName();
+							if(settings.SPACE_BEFORE_TYPE_COLON)
+								text += " ";
+							text += ":";
+							if(settings.SPACE_AFTER_TYPE_COLON)
+								text += " ";
+						}
+						NapileTypeReference typeReference = ((NapilePropertyParameter) parameter).getTypeReference();
+						if(typeReference != null)
+						{
+							text += typeReference.getText();
+						}
 					}
-					NapileTypeReference typeReference = parameter.getTypeReference();
-					if(typeReference != null)
-					{
-						text += typeReference.getText();
-					}
+					else if(parameter instanceof NapileIsParameter)
+						text += parameter.getText();
 					text += ", ";
 				}
 				if(parameters.size() > 0)
@@ -135,23 +142,28 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 			{
 				NapileConstructor function = (NapileConstructor) declaration;
 				text += "(";
-				List<NapileParameter> parameters = function.getValueParameters();
-				for(NapileParameter parameter : parameters)
+				List<NapileElement> parameters = function.getValueParameters();
+				for(NapileElement parameter : parameters)
 				{
-					if(parameter.getName() != null)
+					if(parameter instanceof NapilePropertyParameter)
 					{
-						text += parameter.getName();
-						if(settings.SPACE_BEFORE_TYPE_COLON)
-							text += " ";
-						text += ":";
-						if(settings.SPACE_AFTER_TYPE_COLON)
-							text += " ";
+						if(parameter.getName() != null)
+						{
+							text += parameter.getName();
+							if(settings.SPACE_BEFORE_TYPE_COLON)
+								text += " ";
+							text += ":";
+							if(settings.SPACE_AFTER_TYPE_COLON)
+								text += " ";
+						}
+						NapileTypeReference typeReference = ((NapilePropertyParameter) parameter).getTypeReference();
+						if(typeReference != null)
+						{
+							text += typeReference.getText();
+						}
 					}
-					NapileTypeReference typeReference = parameter.getTypeReference();
-					if(typeReference != null)
-					{
-						text += typeReference.getText();
-					}
+					else if(parameter instanceof NapileIsParameter)
+						text += parameter.getText();
 					text += ", ";
 				}
 				if(parameters.size() > 0)

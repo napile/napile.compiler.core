@@ -30,7 +30,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -100,7 +100,7 @@ public abstract class BaseJetVariableMacro extends Macro
 			PsiElement declaration = BindingContextUtils.descriptorToDeclaration(bc, declarationDescriptor);
 			assert declaration == null || declaration instanceof PsiNamedElement;
 
-			if(declaration instanceof NapileProperty || declaration instanceof NapileParameter)
+			if(declaration instanceof NapileProperty || declaration instanceof NapilePropertyParameter)
 			{
 				declarations.add((NapileNamedDeclaration) declaration);
 			}

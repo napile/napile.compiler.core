@@ -418,10 +418,10 @@ public class CallResolver
 
 		// constraints for function literals
 		// Value parameters
-		for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> entry : resolvedCall.getValueArguments().entrySet())
+		for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : resolvedCall.getValueArguments().entrySet())
 		{
 			ResolvedValueArgument resolvedValueArgument = entry.getValue();
-			ValueParameterDescriptor valueParameterDescriptor = entry.getKey();
+			ParameterDescriptor parameterDescriptor = entry.getKey();
 
 			for(ValueArgument valueArgument : resolvedValueArgument.getArguments())
 			{
@@ -429,10 +429,10 @@ public class CallResolver
 					continue;
 
 				ConstraintSystem systemWithCurrentSubstitution = constraintSystem.copy();
-				addConstraintForValueArgument(valueArgument, valueParameterDescriptor, constraintSystem.getCurrentSubstitutor(), systemWithCurrentSubstitution, context);
+				addConstraintForValueArgument(valueArgument, parameterDescriptor, constraintSystem.getCurrentSubstitutor(), systemWithCurrentSubstitution, context);
 				if(systemWithCurrentSubstitution.hasContradiction() || systemWithCurrentSubstitution.hasErrorInConstrainingTypes())
 				{
-					addConstraintForValueArgument(valueArgument, valueParameterDescriptor, substituteDontCare, constraintSystem, context);
+					addConstraintForValueArgument(valueArgument, parameterDescriptor, substituteDontCare, constraintSystem, context);
 				}
 				else
 				{
@@ -844,10 +844,10 @@ public class CallResolver
 		TypeSubstitutor substituteDontCare = ConstraintSystemWithPriorities.makeConstantSubstitutor(candidateWithFreshVariables.getTypeParameters(), ConstraintSystemImpl.DONT_CARE);
 
 		// Value parameters
-		for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> entry : candidateCall.getValueArguments().entrySet())
+		for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : candidateCall.getValueArguments().entrySet())
 		{
 			ResolvedValueArgument resolvedValueArgument = entry.getValue();
-			ValueParameterDescriptor valueParameterDescriptor = candidateWithFreshVariables.getValueParameters().get(entry.getKey().getIndex());
+			ParameterDescriptor parameterDescriptor = candidateWithFreshVariables.getValueParameters().get(entry.getKey().getIndex());
 
 
 			for(ValueArgument valueArgument : resolvedValueArgument.getArguments())
@@ -859,7 +859,7 @@ public class CallResolver
 				// Here we type check expecting an error type (DONT_CARE, substitution with substituteDontCare)
 				// and throw the results away
 				// We'll type check the arguments later, with the inferred types expected
-				boolean success = addConstraintForValueArgument(valueArgument, valueParameterDescriptor, substituteDontCare, constraintsSystem, context);
+				boolean success = addConstraintForValueArgument(valueArgument, parameterDescriptor, substituteDontCare, constraintsSystem, context);
 				if(!success)
 				{
 					candidateCall.argumentHasNoType();
@@ -905,14 +905,14 @@ public class CallResolver
 		}
 	}
 
-	private boolean addConstraintForValueArgument(ValueArgument valueArgument, @NotNull ValueParameterDescriptor valueParameterDescriptor, @NotNull TypeSubstitutor substitutor, @NotNull ConstraintSystem constraintSystem, @NotNull ResolutionContext context)
+	private boolean addConstraintForValueArgument(ValueArgument valueArgument, @NotNull ParameterDescriptor parameterDescriptor, @NotNull TypeSubstitutor substitutor, @NotNull ConstraintSystem constraintSystem, @NotNull ResolutionContext context)
 	{
 
-		JetType effectiveExpectedType = getEffectiveExpectedType(valueParameterDescriptor, valueArgument);
+		JetType effectiveExpectedType = getEffectiveExpectedType(parameterDescriptor, valueArgument);
 		TemporaryBindingTrace traceForUnknown = TemporaryBindingTrace.create(context.trace);
 		NapileExpression argumentExpression = valueArgument.getArgumentExpression();
-		JetType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(valueParameterDescriptor.getType()), context.dataFlowInfo, traceForUnknown) : null;
-		constraintSystem.addSupertypeConstraint(effectiveExpectedType, type, ConstraintPosition.getValueParameterPosition(valueParameterDescriptor.getIndex()));
+		JetType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(parameterDescriptor.getType()), context.dataFlowInfo, traceForUnknown) : null;
+		constraintSystem.addSupertypeConstraint(effectiveExpectedType, type, ConstraintPosition.getValueParameterPosition(parameterDescriptor.getIndex()));
 		//todo no return
 		if(type == null || ErrorUtils.isErrorType(type))
 			return false;
@@ -1050,9 +1050,9 @@ public class CallResolver
 		ResolutionStatus resultStatus = ResolutionStatus.SUCCESS;
 		DataFlowInfo dataFlowInfo = context.dataFlowInfo;
 		List<JetType> argumentTypes = Lists.newArrayList();
-		for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> entry : candidateCall.getValueArguments().entrySet())
+		for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : candidateCall.getValueArguments().entrySet())
 		{
-			ValueParameterDescriptor parameterDescriptor = entry.getKey();
+			ParameterDescriptor parameterDescriptor = entry.getKey();
 			ResolvedValueArgument resolvedArgument = entry.getValue();
 
 
@@ -1105,7 +1105,7 @@ public class CallResolver
 	}
 
 	@NotNull
-	private JetType getEffectiveExpectedType(ValueParameterDescriptor parameterDescriptor, ValueArgument argument)
+	private JetType getEffectiveExpectedType(ParameterDescriptor parameterDescriptor, ValueArgument argument)
 	{
 		if(argument.getSpreadElement() != null)
 		{
@@ -1401,12 +1401,12 @@ public class CallResolver
 
 	private static boolean checkValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull List<JetType> parameterTypes)
 	{
-		List<ValueParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
+		List<ParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
 		if(valueParameters.size() != parameterTypes.size())
 			return false;
 		for(int i = 0; i < valueParameters.size(); i++)
 		{
-			ValueParameterDescriptor valueParameter = valueParameters.get(i);
+			ParameterDescriptor valueParameter = valueParameters.get(i);
 			JetType expectedType = parameterTypes.get(i);
 			if(!TypeUtils.equalTypes(expectedType, valueParameter.getType()))
 				return false;

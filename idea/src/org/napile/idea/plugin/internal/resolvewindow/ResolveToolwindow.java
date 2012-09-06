@@ -43,7 +43,7 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -306,7 +306,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 		ReceiverDescriptor receiverArgument = resolvedCall.getReceiverArgument();
 		ReceiverDescriptor thisObject = resolvedCall.getThisObject();
 		Map<TypeParameterDescriptor, JetType> typeArguments = resolvedCall.getTypeArguments();
-		Map<ValueParameterDescriptor, ResolvedValueArgument> valueArguments = resolvedCall.getValueArguments();
+		Map<ParameterDescriptor, ResolvedValueArgument> valueArguments = resolvedCall.getValueArguments();
 
 		renderReceiver(receiverArgument, thisObject, builder);
 		builder.append(resultingDescriptor.getName());
@@ -337,12 +337,12 @@ public class ResolveToolwindow extends JPanel implements Disposable
 		return builder.toString();
 	}
 
-	private static void renderValueArguments(Map<ValueParameterDescriptor, ResolvedValueArgument> valueArguments, StringBuilder builder)
+	private static void renderValueArguments(Map<ParameterDescriptor, ResolvedValueArgument> valueArguments, StringBuilder builder)
 	{
 		ResolvedValueArgument[] args = new ResolvedValueArgument[valueArguments.size()];
-		for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> entry : valueArguments.entrySet())
+		for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : valueArguments.entrySet())
 		{
-			ValueParameterDescriptor key = entry.getKey();
+			ParameterDescriptor key = entry.getKey();
 			ResolvedValueArgument value = entry.getValue();
 
 			args[key.getIndex()] = value;

@@ -76,7 +76,7 @@ public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRoo
 
 	@NotNull
 	@Override
-	public List<ValueParameterDescriptor> getValueParameters()
+	public List<ParameterDescriptor> getValueParameters()
 	{
 		return Collections.emptyList();
 	}

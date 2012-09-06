@@ -22,7 +22,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
@@ -74,7 +74,7 @@ import org.napile.compiler.lang.types.JetType;
 		}
 
 		@Override
-		public void noValueForParameter(@NotNull BindingTrace trace, @NotNull ValueParameterDescriptor valueParameter)
+		public void noValueForParameter(@NotNull BindingTrace trace, @NotNull ParameterDescriptor valueParameter)
 		{
 		}
 
@@ -148,7 +148,7 @@ import org.napile.compiler.lang.types.JetType;
 
 	void noReceiverAllowed(@NotNull BindingTrace trace);
 
-	void noValueForParameter(@NotNull BindingTrace trace, @NotNull ValueParameterDescriptor valueParameter);
+	void noValueForParameter(@NotNull BindingTrace trace, @NotNull ParameterDescriptor valueParameter);
 
 	void wrongNumberOfTypeArguments(@NotNull BindingTrace trace, int expectedTypeArgumentCount);
 

@@ -81,8 +81,8 @@ public class JetControlFlowProcessor
 		{
 			NapileDeclarationWithBody declarationWithBody = (NapileDeclarationWithBody) subroutine;
 			CFPVisitor cfpVisitor = new CFPVisitor(false);
-			List<NapileParameter> valueParameters = declarationWithBody.getValueParameters();
-			for(NapileParameter valueParameter : valueParameters)
+			List<NapileElement> valueParameters = declarationWithBody.getValueParameters();
+			for(NapileElement valueParameter : valueParameters)
 			{
 				valueParameter.accept(cfpVisitor);
 			}
@@ -511,10 +511,10 @@ public class JetControlFlowProcessor
 					{
 						isFirst = false;
 					}
-					NapileParameter catchParameter = catchClause.getCatchParameter();
-					if(catchParameter != null)
+					NapileElement catchParameter = catchClause.getCatchParameter();
+					if(catchParameter instanceof NapilePropertyParameter)
 					{
-						builder.declare(catchParameter);
+						builder.declare((NapilePropertyParameter) catchParameter);
 						builder.write(catchParameter, catchParameter);
 					}
 					NapileExpression catchBody = catchClause.getCatchBody();
@@ -609,7 +609,7 @@ public class JetControlFlowProcessor
 			{
 				value(loopRange, false);
 			}
-			NapileParameter loopParameter = expression.getLoopParameter();
+			NapilePropertyParameter loopParameter = expression.getLoopParameter();
 			if(loopParameter != null)
 			{
 				builder.declare(loopParameter);
@@ -735,7 +735,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitParameter(NapileParameter parameter)
+		public void visitPropertyParameter(NapilePropertyParameter parameter)
 		{
 			NapileExpression defaultValue = parameter.getDefaultValue();
 			builder.declare(parameter);

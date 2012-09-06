@@ -32,7 +32,7 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public class ValueParameterDescriptorImpl extends VariableDescriptorImpl implements MutableValueParameterDescriptor
+public class PropertyParameterDescriptorImpl extends VariableDescriptorImpl implements MutableParameterDescriptor
 {
 	private Boolean hasDefaultValue;
 	private final boolean declaresDefaultValue;
@@ -40,13 +40,13 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 	private final JetType varargElementType;
 	private final PropertyKind propertyKind;
 	private final int index;
-	private final ValueParameterDescriptor original;
+	private final ParameterDescriptor original;
 
-	private final Set<ValueParameterDescriptor> overriddenDescriptors = Sets.newLinkedHashSet(); // Linked is essential
+	private final Set<ParameterDescriptor> overriddenDescriptors = Sets.newLinkedHashSet(); // Linked is essential
 	private boolean overriddenDescriptorsLocked = false;
-	private final Set<? extends ValueParameterDescriptor> readOnlyOverriddenDescriptors = Collections.unmodifiableSet(overriddenDescriptors);
+	private final Set<? extends ParameterDescriptor> readOnlyOverriddenDescriptors = Collections.unmodifiableSet(overriddenDescriptors);
 
-	public ValueParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, PropertyKind propertyKind, @NotNull JetType outType, boolean declaresDefaultValue, @Nullable JetType varargElementType)
+	public PropertyParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, PropertyKind propertyKind, @NotNull JetType outType, boolean declaresDefaultValue, @Nullable JetType varargElementType)
 	{
 		super(containingDeclaration, annotations, name, outType, false);
 		this.original = this;
@@ -56,7 +56,7 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 		this.propertyKind = propertyKind;
 	}
 
-	public ValueParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ValueParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, PropertyKind propertyKind, @NotNull JetType outType, @Nullable JetType varargElementType)
+	public PropertyParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, PropertyKind propertyKind, @NotNull JetType outType, @Nullable JetType varargElementType)
 	{
 		super(containingDeclaration, annotations, original.getName(), outType, false);
 		this.original = original;
@@ -102,7 +102,7 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 		}
 		else
 		{
-			for(ValueParameterDescriptor descriptor : overriddenDescriptors)
+			for(ParameterDescriptor descriptor : overriddenDescriptors)
 			{
 				if(descriptor.hasDefaultValue())
 				{
@@ -122,14 +122,14 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 
 	@NotNull
 	@Override
-	public ValueParameterDescriptor getOriginal()
+	public ParameterDescriptor getOriginal()
 	{
 		return original == this ? this : original.getOriginal();
 	}
 
 	@NotNull
 	@Override
-	public ValueParameterDescriptor substitute(TypeSubstitutor substitutor)
+	public ParameterDescriptor substitute(TypeSubstitutor substitutor)
 	{
 		throw new UnsupportedOperationException(); // TODO
 	}
@@ -137,7 +137,7 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 	@Override
 	public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitValueParameterDescriptor(this, data);
+		return visitor.visitPropertyParameterDescriptor(this, data);
 	}
 
 	@NotNull
@@ -149,9 +149,9 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 
 	@NotNull
 	@Override
-	public ValueParameterDescriptor copy(@NotNull DeclarationDescriptor newOwner)
+	public ParameterDescriptor copy(@NotNull DeclarationDescriptor newOwner)
 	{
-		return new ValueParameterDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), propertyKind, getType(), hasDefaultValue, varargElementType);
+		return new PropertyParameterDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), propertyKind, getType(), hasDefaultValue, varargElementType);
 	}
 
 	@NotNull
@@ -163,13 +163,13 @@ public class ValueParameterDescriptorImpl extends VariableDescriptorImpl impleme
 
 	@NotNull
 	@Override
-	public Set<? extends ValueParameterDescriptor> getOverriddenDescriptors()
+	public Set<? extends ParameterDescriptor> getOverriddenDescriptors()
 	{
 		return readOnlyOverriddenDescriptors;
 	}
 
 	@Override
-	public void addOverriddenDescriptor(@NotNull ValueParameterDescriptor overridden)
+	public void addOverriddenDescriptor(@NotNull ParameterDescriptor overridden)
 	{
 		assert !overriddenDescriptorsLocked : "Adding more overridden descriptors is not allowed at this point: " + "the presence of the default value has already been calculated";
 		overriddenDescriptors.add(overridden);

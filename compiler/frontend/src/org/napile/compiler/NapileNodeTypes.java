@@ -51,6 +51,7 @@ public interface NapileNodeTypes
 	NapileNodeType CONSTRUCTOR_CALLEE = new NapileNodeType("CONSTRUCTOR_CALLEE", NapileConstructorCalleeExpression.class);
 	IElementType VALUE_PARAMETER_LIST = JetStubElementTypes.VALUE_PARAMETER_LIST;
 	IElementType VALUE_PARAMETER = JetStubElementTypes.VALUE_PARAMETER;
+	IElementType IS_PARAMETER = new NapileNodeType("IS_PARAMETER", NapileIsParameter.class);
 
 	NapileNodeType CLASS_BODY = new NapileNodeType("CLASS_BODY", NapileClassBody.class);
 	NapileNodeType IMPORT_DIRECTIVE = new NapileNodeType("IMPORT_DIRECTIVE", NapileImportDirective.class);
@@ -105,7 +106,7 @@ public interface NapileNodeTypes
 	NapileNodeType FOR = new NapileNodeType("FOR", NapileForExpression.class);
 	NapileNodeType WHILE = new NapileNodeType("WHILE", NapileWhileExpression.class);
 	NapileNodeType DO_WHILE = new NapileNodeType("DO_WHILE", NapileDoWhileExpression.class);
-	NapileNodeType LOOP_PARAMETER = new NapileNodeType("LOOP_PARAMETER", NapileParameter.class); // TODO: Do we need separate type?
+	NapileNodeType LOOP_PARAMETER = new NapileNodeType("LOOP_PARAMETER", NapilePropertyParameter.class); // TODO: Do we need separate type?
 	NapileNodeType LOOP_RANGE = new NapileNodeType("LOOP_RANGE", NapileContainerNode.class);
 	NapileNodeType BODY = new NapileNodeType("BODY", NapileContainerNode.class);
 	NapileNodeType BLOCK = new NapileNodeType("BLOCK", NapileBlockExpression.class);

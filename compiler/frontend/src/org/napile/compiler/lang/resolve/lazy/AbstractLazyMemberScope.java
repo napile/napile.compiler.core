@@ -33,7 +33,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileLikeClass;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.resolve.lazy.data.JetClassInfoUtil;
 import org.napile.compiler.lang.resolve.name.LabelName;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -277,9 +277,9 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 				NapileProperty property = (NapileProperty) declaration;
 				getProperties(property.getNameAsSafeName());
 			}
-			else if(declaration instanceof NapileParameter)
+			else if(declaration instanceof NapilePropertyParameter)
 			{
-				NapileParameter parameter = (NapileParameter) declaration;
+				NapilePropertyParameter parameter = (NapilePropertyParameter) declaration;
 				Name name = parameter.getNameAsName();
 				if(name != null)
 				{

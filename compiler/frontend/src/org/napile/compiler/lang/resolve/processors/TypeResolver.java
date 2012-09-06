@@ -199,9 +199,10 @@ public class TypeResolver
 					JetType receiverType = receiverTypeRef == null ? null : resolveType(scope, receiverTypeRef, trace, checkBounds);
 
 					List<JetType> parameterTypes = new ArrayList<JetType>();
-					for(NapileParameter parameter : type.getParameters())
+					for(NapileElement parameter : type.getParameters())
 					{
-						parameterTypes.add(resolveType(scope, parameter.getTypeReference(), trace, checkBounds));
+						if(parameter instanceof NapilePropertyParameter)
+							parameterTypes.add(resolveType(scope, ((NapilePropertyParameter) parameter).getTypeReference(), trace, checkBounds));
 					}
 
 					NapileTypeReference returnTypeRef = type.getReturnTypeRef();

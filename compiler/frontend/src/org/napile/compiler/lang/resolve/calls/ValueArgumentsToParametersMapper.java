@@ -34,7 +34,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
@@ -89,15 +89,15 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 	public static <D extends CallableDescriptor> Status mapValueArgumentsToParameters(@NotNull Call call, @NotNull TracingStrategy tracing, @NotNull ResolvedCallImpl<D> candidateCall, @NotNull Set<ValueArgument> unmappedArguments)
 	{
 		TemporaryBindingTrace temporaryTrace = candidateCall.getTrace();
-		Map<ValueParameterDescriptor, VarargValueArgument> varargs = Maps.newHashMap();
-		Set<ValueParameterDescriptor> usedParameters = Sets.newHashSet();
+		Map<ParameterDescriptor, VarargValueArgument> varargs = Maps.newHashMap();
+		Set<ParameterDescriptor> usedParameters = Sets.newHashSet();
 
 		D candidate = candidateCall.getCandidateDescriptor();
 
-		List<ValueParameterDescriptor> valueParameters = candidate.getValueParameters();
+		List<ParameterDescriptor> valueParameters = candidate.getValueParameters();
 
-		Map<Name, ValueParameterDescriptor> parameterByName = Maps.newHashMap();
-		for(ValueParameterDescriptor valueParameter : valueParameters)
+		Map<Name, ParameterDescriptor> parameterByName = Maps.newHashMap();
+		for(ParameterDescriptor valueParameter : valueParameters)
 		{
 			parameterByName.put(valueParameter.getName(), valueParameter);
 		}
@@ -114,8 +114,8 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 			{
 				someNamed = true;
 				NapileSimpleNameExpression nameReference = valueArgument.getArgumentName().getReferenceExpression();
-				ValueParameterDescriptor valueParameterDescriptor = parameterByName.get(nameReference.getReferencedNameAsName());
-				if(valueParameterDescriptor == null)
+				ParameterDescriptor parameterDescriptor = parameterByName.get(nameReference.getReferencedNameAsName());
+				if(parameterDescriptor == null)
 				{
 					temporaryTrace.report(NAMED_PARAMETER_NOT_FOUND.on(nameReference));
 					unmappedArguments.add(valueArgument);
@@ -123,8 +123,8 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 				}
 				else
 				{
-					temporaryTrace.record(BindingContext.REFERENCE_TARGET, nameReference, valueParameterDescriptor);
-					if(!usedParameters.add(valueParameterDescriptor))
+					temporaryTrace.record(BindingContext.REFERENCE_TARGET, nameReference, parameterDescriptor);
+					if(!usedParameters.add(parameterDescriptor))
 					{
 						temporaryTrace.report(ARGUMENT_PASSED_TWICE.on(nameReference));
 						unmappedArguments.add(valueArgument);
@@ -132,7 +132,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 					}
 					else
 					{
-						status = status.compose(put(candidateCall, valueParameterDescriptor, valueArgument, varargs));
+						status = status.compose(put(candidateCall, parameterDescriptor, valueArgument, varargs));
 					}
 				}
 				if(somePositioned)
@@ -154,17 +154,17 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 					int parameterCount = valueParameters.size();
 					if(i < parameterCount)
 					{
-						ValueParameterDescriptor valueParameterDescriptor = valueParameters.get(i);
-						usedParameters.add(valueParameterDescriptor);
-						status = status.compose(put(candidateCall, valueParameterDescriptor, valueArgument, varargs));
+						ParameterDescriptor parameterDescriptor = valueParameters.get(i);
+						usedParameters.add(parameterDescriptor);
+						status = status.compose(put(candidateCall, parameterDescriptor, valueArgument, varargs));
 					}
 					else if(!valueParameters.isEmpty())
 					{
-						ValueParameterDescriptor valueParameterDescriptor = valueParameters.get(valueParameters.size() - 1);
-						if(valueParameterDescriptor.getVarargElementType() != null)
+						ParameterDescriptor parameterDescriptor = valueParameters.get(valueParameters.size() - 1);
+						if(parameterDescriptor.getVarargElementType() != null)
 						{
-							status = status.compose(put(candidateCall, valueParameterDescriptor, valueArgument, varargs));
-							usedParameters.add(valueParameterDescriptor);
+							status = status.compose(put(candidateCall, parameterDescriptor, valueArgument, varargs));
+							usedParameters.add(parameterDescriptor);
 						}
 						else
 						{
@@ -206,22 +206,22 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 					functionLiteral = (NapileFunctionLiteralExpression) possiblyLabeledFunctionLiteral;
 				}
 
-				ValueParameterDescriptor valueParameterDescriptor = valueParameters.get(valueParameters.size() - 1);
-				if(valueParameterDescriptor.getVarargElementType() != null)
+				ParameterDescriptor parameterDescriptor = valueParameters.get(valueParameters.size() - 1);
+				if(parameterDescriptor.getVarargElementType() != null)
 				{
 					temporaryTrace.report(VARARG_OUTSIDE_PARENTHESES.on(possiblyLabeledFunctionLiteral));
 					status = ERROR;
 				}
 				else
 				{
-					if(!usedParameters.add(valueParameterDescriptor))
+					if(!usedParameters.add(parameterDescriptor))
 					{
 						temporaryTrace.report(TOO_MANY_ARGUMENTS.on(possiblyLabeledFunctionLiteral, candidate));
 						status = WEAK_ERROR;
 					}
 					else
 					{
-						status = status.compose(put(candidateCall, valueParameterDescriptor, CallMaker.makeValueArgument(functionLiteral), varargs));
+						status = status.compose(put(candidateCall, parameterDescriptor, CallMaker.makeValueArgument(functionLiteral), varargs));
 					}
 				}
 			}
@@ -235,7 +235,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 		}
 
 
-		for(ValueParameterDescriptor valueParameter : valueParameters)
+		for(ParameterDescriptor valueParameter : valueParameters)
 		{
 			if(!usedParameters.contains(valueParameter))
 			{
@@ -281,17 +281,17 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 		return status;
 	}
 
-	private static <D extends CallableDescriptor> Status put(ResolvedCallImpl<D> candidateCall, ValueParameterDescriptor valueParameterDescriptor, ValueArgument valueArgument, Map<ValueParameterDescriptor, VarargValueArgument> varargs)
+	private static <D extends CallableDescriptor> Status put(ResolvedCallImpl<D> candidateCall, ParameterDescriptor parameterDescriptor, ValueArgument valueArgument, Map<ParameterDescriptor, VarargValueArgument> varargs)
 	{
 		Status error = OK;
-		if(valueParameterDescriptor.getVarargElementType() != null)
+		if(parameterDescriptor.getVarargElementType() != null)
 		{
-			VarargValueArgument vararg = varargs.get(valueParameterDescriptor);
+			VarargValueArgument vararg = varargs.get(parameterDescriptor);
 			if(vararg == null)
 			{
 				vararg = new VarargValueArgument();
-				varargs.put(valueParameterDescriptor, vararg);
-				candidateCall.recordValueArgument(valueParameterDescriptor, vararg);
+				varargs.put(parameterDescriptor, vararg);
+				candidateCall.recordValueArgument(parameterDescriptor, vararg);
 			}
 			vararg.addArgument(valueArgument);
 		}
@@ -304,7 +304,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 				error = WEAK_ERROR;
 			}
 			ResolvedValueArgument argument = new ExpressionValueArgument(valueArgument);
-			candidateCall.recordValueArgument(valueParameterDescriptor, argument);
+			candidateCall.recordValueArgument(parameterDescriptor, argument);
 		}
 		return error;
 	}

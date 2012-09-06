@@ -148,10 +148,10 @@ public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJet
 
 	@Override
 	@NotNull
-	public List<NapileParameter> getValueParameters()
+	public List<NapileElement> getValueParameters()
 	{
 		NapileParameterList list = getValueParameterList();
-		return list != null ? list.getParameters() : Collections.<NapileParameter>emptyList();
+		return list != null ? list.getParameters() : Collections.<NapileElement>emptyList();
 	}
 
 	@Override

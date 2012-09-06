@@ -19,7 +19,8 @@ package org.napile.idea.plugin.quickfix;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.psi.NapileParameter;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapilePropertyAccessor;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
@@ -92,9 +93,9 @@ public class ChangeAccessorTypeFix extends JetIntentionAction<NapilePropertyAcce
 		}
 		else
 		{
-			NapileParameter parameter = newElement.getParameter();
-			assert parameter != null;
-			NapileTypeReference typeReference = parameter.getTypeReference();
+			NapileElement parameter = newElement.getParameter();
+			assert parameter instanceof NapilePropertyParameter;
+			NapileTypeReference typeReference = ((NapilePropertyParameter) parameter).getTypeReference();
 			assert typeReference != null;
 			CodeEditUtil.replaceChild(parameter.getNode(), typeReference.getNode(), newTypeReference.getNode());
 		}

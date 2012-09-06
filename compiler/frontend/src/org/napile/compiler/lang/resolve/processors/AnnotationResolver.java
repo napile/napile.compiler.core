@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnnotationEntry;
@@ -141,11 +141,11 @@ public class AnnotationResolver
 	private void resolveArguments(@NotNull OverloadResolutionResults<MethodDescriptor> results, @NotNull AnnotationDescriptor descriptor, BindingTrace trace)
 	{
 		List<CompileTimeConstant<?>> arguments = Lists.newArrayList();
-		for(Map.Entry<ValueParameterDescriptor, ResolvedValueArgument> descriptorToArgument : results.getResultingCall().getValueArguments().entrySet())
+		for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> descriptorToArgument : results.getResultingCall().getValueArguments().entrySet())
 		{
 			// TODO: are varargs supported here?
 			List<ValueArgument> valueArguments = descriptorToArgument.getValue().getArguments();
-			ValueParameterDescriptor parameterDescriptor = descriptorToArgument.getKey();
+			ParameterDescriptor parameterDescriptor = descriptorToArgument.getKey();
 			for(ValueArgument argument : valueArguments)
 			{
 				arguments.add(resolveAnnotationArgument(argument.getArgumentExpression(), parameterDescriptor.getType(), trace));

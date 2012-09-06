@@ -42,7 +42,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 {
 
 	protected List<TypeParameterDescriptor> typeParameters;
-	protected List<ValueParameterDescriptor> unsubstitutedValueParameters;
+	protected List<ParameterDescriptor> unsubstitutedValueParameters;
 	protected JetType unsubstitutedReturnType;
 	private ReceiverDescriptor receiverParameter;
 	protected ReceiverDescriptor expectedThisObject;
@@ -70,7 +70,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		this.isStatic = isStatic;
 	}
 
-	public MethodDescriptorImpl initialize(@Nullable JetType receiverParameterType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ValueParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
+	public MethodDescriptorImpl initialize(@Nullable JetType receiverParameterType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
 	{
 		this.typeParameters = Lists.newArrayList(typeParameters);
 		this.unsubstitutedValueParameters = unsubstitutedValueParameters;
@@ -93,10 +93,10 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		{
 			// TODO fill me
 			int firstValueParameterOffset = 0; // receiverParameter.exists() ? 1 : 0;
-			ValueParameterDescriptor valueParameterDescriptor = unsubstitutedValueParameters.get(i);
-			if(valueParameterDescriptor.getIndex() != i + firstValueParameterOffset)
+			ParameterDescriptor parameterDescriptor = unsubstitutedValueParameters.get(i);
+			if(parameterDescriptor.getIndex() != i + firstValueParameterOffset)
 			{
-				throw new IllegalStateException(valueParameterDescriptor + "index is " + valueParameterDescriptor.getIndex() + " but position is " + i);
+				throw new IllegalStateException(parameterDescriptor + "index is " + parameterDescriptor.getIndex() + " but position is " + i);
 			}
 		}
 
@@ -174,7 +174,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 
 	@Override
 	@NotNull
-	public List<ValueParameterDescriptor> getValueParameters()
+	public List<ParameterDescriptor> getValueParameters()
 	{
 		return unsubstitutedValueParameters;
 	}
@@ -236,7 +236,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 			substitutedExpectedThis = new TransientReceiver(substitutedType);
 		}
 
-		List<ValueParameterDescriptor> substitutedValueParameters = FunctionDescriptorUtil.getSubstitutedValueParameters(substitutedDescriptor, this, substitutor);
+		List<ParameterDescriptor> substitutedValueParameters = FunctionDescriptorUtil.getSubstitutedValueParameters(substitutedDescriptor, this, substitutor);
 		if(substitutedValueParameters == null)
 		{
 			return null;

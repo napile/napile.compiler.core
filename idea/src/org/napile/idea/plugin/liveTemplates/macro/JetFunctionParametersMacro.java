@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileParameter;
 import org.napile.idea.plugin.JetBundle;
 import com.intellij.codeInsight.template.Expression;
 import com.intellij.codeInsight.template.ExpressionContext;
@@ -69,7 +69,7 @@ public class JetFunctionParametersMacro extends Macro
 			if(place instanceof NapileMethod)
 			{
 				List<Result> result = new ArrayList<Result>();
-				for(NapileParameter param : ((NapileMethod) place).getValueParameters())
+				for(NapileElement param : ((NapileMethod) place).getValueParameters())
 				{
 					String name = param.getName();
 					assert name != null;

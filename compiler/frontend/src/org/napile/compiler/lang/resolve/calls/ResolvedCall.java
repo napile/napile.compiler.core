@@ -22,7 +22,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.ValueParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 
@@ -65,7 +65,7 @@ public interface ResolvedCall<D extends CallableDescriptor>
 	 * Values (arguments) for value parameters
 	 */
 	@NotNull
-	Map<ValueParameterDescriptor, ResolvedValueArgument> getValueArguments();
+	Map<ParameterDescriptor, ResolvedValueArgument> getValueArguments();
 
 	/**
 	 * Values (arguments) for value parameters indexed by parameter index

@@ -70,7 +70,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 	public static final DescriptorRenderer DEBUG_TEXT = new DescriptorRenderer()
 	{
 		@Override
-		protected boolean hasDefaultValue(ValueParameterDescriptor descriptor)
+		protected boolean hasDefaultValue(ParameterDescriptor descriptor)
 		{
 			// hasDefaultValue() has effects
 			return descriptor.declaresDefaultValue();
@@ -93,7 +93,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 
 		@Override
-		public Void visitValueParameterDescriptor(ValueParameterDescriptor descriptor, StringBuilder builder)
+		public Void visitPropertyParameterDescriptor(ParameterDescriptor descriptor, StringBuilder builder)
 		{
 			super.visitVariableDescriptor(descriptor, builder, true);
 			if(hasDefaultValue(descriptor))
@@ -104,7 +104,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 	};
 
-	protected boolean hasDefaultValue(ValueParameterDescriptor descriptor)
+	protected boolean hasDefaultValue(ParameterDescriptor descriptor)
 	{
 		return descriptor.hasDefaultValue();
 	}
@@ -318,7 +318,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderEmptyValueParameters(builder);
 		}
-		for(Iterator<ValueParameterDescriptor> iterator = descriptor.getValueParameters().iterator(); iterator.hasNext(); )
+		for(Iterator<ParameterDescriptor> iterator = descriptor.getValueParameters().iterator(); iterator.hasNext(); )
 		{
 			renderValueParameter(iterator.next(), !iterator.hasNext(), builder);
 		}
@@ -329,7 +329,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		builder.append("()");
 	}
 
-	protected void renderValueParameter(ValueParameterDescriptor parameterDescriptor, boolean isLast, StringBuilder builder)
+	protected void renderValueParameter(ParameterDescriptor parameterDescriptor, boolean isLast, StringBuilder builder)
 	{
 		if(parameterDescriptor.getIndex() == 0)
 		{
@@ -348,12 +348,20 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 	private class RenderDeclarationDescriptorVisitor implements DeclarationDescriptorVisitor<Void, StringBuilder>
 	{
-
 		@Override
-		public Void visitValueParameterDescriptor(ValueParameterDescriptor descriptor, StringBuilder builder)
+		public Void visitPropertyParameterDescriptor(ParameterDescriptor descriptor, StringBuilder builder)
 		{
 			builder.append(renderKeyword("value-parameter")).append(" ");
 			return visitVariableDescriptor(descriptor, builder);
+		}
+
+		@Override
+		public Void visitIsParameterDescriptor(IsParameterDescriptor descriptor, StringBuilder builder)
+		{
+			renderName(descriptor, builder);
+			builder.append(" : ");
+			builder.append(escape(renderType(descriptor.getType())));
+			return null;
 		}
 
 		@Override
@@ -371,9 +379,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		protected Void visitVariableDescriptor(VariableDescriptor descriptor, StringBuilder builder, boolean skipValVar)
 		{
 			JetType type = descriptor.getType();
-			if(descriptor instanceof ValueParameterDescriptor)
+			if(descriptor instanceof ParameterDescriptor)
 			{
-				JetType varargElementType = ((ValueParameterDescriptor) descriptor).getVarargElementType();
+				JetType varargElementType = ((ParameterDescriptor) descriptor).getVarargElementType();
 				if(varargElementType != null)
 				{
 					builder.append(renderKeyword("vararg")).append(" ");

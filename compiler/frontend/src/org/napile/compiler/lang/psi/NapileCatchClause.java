@@ -54,12 +54,12 @@ public class NapileCatchClause extends NapileElementImpl
 
 	@Nullable
 	@IfNotParsed
-	public NapileParameter getCatchParameter()
+	public NapileElement getCatchParameter()
 	{
 		NapileParameterList list = getParameterList();
 		if(list == null)
 			return null;
-		List<NapileParameter> parameters = list.getParameters();
+		List<NapileElement> parameters = list.getParameters();
 		return parameters.size() == 1 ? parameters.get(0) : null;
 	}
 

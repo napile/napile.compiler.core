@@ -490,27 +490,25 @@ public class BodyResolver
 			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, methodDescriptor, DataFlowInfo.EMPTY, null, trace);
 		}
 
-		List<NapileParameter> valueParameters = function.getValueParameters();
-		List<ValueParameterDescriptor> valueParameterDescriptors = methodDescriptor.getValueParameters();
+		List<NapileElement> valueParameters = function.getValueParameters();
+		List<ParameterDescriptor> parameterDescriptors = methodDescriptor.getValueParameters();
 
-		checkDefaultParameterValues(valueParameters, valueParameterDescriptors, functionInnerScope);
+		checkDefaultParameterValues(valueParameters, parameterDescriptors, functionInnerScope);
 
 		assert methodDescriptor.getReturnType() != null;
 	}
 
-	private void checkDefaultParameterValues(List<NapileParameter> valueParameters, List<ValueParameterDescriptor> valueParameterDescriptors, JetScope declaringScope)
+	private void checkDefaultParameterValues(List<NapileElement> valueParameters, List<ParameterDescriptor> parameterDescriptors, JetScope declaringScope)
 	{
 		for(int i = 0; i < valueParameters.size(); i++)
 		{
-			ValueParameterDescriptor valueParameterDescriptor = valueParameterDescriptors.get(i);
-			if(valueParameterDescriptor.hasDefaultValue())
+			ParameterDescriptor parameterDescriptor = parameterDescriptors.get(i);
+			if(parameterDescriptor.hasDefaultValue())
 			{
-				NapileParameter jetParameter = valueParameters.get(i);
-				NapileExpression defaultValue = jetParameter.getDefaultValue();
+				NapileElement jetParameter = valueParameters.get(i);
+				NapileExpression defaultValue = jetParameter instanceof NapilePropertyParameter ? ((NapilePropertyParameter) jetParameter).getDefaultValue() : null;
 				if(defaultValue != null)
-				{
-					expressionTypingServices.getType(declaringScope, defaultValue, valueParameterDescriptor.getType(), DataFlowInfo.EMPTY, trace);
-				}
+					expressionTypingServices.getType(declaringScope, defaultValue, parameterDescriptor.getType(), DataFlowInfo.EMPTY, trace);
 			}
 		}
 	}

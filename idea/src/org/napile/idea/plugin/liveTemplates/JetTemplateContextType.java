@@ -201,7 +201,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 		protected boolean isInContext(@NotNull PsiElement element)
 		{
 			return element.getParent() instanceof NapileExpression && !(element.getParent() instanceof NapileConstantExpression) &&
-					!(element.getParent().getParent() instanceof NapileDotQualifiedExpression) && !(element.getParent() instanceof NapileParameter);
+					!(element.getParent().getParent() instanceof NapileDotQualifiedExpression) && !(element.getParent() instanceof NapilePropertyParameter);
 		}
 	}
 }
