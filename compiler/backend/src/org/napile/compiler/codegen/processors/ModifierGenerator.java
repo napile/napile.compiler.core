@@ -24,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.Modifier;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MemberDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.descriptors.PropertyKind;
 
 /**
  * @author VISTALL
@@ -31,6 +33,12 @@ import org.napile.compiler.lang.descriptors.MemberDescriptor;
  */
 public class ModifierGenerator
 {
+	@NotNull
+	public static Modifier[] toModifiers(@NotNull ParameterDescriptor parameterDescriptor)
+	{
+		return parameterDescriptor.getPropertyKind() == PropertyKind.VAR ? Modifier.EMPTY : new Modifier[]{Modifier.FINAL};
+	}
+
 	@NotNull
 	public static Modifier[] toModifiers(@NotNull ClassDescriptor memberDescriptor)
 	{

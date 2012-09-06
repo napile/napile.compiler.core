@@ -35,7 +35,7 @@ public class KotlinInternalToolWindowFactory implements ToolWindowFactory
 	{
 		ContentManager contentManager = toolWindow.getContentManager();
 		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-		contentManager.addContent(contentFactory.createContent(new ResolveToolwindow(project), "Resolve", false));
 		contentManager.addContent(contentFactory.createContent(new BytecodeToolwindow(project), "Bytecode", false));
+		contentManager.addContent(contentFactory.createContent(new ResolveToolwindow(project), "Resolve", false));
 	}
 }

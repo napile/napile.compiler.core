@@ -148,7 +148,7 @@
 		<referencesSearch implementation="org.napile.idea.plugin.search.KotlinReferencesSearcher"/>
 
 		<compiler implementation="org.napile.idea.plugin.compiler.JetCompiler" />
-		<!--<toolWindow id="Napile" factoryClass="KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/idea/plugin/icons/kotlin_13.png"/> -->
+		<toolWindow id="Napile" factoryClass="org.napile.idea.plugin.internal.KotlinInternalToolWindowFactory" anchor="right" icon="/org/jetbrains/jet/plugin/icons/kotlin_13.png"/>
 
 		<applicationService serviceInterface="org.napile.idea.plugin.editor.JetEditorOptions" serviceImplementation="org.napile.idea.plugin.editor.JetEditorOptions"/>
 		<exportable serviceInterface="org.napile.idea.plugin.editor.JetEditorOptions"/>

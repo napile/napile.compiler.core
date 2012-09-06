@@ -20,6 +20,8 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.MethodNode;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.Node;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.types.ClassTypeNode;
@@ -27,9 +29,14 @@ import org.napile.asm.tree.members.types.TypeConstructorNode;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -37,6 +44,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.lang.JetStandardClasses;
 
 /**
  * @author VISTALL
@@ -79,6 +87,49 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	}
 
 	@Override
+	public Void visitAnonymClass(NapileAnonymClass element, Node data)
+	{
+		ClassDescriptor classDescriptor = (ClassDescriptor) bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
+
+		assert classDescriptor != null;
+
+		FqName fqName = bindingTrace.get(BindingContext2.DECLARATION_TO_FQ_NAME, element);
+
+		assert fqName != null;
+
+		ClassNode classNode = new ClassNode(ModifierGenerator.toModifiers(classDescriptor), fqName);
+
+		classNodes.put(fqName, classNode);
+
+		return super.visitAnonymClass(element, classNode);
+	}
+
+	@Override
+	public Void visitNamedFunction(NapileNamedFunction function, Node parent)
+	{
+		assert parent instanceof ClassNode;
+
+		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, function);
+
+		assert methodDescriptor != null;
+
+		ClassNode classNode = (ClassNode) parent;
+
+		MethodNode methodNode = new MethodNode(ModifierGenerator.toModifiers(methodDescriptor), methodDescriptor.getName().getName());
+		methodNode.returnType = JetStandardClasses.isUnit(methodDescriptor.getReturnType()) ? null : toAsmType(methodDescriptor.getReturnType());
+		for(ParameterDescriptor declaration : methodDescriptor.getValueParameters())
+		{
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.toModifiers(declaration), declaration.getName().getName(), toAsmType(declaration.getType()));
+
+			methodNode.parameters.add(methodParameterNode);
+		}
+
+		classNode.members.add(methodNode);
+
+		return super.visitNamedFunction(function, parent);
+	}
+
+	@Override
 	public Void visitRetellEntry(NapileRetellEntry retellEntry, Node parent)
 	{
 		assert parent instanceof ClassNode;
@@ -89,7 +140,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		VariableNode variableNode = new VariableNode(ModifierGenerator.toModifiers(propertyDescriptor), retellEntry.getNameAsSafeName().getName());
+		VariableNode variableNode = new VariableNode(ModifierGenerator.toModifiers(propertyDescriptor), propertyDescriptor.getName().getName());
 		variableNode.returnType = toAsmType(propertyDescriptor.getType());
 		classNode.members.add(variableNode);
 
@@ -103,6 +154,8 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		ClassifierDescriptor owner = jetType.getConstructor().getDeclarationDescriptor();
 		if(owner instanceof ClassDescriptor)
 			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());
+		else if(owner instanceof TypeParameterDescriptor)
+			typeConstructorNode = new ClassTypeNode(new FqName(owner.getName().getName())) ;//TODO [VISTALL] invalid
 		else
 			throw new RuntimeException("invalid " + owner);
 
