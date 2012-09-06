@@ -189,7 +189,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	{
 		StringBuilder bodyBuilder = new StringBuilder();
 		bodyBuilder.append(displayableVisibility(descriptor));
-		bodyBuilder.append("override fun ");
+		bodyBuilder.append("override meth ");
 
 		List<String> whereRestrictions = new ArrayList<String>();
 		if(!descriptor.getTypeParameters().isEmpty())

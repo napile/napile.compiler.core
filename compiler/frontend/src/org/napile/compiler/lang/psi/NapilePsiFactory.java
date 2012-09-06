@@ -155,7 +155,7 @@ public class NapilePsiFactory
 
 	public static NapileNamedFunction createFunction(Project project, String funDecl)
 	{
-		return createDeclaration(project, funDecl, NapileNamedFunction.class);
+		return createClassDeclaration(project, funDecl);
 	}
 
 	public static NapileModifierList createModifier(Project project, NapileKeywordToken modifier)
@@ -167,13 +167,13 @@ public class NapilePsiFactory
 
 	public static NapileExpression createEmptyBody(Project project)
 	{
-		NapileNamedFunction function = createFunction(project, "fun foo() {}");
+		NapileNamedFunction function = createFunction(project, "meth foo() {}");
 		return function.getBodyExpression();
 	}
 
 	public static NapileParameter createParameter(Project project, String name, String type)
 	{
-		NapileNamedFunction function = createFunction(project, "fun foo(" + name + " : " + type + ") {}");
+		NapileNamedFunction function = createFunction(project, "meth foo(" + name + " : " + type + ") {}");
 		return function.getValueParameters().get(0);
 	}
 
@@ -212,11 +212,5 @@ public class NapilePsiFactory
 
 		NapileFile namespace = createFile(project, importDirectiveBuilder.toString());
 		return namespace.getImportDirectives().iterator().next();
-	}
-
-	public static PsiElement createPrimaryConstructor(Project project)
-	{
-		NapileClass aClass = createClass(project, "class A()");
-		return aClass.findElementAt(7).getParent();
 	}
 }
