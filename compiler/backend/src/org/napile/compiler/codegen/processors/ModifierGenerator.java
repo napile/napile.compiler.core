@@ -17,10 +17,12 @@
 package org.napile.compiler.codegen.processors;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.Modifier;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MemberDescriptor;
 
 /**
@@ -29,6 +31,25 @@ import org.napile.compiler.lang.descriptors.MemberDescriptor;
  */
 public class ModifierGenerator
 {
+	@NotNull
+	public static Modifier[] toModifiers(@NotNull ClassDescriptor memberDescriptor)
+	{
+		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(toModifiers((MemberDescriptor) memberDescriptor)));
+		switch(memberDescriptor.getKind())
+		{
+			case RETELL:
+				list.add(Modifier.RETELL);
+				break;
+			case ENUM_CLASS:
+				list.add(Modifier.ENUM);
+				break;
+			default:
+				break;
+		}
+
+		return list.isEmpty() ? Modifier.EMPTY : list.toArray(new Modifier[list.size()]);
+	}
+
 	@NotNull
 	public static Modifier[] toModifiers(@NotNull MemberDescriptor memberDescriptor)
 	{

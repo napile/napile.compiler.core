@@ -19,8 +19,11 @@ package org.napile.compiler.lang.descriptors;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
+import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileKeywordToken;
 import com.google.common.collect.Sets;
 
 /**
@@ -28,7 +31,7 @@ import com.google.common.collect.Sets;
  */
 public enum  Visibility
 {
-	LOCAL("local", false)
+	LOCAL(JetTokens.LOCAL_KEYWORD, false)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -54,7 +57,8 @@ public enum  Visibility
 			return false;
 		}
 	},
-	COVERED("covered", true)
+
+	COVERED(JetTokens.COVERED_KEYWORD, true)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -75,7 +79,8 @@ public enum  Visibility
 			return p2.getFqName().startsWith(p1.getFqName());
 		}
 	},
-	HERITABLE("heritable", true)
+
+	HERITABLE(JetTokens.HERITABLE_KEYWORD, true)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -94,7 +99,8 @@ public enum  Visibility
 			return isVisible(what, fromClass.getContainingDeclaration());
 		}
 	},
-	PUBLIC("public", true)
+
+	PUBLIC(null, true)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -102,8 +108,9 @@ public enum  Visibility
 			return true;
 		}
 	},
+
 	@Deprecated
-	LOCAL2("local", false)
+	LOCAL2(null, false)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -111,8 +118,9 @@ public enum  Visibility
 			throw new IllegalStateException(); //This method shouldn't be invoked for LOCAL visibility
 		}
 	},
+
 	@Deprecated
-	INHERITED("inherited", false)
+	INHERITED(null, false)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -122,7 +130,7 @@ public enum  Visibility
 	},
 
 	/* Visibility for fake override invisible members (they are created for better error reporting) */
-	INVISIBLE_FAKE("invisible_fake", false)
+	INVISIBLE_FAKE(null, false)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -133,12 +141,12 @@ public enum  Visibility
 
 	public static final Set<Visibility> INTERNAL_VISIBILITIES = Sets.newHashSet(LOCAL, LOCAL2);
 	private final boolean isPublicAPI;
-	private final String name;
+	private final NapileKeywordToken keyword;
 
-	Visibility(@NotNull String name, boolean isPublicAPI)
+	Visibility(@Nullable NapileKeywordToken keyword, boolean isPublicAPI)
 	{
 		this.isPublicAPI = isPublicAPI;
-		this.name = name;
+		this.keyword = keyword;
 	}
 
 	public boolean isPublicAPI()
@@ -146,10 +154,17 @@ public enum  Visibility
 		return isPublicAPI;
 	}
 
+	// if it call it always not null
+	@NotNull
+	public NapileKeywordToken getKeyword()
+	{
+		return keyword;
+	}
+
 	@Override
 	public String toString()
 	{
-		return name;
+		return keyword == null ? "" : keyword.toString();
 	}
 
 	protected abstract boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from);

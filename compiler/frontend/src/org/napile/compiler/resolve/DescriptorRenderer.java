@@ -34,6 +34,7 @@ import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileKeywordToken;
 
 /**
  * @author abreslav
@@ -109,9 +110,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return descriptor.hasDefaultValue();
 	}
 
-	protected String renderKeyword(String keyword)
+	protected String renderKeyword(NapileKeywordToken keyword)
 	{
-		return keyword;
+		return keyword.getValue();
 	}
 
 	public String renderType(JetType type)
@@ -296,17 +297,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 	}
 
-	public String renderAsObject(@NotNull ClassDescriptor classDescriptor)
-	{
-		StringBuilder stringBuilder = new StringBuilder();
-		rootVisitor.renderClassDescriptor(classDescriptor, stringBuilder, "object");
-		if(shouldRenderDefinedIn())
-		{
-			appendDefinedIn(classDescriptor, stringBuilder);
-		}
-		return stringBuilder.toString();
-	}
-
 	public String renderMessage(String s)
 	{
 		return s;
@@ -351,7 +341,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitPropertyParameterDescriptor(ParameterDescriptor descriptor, StringBuilder builder)
 		{
-			builder.append(renderKeyword("value-parameter")).append(" ");
 			return visitVariableDescriptor(descriptor, builder);
 		}
 
@@ -384,7 +373,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				JetType varargElementType = ((ParameterDescriptor) descriptor).getVarargElementType();
 				if(varargElementType != null)
 				{
-					builder.append(renderKeyword("vararg")).append(" ");
+					builder.append(renderKeyword(JetTokens.VARARG_KEYWORD)).append(" ");
 					type = varargElementType;
 				}
 			}
@@ -404,10 +393,10 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 					switch(propertyKind)
 					{
 						case VAR:
-							builder.append(JetTokens.VAR_KEYWORD.getValue());
+							builder.append(renderKeyword(JetTokens.VAR_KEYWORD));
 							break;
 						case VAL:
-							builder.append(JetTokens.VAL_KEYWORD.getValue());
+							builder.append(renderKeyword(JetTokens.VAL_KEYWORD));
 							break;
 						default:
 							break;
@@ -443,26 +432,30 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			if(!shouldRenderModifiers())
 				return;
 
-			builder.append(renderKeyword(visibility.getVisibility().toString())).append(" ");
+			if(visibility.getVisibility() != Visibility.PUBLIC)
+				builder.append(renderKeyword(visibility.getVisibility().getKeyword())).append(" ");
 			if(visibility.isStatic())
-				builder.append(renderKeyword("static")).append(" ");
+				builder.append(renderKeyword(JetTokens.STATIC_KEYWORD)).append(" ");
 		}
 
 		private void renderModality(Modality modality, StringBuilder builder)
 		{
 			if(!shouldRenderModifiers())
 				return;
-			String keyword = "";
+			NapileKeywordToken keyword = null;
 			switch(modality)
 			{
 				case FINAL:
-					keyword = "final";
+					keyword = JetTokens.FINAL_KEYWORD;
 					break;
 				case ABSTRACT:
-					keyword = "abstract";
+					keyword = JetTokens.ABSTRACT_KEYWORD;
+					break;
+				default:
 					break;
 			}
-			builder.append(renderKeyword(keyword)).append(" ");
+			if(keyword != null)
+				builder.append(renderKeyword(keyword)).append(" ");
 		}
 
 		@Override
@@ -470,7 +463,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderVisibility(descriptor, builder);
 			renderModality(descriptor.getModality(), builder);
-			builder.append(renderKeyword(JetTokens.METH_KEYWORD.getValue())).append(" ");
+			builder.append(renderKeyword(JetTokens.METH_KEYWORD)).append(" ");
 			if(renderTypeParameters(descriptor.getTypeParameters(), builder))
 			{
 				builder.append(" ");
@@ -513,7 +506,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 						if(first)
 						{
 							builder.append(" ");
-							builder.append(renderKeyword("where"));
+							builder.append(renderKeyword(JetTokens.WHERE_KEYWORD));
 							builder.append(" ");
 						}
 						else
@@ -534,7 +527,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderVisibility(constructorDescriptor, builder);
 
-			builder.append(renderKeyword("this"));
+			builder.append(renderKeyword(JetTokens.THIS_KEYWORD));
 
 			ClassDescriptor classDescriptor = constructorDescriptor.getContainingDeclaration();
 			renderTypeParameters(classDescriptor.getTypeConstructor().getParameters(), builder);
@@ -574,7 +567,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitNamespaceDescriptor(NamespaceDescriptor namespaceDescriptor, StringBuilder builder)
 		{
-			builder.append(renderKeyword(JetTokens.PACKAGE_KEYWORD.getValue())).append(" ");
+			builder.append(renderKeyword(JetTokens.PACKAGE_KEYWORD)).append(" ");
 			renderName(namespaceDescriptor, builder);
 			return null;
 		}
@@ -590,24 +583,24 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitClassDescriptor(ClassDescriptor descriptor, StringBuilder builder)
 		{
-			String keyword;
+			NapileKeywordToken keyword;
 			switch(descriptor.getKind())
 			{
 				case ENUM_CLASS:
-					keyword = "enum";
+					keyword = JetTokens.ENUM_KEYWORD;
 					break;
-				case ANONYM_CLASS:
-					keyword = "anonym";
+				case RETELL:
+					keyword = JetTokens.RETELL_KEYWORD;
 					break;
 				default:
-					keyword = "class";
+					keyword = JetTokens.CLASS_KEYWORD;
 			}
 			renderClassDescriptor(descriptor, builder, keyword);
 			return null;
 		}
 
 
-		public void renderClassDescriptor(ClassDescriptor descriptor, StringBuilder builder, String keyword)
+		public void renderClassDescriptor(ClassDescriptor descriptor, StringBuilder builder, NapileKeywordToken keyword)
 		{
 			renderVisibility(descriptor, builder);
 
@@ -653,7 +646,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			if(descriptor.isReified())
 			{
-				builder.append(renderKeyword("reified")).append(" ");
+				builder.append(renderKeyword(JetTokens.REIFIED_KEYWORD)).append(" ");
 			}
 			renderName(descriptor, builder);
 			if(descriptor.getUpperBounds().size() == 1)
@@ -702,9 +695,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 
 		@Override
-		public String renderKeyword(String keyword)
+		public String renderKeyword(NapileKeywordToken keyword)
 		{
-			return "<b>" + keyword + "</b>";
+			return "<b>" + keyword.getValue() + "</b>";
 		}
 
 		@Override

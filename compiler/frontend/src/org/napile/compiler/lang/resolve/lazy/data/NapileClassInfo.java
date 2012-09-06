@@ -45,8 +45,6 @@ public class NapileClassInfo extends NapileClassOrObjectInfo<NapileClass>
 	@Override
 	public ClassKind getClassKind()
 	{
-		if(element.isEnum())
-			return ClassKind.ENUM_CLASS;
-		return ClassKind.CLASS;
+		return element.getKind();
 	}
 }

@@ -177,7 +177,7 @@ public class TypeHierarchyResolver
 				@Override
 				public void visitClass(NapileClass klass)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, getClassKind(klass), NapilePsiUtil.safeName(klass.getName()), NapilePsiUtil.isStatic(klass));
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, klass.getKind(), NapilePsiUtil.safeName(klass.getName()), NapilePsiUtil.isStatic(klass));
 					context.getClasses().put(klass, mutableClassDescriptor);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(klass), mutableClassDescriptor);
 
@@ -222,12 +222,6 @@ public class TypeHierarchyResolver
 		return forDeferredResolve;
 	}
 
-
-	@NotNull
-	private static ClassKind getClassKind(@NotNull NapileClass napileClass)
-	{
-		return napileClass.isEnum() ? ClassKind.ENUM_CLASS : ClassKind.CLASS;
-	}
 
 	private void createTypeConstructors()
 	{

@@ -101,7 +101,7 @@ public class GenerationState
 		ClassGenerator classGenerator = new ClassGenerator(injector.getBindingTrace(), classNodes);
 
 		for(NapileClass napileClass : classes)
-			napileClass.accept(classGenerator);
+			napileClass.accept(classGenerator, null);
 
 		classNodes = classGenerator.getClassNodes();
 	}
