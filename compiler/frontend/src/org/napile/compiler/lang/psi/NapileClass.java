@@ -62,16 +62,10 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 		IElementType elementType = element.getNode().getElementType();
 		if(elementType == JetTokens.RETELL_KEYWORD)
 			return ClassKind.RETELL;
-		else if(element == JetTokens.ENUM_KEYWORD)
+		else if(elementType == JetTokens.ENUM_KEYWORD)
 			return ClassKind.ENUM_CLASS;
 		else
 			return ClassKind.CLASS;
-	}
-
-	@Deprecated
-	public boolean isEnum()
-	{
-		return findChildByType(JetTokens.ENUM_KEYWORD) != null;
 	}
 
 	@NotNull
