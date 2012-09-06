@@ -18,6 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 
@@ -38,9 +39,9 @@ public class NapileWhenConditionIsPattern extends NapileWhenCondition
 
 	@Nullable
 	@IfNotParsed
-	public NapilePattern getPattern()
+	public NapileTypeReference getTypeRef()
 	{
-		return findChildByClass(NapilePattern.class);
+		return (NapileTypeReference) findChildByType(NapileNodeTypes.TYPE_REFERENCE);
 	}
 
 	@Override

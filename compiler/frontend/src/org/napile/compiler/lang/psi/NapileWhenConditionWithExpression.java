@@ -32,9 +32,9 @@ public class NapileWhenConditionWithExpression extends NapileWhenCondition
 
 	@Nullable
 	@IfNotParsed
-	public NapileExpressionPattern getPattern()
+	public NapileExpression getExpression()
 	{
-		return findChildByClass(NapileExpressionPattern.class);
+		return findChildByClass(NapileExpression.class);
 	}
 
 	@Override

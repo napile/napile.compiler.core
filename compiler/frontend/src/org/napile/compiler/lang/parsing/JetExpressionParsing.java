@@ -149,9 +149,9 @@ public class JetExpressionParsing extends AbstractJetParsing
 					{
 						if(operation == JetTokens.IS_KEYWORD || operation == JetTokens.NOT_IS)
 						{
-							parser.parsePattern();
+							parser.myJetParsing.parseTypeRef();
 
-							return BINARY_WITH_PATTERN;
+							return IS_EXPRESSION;
 						}
 
 						return super.parseRightHandSide(operation, parser);
@@ -950,17 +950,16 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			if(atSet(WHEN_CONDITION_RECOVERY_SET_WITH_ARROW))
 			{
-				error("Expecting a type or a decomposer pattern");
+				error("Expecting a type");
 			}
 			else
 			{
-				parsePattern();
+				myJetParsing.parseTypeRef();
 			}
 			condition.done(WHEN_CONDITION_IS_PATTERN);
 		}
 		else
 		{
-			PsiBuilder.Marker expressionPattern = mark();
 			if(atSet(WHEN_CONDITION_RECOVERY_SET_WITH_ARROW))
 			{
 				error("Expecting an expression, is-condition or in-condition");
@@ -969,61 +968,9 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				parseExpression();
 			}
-			expressionPattern.done(EXPRESSION_PATTERN);
 			condition.done(WHEN_CONDITION_EXPRESSION);
 		}
 		myBuilder.restoreNewlinesState();
-	}
-
-	/*
-		 * pattern
-		 *   : attributes pattern
-		 *   : type // '[a] T' is a type-pattern 'T' with an attribute '[a]', not a type-pattern '[a] T'
-		 *          // this makes sense because is-check may be different for a type with attributes
-		 *   : constantPattern
-		 *   : bindingPattern
-		 *   : "*" // wildcard pattern
-		 *   ;
-		 */
-	private void parsePattern()
-	{
-		PsiBuilder.Marker pattern = mark();
-
-		myJetParsing.parseAnnotations();
-
-		if(at(JetTokens.PACKAGE_KEYWORD) || at(JetTokens.IDENTIFIER) || at(JetTokens.METH_KEYWORD) || at(JetTokens.THIS_KEYWORD))
-		{
-			PsiBuilder.Marker rollbackMarker = mark();
-			parseBinaryExpression(Precedence.ELVIS);
-
-			int expressionEndOffset = myBuilder.getCurrentOffset();
-			rollbackMarker.rollbackTo();
-			rollbackMarker = mark();
-
-			myJetParsing.parseTypeRef();
-
-			rollbackMarker.drop();
-			pattern.done(TYPE_PATTERN);
-		}
-		else if(at(JetTokens.VAL_KEYWORD))
-		{
-			parseBindingPattern();
-			pattern.done(BINDING_PATTERN);
-		}
-		else if(at(JetTokens.OPEN_QUOTE))
-		{
-			parseStringTemplate();
-			pattern.done(EXPRESSION_PATTERN);
-		}
-		else if(parseLiteralConstant())
-		{
-			pattern.done(EXPRESSION_PATTERN);
-		}
-		else
-		{
-			errorUntil("Pattern expected", TokenSet.create(JetTokens.RBRACE, JetTokens.ARROW));
-			pattern.drop();
-		}
 	}
 
 	/*
@@ -1065,7 +1012,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 				advance(); // IS_KEYWORD or NOT_IS
 
-				parsePattern();
+				myJetParsing.parseTypeRef();
+
 				subCondition.done(WHEN_CONDITION_IS_PATTERN);
 			}
 			else if(at(JetTokens.IN_KEYWORD) || at(JetTokens.NOT_IN))

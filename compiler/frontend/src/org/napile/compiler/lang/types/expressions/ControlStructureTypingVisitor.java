@@ -98,8 +98,8 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 
 		WritableScopeImpl thenScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Then scope");
 		WritableScopeImpl elseScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Else scope");
-		DataFlowInfo thenInfo = DataFlowUtils.extractDataFlowInfoFromCondition(condition, true, thenScope, context);
-		DataFlowInfo elseInfo = DataFlowUtils.extractDataFlowInfoFromCondition(condition, false, null, context);
+		DataFlowInfo thenInfo = DataFlowUtils.extractDataFlowInfoFromCondition(condition, true, context);
+		DataFlowInfo elseInfo = DataFlowUtils.extractDataFlowInfoFromCondition(condition, false, context);
 
 		if(elseBranch == null)
 		{
@@ -185,13 +185,13 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		if(body != null)
 		{
 			WritableScopeImpl scopeToExtend = ExpressionTypingUtils.newWritableScopeImpl(context, "Scope extended in while's condition");
-			DataFlowInfo conditionInfo = condition == null ? context.dataFlowInfo : DataFlowUtils.extractDataFlowInfoFromCondition(condition, true, scopeToExtend, context);
+			DataFlowInfo conditionInfo = condition == null ? context.dataFlowInfo : DataFlowUtils.extractDataFlowInfoFromCondition(condition, true, context);
 			context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(scopeToExtend, Collections.singletonList(body), CoercionStrategy.NO_COERCION, context.replaceDataFlowInfo(conditionInfo), context.trace);
 		}
 		DataFlowInfo dataFlowInfo;
 		if(!containsBreak(expression, context))
 		{
-			dataFlowInfo = DataFlowUtils.extractDataFlowInfoFromCondition(condition, false, null, context);
+			dataFlowInfo = DataFlowUtils.extractDataFlowInfoFromCondition(condition, false, context);
 		}
 		else
 		{
@@ -278,7 +278,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		DataFlowInfo dataFlowInfo;
 		if(!containsBreak(expression, context))
 		{
-			dataFlowInfo = DataFlowUtils.extractDataFlowInfoFromCondition(condition, false, null, context);
+			dataFlowInfo = DataFlowUtils.extractDataFlowInfoFromCondition(condition, false, context);
 		}
 		else
 		{

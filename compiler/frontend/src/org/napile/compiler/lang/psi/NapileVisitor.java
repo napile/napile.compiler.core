@@ -444,15 +444,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitJetElement(condition, data);
 	}
 
-	public R visitTypePattern(NapileTypePattern pattern, D data)
-	{
-		return visitPattern(pattern, data);
-	}
-	public R visitExpressionPattern(NapileExpressionPattern pattern, D data)
-	{
-		return visitPattern(pattern, data);
-	}
-
 	private R visitPattern(NapilePattern pattern, D data)
 	{
 		return visitJetElement(pattern, data);
@@ -466,11 +457,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	public R visitObjectDeclarationName(NapileObjectDeclarationName declarationName, D data)
 	{
 		return visitNamedDeclaration(declarationName, data);
-	}
-
-	public R visitBindingPattern(NapileBindingPattern pattern, D data)
-	{
-		return visitPattern(pattern, data);
 	}
 
 	public R visitStringTemplateEntry(NapileStringTemplateEntry entry, D data)

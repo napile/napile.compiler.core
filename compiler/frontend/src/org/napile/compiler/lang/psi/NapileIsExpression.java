@@ -52,9 +52,9 @@ public class NapileIsExpression extends NapileExpressionImpl
 
 	@Nullable
 	@IfNotParsed
-	public NapilePattern getPattern()
+	public NapileTypeReference getTypeRef()
 	{
-		return findChildByClass(NapilePattern.class);
+		return (NapileTypeReference) findChildByType(NapileNodeTypes.TYPE_REFERENCE);
 	}
 
 	@NotNull

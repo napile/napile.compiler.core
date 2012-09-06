@@ -234,28 +234,6 @@ public class NapilePsiUtil
 		return prefix.child(Name.identifier(jetClass.getName()));
 	}
 
-	public static boolean isIrrefutable(NapileWhenEntry entry)
-	{
-		if(entry.isElse())
-			return true;
-		for(NapileWhenCondition condition : entry.getConditions())
-		{
-			if(condition instanceof NapileWhenConditionIsPattern)
-			{
-				NapilePattern pattern = ((NapileWhenConditionIsPattern) condition).getPattern();
-				if(pattern instanceof NapileBindingPattern)
-				{
-					NapileBindingPattern bindingPattern = (NapileBindingPattern) pattern;
-					if(bindingPattern.getVariableDeclaration().getPropertyTypeRef() == null && bindingPattern.getCondition() == null)
-					{
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
 	@Nullable
 	public static <T extends PsiElement> T getDirectParentOfTypeForBlock(@NotNull NapileBlockExpression block, @NotNull Class<T> aClass)
 	{

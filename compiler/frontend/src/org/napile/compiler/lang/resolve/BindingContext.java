@@ -110,6 +110,7 @@ public interface BindingContext
 	WritableSlice<NapileExpression, Boolean> VARIABLE_REASSIGNMENT = Slices.createSimpleSetSlice();
 	WritableSlice<ParameterDescriptor, Boolean> AUTO_CREATED_IT = Slices.createSimpleSetSlice();
 	WritableSlice<NapileExpression, DeclarationDescriptor> VARIABLE_ASSIGNMENT = Slices.createSimpleSlice();
+	WritableSlice<NapileExpression, DataFlowInfo> DATAFLOW_INFO_AFTER_CONDITION = Slices.createSimpleSlice();
 
 	/**
 	 * Has type of current expression has been already resolved

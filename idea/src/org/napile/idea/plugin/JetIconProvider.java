@@ -102,8 +102,6 @@ public class JetIconProvider extends IconProvider
 			NapileProperty property = (NapileProperty) psiElement;
 			icon = property.isVar() ? JetIcons.FIELD_VAR : JetIcons.FIELD_VAL;
 		}
-		else if(psiElement instanceof NapileElement)
-			throw new IllegalArgumentException("Illegal element " + psiElement);
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags);
 	}

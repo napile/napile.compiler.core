@@ -441,16 +441,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitJetElement(condition);
 	}
 
-	public void visitTypePattern(NapileTypePattern pattern)
-	{
-		visitPattern(pattern);
-	}
-
-	public void visitExpressionPattern(NapileExpressionPattern pattern)
-	{
-		visitPattern(pattern);
-	}
-
 	private void visitPattern(NapilePattern pattern)
 	{
 		visitJetElement(pattern);
@@ -464,11 +454,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 	public void visitObjectDeclarationName(NapileObjectDeclarationName declaration)
 	{
 		visitNamedDeclaration(declaration);
-	}
-
-	public void visitBindingPattern(NapileBindingPattern pattern)
-	{
-		visitPattern(pattern);
 	}
 
 	public void visitStringTemplateEntry(NapileStringTemplateEntry entry)

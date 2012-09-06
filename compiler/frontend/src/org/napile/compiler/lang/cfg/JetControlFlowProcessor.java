@@ -125,54 +125,13 @@ public class JetControlFlowProcessor
 			@Override
 			public void visitWhenConditionIsPattern(NapileWhenConditionIsPattern condition)
 			{
-				NapilePattern pattern = condition.getPattern();
-				if(pattern != null)
-				{
-					pattern.accept(patternVisitor);
-				}
+
 			}
 
 			@Override
 			public void visitWhenConditionWithExpression(NapileWhenConditionWithExpression condition)
 			{
-				NapileExpressionPattern pattern = condition.getPattern();
-				if(pattern != null)
-				{
-					pattern.accept(patternVisitor);
-				}
-			}
-
-			@Override
-			public void visitJetElement(NapileElement element)
-			{
-				throw new UnsupportedOperationException("[JetControlFlowProcessor] " + element.toString());
-			}
-		};
-		private final NapileVisitorVoid patternVisitor = new NapileVisitorVoid()
-		{
-			@Override
-			public void visitTypePattern(NapileTypePattern typePattern)
-			{
-				// TODO
-			}
-
-
-			@Override
-			public void visitExpressionPattern(NapileExpressionPattern pattern)
-			{
-				value(pattern.getExpression(), inCondition);
-			}
-
-			@Override
-			public void visitBindingPattern(NapileBindingPattern pattern)
-			{
-				NapileProperty variableDeclaration = pattern.getVariableDeclaration();
-				builder.write(pattern, variableDeclaration);
-				NapileWhenCondition condition = pattern.getCondition();
-				if(condition != null)
-				{
-					condition.accept(conditionVisitor);
-				}
+				value(condition.getExpression(), inCondition);
 			}
 
 			@Override
@@ -922,12 +881,7 @@ public class JetControlFlowProcessor
 		public void visitIsExpression(final NapileIsExpression expression)
 		{
 			value(expression.getLeftHandSide(), inCondition);
-			NapilePattern pattern = expression.getPattern();
-			if(pattern != null)
-			{
-				pattern.accept(patternVisitor);
-			}
-			// TODO : builder.read(expression.getPattern());
+
 			builder.read(expression);
 		}
 
@@ -958,7 +912,7 @@ public class JetControlFlowProcessor
 						trace.report(ELSE_MISPLACED_IN_WHEN.on(whenEntry));
 					}
 				}
-				boolean isIrrefutable = NapilePsiUtil.isIrrefutable(whenEntry);
+				boolean isIrrefutable = whenEntry.isElse();
 				if(isIrrefutable)
 				{
 					hasElseOrIrrefutableBranch = true;

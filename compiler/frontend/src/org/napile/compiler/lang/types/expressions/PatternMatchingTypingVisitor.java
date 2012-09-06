@@ -17,10 +17,6 @@
 package org.napile.compiler.lang.types.expressions;
 
 import static org.napile.compiler.lang.diagnostics.Errors.EXPECTED_CONDITION;
-import static org.napile.compiler.lang.diagnostics.Errors.INCOMPATIBLE_TYPES;
-import static org.napile.compiler.lang.diagnostics.Errors.SENSELESS_NULL_IN_WHEN;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH_IN_BINDING_PATTERN;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH_IN_CONDITION;
 import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH_IN_RANGE;
 import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
 import static org.napile.compiler.lang.types.expressions.ExpressionTypingUtils.newWritableScopeImpl;
@@ -30,15 +26,14 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
 import org.napile.compiler.lang.resolve.calls.autocasts.Nullability;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
-import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -47,7 +42,6 @@ import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import com.google.common.collect.Sets;
-import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.Ref;
 
 /**
@@ -66,17 +60,14 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 		ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
 		NapileExpression leftHandSide = expression.getLeftHandSide();
 		JetType knownType = facade.safeGetTypeInfo(leftHandSide, context.replaceScope(context.scope)).getType();
-		NapilePattern pattern = expression.getPattern();
-		DataFlowInfo newDataFlowInfo = context.dataFlowInfo;
-		if(pattern != null)
+
+		if(expression.getTypeRef() != null)
 		{
-			WritableScopeImpl scopeToExtend = newWritableScopeImpl(context, "Scope extended in 'is'");
 			DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(leftHandSide, knownType, context.trace.getBindingContext());
-			newDataFlowInfo = checkPatternType(pattern, knownType, false, scopeToExtend, context, dataFlowValue).first;
-			context.patternsToDataFlowInfo.put(pattern, newDataFlowInfo);
-			context.patternsToBoundVariableLists.put(pattern, scopeToExtend.getDeclaredVariables());
+			DataFlowInfo newDataFlowInfo = checkTypeForIs(context, knownType, expression.getTypeRef(), dataFlowValue).thenInfo;
+			context.trace.record(BindingContext.DATAFLOW_INFO_AFTER_CONDITION, expression, newDataFlowInfo);
 		}
-		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.BOOL, false), expression, contextWithExpectedType, newDataFlowInfo);
+		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.BOOL, false), expression, contextWithExpectedType, context.dataFlowInfo);
 	}
 
 	@Override
@@ -116,9 +107,9 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 				NapileWhenCondition condition = conditions[0];
 				if(condition != null)
 				{
-					Pair<DataFlowInfo, DataFlowInfo> infos = checkWhenCondition(subjectExpression, subjectExpression == null, subjectType, condition, scopeToExtend, context, variableDescriptor);
-					newDataFlowInfo = infos.first;
-					elseDataFlowInfo = elseDataFlowInfo.and(infos.second);
+					DataFlowInfos infos = checkWhenCondition(subjectExpression, subjectExpression == null, subjectType, condition, scopeToExtend, context, variableDescriptor);
+					newDataFlowInfo = infos.thenInfo;
+					elseDataFlowInfo = elseDataFlowInfo.and(infos.elseInfo);
 				}
 			}
 			else
@@ -127,16 +118,16 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 				newDataFlowInfo = null;
 				for(NapileWhenCondition condition : conditions)
 				{
-					Pair<DataFlowInfo, DataFlowInfo> infos = checkWhenCondition(subjectExpression, subjectExpression == null, subjectType, condition, newWritableScopeImpl(context, ""), context, variableDescriptor);
+					DataFlowInfos infos = checkWhenCondition(subjectExpression, subjectExpression == null, subjectType, condition, newWritableScopeImpl(context, ""), context, variableDescriptor);
 					if(newDataFlowInfo == null)
 					{
-						newDataFlowInfo = infos.first;
+						newDataFlowInfo = infos.thenInfo;
 					}
 					else
 					{
-						newDataFlowInfo = newDataFlowInfo.or(infos.first);
+						newDataFlowInfo = newDataFlowInfo.or(infos.thenInfo);
 					}
-					elseDataFlowInfo = elseDataFlowInfo.and(infos.second);
+					elseDataFlowInfo = elseDataFlowInfo.and(infos.elseInfo);
 				}
 				if(newDataFlowInfo == null)
 				{
@@ -177,9 +168,9 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 		return JetTypeInfo.create(null, commonDataFlowInfo);
 	}
 
-	private Pair<DataFlowInfo, DataFlowInfo> checkWhenCondition(@Nullable final NapileExpression subjectExpression, final boolean expectedCondition, final JetType subjectType, NapileWhenCondition condition, final WritableScope scopeToExtend, final ExpressionTypingContext context, final DataFlowValue... subjectVariables)
+	private DataFlowInfos checkWhenCondition(@Nullable final NapileExpression subjectExpression, final boolean expectedCondition, final JetType subjectType, NapileWhenCondition condition, final WritableScope scopeToExtend, final ExpressionTypingContext context, final DataFlowValue... subjectVariables)
 	{
-		final Ref<Pair<DataFlowInfo, DataFlowInfo>> newDataFlowInfo = new Ref<Pair<DataFlowInfo, DataFlowInfo>>(Pair.create(context.dataFlowInfo, context.dataFlowInfo));
+		final Ref<DataFlowInfos> newDataFlowInfo = new Ref<DataFlowInfos>(noChange(context));
 		condition.accept(new NapileVisitorVoid()
 		{
 
@@ -204,17 +195,16 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 			@Override
 			public void visitWhenConditionIsPattern(NapileWhenConditionIsPattern condition)
 			{
-				NapilePattern pattern = condition.getPattern();
 				if(expectedCondition)
 				{
 					context.trace.report(EXPECTED_CONDITION.on(condition));
 				}
-				if(pattern != null)
+				if(condition.getTypeRef() != null)
 				{
-					Pair<DataFlowInfo, DataFlowInfo> result = checkPatternType(pattern, subjectType, subjectExpression == null, scopeToExtend, context, subjectVariables);
+					DataFlowInfos result = checkTypeForIs(context, subjectType, condition.getTypeRef(), subjectVariables);
 					if(condition.isNegated())
 					{
-						newDataFlowInfo.set(Pair.create(result.second, result.first));
+						newDataFlowInfo.set(new DataFlowInfos(result.elseInfo, result.thenInfo));
 					}
 					else
 					{
@@ -226,10 +216,10 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 			@Override
 			public void visitWhenConditionWithExpression(NapileWhenConditionWithExpression condition)
 			{
-				NapilePattern pattern = condition.getPattern();
-				if(pattern != null)
+				NapileExpression expression = condition.getExpression();
+				if(expression != null)
 				{
-					newDataFlowInfo.set(checkPatternType(pattern, subjectType, subjectExpression == null, scopeToExtend, context, subjectVariables));
+					newDataFlowInfo.set(checkTypeForExpressionCondition(context, expression, subjectType, subjectExpression == null, subjectVariables));
 				}
 			}
 
@@ -242,116 +232,87 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 		return newDataFlowInfo.get();
 	}
 
-	private Pair<DataFlowInfo, DataFlowInfo> checkPatternType(@NotNull NapilePattern pattern, @NotNull final JetType subjectType, final boolean conditionExpected, @NotNull final WritableScope scopeToExtend, final ExpressionTypingContext context, @NotNull final DataFlowValue... subjectVariables)
+	private static class DataFlowInfos
 	{
-		final Ref<Pair<DataFlowInfo, DataFlowInfo>> result = new Ref<Pair<DataFlowInfo, DataFlowInfo>>(Pair.create(context.dataFlowInfo, context.dataFlowInfo));
-		pattern.accept(new NapileVisitorVoid()
+		private final DataFlowInfo thenInfo;
+		private final DataFlowInfo elseInfo;
+
+		private DataFlowInfos(DataFlowInfo thenInfo, DataFlowInfo elseInfo)
 		{
-			@Override
-			public void visitTypePattern(NapileTypePattern typePattern)
+			this.thenInfo = thenInfo;
+			this.elseInfo = elseInfo;
+		}
+	}
+
+	private static DataFlowInfos checkTypeForIs(ExpressionTypingContext context, JetType subjectType, NapileTypeReference typeReferenceAfterIs, DataFlowValue... subjectVariables)
+	{
+		if(typeReferenceAfterIs == null)
+		{
+			return noChange(context);
+		}
+		JetType type = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReferenceAfterIs, context.trace, true);
+		checkTypeCompatibility(context, type, subjectType, typeReferenceAfterIs);
+		if(BasicExpressionTypingVisitor.isCastErased(subjectType, type, JetTypeChecker.INSTANCE))
+		{
+			context.trace.report(Errors.CANNOT_CHECK_FOR_ERASED.on(typeReferenceAfterIs, type));
+		}
+		return new DataFlowInfos(context.dataFlowInfo.establishSubtyping(subjectVariables, type), context.dataFlowInfo);
+	}
+
+	private static DataFlowInfos noChange(ExpressionTypingContext context)
+	{
+		return new DataFlowInfos(context.dataFlowInfo, context.dataFlowInfo);
+	}
+
+	private DataFlowInfos checkTypeForExpressionCondition(ExpressionTypingContext context, NapileExpression expression, JetType subjectType, boolean conditionExpected, DataFlowValue... subjectVariables)
+	{
+		if(expression == null)
+		{
+			return noChange(context);
+		}
+		JetTypeInfo typeInfo = facade.getTypeInfo(expression, context);
+		JetType type = typeInfo.getType();
+		if(type == null)
+			return noChange(context);
+		if(conditionExpected)
+		{
+			if(!TypeUtils.isEqualFqName(type, NapileLangPackage.BOOL))
+				context.trace.report(Errors.TYPE_MISMATCH_IN_CONDITION.on(expression, type));
+			else
 			{
-				NapileTypeReference typeReference = typePattern.getTypeReference();
-				if(typeReference == null)
-					return;
-				JetType type = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
-				checkTypeCompatibility(type, subjectType, typePattern);
-				result.set(Pair.create(context.dataFlowInfo.establishSubtyping(subjectVariables, type), context.dataFlowInfo));
+				DataFlowInfo ifInfo = DataFlowUtils.extractDataFlowInfoFromCondition(expression, true, context);
+				DataFlowInfo elseInfo = DataFlowUtils.extractDataFlowInfoFromCondition(expression, false, context);
+				return new DataFlowInfos(ifInfo, elseInfo);
 			}
+			return noChange(context);
+		}
+		checkTypeCompatibility(context, type, subjectType, expression);
+		DataFlowValue expressionDataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, type, context.trace.getBindingContext());
+		DataFlowInfos result = noChange(context);
+		for(DataFlowValue subjectVariable : subjectVariables)
+		{
+			result = new DataFlowInfos(result.thenInfo.equate(subjectVariable, expressionDataFlowValue), result.elseInfo.disequate(subjectVariable, expressionDataFlowValue));
+		}
+		return result;
+	}
 
-			@Override
-			public void visitExpressionPattern(NapileExpressionPattern pattern)
-			{
-				NapileExpression expression = pattern.getExpression();
-				if(expression == null)
-					return;
-				JetTypeInfo typeInfo = facade.getTypeInfo(expression, context.replaceScope(scopeToExtend));
-				JetType type = typeInfo.getType();
-				if(type == null)
-					return;
-				if(conditionExpected)
-				{
-					JetType booleanType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.BOOL, false);
-					if(!JetTypeChecker.INSTANCE.equalTypes(booleanType, type))
-					{
-						context.trace.report(TYPE_MISMATCH_IN_CONDITION.on(pattern, type));
-					}
-					else
-					{
-						DataFlowInfo ifInfo = DataFlowUtils.extractDataFlowInfoFromCondition(expression, true, scopeToExtend, context);
-						DataFlowInfo elseInfo = DataFlowUtils.extractDataFlowInfoFromCondition(expression, false, null, context);
-						result.set(Pair.create(ifInfo, elseInfo));
-					}
-					return;
-				}
-				checkTypeCompatibility(type, subjectType, pattern);
-				DataFlowValue expressionDataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, type, context.trace.getBindingContext());
-				for(DataFlowValue subjectVariable : subjectVariables)
-				{
-					result.set(Pair.create(result.get().first.equate(subjectVariable, expressionDataFlowValue), result.get().second.disequate(subjectVariable, expressionDataFlowValue)));
-				}
-			}
+	private static void checkTypeCompatibility(@NotNull ExpressionTypingContext context, @Nullable JetType type, @NotNull JetType subjectType, @NotNull NapileElement reportErrorOn)
+	{
+		// TODO : Take auto casts into account?
+		if(type == null)
+		{
+			return;
+		}
+		if(TypeUtils.isIntersectionEmpty(type, subjectType))
+		{
+			context.trace.report(Errors.INCOMPATIBLE_TYPES.on(reportErrorOn, type, subjectType));
+			return;
+		}
 
-			@Override
-			public void visitBindingPattern(NapileBindingPattern pattern)
-			{
-				NapileProperty variableDeclaration = pattern.getVariableDeclaration();
-				NapileTypeReference propertyTypeRef = variableDeclaration.getPropertyTypeRef();
-				JetType type = propertyTypeRef == null ? subjectType : context.expressionTypingServices.getTypeResolver().resolveType(context.scope, propertyTypeRef, context.trace, true);
-				VariableDescriptor variableDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptorWithType(context.scope.getContainingDeclaration(), variableDeclaration, type, context.trace);
-				scopeToExtend.addVariableDescriptor(variableDescriptor);
-				if(propertyTypeRef != null)
-				{
-					if(!JetTypeChecker.INSTANCE.isSubtypeOf(subjectType, type))
-					{
-						context.trace.report(TYPE_MISMATCH_IN_BINDING_PATTERN.on(propertyTypeRef, type, subjectType));
-					}
-				}
-
-				NapileWhenCondition condition = pattern.getCondition();
-				if(condition != null)
-				{
-					int oldLength = subjectVariables.length;
-					DataFlowValue[] newSubjectVariables = new DataFlowValue[oldLength + 1];
-					System.arraycopy(subjectVariables, 0, newSubjectVariables, 0, oldLength);
-					newSubjectVariables[oldLength] = DataFlowValueFactory.INSTANCE.createDataFlowValue(variableDescriptor);
-					result.set(checkWhenCondition(null, false, subjectType, condition, scopeToExtend, context, newSubjectVariables));
-				}
-			}
-
-			/*
-						 * (a: SubjectType) is Type
-						 */
-			private void checkTypeCompatibility(@Nullable JetType type, @NotNull JetType subjectType, @NotNull NapileElement reportErrorOn)
-			{
-				// TODO : Take auto casts into account?
-				if(type == null)
-				{
-					return;
-				}
-				if(TypeUtils.isIntersectionEmpty(type, subjectType))
-				{
-					context.trace.report(INCOMPATIBLE_TYPES.on(reportErrorOn, type, subjectType));
-					return;
-				}
-
-				// check if the pattern is essentially a 'null' expression
-				if(type.isNullable() && TypeUtils.isEqualFqName(type, NapileLangPackage.NULL) && !subjectType.isNullable())
-				{
-					context.trace.report(SENSELESS_NULL_IN_WHEN.on(reportErrorOn));
-				}
-
-				if(BasicExpressionTypingVisitor.isCastErased(subjectType, type, JetTypeChecker.INSTANCE))
-				{
-					context.trace.report(Errors.CANNOT_CHECK_FOR_ERASED.on(reportErrorOn, type));
-				}
-			}
-
-			@Override
-			public void visitJetElement(NapileElement element)
-			{
-				context.trace.report(UNSUPPORTED.on(element, getClass().getCanonicalName()));
-			}
-		});
-		return result.get();
+		// check if the pattern is essentially a 'null' expression
+		//if(type == JetStandardClasses.getNullableNothingType() && !subjectType.isNullable())
+		//{
+		//	context.trace.report(SENSELESS_NULL_IN_WHEN.on(reportErrorOn));
+		//}
 	}
 }

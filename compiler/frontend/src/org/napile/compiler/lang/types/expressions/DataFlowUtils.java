@@ -23,23 +23,18 @@ import static org.napile.compiler.lang.diagnostics.Errors.IMPLICIT_CAST_TO_UNIT_
 import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH;
 import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
-import org.napile.compiler.lang.psi.NapileIsExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileIsExpression;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.psi.NapilePattern;
 import org.napile.compiler.lang.psi.NapileUnaryExpression;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
-import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
@@ -60,7 +55,7 @@ public class DataFlowUtils
 	}
 
 	@NotNull
-	public static DataFlowInfo extractDataFlowInfoFromCondition(@Nullable NapileExpression condition, final boolean conditionValue, @Nullable final WritableScope scopeToExtend, final ExpressionTypingContext context)
+	public static DataFlowInfo extractDataFlowInfoFromCondition(@Nullable NapileExpression condition, final boolean conditionValue, final ExpressionTypingContext context)
 	{
 		if(condition == null)
 			return context.dataFlowInfo;
@@ -72,19 +67,7 @@ public class DataFlowUtils
 			{
 				if(conditionValue && !expression.isNegated() || !conditionValue && expression.isNegated())
 				{
-					NapilePattern pattern = expression.getPattern();
-					result.set(context.patternsToDataFlowInfo.get(pattern));
-					if(scopeToExtend != null)
-					{
-						List<VariableDescriptor> descriptors = context.patternsToBoundVariableLists.get(pattern);
-						if(descriptors != null)
-						{
-							for(VariableDescriptor variableDescriptor : descriptors)
-							{
-								scopeToExtend.addVariableDescriptor(variableDescriptor);
-							}
-						}
-					}
+					result.set(context.trace.get(BindingContext.DATAFLOW_INFO_AFTER_CONDITION, expression));
 				}
 			}
 
@@ -94,21 +77,11 @@ public class DataFlowUtils
 				IElementType operationToken = expression.getOperationToken();
 				if(OperatorConventions.BOOLEAN_OPERATIONS.containsKey(operationToken))
 				{
-					WritableScope actualScopeToExtend;
-					if(operationToken == JetTokens.ANDAND)
-					{
-						actualScopeToExtend = conditionValue ? scopeToExtend : null;
-					}
-					else
-					{
-						actualScopeToExtend = conditionValue ? null : scopeToExtend;
-					}
-
-					DataFlowInfo dataFlowInfo = extractDataFlowInfoFromCondition(expression.getLeft(), conditionValue, actualScopeToExtend, context);
+					DataFlowInfo dataFlowInfo = extractDataFlowInfoFromCondition(expression.getLeft(), conditionValue, context);
 					NapileExpression expressionRight = expression.getRight();
 					if(expressionRight != null)
 					{
-						DataFlowInfo rightInfo = extractDataFlowInfoFromCondition(expressionRight, conditionValue, actualScopeToExtend, context);
+						DataFlowInfo rightInfo = extractDataFlowInfoFromCondition(expressionRight, conditionValue, context);
 						DataFlowInfo.CompositionOperator operator;
 						if(operationToken == JetTokens.ANDAND)
 						{
@@ -172,7 +145,7 @@ public class DataFlowUtils
 					NapileExpression baseExpression = expression.getBaseExpression();
 					if(baseExpression != null)
 					{
-						result.set(extractDataFlowInfoFromCondition(baseExpression, !conditionValue, scopeToExtend, context));
+						result.set(extractDataFlowInfoFromCondition(baseExpression, !conditionValue, context));
 					}
 				}
 			}

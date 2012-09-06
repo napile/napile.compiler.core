@@ -124,7 +124,7 @@ public interface NapileNodeTypes
 	NapileNodeType SUPER_EXPRESSION = new NapileNodeType("SUPER_EXPRESSION", NapileSuperExpression.class);
 	NapileNodeType BINARY_EXPRESSION = new NapileNodeType("BINARY_EXPRESSION", NapileBinaryExpression.class);
 	NapileNodeType BINARY_WITH_TYPE = new NapileNodeType("BINARY_WITH_TYPE", NapileBinaryExpressionWithTypeRHS.class);
-	NapileNodeType BINARY_WITH_PATTERN = new NapileNodeType("BINARY_WITH_PATTERN", NapileIsExpression.class); // TODO:
+	NapileNodeType IS_EXPRESSION = new NapileNodeType("BINARY_WITH_PATTERN", NapileIsExpression.class); // TODO:
 	NapileNodeType PREFIX_EXPRESSION = new NapileNodeType("PREFIX_EXPRESSION", NapilePrefixExpression.class);
 	NapileNodeType POSTFIX_EXPRESSION = new NapileNodeType("POSTFIX_EXPRESSION", NapilePostfixExpression.class);
 	NapileNodeType CALL_EXPRESSION = new NapileNodeType("CALL_EXPRESSION", NapileCallExpression.class);
@@ -137,10 +137,6 @@ public interface NapileNodeTypes
 
 	NapileNodeType OBJECT_LITERAL = new NapileNodeType("OBJECT_LITERAL", NapileObjectLiteralExpression.class);
 	NapileNodeType ROOT_NAMESPACE = new NapileNodeType("ROOT_NAMESPACE", NapileRootNamespaceExpression.class);
-
-	NapileNodeType EXPRESSION_PATTERN = new NapileNodeType("EXPRESSION_PATTERN", NapileExpressionPattern.class);
-	NapileNodeType TYPE_PATTERN = new NapileNodeType("TYPE_PATTERN", NapileTypePattern.class);
-	NapileNodeType BINDING_PATTERN = new NapileNodeType("BINDING_PATTERN", NapileBindingPattern.class);
 
 	NapileNodeType WHEN = new NapileNodeType("WHEN", NapileWhenExpression.class);
 	NapileNodeType WHEN_ENTRY = new NapileNodeType("WHEN_ENTRY", NapileWhenEntry.class);

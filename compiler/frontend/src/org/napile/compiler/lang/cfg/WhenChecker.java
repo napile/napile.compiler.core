@@ -24,7 +24,6 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileExpressionPattern;
 import org.napile.compiler.lang.psi.NapileWhenCondition;
 import org.napile.compiler.lang.psi.NapileWhenConditionWithExpression;
 import org.napile.compiler.lang.psi.NapileWhenEntry;
@@ -81,10 +80,9 @@ public class WhenChecker
 			{
 				if(condition instanceof NapileWhenConditionWithExpression)
 				{
-					NapileExpressionPattern pattern = ((NapileWhenConditionWithExpression) condition).getPattern();
-					if(pattern == null)
+					NapileExpression patternExpression = ((NapileWhenConditionWithExpression) condition).getExpression();
+					if(patternExpression == null)
 						continue;
-					NapileExpression patternExpression = pattern.getExpression();
 					JetType type = trace.get(BindingContext.EXPRESSION_TYPE, patternExpression);
 					if(type == null)
 						continue;

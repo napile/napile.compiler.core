@@ -1195,7 +1195,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			{
 				JetType leftType = facade.getTypeInfo(left, context.replaceScope(context.scope)).getType();
 				WritableScopeImpl leftScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Left scope of && or ||");
-				DataFlowInfo flowInfoLeft = DataFlowUtils.extractDataFlowInfoFromCondition(left, operationType == JetTokens.ANDAND, leftScope, context);  // TODO: This gets computed twice: here and in extractDataFlowInfoFromCondition() for the whole condition
+				DataFlowInfo flowInfoLeft = DataFlowUtils.extractDataFlowInfoFromCondition(left, operationType == JetTokens.ANDAND, context);  // TODO: This gets computed twice: here and in extractDataFlowInfoFromCondition() for the whole condition
 				WritableScopeImpl rightScope = operationType == JetTokens.ANDAND ? leftScope : ExpressionTypingUtils.newWritableScopeImpl(context, "Right scope of && or ||");
 				JetType rightType = right == null ? null : facade.getTypeInfo(right, context.replaceDataFlowInfo(flowInfoLeft).replaceScope(rightScope)).getType();
 				if(leftType != null && !ExpressionTypingUtils.isBoolean(leftType))
