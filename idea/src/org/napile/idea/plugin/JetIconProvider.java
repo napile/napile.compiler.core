@@ -56,12 +56,8 @@ public class JetIconProvider extends IconProvider
 		if(psiElement instanceof NapileFile)
 		{
 			NapileFile file = (NapileFile) psiElement;
-			NapileLikeClass mainClass = getMainClass(file);
-			icon = mainClass != null && file.getDeclarations().size() == 1 ? getIcon(mainClass, flags) : JetIcons.FILE;
-		}
-		else if(psiElement instanceof NapileNamespaceHeader)
-		{
-			icon = PlatformIcons.PACKAGE_ICON;
+
+			icon = file.getDeclarations().size() == 1 ? getIcon(file.getDeclarations().get(0), flags) : JetIcons.FILE;
 		}
 		else if(psiElement instanceof NapileNamedFunction)
 		{
@@ -101,22 +97,13 @@ public class JetIconProvider extends IconProvider
 		}
 		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry)
 			icon = JetIcons.VAL;
-		else if(psiElement instanceof NapilePropertyParameter)
-		{
-			icon = JetIcons.PARAMETER;
-			NapilePropertyParameter parameter = (NapilePropertyParameter) psiElement;
-			if(parameter.getValOrVarNode() != null)
-			{
-				NapileParameterList parameterList = PsiTreeUtil.getParentOfType(psiElement, NapileParameterList.class);
-				if(parameterList != null && parameterList.getParent() instanceof NapileClass)
-					icon = parameter.isMutable() ? JetIcons.FIELD_VAR : JetIcons.FIELD_VAL;
-			}
-		}
 		else if(psiElement instanceof NapileProperty)
 		{
 			NapileProperty property = (NapileProperty) psiElement;
 			icon = property.isVar() ? JetIcons.FIELD_VAR : JetIcons.FIELD_VAL;
 		}
+		else if(psiElement instanceof NapileElement)
+			throw new IllegalArgumentException("Illegal element " + psiElement);
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags);
 	}
