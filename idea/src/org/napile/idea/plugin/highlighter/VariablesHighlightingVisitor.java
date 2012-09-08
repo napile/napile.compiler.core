@@ -109,7 +109,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			VariableDescriptor variableDescriptor = (VariableDescriptor) descriptor;
 			if(variableDescriptor.getPropertyKind() == PropertyKind.VAR)
 			{
-				JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.MUTABLE_VARIABLE);
+				//JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.MUTABLE_VARIABLE);
 			}
 
 			if(Boolean.TRUE.equals(bindingContext.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
