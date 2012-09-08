@@ -133,9 +133,7 @@ public class ModifiersChecker
 		if(containingDeclaration instanceof NamespaceDescriptor)
 		{
 			if(modifierList.hasModifier(JetTokens.HERITABLE_KEYWORD))
-			{
 				trace.report(Errors.PACKAGE_MEMBER_CANNOT_BE_HERITABLE.on(modifierList.getModifierNode(JetTokens.HERITABLE_KEYWORD).getPsi()));
-			}
 		}
 
 		checkCompatibility(modifierList, Lists.newArrayList(JetTokens.LOCAL_KEYWORD, JetTokens.COVERED_KEYWORD));

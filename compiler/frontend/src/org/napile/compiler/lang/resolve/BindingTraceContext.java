@@ -94,6 +94,13 @@ public class BindingTraceContext implements BindingTrace
 		return map.get(slice, key);
 	}
 
+	@Override
+	@NotNull
+	public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
+	{
+		return get(slice, key);
+	}
+
 	@NotNull
 	@Override
 	public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)

@@ -285,7 +285,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		@Override
 		public void instanceCallFromStatic(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
 		{
-			trace.report(INSTANCE_CALL_FROM_STATIC_CONTEXT.on(call.getCallElement()));
+			//TODO [VISTALL] invalid trace.report(INSTANCE_CALL_FROM_STATIC_CONTEXT.on(call.getCallElement()));
 		}
 
 		@Override

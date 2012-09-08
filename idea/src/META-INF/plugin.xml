@@ -99,7 +99,7 @@
 		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameJetClassProcessor"/>
 		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameKotlinFunctionProcessor"/>
 
-		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Generic"/>
+		<!--<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Generic"/>
 		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Namespace"/>
 		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Statement"/>
 		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Class"/>
@@ -109,7 +109,7 @@
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetFunctionParametersMacro"/>
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetAnonymousSuperMacro"/>
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetIterableVariableMacro"/>
-		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetSuggestVariableNameMacro"/>
+		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetSuggestVariableNameMacro"/> -->
 
 		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>
 		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.DebugInfoAnnotator"/>

@@ -33,7 +33,7 @@ public class ExpressionAsMethodDescriptor extends MethodDescriptorImpl
 {
 	public ExpressionAsMethodDescriptor(DeclarationDescriptor containingDeclaration, Name name)
 	{
-		super(containingDeclaration, Collections.<AnnotationDescriptor>emptyList(), name, Kind.DECLARATION, false);
+		super(containingDeclaration, Collections.<AnnotationDescriptor>emptyList(), name, Kind.DECLARATION, false, false);
 	}
 
 	@Override

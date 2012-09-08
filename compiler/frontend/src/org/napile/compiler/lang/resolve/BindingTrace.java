@@ -40,6 +40,9 @@ public interface BindingTrace extends DiagnosticHolder
 	@Nullable
 	<K, V> V get(ReadOnlySlice<K, V> slice, K key);
 
+	@NotNull
+	<K, V> V safeGet(ReadOnlySlice<K, V> slice, K key);
+
 	// slice.isCollective() must be true
 	@NotNull
 	<K, V> Collection<K> getKeys(WritableSlice<K, V> slice);

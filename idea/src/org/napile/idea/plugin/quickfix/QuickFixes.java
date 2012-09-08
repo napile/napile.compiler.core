@@ -57,7 +57,6 @@ public class QuickFixes
 		JetIntentionActionFactory removeAbstractModifierFactory = RemoveModifierFix.createRemoveModifierFromListOwnerFactory(ABSTRACT_KEYWORD);
 		JetIntentionActionFactory addAbstractModifierFactory = AddModifierFix.createFactory(ABSTRACT_KEYWORD);
 
-		factories.put(ABSTRACT_PROPERTY_IN_PRIMARY_CONSTRUCTOR_PARAMETERS, removeAbstractModifierFactory);
 		factories.put(ABSTRACT_PROPERTY_NOT_IN_CLASS, removeAbstractModifierFactory);
 
 		JetIntentionActionFactory removePartsFromPropertyFactory = RemovePartsFromPropertyFix.createFactory();
@@ -84,8 +83,8 @@ public class QuickFixes
 		factories.put(ABSTRACT_FUNCTION_WITH_BODY, removeFunctionBodyFactory);
 
 		JetIntentionActionFactory addFunctionBodyFactory = AddFunctionBodyFix.createFactory();
-		factories.put(NON_ABSTRACT_FUNCTION_WITH_NO_BODY, addAbstractModifierFactory);
-		factories.put(NON_ABSTRACT_FUNCTION_WITH_NO_BODY, addFunctionBodyFactory);
+		factories.put(NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY, addAbstractModifierFactory);
+		factories.put(NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY, addFunctionBodyFactory);
 
 		factories.put(NON_MEMBER_ABSTRACT_FUNCTION, removeAbstractModifierFactory);
 		factories.put(NON_MEMBER_FUNCTION_NO_BODY, addFunctionBodyFactory);

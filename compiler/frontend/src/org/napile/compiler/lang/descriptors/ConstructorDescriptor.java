@@ -31,16 +31,16 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
  */
 public class ConstructorDescriptor extends MethodDescriptorImpl
 {
-	private static final Name NAME = Name.special("<init>");
+	private static final Name NAME = Name.identifier("this");
 
 	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations)
 	{
-		super(containingDeclaration, annotations, NAME, Kind.DECLARATION, false);
+		super(containingDeclaration, annotations, NAME, Kind.DECLARATION, false, false);
 	}
 
 	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations)
 	{
-		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION, false);
+		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION, false, false);
 	}
 
 	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, Visibility visibility)
@@ -87,6 +87,12 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 	public Set<? extends MethodDescriptor> getOverriddenDescriptors()
 	{
 		return Collections.emptySet();
+	}
+
+	@Override
+	public boolean isNative()
+	{
+		return false;
 	}
 
 	@Override

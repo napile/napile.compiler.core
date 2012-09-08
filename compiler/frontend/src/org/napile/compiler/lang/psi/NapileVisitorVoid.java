@@ -441,11 +441,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitJetElement(condition);
 	}
 
-	private void visitPattern(NapilePattern pattern)
-	{
-		visitJetElement(pattern);
-	}
-
 	public void visitAnonymClass(NapileAnonymClass declaration)
 	{
 		visitNamedDeclaration(declaration);

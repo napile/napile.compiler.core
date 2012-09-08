@@ -41,6 +41,8 @@ public interface MethodDescriptor extends CallableMemberDescriptor
 	@NotNull
 	Set<? extends MethodDescriptor> getOverriddenDescriptors();
 
+	boolean isNative();
+
 	@NotNull
 	@Override
 	MethodDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides);

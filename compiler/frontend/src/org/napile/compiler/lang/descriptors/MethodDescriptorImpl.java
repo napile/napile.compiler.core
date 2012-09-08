@@ -50,24 +50,27 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 	protected Modality modality;
 	protected Visibility visibility;
 	private final boolean isStatic;
+	private final boolean isNative;
 	protected final Set<MethodDescriptor> overriddenMethods = Sets.newLinkedHashSet(); // LinkedHashSet is essential here
 	private final MethodDescriptor original;
 	private final Kind kind;
 
-	protected MethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
+	protected MethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
 	{
 		super(containingDeclaration, annotations, name);
 		this.original = this;
 		this.kind = kind;
 		this.isStatic = isStatic;
+		this.isNative = isNative;
 	}
 
-	protected MethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull MethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
+	protected MethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull MethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
 	{
 		super(containingDeclaration, annotations, name);
 		this.original = original;
 		this.kind = kind;
 		this.isStatic = isStatic;
+		this.isNative = isNative;
 	}
 
 	public MethodDescriptorImpl initialize(@Nullable JetType receiverParameterType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
@@ -157,6 +160,12 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 	public boolean isStatic()
 	{
 		return isStatic;
+	}
+
+	@Override
+	public boolean isNative()
+	{
+		return isNative;
 	}
 
 	@Override

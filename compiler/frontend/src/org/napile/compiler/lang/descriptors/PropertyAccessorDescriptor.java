@@ -58,6 +58,12 @@ public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNo
 	}
 
 	@Override
+	public boolean isNative()
+	{
+		return false; //TODO [VISTALL] invalid
+	}
+
+	@Override
 	public boolean isStatic()
 	{
 		return isStatic;

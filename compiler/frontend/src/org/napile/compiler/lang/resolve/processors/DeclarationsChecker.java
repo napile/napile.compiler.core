@@ -98,7 +98,7 @@ public class DeclarationsChecker
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
 
-			chechMethod(function, functionDescriptor);
+			checkMethod(function, functionDescriptor);
 		}
 
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
@@ -259,10 +259,12 @@ public class DeclarationsChecker
 		}
 	}
 
-	protected void chechMethod(NapileNamedFunction function, SimpleMethodDescriptor functionDescriptor)
+	protected void checkMethod(NapileNamedFunction function, SimpleMethodDescriptor functionDescriptor)
 	{
 		DeclarationDescriptor containingDescriptor = functionDescriptor.getContainingDeclaration();
 		boolean hasAbstractModifier = function.hasModifier(JetTokens.ABSTRACT_KEYWORD);
+		boolean hasNativeModifier = function.hasModifier(JetTokens.NATIVE_KEYWORD);
+
 		checkDeclaredTypeInPublicMember(function, functionDescriptor);
 
 		ClassDescriptor classDescriptor = (ClassDescriptor) containingDescriptor;
@@ -277,10 +279,9 @@ public class DeclarationsChecker
 		{
 			trace.report(Errors.ABSTRACT_FUNCTION_WITH_BODY.on(function, functionDescriptor));
 		}
-		if(function.getBodyExpression() == null && !hasAbstractModifier)
-		{
-			trace.report(Errors.NON_ABSTRACT_FUNCTION_WITH_NO_BODY.on(function, functionDescriptor));
-		}
+
+		if(function.getBodyExpression() == null && !hasAbstractModifier && !hasNativeModifier)
+			trace.report(Errors.NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY.on(function, functionDescriptor));
 	}
 
 	private void checkConstructor(NapileConstructor constructor, ConstructorDescriptor constructorDescriptor)

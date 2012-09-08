@@ -86,7 +86,6 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileExpression> MANY_FUNCTION_LITERAL_ARGUMENTS = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileProperty> PROPERTY_WITH_NO_TYPE_NO_INITIALIZER = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
-	SimpleDiagnosticFactory<NapileModifierListOwner> ABSTRACT_PROPERTY_IN_PRIMARY_CONSTRUCTOR_PARAMETERS = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	SimpleDiagnosticFactory<NapileProperty> ABSTRACT_PROPERTY_NOT_IN_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	SimpleDiagnosticFactory<NapileExpression> ABSTRACT_PROPERTY_WITH_INITIALIZER = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapilePropertyAccessor> ABSTRACT_PROPERTY_WITH_GETTER = SimpleDiagnosticFactory.create(Severity.ERROR);
@@ -105,7 +104,7 @@ public interface Errors
 	DiagnosticFactory2<NapileModifierListOwner, String, ClassDescriptor> ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	DiagnosticFactory2<NapileMethod, String, ClassDescriptor> ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> ABSTRACT_FUNCTION_WITH_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
-	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> NON_ABSTRACT_FUNCTION_WITH_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 	DiagnosticFactory1<NapileModifierListOwner, SimpleMethodDescriptor> NON_MEMBER_ABSTRACT_FUNCTION = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 
 	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> NON_MEMBER_FUNCTION_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);

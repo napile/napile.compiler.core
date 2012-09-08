@@ -44,7 +44,7 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 
 	public PropertySetterDescriptor(@NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean hasBody, boolean isDefault, @NotNull Kind kind, @Nullable PropertySetterDescriptor original, boolean isStatic)
 	{
-		super(modality, visibility, correspondingProperty, annotations, Name.special("<set-" + correspondingProperty.getName() + ">"), hasBody, isDefault, kind, isStatic);
+		super(modality, visibility, correspondingProperty, annotations, Name.identifier(correspondingProperty.getName() + "$set"), hasBody, isDefault, kind, isStatic);
 		this.original = original != null ? original : this;
 	}
 
@@ -57,7 +57,7 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 	public void initializeDefault()
 	{
 		assert parameter == null;
-		parameter = new PropertyParameterDescriptorImpl(this, 0, Collections.<AnnotationDescriptor>emptyList(), Name.special("<set-?>"), PropertyKind.VAR, getCorrespondingProperty().getReturnType(), false, null);
+		parameter = new PropertyParameterDescriptorImpl(this, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), PropertyKind.VAR, getCorrespondingProperty().getReturnType(), false, null);
 	}
 
 	@NotNull

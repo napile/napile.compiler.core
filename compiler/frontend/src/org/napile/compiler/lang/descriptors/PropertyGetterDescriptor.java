@@ -43,7 +43,7 @@ public class PropertyGetterDescriptor extends PropertyAccessorDescriptor
 
 	public PropertyGetterDescriptor(@NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean hasBody, boolean isDefault, @NotNull Kind kind, @Nullable PropertyGetterDescriptor original, boolean isStatic)
 	{
-		super(modality, visibility, correspondingProperty, annotations, Name.special("<get-" + correspondingProperty.getName() + ">"), hasBody, isDefault, kind, isStatic);
+		super(modality, visibility, correspondingProperty, annotations, Name.identifier(correspondingProperty.getName() + "$get"), hasBody, isDefault, kind, isStatic);
 		this.original = original != null ? original : this;
 	}
 

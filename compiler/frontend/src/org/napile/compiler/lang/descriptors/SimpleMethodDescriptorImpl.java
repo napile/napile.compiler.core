@@ -28,14 +28,14 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  */
 public class SimpleMethodDescriptorImpl extends MethodDescriptorImpl implements SimpleMethodDescriptor
 {
-	public SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
+	public SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
 	{
-		super(containingDeclaration, annotations, name, kind, isStatic);
+		super(containingDeclaration, annotations, name, kind, isStatic, isNative);
 	}
 
-	private SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull SimpleMethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic)
+	private SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull SimpleMethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
 	{
-		super(containingDeclaration, original, annotations, name, kind, isStatic);
+		super(containingDeclaration, original, annotations, name, kind, isStatic, isNative);
 	}
 
 	@NotNull
@@ -52,13 +52,13 @@ public class SimpleMethodDescriptorImpl extends MethodDescriptorImpl implements 
 		{
 			return new SimpleMethodDescriptorImpl(newOwner, getOriginal(),
 					// TODO : safeSubstitute
-					getAnnotations(), getName(), kind, false);
+					getAnnotations(), getName(), kind, isStatic(), isNative());
 		}
 		else
 		{
 			return new SimpleMethodDescriptorImpl(newOwner,
 					// TODO : safeSubstitute
-					getAnnotations(), getName(), kind, false);
+					getAnnotations(), getName(), kind, isStatic(), isNative());
 		}
 	}
 

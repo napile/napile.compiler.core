@@ -40,7 +40,7 @@ public class ErrorSimpleMethodDescriptorImpl extends SimpleMethodDescriptorImpl
 
 	public ErrorSimpleMethodDescriptorImpl(ErrorUtils.ErrorScope ownerScope)
 	{
-		super(ErrorUtils.getErrorClass(), Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR FUNCTION>"), Kind.DECLARATION, false);
+		super(ErrorUtils.getErrorClass(), Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR FUNCTION>"), Kind.DECLARATION, false, false);
 		this.ownerScope = ownerScope;
 	}
 
