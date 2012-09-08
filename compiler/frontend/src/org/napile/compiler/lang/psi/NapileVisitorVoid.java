@@ -237,6 +237,11 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitExpression(expression);
 	}
 
+	public void visitLabelExpression(NapileLabelExpression expression)
+	{
+		visitExpression(expression);
+	}
+
 	public void visitWhenExpression(NapileWhenExpression expression)
 	{
 		visitExpression(expression);

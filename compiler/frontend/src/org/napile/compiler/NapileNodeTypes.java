@@ -128,6 +128,7 @@ public interface NapileNodeTypes
 	NapileNodeType PREFIX_EXPRESSION = new NapileNodeType("PREFIX_EXPRESSION", NapilePrefixExpression.class);
 	NapileNodeType POSTFIX_EXPRESSION = new NapileNodeType("POSTFIX_EXPRESSION", NapilePostfixExpression.class);
 	NapileNodeType CALL_EXPRESSION = new NapileNodeType("CALL_EXPRESSION", NapileCallExpression.class);
+	NapileNodeType LABEL_EXPRESSION = new NapileNodeType("LABEL_EXPRESSION", NapileLabelExpression.class);
 	NapileNodeType ARRAY_ACCESS_EXPRESSION = new NapileNodeType("ARRAY_ACCESS_EXPRESSION", NapileArrayAccessExpression.class);
 	NapileNodeType INDICES = new NapileNodeType("INDICES", NapileContainerNode.class);
 	NapileNodeType DOT_QUALIFIED_EXPRESSION = new NapileNodeType("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpression.class);

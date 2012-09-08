@@ -64,7 +64,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	/*package*/ static final TokenSet EXPRESSION_FIRST = TokenSet.create(
 			// Prefix
 			JetTokens.MINUS, JetTokens.PLUS, JetTokens.MINUSMINUS, JetTokens.PLUSPLUS, JetTokens.EXCL, JetTokens.EXCLEXCL, // Joining complex tokens makes it necessary to put EXCLEXCL here
-			JetTokens.LBRACKET, JetTokens.LABEL_IDENTIFIER, JetTokens.AT, JetTokens.ATAT,
+			JetTokens.LBRACKET, JetTokens.LABEL_IDENTIFIER,
 			// Atomic
 
 			JetTokens.LPAR, // parenthesized
@@ -84,6 +84,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			JetTokens.WHEN_KEYWORD, // when
 			JetTokens.TRY_KEYWORD, // try
 			JetTokens.ANONYM_KEYWORD, // object
+			JetTokens.LABEL_KEYWORD, // label
 
 			// jump
 			JetTokens.THROW_KEYWORD, JetTokens.RETURN_KEYWORD, JetTokens.CONTINUE_KEYWORD, JetTokens.BREAK_KEYWORD,
@@ -111,7 +112,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 				//                HASH,
 				JetTokens.DOT, JetTokens.SAFE_ACCESS), // typeArguments? valueArguments : typeArguments : arrayAccess
 
-		PREFIX(JetTokens.MINUS, JetTokens.PLUS, JetTokens.MINUSMINUS, JetTokens.PLUSPLUS, JetTokens.EXCL, JetTokens.LABEL_IDENTIFIER, JetTokens.AT, JetTokens.ATAT)
+		PREFIX(JetTokens.MINUS, JetTokens.PLUS, JetTokens.MINUSMINUS, JetTokens.PLUSPLUS, JetTokens.EXCL, JetTokens.LABEL_IDENTIFIER)
 				{ // attributes
 
 					@Override
@@ -337,7 +338,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			if(!parseLocalDeclaration())
 			{
 				PsiBuilder.Marker expression = mark();
-				myJetParsing.parseAnnotations();
+				//myJetParsing.parseAnnotations();
 				parsePrefixExpression();
 				expression.done(ANNOTATED_EXPRESSION);
 			}
@@ -603,6 +604,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 		else if(at(JetTokens.FOR_KEYWORD))
 		{
 			parseFor();
+		}
+		else if(at(JetTokens.LABEL_KEYWORD))
+		{
+			parseLabel0();
 		}
 		else if(at(JetTokens.WHILE_KEYWORD))
 		{
@@ -1504,6 +1509,23 @@ public class JetExpressionParsing extends AbstractJetParsing
 		loop.done(DO_WHILE);
 	}
 
+	private void parseLabel0()
+	{
+		assert _at(JetTokens.LABEL_KEYWORD);
+
+		PsiBuilder.Marker marker = mark();
+
+		advance();
+
+		if(!at(JetTokens.IDENTIFIER))
+			error("Identifier expected");
+		else
+			advance();
+
+		parseControlStructureBody();
+
+		marker.done(LABEL_EXPRESSION);
+	}
 	/*
 		 * while
 		 *   : "while" "(" element ")" element
@@ -1732,7 +1754,12 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		advance(); // BREAK_KEYWORD or CONTINUE_KEYWORD
 
-		parseLabel();
+		if(type == BREAK && at(JetTokens.IDENTIFIER))
+		{
+			PsiBuilder.Marker labMarker = mark();
+			advance();
+			labMarker.done(LABEL_REFERENCE);
+		}
 
 		marker.done(type);
 	}
@@ -1748,29 +1775,11 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		advance(); // RETURN_KEYWORD
 
-		parseLabel();
 
 		if(atSet(EXPRESSION_FIRST) && !at(JetTokens.EOL_OR_SEMICOLON))
 			parseExpression();
 
 		returnExpression.done(RETURN);
-	}
-
-	/*
-		 * labels
-		 */
-	private void parseLabel()
-	{
-		if(!eol() && atSet(JetTokens.LABELS))
-		{
-			PsiBuilder.Marker labelWrap = mark();
-
-			PsiBuilder.Marker mark = mark();
-			advance(); // LABELS
-			mark.done(LABEL_REFERENCE);
-
-			labelWrap.done(LABEL_QUALIFIER);
-		}
 	}
 
 	/*
@@ -1828,8 +1837,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 		advance(); // THIS_KEYWORD
 		thisReference.done(REFERENCE_EXPRESSION);
 
-		parseLabel();
-
 		mark.done(THIS_EXPRESSION);
 	}
 
@@ -1866,8 +1873,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 			myBuilder.restoreNewlinesState();
 		}
-		parseLabel();
-
 		mark.done(SUPER_EXPRESSION);
 	}
 

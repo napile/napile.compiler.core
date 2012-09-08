@@ -30,6 +30,7 @@ import org.napile.compiler.lang.diagnostics.Severity;
 import org.napile.compiler.lang.diagnostics.UnresolvedReferenceDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.UnusedElementDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
+import org.napile.compiler.lang.psi.NapileAnnotationEntry;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -50,6 +51,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.MultiRangeReference;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.xml.util.XmlStringUtil;
 
 /**
@@ -85,7 +87,10 @@ public class JetPsiChecker implements Annotator
 	{
 		if(isNamesHighlightingEnabled())
 		{
-			holder.createInfoAnnotation(psiElement, null).setTextAttributes(attributesKey);
+			if(PsiTreeUtil.getParentOfType(psiElement, NapileAnnotationEntry.class) != null)
+				holder.createInfoAnnotation(new TextRange(psiElement.getNode().getStartOffset() - 1, psiElement.getNode().getStartOffset() + psiElement.getTextLength() + 1), null).setTextAttributes(attributesKey);
+			else
+				holder.createInfoAnnotation(psiElement, null).setTextAttributes(attributesKey);
 		}
 	}
 

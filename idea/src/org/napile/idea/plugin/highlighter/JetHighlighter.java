@@ -56,7 +56,6 @@ public class JetHighlighter extends SyntaxHighlighterBase
 
 		keys.put(JetTokens.AS_SAFE, JetHighlightingColors.KEYWORD);
 		keys.put(JetTokens.LABEL_IDENTIFIER, JetHighlightingColors.LABEL);
-		keys.put(JetTokens.ATAT, JetHighlightingColors.LABEL);
 		keys.put(JetTokens.INTEGER_LITERAL, JetHighlightingColors.NUMBER);
 		keys.put(JetTokens.FLOAT_LITERAL, JetHighlightingColors.NUMBER);
 

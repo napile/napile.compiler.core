@@ -342,9 +342,9 @@ public class JetParsing extends AbstractJetParsing
 			{
 				advance(); // MODIFIER
 			}
-			else if(at(JetTokens.LBRACKET))
+			else if(at(JetTokens.AT))
 			{
-				parseAnnotation();
+				parseAnnotations();
 			}
 			else
 			{
@@ -363,76 +363,38 @@ public class JetParsing extends AbstractJetParsing
 		return !empty;
 	}
 
-	/*
-		 * annotations
-		 *   : annotation*
-		 *   ;
-		 */
-	void parseAnnotations()
-	{
-		while(true)
-		{
-			if(!(parseAnnotation()))
-				break;
-		}
-	}
 
 	/*
 		 * annotation
-		 *   : "[" annotationEntry+ "]"
-		 *   : annotationEntry
+		 *   : annotationEntry+
 		 *   ;
 		 */
-	private boolean parseAnnotation()
+	public boolean parseAnnotations()
 	{
-		if(at(JetTokens.LBRACKET))
-		{
-			PsiBuilder.Marker annotation = mark();
+		PsiBuilder.Marker annotation = mark();
+		myBuilder.disableNewlines();
 
-			myBuilder.disableNewlines();
-			advance(); // LBRACKET
+		while(at(JetTokens.AT))
+			parseAnnotationEntry();
 
-			if(!at(JetTokens.IDENTIFIER))
-			{
-				error("Expecting a list of attributes");
-			}
-			else
-			{
-				parseAnnotationEntry();
-				while(at(JetTokens.COMMA))
-				{
-					errorAndAdvance("No commas needed to separate attributes");
-				}
+		myBuilder.restoreNewlinesState();
 
-				while(at(JetTokens.IDENTIFIER))
-				{
-					parseAnnotationEntry();
-					while(at(JetTokens.COMMA))
-					{
-						errorAndAdvance("No commas needed to separate attributes");
-					}
-				}
-			}
-
-			expect(JetTokens.RBRACKET, "Expecting ']' to close an attribute annotation");
-			myBuilder.restoreNewlinesState();
-
-			annotation.done(ANNOTATION_LIST);
-			return true;
-		}
-		return false;
+		annotation.done(ANNOTATION_LIST);
+		return true;
 	}
 
 	/*
 		 * annotationEntry
-		 *   : SimpleName{"."} typeArguments? valueArguments?
+		 *   : "@" SimpleName{"."} typeArguments? valueArguments?
 		 *   ;
 		 */
 	private void parseAnnotationEntry()
 	{
-		assert _at(JetTokens.IDENTIFIER);
+		assert _at(JetTokens.AT);
 
 		PsiBuilder.Marker attribute = mark();
+
+		advance();
 
 		PsiBuilder.Marker reference = mark();
 		PsiBuilder.Marker typeReference = mark();

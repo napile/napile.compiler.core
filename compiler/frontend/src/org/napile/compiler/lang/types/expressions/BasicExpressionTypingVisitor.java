@@ -178,6 +178,12 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
+	public JetTypeInfo visitLabelExpression(NapileLabelExpression expression, ExpressionTypingContext context)
+	{
+		return JetTypeInfo.create(null, context.dataFlowInfo);
+	}
+
+	@Override
 	public JetTypeInfo visitConstantExpression(NapileConstantExpression expression, ExpressionTypingContext context)
 	{
 		ASTNode node = expression.getNode();

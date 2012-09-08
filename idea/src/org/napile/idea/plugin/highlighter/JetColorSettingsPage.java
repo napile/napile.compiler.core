@@ -61,7 +61,7 @@ public class JetColorSettingsPage implements ColorSettingsPage
 				" * Doc comment here for `SomeClass`\n" +
 				" * @see Iterator#next()\n" +
 				" */\n" +
-				"[<ANNOTATION>Deprecated</ANNOTATION>]\n" +
+				"<ANNOTATION>@Deprecated</ANNOTATION>\n" +
 				"<BUILTIN_ANNOTATION>covered</BUILTIN_ANNOTATION> class <CLASS>MyClass</CLASS><<TYPE_PARAMETER>T</TYPE_PARAMETER> : <CLASS>Iterable</CLASS><<TYPE_PARAMETER>T</TYPE_PARAMETER>>>\n" +
 				"{\n" +
 				"    meth <FUNCTION_DECLARATION>foo</FUNCTION_DECLARATION>(<PARAMETER>nullable</PARAMETER> : String?, <PARAMETER>r</PARAMETER> : <CLASS>Runnable</CLASS>, <PARAMETER>f</PARAMETER> : () -> Int) {\n" +
