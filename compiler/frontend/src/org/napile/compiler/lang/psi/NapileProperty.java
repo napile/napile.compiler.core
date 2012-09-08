@@ -32,7 +32,6 @@ import com.intellij.psi.search.LocalSearchScope;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -73,11 +72,10 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 	{
 		PsiJetPropertyStub stub = getStub();
 		if(stub != null)
-		{
 			return stub.isVar();
-		}
 
-		return getNode().findChildByType(JetTokens.VAR_KEYWORD) != null;
+		NapileModifierList modifierList = getModifierList();
+		return modifierList == null || !modifierList.hasModifier(JetTokens.FINAL_KEYWORD);
 	}
 
 	public boolean isLocal()
@@ -199,10 +197,10 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 	}
 
 	@NotNull
-	public ASTNode getValOrVarNode()
+	public ASTNode getVarNode()
 	{
-		ASTNode node = getNode().findChildByType(TokenSet.create(JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD));
-		assert node != null : "Val or var should always exist for property";
+		ASTNode node = getNode().findChildByType(JetTokens.VAR_KEYWORD);
+		assert node != null : "Var should always exist for property";
 		return node;
 	}
 }

@@ -50,7 +50,7 @@ public class JetParsing extends AbstractJetParsing
 	}
 
 	public static final TokenSet CLASS_KEYWORDS = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD, JetTokens.RETELL_KEYWORD);
-	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.IDENTIFIER);
+	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.IDENTIFIER);
 
 	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE), CLASS_KEYWORDS);
 	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(JetTokens.WHERE_KEYWORD, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.GT);
@@ -668,7 +668,7 @@ public class JetParsing extends AbstractJetParsing
 			declType = parseMethod();
 		else if(keywordToken == JetTokens.THIS_KEYWORD)
 			declType = parseConstructor();
-		else if(keywordToken == JetTokens.VAL_KEYWORD || keywordToken == JetTokens.VAR_KEYWORD)
+		else if(keywordToken == JetTokens.VAR_KEYWORD)
 			declType = parseProperty();
 
 		return declType;
@@ -767,7 +767,7 @@ public class JetParsing extends AbstractJetParsing
 
 	IElementType parseProperty(boolean local)
 	{
-		if(at(JetTokens.VAL_KEYWORD) || at(JetTokens.VAR_KEYWORD))
+		if(at(JetTokens.VAR_KEYWORD))
 		{
 			advance(); // VAL_KEYWORD or VAR_KEYWORD
 		}
@@ -778,7 +778,7 @@ public class JetParsing extends AbstractJetParsing
 
 		boolean typeParametersDeclared = at(JetTokens.LT) && parseTypeParameterList(TokenSet.create(JetTokens.IDENTIFIER, JetTokens.EQ, JetTokens.COLON, JetTokens.SEMICOLON));
 
-		TokenSet propertyNameFollow = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.LBRACE, JetTokens.RBRACE, JetTokens.SEMICOLON, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.CLASS_KEYWORD);
+		TokenSet propertyNameFollow = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.LBRACE, JetTokens.RBRACE, JetTokens.SEMICOLON, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.CLASS_KEYWORD);
 
 		myBuilder.disableJoiningComplexTokens();
 
@@ -1701,7 +1701,7 @@ public class JetParsing extends AbstractJetParsing
 		{
 			parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(JetTokens.IDENTIFIER), TokenSet.create(JetTokens.COMMA, JetTokens.RPAR, JetTokens.COLON));
 
-			if(at(JetTokens.VAR_KEYWORD) || at(JetTokens.VAL_KEYWORD))
+			if(at(JetTokens.VAR_KEYWORD))
 			{
 				advance(); // VAR_KEYWORD | VAL_KEYWORD
 			}

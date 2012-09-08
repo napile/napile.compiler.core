@@ -141,7 +141,7 @@ public interface BindingContext
 			if(declarationPsiElement instanceof NapilePropertyParameter)
 			{
 				NapilePropertyParameter jetParameter = (NapilePropertyParameter) declarationPsiElement;
-				return jetParameter.getValOrVarNode() != null || backingFieldRequired; // this part is unused because we do not allow access to constructor parameters in member bodies
+				return jetParameter.getVarNode() != null || backingFieldRequired; // this part is unused because we do not allow access to constructor parameters in member bodies
 			}
 			if(propertyDescriptor.getModality() == Modality.ABSTRACT)
 				return false;

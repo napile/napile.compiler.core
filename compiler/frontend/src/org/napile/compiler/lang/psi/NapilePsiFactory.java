@@ -39,13 +39,13 @@ public class NapilePsiFactory
 	public static ASTNode createValNode(Project project)
 	{
 		NapileProperty property = createProperty(project, "val x = 1");
-		return property.getValOrVarNode();
+		return property.getVarNode();
 	}
 
 	public static ASTNode createVarNode(Project project)
 	{
 		NapileProperty property = createProperty(project, "var x = 1");
-		return property.getValOrVarNode();
+		return property.getVarNode();
 	}
 
 	public static NapileExpression createExpression(Project project, String text)

@@ -272,7 +272,7 @@ public interface Errors
 		@Override
 		public List<TextRange> mark(@NotNull NapileProperty property)
 		{
-			return markNode(property.getValOrVarNode());
+			return markNode(property.getVarNode());
 		}
 	});
 

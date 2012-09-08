@@ -395,9 +395,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 						case VAR:
 							builder.append(renderKeyword(JetTokens.VAR_KEYWORD));
 							break;
-						case VAL:
-							builder.append(renderKeyword(JetTokens.VAL_KEYWORD));
-							break;
 						default:
 							break;
 					}

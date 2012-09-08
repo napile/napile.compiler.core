@@ -54,7 +54,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		return builder.build();
 	}
 
-	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(JetTokens.INTEGER_LITERAL, JetTokens.FLOAT_LITERAL, JetTokens.CHARACTER_LITERAL, JetTokens.OPEN_QUOTE, JetTokens.PACKAGE_KEYWORD, JetTokens.AS_KEYWORD, JetTokens.CLASS_KEYWORD, JetTokens.THIS_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.FOR_KEYWORD, JetTokens.NULL_KEYWORD, JetTokens.TRUE_KEYWORD, JetTokens.FALSE_KEYWORD, JetTokens.IS_KEYWORD, JetTokens.THROW_KEYWORD, JetTokens.RETURN_KEYWORD, JetTokens.BREAK_KEYWORD, JetTokens.CONTINUE_KEYWORD, JetTokens.ANONYM_KEYWORD, JetTokens.IF_KEYWORD, JetTokens.TRY_KEYWORD, JetTokens.ELSE_KEYWORD, JetTokens.WHILE_KEYWORD, JetTokens.DO_KEYWORD, JetTokens.WHEN_KEYWORD, JetTokens.RBRACKET, JetTokens.RBRACE, JetTokens.RPAR, JetTokens.PLUSPLUS, JetTokens.MINUSMINUS, JetTokens.EXCLEXCL,
+	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(JetTokens.INTEGER_LITERAL, JetTokens.FLOAT_LITERAL, JetTokens.CHARACTER_LITERAL, JetTokens.OPEN_QUOTE, JetTokens.PACKAGE_KEYWORD, JetTokens.AS_KEYWORD, JetTokens.CLASS_KEYWORD, JetTokens.THIS_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.FOR_KEYWORD, JetTokens.NULL_KEYWORD, JetTokens.TRUE_KEYWORD, JetTokens.FALSE_KEYWORD, JetTokens.IS_KEYWORD, JetTokens.THROW_KEYWORD, JetTokens.RETURN_KEYWORD, JetTokens.BREAK_KEYWORD, JetTokens.CONTINUE_KEYWORD, JetTokens.ANONYM_KEYWORD, JetTokens.IF_KEYWORD, JetTokens.TRY_KEYWORD, JetTokens.ELSE_KEYWORD, JetTokens.WHILE_KEYWORD, JetTokens.DO_KEYWORD, JetTokens.WHEN_KEYWORD, JetTokens.RBRACKET, JetTokens.RBRACE, JetTokens.RPAR, JetTokens.PLUSPLUS, JetTokens.MINUSMINUS, JetTokens.EXCLEXCL,
 			//            MUL,
 			JetTokens.PLUS, JetTokens.MINUS, JetTokens.EXCL, JetTokens.DIV, JetTokens.PERC, JetTokens.LTEQ,
 			// TODO GTEQ,   foo<bar, baz>=x
@@ -101,7 +101,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private static final TokenSet STATEMENT_FIRST = TokenSet.orSet(EXPRESSION_FIRST, TokenSet.create(
 			// declaration
 			JetTokens.LBRACKET, // attribute
-			JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.CLASS_KEYWORD), JetTokens.MODIFIER_KEYWORDS);
+			JetTokens.METH_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.CLASS_KEYWORD), JetTokens.MODIFIER_KEYWORDS);
 
 	/*package*/ static final TokenSet EXPRESSION_FOLLOW = TokenSet.create(JetTokens.SEMICOLON, JetTokens.ARROW, JetTokens.COMMA, JetTokens.RBRACE, JetTokens.RPAR, JetTokens.RBRACKET, JetTokens.IDE_TEMPLATE_END);
 
@@ -617,7 +617,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			parseDoWhile();
 		}
-		else if(atSet(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD))
+		else if(atSet(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAR_KEYWORD))
 		{
 			parseLocalDeclaration();
 		}
@@ -813,7 +813,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			advanceAt(JetTokens.LPAR);
 
-			int valPos = matchTokenStreamPredicate(new FirstBefore(new At(JetTokens.VAL_KEYWORD), new AtSet(JetTokens.RPAR, JetTokens.LBRACE, JetTokens.RBRACE, JetTokens.SEMICOLON, JetTokens.EQ)));
+			int valPos = matchTokenStreamPredicate(new FirstBefore(new At(JetTokens.VAR_KEYWORD), new AtSet(JetTokens.RPAR, JetTokens.LBRACE, JetTokens.RBRACE, JetTokens.SEMICOLON, JetTokens.EQ)));
 			if(valPos >= 0)
 			{
 				PsiBuilder.Marker property = mark();
@@ -976,65 +976,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 			condition.done(WHEN_CONDITION_EXPRESSION);
 		}
 		myBuilder.restoreNewlinesState();
-	}
-
-	/*
-		 * bindingPattern
-		 *   : "val" SimpleName binding?
-		 *   ;
-		 *
-		 * binding
-		 *   : "is" pattern
-		 *   : "!is" pattern
-		 *   : "in" element
-		 *   : "!in" element
-		 *   : ":" type
-		 *   ;
-		 */
-	private void parseBindingPattern()
-	{
-		assert _at(JetTokens.VAL_KEYWORD);
-
-		PsiBuilder.Marker declaration = mark();
-
-		advance(); // VAL_KEYWORD
-
-		expect(JetTokens.IDENTIFIER, "Expecting an identifier");
-
-		if(at(JetTokens.COLON))
-		{
-			advance(); // EQ
-
-			myJetParsing.parseTypeRef();
-			declaration.done(PROPERTY);
-		}
-		else
-		{
-			declaration.done(PROPERTY);
-			PsiBuilder.Marker subCondition = mark();
-			if(at(JetTokens.IS_KEYWORD) || at(JetTokens.NOT_IS))
-			{
-
-				advance(); // IS_KEYWORD or NOT_IS
-
-				myJetParsing.parseTypeRef();
-
-				subCondition.done(WHEN_CONDITION_IS_PATTERN);
-			}
-			else if(at(JetTokens.IN_KEYWORD) || at(JetTokens.NOT_IN))
-			{
-				PsiBuilder.Marker mark = mark();
-				advance(); // IN_KEYWORD ot NOT_IN
-				mark.done(OPERATION_REFERENCE);
-
-				parseExpression();
-				subCondition.done(WHEN_CONDITION_IN_RANGE);
-			}
-			else
-			{
-				subCondition.drop();
-			}
-		}
 	}
 
 	/*
@@ -1476,7 +1417,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			declType = myJetParsing.parseMethod();
 		}
-		else if(keywordToken == JetTokens.VAL_KEYWORD || keywordToken == JetTokens.VAR_KEYWORD)
+		else if(keywordToken == JetTokens.VAR_KEYWORD)
 		{
 			declType = myJetParsing.parseProperty(true);
 		}
@@ -1562,10 +1503,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 		advance(); // FOR_KEYWORD
 
 		myBuilder.disableNewlines();
-		expect(JetTokens.LPAR, "Expecting '(' to open a loop range", TokenSet.create(JetTokens.RPAR, JetTokens.VAL_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.IDENTIFIER));
+		expect(JetTokens.LPAR, "Expecting '(' to open a loop range", TokenSet.create(JetTokens.RPAR,  JetTokens.VAR_KEYWORD, JetTokens.IDENTIFIER));
 
 		PsiBuilder.Marker parameter = mark();
-		if(at(JetTokens.VAL_KEYWORD) || at(JetTokens.VAR_KEYWORD))
+		if(at(JetTokens.VAR_KEYWORD))
 			advance(); // VAL_KEYWORD or VAR_KEYWORD
 		if(!myJetParsing.parseIdeTemplate())
 		{

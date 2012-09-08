@@ -104,7 +104,8 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 			return stub.isMutable();
 		}
 
-		return findChildByType(JetTokens.VAR_KEYWORD) != null;
+		NapileModifierList modifierList = getModifierList();
+		return modifierList == null || !modifierList.hasModifier(JetTokens.FINAL_KEYWORD);
 	}
 
 	public boolean isVarArg()
@@ -120,12 +121,8 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 	}
 
 	@Nullable
-	public ASTNode getValOrVarNode()
+	public ASTNode getVarNode()
 	{
-		ASTNode val = getNode().findChildByType(JetTokens.VAL_KEYWORD);
-		if(val != null)
-			return val;
-
 		return getNode().findChildByType(JetTokens.VAR_KEYWORD);
 	}
 }
