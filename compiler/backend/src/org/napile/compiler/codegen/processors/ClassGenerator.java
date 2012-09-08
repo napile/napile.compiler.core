@@ -18,33 +18,25 @@ package org.napile.compiler.codegen.processors;
 
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
-import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.Node;
 import org.napile.asm.tree.members.VariableNode;
-import org.napile.asm.tree.members.types.ClassTypeNode;
-import org.napile.asm.tree.members.types.TypeConstructorNode;
-import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
+import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
+import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
+import org.napile.asm.tree.members.bytecode.impl.PutToStaticVariableInstruction;
+import org.napile.asm.tree.members.bytecode.impl.PutToVariableInstruction;
+import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileRetellEntry;
-import org.napile.compiler.lang.psi.NapileTreeVisitor;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 
 /**
  * @author VISTALL
@@ -71,15 +63,13 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	@Override
 	public Void visitClass(NapileClass klass, Node parent)
 	{
-		ClassDescriptor classDescriptor = (ClassDescriptor) bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, klass);
-
-		assert classDescriptor != null;
+		ClassDescriptor classDescriptor = (ClassDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, klass);
 
 		FqName fqName = bindingTrace.get(BindingContext2.DECLARATION_TO_FQ_NAME, klass);
 
 		assert fqName != null;
 
-		ClassNode classNode = new ClassNode(ModifierGenerator.toModifiers(classDescriptor), fqName);
+		ClassNode classNode = new ClassNode(ModifierGenerator.gen(classDescriptor), fqName);
 
 		classNodes.put(fqName, classNode);
 
@@ -89,19 +79,59 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	@Override
 	public Void visitAnonymClass(NapileAnonymClass element, Node data)
 	{
-		ClassDescriptor classDescriptor = (ClassDescriptor) bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
-
-		assert classDescriptor != null;
+		ClassDescriptor classDescriptor = (ClassDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
 
 		FqName fqName = bindingTrace.get(BindingContext2.DECLARATION_TO_FQ_NAME, element);
 
 		assert fqName != null;
 
-		ClassNode classNode = new ClassNode(ModifierGenerator.toModifiers(classDescriptor), fqName);
+		ClassNode classNode = new ClassNode(ModifierGenerator.gen(classDescriptor), fqName);
 
 		classNodes.put(fqName, classNode);
 
-		return super.visitAnonymClass(element, classNode);
+		return null; //return super.visitAnonymClass(element, classNode);
+	}
+
+	@Override
+	public Void visitConstructor(NapileConstructor constructor, Node parent)
+	{
+		assert parent instanceof ClassNode;
+
+		ConstructorDescriptor methodDescriptor = (ConstructorDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, constructor);
+
+		ClassNode classNode = (ClassNode) parent;
+
+		ConstructorNode constructorNode = MethodGenerator.gen(methodDescriptor);
+
+		classNode.members.add(constructorNode);
+
+		NapileClass napileClass = (NapileClass) constructor.getParent().getParent();
+
+		int i = 0;
+
+		//TODO [VISTALL] call supers
+
+		/*PropertyInitializerGenerator gen = new PropertyInitializerGenerator(bindingTrace);
+		for(NapileDeclaration decl : napileClass.getDeclarations())
+			decl.accept(gen, null);
+
+		constructorNode.instructions.addAll(gen.getInstructions());
+
+		NapileExpression expression = constructor.getBodyExpression();
+		if(expression != null)
+		{
+			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, methodDescriptor.isStatic());
+
+			expression.accept(expressionGenerator);
+
+			constructorNode.instructions.addAll(expressionGenerator.getInstructions());
+
+			i += expressionGenerator.localsSize();
+		}    */
+
+		constructorNode.visitMaxs(i, i);
+
+		return null;
 	}
 
 	@Override
@@ -109,24 +139,81 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	{
 		assert parent instanceof ClassNode;
 
-		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, function);
-
-		assert methodDescriptor != null;
+		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, function);
 
 		ClassNode classNode = (ClassNode) parent;
 
-		MethodNode methodNode = new MethodNode(ModifierGenerator.toModifiers(methodDescriptor), methodDescriptor.getName().getName());
-		methodNode.returnType = JetStandardClasses.isUnit(methodDescriptor.getReturnType()) ? null : toAsmType(methodDescriptor.getReturnType());
-		for(ParameterDescriptor declaration : methodDescriptor.getValueParameters())
-		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.toModifiers(declaration), declaration.getName().getName(), toAsmType(declaration.getType()));
-
-			methodNode.parameters.add(methodParameterNode);
-		}
+		MethodNode methodNode = MethodGenerator.gen(methodDescriptor);
 
 		classNode.members.add(methodNode);
 
-		return super.visitNamedFunction(function, parent);
+		NapileExpression expression = function.getBodyExpression();
+		if(expression != null)
+		{
+			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, methodDescriptor.isStatic());
+
+			expression.accept(expressionGenerator);
+
+		//	methodNode.instructions.addAll(expressionGenerator.getInstructions());
+		//	methodNode.visitMaxs(expressionGenerator.localsSize(), expressionGenerator.localsSize());
+		}
+
+		return null; //return super.visitNamedFunction(function, parent);
+	}
+
+	@Override
+	public Void visitProperty(NapileProperty property, Node parent)
+	{
+		assert parent instanceof ClassNode;
+
+		PropertyDescriptor propertyDescriptor = (PropertyDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, property);
+
+		ClassNode classNode = (ClassNode) parent;
+
+		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName().getName());
+		variableNode.returnType = TypeGenerator.toAsmType(propertyDescriptor.getType());
+		classNode.members.add(variableNode);
+
+		assert propertyDescriptor.getGetter() != null;
+		assert propertyDescriptor.getSetter() != null;
+
+		MethodNode setterNode = MethodGenerator.gen(propertyDescriptor.getSetter());
+		if(propertyDescriptor.getSetter().isDefault())
+		{
+			if(propertyDescriptor.isStatic())
+			{
+				setterNode.instructions.add(new LoadInstruction(0)); // push method parameter
+				setterNode.instructions.add(new PutToStaticVariableInstruction(NodeRefUtil.ref(classNode, variableNode))); // pop this & parameter
+			}
+			else
+			{
+				setterNode.instructions.add(new LoadInstruction(0)); // push this
+				setterNode.instructions.add(new LoadInstruction(1)); // push method parameter
+				setterNode.instructions.add(new PutToVariableInstruction(NodeRefUtil.ref(classNode, variableNode))); // pop this & parameter
+			}
+			setterNode.visitMaxs(propertyDescriptor.isStatic() ? 1 : 2, propertyDescriptor.isStatic() ? 1 : 2);
+		}
+		classNode.members.add(setterNode);
+
+		MethodNode getterNode = MethodGenerator.gen(propertyDescriptor.getGetter());
+		if(propertyDescriptor.getGetter().isDefault())
+		{
+			if(propertyDescriptor.isStatic())
+			{
+				getterNode.instructions.add(new GetStaticVariableInstruction(NodeRefUtil.ref(classNode, variableNode)));
+				getterNode.instructions.add(new ReturnInstruction());
+			}
+			else
+			{
+				getterNode.instructions.add(new LoadInstruction(0)); // push this
+				getterNode.instructions.add(new GetVariableInstruction(NodeRefUtil.ref(classNode, variableNode)));
+				getterNode.instructions.add(new ReturnInstruction());
+			}
+			getterNode.visitMaxs(propertyDescriptor.isStatic() ? 0 : 1, propertyDescriptor.isStatic() ? 0 : 1);
+		}
+		classNode.members.add(getterNode);
+
+		return null;//return super.visitProperty(property, parent);
 	}
 
 	@Override
@@ -134,35 +221,15 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	{
 		assert parent instanceof ClassNode;
 
-		PropertyDescriptor propertyDescriptor = (PropertyDescriptor) bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, retellEntry);
-
-		assert propertyDescriptor != null;
+		PropertyDescriptor propertyDescriptor = (PropertyDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, retellEntry);
 
 		ClassNode classNode = (ClassNode) parent;
 
-		VariableNode variableNode = new VariableNode(ModifierGenerator.toModifiers(propertyDescriptor), propertyDescriptor.getName().getName());
-		variableNode.returnType = toAsmType(propertyDescriptor.getType());
+		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName().getName());
+		variableNode.returnType = TypeGenerator.toAsmType(propertyDescriptor.getType());
 		classNode.members.add(variableNode);
 
-		return super.visitRetellEntry(retellEntry, variableNode);
-	}
-
-	@NotNull
-	private TypeNode toAsmType(@NotNull JetType jetType)
-	{
-		TypeConstructorNode typeConstructorNode = null;
-		ClassifierDescriptor owner = jetType.getConstructor().getDeclarationDescriptor();
-		if(owner instanceof ClassDescriptor)
-			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());
-		else if(owner instanceof TypeParameterDescriptor)
-			typeConstructorNode = new ClassTypeNode(new FqName(owner.getName().getName())) ;//TODO [VISTALL] invalid
-		else
-			throw new RuntimeException("invalid " + owner);
-
-		TypeNode typeNode = new TypeNode(jetType.isNullable(), typeConstructorNode);
-
-		//TODO [VISTALL] annotations & type parameters
-		return typeNode;
+		return null;// super.visitRetellEntry(retellEntry, variableNode);
 	}
 
 	public Map<FqName, ClassNode> getClassNodes()

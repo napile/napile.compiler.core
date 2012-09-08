@@ -82,11 +82,9 @@
 
 		<completion.contributor language="NAPILE" id="JetKeywordCompletionContributor" order="first" implementationClass="org.napile.idea.plugin.completion.JetKeywordCompletionContributor"/>
 
-		<completion.contributor language="NAPILE" id="JetPackagesContributor" order="after JetKeywordCompletionContributor" implementationClass="org.napile.idea.plugin.completion.JetPackagesContributor"/>
+		<completion.contributor language="NAPILE" id="JetCompletionContributor" implementationClass="org.napile.idea.plugin.completion.JetCompletionContributor"/>
 
-		<completion.contributor language="NAPILE" id="JetCompletionContributor" order="after JetClassCompletionContributor" implementationClass="org.napile.idea.plugin.completion.JetCompletionContributor"/>
-
-		<completion.contributor language="NAPILE" implementationClass="org.napile.idea.plugin.liveTemplates.JetLiveTemplateCompletionContributor" id="liveTemplates" order="first"/>
+		<!--<completion.contributor language="NAPILE" implementationClass="org.napile.idea.plugin.liveTemplates.JetLiveTemplateCompletionContributor" id="liveTemplates" order="first"/>  -->
 
 		<completion.confidence language="NAPILE" implementationClass="com.intellij.codeInsight.completion.UnfocusedNameIdentifier"/>
 		<completion.confidence language="NAPILE" implementationClass="org.napile.idea.plugin.completion.confidence.UnfocusedPossibleFunctionParameter"/>

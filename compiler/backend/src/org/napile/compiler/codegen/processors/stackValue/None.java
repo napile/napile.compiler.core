@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.codegen;
+package org.napile.compiler.codegen.processors.stackValue;
 
 /**
  * @author VISTALL
- * @date 10:55/04.09.12
+ * @date 18:48/08.09.12
  */
-public enum GenerationType
+public class None
 {
-	XML,
-
-	TEXT
 }
