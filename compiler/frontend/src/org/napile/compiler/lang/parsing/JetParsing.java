@@ -1689,26 +1689,13 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker parameter = mark();
 
-		if(at(JetTokens.IS_KEYWORD))
+		if(at(JetTokens.IDENTIFIER) && (lookahead(1) == JetTokens.COMMA || lookahead(1) == JetTokens.RPAR))
 		{
-			advance();
-
-			if(!at(JetTokens.IDENTIFIER))
-			{
-				if(rollbackOnFailure)
-				{
-					parameter.rollbackTo();
-					return false;
-				}
-
-				error("Reference expected");
-			}
-
 			PsiBuilder.Marker refMark = mark();
 			advance();
 			refMark.done(REFERENCE_EXPRESSION);
 
-			parameter.done(IS_PARAMETER);
+			parameter.done(REFERENCE_PARAMETER);
 		}
 		else
 		{

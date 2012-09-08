@@ -24,7 +24,7 @@ import org.napile.compiler.lang.psi.NapileClassInitializer;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileIsParameter;
+import org.napile.compiler.lang.psi.NapileReferenceParameter;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
@@ -120,7 +120,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 							text += typeReference.getText();
 						}
 					}
-					else if(parameter instanceof NapileIsParameter)
+					else if(parameter instanceof NapileReferenceParameter)
 						text += parameter.getText();
 					text += ", ";
 				}
@@ -162,7 +162,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 							text += typeReference.getText();
 						}
 					}
-					else if(parameter instanceof NapileIsParameter)
+					else if(parameter instanceof NapileReferenceParameter)
 						text += parameter.getText();
 					text += ", ";
 				}

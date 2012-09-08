@@ -486,8 +486,8 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitStringTemplateEntry(entry);
 	}
 
-	public void visitIsParameter(NapileIsParameter napileIsParameter)
+	public void visitReferenceParameter(NapileReferenceParameter napileReferenceParameter)
 	{
-		visitJetElement(napileIsParameter);
+		visitJetElement(napileReferenceParameter);
 	}
 }

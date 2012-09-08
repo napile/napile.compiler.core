@@ -51,7 +51,7 @@ public interface NapileNodeTypes
 	NapileNodeType CONSTRUCTOR_CALLEE = new NapileNodeType("CONSTRUCTOR_CALLEE", NapileConstructorCalleeExpression.class);
 	IElementType VALUE_PARAMETER_LIST = JetStubElementTypes.VALUE_PARAMETER_LIST;
 	IElementType VALUE_PARAMETER = JetStubElementTypes.VALUE_PARAMETER;
-	IElementType IS_PARAMETER = new NapileNodeType("IS_PARAMETER", NapileIsParameter.class);
+	IElementType REFERENCE_PARAMETER = new NapileNodeType("REFERENCE_PARAMETER", NapileReferenceParameter.class);
 
 	NapileNodeType CLASS_BODY = new NapileNodeType("CLASS_BODY", NapileClassBody.class);
 	NapileNodeType IMPORT_DIRECTIVE = new NapileNodeType("IMPORT_DIRECTIVE", NapileImportDirective.class);

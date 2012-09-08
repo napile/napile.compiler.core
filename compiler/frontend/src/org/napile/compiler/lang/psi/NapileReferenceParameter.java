@@ -25,9 +25,9 @@ import com.intellij.lang.ASTNode;
  * @author VISTALL
  * @date 13:34/06.09.12
  */
-public class NapileIsParameter extends NapileDeclarationImpl
+public class NapileReferenceParameter extends NapileDeclarationImpl
 {
-	public NapileIsParameter(@NotNull ASTNode node)
+	public NapileReferenceParameter(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -35,13 +35,13 @@ public class NapileIsParameter extends NapileDeclarationImpl
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitIsParameter(this);
+		visitor.visitReferenceParameter(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitIsParameter(this, data);
+		return visitor.visitReferenceParameter(this, data);
 	}
 
 	@Nullable

@@ -32,14 +32,14 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  * @author VISTALL
  * @date 13:56/06.09.12
  */
-public class IsParameterDescriptor implements ParameterDescriptor
+public class ReferenceParameterDescriptor implements ParameterDescriptor
 {
 	private final int index;
 	private final DeclarationDescriptor ownerDescriptor;
 	private JetType type;
 	private Name name;
 
-	public IsParameterDescriptor(int index, DeclarationDescriptor ownerDescriptor)
+	public ReferenceParameterDescriptor(int index, DeclarationDescriptor ownerDescriptor)
 	{
 		this.index = index;
 		this.ownerDescriptor = ownerDescriptor;
@@ -99,7 +99,7 @@ public class IsParameterDescriptor implements ParameterDescriptor
 	@Override
 	public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitIsParameterDescriptor(this, data);
+		return visitor.visitReferenceParameterDescriptor(this, data);
 	}
 
 	@Override

@@ -345,7 +345,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 
 		@Override
-		public Void visitIsParameterDescriptor(IsParameterDescriptor descriptor, StringBuilder builder)
+		public Void visitReferenceParameterDescriptor(ReferenceParameterDescriptor descriptor, StringBuilder builder)
 		{
 			renderName(descriptor, builder);
 			builder.append(" : ");

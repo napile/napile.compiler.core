@@ -283,11 +283,11 @@ public class DescriptorResolver
 				parameterScope.addVariableDescriptor(parameterDescriptor);
 				result.add(parameterDescriptor);
 			}
-			else if(parameter instanceof NapileIsParameter)
+			else if(parameter instanceof NapileReferenceParameter)
 			{
-				NapileSimpleNameExpression ref = ((NapileIsParameter) parameter).getReferenceExpression();
+				NapileSimpleNameExpression ref = ((NapileReferenceParameter) parameter).getReferenceExpression();
 
-				IsParameterDescriptor parameterDescriptor = new IsParameterDescriptor(i, methodDescriptor);
+				ReferenceParameterDescriptor parameterDescriptor = new ReferenceParameterDescriptor(i, methodDescriptor);
 				JetType jetType = null;
 				if(ref == null)
 					jetType = ErrorUtils.createErrorType("Reference expected");

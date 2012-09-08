@@ -32,7 +32,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class NapileParameterList extends NapileElementImplStub<PsiJetParameterListStub>
 {
-	private static final TokenSet PARAMETER_TYPES = TokenSet.create(JetStubElementTypes.VALUE_PARAMETER, NapileNodeTypes.IS_PARAMETER);
+	private static final TokenSet PARAMETER_TYPES = TokenSet.create(JetStubElementTypes.VALUE_PARAMETER, NapileNodeTypes.REFERENCE_PARAMETER);
 
 	public NapileParameterList(@NotNull ASTNode node)
 	{

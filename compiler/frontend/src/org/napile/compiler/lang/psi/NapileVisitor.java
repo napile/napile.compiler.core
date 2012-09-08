@@ -494,8 +494,8 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitStringTemplateEntry(entry, data);
 	}
 
-	public R visitIsParameter(NapileIsParameter napileIsParameter, D data)
+	public R visitReferenceParameter(NapileReferenceParameter napileReferenceParameter, D data)
 	{
-		return visitJetElement(napileIsParameter, data);
+		return visitJetElement(napileReferenceParameter, data);
 	}
 }

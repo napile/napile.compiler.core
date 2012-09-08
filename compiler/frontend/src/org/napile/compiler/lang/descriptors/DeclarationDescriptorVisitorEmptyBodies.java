@@ -87,7 +87,7 @@ public class DeclarationDescriptorVisitorEmptyBodies<R, D> implements Declaratio
 	}
 
 	@Override
-	public R visitIsParameterDescriptor(IsParameterDescriptor descriptor, D data)
+	public R visitReferenceParameterDescriptor(ReferenceParameterDescriptor descriptor, D data)
 	{
 		return visitDeclarationDescriptor(descriptor, data);
 	}
