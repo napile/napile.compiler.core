@@ -241,6 +241,9 @@ LONG_TEMPLATE_ENTRY_END=\}
 "enum"       { return JetTokens.ENUM_KEYWORD ;}
 "retell"       { return JetTokens.RETELL_KEYWORD ;}
 
+"var"        { return JetTokens.VAR_KEYWORD ;}
+"meth"       { return JetTokens.METH_KEYWORD ;}
+
 "throw"      { return JetTokens.THROW_KEYWORD ;}
 "false"      { return JetTokens.FALSE_KEYWORD ;}
 "super"      { return JetTokens.SUPER_KEYWORD ;}
@@ -250,8 +253,6 @@ LONG_TEMPLATE_ENTRY_END=\}
 "null"       { return JetTokens.NULL_KEYWORD ;}
 "else"       { return JetTokens.ELSE_KEYWORD ;}
 "try"        { return JetTokens.TRY_KEYWORD ;}
-"var"        { return JetTokens.VAR_KEYWORD ;}
-"meth"       { return JetTokens.METH_KEYWORD ;}
 "for"        { return JetTokens.FOR_KEYWORD ;}
 "is"         { return JetTokens.IS_KEYWORD ;}
 "in"         { return JetTokens.IN_KEYWORD ;}
