@@ -966,7 +966,7 @@ public class JetControlFlowProcessor
 			List<NapileDeclaration> functions = Lists.newArrayList();
 			for(NapileDeclaration localDeclaration : declarations)
 			{
-				if(!(localDeclaration instanceof NapileProperty) && !(localDeclaration instanceof NapileClassInitializer))
+				if(!(localDeclaration instanceof NapileProperty) )
 				{
 					functions.add(localDeclaration);
 				}
@@ -998,12 +998,6 @@ public class JetControlFlowProcessor
 			builder.read(expression);
 		}
 
-		@Override
-		public void visitAnonymousInitializer(NapileClassInitializer classInitializer)
-		{
-			value(classInitializer.getBody(), inCondition);
-		}
-
 		private void visitClassOrObject(NapileLikeClass classOrObject)
 		{
 			for(NapileDelegationSpecifier specifier : classOrObject.getDelegationSpecifiers())
@@ -1018,10 +1012,6 @@ public class JetControlFlowProcessor
 				{
 					value(declaration, inCondition);
 					properties.add((NapileProperty) declaration);
-				}
-				else if(declaration instanceof NapileClassInitializer)
-				{
-					value(declaration, inCondition);
 				}
 			}
 		}

@@ -279,7 +279,6 @@ public class DefaultErrorMessages
 		MAP.put(NOT_A_LOOP_LABEL, "The label ''{0}'' does not denote a loop", TO_STRING);
 		MAP.put(NOT_A_RETURN_LABEL, "The label ''{0}'' does not reference to a context from which we can return", TO_STRING);
 
-		MAP.put(ANONYMOUS_INITIALIZER_WITHOUT_CONSTRUCTOR, "Anonymous initializers are only allowed in the presence of a primary constructor");
 		MAP.put(NULLABLE_SUPERTYPE, "A supertype cannot be nullable");
 		MAP.put(UNSAFE_CALL, "Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type {0}", RENDER_TYPE);
 		MAP.put(AMBIGUOUS_LABEL, "Ambiguous label");

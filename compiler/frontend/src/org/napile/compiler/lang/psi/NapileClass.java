@@ -117,17 +117,6 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 	}
 
 	@Override
-	@NotNull
-	public List<NapileClassInitializer> getAnonymousInitializers()
-	{
-		NapileClassBody body = getBody();
-		if(body == null)
-			return Collections.emptyList();
-
-		return body.getAnonymousInitializers();
-	}
-
-	@Override
 	public FqName getFqName()
 	{
 		return NapilePsiUtil.getFQName(this);

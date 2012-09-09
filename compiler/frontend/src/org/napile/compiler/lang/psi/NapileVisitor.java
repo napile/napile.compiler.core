@@ -364,11 +364,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitJetElement(list, data);
 	}
 
-	public R visitAnonymousInitializer(NapileClassInitializer initializer, D data)
-	{
-		return visitDeclaration(initializer, data);
-	}
-
 	public R visitPropertyAccessor(NapilePropertyAccessor accessor, D data)
 	{
 		return visitDeclaration(accessor, data);

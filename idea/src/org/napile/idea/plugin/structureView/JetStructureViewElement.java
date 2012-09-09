@@ -28,7 +28,6 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassInitializer;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -176,15 +175,6 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		if(StringUtil.isEmpty(text))
 		{
 			text = myElement.getName();
-		}
-
-		if(StringUtil.isEmpty(text))
-		{
-			if(myElement instanceof NapileClassInitializer)
-			{
-				return "<class initializer>";
-			}
-
 		}
 
 		return text;

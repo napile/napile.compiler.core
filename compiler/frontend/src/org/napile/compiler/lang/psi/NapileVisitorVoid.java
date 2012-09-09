@@ -361,11 +361,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitJetElement(list);
 	}
 
-	public void visitAnonymousInitializer(NapileClassInitializer initializer)
-	{
-		visitDeclaration(initializer);
-	}
-
 	public void visitPropertyAccessor(NapilePropertyAccessor accessor)
 	{
 		visitDeclaration(accessor);

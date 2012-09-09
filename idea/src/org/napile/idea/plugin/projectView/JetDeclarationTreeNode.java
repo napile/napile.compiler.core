@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.napile.compiler.lang.psi.NapileClassInitializer;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
@@ -44,8 +43,6 @@ import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
  */
 public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclaration>
 {
-	public static final String CLASS_INITIALIZER = "<class initializer>";
-
 	protected JetDeclarationTreeNode(Project project, NapileDeclaration jetDeclaration, ViewSettings viewSettings)
 	{
 		super(project, jetDeclaration, viewSettings);
@@ -73,11 +70,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 			if(text == null)
 				return;
 			JetCodeStyleSettings settings = CodeStyleSettingsManager.getInstance(getProject()).getCurrentSettings().getCustomSettings(JetCodeStyleSettings.class);
-			if(declaration instanceof NapileClassInitializer)
-			{
-				text = CLASS_INITIALIZER;
-			}
-			else if(declaration instanceof NapileProperty)
+			if(declaration instanceof NapileProperty)
 			{
 				NapileProperty property = (NapileProperty) declaration;
 				NapileTypeReference ref = property.getPropertyTypeRef();

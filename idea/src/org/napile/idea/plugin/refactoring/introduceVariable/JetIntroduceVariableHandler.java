@@ -282,8 +282,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				if(anchor == null)
 					return;
 				boolean needBraces = !(commonContainer instanceof NapileBlockExpression ||
-						commonContainer instanceof NapileClassBody ||
-						commonContainer instanceof NapileClassInitializer);
+						commonContainer instanceof NapileClassBody);
 				if(!needBraces)
 				{
 					property = (NapileProperty) commonContainer.addBefore(property, anchor);
@@ -571,8 +570,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 	@Nullable
 	private static PsiElement getContainer(PsiElement place)
 	{
-		if(place instanceof NapileBlockExpression || place instanceof NapileClassBody ||
-				place instanceof NapileClassInitializer)
+		if(place instanceof NapileBlockExpression || place instanceof NapileClassBody)
 		{
 			return place;
 		}
@@ -587,7 +585,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				}
 			}
 			if(parent instanceof NapileBlockExpression || parent instanceof NapileWhenEntry ||
-					parent instanceof NapileClassBody || parent instanceof NapileClassInitializer)
+					parent instanceof NapileClassBody)
 			{
 				return parent;
 			}
@@ -631,7 +629,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 					result = parent;
 				}
 			}
-			else if(parent instanceof NapileClassBody || parent instanceof NapileFile || parent instanceof NapileClassInitializer)
+			else if(parent instanceof NapileClassBody || parent instanceof NapileFile)
 			{
 				if(result == null)
 				{

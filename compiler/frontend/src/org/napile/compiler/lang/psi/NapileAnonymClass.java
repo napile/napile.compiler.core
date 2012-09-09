@@ -108,17 +108,6 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileLikeCl
 		return list != null ? list.getDelegationSpecifiers() : Collections.<NapileDelegationSpecifier>emptyList();
 	}
 
-	@Override
-	@NotNull
-	public List<NapileClassInitializer> getAnonymousInitializers()
-	{
-		NapileClassBody body = (NapileClassBody) findChildByType(NapileNodeTypes.CLASS_BODY);
-		if(body == null)
-			return Collections.emptyList();
-
-		return body.getAnonymousInitializers();
-	}
-
 	@Nullable
 	@Override
 	public Name getNameAsName()

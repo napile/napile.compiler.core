@@ -234,7 +234,6 @@ public interface Errors
 	DiagnosticFactory1<NapileLabelQualifiedExpression, String> NOT_A_LOOP_LABEL = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileReturnExpression, String> NOT_A_RETURN_LABEL = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileClassInitializer> ANONYMOUS_INITIALIZER_WITHOUT_CONSTRUCTOR = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileNullableType> NULLABLE_SUPERTYPE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NULLABLE_TYPE);
 	DiagnosticFactory1<PsiElement, JetType> UNSAFE_CALL = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> AMBIGUOUS_LABEL = SimpleDiagnosticFactory.create(Severity.ERROR);

@@ -55,13 +55,6 @@ public class NapileEnumEntry extends NapileNamedDeclarationStub<NapilePsiEnumEnt
 		return visitor.visitEnumEntry(this, data);
 	}
 
-	@NotNull
-	@Override
-	public List<NapileClassInitializer> getAnonymousInitializers()
-	{
-		return Collections.emptyList();
-	}
-
 	@Override
 	public FqName getFqName()
 	{

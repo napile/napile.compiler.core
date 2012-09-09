@@ -62,12 +62,6 @@ public class NapileClassBody extends NapileElementImpl implements NapileDeclarat
 	}
 
 	@NotNull
-	public List<NapileClassInitializer> getAnonymousInitializers()
-	{
-		return findChildrenByType(NapileNodeTypes.ANONYMOUS_INITIALIZER);
-	}
-
-	@NotNull
 	public List<NapileProperty> getProperties()
 	{
 		return findChildrenByType(NapileNodeTypes.PROPERTY);

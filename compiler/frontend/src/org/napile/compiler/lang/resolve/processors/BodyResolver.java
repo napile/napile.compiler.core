@@ -159,8 +159,6 @@ public class BodyResolver
 
 		resolvePropertyDeclarationBodies();
 
-		resolveAnonymousInitializers();
-
 		resolveFunctionBodies();
 
 		resolveConstructorBodies();
@@ -308,44 +306,6 @@ public class BodyResolver
 				trace.report(FINAL_SUPERTYPE.on(typeReference));
 			}
 		}
-	}
-
-	private void resolveAnonymousInitializers()
-	{
-		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
-		{
-			resolveAnonymousInitializers(entry.getKey(), entry.getValue());
-		}
-		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-		{
-			resolveAnonymousInitializers(entry.getKey(), entry.getValue());
-		}
-	}
-
-	private void resolveAnonymousInitializers(NapileLikeClass jetClassOrObject, MutableClassDescriptor classDescriptor)
-	{
-		if(!context.completeAnalysisNeeded(jetClassOrObject))
-			return;
-		List<NapileClassInitializer> anonymousInitializers = jetClassOrObject.getAnonymousInitializers();
-
-		//TODO [VISTALL] anonymous initializer
-	/*	if(classDescriptor.getUnsubstitutedPrimaryConstructor() != null)
-		{
-			ConstructorDescriptor primaryConstructor = classDescriptor.getUnsubstitutedPrimaryConstructor();
-			assert primaryConstructor != null;
-			final JetScope scopeForInitializers = classDescriptor.getScopeForInitializers();
-			for(NapileClassInitializer anonymousInitializer : anonymousInitializers)
-			{
-				expressionTypingServices.getType(scopeForInitializers, anonymousInitializer.getBody(), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
-			}
-		}
-		else
-		{
-			for(NapileClassInitializer anonymousInitializer : anonymousInitializers)
-			{
-				trace.report(ANONYMOUS_INITIALIZER_WITHOUT_CONSTRUCTOR.on(anonymousInitializer));
-			}
-		} */
 	}
 
 

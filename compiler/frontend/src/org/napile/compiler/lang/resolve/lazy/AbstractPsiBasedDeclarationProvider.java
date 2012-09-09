@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassInitializer;
 import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
@@ -57,10 +56,6 @@ public abstract class AbstractPsiBasedDeclarationProvider implements Declaration
 
 	protected void putToIndex(NapileDeclaration declaration)
 	{
-		if(declaration instanceof NapileClassInitializer)
-		{
-			return;
-		}
 		allDeclarations.add(declaration);
 		if(declaration instanceof NapileNamedFunction)
 		{

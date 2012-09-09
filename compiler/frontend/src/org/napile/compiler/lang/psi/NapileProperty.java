@@ -101,7 +101,7 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 	{
 		if(isLocal())
 		{
-			@SuppressWarnings("unchecked") PsiElement block = PsiTreeUtil.getParentOfType(this, NapileBlockExpression.class, NapileClassInitializer.class);
+			@SuppressWarnings("unchecked") PsiElement block = PsiTreeUtil.getParentOfType(this, NapileBlockExpression.class);
 			if(block == null)
 			{
 				return super.getUseScope();
