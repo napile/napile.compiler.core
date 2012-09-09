@@ -2,7 +2,7 @@
   <artifact name="idea.napile-lang">
     <output-path>$PROJECT_DIR$/out/artifacts</output-path>
     <root id="root">
-      <element id="directory" name="Napile">
+      <element id="directory" name="idea.napile-lang">
         <element id="directory" name="lib">
           <element id="archive" name="idea.napile-lang.jar">
             <element id="module-output" name="backend" />

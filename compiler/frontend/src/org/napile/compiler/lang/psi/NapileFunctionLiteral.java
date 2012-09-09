@@ -18,6 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -27,6 +28,8 @@ import com.intellij.psi.PsiElement;
  */
 public class NapileFunctionLiteral extends NapileMethodNotStubbed
 {
+	public static final FqName FQ_NAME = new FqName("@anonym");
+
 	public NapileFunctionLiteral(@NotNull ASTNode node)
 	{
 		super(node);
@@ -41,7 +44,7 @@ public class NapileFunctionLiteral extends NapileMethodNotStubbed
 	@Override
 	public String getName()
 	{
-		return "<anonymous>";
+		return FQ_NAME.getFqName();
 	}
 
 	@Override

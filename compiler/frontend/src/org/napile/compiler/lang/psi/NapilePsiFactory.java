@@ -38,7 +38,7 @@ public class NapilePsiFactory
 {
 	public static ASTNode createValNode(Project project)
 	{
-		NapileProperty property = createProperty(project, "val x = 1");
+		NapileProperty property = createProperty(project, "final var x = 1");
 		return property.getVarNode();
 	}
 
@@ -50,13 +50,13 @@ public class NapilePsiFactory
 
 	public static NapileExpression createExpression(Project project, String text)
 	{
-		NapileProperty property = createProperty(project, "val x = " + text);
+		NapileProperty property = createProperty(project, "final var x = " + text);
 		return property.getInitializer();
 	}
 
 	public static NapileValueArgumentList createCallArguments(Project project, String text)
 	{
-		NapileProperty property = createProperty(project, "val x = foo" + text);
+		NapileProperty property = createProperty(project, "final var x = foo" + text);
 		NapileExpression initializer = property.getInitializer();
 		NapileCallExpression callExpression = (NapileCallExpression) initializer;
 		return callExpression.getValueArgumentList();
@@ -64,20 +64,20 @@ public class NapilePsiFactory
 
 	public static NapileTypeReference createType(Project project, String type)
 	{
-		NapileProperty property = createProperty(project, "val x : " + type);
+		NapileProperty property = createProperty(project, "final var x : " + type);
 		return property.getPropertyTypeRef();
 	}
 
 	//the pair contains the first and the last elements of a range
 	public static Pair<PsiElement, PsiElement> createColon(Project project)
 	{
-		NapileProperty property = createProperty(project, "val x : Int");
+		NapileProperty property = createProperty(project, "final var x : Int");
 		return Pair.create(property.findElementAt(5), property.findElementAt(7));
 	}
 
 	public static ASTNode createColonNode(Project project)
 	{
-		NapileProperty property = createProperty(project, "val x: Int");
+		NapileProperty property = createProperty(project, "final var x: Int");
 		return property.getNode().findChildByType(JetTokens.COLON);
 	}
 
@@ -88,7 +88,7 @@ public class NapilePsiFactory
 
 	public static PsiElement createWhiteSpace(Project project, String text)
 	{
-		NapileProperty property = createProperty(project, "val" + text + "x");
+		NapileProperty property = createProperty(project, "final var" + text + "x");
 		return property.findElementAt(3);
 	}
 
@@ -111,7 +111,7 @@ public class NapilePsiFactory
 
 	public static NapileProperty createProperty(Project project, String name, String type, boolean isVar, @Nullable String initializer)
 	{
-		String text = (isVar ? "var " : "val ") + name + (type != null ? ":" + type : "") + (initializer == null ? "" : " = " + initializer);
+		String text = (isVar ? "var " : "final var ") + name + (type != null ? ":" + type : "") + (initializer == null ? "" : " = " + initializer);
 		return createProperty(project, text);
 	}
 
@@ -160,7 +160,7 @@ public class NapilePsiFactory
 
 	public static NapileModifierList createModifier(Project project, NapileKeywordToken modifier)
 	{
-		String text = modifier.getValue() + " val x";
+		String text = modifier.getValue() + " final var x";
 		NapileProperty property = createProperty(project, text);
 		return property.getModifierList();
 	}

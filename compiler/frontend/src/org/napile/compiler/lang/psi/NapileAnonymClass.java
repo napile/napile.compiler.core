@@ -46,7 +46,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileLikeCl
 	@Override
 	public String getName()
 	{
-		return "anonym";
+		return FQ_NAME.getFqName();
 	}
 
 	@Override

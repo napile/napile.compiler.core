@@ -216,7 +216,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 		checkMayWrite();
 
 		Map<Name, List<DeclarationDescriptor>> labelsToDescriptors = getLabelsToDescriptors();
-		Name name = Name.identifier(descriptor.getName().getName());
+		Name name = Name.identifierNoValidate(descriptor.getName().getName());
 		List<DeclarationDescriptor> declarationDescriptors = labelsToDescriptors.get(name);
 		if(declarationDescriptors == null)
 		{
