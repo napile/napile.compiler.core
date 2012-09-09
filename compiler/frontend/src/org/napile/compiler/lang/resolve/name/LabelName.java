@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Stepan Koltsov
  */
+@Deprecated
 public class LabelName
 {
 

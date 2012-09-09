@@ -17,12 +17,14 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.NapileNodeTypes;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileBreakExpression extends NapileLabelQualifiedExpression implements NapileStatementExpression
+public class NapileBreakExpression extends NapileExpressionImpl implements NapileStatementExpression
 {
 	public NapileBreakExpression(@NotNull ASTNode node)
 	{
@@ -39,5 +41,19 @@ public class NapileBreakExpression extends NapileLabelQualifiedExpression implem
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitBreakExpression(this, data);
+	}
+
+	@Nullable
+	public NapileSimpleNameExpression getTargetLabel()
+	{
+		return (NapileSimpleNameExpression) findChildByType(NapileNodeTypes.LABEL_REFERENCE);
+	}
+
+	@Nullable
+	public String getLabelName()
+	{
+		NapileSimpleNameExpression labelElement = getTargetLabel();
+
+		return labelElement == null ? null : labelElement.getText();
 	}
 }

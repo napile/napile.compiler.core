@@ -22,7 +22,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.SmartList;
@@ -91,18 +90,6 @@ public class NapileCallExpression extends NapileExpressionImpl implements Napile
 			if(psi instanceof NapileFunctionLiteralExpression)
 			{
 				result.add((NapileFunctionLiteralExpression) psi);
-			}
-			else if(psi instanceof NapilePrefixExpression)
-			{
-				NapilePrefixExpression prefixExpression = (NapilePrefixExpression) psi;
-				if(JetTokens.LABELS.contains(prefixExpression.getOperationReference().getReferencedNameElementType()))
-				{
-					NapileExpression labeledExpression = prefixExpression.getBaseExpression();
-					if(labeledExpression instanceof NapileFunctionLiteralExpression)
-					{
-						result.add(labeledExpression);
-					}
-				}
 			}
 			node = node.getTreeNext();
 		}

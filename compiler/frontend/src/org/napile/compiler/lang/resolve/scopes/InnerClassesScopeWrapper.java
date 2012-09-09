@@ -26,7 +26,6 @@ import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.resolve.AbstractScopeAdapter;
-import org.napile.compiler.lang.resolve.name.LabelName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.google.common.base.Predicate;
@@ -67,7 +66,7 @@ public class InnerClassesScopeWrapper extends AbstractScopeAdapter
 
 	@NotNull
 	@Override
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(LabelName labelName)
+	public Collection<DeclarationDescriptor> getDeclarationsByLabel(Name labelName)
 	{
 		Collection<DeclarationDescriptor> declarationsByLabel = actualScope.getDeclarationsByLabel(labelName);
 		return Collections2.filter(declarationsByLabel, new Predicate<DeclarationDescriptor>()

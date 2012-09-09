@@ -211,11 +211,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	//
 	public R visitReturnExpression(NapileReturnExpression expression, D data)
 	{
-		return visitLabelQualifiedExpression(expression, data);
-	}
-
-	public R visitLabelQualifiedExpression(NapileLabelQualifiedExpression expression, D data)
-	{
 		return visitExpression(expression, data);
 	}
 
@@ -226,12 +221,12 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 
 	public R visitBreakExpression(NapileBreakExpression expression, D data)
 	{
-		return visitLabelQualifiedExpression(expression, data);
+		return visitExpression(expression, data);
 	}
 
 	public R visitContinueExpression(NapileContinueExpression expression, D data)
 	{
-		return visitLabelQualifiedExpression(expression, data);
+		return visitExpression(expression, data);
 	}
 
 	public R visitIfExpression(NapileIfExpression expression, D data)
@@ -346,12 +341,12 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 
 	public R visitThisExpression(NapileThisExpression expression, D data)
 	{
-		return visitLabelQualifiedExpression(expression, data);
+		return visitExpression(expression, data);
 	}
 
 	public R visitSuperExpression(NapileSuperExpression expression, D data)
 	{
-		return visitLabelQualifiedExpression(expression, data);
+		return visitExpression(expression, data);
 	}
 
 	public R visitParenthesizedExpression(NapileParenthesizedExpression expression, D data)

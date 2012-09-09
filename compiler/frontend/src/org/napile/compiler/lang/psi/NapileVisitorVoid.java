@@ -209,11 +209,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 	//
 	public void visitReturnExpression(NapileReturnExpression expression)
 	{
-		visitLabelQualifiedExpression(expression);
-	}
-
-	public void visitLabelQualifiedExpression(NapileLabelQualifiedExpression expression)
-	{
 		visitExpression(expression);
 	}
 
@@ -224,12 +219,12 @@ public class NapileVisitorVoid extends PsiElementVisitor
 
 	public void visitBreakExpression(NapileBreakExpression expression)
 	{
-		visitLabelQualifiedExpression(expression);
+		visitExpression(expression);
 	}
 
 	public void visitContinueExpression(NapileContinueExpression expression)
 	{
-		visitLabelQualifiedExpression(expression);
+		visitExpression(expression);
 	}
 
 	public void visitIfExpression(NapileIfExpression expression)
@@ -343,12 +338,12 @@ public class NapileVisitorVoid extends PsiElementVisitor
 
 	public void visitThisExpression(NapileThisExpression expression)
 	{
-		visitLabelQualifiedExpression(expression);
+		visitExpression(expression);
 	}
 
 	public void visitSuperExpression(NapileSuperExpression expression)
 	{
-		visitLabelQualifiedExpression(expression);
+		visitExpression(expression);
 	}
 
 	public void visitParenthesizedExpression(NapileParenthesizedExpression expression)

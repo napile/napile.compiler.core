@@ -23,10 +23,10 @@ import com.intellij.lang.ASTNode;
 /**
  * @author abreslav
  */
-public abstract class NapileLabelQualifiedInstanceExpression extends NapileLabelQualifiedExpression implements NapileStatementExpression
+public abstract class NapileInstanceExpression extends NapileExpressionImpl implements NapileStatementExpression
 {
 
-	public NapileLabelQualifiedInstanceExpression(@NotNull ASTNode node)
+	public NapileInstanceExpression(@NotNull ASTNode node)
 	{
 		super(node);
 	}

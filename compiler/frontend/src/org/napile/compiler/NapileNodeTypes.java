@@ -117,8 +117,6 @@ public interface NapileNodeTypes
 	NapileNodeType OPERATION_REFERENCE = new NapileNodeType("OPERATION_REFERENCE", NapileSimpleNameExpression.class);
 	NapileNodeType LABEL_REFERENCE = new NapileNodeType("LABEL_REFERENCE", NapileSimpleNameExpression.class);
 
-	NapileNodeType LABEL_QUALIFIER = new NapileNodeType("LABEL_QUALIFIER", NapileContainerNode.class);
-
 	NapileNodeType THIS_EXPRESSION = new NapileNodeType("THIS_EXPRESSION", NapileThisExpression.class);
 	NapileNodeType SUPER_EXPRESSION = new NapileNodeType("SUPER_EXPRESSION", NapileSuperExpression.class);
 	NapileNodeType BINARY_EXPRESSION = new NapileNodeType("BINARY_EXPRESSION", NapileBinaryExpression.class);

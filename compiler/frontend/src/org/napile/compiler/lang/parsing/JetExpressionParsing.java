@@ -511,17 +511,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 		boolean success = false;
 		//        while (!myBuilder.newlineBeforeCurrentToken()
 		//                && (at(LBRACE)
-		while((at(JetTokens.LBRACE) || atSet(JetTokens.LABELS) && lookahead(1) == JetTokens.LBRACE))
+		while(at(JetTokens.LBRACE))
 		{
-			if(!at(JetTokens.LBRACE))
-			{
-				assert _atSet(JetTokens.LABELS);
-				parsePrefixExpression();
-			}
-			else
-			{
-				parseFunctionLiteral();
-			}
+			parseFunctionLiteral();
+
 			success = true;
 		}
 		return success;
@@ -1463,7 +1456,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		else
 			advance();
 
-		parseControlStructureBody();
+		myJetParsing.parseBlock();
 
 		marker.done(LABEL_EXPRESSION);
 	}
@@ -1541,16 +1534,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 		if(at(JetTokens.LBRACE))
 		{
 			parseFunctionLiteral(true);
-		}
-		else if(atSet(JetTokens.LABELS) && lookahead(1) == JetTokens.LBRACE)
-		{
-			PsiBuilder.Marker mark = mark();
-
-			parseOperationReference();
-
-			parseFunctionLiteral(true);
-
-			mark.done(PREFIX_EXPRESSION);
 		}
 		else
 		{
@@ -1684,7 +1667,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	}
 
 	/*
-		 * : "continue" getEntryPoint?
+		 * : "continue"
 		 * : "break" getEntryPoint?
 		 */
 	private void parseJump(NapileNodeType type)
@@ -1696,11 +1679,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		advance(); // BREAK_KEYWORD or CONTINUE_KEYWORD
 
 		if(type == BREAK && at(JetTokens.IDENTIFIER))
-		{
-			PsiBuilder.Marker labMarker = mark();
-			advance();
-			labMarker.done(LABEL_REFERENCE);
-		}
+			parseOneTokenExpression(LABEL_REFERENCE);
 
 		marker.done(type);
 	}

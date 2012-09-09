@@ -34,7 +34,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class NapileSimpleNameExpression extends NapileReferenceExpression
 {
-	public static final TokenSet REFERENCE_TOKENS = TokenSet.orSet(JetTokens.LABELS, TokenSet.create(JetTokens.IDENTIFIER, JetTokens.FIELD_IDENTIFIER, JetTokens.THIS_KEYWORD, JetTokens.SUPER_KEYWORD));
+	public static final TokenSet REFERENCE_TOKENS = TokenSet.create(JetTokens.IDENTIFIER, JetTokens.FIELD_IDENTIFIER, JetTokens.THIS_KEYWORD, JetTokens.SUPER_KEYWORD);
 
 	public NapileSimpleNameExpression(@NotNull ASTNode node)
 	{

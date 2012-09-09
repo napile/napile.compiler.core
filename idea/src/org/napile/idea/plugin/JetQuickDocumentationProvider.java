@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileLabelExpression;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -74,7 +75,11 @@ public class JetQuickDocumentationProvider extends AbstractDocumentationProvider
 					return render(declarationDescriptor, bindingContext, element, originalElement, mergeKotlinAndJava);
 				}
 			}
-			return "Unresolved";
+
+			if(element instanceof NapileLabelExpression)
+				return "Label "+ ((NapileLabelExpression) element).getLabelName();
+
+			return JetQuickDocumentationProvider.class.getName();
 		}
 		return null;
 	}

@@ -19,11 +19,11 @@
  */
 package org.napile.idea.plugin.highlighter;
 
-import org.napile.compiler.lang.psi.NapileLabelQualifiedExpression;
-import org.napile.compiler.lang.psi.NapilePrefixExpression;
+import org.napile.compiler.lang.psi.NapileBreakExpression;
+import org.napile.compiler.lang.psi.NapileLabelExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.psi.PsiElement;
 
 class LabelsHighlightingVisitor extends HighlightingVisitor
 {
@@ -33,17 +33,17 @@ class LabelsHighlightingVisitor extends HighlightingVisitor
 	}
 
 	@Override
-	public void visitPrefixExpression(NapilePrefixExpression expression)
+	public void visitLabelExpression(NapileLabelExpression expression)
 	{
-		NapileSimpleNameExpression operationSign = expression.getOperationReference();
-		if(JetTokens.LABELS.contains(operationSign.getReferencedNameElementType()))
+		PsiElement targetLabel = expression.getLabelNameElement();
+		if(targetLabel != null)
 		{
-			JetPsiChecker.highlightName(holder, operationSign, JetHighlightingColors.LABEL);
+			JetPsiChecker.highlightName(holder, targetLabel, JetHighlightingColors.LABEL);
 		}
 	}
 
 	@Override
-	public void visitLabelQualifiedExpression(NapileLabelQualifiedExpression expression)
+	public void visitBreakExpression(NapileBreakExpression expression)
 	{
 		NapileSimpleNameExpression targetLabel = expression.getTargetLabel();
 		if(targetLabel != null)

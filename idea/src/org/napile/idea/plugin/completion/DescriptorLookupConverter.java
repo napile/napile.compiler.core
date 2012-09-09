@@ -85,17 +85,17 @@ public final class DescriptorLookupConverter
 			// TODO: Support omitting brackets for one argument functions
 			if(methodDescriptor.getValueParameters().isEmpty())
 			{
-				element = element.setInsertHandler(EMPTY_FUNCTION_HANDLER);
+				element = element.withInsertHandler(EMPTY_FUNCTION_HANDLER);
 			}
 			else
 			{
 				if(methodDescriptor.getValueParameters().size() == 1 && JetStandardClasses.isFunctionType(methodDescriptor.getValueParameters().get(0).getType()))
 				{
-					element = element.setInsertHandler(PARAMS_BRACES_FUNCTION_HANDLER);
+					element = element.withInsertHandler(PARAMS_BRACES_FUNCTION_HANDLER);
 				}
 				else
 				{
-					element = element.setInsertHandler(PARAMS_PARENTHESIS_FUNCTION_HANDLER);
+					element = element.withInsertHandler(PARAMS_PARENTHESIS_FUNCTION_HANDLER);
 				}
 			}
 		}
@@ -110,14 +110,14 @@ public final class DescriptorLookupConverter
 			assert declaredIn != null;
 			tailText = " (" + DescriptorUtils.getFQName(declaredIn) + ")";
 			tailTextGrayed = true;
-			element = element.setInsertHandler(JetClassInsertHandler.INSTANCE);
+			element = element.withInsertHandler(JetClassInsertHandler.INSTANCE);
 		}
 		else
 		{
 			typeText = DescriptorRenderer.TEXT.render(descriptor);
 		}
 
-		element = element.setTailText(tailText, tailTextGrayed).setTypeText(typeText).setPresentableText(presentableText);
+		element = element.withTailText(tailText, tailTextGrayed).withTypeText(typeText).withPresentableText(presentableText);
 		element = element.withIcon(JetIconProvider.INSTANCE.getIcon(declaration, 0));
 
 		return element;

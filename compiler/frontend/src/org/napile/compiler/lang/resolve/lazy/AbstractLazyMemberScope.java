@@ -32,17 +32,16 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileLikeClass;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.resolve.lazy.data.JetClassInfoUtil;
-import org.napile.compiler.lang.resolve.name.LabelName;
-import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
+import org.napile.compiler.lang.psi.NapileLikeClass;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
+import org.napile.compiler.lang.resolve.lazy.data.JetClassInfoUtil;
+import org.napile.compiler.lang.resolve.name.Name;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -222,7 +221,7 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 
 	@NotNull
 	@Override
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(@NotNull LabelName labelName)
+	public Collection<DeclarationDescriptor> getDeclarationsByLabel(@NotNull Name labelName)
 	{
 		// A member scope has no labels
 		return Collections.emptySet();

@@ -32,7 +32,7 @@ import org.napile.compiler.lang.cfg.pseudocode.JetControlFlowInstructionsGenerat
 import org.napile.compiler.lang.cfg.pseudocode.LocalDeclarationInstruction;
 import org.napile.compiler.lang.cfg.pseudocode.Pseudocode;
 import org.napile.compiler.lang.cfg.pseudocode.PseudocodeImpl;
-import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -42,7 +42,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
-import org.napile.compiler.lang.psi.*;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -201,23 +200,17 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitLabelQualifiedExpression(NapileLabelQualifiedExpression expression)
+		public void visitLabelExpression(NapileLabelExpression expression)
 		{
-			String labelName = expression.getLabelName();
-			NapileExpression labeledExpression = expression.getLabeledExpression();
-			if(labelName != null && labeledExpression != null)
-			{
-				visitLabeledExpression(labelName, labeledExpression);
-			}
-		}
+			NapileExpression body = expression.getExpression();
+			if(body == null)
+				return;
 
-		private void visitLabeledExpression(@NotNull String labelName, @NotNull NapileExpression labeledExpression)
-		{
-			NapileExpression deparenthesized = NapilePsiUtil.deparenthesize(labeledExpression);
-			if(deparenthesized != null)
-			{
-				value(labeledExpression, inCondition);
-			}
+			builder.enterLoop(expression, null, null);
+
+			value(body, inCondition);
+
+			builder.exitLoop(expression);
 		}
 
 		@SuppressWarnings("SuspiciousMethodCalls")
@@ -350,25 +343,17 @@ public class JetControlFlowProcessor
 			NapileExpression baseExpression = expression.getBaseExpression();
 			if(baseExpression == null)
 				return;
-			if(JetTokens.LABELS.contains(operationType))
-			{
-				String referencedName = operationSign.getReferencedName();
-				referencedName = referencedName == null ? " <?>" : referencedName;
-				visitLabeledExpression(referencedName.substring(1), baseExpression);
-			}
-			else
-			{
-				value(baseExpression, false);
-				value(operationSign, false);
 
-				boolean incrementOrDecrement = isIncrementOrDecrement(operationType);
-				if(incrementOrDecrement)
-				{
-					builder.write(expression, baseExpression);
-				}
+			value(baseExpression, false);
+			value(operationSign, false);
 
-				builder.read(expression);
+			boolean incrementOrDecrement = isIncrementOrDecrement(operationType);
+			if(incrementOrDecrement)
+			{
+				builder.write(expression, baseExpression);
 			}
+
+			builder.read(expression);
 		}
 
 		private boolean isIncrementOrDecrement(IElementType operationType)
@@ -598,25 +583,6 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitBreakExpression(NapileBreakExpression expression)
 		{
-			NapileElement loop = getCorrespondingLoop(expression);
-			if(loop != null)
-			{
-				builder.jump(builder.getExitPoint(loop));
-			}
-		}
-
-		@Override
-		public void visitContinueExpression(NapileContinueExpression expression)
-		{
-			NapileElement loop = getCorrespondingLoop(expression);
-			if(loop != null)
-			{
-				builder.jump(builder.getEntryPoint(loop));
-			}
-		}
-
-		private NapileElement getCorrespondingLoop(NapileLabelQualifiedExpression expression)
-		{
 			String labelName = expression.getLabelName();
 			NapileElement loop;
 			if(labelName != null)
@@ -624,9 +590,9 @@ public class JetControlFlowProcessor
 				NapileSimpleNameExpression targetLabel = expression.getTargetLabel();
 				assert targetLabel != null;
 				PsiElement labeledElement = BindingContextUtils.resolveToDeclarationPsiElement(trace.getBindingContext(), targetLabel);
-				if(labeledElement instanceof NapileLoopExpression)
+				if(labeledElement != null)
 				{
-					loop = (NapileLoopExpression) labeledElement;
+					loop = (NapileElement) labeledElement;
 				}
 				else
 				{
@@ -642,7 +608,21 @@ public class JetControlFlowProcessor
 					trace.report(BREAK_OR_CONTINUE_OUTSIDE_A_LOOP.on(expression));
 				}
 			}
-			return loop;
+
+			if(loop != null)
+				builder.jump(builder.getExitPoint(loop));
+		}
+
+		@Override
+		public void visitContinueExpression(NapileContinueExpression expression)
+		{
+			NapileElement loop = builder.getCurrentLoop();
+			if(loop == null)
+			{
+				trace.report(BREAK_OR_CONTINUE_OUTSIDE_A_LOOP.on(expression));
+			}
+			else
+				builder.jump(builder.getEntryPoint(loop));
 		}
 
 		@Override
@@ -653,28 +633,8 @@ public class JetControlFlowProcessor
 			{
 				value(returnedExpression, false);
 			}
-			NapileSimpleNameExpression labelElement = expression.getTargetLabel();
-			NapileElement subroutine;
-			String labelName = expression.getLabelName();
-			if(labelElement != null)
-			{
-				assert labelName != null;
-				PsiElement labeledElement = BindingContextUtils.resolveToDeclarationPsiElement(trace.getBindingContext(), labelElement);
-				if(labeledElement != null)
-				{
-					assert labeledElement instanceof NapileElement;
-					subroutine = (NapileElement) labeledElement;
-				}
-				else
-				{
-					subroutine = null;
-				}
-			}
-			else
-			{
-				subroutine = builder.getReturnSubroutine();
-				// TODO : a context check
-			}
+			NapileElement subroutine = builder.getReturnSubroutine();
+
 			//todo cache NapileFunctionLiteral instead
 			if(subroutine instanceof NapileFunctionLiteralExpression)
 			{

@@ -61,7 +61,6 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
 import org.napile.compiler.lang.resolve.calls.autocasts.Nullability;
 import org.napile.compiler.lang.resolve.constants.*;
 import org.napile.compiler.lang.resolve.constants.StringValue;
-import org.napile.compiler.lang.resolve.name.LabelName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
@@ -180,6 +179,16 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitLabelExpression(NapileLabelExpression expression, ExpressionTypingContext context)
 	{
+		NapileExpression blockExpression = expression.getExpression();
+		if(blockExpression == null)
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+
+		context.labelResolver.enterLabeledElement(Name.identifier(expression.getLabelName()), expression);
+
+		facade.getTypeInfo(blockExpression, context, false);
+
+		context.labelResolver.exitLabeledElement(expression);
+
 		return JetTypeInfo.create(null, context.dataFlowInfo);
 	}
 
@@ -569,39 +578,31 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Nullable // No class receivers
-	private ReceiverDescriptor resolveToReceiver(NapileLabelQualifiedInstanceExpression expression, ExpressionTypingContext context, boolean onlyClassReceivers)
+	private ReceiverDescriptor resolveToReceiver(NapileInstanceExpression expression, ExpressionTypingContext context, boolean onlyClassReceivers)
 	{
 		ReceiverDescriptor thisReceiver = null;
-		String labelName = expression.getLabelName();
-		if(labelName != null)
+		if(onlyClassReceivers)
 		{
-			thisReceiver = context.labelResolver.resolveThisLabel(expression.getInstanceReference(), expression.getTargetLabel(), context, thisReceiver, new LabelName(labelName));
+			List<ReceiverDescriptor> receivers = Lists.newArrayList();
+			context.scope.getImplicitReceiversHierarchy(receivers);
+			for(ReceiverDescriptor receiver : receivers)
+			{
+				if(receiver instanceof ClassReceiver)
+				{
+					thisReceiver = receiver;
+					break;
+				}
+			}
 		}
 		else
 		{
-			if(onlyClassReceivers)
-			{
-				List<ReceiverDescriptor> receivers = Lists.newArrayList();
-				context.scope.getImplicitReceiversHierarchy(receivers);
-				for(ReceiverDescriptor receiver : receivers)
-				{
-					if(receiver instanceof ClassReceiver)
-					{
-						thisReceiver = receiver;
-						break;
-					}
-				}
-			}
-			else
-			{
-				thisReceiver = context.scope.getImplicitReceiver();
-				if(context.scope.getContainingDeclaration() instanceof DeclarationDescriptorWithVisibility)
-					thisReceiver = ReceiverDescriptor.NO_RECEIVER;
-			}
-			if(thisReceiver instanceof ThisReceiverDescriptor)
-			{
-				context.trace.record(REFERENCE_TARGET, expression.getInstanceReference(), ((ThisReceiverDescriptor) thisReceiver).getDeclarationDescriptor());
-			}
+			thisReceiver = context.scope.getImplicitReceiver();
+			if(context.scope.getContainingDeclaration() instanceof DeclarationDescriptorWithVisibility)
+				thisReceiver = ReceiverDescriptor.NO_RECEIVER;
+		}
+		if(thisReceiver instanceof ThisReceiverDescriptor)
+		{
+			context.trace.record(REFERENCE_TARGET, expression.getInstanceReference(), ((ThisReceiverDescriptor) thisReceiver).getDeclarationDescriptor());
 		}
 		return thisReceiver;
 	}
@@ -929,11 +930,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
 
 		IElementType operationType = operationSign.getReferencedNameElementType();
-		// If it's a labeled expression
-		if(JetTokens.LABELS.contains(operationType))
-		{
-			return visitLabeledExpression(expression, context, isStatement);
-		}
 
 		// Special case for expr!!
 		if(operationType == JetTokens.EXCLEXCL)
@@ -1042,22 +1038,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			dataFlowInfo = dataFlowInfo.disequate(value, new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, true), false, Nullability.NULL));
 		}
 		return JetTypeInfo.create(TypeUtils.makeNotNullable(type), dataFlowInfo);
-	}
-
-	private JetTypeInfo visitLabeledExpression(@NotNull NapileUnaryExpression expression, @NotNull ExpressionTypingContext context, boolean isStatement)
-	{
-		NapileExpression baseExpression = expression.getBaseExpression();
-		assert baseExpression != null;
-		NapileSimpleNameExpression operationSign = expression.getOperationReference();
-		assert JetTokens.LABELS.contains(operationSign.getReferencedNameElementType());
-
-		String referencedName = operationSign.getReferencedName();
-		referencedName = referencedName == null ? " <?>" : referencedName;
-		context.labelResolver.enterLabeledElement(new LabelName(referencedName.substring(1)), baseExpression);
-		// TODO : Some processing for the label?
-		JetTypeInfo typeInfo = facade.getTypeInfo(baseExpression, context, isStatement);
-		context.labelResolver.exitLabeledElement(baseExpression);
-		return DataFlowUtils.checkType(typeInfo.getType(), expression, context, typeInfo.getDataFlowInfo());
 	}
 
 	private boolean isKnownToBeNotNull(NapileExpression expression, ExpressionTypingContext context)

@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
@@ -165,6 +164,20 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		}
 
 		return DataFlowUtils.checkImplicitCast(result.getType(), expression, contextWithExpectedType, isStatement, result.getDataFlowInfo());
+	}
+
+	@Override
+	public JetTypeInfo visitLabelExpression(NapileLabelExpression expression, ExpressionTypingContext context)
+	{
+		NapileExpression body = expression.getExpression();
+		if(body != null)
+		{
+			WritableScopeImpl scopeToExtend = ExpressionTypingUtils.newWritableScopeImpl(context, "Scope extended in while's condition");
+
+			context.expressionTypingServices.getType(scopeToExtend, expression, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace);
+		}
+
+		return JetTypeInfo.create(TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo);
 	}
 
 	@Override
@@ -559,8 +572,6 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitReturnExpression(NapileReturnExpression expression, ExpressionTypingContext context)
 	{
-		NapileElement element = context.labelResolver.resolveLabel(expression, context);
-
 		NapileExpression returnedExpression = expression.getReturnedExpression();
 
 		JetType expectedType = TypeUtils.NO_EXPECTED_TYPE;
@@ -577,48 +588,30 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, parentDeclaration);
 		MethodDescriptor containingMethodDescriptor = DescriptorUtils.getParentOfType(declarationDescriptor, MethodDescriptor.class, false);
 
-		if(expression.getTargetLabel() == null)
+		if(containingMethodDescriptor != null)
 		{
-			if(containingMethodDescriptor != null)
+			PsiElement containingFunction = BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor);
+			assert containingFunction != null;
+			if(containingFunction instanceof NapileFunctionLiteralExpression)
 			{
-				PsiElement containingFunction = BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor);
-				assert containingFunction != null;
-				if(containingFunction instanceof NapileFunctionLiteralExpression)
+				do
 				{
-					do
-					{
-						containingMethodDescriptor = DescriptorUtils.getParentOfType(containingMethodDescriptor, MethodDescriptor.class);
-						containingFunction = containingMethodDescriptor != null ? BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor) : null;
-					}
-					while(containingFunction instanceof NapileFunctionLiteralExpression);
-					context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
+					containingMethodDescriptor = DescriptorUtils.getParentOfType(containingMethodDescriptor, MethodDescriptor.class);
+					containingFunction = containingMethodDescriptor != null ? BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor) : null;
 				}
-				if(containingMethodDescriptor != null)
-				{
-					expectedType = DescriptorUtils.getFunctionExpectedReturnType(containingMethodDescriptor, (NapileElement) containingFunction);
-				}
-			}
-			else
-			{
+				while(containingFunction instanceof NapileFunctionLiteralExpression);
 				context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
 			}
+			if(containingMethodDescriptor != null)
+			{
+				expectedType = DescriptorUtils.getFunctionExpectedReturnType(containingMethodDescriptor, (NapileElement) containingFunction);
+			}
 		}
-		else if(element != null)
+		else
 		{
-			SimpleMethodDescriptor functionDescriptor = context.trace.get(BindingContext.FUNCTION, element);
-			if(functionDescriptor != null)
-			{
-				expectedType = DescriptorUtils.getFunctionExpectedReturnType(functionDescriptor, element);
-				if(functionDescriptor != containingMethodDescriptor)
-				{
-					context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
-				}
-			}
-			else
-			{
-				context.trace.report(Errors.NOT_A_RETURN_LABEL.on(expression, expression.getLabelName()));
-			}
+			context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
 		}
+
 		if(returnedExpression != null)
 		{
 			facade.getTypeInfo(returnedExpression, context.replaceExpectedType(expectedType).replaceScope(context.scope));
@@ -643,7 +636,6 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitContinueExpression(NapileContinueExpression expression, ExpressionTypingContext context)
 	{
-		context.labelResolver.resolveLabel(expression, context);
 		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, false), expression, context, context.dataFlowInfo);
 	}
 }

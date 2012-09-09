@@ -38,7 +38,6 @@ import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lang.psi.NapileLabelQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
@@ -195,16 +194,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 			}
 			else
 			{
-				NapileFunctionLiteralExpression functionLiteral;
-				if(possiblyLabeledFunctionLiteral instanceof NapileLabelQualifiedExpression)
-				{
-					NapileLabelQualifiedExpression labeledFunctionLiteral = (NapileLabelQualifiedExpression) possiblyLabeledFunctionLiteral;
-					functionLiteral = (NapileFunctionLiteralExpression) labeledFunctionLiteral.getLabeledExpression();
-				}
-				else
-				{
-					functionLiteral = (NapileFunctionLiteralExpression) possiblyLabeledFunctionLiteral;
-				}
+				NapileFunctionLiteralExpression functionLiteral = (NapileFunctionLiteralExpression) possiblyLabeledFunctionLiteral;
 
 				ParameterDescriptor parameterDescriptor = valueParameters.get(valueParameters.size() - 1);
 				if(parameterDescriptor.getVarargElementType() != null)

@@ -17,7 +17,10 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
@@ -28,6 +31,26 @@ public class NapileLabelExpression extends NapileExpressionImpl
 	public NapileLabelExpression(@NotNull ASTNode node)
 	{
 		super(node);
+	}
+
+	@Nullable
+	public String getLabelName()
+	{
+		PsiElement element = getLabelNameElement();
+
+		return element == null ? null : element.getText();
+	}
+
+	@Nullable
+	public PsiElement getLabelNameElement()
+	{
+		return findChildByType(JetTokens.IDENTIFIER);
+	}
+
+	@Nullable
+	public NapileBlockExpression getExpression()
+	{
+		return findChildByClass(NapileBlockExpression.class);
 	}
 
 	@Override

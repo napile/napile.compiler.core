@@ -33,17 +33,16 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.psi.NapileReferenceExpression;
+import org.napile.compiler.lang.psi.NapileBreakExpression;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileLabelQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
+import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
-import org.napile.compiler.lang.resolve.name.LabelName;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -52,39 +51,34 @@ import com.intellij.psi.PsiElement;
 public class LabelResolver
 {
 
-	private final Map<LabelName, Stack<NapileElement>> labeledElements = new HashMap<LabelName, Stack<NapileElement>>();
+	private final Map<Name, Stack<NapileElement>> labeledElements = new HashMap<Name, Stack<NapileElement>>();
 
 	public LabelResolver()
 	{
 	}
 
-	public void enterLabeledElement(@NotNull LabelName labelName, @NotNull NapileExpression labeledExpression)
+	public void enterLabeledElement(@NotNull Name labelName, @NotNull NapileExpression labeledExpression)
 	{
-		NapileExpression deparenthesized = NapilePsiUtil.deparenthesize(labeledExpression);
-		if(deparenthesized != null)
+		Stack<NapileElement> stack = labeledElements.get(labelName);
+		if(stack == null)
 		{
-			Stack<NapileElement> stack = labeledElements.get(labelName);
-			if(stack == null)
-			{
-				stack = new Stack<NapileElement>();
-				labeledElements.put(labelName, stack);
-			}
-			stack.push(deparenthesized);
+			stack = new Stack<NapileElement>();
+			labeledElements.put(labelName, stack);
 		}
+		stack.push(labeledExpression);
 	}
 
 	public void exitLabeledElement(@NotNull NapileExpression expression)
 	{
-		NapileExpression deparenthesized = NapilePsiUtil.deparenthesize(expression);
 		// TODO : really suboptimal
-		for(Iterator<Map.Entry<LabelName, Stack<NapileElement>>> mapIter = labeledElements.entrySet().iterator(); mapIter.hasNext(); )
+		for(Iterator<Map.Entry<Name, Stack<NapileElement>>> mapIter = labeledElements.entrySet().iterator(); mapIter.hasNext(); )
 		{
-			Map.Entry<LabelName, Stack<NapileElement>> entry = mapIter.next();
+			Map.Entry<Name, Stack<NapileElement>> entry = mapIter.next();
 			Stack<NapileElement> stack = entry.getValue();
 			for(Iterator<NapileElement> stackIter = stack.iterator(); stackIter.hasNext(); )
 			{
 				NapileElement recorded = stackIter.next();
-				if(recorded == deparenthesized)
+				if(recorded == expression)
 				{
 					stackIter.remove();
 				}
@@ -97,7 +91,7 @@ public class LabelResolver
 	}
 
 	@Nullable
-	private NapileElement resolveControlLabel(@NotNull LabelName labelName, @NotNull NapileSimpleNameExpression labelExpression, boolean reportUnresolved, ExpressionTypingContext context)
+	private NapileElement resolveControlLabel(@NotNull Name labelName, @NotNull NapileSimpleNameExpression labelExpression, boolean reportUnresolved, ExpressionTypingContext context)
 	{
 		Collection<DeclarationDescriptor> declarationsByLabel = context.scope.getDeclarationsByLabel(labelName);
 		int size = declarationsByLabel.size();
@@ -126,18 +120,18 @@ public class LabelResolver
 	}
 
 	@Nullable
-	public NapileElement resolveLabel(NapileLabelQualifiedExpression expression, ExpressionTypingContext context)
+	public NapileElement resolveLabel(NapileBreakExpression expression, ExpressionTypingContext context)
 	{
 		NapileSimpleNameExpression labelElement = expression.getTargetLabel();
 		if(labelElement != null)
 		{
-			LabelName labelName = new LabelName(expression.getLabelName());
+			Name labelName = Name.identifier(labelElement.getText());
 			return resolveControlLabel(labelName, labelElement, true, context);
 		}
 		return null;
 	}
 
-	private NapileElement resolveNamedLabel(@NotNull LabelName labelName, @NotNull NapileSimpleNameExpression labelExpression, boolean reportUnresolved, ExpressionTypingContext context)
+	private NapileElement resolveNamedLabel(@NotNull Name labelName, @NotNull NapileSimpleNameExpression labelExpression, boolean reportUnresolved, ExpressionTypingContext context)
 	{
 		Stack<NapileElement> stack = labeledElements.get(labelName);
 		if(stack == null || stack.isEmpty())
@@ -158,7 +152,7 @@ public class LabelResolver
 		return result;
 	}
 
-	public ReceiverDescriptor resolveThisLabel(NapileReferenceExpression thisReference, NapileSimpleNameExpression targetLabel, ExpressionTypingContext context, ReceiverDescriptor thisReceiver, LabelName labelName)
+	public ReceiverDescriptor resolveThisLabel(NapileReferenceExpression thisReference, NapileSimpleNameExpression targetLabel, ExpressionTypingContext context, ReceiverDescriptor thisReceiver, Name labelName)
 	{
 		Collection<DeclarationDescriptor> declarationsByLabel = context.scope.getDeclarationsByLabel(labelName);
 		int size = declarationsByLabel.size();

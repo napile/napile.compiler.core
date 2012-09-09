@@ -230,8 +230,8 @@ public interface Errors
 	DiagnosticFactory1<NapileExpression, String> ILLEGAL_SELECTOR = DiagnosticFactory1.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapilePropertyParameter> VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileLabelQualifiedExpression> BREAK_OR_CONTINUE_OUTSIDE_A_LOOP = SimpleDiagnosticFactory.create(Severity.ERROR);
-	DiagnosticFactory1<NapileLabelQualifiedExpression, String> NOT_A_LOOP_LABEL = DiagnosticFactory1.create(Severity.ERROR);
+	SimpleDiagnosticFactory<NapileExpression> BREAK_OR_CONTINUE_OUTSIDE_A_LOOP = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory1<NapileExpression, String> NOT_A_LOOP_LABEL = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileReturnExpression, String> NOT_A_RETURN_LABEL = DiagnosticFactory1.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileNullableType> NULLABLE_SUPERTYPE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NULLABLE_TYPE);

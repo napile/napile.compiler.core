@@ -23,7 +23,7 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileReturnExpression extends NapileLabelQualifiedExpression implements NapileStatementExpression
+public class NapileReturnExpression extends NapileExpressionImpl implements NapileStatementExpression
 {
 	public NapileReturnExpression(@NotNull ASTNode node)
 	{

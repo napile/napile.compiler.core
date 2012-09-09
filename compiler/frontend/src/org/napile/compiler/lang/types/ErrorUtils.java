@@ -26,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.name.LabelName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -117,7 +116,7 @@ public class ErrorUtils
 
 		@NotNull
 		@Override
-		public Collection<DeclarationDescriptor> getDeclarationsByLabel(LabelName labelName)
+		public Collection<DeclarationDescriptor> getDeclarationsByLabel(Name labelName)
 		{
 			return Collections.emptyList();
 		}

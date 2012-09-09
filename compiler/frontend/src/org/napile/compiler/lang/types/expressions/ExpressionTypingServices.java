@@ -30,34 +30,32 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
-import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
+import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
+import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lexer.JetTokens;
-import org.napile.compiler.lang.psi.NapileElement;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -243,12 +241,8 @@ public class ExpressionTypingServices
 				@Override
 				public Void visitReturnExpression(NapileReturnExpression expression, NapileDeclarationWithBody outerFunction)
 				{
-					NapileSimpleNameExpression targetLabel = expression.getTargetLabel();
-					PsiElement element = targetLabel != null ? trace.get(BindingContext.LABEL_TARGET, targetLabel) : null;
-					if(element == function || (targetLabel == null && outerFunction == function))
-					{
-						returnedExpressions.add(expression);
-					}
+					returnedExpressions.add(expression);
+
 					return null;
 				}
 

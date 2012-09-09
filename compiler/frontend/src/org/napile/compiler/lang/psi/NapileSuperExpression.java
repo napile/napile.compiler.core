@@ -24,7 +24,7 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileSuperExpression extends NapileLabelQualifiedInstanceExpression
+public class NapileSuperExpression extends NapileInstanceExpression
 {
 
 	public NapileSuperExpression(@NotNull ASTNode node)

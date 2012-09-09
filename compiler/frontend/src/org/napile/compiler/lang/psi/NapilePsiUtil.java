@@ -59,22 +59,6 @@ public class NapilePsiUtil
 				expression = ((NapileBinaryExpressionWithTypeRHS) expression).getLeft();
 			}
 		}
-		else if(expression instanceof NapilePrefixExpression)
-		{
-			if(JetTokens.LABELS.contains(((NapilePrefixExpression) expression).getOperationReference().getReferencedNameElementType()))
-			{
-				NapileExpression baseExpression = ((NapilePrefixExpression) expression).getBaseExpression();
-				if(baseExpression != null)
-				{
-					expression = baseExpression;
-				}
-			}
-		}
-		if(expression instanceof NapileParenthesizedExpression)
-		{
-			NapileExpression innerExpression = ((NapileParenthesizedExpression) expression).getExpression();
-			return innerExpression != null ? deparenthesize(innerExpression) : null;
-		}
 		return expression;
 	}
 
