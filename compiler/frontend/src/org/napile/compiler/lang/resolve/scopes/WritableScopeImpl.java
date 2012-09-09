@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.resolve.scopes;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -74,9 +73,6 @@ public class WritableScopeImpl extends WritableScopeWithImports
 
 	@Nullable
 	private Map<Name, NamespaceDescriptor> namespaceAliases;
-
-	@Nullable
-	private Map<Name, List<DeclarationDescriptor>> labelsToDescriptors;
 
 	@Nullable
 	private Map<Name, ClassDescriptor> objectDescriptors;
@@ -171,16 +167,6 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@NotNull
-	private Map<Name, List<DeclarationDescriptor>> getLabelsToDescriptors()
-	{
-		if(labelsToDescriptors == null)
-		{
-			labelsToDescriptors = new HashMap<Name, List<DeclarationDescriptor>>();
-		}
-		return labelsToDescriptors;
-	}
-
-	@NotNull
 	private Map<Name, ClassDescriptor> getObjectDescriptorsMap()
 	{
 		if(objectDescriptors == null)
@@ -188,42 +174,6 @@ public class WritableScopeImpl extends WritableScopeWithImports
 			objectDescriptors = Maps.newHashMap();
 		}
 		return objectDescriptors;
-	}
-
-	@NotNull
-	@Override
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(@NotNull Name labelName)
-	{
-		checkMayRead();
-
-		Collection<DeclarationDescriptor> superResult = super.getDeclarationsByLabel(labelName);
-		Map<Name, List<DeclarationDescriptor>> labelsToDescriptors = getLabelsToDescriptors();
-		List<DeclarationDescriptor> declarationDescriptors = labelsToDescriptors.get(labelName);
-		if(declarationDescriptors == null)
-		{
-			return superResult;
-		}
-		if(superResult.isEmpty())
-			return declarationDescriptors;
-		List<DeclarationDescriptor> result = new ArrayList<DeclarationDescriptor>(declarationDescriptors);
-		result.addAll(superResult);
-		return result;
-	}
-
-	@Override
-	public void addLabeledDeclaration(@NotNull DeclarationDescriptor descriptor)
-	{
-		checkMayWrite();
-
-		Map<Name, List<DeclarationDescriptor>> labelsToDescriptors = getLabelsToDescriptors();
-		Name name = Name.identifierNoValidate(descriptor.getName().getName());
-		List<DeclarationDescriptor> declarationDescriptors = labelsToDescriptors.get(name);
-		if(declarationDescriptors == null)
-		{
-			declarationDescriptors = new ArrayList<DeclarationDescriptor>();
-			labelsToDescriptors.put(name, declarationDescriptors);
-		}
-		declarationDescriptors.add(descriptor);
 	}
 
 	@NotNull

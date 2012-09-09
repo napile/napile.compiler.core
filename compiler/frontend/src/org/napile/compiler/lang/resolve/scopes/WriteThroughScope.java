@@ -61,15 +61,6 @@ public class WriteThroughScope extends WritableScopeWithImports
 
 	@Override
 	@NotNull
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(Name labelName)
-	{
-		checkMayRead();
-
-		return writableWorker.getDeclarationsByLabel(labelName);
-	}
-
-	@Override
-	@NotNull
 	public DeclarationDescriptor getContainingDeclaration()
 	{
 		checkMayRead();
@@ -194,14 +185,6 @@ public class WriteThroughScope extends WritableScopeWithImports
 		objectDescriptors.addAll(getWorkerScope().getObjectDescriptors());
 		objectDescriptors.addAll(writableWorker.getObjectDescriptors());
 		return objectDescriptors;
-	}
-
-	@Override
-	public void addLabeledDeclaration(@NotNull DeclarationDescriptor descriptor)
-	{
-		checkMayWrite();
-
-		writableWorker.addLabeledDeclaration(descriptor); // TODO : review
 	}
 
 	@Override

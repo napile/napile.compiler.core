@@ -16,13 +16,9 @@
 
 package org.napile.compiler.lang.types.expressions;
 
-import static org.napile.compiler.lang.diagnostics.Errors.AMBIGUOUS_LABEL;
 import static org.napile.compiler.lang.diagnostics.Errors.LABEL_NAME_CLASH;
 import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
-import static org.napile.compiler.lang.resolve.BindingContext.LABEL_TARGET;
-import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -30,20 +26,12 @@ import java.util.Stack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.NapileBreakExpression;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import com.intellij.psi.PsiElement;
 
 /**
  * @author abreslav
@@ -93,30 +81,7 @@ public class LabelResolver
 	@Nullable
 	private NapileElement resolveControlLabel(@NotNull Name labelName, @NotNull NapileSimpleNameExpression labelExpression, boolean reportUnresolved, ExpressionTypingContext context)
 	{
-		Collection<DeclarationDescriptor> declarationsByLabel = context.scope.getDeclarationsByLabel(labelName);
-		int size = declarationsByLabel.size();
-
-		if(size == 1)
-		{
-			DeclarationDescriptor declarationDescriptor = declarationsByLabel.iterator().next();
-			NapileElement element;
-			if(declarationDescriptor instanceof MethodDescriptor || declarationDescriptor instanceof ClassDescriptor)
-			{
-				element = (NapileElement) BindingContextUtils.descriptorToDeclaration(context.trace.getBindingContext(), declarationDescriptor);
-			}
-			else
-			{
-				throw new UnsupportedOperationException(); // TODO
-			}
-			context.trace.record(LABEL_TARGET, labelExpression, element);
-			return element;
-		}
-		else if(size == 0)
-		{
-			return resolveNamedLabel(labelName, labelExpression, reportUnresolved, context);
-		}
-		context.trace.report(AMBIGUOUS_LABEL.on(labelExpression));
-		return null;
+		return resolveNamedLabel(labelName, labelExpression, reportUnresolved, context);
 	}
 
 	@Nullable
@@ -150,64 +115,5 @@ public class LabelResolver
 		NapileElement result = stack.peek();
 		context.trace.record(BindingContext.LABEL_TARGET, labelExpression, result);
 		return result;
-	}
-
-	public ReceiverDescriptor resolveThisLabel(NapileReferenceExpression thisReference, NapileSimpleNameExpression targetLabel, ExpressionTypingContext context, ReceiverDescriptor thisReceiver, Name labelName)
-	{
-		Collection<DeclarationDescriptor> declarationsByLabel = context.scope.getDeclarationsByLabel(labelName);
-		int size = declarationsByLabel.size();
-		assert targetLabel != null;
-		if(size == 1)
-		{
-			DeclarationDescriptor declarationDescriptor = declarationsByLabel.iterator().next();
-			if(declarationDescriptor instanceof ClassDescriptor)
-			{
-				ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
-				thisReceiver = classDescriptor.getImplicitReceiver();
-			}
-			else if(declarationDescriptor instanceof MethodDescriptor)
-			{
-				MethodDescriptor methodDescriptor = (MethodDescriptor) declarationDescriptor;
-				thisReceiver = methodDescriptor.getReceiverParameter();
-			}
-			else
-			{
-				throw new UnsupportedOperationException("Unsupported descriptor: " + declarationDescriptor); // TODO
-			}
-			PsiElement element = BindingContextUtils.descriptorToDeclaration(context.trace.getBindingContext(), declarationDescriptor);
-			assert element != null : "No PSI element for descriptor: " + declarationDescriptor;
-			context.trace.record(LABEL_TARGET, targetLabel, element);
-			context.trace.record(REFERENCE_TARGET, thisReference, declarationDescriptor);
-		}
-		else if(size == 0)
-		{
-			NapileElement element = resolveNamedLabel(labelName, targetLabel, false, context);
-			if(element instanceof NapileFunctionLiteralExpression)
-			{
-				DeclarationDescriptor declarationDescriptor = context.trace.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
-				if(declarationDescriptor instanceof MethodDescriptor)
-				{
-					thisReceiver = ((MethodDescriptor) declarationDescriptor).getReceiverParameter();
-					if(thisReceiver.exists())
-					{
-						context.trace.record(LABEL_TARGET, targetLabel, element);
-						context.trace.record(REFERENCE_TARGET, thisReference, declarationDescriptor);
-					}
-				}
-				else
-				{
-					context.trace.report(UNRESOLVED_REFERENCE.on(targetLabel));
-				}
-			}
-			else
-			{
-				context.trace.report(UNRESOLVED_REFERENCE.on(targetLabel));
-			}
-		}
-		else
-		{
-			context.trace.report(AMBIGUOUS_LABEL.on(targetLabel));
-		}
-		return thisReceiver;
 	}
 }

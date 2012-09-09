@@ -44,8 +44,6 @@ public interface WritableScope extends JetScope
 
 	WritableScope changeLockLevel(LockLevel lockLevel);
 
-	void addLabeledDeclaration(@NotNull DeclarationDescriptor descriptor);
-
 	void addVariableDescriptor(@NotNull VariableDescriptor variableDescriptor);
 
 	void addPropertyDescriptor(@NotNull VariableDescriptor propertyDescriptor);

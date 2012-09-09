@@ -219,14 +219,6 @@ public abstract class AbstractLazyMemberScope<D extends DeclarationDescriptor, D
 		return thisDescriptor;
 	}
 
-	@NotNull
-	@Override
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(@NotNull Name labelName)
-	{
-		// A member scope has no labels
-		return Collections.emptySet();
-	}
-
 	@Override
 	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
 	{

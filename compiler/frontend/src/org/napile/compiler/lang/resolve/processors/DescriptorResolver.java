@@ -199,7 +199,6 @@ public class DescriptorResolver
 		NapileModifierList modifierList = function.getModifierList();
 		final SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, function.getModifierList(), trace), NapilePsiUtil.safeName(function.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD), modifierList != null && modifierList.hasModifier(JetTokens.NATIVE_KEYWORD));
 		WritableScope innerScope = new WritableScopeImpl(scope, functionDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
-		innerScope.addLabeledDeclaration(functionDescriptor);
 
 		List<TypeParameterDescriptorImpl> typeParameterDescriptors = resolveTypeParameters(functionDescriptor, innerScope, function.getTypeParameters(), trace);
 		innerScope.changeLockLevel(WritableScope.LockLevel.BOTH);

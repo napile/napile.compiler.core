@@ -124,13 +124,6 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public void setName(@NotNull Name name)
-	{
-		super.setName(name);
-		scopeForMemberResolution.addLabeledDeclaration(this);
-	}
-
-	@Override
 	public void createTypeConstructor()
 	{
 		super.createTypeConstructor();

@@ -164,19 +164,6 @@ public class ChainedScope implements JetScope
 		return containingDeclaration;
 	}
 
-	@NotNull
-	@Override
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(Name labelName)
-	{
-		for(JetScope jetScope : scopeChain)
-		{
-			Collection<DeclarationDescriptor> declarationsByLabel = jetScope.getDeclarationsByLabel(labelName);
-			if(!declarationsByLabel.isEmpty())
-				return declarationsByLabel; // TODO : merge?
-		}
-		return Collections.emptyList();
-	}
-
 	@Override
 	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
 	{

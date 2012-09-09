@@ -106,13 +106,6 @@ public abstract class AbstractScopeAdapter implements JetScope
 		return getWorkerScope().getContainingDeclaration();
 	}
 
-	@NotNull
-	@Override
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(Name labelName)
-	{
-		return getWorkerScope().getDeclarationsByLabel(labelName);
-	}
-
 	@Override
 	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
 	{

@@ -165,7 +165,7 @@ public class LazyClassDescriptor extends ClassDescriptorBase
 		if(scopeForMemberDeclarationResolution == null)
 		{
 			WritableScopeImpl scope = new WritableScopeImpl(getScopeForMemberLookup(), this, RedeclarationHandler.DO_NOTHING, "Member Declaration Resolution");
-			scope.addLabeledDeclaration(this);
+
 			scope.importScope(getScopeForClassHeaderResolution());
 
 			scope.changeLockLevel(WritableScope.LockLevel.READING);

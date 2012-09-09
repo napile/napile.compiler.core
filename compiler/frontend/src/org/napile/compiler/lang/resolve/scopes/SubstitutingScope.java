@@ -163,13 +163,6 @@ public class SubstitutingScope implements JetScope
 		return workerScope.getContainingDeclaration();
 	}
 
-	@NotNull
-	@Override
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(Name labelName)
-	{
-		throw new UnsupportedOperationException(); // TODO
-	}
-
 	@Override
 	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
 	{

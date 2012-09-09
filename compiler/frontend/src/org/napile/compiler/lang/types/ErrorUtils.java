@@ -114,13 +114,6 @@ public class ErrorUtils
 			return ERROR_MODULE;
 		}
 
-		@NotNull
-		@Override
-		public Collection<DeclarationDescriptor> getDeclarationsByLabel(Name labelName)
-		{
-			return Collections.emptyList();
-		}
-
 		@Override
 		public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
 		{

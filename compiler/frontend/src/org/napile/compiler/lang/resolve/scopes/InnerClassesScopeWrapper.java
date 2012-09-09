@@ -66,21 +66,6 @@ public class InnerClassesScopeWrapper extends AbstractScopeAdapter
 
 	@NotNull
 	@Override
-	public Collection<DeclarationDescriptor> getDeclarationsByLabel(Name labelName)
-	{
-		Collection<DeclarationDescriptor> declarationsByLabel = actualScope.getDeclarationsByLabel(labelName);
-		return Collections2.filter(declarationsByLabel, new Predicate<DeclarationDescriptor>()
-		{
-			@Override
-			public boolean apply(@Nullable DeclarationDescriptor descriptor)
-			{
-				return isClass(descriptor);
-			}
-		});
-	}
-
-	@NotNull
-	@Override
 	public Collection<DeclarationDescriptor> getAllDescriptors()
 	{
 		Collection<DeclarationDescriptor> allDescriptors = actualScope.getAllDescriptors();

@@ -76,9 +76,6 @@ public interface JetScope
 	@NotNull
 	DeclarationDescriptor getContainingDeclaration();
 
-	@NotNull
-	Collection<DeclarationDescriptor> getDeclarationsByLabel(@NotNull Name labelName);
-
 	/**
 	 * @param fieldName includes the "$"
 	 * @return the property declaring this field, if any

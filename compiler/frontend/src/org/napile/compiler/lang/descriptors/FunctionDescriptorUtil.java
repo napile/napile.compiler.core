@@ -122,18 +122,11 @@ public class FunctionDescriptorUtil
 		WritableScope parameterScope = new WritableScopeImpl(outerScope, descriptor, new TraceBasedRedeclarationHandler(trace), "Function inner scope");
 		ReceiverDescriptor receiver = descriptor.getReceiverParameter();
 		if(receiver.exists())
-		{
 			parameterScope.setImplicitReceiver(receiver);
-		}
 		for(TypeParameterDescriptor typeParameter : descriptor.getTypeParameters())
-		{
 			parameterScope.addTypeParameterDescriptor(typeParameter);
-		}
 		for(ParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
-		{
 			parameterScope.addVariableDescriptor(parameterDescriptor);
-		}
-		parameterScope.addLabeledDeclaration(descriptor);
 		parameterScope.changeLockLevel(WritableScope.LockLevel.READING);
 		return parameterScope;
 	}
