@@ -26,7 +26,7 @@ import com.intellij.util.PlatformIcons;
  */
 public interface JetIcons
 {
-	Icon SMALL_LOGO = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/kotlin.png");
+	Icon SMALL_LOGO = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/kotlin.png");  //TODO [VISTALL] new icon
 
 	Icon CLASS = IconLoader.getIcon("/org/napile/icons/nodes/class.png");
 	Icon RETELL = IconLoader.getIcon("/org/napile/icons/nodes/retell.png");
@@ -36,17 +36,14 @@ public interface JetIcons
 	Icon ABSTRACT_CLASS = IconLoader.getIcon("/org/napile/icons/nodes/abstractClass.png");
 	Icon TYPE_PARAMETER = IconLoader.getIcon("/org/napile/icons/nodes/typeparameter.png");
 
+	Icon METHOD = PlatformIcons.METHOD_ICON;
 	Icon CONSTRUCTOR = PlatformIcons.METHOD_ICON; //TODO [VISTALL] new icon
 
 	Icon C_HERITABLE = IconLoader.getIcon("/org/napile/icons/gutter/c_heritable.png");
 
 	Icon FILE = IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
 
-	Icon FUNCTION = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/function.png");
-	Icon EXTENSION_FUNCTION = PlatformIcons.FUNCTION_ICON;
-
-	Icon VAR = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/variable.png");
-	Icon VAL = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/value.png");
-	Icon FIELD_VAL = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/field_value.png");
-	Icon FIELD_VAR = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/field_variable.png");
+	//FIXME [VISTALL] val need?
+	Icon FIELD_VAL = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/value.png");
+	Icon FIELD_VAR = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/variable.png");
 }

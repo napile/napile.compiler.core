@@ -34,7 +34,6 @@ import com.intellij.ide.IconProvider;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.ui.LayeredIcon;
 import com.intellij.ui.RowIcon;
 import com.intellij.util.BitUtil;
@@ -60,11 +59,7 @@ public class JetIconProvider extends IconProvider
 			icon = file.getDeclarations().size() == 1 ? getIcon(file.getDeclarations().get(0), flags) : JetIcons.FILE;
 		}
 		else if(psiElement instanceof NapileNamedFunction)
-		{
-			icon = PsiTreeUtil.getParentOfType(psiElement, NapileNamedDeclaration.class) instanceof NapileClass ? PlatformIcons.METHOD_ICON : JetIcons.FUNCTION;
-			if(((NapileMethod) psiElement).getReceiverTypeRef() != null)
-				icon = JetIcons.EXTENSION_FUNCTION;
-		}
+			icon = JetIcons.METHOD;
 		else if(psiElement instanceof NapileConstructor)
 			icon = JetIcons.CONSTRUCTOR;
 		else if(psiElement instanceof NapileTypeParameter)
@@ -96,7 +91,7 @@ public class JetIconProvider extends IconProvider
 			}
 		}
 		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry)
-			icon = JetIcons.VAL;
+			icon = JetIcons.FIELD_VAL;
 		else if(psiElement instanceof NapileProperty)
 		{
 			NapileProperty property = (NapileProperty) psiElement;
