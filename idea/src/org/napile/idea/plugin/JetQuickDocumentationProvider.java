@@ -77,7 +77,7 @@ public class JetQuickDocumentationProvider extends AbstractDocumentationProvider
 			}
 
 			if(element instanceof NapileLabelExpression)
-				return "Label "+ ((NapileLabelExpression) element).getLabelName();
+				return "<b>label</b> "+ ((NapileLabelExpression) element).getLabelName();
 
 			return JetQuickDocumentationProvider.class.getName();
 		}
