@@ -531,7 +531,7 @@ public class JetFlowInformationProvider
 				VariableUseState variableUseState = in.get(variableDescriptor);
 				if(instruction instanceof WriteValueInstruction)
 				{
-					if(trace.get(BindingContext.CAPTURED_IN_CLOSURE, variableDescriptor))
+					if(trace.safeGet(BindingContext.CAPTURED_IN_CLOSURE, variableDescriptor))
 						return;
 					NapileElement element = ((WriteValueInstruction) instruction).getElement();
 					if(variableUseState != VariableUseState.LAST_READ)
