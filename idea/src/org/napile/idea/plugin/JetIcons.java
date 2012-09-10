@@ -43,7 +43,5 @@ public interface JetIcons
 
 	Icon FILE = IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
 
-	//FIXME [VISTALL] val need?
-	Icon FIELD_VAL = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/value.png");
-	Icon FIELD_VAR = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/variable.png");
+	Icon VARIABLE = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/variable.png");
 }

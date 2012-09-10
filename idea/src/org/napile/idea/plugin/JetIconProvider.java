@@ -90,13 +90,8 @@ public class JetIconProvider extends IconProvider
 					icon = JetIcons.REPEATABLE_ANNOTATION;
 			}
 		}
-		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry)
-			icon = JetIcons.FIELD_VAL;
-		else if(psiElement instanceof NapileProperty)
-		{
-			NapileProperty property = (NapileProperty) psiElement;
-			icon = property.isVar() ? JetIcons.FIELD_VAR : JetIcons.FIELD_VAL;
-		}
+		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry || psiElement instanceof NapileProperty)
+			icon = JetIcons.VARIABLE;
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags);
 	}
