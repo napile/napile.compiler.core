@@ -317,7 +317,7 @@ public class JetFlowInformationProvider
 		boolean hasBackingField = true;
 		if(variableDescriptor instanceof PropertyDescriptor)
 		{
-			hasBackingField = trace.get(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor);
+			hasBackingField = trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor);
 		}
 		if((isInitializedNotHere || !hasBackingField) &&
 				variableDescriptor.getPropertyKind() != PropertyKind.VAR &&
@@ -385,7 +385,7 @@ public class JetFlowInformationProvider
 		{
 			if(variableDescriptor.getPropertyKind() != PropertyKind.VAR)
 				return false;
-			if(!trace.get(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
+			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
 				return false;
 			PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
 			assert property instanceof NapileProperty;
@@ -439,7 +439,7 @@ public class JetFlowInformationProvider
 		}
 		PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
 		boolean insideSelfAccessors = PsiTreeUtil.isAncestor(property, element, false);
-		if(!trace.get(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor) && !insideSelfAccessors)
+		if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor) && !insideSelfAccessors)
 		{ // not to generate error in accessors of abstract properties, there is one: declared accessor of abstract property
 
 			if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.ABSTRACT)
@@ -639,6 +639,33 @@ public class JetFlowInformationProvider
 							trace.report(Errors.UNUSED_EXPRESSION.on(element));
 						}
 					}
+				}
+			}
+		});
+	}
+
+	public void checkMethodReferenceParameters()
+	{
+		assert pseudocode != null;
+		PseudocodeTraverser.traverse(pseudocode, true, new PseudocodeTraverser.InstructionAnalyzeStrategy()
+		{
+			@Override
+			public void execute(@NotNull Instruction instruction)
+			{
+				if(instruction instanceof WriteValueInstruction && ((WriteValueInstruction) instruction).getElement() instanceof NapileReferenceParameter)
+				{
+					NapileSimpleNameExpression refExp = ((NapileReferenceParameter) ((WriteValueInstruction) instruction).getElement()).getReferenceExpression();
+					if(refExp == null)
+						return;
+
+					DeclarationDescriptor descriptor = trace.get(BindingContext.REFERENCE_TARGET, refExp);
+					// if property is not final, or description is not found dont check
+					if(!(descriptor instanceof PropertyDescriptor) || ((PropertyDescriptor) descriptor).getPropertyKind() == PropertyKind.VAR)
+						return;
+
+					boolean isInitialized = trace.safeGet(BindingContext.IS_INITIALIZED, (PropertyDescriptor) descriptor);
+					if(isInitialized)
+						trace.report(Errors.FINAL_VAR_REASSIGNMENT.on(refExp, descriptor));
 				}
 			}
 		});

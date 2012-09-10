@@ -130,6 +130,8 @@ public class ControlFlowAnalyzer
 
 		flowInformationProvider.markUnusedVariables();
 
+		flowInformationProvider.checkMethodReferenceParameters();
+
 		flowInformationProvider.markUnusedLiteralsInBlock();
 	}
 }
