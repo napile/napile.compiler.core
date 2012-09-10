@@ -719,7 +719,7 @@ public class JetControlFlowProcessor
 				value(selectorExpression, false);
 			}
 			builder.read(expression);
-			if(trace.get(BindingContext.PROCESSED, expression))
+			if(trace.safeGet(BindingContext.PROCESSED, expression))
 			{
 				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
 				if(type != null && JetStandardClasses.isNothing(type))
@@ -769,7 +769,7 @@ public class JetControlFlowProcessor
 
 			value(expression.getCalleeExpression(), false);
 			builder.read(expression);
-			if(trace.get(BindingContext.PROCESSED, expression))
+			if(trace.safeGet(BindingContext.PROCESSED, expression))
 			{
 				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
 				if(type != null && JetStandardClasses.isNothing(type))

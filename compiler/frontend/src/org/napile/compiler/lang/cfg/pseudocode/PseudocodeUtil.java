@@ -36,56 +36,6 @@ import org.napile.compiler.util.slicedmap.WritableSlice;
  */
 public class PseudocodeUtil
 {
-
-	public static Pseudocode generatePseudocode(@NotNull NapileDeclaration declaration, @NotNull final BindingContext bindingContext)
-	{
-		BindingTrace mockTrace = new BindingTrace()
-		{
-			@NotNull
-			@Override
-			public BindingContext getBindingContext()
-			{
-				return bindingContext;
-			}
-
-			@Override
-			public <K, V> void record(WritableSlice<K, V> slice, K key, V value)
-			{
-			}
-
-			@Override
-			public <K> void record(WritableSlice<K, Boolean> slice, K key)
-			{
-			}
-
-			@Override
-			public <K, V> V get(ReadOnlySlice<K, V> slice, K key)
-			{
-				return bindingContext.get(slice, key);
-			}
-
-			@Override
-			@NotNull
-			public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
-			{
-				return bindingContext.safeGet(slice, key);
-			}
-
-			@NotNull
-			@Override
-			public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
-			{
-				return bindingContext.getKeys(slice);
-			}
-
-			@Override
-			public void report(@NotNull Diagnostic diagnostic)
-			{
-			}
-		};
-		return new JetControlFlowProcessor(mockTrace).generatePseudocode(declaration);
-	}
-
 	@Nullable
 	public static VariableDescriptor extractVariableDescriptorIfAny(@NotNull Instruction instruction, boolean onlyReference, @NotNull BindingContext bindingContext)
 	{

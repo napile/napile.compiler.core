@@ -121,9 +121,6 @@ public interface Errors
 	DiagnosticFactory3<NapileModifierListOwner, CallableMemberDescriptor, CallableDescriptor, DeclarationDescriptor> CANNOT_OVERRIDE_INVISIBLE_MEMBER = DiagnosticFactory3.create(Severity.ERROR, PositioningStrategies.OVERRIDE_MODIFIER);
 	SimpleDiagnosticFactory<NapileDeclaration> CANNOT_INFER_VISIBILITY = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.DECLARATION);
 
-	DiagnosticFactory1<NapileClass, ClassDescriptor> ENUM_ENTRY_SHOULD_BE_INITIALIZED = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
-	DiagnosticFactory1<NapileTypeReference, ClassDescriptor> ENUM_ENTRY_ILLEGAL_TYPE = DiagnosticFactory1.create(Severity.ERROR);
-
 	DiagnosticFactory1<NapileSimpleNameExpression, VariableDescriptor> UNINITIALIZED_VARIABLE = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, ParameterDescriptor> UNINITIALIZED_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
 	UnusedElementDiagnosticFactory<NapileProperty, VariableDescriptor> UNUSED_VARIABLE = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
@@ -182,8 +179,6 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> CAST_NEVER_SUCCEEDS = SimpleDiagnosticFactory.create(Severity.WARNING);
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> WRONG_SETTER_PARAMETER_TYPE = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> WRONG_GETTER_RETURN_TYPE = DiagnosticFactory2.create(Severity.ERROR);
-	@Deprecated
-	DiagnosticFactory1<NapileSimpleNameExpression, ClassifierDescriptor> NO_CLASS_OBJECT = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<PsiElement> NO_GENERICS_IN_SUPERTYPE_SPECIFIER = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileExpression> HAS_NEXT_PROPERTY_AND_FUNCTION_AMBIGUITY = SimpleDiagnosticFactory.create(Severity.ERROR);

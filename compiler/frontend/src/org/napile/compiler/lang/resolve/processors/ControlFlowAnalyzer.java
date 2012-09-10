@@ -117,20 +117,20 @@ public class ControlFlowAnalyzer
 
 	private void checkFunction(NapileDeclarationWithBody function, final @NotNull JetType expectedReturnType)
 	{
+		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider(function, trace);
+
+		flowInformationProvider.checkMethodReferenceParameters();
+
 		NapileExpression bodyExpression = function.getBodyExpression();
 		if(bodyExpression == null)
 			return;
-		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider((NapileDeclaration) function, trace);
 
 		flowInformationProvider.checkDefiniteReturn(expectedReturnType);
 
 		// Property accessor is checked through initialization of a class check (at 'checkClassOrObject')
-		boolean isPropertyAccessor = function instanceof NapilePropertyAccessor;
-		flowInformationProvider.markUninitializedVariables(topDownAnalysisParameters.isDeclaredLocally() || isPropertyAccessor);
+		flowInformationProvider.markUninitializedVariables(topDownAnalysisParameters.isDeclaredLocally() || function instanceof NapilePropertyAccessor);
 
 		flowInformationProvider.markUnusedVariables();
-
-		flowInformationProvider.checkMethodReferenceParameters();
 
 		flowInformationProvider.markUnusedLiteralsInBlock();
 	}

@@ -142,7 +142,7 @@ public interface BindingContext
 				return false;
 			}
 			backingFieldRequired = valueNotFound ? false : backingFieldRequired;
-			assert backingFieldRequired != null;
+
 			// TODO: user BindingContextAccessors
 			PsiElement declarationPsiElement = map.get(BindingContextUtils.DESCRIPTOR_TO_DECLARATION, propertyDescriptor);
 			if(declarationPsiElement instanceof NapilePropertyParameter)

@@ -31,6 +31,7 @@ import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
@@ -154,6 +155,16 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(context.scope, functionDescriptor, context.trace);
 		context.expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, functionDescriptor, context.dataFlowInfo, null, context.trace);
 		return DataFlowUtils.checkStatementType(function, context, context.dataFlowInfo);
+	}
+
+	@Override
+	public JetTypeInfo visitConstructor(NapileConstructor constructor, ExpressionTypingContext context)
+	{
+		ConstructorDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveConstructorDescriptor(scope, (ClassDescriptor) scope.getContainingDeclaration(), constructor, context.trace);
+		scope.addConstructorDescriptor(functionDescriptor);
+		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(context.scope, functionDescriptor, context.trace);
+		context.expressionTypingServices.checkFunctionReturnType(functionInnerScope, constructor, functionDescriptor, context.dataFlowInfo, null, context.trace);
+		return DataFlowUtils.checkStatementType(constructor, context, context.dataFlowInfo);
 	}
 
 	@Override

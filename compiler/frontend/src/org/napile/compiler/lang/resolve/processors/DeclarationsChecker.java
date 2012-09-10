@@ -76,7 +76,7 @@ public class DeclarationsChecker
 			if(!bodiesResolveContext.completeAnalysisNeeded(aClass))
 				continue;
 
-			checkClass(aClass, classDescriptor);
+			// some thing check?
 		}
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : bodiesResolveContext.getAnonymous().entrySet())
@@ -122,11 +122,6 @@ public class DeclarationsChecker
 
 			checkProperty(property, propertyDescriptor);
 		}
-	}
-
-	private void checkClass(NapileClass aClass, MutableClassDescriptor classDescriptor)
-	{
-		checkEnum(aClass, classDescriptor);
 	}
 
 	private void checkObject(NapileAnonymClass objectDeclaration, MutableClassDescriptor classDescriptor)
@@ -235,21 +230,15 @@ public class DeclarationsChecker
 			boolean error = false;
 			if(backingFieldRequired && !trace.getBindingContext().safeGet(BindingContext.IS_INITIALIZED, propertyDescriptor))
 			{
-				if( hasAccessorImplementation)
-				{
-					error = true;
+				error = true;
+				if(hasAccessorImplementation)
 					trace.report(Errors.MUST_BE_INITIALIZED.on(property));
-				}
 				else
-				{
-					error = true;
 					trace.report(Errors.MUST_BE_INITIALIZED_OR_BE_ABSTRACT.on(property));
-				}
 			}
+
 			if(!error && property.getPropertyTypeRef() == null)
-			{
 				trace.report(Errors.PROPERTY_WITH_NO_TYPE_NO_INITIALIZER.on(property));
-			}
 		}
 		else if(!backingFieldRequired)
 		{
@@ -318,42 +307,5 @@ public class DeclarationsChecker
 		}
 
 		return types;
-	}
-
-	private void checkEnum(NapileClass aClass, ClassDescriptor classDescriptor)
-	{
-		if(classDescriptor.getKind() != ClassKind.ENUM_ENTRY)
-			return;
-
-		//TODO [VISTALL]
-		/*DeclarationDescriptor declaration = classDescriptor.getContainingDeclaration().getContainingDeclaration();
-		assert declaration instanceof ClassDescriptor;
-		ClassDescriptor enumClass = (ClassDescriptor) declaration;
-		assert enumClass.getKind() == ClassKind.ENUM_CLASS;
-
-		List<NapileDelegationSpecifier> delegationSpecifiers = aClass.getDelegationSpecifiers();
-		ConstructorDescriptor constructor = enumClass.getUnsubstitutedPrimaryConstructor();
-		assert constructor != null;
-		if(!constructor.getValueParameters().isEmpty() && delegationSpecifiers.isEmpty())
-		{
-			trace.report(Errors.ENUM_ENTRY_SHOULD_BE_INITIALIZED.on(aClass, enumClass));
-		}
-
-		for(NapileDelegationSpecifier delegationSpecifier : delegationSpecifiers)
-		{
-			NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
-			if(typeReference != null)
-			{
-				JetType type = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
-				if(type != null)
-				{
-					JetType enumType = enumClass.getDefaultType();
-					if(!type.getConstructor().equals(enumType.getConstructor()))
-					{
-						trace.report(Errors.ENUM_ENTRY_ILLEGAL_TYPE.on(typeReference, enumClass));
-					}
-				}
-			}
-		}*/
 	}
 }

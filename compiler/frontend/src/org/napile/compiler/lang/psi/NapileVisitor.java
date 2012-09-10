@@ -41,7 +41,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 
 	public R visitConstructor(NapileConstructor constructor, D data)
 	{
-		return visitDeclaration(constructor, data);
+		return visitNamedDeclaration(constructor, data);
 	}
 
 	public R visitNamedFunction(NapileNamedFunction function, D data)
