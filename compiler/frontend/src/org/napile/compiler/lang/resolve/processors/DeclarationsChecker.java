@@ -259,7 +259,6 @@ public class DeclarationsChecker
 		boolean inAbstractClass = classDescriptor.getModality() == Modality.ABSTRACT;
 		if(hasAbstractModifier && !inAbstractClass && !inEnum)
 		{
-			NapileClass classElement = (NapileClass) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
 			trace.report(Errors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(function, functionDescriptor.getName().getName(), classDescriptor));
 		}
 		if(function.getBodyExpression() != null && hasAbstractModifier)
