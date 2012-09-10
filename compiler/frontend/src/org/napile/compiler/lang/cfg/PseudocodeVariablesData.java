@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.cfg.PseudocodeTraverser.Edges;
 import org.napile.compiler.lang.cfg.PseudocodeTraverser.InstructionAnalyzeStrategy;
 import org.napile.compiler.lang.cfg.PseudocodeTraverser.InstructionDataMergeStrategy;
@@ -316,89 +315,4 @@ public class PseudocodeVariablesData
 		return variableStatusMap;
 	}
 
-	public static class VariableInitState
-	{
-		public final boolean isInitialized;
-		public final boolean isDeclared;
-
-		private VariableInitState(boolean isInitialized, boolean isDeclared)
-		{
-			this.isInitialized = isInitialized;
-			this.isDeclared = isDeclared;
-		}
-
-		private static final VariableInitState VS_TT = new VariableInitState(true, true);
-		private static final VariableInitState VS_TF = new VariableInitState(true, false);
-		private static final VariableInitState VS_FT = new VariableInitState(false, true);
-		private static final VariableInitState VS_FF = new VariableInitState(false, false);
-
-
-		private static VariableInitState create(boolean isInitialized, boolean isDeclared)
-		{
-			if(isInitialized)
-			{
-				if(isDeclared)
-					return VS_TT;
-				return VS_TF;
-			}
-			if(isDeclared)
-				return VS_FT;
-			return VS_FF;
-		}
-
-		private static VariableInitState create(boolean isInitialized)
-		{
-			return create(isInitialized, false);
-		}
-
-		private static VariableInitState create(boolean isDeclaredHere, @Nullable VariableInitState mergedEdgesData)
-		{
-			return create(true, isDeclaredHere || (mergedEdgesData != null && mergedEdgesData.isDeclared));
-		}
-
-		private static VariableInitState create(@NotNull Set<VariableInitState> edgesData)
-		{
-			boolean isInitialized = true;
-			boolean isDeclared = true;
-			for(VariableInitState edgeData : edgesData)
-			{
-				if(!edgeData.isInitialized)
-				{
-					isInitialized = false;
-				}
-				if(!edgeData.isDeclared)
-				{
-					isDeclared = false;
-				}
-			}
-			return create(isInitialized, isDeclared);
-		}
-	}
-
-	public static enum VariableUseState
-	{
-		LAST_READ(3),
-		LAST_WRITTEN(2),
-		ONLY_WRITTEN_NEVER_READ(1),
-		UNUSED(0);
-
-		private final int importance;
-
-		VariableUseState(int importance)
-		{
-			this.importance = importance;
-		}
-
-		private VariableUseState merge(@Nullable VariableUseState variableUseState)
-		{
-			if(variableUseState == null || importance > variableUseState.importance)
-				return this;
-			return variableUseState;
-		}
-
-		public static boolean isUsed(@Nullable VariableUseState variableUseState)
-		{
-			return variableUseState != null && variableUseState != UNUSED;
-		}
-	}
 }

@@ -23,8 +23,6 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.cfg.PseudocodeVariablesData.VariableInitState;
-import org.napile.compiler.lang.cfg.PseudocodeVariablesData.VariableUseState;
 import org.napile.compiler.lang.cfg.pseudocode.*;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -230,10 +228,10 @@ public class JetFlowInformationProvider
 
 		Map<Instruction, PseudocodeTraverser.Edges<Map<VariableDescriptor, VariableInitState>>> initializers = pseudocodeVariablesData.getVariableInitializers();
 		final Set<VariableDescriptor> declaredVariables = pseudocodeVariablesData.getDeclaredVariables(pseudocode);
-		PseudocodeTraverser.traverse(pseudocode, true, true, initializers, new PseudocodeTraverser.InstructionDataAnalyzeStrategy<Map<VariableDescriptor, PseudocodeVariablesData.VariableInitState>>()
+		PseudocodeTraverser.traverse(pseudocode, true, true, initializers, new PseudocodeTraverser.InstructionDataAnalyzeStrategy<Map<VariableDescriptor, VariableInitState>>()
 		{
 			@Override
-			public void execute(@NotNull Instruction instruction, @Nullable Map<VariableDescriptor, PseudocodeVariablesData.VariableInitState> in, @Nullable Map<VariableDescriptor, PseudocodeVariablesData.VariableInitState> out)
+			public void execute(@NotNull Instruction instruction, @Nullable Map<VariableDescriptor, VariableInitState> in, @Nullable Map<VariableDescriptor, VariableInitState> out)
 			{
 				assert in != null && out != null;
 				VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, true, trace.getBindingContext());
@@ -243,7 +241,7 @@ public class JetFlowInformationProvider
 				{
 					return;
 				}
-				PseudocodeVariablesData.VariableInitState outInitState = out.get(variableDescriptor);
+				VariableInitState outInitState = out.get(variableDescriptor);
 				if(instruction instanceof ReadValueInstruction)
 				{
 					NapileElement element = ((ReadValueInstruction) instruction).getElement();
@@ -258,7 +256,7 @@ public class JetFlowInformationProvider
 				boolean error = checkBackingField(variableDescriptor, element);
 				if(!(element instanceof NapileExpression))
 					return;
-				PseudocodeVariablesData.VariableInitState inInitState = in.get(variableDescriptor);
+				VariableInitState inInitState = in.get(variableDescriptor);
 				if(!error && !processLocalDeclaration)
 				{ // error has been generated before, while processing outer function of this local declaration
 					error = checkValReassignment(variableDescriptor, (NapileExpression) element, inInitState, varWithValReassignErrorGenerated);
@@ -282,7 +280,7 @@ public class JetFlowInformationProvider
 		}
 	}
 
-	private void checkIsInitialized(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileElement element, @NotNull PseudocodeVariablesData.VariableInitState variableInitState, @NotNull Collection<VariableDescriptor> varWithUninitializedErrorGenerated)
+	private void checkIsInitialized(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileElement element, @NotNull VariableInitState variableInitState, @NotNull Collection<VariableDescriptor> varWithUninitializedErrorGenerated)
 	{
 		if(!(element instanceof NapileSimpleNameExpression))
 			return;
@@ -290,7 +288,7 @@ public class JetFlowInformationProvider
 		boolean isInitialized = variableInitState.isInitialized;
 		if(variableDescriptor instanceof PropertyDescriptor)
 		{
-			if(!trace.get(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
+			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
 			{
 				isInitialized = true;
 			}
@@ -309,7 +307,7 @@ public class JetFlowInformationProvider
 		}
 	}
 
-	private boolean checkValReassignment(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull PseudocodeVariablesData.VariableInitState enterInitState, @NotNull Collection<VariableDescriptor> varWithValReassignErrorGenerated)
+	private boolean checkValReassignment(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull VariableInitState enterInitState, @NotNull Collection<VariableDescriptor> varWithValReassignErrorGenerated)
 	{
 		boolean isInitializedNotHere = enterInitState.isInitialized;
 		if(expression.getParent() instanceof NapileProperty && ((NapileProperty) expression).getInitializer() != null)
@@ -371,7 +369,7 @@ public class JetFlowInformationProvider
 		return false;
 	}
 
-	private boolean checkAssignmentBeforeDeclaration(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull PseudocodeVariablesData.VariableInitState enterInitState, @NotNull PseudocodeVariablesData.VariableInitState exitInitState)
+	private boolean checkAssignmentBeforeDeclaration(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull VariableInitState enterInitState, @NotNull VariableInitState exitInitState)
 	{
 		if(!enterInitState.isDeclared && !exitInitState.isDeclared && !enterInitState.isInitialized && exitInitState.isInitialized)
 		{
@@ -381,7 +379,7 @@ public class JetFlowInformationProvider
 		return false;
 	}
 
-	private boolean checkInitializationUsingBackingField(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull PseudocodeVariablesData.VariableInitState enterInitState, @NotNull PseudocodeVariablesData.VariableInitState exitInitState)
+	private boolean checkInitializationUsingBackingField(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull VariableInitState enterInitState, @NotNull VariableInitState exitInitState)
 	{
 		if(variableDescriptor instanceof PropertyDescriptor && !enterInitState.isInitialized && exitInitState.isInitialized)
 		{
@@ -493,7 +491,7 @@ public class JetFlowInformationProvider
 		return false;
 	}
 
-	private void recordInitializedVariables(@NotNull Pseudocode pseudocode, @NotNull Map<Instruction, PseudocodeTraverser.Edges<Map<VariableDescriptor, PseudocodeVariablesData.VariableInitState>>> initializersMap)
+	private void recordInitializedVariables(@NotNull Pseudocode pseudocode, @NotNull Map<Instruction, PseudocodeTraverser.Edges<Map<VariableDescriptor, VariableInitState>>> initializersMap)
 	{
 		PseudocodeTraverser.Edges<Map<VariableDescriptor, VariableInitState>> initializers = initializersMap.get(pseudocode.getExitInstruction());
 		Set<VariableDescriptor> usedVariables = pseudocodeVariablesData.getUsedVariables(pseudocode);
@@ -502,7 +500,7 @@ public class JetFlowInformationProvider
 		{
 			if(variable instanceof PropertyDescriptor && declaredVariables.contains(variable))
 			{
-				PseudocodeVariablesData.VariableInitState variableInitState = initializers.in.get(variable);
+				VariableInitState variableInitState = initializers.in.get(variable);
 				if(variableInitState == null)
 					return;
 				trace.record(BindingContext.IS_INITIALIZED, (PropertyDescriptor) variable, variableInitState.isInitialized);
@@ -516,10 +514,10 @@ public class JetFlowInformationProvider
 	public void markUnusedVariables()
 	{
 		Map<Instruction, PseudocodeTraverser.Edges<Map<VariableDescriptor, VariableUseState>>> variableStatusData = pseudocodeVariablesData.getVariableUseStatusData();
-		PseudocodeTraverser.InstructionDataAnalyzeStrategy<Map<VariableDescriptor, VariableUseState>> variableStatusAnalyzeStrategy = new PseudocodeTraverser.InstructionDataAnalyzeStrategy<Map<VariableDescriptor, PseudocodeVariablesData.VariableUseState>>()
+		PseudocodeTraverser.InstructionDataAnalyzeStrategy<Map<VariableDescriptor, VariableUseState>> variableStatusAnalyzeStrategy = new PseudocodeTraverser.InstructionDataAnalyzeStrategy<Map<VariableDescriptor, VariableUseState>>()
 		{
 			@Override
-			public void execute(@NotNull Instruction instruction, @Nullable Map<VariableDescriptor, PseudocodeVariablesData.VariableUseState> in, @Nullable Map<VariableDescriptor, PseudocodeVariablesData.VariableUseState> out)
+			public void execute(@NotNull Instruction instruction, @Nullable Map<VariableDescriptor, VariableUseState> in, @Nullable Map<VariableDescriptor, VariableUseState> out)
 			{
 
 				assert in != null && out != null;
@@ -530,13 +528,13 @@ public class JetFlowInformationProvider
 				{
 					return;
 				}
-				PseudocodeVariablesData.VariableUseState variableUseState = in.get(variableDescriptor);
+				VariableUseState variableUseState = in.get(variableDescriptor);
 				if(instruction instanceof WriteValueInstruction)
 				{
 					if(trace.get(BindingContext.CAPTURED_IN_CLOSURE, variableDescriptor))
 						return;
 					NapileElement element = ((WriteValueInstruction) instruction).getElement();
-					if(variableUseState != PseudocodeVariablesData.VariableUseState.LAST_READ)
+					if(variableUseState != VariableUseState.LAST_READ)
 					{
 						if(element instanceof NapileBinaryExpression && ((NapileBinaryExpression) element).getOperationToken() == JetTokens.EQ)
 						{
@@ -564,7 +562,7 @@ public class JetFlowInformationProvider
 						PsiElement nameIdentifier = ((NapileNamedDeclaration) element).getNameIdentifier();
 						if(nameIdentifier == null)
 							return;
-						if(!PseudocodeVariablesData.VariableUseState.isUsed(variableUseState))
+						if(!VariableUseState.isUsed(variableUseState))
 						{
 							if(element instanceof NapileProperty)
 							{
@@ -590,11 +588,11 @@ public class JetFlowInformationProvider
 								}
 							}
 						}
-						else if(variableUseState == PseudocodeVariablesData.VariableUseState.ONLY_WRITTEN_NEVER_READ && element instanceof NapileProperty)
+						else if(variableUseState == VariableUseState.ONLY_WRITTEN_NEVER_READ && element instanceof NapileProperty)
 						{
 							trace.report(Errors.ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE.on((NapileNamedDeclaration) element, variableDescriptor));
 						}
-						else if(variableUseState == PseudocodeVariablesData.VariableUseState.LAST_WRITTEN && element instanceof NapileProperty)
+						else if(variableUseState == VariableUseState.LAST_WRITTEN && element instanceof NapileProperty)
 						{
 							NapileExpression initializer = ((NapileProperty) element).getInitializer();
 							if(initializer != null)

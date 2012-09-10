@@ -1,6 +1,0 @@
-package testing;
-
-class NewName
-{
-}
-

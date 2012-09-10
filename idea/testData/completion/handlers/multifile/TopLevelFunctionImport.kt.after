@@ -1,8 +1,0 @@
-package some
-
-import java.util.SortedSet
-import jettesting.data.somefun
-
-fun other() {
-    somefun(<caret>)
-}

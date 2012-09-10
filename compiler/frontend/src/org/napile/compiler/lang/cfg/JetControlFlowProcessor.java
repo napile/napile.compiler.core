@@ -186,10 +186,20 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
+		public void visitReferenceParameter(NapileReferenceParameter parameter)
+		{
+			NapileSimpleNameExpression reference = parameter.getReferenceExpression();
+			if(reference == null)
+				return;
+
+			builder.write(parameter, parameter);
+		}
+
+		@Override
 		public void visitSimpleNameExpression(NapileSimpleNameExpression expression)
 		{
 			builder.read(expression);
-			if(trace.get(BindingContext.PROCESSED, expression))
+			if(trace.safeGet(BindingContext.PROCESSED, expression))
 			{
 				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
 				if(type != null && JetStandardClasses.isNothing(type))

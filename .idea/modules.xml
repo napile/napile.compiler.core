@@ -5,13 +5,12 @@
       <module fileurl="file://$PROJECT_DIR$/compiler/backend/backend.iml" filepath="$PROJECT_DIR$/compiler/backend/backend.iml" group="compiler" />
       <module fileurl="file://$PROJECT_DIR$/compiler/cli/cli.iml" filepath="$PROJECT_DIR$/compiler/cli/cli.iml" group="compiler" />
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend/frontend.iml" filepath="$PROJECT_DIR$/compiler/frontend/frontend.iml" group="compiler" />
-      <module fileurl="file://$PROJECT_DIR$/compiler/frontend.bytecode/frontend.bytecode.iml" filepath="$PROJECT_DIR$/compiler/frontend.bytecode/frontend.bytecode.iml" />
-      <module fileurl="file://$PROJECT_DIR$/idea/idea.iml" filepath="$PROJECT_DIR$/idea/idea.iml" />
-      <module fileurl="file://$PROJECT_DIR$/idea_runner/idea_runner.iml" filepath="$PROJECT_DIR$/idea_runner/idea_runner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/frontend.bytecode/frontend.bytecode.iml" filepath="$PROJECT_DIR$/compiler/frontend.bytecode/frontend.bytecode.iml" group="compiler" />
+      <module fileurl="file://$PROJECT_DIR$/idea/idea.napile-lang.iml" filepath="$PROJECT_DIR$/idea/idea.napile-lang.iml" />
       <module fileurl="file://$PROJECT_DIR$/injector-generator/injector-generator.iml" filepath="$PROJECT_DIR$/injector-generator/injector-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/j2k/java2napile.iml" filepath="$PROJECT_DIR$/j2k/java2napile.iml" />
-      <module fileurl="file://$PROJECT_DIR$/j2k/tests/java2napile-tests.iml" filepath="$PROJECT_DIR$/j2k/tests/java2napile-tests.iml" />
       <module fileurl="file://$PROJECT_DIR$/napile.compiler.iml" filepath="$PROJECT_DIR$/napile.compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/napilec/napilec.iml" filepath="$PROJECT_DIR$/compiler/napilec/napilec.iml" group="compiler" />
       <module fileurl="file://$PROJECT_DIR$/compiler/util/util.iml" filepath="$PROJECT_DIR$/compiler/util/util.iml" group="compiler" />
     </modules>
   </component>

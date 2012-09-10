@@ -60,6 +60,13 @@ public class DelegatingBindingTrace implements BindingTrace
 
 		@NotNull
 		@Override
+		public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
+		{
+			return DelegatingBindingTrace.this.safeGet(slice, key);
+		}
+
+		@NotNull
+		@Override
 		public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
 		{
 			return DelegatingBindingTrace.this.getKeys(slice);

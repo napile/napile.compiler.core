@@ -51,6 +51,7 @@ public class ObservableBindingTrace implements BindingTrace
 		originalTrace.report(diagnostic);
 	}
 
+	@NotNull
 	@Override
 	public BindingContext getBindingContext()
 	{

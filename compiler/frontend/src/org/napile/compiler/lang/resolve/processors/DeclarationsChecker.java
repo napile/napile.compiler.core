@@ -212,7 +212,7 @@ public class DeclarationsChecker
 		}
 	}
 
-	private void checkPropertyInitializer(NapileProperty property, PropertyDescriptor propertyDescriptor, ClassDescriptor classDescriptor)
+	private void checkPropertyInitializer(NapileProperty property, PropertyDescriptor propertyDescriptor, @NotNull ClassDescriptor classDescriptor)
 	{
 		NapilePropertyAccessor getter = property.getGetter();
 		NapilePropertyAccessor setter = property.getSetter();
@@ -228,14 +228,14 @@ public class DeclarationsChecker
 		}
 
 		NapileExpression initializer = property.getInitializer();
-		boolean backingFieldRequired = trace.getBindingContext().get(BindingContext.BACKING_FIELD_REQUIRED, propertyDescriptor);
+		boolean backingFieldRequired = trace.getBindingContext().safeGet(BindingContext.BACKING_FIELD_REQUIRED, propertyDescriptor);
 
 		if(initializer == null)
 		{
 			boolean error = false;
-			if(backingFieldRequired && !trace.getBindingContext().get(BindingContext.IS_INITIALIZED, propertyDescriptor))
+			if(backingFieldRequired && !trace.getBindingContext().safeGet(BindingContext.IS_INITIALIZED, propertyDescriptor))
 			{
-				if(classDescriptor == null || hasAccessorImplementation)
+				if( hasAccessorImplementation)
 				{
 					error = true;
 					trace.report(Errors.MUST_BE_INITIALIZED.on(property));
@@ -250,9 +250,7 @@ public class DeclarationsChecker
 			{
 				trace.report(Errors.PROPERTY_WITH_NO_TYPE_NO_INITIALIZER.on(property));
 			}
-			return;
 		}
-
 		else if(!backingFieldRequired)
 		{
 			trace.report(Errors.PROPERTY_INITIALIZER_NO_BACKING_FIELD.on(initializer));

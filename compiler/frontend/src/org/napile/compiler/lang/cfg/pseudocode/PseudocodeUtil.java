@@ -41,6 +41,7 @@ public class PseudocodeUtil
 	{
 		BindingTrace mockTrace = new BindingTrace()
 		{
+			@NotNull
 			@Override
 			public BindingContext getBindingContext()
 			{
@@ -67,7 +68,7 @@ public class PseudocodeUtil
 			@NotNull
 			public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
 			{
-				return get(slice, key);
+				return bindingContext.safeGet(slice, key);
 			}
 
 			@NotNull

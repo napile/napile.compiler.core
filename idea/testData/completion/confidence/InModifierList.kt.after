@@ -1,5 +1,0 @@
-package test
-
-import java.util.AbstractSet as Hello
-
-public // Comment to prevent for removing trailing spaces

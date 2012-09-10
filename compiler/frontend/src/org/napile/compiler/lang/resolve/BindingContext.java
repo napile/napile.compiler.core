@@ -65,6 +65,13 @@ public interface BindingContext
 
 		@NotNull
 		@Override
+		public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
+		{
+			throw new IllegalArgumentException();
+		}
+
+		@NotNull
+		@Override
 		public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
 		{
 			return Collections.emptyList();
@@ -232,6 +239,9 @@ public interface BindingContext
 
 	@Nullable
 	<K, V> V get(ReadOnlySlice<K, V> slice, K key);
+
+	@NotNull
+	<K, V> V safeGet(ReadOnlySlice<K, V> slice, K key);
 
 	// slice.isCollective() must be true
 	@NotNull

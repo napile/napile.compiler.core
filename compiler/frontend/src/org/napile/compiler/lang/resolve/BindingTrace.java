@@ -29,7 +29,7 @@ import org.napile.compiler.util.slicedmap.WritableSlice;
  */
 public interface BindingTrace extends DiagnosticHolder
 {
-
+	@NotNull
 	BindingContext getBindingContext();
 
 	<K, V> void record(WritableSlice<K, V> slice, K key, V value);

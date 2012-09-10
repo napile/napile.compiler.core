@@ -53,6 +53,13 @@ public class BindingTraceContext implements BindingTrace
 
 		@NotNull
 		@Override
+		public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
+		{
+			return BindingTraceContext.this.safeGet(slice, key);
+		}
+
+		@NotNull
+		@Override
 		public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
 		{
 			return BindingTraceContext.this.getKeys(slice);
@@ -70,6 +77,7 @@ public class BindingTraceContext implements BindingTrace
 		diagnostics.clear();
 	}
 
+	@NotNull
 	@Override
 	public BindingContext getBindingContext()
 	{
