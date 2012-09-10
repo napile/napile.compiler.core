@@ -172,7 +172,7 @@ public class DefaultErrorMessages
 		MAP.put(UNUSED_EXPRESSION, "The expression is unused");
 		MAP.put(UNUSED_FUNCTION_LITERAL, "The function literal is unused. If you mean block, you can use 'run { ... }'");
 
-		MAP.put(VAL_REASSIGNMENT, "Val cannot be reassigned", NAME);
+		MAP.put(FINAL_VAR_REASSIGNMENT, "''final var'' cannot be reassigned", NAME);
 		MAP.put(INITIALIZATION_BEFORE_DECLARATION, "Variable cannot be initialized before declaration", NAME);
 		MAP.put(VARIABLE_EXPECTED, "Variable expected");
 

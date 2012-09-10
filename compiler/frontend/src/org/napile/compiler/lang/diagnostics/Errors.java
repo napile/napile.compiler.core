@@ -135,7 +135,7 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileElement> UNUSED_EXPRESSION = SimpleDiagnosticFactory.create(Severity.WARNING);
 	SimpleDiagnosticFactory<NapileFunctionLiteralExpression> UNUSED_FUNCTION_LITERAL = SimpleDiagnosticFactory.create(Severity.WARNING);
 
-	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> VAL_REASSIGNMENT = DiagnosticFactory1.create(Severity.ERROR);
+	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> FINAL_VAR_REASSIGNMENT = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> INITIALIZATION_BEFORE_DECLARATION = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> VARIABLE_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
 

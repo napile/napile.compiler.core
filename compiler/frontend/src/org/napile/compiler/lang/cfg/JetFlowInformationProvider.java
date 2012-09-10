@@ -364,7 +364,7 @@ public class JetFlowInformationProvider
 			if(!hasReassignMethodReturningUnit)
 			{
 				varWithValReassignErrorGenerated.add(variableDescriptor);
-				trace.report(Errors.VAL_REASSIGNMENT.on(expression, variableDescriptor));
+				trace.report(Errors.FINAL_VAR_REASSIGNMENT.on(expression, variableDescriptor));
 				return true;
 			}
 		}
