@@ -114,7 +114,7 @@ public class DescriptorResolver
 	}
 
 
-	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileLikeClass jetClass, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
+	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileClassLike jetClass, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
 	{
 		for(JetType supertype : resolveSupertypes(descriptor.getScopeForSupertypeResolution(), jetClass, trace))
 		{
@@ -122,7 +122,7 @@ public class DescriptorResolver
 		}
 	}
 
-	public List<JetType> resolveSupertypes(@NotNull JetScope scope, @NotNull NapileLikeClass jetClass, BindingTrace trace)
+	public List<JetType> resolveSupertypes(@NotNull JetScope scope, @NotNull NapileClassLike jetClass, BindingTrace trace)
 	{
 		if(NapileLangPackage.ANY.equals(jetClass.getFqName()))  // master object dont have super classes
 			return Collections.emptyList();
@@ -144,12 +144,12 @@ public class DescriptorResolver
 		return result;
 	}
 
-	private JetType getDefaultSupertype(JetScope jetScope, NapileLikeClass jetClass, BindingTrace trace)
+	private JetType getDefaultSupertype(JetScope jetScope, NapileClassLike jetClass, BindingTrace trace)
 	{
 		// TODO : beautify
 		if(jetClass instanceof NapileEnumEntry)
 		{
-			NapileLikeClass parent = PsiTreeUtil.getParentOfType(jetClass, NapileLikeClass.class);
+			NapileClassLike parent = PsiTreeUtil.getParentOfType(jetClass, NapileClassLike.class);
 			ClassDescriptor parentDescriptor = trace.getBindingContext().get(BindingContext.CLASS, parent);
 			if(parentDescriptor.getTypeConstructor().getParameters().isEmpty())
 			{
@@ -385,63 +385,11 @@ public class DescriptorResolver
 
 			parameterByName.put(typeParameterDescriptor.getName(), typeParameterDescriptor);
 
-			NapileTypeReference extendsBound = jetTypeParameter.getExtendsBound();
-			if(extendsBound != null)
+			for(NapileTypeReference extendsBound : jetTypeParameter.getExtendsBound())
 			{
 				JetType type = typeResolver.resolveType(scope, extendsBound, trace, false);
 				typeParameterDescriptor.addUpperBound(type);
 				deferredUpperBoundCheckerTasks.add(new UpperBoundCheckerTask(extendsBound, type, false));
-			}
-		}
-		for(NapileTypeConstraint constraint : declaration.getTypeConstraints())
-		{
-			NapileSimpleNameExpression subjectTypeParameterName = constraint.getSubjectTypeParameterName();
-			if(subjectTypeParameterName == null)
-			{
-				continue;
-			}
-			Name referencedName = subjectTypeParameterName.getReferencedNameAsName();
-			if(referencedName == null)
-			{
-				continue;
-			}
-			TypeParameterDescriptorImpl typeParameterDescriptor = parameterByName.get(referencedName);
-			NapileTypeReference boundTypeReference = constraint.getBoundTypeReference();
-			JetType bound = null;
-			if(boundTypeReference != null)
-			{
-				bound = typeResolver.resolveType(scope, boundTypeReference, trace, false);
-				deferredUpperBoundCheckerTasks.add(new UpperBoundCheckerTask(boundTypeReference, bound, constraint.isClassObjectContraint()));
-			}
-
-			if(typeParameterDescriptor == null)
-			{
-				// To tell the user that we look only for locally defined type parameters
-				ClassifierDescriptor classifier = scope.getClassifier(referencedName);
-				if(classifier != null)
-				{
-					trace.report(NAME_IN_CONSTRAINT_IS_NOT_A_TYPE_PARAMETER.on(subjectTypeParameterName, constraint, declaration));
-					trace.record(BindingContext.REFERENCE_TARGET, subjectTypeParameterName, classifier);
-				}
-				else
-				{
-					trace.report(UNRESOLVED_REFERENCE.on(subjectTypeParameterName));
-				}
-			}
-			else
-			{
-				trace.record(BindingContext.REFERENCE_TARGET, subjectTypeParameterName, typeParameterDescriptor);
-				if(bound != null)
-				{
-					if(constraint.isClassObjectContraint())
-					{
-						typeParameterDescriptor.addClassObjectBound(bound);
-					}
-					else
-					{
-						typeParameterDescriptor.addUpperBound(bound);
-					}
-				}
 			}
 		}
 
@@ -532,7 +480,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptor resolveObjectDeclaration(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
+	public VariableDescriptor resolveObjectDeclaration(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileClassLike objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		boolean isProperty = (containingDeclaration instanceof NamespaceDescriptor) || (containingDeclaration instanceof ClassDescriptor);
 		if(isProperty)
@@ -546,7 +494,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public PropertyDescriptor resolveObjectDeclarationAsPropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
+	public PropertyDescriptor resolveObjectDeclarationAsPropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileClassLike objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		NapileModifierList modifierList = objectDeclaration.getModifierList();
 		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), PropertyKind.VAL, NapilePsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
@@ -561,7 +509,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	private VariableDescriptor resolveObjectDeclarationAsLocalVariable(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileLikeClass objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
+	private VariableDescriptor resolveObjectDeclarationAsLocalVariable(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileClassLike objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace)
 	{
 		VariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(objectDeclaration.getModifierList(), trace), NapilePsiUtil.safeName(objectDeclaration.getName()), classDescriptor.getDefaultType(), PropertyKind.VAL);
 		NapileObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();

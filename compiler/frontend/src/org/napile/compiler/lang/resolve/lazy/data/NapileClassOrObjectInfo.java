@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -32,7 +32,7 @@ import com.intellij.psi.PsiFile;
 /**
  * @author abreslav
  */
-public abstract class NapileClassOrObjectInfo<E extends NapileLikeClass> implements NapileClassLikeInfo
+public abstract class NapileClassOrObjectInfo<E extends NapileClassLike> implements NapileClassLikeInfo
 {
 	protected final E element;
 
@@ -42,7 +42,7 @@ public abstract class NapileClassOrObjectInfo<E extends NapileLikeClass> impleme
 	}
 
 	@Override
-	public NapileLikeClass getCorrespondingClassOrObject()
+	public NapileClassLike getCorrespondingClassOrObject()
 	{
 		return element;
 	}

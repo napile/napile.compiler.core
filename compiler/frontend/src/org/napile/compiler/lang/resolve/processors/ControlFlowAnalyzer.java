@@ -98,7 +98,7 @@ public class ControlFlowAnalyzer
 		}
 	}
 
-	private void checkClassOrObject(NapileLikeClass klass)
+	private void checkClassOrObject(NapileClassLike klass)
 	{
 		// A pseudocode of class initialization corresponds to a class
 		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider((NapileDeclaration) klass, trace);

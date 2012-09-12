@@ -18,45 +18,13 @@ package org.napile.idea.plugin.formatter;
 
 import static org.napile.compiler.NapileNodeTypes.BINARY_EXPRESSION;
 import static org.napile.compiler.NapileNodeTypes.BLOCK;
-import static org.napile.compiler.NapileNodeTypes.CLASS;
 import static org.napile.compiler.NapileNodeTypes.CLASS_BODY;
-import static org.napile.compiler.NapileNodeTypes.METHOD;
 import static org.napile.compiler.NapileNodeTypes.IMPORT_DIRECTIVE;
+import static org.napile.compiler.NapileNodeTypes.METHOD;
 import static org.napile.compiler.NapileNodeTypes.NAMESPACE_HEADER;
 import static org.napile.compiler.NapileNodeTypes.PROPERTY;
-import static org.napile.compiler.NapileNodeTypes.TYPE_CONSTRAINT;
-import static org.napile.compiler.NapileNodeTypes.TYPE_PARAMETER;
 import static org.napile.compiler.NapileNodeTypes.VALUE_PARAMETER;
-import static org.napile.compiler.lexer.JetTokens.ANDAND;
-import static org.napile.compiler.lexer.JetTokens.COLON;
-import static org.napile.compiler.lexer.JetTokens.COMMA;
-import static org.napile.compiler.lexer.JetTokens.DIV;
-import static org.napile.compiler.lexer.JetTokens.DIVEQ;
-import static org.napile.compiler.lexer.JetTokens.EQ;
-import static org.napile.compiler.lexer.JetTokens.EQEQ;
-import static org.napile.compiler.lexer.JetTokens.EQEQEQ;
-import static org.napile.compiler.lexer.JetTokens.EXCL;
-import static org.napile.compiler.lexer.JetTokens.EXCLEQ;
-import static org.napile.compiler.lexer.JetTokens.EXCLEQEQEQ;
-import static org.napile.compiler.lexer.JetTokens.EXCLEXCL;
-import static org.napile.compiler.lexer.JetTokens.GT;
-import static org.napile.compiler.lexer.JetTokens.GTEQ;
-import static org.napile.compiler.lexer.JetTokens.LBRACE;
-import static org.napile.compiler.lexer.JetTokens.LT;
-import static org.napile.compiler.lexer.JetTokens.LTEQ;
-import static org.napile.compiler.lexer.JetTokens.MINUS;
-import static org.napile.compiler.lexer.JetTokens.MINUSEQ;
-import static org.napile.compiler.lexer.JetTokens.MINUSMINUS;
-import static org.napile.compiler.lexer.JetTokens.MUL;
-import static org.napile.compiler.lexer.JetTokens.MULTEQ;
-import static org.napile.compiler.lexer.JetTokens.OROR;
-import static org.napile.compiler.lexer.JetTokens.PERC;
-import static org.napile.compiler.lexer.JetTokens.PERCEQ;
-import static org.napile.compiler.lexer.JetTokens.PLUS;
-import static org.napile.compiler.lexer.JetTokens.PLUSEQ;
-import static org.napile.compiler.lexer.JetTokens.PLUSPLUS;
-import static org.napile.compiler.lexer.JetTokens.RANGE;
-import static org.napile.compiler.lexer.JetTokens.RBRACE;
+import static org.napile.compiler.lexer.JetTokens.*;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.plugin.JetLanguage;
@@ -111,10 +79,7 @@ public class JetFormattingModelBuilder implements FormattingModelBuilder
 
 						// TODO: Ask for better API
 						// Type of the declaration colon
-				.beforeInside(COLON, PROPERTY).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, PROPERTY).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, METHOD).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, METHOD).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON)
-
-						// Extends or constraint colon
-				.beforeInside(COLON, TYPE_CONSTRAINT).spaceIf(jetSettings.SPACE_BEFORE_EXTEND_COLON).afterInside(COLON, TYPE_CONSTRAINT).spaceIf(jetSettings.SPACE_AFTER_EXTEND_COLON).beforeInside(COLON, CLASS).spaceIf(jetSettings.SPACE_BEFORE_EXTEND_COLON).afterInside(COLON, CLASS).spaceIf(jetSettings.SPACE_AFTER_EXTEND_COLON).beforeInside(COLON, TYPE_PARAMETER).spaceIf(jetSettings.SPACE_BEFORE_EXTEND_COLON).afterInside(COLON, TYPE_PARAMETER).spaceIf(jetSettings.SPACE_AFTER_EXTEND_COLON);
+				.beforeInside(COLON, PROPERTY).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, PROPERTY).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, METHOD).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, METHOD).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON);
 	}
 
 	@Override

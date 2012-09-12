@@ -29,6 +29,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.google.common.collect.Sets;
@@ -46,6 +47,18 @@ public class ChainedScope implements JetScope
 	{
 		this.containingDeclaration = containingDeclaration;
 		scopeChain = scopes.clone();
+	}
+
+	@Override
+	public ClassDescriptor getClass(@NotNull FqName fqName)
+	{
+		for(JetScope scope : scopeChain)
+		{
+			ClassDescriptor classifier = scope.getClass(fqName);
+			if(classifier != null)
+				return classifier;
+		}
+		return null;
 	}
 
 	@Override

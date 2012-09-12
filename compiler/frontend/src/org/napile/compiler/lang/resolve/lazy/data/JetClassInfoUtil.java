@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve.lazy.data;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 
 /**
  * @author abreslav
@@ -27,7 +27,7 @@ import org.napile.compiler.lang.psi.NapileLikeClass;
 public class JetClassInfoUtil
 {
 
-	public static NapileClassLikeInfo createClassLikeInfo(@NotNull NapileLikeClass classOrObject)
+	public static NapileClassLikeInfo createClassLikeInfo(@NotNull NapileClassLike classOrObject)
 	{
 		if(classOrObject instanceof NapileClass)
 		{

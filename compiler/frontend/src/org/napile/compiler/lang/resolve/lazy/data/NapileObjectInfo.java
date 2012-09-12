@@ -21,16 +21,16 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassKind;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 
 /**
  * @author abreslav
  */
-public class NapileObjectInfo extends NapileClassOrObjectInfo<NapileLikeClass>
+public class NapileObjectInfo extends NapileClassOrObjectInfo<NapileClassLike>
 {
 
-	protected NapileObjectInfo(@NotNull NapileLikeClass element)
+	protected NapileObjectInfo(@NotNull NapileClassLike element)
 	{
 		super(element);
 	}

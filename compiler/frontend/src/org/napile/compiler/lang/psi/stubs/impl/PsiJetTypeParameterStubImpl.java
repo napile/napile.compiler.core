@@ -19,8 +19,10 @@ package org.napile.compiler.lang.psi.stubs.impl;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetTypeParameterElementType;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.util.Function;
 import com.intellij.util.io.StringRef;
 
 /**
@@ -29,9 +31,9 @@ import com.intellij.util.io.StringRef;
 public class PsiJetTypeParameterStubImpl extends StubBase<NapileTypeParameter> implements PsiJetTypeParameterStub
 {
 	private final StringRef name;
-	private final StringRef extendBoundTypeText;
+	private final StringRef[] extendBoundTypeText;
 
-	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, StringRef name, StringRef extendBoundTypeText)
+	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, StringRef name, StringRef[] extendBoundTypeText)
 	{
 		super(parent, type);
 
@@ -39,15 +41,15 @@ public class PsiJetTypeParameterStubImpl extends StubBase<NapileTypeParameter> i
 		this.extendBoundTypeText = extendBoundTypeText;
 	}
 
-	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, String name, String extendBoundTypeText)
+	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, String name, StringRef[] extendBoundTypeText)
 	{
-		this(type, parent, StringRef.fromString(name), StringRef.fromString(extendBoundTypeText));
+		this(type, parent, StringRef.fromString(name), extendBoundTypeText);
 	}
 
 	@Override
-	public String getExtendBoundTypeText()
+	public StringRef[] getExtendBoundTypeText()
 	{
-		return StringRef.toString(extendBoundTypeText);
+		return extendBoundTypeText;
 	}
 
 	@Override
@@ -63,7 +65,14 @@ public class PsiJetTypeParameterStubImpl extends StubBase<NapileTypeParameter> i
 		builder.append("PsiJetTypeParameterStubImpl[");
 
 		builder.append("name=").append(getName());
-		builder.append(" extendText=").append(getExtendBoundTypeText());
+		builder.append(" extendText=").append(StringUtil.join(extendBoundTypeText, new Function<StringRef, String>()
+		{
+			@Override
+			public String fun(StringRef stringRef)
+			{
+				return stringRef.getString();
+			}
+		}, ","));
 
 		builder.append("]");
 

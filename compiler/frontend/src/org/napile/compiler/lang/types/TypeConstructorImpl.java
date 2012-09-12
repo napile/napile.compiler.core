@@ -34,7 +34,7 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 public class TypeConstructorImpl extends AnnotatedImpl implements TypeConstructor
 {
 	private final List<TypeParameterDescriptor> parameters;
-	private Collection<JetType> supertypes;
+	private final Collection<JetType> supertypes;
 	private final String debugName;
 	private final boolean sealed;
 

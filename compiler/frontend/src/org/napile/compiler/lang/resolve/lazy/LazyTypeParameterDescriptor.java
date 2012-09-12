@@ -27,14 +27,12 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptorVisitor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileLikeClass;
-import org.napile.compiler.lang.psi.NapileTypeConstraint;
-import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeImpl;
 import org.napile.compiler.lang.types.TypeConstructor;
@@ -42,13 +40,10 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.util.lazy.LazyValue;
-import org.napile.compiler.lang.psi.NapileClass;
 import com.google.common.collect.Sets;
 import com.intellij.psi.SmartPsiElementPointer;
-import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author abreslav
@@ -99,51 +94,15 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 
 			NapileTypeParameter jetTypeParameter = getElement();
 
-			resolveUpperBoundsFromWhereClause(upperBounds, false);
-
-			NapileTypeReference extendsBound = jetTypeParameter.getExtendsBound();
-			if(extendsBound != null)
-			{
+			for(NapileTypeReference extendsBound : jetTypeParameter.getExtendsBound())
 				upperBounds.add(resolveBoundType(extendsBound));
-			}
 
 			if(upperBounds.isEmpty())
-			{
 				upperBounds.add(JetStandardClasses.getDefaultBound());
-			}
 		}
 		return upperBounds;
 	}
 
-	private void resolveUpperBoundsFromWhereClause(Set<JetType> upperBounds, boolean forClassObject)
-	{
-		NapileTypeParameter jetTypeParameter = getElement();
-
-		NapileLikeClass classOrObject = PsiTreeUtil.getParentOfType(jetTypeParameter, NapileLikeClass.class);
-		if(classOrObject instanceof NapileClass)
-		{
-			NapileClass napileClass = (NapileClass) classOrObject;
-			for(NapileTypeConstraint jetTypeConstraint : napileClass.getTypeConstraints())
-			{
-				if(jetTypeConstraint.isClassObjectContraint() != forClassObject)
-					continue;
-
-				NapileSimpleNameExpression constrainedParameterName = jetTypeConstraint.getSubjectTypeParameterName();
-				if(constrainedParameterName != null)
-				{
-					if(name.equals(constrainedParameterName.getReferencedNameAsName()))
-					{
-
-						NapileTypeReference boundTypeReference = jetTypeConstraint.getBoundTypeReference();
-						if(boundTypeReference != null)
-						{
-							upperBounds.add(resolveBoundType(boundTypeReference));
-						}
-					}
-				}
-			}
-		}
-	}
 
 	private NapileTypeParameter getElement()
 	{

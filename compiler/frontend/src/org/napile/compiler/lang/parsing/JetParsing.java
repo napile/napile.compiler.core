@@ -53,7 +53,7 @@ public class JetParsing extends AbstractJetParsing
 	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.IDENTIFIER);
 
 	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE), CLASS_KEYWORDS);
-	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(JetTokens.WHERE_KEYWORD, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.GT);
+	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.GT);
 	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.COMMA, JetTokens.RPAR);
 	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(JetTokens.DOT, JetTokens.EOL_OR_SEMICOLON);
 	/*package*/ static final TokenSet TYPE_REF_FIRST = TokenSet.create(JetTokens.LBRACKET, JetTokens.IDENTIFIER, JetTokens.METH_KEYWORD, JetTokens.LPAR, JetTokens.THIS_KEYWORD, JetTokens.HASH);
@@ -431,7 +431,7 @@ public class JetParsing extends AbstractJetParsing
 		{
 			expect(JetTokens.IDENTIFIER, "Class name expected", CLASS_NAME_RECOVERY_SET);
 		}
-		boolean typeParametersDeclared = parseTypeParameterList(TYPE_PARAMETER_GT_RECOVERY_SET);
+		parseTypeParameterList();
 
 		PsiBuilder.Marker beforeConstructorModifiers = mark();
 
@@ -443,8 +443,6 @@ public class JetParsing extends AbstractJetParsing
 			advance(); // COLON
 			parseDelegationSpecifierList();
 		}
-
-		parseTypeConstraintsGuarded(typeParametersDeclared);
 
 		if(at(JetTokens.LBRACE))
 		{
@@ -773,10 +771,10 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			errorAndAdvance("Expecting 'val' or 'var'");
+			errorAndAdvance("Expecting 'var'");
 		}
 
-		boolean typeParametersDeclared = at(JetTokens.LT) && parseTypeParameterList(TokenSet.create(JetTokens.IDENTIFIER, JetTokens.EQ, JetTokens.COLON, JetTokens.SEMICOLON));
+		parseTypeParameterList();
 
 		TokenSet propertyNameFollow = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.LBRACE, JetTokens.RBRACE, JetTokens.SEMICOLON, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.CLASS_KEYWORD);
 
@@ -811,8 +809,6 @@ public class JetParsing extends AbstractJetParsing
 				parseTypeRef();
 			}
 		}
-
-		parseTypeConstraintsGuarded(typeParametersDeclared);
 
 		if(local)
 		{
@@ -953,13 +949,6 @@ public class JetParsing extends AbstractJetParsing
 			return METHOD;
 		}
 
-		boolean typeParameterListOccurred = false;
-		if(at(JetTokens.LT))
-		{
-			parseTypeParameterList(TokenSet.create(JetTokens.LBRACKET, JetTokens.LBRACE, JetTokens.LPAR));
-			typeParameterListOccurred = true;
-		}
-
 		myBuilder.disableJoiningComplexTokens();
 		int lastDot = findLastBefore(RECEIVER_TYPE_TERMINATORS, TokenSet.create(JetTokens.LPAR), true);
 		parseReceiverType("function", TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.EQ), lastDot);
@@ -967,20 +956,7 @@ public class JetParsing extends AbstractJetParsing
 
 		TokenSet valueParametersFollow = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.LBRACE, JetTokens.SEMICOLON, JetTokens.RPAR);
 
-		if(at(JetTokens.LT))
-		{
-			PsiBuilder.Marker error = mark();
-			parseTypeParameterList(TokenSet.orSet(TokenSet.create(JetTokens.LPAR), valueParametersFollow));
-			if(typeParameterListOccurred)
-			{
-				error.error("Only one type parameter list is allowed for a function"); // TODO : discuss
-			}
-			else
-			{
-				error.drop();
-			}
-			typeParameterListOccurred = true;
-		}
+		parseTypeParameterList();
 
 		parseValueParameterList(false, valueParametersFollow);
 
@@ -993,8 +969,6 @@ public class JetParsing extends AbstractJetParsing
 				parseTypeRef();
 			}
 		}
-
-		parseTypeConstraintsGuarded(typeParameterListOccurred);
 
 		if(at(JetTokens.SEMICOLON))
 		{
@@ -1190,13 +1164,12 @@ public class JetParsing extends AbstractJetParsing
 		 *   : ("<" typeParameter{","} ">"
 		 *   ;
 		 */
-	private boolean parseTypeParameterList(TokenSet recoverySet)
+	private boolean parseTypeParameterList()
 	{
 		PsiBuilder.Marker list = mark();
 		boolean result = false;
 		if(at(JetTokens.LT))
 		{
-
 			myBuilder.disableNewlines();
 			advance(); // LT
 
@@ -1204,6 +1177,7 @@ public class JetParsing extends AbstractJetParsing
 			{
 				if(at(JetTokens.COMMA))
 					errorAndAdvance("Expecting type parameter declaration");
+
 				parseTypeParameter();
 
 				if(!at(JetTokens.COMMA))
@@ -1211,7 +1185,7 @@ public class JetParsing extends AbstractJetParsing
 				advance(); // COMMA
 			}
 
-			expect(JetTokens.GT, "Missing '>'", recoverySet);
+			expect(JetTokens.GT, "Missing '>'");
 			myBuilder.restoreNewlinesState();
 			result = true;
 		}
@@ -1219,98 +1193,10 @@ public class JetParsing extends AbstractJetParsing
 		return result;
 	}
 
-	/*
-		 * typeConstraints
-		 *   : ("where" typeConstraint{","})?
-		 *   ;
-		 */
-	private void parseTypeConstraintsGuarded(boolean typeParameterListOccurred)
-	{
-		PsiBuilder.Marker error = mark();
-		boolean constraints = parseTypeConstraints();
-		if(constraints && !typeParameterListOccurred)
-		{
-			error.error("Type constraints are not allowed when no type parameters declared");
-		}
-		else
-		{
-			error.drop();
-		}
-	}
-
-	private boolean parseTypeConstraints()
-	{
-		if(at(JetTokens.WHERE_KEYWORD))
-		{
-			parseTypeConstraintList();
-			return true;
-		}
-		return false;
-	}
-
-	/*
-		 * typeConstraint{","}
-		 */
-	private void parseTypeConstraintList()
-	{
-		assert _at(JetTokens.WHERE_KEYWORD);
-
-		advance(); // WHERE_KEYWORD
-
-		PsiBuilder.Marker list = mark();
-
-		while(true)
-		{
-			if(at(JetTokens.COMMA))
-				errorAndAdvance("Type constraint expected");
-			parseTypeConstraint();
-			if(!at(JetTokens.COMMA))
-				break;
-			advance(); // COMMA
-		}
-
-		list.done(TYPE_CONSTRAINT_LIST);
-	}
-
-	/*
-		 * typeConstraint
-		 *   : attributes SimpleName ":" type
-		 *   : attributes "class" "object" SimpleName ":" type
-		 *   ;
-		 */
-	private void parseTypeConstraint()
-	{
-		PsiBuilder.Marker constraint = mark();
-
-		parseAnnotations();
-
-		if(at(JetTokens.CLASS_KEYWORD))
-		{
-			advance(); // CLASS_KEYWORD
-
-			expect(JetTokens.ANONYM_KEYWORD, "Expecting 'object'", TYPE_REF_FIRST);
-		}
-
-		PsiBuilder.Marker reference = mark();
-		if(expect(JetTokens.IDENTIFIER, "Expecting type parameter name", TokenSet.orSet(TokenSet.create(JetTokens.COLON, JetTokens.COMMA), TYPE_REF_FIRST)))
-		{
-			reference.done(REFERENCE_EXPRESSION);
-		}
-		else
-		{
-			reference.drop();
-		}
-
-		expect(JetTokens.COLON, "Expecting ':' before the upper bound", TYPE_REF_FIRST);
-
-		parseTypeRef();
-
-		constraint.done(TYPE_CONSTRAINT);
-	}
 
 	/*
 		 * typeParameter
-		 *   : modifiers SimpleName (":" userType)?
+		 *   : modifiers SimpleName (("[" typeList? "]") | (":" userType))?
 		 *   ;
 		 */
 	private void parseTypeParameter()
@@ -1330,7 +1216,27 @@ public class JetParsing extends AbstractJetParsing
 		if(at(JetTokens.COLON))
 		{
 			advance(); // COLON
+
 			parseTypeRef();
+		}
+		else if(at(JetTokens.LBRACKET))
+		{
+			advance(); // LBRACKET
+
+			while(true)
+			{
+				if(at(JetTokens.COMMA))
+					errorAndAdvance("Expecting type declaration");
+
+				parseTypeRef();
+
+				if(!at(JetTokens.COMMA))
+					break;
+
+				advance(); // COMMA
+			}
+
+			expect(JetTokens.RBRACKET, "Missing ']'");
 		}
 
 		mark.done(TYPE_PARAMETER);

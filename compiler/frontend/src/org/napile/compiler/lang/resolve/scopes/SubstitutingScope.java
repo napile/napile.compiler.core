@@ -30,6 +30,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
@@ -109,6 +110,12 @@ public class SubstitutingScope implements JetScope
 	public VariableDescriptor getLocalVariable(@NotNull Name name)
 	{
 		return substitute(workerScope.getLocalVariable(name));
+	}
+
+	@Override
+	public ClassDescriptor getClass(@NotNull FqName fqName)
+	{
+		return substitute(workerScope.getClass(fqName));
 	}
 
 	@Override

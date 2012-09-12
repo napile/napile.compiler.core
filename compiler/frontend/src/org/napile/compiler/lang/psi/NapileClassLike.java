@@ -24,9 +24,9 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 /**
  * @author max
  */
-public interface NapileLikeClass extends PsiNameIdentifierOwner, NapileDeclarationContainer<NapileDeclaration>, NapileModifierListOwner, NapileDelegationSpecifierListOwner
+public interface NapileClassLike extends PsiNameIdentifierOwner, NapileDeclarationContainer<NapileDeclaration>, NapileModifierListOwner, NapileDelegationSpecifierListOwner
 {
-	NapileLikeClass[] EMPTY_ARRAY = new NapileLikeClass[0];
+	NapileClassLike[] EMPTY_ARRAY = new NapileClassLike[0];
 
 	@Nullable
 	Name getNameAsName();

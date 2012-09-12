@@ -42,27 +42,10 @@ abstract class NapileTypeParameterListOwnerStub<T extends NamedStub> extends Nap
 	}
 
 	@Nullable
-	NapileTypeParameterList getTypeParameterList()
+	@Override
+	public NapileTypeParameterList getTypeParameterList()
 	{
 		return (NapileTypeParameterList) findChildByType(NapileNodeTypes.TYPE_PARAMETER_LIST);
-	}
-
-	@Nullable
-	NapileTypeConstraintList getTypeConstraintList()
-	{
-		return (NapileTypeConstraintList) findChildByType(NapileNodeTypes.TYPE_CONSTRAINT_LIST);
-	}
-
-	@Override
-	@NotNull
-	public List<NapileTypeConstraint> getTypeConstraints()
-	{
-		NapileTypeConstraintList typeConstraintList = getTypeConstraintList();
-		if(typeConstraintList == null)
-		{
-			return Collections.emptyList();
-		}
-		return typeConstraintList.getConstraints();
 	}
 
 	@Override

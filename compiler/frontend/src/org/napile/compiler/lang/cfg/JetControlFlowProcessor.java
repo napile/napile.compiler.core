@@ -968,7 +968,7 @@ public class JetControlFlowProcessor
 			builder.read(expression);
 		}
 
-		private void visitClassOrObject(NapileLikeClass classOrObject)
+		private void visitClassOrObject(NapileClassLike classOrObject)
 		{
 			for(NapileDelegationSpecifier specifier : classOrObject.getDelegationSpecifiers())
 			{

@@ -35,7 +35,7 @@ import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -179,7 +179,7 @@ public class OverloadResolver
 		}
 	}
 
-	private String nameForErrorMessage(ClassDescriptor classDescriptor, NapileLikeClass jetClass)
+	private String nameForErrorMessage(ClassDescriptor classDescriptor, NapileClassLike jetClass)
 	{
 		String name = jetClass.getName();
 		if(name != null)
@@ -196,7 +196,7 @@ public class OverloadResolver
 		return "<unknown>";
 	}
 
-	private void checkOverloadsInAClass(MutableClassDescriptor classDescriptor, NapileLikeClass klass, Collection<ConstructorDescriptor> nestedClassConstructors)
+	private void checkOverloadsInAClass(MutableClassDescriptor classDescriptor, NapileClassLike klass, Collection<ConstructorDescriptor> nestedClassConstructors)
 	{
 		MultiMap<Name, CallableMemberDescriptor> functionsByName = MultiMap.create();
 

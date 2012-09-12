@@ -235,6 +235,6 @@ public class BindingContextUtils
 			throw new IllegalArgumentException("function of kind " + function.getKind() + " cannot have declaration");
 		}
 
-		trace.record(BindingContext.FUNCTION, psiElement, function);
+		trace.record(BindingContext.METHOD, psiElement, function);
 	}
 }

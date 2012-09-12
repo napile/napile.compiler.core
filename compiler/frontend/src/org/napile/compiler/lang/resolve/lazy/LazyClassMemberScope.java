@@ -32,7 +32,7 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -53,34 +53,6 @@ import com.intellij.psi.PsiElement;
  */
 public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescriptor, ClassMemberDeclarationProvider>
 {
-
-	private interface MemberExtractor<T extends CallableMemberDescriptor>
-	{
-		MemberExtractor<MethodDescriptor> EXTRACT_FUNCTIONS = new MemberExtractor<MethodDescriptor>()
-		{
-			@NotNull
-			@Override
-			public Collection<MethodDescriptor> extract(@NotNull JetType extractFrom, @NotNull Name name)
-			{
-				return extractFrom.getMemberScope().getFunctions(name);
-			}
-		};
-
-		MemberExtractor<PropertyDescriptor> EXTRACT_PROPERTIES = new MemberExtractor<PropertyDescriptor>()
-		{
-			@NotNull
-			@Override
-			public Collection<PropertyDescriptor> extract(@NotNull JetType extractFrom, @NotNull Name name)
-			{
-				//noinspection unchecked
-				return (Collection) extractFrom.getMemberScope().getProperties(name);
-			}
-		};
-
-		@NotNull
-		Collection<T> extract(@NotNull JetType extractFrom, @NotNull Name name);
-	}
-
 	private Set<ConstructorDescriptor> constructorDescriptors = null;
 
 	public LazyClassMemberScope(@NotNull ResolveSession resolveSession, @NotNull ClassMemberDeclarationProvider declarationProvider, @NotNull LazyClassDescriptor thisClass)
@@ -171,7 +143,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 	protected void getNonDeclaredProperties(@NotNull Name name, @NotNull final Set<VariableDescriptor> result)
 	{
 		// Enum entries
-		NapileLikeClass classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
+		NapileClassLike classOrObjectDeclaration = declarationProvider.getClassOrObjectDeclaration(name);
 		/*if(classOrObjectDeclaration instanceof NapileEnumEntry)
 		{
 			// TODO: This code seems to be wrong, but it mimics the present behavior of eager resolve
@@ -234,7 +206,7 @@ public class LazyClassMemberScope extends AbstractLazyMemberScope<LazyClassDescr
 			constructorDescriptors = new HashSet<ConstructorDescriptor>();
 			if(EnumSet.of(ClassKind.CLASS, ClassKind.ANONYM_CLASS, ClassKind.ENUM_CLASS).contains(thisDescriptor.getKind()))
 			{
-				NapileLikeClass classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
+				NapileClassLike classOrObject = declarationProvider.getOwnerInfo().getCorrespondingClassOrObject();
 				if(thisDescriptor.getKind() != ClassKind.ANONYM_CLASS)
 				{
 					NapileClass napileClass = (NapileClass) classOrObject;

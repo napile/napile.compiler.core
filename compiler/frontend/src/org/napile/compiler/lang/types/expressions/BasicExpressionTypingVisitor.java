@@ -597,7 +597,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		else
 		{
 			thisReceiver = context.scope.getImplicitReceiver();
-			if(context.scope.getContainingDeclaration() instanceof DeclarationDescriptorWithVisibility)
+			if(context.scope.getContainingDeclaration() instanceof DeclarationDescriptorWithVisibility && ((DeclarationDescriptorWithVisibility) context.scope.getContainingDeclaration()).isStatic())
 				thisReceiver = ReceiverDescriptor.NO_RECEIVER;
 		}
 		if(thisReceiver instanceof ThisReceiverDescriptor)

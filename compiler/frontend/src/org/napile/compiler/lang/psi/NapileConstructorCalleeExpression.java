@@ -39,6 +39,17 @@ public class NapileConstructorCalleeExpression extends NapileExpressionImpl
 
 	@Nullable
 	@IfNotParsed
+	public NapileTypeElement getConstructorType()
+	{
+		NapileTypeReference typeReference = getTypeReference();
+		if(typeReference == null)
+			return null;
+		return typeReference.getTypeElement();
+	}
+
+	@Nullable
+	@IfNotParsed
+	@Deprecated
 	public NapileReferenceExpression getConstructorReferenceExpression()
 	{
 		NapileTypeReference typeReference = getTypeReference();

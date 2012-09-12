@@ -48,7 +48,7 @@ public class AnalyzerFacadeForEverything
 		try
 		{
 			injector.getBodyResolver().resolveBodies(bodiesResolveContext);
-			return AnalyzeExhaust.success(traceContext.getBindingContext());
+			return AnalyzeExhaust.success(traceContext.getBindingContext(), bodiesResolveContext);
 		}
 		finally
 		{

@@ -74,8 +74,6 @@ public interface NapileNodeTypes
 	NapileNodeType INITIALIZER_LIST = new NapileNodeType("INITIALIZER_LIST", NapileInitializerList.class);
 	NapileNodeType THIS_CALL = new NapileNodeType("THIS_CALL", NapileDelegatorToThisCall.class);
 	NapileNodeType THIS_CONSTRUCTOR_REFERENCE = new NapileNodeType("THIS_CONSTRUCTOR_REFERENCE", NapileThisReferenceExpression.class);
-	NapileNodeType TYPE_CONSTRAINT_LIST = new NapileNodeType("TYPE_CONSTRAINT_LIST", NapileTypeConstraintList.class);
-	NapileNodeType TYPE_CONSTRAINT = new NapileNodeType("TYPE_CONSTRAINT", NapileTypeConstraint.class);
 
 	// TODO: Not sure if we need separate NT for each kind of constants
 	NapileNodeType NULL = new NapileNodeType("NULL", NapileConstantExpression.class);

@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
@@ -35,7 +35,7 @@ import com.intellij.refactoring.move.moveFilesOrDirectories.MoveFilesOrDirectori
  */
 public class JetMoveFilesOrDirectoriesHandler extends MoveFilesOrDirectoriesHandler
 {
-	public static boolean isMovableClass(NapileLikeClass clazz)
+	public static boolean isMovableClass(NapileClassLike clazz)
 	{
 		if(!(clazz.getParent() instanceof NapileFile))
 			return false;
@@ -55,7 +55,7 @@ public class JetMoveFilesOrDirectoriesHandler extends MoveFilesOrDirectoriesHand
 		for(PsiElement element : elements)
 		{
 			if(!(element instanceof PsiFile) && !(element instanceof PsiDirectory) &&
-					(!(element instanceof NapileLikeClass) || !isMovableClass((NapileLikeClass) element)))
+					(!(element instanceof NapileClassLike) || !isMovableClass((NapileClassLike) element)))
 			{
 				return false;
 			}
@@ -69,7 +69,7 @@ public class JetMoveFilesOrDirectoriesHandler extends MoveFilesOrDirectoriesHand
 		ArrayList<PsiElement> result = new ArrayList<PsiElement>();
 		for(PsiElement element : sourceElements)
 		{
-			if(element instanceof NapileLikeClass)
+			if(element instanceof NapileClassLike)
 			{
 				result.add(element.getContainingFile());
 			}

@@ -27,7 +27,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * Type reference element.
- * Underlying token is {@link org.napile.compiler.NapileNodeTypes#TYPE_REFERENCE}
+ * Underlying token is {@link NapileNodeTypes#TYPE_REFERENCE}
  *
  * @author max
  */

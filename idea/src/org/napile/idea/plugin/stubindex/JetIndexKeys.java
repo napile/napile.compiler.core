@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.stubindex;
 
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileProperty;
 import com.intellij.psi.stubs.StubIndexKey;
@@ -26,9 +26,9 @@ import com.intellij.psi.stubs.StubIndexKey;
  */
 public interface JetIndexKeys
 {
-	StubIndexKey<String, NapileLikeClass> SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.class.shortName");
-	StubIndexKey<String, NapileLikeClass> SUPERCLASS_NAME_KEY = StubIndexKey.createIndexKey("napile.class.superClassName");
-	StubIndexKey<String, NapileLikeClass> FQN_KEY = StubIndexKey.createIndexKey("napile.fqn");
+	StubIndexKey<String, NapileClassLike> SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.class.shortName");
+	StubIndexKey<String, NapileClassLike> SUPERCLASS_NAME_KEY = StubIndexKey.createIndexKey("napile.class.superClassName");
+	StubIndexKey<String, NapileClassLike> FQN_KEY = StubIndexKey.createIndexKey("napile.fqn");
 
 	StubIndexKey<String, NapileNamedFunction> TOP_LEVEL_FUNCTION_SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.top.level.function.short.name");
 

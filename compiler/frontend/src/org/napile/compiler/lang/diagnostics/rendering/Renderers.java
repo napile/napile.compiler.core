@@ -31,7 +31,7 @@ import org.napile.compiler.lang.descriptors.Named;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintPosition;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintsUtil;
@@ -90,11 +90,11 @@ public class Renderers
 		}
 	};
 
-	public static final Renderer<NapileLikeClass> RENDER_CLASS_OR_OBJECT = new Renderer<NapileLikeClass>()
+	public static final Renderer<NapileClassLike> RENDER_CLASS_OR_OBJECT = new Renderer<NapileClassLike>()
 	{
 		@NotNull
 		@Override
-		public String render(@NotNull NapileLikeClass classOrObject)
+		public String render(@NotNull NapileClassLike classOrObject)
 		{
 			String name = classOrObject.getName() != null ? " '" + classOrObject.getName() + "'" : "";
 			if(classOrObject instanceof NapileClass)

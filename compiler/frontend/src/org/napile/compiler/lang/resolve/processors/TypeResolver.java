@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
-import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
 import static org.napile.compiler.lang.diagnostics.Errors.WRONG_NUMBER_OF_TYPE_ARGUMENTS;
 
 import java.util.ArrayList;
@@ -33,19 +32,21 @@ import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeImpl;
+import org.napile.compiler.lang.types.SelfTypeConstructorImpl;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.util.lazy.LazyValue;
+import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author abreslav
@@ -221,19 +222,21 @@ public class TypeResolver
 				@Override
 				public void visitSelfType(NapileSelfType type)
 				{
-					trace.report(UNSUPPORTED.on(type, "Self-types are not supported yet"));
-					//                    throw new IllegalArgumentException("Unsupported type: " + element);
+					NapileClassLike classLike = PsiTreeUtil.getParentOfType(type, NapileClassLike.class);
+
+					assert classLike != null;
+
+					ClassDescriptor classDescriptor = trace.safeGet(BindingContext.CLASS, classLike);
+
+					result[0] = new JetTypeImpl(annotations, new SelfTypeConstructorImpl(classDescriptor), nullable, Collections.<JetType>emptyList(), classDescriptor.getMemberScope(Collections.<JetType>emptyList()));
 				}
 			});
 		}
+
 		if(result[0] == null)
-		{
 			return ErrorUtils.createErrorType(typeElement == null ? "No type element" : typeElement.getText());
-		}
 		if(nullable)
-		{
 			return TypeUtils.makeNullable(result[0]);
-		}
 		return result[0];
 	}
 

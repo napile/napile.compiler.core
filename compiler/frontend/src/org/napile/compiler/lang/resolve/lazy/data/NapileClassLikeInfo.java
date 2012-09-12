@@ -21,7 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassKind;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDeclarationContainer;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
@@ -53,7 +53,7 @@ public interface NapileClassLikeInfo extends NapileDeclarationContainer<NapileDe
 	PsiElement getScopeAnchor();
 
 	@Nullable
-	NapileLikeClass getCorrespondingClassOrObject();
+	NapileClassLike getCorrespondingClassOrObject();
 
 	@NotNull
 	List<NapileTypeParameter> getTypeParameters();

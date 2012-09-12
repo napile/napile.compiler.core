@@ -362,7 +362,7 @@ public class OverrideResolver
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
 	}
 
-	protected void checkOverridesInAClass(@NotNull MutableClassDescriptor classDescriptor, @NotNull NapileLikeClass klass)
+	protected void checkOverridesInAClass(@NotNull MutableClassDescriptor classDescriptor, @NotNull NapileClassLike klass)
 	{
 		if(topDownAnalysisParameters.isAnalyzingBootstrapLibrary())
 			return;
@@ -640,7 +640,7 @@ public class OverrideResolver
 		{
 			NapilePropertyParameter parameter = fakeOverride ? null : (NapilePropertyParameter) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), parameterFromSubclass);
 
-			NapileLikeClass classElement = fakeOverride ? (NapileLikeClass) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared.getContainingDeclaration()) : null;
+			NapileClassLike classElement = fakeOverride ? (NapileClassLike) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared.getContainingDeclaration()) : null;
 
 			if(parameterFromSubclass.declaresDefaultValue() && !fakeOverride)
 			{

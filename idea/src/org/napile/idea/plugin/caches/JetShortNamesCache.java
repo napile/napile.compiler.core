@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
@@ -77,13 +77,13 @@ public class JetShortNamesCache
 	}
 
 	@NotNull
-	public Map<NapileLikeClass, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
+	public Map<NapileClassLike, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
 	{
 		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile()).getBindingContext();
 
 		JetFilesProvider jetFilesProvider = JetFilesProvider.getInstance(project);
 
-		Map<NapileLikeClass, ClassDescriptor> result = new HashMap<NapileLikeClass, ClassDescriptor>();
+		Map<NapileClassLike, ClassDescriptor> result = new HashMap<NapileClassLike, ClassDescriptor>();
 
 		for(NapileFile temp : jetFilesProvider.allInScope(globalSearchScope))
 		{
@@ -111,11 +111,11 @@ public class JetShortNamesCache
 	 * Return class names form idea sources in given scope which should be visible as Java classes.
 	 */
 	@NotNull
-	public NapileLikeClass[] getClassesByName(@NotNull @NonNls String name, @NotNull GlobalSearchScope scope)
+	public NapileClassLike[] getClassesByName(@NotNull @NonNls String name, @NotNull GlobalSearchScope scope)
 	{
 		// Quick check for classes from getAllClassNames()
-		Collection<NapileLikeClass> classOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
-		return classOrObjects.isEmpty() ? NapileLikeClass.EMPTY_ARRAY : classOrObjects.toArray(NapileLikeClass.EMPTY_ARRAY);
+		Collection<NapileClassLike> classOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
+		return classOrObjects.isEmpty() ? NapileClassLike.EMPTY_ARRAY : classOrObjects.toArray(NapileClassLike.EMPTY_ARRAY);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class JetShortNamesCache
 		Collection<NapileNamedFunction> jetNamedFunctions = JetShortFunctionNameIndex.getInstance().get(name, project, scope);
 		for(NapileNamedFunction jetNamedFunction : jetNamedFunctions)
 		{
-			SimpleMethodDescriptor functionDescriptor = context.get(BindingContext.FUNCTION, jetNamedFunction);
+			SimpleMethodDescriptor functionDescriptor = context.get(BindingContext.METHOD, jetNamedFunction);
 			if(functionDescriptor != null)
 			{
 				result.add(functionDescriptor);

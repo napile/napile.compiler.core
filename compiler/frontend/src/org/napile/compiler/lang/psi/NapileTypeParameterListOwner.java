@@ -19,14 +19,15 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Nikolay Krasko
  */
 public interface NapileTypeParameterListOwner extends NapileNamedDeclaration
 {
-	@NotNull
-	List<NapileTypeConstraint> getTypeConstraints();
+	@Nullable
+	NapileTypeParameterList getTypeParameterList();
 
 	@NotNull
 	List<NapileTypeParameter> getTypeParameters();

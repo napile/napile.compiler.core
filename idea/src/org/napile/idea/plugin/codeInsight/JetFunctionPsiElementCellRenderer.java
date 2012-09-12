@@ -42,7 +42,7 @@ public class JetFunctionPsiElementCellRenderer extends DefaultPsiElementCellRend
 		if(element instanceof NapileNamedFunction)
 		{
 			NapileNamedFunction function = (NapileNamedFunction) element;
-			SimpleMethodDescriptor fd = bindingContext.get(BindingContext.FUNCTION, function);
+			SimpleMethodDescriptor fd = bindingContext.get(BindingContext.METHOD, function);
 			assert fd != null;
 			return DescriptorRenderer.TEXT.render(fd);
 		}

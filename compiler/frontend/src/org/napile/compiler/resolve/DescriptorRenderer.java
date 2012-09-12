@@ -500,16 +500,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				{
 					for(JetType upperBound : typeParameter.getUpperBounds())
 					{
-						if(first)
-						{
-							builder.append(" ");
-							builder.append(renderKeyword(JetTokens.WHERE_KEYWORD));
-							builder.append(" ");
-						}
-						else
-						{
-							builder.append(", ");
-						}
+						builder.append(", ");
 						builder.append(typeParameter.getName());
 						builder.append(" : ");
 						builder.append(escape(renderType(upperBound)));

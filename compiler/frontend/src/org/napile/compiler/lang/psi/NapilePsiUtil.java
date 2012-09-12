@@ -41,8 +41,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 public class NapilePsiUtil
 {
 
-	public static final Name NO_NAME_PROVIDED = Name.special("<no name provided>");
-	public static final Name ROOT_NAMESPACE_NAME = Name.special("<root namespace>");
+	public static final Name NO_NAME_PROVIDED = Name.identifier("@noname");
+	public static final Name ROOT_NAMESPACE_NAME = Name.identifier("@root");
 
 	private NapilePsiUtil()
 	{
@@ -104,7 +104,7 @@ public class NapilePsiUtil
 		{
 			if(element instanceof NapileNamedFunction)
 				return (NapileNamedFunction) element;
-			if(element instanceof NapileLikeClass || element instanceof NapileFile)
+			if(element instanceof NapileClassLike || element instanceof NapileFile)
 				return null;
 			element = element.getParent();
 		}
@@ -213,7 +213,7 @@ public class NapilePsiUtil
 	}
 
 	@NotNull
-	private static FqName makeFQName(@NotNull FqName prefix, @NotNull NapileLikeClass jetClass)
+	private static FqName makeFQName(@NotNull FqName prefix, @NotNull NapileClassLike jetClass)
 	{
 		return prefix.child(Name.identifier(jetClass.getName()));
 	}
@@ -297,7 +297,7 @@ public class NapilePsiUtil
 		return false;
 	}
 
-	public static void deleteClass(@NotNull NapileLikeClass clazz)
+	public static void deleteClass(@NotNull NapileClassLike clazz)
 	{
 		CheckUtil.checkWritable(clazz);
 		NapileFile file = (NapileFile) clazz.getContainingFile();

@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileProperty;
@@ -73,7 +73,7 @@ public class EmptyPackageMemberDeclarationProvider implements PackageMemberDecla
 	}
 
 	@Override
-	public NapileLikeClass getClassOrObjectDeclaration(@NotNull Name name)
+	public NapileClassLike getClassOrObjectDeclaration(@NotNull Name name)
 	{
 		return null;
 	}

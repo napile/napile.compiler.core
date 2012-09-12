@@ -111,16 +111,16 @@ public final class AnalyzerFacadeWithCache
 						catch(Throwable e)
 						{
 							handleError(e);
-							return emptyExhaustWithDiagnosticOnFile(e);
+							return emptyExhaustWithDiagnosticOnFile(e, BodiesResolveContext.EMPTY);
 						}
 					}
 
 					@NotNull
-					private Result<AnalyzeExhaust> emptyExhaustWithDiagnosticOnFile(Throwable e)
+					private Result<AnalyzeExhaust> emptyExhaustWithDiagnosticOnFile(Throwable e, BodiesResolveContext bodiesResolveContext)
 					{
 						BindingTraceContext bindingTraceContext = new BindingTraceContext();
 						bindingTraceContext.report(Errors.EXCEPTION_WHILE_ANALYZING.on(file, e));
-						AnalyzeExhaust analyzeExhaust = AnalyzeExhaust.error(bindingTraceContext.getBindingContext(), e);
+						AnalyzeExhaust analyzeExhaust = AnalyzeExhaust.error(bindingTraceContext.getBindingContext(), bodiesResolveContext, e);
 
 						CachedValue<AnalyzeExhaust> bindingContextCachedValue = file.getUserData(ANALYZE_EXHAUST_HEADERS);
 						if(bindingContextCachedValue != null && bindingContextCachedValue.hasUpToDateValue())

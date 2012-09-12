@@ -192,7 +192,7 @@ public interface BindingContext
 	/**
 	 * @see BindingContextUtils#recordFunctionDeclarationToDescriptor(BindingTrace, PsiElement, org.napile.compiler.lang.descriptors.SimpleMethodDescriptor)}
 	 */
-	WritableSlice<PsiElement, SimpleMethodDescriptor> FUNCTION = Slices.<PsiElement, SimpleMethodDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, SimpleMethodDescriptor> METHOD = Slices.<PsiElement, SimpleMethodDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, ConstructorDescriptor> CONSTRUCTOR = Slices.<PsiElement, ConstructorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapilePropertyParameter, VariableDescriptor> VALUE_PARAMETER = Slices.<NapilePropertyParameter, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
@@ -205,7 +205,7 @@ public interface BindingContext
 			NAMESPACE,
 			CLASS,
 			TYPE_PARAMETER,
-			FUNCTION,
+			METHOD,
 			CONSTRUCTOR,
 			VARIABLE,
 			VALUE_PARAMETER,

@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -42,12 +43,17 @@ public class ErrorUtils
 
 	public static class ErrorScope implements JetScope
 	{
-
 		private final String debugMessage;
 
 		private ErrorScope(String debugMessage)
 		{
 			this.debugMessage = debugMessage;
+		}
+
+		@Override
+		public ClassDescriptor getClass(@NotNull FqName fqName)
+		{
+			return ERROR_CLASS;
 		}
 
 		@Override
@@ -133,6 +139,12 @@ public class ErrorUtils
 		{
 			return Collections.emptyList();
 		}
+
+		@Override
+		public String toString()
+		{
+			return debugMessage;
+		}
 	}
 
 	private static final LightClassDescriptorImpl ERROR_CLASS = new LightClassDescriptorImpl(ERROR_MODULE, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Name.special("<ERROR CLASS>"), false)
@@ -178,7 +190,7 @@ public class ErrorUtils
 		ErrorSimpleMethodDescriptorImpl function = new ErrorSimpleMethodDescriptorImpl(ownerScope);
 		function.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
 				Collections.<ParameterDescriptor>emptyList(), // TODO
-				createErrorType("<ERROR FUNCTION RETURN TYPE>"), Modality.OPEN, Visibility.PUBLIC
+				createErrorType("<ERROR METHOD RETURN TYPE>"), Modality.OPEN, Visibility.PUBLIC
                 /*isInline = */);
 		return function;
 	}

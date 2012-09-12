@@ -58,6 +58,7 @@ public class FileBasedPackageMemberDeclarationProvider extends AbstractPsiBasedD
 	@Override
 	public boolean isPackageDeclared(@NotNull Name name)
 	{
+		System.out.println(name);
 		return factory.isPackageDeclared(fqName.child(name));
 	}
 

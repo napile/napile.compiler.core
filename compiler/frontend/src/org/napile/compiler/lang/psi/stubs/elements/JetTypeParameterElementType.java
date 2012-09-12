@@ -56,24 +56,35 @@ public class JetTypeParameterElementType extends JetStubElementType<PsiJetTypePa
 	@Override
 	public PsiJetTypeParameterStub createStub(@NotNull NapileTypeParameter psi, StubElement parentStub)
 	{
-		NapileTypeReference extendsBound = psi.getExtendsBound();
-		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, psi.getName(), extendsBound != null ? extendsBound.getText() : null);
+		NapileTypeReference[] extendsBound = psi.getExtendsBound();
+		StringRef[] stringRefs = StringRef.createArray(extendsBound.length);
+		for(int i = 0; i < extendsBound.length; i++)
+			stringRefs[i] = StringRef.fromString(extendsBound[i].getText());
+
+		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, psi.getName(), stringRefs);
 	}
 
 	@Override
 	public void serialize(PsiJetTypeParameterStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
-		dataStream.writeName(stub.getExtendBoundTypeText());
+		StringRef[] refs = stub.getExtendBoundTypeText();
+		dataStream.writeInt(refs.length);
+		for(StringRef stringRef : refs)
+			dataStream.writeName(stringRef.getString());
 	}
 
 	@Override
 	public PsiJetTypeParameterStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		StringRef extendBoundTypeText = dataStream.readName();
+		int count = dataStream.readInt();
 
-		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, name, extendBoundTypeText);
+		StringRef[] refs = new StringRef[count];
+		for(int i = 0; i < count; i++)
+			refs[i] = dataStream.readName();
+
+		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, name, refs);
 	}
 
 	@Override

@@ -567,12 +567,12 @@ public class TypeUtils
 	@NotNull
 	public static JetType getTypeOfClassOrErrorType(@NotNull JetScope jetScope, @NotNull FqName name, boolean nullable)
 	{
-		ClassifierDescriptor classifierDescriptor = jetScope.getClassifier(name.shortName());
-		if(!(classifierDescriptor instanceof ClassDescriptor) || jetScope instanceof ErrorUtils.ErrorScope)
+		ClassDescriptor classifierDescriptor = jetScope.getClass(name);
+		if(classifierDescriptor == null || jetScope instanceof ErrorUtils.ErrorScope)
 			return ErrorUtils.createErrorType(name.getFqName());
 		else
 		{
-			jetScope = ((ClassDescriptor)classifierDescriptor).getMemberScope(Collections.<JetType>emptyList());
+			jetScope = classifierDescriptor.getMemberScope(Collections.<JetType>emptyList());
 			if(jetScope instanceof ErrorUtils.ErrorScope)
 				return ErrorUtils.createErrorType(name.getFqName());
 

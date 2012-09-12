@@ -34,6 +34,7 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
@@ -67,6 +68,9 @@ public class WritableScopeImpl extends WritableScopeWithImports
 
 	@Nullable
 	private Map<Name, DeclarationDescriptor> variableClassOrNamespaceDescriptors;
+
+	@NotNull
+	private final Map<FqName, ClassDescriptor> classDescriptors = new HashMap<FqName, ClassDescriptor>();
 
 	@Nullable
 	private SetMultimap<Name, VariableDescriptor> propertyGroups;
@@ -358,6 +362,9 @@ public class WritableScopeImpl extends WritableScopeWithImports
 		getVariableClassOrNamespaceDescriptors().put(name, classifierDescriptor);
 		allDescriptors.add(classifierDescriptor);
 		addToDeclared(classifierDescriptor);
+
+		if(classifierDescriptor instanceof ClassDescriptor)
+			classDescriptors.put(DescriptorUtils.getFQName(classifierDescriptor).toSafe(), (ClassDescriptor) classifierDescriptor);
 	}
 
 	@Override
@@ -430,6 +437,22 @@ public class WritableScopeImpl extends WritableScopeWithImports
 			return classifierDescriptor;
 
 		return super.getClassifier(name);
+	}
+
+	@Override
+	public ClassDescriptor getClass(@NotNull FqName name)
+	{
+		checkMayRead();
+
+		ClassDescriptor classDescriptor = classDescriptors.get(name);
+		if(classDescriptor != null)
+			return classDescriptor;
+
+		classDescriptor = getWorkerScope().getClass(name);
+		if(classDescriptor != null)
+			return classDescriptor;
+
+		return super.getClass(name);
 	}
 
 	@Override

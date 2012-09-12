@@ -123,7 +123,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 					}
 					continue;
 				}
-				if(e instanceof NapileProperty || e instanceof NapileNamedFunction || e instanceof NapileLikeClass)
+				if(e instanceof NapileProperty || e instanceof NapileNamedFunction || e instanceof NapileClassLike)
 				{
 					return false;
 				}
@@ -144,7 +144,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 		protected boolean isInContext(@NotNull PsiElement element)
 		{
 			PsiElement e = element;
-			while(e != null && !(e instanceof NapileLikeClass))
+			while(e != null && !(e instanceof NapileClassLike))
 			{
 				if(e instanceof NapileModifierList)
 				{

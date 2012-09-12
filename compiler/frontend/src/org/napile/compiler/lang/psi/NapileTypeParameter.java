@@ -17,8 +17,6 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import com.intellij.lang.ASTNode;
@@ -63,10 +61,10 @@ public class NapileTypeParameter extends NapileNamedDeclarationStub<PsiJetTypePa
 		return visitor.visitTypeParameter(this, data);
 	}
 
-	@Nullable
-	public NapileTypeReference getExtendsBound()
+	@NotNull
+	public NapileTypeReference[] getExtendsBound()
 	{
-		return (NapileTypeReference) findChildByType(NapileNodeTypes.TYPE_REFERENCE);
+		return findChildrenByClass(NapileTypeReference.class);
 	}
 
 	@NotNull

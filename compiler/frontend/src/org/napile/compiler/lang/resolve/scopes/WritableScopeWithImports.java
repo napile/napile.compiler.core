@@ -29,6 +29,7 @@ import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.google.common.collect.Sets;
@@ -197,6 +198,21 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 			{
 				return importedClassifier;
 			}
+		}
+		return null;
+	}
+
+	@Override
+	public ClassDescriptor getClass(@NotNull FqName name)
+	{
+		checkMayRead();
+
+		for(JetScope imported : getImports())
+		{
+			ClassDescriptor importedClassifier = imported.getClass(name);
+			if(importedClassifier != null)
+				return importedClassifier;
+
 		}
 		return null;
 	}

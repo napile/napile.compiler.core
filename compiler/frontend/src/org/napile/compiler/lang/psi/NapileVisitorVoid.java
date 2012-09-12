@@ -361,16 +361,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitDeclaration(accessor);
 	}
 
-	public void visitTypeConstraintList(NapileTypeConstraintList list)
-	{
-		visitJetElement(list);
-	}
-
-	public void visitTypeConstraint(NapileTypeConstraint constraint)
-	{
-		visitJetElement(constraint);
-	}
-
 	private void visitTypeElement(NapileTypeElement type)
 	{
 		visitJetElement(type);

@@ -22,13 +22,10 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.di.InjectorForLazyResolve;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -132,7 +129,7 @@ public class ResolveSession
 	}
 
 	@NotNull
-	public ClassDescriptor getClassDescriptor(@NotNull NapileLikeClass classOrObject)
+	public ClassDescriptor getClassDescriptor(@NotNull NapileClassLike classOrObject)
 	{
 		if(classOrObject instanceof NapileEnumEntry)
 		{
@@ -212,7 +209,7 @@ public class ResolveSession
 
 	private LazyClassDescriptor getEnclosingLazyClass(PsiElement element)
 	{
-		NapileLikeClass classOrObject = PsiTreeUtil.getParentOfType(element.getParent(), NapileLikeClass.class);
+		NapileClassLike classOrObject = PsiTreeUtil.getParentOfType(element.getParent(), NapileClassLike.class);
 		assert classOrObject != null : "Called for an element that is not a class member: " + element;
 		ClassDescriptor classDescriptor = getClassDescriptor(classOrObject);
 		assert classDescriptor instanceof LazyClassDescriptor : "Trying to resolve a member of a non-lazily loaded class: " + element;

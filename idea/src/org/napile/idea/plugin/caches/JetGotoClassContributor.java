@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.resolve.name.FqName;
@@ -42,8 +42,8 @@ public class JetGotoClassContributor implements GotoClassContributor
 	@Override
 	public String getQualifiedName(NavigationItem item)
 	{
-		if(item instanceof NapileLikeClass)
-			return ((NapileLikeClass) item).getFqName().toString();
+		if(item instanceof NapileClassLike)
+			return ((NapileClassLike) item).getFqName().toString();
 		return StringUtils.EMPTY;
 	}
 
@@ -67,9 +67,9 @@ public class JetGotoClassContributor implements GotoClassContributor
 		final GlobalSearchScope scope = GlobalSearchScope.allScope(project);
 
 		ArrayList<NavigationItem> items = new ArrayList<NavigationItem>();
-		Collection<NapileLikeClass> classesOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
+		Collection<NapileClassLike> classesOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
 
-		for(NapileLikeClass classOrObject : classesOrObjects)
+		for(NapileClassLike classOrObject : classesOrObjects)
 		{
 			if(classOrObject instanceof NapileNamedDeclaration)
 			{

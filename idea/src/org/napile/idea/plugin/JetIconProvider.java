@@ -97,7 +97,7 @@ public class JetIconProvider extends IconProvider
 	}
 
 	@Nullable
-	public static NapileLikeClass getMainClass(@NotNull NapileFile file)
+	public static NapileClassLike getMainClass(@NotNull NapileFile file)
 	{
 		List<NapileClass> list = file.getDeclarations();
 		if(list.size() == 1)

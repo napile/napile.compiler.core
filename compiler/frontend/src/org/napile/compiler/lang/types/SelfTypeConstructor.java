@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs;
+package org.napile.compiler.lang.types;
 
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import com.intellij.psi.stubs.NamedStub;
-import com.intellij.util.io.StringRef;
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
 
 /**
- * @author Nikolay Krasko
+ * @author VISTALL
+ * @date 19:02/12.09.12
  */
-public interface PsiJetTypeParameterStub extends NamedStub<NapileTypeParameter>
+public interface SelfTypeConstructor extends TypeConstructor
 {
-	StringRef[] getExtendBoundTypeText();
+	@Override
+	@NotNull
+	ClassDescriptor getDeclarationDescriptor();
 }

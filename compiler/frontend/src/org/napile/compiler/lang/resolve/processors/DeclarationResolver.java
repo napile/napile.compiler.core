@@ -125,7 +125,7 @@ public class DeclarationResolver
 		}
 	}
 
-	private void resolveAnnotationsForClassOrObject(AnnotationResolver annotationResolver, NapileLikeClass jetClass, MutableClassDescriptor descriptor)
+	private void resolveAnnotationsForClassOrObject(AnnotationResolver annotationResolver, NapileClassLike jetClass, MutableClassDescriptor descriptor)
 	{
 		NapileModifierList modifierList = jetClass.getModifierList();
 		if(modifierList != null)

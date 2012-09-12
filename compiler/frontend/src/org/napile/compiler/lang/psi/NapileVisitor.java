@@ -364,16 +364,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitDeclaration(accessor, data);
 	}
 
-	public R visitTypeConstraintList(NapileTypeConstraintList list, D data)
-	{
-		return visitJetElement(list, data);
-	}
-
-	public R visitTypeConstraint(NapileTypeConstraint constraint, D data)
-	{
-		return visitJetElement(constraint, data);
-	}
-
 	private R visitTypeElement(NapileTypeElement type, D data)
 	{
 		return visitJetElement(type, data);

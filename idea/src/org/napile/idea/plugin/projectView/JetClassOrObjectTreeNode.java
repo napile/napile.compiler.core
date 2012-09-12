@@ -21,8 +21,8 @@ import static org.napile.idea.plugin.projectView.JetProjectViewUtil.getClassOrOb
 
 import java.util.Collection;
 
-import org.napile.compiler.lang.psi.NapileLikeClass;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
+import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileTypeParameterList;
 import org.napile.compiler.lang.psi.NapileTypeParameterListOwner;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectView;
@@ -30,17 +30,15 @@ import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.projectView.impl.nodes.AbstractPsiBasedNode;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
-import com.intellij.util.Function;
 
 /**
  * User: Alefas
  * Date: 15.02.12
  */
-public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileLikeClass>
+public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileClassLike>
 {
-	protected JetClassOrObjectTreeNode(Project project, NapileLikeClass jetClassOrObject, ViewSettings viewSettings)
+	protected JetClassOrObjectTreeNode(Project project, NapileClassLike jetClassOrObject, ViewSettings viewSettings)
 	{
 		super(project, jetClassOrObject, viewSettings);
 	}
@@ -60,23 +58,16 @@ public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileLikeCla
 	@Override
 	protected void updateImpl(PresentationData data)
 	{
-		NapileLikeClass classOrObject = getValue();
+		NapileClassLike classOrObject = getValue();
 		if(classOrObject != null)
 		{
-			if(classOrObject instanceof NapileTypeParameterListOwner && !((NapileTypeParameterListOwner) classOrObject).getTypeParameters().isEmpty())
+			if(classOrObject instanceof NapileTypeParameterListOwner)
 			{
-				StringBuilder builder = new StringBuilder(classOrObject.getName());
-				builder.append("<");
-				builder.append(StringUtil.join(((NapileTypeParameterListOwner) classOrObject).getTypeParameters(), new Function<NapileTypeParameter, String>()
-				{
-					@Override
-					public String fun(NapileTypeParameter jetTypeParameter)
-					{
-						return jetTypeParameter.getName();
-					}
-				}, ", "));
-				builder.append(">");
-				data.setPresentableText(builder.toString());
+				NapileTypeParameterList typeParameterList = ((NapileTypeParameterListOwner) classOrObject).getTypeParameterList();
+				if(typeParameterList != null)
+					data.setPresentableText(classOrObject.getName() + typeParameterList.getText());
+				else
+					data.setPresentableText(classOrObject.getName());
 			}
 			else
 				data.setPresentableText(classOrObject.getName());

@@ -211,7 +211,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		functionDescriptor.initialize(effectiveReceiverType, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), parameterDescriptors,
                                       /*unsubstitutedReturnType = */ null, Modality.FINAL, Visibility.LOCAL2
                                       /*isInline = */);
-		context.trace.record(BindingContext.FUNCTION, expression, functionDescriptor);
+		context.trace.record(BindingContext.METHOD, expression, functionDescriptor);
 		BindingContextUtils.recordFunctionDeclarationToDescriptor(context.trace, expression, functionDescriptor);
 		return functionDescriptor;
 	}

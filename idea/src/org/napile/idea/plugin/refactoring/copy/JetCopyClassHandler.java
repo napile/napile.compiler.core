@@ -18,7 +18,7 @@ package org.napile.idea.plugin.refactoring.copy;
 
 import java.util.ArrayList;
 
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.idea.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
@@ -45,7 +45,7 @@ public class JetCopyClassHandler extends CopyHandlerDelegateBase
 
 	private static PsiElement replaceElement(PsiElement element)
 	{
-		if(element instanceof NapileLikeClass && JetMoveFilesOrDirectoriesHandler.isMovableClass((NapileLikeClass) element))
+		if(element instanceof NapileClassLike && JetMoveFilesOrDirectoriesHandler.isMovableClass((NapileClassLike) element))
 		{
 			return element.getContainingFile();
 		}

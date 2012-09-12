@@ -257,7 +257,7 @@ public class TypeHierarchyResolver
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
-			NapileLikeClass jetClass = entry.getKey();
+			NapileClassLike jetClass = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 			descriptorResolver.resolveSupertypesForMutableClassDescriptor(jetClass, descriptor, trace);
 		}
@@ -360,9 +360,9 @@ public class TypeHierarchyResolver
 			PsiElement psiElement = BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
 
 			PsiElement elementToMark = null;
-			if(psiElement instanceof NapileLikeClass)
+			if(psiElement instanceof NapileClassLike)
 			{
-				NapileLikeClass classOrObject = (NapileLikeClass) psiElement;
+				NapileClassLike classOrObject = (NapileClassLike) psiElement;
 				for(NapileDelegationSpecifier delegationSpecifier : classOrObject.getDelegationSpecifiers())
 				{
 					NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
@@ -423,7 +423,7 @@ public class TypeHierarchyResolver
 					{
 						DeclarationDescriptor containingDeclaration = typeParameterDescriptor.getContainingDeclaration();
 						assert containingDeclaration instanceof ClassDescriptor : containingDeclaration;
-						NapileLikeClass psiElement = (NapileLikeClass) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), mutableClassDescriptor);
+						NapileClassLike psiElement = (NapileClassLike) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), mutableClassDescriptor);
 						NapileDelegationSpecifierList delegationSpecifierList = psiElement.getDelegationSpecifierList();
 						assert delegationSpecifierList != null;
 						//                        trace.getErrorHandler().genericError(delegationSpecifierList.getNode(), "Type parameter " + typeParameterDescriptor.getName() + " of " + containingDeclaration.getName() + " has inconsistent values: " + conflictingTypes);
@@ -455,21 +455,7 @@ public class TypeHierarchyResolver
 
 			for(NapileTypeParameter jetTypeParameter : napileClass.getTypeParameters())
 			{
-				NapileTypeReference extendsBound = jetTypeParameter.getExtendsBound();
-				if(extendsBound != null)
-				{
-					JetType type = trace.getBindingContext().get(BindingContext.TYPE, extendsBound);
-					if(type != null)
-					{
-						descriptorResolver.checkBounds(extendsBound, type, trace);
-					}
-				}
-			}
-
-			for(NapileTypeConstraint constraint : napileClass.getTypeConstraints())
-			{
-				NapileTypeReference extendsBound = constraint.getBoundTypeReference();
-				if(extendsBound != null)
+				for(NapileTypeReference extendsBound : jetTypeParameter.getExtendsBound())
 				{
 					JetType type = trace.getBindingContext().get(BindingContext.TYPE, extendsBound);
 					if(type != null)

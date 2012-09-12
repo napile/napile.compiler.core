@@ -30,32 +30,27 @@ public class AnalyzeExhaust
 	private final BindingContext bindingContext;
 	private final Throwable error;
 
-	@Nullable
+	@NotNull
 	private final BodiesResolveContext bodiesResolveContext;
 
-	private AnalyzeExhaust(@NotNull BindingContext bindingContext, @Nullable BodiesResolveContext bodiesResolveContext, @Nullable Throwable error)
+	private AnalyzeExhaust(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, @Nullable Throwable error)
 	{
 		this.bindingContext = bindingContext;
 		this.error = error;
 		this.bodiesResolveContext = bodiesResolveContext;
 	}
 
-	public static AnalyzeExhaust success(@NotNull BindingContext bindingContext)
-	{
-		return new AnalyzeExhaust(bindingContext, null, null);
-	}
-
-	public static AnalyzeExhaust success(@NotNull BindingContext bindingContext, BodiesResolveContext bodiesResolveContext)
+	public static AnalyzeExhaust success(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		return new AnalyzeExhaust(bindingContext, bodiesResolveContext, null);
 	}
 
-	public static AnalyzeExhaust error(@NotNull BindingContext bindingContext, @NotNull Throwable error)
+	public static AnalyzeExhaust error(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, @NotNull Throwable error)
 	{
-		return new AnalyzeExhaust(bindingContext, null, error);
+		return new AnalyzeExhaust(bindingContext, bodiesResolveContext, error);
 	}
 
-	@Nullable
+	@NotNull
 	public BodiesResolveContext getBodiesResolveContext()
 	{
 		return bodiesResolveContext;
@@ -67,7 +62,7 @@ public class AnalyzeExhaust
 		return bindingContext;
 	}
 
-	@NotNull
+	@Nullable
 	public Throwable getError()
 	{
 		return error;

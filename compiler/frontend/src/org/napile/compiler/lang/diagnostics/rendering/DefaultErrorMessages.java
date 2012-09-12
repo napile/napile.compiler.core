@@ -40,7 +40,6 @@ import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.psi.NapileTypeConstraint;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lexer.NapileKeywordToken;
@@ -281,16 +280,6 @@ public class DefaultErrorMessages
 		MAP.put(UNSUPPORTED, "Unsupported [{0}]", TO_STRING);
 		MAP.put(UNNECESSARY_SAFE_CALL, "Unnecessary safe call on a non-null receiver of type {0}", RENDER_TYPE);
 		MAP.put(UNNECESSARY_NOT_NULL_ASSERTION, "Unnecessary non-null assertion (!!) on a non-null receiver of type {0}", RENDER_TYPE);
-		MAP.put(NAME_IN_CONSTRAINT_IS_NOT_A_TYPE_PARAMETER, "{0} does not refer to a type parameter of {1}", new Renderer<NapileTypeConstraint>()
-		{
-			@NotNull
-			@Override
-			public String render(@NotNull NapileTypeConstraint typeConstraint)
-			{
-				//noinspection ConstantConditions
-				return typeConstraint.getSubjectTypeParameterName().getReferencedName();
-			}
-		}, NAME);
 		MAP.put(AUTOCAST_IMPOSSIBLE, "Automatic cast to ''{0}'' is impossible, because ''{1}'' could have changed since the is-check", RENDER_TYPE, NAME);
 
 		MAP.put(TYPE_MISMATCH_IN_FOR_LOOP, "The loop iterates over values of type {0} but the parameter is declared to be {1}", RENDER_TYPE, RENDER_TYPE);

@@ -19,7 +19,7 @@ package org.napile.idea.plugin.stubindex.resolve;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.lazy.DeclarationProvider;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -37,7 +37,7 @@ public abstract class AbstractStubDeclarationProvider implements DeclarationProv
 	}
 
 	@Override
-	public NapileLikeClass getClassOrObjectDeclaration(@NotNull Name name)
+	public NapileClassLike getClassOrObjectDeclaration(@NotNull Name name)
 	{
 		// TODO:
 		return null;

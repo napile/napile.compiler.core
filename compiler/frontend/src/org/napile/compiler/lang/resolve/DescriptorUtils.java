@@ -370,23 +370,4 @@ public class DescriptorUtils
 		assert superClassDescriptor instanceof ClassDescriptor : "Superclass descriptor of a type should be of type ClassDescriptor";
 		return (ClassDescriptor) superClassDescriptor;
 	}
-
-	public static boolean inStaticContext(@NotNull DeclarationDescriptor descriptor)
-	{
-		DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
-		if(containingDeclaration instanceof NamespaceDescriptor)
-		{
-			return true;
-		}
-		if(containingDeclaration instanceof ClassDescriptor)
-		{
-			ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
-
-			if(classDescriptor.getKind() == ClassKind.ANONYM_CLASS)
-			{
-				return inStaticContext(classDescriptor.getContainingDeclaration());
-			}
-		}
-		return false;
-	}
 }

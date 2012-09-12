@@ -235,7 +235,6 @@ public interface Errors
 	DiagnosticFactory1<PsiElement, String> UNSUPPORTED = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, JetType> UNNECESSARY_SAFE_CALL = DiagnosticFactory1.create(Severity.WARNING);
 	DiagnosticFactory1<PsiElement, JetType> UNNECESSARY_NOT_NULL_ASSERTION = DiagnosticFactory1.create(Severity.WARNING);
-	DiagnosticFactory2<NapileSimpleNameExpression, NapileTypeConstraint, NapileTypeParameterListOwner> NAME_IN_CONSTRAINT_IS_NOT_A_TYPE_PARAMETER = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory2<NapileExpression, JetType, String> AUTOCAST_IMPOSSIBLE = DiagnosticFactory2.create(Severity.ERROR);
 
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> TYPE_MISMATCH_IN_FOR_LOOP = DiagnosticFactory2.create(Severity.ERROR);
@@ -270,15 +269,15 @@ public interface Errors
 		}
 	});
 
-	DiagnosticFactory2<PsiElement, NapileLikeClass, CallableMemberDescriptor> ABSTRACT_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
+	DiagnosticFactory2<PsiElement, NapileClassLike, CallableMemberDescriptor> ABSTRACT_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
 
-	DiagnosticFactory2<PsiElement, NapileLikeClass, CallableMemberDescriptor> MANY_IMPL_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
+	DiagnosticFactory2<PsiElement, NapileClassLike, CallableMemberDescriptor> MANY_IMPL_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapilePropertyParameter> DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.PARAMETER_DEFAULT_VALUE);
 	DiagnosticFactory1<NapilePropertyParameter, ParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES = DiagnosticFactory1.create(Severity.ERROR);
-	DiagnosticFactory1<NapileLikeClass, ParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES_WHEN_NO_EXPLICIT_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
+	DiagnosticFactory1<NapileClassLike, ParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES_WHEN_NO_EXPLICIT_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
 	DiagnosticFactory2<NapilePropertyParameter, ClassDescriptor, ParameterDescriptor> PARAMETER_NAME_CHANGED_ON_OVERRIDE = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
-	DiagnosticFactory2<NapileLikeClass, Collection<? extends CallableMemberDescriptor>, Integer> DIFFERENT_NAMES_FOR_THE_SAME_PARAMETER_IN_SUPERTYPES = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
+	DiagnosticFactory2<NapileClassLike, Collection<? extends CallableMemberDescriptor>, Integer> DIFFERENT_NAMES_FOR_THE_SAME_PARAMETER_IN_SUPERTYPES = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 
 	DiagnosticFactory2<NapileDeclaration, CallableMemberDescriptor, String> CONFLICTING_OVERLOADS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.DECLARATION);
 

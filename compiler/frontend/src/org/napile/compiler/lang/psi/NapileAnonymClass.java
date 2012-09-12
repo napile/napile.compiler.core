@@ -34,7 +34,7 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author abreslav
  */
-public class NapileAnonymClass extends NapileElementImpl implements NapileLikeClass, NapileExpression, NapileNamedDeclaration
+public class NapileAnonymClass extends NapileElementImpl implements NapileClassLike, NapileExpression, NapileNamedDeclaration
 {
 	private static final FqName FQ_NAME = new FqName("@anonym");
 

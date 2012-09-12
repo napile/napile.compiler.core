@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.resolve;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,68 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
  */
 public interface BodiesResolveContext
 {
+	BodiesResolveContext EMPTY = new BodiesResolveContext()
+	{
+		@Override
+		public Map<NapileClass, MutableClassDescriptor> getClasses()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public Map<NapileAnonymClass, MutableClassDescriptor> getAnonymous()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public Map<NapileConstructor, ConstructorDescriptor> getConstructors()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public Map<NapileProperty, PropertyDescriptor> getProperties()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public Map<NapileRetellEntry, PropertyDescriptor> getRetellEntries()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public Map<NapileDeclaration, JetScope> getDeclaringScopes()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public void setTopDownAnalysisParameters(TopDownAnalysisParameters parameters)
+		{
+		}
+
+		@Override
+		public boolean completeAnalysisNeeded(@NotNull NapileElement element)
+		{
+			return false;
+		}
+	};
+
 	Map<NapileClass, MutableClassDescriptor> getClasses();
 
 	Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries();

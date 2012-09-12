@@ -228,13 +228,12 @@ public class CallResolver
 				else
 				{
 					NapileConstructorCalleeExpression expression = (NapileConstructorCalleeExpression) calleeExpression;
-					functionReference = expression.getConstructorReferenceExpression();
-					if(functionReference == null)
-					{
-						return checkArgumentTypesAndFail(context); // No type there
-					}
+
 					NapileTypeReference typeReference = expression.getTypeReference();
-					assert typeReference != null;
+					if(typeReference == null)
+						return checkArgumentTypesAndFail(context); // No type there
+					functionReference = new NapileFakeReference(typeReference);
+
 					JetType constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
 					declarationDescriptor = constructedType.getConstructor().getDeclarationDescriptor();
 				}

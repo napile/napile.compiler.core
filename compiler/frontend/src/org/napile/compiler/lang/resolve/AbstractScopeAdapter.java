@@ -27,6 +27,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -65,6 +66,12 @@ public abstract class AbstractScopeAdapter implements JetScope
 	public NamespaceDescriptor getNamespace(@NotNull Name name)
 	{
 		return getWorkerScope().getNamespace(name);
+	}
+
+	@Override
+	public ClassDescriptor getClass(@NotNull FqName name)
+	{
+		return getWorkerScope().getClass(name);
 	}
 
 	@Override
