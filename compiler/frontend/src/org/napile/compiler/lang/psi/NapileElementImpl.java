@@ -45,7 +45,7 @@ public class NapileElementImpl extends ASTWrapperPsiElement implements NapileEle
 	@Override
 	public String toString()
 	{
-		return getNode().getElementType().toString();
+		return getClass().getSimpleName() + "(" + getNode().getElementType() + ")";
 	}
 
 	@Override

@@ -123,7 +123,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		// To report NO_CLASS_OBJECT when no namespace found
 		if(classifier != null)
 		{
-			//context.trace.report(NO_CLASS_OBJECT.on(expression, classifier));
+			context.trace.report(FUNCTION_CALL_EXPECTED.on(expression, expression, false));
 			context.trace.record(REFERENCE_TARGET, expression, classifier);
 			return classifier.getDefaultType();
 		}
