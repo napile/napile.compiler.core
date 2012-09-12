@@ -132,7 +132,7 @@ public class TypeResolver
 						}
 						else
 						{
-							result[0] = new JetTypeImpl(annotations, typeParameterDescriptor.getTypeConstructor(), nullable || TypeUtils.hasNullableLowerBound(typeParameterDescriptor), Collections.<JetType>emptyList(), scopeForTypeParameter);
+							result[0] = new JetTypeImpl(annotations, typeParameterDescriptor.getTypeConstructor(), nullable, Collections.<JetType>emptyList(), scopeForTypeParameter);
 						}
 
 						resolveTypes(scope, type.getTypeArguments(), trace, checkBounds);

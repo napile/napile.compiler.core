@@ -383,11 +383,6 @@ public class ConstraintSystemWithPriorities
 				constraintsToEnsureAfterInference.add(PARAMETER_BOUND.assertSubtyping(unknown.getOriginalType(), getTypeValueFor(upperBound).getOriginalType()));
 				//                unknown.addUpperBound(new TypeValue(upperBound));
 			}
-			for(JetType lowerBound : typeParameterDescriptor.getLowerBounds())
-			{
-				constraintsToEnsureAfterInference.add(PARAMETER_BOUND.assertSubtyping(getTypeValueFor(lowerBound).getOriginalType(), unknown.getOriginalType()));
-				//                unknown.addLowerBound(new TypeValue(lowerBound));
-			}
 		}
 
 

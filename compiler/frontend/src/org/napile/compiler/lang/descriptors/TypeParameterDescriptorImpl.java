@@ -64,7 +64,6 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	private JetType upperBoundsAsType;
 	private final TypeConstructor typeConstructor;
 	private JetType defaultType;
-	private final Set<JetType> classObjectUpperBounds = Sets.newLinkedHashSet();
 
 	private final boolean reified;
 
@@ -161,22 +160,6 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 		return upperBoundsAsType;
 	}
 
-	@Override
-	@NotNull
-	public Set<JetType> getLowerBounds()
-	{
-		//checkInitialized();
-		return Collections.singleton(TypeUtils.getTypeOfClassOrErrorType(TypeUtils.getChainedScope(upperBounds), NapileLangPackage.NULL, false));
-	}
-
-	@Override
-	@NotNull
-	public JetType getLowerBoundsAsType()
-	{
-		checkInitialized();
-		return TypeUtils.getTypeOfClassOrErrorType(TypeUtils.getChainedScope(upperBounds), NapileLangPackage.NULL, false);
-	}
-
 	@NotNull
 	@Override
 	public TypeConstructor getTypeConstructor()
@@ -220,7 +203,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 		//checkInitialized();
 		if(defaultType == null)
 		{
-			defaultType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), getTypeConstructor(), TypeUtils.hasNullableLowerBound(this), Collections.<JetType>emptyList(), new LazyScopeAdapter(new LazyValue<JetScope>()
+			defaultType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), getTypeConstructor(), false, Collections.<JetType>emptyList(), new LazyScopeAdapter(new LazyValue<JetScope>()
 			{
 				@Override
 				protected JetScope compute()
@@ -244,12 +227,6 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	public Collection<JetType> getSupertypes()
 	{
 		return Collections.emptySet();
-	}
-
-	public void addClassObjectBound(@NotNull JetType bound)
-	{
-		checkUninitialized();
-		classObjectUpperBounds.add(bound); // TODO : Duplicates?
 	}
 
 	@Override

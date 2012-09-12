@@ -63,8 +63,6 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 	private Set<JetType> upperBounds;
 	private JetType upperBoundsAsType;
 
-	private Set<JetType> classObjectBounds;
-	private JetType classObjectBoundsAsType;
 	private final boolean reified;
 
 	public LazyTypeParameterDescriptor(@NotNull ResolveSession resolveSession, @NotNull LazyClassDescriptor containingDeclaration, @NotNull NapileTypeParameter jetTypeParameter, int index)
@@ -132,20 +130,6 @@ public class LazyTypeParameterDescriptor implements TypeParameterDescriptor
 				upperBoundsAsType = TypeUtils.getTypeOfClassOrErrorType(TypeUtils.getChainedScope(upperBounds), NapileLangPackage.NULL, false);
 		}
 		return upperBoundsAsType;
-	}
-
-	@NotNull
-	@Override
-	public Set<JetType> getLowerBounds()
-	{
-		return Collections.singleton(getLowerBoundsAsType());
-	}
-
-	@NotNull
-	@Override
-	public JetType getLowerBoundsAsType()
-	{
-		return TypeUtils.getTypeOfClassOrErrorType(TypeUtils.getChainedScope(upperBounds), NapileLangPackage.NULL, false);
 	}
 
 	@NotNull

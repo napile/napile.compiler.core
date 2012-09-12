@@ -442,18 +442,6 @@ public class TypeUtils
 		return result;
 	}
 
-	public static boolean hasNullableLowerBound(@NotNull TypeParameterDescriptor typeParameterDescriptor)
-	{
-		for(JetType bound : typeParameterDescriptor.getLowerBounds())
-		{
-			if(bound.isNullable())
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public static boolean equalClasses(@NotNull JetType type1, @NotNull JetType type2)
 	{
 		DeclarationDescriptor declarationDescriptor1 = type1.getConstructor().getDeclarationDescriptor();
