@@ -85,7 +85,7 @@ public enum LineMarkers
 
 						if(DescriptorUtils.isSubclass(ownerDescriptor, methodOwnerDescription))
 						{
-							if(descriptor.getOverriddenDescriptors().contains(methodDescriptor.getOriginal()))
+							if(descriptor.getOverriddenDescriptors().contains(methodDescriptor))
 								list.add(namedFunction);
 						}
 					}
@@ -131,7 +131,7 @@ public enum LineMarkers
 						NapileNamedFunction namedFunction = entry.getKey();
 						SimpleMethodDescriptor methodDescriptor = entry.getValue();
 
-						if(methodDescriptor.getOverriddenDescriptors().contains(descriptor.getOriginal()))
+						if(methodDescriptor.getOverriddenDescriptors().contains(descriptor))
 							list.add(namedFunction);
 					}
 
