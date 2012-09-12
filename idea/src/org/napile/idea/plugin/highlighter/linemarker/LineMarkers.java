@@ -27,10 +27,14 @@ import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileLikeClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
@@ -51,20 +55,120 @@ import com.intellij.util.Function;
  */
 public enum LineMarkers
 {
+	METHOD_OVERRIDING
+			{
+				@NotNull
+				@Override
+				protected List<NapileElement> getTargets(PsiElement element)
+				{
+					if(!(element instanceof NapileMethod))
+						return Collections.emptyList();
+
+					NapileMethod napileMethod = (NapileMethod) element;
+					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileMethod.getContainingFile());
+
+					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
+
+					SimpleMethodDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, napileMethod);
+					if(descriptor == null)
+						return Collections.emptyList();
+
+					ClassDescriptor ownerDescriptor = (ClassDescriptor)descriptor.getContainingDeclaration();
+
+					List<NapileElement> list = new ArrayList<NapileElement>();
+					for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
+					{
+						NapileNamedFunction namedFunction = entry.getKey();
+						SimpleMethodDescriptor methodDescriptor = entry.getValue();
+
+						ClassDescriptor methodOwnerDescription = (ClassDescriptor) methodDescriptor.getContainingDeclaration();
+
+						if(DescriptorUtils.isSubclass(ownerDescriptor, methodOwnerDescription))
+						{
+							if(descriptor.getOverriddenDescriptors().contains(methodDescriptor.getOriginal()))
+								list.add(namedFunction);
+						}
+					}
+
+					return list;
+				}
+
+				@NotNull
+				@Override
+				protected String getTitle()
+				{
+					return "Go to overriding methods";
+				}
+
+				@NotNull
+				@Override
+				protected Icon getIcon()
+				{
+					return AllIcons.Gutter.OverridingMethod;
+				}
+			},
+	METHOD_OVERRIDEN
+			{
+				@NotNull
+				@Override
+				protected List<NapileElement> getTargets(PsiElement element)
+				{
+					if(!(element instanceof NapileMethod))
+						return Collections.emptyList();
+
+					NapileMethod napileMethod = (NapileMethod) element;
+					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileMethod.getContainingFile());
+
+					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
+
+					SimpleMethodDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, napileMethod);
+					if(descriptor == null)
+						return Collections.emptyList();
+
+					List<NapileElement> list = new ArrayList<NapileElement>();
+					for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
+					{
+						NapileNamedFunction namedFunction = entry.getKey();
+						SimpleMethodDescriptor methodDescriptor = entry.getValue();
+
+						if(methodDescriptor.getOverriddenDescriptors().contains(descriptor.getOriginal()))
+							list.add(namedFunction);
+					}
+
+					return list;
+				}
+
+				@NotNull
+				@Override
+				protected String getTitle()
+				{
+					return "Go to overrided methods";
+				}
+
+				@NotNull
+				@Override
+				protected Icon getIcon()
+				{
+					return AllIcons.Gutter.OverridenMethod;
+				}
+			},
 	CLASS_OVERRIDEN
 			{
+				@NotNull
 				@Override
 				public Icon getIcon()
 				{
 					return AllIcons.Gutter.OverridenMethod;
 				}
 
+				@NotNull
 				@Override
 				public String getTitle()
 				{
 					return "Go to overriding classes";
 				}
 
+				@NotNull
 				@Override
 				protected List<NapileElement> getTargets(PsiElement element)
 				{
@@ -79,8 +183,8 @@ public enum LineMarkers
 
 					List<NapileElement> result = new ArrayList<NapileElement>();
 
-					Map<NapileLikeClass, ClassDescriptor> res = JetShortNamesCache.getInstance(napileClass.getProject()).getAllClassesAndDescriptors(napileClass, napileClass.getResolveScope());
-					for(Map.Entry<NapileLikeClass, ClassDescriptor> entry : res.entrySet())
+					Map<NapileClassLike, ClassDescriptor> res = JetShortNamesCache.getInstance(napileClass.getProject()).getAllClassesAndDescriptors(napileClass, napileClass.getResolveScope());
+					for(Map.Entry<NapileClassLike, ClassDescriptor> entry : res.entrySet())
 					{
 						if(entry.getValue() == classDeclaration)
 							continue;
@@ -127,9 +231,12 @@ public enum LineMarkers
 		return null;
 	}
 
+	@NotNull
 	protected abstract List<NapileElement> getTargets(PsiElement element);
 
+	@NotNull
 	protected abstract String getTitle();
 
+	@NotNull
 	protected abstract Icon getIcon();
 }
