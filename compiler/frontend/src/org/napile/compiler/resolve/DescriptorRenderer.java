@@ -35,6 +35,8 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.Function;
 
 /**
  * @author abreslav
@@ -89,7 +91,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitTypeParameterDescriptor(TypeParameterDescriptor descriptor, StringBuilder builder)
 		{
-			renderTypeParameter(descriptor, builder, false);
+			renderTypeParameter(descriptor, builder);
 			return null;
 		}
 
@@ -547,7 +549,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		public Void visitTypeParameterDescriptor(TypeParameterDescriptor descriptor, StringBuilder builder)
 		{
 			builder.append(lt());
-			renderTypeParameter(descriptor, builder, true);
+			renderTypeParameter(descriptor, builder);
 			builder.append(">");
 			return null;
 		}
@@ -630,45 +632,31 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			stringBuilder.append(escape(descriptor.getName().getName()));
 		}
 
-		protected void renderTypeParameter(TypeParameterDescriptor descriptor, StringBuilder builder, boolean topLevel)
+		protected void renderTypeParameter(TypeParameterDescriptor descriptor, StringBuilder builder)
 		{
 			if(descriptor.isReified())
-			{
 				builder.append(renderKeyword(JetTokens.REIFIED_KEYWORD)).append(" ");
-			}
+
 			renderName(descriptor, builder);
+
 			if(descriptor.getUpperBounds().size() == 1)
 			{
 				JetType upperBound = descriptor.getUpperBounds().iterator().next();
 				if(upperBound != JetStandardClasses.getDefaultBound())
-				{
 					builder.append(" : ").append(renderType(upperBound));
-				}
-			}
-			else if(topLevel)
-			{
-				boolean first = true;
-				for(JetType upperBound : descriptor.getUpperBounds())
-				{
-					if(upperBound.equals(JetStandardClasses.getDefaultBound()))
-					{
-						continue;
-					}
-					if(first)
-					{
-						builder.append(" : ");
-					}
-					else
-					{
-						builder.append(" & ");
-					}
-					builder.append(renderType(upperBound));
-					first = false;
-				}
 			}
 			else
 			{
-				// rendered with "where"
+				builder.append(" [");
+				builder.append(StringUtil.join(descriptor.getUpperBounds(), new Function<JetType, String>()
+				{
+					@Override
+					public String fun(JetType jetType)
+					{
+						return renderType(jetType);
+					}
+				}, ", "));
+				builder.append("]");
 			}
 		}
 	}
