@@ -27,7 +27,9 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.rt.NapileAnnotationPackage;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.IconProvider;
@@ -83,11 +85,16 @@ public class JetIconProvider extends IconProvider
 					icon = napileClass.hasModifier(JetTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_CLASS : JetIcons.CLASS;
 			}
 
-			if(descriptor != null && AnnotationUtils.isAnnotation(descriptor))
+			if(descriptor != null)
 			{
-				icon = JetIcons.ANNOTATION;
-				if(AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.REPEATABLE))
-					icon = JetIcons.REPEATABLE_ANNOTATION;
+				if(AnnotationUtils.isAnnotation(descriptor))
+				{
+					icon = JetIcons.ANNOTATION;
+					if(AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.REPEATABLE))
+						icon = JetIcons.REPEATABLE_ANNOTATION;
+				}
+				else if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.THROWABLE))
+					icon = napileClass.hasModifier(JetTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_THROWABLE : JetIcons.THROWABLE;
 			}
 		}
 		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry || psiElement instanceof NapileProperty)

@@ -32,6 +32,8 @@ public interface JetIcons
 	Icon RETELL = IconLoader.getIcon("/org/napile/icons/nodes/retell.png");
 	Icon ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotation.png");
 	Icon REPEATABLE_ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotationRepeatable.png");
+	Icon THROWABLE = IconLoader.getIcon("/org/napile/icons/nodes/throwable.png");
+	Icon ABSTRACT_THROWABLE = IconLoader.getIcon("/org/napile/icons/nodes/abstractThrowable.png");
 	Icon ENUM = IconLoader.getIcon("/org/napile/icons/nodes/enum.png");
 	Icon ABSTRACT_CLASS = IconLoader.getIcon("/org/napile/icons/nodes/abstractClass.png");
 	Icon TYPE_PARAMETER = IconLoader.getIcon("/org/napile/icons/nodes/typeparameter.png");

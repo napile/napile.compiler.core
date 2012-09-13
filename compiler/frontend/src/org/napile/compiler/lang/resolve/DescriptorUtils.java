@@ -16,20 +16,20 @@
 
 package org.napile.compiler.lang.resolve;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.resolve.name.FqName;
+import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -37,8 +37,6 @@ import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -316,58 +314,20 @@ public class DescriptorUtils
 		}
 	}
 
-	public static boolean isTopLevelNamespace(@NotNull NamespaceDescriptor namespaceDescriptor)
+	public static boolean isSubclassOf(@NotNull ClassDescriptor classDescriptor, @NotNull FqName fqName)
 	{
-		return namespaceDescriptor.getContainingDeclaration() instanceof NamespaceDescriptor && namespaceDescriptor.getContainingDeclaration().getContainingDeclaration() instanceof ModuleDescriptor;
-	}
+		Set<JetType> set = new HashSet<JetType>();
+		addSuperTypes(classDescriptor.getDefaultType(), set);
 
-	public static boolean isRootNamespace(@NotNull NamespaceDescriptor namespaceDescriptor)
-	{
-		return namespaceDescriptor.getContainingDeclaration() instanceof ModuleDescriptor;
-	}
-
-	@NotNull
-	public static List<DeclarationDescriptor> getPathWithoutRootNsAndModule(@NotNull DeclarationDescriptor descriptor)
-	{
-		List<DeclarationDescriptor> path = Lists.newArrayList();
-		DeclarationDescriptor current = descriptor;
-		while(true)
-		{
-			if(current instanceof NamespaceDescriptor && isRootNamespace((NamespaceDescriptor) current))
-			{
-				return Lists.reverse(path);
-			}
-			path.add(current);
-			current = current.getContainingDeclaration();
-		}
-	}
-
-	public static boolean isClassObject(@NotNull DeclarationDescriptor descriptor)
-	{
+		for(JetType jetType : set)
+			if(TypeUtils.isEqualFqName(jetType, fqName))
+				return true;
 		return false;
 	}
 
-	@NotNull
-	public static List<ClassDescriptor> getSuperclassDescriptors(@NotNull ClassDescriptor classDescriptor)
+	@Deprecated
+	public static boolean isClassObject(@NotNull DeclarationDescriptor descriptor)
 	{
-		Collection<? extends JetType> superclassTypes = classDescriptor.getTypeConstructor().getSupertypes();
-		List<ClassDescriptor> superClassDescriptors = new ArrayList<ClassDescriptor>();
-		for(JetType type : superclassTypes)
-		{
-			ClassDescriptor result = getClassDescriptorForType(type);
-			if(JetStandardClasses.isNotAny(result))
-			{
-				superClassDescriptors.add(result);
-			}
-		}
-		return superClassDescriptors;
-	}
-
-	@NotNull
-	public static ClassDescriptor getClassDescriptorForType(@NotNull JetType type)
-	{
-		DeclarationDescriptor superClassDescriptor = type.getConstructor().getDeclarationDescriptor();
-		assert superClassDescriptor instanceof ClassDescriptor : "Superclass descriptor of a type should be of type ClassDescriptor";
-		return (ClassDescriptor) superClassDescriptor;
+		return false;
 	}
 }
