@@ -44,23 +44,13 @@ public class JetFileTreeNode extends PsiFileNode
 	{
 		NapileFile file = (NapileFile) getValue();
 
-		if(file == null)
+		if(file == null || !getSettings().isShowMembers())
 			return Collections.emptyList();
-		ArrayList<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>();
 
-		if(getSettings().isShowMembers())
-		{
-			List<NapileClass> declarations = file.getDeclarations();
-
-			for(NapileClass declaration : declarations)
-			{
-				if(declaration != null)
-				{
-					result.add(new JetClassOrObjectTreeNode(file.getProject(), declaration, getSettings()));
-				}
-			}
-		}
-
+		List<NapileClass> classes = file.getDeclarations();
+		List<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>(classes.size());
+		for(NapileClass declaration : file.getDeclarations())
+			result.add(new NapileClassTreeNode(file.getProject(), declaration, getSettings()));
 		return result;
 	}
 }

@@ -27,6 +27,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
@@ -38,13 +39,10 @@ import org.napile.compiler.lang.resolve.ImportPath;
 import org.napile.compiler.lang.resolve.Importer;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
-import org.napile.compiler.lang.resolve.lazy.ScopeProvider;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.resolve.processors.QualifiedExpressionResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.plugin.JetLanguage;
-import org.napile.compiler.lang.diagnostics.Errors;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.intellij.openapi.project.Project;
@@ -103,7 +101,7 @@ public class ImportsResolver
 		for(NapileFile file : context.getNamespaceDescriptors().keySet())
 		{
 			WritableScope namespaceScope = context.getNamespaceScopes().get(file);
-			processImportsInFile(onlyClasses, namespaceScope, ScopeProvider.getFileImports(file), rootScope);
+			processImportsInFile(onlyClasses, namespaceScope, file.getImportDirectives(), rootScope);
 		}
 	}
 

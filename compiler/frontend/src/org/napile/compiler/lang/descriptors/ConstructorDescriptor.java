@@ -33,25 +33,19 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 {
 	private static final Name NAME = Name.identifier("this");
 
-	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations)
+	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
 	{
-		super(containingDeclaration, annotations, NAME, Kind.DECLARATION, false, false);
+		super(containingDeclaration, annotations, NAME, Kind.DECLARATION, isStatic, false);
 	}
 
-	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations)
+	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
 	{
-		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION, false, false);
+		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION, isStatic, false);
 	}
 
 	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, Visibility visibility)
 	{
-		return initialize(typeParameters, unsubstitutedValueParameters, visibility, false);
-	}
-
-	//isStatic - for java only
-	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, Visibility visibility, boolean isStatic)
-	{
-		super.initialize(null, isStatic ? ReceiverDescriptor.NO_RECEIVER : getExpectedThisObject(getContainingDeclaration()), typeParameters, unsubstitutedValueParameters, null, Modality.FINAL, visibility);
+		super.initialize(null, isStatic() ? ReceiverDescriptor.NO_RECEIVER : getExpectedThisObject(getContainingDeclaration()), typeParameters, unsubstitutedValueParameters, null, Modality.FINAL, visibility);
 		return this;
 	}
 
@@ -90,12 +84,6 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 	}
 
 	@Override
-	public boolean isNative()
-	{
-		return false;
-	}
-
-	@Override
 	public void addOverriddenDescriptor(@NotNull CallableMemberDescriptor overriddenFunction)
 	{
 		throw new UnsupportedOperationException("Constructors cannot override anything");
@@ -108,7 +96,7 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 		{
 			throw new IllegalStateException();
 		}
-		return new ConstructorDescriptor((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList());//TODO annotation list
+		return new ConstructorDescriptor((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList(), false);//TODO annotation list
 	}
 
 	@NotNull

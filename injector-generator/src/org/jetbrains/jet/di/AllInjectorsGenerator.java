@@ -26,15 +26,10 @@ import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.TopDownAnalyzer;
-import org.napile.compiler.lang.resolve.lazy.ResolveSession;
-import org.napile.compiler.lang.resolve.lazy.ScopeProvider;
-import org.napile.compiler.lang.resolve.processors.AnnotationResolver;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
 import org.napile.compiler.lang.resolve.processors.ControlFlowAnalyzer;
 import org.napile.compiler.lang.resolve.processors.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
-import org.napile.compiler.lang.resolve.processors.QualifiedExpressionResolver;
-import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import com.intellij.openapi.project.Project;
 
@@ -53,23 +48,8 @@ public class AllInjectorsGenerator
 		generateMacroInjector();
 
 		generateInjectorForJvmCodegen();
-		generateInjectorForLazyResolve();
-		generateInjectorForBodyResolve();
-	}
 
-	private static void generateInjectorForLazyResolve() throws IOException
-	{
-		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
-		generator.addParameter(Project.class);
-		generator.addParameter(ResolveSession.class);
-		generator.addParameter(BindingTrace.class);
-		generator.addPublicField(DescriptorResolver.class);
-		generator.addPublicField(ExpressionTypingServices.class);
-		generator.addPublicField(TypeResolver.class);
-		generator.addPublicField(ScopeProvider.class);
-		generator.addPublicField(AnnotationResolver.class);
-		generator.addPublicField(QualifiedExpressionResolver.class);
-		generator.generate("compiler/frontend/src", "org.napile.compiler.di", "InjectorForLazyResolve");
+		generateInjectorForBodyResolve();
 	}
 
 	private static void generateInjectorForTopDownAnalyzerBasic() throws IOException

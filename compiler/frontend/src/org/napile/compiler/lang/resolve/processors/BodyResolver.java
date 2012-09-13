@@ -425,12 +425,23 @@ public class BodyResolver
 
 	private void resolveConstructorBodies()
 	{
-		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : this.context.getConstructors().entrySet())
+		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
+			for(NapileStaticConstructor constructor : entry.getKey().getStaticConstructors())
+			{
+				JetScope declaringScope = context.getDeclaringScopes().get(constructor);
+				assert declaringScope != null;
+
+				ConstructorDescriptor constructorDescriptor = trace.safeGet(BindingContext.CONSTRUCTOR, constructor);
+
+				resolveFunctionBody(trace, constructor, constructorDescriptor, declaringScope);
+			}
+
+		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : context.getConstructors().entrySet())
 		{
 			NapileConstructor declaration = entry.getKey();
 			ConstructorDescriptor descriptor = entry.getValue();
 
-			JetScope declaringScope = this.context.getDeclaringScopes().get(declaration);
+			JetScope declaringScope = context.getDeclaringScopes().get(declaration);
 			assert declaringScope != null;
 
 			resolveFunctionBody(trace, declaration, descriptor, declaringScope);

@@ -810,7 +810,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			if(valPos >= 0)
 			{
 				PsiBuilder.Marker property = mark();
-				myJetParsing.parseModifierList(MODIFIER_LIST, true);
+				myJetParsing.parseModifierList(MODIFIER_LIST);
 				myJetParsing.parseProperty(true);
 				property.done(PROPERTY);
 			}
@@ -1305,7 +1305,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 				PsiBuilder.Marker parameter = mark();
 				int parameterNamePos = matchTokenStreamPredicate(new LastBefore(new At(JetTokens.IDENTIFIER), new AtSet(JetTokens.COMMA, JetTokens.RPAR, JetTokens.COLON, JetTokens.ARROW)));
-				createTruncatedBuilder(parameterNamePos).parseModifierList(MODIFIER_LIST, false);
+				createTruncatedBuilder(parameterNamePos).parseModifierList(MODIFIER_LIST);
 
 				expect(JetTokens.IDENTIFIER, "Expecting parameter declaration");
 

@@ -36,4 +36,6 @@ public interface NamespaceLikeBuilder
 	void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor);
 
 	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
+
+	void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
 }

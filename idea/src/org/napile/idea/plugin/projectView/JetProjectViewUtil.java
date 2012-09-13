@@ -21,8 +21,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileStaticConstructor;
 import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.Project;
@@ -39,30 +43,25 @@ public final class JetProjectViewUtil
 	{
 	}
 
-	public static Collection<AbstractTreeNode> getClassOrObjectChildren(NapileClassLike classOrObject, Project project, ViewSettings settings)
+	public static Collection<AbstractTreeNode> getChildren(@NotNull NapileClass napileClass, Project project, ViewSettings settings)
 	{
-		if(classOrObject != null && settings.isShowMembers())
+		if(settings.isShowMembers())
 		{
-			Collection<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>();
-			List<? extends NapileDeclaration> declarations = classOrObject.getDeclarations();
+			List<? extends NapileDeclaration> declarations = napileClass.getDeclarations();
+			List<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>(declarations.size());
+
 			for(NapileDeclaration declaration : declarations)
 			{
-				if(declaration instanceof NapileClassLike)
-				{
-					result.add(new JetClassOrObjectTreeNode(project, (NapileClassLike) declaration, settings));
-				}
-				else
-				{
+				if(declaration instanceof NapileClass)
+					result.add(new NapileClassTreeNode(project, (NapileClass) declaration, settings));
+				else if(!(declaration instanceof NapileStaticConstructor))
 					result.add(new JetDeclarationTreeNode(project, declaration, settings));
-				}
 			}
 
 			return result;
 		}
 		else
-		{
 			return Collections.emptyList();
-		}
 	}
 
 	public static boolean canRepresentPsiElement(PsiElement value, Object element, ViewSettings settings)
@@ -96,5 +95,12 @@ public final class JetProjectViewUtil
 		}
 
 		return false;
+	}
+
+	@Nullable
+	public static NapileClass getClassIfHeSingle(@NotNull NapileFile file)
+	{
+		List<NapileClass> list = file.getDeclarations();
+		return list.size() == 1 ? list.get(0) : null;
 	}
 }

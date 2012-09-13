@@ -190,6 +190,16 @@ public class DeclarationResolver
 				}
 
 				@Override
+				public void visitStaticConstructor(NapileStaticConstructor staticConstructor)
+				{
+					ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveStaticConstructorDescriptor(scope, ownerDescription, staticConstructor, trace);
+
+					ownerDescription.getBuilder().addStaticConstructorDescriptor(constructorDescriptor);
+
+					context.getDeclaringScopes().put(staticConstructor, scope);
+				}
+
+				@Override
 				public void visitProperty(NapileProperty property)
 				{
 					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptor(ownerDescription, scope, property, trace);

@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.descriptors;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 public class MutableClassDescriptor extends MutableClassDescriptorLite
 {
 	private final Set<ConstructorDescriptor> constructors = new HashSet<ConstructorDescriptor>();
+	private final Set<ConstructorDescriptor> staticConstructors = new LinkedHashSet<ConstructorDescriptor>();
 	private final Set<CallableMemberDescriptor> declaredCallableMembers = new HashSet<CallableMemberDescriptor>();
 	private final Set<CallableMemberDescriptor> allCallableMembers = new HashSet<CallableMemberDescriptor>(); // includes fake overrides
 	private final Set<PropertyDescriptor> properties = new HashSet<PropertyDescriptor>();
@@ -96,6 +98,12 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	public Set<PropertyDescriptor> getProperties()
 	{
 		return properties;
+	}
+
+	@NotNull
+	public Set<ConstructorDescriptor> getStaticConstructors()
+	{
+		return staticConstructors;
 	}
 
 	@NotNull
@@ -221,6 +229,12 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 					allCallableMembers.add(constructorDescriptor);
 
 					scopeForMemberResolution.addConstructorDescriptor(constructorDescriptor);
+				}
+
+				@Override
+				public void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+				{
+					getStaticConstructors().add(constructorDescriptor);
 				}
 			};
 		}

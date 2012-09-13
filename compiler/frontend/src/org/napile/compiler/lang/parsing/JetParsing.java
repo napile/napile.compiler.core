@@ -146,7 +146,7 @@ public class JetParsing extends AbstractJetParsing
          */
 		PsiBuilder.Marker namespaceHeader = mark();
 		PsiBuilder.Marker firstEntry = mark();
-		parseModifierList(MODIFIER_LIST, true);
+		parseModifierList(MODIFIER_LIST);
 
 		if(at(JetTokens.PACKAGE_KEYWORD))
 		{
@@ -319,13 +319,6 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
-	/*
-		 * (modifier | attribute)*
-		 */
-	boolean parseModifierList(NapileNodeType nodeType, boolean allowShortAnnotations)
-	{
-		return parseModifierList(nodeType);
-	}
 
 	/**
 	 * (modifier | attribute)*
@@ -433,11 +426,6 @@ public class JetParsing extends AbstractJetParsing
 		}
 		parseTypeParameterList();
 
-		PsiBuilder.Marker beforeConstructorModifiers = mark();
-
-		// We are still inside a class declaration
-		beforeConstructorModifiers.drop();
-
 		if(at(JetTokens.COLON))
 		{
 			advance(); // COLON
@@ -514,7 +502,7 @@ public class JetParsing extends AbstractJetParsing
 
 	/*
 		 * enumEntry
-		 *   : modifiers typeParameters? valueArguments? typeConstraints classBody?
+		 *   : typeParameters? valueArguments? typeConstraints classBody?
 		 *   ;
 		 */
 	private void parseEnumEntry()
@@ -641,9 +629,16 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker decl = mark();
 
-		parseModifierList(MODIFIER_LIST);
+		IElementType declType = null;
+		// ugly
+		if(at(JetTokens.STATIC_KEYWORD) && lookahead(1) == JetTokens.LBRACE)
+			declType = parseStaticConstructor();
+		else
+		{
+			parseModifierList(MODIFIER_LIST);
 
-		IElementType declType = parseMemberDeclarationRest();
+			declType = parseMemberDeclarationRest();
+		}
 
 		if(declType == null)
 		{
@@ -651,9 +646,7 @@ public class JetParsing extends AbstractJetParsing
 			decl.drop();
 		}
 		else
-		{
 			decl.done(declType);
-		}
 	}
 
 	private IElementType parseMemberDeclarationRest()
@@ -863,7 +856,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker getterOrSetter = mark();
 
-		parseModifierList(MODIFIER_LIST, false);
+		parseModifierList(MODIFIER_LIST);
 
 		if(!at(JetTokens.GET_KEYWORD) && !at(JetTokens.SET_KEYWORD))
 		{
@@ -980,6 +973,17 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		return METHOD;
+	}
+
+	private NapileNodeType parseStaticConstructor()
+	{
+		assert _at(JetTokens.STATIC_KEYWORD);
+
+		advance(); // STATIC_KEYWORD
+
+		parseBlock();
+
+		return STATIC_CONSTRUCTOR;
 	}
 
 	/*
@@ -1475,7 +1479,7 @@ public class JetParsing extends AbstractJetParsing
 	private void parseModifierListWithShortAnnotations(NapileNodeType modifierList, TokenSet lookFor, TokenSet stopAt)
 	{
 		int lastId = findLastBefore(lookFor, stopAt, false);
-		createTruncatedBuilder(lastId).parseModifierList(modifierList, true);
+		createTruncatedBuilder(lastId).parseModifierList(modifierList);
 	}
 
 	/*
@@ -1554,7 +1558,7 @@ public class JetParsing extends AbstractJetParsing
 						if(!tryParseValueParameter())
 						{
 							PsiBuilder.Marker valueParameter = mark();
-							parseModifierList(MODIFIER_LIST, false); // lazy, out, ref
+							parseModifierList(MODIFIER_LIST); // lazy, out, ref
 							parseTypeRef();
 							valueParameter.done(VALUE_PARAMETER);
 						}

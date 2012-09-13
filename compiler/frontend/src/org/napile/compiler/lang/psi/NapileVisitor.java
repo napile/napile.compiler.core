@@ -44,6 +44,11 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitNamedDeclaration(constructor, data);
 	}
 
+	public R visitStaticConstructor(NapileStaticConstructor constructor, D data)
+	{
+		return visitNamedDeclaration(constructor, data);
+	}
+
 	public R visitNamedFunction(NapileNamedFunction function, D data)
 	{
 		return visitNamedDeclaration(function, data);
@@ -52,12 +57,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	public R visitProperty(NapileProperty property, D data)
 	{
 		return visitNamedDeclaration(property, data);
-	}
-
-	public R visitJetFile(NapileFile file, D data)
-	{
-		visitFile(file);
-		return null;
 	}
 
 	public R visitImportDirective(NapileImportDirective importDirective, D data)

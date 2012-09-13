@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -56,15 +55,16 @@ public class NapileClassBody extends NapileElementImpl implements NapileDeclarat
 		return visitor.visitClassBody(this, data);
 	}
 
-	public List<NapileConstructor> getConstructors()
+	@NotNull
+	public NapileConstructor[] getConstructors()
 	{
-		return PsiTreeUtil.getChildrenOfTypeAsList(this, NapileConstructor.class);
+		return findChildrenByClass(NapileConstructor.class);
 	}
 
 	@NotNull
-	public List<NapileProperty> getProperties()
+	public NapileStaticConstructor[] getStaticConstructors()
 	{
-		return findChildrenByType(NapileNodeTypes.PROPERTY);
+		return findChildrenByClass(NapileStaticConstructor.class);
 	}
 
 	@Nullable

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import java.util.List;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
@@ -30,13 +29,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
 
 /**
- * @author max
+ * @author VISTALL
+ * @date 22:20/13.09.12
  */
-public class NapileConstructor extends NapileDeclarationImpl implements NapileDeclarationWithBody, NapileStatementExpression, NapileDelegationSpecifierListOwner, NapileNamedDeclaration
+public class NapileStaticConstructor extends NapileDeclarationImpl implements NapileDeclarationWithBody, NapileStatementExpression, NapileNamedDeclaration
 {
-	public static final NapileConstructor[] EMPTY_ARRAY = new NapileConstructor[0];
+	public static final NapileStaticConstructor[] EMPTY_ARRAY = new NapileStaticConstructor[0];
 
-	public NapileConstructor(@NotNull ASTNode node)
+	public NapileStaticConstructor(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -44,43 +44,13 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitConstructor(this);
+		visitor.visitStaticConstructor(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitConstructor(this, data);
-	}
-
-	@Nullable
-	@IfNotParsed
-	public NapileParameterList getParameterList()
-	{
-		return (NapileParameterList) findChildByType(NapileNodeTypes.VALUE_PARAMETER_LIST);
-	}
-
-	@Override
-	@NotNull
-	public List<NapileElement> getValueParameters()
-	{
-		NapileParameterList list = getParameterList();
-		return list != null ? list.getParameters() : Collections.<NapileElement>emptyList();
-	}
-
-	@Override
-	@Nullable
-	public NapileDelegationSpecifierList getDelegationSpecifierList()
-	{
-		return (NapileDelegationSpecifierList) findChildByType(NapileNodeTypes.DELEGATION_SPECIFIER_LIST);
-	}
-
-	@NotNull
-	@Override
-	public List<NapileDelegationSpecifier> getDelegationSpecifiers()
-	{
-		NapileDelegationSpecifierList list = getDelegationSpecifierList();
-		return list != null ? list.getDelegationSpecifiers() : Collections.<NapileDelegationSpecifier>emptyList();
+		return visitor.visitStaticConstructor(this, data);
 	}
 
 	@Override
@@ -92,13 +62,13 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 	@Override
 	public boolean hasBlockBody()
 	{
-		return findChildByType(JetTokens.EQ) == null;
+		return true;
 	}
 
 	@Override
 	public boolean hasDeclaredReturnType()
 	{
-		return true;
+		return false;
 	}
 
 	@NotNull
@@ -108,17 +78,11 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 		return this;
 	}
 
-	@Override
 	@NotNull
-	public String getName()
-	{
-		return "this";  // JetDeclarationTreeNode not show node if name is null
-	}
-
 	@Override
-	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	public List<NapileElement> getValueParameters()
 	{
-		throw new IncorrectOperationException();
+		return Collections.emptyList();
 	}
 
 	@NotNull
@@ -139,6 +103,19 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 	@Override
 	public PsiElement getNameIdentifier()
 	{
-		return findNotNullChildByType(JetTokens.THIS_KEYWORD);
+		return findNotNullChildByType(JetTokens.STATIC_KEYWORD);
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String s) throws IncorrectOperationException
+	{
+		throw new IncorrectOperationException();
+	}
+
+	@Override
+	@NotNull
+	public String getName()
+	{
+		return "static";
 	}
 }

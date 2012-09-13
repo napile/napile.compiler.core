@@ -92,13 +92,23 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 	}
 
 	@NotNull
-	public List<NapileConstructor> getConstructors()
+	public NapileConstructor[] getConstructors()
 	{
 		NapileClassBody body = (NapileClassBody) findChildByType(NapileNodeTypes.CLASS_BODY);
 		if(body == null)
-			return Collections.emptyList();
+			return NapileConstructor.EMPTY_ARRAY;
 
 		return body.getConstructors();
+	}
+
+	@NotNull
+	public NapileStaticConstructor[] getStaticConstructors()
+	{
+		NapileClassBody body = (NapileClassBody) findChildByType(NapileNodeTypes.CLASS_BODY);
+		if(body == null)
+			return NapileStaticConstructor.EMPTY_ARRAY;
+
+		return body.getStaticConstructors();
 	}
 
 	@Override

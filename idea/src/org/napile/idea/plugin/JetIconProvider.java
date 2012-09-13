@@ -16,15 +16,20 @@
 
 package org.napile.idea.plugin;
 
-import java.util.List;
-
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileModifierListOwner;
+import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileRetellEntry;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -101,15 +106,6 @@ public class JetIconProvider extends IconProvider
 			icon = JetIcons.VARIABLE;
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags);
-	}
-
-	@Nullable
-	public static NapileClassLike getMainClass(@NotNull NapileFile file)
-	{
-		List<NapileClass> list = file.getDeclarations();
-		if(list.size() == 1)
-			return list.get(0);
-		return null;
 	}
 
 	public static Icon modifyIcon(NapileModifierListOwner modifierList, Icon baseIcon, int flags)

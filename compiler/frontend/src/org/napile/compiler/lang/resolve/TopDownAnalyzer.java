@@ -240,6 +240,11 @@ public class TopDownAnalyzer
 			public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
 			{
 			}
+
+			@Override
+			public void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+			{
+			}
 		}, Collections.<PsiElement>singletonList(object));
 	}
 

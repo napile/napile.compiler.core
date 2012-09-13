@@ -43,6 +43,11 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitNamedDeclaration(constructor);
 	}
 
+	public void visitStaticConstructor(NapileStaticConstructor constructor)
+	{
+		visitNamedDeclaration(constructor);
+	}
+
 	public void visitNamedMethod(NapileNamedFunction function)
 	{
 		visitNamedDeclaration(function);

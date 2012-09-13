@@ -37,6 +37,7 @@ public interface NapileNodeTypes
 	NapileNodeType OBJECT_DECLARATION_NAME = new NapileNodeType("OBJECT_DECLARATION_NAME", NapileObjectDeclarationName.class);
 
 	NapileNodeType CONSTRUCTOR = new NapileNodeType("CONSTRUCTOR", NapileConstructor.class);
+	NapileNodeType STATIC_CONSTRUCTOR = new NapileNodeType("STATIC_CONSTRUCTOR", NapileStaticConstructor.class);
 	IElementType ENUM_ENTRY = JetStubElementTypes.ENUM_ENTRY;
 	IElementType RETELL_ENTRY = JetStubElementTypes.RETELL_ENTRY;
 

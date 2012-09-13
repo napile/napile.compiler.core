@@ -25,14 +25,12 @@ import org.napile.compiler.lang.psi.NapileClassBody;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.JetIconProvider;
+import org.napile.idea.plugin.util.FileRootUtil;
 import com.intellij.ide.projectView.SelectableTreeStructureProvider;
 import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.util.treeView.AbstractTreeNode;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -43,7 +41,7 @@ import com.intellij.psi.PsiFile;
  */
 public class JetProjectViewProvider implements SelectableTreeStructureProvider, DumbAware
 {
-	private Project myProject;
+	private final Project myProject;
 
 	public JetProjectViewProvider(Project project)
 	{
@@ -53,7 +51,7 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 	@Override
 	public Collection<AbstractTreeNode> modify(AbstractTreeNode parent, Collection<AbstractTreeNode> children, ViewSettings settings)
 	{
-		List<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>();
+		List<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>(children.size());
 
 		for(AbstractTreeNode child : children)
 		{
@@ -62,17 +60,12 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 			if(childValue instanceof NapileFile)
 			{
 				NapileFile file = (NapileFile) childValue;
-				List<NapileClass> declarations = file.getDeclarations();
 
-				NapileClassLike mainClass = JetIconProvider.getMainClass(file);
-				if(mainClass != null && declarations.size() == 1)
-				{
-					result.add(new JetClassOrObjectTreeNode(file.getProject(), mainClass, settings));
-				}
+				NapileClass mainClass = JetProjectViewUtil.getClassIfHeSingle(file);
+				if(mainClass != null)
+					result.add(new NapileClassTreeNode(file.getProject(), mainClass, settings));
 				else
-				{
 					result.add(new JetFileTreeNode(file.getProject(), file, settings));
-				}
 			}
 			else
 			{
@@ -97,7 +90,9 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 			return null;
 
 		VirtualFile virtualFile = file.getVirtualFile();
-		if(!fileInRoots(virtualFile))
+		assert virtualFile != null;
+
+		if(!FileRootUtil.isNapileSourceFile(myProject, virtualFile))
 			return file;
 
 		PsiElement current = element;
@@ -154,11 +149,5 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 		{
 			return false;
 		}
-	}
-
-	private boolean fileInRoots(VirtualFile file)
-	{
-		final ProjectFileIndex index = ProjectRootManager.getInstance(myProject).getFileIndex();
-		return file != null && (index.isInSourceContent(file) || index.isInLibraryClasses(file) || index.isInLibrarySource(file));
 	}
 }

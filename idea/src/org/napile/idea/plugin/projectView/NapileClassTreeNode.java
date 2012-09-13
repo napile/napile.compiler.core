@@ -17,13 +17,11 @@
 package org.napile.idea.plugin.projectView;
 
 import static org.napile.idea.plugin.projectView.JetProjectViewUtil.canRepresentPsiElement;
-import static org.napile.idea.plugin.projectView.JetProjectViewUtil.getClassOrObjectChildren;
 
 import java.util.Collection;
 
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
-import org.napile.compiler.lang.psi.NapileTypeParameterListOwner;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.projectView.ViewSettings;
@@ -36,9 +34,9 @@ import com.intellij.psi.PsiElement;
  * User: Alefas
  * Date: 15.02.12
  */
-public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileClassLike>
+public class NapileClassTreeNode extends AbstractPsiBasedNode<NapileClass>
 {
-	protected JetClassOrObjectTreeNode(Project project, NapileClassLike jetClassOrObject, ViewSettings viewSettings)
+	protected NapileClassTreeNode(Project project, NapileClass jetClassOrObject, ViewSettings viewSettings)
 	{
 		super(project, jetClassOrObject, viewSettings);
 	}
@@ -52,25 +50,20 @@ public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileClassLi
 	@Override
 	protected Collection<AbstractTreeNode> getChildrenImpl()
 	{
-		return getClassOrObjectChildren(getValue(), getProject(), getSettings());
+		return JetProjectViewUtil.getChildren(getValue(), getProject(), getSettings());
 	}
 
 	@Override
 	protected void updateImpl(PresentationData data)
 	{
-		NapileClassLike classOrObject = getValue();
-		if(classOrObject != null)
+		NapileClass napileClass = getValue();
+		if(napileClass != null)
 		{
-			if(classOrObject instanceof NapileTypeParameterListOwner)
-			{
-				NapileTypeParameterList typeParameterList = ((NapileTypeParameterListOwner) classOrObject).getTypeParameterList();
-				if(typeParameterList != null)
-					data.setPresentableText(classOrObject.getName() + typeParameterList.getText());
-				else
-					data.setPresentableText(classOrObject.getName());
-			}
+			NapileTypeParameterList typeParameterList = napileClass.getTypeParameterList();
+			if(typeParameterList != null)
+				data.setPresentableText(napileClass.getName() + typeParameterList.getText());
 			else
-				data.setPresentableText(classOrObject.getName());
+				data.setPresentableText(napileClass.getName());
 
 			ProjectView.getInstance(getProject()).getCurrentProjectViewPane().getTreeBuilder().addSubtreeToUpdateByElement(data);
 		}
@@ -80,9 +73,7 @@ public class JetClassOrObjectTreeNode extends AbstractPsiBasedNode<NapileClassLi
 	public boolean canRepresent(Object element)
 	{
 		if(!isValid())
-		{
 			return false;
-		}
 
 		return super.canRepresent(element) || canRepresentPsiElement(getValue(), element, getSettings());
 	}

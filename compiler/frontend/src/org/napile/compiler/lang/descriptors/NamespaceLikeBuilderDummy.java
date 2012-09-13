@@ -59,4 +59,10 @@ public class NamespaceLikeBuilderDummy implements NamespaceLikeBuilder
 	{
 		throw new IllegalStateException();
 	}
+
+	@Override
+	public void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+	{
+		throw new IllegalStateException();
+	}
 }

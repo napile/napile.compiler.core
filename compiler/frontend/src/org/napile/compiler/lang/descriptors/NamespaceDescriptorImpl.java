@@ -106,6 +106,12 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 					getMemberScope().addConstructorDescriptor(constructorDescriptor);
 				}
 
+				@Override
+				public void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+				{
+					throw new IllegalArgumentException();
+				}
+
 				@NotNull
 				@Override
 				public DeclarationDescriptor getOwnerForChildren()

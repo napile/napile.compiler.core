@@ -231,7 +231,7 @@ public class DeclarationsChecker
 			if(backingFieldRequired && !trace.getBindingContext().safeGet(BindingContext.IS_INITIALIZED, propertyDescriptor))
 			{
 				error = true;
-				if(hasAccessorImplementation)
+				if(hasAccessorImplementation || propertyDescriptor.isStatic())
 					trace.report(Errors.MUST_BE_INITIALIZED.on(property));
 				else
 					trace.report(Errors.MUST_BE_INITIALIZED_OR_BE_ABSTRACT.on(property));
