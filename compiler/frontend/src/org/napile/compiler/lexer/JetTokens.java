@@ -79,7 +79,6 @@ public interface JetTokens
 	NapileToken AS_SAFE = NapileKeywordToken.keyword("AS_SAFE");//new NapileToken("as?");
 
 	NapileToken IDENTIFIER = new NapileToken("IDENTIFIER");
-	NapileToken LABEL_IDENTIFIER = new NapileToken("LABEL_IDENTIFIER");
 
 	NapileToken FIELD_IDENTIFIER = new NapileToken("FIELD_IDENTIFIER");
 	NapileToken LBRACKET = new NapileToken("LBRACKET");
@@ -132,9 +131,6 @@ public interface JetTokens
 	NapileToken IDE_TEMPLATE_START = new NapileToken("IDE_TEMPLATE_START");
 	NapileToken IDE_TEMPLATE_END = new NapileToken("IDE_TEMPLATE_END");
 
-	@Deprecated
-	TokenSet LABELS = TokenSet.create();
-
 	NapileToken COMMA = new NapileToken("COMMA");
 
 	NapileToken EOL_OR_SEMICOLON = new NapileToken("EOL_OR_SEMICOLON");
@@ -176,7 +172,7 @@ public interface JetTokens
 			//            MAP, FILTER,
 			COLON, RANGE, EQ, MULTEQ, DIVEQ, PERCEQ, PLUSEQ, MINUSEQ, NOT_IN, NOT_IS,
 			//            HASH,
-			IDENTIFIER, LABEL_IDENTIFIER);
+			IDENTIFIER);
 
 	TokenSet AUGMENTED_ASSIGNMENTS = TokenSet.create(PLUSEQ, MINUSEQ, MULTEQ, PERCEQ, DIVEQ);
 }

@@ -121,8 +121,6 @@ public class DebugInfoAnnotator implements Annotator
 								{
 									return;
 								}
-								if(JetTokens.LABELS.contains(referencedNameElementType))
-									return;
 							}
 							else if(nameExpression.getReferencedNameElementType() == JetTokens.THIS_KEYWORD)
 							{

@@ -64,7 +64,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	/*package*/ static final TokenSet EXPRESSION_FIRST = TokenSet.create(
 			// Prefix
 			JetTokens.MINUS, JetTokens.PLUS, JetTokens.MINUSMINUS, JetTokens.PLUSPLUS, JetTokens.EXCL, JetTokens.EXCLEXCL, // Joining complex tokens makes it necessary to put EXCLEXCL here
-			JetTokens.LBRACKET, JetTokens.LABEL_IDENTIFIER,
+			JetTokens.LBRACKET,
 			// Atomic
 
 			JetTokens.LPAR, // parenthesized
@@ -112,7 +112,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 				//                HASH,
 				JetTokens.DOT, JetTokens.SAFE_ACCESS), // typeArguments? valueArguments : typeArguments : arrayAccess
 
-		PREFIX(JetTokens.MINUS, JetTokens.PLUS, JetTokens.MINUSMINUS, JetTokens.PLUSPLUS, JetTokens.EXCL, JetTokens.LABEL_IDENTIFIER)
+		PREFIX(JetTokens.MINUS, JetTokens.PLUS, JetTokens.MINUSMINUS, JetTokens.PLUSPLUS, JetTokens.EXCL)
 				{ // attributes
 
 					@Override
