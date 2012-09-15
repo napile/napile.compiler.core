@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.types;
+package org.napile.compiler.lang.types.impl;
 
 import java.util.Collections;
 
@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.types.SelfTypeConstructor;
+import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 
 /**
  * @author VISTALL

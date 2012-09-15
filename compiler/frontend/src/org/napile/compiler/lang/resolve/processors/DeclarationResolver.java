@@ -37,7 +37,7 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;

@@ -31,6 +31,7 @@ import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.error.ErrorSimpleMethodDescriptorImpl;
+import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 
 /**
  * @author abreslav

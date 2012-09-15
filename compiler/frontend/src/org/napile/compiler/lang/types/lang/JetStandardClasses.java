@@ -40,7 +40,7 @@ import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;

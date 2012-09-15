@@ -30,7 +30,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DescriptorSubstitutor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeConstructorImpl;
+import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import com.google.common.collect.Lists;
 

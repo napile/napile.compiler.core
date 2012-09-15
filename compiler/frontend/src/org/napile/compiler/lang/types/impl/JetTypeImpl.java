@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.types;
+package org.napile.compiler.lang.types.impl;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -25,6 +25,9 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.types.ErrorUtils;
+import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 
 /**

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.types;
+package org.napile.compiler.lang.types.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +27,8 @@ import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.TypeConstructor;
 
 /**
  * @author abreslav

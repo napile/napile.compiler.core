@@ -25,6 +25,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 
 /**

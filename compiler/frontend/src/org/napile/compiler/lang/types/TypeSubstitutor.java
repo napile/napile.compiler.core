@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;

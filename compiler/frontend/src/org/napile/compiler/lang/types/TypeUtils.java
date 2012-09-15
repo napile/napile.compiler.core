@@ -41,6 +41,7 @@ import org.napile.compiler.lang.resolve.scopes.ChainedScope;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
