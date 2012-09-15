@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,13 +27,7 @@ import org.napile.compiler.lang.types.JetType;
 public interface TypeConstraints
 {
 	@NotNull
-	Set<JetType> getLowerBounds();
-
-	@NotNull
 	Set<JetType> getUpperBounds();
-
-	@NotNull
-	Set<JetType> getExactBounds();
 
 	boolean isEmpty();
 }

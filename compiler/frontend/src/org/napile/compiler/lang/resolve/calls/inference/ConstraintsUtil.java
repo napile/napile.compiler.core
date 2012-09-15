@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
@@ -46,23 +45,6 @@ public class ConstraintsUtil
 		Set<JetType> values = Sets.newLinkedHashSet();
 		if(typeConstraints != null && !typeConstraints.isEmpty())
 		{
-			values.addAll(typeConstraints.getExactBounds());
-			if(!typeConstraints.getLowerBounds().isEmpty())
-			{
-				JetType superTypeOfLowerBounds = CommonSupertypes.commonSupertype(typeConstraints.getLowerBounds());
-				if(values.isEmpty())
-				{
-					values.add(superTypeOfLowerBounds);
-				}
-				for(JetType value : values)
-				{
-					if(!JetTypeChecker.INSTANCE.isSubtypeOf(superTypeOfLowerBounds, value))
-					{
-						values.add(superTypeOfLowerBounds);
-						break;
-					}
-				}
-			}
 			if(!typeConstraints.getUpperBounds().isEmpty())
 			{
 				//todo subTypeOfUpperBounds

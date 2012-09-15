@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ import com.google.common.collect.Sets;
 public class TypeConstraintsImpl implements TypeConstraints
 {
 	private final Set<JetType> upperBounds = Sets.newLinkedHashSet();
-	private final Set<JetType> lowerBounds = Sets.newLinkedHashSet();
-	private final Set<JetType> exactBounds = Sets.newLinkedHashSet();
 
 	public TypeConstraintsImpl()
 	{
@@ -38,32 +36,15 @@ public class TypeConstraintsImpl implements TypeConstraints
 
 	public void addBound(@NotNull JetType type)
 	{
-		//TODO [VISTALL]
-		/*switch(constraintKind)
-		{
-			case SUPER_TYPE:
-				lowerBounds.add(type);
-				break;
-			case SUB_TYPE:
-				upperBounds.add(type);
-				break;
-			case EQUAL:
-				exactBounds.add(type);
-		}    */
+		upperBounds.add(type);
 	}
 
 	@Override
 	public boolean isEmpty()
 	{
-		return upperBounds.isEmpty() && lowerBounds.isEmpty() && exactBounds.isEmpty();
+		return upperBounds.isEmpty();
 	}
 
-	@NotNull
-	@Override
-	public Set<JetType> getLowerBounds()
-	{
-		return lowerBounds;
-	}
 
 	@NotNull
 	@Override
@@ -72,12 +53,6 @@ public class TypeConstraintsImpl implements TypeConstraints
 		return upperBounds;
 	}
 
-	@NotNull
-	@Override
-	public Set<JetType> getExactBounds()
-	{
-		return exactBounds;
-	}
 
 	/*package*/ TypeConstraintsImpl copy()
 	{
@@ -85,14 +60,6 @@ public class TypeConstraintsImpl implements TypeConstraints
 		for(JetType upperBound : upperBounds)
 		{
 			typeConstraints.upperBounds.add(upperBound);
-		}
-		for(JetType lowerBound : lowerBounds)
-		{
-			typeConstraints.lowerBounds.add(lowerBound);
-		}
-		for(JetType exactBound : exactBounds)
-		{
-			typeConstraints.exactBounds.add(exactBound);
 		}
 		return typeConstraints;
 	}
