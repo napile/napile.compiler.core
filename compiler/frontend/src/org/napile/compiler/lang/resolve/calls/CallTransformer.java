@@ -22,21 +22,23 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.Call;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileTypeArgumentList;
+import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileValueArgumentList;
+import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.ChainedTemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
-import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.psi.NapileValueArgumentList;
+import org.napile.compiler.lang.types.MethodTypeConstructor;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import com.intellij.psi.PsiElement;
 
 /**
  * CallTransformer treats specially 'variable as function' call case, other cases keeps unchanged (base realization).
@@ -188,20 +190,18 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 
 			assert descriptor instanceof VariableDescriptor;
 			JetType returnType = descriptor.getReturnType();
-			if(returnType == null)
-			{
+			if(returnType == null || !(returnType.getConstructor() instanceof MethodTypeConstructor))
 				return Collections.emptyList();
-			}
 
 			final ResolvedCallWithTrace<VariableDescriptor> variableResolvedCall = (ResolvedCallWithTrace) context.candidateCall;
 
-			Call functionCall = createFunctionCall(context, task, returnType);
+			MethodDescriptor methodDescriptor = FunctionDescriptorUtil.createDescriptorFromType(descriptor.getName(), returnType, descriptor.getContainingDeclaration());
 
 			final TemporaryBindingTrace variableCallTrace = context.candidateCall.getTrace();
-			BasicResolutionContext basicResolutionContext = BasicResolutionContext.create(variableCallTrace, context.scope, functionCall, context.expectedType, context.dataFlowInfo);
 
-			// 'invoke' call resolve
-			OverloadResolutionResults<MethodDescriptor> results = callResolver.resolveCallWithGivenName(basicResolutionContext, task.reference, Name.identifier("invoke"));
+			ResolutionCandidate<MethodDescriptor> resolutionCandidate = ResolutionCandidate.create(methodDescriptor, false);
+
+			OverloadResolutionResults<MethodDescriptor> results = OverloadResolutionResultsImpl.success(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace));
 			Collection<ResolvedCallWithTrace<MethodDescriptor>> calls = ((OverloadResolutionResultsImpl<MethodDescriptor>) results).getResultingCalls();
 
 			return Collections2.transform(calls, new Function<ResolvedCallWithTrace<MethodDescriptor>, ResolvedCallWithTrace<MethodDescriptor>>()
@@ -212,52 +212,6 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 					return new VariableAsFunctionResolvedCall(functionResolvedCall, variableResolvedCall);
 				}
 			});
-		}
-
-		private Call createFunctionCall(final CallResolutionContext<CallableDescriptor, MethodDescriptor> context, final ResolutionTask<CallableDescriptor, MethodDescriptor> task, JetType returnType)
-		{
-
-			final ExpressionReceiver receiverFromVariable = new ExpressionReceiver(task.reference, returnType);
-			final NapileSimpleNameExpression invokeExpression = (NapileSimpleNameExpression) NapilePsiFactory.createExpression(task.call.getCallElement().getProject(), "invoke");
-
-			return new CallForImplicitInvoke(task.call)
-			{
-				@NotNull
-				@Override
-				public ReceiverDescriptor getExplicitReceiver()
-				{
-					return context.receiverForVariableAsFunctionSecondCall;
-				}
-
-				@NotNull
-				@Override
-				public ReceiverDescriptor getThisObject()
-				{
-					return receiverFromVariable;
-				}
-
-				@Override
-				public NapileExpression getCalleeExpression()
-				{
-					return invokeExpression;
-				}
-
-				@NotNull
-				@Override
-				public PsiElement getCallElement()
-				{
-					if(task.call.getCallElement() instanceof NapileCallElement)
-					{
-						//to report errors properly
-						NapileValueArgumentList list = ((NapileCallElement) task.call.getCallElement()).getValueArgumentList();
-						if(list != null)
-						{
-							return list;
-						}
-					}
-					return invokeExpression;
-				}
-			};
 		}
 	};
 

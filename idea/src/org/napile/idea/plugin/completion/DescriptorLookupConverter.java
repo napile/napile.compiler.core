@@ -29,7 +29,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
+import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.idea.plugin.JetIconProvider;
 import org.napile.idea.plugin.completion.handlers.JetClassInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetFunctionInsertHandler;
@@ -89,7 +89,7 @@ public final class DescriptorLookupConverter
 			}
 			else
 			{
-				if(methodDescriptor.getValueParameters().size() == 1 && JetStandardClasses.isFunctionType(methodDescriptor.getValueParameters().get(0).getType()))
+				if(methodDescriptor.getValueParameters().size() == 1 && methodDescriptor.getValueParameters().get(0).getType().getConstructor() instanceof MethodTypeConstructor)
 				{
 					element = element.withInsertHandler(PARAMS_BRACES_FUNCTION_HANDLER);
 				}

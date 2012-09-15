@@ -35,6 +35,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
@@ -231,7 +232,7 @@ public class DataFlowUtils
 	public static JetType checkImplicitCast(@Nullable JetType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, boolean isStatement)
 	{
 		if(expressionType != null && context.expectedType == TypeUtils.NO_EXPECTED_TYPE && !isStatement &&
-				(JetStandardClasses.isUnit(expressionType) || JetStandardClasses.isAny(expressionType)))
+				(JetStandardClasses.isUnit(expressionType) || TypeUtils.isEqualFqName(expressionType, NapileLangPackage.ANY)))
 		{
 			context.trace.report(IMPLICIT_CAST_TO_UNIT_OR_ANY.on(expression, expressionType));
 		}

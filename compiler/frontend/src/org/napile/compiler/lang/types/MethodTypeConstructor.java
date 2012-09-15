@@ -16,10 +16,20 @@
 
 package org.napile.compiler.lang.types;
 
+import java.util.Map;
+
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.resolve.name.Name;
+
 /**
  * @author VISTALL
  * @date 12:16/15.09.12
  */
 public interface MethodTypeConstructor extends TypeConstructor
 {
+	@NotNull
+	JetType getReturnType();
+
+	@NotNull
+	Map<Name, JetType> getParameterTypes();
 }

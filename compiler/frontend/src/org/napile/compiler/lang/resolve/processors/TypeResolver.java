@@ -21,7 +21,9 @@ import static org.napile.compiler.lang.diagnostics.Errors.WRONG_NUMBER_OF_TYPE_A
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -35,15 +37,18 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
-import org.napile.compiler.lang.types.impl.SelfTypeConstructorImpl;
+import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
+import org.napile.compiler.lang.types.impl.SelfTypeConstructorImpl;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.util.lazy.LazyValue;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -196,27 +201,30 @@ public class TypeResolver
 				@Override
 				public void visitFunctionType(NapileFunctionType type)
 				{
-					NapileTypeReference receiverTypeRef = type.getReceiverTypeRef();
-					JetType receiverType = receiverTypeRef == null ? null : resolveType(scope, receiverTypeRef, trace, checkBounds);
-
-					List<JetType> parameterTypes = new ArrayList<JetType>();
-					for(NapileElement parameter : type.getParameters())
+					List<NapileElement> parameters = type.getParameters();
+					Map<Name, JetType> parameterTypes = new LinkedHashMap<Name, JetType>(parameters.size());
+					int i = 1;
+					for(NapileElement parameter : parameters)
 					{
 						if(parameter instanceof NapilePropertyParameter)
-							parameterTypes.add(resolveType(scope, ((NapilePropertyParameter) parameter).getTypeReference(), trace, checkBounds));
+						{
+							Name name = ((NapilePropertyParameter) parameter).getNameAsName();
+							JetType jetType = resolveType(scope, ((NapilePropertyParameter) parameter).getTypeReference(), trace, checkBounds);
+
+							parameterTypes.put(name == null ? Name.identifier("p" + i) : name, jetType);
+						}
+						i++;
 					}
 
 					NapileTypeReference returnTypeRef = type.getReturnTypeRef();
 					JetType returnType;
 					if(returnTypeRef != null)
-					{
 						returnType = resolveType(scope, returnTypeRef, trace, checkBounds);
-					}
 					else
-					{
 						returnType = JetStandardClasses.getUnitType();
-					}
-					result[0] = JetStandardClasses.getFunctionType(annotations, receiverType, parameterTypes, returnType);
+
+					MethodTypeConstructor methodTypeConstructor = new MethodTypeConstructorImpl(returnType, parameterTypes);
+					result[0] = new JetTypeImpl(annotations, methodTypeConstructor, false, Collections.<JetType>emptyList(), scope);
 				}
 
 				@Override

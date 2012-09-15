@@ -33,8 +33,9 @@ import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.CodeInsightActionHandler;
@@ -124,7 +125,7 @@ public class GotoSuperActionHandler implements CodeInsightActionHandler
 			@Override
 			public PsiElement fun(DeclarationDescriptor descriptor)
 			{
-				if(JetStandardClasses.getAny() == descriptor)
+				if(DescriptorUtils.getFQName(descriptor).equals(NapileLangPackage.ANY))
 				{
 					return null;
 				}

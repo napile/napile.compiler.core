@@ -24,7 +24,6 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClassBody;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
@@ -32,12 +31,11 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.compiler.lang.rt.NapileLangPackage;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.ide.util.MemberChooser;
 import com.intellij.lang.LanguageCodeInsightActionHandler;
@@ -211,7 +209,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 					for(JetType upperBound : upperBounds)
 					{
 						String upperBoundText = " : " + renderType(upperBound);
-						if(upperBound != JetStandardClasses.getDefaultBound())
+						if(!TypeUtils.isEqualFqName(upperBound, NapileLangPackage.ANY))
 						{
 							if(firstUpperBound)
 							{

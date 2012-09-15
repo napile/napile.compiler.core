@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.types.impl;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +28,7 @@ import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.resolve.DescriptorRenderer;
 
 /**
  * @author abreslav
@@ -101,22 +101,7 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 	@Override
 	public String toString()
 	{
-		return constructor + (arguments.isEmpty() ? "" : "<" + argumentsToString() + ">") + (isNullable() ? "?" : "");
-	}
-
-	private StringBuilder argumentsToString()
-	{
-		StringBuilder stringBuilder = new StringBuilder();
-		for(Iterator<JetType> iterator = arguments.iterator(); iterator.hasNext(); )
-		{
-			JetType argument = iterator.next();
-			stringBuilder.append(argument);
-			if(iterator.hasNext())
-			{
-				stringBuilder.append(", ");
-			}
-		}
-		return stringBuilder;
+		return DescriptorRenderer.TEXT.renderType(this);
 	}
 
 	@Override

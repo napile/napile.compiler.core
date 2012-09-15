@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,9 +30,14 @@ import org.napile.compiler.lang.diagnostics.rendering.Renderer;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.MethodTypeConstructor;
+import org.napile.compiler.lang.types.SelfTypeConstructor;
+import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
@@ -130,25 +136,17 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 	private String renderType(JetType type, boolean shortNamesOnly)
 	{
 		if(type == null)
-		{
 			return escape("[NULL]");
-		}
 		else if(ErrorUtils.isErrorType(type))
-		{
 			return escape(type.toString());
-		}
 		else if(JetStandardClasses.isUnit(type))
-		{
 			return escape(JetStandardClasses.UNIT_ALIAS + (type.isNullable() ? "?" : ""));
-		}
-		else if(JetStandardClasses.isFunctionType(type))
-		{
+		else if(type.getConstructor() instanceof SelfTypeConstructor)
+			return escape(renderKeyword(JetTokens.THIS_KEYWORD));
+		else if(type.getConstructor() instanceof MethodTypeConstructor)
 			return escape(renderFunctionType(type, shortNamesOnly));
-		}
 		else
-		{
 			return escape(renderDefaultType(type, shortNamesOnly));
-		}
 	}
 
 	private static List<String> getOuterClassesNames(ClassDescriptor cd)
@@ -218,26 +216,25 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 	}
 
-	private String renderFunctionType(JetType type, boolean shortNamesOnly)
+	private String renderFunctionType(JetType type, final boolean shortNamesOnly)
 	{
 		StringBuilder sb = new StringBuilder();
-
-		JetType receiverType = JetStandardClasses.getReceiverType(type);
-		if(receiverType != null)
-		{
-			sb.append(renderType(receiverType, shortNamesOnly));
-			sb.append(".");
-		}
-
+		sb.append("{");
 		sb.append("(");
-		appendTypes(sb, JetStandardClasses.getParameterTypeProjectionsFromFunctionType(type), shortNamesOnly);
-		sb.append(") -> ");
-		sb.append(renderType(JetStandardClasses.getReturnTypeFromFunctionType(type), shortNamesOnly));
-
-		if(type.isNullable())
+		sb.append(StringUtil.join(((MethodTypeConstructor) type.getConstructor()).getParameterTypes().entrySet(), new Function<Map.Entry<Name, JetType>, String>()
 		{
-			return "(" + sb + ")?";
-		}
+			@Override
+			public String fun(Map.Entry<Name, JetType> nameJetTypeEntry)
+			{
+				return nameJetTypeEntry.getKey() + " : " + renderType(nameJetTypeEntry.getValue(), shortNamesOnly);
+			}
+		}, ", "));
+		sb.append(") -> ");
+
+		sb.append(renderType(((MethodTypeConstructor) type.getConstructor()).getReturnType(), shortNamesOnly));
+		sb.append("}");
+		if(type.isNullable())
+			sb.append("?");
 		return sb.toString();
 	}
 
@@ -605,10 +602,11 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				renderName(descriptor, builder);
 				renderTypeParameters(descriptor.getTypeConstructor().getParameters(), builder);
 			}
+
 			if(!descriptor.equals(JetStandardClasses.getNothing()))
 			{
 				Collection<? extends JetType> supertypes = descriptor.getTypeConstructor().getSupertypes();
-				if(supertypes.isEmpty() || supertypes.size() == 1 && JetStandardClasses.isAny(supertypes.iterator().next()))
+				if(supertypes.isEmpty() || supertypes.size() == 1 && TypeUtils.isEqualFqName(supertypes.iterator().next(), NapileLangPackage.ANY))
 				{
 				}
 				else
@@ -642,7 +640,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			if(descriptor.getUpperBounds().size() == 1)
 			{
 				JetType upperBound = descriptor.getUpperBounds().iterator().next();
-				if(upperBound != JetStandardClasses.getDefaultBound())
+				if(!TypeUtils.isEqualFqName(upperBound, NapileLangPackage.ANY))
 					builder.append(" : ").append(renderType(upperBound));
 			}
 			else

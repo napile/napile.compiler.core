@@ -69,12 +69,12 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Function;
@@ -285,7 +285,7 @@ public class CallResolver
 				// Here we handle the case where the callee expression must be something of type function, e.g. (foo.bar())(1, 2)
 				JetType calleeType = expressionTypingServices.safeGetType(context.scope, calleeExpression, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace); // We are actually expecting a function, but there seems to be no easy way of expressing this
 
-				if(!JetStandardClasses.isFunctionType(calleeType))
+				if(!(calleeType.getConstructor() instanceof MethodTypeConstructor))
 				{
 					//                    checkTypesWithNoCallee(trace, scope, call);
 					if(!ErrorUtils.isErrorType(calleeType))

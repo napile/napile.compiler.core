@@ -19,12 +19,14 @@ package org.napile.compiler.lang.types.impl;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 
@@ -34,6 +36,15 @@ import org.napile.compiler.lang.types.MethodTypeConstructor;
  */
 public class MethodTypeConstructorImpl implements MethodTypeConstructor
 {
+	private final JetType returnType;
+	private final Map<Name, JetType> parameterTypes;
+
+	public MethodTypeConstructorImpl(@NotNull JetType returnType, Map<Name, JetType> parameterTypes)
+	{
+		this.returnType = returnType;
+		this.parameterTypes = parameterTypes;
+	}
+
 	@NotNull
 	@Override
 	public List<TypeParameterDescriptor> getParameters()
@@ -65,5 +76,19 @@ public class MethodTypeConstructorImpl implements MethodTypeConstructor
 	public List<AnnotationDescriptor> getAnnotations()
 	{
 		return Collections.emptyList();
+	}
+
+	@NotNull
+	@Override
+	public JetType getReturnType()
+	{
+		return returnType;
+	}
+
+	@NotNull
+	@Override
+	public Map<Name, JetType> getParameterTypes()
+	{
+		return parameterTypes;
 	}
 }

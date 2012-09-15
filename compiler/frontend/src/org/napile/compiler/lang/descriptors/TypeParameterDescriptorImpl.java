@@ -26,15 +26,14 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.compiler.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.compiler.util.lazy.LazyValue;
 import com.google.common.collect.Sets;
@@ -44,14 +43,6 @@ import com.google.common.collect.Sets;
  */
 public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImpl implements TypeParameterDescriptor
 {
-	public static TypeParameterDescriptor createWithDefaultBound(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
-	{
-		TypeParameterDescriptorImpl typeParameterDescriptor = createForFurtherModification(containingDeclaration, annotations, reified, name, index);
-		typeParameterDescriptor.addUpperBound(JetStandardClasses.getDefaultBound());
-		typeParameterDescriptor.setInitialized();
-		return typeParameterDescriptor;
-	}
-
 	public static TypeParameterDescriptorImpl createForFurtherModification(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
 	{
 		return new TypeParameterDescriptorImpl(containingDeclaration, annotations, reified, name, index);

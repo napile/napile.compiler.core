@@ -24,7 +24,9 @@ import static org.napile.compiler.lang.resolve.BindingContext.PROCESSED;
 import static org.napile.compiler.lang.resolve.BindingContext.TRACE_DELTAS_CACHE;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -51,7 +53,10 @@ import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import org.napile.compiler.util.slicedmap.WritableSlice;
@@ -127,18 +132,16 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 			return null;
 
 		JetType expectedType = context.expectedType;
-		boolean functionTypeExpected = expectedType != TypeUtils.NO_EXPECTED_TYPE && JetStandardClasses.isFunctionType(expectedType);
+		boolean functionTypeExpected = expectedType != TypeUtils.NO_EXPECTED_TYPE && expectedType.getConstructor() instanceof MethodTypeConstructor;
 
 		SimpleMethodDescriptorImpl functionDescriptor = createFunctionDescriptor(expression, context, functionTypeExpected);
 
-		List<JetType> parameterTypes = Lists.newArrayList();
 		List<ParameterDescriptor> valueParameters = functionDescriptor.getValueParameters();
+		Map<Name, JetType> parameterTypes = new LinkedHashMap<Name, JetType>(valueParameters.size());
 		for(ParameterDescriptor valueParameter : valueParameters)
-		{
-			parameterTypes.add(valueParameter.getType());
-		}
+			parameterTypes.put(valueParameter.getName(), valueParameter.getType());
+
 		ReceiverDescriptor receiverParameter = functionDescriptor.getReceiverParameter();
-		JetType receiver = receiverParameter != ReceiverDescriptor.NO_RECEIVER ? receiverParameter.getType() : null;
 
 		JetType returnType = TypeUtils.NO_EXPECTED_TYPE;
 		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(context.scope, functionDescriptor, context.trace);
@@ -154,7 +157,8 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		{
 			if(functionTypeExpected)
 			{
-				returnType = JetStandardClasses.getReturnTypeFromFunctionType(expectedType);
+
+				returnType = ((MethodTypeConstructor) expectedType.getConstructor()).getReturnType();
 			}
 			returnType = context.expressionTypingServices.getBlockReturnedType(functionInnerScope, bodyExpression, CoercionStrategy.COERCION_TO_UNIT, context.replaceExpectedType(returnType).replaceBindingTrace(temporaryTrace), temporaryTrace).getType();
 		}
@@ -174,14 +178,15 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		boolean hasDeclaredValueParameters = functionLiteral.getValueParameterList() != null;
 		if(!hasDeclaredValueParameters && functionTypeExpected)
 		{
-			JetType expectedReturnType = JetStandardClasses.getReturnTypeFromFunctionType(expectedType);
+
+			JetType expectedReturnType = ((MethodTypeConstructor) expectedType.getConstructor()).getReturnType();
 			if(JetStandardClasses.isUnit(expectedReturnType))
 			{
 				functionDescriptor.setReturnType(JetStandardClasses.getUnitType());
-				return DataFlowUtils.checkType(JetStandardClasses.getFunctionType(Collections.<AnnotationDescriptor>emptyList(), receiver, parameterTypes, JetStandardClasses.getUnitType()), expression, context, context.dataFlowInfo);
+				return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(JetStandardClasses.getUnitType(), parameterTypes), context.scope), expression, context, context.dataFlowInfo);
 			}
 		}
-		return DataFlowUtils.checkType(JetStandardClasses.getFunctionType(Collections.<AnnotationDescriptor>emptyList(), receiver, parameterTypes, safeReturnType), expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(safeReturnType, parameterTypes), context.scope), expression, context, context.dataFlowInfo);
 	}
 
 	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileFunctionLiteralExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)
@@ -197,7 +202,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		{
 			if(functionTypeExpected)
 			{
-				effectiveReceiverType = JetStandardClasses.getReceiverType(context.expectedType);
+				effectiveReceiverType = null;
 			}
 			else
 			{
@@ -221,7 +226,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		List<ParameterDescriptor> parameterDescriptors = Lists.newArrayList();
 		List<NapileElement> declaredValueParameters = functionLiteral.getValueParameters();
 
-		List<ParameterDescriptor> expectedValueParameters = (functionTypeExpected) ? JetStandardClasses.getValueParameters(functionDescriptor, context.expectedType) : null;
+		List<ParameterDescriptor> expectedValueParameters = (functionTypeExpected) ? FunctionDescriptorUtil.getValueParameters(functionDescriptor, context.expectedType) : null;
 
 		boolean hasDeclaredValueParameters = functionLiteral.getValueParameterList() != null;
 		if(functionTypeExpected && !hasDeclaredValueParameters && expectedValueParameters.size() == 1)

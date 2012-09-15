@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.descriptors;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +24,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.name.Name;
@@ -33,10 +33,10 @@ import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 
 /**
  * @author abreslav
@@ -134,8 +134,9 @@ public class FunctionDescriptorUtil
 	public static void initializeFromFunctionType(@NotNull MethodDescriptorImpl functionDescriptor, @NotNull JetType functionType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Modality modality, @NotNull Visibility visibility)
 	{
 
-		assert JetStandardClasses.isFunctionType(functionType);
-		functionDescriptor.initialize(JetStandardClasses.getReceiverType(functionType), expectedThisObject, Collections.<TypeParameterDescriptorImpl>emptyList(), JetStandardClasses.getValueParameters(functionDescriptor, functionType), JetStandardClasses.getReturnTypeFromFunctionType(functionType), modality, visibility);
+		assert functionType.getConstructor() instanceof MethodTypeConstructor;
+
+		functionDescriptor.initialize(null, expectedThisObject, Collections.<TypeParameterDescriptorImpl>emptyList(), getValueParameters(functionDescriptor, functionType), ((MethodTypeConstructor) functionType.getConstructor()).getReturnType(), modality, visibility);
 	}
 
 	public static <D extends CallableDescriptor> D alphaConvertTypeParameters(D candidate)
@@ -143,14 +144,30 @@ public class FunctionDescriptorUtil
 		return (D) candidate.substitute(MAKE_TYPE_PARAMETERS_FRESH);
 	}
 
-	public static MethodDescriptor getInvokeFunction(@NotNull JetType functionType)
+	public static SimpleMethodDescriptor createDescriptorFromType(@NotNull Name name, @NotNull JetType jetType, @NotNull DeclarationDescriptor owner)
 	{
-		assert JetStandardClasses.isFunctionType(functionType);
+		assert jetType.getConstructor() instanceof MethodTypeConstructor;
 
-		ClassifierDescriptor classDescriptorForFunction = functionType.getConstructor().getDeclarationDescriptor();
-		assert classDescriptorForFunction instanceof ClassDescriptor;
-		Collection<MethodDescriptor> invokeMethods = ((ClassDescriptor) classDescriptorForFunction).getMemberScope(functionType.getArguments()).getFunctions(Name.identifier("invoke"));
-		assert invokeMethods.size() == 1;
-		return invokeMethods.iterator().next();
+		SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(owner, Collections.<AnnotationDescriptor>emptyList(), name, CallableMemberDescriptor.Kind.DECLARATION, false, false);
+		methodDescriptor.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptor>emptyList(), getValueParameters(methodDescriptor, jetType), ((MethodTypeConstructor) jetType.getConstructor()).getReturnType(), Modality.FINAL, Visibility.PUBLIC);
+		return methodDescriptor;
+	}
+
+	@NotNull
+	public static List<ParameterDescriptor> getValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull JetType type)
+	{
+		assert type.getConstructor() instanceof MethodTypeConstructor;
+
+		Map<Name, JetType> parameterTypes = ((MethodTypeConstructor) type.getConstructor()).getParameterTypes();
+		List<ParameterDescriptor> valueParameters = new ArrayList<ParameterDescriptor>(parameterTypes.size());
+		int i = 0;
+		for(Map.Entry<Name, JetType> entry : parameterTypes.entrySet())
+		{
+			PropertyParameterDescriptorImpl valueParameterDescriptor = new PropertyParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), entry.getKey(), PropertyKind.VAL, entry.getValue(), false, null);
+			valueParameters.add(valueParameterDescriptor);
+
+			i++;
+		}
+		return valueParameters;
 	}
 }

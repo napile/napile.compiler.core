@@ -347,7 +347,7 @@ public class DefaultErrorMessages
 			{
 				if(ErrorUtils.isErrorType(type))
 					return "";
-				return " of type '" + type.toString() + "'";
+				return " of type '" + DescriptorRenderer.TEXT.renderType(type) + "'";
 			}
 		});
 		MAP.put(FUNCTION_CALL_EXPECTED, "Function invocation ''{0}({1})'' expected", ELEMENT_TEXT, new Renderer<Boolean>()
