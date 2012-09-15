@@ -91,7 +91,7 @@ public class JetPsiChecker implements Annotator
 			if(PsiTreeUtil.getParentOfType(psiElement, NapileAnnotationEntry.class) != null)
 				holder.createInfoAnnotation(new TextRange(psiElement.getNode().getStartOffset() - 1, psiElement.getNode().getStartOffset() + psiElement.getTextLength()), null).setTextAttributes(attributesKey);
 			else
-				holder.createInfoAnnotation(psiElement, "AAAAAA").setTextAttributes(attributesKey);
+				holder.createInfoAnnotation(psiElement, null).setTextAttributes(attributesKey);
 		}
 	}
 
