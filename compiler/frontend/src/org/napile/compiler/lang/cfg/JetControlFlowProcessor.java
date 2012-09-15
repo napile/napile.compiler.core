@@ -40,7 +40,6 @@ import org.napile.compiler.lang.resolve.constants.BoolValue;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
@@ -202,7 +201,7 @@ public class JetControlFlowProcessor
 			if(trace.safeGet(BindingContext.PROCESSED, expression))
 			{
 				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
-				if(type != null && JetStandardClasses.isNothing(type))
+				if(type != null && false)
 				{
 					builder.jumpToError(expression);
 				}
@@ -728,7 +727,7 @@ public class JetControlFlowProcessor
 			if(trace.safeGet(BindingContext.PROCESSED, expression))
 			{
 				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
-				if(type != null && JetStandardClasses.isNothing(type))
+				if(type != null && false)
 				{
 					builder.jumpToError(expression);
 				}
@@ -778,7 +777,7 @@ public class JetControlFlowProcessor
 			if(trace.safeGet(BindingContext.PROCESSED, expression))
 			{
 				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
-				if(type != null && JetStandardClasses.isNothing(type))
+				if(type != null && false)
 				{
 					builder.jumpToError(expression);
 				}

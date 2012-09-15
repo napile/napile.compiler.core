@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.resolve.ImportPath;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.text.StringUtil;
@@ -345,16 +344,6 @@ public class NapilePsiUtil
 			return (NapileSimpleNameExpression) importedReference;
 		}
 		return null;
-	}
-
-	public static boolean isVoidType(@Nullable NapileTypeReference typeReference)
-	{
-		if(typeReference == null)
-		{
-			return false;
-		}
-
-		return JetStandardClasses.UNIT_ALIAS.getName().equals(typeReference.getText());
 	}
 
 	public static boolean isSafeCall(@NotNull Call call)

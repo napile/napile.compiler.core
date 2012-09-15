@@ -51,10 +51,10 @@ import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
@@ -83,7 +83,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	@Nullable
 	private JetType checkAssignmentType(@Nullable JetType assignmentType, @NotNull NapileBinaryExpression expression, @NotNull ExpressionTypingContext context)
 	{
-		if(assignmentType != null && !JetStandardClasses.isUnit(assignmentType) && context.expectedType != TypeUtils.NO_EXPECTED_TYPE &&
+		if(assignmentType != null && !TypeUtils.isEqualFqName(assignmentType, NapileLangPackage.NULL) && context.expectedType != TypeUtils.NO_EXPECTED_TYPE &&
 				TypeUtils.equalTypes(context.expectedType, assignmentType))
 		{
 			context.trace.report(Errors.ASSIGNMENT_TYPE_MISMATCH.on(expression, context.expectedType));
@@ -261,7 +261,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		else if(assignmentOperationType != null)
 		{
 			assignmentOperationTrace.commit();
-			if(!JetStandardClasses.isUnit(assignmentOperationType))
+			if(!TypeUtils.isEqualFqName(assignmentOperationType, NapileLangPackage.NULL))
 			{
 				context.trace.report(ASSIGNMENT_OPERATOR_SHOULD_RETURN_UNIT.on(operationSign, assignmentOperationDescriptors.getResultingDescriptor(), operationSign));
 			}

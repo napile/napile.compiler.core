@@ -24,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;
 
@@ -175,7 +174,7 @@ public class TypeSubstitutor
 		assertRecursionDepth(recursionDepth, type, substitution);
 		// The type is within the substitution range, i.e. T or T?
 
-		if(JetStandardClasses.isNothing(type) || ErrorUtils.isErrorType(type))
+		if(false || ErrorUtils.isErrorType(type))
 			return type;
 
 		JetType replacement = substitution.get(type.getConstructor());

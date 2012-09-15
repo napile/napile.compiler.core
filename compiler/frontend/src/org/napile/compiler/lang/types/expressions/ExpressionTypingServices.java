@@ -52,7 +52,6 @@ import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
@@ -214,7 +213,7 @@ public class ExpressionTypingServices
 		JetTypeInfo r;
 		if(block.isEmpty())
 		{
-			r = DataFlowUtils.checkType(JetStandardClasses.getUnitType(), expression, context, context.dataFlowInfo);
+			r = DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), expression, context, context.dataFlowInfo);
 		}
 		else
 		{
@@ -286,7 +285,7 @@ public class ExpressionTypingServices
 	{
 		if(block.isEmpty())
 		{
-			return JetTypeInfo.create(JetStandardClasses.getUnitType(), context.dataFlowInfo);
+			return JetTypeInfo.create(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), context.dataFlowInfo);
 		}
 
 		ExpressionTypingInternals blockLevelVisitor = ExpressionTypingVisitorDispatcher.createForBlock(scope);
@@ -307,7 +306,7 @@ public class ExpressionTypingServices
 			{
 				if(context.expectedType != TypeUtils.NO_EXPECTED_TYPE)
 				{
-					if(coercionStrategyForLastExpression == CoercionStrategy.COERCION_TO_UNIT && JetStandardClasses.isUnit(context.expectedType))
+					if(coercionStrategyForLastExpression == CoercionStrategy.COERCION_TO_UNIT && TypeUtils.isEqualFqName(context.expectedType, NapileLangPackage.NULL))
 					{
 						// This implements coercion to Unit
 						TemporaryBindingTrace temporaryTraceExpectingUnit = TemporaryBindingTrace.create(trace);
@@ -364,8 +363,8 @@ public class ExpressionTypingServices
 						if(mightBeUnit)
 						{
 							// ExpressionTypingVisitorForStatements should return only null or Unit for declarations and assignments
-							assert result.getType() == null || JetStandardClasses.isUnit(result.getType());
-							result = JetTypeInfo.create(JetStandardClasses.getUnitType(), newContext.dataFlowInfo);
+							assert result.getType() == null || TypeUtils.isEqualFqName(result.getType(), NapileLangPackage.NULL);
+							result = JetTypeInfo.create(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), newContext.dataFlowInfo);
 						}
 					}
 				}

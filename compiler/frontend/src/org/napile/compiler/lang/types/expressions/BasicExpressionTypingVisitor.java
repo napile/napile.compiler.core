@@ -79,7 +79,6 @@ import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -652,7 +651,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		//TODO move further
 		if(expression.getOperationSign() == JetTokens.SAFE_ACCESS)
 		{
-			if(selectorReturnType != null && !selectorReturnType.isNullable() && !JetStandardClasses.isUnit(selectorReturnType))
+			if(selectorReturnType != null && !selectorReturnType.isNullable() && !TypeUtils.isEqualFqName(selectorReturnType, NapileLangPackage.NULL))
 			{
 				if(receiverType.isNullable())
 				{
@@ -976,9 +975,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		JetType result;
 		if(operationType == JetTokens.PLUSPLUS || operationType == JetTokens.MINUSMINUS)
 		{
-			if(JetTypeChecker.INSTANCE.isSubtypeOf(returnType, JetStandardClasses.getUnitType()))
+			if(TypeUtils.isEqualFqName(returnType, NapileLangPackage.NULL))
 			{
-				result = ErrorUtils.createErrorType(JetStandardClasses.UNIT_ALIAS.getName());
+				result = returnType;
 				context.trace.report(INC_DEC_SHOULD_NOT_RETURN_UNIT.on(operationSign));
 			}
 			else

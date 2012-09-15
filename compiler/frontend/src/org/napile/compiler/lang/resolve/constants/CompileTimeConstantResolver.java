@@ -29,7 +29,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lang.rt.NapileLangPackage;
 import com.google.common.base.Function;
 
@@ -373,7 +372,7 @@ public class CompileTimeConstantResolver
 	private boolean noExpectedType(JetType expectedType)
 	{
 		return expectedType == TypeUtils.NO_EXPECTED_TYPE ||
-				JetStandardClasses.isUnit(expectedType) ||
+				TypeUtils.isEqualFqName(expectedType, NapileLangPackage.NULL) ||
 				ErrorUtils.isErrorType(expectedType);
 	}
 }

@@ -31,7 +31,8 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
+import org.napile.compiler.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.types.TypeUtils;
 
 /**
  * @author VISTALL
@@ -56,6 +57,6 @@ public class NodeRefUtil
 		for(ParameterDescriptor p : descriptor.getValueParameters())
 			typeNodes.add(TypeGenerator.toAsmType(p.getType()));
 
-		return new MethodRef(fqName, typeNodes, JetStandardClasses.isUnit(descriptor.getReturnType()) ? null : TypeGenerator.toAsmType(descriptor.getReturnType()));
+		return new MethodRef(fqName, typeNodes, TypeUtils.isEqualFqName(descriptor.getReturnType(), NapileLangPackage.NULL) ? null : TypeGenerator.toAsmType(descriptor.getReturnType()));
 	}
 }

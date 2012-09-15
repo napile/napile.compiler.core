@@ -41,7 +41,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.tree.IElementType;
@@ -213,13 +212,13 @@ public class DataFlowUtils
 	public static JetType checkStatementType(@NotNull NapileExpression expression, @NotNull ExpressionTypingContext context)
 	{
 		if(context.expectedType != TypeUtils.NO_EXPECTED_TYPE &&
-				!JetStandardClasses.isUnit(context.expectedType) &&
+				!TypeUtils.isEqualFqName(context.expectedType, NapileLangPackage.NULL) &&
 				!ErrorUtils.isErrorType(context.expectedType))
 		{
 			context.trace.report(EXPECTED_TYPE_MISMATCH.on(expression, context.expectedType));
 			return null;
 		}
-		return JetStandardClasses.getUnitType();
+		return TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL);
 	}
 
 	@NotNull
@@ -232,7 +231,7 @@ public class DataFlowUtils
 	public static JetType checkImplicitCast(@Nullable JetType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, boolean isStatement)
 	{
 		if(expressionType != null && context.expectedType == TypeUtils.NO_EXPECTED_TYPE && !isStatement &&
-				(JetStandardClasses.isUnit(expressionType) || TypeUtils.isEqualFqName(expressionType, NapileLangPackage.ANY)))
+				(TypeUtils.isEqualFqName(expressionType, NapileLangPackage.NULL) || TypeUtils.isEqualFqName(expressionType, NapileLangPackage.ANY)))
 		{
 			context.trace.report(IMPLICIT_CAST_TO_UNIT_OR_ANY.on(expression, expressionType));
 		}

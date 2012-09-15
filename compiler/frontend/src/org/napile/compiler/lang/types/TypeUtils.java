@@ -554,6 +554,12 @@ public class TypeUtils
 	}
 
 	@NotNull
+	public static JetType getTypeOfClassOrErrorType(@NotNull JetScope jetScope, @NotNull FqName name)
+	{
+		return getTypeOfClassOrErrorType(jetScope, name, false);
+	}
+
+	@NotNull
 	public static JetType getTypeOfClassOrErrorType(@NotNull JetScope jetScope, @NotNull FqName name, boolean nullable)
 	{
 		ClassDescriptor classifierDescriptor = jetScope.getClass(name);

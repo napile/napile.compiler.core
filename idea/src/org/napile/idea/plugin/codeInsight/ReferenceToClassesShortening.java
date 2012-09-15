@@ -22,20 +22,19 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNullableType;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
-import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.NapileTypeElement;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileTypeArgumentList;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
-import org.napile.idea.plugin.quickfix.ImportInsertHelper;
+import org.napile.compiler.lang.psi.NapileTypeElement;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileUserType;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 
 public class ReferenceToClassesShortening
 {
@@ -101,11 +100,6 @@ public class ReferenceToClassesShortening
 
 				private void compactReferenceToClass(NapileUserType userType, ClassDescriptor targetClass)
 				{
-					if(targetClass == JetStandardClasses.getUnitType().getConstructor().getDeclarationDescriptor())
-					{
-						// do not replace "Unit" with "Tuple0"
-						return;
-					}
 					String name = targetClass.getName().getName();
 					DeclarationDescriptor parent = targetClass.getContainingDeclaration();
 					while(parent instanceof ClassDescriptor)

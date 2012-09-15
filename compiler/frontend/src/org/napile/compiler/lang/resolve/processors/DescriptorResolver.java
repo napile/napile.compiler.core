@@ -53,7 +53,6 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
@@ -224,7 +223,7 @@ public class DescriptorResolver
 		}
 		else if(function.hasBlockBody())
 		{
-			returnType = JetStandardClasses.getUnitType();
+			returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
 		}
 		else
 		{
@@ -325,12 +324,8 @@ public class DescriptorResolver
 
 	private TypeParameterDescriptorImpl resolveTypeParameter(DeclarationDescriptor containingDescriptor, WritableScope extensibleScope, NapileTypeParameter typeParameter, int index, BindingTrace trace)
 	{
-		//        NapileTypeReference extendsBound = typeParameter.getExtendsBound();
-		//        JetType bound = extendsBound == null
-		//                ? JetStandardClasses.getDefaultBound()
-		//                : typeResolver.resolveType(extensibleScope, extendsBound);
 		TypeParameterDescriptorImpl typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(containingDescriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(JetTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
-		//        typeParameterDescriptor.addUpperBound(bound);
+
 		extensibleScope.addTypeParameterDescriptor(typeParameterDescriptor);
 		trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
 		return typeParameterDescriptor;
@@ -399,7 +394,7 @@ public class DescriptorResolver
 
 			parameter.setInitialized();
 
-			if(JetStandardClasses.isNothing(parameter.getUpperBoundsAsType()))
+			if(false)
 			{
 				PsiElement nameIdentifier = typeParameters.get(parameter.getIndex()).getNameIdentifier();
 				if(nameIdentifier != null)

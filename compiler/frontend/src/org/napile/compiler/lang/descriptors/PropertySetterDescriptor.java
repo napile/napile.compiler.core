@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 
 /**
  * @author abreslav
@@ -78,11 +77,11 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 		return Collections.singletonList(parameter);
 	}
 
-	@NotNull
+	@Nullable
 	@Override
 	public JetType getReturnType()
 	{
-		return JetStandardClasses.getUnitType();
+		return null;
 	}
 
 	@Override

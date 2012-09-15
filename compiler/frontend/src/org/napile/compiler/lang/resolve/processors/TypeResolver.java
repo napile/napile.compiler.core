@@ -40,6 +40,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
@@ -49,7 +50,6 @@ import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.SelfTypeConstructorImpl;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.util.lazy.LazyValue;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -221,7 +221,7 @@ public class TypeResolver
 					if(returnTypeRef != null)
 						returnType = resolveType(scope, returnTypeRef, trace, checkBounds);
 					else
-						returnType = JetStandardClasses.getUnitType();
+						returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
 
 					MethodTypeConstructor methodTypeConstructor = new MethodTypeConstructorImpl(returnType, parameterTypes);
 					result[0] = new JetTypeImpl(annotations, methodTypeConstructor, false, Collections.<JetType>emptyList(), scope);

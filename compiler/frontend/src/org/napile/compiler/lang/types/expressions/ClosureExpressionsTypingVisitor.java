@@ -49,6 +49,7 @@ import org.napile.compiler.lang.resolve.TopDownAnalyzer;
 import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -57,7 +58,6 @@ import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Predicate;
@@ -180,10 +180,10 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		{
 
 			JetType expectedReturnType = ((MethodTypeConstructor) expectedType.getConstructor()).getReturnType();
-			if(JetStandardClasses.isUnit(expectedReturnType))
+			if(TypeUtils.isEqualFqName(expectedReturnType, NapileLangPackage.NULL))
 			{
-				functionDescriptor.setReturnType(JetStandardClasses.getUnitType());
-				return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(JetStandardClasses.getUnitType(), parameterTypes), context.scope), expression, context, context.dataFlowInfo);
+				functionDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL));
+				return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(functionDescriptor.getReturnType(), parameterTypes), context.scope), expression, context, context.dataFlowInfo);
 			}
 		}
 		return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(safeReturnType, parameterTypes), context.scope), expression, context, context.dataFlowInfo);

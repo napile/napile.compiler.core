@@ -16,22 +16,19 @@
 
 package org.napile.compiler.lang.resolve;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
 import org.napile.compiler.lang.resolve.processors.DeclarationResolver;
 import org.napile.compiler.lang.resolve.processors.OverloadResolver;
@@ -40,7 +37,6 @@ import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import com.google.common.base.Predicates;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
@@ -171,28 +167,7 @@ public class TopDownAnalyzer
 		}
 	}
 
-	public static void processStandardLibraryNamespace(@NotNull Project project, @NotNull BindingTrace trace, @NotNull WritableScope outerScope, @NotNull NamespaceDescriptorImpl standardLibraryNamespace, @NotNull List<NapileFile> files)
-	{
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.<NapileFile>alwaysFalse(), true, false);
-		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), JetStandardClasses.FAKE_STANDARD_CLASSES_MODULE);
-
-		injector.getTopDownAnalyzer().doProcessStandardLibraryNamespace(outerScope, standardLibraryNamespace, files);
-	}
-
-	private void doProcessStandardLibraryNamespace(WritableScope outerScope, NamespaceDescriptorImpl standardLibraryNamespace, List<NapileFile> files)
-	{
-		ArrayList<NapileDeclaration> toAnalyze = new ArrayList<NapileDeclaration>();
-		for(NapileFile file : files)
-		{
-			context.getNamespaceDescriptors().put(file, standardLibraryNamespace);
-			context.getNamespaceScopes().put(file, standardLibraryNamespace.getMemberScope());
-			toAnalyze.addAll(file.getDeclarations());
-		}
-		//        context.getDeclaringScopes().put(file, outerScope);
-
-		doProcess(outerScope, standardLibraryNamespace.getBuilder(), toAnalyze);
-	}
 
 	public static void processClassOrObject(@NotNull Project project, @NotNull final BindingTrace trace, @NotNull JetScope outerScope, @NotNull final DeclarationDescriptor containingDeclaration, @NotNull NapileClassLike object)
 	{

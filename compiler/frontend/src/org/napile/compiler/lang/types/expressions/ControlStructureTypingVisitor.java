@@ -49,7 +49,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -107,15 +106,8 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 				JetTypeInfo typeInfo = context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(thenScope, Collections.singletonList(thenBranch), CoercionStrategy.NO_COERCION, context.replaceDataFlowInfo(thenInfo), context.trace);
 				JetType type = typeInfo.getType();
 				DataFlowInfo dataFlowInfo;
-				if(type != null && JetStandardClasses.isNothing(type))
-				{
-					dataFlowInfo = elseInfo;
-				}
-				else
-				{
-					dataFlowInfo = typeInfo.getDataFlowInfo().or(elseInfo);
-				}
-				return DataFlowUtils.checkImplicitCast(DataFlowUtils.checkType(JetStandardClasses.getUnitType(), expression, contextWithExpectedType), expression, contextWithExpectedType, isStatement, dataFlowInfo);
+				dataFlowInfo = typeInfo.getDataFlowInfo().or(elseInfo);
+				return DataFlowUtils.checkImplicitCast(DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL), expression, contextWithExpectedType), expression, contextWithExpectedType, isStatement, dataFlowInfo);
 			}
 			return JetTypeInfo.create(null, context.dataFlowInfo);
 		}
@@ -124,15 +116,8 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			JetTypeInfo typeInfo = context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(elseScope, Collections.singletonList(elseBranch), CoercionStrategy.NO_COERCION, context.replaceDataFlowInfo(elseInfo), context.trace);
 			JetType type = typeInfo.getType();
 			DataFlowInfo dataFlowInfo;
-			if(type != null && JetStandardClasses.isNothing(type))
-			{
-				dataFlowInfo = thenInfo;
-			}
-			else
-			{
-				dataFlowInfo = typeInfo.getDataFlowInfo().or(thenInfo);
-			}
-			return DataFlowUtils.checkImplicitCast(DataFlowUtils.checkType(JetStandardClasses.getUnitType(), expression, contextWithExpectedType), expression, contextWithExpectedType, isStatement, dataFlowInfo);
+			dataFlowInfo = typeInfo.getDataFlowInfo().or(thenInfo);
+			return DataFlowUtils.checkImplicitCast(DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL), expression, contextWithExpectedType), expression, contextWithExpectedType, isStatement, dataFlowInfo);
 		}
 		CoercionStrategy coercionStrategy = isStatement ? CoercionStrategy.COERCION_TO_UNIT : CoercionStrategy.NO_COERCION;
 		JetTypeInfo thenTypeInfo = context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(thenScope, Collections.singletonList(thenBranch), coercionStrategy, contextWithExpectedType.replaceDataFlowInfo(thenInfo), context.trace);
@@ -142,8 +127,8 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		DataFlowInfo thenDataFlowInfo = thenTypeInfo.getDataFlowInfo();
 		DataFlowInfo elseDataFlowInfo = elseTypeInfo.getDataFlowInfo();
 
-		boolean jumpInThen = thenType != null && JetStandardClasses.isNothing(thenType);
-		boolean jumpInElse = elseType != null && JetStandardClasses.isNothing(elseType);
+		boolean jumpInThen = thenType != null && false;
+		boolean jumpInElse = elseType != null && false;
 
 		JetTypeInfo result;
 		if(thenType == null && elseType == null)
@@ -210,7 +195,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		{
 			dataFlowInfo = context.dataFlowInfo;
 		}
-		return DataFlowUtils.checkType(JetStandardClasses.getUnitType(), expression, contextWithExpectedType, dataFlowInfo);
+		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL), expression, contextWithExpectedType, dataFlowInfo);
 	}
 
 	private boolean containsBreak(final NapileLoopExpression loopExpression, final ExpressionTypingContext context)
@@ -297,7 +282,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		{
 			dataFlowInfo = context.dataFlowInfo;
 		}
-		return DataFlowUtils.checkType(JetStandardClasses.getUnitType(), expression, contextWithExpectedType, dataFlowInfo);
+		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL), expression, contextWithExpectedType, dataFlowInfo);
 	}
 
 	@Override
@@ -370,7 +355,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(loopScope, Collections.singletonList(body), CoercionStrategy.NO_COERCION, context, context.trace);
 		}
 
-		return DataFlowUtils.checkType(JetStandardClasses.getUnitType(), expression, contextWithExpectedType, context.dataFlowInfo);
+		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL), expression, contextWithExpectedType, context.dataFlowInfo);
 	}
 
 	@Nullable
@@ -618,7 +603,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		}
 		else
 		{
-			if(expectedType != TypeUtils.NO_EXPECTED_TYPE && expectedType != null && !JetStandardClasses.isUnit(expectedType))
+			if(expectedType != TypeUtils.NO_EXPECTED_TYPE && expectedType != null && !TypeUtils.isEqualFqName(expectedType, NapileLangPackage.NULL))
 			{
 				context.trace.report(Errors.RETURN_TYPE_MISMATCH.on(expression, expectedType));
 			}

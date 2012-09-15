@@ -22,30 +22,10 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.j2k.Converter;
 import org.jetbrains.jet.j2k.J2KConverterFlags;
-import org.jetbrains.jet.j2k.ast.ArrayType;
-import org.jetbrains.jet.j2k.ast.ClassType;
-import org.jetbrains.jet.j2k.ast.IdentifierImpl;
-import org.jetbrains.jet.j2k.ast.InProjectionType;
-import org.jetbrains.jet.j2k.ast.Node;
-import org.jetbrains.jet.j2k.ast.OutProjectionType;
-import org.jetbrains.jet.j2k.ast.PrimitiveType;
-import org.jetbrains.jet.j2k.ast.StarProjectionType;
-import org.jetbrains.jet.j2k.ast.Type;
-import org.jetbrains.jet.j2k.ast.VarArg;
+import org.jetbrains.jet.j2k.ast.*;
 import org.jetbrains.jet.j2k.util.AstUtil;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
-import com.intellij.psi.PsiArrayType;
-import com.intellij.psi.PsiCapturedWildcardType;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiClassType;
-import com.intellij.psi.PsiDisjunctionType;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiEllipsisType;
-import com.intellij.psi.PsiJavaCodeReferenceElement;
-import com.intellij.psi.PsiPrimitiveType;
-import com.intellij.psi.PsiTypeParameter;
-import com.intellij.psi.PsiTypeVisitor;
-import com.intellij.psi.PsiWildcardType;
+import org.napile.compiler.lang.rt.NapileLangPackage;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
 
 /**
@@ -87,7 +67,7 @@ public class TypeVisitor extends PsiTypeVisitor<Type> implements J2KVisitor
 
 		if(name.equals("void"))
 		{
-			myResult = new PrimitiveType(new IdentifierImpl(JetStandardClasses.UNIT_ALIAS.getName()));
+			myResult = new PrimitiveType(new IdentifierImpl(NapileLangPackage.NULL.getFqName()));
 		}
 		else if(Node.PRIMITIVE_TYPES.contains(name))
 		{

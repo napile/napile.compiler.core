@@ -23,7 +23,8 @@ import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
+import org.napile.compiler.lang.rt.NapileLangPackage;
+import org.napile.compiler.lang.types.TypeUtils;
 
 /**
  * @author VISTALL
@@ -47,7 +48,7 @@ public class MethodGenerator
 	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor)
 	{
 		MethodNode methodNode = new MethodNode(ModifierGenerator.gen(methodDescriptor), methodDescriptor.getName().getName());
-		methodNode.returnType = JetStandardClasses.isUnit(methodDescriptor.getReturnType()) ? null : TypeGenerator.toAsmType(methodDescriptor.getReturnType());
+		methodNode.returnType = TypeUtils.isEqualFqName(methodDescriptor.getReturnType(), NapileLangPackage.NULL) ? null : TypeGenerator.toAsmType(methodDescriptor.getReturnType());
 
 		for(ParameterDescriptor declaration : methodDescriptor.getValueParameters())
 		{

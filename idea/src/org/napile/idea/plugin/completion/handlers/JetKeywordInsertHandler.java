@@ -19,7 +19,6 @@ package org.napile.idea.plugin.completion.handlers;
 import java.util.Set;
 
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lexer.JetTokens;
 import com.google.common.collect.Sets;
 import com.intellij.codeInsight.TailType;
@@ -55,7 +54,7 @@ public class JetKeywordInsertHandler implements InsertHandler<LookupElement>
 				NapileMethod napileMethod = PsiTreeUtil.getParentOfType(element, NapileMethod.class);
 				if(napileMethod != null)
 				{
-					if(!napileMethod.hasDeclaredReturnType() || NapilePsiUtil.isVoidType(napileMethod.getReturnTypeRef()))
+					if(!napileMethod.hasDeclaredReturnType())
 					{
 						// No space for void function
 						return;

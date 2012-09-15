@@ -38,9 +38,9 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.plugin.JetMainDetector;
 import com.google.common.collect.Lists;
@@ -156,7 +156,7 @@ public class JetFlowInformationProvider
 		returnedExpressions.remove(function); // This will be the only "expression" if the body is empty
 
 		if(expectedReturnType != TypeUtils.NO_EXPECTED_TYPE &&
-				!JetStandardClasses.isUnit(expectedReturnType) &&
+				!TypeUtils.isEqualFqName(expectedReturnType, NapileLangPackage.NULL) &&
 				returnedExpressions.isEmpty() &&
 				!nothingReturned)
 		{
@@ -189,7 +189,7 @@ public class JetFlowInformationProvider
 				{
 					if(blockBody &&
 							expectedReturnType != TypeUtils.NO_EXPECTED_TYPE &&
-							!JetStandardClasses.isUnit(expectedReturnType) &&
+							!TypeUtils.isEqualFqName(expectedReturnType, NapileLangPackage.NULL) &&
 							!rootUnreachableElements.contains(expression))
 					{
 						noReturnError[0] = true;
@@ -339,7 +339,7 @@ public class JetFlowInformationProvider
 				DeclarationDescriptor descriptor = trace.get(BindingContext.REFERENCE_TARGET, operationReference);
 				if(descriptor instanceof MethodDescriptor)
 				{
-					if(JetStandardClasses.isUnit(((MethodDescriptor) descriptor).getReturnType()))
+					if(TypeUtils.isEqualFqName(((MethodDescriptor) descriptor).getReturnType(), NapileLangPackage.NULL))
 					{
 						hasReassignMethodReturningUnit = true;
 					}
@@ -351,7 +351,7 @@ public class JetFlowInformationProvider
 					{
 						for(DeclarationDescriptor referenceDescriptor : descriptors)
 						{
-							if(JetStandardClasses.isUnit(((MethodDescriptor) referenceDescriptor).getReturnType()))
+							if(TypeUtils.isEqualFqName(((MethodDescriptor) referenceDescriptor).getReturnType(), NapileLangPackage.NULL))
 							{
 								hasReassignMethodReturningUnit = true;
 							}

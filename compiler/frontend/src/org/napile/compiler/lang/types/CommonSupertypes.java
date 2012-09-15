@@ -19,14 +19,13 @@ package org.napile.compiler.lang.types;
 import java.util.*;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 
 /**
  * @author abreslav
@@ -193,7 +192,7 @@ public class CommonSupertypes
 		}
 
 		// TODO : attributes?
-		JetScope newScope = JetStandardClasses.STUB;
+		JetScope newScope = JetScope.EMPTY;
 		DeclarationDescriptor declarationDescriptor = constructor.getDeclarationDescriptor();
 		if(declarationDescriptor instanceof ClassDescriptor)
 		{

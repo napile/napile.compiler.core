@@ -16,7 +16,6 @@
 
 package org.napile.compiler.resolve;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -38,7 +37,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.lang.JetStandardClasses;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import com.intellij.openapi.util.text.StringUtil;
@@ -139,25 +137,12 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			return escape("[NULL]");
 		else if(ErrorUtils.isErrorType(type))
 			return escape(type.toString());
-		else if(JetStandardClasses.isUnit(type))
-			return escape(JetStandardClasses.UNIT_ALIAS + (type.isNullable() ? "?" : ""));
 		else if(type.getConstructor() instanceof SelfTypeConstructor)
 			return escape(renderKeyword(JetTokens.THIS_KEYWORD));
 		else if(type.getConstructor() instanceof MethodTypeConstructor)
 			return escape(renderFunctionType(type, shortNamesOnly));
 		else
 			return escape(renderDefaultType(type, shortNamesOnly));
-	}
-
-	private static List<String> getOuterClassesNames(ClassDescriptor cd)
-	{
-		ArrayList<String> result = new ArrayList<String>();
-		while(cd.getContainingDeclaration() instanceof ClassifierDescriptor)
-		{
-			result.add(cd.getName().getName());
-			cd = (ClassDescriptor) cd.getContainingDeclaration();
-		}
-		return result;
 	}
 
 	private String renderDefaultType(JetType type, boolean shortNamesOnly)
@@ -603,23 +588,20 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				renderTypeParameters(descriptor.getTypeConstructor().getParameters(), builder);
 			}
 
-			if(!descriptor.equals(JetStandardClasses.getNothing()))
+			Collection<? extends JetType> supertypes = descriptor.getTypeConstructor().getSupertypes();
+			if(supertypes.isEmpty() || supertypes.size() == 1 && TypeUtils.isEqualFqName(supertypes.iterator().next(), NapileLangPackage.ANY))
 			{
-				Collection<? extends JetType> supertypes = descriptor.getTypeConstructor().getSupertypes();
-				if(supertypes.isEmpty() || supertypes.size() == 1 && TypeUtils.isEqualFqName(supertypes.iterator().next(), NapileLangPackage.ANY))
+			}
+			else
+			{
+				builder.append(" : ");
+				for(Iterator<? extends JetType> iterator = supertypes.iterator(); iterator.hasNext(); )
 				{
-				}
-				else
-				{
-					builder.append(" : ");
-					for(Iterator<? extends JetType> iterator = supertypes.iterator(); iterator.hasNext(); )
+					JetType supertype = iterator.next();
+					builder.append(renderType(supertype));
+					if(iterator.hasNext())
 					{
-						JetType supertype = iterator.next();
-						builder.append(renderType(supertype));
-						if(iterator.hasNext())
-						{
-							builder.append(", ");
-						}
+						builder.append(", ");
 					}
 				}
 			}
