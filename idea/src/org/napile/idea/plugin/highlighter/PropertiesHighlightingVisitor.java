@@ -18,6 +18,7 @@ package org.napile.idea.plugin.highlighter;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
@@ -104,6 +105,8 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 
 	private void highlightProperty(@NotNull PsiElement elementToHighlight, @NotNull VariableDescriptor descriptor, boolean withBackingField)
 	{
+		if(descriptor instanceof LocalVariableDescriptor)
+			return;
 		JetPsiChecker.highlightName(holder, elementToHighlight, descriptor.isStatic() ? JetHighlightingColors.STATIC_PROPERTY : JetHighlightingColors.INSTANCE_PROPERTY);
 		if(descriptor.getReceiverParameter() != ReceiverDescriptor.NO_RECEIVER)
 		{
