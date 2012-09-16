@@ -176,7 +176,6 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 		@Override
 		public Collection<ResolvedCallWithTrace<MethodDescriptor>> transformCall(@NotNull final CallResolutionContext<CallableDescriptor, MethodDescriptor> context, @NotNull CallResolver callResolver, @NotNull final ResolutionTask<CallableDescriptor, MethodDescriptor> task)
 		{
-
 			final CallableDescriptor descriptor = context.candidateCall.getCandidateDescriptor();
 			if(descriptor instanceof MethodDescriptor)
 			{
@@ -192,9 +191,8 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 
 			final TemporaryBindingTrace variableCallTrace = context.candidateCall.getTrace();
 
-			ResolutionCandidate<MethodDescriptor> resolutionCandidate = ResolutionCandidate.create(callableDescriptor, false);
+			ResolutionCandidate<MethodDescriptor> resolutionCandidate = ResolutionCandidate.create(callableDescriptor, true);
 
-			//return Collections.<ResolvedCallWithTrace<MethodDescriptor>>singletonList(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace));
 			return Collections.<ResolvedCallWithTrace<MethodDescriptor>>singletonList(new VariableAsFunctionResolvedCall(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace), variableResolvedCall)) ;
 		}
 	};
