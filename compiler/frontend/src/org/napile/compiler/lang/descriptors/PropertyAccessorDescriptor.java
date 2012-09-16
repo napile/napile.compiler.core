@@ -164,4 +164,11 @@ public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNo
 	{
 		throw new IllegalStateException();
 	}
+
+	@NotNull
+	@Override
+	public MethodDescriptor getCallableDescriptor()
+	{
+		return this;
+	}
 }

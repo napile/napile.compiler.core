@@ -701,7 +701,7 @@ public class CallResolver
 
 		boolean isStatic = context.scope.getContainingDeclaration() instanceof DeclarationDescriptorWithVisibility && ((DeclarationDescriptorWithVisibility) context.scope.getContainingDeclaration()).isStatic();
 		// static body
-		if(isStatic)
+		/*if(isStatic)
 		{
 			ReceiverDescriptor thisRef = candidateCall.getThisObject();
 			loop:
@@ -728,7 +728,7 @@ public class CallResolver
 					return;
 				}
 			}
-		}
+		}      */
 
 		if(!Visibilities.isVisible(candidate, context.scope.getContainingDeclaration()))
 		{

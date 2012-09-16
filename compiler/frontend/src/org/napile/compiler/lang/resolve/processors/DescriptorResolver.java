@@ -754,6 +754,7 @@ public class DescriptorResolver
 				setterDescriptor.initializeDefault();
 			}
 
+			setterDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL));
 			trace.record(BindingContext.PROPERTY_ACCESSOR, setter, setterDescriptor);
 		}
 		else if(property.isVar())

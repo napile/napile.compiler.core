@@ -35,6 +35,8 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 	private ParameterDescriptor parameter;
 	@NotNull
 	private final PropertySetterDescriptor original;
+	@NotNull
+	private JetType returnType;
 
 	public PropertySetterDescriptor(@NotNull PropertyDescriptor correspondingProperty, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, boolean hasBody, boolean isDefault, @NotNull Kind kind, boolean isStatic)
 	{
@@ -77,11 +79,16 @@ public class PropertySetterDescriptor extends PropertyAccessorDescriptor
 		return Collections.singletonList(parameter);
 	}
 
-	@Nullable
+	@NotNull
 	@Override
 	public JetType getReturnType()
 	{
-		return null;
+		return returnType;
+	}
+
+	public void setReturnType(@NotNull JetType returnType)
+	{
+		this.returnType = returnType;
 	}
 
 	@Override

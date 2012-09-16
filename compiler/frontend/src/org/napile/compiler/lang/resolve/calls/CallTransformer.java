@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.Call;
@@ -34,10 +33,6 @@ import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.ChainedTemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.MethodTypeConstructor;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 /**
@@ -189,29 +184,18 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 			}
 
 			assert descriptor instanceof VariableDescriptor;
-			JetType returnType = descriptor.getReturnType();
-			if(returnType == null || !(returnType.getConstructor() instanceof MethodTypeConstructor))
+			final MethodDescriptor callableDescriptor = descriptor.getCallableDescriptor();
+			if(callableDescriptor == null)
 				return Collections.emptyList();
 
 			final ResolvedCallWithTrace<VariableDescriptor> variableResolvedCall = (ResolvedCallWithTrace) context.candidateCall;
 
-			MethodDescriptor methodDescriptor = FunctionDescriptorUtil.createDescriptorFromType(descriptor.getName(), returnType, descriptor.getContainingDeclaration());
-
 			final TemporaryBindingTrace variableCallTrace = context.candidateCall.getTrace();
 
-			ResolutionCandidate<MethodDescriptor> resolutionCandidate = ResolutionCandidate.create(methodDescriptor, false);
+			ResolutionCandidate<MethodDescriptor> resolutionCandidate = ResolutionCandidate.create(callableDescriptor, false);
 
-			OverloadResolutionResults<MethodDescriptor> results = OverloadResolutionResultsImpl.success(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace));
-			Collection<ResolvedCallWithTrace<MethodDescriptor>> calls = ((OverloadResolutionResultsImpl<MethodDescriptor>) results).getResultingCalls();
-
-			return Collections2.transform(calls, new Function<ResolvedCallWithTrace<MethodDescriptor>, ResolvedCallWithTrace<MethodDescriptor>>()
-			{
-				@Override
-				public ResolvedCallWithTrace<MethodDescriptor> apply(ResolvedCallWithTrace<MethodDescriptor> functionResolvedCall)
-				{
-					return new VariableAsFunctionResolvedCall(functionResolvedCall, variableResolvedCall);
-				}
-			});
+			//return Collections.<ResolvedCallWithTrace<MethodDescriptor>>singletonList(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace));
+			return Collections.<ResolvedCallWithTrace<MethodDescriptor>>singletonList(new VariableAsFunctionResolvedCall(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace), variableResolvedCall)) ;
 		}
 	};
 

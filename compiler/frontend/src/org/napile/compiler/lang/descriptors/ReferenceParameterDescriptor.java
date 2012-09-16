@@ -171,6 +171,13 @@ public class ReferenceParameterDescriptor implements ParameterDescriptor
 		return Collections.emptySet();
 	}
 
+	@NotNull
+	@Override
+	public MethodDescriptor getCallableDescriptor()
+	{
+		throw new IllegalArgumentException();
+	}
+
 	@Override
 	public void addOverriddenDescriptor(@NotNull ParameterDescriptor overridden)
 	{

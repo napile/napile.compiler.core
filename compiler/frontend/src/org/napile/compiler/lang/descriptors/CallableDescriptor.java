@@ -57,4 +57,7 @@ public interface CallableDescriptor extends DeclarationDescriptorWithVisibility,
 
 	@NotNull
 	Set<? extends CallableDescriptor> getOverriddenDescriptors();
+
+	@Nullable
+	MethodDescriptor getCallableDescriptor();
 }
