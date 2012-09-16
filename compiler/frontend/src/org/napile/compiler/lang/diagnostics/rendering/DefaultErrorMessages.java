@@ -95,8 +95,9 @@ public class DefaultErrorMessages
 		});
 		MAP.put(ILLEGAL_MODIFIER, "Illegal modifier ''{0}''", TO_STRING);
 
-		MAP.put(REDUNDANT_MODIFIER, "Modifier ''{0}'' is redundant because ''{1}'' is present", TO_STRING, TO_STRING);
+		MAP.put(REDUNDANT_MODIFIER_WITH_MODIFIER, "Modifier ''{0}'' is redundant because ''{1}'' is present", TO_STRING, TO_STRING);
 		MAP.put(REDUNDANT_MODIFIER_IN_GETTER, "Visibility modifiers are redundant in getter");
+		MAP.put(REDUNDANT_MODIFIER, "Redundant modifier");
 
 		MAP.put(TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM, "Type checking has run into a recursive problem. Easiest workaround: specify types of your declarations explicitly"); // TODO: message
 		MAP.put(RETURN_NOT_ALLOWED, "'return' is not allowed here");
@@ -128,8 +129,6 @@ public class DefaultErrorMessages
 		MAP.put(ABSTRACT_PROPERTY_WITH_INITIALIZER, "Property with initializer cannot be abstract");
 		MAP.put(ABSTRACT_PROPERTY_WITH_GETTER, "Property with getter implementation cannot be abstract");
 		MAP.put(ABSTRACT_PROPERTY_WITH_SETTER, "Property with setter implementation cannot be abstract");
-
-		MAP.put(PACKAGE_MEMBER_CANNOT_BE_HERITABLE, "Package member cannot be 'heritable'");
 
 		MAP.put(INSTANCE_CALL_FROM_STATIC_CONTEXT, "Instance call from static context");
 

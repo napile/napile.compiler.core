@@ -56,9 +56,10 @@ public interface Errors
 	DiagnosticFactory1<PsiElement, Collection<NapileKeywordToken>> INCOMPATIBLE_MODIFIERS = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, NapileKeywordToken> ILLEGAL_MODIFIER = DiagnosticFactory1.create(Severity.ERROR);
 
-	DiagnosticFactory2<PsiElement, NapileKeywordToken, NapileKeywordToken> REDUNDANT_MODIFIER = DiagnosticFactory2.create(Severity.WARNING);
+	DiagnosticFactory2<PsiElement, NapileKeywordToken, NapileKeywordToken> REDUNDANT_MODIFIER_WITH_MODIFIER = DiagnosticFactory2.create(Severity.WARNING);
 
 	SimpleDiagnosticFactory<PsiElement> REDUNDANT_MODIFIER_IN_GETTER = SimpleDiagnosticFactory.create(Severity.WARNING);
+	SimpleDiagnosticFactory<PsiElement> REDUNDANT_MODIFIER = SimpleDiagnosticFactory.create(Severity.WARNING);
 
 	SimpleDiagnosticFactory<NapileExpression> TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReturnExpression> RETURN_NOT_ALLOWED = SimpleDiagnosticFactory.create(Severity.ERROR);
@@ -90,8 +91,6 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileExpression> ABSTRACT_PROPERTY_WITH_INITIALIZER = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapilePropertyAccessor> ABSTRACT_PROPERTY_WITH_GETTER = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapilePropertyAccessor> ABSTRACT_PROPERTY_WITH_SETTER = SimpleDiagnosticFactory.create(Severity.ERROR);
-
-	SimpleDiagnosticFactory<PsiElement> PACKAGE_MEMBER_CANNOT_BE_HERITABLE = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<PsiElement> GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY = SimpleDiagnosticFactory.create(Severity.ERROR);
 

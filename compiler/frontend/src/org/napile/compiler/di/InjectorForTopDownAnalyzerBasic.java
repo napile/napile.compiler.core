@@ -116,7 +116,6 @@ public class InjectorForTopDownAnalyzerBasic
 		this.controlFlowAnalyzer.setTopDownAnalysisParameters(topDownAnalysisParameters);
 		this.controlFlowAnalyzer.setTrace(bindingTrace);
 
-		this.declarationsChecker.setModifiersChecker(modifiersChecker);
 		this.declarationsChecker.setTrace(bindingTrace);
 
 		this.descriptorResolver.setAnnotationResolver(annotationResolver);

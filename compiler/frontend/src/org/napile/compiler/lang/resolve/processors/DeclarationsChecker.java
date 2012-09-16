@@ -23,17 +23,21 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapilePropertyAccessor;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -41,7 +45,6 @@ import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lexer.JetTokens;
-import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -52,8 +55,6 @@ public class DeclarationsChecker
 {
 	@NotNull
 	private BindingTrace trace;
-	@NotNull
-	private ModifiersChecker modifiersChecker;
 
 	@Inject
 	public void setTrace(@NotNull BindingTrace trace)
@@ -61,46 +62,8 @@ public class DeclarationsChecker
 		this.trace = trace;
 	}
 
-	@Inject
-	public void setModifiersChecker(@NotNull ModifiersChecker modifiersChecker)
-	{
-		this.modifiersChecker = modifiersChecker;
-	}
-
 	public void process(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
-		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : bodiesResolveContext.getClasses().entrySet())
-		{
-			NapileClass aClass = entry.getKey();
-			MutableClassDescriptor classDescriptor = entry.getValue();
-			if(!bodiesResolveContext.completeAnalysisNeeded(aClass))
-				continue;
-
-			// some thing check?
-		}
-
-		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : bodiesResolveContext.getAnonymous().entrySet())
-		{
-			NapileAnonymClass objectDeclaration = entry.getKey();
-			MutableClassDescriptor objectDescriptor = entry.getValue();
-
-			if(!bodiesResolveContext.completeAnalysisNeeded(objectDeclaration))
-				continue;
-
-			checkObject(objectDeclaration, objectDescriptor);
-		}
-
-		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
-		{
-			NapileNamedFunction function = entry.getKey();
-			SimpleMethodDescriptor functionDescriptor = entry.getValue();
-
-			if(!bodiesResolveContext.completeAnalysisNeeded(function))
-				continue;
-
-			checkMethod(function, functionDescriptor);
-		}
-
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
 		{
 			NapileConstructor constructor = entry.getKey();
@@ -124,40 +87,14 @@ public class DeclarationsChecker
 		}
 	}
 
-	private void checkObject(NapileAnonymClass objectDeclaration, MutableClassDescriptor classDescriptor)
-	{
-		modifiersChecker.checkIllegalInThisContextModifiers(objectDeclaration.getModifierList(), Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.OVERRIDE_KEYWORD));
-	}
-
 	private void checkProperty(NapileProperty property, PropertyDescriptor propertyDescriptor)
 	{
 		DeclarationDescriptor containingDeclaration = propertyDescriptor.getContainingDeclaration();
 		ClassDescriptor classDescriptor = (containingDeclaration instanceof ClassDescriptor) ? (ClassDescriptor) containingDeclaration : null;
-		checkPropertyAbstractness(property, propertyDescriptor, classDescriptor);
-		checkPropertyInitializer(property, propertyDescriptor, classDescriptor);
-		modifiersChecker.checkAccessors(property, propertyDescriptor);
-		checkDeclaredTypeInPublicMember(property, propertyDescriptor);
-	}
 
-	private void checkDeclaredTypeInPublicMember(NapileNamedDeclaration member, CallableMemberDescriptor memberDescriptor)
-	{
-		boolean hasDeferredType;
-		if(member instanceof NapileProperty)
-		{
-			hasDeferredType = ((NapileProperty) member).getPropertyTypeRef() == null && DescriptorResolver.hasBody((NapileProperty) member);
-		}
-		else
-		{
-			assert member instanceof NapileMethod;
-			NapileMethod function = (NapileMethod) member;
-			hasDeferredType = function.getReturnTypeRef() == null && function.getBodyExpression() != null && !function.hasBlockBody();
-		}
-		if((memberDescriptor.getVisibility().isPublicAPI()) &&
-				memberDescriptor.getOverriddenDescriptors().size() == 0 &&
-				hasDeferredType)
-		{
-			trace.report(Errors.PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE.on(member));
-		}
+		checkPropertyAbstractness(property, propertyDescriptor, classDescriptor);
+
+		checkPropertyInitializer(property, propertyDescriptor, classDescriptor);
 	}
 
 	private void checkPropertyAbstractness(NapileProperty property, PropertyDescriptor propertyDescriptor, ClassDescriptor classDescriptor)
@@ -246,31 +183,8 @@ public class DeclarationsChecker
 		}
 	}
 
-	protected void checkMethod(NapileNamedFunction method, SimpleMethodDescriptor methodDescriptor)
-	{
-		DeclarationDescriptor containingDescriptor = methodDescriptor.getContainingDeclaration();
-		ASTNode abstractModifier = method.getModifierNode(JetTokens.ABSTRACT_KEYWORD);
-		ASTNode nativeModifier = method.getModifierNode(JetTokens.NATIVE_KEYWORD);
-
-		checkDeclaredTypeInPublicMember(method, methodDescriptor);
-
-		ClassDescriptor classDescriptor = (ClassDescriptor) containingDescriptor;
-		boolean inEnum = classDescriptor.getKind() == ClassKind.ENUM_CLASS;
-		boolean inAbstractClass = classDescriptor.getModality() == Modality.ABSTRACT;
-		if(abstractModifier != null && !inAbstractClass && !inEnum)
-			trace.report(Errors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(method, methodDescriptor.getName().getName(), classDescriptor));
-
-		if(method.getBodyExpression() != null && (abstractModifier != null || nativeModifier != null))
-			trace.report(Errors.NATIVE_OR_ABSTRACT_METHOD_WITH_BODY.on(abstractModifier == null ? nativeModifier.getPsi() : abstractModifier.getPsi(), methodDescriptor));
-
-		if(method.getBodyExpression() == null && abstractModifier == null && nativeModifier == null)
-			trace.report(Errors.NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY.on(method, methodDescriptor));
-	}
-
 	private void checkConstructor(NapileConstructor constructor, ConstructorDescriptor constructorDescriptor)
 	{
-		modifiersChecker.checkIllegalInThisContextModifiers(constructor.getModifierList(), Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD, JetTokens.OVERRIDE_KEYWORD, JetTokens.STATIC_KEYWORD));
-
 		NapileClass parent = PsiTreeUtil.getParentOfType(constructor, NapileClass.class);
 
 		assert parent != null;

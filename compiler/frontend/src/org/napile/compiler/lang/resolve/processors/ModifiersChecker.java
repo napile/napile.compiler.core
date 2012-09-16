@@ -16,37 +16,26 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyGetterDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileModifierList;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileProperty;
-import org.napile.compiler.lang.psi.NapilePropertyAccessor;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.Pair;
 
 /**
  * @author VISTALL
@@ -54,6 +43,12 @@ import com.intellij.openapi.util.Pair;
  */
 public class ModifiersChecker
 {
+	// not create new list every checks - it good for compiler, but as plugin create leaks
+	@NotNull
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CLASS = Arrays.asList(JetTokens.OVERRIDE_KEYWORD, JetTokens.NATIVE_KEYWORD);
+	@NotNull
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(JetTokens.ABSTRACT_KEYWORD, JetTokens.NATIVE_KEYWORD, JetTokens.STATIC_KEYWORD, JetTokens.OVERRIDE_KEYWORD, JetTokens.FINAL_KEYWORD);
+
 	@NotNull
 	private BindingTrace trace;
 
@@ -68,12 +63,19 @@ public class ModifiersChecker
 		Map<NapileClass, MutableClassDescriptor> classes = bodiesResolveContext.getClasses();
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : classes.entrySet())
 		{
-			NapileClass aClass = entry.getKey();
-			MutableClassDescriptor classDescriptor = entry.getValue();
-			if(!bodiesResolveContext.completeAnalysisNeeded(aClass))
+			NapileClass clazz = entry.getKey();
+			//MutableClassDescriptor classDescriptor = entry.getValue();
+			if(!bodiesResolveContext.completeAnalysisNeeded(clazz))
 				continue;
 
-			checkModifiers(aClass.getModifierList(), classDescriptor);
+			if(clazz.getParent() instanceof NapileFile)
+			{
+				checkIllegalInThisContextModifiers(clazz, Arrays.asList(JetTokens.HERITABLE_KEYWORD));
+				checkRedundant(clazz, Arrays.asList(JetTokens.STATIC_KEYWORD));
+			}
+
+			checkIllegalInThisContextModifiers(clazz, INVALID_MODIFIERS_FOR_CLASS);
+			checkModalityModifiers(clazz);
 		}
 
 		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
@@ -84,18 +86,21 @@ public class ModifiersChecker
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
 
-			checkModifiers(function.getModifierList(), functionDescriptor);
+			checkModalityModifiers(function);
+			checkMethod(function, functionDescriptor);
+			checkDeclaredTypeInPublicMember(function, functionDescriptor);
 		}
 
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
 		{
 			NapileConstructor constructor = entry.getKey();
-			ConstructorDescriptor constructorDescriptor = entry.getValue();
+			//ConstructorDescriptor constructorDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(constructor))
 				continue;
 
-			checkModifiers(constructor.getModifierList(), constructorDescriptor);
+			checkIllegalInThisContextModifiers(constructor, INVALID_MODIFIERS_FOR_CONSTRUCTOR);
+			checkModalityModifiers(constructor);
 		}
 
 		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
@@ -106,73 +111,90 @@ public class ModifiersChecker
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
 				continue;
 
-			checkModifiers(property.getModifierList(), propertyDescriptor);
+			checkModalityModifiers(property);
+			checkDeclaredTypeInPublicMember(property, propertyDescriptor);
+			checkAccessors(property, propertyDescriptor);
 		}
 	}
 
-	private void checkModifiers(@Nullable NapileModifierList modifierList, @NotNull DeclarationDescriptor descriptor)
+	protected void checkMethod(NapileNamedFunction method, SimpleMethodDescriptor methodDescriptor)
 	{
-		checkModalityModifiers(modifierList);
-		checkVisibilityModifiers(modifierList, descriptor);
+		DeclarationDescriptor containingDescriptor = methodDescriptor.getContainingDeclaration();
+		ASTNode abstractModifier = method.getModifierNode(JetTokens.ABSTRACT_KEYWORD);
+		ASTNode nativeModifier = method.getModifierNode(JetTokens.NATIVE_KEYWORD);
+
+		checkDeclaredTypeInPublicMember(method, methodDescriptor);
+
+		ClassDescriptor classDescriptor = (ClassDescriptor) containingDescriptor;
+		boolean inEnum = classDescriptor.getKind() == ClassKind.ENUM_CLASS;
+		boolean inAbstractClass = classDescriptor.getModality() == Modality.ABSTRACT;
+		if(abstractModifier != null && !inAbstractClass && !inEnum)
+			trace.report(Errors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(method, methodDescriptor.getName().getName(), classDescriptor));
+
+		if(method.getBodyExpression() != null && (abstractModifier != null || nativeModifier != null))
+			trace.report(Errors.NATIVE_OR_ABSTRACT_METHOD_WITH_BODY.on(abstractModifier == null ? nativeModifier.getPsi() : abstractModifier.getPsi(), methodDescriptor));
+
+		if(method.getBodyExpression() == null && abstractModifier == null && nativeModifier == null)
+			trace.report(Errors.NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY.on(method, methodDescriptor));
 	}
 
-	private void checkModalityModifiers(@Nullable NapileModifierList modifierList)
+	private void checkDeclaredTypeInPublicMember(NapileNamedDeclaration member, CallableMemberDescriptor memberDescriptor)
 	{
-		if(modifierList == null)
-			return;
-
-		checkCompatibility(modifierList, Lists.newArrayList(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD), Lists.<NapileToken>newArrayList(JetTokens.ABSTRACT_KEYWORD));
-		checkCompatibility(modifierList, Lists.newArrayList(JetTokens.ABSTRACT_KEYWORD, JetTokens.NATIVE_KEYWORD));
-	}
-
-	private void checkVisibilityModifiers(@Nullable NapileModifierList modifierList, @NotNull DeclarationDescriptor descriptor)
-	{
-		if(modifierList == null)
-			return;
-
-		DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
-		if(containingDeclaration instanceof NamespaceDescriptor)
+		boolean hasDeferredType;
+		if(member instanceof NapileProperty)
+			hasDeferredType = ((NapileProperty) member).getPropertyTypeRef() == null && DescriptorResolver.hasBody((NapileProperty) member);
+		else
 		{
-			if(modifierList.hasModifier(JetTokens.HERITABLE_KEYWORD))
-				trace.report(Errors.PACKAGE_MEMBER_CANNOT_BE_HERITABLE.on(modifierList.getModifierNode(JetTokens.HERITABLE_KEYWORD).getPsi()));
+			assert member instanceof NapileMethod;
+			NapileMethod function = (NapileMethod) member;
+			hasDeferredType = function.getReturnTypeRef() == null && function.getBodyExpression() != null && !function.hasBlockBody();
 		}
 
-		checkCompatibility(modifierList, Lists.newArrayList(JetTokens.LOCAL_KEYWORD, JetTokens.COVERED_KEYWORD));
+		if(memberDescriptor.getVisibility().isPublicAPI() && memberDescriptor.getOverriddenDescriptors().size() == 0 && hasDeferredType)
+			trace.report(Errors.PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE.on(member));
 	}
 
-	private void checkCompatibility(@Nullable NapileModifierList modifierList, Collection<NapileKeywordToken> availableModifiers, Collection<NapileToken>... availableCombinations)
+	@SuppressWarnings("unchecked")
+	private void checkModalityModifiers(@NotNull NapileDeclaration declaration)
 	{
-		if(modifierList == null)
-			return;
+		checkCompatibility(declaration, Lists.newArrayList(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD), Lists.<NapileToken>newArrayList(JetTokens.ABSTRACT_KEYWORD));
+
+		checkCompatibility(declaration, Lists.newArrayList(JetTokens.ABSTRACT_KEYWORD, JetTokens.NATIVE_KEYWORD));
+	}
+
+	private void checkCompatibility(@NotNull NapileDeclaration declaration, Collection<NapileKeywordToken> availableModifiers, Collection<NapileToken>... availableCombinations)
+	{
 		Collection<NapileKeywordToken> presentModifiers = Sets.newLinkedHashSet();
 		for(NapileKeywordToken modifier : availableModifiers)
-		{
-			if(modifierList.hasModifier(modifier))
-			{
+			if(declaration.hasModifier(modifier))
 				presentModifiers.add(modifier);
-			}
-		}
+
 		if(presentModifiers.size() == 1)
-		{
 			return;
-		}
+
 		for(Collection<NapileToken> combination : availableCombinations)
-		{
 			if(presentModifiers.containsAll(combination) && combination.containsAll(presentModifiers))
-			{
 				return;
-			}
-		}
+
 		for(NapileKeywordToken token : presentModifiers)
-		{
-			trace.report(Errors.INCOMPATIBLE_MODIFIERS.on(modifierList.getModifierNode(token).getPsi(), presentModifiers));
-		}
+			trace.report(Errors.INCOMPATIBLE_MODIFIERS.on(declaration.getModifierNode(token).getPsi(), presentModifiers));
+	}
+
+	private void checkRedundant(@NotNull NapileDeclaration declaration, Collection<NapileKeywordToken> availableModifiers)
+	{
+		Collection<NapileKeywordToken> presentModifiers = Sets.newLinkedHashSet();
+		for(NapileKeywordToken modifier : availableModifiers)
+			if(declaration.hasModifier(modifier))
+				presentModifiers.add(modifier);
+
+		for(NapileKeywordToken token : presentModifiers)
+			trace.report(Errors.REDUNDANT_MODIFIER.on(declaration.getModifierNode(token).getPsi()));
 	}
 
 	public void checkAccessors(NapileProperty property, PropertyDescriptor propertyDescriptor)
 	{
 		for(NapilePropertyAccessor accessor : property.getAccessors())
-			checkIllegalInThisContextModifiers(accessor.getModifierList(), Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD, JetTokens.OVERRIDE_KEYWORD));
+			checkIllegalInThisContextModifiers(accessor, Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD, JetTokens.OVERRIDE_KEYWORD));
 
 		NapilePropertyAccessor getter = property.getGetter();
 		PropertyGetterDescriptor getterDescriptor = propertyDescriptor.getGetter();
@@ -181,60 +203,28 @@ public class ModifiersChecker
 		{
 			Map<NapileKeywordToken, ASTNode> nodes = getNodesCorrespondingToModifiers(getterModifierList, Sets.newHashSet(JetTokens.COVERED_KEYWORD, JetTokens.LOCAL_KEYWORD));
 			if(getterDescriptor.getVisibility() != propertyDescriptor.getVisibility())
-			{
 				for(ASTNode node : nodes.values())
-				{
 					trace.report(Errors.GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY.on(node.getPsi()));
-				}
-			}
 			else
-			{
 				for(ASTNode node : nodes.values())
-				{
 					trace.report(Errors.REDUNDANT_MODIFIER_IN_GETTER.on(node.getPsi()));
-				}
-			}
 		}
 	}
 
-	private void checkRedundantModifier(@NotNull NapileModifierList modifierList, Pair<NapileKeywordToken, NapileKeywordToken>... redundantBundles)
+	public void checkIllegalInThisContextModifiers(@NotNull NapileDeclaration declaration, Collection<NapileKeywordToken> illegalModifiers)
 	{
-		for(Pair<NapileKeywordToken, NapileKeywordToken> tokenPair : redundantBundles)
-		{
-			NapileKeywordToken redundantModifier = tokenPair.getFirst();
-			NapileKeywordToken sufficientModifier = tokenPair.getSecond();
-			if(modifierList.hasModifier(redundantModifier) && modifierList.hasModifier(sufficientModifier))
-			{
-				trace.report(Errors.REDUNDANT_MODIFIER.on(modifierList.getModifierNode(redundantModifier).getPsi(), redundantModifier, sufficientModifier));
-			}
-		}
-	}
-
-	public void checkIllegalInThisContextModifiers(@Nullable NapileModifierList modifierList, Collection<NapileKeywordToken> illegalModifiers)
-	{
-		if(modifierList == null)
-			return;
 		for(NapileKeywordToken modifier : illegalModifiers)
-		{
-			if(modifierList.hasModifier(modifier))
-			{
-				trace.report(Errors.ILLEGAL_MODIFIER.on(modifierList.getModifierNode(modifier).getPsi(), modifier));
-			}
-		}
+			if(declaration.hasModifier(modifier))
+				trace.report(Errors.ILLEGAL_MODIFIER.on(declaration.getModifierNode(modifier).getPsi(), modifier));
 	}
 
 	@NotNull
 	public static Map<NapileKeywordToken, ASTNode> getNodesCorrespondingToModifiers(@NotNull NapileModifierList modifierList, Collection<NapileKeywordToken> possibleModifiers)
 	{
-		Map<NapileKeywordToken, ASTNode> nodes = Maps.newHashMap();
+		Map<NapileKeywordToken, ASTNode> nodes = new HashMap<NapileKeywordToken, ASTNode>(possibleModifiers.size());
 		for(NapileKeywordToken modifier : possibleModifiers)
-		{
 			if(modifierList.hasModifier(modifier))
-			{
 				nodes.put(modifier, modifierList.getModifierNode(modifier));
-			}
-		}
 		return nodes;
 	}
-
 }

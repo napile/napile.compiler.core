@@ -102,7 +102,7 @@ public class QuickFixes
 		factories.put(USELESS_ELVIS, RemoveRightPartOfBinaryExpressionFix.createRemoveElvisOperatorFactory());
 
 		JetIntentionActionFactory removeRedundantModifierFactory = RemoveModifierFix.createRemoveModifierFactory(true);
-		factories.put(REDUNDANT_MODIFIER, removeRedundantModifierFactory);
+		factories.put(REDUNDANT_MODIFIER_WITH_MODIFIER, removeRedundantModifierFactory);
 
 		JetIntentionActionFactory removeModifierFactory = RemoveModifierFix.createRemoveModifierFactory();
 		factories.put(GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY, removeModifierFactory);
