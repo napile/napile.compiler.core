@@ -246,28 +246,25 @@ public class DeclarationsChecker
 		}
 	}
 
-	protected void checkMethod(NapileNamedFunction function, SimpleMethodDescriptor functionDescriptor)
+	protected void checkMethod(NapileNamedFunction method, SimpleMethodDescriptor methodDescriptor)
 	{
-		DeclarationDescriptor containingDescriptor = functionDescriptor.getContainingDeclaration();
-		boolean hasAbstractModifier = function.hasModifier(JetTokens.ABSTRACT_KEYWORD);
-		boolean hasNativeModifier = function.hasModifier(JetTokens.NATIVE_KEYWORD);
+		DeclarationDescriptor containingDescriptor = methodDescriptor.getContainingDeclaration();
+		ASTNode abstractModifier = method.getModifierNode(JetTokens.ABSTRACT_KEYWORD);
+		ASTNode nativeModifier = method.getModifierNode(JetTokens.NATIVE_KEYWORD);
 
-		checkDeclaredTypeInPublicMember(function, functionDescriptor);
+		checkDeclaredTypeInPublicMember(method, methodDescriptor);
 
 		ClassDescriptor classDescriptor = (ClassDescriptor) containingDescriptor;
 		boolean inEnum = classDescriptor.getKind() == ClassKind.ENUM_CLASS;
 		boolean inAbstractClass = classDescriptor.getModality() == Modality.ABSTRACT;
-		if(hasAbstractModifier && !inAbstractClass && !inEnum)
-		{
-			trace.report(Errors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(function, functionDescriptor.getName().getName(), classDescriptor));
-		}
-		if(function.getBodyExpression() != null && hasAbstractModifier)
-		{
-			trace.report(Errors.ABSTRACT_FUNCTION_WITH_BODY.on(function, functionDescriptor));
-		}
+		if(abstractModifier != null && !inAbstractClass && !inEnum)
+			trace.report(Errors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(method, methodDescriptor.getName().getName(), classDescriptor));
 
-		if(function.getBodyExpression() == null && !hasAbstractModifier && !hasNativeModifier)
-			trace.report(Errors.NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY.on(function, functionDescriptor));
+		if(method.getBodyExpression() != null && (abstractModifier != null || nativeModifier != null))
+			trace.report(Errors.NATIVE_OR_ABSTRACT_METHOD_WITH_BODY.on(abstractModifier == null ? nativeModifier.getPsi() : abstractModifier.getPsi(), methodDescriptor));
+
+		if(method.getBodyExpression() == null && abstractModifier == null && nativeModifier == null)
+			trace.report(Errors.NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY.on(method, methodDescriptor));
 	}
 
 	private void checkConstructor(NapileConstructor constructor, ConstructorDescriptor constructorDescriptor)

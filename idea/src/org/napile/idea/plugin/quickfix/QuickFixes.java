@@ -79,8 +79,8 @@ public class QuickFixes
 		factories.put(ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS, removeAbstractModifierFactory);
 		factories.put(ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS, addAbstractToClassFactory);
 
-		factories.put(ABSTRACT_FUNCTION_WITH_BODY, removeAbstractModifierFactory);
-		factories.put(ABSTRACT_FUNCTION_WITH_BODY, removeFunctionBodyFactory);
+		factories.put(NATIVE_OR_ABSTRACT_METHOD_WITH_BODY, removeAbstractModifierFactory);
+		factories.put(NATIVE_OR_ABSTRACT_METHOD_WITH_BODY, removeFunctionBodyFactory);
 
 		JetIntentionActionFactory addFunctionBodyFactory = AddFunctionBodyFix.createFactory();
 		factories.put(NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY, addAbstractModifierFactory);

@@ -103,7 +103,7 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileExpression> PROPERTY_INITIALIZER_NO_BACKING_FIELD = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory2<NapileModifierListOwner, String, ClassDescriptor> ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	DiagnosticFactory2<NapileMethod, String, ClassDescriptor> ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
-	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> ABSTRACT_FUNCTION_WITH_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
+	DiagnosticFactory1<PsiElement, SimpleMethodDescriptor> NATIVE_OR_ABSTRACT_METHOD_WITH_BODY = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 	DiagnosticFactory1<NapileModifierListOwner, SimpleMethodDescriptor> NON_MEMBER_ABSTRACT_FUNCTION = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 

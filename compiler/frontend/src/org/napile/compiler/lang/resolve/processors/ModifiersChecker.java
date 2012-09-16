@@ -122,6 +122,7 @@ public class ModifiersChecker
 			return;
 
 		checkCompatibility(modifierList, Lists.newArrayList(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD), Lists.<NapileToken>newArrayList(JetTokens.ABSTRACT_KEYWORD));
+		checkCompatibility(modifierList, Lists.newArrayList(JetTokens.ABSTRACT_KEYWORD, JetTokens.NATIVE_KEYWORD));
 	}
 
 	private void checkVisibilityModifiers(@Nullable NapileModifierList modifierList, @NotNull DeclarationDescriptor descriptor)
