@@ -18,10 +18,13 @@ package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileRetellEntry;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.PsiElement;
@@ -56,21 +59,19 @@ public class JetFindUsagesProvider implements FindUsagesProvider
 	public String getType(@NotNull PsiElement psiElement)
 	{
 		if(psiElement instanceof NapileNamedFunction)
-		{
-			return "function";
-		}
+			return "method";
+		if(psiElement instanceof NapileRetellEntry)
+			return "retell entry";
+		if(psiElement instanceof NapileEnumEntry)
+			return "enum entry";
+		if(psiElement instanceof NapileConstructor)
+			return "constructor";
 		if(psiElement instanceof NapileClass)
-		{
 			return "class";
-		}
 		if(psiElement instanceof NapilePropertyParameter)
-		{
 			return "parameter";
-		}
 		if(psiElement instanceof NapileProperty)
-		{
 			return "property";
-		}
 		return "";
 	}
 
