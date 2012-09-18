@@ -39,10 +39,7 @@ public interface CallableDescriptor extends DeclarationDescriptorWithVisibility,
 	@NotNull
 	List<TypeParameterDescriptor> getTypeParameters();
 
-	/**
-	 * Method may return null for not yet fully initialized object or if error occurred.
-	 */
-	@Nullable
+	@NotNull
 	JetType getReturnType();
 
 	@NotNull

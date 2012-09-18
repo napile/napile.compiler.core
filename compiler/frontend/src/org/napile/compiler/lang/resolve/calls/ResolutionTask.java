@@ -135,6 +135,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		public <D extends CallableDescriptor> void bindResolvedCall(@NotNull BindingTrace trace, @NotNull ResolvedCallWithTrace<D> resolvedCall)
 		{
 			trace.record(BindingContext.RESOLVED_CALL, call.getCalleeExpression(), resolvedCall);
+			trace.record(BindingContext.CALL, call.getCalleeExpression(), call);
 		}
 
 		@Override

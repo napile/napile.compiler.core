@@ -66,6 +66,7 @@ public class PropertyGetterDescriptor extends PropertyAccessorDescriptor
 		return Collections.emptyList();
 	}
 
+	@NotNull
 	@Override
 	public JetType getReturnType()
 	{

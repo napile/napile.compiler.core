@@ -47,7 +47,7 @@ public class NodeRefUtil
 
 	public static VariableRef ref(@NotNull PropertyDescriptor propertyDescriptor)
 	{
-		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeGenerator.toAsmType(propertyDescriptor.getType()));
+		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()));
 	}
 
 	public static MethodRef ref(CallableDescriptor descriptor)
@@ -55,8 +55,8 @@ public class NodeRefUtil
 		FqName fqName = DescriptorUtils.getFQName(descriptor).toSafe();
 		List<TypeNode> typeNodes = new ArrayList<TypeNode>(descriptor.getValueParameters().size());
 		for(ParameterDescriptor p : descriptor.getValueParameters())
-			typeNodes.add(TypeGenerator.toAsmType(p.getType()));
+			typeNodes.add(TypeTransformer.toAsmType(p.getType()));
 
-		return new MethodRef(fqName, typeNodes, TypeUtils.isEqualFqName(descriptor.getReturnType(), NapileLangPackage.NULL) ? null : TypeGenerator.toAsmType(descriptor.getReturnType()));
+		return new MethodRef(fqName, typeNodes, TypeUtils.isEqualFqName(descriptor.getReturnType(), NapileLangPackage.NULL) ? null : TypeTransformer.toAsmType(descriptor.getReturnType()));
 	}
 }

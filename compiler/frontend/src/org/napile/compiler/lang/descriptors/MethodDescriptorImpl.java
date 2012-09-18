@@ -188,6 +188,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		return unsubstitutedValueParameters;
 	}
 
+	@NotNull
 	@Override
 	public JetType getReturnType()
 	{

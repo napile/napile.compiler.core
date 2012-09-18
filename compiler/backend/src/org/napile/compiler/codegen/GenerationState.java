@@ -103,6 +103,8 @@ public class GenerationState
 		for(NapileClass napileClass : classes)
 			napileClass.accept(classGenerator, null);
 
+		classGenerator.addPropertiesInitToConstructors();
+
 		classNodes = classGenerator.getClassNodes();
 	}
 

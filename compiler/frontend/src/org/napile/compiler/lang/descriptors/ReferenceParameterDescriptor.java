@@ -143,11 +143,11 @@ public class ReferenceParameterDescriptor implements ParameterDescriptor
 		return Collections.emptyList();
 	}
 
-	@Nullable
+	@NotNull
 	@Override
 	public JetType getReturnType()
 	{
-		return null;
+		return getType();
 	}
 
 	@NotNull

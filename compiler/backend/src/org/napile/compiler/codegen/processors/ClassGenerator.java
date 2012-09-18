@@ -16,24 +16,38 @@
 
 package org.napile.compiler.codegen.processors;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.Node;
 import org.napile.asm.tree.members.VariableNode;
+import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PutToStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PutToVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
+import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileRetellEntry;
+import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.name.FqName;
@@ -46,6 +60,10 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 {
 	private final Map<FqName, ClassNode> classNodes;
 	private final BindingTrace bindingTrace;
+
+	private Map<NapileConstructor, ConstructorNode> constructors = new LinkedHashMap<NapileConstructor, ConstructorNode>(5);
+
+	private List<InstructionAdapter> propertiesInit = new ArrayList<InstructionAdapter>();
 
 	public ClassGenerator(BindingTrace bindingTrace, Map<FqName, ClassNode> classNodes)
 	{
@@ -105,31 +123,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		classNode.members.add(constructorNode);
 
-		NapileClass napileClass = (NapileClass) constructor.getParent().getParent();
-
-		int i = 0;
-
-		//TODO [VISTALL] call supers
-
-		/*PropertyInitializerGenerator gen = new PropertyInitializerGenerator(bindingTrace);
-		for(NapileDeclaration decl : napileClass.getDeclarations())
-			decl.accept(gen, null);
-
-		constructorNode.instructions.addAll(gen.getInstructions());
-
-		NapileExpression expression = constructor.getBodyExpression();
-		if(expression != null)
-		{
-			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, methodDescriptor.isStatic());
-
-			expression.accept(expressionGenerator);
-
-			constructorNode.instructions.addAll(expressionGenerator.getInstructions());
-
-			i += expressionGenerator.localsSize();
-		}    */
-
-		constructorNode.visitMaxs(i, i);
+		constructors.put(constructor, constructorNode);
 
 		return null;
 	}
@@ -143,20 +137,9 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		MethodNode methodNode = MethodGenerator.gen(methodDescriptor);
+		MethodNode methodNode = MethodGenerator.gen(methodDescriptor, function, bindingTrace);
 
 		classNode.members.add(methodNode);
-
-		NapileExpression expression = function.getBodyExpression();
-		if(expression != null)
-		{
-			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, methodDescriptor.isStatic());
-
-			expression.accept(expressionGenerator);
-
-		//	methodNode.instructions.addAll(expressionGenerator.getInstructions());
-		//	methodNode.visitMaxs(expressionGenerator.localsSize(), expressionGenerator.localsSize());
-		}
 
 		return null; //return super.visitNamedFunction(function, parent);
 	}
@@ -171,7 +154,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		ClassNode classNode = (ClassNode) parent;
 
 		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName().getName());
-		variableNode.returnType = TypeGenerator.toAsmType(propertyDescriptor.getType());
+		variableNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 		classNode.members.add(variableNode);
 
 		assert propertyDescriptor.getGetter() != null;
@@ -213,6 +196,17 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		}
 		classNode.members.add(getterNode);
 
+		NapileExpression initializer = property.getInitializer();
+		if(initializer != null)
+		{
+			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, propertyDescriptor);
+			expressionGenerator.getInstructs().load(0);
+			expressionGenerator.gen(initializer, variableNode.returnType);
+
+			StackValue.property(propertyDescriptor).store(variableNode.returnType, expressionGenerator.getInstructs());
+
+			propertiesInit.add(expressionGenerator.getInstructs());
+		}
 		return null;//return super.visitProperty(property, parent);
 	}
 
@@ -226,10 +220,31 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		ClassNode classNode = (ClassNode) parent;
 
 		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName().getName());
-		variableNode.returnType = TypeGenerator.toAsmType(propertyDescriptor.getType());
+		variableNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 		classNode.members.add(variableNode);
 
 		return null;// super.visitRetellEntry(retellEntry, variableNode);
+	}
+
+	public void addPropertiesInitToConstructors()
+	{
+		int size = 1;
+		List<Instruction> instructions = new ArrayList<Instruction>();
+		for(InstructionAdapter inst : propertiesInit)
+		{
+			instructions.addAll(inst.getInstructions());
+			size += inst.getMaxLocals();
+		}
+
+		for(Map.Entry<NapileConstructor, ConstructorNode> entry : constructors.entrySet())
+		{
+			ConstructorNode constructorNode = entry.getValue();
+
+			constructorNode.instructions.addAll(instructions);
+			constructorNode.visitMaxs(size, size);
+
+			//TODO [VISTALL] generate code
+		}
 	}
 
 	public Map<FqName, ClassNode> getClassNodes()

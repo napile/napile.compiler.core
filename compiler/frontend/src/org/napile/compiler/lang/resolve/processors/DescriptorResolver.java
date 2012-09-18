@@ -757,10 +757,8 @@ public class DescriptorResolver
 			setterDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL));
 			trace.record(BindingContext.PROPERTY_ACCESSOR, setter, setterDescriptor);
 		}
-		else if(property.isVar())
-		{
-			setterDescriptor = createDefaultSetter(propertyDescriptor);
-		}
+		else
+			setterDescriptor = createDefaultSetter(propertyDescriptor, scope);
 
 		if(!property.isVar())
 		{
@@ -773,11 +771,12 @@ public class DescriptorResolver
 		return setterDescriptor;
 	}
 
-	private PropertySetterDescriptor createDefaultSetter(PropertyDescriptor propertyDescriptor)
+	private PropertySetterDescriptor createDefaultSetter(PropertyDescriptor propertyDescriptor, JetScope scope)
 	{
 		PropertySetterDescriptor setterDescriptor;
 		setterDescriptor = new PropertySetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), propertyDescriptor.getModality(), propertyDescriptor.getVisibility(), false, true, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
 		setterDescriptor.initializeDefault();
+		setterDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL));
 		return setterDescriptor;
 	}
 

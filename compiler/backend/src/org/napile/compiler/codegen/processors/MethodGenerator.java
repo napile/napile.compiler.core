@@ -17,12 +17,16 @@
 package org.napile.compiler.codegen.processors;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.TypeUtils;
 
@@ -37,10 +41,13 @@ public class MethodGenerator
 		ConstructorNode constructorNode = new ConstructorNode(ModifierGenerator.gen(constructorDescriptor));
 		for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName().getName(), TypeGenerator.toAsmType(declaration.getType()));
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName().getName(), TypeTransformer.toAsmType(declaration.getType()));
 
 			constructorNode.parameters.add(methodParameterNode);
 		}
+
+		//TODO [VISTALL] super calls
+
 		return constructorNode;
 	}
 
@@ -48,13 +55,37 @@ public class MethodGenerator
 	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor)
 	{
 		MethodNode methodNode = new MethodNode(ModifierGenerator.gen(methodDescriptor), methodDescriptor.getName().getName());
-		methodNode.returnType = TypeUtils.isEqualFqName(methodDescriptor.getReturnType(), NapileLangPackage.NULL) ? null : TypeGenerator.toAsmType(methodDescriptor.getReturnType());
+		methodNode.returnType = TypeUtils.isEqualFqName(methodDescriptor.getReturnType(), NapileLangPackage.NULL) ? null : TypeTransformer.toAsmType(methodDescriptor.getReturnType());
 
 		for(ParameterDescriptor declaration : methodDescriptor.getValueParameters())
 		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName().getName(), TypeGenerator.toAsmType(declaration.getType()));
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName().getName(), TypeTransformer.toAsmType(declaration.getType()));
 
 			methodNode.parameters.add(methodParameterNode);
+		}
+
+		return methodNode;
+	}
+
+	@NotNull
+	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace bindingTrace)
+	{
+		MethodNode methodNode = gen(methodDescriptor);
+
+		NapileExpression expression = declarationWithBody.getBodyExpression();
+		if(expression != null)
+		{
+			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, methodDescriptor);
+			expressionGenerator.returnExpression(expression);
+
+			InstructionAdapter adapter = expressionGenerator.getInstructs();
+
+			int val = adapter.getMaxLocals();
+			if(!methodDescriptor.isStatic())
+				val ++;
+			methodNode.visitMaxs(val, val);
+
+			methodNode.instructions.addAll(adapter.getInstructions());
 		}
 
 		return methodNode;

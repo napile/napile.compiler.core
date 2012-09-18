@@ -31,7 +31,7 @@ import org.napile.compiler.lang.types.JetType;
  * @author VISTALL
  * @date 0:48/07.09.12
  */
-public class TypeGenerator
+public class TypeTransformer
 {
 	@NotNull
 	public static TypeNode toAsmType(@NotNull JetType jetType)
