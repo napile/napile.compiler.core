@@ -118,7 +118,8 @@ public final class DescriptorLookupConverter
 		}
 
 		element = element.withTailText(tailText, tailTextGrayed).withTypeText(typeText).withPresentableText(presentableText);
-		element = element.withIcon(JetIconProvider.INSTANCE.getIcon(declaration, 0));
+		if(declaration != null)
+			element = element.withIcon(JetIconProvider.INSTANCE.getIcon(declaration, 0));
 
 		return element;
 	}
