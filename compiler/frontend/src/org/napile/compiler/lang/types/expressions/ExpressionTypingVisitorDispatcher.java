@@ -29,7 +29,6 @@ import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
-import org.napile.compiler.lang.psi.NapileElement;
 import com.intellij.lang.ASTNode;
 
 /**

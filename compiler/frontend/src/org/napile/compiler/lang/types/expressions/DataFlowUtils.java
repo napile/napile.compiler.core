@@ -25,6 +25,7 @@ import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileIsExpression;
@@ -35,7 +36,6 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;

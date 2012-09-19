@@ -16,11 +16,11 @@
 
 package org.napile.idea.plugin.stubindex;
 
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
 import org.napile.compiler.lang.psi.stubs.elements.StubIndexService;
-import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.psi.stubs.IndexSink;
 
 /**

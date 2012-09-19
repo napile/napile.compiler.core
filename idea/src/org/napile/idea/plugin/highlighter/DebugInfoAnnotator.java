@@ -20,18 +20,7 @@ import static org.napile.compiler.lang.resolve.BindingContext.AMBIGUOUS_REFERENC
 import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
 import static org.napile.compiler.lang.resolve.BindingContext.LABEL_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
-import static org.napile.compiler.lexer.JetTokens.ANDAND;
-import static org.napile.compiler.lexer.JetTokens.AS_KEYWORD;
-import static org.napile.compiler.lexer.JetTokens.AS_SAFE;
-import static org.napile.compiler.lexer.JetTokens.COLON;
-import static org.napile.compiler.lexer.JetTokens.ELVIS;
-import static org.napile.compiler.lexer.JetTokens.EQ;
-import static org.napile.compiler.lexer.JetTokens.EQEQEQ;
-import static org.napile.compiler.lexer.JetTokens.EXCLEQEQEQ;
-import static org.napile.compiler.lexer.JetTokens.EXCLEXCL;
-import static org.napile.compiler.lexer.JetTokens.IS_KEYWORD;
-import static org.napile.compiler.lexer.JetTokens.NOT_IS;
-import static org.napile.compiler.lexer.JetTokens.OROR;
+import static org.napile.compiler.lexer.JetTokens.*;
 
 import java.util.Collection;
 import java.util.Set;

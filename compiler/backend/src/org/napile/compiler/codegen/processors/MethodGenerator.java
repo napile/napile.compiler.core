@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.adapters.InstructionAdapter;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
@@ -39,7 +40,6 @@ import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.TypeUtils;
 
 /**

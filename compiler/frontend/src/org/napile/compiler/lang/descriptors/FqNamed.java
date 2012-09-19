@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.descriptors;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.name.FqName;
+import org.napile.asm.resolve.name.FqName;
 
 /**
  * @author Nikolay Krasko

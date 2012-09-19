@@ -21,27 +21,25 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
-import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.slicedmap.BasicWritableSlice;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
+import org.napile.compiler.util.slicedmap.RewritePolicy;
 import org.napile.compiler.util.slicedmap.SlicedMap;
 import org.napile.compiler.util.slicedmap.Slices;
 import org.napile.compiler.util.slicedmap.WritableSlice;
-import org.napile.compiler.util.slicedmap.RewritePolicy;
 import com.intellij.psi.PsiElement;
 
 /**

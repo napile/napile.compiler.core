@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import com.google.common.collect.Sets;

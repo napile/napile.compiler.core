@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -34,7 +35,6 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
 import org.napile.compiler.lang.resolve.calls.autocasts.Nullability;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;

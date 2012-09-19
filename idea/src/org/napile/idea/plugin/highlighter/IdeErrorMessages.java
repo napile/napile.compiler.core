@@ -16,26 +16,7 @@
 
 package org.napile.idea.plugin.highlighter;
 
-import static org.napile.compiler.lang.diagnostics.Errors.ABSTRACT_MEMBER_NOT_IMPLEMENTED;
-import static org.napile.compiler.lang.diagnostics.Errors.ASSIGN_OPERATOR_AMBIGUITY;
-import static org.napile.compiler.lang.diagnostics.Errors.CONFLICTING_OVERLOADS;
-import static org.napile.compiler.lang.diagnostics.Errors.ITERATOR_AMBIGUITY;
-import static org.napile.compiler.lang.diagnostics.Errors.MANY_IMPL_MEMBER_NOT_IMPLEMENTED;
-import static org.napile.compiler.lang.diagnostics.Errors.NONE_APPLICABLE;
-import static org.napile.compiler.lang.diagnostics.Errors.OVERLOAD_RESOLUTION_AMBIGUITY;
-import static org.napile.compiler.lang.diagnostics.Errors.RESULT_TYPE_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.RETURN_TYPE_MISMATCH_ON_OVERRIDE;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_EXPECTED_TYPE_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_NO_INFORMATION_FOR_PARAMETER;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_TYPE_CONSTRUCTOR_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_UPPER_BOUND_VIOLATED;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH;
-import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH_IN_FOR_LOOP;
-import static org.napile.compiler.lang.diagnostics.Errors.UPPER_BOUND_VIOLATED;
-import static org.napile.compiler.lang.diagnostics.Errors.VAR_OVERRIDDEN_BY_VAL;
-import static org.napile.compiler.lang.diagnostics.Errors.WRONG_GETTER_RETURN_TYPE;
-import static org.napile.compiler.lang.diagnostics.Errors.WRONG_SETTER_PARAMETER_TYPE;
+import static org.napile.compiler.lang.diagnostics.Errors.*;
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.RENDER_CLASS_OR_OBJECT;
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.TO_STRING;
 import static org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TextElementType;

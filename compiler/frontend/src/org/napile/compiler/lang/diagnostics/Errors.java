@@ -23,10 +23,10 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lexer.NapileKeywordToken;
-import org.napile.compiler.lang.psi.*;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;

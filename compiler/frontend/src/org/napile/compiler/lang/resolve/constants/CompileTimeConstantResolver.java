@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.psi.NapileEscapeStringTemplateEntry;
 import org.napile.compiler.lang.psi.NapileLiteralStringTemplateEntry;
 import org.napile.compiler.lang.psi.NapileStringTemplateEntry;
@@ -29,7 +30,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import com.google.common.base.Function;
 
 /**

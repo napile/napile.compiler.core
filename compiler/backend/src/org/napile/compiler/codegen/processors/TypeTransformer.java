@@ -17,6 +17,7 @@
 package org.napile.compiler.codegen.processors;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.types.ClassTypeNode;
 import org.napile.asm.tree.members.types.TypeConstructorNode;
 import org.napile.asm.tree.members.types.TypeNode;
@@ -24,7 +25,6 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.types.JetType;
 
 /**

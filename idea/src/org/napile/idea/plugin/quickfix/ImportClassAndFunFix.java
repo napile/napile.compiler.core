@@ -23,6 +23,8 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.ImportPath;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -30,8 +32,6 @@ import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.ImportPath;
-import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.actions.JetAddImportAction;
 import org.napile.idea.plugin.caches.JetShortNamesCache;

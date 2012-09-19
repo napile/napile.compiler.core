@@ -18,8 +18,8 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.psi.stubs.NamedStub;
 
 /**

@@ -17,17 +17,7 @@
 package org.napile.compiler.lang.diagnostics.rendering;
 
 import static org.napile.compiler.lang.diagnostics.Errors.*;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.AMBIGUOUS_CALLS;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.ELEMENT_TEXT;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.NAME;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.RENDER_CLASS_OR_OBJECT;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.RENDER_TYPE;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.TO_STRING;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS_RENDERER;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.TYPE_INFERENCE_NO_INFORMATION_FOR_PARAMETER_RENDERER;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.TYPE_INFERENCE_TYPE_CONSTRUCTOR_MISMATCH_RENDERER;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.TYPE_INFERENCE_UPPER_BOUND_VIOLATED_RENDERER;
-import static org.napile.compiler.lang.diagnostics.rendering.Renderers.commaSeparated;
+import static org.napile.compiler.lang.diagnostics.rendering.Renderers.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
@@ -29,9 +32,6 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.TypeUtils;
 
 /**

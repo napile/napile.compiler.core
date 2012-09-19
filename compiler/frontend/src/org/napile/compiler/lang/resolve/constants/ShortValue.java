@@ -18,11 +18,11 @@ package org.napile.compiler.lang.resolve.constants;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationArgumentVisitor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import com.google.common.base.Function;
 
 /**

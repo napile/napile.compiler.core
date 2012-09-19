@@ -19,9 +19,9 @@
  */
 package org.napile.compiler;
 
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.plugin.JetLanguage;
-import org.napile.compiler.lang.psi.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 

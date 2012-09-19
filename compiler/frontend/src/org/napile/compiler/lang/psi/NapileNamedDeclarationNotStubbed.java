@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.name.Name;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.name.Name;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;

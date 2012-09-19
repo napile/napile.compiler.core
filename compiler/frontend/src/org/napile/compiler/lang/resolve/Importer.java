@@ -19,6 +19,7 @@ package org.napile.compiler.lang.resolve;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
@@ -26,7 +27,6 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.Pair;

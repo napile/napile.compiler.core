@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
@@ -32,7 +33,6 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;

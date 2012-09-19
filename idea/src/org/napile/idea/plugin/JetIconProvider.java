@@ -19,6 +19,8 @@ package org.napile.idea.plugin;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileAnnotationPackage;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -33,8 +35,6 @@ import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.rt.NapileAnnotationPackage;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.IconProvider;

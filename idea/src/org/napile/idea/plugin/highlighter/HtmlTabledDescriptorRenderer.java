@@ -16,8 +16,6 @@
 
 package org.napile.idea.plugin.highlighter;
 
-import static org.napile.idea.plugin.highlighter.IdeRenderers.strong;
-
 import java.util.Iterator;
 import java.util.List;
 

@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
@@ -34,7 +35,6 @@ import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSuperExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.autocasts.AutoCastServiceImpl;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;

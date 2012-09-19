@@ -24,14 +24,14 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.FqNameUnsafe;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.rendering.Renderer;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;

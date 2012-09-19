@@ -24,7 +24,7 @@ import org.jetbrains.jet.j2k.Converter;
 import org.jetbrains.jet.j2k.J2KConverterFlags;
 import org.jetbrains.jet.j2k.ast.*;
 import org.jetbrains.jet.j2k.util.AstUtil;
-import org.napile.compiler.lang.rt.NapileLangPackage;
+import org.napile.asm.lib.NapileLangPackage;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
 

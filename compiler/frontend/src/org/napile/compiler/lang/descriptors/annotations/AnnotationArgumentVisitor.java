@@ -17,16 +17,7 @@
 package org.napile.compiler.lang.descriptors.annotations;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.constants.BoolValue;
-import org.napile.compiler.lang.resolve.constants.ByteValue;
-import org.napile.compiler.lang.resolve.constants.CharValue;
-import org.napile.compiler.lang.resolve.constants.DoubleValue;
-import org.napile.compiler.lang.resolve.constants.ErrorValue;
-import org.napile.compiler.lang.resolve.constants.FloatValue;
-import org.napile.compiler.lang.resolve.constants.IntValue;
-import org.napile.compiler.lang.resolve.constants.LongValue;
-import org.napile.compiler.lang.resolve.constants.NullValue;
-import org.napile.compiler.lang.resolve.constants.ShortValue;
+import org.napile.compiler.lang.resolve.constants.*;
 import org.napile.compiler.lang.resolve.constants.StringValue;
 
 /**

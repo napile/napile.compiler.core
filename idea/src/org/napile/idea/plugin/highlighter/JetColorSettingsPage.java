@@ -24,9 +24,9 @@ import java.util.Map;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.plugin.JetLanguage;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.JetIcons;
-import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.OptionsBundle;

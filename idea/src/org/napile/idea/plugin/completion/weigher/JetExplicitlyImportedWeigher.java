@@ -17,12 +17,12 @@
 package org.napile.idea.plugin.completion.weigher;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.ImportPath;
+import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.ImportPath;
-import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
 import org.napile.idea.plugin.completion.JetLookupObject;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 import com.intellij.codeInsight.lookup.LookupElement;

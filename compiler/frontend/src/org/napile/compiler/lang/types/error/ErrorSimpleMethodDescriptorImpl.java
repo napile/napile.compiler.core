@@ -19,6 +19,7 @@ package org.napile.compiler.lang.types.error;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptorImpl;
@@ -26,7 +27,6 @@ import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptorImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.types.ErrorUtils;
 
 /**

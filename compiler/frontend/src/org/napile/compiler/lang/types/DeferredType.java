@@ -20,12 +20,12 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
-import org.napile.compiler.lang.resolve.BindingContext;
 
 /**
  * @author abreslav

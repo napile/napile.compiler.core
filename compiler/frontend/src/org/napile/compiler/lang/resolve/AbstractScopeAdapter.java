@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -27,8 +29,6 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 

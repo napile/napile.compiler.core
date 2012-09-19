@@ -23,9 +23,9 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.resolve.ImportPath;
-import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.resolve.name.Name;
+import org.napile.asm.resolve.ImportPath;
+import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.text.StringUtil;

@@ -21,12 +21,12 @@ import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.idea.plugin.stubindex.JetShortClassNameIndex;
 import com.intellij.navigation.GotoClassContributor;
 import com.intellij.navigation.NavigationItem;

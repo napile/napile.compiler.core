@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
@@ -34,7 +35,6 @@ import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;

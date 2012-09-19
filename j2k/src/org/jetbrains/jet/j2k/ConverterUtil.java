@@ -25,20 +25,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.openapi.util.Pair;
-import com.intellij.psi.JavaRecursiveElementVisitor;
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiAnonymousClass;
-import com.intellij.psi.PsiArrayType;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiModifier;
-import com.intellij.psi.PsiModifierList;
-import com.intellij.psi.PsiParameter;
-import com.intellij.psi.PsiReferenceExpression;
-import com.intellij.psi.PsiType;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiUtil;
 
 /**

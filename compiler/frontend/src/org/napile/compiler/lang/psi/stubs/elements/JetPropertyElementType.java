@@ -20,13 +20,13 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetPropertyStubImpl;
-import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IndexSink;

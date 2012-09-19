@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;

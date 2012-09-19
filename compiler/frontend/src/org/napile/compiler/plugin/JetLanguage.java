@@ -19,7 +19,7 @@
  */
 package org.napile.compiler.plugin;
 
-import org.napile.compiler.lang.resolve.ImportPath;
+import org.napile.asm.resolve.ImportPath;
 import com.intellij.lang.Language;
 
 public class JetLanguage extends Language

@@ -17,21 +17,21 @@
 package org.napile.compiler.lang.resolve.calls.autocasts;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
-import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
+import org.napile.compiler.lang.psi.NapileQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileRootNamespaceExpression;
+import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
+import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.JetModuleUtil;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.rt.NapileLangPackage;
-import org.napile.compiler.lang.psi.NapileQualifiedExpression;
-import org.napile.compiler.lang.psi.NapileRootNamespaceExpression;
-import org.napile.compiler.lang.psi.NapileThisExpression;
 import com.intellij.openapi.util.Pair;
 
 /**

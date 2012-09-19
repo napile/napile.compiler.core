@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
@@ -32,9 +32,9 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 
 /**
  * @author abreslav

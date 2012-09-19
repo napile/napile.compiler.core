@@ -26,8 +26,8 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileKeywordToken;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;

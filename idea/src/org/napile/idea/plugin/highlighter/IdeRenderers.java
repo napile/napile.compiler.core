@@ -28,6 +28,8 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
@@ -42,8 +44,6 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.ResolvedCallImpl;
 import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
-import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.resolve.DescriptorRenderer;

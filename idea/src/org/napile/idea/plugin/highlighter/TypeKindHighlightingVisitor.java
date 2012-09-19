@@ -17,6 +17,7 @@
 package org.napile.idea.plugin.highlighter;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -27,7 +28,6 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.rt.NapileAnnotationPackage;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;

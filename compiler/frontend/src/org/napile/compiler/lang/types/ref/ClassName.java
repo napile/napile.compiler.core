@@ -17,10 +17,10 @@
 package org.napile.compiler.lang.types.ref;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.types.JetType;
 
 /**

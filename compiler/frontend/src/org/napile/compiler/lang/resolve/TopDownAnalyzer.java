@@ -23,12 +23,12 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.name.FqName;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
 import org.napile.compiler.lang.resolve.processors.DeclarationResolver;
 import org.napile.compiler.lang.resolve.processors.OverloadResolver;

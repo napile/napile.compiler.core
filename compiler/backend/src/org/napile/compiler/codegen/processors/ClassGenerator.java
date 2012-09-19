@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.napile.asm.adapters.InstructionAdapter;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
@@ -51,7 +52,6 @@ import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.name.FqName;
 import org.napile.compiler.lang.types.JetType;
 import com.intellij.util.containers.MultiMap;
 

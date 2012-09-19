@@ -2,12 +2,11 @@
 
 package org.napile.compiler.lexer;
 
-import java.util.*;
-import com.intellij.lexer.*;
-import com.intellij.psi.*;
-import com.intellij.psi.tree.IElementType;
+import java.util.Stack;
 
-import org.napile.compiler.lexer.JetTokens;
+import com.intellij.lexer.FlexLexer;
+import com.intellij.psi.TokenType;
+import com.intellij.psi.tree.IElementType;
 
 
 /**

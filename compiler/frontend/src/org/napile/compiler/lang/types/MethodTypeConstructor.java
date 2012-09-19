@@ -19,7 +19,7 @@ package org.napile.compiler.lang.types;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.name.Name;
+import org.napile.asm.resolve.name.Name;
 
 /**
  * @author VISTALL

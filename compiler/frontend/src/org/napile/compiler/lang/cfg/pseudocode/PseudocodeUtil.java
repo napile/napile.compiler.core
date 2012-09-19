@@ -16,20 +16,12 @@
 
 package org.napile.compiler.lang.cfg.pseudocode;
 
-import java.util.Collection;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.cfg.JetControlFlowProcessor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
-import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.util.slicedmap.ReadOnlySlice;
-import org.napile.compiler.util.slicedmap.WritableSlice;
 
 /**
  * @author svtk

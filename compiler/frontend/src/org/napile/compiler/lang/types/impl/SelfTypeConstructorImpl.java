@@ -23,7 +23,6 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
-import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 
 /**
  * @author VISTALL

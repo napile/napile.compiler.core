@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.rt.NapileLangPackage;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.util.CommonSuppliers;
 import com.google.common.collect.Maps;

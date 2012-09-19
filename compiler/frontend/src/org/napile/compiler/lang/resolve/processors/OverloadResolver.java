@@ -23,6 +23,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
@@ -42,7 +43,6 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverloadUtil;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
-import org.napile.compiler.lang.resolve.name.Name;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.util.Pair;
 import com.intellij.util.containers.MultiMap;

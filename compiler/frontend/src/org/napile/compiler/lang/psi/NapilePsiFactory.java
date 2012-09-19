@@ -20,9 +20,9 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.resolve.ImportPath;
-import org.napile.compiler.lexer.NapileKeywordToken;
+import org.napile.asm.resolve.ImportPath;
 import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.plugin.JetFileType;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;

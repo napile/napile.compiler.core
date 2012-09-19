@@ -1,10 +1,10 @@
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
 import org.napile.asm.adapters.InstructionAdapter;
+import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
-import org.napile.compiler.lang.resolve.name.Name;
-import org.napile.compiler.lang.rt.NapileLangPackage;
 
 /**
  * @author VISTALL

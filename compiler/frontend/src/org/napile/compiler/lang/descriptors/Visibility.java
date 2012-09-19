@@ -20,8 +20,8 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import com.google.common.collect.Sets;

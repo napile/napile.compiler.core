@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetClassStubImpl;
-import org.napile.compiler.lang.resolve.name.FqName;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;

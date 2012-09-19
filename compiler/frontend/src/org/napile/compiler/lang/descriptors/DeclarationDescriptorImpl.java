@@ -19,9 +19,9 @@ package org.napile.compiler.lang.descriptors;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.name.Name;
 import org.napile.compiler.resolve.DescriptorRenderer;
 
 /**

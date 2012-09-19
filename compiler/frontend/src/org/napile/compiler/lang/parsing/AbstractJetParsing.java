@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import org.napile.compiler.lexer.JetTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;

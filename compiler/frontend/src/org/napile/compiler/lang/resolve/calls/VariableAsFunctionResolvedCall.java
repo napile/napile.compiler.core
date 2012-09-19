@@ -21,8 +21,8 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
