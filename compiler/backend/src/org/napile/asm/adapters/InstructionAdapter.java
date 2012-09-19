@@ -81,6 +81,11 @@ public class InstructionAdapter implements Iterable<Instruction>
 		instructions.add(new NewObjectInstruction(typeNode));
 	}
 
+	public void returnVal()
+	{
+		instructions.add(new ReturnInstruction());
+	}
+
 	public void swap()
 	{
 		throw new UnsupportedOperationException(); //TODO [VISTALL]

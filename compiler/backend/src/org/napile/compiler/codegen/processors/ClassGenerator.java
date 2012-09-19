@@ -17,7 +17,7 @@
 package org.napile.compiler.codegen.processors;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +26,7 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.Node;
+import org.napile.asm.tree.members.StaticConstructorNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
@@ -51,6 +52,7 @@ import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.name.FqName;
+import com.intellij.util.containers.MultiMap;
 
 /**
  * @author VISTALL
@@ -61,9 +63,9 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	private final Map<FqName, ClassNode> classNodes;
 	private final BindingTrace bindingTrace;
 
-	private Map<NapileConstructor, ConstructorNode> constructors = new LinkedHashMap<NapileConstructor, ConstructorNode>(5);
-
-	private List<InstructionAdapter> propertiesInit = new ArrayList<InstructionAdapter>();
+	private final MultiMap<ClassNode, ConstructorNode> constructors = new MultiMap<ClassNode, ConstructorNode>();
+	private final MultiMap<ClassNode, InstructionAdapter> propertiesStaticInit = new MultiMap<ClassNode, InstructionAdapter>();
+	private final MultiMap<ClassNode, InstructionAdapter> propertiesInit = new MultiMap<ClassNode, InstructionAdapter>();
 
 	public ClassGenerator(BindingTrace bindingTrace, Map<FqName, ClassNode> classNodes)
 	{
@@ -123,7 +125,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		classNode.members.add(constructorNode);
 
-		constructors.put(constructor, constructorNode);
+		constructors.putValue(classNode, constructorNode);
 
 		return null;
 	}
@@ -200,12 +202,17 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		if(initializer != null)
 		{
 			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, propertyDescriptor);
-			expressionGenerator.getInstructs().load(0);
+			if(!propertyDescriptor.isStatic())
+				expressionGenerator.getInstructs().load(0);
+
 			expressionGenerator.gen(initializer, variableNode.returnType);
 
 			StackValue.property(propertyDescriptor).store(variableNode.returnType, expressionGenerator.getInstructs());
 
-			propertiesInit.add(expressionGenerator.getInstructs());
+			if(propertyDescriptor.isStatic())
+				propertiesStaticInit.putValue(classNode, expressionGenerator.getInstructs());
+			else
+				propertiesInit.putValue(classNode, expressionGenerator.getInstructs());
 		}
 		return null;//return super.visitProperty(property, parent);
 	}
@@ -228,22 +235,49 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 	public void addPropertiesInitToConstructors()
 	{
-		int size = 1;
-		List<Instruction> instructions = new ArrayList<Instruction>();
-		for(InstructionAdapter inst : propertiesInit)
+		for(ClassNode classNode : classNodes.values())
 		{
-			instructions.addAll(inst.getInstructions());
-			size += inst.getMaxLocals();
-		}
+			// first instance properties
+			int size = 1;
+			List<Instruction> instructions = new ArrayList<Instruction>();
+			Collection<InstructionAdapter> instructionAdapters = propertiesInit.get(classNode);
+			for(InstructionAdapter inst : instructionAdapters)
+			{
+				instructions.addAll(inst.getInstructions());
+				size += inst.getMaxLocals();
+			}
 
-		for(Map.Entry<NapileConstructor, ConstructorNode> entry : constructors.entrySet())
-		{
-			ConstructorNode constructorNode = entry.getValue();
+			Collection<ConstructorNode> constrs = constructors.get(classNode);
 
-			constructorNode.instructions.addAll(instructions);
-			constructorNode.visitMaxs(size, size);
+			for(ConstructorNode constructorNode : constrs)
+			{
+				constructorNode.instructions.addAll(instructions);
+				constructorNode.visitMaxs(size, size);
 
-			//TODO [VISTALL] generate code
+				//TODO [VISTALL] add codegen from body
+			}
+
+			// next static properties
+			size = 0;
+			instructions.clear();
+
+			instructionAdapters = propertiesStaticInit.get(classNode);
+			for(InstructionAdapter inst : instructionAdapters)
+			{
+				instructions.addAll(inst.getInstructions());
+				size += inst.getMaxLocals();
+			}
+
+			if(!instructions.isEmpty())
+			{
+				StaticConstructorNode staticConstructorNode = new StaticConstructorNode();
+				staticConstructorNode.instructions.addAll(instructions);
+				staticConstructorNode.visitMaxs(size, size);
+
+				//TODO [VISTALL] add codegen from bodies
+
+				classNode.members.add(staticConstructorNode);
+			}
 		}
 	}
 

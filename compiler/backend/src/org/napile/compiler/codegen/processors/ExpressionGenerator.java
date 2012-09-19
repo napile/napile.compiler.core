@@ -119,9 +119,21 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitExpression(NapileExpression expression, StackValue receiver)
+	{
+		throw new UnsupportedOperationException("Codegen for " + expression + " is not yet implemented");
+	}
+
+	@Override
 	public StackValue visitDotQualifiedExpression(NapileDotQualifiedExpression expression, StackValue receiver)
 	{
 		return genQualified(StackValue.none(), expression.getSelectorExpression());
+	}
+
+	@Override
+	public StackValue visitParenthesizedExpression(NapileParenthesizedExpression expression, StackValue receiver)
+	{
+		return genQualified(receiver, expression.getExpression());
 	}
 
 	@Override
@@ -129,6 +141,27 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		List<NapileElement> statements = expression.getStatements();
 		return generateBlock(statements);
+	}
+
+	@Override
+	public StackValue visitReturnExpression(NapileReturnExpression expression, StackValue receiver)
+	{
+		final NapileExpression returnedExpression = expression.getReturnedExpression();
+		if(returnedExpression != null)
+		{
+			gen(returnedExpression, returnType);
+
+			doFinallyOnReturn();
+
+			instructs.returnVal();
+		}
+		else
+		{
+			StackValue.nullInstance().put(returnType, instructs);
+
+			instructs.returnVal();
+		}
+		return StackValue.none();
 	}
 
 	@Override
@@ -178,9 +211,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 				return intrinsic.generate(this, instructs, expressionType(expression), expression, Arrays.asList(expression.getLeft(), expression.getRight()), receiver);
 			}
 			else
-			{
 				return invokeOperation(expression, (MethodDescriptor) op, (CallableMethod) callable);
-			}
 		}
 	}
 
@@ -387,6 +418,10 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		return null;
 	}
 
+	private void doFinallyOnReturn()
+	{
+		//TODO [VISTALL] make it
+	}
 
 	public void invokeMethodWithArguments(CallableMethod callableMethod, NapileCallElement expression, StackValue receiver)
 	{

@@ -84,6 +84,11 @@ public abstract class StackValue
 		return new Property(fqName, type, staticVar);
 	}
 
+	public static StackValue nullInstance()
+	{
+		return Null.INSTANCE;
+	}
+
 	private final TypeNode type;
 
 	protected StackValue(TypeNode type)
