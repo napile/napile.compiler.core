@@ -87,12 +87,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	private final FrameMap myFrameMap;
 	@NotNull
 	private final TypeNode returnType;
+	private final boolean isInstanceConstructor;
 
 	public ExpressionGenerator(@NotNull BindingTrace b, @NotNull CallableDescriptor d)
 	{
 		bindingTrace = b;
-		returnType = TypeTransformer.toAsmType(d.getReturnType());
-
+		isInstanceConstructor = d instanceof ConstructorDescriptor;
+		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(((ClassDescriptor)d.getContainingDeclaration()).getDefaultType()) : TypeTransformer.toAsmType(d.getReturnType());
 		myFrameMap = new FrameMap();
 		if(!d.isStatic())
 			myFrameMap.enterTemp(TypeConstants.ANY);
@@ -157,11 +158,39 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		}
 		else
 		{
-			StackValue.nullInstance().put(returnType, instructs);
+			if(isInstanceConstructor)
+				StackValue.local(0, returnType);
+			else
+				StackValue.nullInstance().put(returnType, instructs);
 
 			instructs.returnVal();
 		}
 		return StackValue.none();
+	}
+
+	@Override
+	public StackValue visitStringTemplateExpression(NapileStringTemplateExpression expression, StackValue receiver)
+	{
+		StringBuilder constantValue = new StringBuilder("");
+		for(NapileStringTemplateEntry entry : expression.getEntries())
+		{
+			if(entry instanceof NapileLiteralStringTemplateEntry)
+				constantValue.append(entry.getText());
+			else if(entry instanceof NapileEscapeStringTemplateEntry)
+				constantValue.append(((NapileEscapeStringTemplateEntry) entry).getUnescapedValue());
+			else
+			{
+				constantValue = null;
+				break;
+			}
+		}
+		if(constantValue != null)
+		{
+			final TypeNode type = expressionType(expression);
+			return StackValue.constant(constantValue.toString(), type);
+		}
+		else
+			throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -735,15 +764,19 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		StackValue lastValue = gen(expr);
 
-		//if(lastValue.type != Type.VOID_TYPE)
-		//{
-		//	lastValue.put(returnType, v);
-		//	v.areturn(returnType);
-		//}
-		//else if(!endsWithReturn(expr))
-		//{
-		//	v.areturn(returnType);
-		//}
+		if(lastValue.getType() != TypeConstants.NULL)
+		{
+			lastValue.put(returnType, instructs);
+			instructs.returnVal();
+		}
+		else if(!endsWithReturn(expr))
+		{
+			if(isInstanceConstructor)
+				StackValue.local(0, returnType).put(returnType, instructs);
+			else
+				StackValue.nullInstance().put(TypeConstants.NULL, instructs);
+			instructs.returnVal();
+		}
 	}
 
 	@SuppressWarnings("unchecked")

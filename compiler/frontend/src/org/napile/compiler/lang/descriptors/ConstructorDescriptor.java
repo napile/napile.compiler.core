@@ -31,7 +31,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
  */
 public class ConstructorDescriptor extends MethodDescriptorImpl
 {
-	private static final Name NAME = Name.identifier("this");
+	public static final Name NAME = Name.identifier("this");
 
 	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
 	{

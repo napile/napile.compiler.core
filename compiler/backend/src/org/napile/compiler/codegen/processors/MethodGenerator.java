@@ -16,17 +16,29 @@
 
 package org.napile.compiler.codegen.processors;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
+import org.napile.asm.tree.members.bytecode.MethodRef;
+import org.napile.asm.tree.members.bytecode.impl.InvokeSpecialInstruction;
+import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
+import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.codegen.TypeConstants;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
+import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.rt.NapileLangPackage;
 import org.napile.compiler.lang.types.TypeUtils;
 
@@ -36,7 +48,7 @@ import org.napile.compiler.lang.types.TypeUtils;
  */
 public class MethodGenerator
 {
-	public static ConstructorNode gen(@NotNull ConstructorDescriptor constructorDescriptor)
+	public static ConstructorNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor)
 	{
 		ConstructorNode constructorNode = new ConstructorNode(ModifierGenerator.gen(constructorDescriptor));
 		for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
@@ -44,6 +56,30 @@ public class MethodGenerator
 			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName().getName(), TypeTransformer.toAsmType(declaration.getType()));
 
 			constructorNode.parameters.add(methodParameterNode);
+		}
+
+		List<NapileDelegationSpecifier> delegationSpecifiers = napileConstructor.getDelegationSpecifiers();
+		// delegation list is empty - if no extends
+		if(delegationSpecifiers.isEmpty())
+		{
+			ClassDescriptor classDescriptor = constructorDescriptor.getContainingDeclaration();
+			// napile.lang.Any cant call self constructor
+			if(!DescriptorUtils.getFQName(classDescriptor).equals(NapileLangPackage.ANY))
+			{
+				switch(classDescriptor.getKind())
+				{
+					case CLASS:
+						constructorNode.instructions.add(new LoadInstruction(0));
+						constructorNode.instructions.add(new InvokeSpecialInstruction(new MethodRef(NapileLangPackage.ANY.child(ConstructorDescriptor.NAME), Collections.<TypeNode>emptyList(), TypeConstants.NULL)));
+						break;
+					default:
+						throw new UnsupportedOperationException();
+				}
+			}
+		}
+		else
+		{
+			throw new UnsupportedOperationException();
 		}
 
 		//TODO [VISTALL] super calls

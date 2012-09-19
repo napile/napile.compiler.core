@@ -41,6 +41,11 @@ public class InstructionAdapter implements Iterable<Instruction>
 		instructions.add(new NewIntInstruction(value));
 	}
 
+	public void newString(@NotNull String value)
+	{
+		instructions.add(new NewStringInstruction(value));
+	}
+
 	public void invokeSpecial(MethodRef methodRef)
 	{
 		instructions.add(new InvokeSpecialInstruction(methodRef));
