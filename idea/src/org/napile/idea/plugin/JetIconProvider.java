@@ -16,13 +16,17 @@
 
 package org.napile.idea.plugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
@@ -37,6 +41,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lexer.JetTokens;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.util.RunUtil;
 import com.intellij.ide.IconProvider;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Iconable;
@@ -52,6 +57,7 @@ import com.intellij.util.PlatformIcons;
 public class JetIconProvider extends IconProvider
 {
 	private static final Icon FINAL_MARK_ICON = IconLoader.getIcon("/nodes/finalMark.png");
+	private static final Icon RUNNABLE_MARK = IconLoader.getIcon("/nodes/runnableMark.png");
 
 	public static JetIconProvider INSTANCE = new JetIconProvider();
 
@@ -59,6 +65,9 @@ public class JetIconProvider extends IconProvider
 	public Icon getIcon(@NotNull PsiElement psiElement, int flags)
 	{
 		Icon icon = null;
+		boolean isFinal = false;
+		boolean isRunnable = false;
+
 		if(psiElement instanceof NapileFile)
 		{
 			NapileFile file = (NapileFile) psiElement;
@@ -76,7 +85,7 @@ public class JetIconProvider extends IconProvider
 			NapileClass napileClass = (NapileClass) psiElement;
 
 			AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileClass.getContainingFile());
-			ClassDescriptor descriptor = (ClassDescriptor) analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileClass);
+			MutableClassDescriptor descriptor = (MutableClassDescriptor) analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileClass);
 
 			switch(napileClass.getKind())
 			{
@@ -100,20 +109,41 @@ public class JetIconProvider extends IconProvider
 				}
 				else if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.THROWABLE))
 					icon = napileClass.hasModifier(JetTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_THROWABLE : JetIcons.THROWABLE;
+
+				for(SimpleMethodDescriptor m : descriptor.getFunctions())
+					if(RunUtil.isRunPoint(m))
+					{
+						isRunnable = true;
+						break;
+					}
 			}
 		}
 		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry || psiElement instanceof NapileProperty)
 			icon = JetIcons.VARIABLE;
 
-		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags);
+		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isFinal, isRunnable);
 	}
 
-	public static Icon modifyIcon(NapileModifierListOwner modifierList, Icon baseIcon, int flags)
+	public static Icon modifyIcon(NapileModifierListOwner modifierList, Icon baseIcon, int flags, boolean isFinal, boolean isRunnable)
 	{
 		RowIcon icon = new RowIcon(2);
 
 		if(baseIcon != null)
-			icon.setIcon(modifierList == null ? baseIcon : modifierList.hasModifier(JetTokens.FINAL_KEYWORD) ? new LayeredIcon(baseIcon, FINAL_MARK_ICON) : baseIcon, 0);
+		{
+			if(isFinal || isRunnable)
+			{
+				List<Icon> icons = new ArrayList<Icon>(2);
+				icons.add(baseIcon);
+				if(isFinal)
+					icons.add(FINAL_MARK_ICON);
+				if(isRunnable)
+					icons.add(RUNNABLE_MARK);
+
+				icon.setIcon(new LayeredIcon(icons.toArray(new Icon[icons.size()])), 0);
+			}
+			else
+				icon.setIcon(baseIcon, 0);
+		}
 
 		if(modifierList != null && BitUtil.isSet(flags, Iconable.ICON_FLAG_VISIBILITY))
 		{

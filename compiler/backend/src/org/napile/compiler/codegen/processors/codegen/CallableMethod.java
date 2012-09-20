@@ -38,11 +38,15 @@ public class CallableMethod implements Callable
 
 	private final MethodRef methodRef;
 	private final CallType callType;
+	private final TypeNode returnType;
+	private final List<TypeNode> parameters;
 
-	public CallableMethod(@NotNull MethodRef methodRef, @NotNull  CallType callType)
+	public CallableMethod(@NotNull MethodRef methodRef, @NotNull CallType callType, TypeNode returnType, List<TypeNode> parameters)
 	{
 		this.methodRef = methodRef;
 		this.callType = callType;
+		this.returnType = returnType;
+		this.parameters = parameters;
 	}
 
 	public void invoke(InstructionAdapter instructionAdapter)
@@ -63,12 +67,12 @@ public class CallableMethod implements Callable
 
 	public TypeNode getReturnType()
 	{
-		return methodRef.returnType;
+		return returnType;
 	}
 
 	public List<TypeNode> getValueParameterTypes()
 	{
-		return methodRef.parameters;
+		return parameters;
 	}
 
 	public void invokeWithDefault(InstructionAdapter instructionAdapter, int mask)
@@ -76,9 +80,9 @@ public class CallableMethod implements Callable
 		throw new UnsupportedOperationException();
 	}
 
-	public MethodRef getMethodRef()
+	public String getName()
 	{
-		return methodRef;
+		return methodRef.method.shortName().getName();
 	}
 
 	public CallType getCallType()

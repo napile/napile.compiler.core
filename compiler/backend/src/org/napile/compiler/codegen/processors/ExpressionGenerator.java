@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.Label;
 import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.CompilationException;
@@ -47,7 +48,6 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.AutoCastReceiver;
@@ -67,7 +67,6 @@ import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.Function;
-import com.sun.xml.internal.ws.org.objectweb.asm.Label;
 
 /**
  * @author VISTALL
@@ -93,10 +92,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		bindingTrace = b;
 		isInstanceConstructor = d instanceof ConstructorDescriptor;
-		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(((ClassDescriptor)d.getContainingDeclaration()).getDefaultType()) : TypeTransformer.toAsmType(d.getReturnType());
+		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(((ClassDescriptor) d.getContainingDeclaration()).getDefaultType()) : TypeTransformer.toAsmType(d.getReturnType());
 		myFrameMap = new FrameMap();
+
 		if(!d.isStatic())
 			myFrameMap.enterTemp(TypeConstants.ANY);
+		for(ParameterDescriptor p : d.getValueParameters())
+			myFrameMap.enter(p, null);
 	}
 
 	@Override
@@ -280,6 +282,47 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitArrayAccessExpression(NapileArrayAccessExpression expression, StackValue receiver)
+	{
+		MethodDescriptor operationDescriptor = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
+		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor);
+
+		boolean isGetter = accessor.getName().endsWith("get");
+
+		ResolvedCall<MethodDescriptor> resolvedGetCall = bindingTrace.get(BindingContext.INDEXED_LVALUE_GET, expression);
+		ResolvedCall<MethodDescriptor> resolvedSetCall = bindingTrace.get(BindingContext.INDEXED_LVALUE_SET, expression);
+
+		List<TypeNode> argumentTypes = accessor.getValueParameterTypes();
+		int index = 0;
+
+		TypeNode asmType;
+		if(isGetter)
+		{
+			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall.getResultingDescriptor()));
+
+			if(resolvedGetCall.getResultingDescriptor().getReceiverParameter().exists())
+				index++;
+			asmType = accessor.getReturnType();
+		}
+		else
+		{
+			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall.getResultingDescriptor()));
+
+			if(resolvedSetCall.getResultingDescriptor().getReceiverParameter().exists())
+				index++;
+			asmType = argumentTypes.get(argumentTypes.size() - 1);
+		}
+
+		for(NapileExpression jetExpression : expression.getIndexExpressions())
+		{
+			gen(jetExpression, argumentTypes.get(index));
+			index++;
+		}
+
+		return StackValue.collectionElement(asmType, resolvedGetCall, resolvedSetCall, this);
+	}
+
+	@Override
 	public StackValue visitSimpleNameExpression(NapileSimpleNameExpression expression, StackValue receiver)
 	{
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.get(BindingContext.RESOLVED_CALL, expression);
@@ -387,7 +430,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		DeclarationDescriptor constructorDescriptor = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, constructorReference);
 
-		final PsiElement declaration = BindingContextUtils.descriptorToDeclaration(bindingTrace.getBindingContext(), constructorDescriptor);
+		//final PsiElement declaration = BindingContextUtils.descriptorToDeclaration(bindingTrace.getBindingContext(), constructorDescriptor);
 		TypeNode type;
 		if(constructorDescriptor instanceof ConstructorDescriptor)
 		{
@@ -398,9 +441,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			instructs.newObject(type);
 			instructs.dup();
 
-			final ClassDescriptor classDescriptor = ((ConstructorDescriptor) constructorDescriptor).getContainingDeclaration();
+			//final ClassDescriptor classDescriptor = ((ConstructorDescriptor) constructorDescriptor).getContainingDeclaration();
 
-			CallableMethod method = (CallableMethod) CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor);
+			CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor);
 
 			receiver.put(receiver.getType(), instructs);
 
@@ -435,16 +478,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		//TODO [VISTALL] super<A>.foo();
 
 		Callable callable = CallTransformer.transformToCallable(fd);
-		if(callable instanceof CallableMethod)
-		{
-			final CallableMethod callableMethod = (CallableMethod) callable;
-			invokeMethodWithArguments(callableMethod, resolvedCall, call, receiver);
+		final CallableMethod callableMethod = (CallableMethod) callable;
 
-			final TypeNode callReturnType = callableMethod.getReturnType();
+		invokeMethodWithArguments(callableMethod, resolvedCall, call, receiver);
 
-			return returnValueAsStackValue(fd, callReturnType);
-		}
-		return null;
+		final TypeNode callReturnType = callableMethod.getReturnType();
+
+		return returnValueAsStackValue(fd, callReturnType);
 	}
 
 	private void doFinallyOnReturn()
@@ -577,7 +617,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	private StackValue generateBlock(List<NapileElement> statements)
 	{
-		//final Label blockEnd = new Label();
+		final Label blockEnd = new Label();
 
 		List<Function<StackValue, Void>> leaveTasks = Lists.newArrayList();
 
@@ -596,12 +636,10 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 				gen(statement, TypeConstants.NULL);
 		}
 
-		//v.mark(blockEnd);
+		instructs.mark(blockEnd);
 
 		for(Function<StackValue, Void> task : Lists.reverse(leaveTasks))
-		{
 			task.fun(answer);
-		}
 
 		return answer;
 	}
@@ -668,8 +706,8 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		final VariableDescriptor variableDescriptor = bindingTrace.get(BindingContext.VARIABLE, variableDeclaration);
 		assert variableDescriptor != null;
 
-		//final Label scopeStart = new Label();
-		//v.mark(scopeStart);
+		final Label scopeStart = new Label();
+		instructs.mark(scopeStart);
 
 		final TypeNode type = asmType(variableDescriptor.getType());
 		int index = myFrameMap.enter(variableDescriptor, type);

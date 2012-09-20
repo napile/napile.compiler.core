@@ -30,7 +30,9 @@ public interface TypeParameterDescriptor extends ClassifierDescriptor
 {
 	boolean isReified();
 
+	//TODO [VISTALL] move it to getSupertypes()
 	@NotNull
+	@Deprecated
 	Set<JetType> getUpperBounds();
 
 	@NotNull

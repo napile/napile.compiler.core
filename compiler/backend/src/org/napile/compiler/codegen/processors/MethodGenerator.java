@@ -116,7 +116,7 @@ public class MethodGenerator
 
 			InstructionAdapter adapter = expressionGenerator.getInstructs();
 
-			int val = adapter.getMaxLocals();
+			int val = adapter.getMaxLocals() + methodDescriptor.getValueParameters().size();
 			if(!methodDescriptor.isStatic())
 				val ++;
 			methodNode.visitMaxs(val, val);

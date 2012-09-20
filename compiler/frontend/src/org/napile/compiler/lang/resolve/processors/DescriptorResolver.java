@@ -291,7 +291,9 @@ public class DescriptorResolver
 					jetType = ErrorUtils.createErrorType("Reference expected");
 				else
 					jetType = expressionTypingServices.safeGetType(parameterScope, ref, TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
-				parameterDescriptor.initialize(jetType, ref.getReferencedNameAsName());
+
+				DeclarationDescriptor refDesc = trace.get(BindingContext.REFERENCE_TARGET, ref);
+				parameterDescriptor.initialize(jetType, ref.getReferencedNameAsName(), refDesc instanceof PropertyDescriptor ? (PropertyDescriptor) refDesc : null);
 
 				result.add(parameterDescriptor);
 			}

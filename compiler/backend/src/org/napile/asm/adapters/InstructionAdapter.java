@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.Label;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.VariableRef;
@@ -22,6 +23,7 @@ public class InstructionAdapter implements Iterable<Instruction>
 	private final List<Instruction> instructions = new ArrayList<Instruction>();
 
 	private int maxLocals;
+	private int maxStacks;
 
 	public InstructionAdapter()
 	{}
@@ -99,6 +101,16 @@ public class InstructionAdapter implements Iterable<Instruction>
 	public void dup()
 	{
 		instructions.add(new DupInstruction());
+	}
+
+	public void throwVal()
+	{
+		instructions.add(new ThrowInstruction());
+	}
+
+	public void mark(Label label)
+	{
+		maxStacks ++;
 	}
 
 	public void visitLocalVariable(String name)

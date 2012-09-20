@@ -38,6 +38,7 @@ public class ReferenceParameterDescriptor implements ParameterDescriptor
 	private final DeclarationDescriptor ownerDescriptor;
 	private JetType type;
 	private Name name;
+	private PropertyDescriptor referenceProperty;
 
 	public ReferenceParameterDescriptor(int index, DeclarationDescriptor ownerDescriptor)
 	{
@@ -45,10 +46,11 @@ public class ReferenceParameterDescriptor implements ParameterDescriptor
 		this.ownerDescriptor = ownerDescriptor;
 	}
 
-	public void initialize(@NotNull JetType type, @NotNull Name name)
+	public void initialize(@NotNull JetType type, @NotNull Name name, @Nullable PropertyDescriptor referenceProperty)
 	{
 		this.type = type;
 		this.name = name;
+		this.referenceProperty = referenceProperty;
 	}
 
 	@Override
@@ -207,5 +209,10 @@ public class ReferenceParameterDescriptor implements ParameterDescriptor
 	public Name getName()
 	{
 		return name;
+	}
+
+	public PropertyDescriptor getReferenceProperty()
+	{
+		return referenceProperty;
 	}
 }

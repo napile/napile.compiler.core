@@ -72,8 +72,6 @@ public class NapileArrayAccessExpression extends NapileReferenceExpression
 	public List<NapileExpression> getIndexExpressions()
 	{
 		PsiElement container = getIndicesNode();
-		if(container == null)
-			return Collections.emptyList();
 		return PsiTreeUtil.getChildrenOfTypeAsList(container, NapileExpression.class);
 	}
 

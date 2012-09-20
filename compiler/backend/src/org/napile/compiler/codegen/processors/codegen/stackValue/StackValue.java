@@ -26,6 +26,7 @@ import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
@@ -82,6 +83,11 @@ public abstract class StackValue
 	public static StackValue property(@NotNull FqName fqName, @NotNull TypeNode type, boolean staticVar)
 	{
 		return new Property(fqName, type, staticVar);
+	}
+
+	public static StackValue collectionElement(@NotNull TypeNode typeNode, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionGenerator expressionGenerator)
+	{
+		return new CollectionElement(typeNode, getCall, setCall, expressionGenerator);
 	}
 
 	public static StackValue nullInstance()

@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
 import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
@@ -28,6 +29,7 @@ import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.Node;
 import org.napile.asm.tree.members.StaticConstructorNode;
+import org.napile.asm.tree.members.TypeParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
@@ -36,11 +38,17 @@ import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PutToStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PutToVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
+import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.ReferenceParameterDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
@@ -106,6 +114,15 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		for(JetType superType : classDescriptor.getSupertypes())
 			classNode.supers.add(TypeTransformer.toAsmType(superType));
+
+		for(TypeParameterDescriptor typeParameterDescriptor : classDescriptor.getTypeConstructor().getParameters())
+		{
+			TypeParameterNode typeParameterNode = new TypeParameterNode(typeParameterDescriptor.getName().getName());
+			for(JetType superType : typeParameterDescriptor.getUpperBounds())
+				typeParameterNode.supers.add(TypeTransformer.toAsmType(superType));
+
+			classNode.typeParameters.add(typeParameterNode);
+		}
 
 		classNodes.put(fqName, classNode);
 
@@ -273,6 +290,8 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 				constructorNode.instructions.addAll(instructions);
 
+				genReferenceParameters(constructorDescriptor, constructorNode.instructions);
+
 				ExpressionGenerator gen = new ExpressionGenerator(bindingTrace, constructorDescriptor);
 				NapileExpression expression = constructor.getBodyExpression();
 				if(expression != null)
@@ -285,7 +304,8 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 				constructorNode.instructions.addAll(gen.getInstructs().getInstructions());
 
-				constructorNode.visitMaxs(size + gen.getInstructs().getMaxLocals(), size + gen.getInstructs().getMaxLocals());
+				final int maxLocals = size + gen.getInstructs().getMaxLocals() + constructorDescriptor.getValueParameters().size();
+				constructorNode.visitMaxs(maxLocals, maxLocals);
 			}
 
 			// next static properties
@@ -310,6 +330,27 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 				classNode.members.add(staticConstructorNode);
 			}
 		}
+	}
+
+	private static void genReferenceParameters(@NotNull CallableDescriptor callableDescriptor, List<Instruction> instructions)
+	{
+		InstructionAdapter adapter = new InstructionAdapter();
+		for(ParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
+			if(parameterDescriptor instanceof ReferenceParameterDescriptor)
+			{
+				PropertyDescriptor propertyDescriptor = ((ReferenceParameterDescriptor) parameterDescriptor).getReferenceProperty();
+				if(propertyDescriptor == null)
+					continue;
+
+				TypeNode typeNode = TypeTransformer.toAsmType(propertyDescriptor.getType());
+
+				if(!propertyDescriptor.isStatic())
+					StackValue.local(0, typeNode).put(TypeConstants.ANY, adapter);
+				StackValue.local(callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter);
+				StackValue.property(propertyDescriptor).store(typeNode, adapter);
+			}
+
+		instructions.addAll(adapter.getInstructions());
 	}
 
 	public Map<FqName, ClassNode> getClassNodes()

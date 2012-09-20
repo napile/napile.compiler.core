@@ -42,7 +42,7 @@ public class CallTransformer
 	}
 
 	@NotNull
-	public static Callable transformToCallable(MethodDescriptor methodDescriptor)
+	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor)
 	{
 		CallableMethod.CallType type = CallableMethod.CallType.VIRTUAL;
 		if(methodDescriptor instanceof ConstructorDescriptor)
@@ -51,10 +51,19 @@ public class CallTransformer
 			type = CallableMethod.CallType.STATIC;
 
 		FqName fqName = DescriptorUtils.getFQName(methodDescriptor).toSafe();
-		List<TypeNode> parameters = new ArrayList<TypeNode>(methodDescriptor.getValueParameters().size());
-		for(ParameterDescriptor p : methodDescriptor.getValueParameters())
-			parameters.add(TypeTransformer.toAsmType(p.getType()));
 
-		return new CallableMethod(new MethodRef(fqName, parameters, TypeTransformer.toAsmType(methodDescriptor.getReturnType())), type);
+		MethodDescriptor originalMethodDescriptor = methodDescriptor.getOriginal();
+
+		// it used for save in bytecode/checks - for example, original 'E'(type parameter) and caller is 'napile.lang.Int'
+		List<TypeNode> parametersToByteCode = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());
+		List<TypeNode> parametersToChecks = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());
+
+		for(ParameterDescriptor p : methodDescriptor.getValueParameters())
+			parametersToChecks.add(TypeTransformer.toAsmType(p.getType()));
+
+		for(ParameterDescriptor p : originalMethodDescriptor.getValueParameters())
+			parametersToByteCode.add(TypeTransformer.toAsmType(p.getType()));
+
+		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks);
 	}
 }
