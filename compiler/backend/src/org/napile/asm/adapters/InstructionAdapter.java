@@ -95,7 +95,12 @@ public class InstructionAdapter implements Iterable<Instruction>
 
 	public void swap()
 	{
-		throw new UnsupportedOperationException(); //TODO [VISTALL]
+		instructions.add(new SwapInstruction());
+	}
+
+	public void pop()
+	{
+		instructions.add(new PopInstruction());
 	}
 
 	public void dup()

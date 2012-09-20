@@ -17,15 +17,18 @@
 package org.napile.compiler.codegen.processors;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.resolve.name.FqName;
-import org.napile.asm.tree.members.types.ClassTypeNode;
-import org.napile.asm.tree.members.types.TypeConstructorNode;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
+import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
+import org.napile.asm.tree.members.types.constructors.TypeConstructorNode;
+import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.MethodTypeConstructor;
+import org.napile.compiler.lang.types.SelfTypeConstructor;
 
 /**
  * @author VISTALL
@@ -38,16 +41,22 @@ public class TypeTransformer
 	{
 		TypeConstructorNode typeConstructorNode = null;
 		ClassifierDescriptor owner = jetType.getConstructor().getDeclarationDescriptor();
-		if(owner instanceof ClassDescriptor)
+		if(jetType.getConstructor() instanceof SelfTypeConstructor)
+			typeConstructorNode = new ThisTypeNode();
+		else if(jetType.getConstructor() instanceof MethodTypeConstructor)
+			throw new IllegalArgumentException("MethodTypeConstructor is not supported for not");
+		else if(owner instanceof ClassDescriptor)
 			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());
 		else if(owner instanceof TypeParameterDescriptor)
-			typeConstructorNode = new ClassTypeNode(new FqName(owner.getName().getName())) ;//TODO [VISTALL] invalid
+			typeConstructorNode = new TypeParameterValueTypeNode(owner.getName().getName());
 		else
 			throw new RuntimeException("invalid " + owner);
 
 		TypeNode typeNode = new TypeNode(jetType.isNullable(), typeConstructorNode);
+		for(JetType argument : jetType.getArguments())
+			typeNode.arguments.add(toAsmType(argument));
 
-		//TODO [VISTALL] annotations & type parameters
+		//TODO [VISTALL] annotations
 		return typeNode;
 	}
 }

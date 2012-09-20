@@ -1,8 +1,8 @@
 package org.napile.compiler.codegen.processors.codegen;
 
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.asm.tree.members.types.ClassTypeNode;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 
 /**
  * @author VISTALL
