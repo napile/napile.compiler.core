@@ -119,13 +119,6 @@ public class ReferenceParameterDescriptor implements ParameterDescriptor
 
 	@NotNull
 	@Override
-	public PropertyKind getPropertyKind()
-	{
-		return PropertyKind.VAL;
-	}
-
-	@NotNull
-	@Override
 	public ReceiverDescriptor getReceiverParameter()
 	{
 		return ReceiverDescriptor.NO_RECEIVER;
@@ -190,6 +183,13 @@ public class ReferenceParameterDescriptor implements ParameterDescriptor
 	public Visibility getVisibility()
 	{
 		return Visibility.PUBLIC;
+	}
+
+	@NotNull
+	@Override
+	public Modality getModality()
+	{
+		return Modality.FINAL;
 	}
 
 	@Override

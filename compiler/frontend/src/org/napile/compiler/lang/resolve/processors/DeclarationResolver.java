@@ -228,7 +228,7 @@ public class DeclarationResolver
 				@Override
 				public void visitEnumEntry(NapileEnumEntry enumEntry)
 				{
-					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(ownerDescription, new ArrayList<AnnotationDescriptor>(), Modality.FINAL, Visibility.PUBLIC, PropertyKind.ENUM_ENTRY, NapilePsiUtil.safeName(enumEntry.getName()), CallableMemberDescriptor.Kind.DECLARATION, true);
+					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(ownerDescription, new ArrayList<AnnotationDescriptor>(), Modality.FINAL, Visibility.PUBLIC, NapilePsiUtil.safeName(enumEntry.getName()), CallableMemberDescriptor.Kind.DECLARATION, true);
 					trace.record(BindingContext.VARIABLE, enumEntry, propertyDescriptor);
 
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(ownerDescription, scope, ClassKind.ENUM_ENTRY, propertyDescriptor.getName(), true);

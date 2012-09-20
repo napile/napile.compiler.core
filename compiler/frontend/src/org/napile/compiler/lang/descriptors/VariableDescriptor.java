@@ -35,7 +35,4 @@ public interface VariableDescriptor extends CallableDescriptor
 
 	@Override
 	VariableDescriptor substitute(TypeSubstitutor substitutor);
-
-	@NotNull
-	PropertyKind getPropertyKind();
 }

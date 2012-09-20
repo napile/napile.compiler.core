@@ -26,5 +26,8 @@ public interface DeclarationDescriptorWithVisibility extends DeclarationDescript
 	@NotNull
 	Visibility getVisibility();
 
+	@NotNull
+	Modality getModality();
+
 	boolean isStatic();
 }

@@ -23,10 +23,9 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.Modifier;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.MemberDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyKind;
 
 /**
  * @author VISTALL
@@ -37,13 +36,13 @@ public class ModifierGenerator
 	@NotNull
 	public static Modifier[] gen(@NotNull ParameterDescriptor parameterDescriptor)
 	{
-		return parameterDescriptor.getPropertyKind() == PropertyKind.VAR ? Modifier.EMPTY : new Modifier[]{Modifier.FINAL};
+		return gen((DeclarationDescriptorWithVisibility) parameterDescriptor);
 	}
 
 	@NotNull
 	public static Modifier[] gen(@NotNull ClassDescriptor memberDescriptor)
 	{
-		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((MemberDescriptor) memberDescriptor)));
+		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((DeclarationDescriptorWithVisibility) memberDescriptor)));
 		switch(memberDescriptor.getKind())
 		{
 			case RETELL:
@@ -61,7 +60,7 @@ public class ModifierGenerator
 
 	public static Modifier[] gen(@NotNull MethodDescriptor methodDescriptor)
 	{
-		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((MemberDescriptor) methodDescriptor)));
+		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((DeclarationDescriptorWithVisibility) methodDescriptor)));
 		if(methodDescriptor.isNative())
 			list.add(Modifier.NATIVE);
 
@@ -69,7 +68,7 @@ public class ModifierGenerator
 	}
 
 	@NotNull
-	public static Modifier[] gen(@NotNull MemberDescriptor memberDescriptor)
+	public static Modifier[] gen(@NotNull DeclarationDescriptorWithVisibility memberDescriptor)
 	{
 		List<Modifier> list = new ArrayList<Modifier>(3);
 		switch(memberDescriptor.getVisibility())

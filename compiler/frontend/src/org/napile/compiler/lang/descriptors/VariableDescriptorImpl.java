@@ -36,19 +36,21 @@ public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRoo
 	private MethodDescriptor methodDescriptor;
 	private JetType outType;
 	protected final boolean isStatic;
+	private Modality modality;
 
-	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, boolean isStatic)
+	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, name);
 
 		if(outType != null)
 			setOutType(outType);
 		this.isStatic = isStatic;
+		this.modality = modality;
 	}
 
-	protected VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, boolean isStatic)
+	protected VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull Modality modality, boolean isStatic)
 	{
-		this(containingDeclaration, annotations, name, null, isStatic);
+		this(containingDeclaration, annotations, name, null, modality, isStatic);
 	}
 
 	@Override
@@ -62,6 +64,13 @@ public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRoo
 	public JetType getType()
 	{
 		return outType;
+	}
+
+	@Override
+	@NotNull
+	public Modality getModality()
+	{
+		return modality;
 	}
 
 	public void setOutType(@NotNull JetType type)

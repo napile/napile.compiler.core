@@ -539,7 +539,7 @@ public class OverrideResolver
 						typeMismatchError = true;
 					}
 
-					if(checkPropertyKind(overridden, PropertyKind.VAR) && checkPropertyKind(declared, PropertyKind.VAL) && !kindMismatchError)
+					if(!haveFinalModality(overridden) && haveFinalModality(declared) && !kindMismatchError)
 					{
 						trace.report(VAR_OVERRIDDEN_BY_VAL.on((NapileProperty) member, (PropertyDescriptor) declared, (PropertyDescriptor) overridden));
 						kindMismatchError = true;
@@ -685,14 +685,9 @@ public class OverrideResolver
 		}
 	}
 
-	private boolean checkPropertyKind(CallableMemberDescriptor descriptor, PropertyKind propertyKind)
+	private static boolean haveFinalModality(CallableMemberDescriptor descriptor)
 	{
-		if(descriptor instanceof PropertyDescriptor)
-		{
-			PropertyDescriptor propertyDescriptor = (PropertyDescriptor) descriptor;
-			return propertyDescriptor.getPropertyKind() == propertyKind;
-		}
-		return false;
+		return descriptor.getModality() == Modality.FINAL;
 	}
 
 	public static void resolveUnknownVisibilityForMember(@Nullable NapileDeclaration member, @NotNull CallableMemberDescriptor memberDescriptor, @NotNull BindingTrace trace)

@@ -157,7 +157,7 @@ public interface BindingContext
 			{
 				return true;
 			}
-			else if(propertyDescriptor.getPropertyKind() == PropertyKind.VAR && setter == null)
+			else if(propertyDescriptor.getModality() != Modality.FINAL && setter == null)
 			{
 				return true;
 			}

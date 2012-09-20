@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author abreslav
  */
-public interface CallableMemberDescriptor extends CallableDescriptor, MemberDescriptor
+public interface CallableMemberDescriptor extends CallableDescriptor, DeclarationDescriptorNonRoot, DeclarationDescriptorWithVisibility
 {
 	@NotNull
 	@Override

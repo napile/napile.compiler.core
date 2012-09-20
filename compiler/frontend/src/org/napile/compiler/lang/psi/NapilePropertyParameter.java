@@ -96,6 +96,7 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 		return null;
 	}
 
+	@Deprecated
 	public boolean isMutable()
 	{
 		PsiJetParameterStub stub = getStub();

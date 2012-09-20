@@ -154,14 +154,8 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	{
 		StringBuilder bodyBuilder = new StringBuilder();
 		bodyBuilder.append(displayableVisibility(descriptor)).append("override ");
-		if(descriptor.getPropertyKind() == PropertyKind.VAR)
-		{
-			bodyBuilder.append("var ");
-		}
-		else
-		{
-			bodyBuilder.append("val ");
-		}
+
+		bodyBuilder.append("var ");
 
 		addReceiverParameter(descriptor, bodyBuilder);
 
@@ -319,7 +313,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 		return null;
 	}
 
-	private static String displayableVisibility(MemberDescriptor descriptor)
+	private static String displayableVisibility(DeclarationDescriptorWithVisibility descriptor)
 	{
 		Visibility visibility = descriptor.getVisibility();
 		return visibility != Visibility.PUBLIC ? visibility.toString() + " " : "";

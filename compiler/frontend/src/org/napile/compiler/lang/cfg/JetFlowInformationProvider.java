@@ -31,7 +31,6 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyKind;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
@@ -320,7 +319,7 @@ public class JetFlowInformationProvider
 			hasBackingField = trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor);
 		}
 		if((isInitializedNotHere || !hasBackingField) &&
-				variableDescriptor.getPropertyKind() != PropertyKind.VAR &&
+				variableDescriptor.getModality() == Modality.FINAL &&
 				!varWithValReassignErrorGenerated.contains(variableDescriptor))
 		{
 			boolean hasReassignMethodReturningUnit = false;
@@ -383,8 +382,8 @@ public class JetFlowInformationProvider
 	{
 		if(variableDescriptor instanceof PropertyDescriptor && !enterInitState.isInitialized && exitInitState.isInitialized)
 		{
-			if(variableDescriptor.getPropertyKind() != PropertyKind.VAR)
-				return false;
+			//if(variableDescriptor.getModality() != Modality.ABSTRACT)
+			//	return false;
 			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
 				return false;
 			PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
@@ -660,7 +659,7 @@ public class JetFlowInformationProvider
 
 					DeclarationDescriptor descriptor = trace.get(BindingContext.REFERENCE_TARGET, refExp);
 					// if property is not final, or description is not found dont check
-					if(!(descriptor instanceof PropertyDescriptor) || ((PropertyDescriptor) descriptor).getPropertyKind() == PropertyKind.VAR)
+					if(!(descriptor instanceof PropertyDescriptor) || ((PropertyDescriptor) descriptor).getModality() == Modality.OPEN)
 						return;
 
 					boolean isInitialized = trace.safeGet(BindingContext.IS_INITIALIZED, (PropertyDescriptor) descriptor);

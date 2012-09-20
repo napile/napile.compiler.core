@@ -28,7 +28,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 /**
  * @author abreslav
  */
-public interface ClassDescriptor extends ClassifierDescriptor, MemberDescriptor, ClassOrNamespaceDescriptor
+public interface ClassDescriptor extends ClassifierDescriptor, ClassOrNamespaceDescriptor, DeclarationDescriptorNonRoot, DeclarationDescriptorWithVisibility
 {
 
 	@NotNull

@@ -898,12 +898,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			return;
 		NapileExpression receiver = ((ExpressionReceiver) receiverDescriptor).getExpression();
 		CallableDescriptor descriptor = results.getResultingDescriptor();
-		if(receiver instanceof NapileSuperExpression && descriptor instanceof MemberDescriptor)
+		if(receiver instanceof NapileSuperExpression)
 		{
-			if(((MemberDescriptor) descriptor).getModality() == Modality.ABSTRACT)
-			{
+			if(descriptor.getModality() == Modality.ABSTRACT)
 				trace.report(ABSTRACT_SUPER_CALL.on(expression));
-			}
 		}
 	}
 

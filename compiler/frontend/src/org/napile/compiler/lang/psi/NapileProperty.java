@@ -68,6 +68,7 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 		return JetStubElementTypes.PROPERTY;
 	}
 
+	@Deprecated
 	public boolean isVar()
 	{
 		PsiJetPropertyStub stub = getStub();

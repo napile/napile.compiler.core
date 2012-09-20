@@ -30,7 +30,7 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNonRootImpl implements MethodDescriptor, MemberDescriptor
+public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNonRootImpl implements MethodDescriptor, DeclarationDescriptorNonRoot, DeclarationDescriptorWithVisibility
 {
 	private final boolean hasBody;
 	private final boolean isDefault;

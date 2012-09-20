@@ -38,7 +38,6 @@ public class PropertyParameterDescriptorImpl extends VariableDescriptorImpl impl
 	private final boolean declaresDefaultValue;
 
 	private final JetType varargElementType;
-	private final PropertyKind propertyKind;
 	private final int index;
 	private final ParameterDescriptor original;
 
@@ -46,24 +45,22 @@ public class PropertyParameterDescriptorImpl extends VariableDescriptorImpl impl
 	private boolean overriddenDescriptorsLocked = false;
 	private final Set<? extends ParameterDescriptor> readOnlyOverriddenDescriptors = Collections.unmodifiableSet(overriddenDescriptors);
 
-	public PropertyParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, PropertyKind propertyKind, @NotNull JetType outType, boolean declaresDefaultValue, @Nullable JetType varargElementType)
+	public PropertyParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull JetType outType, boolean declaresDefaultValue, @Nullable JetType varargElementType, @NotNull Modality modality)
 	{
-		super(containingDeclaration, annotations, name, outType, false);
+		super(containingDeclaration, annotations, name, outType, modality, false);
 		this.original = this;
 		this.index = index;
 		this.declaresDefaultValue = declaresDefaultValue;
 		this.varargElementType = varargElementType;
-		this.propertyKind = propertyKind;
 	}
 
-	public PropertyParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, PropertyKind propertyKind, @NotNull JetType outType, @Nullable JetType varargElementType)
+	public PropertyParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull JetType outType, @Nullable JetType varargElementType, @NotNull Modality modality)
 	{
-		super(containingDeclaration, annotations, original.getName(), outType, false);
+		super(containingDeclaration, annotations, original.getName(), outType, modality, false);
 		this.original = original;
 		this.index = original.getIndex();
 		this.declaresDefaultValue = original.declaresDefaultValue();
 		this.varargElementType = varargElementType;
-		this.propertyKind = propertyKind;
 	}
 
 	@Override
@@ -142,16 +139,9 @@ public class PropertyParameterDescriptorImpl extends VariableDescriptorImpl impl
 
 	@NotNull
 	@Override
-	public PropertyKind getPropertyKind()
-	{
-		return propertyKind;
-	}
-
-	@NotNull
-	@Override
 	public ParameterDescriptor copy(@NotNull DeclarationDescriptor newOwner)
 	{
-		return new PropertyParameterDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), propertyKind, getType(), hasDefaultValue, varargElementType);
+		return new PropertyParameterDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), getType(), hasDefaultValue, varargElementType, getModality());
 	}
 
 	@NotNull

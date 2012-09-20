@@ -361,38 +361,27 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 					type = varargElementType;
 				}
 			}
-			String typeString = renderPropertyPrefixAndComputeTypeString(builder, skipValVar ? null : descriptor.getPropertyKind(), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, type);
+
+			renderModality(descriptor.getModality(), builder);
+			String typeString = renderPropertyPrefixAndComputeTypeString(builder, skipValVar, Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, type);
 			renderName(descriptor, builder);
 			builder.append(" : ").append(escape(typeString));
 			return null;
 		}
 
-		private String renderPropertyPrefixAndComputeTypeString(@NotNull StringBuilder builder, @Nullable PropertyKind propertyKind, @NotNull List<TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor receiver, @Nullable JetType outType)
+		private String renderPropertyPrefixAndComputeTypeString(@NotNull StringBuilder builder, boolean skipVar,  @NotNull List<TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor receiver, @Nullable JetType outType)
 		{
 			String typeString = lt() + "no type>";
+			if(!skipVar)
+				builder.append(renderKeyword(JetTokens.VAR_KEYWORD)).append(" ");
+
 			if(outType != null)
-			{
-				if(propertyKind != null)
-				{
-					switch(propertyKind)
-					{
-						case VAR:
-							builder.append(renderKeyword(JetTokens.VAR_KEYWORD));
-							break;
-						default:
-							break;
-					}
-					builder.append(" ");
-				}
 				typeString = renderType(outType);
-			}
 
 			renderTypeParameters(typeParameters, builder);
 
 			if(receiver.exists())
-			{
 				builder.append(escape(renderType(receiver.getType()))).append(".");
-			}
 
 			return typeString;
 		}
@@ -402,7 +391,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderVisibility(descriptor, builder);
 			renderModality(descriptor.getModality(), builder);
-			String typeString = renderPropertyPrefixAndComputeTypeString(builder, descriptor.getPropertyKind(), descriptor.getTypeParameters(), descriptor.getReceiverParameter(), descriptor.getType());
+			String typeString = renderPropertyPrefixAndComputeTypeString(builder, false, descriptor.getTypeParameters(), descriptor.getReceiverParameter(), descriptor.getType());
 			renderName(descriptor, builder);
 			builder.append(" : ").append(escape(typeString));
 			return null;

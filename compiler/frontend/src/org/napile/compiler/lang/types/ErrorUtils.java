@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.types;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -183,7 +182,7 @@ public class ErrorUtils
 	}
 
 	private static final JetType ERROR_PROPERTY_TYPE = createErrorType("<ERROR PROPERTY TYPE>");
-	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, PropertyKind.VAR, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
+	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
 	private static final Set<VariableDescriptor> ERROR_PROPERTY_GROUP = Collections.singleton(ERROR_PROPERTY);
 
 	private static SimpleMethodDescriptor createErrorFunction(ErrorScope ownerScope)
@@ -197,16 +196,6 @@ public class ErrorUtils
 	}
 
 	private static final JetType ERROR_PARAMETER_TYPE = createErrorType("<ERROR VALUE_PARAMETER TYPE>");
-
-	private static List<ParameterDescriptor> getValueParameters(MethodDescriptor methodDescriptor, List<JetType> argumentTypes)
-	{
-		List<ParameterDescriptor> result = new ArrayList<ParameterDescriptor>();
-		for(int i = 0, argumentTypesSize = argumentTypes.size(); i < argumentTypesSize; i++)
-		{
-			result.add(new PropertyParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR VALUE_PARAMETER>"), PropertyKind.VAR, ERROR_PARAMETER_TYPE, false, null));
-		}
-		return result;
-	}
 
 	@NotNull
 	public static JetType createErrorType(String debugMessage)

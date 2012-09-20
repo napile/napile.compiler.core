@@ -146,7 +146,7 @@ public class DataFlowValueFactory
 
 	public static boolean isStableVariable(@NotNull VariableDescriptor variableDescriptor)
 	{
-		if(variableDescriptor.getPropertyKind() != PropertyKind.VAR)
+		if(variableDescriptor.getModality() != Modality.FINAL)
 			return false;
 		if(variableDescriptor instanceof PropertyDescriptor)
 		{

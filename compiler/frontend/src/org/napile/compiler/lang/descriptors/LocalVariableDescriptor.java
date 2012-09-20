@@ -30,12 +30,9 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  */
 public class LocalVariableDescriptor extends VariableDescriptorImpl
 {
-	private final PropertyKind propertyKind;
-
-	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, PropertyKind propertyKind)
+	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, Modality modality)
 	{
-		super(containingDeclaration, annotations, name, type, false);
-		this.propertyKind = propertyKind;
+		super(containingDeclaration, annotations, name, type, modality, false);
 	}
 
 	@NotNull
@@ -49,13 +46,6 @@ public class LocalVariableDescriptor extends VariableDescriptorImpl
 	public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitLocalVariableDescriptor(this, data);
-	}
-
-	@NotNull
-	@Override
-	public PropertyKind getPropertyKind()
-	{
-		return propertyKind;
 	}
 
 	@NotNull
