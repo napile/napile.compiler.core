@@ -73,14 +73,6 @@ public final class DescriptorLookupConverter
 			typeText = DescriptorRenderer.TEXT.renderType(returnType);
 			presentableText += DescriptorRenderer.TEXT.renderFunctionParameters(methodDescriptor);
 
-			boolean extensionFunction = methodDescriptor.getReceiverParameter().exists();
-			DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
-			if(containingDeclaration != null && extensionFunction)
-			{
-				tailText += " for " + DescriptorRenderer.TEXT.renderType(methodDescriptor.getReceiverParameter().getType());
-				tailText += " in " + DescriptorUtils.getFQName(containingDeclaration);
-			}
-
 			// TODO: A special case when it's impossible to resolve type parameters from arguments. Need '<' caret '>'
 			// TODO: Support omitting brackets for one argument functions
 			if(methodDescriptor.getValueParameters().isEmpty())

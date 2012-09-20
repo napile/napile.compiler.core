@@ -27,7 +27,6 @@ import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lexer.JetTokens;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.psi.PsiElement;
@@ -108,13 +107,8 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		if(descriptor instanceof LocalVariableDescriptor)
 			return;
 		JetPsiChecker.highlightName(holder, elementToHighlight, descriptor.isStatic() ? JetHighlightingColors.STATIC_PROPERTY : JetHighlightingColors.INSTANCE_PROPERTY);
-		if(descriptor.getReceiverParameter() != ReceiverDescriptor.NO_RECEIVER)
-		{
-			JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.EXTENSION_PROPERTY);
-		}
+
 		if(withBackingField)
-		{
 			holder.createInfoAnnotation(elementToHighlight, "This property has a backing field").setTextAttributes(JetHighlightingColors.PROPERTY_WITH_BACKING_FIELD);
-		}
 	}
 }

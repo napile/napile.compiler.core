@@ -31,7 +31,6 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.rendering.Renderer;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
@@ -363,13 +362,13 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			}
 
 			renderModality(descriptor.getModality(), builder);
-			String typeString = renderPropertyPrefixAndComputeTypeString(builder, skipValVar, Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, type);
+			String typeString = renderPropertyPrefixAndComputeTypeString(builder, skipValVar, Collections.<TypeParameterDescriptor>emptyList(), type);
 			renderName(descriptor, builder);
 			builder.append(" : ").append(escape(typeString));
 			return null;
 		}
 
-		private String renderPropertyPrefixAndComputeTypeString(@NotNull StringBuilder builder, boolean skipVar,  @NotNull List<TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor receiver, @Nullable JetType outType)
+		private String renderPropertyPrefixAndComputeTypeString(@NotNull StringBuilder builder, boolean skipVar,  @NotNull List<TypeParameterDescriptor> typeParameters, @Nullable JetType outType)
 		{
 			String typeString = lt() + "no type>";
 			if(!skipVar)
@@ -380,9 +379,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 			renderTypeParameters(typeParameters, builder);
 
-			if(receiver.exists())
-				builder.append(escape(renderType(receiver.getType()))).append(".");
-
 			return typeString;
 		}
 
@@ -391,7 +387,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderVisibility(descriptor, builder);
 			renderModality(descriptor.getModality(), builder);
-			String typeString = renderPropertyPrefixAndComputeTypeString(builder, false, descriptor.getTypeParameters(), descriptor.getReceiverParameter(), descriptor.getType());
+			String typeString = renderPropertyPrefixAndComputeTypeString(builder, false, descriptor.getTypeParameters(), descriptor.getType());
 			renderName(descriptor, builder);
 			builder.append(" : ").append(escape(typeString));
 			return null;
@@ -435,15 +431,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			renderModality(descriptor.getModality(), builder);
 			builder.append(renderKeyword(JetTokens.METH_KEYWORD)).append(" ");
 			if(renderTypeParameters(descriptor.getTypeParameters(), builder))
-			{
 				builder.append(" ");
-			}
-
-			ReceiverDescriptor receiver = descriptor.getReceiverParameter();
-			if(receiver.exists())
-			{
-				builder.append(escape(renderType(receiver.getType()))).append(".");
-			}
 
 			renderName(descriptor, builder);
 			renderValueParameters(descriptor, builder);

@@ -11,9 +11,6 @@ public interface NapileMethod extends NapileTypeParameterListOwner, NapileDeclar
 	NapileParameterList getValueParameterList();
 
 	@Nullable
-	NapileTypeReference getReceiverTypeRef();
-
-	@Nullable
 	NapileTypeReference getReturnTypeRef();
 
 	boolean isLocal();

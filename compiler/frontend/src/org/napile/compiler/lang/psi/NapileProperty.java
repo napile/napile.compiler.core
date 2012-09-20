@@ -68,32 +68,10 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 		return JetStubElementTypes.PROPERTY;
 	}
 
-	@Deprecated
-	public boolean isVar()
-	{
-		PsiJetPropertyStub stub = getStub();
-		if(stub != null)
-			return stub.isVar();
-
-		NapileModifierList modifierList = getModifierList();
-		return modifierList == null || !modifierList.hasModifier(JetTokens.FINAL_KEYWORD);
-	}
-
 	public boolean isLocal()
 	{
 		PsiElement parent = getParent();
 		return !(parent instanceof NapileFile || parent instanceof NapileClassBody || parent instanceof NapileNamespaceBody);
-	}
-
-	public boolean isTopLevel()
-	{
-		PsiJetPropertyStub stub = getStub();
-		if(stub != null)
-		{
-			return stub.isTopLevel();
-		}
-
-		return getParent() instanceof NapileFile;
 	}
 
 	@NotNull
@@ -116,26 +94,6 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 		{
 			return super.getUseScope();
 		}
-	}
-
-	@Nullable
-	public NapileTypeReference getReceiverTypeRef()
-	{
-		ASTNode node = getNode().getFirstChildNode();
-		while(node != null)
-		{
-			IElementType tt = node.getElementType();
-			if(tt == JetTokens.COLON)
-				break;
-
-			if(tt == NapileNodeTypes.TYPE_REFERENCE)
-			{
-				return (NapileTypeReference) node.getPsi();
-			}
-			node = node.getTreeNext();
-		}
-
-		return null;
 	}
 
 	@Nullable

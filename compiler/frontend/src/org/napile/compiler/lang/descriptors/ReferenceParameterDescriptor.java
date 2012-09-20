@@ -119,13 +119,6 @@ public class ReferenceParameterDescriptor implements ParameterDescriptor
 
 	@NotNull
 	@Override
-	public ReceiverDescriptor getReceiverParameter()
-	{
-		return ReceiverDescriptor.NO_RECEIVER;
-	}
-
-	@NotNull
-	@Override
 	public ReceiverDescriptor getExpectedThisObject()
 	{
 		return ReceiverDescriptor.NO_RECEIVER;

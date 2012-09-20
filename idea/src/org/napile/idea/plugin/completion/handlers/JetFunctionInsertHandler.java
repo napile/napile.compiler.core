@@ -169,12 +169,9 @@ public class JetFunctionInsertHandler implements InsertHandler<LookupElement>
 
 						final NapileFile file = (NapileFile) context.getFile();
 						final SimpleMethodDescriptor functionDescriptor = (SimpleMethodDescriptor) descriptor;
-						// Don't insert import for qualified expression if don't try to insert extension function
-						if(PsiTreeUtil.getParentOfType(element, NapileQualifiedExpression.class) != null && !functionDescriptor.getReceiverParameter().exists())
-						{
 
+						if(PsiTreeUtil.getParentOfType(element, NapileQualifiedExpression.class) != null)
 							return;
-						}
 
 						if(DescriptorUtils.isTopLevelFunction(functionDescriptor))
 						{

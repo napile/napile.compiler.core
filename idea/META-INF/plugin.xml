@@ -135,13 +135,8 @@
 		<stubElementTypeHolder class="org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes"/>
 		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetShortClassNameIndex"/>
 		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetFullClassNameIndex"/>
-		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetShortFunctionNameIndex"/>
-		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetExtensionFunctionNameIndex"/>
 		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetAllShortFunctionNameIndex"/>
 		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetSuperClassIndex"/>
-		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetTopLevelFunctionsFqnNameIndex"/>
-		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetTopLevelPropertiesFqnNameIndex"/>
-
 
 		<referencesSearch implementation="org.napile.idea.plugin.search.KotlinReferencesSearcher"/>
 

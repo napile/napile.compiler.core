@@ -39,7 +39,6 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -238,7 +237,7 @@ public class DeclarationResolver
 					mutableClassDescriptor.addSupertype(new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), ownerDescription.getTypeConstructor(), false, typeResolver.resolveTypes(scope, enumEntry.getTypeArguments(), trace, false), scope));
 					mutableClassDescriptor.createTypeConstructor();
 
-					propertyDescriptor.setType(new JetTypeImpl(mutableClassDescriptor), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, ReceiverDescriptor.NO_RECEIVER);
+					propertyDescriptor.setType(new JetTypeImpl(mutableClassDescriptor), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
 					propertyDescriptor.initialize(null, null);
 
 					context.getEnumEntries().put(enumEntry, mutableClassDescriptor);
@@ -257,20 +256,8 @@ public class DeclarationResolver
 			Multimap<Name, DeclarationDescriptor> simpleNameDescriptors = descriptor.getMemberScope().getDeclaredDescriptorsAccessibleBySimpleName();
 			for(Name name : simpleNameDescriptors.keySet())
 			{
-				// Keep only properties with no receiver
-				Collection<DeclarationDescriptor> descriptors = Collections2.filter(simpleNameDescriptors.get(name), new Predicate<DeclarationDescriptor>()
-				{
-					@Override
-					public boolean apply(@Nullable DeclarationDescriptor descriptor)
-					{
-						if(descriptor instanceof PropertyDescriptor)
-						{
-							PropertyDescriptor propertyDescriptor = (PropertyDescriptor) descriptor;
-							return !propertyDescriptor.getReceiverParameter().exists();
-						}
-						return true;
-					}
-				});
+				Collection<DeclarationDescriptor> descriptors = simpleNameDescriptors.get(name);
+
 				if(descriptors.size() > 1)
 				{
 					for(DeclarationDescriptor declarationDescriptor : descriptors)

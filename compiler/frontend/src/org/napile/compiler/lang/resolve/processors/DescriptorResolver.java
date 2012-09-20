@@ -44,7 +44,6 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
-import org.napile.compiler.lang.resolve.scopes.receivers.ExtensionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -203,14 +202,6 @@ public class DescriptorResolver
 		innerScope.changeLockLevel(WritableScope.LockLevel.BOTH);
 		resolveGenericBounds(function, innerScope, typeParameterDescriptors, trace);
 
-		JetType receiverType = null;
-		NapileTypeReference receiverTypeRef = function.getReceiverTypeRef();
-		if(receiverTypeRef != null)
-		{
-			JetScope scopeForReceiver = function.hasTypeParameterListBeforeFunctionName() ? innerScope : scope;
-			receiverType = typeResolver.resolveType(scopeForReceiver, receiverTypeRef, trace, true);
-		}
-
 		List<ParameterDescriptor> parameterDescriptors = resolveValueParameters(functionDescriptor, innerScope, function.getValueParameters(), trace);
 
 		innerScope.changeLockLevel(WritableScope.LockLevel.READING);
@@ -249,7 +240,7 @@ public class DescriptorResolver
 		Modality modality = resolveModalityFromModifiers(function.getModifierList(), Modality.OPEN);
 		Visibility visibility = resolveVisibilityFromModifiers(function.getModifierList());
 
-		functionDescriptor.initialize(receiverType, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, parameterDescriptors, returnType, modality, visibility);
+		functionDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, parameterDescriptors, returnType, modality, visibility);
 
 		BindingContextUtils.recordFunctionDeclarationToDescriptor(trace, function, functionDescriptor);
 		return functionDescriptor;
@@ -495,7 +486,7 @@ public class DescriptorResolver
 	{
 		NapileModifierList modifierList = objectDeclaration.getModifierList();
 		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), NapilePsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
-		propertyDescriptor.setType(classDescriptor.getDefaultType(), Collections.<TypeParameterDescriptor>emptyList(), DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), ReceiverDescriptor.NO_RECEIVER);
+		propertyDescriptor.setType(classDescriptor.getDefaultType(), Collections.<TypeParameterDescriptor>emptyList(), DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
 		propertyDescriptor.initialize(createDefaultGetter(propertyDescriptor), null);
 		NapileObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();
 		if(nameAsDeclaration != null)
@@ -517,17 +508,11 @@ public class DescriptorResolver
 		return variableDescriptor;
 	}
 
-	public JetScope getPropertyDeclarationInnerScope(@NotNull JetScope outerScope, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor receiver, BindingTrace trace)
+	public JetScope getPropertyDeclarationInnerScope(@NotNull JetScope outerScope, @NotNull List<? extends TypeParameterDescriptor> typeParameters, BindingTrace trace)
 	{
 		WritableScopeImpl result = new WritableScopeImpl(outerScope, outerScope.getContainingDeclaration(), new TraceBasedRedeclarationHandler(trace), "Property declaration inner scope");
 		for(TypeParameterDescriptor typeParameterDescriptor : typeParameters)
-		{
 			result.addTypeParameterDescriptor(typeParameterDescriptor);
-		}
-		if(receiver.exists())
-		{
-			result.setImplicitReceiver(receiver);
-		}
 		result.changeLockLevel(WritableScope.LockLevel.READING);
 		return result;
 	}
@@ -558,21 +543,12 @@ public class DescriptorResolver
 				resolveGenericBounds(property, writableScope, typeParameterDescriptors, trace);
 				scopeWithTypeParameters = writableScope;
 			}
-
-			NapileTypeReference receiverTypeRef = property.getReceiverTypeRef();
-			if(receiverTypeRef != null)
-			{
-				receiverType = typeResolver.resolveType(scopeWithTypeParameters, receiverTypeRef, trace, true);
-			}
 		}
-
-		ReceiverDescriptor receiverDescriptor = receiverType == null ? ReceiverDescriptor.NO_RECEIVER : new ExtensionReceiver(propertyDescriptor, receiverType);
-
-		JetScope propertyScope = getPropertyDeclarationInnerScope(scope, typeParameterDescriptors, ReceiverDescriptor.NO_RECEIVER, trace);
+		JetScope propertyScope = getPropertyDeclarationInnerScope(scope, typeParameterDescriptors, trace);
 
 		JetType type = getVariableType(propertyScope, property, DataFlowInfo.EMPTY, true, trace);
 
-		propertyDescriptor.setType(type, typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), receiverDescriptor);
+		propertyDescriptor.setType(type, typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
 
 		PropertyGetterDescriptor getter = resolvePropertyGetterDescriptor(scopeWithTypeParameters, property, propertyDescriptor, trace);
 		PropertySetterDescriptor setter = resolvePropertySetterDescriptor(scopeWithTypeParameters, property, propertyDescriptor, trace);
@@ -595,7 +571,7 @@ public class DescriptorResolver
 		else
 			entryType = ErrorUtils.createErrorType("Expression expected");
 
-		propertyDescriptor.setType(entryType, Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER, ReceiverDescriptor.NO_RECEIVER);
+		propertyDescriptor.setType(entryType, Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
 		propertyDescriptor.initialize(null, null);
 
 		trace.record(BindingContext.VARIABLE, retellEntry, propertyDescriptor);
@@ -765,7 +741,7 @@ public class DescriptorResolver
 		else
 			setterDescriptor = createDefaultSetter(propertyDescriptor, scope);
 
-		if(!property.isVar())
+		if(propertyDescriptor.getModality() == Modality.FINAL)
 		{
 			if(setter != null)
 			{

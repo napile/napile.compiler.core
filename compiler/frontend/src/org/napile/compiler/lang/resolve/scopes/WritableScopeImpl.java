@@ -37,7 +37,6 @@ import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.util.CommonSuppliers;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
@@ -225,16 +224,12 @@ public class WritableScopeImpl extends WritableScopeWithImports
 
 		Name name = variableDescriptor.getName();
 		if(isProperty)
-		{
-			checkForPropertyRedeclaration(name, variableDescriptor);
 			getPropertyGroups().put(name, variableDescriptor);
-		}
-		if(!variableDescriptor.getReceiverParameter().exists())
-		{
-			checkForRedeclaration(name, variableDescriptor);
-			// TODO : Should this always happen?
-			getVariableClassOrNamespaceDescriptors().put(name, variableDescriptor);
-		}
+
+		checkForRedeclaration(name, variableDescriptor);
+
+		getVariableClassOrNamespaceDescriptors().put(name, variableDescriptor);
+
 		allDescriptors.add(variableDescriptor);
 		addToDeclared(variableDescriptor);
 	}
@@ -399,19 +394,6 @@ public class WritableScopeImpl extends WritableScopeWithImports
 		addToDeclared(variableDescriptor);
 	}
 
-	private void checkForPropertyRedeclaration(@NotNull Name name, VariableDescriptor variableDescriptor)
-	{
-		Set<VariableDescriptor> properties = getPropertyGroups().get(name);
-		ReceiverDescriptor receiverParameter = variableDescriptor.getReceiverParameter();
-		for(VariableDescriptor oldProperty : properties)
-		{
-			ReceiverDescriptor receiverParameterForOldVariable = oldProperty.getReceiverParameter();
-			if(((receiverParameter.exists() && receiverParameterForOldVariable.exists()) && (JetTypeChecker.INSTANCE.equalTypes(receiverParameter.getType(), receiverParameterForOldVariable.getType()))))
-			{
-				redeclarationHandler.handleRedeclaration(oldProperty, variableDescriptor);
-			}
-		}
-	}
 
 	private void checkForRedeclaration(@NotNull Name name, DeclarationDescriptor classifierDescriptor)
 	{
@@ -528,6 +510,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
+	@Deprecated
 	public void setImplicitReceiver(@NotNull ReceiverDescriptor implicitReceiver)
 	{
 		checkMayWrite();

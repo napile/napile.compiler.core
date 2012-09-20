@@ -60,7 +60,7 @@ public class JetParameterElementType extends JetStubElementType<PsiJetParameterS
 		NapileTypeReference typeReference = psi.getTypeReference();
 		NapileExpression defaultValue = psi.getDefaultValue();
 
-		return new PsiJetParameterStubImpl(JetStubElementTypes.VALUE_PARAMETER, parentStub, psi.getName(), psi.isMutable(), psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
+		return new PsiJetParameterStubImpl(JetStubElementTypes.VALUE_PARAMETER, parentStub, psi.getName(), false, psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
 	}
 
 	@Override

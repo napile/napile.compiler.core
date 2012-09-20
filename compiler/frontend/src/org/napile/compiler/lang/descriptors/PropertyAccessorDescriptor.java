@@ -125,13 +125,6 @@ public abstract class PropertyAccessorDescriptor extends DeclarationDescriptorNo
 
 	@NotNull
 	@Override
-	public ReceiverDescriptor getReceiverParameter()
-	{
-		return getCorrespondingProperty().getReceiverParameter();
-	}
-
-	@NotNull
-	@Override
 	public ReceiverDescriptor getExpectedThisObject()
 	{
 		return getCorrespondingProperty().getExpectedThisObject();

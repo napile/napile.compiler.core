@@ -235,10 +235,7 @@ public class DescriptorUtils
 	{
 		for(VariableDescriptor variable : variables)
 		{
-			if(!variable.getReceiverParameter().exists())
-			{
-				return variable;
-			}
+			return variable;
 		}
 		return null;
 	}

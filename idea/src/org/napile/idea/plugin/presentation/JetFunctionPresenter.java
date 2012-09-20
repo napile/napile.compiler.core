@@ -90,9 +90,7 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 				FqName name = NapilePsiUtil.getFQName(function);
 				if(name != null)
 				{
-					NapileTypeReference receiverTypeRef = function.getReceiverTypeRef();
-					String extensionLocation = receiverTypeRef != null ? "for " + receiverTypeRef.getText() + " " : "";
-					return String.format("(%sin %s)", extensionLocation, QualifiedNamesUtil.withoutLastSegment(name));
+					return String.format("(in %s)", QualifiedNamesUtil.withoutLastSegment(name));
 				}
 
 				return "";

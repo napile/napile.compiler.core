@@ -26,8 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -50,7 +48,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.IncorrectOperationException;
 
 /**
@@ -89,8 +86,6 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 
 		List<FqName> result = Lists.newArrayList();
 		result.addAll(getClassNames(referenceName, (NapileFile) file));
-		result.addAll(getJetTopLevelFunctions(referenceName, element, file.getProject()));
-		result.addAll(getJetExtensionFunctions(referenceName, element, file.getProject()));
 
 		return Collections2.filter(result, new Predicate<FqName>()
 		{
@@ -101,45 +96,6 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 				return ImportInsertHelper.doNeedImport(new ImportPath(fqName, false), null, (NapileFile) file);
 			}
 		});
-	}
-
-	private static Collection<FqName> getJetTopLevelFunctions(@NotNull String referenceName, NapileSimpleNameExpression expression, @NotNull Project project)
-	{
-		JetShortNamesCache namesCache = JetShortNamesCache.getInstance(project);
-		Collection<MethodDescriptor> topLevelMethods = namesCache.getTopLevelFunctionDescriptorsByName(referenceName, expression, GlobalSearchScope.allScope(project));
-
-		return Sets.newHashSet(Collections2.transform(topLevelMethods, new Function<DeclarationDescriptor, FqName>()
-		{
-			@Override
-			public FqName apply(@Nullable DeclarationDescriptor declarationDescriptor)
-			{
-				assert declarationDescriptor != null;
-				return DescriptorUtils.getFQName(declarationDescriptor).toSafe();
-			}
-		}));
-	}
-
-	private static Collection<FqName> getJetExtensionFunctions(@NotNull final String referenceName, @NotNull NapileSimpleNameExpression expression, @NotNull Project project)
-	{
-		JetShortNamesCache namesCache = JetShortNamesCache.getInstance(project);
-		Collection<DeclarationDescriptor> jetCallableExtensions = namesCache.getJetCallableExtensions(new Condition<String>()
-		{
-			@Override
-			public boolean value(String callableExtensionName)
-			{
-				return callableExtensionName.equals(referenceName);
-			}
-		}, expression, GlobalSearchScope.allScope(project));
-
-		return Sets.newHashSet(Collections2.transform(jetCallableExtensions, new Function<DeclarationDescriptor, FqName>()
-		{
-			@Override
-			public FqName apply(@Nullable DeclarationDescriptor declarationDescriptor)
-			{
-				assert declarationDescriptor != null;
-				return DescriptorUtils.getFQName(declarationDescriptor).toSafe();
-			}
-		}));
 	}
 
 	/*

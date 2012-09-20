@@ -120,9 +120,6 @@ public class FunctionDescriptorUtil
 	public static JetScope getFunctionInnerScope(@NotNull JetScope outerScope, @NotNull MethodDescriptor descriptor, @NotNull BindingTrace trace)
 	{
 		WritableScope parameterScope = new WritableScopeImpl(outerScope, descriptor, new TraceBasedRedeclarationHandler(trace), "Function inner scope");
-		ReceiverDescriptor receiver = descriptor.getReceiverParameter();
-		if(receiver.exists())
-			parameterScope.setImplicitReceiver(receiver);
 		for(TypeParameterDescriptor typeParameter : descriptor.getTypeParameters())
 			parameterScope.addTypeParameterDescriptor(typeParameter);
 		for(ParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
@@ -133,10 +130,9 @@ public class FunctionDescriptorUtil
 
 	public static void initializeFromFunctionType(@NotNull MethodDescriptorImpl functionDescriptor, @NotNull JetType functionType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Modality modality, @NotNull Visibility visibility)
 	{
-
 		assert functionType.getConstructor() instanceof MethodTypeConstructor;
 
-		functionDescriptor.initialize(null, expectedThisObject, Collections.<TypeParameterDescriptorImpl>emptyList(), getValueParameters(functionDescriptor, functionType), ((MethodTypeConstructor) functionType.getConstructor()).getReturnType(), modality, visibility);
+		functionDescriptor.initialize(expectedThisObject, Collections.<TypeParameterDescriptorImpl>emptyList(), getValueParameters(functionDescriptor, functionType), ((MethodTypeConstructor) functionType.getConstructor()).getReturnType(), modality, visibility);
 	}
 
 	public static <D extends CallableDescriptor> D alphaConvertTypeParameters(D candidate)
@@ -149,7 +145,7 @@ public class FunctionDescriptorUtil
 		assert jetType.getConstructor() instanceof MethodTypeConstructor;
 
 		SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(owner, Collections.<AnnotationDescriptor>emptyList(), name, CallableMemberDescriptor.Kind.DECLARATION, false, false);
-		methodDescriptor.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptor>emptyList(), getValueParameters(methodDescriptor, jetType), ((MethodTypeConstructor) jetType.getConstructor()).getReturnType(), Modality.FINAL, Visibility.PUBLIC);
+		methodDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptor>emptyList(), getValueParameters(methodDescriptor, jetType), ((MethodTypeConstructor) jetType.getConstructor()).getReturnType(), Modality.FINAL, Visibility.PUBLIC);
 		return methodDescriptor;
 	}
 

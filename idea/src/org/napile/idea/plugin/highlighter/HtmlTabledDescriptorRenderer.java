@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
@@ -116,7 +115,7 @@ public class HtmlTabledDescriptorRenderer extends TabledDescriptorRenderer
 			if(row instanceof FunctionArgumentsRow)
 			{
 				FunctionArgumentsRow functionArgumentsRow = (FunctionArgumentsRow) row;
-				renderFunctionArguments(functionArgumentsRow.receiverType, functionArgumentsRow.argumentTypes, functionArgumentsRow.isErrorPosition, result);
+				renderFunctionArguments(functionArgumentsRow.argumentTypes, functionArgumentsRow.isErrorPosition, result);
 			}
 			result.append("</tr>");
 		}
@@ -125,22 +124,12 @@ public class HtmlTabledDescriptorRenderer extends TabledDescriptorRenderer
 		result.append("</table>");
 	}
 
-	private void renderFunctionArguments(@Nullable JetType receiverType, @NotNull List<JetType> argumentTypes, Predicate<ConstraintPosition> isErrorPosition, StringBuilder result)
+	private void renderFunctionArguments(@NotNull List<JetType> argumentTypes, Predicate<ConstraintPosition> isErrorPosition, StringBuilder result)
 	{
-		boolean hasReceiver = receiverType != null;
 		tdSpace(result);
 		String receiver = "";
-		if(hasReceiver)
-		{
-			boolean error = false;
-			if(isErrorPosition.apply(ConstraintPosition.RECEIVER_POSITION))
-			{
-				error = true;
-			}
-			receiver = "receiver: " + IdeRenderers.strong(IdeRenderers.HTML_RENDER_TYPE.render(receiverType), error);
-		}
+
 		td(result, receiver);
-		td(result, hasReceiver ? "arguments: " : "");
 		if(argumentTypes.isEmpty())
 		{
 			tdBold(result, "( )");

@@ -44,7 +44,6 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.napile.compiler.lang.resolve.calls.inference.ConstraintPosition;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemImpl;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintsUtil;
@@ -255,17 +254,6 @@ public class ExpressionTypingUtils
 		for(TypeParameterDescriptor typeParameterDescriptor : receiverArgument.getTypeParameters())
 		{
 			constraintSystem.registerTypeVariable(typeParameterDescriptor);
-		}
-
-		ReceiverDescriptor receiverParameter = receiverArgument.getReceiverParameter();
-		if(expectedReceiver.exists() && receiverParameter.exists())
-		{
-			constraintSystem.addSupertypeConstraint(receiverParameter.getType(), receiverType, ConstraintPosition.RECEIVER_POSITION);
-		}
-		else if(expectedReceiver.exists() || receiverParameter.exists())
-		{
-			// Only one of receivers exist
-			return false;
 		}
 
 		return constraintSystem.isSuccessful() && ConstraintsUtil.checkBoundsAreSatisfied(constraintSystem);

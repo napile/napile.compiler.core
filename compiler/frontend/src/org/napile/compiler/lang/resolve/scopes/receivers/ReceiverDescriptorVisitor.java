@@ -31,11 +31,6 @@ public class ReceiverDescriptorVisitor<R, D>
 		return null;
 	}
 
-	public R visitExtensionReceiver(ExtensionReceiver receiver, D data)
-	{
-		return null;
-	}
-
 	public R visitExpressionReceiver(ExpressionReceiver receiver, D data)
 	{
 		return null;

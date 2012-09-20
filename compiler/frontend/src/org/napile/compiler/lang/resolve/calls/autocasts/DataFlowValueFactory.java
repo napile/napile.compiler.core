@@ -129,7 +129,7 @@ public class DataFlowValueFactory
 			DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, thisExpression.getInstanceReference());
 			if(declarationDescriptor instanceof CallableDescriptor)
 			{
-				return Pair.create((Object) ((CallableDescriptor) declarationDescriptor).getReceiverParameter(), true);
+				return Pair.create(null, true);
 			}
 			if(declarationDescriptor instanceof ClassDescriptor)
 			{

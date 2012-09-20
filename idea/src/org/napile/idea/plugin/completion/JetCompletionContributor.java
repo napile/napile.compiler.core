@@ -24,11 +24,9 @@ import org.napile.compiler.cli.jvm.compiler.TipsManager;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibilities;
-import org.napile.compiler.lang.psi.NapileDotQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
@@ -37,7 +35,6 @@ import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lexer.JetTokens;
-import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.completion.weigher.JetCompletionSorting;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.idea.plugin.references.JetSimpleNameReference;
@@ -48,14 +45,10 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.completion.CompletionType;
-import com.intellij.codeInsight.completion.PrefixMatcher;
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 
@@ -146,35 +139,7 @@ public class JetCompletionContributor extends CompletionContributor
 		}
 
 		for(LookupElement variant : getReferenceVariants(jetReference, result, session))
-		{
 			addCheckedCompletionToResult(result, variant, session);
-		}
-
-		String prefix = result.getPrefixMatcher().getPrefix();
-
-		// Try to avoid computing not-imported descriptors for empty prefix
-		if(prefix.isEmpty())
-		{
-			if(session.customInvocationCount < 2)
-			{
-				return;
-			}
-
-			if(PsiTreeUtil.getParentOfType(jetReference.getElement(), NapileDotQualifiedExpression.class) == null)
-			{
-				return;
-			}
-		}
-
-		if(shouldRunTopLevelCompletion(parameters, session))
-		{
-			addJetTopLevelFunctions(jetReference.getExpression(), result, position, session);
-		}
-
-		if(shouldRunExtensionsCompletion(parameters, prefix, session))
-		{
-			addJetExtensions(jetReference.getExpression(), result, position);
-		}
 	}
 
 	private static boolean isOnlyKeywordCompletion(PsiElement position)
@@ -182,28 +147,6 @@ public class JetCompletionContributor extends CompletionContributor
 		return PsiTreeUtil.getParentOfType(position, NapileModifierList.class) != null;
 	}
 
-	private static void addJetExtensions(NapileSimpleNameExpression expression, CompletionResultSet result, PsiElement position)
-	{
-		final PrefixMatcher prefixMatcher = result.getPrefixMatcher();
-		JetShortNamesCache namesCache = JetShortNamesCache.getInstance(expression.getProject());
-		Condition<String> matchPrefixCondition = new Condition<String>()
-		{
-			@Override
-			public boolean value(String callableName)
-			{
-				return prefixMatcher.prefixMatches(callableName);
-			}
-		};
-
-		Collection<DeclarationDescriptor> jetCallableExtensions = namesCache.getJetCallableExtensions(matchPrefixCondition, expression, GlobalSearchScope.allScope(position.getProject()));
-
-		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) position.getContainingFile()).getBindingContext();
-
-		for(DeclarationDescriptor jetCallableExtension : jetCallableExtensions)
-		{
-			result.addElement(DescriptorLookupConverter.createLookupElement(context, jetCallableExtension));
-		}
-	}
 
 	public static boolean isTypeDeclaration(@NotNull Object variant)
 	{
@@ -222,30 +165,6 @@ public class JetCompletionContributor extends CompletionContributor
 		return false;
 	}
 
-	private static void addJetTopLevelFunctions(NapileSimpleNameExpression expression, @NotNull CompletionResultSet result, @NotNull PsiElement position, @NotNull CompletionSession session)
-	{
-
-		String actualPrefix = result.getPrefixMatcher().getPrefix();
-
-		Project project = position.getProject();
-
-		JetShortNamesCache namesCache = JetShortNamesCache.getInstance(project);
-		GlobalSearchScope scope = GlobalSearchScope.allScope(project);
-		Collection<String> functionNames = namesCache.getAllTopLevelFunctionNames();
-
-		BindingContext resolutionContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) position.getContainingFile()).getBindingContext();
-
-		for(String name : functionNames)
-		{
-			if(name.contains(actualPrefix))
-			{
-				for(MethodDescriptor method : namesCache.getTopLevelFunctionDescriptorsByName(name, expression, scope))
-				{
-					addCompletionToResult(result, DescriptorLookupConverter.createLookupElement(resolutionContext, method), session);
-				}
-			}
-		}
-	}
 
 
 	private static boolean shouldRunTypeCompletionOnly(PsiElement position, JetSimpleNameReference jetReference)

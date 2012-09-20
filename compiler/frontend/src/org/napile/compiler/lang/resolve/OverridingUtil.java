@@ -30,7 +30,6 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
@@ -147,12 +146,7 @@ public class OverridingUtil
 
 	private static List<JetType> compiledValueParameters(CallableDescriptor callableDescriptor)
 	{
-		ReceiverDescriptor receiverParameter = callableDescriptor.getReceiverParameter();
-		ArrayList<JetType> parameters = new ArrayList<JetType>();
-		if(receiverParameter.exists())
-		{
-			parameters.add(receiverParameter.getType());
-		}
+		ArrayList<JetType> parameters = new ArrayList<JetType>(callableDescriptor.getValueParameters().size());
 		for(ParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
 		{
 			parameters.add(parameterDescriptor.getType());
@@ -162,14 +156,7 @@ public class OverridingUtil
 
 	private static int compiledValueParameterCount(CallableDescriptor callableDescriptor)
 	{
-		if(callableDescriptor.getReceiverParameter().exists())
-		{
-			return 1 + callableDescriptor.getValueParameters().size();
-		}
-		else
-		{
-			return callableDescriptor.getValueParameters().size();
-		}
+		return callableDescriptor.getValueParameters().size();
 	}
 
 	/**

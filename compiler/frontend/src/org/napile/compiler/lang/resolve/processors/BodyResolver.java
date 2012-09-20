@@ -337,7 +337,7 @@ public class BodyResolver
 	{
 		JetScope declaringScope = context.getDeclaringScopes().get(accessor);
 
-		JetScope propertyDeclarationInnerScope = descriptorResolver.getPropertyDeclarationInnerScope(declaringScope, propertyDescriptor.getTypeParameters(), propertyDescriptor.getReceiverParameter(), trace);
+		JetScope propertyDeclarationInnerScope = descriptorResolver.getPropertyDeclarationInnerScope(declaringScope, propertyDescriptor.getTypeParameters(), trace);
 		WritableScope accessorScope = new WritableScopeImpl(propertyDeclarationInnerScope, declaringScope.getContainingDeclaration(), new TraceBasedRedeclarationHandler(trace), "Accessor scope");
 		accessorScope.changeLockLevel(WritableScope.LockLevel.READING);
 
@@ -392,7 +392,7 @@ public class BodyResolver
 	{
 		//JetFlowInformationProvider flowInformationProvider = context.getDescriptorResolver().computeFlowData(property, initializer); // TODO : flow JET-15
 		JetType expectedTypeForInitializer = property.getPropertyTypeRef() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;
-		JetScope propertyDeclarationInnerScope = descriptorResolver.getPropertyDeclarationInnerScope(scope, propertyDescriptor.getTypeParameters(), ReceiverDescriptor.NO_RECEIVER, trace);
+		JetScope propertyDeclarationInnerScope = descriptorResolver.getPropertyDeclarationInnerScope(scope, propertyDescriptor.getTypeParameters(), trace);
 		JetType type = expressionTypingServices.getType(propertyDeclarationInnerScope, initializer, expectedTypeForInitializer, DataFlowInfo.EMPTY, trace);
 		//
 		//        JetType expectedType = propertyDescriptor.getInType();

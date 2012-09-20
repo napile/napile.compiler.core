@@ -17,15 +17,13 @@
 package org.napile.compiler.lang.resolve.scopes;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 /**
  * @author Nikolay Krasko
@@ -57,22 +55,10 @@ public final class JetScopeUtils
 	 * @param scope Scope for query extensions.
 	 * @return extension descriptors.
 	 */
+	@Deprecated
 	public static Collection<CallableDescriptor> getAllExtensions(@NotNull JetScope scope)
 	{
-		final Set<CallableDescriptor> result = Sets.newHashSet();
 
-		for(DeclarationDescriptor descriptor : scope.getAllDescriptors())
-		{
-			if(descriptor instanceof CallableDescriptor)
-			{
-				CallableDescriptor callDescriptor = (CallableDescriptor) descriptor;
-				if(callDescriptor.getReceiverParameter().exists())
-				{
-					result.add(callDescriptor);
-				}
-			}
-		}
-
-		return result;
+		return Collections.emptySet();
 	}
 }

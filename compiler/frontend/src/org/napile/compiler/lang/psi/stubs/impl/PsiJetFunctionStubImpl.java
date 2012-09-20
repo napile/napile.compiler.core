@@ -18,7 +18,6 @@ package org.napile.compiler.lang.psi.stubs.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import com.intellij.psi.stubs.IStubElementType;
@@ -32,55 +31,24 @@ import com.intellij.util.io.StringRef;
  */
 public class PsiJetFunctionStubImpl extends StubBase<NapileNamedFunction> implements PsiJetFunctionStub
 {
-
 	private final StringRef nameRef;
-	private final boolean isTopLevel;
-	private final boolean isExtension;
-	private final FqName topFQName;
 
-	public PsiJetFunctionStubImpl(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable String name, boolean isTopLevel, @Nullable FqName topFQName, boolean isExtension)
+	public PsiJetFunctionStubImpl(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable String name)
 	{
-		this(elementType, parent, StringRef.fromString(name), isTopLevel, topFQName, isExtension);
+		this(elementType, parent, StringRef.fromString(name));
 	}
 
-	public PsiJetFunctionStubImpl(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable StringRef nameRef, boolean isTopLevel, @Nullable FqName topFQName, boolean isExtension)
+	public PsiJetFunctionStubImpl(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable StringRef nameRef)
 	{
 		super(parent, elementType);
 
-		if(isTopLevel && topFQName == null)
-		{
-			throw new IllegalArgumentException("topFQName shouldn't be null for top level functions");
-		}
-
 		this.nameRef = nameRef;
-		this.topFQName = topFQName;
-		this.isTopLevel = isTopLevel;
-		this.isExtension = isExtension;
 	}
 
 	@Override
 	public String getName()
 	{
 		return StringRef.toString(nameRef);
-	}
-
-	@Nullable
-	@Override
-	public FqName getTopFQName()
-	{
-		return topFQName;
-	}
-
-	@Override
-	public boolean isTopLevel()
-	{
-		return isTopLevel;
-	}
-
-	@Override
-	public boolean isExtension()
-	{
-		return isExtension;
 	}
 
 	@NotNull
@@ -96,17 +64,6 @@ public class PsiJetFunctionStubImpl extends StubBase<NapileNamedFunction> implem
 	{
 		StringBuilder builder = new StringBuilder();
 		builder.append("PsiJetFunctionStubImpl[");
-
-		if(isTopLevel())
-		{
-			assert topFQName != null;
-			builder.append("top ").append("topFQName=").append(topFQName.toString()).append(" ");
-		}
-
-		if(isExtension())
-		{
-			builder.append("ext ");
-		}
 
 		builder.append("name=").append(getName());
 

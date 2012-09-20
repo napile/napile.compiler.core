@@ -58,7 +58,6 @@ import org.napile.compiler.lang.resolve.calls.VariableAsFunctionResolvedCall;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
-import org.napile.compiler.lang.resolve.scopes.receivers.ExtensionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lexer.JetTokens;
@@ -300,16 +299,12 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		{
 			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall.getResultingDescriptor()));
 
-			if(resolvedGetCall.getResultingDescriptor().getReceiverParameter().exists())
-				index++;
 			asmType = accessor.getReturnType();
 		}
 		else
 		{
 			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall.getResultingDescriptor()));
 
-			if(resolvedSetCall.getResultingDescriptor().getReceiverParameter().exists())
-				index++;
 			asmType = argumentTypes.get(argumentTypes.size() - 1);
 		}
 
@@ -374,7 +369,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 			final StackValue iValue = intermediateValueForProperty(propertyDescriptor, directToField, isSuper ? (NapileSuperExpression) r : null);
 			if(!directToField && resolvedCall != null && !isSuper)
-				receiver.put(propertyDescriptor.getReceiverParameter().exists() || isStatic ? receiver.getType() : TypeTransformer.toAsmType(((ClassDescriptor) container).getDefaultType()), instructs);
+				receiver.put(isStatic ? receiver.getType() : TypeTransformer.toAsmType(((ClassDescriptor) container).getDefaultType()), instructs);
 			else
 			{
 				if(!isStatic)
@@ -384,17 +379,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 						if(resolvedCall == null)
 							receiver = generateThisOrOuter((ClassDescriptor) propertyDescriptor.getContainingDeclaration(), false);
 						else
-						{
-							if(resolvedCall.getThisObject() instanceof ExtensionReceiver)
-							{
-								throw new UnsupportedOperationException();
-								//receiver = generateReceiver(((ExtensionReceiver) resolvedCall.getThisObject()).getDeclarationDescriptor());
-							}
-							else
-							{
-								receiver = generateThisOrOuter((ClassDescriptor) propertyDescriptor.getContainingDeclaration(), false);
-							}
-						}
+							receiver = generateThisOrOuter((ClassDescriptor) propertyDescriptor.getContainingDeclaration(), false);
 					}
 					JetType receiverType = bindingTrace.get(BindingContext.EXPRESSION_TYPE, r);
 					receiver.put(receiverType != null && !isSuper ? asmType(receiverType) : TypeConstants.ANY, instructs);

@@ -44,7 +44,6 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.ResolvedCallImpl;
 import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import com.intellij.psi.PsiElement;
@@ -165,10 +164,6 @@ public class IdeRenderers
 				Set<ParameterDescriptor> parametersToHighlight = getParametersToHighlight(call);
 
 				DescriptorRenderer htmlRenderer = DescriptorRenderer.HTML;
-				if(funDescriptor.getReceiverParameter() != ReceiverDescriptor.NO_RECEIVER)
-				{
-					stringBuilder.append(htmlRenderer.renderType(funDescriptor.getReceiverParameter().getType())).append(".");
-				}
 				stringBuilder.append(funDescriptor.getName()).append("(");
 				boolean first = true;
 				for(ParameterDescriptor parameter : funDescriptor.getValueParameters())

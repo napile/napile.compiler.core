@@ -20,9 +20,7 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.stubs.PsiJetFileStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetFunctionStubImpl;
 import com.intellij.lang.ASTNode;
@@ -75,38 +73,20 @@ public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub,
 	@Override
 	public PsiJetFunctionStub createStub(@NotNull NapileNamedFunction psi, @NotNull StubElement parentStub)
 	{
-		final boolean isTopLevel = parentStub instanceof PsiJetFileStub;
-		final boolean isExtension = psi.getReceiverTypeRef() != null;
-
-		FqName qualifiedName = psi.getQualifiedName();
-
-		return new PsiJetFunctionStubImpl(JetStubElementTypes.METHOD, parentStub, psi.getName(), isTopLevel, qualifiedName, isExtension);
+		return new PsiJetFunctionStubImpl(JetStubElementTypes.METHOD, parentStub, psi.getName());
 	}
 
 	@Override
 	public void serialize(PsiJetFunctionStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
-		dataStream.writeBoolean(stub.isTopLevel());
-
-		FqName topFQName = stub.getTopFQName();
-		dataStream.writeName(topFQName != null ? topFQName.toString() : null);
-
-		dataStream.writeBoolean(stub.isExtension());
 	}
 
 	@Override
 	public PsiJetFunctionStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		boolean isTopLevel = dataStream.readBoolean();
-
-		StringRef topFQNameStr = dataStream.readName();
-		FqName fqName = topFQNameStr != null ? new FqName(topFQNameStr.toString()) : null;
-
-		boolean isExtension = dataStream.readBoolean();
-
-		return new PsiJetFunctionStubImpl(JetStubElementTypes.METHOD, parentStub, name, isTopLevel, fqName, isExtension);
+		return new PsiJetFunctionStubImpl(JetStubElementTypes.METHOD, parentStub, name);
 	}
 
 	@Override

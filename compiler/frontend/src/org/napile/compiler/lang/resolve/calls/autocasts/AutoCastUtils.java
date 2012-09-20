@@ -24,7 +24,6 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.AutoCastReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
-import org.napile.compiler.lang.resolve.scopes.receivers.ExtensionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptorVisitor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
@@ -59,12 +58,6 @@ public class AutoCastUtils
 			public List<ReceiverDescriptor> visitTransientReceiver(TransientReceiver receiver, Object data)
 			{
 				return Collections.emptyList();
-			}
-
-			@Override
-			public List<ReceiverDescriptor> visitExtensionReceiver(ExtensionReceiver receiver, Object data)
-			{
-				return castThis(dataFlowInfo, receiver);
 			}
 
 			@Override

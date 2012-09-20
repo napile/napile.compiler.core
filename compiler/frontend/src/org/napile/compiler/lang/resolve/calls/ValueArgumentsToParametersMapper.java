@@ -246,14 +246,10 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 			}
 		}
 
-		ReceiverDescriptor receiverParameter = candidate.getReceiverParameter();
+
 		ReceiverDescriptor receiverArgument = candidateCall.getReceiverArgument();
-		if(receiverParameter.exists() && !receiverArgument.exists())
-		{
-			tracing.missingReceiver(temporaryTrace, receiverParameter);
-			status = ERROR;
-		}
-		if(!receiverParameter.exists() && receiverArgument.exists())
+
+		if(receiverArgument.exists())
 		{
 			tracing.noReceiverAllowed(temporaryTrace);
 			if(call.getCalleeExpression() instanceof NapileSimpleNameExpression)

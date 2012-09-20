@@ -76,6 +76,7 @@ public interface WritableScope extends JetScope
 
 	void importScope(@NotNull JetScope imported);
 
+	@Deprecated
 	void setImplicitReceiver(@NotNull ReceiverDescriptor implicitReceiver);
 
 	void importClassifierAlias(@NotNull Name importedClassifierName, @NotNull ClassifierDescriptor classifierDescriptor);

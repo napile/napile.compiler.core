@@ -33,7 +33,6 @@ import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
@@ -199,11 +198,6 @@ public class JetStructureViewElement implements StructureViewTreeElement
 			textBuilder = new StringBuilder();
 
 			MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
-			ReceiverDescriptor receiver = methodDescriptor.getReceiverParameter();
-			if(receiver.exists())
-			{
-				textBuilder.append(DescriptorRenderer.TEXT.renderType(receiver.getType())).append(".");
-			}
 
 			textBuilder.append(methodDescriptor.getName());
 

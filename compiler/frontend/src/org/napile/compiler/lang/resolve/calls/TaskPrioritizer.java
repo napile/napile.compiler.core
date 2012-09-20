@@ -226,7 +226,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 		{
 			for(D descriptor : descriptors)
 			{
-				if(descriptor.getExpectedThisObject().exists() && !descriptor.getReceiverParameter().exists())
+				if(descriptor.getExpectedThisObject().exists())
 				{
 					DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
 					if(descriptor instanceof ConstructorDescriptor)

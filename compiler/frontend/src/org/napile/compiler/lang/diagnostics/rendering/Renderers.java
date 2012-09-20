@@ -216,8 +216,6 @@ public class Renderers
 
 		for(CallableDescriptor substitutedDescriptor : substitutedDescriptors)
 		{
-			JetType receiverType = substitutedDescriptor.getReceiverParameter().exists() ? substitutedDescriptor.getReceiverParameter().getType() : null;
-
 			final Collection<ConstraintPosition> errorPositions = Sets.newHashSet();
 			List<JetType> valueArgumentTypes = Lists.newArrayList();
 			for(ParameterDescriptor parameterDescriptor : substitutedDescriptor.getValueParameters())
@@ -230,12 +228,6 @@ public class Renderers
 				}
 			}
 
-			if(receiverType != null && inferenceErrorData.receiverArgumentType != null &&
-					!JetTypeChecker.INSTANCE.isSubtypeOf(inferenceErrorData.receiverArgumentType, receiverType))
-			{
-				errorPositions.add(ConstraintPosition.RECEIVER_POSITION);
-			}
-
 			Predicate<ConstraintPosition> isErrorPosition = new Predicate<ConstraintPosition>()
 			{
 				@Override
@@ -244,10 +236,10 @@ public class Renderers
 					return errorPositions.contains(constraintPosition);
 				}
 			};
-			table.functionArgumentTypeList(receiverType, valueArgumentTypes, isErrorPosition);
+			table.functionArgumentTypeList(valueArgumentTypes, isErrorPosition);
 		}
 
-		table.text("can be applied to").functionArgumentTypeList(inferenceErrorData.receiverArgumentType, inferenceErrorData.valueArgumentsTypes);
+		table.text("can be applied to").functionArgumentTypeList(inferenceErrorData.valueArgumentsTypes);
 
 		return result;
 	}
@@ -263,7 +255,7 @@ public class Renderers
 				return inferenceErrorData.constraintSystem.hasTypeConstructorMismatchAt(constraintPosition);
 			}
 		};
-		return renderer.table(TabledDescriptorRenderer.newTable().descriptor(inferenceErrorData.descriptor).text("cannot be applied to").functionArgumentTypeList(inferenceErrorData.receiverArgumentType, inferenceErrorData.valueArgumentsTypes, isErrorPosition));
+		return renderer.table(TabledDescriptorRenderer.newTable().descriptor(inferenceErrorData.descriptor).text("cannot be applied to").functionArgumentTypeList(inferenceErrorData.valueArgumentsTypes, isErrorPosition));
 	}
 
 	public static TabledDescriptorRenderer renderNoInformationForParameterError(InferenceErrorData inferenceErrorData, TabledDescriptorRenderer renderer)

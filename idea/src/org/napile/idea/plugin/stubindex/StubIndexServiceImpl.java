@@ -16,7 +16,6 @@
 
 package org.napile.idea.plugin.stubindex;
 
-import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
@@ -55,40 +54,12 @@ public class StubIndexServiceImpl implements StubIndexService
 	{
 		String name = stub.getName();
 		if(name != null)
-		{
-			if(stub.isTopLevel())
-			{
-				// Collection only top level functions as only they are expected in completion without explicit import
-				if(!stub.isExtension())
-				{
-					sink.occurrence(JetIndexKeys.TOP_LEVEL_FUNCTION_SHORT_NAME_KEY, name);
-				}
-				else
-				{
-					sink.occurrence(JetIndexKeys.TOP_LEVEL_EXTENSION_FUNCTION_SHORT_NAME_KEY, name);
-				}
-
-				FqName topFQName = stub.getTopFQName();
-				if(topFQName != null)
-				{
-					sink.occurrence(JetIndexKeys.TOP_LEVEL_FUNCTIONS_FQN_NAME_KEY, topFQName.toString());
-				}
-			}
-
 			sink.occurrence(JetIndexKeys.FUNCTIONS_SHORT_NAME_KEY, name);
-		}
 	}
 
 	@Override
 	public void indexProperty(PsiJetPropertyStub stub, IndexSink sink)
 	{
-		if(stub.isTopLevel())
-		{
-			FqName topFQName = stub.getTopFQName();
-			if(topFQName != null)
-			{
-				sink.occurrence(JetIndexKeys.TOP_LEVEL_PROPERTY_FQN_NAME_KEY, topFQName.toString());
-			}
-		}
+
 	}
 }

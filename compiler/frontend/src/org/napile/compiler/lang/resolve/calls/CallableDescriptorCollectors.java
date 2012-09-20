@@ -19,7 +19,6 @@ package org.napile.compiler.lang.resolve.calls;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -52,14 +51,6 @@ public class CallableDescriptorCollectors
 		public Collection<MethodDescriptor> getNonExtensionsByName(JetScope scope, Name name)
 		{
 			Set<MethodDescriptor> methods = Sets.newLinkedHashSet(scope.getFunctions(name));
-			for(Iterator<MethodDescriptor> iterator = methods.iterator(); iterator.hasNext(); )
-			{
-				MethodDescriptor methodDescriptor = iterator.next();
-				if(methodDescriptor.getReceiverParameter().exists())
-				{
-					iterator.remove();
-				}
-			}
 			addConstructors(scope, name, methods);
 			return methods;
 		}

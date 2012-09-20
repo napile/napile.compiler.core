@@ -68,26 +68,6 @@ abstract public class NapileMethodNotStubbed extends NapileTypeParameterListOwne
 
 	@Override
 	@Nullable
-	public NapileTypeReference getReceiverTypeRef()
-	{
-		PsiElement child = getFirstChild();
-		while(child != null)
-		{
-			IElementType tt = child.getNode().getElementType();
-			if(tt == JetTokens.LPAR || tt == JetTokens.COLON)
-				break;
-			if(child instanceof NapileTypeReference)
-			{
-				return (NapileTypeReference) child;
-			}
-			child = child.getNextSibling();
-		}
-
-		return null;
-	}
-
-	@Override
-	@Nullable
 	public NapileTypeReference getReturnTypeRef()
 	{
 		boolean colonPassed = false;
@@ -119,7 +99,6 @@ abstract public class NapileMethodNotStubbed extends NapileTypeParameterListOwne
 	@Override
 	public boolean isLocal()
 	{
-		PsiElement parent = getParent();
-		return !(parent instanceof NapileFile || parent instanceof NapileClassBody || parent instanceof NapileNamespaceBody);
+		return false;
 	}
 }

@@ -26,7 +26,6 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverridingUtil;
-import org.napile.compiler.lang.resolve.scopes.receivers.ExtensionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
 import org.napile.compiler.lang.types.DescriptorSubstitutor;
@@ -47,7 +46,6 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 	private final Kind kind;
 
 	private ReceiverDescriptor expectedThisObject;
-	private ReceiverDescriptor receiver;
 	private List<TypeParameterDescriptor> typeParameters;
 	private PropertyGetterDescriptor getter;
 	private PropertySetterDescriptor setter;
@@ -66,25 +64,18 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		this(null, containingDeclaration, annotations, modality, visibility, name, kind, isStatic);
 	}
 
-	public PropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @Nullable JetType receiverType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic)
+	public PropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic)
 	{
 		this(containingDeclaration, annotations, modality, visibility, name, kind, isStatic);
-		setType(outType, Collections.<TypeParameterDescriptor>emptyList(), expectedThisObject, receiverType);
+		setType(outType, Collections.<TypeParameterDescriptor>emptyList(), expectedThisObject);
 	}
 
-	public void setType(@NotNull JetType outType, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor expectedThisObject, @Nullable JetType receiverType)
-	{
-		ReceiverDescriptor receiver = receiverType == null ? ReceiverDescriptor.NO_RECEIVER : new ExtensionReceiver(this, receiverType);
-		setType(outType, typeParameters, expectedThisObject, receiver);
-	}
-
-	public void setType(@NotNull JetType outType, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor expectedThisObject, @NotNull ReceiverDescriptor receiver)
+	public void setType(@NotNull JetType outType, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor expectedThisObject)
 	{
 		setOutType(outType);
 
 		this.typeParameters = Lists.newArrayList(typeParameters);
 
-		this.receiver = receiver;
 		this.expectedThisObject = expectedThisObject;
 	}
 
@@ -104,13 +95,6 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 	public List<TypeParameterDescriptor> getTypeParameters()
 	{
 		return typeParameters;
-	}
-
-	@Override
-	@NotNull
-	public ReceiverDescriptor getReceiverParameter()
-	{
-		return receiver;
 	}
 
 	@NotNull
@@ -195,19 +179,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 			substitutedExpectedThisObject = ReceiverDescriptor.NO_RECEIVER;
 		}
 
-		JetType substitutedReceiverType;
-		if(receiver.exists())
-		{
-			substitutedReceiverType = substitutor.substitute(receiver.getType());
-			if(substitutedReceiverType == null)
-				return null;
-		}
-		else
-		{
-			substitutedReceiverType = null;
-		}
-
-		substitutedDescriptor.setType(outType, substitutedTypeParameters, substitutedExpectedThisObject, substitutedReceiverType);
+		substitutedDescriptor.setType(outType, substitutedTypeParameters, substitutedExpectedThisObject);
 
 		PropertyGetterDescriptor newGetter = getter == null ? null : new PropertyGetterDescriptor(substitutedDescriptor, Lists.newArrayList(getter.getAnnotations()), DescriptorUtils.convertModality(getter.getModality(), false), getter.getVisibility(), getter.hasBody(), getter.isDefault(), kind, getter.getOriginal(), false);
 		if(newGetter != null)

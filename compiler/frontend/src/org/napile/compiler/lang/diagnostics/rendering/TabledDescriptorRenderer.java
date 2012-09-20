@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TableRenderer.DescriptorRow;
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TableRenderer.FunctionArgumentsRow;
@@ -60,13 +59,11 @@ public class TabledDescriptorRenderer
 
 		public static class FunctionArgumentsRow implements TableRow
 		{
-			public final JetType receiverType;
 			public final List<JetType> argumentTypes;
 			public final Predicate<ConstraintPosition> isErrorPosition;
 
-			public FunctionArgumentsRow(JetType receiverType, List<JetType> argumentTypes, Predicate<ConstraintPosition> isErrorPosition)
+			public FunctionArgumentsRow(List<JetType> argumentTypes, Predicate<ConstraintPosition> isErrorPosition)
 			{
-				this.receiverType = receiverType;
 				this.argumentTypes = argumentTypes;
 				this.isErrorPosition = isErrorPosition;
 			}
@@ -80,15 +77,14 @@ public class TabledDescriptorRenderer
 			return this;
 		}
 
-		public TableRenderer functionArgumentTypeList(@Nullable JetType receiverType, @NotNull List<JetType> argumentTypes)
+		public TableRenderer functionArgumentTypeList(@NotNull List<JetType> argumentTypes)
 		{
-
-			return functionArgumentTypeList(receiverType, argumentTypes, Predicates.<ConstraintPosition>alwaysFalse());
+			return functionArgumentTypeList(argumentTypes, Predicates.<ConstraintPosition>alwaysFalse());
 		}
 
-		public TableRenderer functionArgumentTypeList(@Nullable JetType receiverType, @NotNull List<JetType> argumentTypes, @NotNull Predicate<ConstraintPosition> isErrorPosition)
+		public TableRenderer functionArgumentTypeList(@NotNull List<JetType> argumentTypes, @NotNull Predicate<ConstraintPosition> isErrorPosition)
 		{
-			rows.add(new FunctionArgumentsRow(receiverType, argumentTypes, isErrorPosition));
+			rows.add(new FunctionArgumentsRow(argumentTypes, isErrorPosition));
 			return this;
 		}
 
@@ -243,21 +239,14 @@ public class TabledDescriptorRenderer
 			if(row instanceof FunctionArgumentsRow)
 			{
 				FunctionArgumentsRow functionArgumentsRow = (FunctionArgumentsRow) row;
-				renderFunctionArguments(functionArgumentsRow.receiverType, functionArgumentsRow.argumentTypes, result);
+				renderFunctionArguments(functionArgumentsRow.argumentTypes, result);
 			}
 			result.append("\n");
 		}
 	}
 
-	private void renderFunctionArguments(@Nullable JetType receiverType, @NotNull List<JetType> argumentTypes, StringBuilder result)
+	private void renderFunctionArguments(@NotNull List<JetType> argumentTypes, StringBuilder result)
 	{
-		boolean hasReceiver = receiverType != null;
-		if(hasReceiver)
-		{
-			result.append("receiver: ");
-			result.append(Renderers.RENDER_TYPE.render(receiverType));
-			result.append("  arguments: ");
-		}
 		if(argumentTypes.isEmpty())
 		{
 			result.append("()");

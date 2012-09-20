@@ -126,10 +126,6 @@ public class QuickFixes
 		actions.put(ABSTRACT_MEMBER_NOT_IMPLEMENTED, implementMethodsHandler);
 		actions.put(MANY_IMPL_MEMBER_NOT_IMPLEMENTED, implementMethodsHandler);
 
-		ChangeVariableMutabilityFix changeVariableMutabilityFix = new ChangeVariableMutabilityFix();
-		actions.put(VAL_WITH_SETTER, changeVariableMutabilityFix);
-		actions.put(FINAL_VAR_REASSIGNMENT, changeVariableMutabilityFix);
-
 		actions.put(UNNECESSARY_SAFE_CALL, ReplaceCallFix.toDotCallFromSafeCall());
 		actions.put(UNSAFE_CALL, ReplaceCallFix.toSafeCall());
 

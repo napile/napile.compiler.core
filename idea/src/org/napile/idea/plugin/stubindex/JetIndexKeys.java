@@ -18,7 +18,6 @@ package org.napile.idea.plugin.stubindex;
 
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileProperty;
 import com.intellij.psi.stubs.StubIndexKey;
 
 /**
@@ -27,19 +26,10 @@ import com.intellij.psi.stubs.StubIndexKey;
 public interface JetIndexKeys
 {
 	StubIndexKey<String, NapileClassLike> SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.class.shortName");
+
 	StubIndexKey<String, NapileClassLike> SUPERCLASS_NAME_KEY = StubIndexKey.createIndexKey("napile.class.superClassName");
+
 	StubIndexKey<String, NapileClassLike> FQN_KEY = StubIndexKey.createIndexKey("napile.fqn");
-
-	StubIndexKey<String, NapileNamedFunction> TOP_LEVEL_FUNCTION_SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.top.level.function.short.name");
-
-	StubIndexKey<String, NapileNamedFunction> TOP_LEVEL_EXTENSION_FUNCTION_SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.top.level.extension.function.short.name");
-
-	/**
-	 * Stores package top level function (both extension and non-extension) full qualified names.
-	 */
-	StubIndexKey<String, NapileNamedFunction> TOP_LEVEL_FUNCTIONS_FQN_NAME_KEY = StubIndexKey.createIndexKey("napile.top.level.functions.fqn.name");
-
-	StubIndexKey<String, NapileProperty> TOP_LEVEL_PROPERTY_FQN_NAME_KEY = StubIndexKey.createIndexKey("napile.top.level.property.fqn.name");
 
 	StubIndexKey<String, NapileNamedFunction> FUNCTIONS_SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.functions.short.name");
 }

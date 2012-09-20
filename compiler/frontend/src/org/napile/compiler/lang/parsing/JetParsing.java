@@ -759,38 +759,16 @@ public class JetParsing extends AbstractJetParsing
 	IElementType parseProperty(boolean local)
 	{
 		if(at(JetTokens.VAR_KEYWORD))
-		{
-			advance(); // VAL_KEYWORD or VAR_KEYWORD
-		}
+			advance(); // VAR_KEYWORD
 		else
-		{
 			errorAndAdvance("Expecting 'var'");
-		}
 
 		parseTypeParameterList();
 
-		TokenSet propertyNameFollow = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.LBRACE, JetTokens.RBRACE, JetTokens.SEMICOLON, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.CLASS_KEYWORD);
-
 		myBuilder.disableJoiningComplexTokens();
 
-		// TODO: extract constant
-		int lastDot = matchTokenStreamPredicate(new LastBefore(new AtSet(JetTokens.DOT, JetTokens.SAFE_ACCESS), new AbstractTokenStreamPredicate()
-		{
-			@Override
-			public boolean matching(boolean topLevel)
-			{
-				if(topLevel && (at(JetTokens.EQ) || at(JetTokens.COLON)))
-					return true;
-				if(topLevel && at(JetTokens.IDENTIFIER))
-				{
-					IElementType lookahead = lookahead(1);
-					return lookahead != JetTokens.LT && lookahead != JetTokens.DOT && lookahead != JetTokens.SAFE_ACCESS && lookahead != JetTokens.QUEST;
-				}
-				return false;
-			}
-		}));
-
-		parseReceiverType("property", propertyNameFollow, lastDot);
+		if(!parseIdeTemplate())
+			expect(JetTokens.IDENTIFIER, "Expecting identifier");
 
 		myBuilder.restoreJoiningComplexTokensState();
 
@@ -933,7 +911,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		assert _at(JetTokens.METH_KEYWORD);
 
-		advance(); // FUN_METH_KEYWORD
+		advance(); // METH_KEYWORD
 
 		// Recovery for the case of class A { fun| }
 		if(at(JetTokens.RBRACE))
@@ -942,10 +920,8 @@ public class JetParsing extends AbstractJetParsing
 			return METHOD;
 		}
 
-		myBuilder.disableJoiningComplexTokens();
-		int lastDot = findLastBefore(RECEIVER_TYPE_TERMINATORS, TokenSet.create(JetTokens.LPAR), true);
-		parseReceiverType("function", TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.EQ), lastDot);
-		myBuilder.restoreJoiningComplexTokensState();
+		if(!parseIdeTemplate())
+			expect(JetTokens.IDENTIFIER, "Expecting identifier");
 
 		TokenSet valueParametersFollow = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.LBRACE, JetTokens.SEMICOLON, JetTokens.RPAR);
 
@@ -1019,48 +995,6 @@ public class JetParsing extends AbstractJetParsing
 		return CONSTRUCTOR;
 	}
 
-
-	/*
-		 * :
-		 *   (type "." | attributes)?
-		 */
-	private void parseReceiverType(String title, TokenSet nameFollow, int lastDot)
-	{
-		if(lastDot == -1)
-		{ // There's no explicit receiver type specified
-			parseAnnotations();
-
-			if(!parseIdeTemplate())
-			{
-				expect(JetTokens.IDENTIFIER, "Expecting " + title + " name or receiver type", nameFollow);
-			}
-		}
-		else
-		{
-			if(parseIdeTemplate())
-			{
-				expect(JetTokens.DOT, "Expecting '.' after receiver template");
-			}
-			else
-			{
-				createTruncatedBuilder(lastDot).parseTypeRef();
-
-				if(atSet(RECEIVER_TYPE_TERMINATORS))
-				{
-					advance(); // expectation
-				}
-				else
-				{
-					errorWithRecovery("Expecting '.' before a " + title + " name", nameFollow);
-				}
-			}
-
-			if(!parseIdeTemplate())
-			{
-				expect(JetTokens.IDENTIFIER, "Expecting " + title + " name", nameFollow);
-			}
-		}
-	}
 
 	/*
 		 * functionBody

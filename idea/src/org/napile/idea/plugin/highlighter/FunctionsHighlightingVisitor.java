@@ -22,7 +22,6 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.psi.PsiElement;
 
@@ -89,10 +88,6 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 					if(fun.getContainingDeclaration() instanceof NamespaceDescriptor)
 					{
 						JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.NAMESPACE_FUNCTION_CALL);
-					}
-					if(fun.getReceiverParameter() != ReceiverDescriptor.NO_RECEIVER)
-					{
-						JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.EXTENSION_FUNCTION_CALL);
 					}
 				}
 			}

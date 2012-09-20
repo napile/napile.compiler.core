@@ -96,19 +96,6 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 		return null;
 	}
 
-	@Deprecated
-	public boolean isMutable()
-	{
-		PsiJetParameterStub stub = getStub();
-		if(stub != null)
-		{
-			return stub.isMutable();
-		}
-
-		NapileModifierList modifierList = getModifierList();
-		return modifierList == null || !modifierList.hasModifier(JetTokens.FINAL_KEYWORD);
-	}
-
 	public boolean isVarArg()
 	{
 		PsiJetParameterStub stub = getStub();

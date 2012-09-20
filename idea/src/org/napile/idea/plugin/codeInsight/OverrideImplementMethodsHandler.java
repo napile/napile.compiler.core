@@ -31,7 +31,6 @@ import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.resolve.DescriptorRenderer;
@@ -157,8 +156,6 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 
 		bodyBuilder.append("var ");
 
-		addReceiverParameter(descriptor, bodyBuilder);
-
 		bodyBuilder.append(descriptor.getName()).append(" : ").append(DescriptorRenderer.COMPACT_WITH_MODIFIERS.renderTypeWithShortNames(descriptor.getType()));
 		String initializer = defaultInitializer(descriptor.getType());
 		if(initializer != null)
@@ -223,8 +220,6 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 			bodyBuilder.append("> ");
 		}
 
-		addReceiverParameter(descriptor, bodyBuilder);
-
 		bodyBuilder.append(descriptor.getName()).append("(");
 		boolean isAbstractFun = descriptor.getModality() == Modality.ABSTRACT;
 		StringBuilder delegationBuilder = new StringBuilder();
@@ -277,15 +272,6 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 		bodyBuilder.append("{").append(returnsNotUnit && !isAbstractFun ? "return " : "").append(delegationBuilder.toString()).append("}");
 
 		return NapilePsiFactory.createFunction(project, bodyBuilder.toString());
-	}
-
-	private static void addReceiverParameter(CallableDescriptor descriptor, StringBuilder bodyBuilder)
-	{
-		ReceiverDescriptor receiverParameter = descriptor.getReceiverParameter();
-		if(receiverParameter.exists())
-		{
-			bodyBuilder.append(receiverParameter.getType()).append(".");
-		}
 	}
 
 	//TODO [VISTALL] get from @DefaultValue =

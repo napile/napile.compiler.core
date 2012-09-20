@@ -182,13 +182,13 @@ public class ErrorUtils
 	}
 
 	private static final JetType ERROR_PROPERTY_TYPE = createErrorType("<ERROR PROPERTY TYPE>");
-	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, null, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
+	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
 	private static final Set<VariableDescriptor> ERROR_PROPERTY_GROUP = Collections.singleton(ERROR_PROPERTY);
 
 	private static SimpleMethodDescriptor createErrorFunction(ErrorScope ownerScope)
 	{
 		ErrorSimpleMethodDescriptorImpl function = new ErrorSimpleMethodDescriptorImpl(ownerScope);
-		function.initialize(null, ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
+		function.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
 				Collections.<ParameterDescriptor>emptyList(), // TODO
 				createErrorType("<ERROR METHOD RETURN TYPE>"), Modality.OPEN, Visibility.PUBLIC
                 /*isInline = */);

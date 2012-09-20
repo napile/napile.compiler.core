@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.OverridingUtil;
-import org.napile.compiler.lang.resolve.scopes.receivers.ExtensionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
 import org.napile.compiler.lang.types.DescriptorSubstitutor;
@@ -44,7 +43,6 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 	protected List<TypeParameterDescriptor> typeParameters;
 	protected List<ParameterDescriptor> unsubstitutedValueParameters;
 	protected JetType unsubstitutedReturnType;
-	private ReceiverDescriptor receiverParameter;
 	protected ReceiverDescriptor expectedThisObject;
 
 	protected Modality modality;
@@ -73,14 +71,13 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		this.isNative = isNative;
 	}
 
-	public MethodDescriptorImpl initialize(@Nullable JetType receiverParameterType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
+	public MethodDescriptorImpl initialize(@NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
 	{
 		this.typeParameters = Lists.newArrayList(typeParameters);
 		this.unsubstitutedValueParameters = unsubstitutedValueParameters;
 		this.unsubstitutedReturnType = unsubstitutedReturnType;
 		this.modality = modality;
 		this.visibility = visibility;
-		this.receiverParameter = receiverParameterType == null ? NO_RECEIVER : new ExtensionReceiver(this, receiverParameterType);
 		this.expectedThisObject = expectedThisObject;
 
 		for(int i = 0; i < typeParameters.size(); ++i)
@@ -119,13 +116,6 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 			//throw new IllegalStateException("returnType already set");
 		}
 		this.unsubstitutedReturnType = unsubstitutedReturnType;
-	}
-
-	@NotNull
-	@Override
-	public ReceiverDescriptor getReceiverParameter()
-	{
-		return receiverParameter;
 	}
 
 	@NotNull
@@ -225,16 +215,6 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		List<TypeParameterDescriptor> substitutedTypeParameters = Lists.newArrayList();
 		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);
 
-		JetType substitutedReceiverParameterType = null;
-		if(receiverParameter.exists())
-		{
-			substitutedReceiverParameterType = substitutor.substitute(getReceiverParameter().getType());
-			if(substitutedReceiverParameterType == null)
-			{
-				return null;
-			}
-		}
-
 		ReceiverDescriptor substitutedExpectedThis = NO_RECEIVER;
 		if(expectedThisObject.exists())
 		{
@@ -258,7 +238,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 			return null;
 		}
 
-		substitutedDescriptor.initialize(substitutedReceiverParameterType, substitutedExpectedThis, substitutedTypeParameters, substitutedValueParameters, substitutedReturnType, newModality, newVisibility);
+		substitutedDescriptor.initialize(substitutedExpectedThis, substitutedTypeParameters, substitutedValueParameters, substitutedReturnType, newModality, newVisibility);
 		if(copyOverrides)
 		{
 			for(MethodDescriptor overriddenMethod : overriddenMethods)

@@ -18,7 +18,6 @@ package org.napile.compiler.lang.types.expressions;
 
 import static org.napile.compiler.lang.diagnostics.Errors.ASSIGNMENT_OPERATOR_SHOULD_RETURN_UNIT;
 import static org.napile.compiler.lang.diagnostics.Errors.ASSIGN_OPERATOR_AMBIGUITY;
-import static org.napile.compiler.lang.diagnostics.Errors.LOCAL_EXTENSION_PROPERTY;
 import static org.napile.compiler.lang.diagnostics.Errors.LOCAL_VARIABLE_WITH_GETTER;
 import static org.napile.compiler.lang.diagnostics.Errors.LOCAL_VARIABLE_WITH_SETTER;
 import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
@@ -108,12 +107,6 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	@Override
 	public JetTypeInfo visitProperty(NapileProperty property, ExpressionTypingContext context)
 	{
-		NapileTypeReference receiverTypeRef = property.getReceiverTypeRef();
-		if(receiverTypeRef != null)
-		{
-			context.trace.report(LOCAL_EXTENSION_PROPERTY.on(receiverTypeRef));
-		}
-
 		NapilePropertyAccessor getter = property.getGetter();
 		if(getter != null)
 		{

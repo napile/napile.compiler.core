@@ -87,11 +87,6 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 			else if(declaration instanceof NapileMethod)
 			{
 				NapileMethod function = (NapileMethod) declaration;
-				NapileTypeReference receiverTypeRef = function.getReceiverTypeRef();
-				if(receiverTypeRef != null)
-				{
-					text = receiverTypeRef.getText() + "." + text;
-				}
 				text += "(";
 				List<NapileElement> parameters = function.getValueParameters();
 				for(NapileElement parameter : parameters)

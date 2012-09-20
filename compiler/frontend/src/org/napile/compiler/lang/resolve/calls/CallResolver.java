@@ -451,8 +451,8 @@ public class CallResolver
 				resolvedCall.setResultingSubstitutor(constraintSystemWithoutExpectedTypeConstraint.getResultingSubstitutor());
 			}
 			List<JetType> argumentTypes = checkValueArgumentTypes(context, resolvedCall, context.trace).argumentTypes;
-			JetType receiverType = resolvedCall.getReceiverArgument().exists() ? resolvedCall.getReceiverArgument().getType() : null;
-			tracing.typeInferenceFailed(context.trace, InferenceErrorData.create(descriptor, constraintSystem, argumentTypes, receiverType, context.expectedType), constraintSystemWithoutExpectedTypeConstraint);
+
+			tracing.typeInferenceFailed(context.trace, InferenceErrorData.create(descriptor, constraintSystem, argumentTypes, context.expectedType), constraintSystemWithoutExpectedTypeConstraint);
 			resolvedCall.addStatus(ResolutionStatus.TYPE_INFERENCE_ERROR);
 			failed.add(resolvedCall);
 			return;
@@ -869,11 +869,7 @@ public class CallResolver
 		// Receiver
 		// Error is already reported if something is missing
 		ReceiverDescriptor receiverArgument = candidateCall.getReceiverArgument();
-		ReceiverDescriptor receiverParameter = candidateWithFreshVariables.getReceiverParameter();
-		if(receiverArgument.exists() && receiverParameter.exists())
-		{
-			constraintsSystem.addSupertypeConstraint(receiverParameter.getType(), receiverArgument.getType(), ConstraintPosition.RECEIVER_POSITION);
-		}
+
 
 		ConstraintSystem constraintSystemWithRightTypeParameters = constraintsSystem.replaceTypeVariables(new Function<TypeParameterDescriptor, TypeParameterDescriptor>()
 		{
@@ -898,8 +894,7 @@ public class CallResolver
 			ValueArgumentsCheckingResult checkingResult = checkAllValueArguments(context);
 			ResolutionStatus argumentsStatus = checkingResult.status;
 			List<JetType> argumentTypes = checkingResult.argumentTypes;
-			JetType receiverType = candidateCall.getReceiverArgument().exists() ? candidateCall.getReceiverArgument().getType() : null;
-			context.tracing.typeInferenceFailed(context.trace, InferenceErrorData.create(candidate, constraintSystemWithRightTypeParameters, argumentTypes, receiverType, context.expectedType), constraintSystemWithRightTypeParameters);
+			context.tracing.typeInferenceFailed(context.trace, InferenceErrorData.create(candidate, constraintSystemWithRightTypeParameters, argumentTypes, context.expectedType), constraintSystemWithRightTypeParameters);
 			return ResolutionStatus.TYPE_INFERENCE_ERROR.combine(argumentsStatus);
 		}
 	}
@@ -987,7 +982,7 @@ public class CallResolver
 		// both 'b' (receiver) and 'foo' (this object) might be nullable. In the first case we mark dot, in the second 'foo'.
 		// Class 'CallForImplicitInvoke' helps up to recognise this case, and parameter 'implicitInvokeCheck' helps us to distinguish whether we check receiver or this object.
 
-		resultStatus = resultStatus.combine(checkReceiver(context, candidateCall, candidateCall.getResultingDescriptor().getReceiverParameter(), candidateCall.getReceiverArgument(), candidateCall.getExplicitReceiverKind().isReceiver(), false));
+		//resultStatus = resultStatus.combine(checkReceiver(context, candidateCall, candidateCall.getResultingDescriptor().getReceiverParameter(), candidateCall.getReceiverArgument(), candidateCall.getExplicitReceiverKind().isReceiver(), false));
 
 		resultStatus = resultStatus.combine(checkReceiver(context, candidateCall, candidateCall.getResultingDescriptor().getExpectedThisObject(), candidateCall.getThisObject(), candidateCall.getExplicitReceiverKind().isThisObject(),
 				// for the invocation 'foo(1)' where foo is a variable of function type we should mark 'foo' if there is unsafe call error
@@ -1339,17 +1334,10 @@ public class CallResolver
 			TaskPrioritizer.splitLexicallyLocalDescriptors(extensionFunctionDescriptors, scope.getContainingDeclaration(), local, nonlocal);
 
 
-			if(findExtensionFunctions(local, receiver, parameterTypes, result))
-			{
-				return result;
-			}
-
 			Collection<ResolutionCandidate<MethodDescriptor>> functionDescriptors = ResolutionCandidate.convertCollection(receiver.getType().getMemberScope().getFunctions(name), false);
 			if(lookupExactSignature(functionDescriptors, parameterTypes, result))
-			{
 				return result;
-			}
-			findExtensionFunctions(nonlocal, receiver, parameterTypes, result);
+
 			return result;
 		}
 		else
@@ -1365,34 +1353,12 @@ public class CallResolver
 		for(ResolutionCandidate<MethodDescriptor> resolvedCall : candidates)
 		{
 			MethodDescriptor methodDescriptor = resolvedCall.getDescriptor();
-			if(methodDescriptor.getReceiverParameter().exists())
-				continue;
+
 			if(!methodDescriptor.getTypeParameters().isEmpty())
 				continue;
 			if(!checkValueParameters(methodDescriptor, parameterTypes))
 				continue;
 			result.add(resolvedCall);
-			found = true;
-		}
-		return found;
-	}
-
-	private boolean findExtensionFunctions(Collection<ResolutionCandidate<MethodDescriptor>> candidates, ReceiverDescriptor receiver, List<JetType> parameterTypes, List<ResolutionCandidate<MethodDescriptor>> result)
-	{
-		boolean found = false;
-		for(ResolutionCandidate<MethodDescriptor> candidate : candidates)
-		{
-			MethodDescriptor methodDescriptor = candidate.getDescriptor();
-			ReceiverDescriptor functionReceiver = methodDescriptor.getReceiverParameter();
-			if(!functionReceiver.exists())
-				continue;
-			if(!methodDescriptor.getTypeParameters().isEmpty())
-				continue;
-			if(!typeChecker.isSubtypeOf(receiver.getType(), functionReceiver.getType()))
-				continue;
-			if(!checkValueParameters(methodDescriptor, parameterTypes))
-				continue;
-			result.add(candidate);
 			found = true;
 		}
 		return found;

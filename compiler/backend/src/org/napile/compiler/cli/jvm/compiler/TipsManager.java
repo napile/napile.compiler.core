@@ -172,18 +172,7 @@ public final class TipsManager
 			@Override
 			public boolean apply(CallableDescriptor callableDescriptor)
 			{
-				if(!callableDescriptor.getReceiverParameter().exists())
-				{
-					return false;
-				}
-				for(ReceiverDescriptor receiverDescriptor : result)
-				{
-					if(ExpressionTypingUtils.checkIsExtensionCallable(receiverDescriptor, callableDescriptor))
-					{
-						return false;
-					}
-				}
-				return true;
+				return false;
 			}
 		}));
 

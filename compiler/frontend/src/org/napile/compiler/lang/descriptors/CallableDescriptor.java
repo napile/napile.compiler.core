@@ -31,9 +31,6 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 public interface CallableDescriptor extends DeclarationDescriptorWithVisibility, DeclarationDescriptorNonRoot
 {
 	@NotNull
-	ReceiverDescriptor getReceiverParameter();
-
-	@NotNull
 	ReceiverDescriptor getExpectedThisObject();
 
 	@NotNull

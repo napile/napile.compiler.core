@@ -16,7 +16,6 @@
 
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
-import org.jetbrains.annotations.Nullable;
 import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
@@ -116,28 +115,19 @@ public class CallReceiver extends StackValue
 				throw new UnsupportedOperationException();
 			}
 			else
-				genReceiver(v, thisObject, type, null, 0);
+				genReceiver(v, thisObject, type, 0);
 		}
 		else
 		{
 			if(receiverArgument.exists())
-				genReceiver(v, receiverArgument, type, descriptor.getReceiverParameter(), 0);
+				genReceiver(v, receiverArgument, type, 0);
 		}
 	}
 
-	private void genReceiver(InstructionAdapter v, ReceiverDescriptor receiverArgument, TypeNode type, @Nullable ReceiverDescriptor receiverParameter, int depth)
+	private void genReceiver(InstructionAdapter v, ReceiverDescriptor receiverArgument, TypeNode type, int depth)
 	{
 		if(receiver == StackValue.none())
-		{
-			if(receiverParameter != null)
-			{
-				TypeNode receiverType = TypeTransformer.toAsmType(receiverParameter.getType());
-				codegen.generateFromResolvedCall(receiverArgument, receiverType);
-				StackValue.onStack(receiverType).put(type, v);
-			}
-			else
-				codegen.generateFromResolvedCall(receiverArgument, type);
-		}
+			codegen.generateFromResolvedCall(receiverArgument, type);
 		else
 			receiver.moveToTopOfStack(type, v, depth);
 	}

@@ -29,7 +29,6 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverridingUtil;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
@@ -98,14 +97,6 @@ public class OverloadingConflictResolver
 			return true;
 		if(OverridingUtil.overrides(g, f))
 			return false;
-
-		ReceiverDescriptor receiverOfF = f.getReceiverParameter();
-		ReceiverDescriptor receiverOfG = g.getReceiverParameter();
-		if(f.getReceiverParameter().exists() && g.getReceiverParameter().exists())
-		{
-			if(!typeMoreSpecific(receiverOfF.getType(), receiverOfG.getType()))
-				return false;
-		}
 
 		List<ParameterDescriptor> fParams = f.getValueParameters();
 		List<ParameterDescriptor> gParams = g.getValueParameters();

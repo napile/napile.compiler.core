@@ -16,8 +16,6 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileProperty;
 import com.intellij.psi.stubs.NamedStub;
 
@@ -26,13 +24,6 @@ import com.intellij.psi.stubs.NamedStub;
  */
 public interface PsiJetPropertyStub extends NamedStub<NapileProperty>
 {
-	boolean isVar();
-
-	boolean isTopLevel();
-
-	@Nullable
-	FqName getTopFQName();
-
 	String getTypeText();
 
 	String getInferenceBodyText();

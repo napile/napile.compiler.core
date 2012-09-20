@@ -17,8 +17,6 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileNamedFunction;
 import com.intellij.psi.stubs.NamedStub;
 
@@ -27,21 +25,6 @@ import com.intellij.psi.stubs.NamedStub;
  */
 public interface PsiJetFunctionStub extends NamedStub<NapileNamedFunction>
 {
-	@Nullable
-	FqName getTopFQName();
-
-	/**
-	 * Is function defined in directly in package.
-	 *
-	 * @return
-	 */
-	boolean isTopLevel();
-
-	/**
-	 * Does function extends some type.
-	 */
-	boolean isExtension();
-
 	@NotNull
 	String[] getAnnotations();
 }

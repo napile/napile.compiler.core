@@ -20,10 +20,8 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileProperty;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetPropertyStubImpl;
@@ -81,19 +79,13 @@ public class JetPropertyElementType extends JetStubElementType<PsiJetPropertyStu
 
 		assert !psi.isLocal() : "Should not store local property";
 
-		return new PsiJetPropertyStubImpl(JetStubElementTypes.PROPERTY, parentStub, psi.getName(), psi.isVar(), psi.isTopLevel(), NapilePsiUtil.getFQName(psi), typeRef != null ? typeRef.getText() : null, expression != null ? expression.getText() : null);
+		return new PsiJetPropertyStubImpl(JetStubElementTypes.PROPERTY, parentStub, psi.getName(), typeRef != null ? typeRef.getText() : null, expression != null ? expression.getText() : null);
 	}
 
 	@Override
 	public void serialize(PsiJetPropertyStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
-		dataStream.writeBoolean(stub.isVar());
-		dataStream.writeBoolean(stub.isTopLevel());
-
-		FqName topFQName = stub.getTopFQName();
-		dataStream.writeName(topFQName != null ? topFQName.toString() : null);
-
 		dataStream.writeName(stub.getTypeText());
 		dataStream.writeName(stub.getInferenceBodyText());
 	}
@@ -102,16 +94,10 @@ public class JetPropertyElementType extends JetStubElementType<PsiJetPropertyStu
 	public PsiJetPropertyStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		boolean isVar = dataStream.readBoolean();
-		boolean isTopLevel = dataStream.readBoolean();
-
-		StringRef topFQNameStr = dataStream.readName();
-		FqName fqName = topFQNameStr != null ? new FqName(topFQNameStr.toString()) : null;
-
 		StringRef typeText = dataStream.readName();
 		StringRef inferenceBodyText = dataStream.readName();
 
-		return new PsiJetPropertyStubImpl(JetStubElementTypes.PROPERTY, parentStub, name, isVar, isTopLevel, fqName, typeText, inferenceBodyText);
+		return new PsiJetPropertyStubImpl(JetStubElementTypes.PROPERTY, parentStub, name, typeText, inferenceBodyText);
 	}
 
 	@Override
