@@ -19,7 +19,7 @@ public class Constant extends StackValue
 	@Override
 	public void put(TypeNode type, InstructionAdapter instructionAdapter)
 	{
-		ClassTypeNode classTypeNode = (ClassTypeNode) type.typeConstructorNode;
+		ClassTypeNode classTypeNode = (ClassTypeNode) getType().typeConstructorNode;
 
 		if(classTypeNode.className.equals(NapileLangPackage.INT))
 			instructionAdapter.newInt((Integer) value);

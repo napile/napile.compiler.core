@@ -28,8 +28,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.utils.ExceptionUtils;
 import org.jetbrains.jet.utils.Progress;
 import org.napile.asm.LangVersion;
+import org.napile.asm.io.xml.out.AsmXmlFileWriter;
 import org.napile.asm.tree.members.ClassNode;
-import org.napile.asm.writters.BytecodeToXmlFileWriter;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.analyzer.AnalyzerFacade;
 import org.napile.compiler.cli.common.CLIConfigurationKeys;
@@ -70,7 +70,7 @@ public class KotlinToJVMBytecodeCompiler
 		{
 			if(outputDir != null)
 			{
-				BytecodeToXmlFileWriter writer = new BytecodeToXmlFileWriter(outputDir);
+				AsmXmlFileWriter writer = new AsmXmlFileWriter(outputDir);
 				for(ClassNode classNode : generationState.getClassNodes().values())
 					writer.write(LangVersion.CURRENT, classNode);
 			}

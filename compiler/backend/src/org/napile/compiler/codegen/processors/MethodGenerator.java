@@ -28,6 +28,7 @@ import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.impl.InvokeSpecialInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
+import org.napile.asm.tree.members.bytecode.impl.PopInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
@@ -71,6 +72,7 @@ public class MethodGenerator
 					case CLASS:
 						constructorNode.instructions.add(new LoadInstruction(0));
 						constructorNode.instructions.add(new InvokeSpecialInstruction(new MethodRef(NapileLangPackage.ANY.child(ConstructorDescriptor.NAME), Collections.<TypeNode>emptyList(), TypeConstants.NULL)));
+						constructorNode.instructions.add(new PopInstruction());
 						break;
 					default:
 						throw new UnsupportedOperationException();

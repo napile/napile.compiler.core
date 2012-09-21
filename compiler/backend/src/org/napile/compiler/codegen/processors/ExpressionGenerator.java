@@ -388,6 +388,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			return iValue;
 		}
 
+		if (descriptor instanceof ClassDescriptor)
+			return StackValue.none();
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -433,6 +436,8 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			receiver.put(receiver.getType(), instructs);
 
 			invokeMethodWithArguments(method, expression, StackValue.none());
+
+			instructs.pop();// calling constructor - it return THIS, remove for now
 		}
 		else
 		{
