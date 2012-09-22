@@ -146,6 +146,22 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitThisExpression(NapileThisExpression expression, StackValue receiver)
+	{
+		final DeclarationDescriptor descriptor = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getInstanceReference());
+		if(descriptor instanceof ClassDescriptor)
+			return StackValue.thisOrOuter(this, (ClassDescriptor) descriptor, false);
+		else
+		{
+			/*if(descriptor instanceof CallableDescriptor)
+			{
+				return generateReceiver(descriptor);
+			}  */
+			throw new UnsupportedOperationException("neither this nor receiver");
+		}
+	}
+
+	@Override
 	public StackValue visitReturnExpression(NapileReturnExpression expression, StackValue receiver)
 	{
 		final NapileExpression returnedExpression = expression.getReturnedExpression();
@@ -388,7 +404,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			return iValue;
 		}
 
-		if (descriptor instanceof ClassDescriptor)
+		if(descriptor instanceof ClassDescriptor)
 			return StackValue.none();
 
 		throw new UnsupportedOperationException();
