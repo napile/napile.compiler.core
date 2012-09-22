@@ -37,15 +37,7 @@ import org.napile.compiler.codegen.processors.codegen.IntrinsicMethod;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -498,7 +490,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		//TODO [VISTALL] make it
 	}
 
-	public void invokeMethodWithArguments(CallableMethod callableMethod, NapileCallElement expression, StackValue receiver)
+	public void invokeMethodWithArguments(@NotNull CallableMethod callableMethod, NapileCallElement expression, StackValue receiver)
 	{
 		NapileExpression calleeExpression = expression.getCalleeExpression();
 		Call call = bindingTrace.safeGet(BindingContext.CALL, calleeExpression);

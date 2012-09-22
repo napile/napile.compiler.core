@@ -30,17 +30,25 @@ import org.napile.asm.tree.members.bytecode.impl.InvokeSpecialInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PopInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.codegen.CallTransformer;
+import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
+import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.psi.NapileCallElement;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
+import org.napile.compiler.lang.psi.NapileDelegatorToSuperCall;
 import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.TypeUtils;
 
 /**
@@ -49,7 +57,7 @@ import org.napile.compiler.lang.types.TypeUtils;
  */
 public class MethodGenerator
 {
-	public static ConstructorNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor)
+	public static ConstructorNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace bindingTrace)
 	{
 		ConstructorNode constructorNode = new ConstructorNode(ModifierGenerator.gen(constructorDescriptor));
 		for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
@@ -81,7 +89,25 @@ public class MethodGenerator
 		}
 		else
 		{
-			throw new UnsupportedOperationException();
+			for(NapileDelegationSpecifier specifier : delegationSpecifiers)
+			{
+				if(specifier instanceof NapileDelegatorToSuperCall)
+				{
+					ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, ((NapileDelegatorToSuperCall) specifier).getCalleeExpression());
+
+					ExpressionGenerator generator = new ExpressionGenerator(bindingTrace, constructorDescriptor);
+
+					CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) call.getResultingDescriptor());
+
+					generator.invokeMethodWithArguments(method, (NapileCallElement) specifier, StackValue.none());
+
+					constructorNode.instructions.add(new LoadInstruction(0));
+					constructorNode.instructions.addAll(generator.getInstructs().getInstructions());
+					constructorNode.instructions.add(new PopInstruction());
+				}
+				else
+					throw new UnsupportedOperationException(specifier.getClass().toString());
+			}
 		}
 
 		//TODO [VISTALL] super calls

@@ -154,7 +154,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		ConstructorNode constructorNode = MethodGenerator.gen(constructor, methodDescriptor);
+		ConstructorNode constructorNode = MethodGenerator.gen(constructor, methodDescriptor, bindingTrace);
 
 		classNode.members.add(constructorNode);
 
