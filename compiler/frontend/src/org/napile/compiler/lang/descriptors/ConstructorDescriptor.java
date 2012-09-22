@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 /**
@@ -32,6 +33,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 public class ConstructorDescriptor extends MethodDescriptorImpl
 {
 	public static final Name NAME = Name.identifier("this");
+	private JetScope parametersScope;
 
 	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
 	{
@@ -106,9 +108,14 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 		throw new UnsupportedOperationException("Constructors should not be copied for overriding");
 	}
 
-	@Override
-	public boolean isStatic()
+	public void setParametersScope(@NotNull JetScope parametersScope)
 	{
-		return false;
+		this.parametersScope = parametersScope;
+	}
+
+	@NotNull
+	public JetScope getParametersScope()
+	{
+		return parametersScope;
 	}
 }
