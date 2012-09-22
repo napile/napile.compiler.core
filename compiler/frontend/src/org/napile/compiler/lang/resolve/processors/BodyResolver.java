@@ -189,7 +189,7 @@ public class BodyResolver
 
 				assert constructorDescriptor != null;
 
-				resolveDelegationSpecifierList(napileConstructor, constructorDescriptor, classEntry.getValue().getScopeForSupertypeResolution());
+				resolveDelegationSpecifierList(napileConstructor, constructorDescriptor, constructorDescriptor.getParametersScope());
 			}
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())

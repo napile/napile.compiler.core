@@ -810,6 +810,7 @@ public class DescriptorResolver
 		trace.record(BindingContext.CONSTRUCTOR, constructor, constructorDescriptor);
 		WritableScopeImpl parameterScope = new WritableScopeImpl(scope, constructorDescriptor, new TraceBasedRedeclarationHandler(trace), "Scope with value parameters of a constructor");
 		parameterScope.changeLockLevel(WritableScope.LockLevel.BOTH);
+		constructorDescriptor.setParametersScope(parameterScope);
 
 		resolveDelegationSpecifiers(scope, constructor.getDelegationSpecifiers(), typeResolver, trace, true);
 
