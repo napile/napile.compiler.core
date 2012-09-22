@@ -112,6 +112,15 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	private JetType lookupNamespaceOrClassObject(NapileSimpleNameExpression expression, Name referencedName, ExpressionTypingContext context)
 	{
 		ClassifierDescriptor classifier = context.scope.getClassifier(referencedName);
+		if(classifier != null)
+		{
+			if(!context.namespacesAllowed)
+				context.trace.report(NO_CLASS_OBJECT.on(expression, classifier));
+
+			context.trace.record(REFERENCE_TARGET, expression, classifier);
+
+			return DataFlowUtils.checkType(classifier.getDefaultType(), expression, context);
+		}
 		JetType[] result = new JetType[1];
 		TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(context.trace);
 		if(furtherNameLookup(expression, referencedName, result, context.replaceBindingTrace(temporaryTrace)))
@@ -122,7 +131,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		// To report NO_CLASS_OBJECT when no namespace found
 		if(classifier != null)
 		{
-			//context.trace.report(FUNCTION_CALL_EXPECTED.on(expression, expression, false));
+			context.trace.report(NO_CLASS_OBJECT.on(expression, classifier));
 			context.trace.record(REFERENCE_TARGET, expression, classifier);
 			return classifier.getDefaultType();
 		}

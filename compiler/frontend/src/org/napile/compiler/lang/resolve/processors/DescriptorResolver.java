@@ -806,6 +806,7 @@ public class DescriptorResolver
 	{
 		NapileModifierList modifierList = constructor.getModifierList();
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, annotationResolver.resolveAnnotations(scope, modifierList, trace), false);
+		constructorDescriptor.setReturnType(classDescriptor.getDefaultType());
 		trace.record(BindingContext.CONSTRUCTOR, constructor, constructorDescriptor);
 		WritableScopeImpl parameterScope = new WritableScopeImpl(scope, constructorDescriptor, new TraceBasedRedeclarationHandler(trace), "Scope with value parameters of a constructor");
 		parameterScope.changeLockLevel(WritableScope.LockLevel.BOTH);
@@ -820,6 +821,7 @@ public class DescriptorResolver
 	{
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), true);
 		trace.record(BindingContext.CONSTRUCTOR, constructor, constructorDescriptor);
+		constructorDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL));
 
 		return constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
 	}

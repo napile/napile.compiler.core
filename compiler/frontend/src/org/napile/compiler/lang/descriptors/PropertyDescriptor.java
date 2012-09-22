@@ -76,7 +76,7 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 
 		this.typeParameters = Lists.newArrayList(typeParameters);
 
-		this.expectedThisObject = expectedThisObject;
+		this.expectedThisObject = isStatic ? ReceiverDescriptor.NO_RECEIVER : expectedThisObject;
 	}
 
 	public void initialize(@Nullable PropertyGetterDescriptor getter, @Nullable PropertySetterDescriptor setter)

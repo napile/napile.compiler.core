@@ -18,13 +18,14 @@ package org.napile.compiler.lang.descriptors;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.DescriptorWithParent;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
  * @author abreslav
  */
-public interface DeclarationDescriptor extends Annotated, Named
+public interface DeclarationDescriptor extends Annotated, Named, DescriptorWithParent
 {
 	/**
 	 * @return The descriptor that corresponds to the original declaration of this element.
@@ -35,6 +36,7 @@ public interface DeclarationDescriptor extends Annotated, Named
 	@NotNull
 	DeclarationDescriptor getOriginal();
 
+	@Override
 	@Nullable
 	DeclarationDescriptor getContainingDeclaration();
 

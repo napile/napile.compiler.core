@@ -337,10 +337,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			if(!parseLocalDeclaration())
 			{
-				PsiBuilder.Marker expression = mark();
+				//PsiBuilder.Marker expression = mark();
 				//myJetParsing.parseAnnotations();
-				parsePrefixExpression();
-				expression.done(ANNOTATED_EXPRESSION);
+				//parsePrefixExpression();
+				//expression.done(ANNOTATED_EXPRESSION);
 			}
 			else
 			{

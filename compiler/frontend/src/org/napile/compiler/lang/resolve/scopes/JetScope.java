@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.DescriptorWithParent;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -35,7 +36,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 /**
  * @author abreslav
  */
-public interface JetScope
+public interface JetScope extends DescriptorWithParent
 {
 	JetScope EMPTY = new JetScopeImpl()
 	{
@@ -77,6 +78,7 @@ public interface JetScope
 	@NotNull
 	Collection<MethodDescriptor> getFunctions(@NotNull Name name);
 
+	@Override
 	@NotNull
 	DeclarationDescriptor getContainingDeclaration();
 

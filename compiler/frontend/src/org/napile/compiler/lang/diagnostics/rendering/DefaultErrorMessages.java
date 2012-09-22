@@ -356,7 +356,6 @@ public class DefaultErrorMessages
 		MAP.put(OVERLOAD_RESOLUTION_AMBIGUITY, "Overload resolution ambiguity: {0}", AMBIGUOUS_CALLS);
 		MAP.put(NONE_APPLICABLE, "None of the following functions can be called with the arguments supplied: {0}", AMBIGUOUS_CALLS);
 		MAP.put(NO_VALUE_FOR_PARAMETER, "No value passed for parameter {0}", NAME);
-		MAP.put(MISSING_RECEIVER, "A receiver of type {0} is required", RENDER_TYPE);
 		MAP.put(NO_RECEIVER_ADMITTED, "No receiver can be passed to this function or property");
 
 		MAP.put(CREATING_AN_INSTANCE_OF_ABSTRACT_CLASS, "Cannot create an instance of an abstract class");
@@ -383,6 +382,8 @@ public class DefaultErrorMessages
 		MAP.put(PARAMETER_NAME_CHANGED_ON_OVERRIDE, "The corresponding parameter in the supertype ''{0}'' is named ''{1}''. " + "This may cause problems when calling this function with named arguments.", NAME, NAME);
 
 		MAP.put(DIFFERENT_NAMES_FOR_THE_SAME_PARAMETER_IN_SUPERTYPES, "Names of the parameter #{1} conflict in the following members of supertypes: ''{0}''" + "This may cause problems when calling this function with named arguments.", commaSeparated(TO_STRING), TO_STRING);
+
+		MAP.put(NO_CLASS_OBJECT, "Please specify constructor invocation; cla!= ''{0}'' does not have a class object", NAME);
 
 		MAP.setImmutable();
 

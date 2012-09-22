@@ -26,8 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Visibilities;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -36,7 +34,6 @@ import org.napile.compiler.lang.psi.NapileSuperExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.autocasts.AutoCastServiceImpl;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -189,19 +186,14 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 
 	private static <D extends CallableDescriptor> void convertWithReceivers(Collection<? extends D> descriptors, Iterable<ReceiverDescriptor> thisObjects, Iterable<ReceiverDescriptor> receiverParameters, Collection<ResolutionCandidate<D>> result, boolean hasExplicitThisObject)
 	{
-
 		for(ReceiverDescriptor thisObject : thisObjects)
 		{
-			for(ReceiverDescriptor receiverParameter : receiverParameters)
+			for(D extension : descriptors)
 			{
-				for(D extension : descriptors)
-				{
-					ResolutionCandidate<D> candidate = ResolutionCandidate.create(extension);
-					candidate.setThisObject(thisObject);
-					candidate.setReceiverArgument(receiverParameter);
-					candidate.setExplicitReceiverKind(hasExplicitThisObject ? ExplicitReceiverKind.BOTH_RECEIVERS : ExplicitReceiverKind.THIS_OBJECT);
-					result.add(candidate);
-				}
+				ResolutionCandidate<D> candidate = ResolutionCandidate.create(extension);
+				candidate.setThisObject(candidate.getDescriptor().isStatic() ? NO_RECEIVER : thisObject);
+				candidate.setExplicitReceiverKind(hasExplicitThisObject ? ExplicitReceiverKind.BOTH_RECEIVERS : ExplicitReceiverKind.THIS_OBJECT);
+				result.add(candidate);
 			}
 		}
 	}
@@ -214,33 +206,10 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 			for(D descriptor : descriptors)
 			{
 				ResolutionCandidate<D> candidate = ResolutionCandidate.create(descriptor);
-				candidate.setReceiverArgument(receiverParameter);
 				candidate.setExplicitReceiverKind(receiverParameter.exists() ? ExplicitReceiverKind.RECEIVER_ARGUMENT : ExplicitReceiverKind.NO_EXPLICIT_RECEIVER);
 				if(setImpliedThis(scope, candidate))
 				{
 					result.add(candidate);
-				}
-			}
-		}
-		if(receiverParameters.size() == 1 && !receiverParameters.iterator().next().exists())
-		{
-			for(D descriptor : descriptors)
-			{
-				if(descriptor.getExpectedThisObject().exists())
-				{
-					DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
-					if(descriptor instanceof ConstructorDescriptor)
-					{
-						assert containingDeclaration != null;
-						containingDeclaration = containingDeclaration.getContainingDeclaration();
-					}
-					if(containingDeclaration instanceof ClassDescriptor && DescriptorUtils.isClassObject(containingDeclaration))
-					{
-						ResolutionCandidate<D> candidate = ResolutionCandidate.create(descriptor);
-						candidate.setThisObject(new ClassReceiver((ClassDescriptor) containingDeclaration));
-						candidate.setExplicitReceiverKind(ExplicitReceiverKind.NO_EXPLICIT_RECEIVER);
-						result.add(candidate);
-					}
 				}
 			}
 		}

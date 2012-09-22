@@ -54,7 +54,7 @@ public abstract class StackValue
 
 	public static StackValue receiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionGenerator codegen, @Nullable CallableMethod callableMethod)
 	{
-		if(resolvedCall.getThisObject().exists() || resolvedCall.getReceiverArgument().exists())
+		if(resolvedCall.getThisObject().exists())
 			return new CallReceiver(resolvedCall, receiver, codegen, callableMethod);
 
 		return receiver;

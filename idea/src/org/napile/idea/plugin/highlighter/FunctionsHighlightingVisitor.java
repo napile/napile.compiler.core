@@ -19,7 +19,6 @@ package org.napile.idea.plugin.highlighter;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -84,11 +83,9 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 				else if(calleeDescriptor instanceof MethodDescriptor)
 				{
 					MethodDescriptor fun = (MethodDescriptor) calleeDescriptor;
-					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.FUNCTION_CALL);
-					if(fun.getContainingDeclaration() instanceof NamespaceDescriptor)
-					{
-						JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.NAMESPACE_FUNCTION_CALL);
-					}
+					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.METHOD_CALL);
+					if(fun.isStatic())
+						JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.STATIC_METHOD_CALL);
 				}
 			}
 		}

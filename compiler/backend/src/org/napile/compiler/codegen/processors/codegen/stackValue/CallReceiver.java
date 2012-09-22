@@ -46,50 +46,18 @@ public class CallReceiver extends StackValue
 	private static TypeNode calcType(ResolvedCall<? extends CallableDescriptor> resolvedCall, ExpressionGenerator codegen, CallableMethod callableMethod)
 	{
 		ReceiverDescriptor thisObject = resolvedCall.getThisObject();
-		ReceiverDescriptor receiverArgument = resolvedCall.getReceiverArgument();
 
 		CallableDescriptor descriptor = resolvedCall.getResultingDescriptor();
 
 		if(thisObject.exists())
 		{
 			if(callableMethod != null)
-			{
-				if(receiverArgument.exists())
-				{
-					throw new UnsupportedOperationException();
-					//return callableMethod.getReceiverClass();
-				}
-				else
-					return TypeTransformer.toAsmType(((ClassDescriptor) descriptor.getContainingDeclaration()).getDefaultType());
-			}
+				return TypeTransformer.toAsmType(((ClassDescriptor) descriptor.getContainingDeclaration()).getDefaultType());
 			else
-			{
-				if(receiverArgument.exists())
-				{
-					throw new UnsupportedOperationException();
-					//return codegen.typeMapper.mapType(descriptor.getReceiverParameter().getType(), JetTypeMapperMode.VALUE);
-				}
-				else
-					return TypeTransformer.toAsmType(descriptor.getExpectedThisObject().getType());
-			}
+				return TypeTransformer.toAsmType(descriptor.getExpectedThisObject().getType());
 		}
 		else
-		{
-			if(receiverArgument.exists())
-			{
-				/*if(callableMethod != null)
-				{
-					return callableMethod.getReceiverClass();
-				}
-				else
-				{
-					return codegen.typeMapper.mapType(descriptor.getReceiverParameter().getType(), JetTypeMapperMode.VALUE);
-				}  */
-				throw new UnsupportedOperationException();
-			}
-			else
-				return TypeConstants.NULL;
-		}
+			return TypeConstants.NULL;
 	}
 
 	@Override
@@ -98,30 +66,8 @@ public class CallReceiver extends StackValue
 		CallableDescriptor descriptor = resolvedCall.getResultingDescriptor();
 
 		ReceiverDescriptor thisObject = resolvedCall.getThisObject();
-		ReceiverDescriptor receiverArgument = resolvedCall.getReceiverArgument();
 		if(thisObject.exists())
-		{
-			if(receiverArgument.exists())
-			{
-				/*if(callableMethod != null)
-				{
-					codegen.generateFromResolvedCall(thisObject, callableMethod.getOwner().getAsmType());
-				}
-				else
-				{
-					codegen.generateFromResolvedCall(thisObject, codegen.typeMapper.mapType(descriptor.getExpectedThisObject().getType(), JetTypeMapperMode.VALUE));
-				}
-				genReceiver(v, receiverArgument, type, descriptor.getReceiverParameter(), 1);    */
-				throw new UnsupportedOperationException();
-			}
-			else
-				genReceiver(v, thisObject, type, 0);
-		}
-		else
-		{
-			if(receiverArgument.exists())
-				genReceiver(v, receiverArgument, type, 0);
-		}
+			genReceiver(v, thisObject, type, 0);
 	}
 
 	private void genReceiver(InstructionAdapter v, ReceiverDescriptor receiverArgument, TypeNode type, int depth)

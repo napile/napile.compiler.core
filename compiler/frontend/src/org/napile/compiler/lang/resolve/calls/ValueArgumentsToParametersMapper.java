@@ -25,7 +25,6 @@ import static org.napile.compiler.lang.diagnostics.Errors.TOO_MANY_ARGUMENTS;
 import static org.napile.compiler.lang.diagnostics.Errors.VARARG_OUTSIDE_PARENTHESES;
 import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.ERROR;
 import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.OK;
-import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.STRONG_ERROR;
 import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.WEAK_ERROR;
 
 import java.util.List;
@@ -43,7 +42,6 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
@@ -243,22 +241,6 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 					tracing.noValueForParameter(temporaryTrace, valueParameter);
 					status = ERROR;
 				}
-			}
-		}
-
-
-		ReceiverDescriptor receiverArgument = candidateCall.getReceiverArgument();
-
-		if(receiverArgument.exists())
-		{
-			tracing.noReceiverAllowed(temporaryTrace);
-			if(call.getCalleeExpression() instanceof NapileSimpleNameExpression)
-			{
-				status = STRONG_ERROR;
-			}
-			else
-			{
-				status = ERROR;
 			}
 		}
 

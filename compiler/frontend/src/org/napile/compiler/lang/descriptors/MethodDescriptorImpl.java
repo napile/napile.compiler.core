@@ -78,7 +78,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		this.unsubstitutedReturnType = unsubstitutedReturnType;
 		this.modality = modality;
 		this.visibility = visibility;
-		this.expectedThisObject = expectedThisObject;
+		this.expectedThisObject = isStatic() ? NO_RECEIVER : expectedThisObject;
 
 		for(int i = 0; i < typeParameters.size(); ++i)
 		{
@@ -178,7 +178,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		return unsubstitutedValueParameters;
 	}
 
-	@NotNull
+	@Nullable
 	@Override
 	public JetType getReturnType()
 	{

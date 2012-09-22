@@ -44,12 +44,6 @@ public interface ResolvedCall<D extends CallableDescriptor>
 	D getResultingDescriptor();
 
 	/**
-	 * If the target was an extension function or property, this is the value for its receiver parameter
-	 */
-	@NotNull
-	ReceiverDescriptor getReceiverArgument();
-
-	/**
 	 * If the target was a member of a class, this is the object of that class to call it on
 	 */
 	@NotNull

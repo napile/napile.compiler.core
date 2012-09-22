@@ -156,8 +156,8 @@ public class JetColorSettingsPage implements ColorSettingsPage
 
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.it"), JetHighlightingColors.FUNCTION_LITERAL_DEFAULT_PARAMETER),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.fun"), JetHighlightingColors.FUNCTION_DECLARATION),
-				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.fun.call"), JetHighlightingColors.FUNCTION_CALL),
-				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.namespace.fun.call"), JetHighlightingColors.NAMESPACE_FUNCTION_CALL),
+				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.fun.call"), JetHighlightingColors.METHOD_CALL),
+				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.namespace.fun.call"), JetHighlightingColors.STATIC_METHOD_CALL),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.extension.fun.call"), JetHighlightingColors.EXTENSION_FUNCTION_CALL),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.constructor.call"), JetHighlightingColors.CONSTRUCTOR_CALL),
 

@@ -59,11 +59,6 @@ import org.napile.compiler.lang.types.JetType;
 		}
 
 		@Override
-		public void missingReceiver(@NotNull BindingTrace trace, @NotNull ReceiverDescriptor expectedReceiver)
-		{
-		}
-
-		@Override
 		public void wrongReceiverType(@NotNull BindingTrace trace, @NotNull ReceiverDescriptor receiverParameter, @NotNull ReceiverDescriptor receiverArgument)
 		{
 		}
@@ -141,8 +136,6 @@ import org.napile.compiler.lang.types.JetType;
 	void unresolvedReference(@NotNull BindingTrace trace);
 
 	<D extends CallableDescriptor> void recordAmbiguity(BindingTrace trace, Collection<ResolvedCallWithTrace<D>> candidates);
-
-	void missingReceiver(@NotNull BindingTrace trace, @NotNull ReceiverDescriptor expectedReceiver);
 
 	void wrongReceiverType(@NotNull BindingTrace trace, @NotNull ReceiverDescriptor receiverParameter, @NotNull ReceiverDescriptor receiverArgument);
 

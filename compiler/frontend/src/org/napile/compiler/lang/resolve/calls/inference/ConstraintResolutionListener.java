@@ -27,7 +27,7 @@ import org.napile.compiler.lang.types.JetType;
 public interface ConstraintResolutionListener
 {
 
-	public static final ConstraintResolutionListener DO_NOTHING = new ConstraintResolutionListener()
+	ConstraintResolutionListener DO_NOTHING = new ConstraintResolutionListener()
 	{
 		@Override
 		public void constraintsForUnknown(TypeParameterDescriptor typeParameterDescriptor, BoundsOwner typeValue)

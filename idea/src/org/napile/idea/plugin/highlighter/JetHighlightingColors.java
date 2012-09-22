@@ -102,9 +102,9 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey FUNCTION_DECLARATION = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_DECLARATION", CodeInsightColors.METHOD_DECLARATION_ATTRIBUTES.getDefaultAttributes());
 
-	public static final TextAttributesKey FUNCTION_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_CALL", CodeInsightColors.METHOD_CALL_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey METHOD_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_CALL", CodeInsightColors.METHOD_CALL_ATTRIBUTES.getDefaultAttributes());
 
-	public static final TextAttributesKey NAMESPACE_FUNCTION_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_NAMESPACE_FUNCTION_CALL", CodeInsightColors.STATIC_METHOD_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey STATIC_METHOD_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_NAMESPACE_FUNCTION_CALL", CodeInsightColors.STATIC_METHOD_ATTRIBUTES.getDefaultAttributes());
 
 	public static final TextAttributesKey EXTENSION_FUNCTION_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_EXTENSION_FUNCTION_CALL", new TextAttributes());
 

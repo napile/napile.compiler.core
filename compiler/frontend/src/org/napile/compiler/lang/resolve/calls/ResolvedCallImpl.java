@@ -66,7 +66,6 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 	private final D candidateDescriptor;
 	private D resultingDescriptor; // Probably substituted
 	private final ReceiverDescriptor thisObject; // receiver object of a method
-	private final ReceiverDescriptor receiverArgument; // receiver of an extension function
 	private final ExplicitReceiverKind explicitReceiverKind;
 	private final boolean isSafeCall;
 
@@ -83,7 +82,6 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 	{
 		this.candidateDescriptor = candidate.getDescriptor();
 		this.thisObject = candidate.getThisObject();
-		this.receiverArgument = candidate.getReceiverArgument();
 		this.explicitReceiverKind = candidate.getExplicitReceiverKind();
 		this.isSafeCall = candidate.isSafeCall();
 		this.trace = trace;
@@ -181,13 +179,6 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 	{
 		assert !autoCasts.containsKey(parameter);
 		autoCasts.put(parameter, target);
-	}
-
-	@Override
-	@NotNull
-	public ReceiverDescriptor getReceiverArgument()
-	{
-		return receiverArgument;
 	}
 
 	@Override

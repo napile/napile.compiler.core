@@ -184,11 +184,6 @@ public class DescriptorUtils
 		return getFQName(containingDeclaration).child(descriptor.getName());
 	}
 
-	public static boolean isTopLevelFunction(@NotNull SimpleMethodDescriptor functionDescriptor)
-	{
-		return functionDescriptor.getContainingDeclaration() instanceof NamespaceDescriptor;
-	}
-
 	@Nullable
 	public static <D extends DeclarationDescriptor> D getParentOfType(@Nullable DeclarationDescriptor descriptor, @NotNull Class<D> aClass)
 	{

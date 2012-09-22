@@ -20,7 +20,6 @@ import static org.napile.compiler.lang.diagnostics.Errors.AUTOCAST_IMPOSSIBLE;
 import static org.napile.compiler.lang.diagnostics.Errors.CALLEE_NOT_A_FUNCTION;
 import static org.napile.compiler.lang.diagnostics.Errors.NOT_A_CLASS;
 import static org.napile.compiler.lang.diagnostics.Errors.NO_CONSTRUCTOR;
-import static org.napile.compiler.lang.diagnostics.Errors.SUPER_IS_NOT_AN_EXPRESSION;
 import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
 import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
 import static org.napile.compiler.lang.resolve.BindingContext.NON_DEFAULT_EXPRESSION_DATA_FLOW;
@@ -45,6 +44,7 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.DescriptorWithParent;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -300,7 +300,6 @@ public class CallResolver
 						">"));
 				FunctionDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, ReceiverDescriptor.NO_RECEIVER, Modality.FINAL, Visibility.LOCAL2);
 				ResolutionCandidate<CallableDescriptor> resolutionCandidate = ResolutionCandidate.<CallableDescriptor>create(functionDescriptor, NapilePsiUtil.isSafeCall(context.call));
-				resolutionCandidate.setReceiverArgument(context.call.getExplicitReceiver());
 				resolutionCandidate.setExplicitReceiverKind(ExplicitReceiverKind.RECEIVER_ARGUMENT);
 
 				// strictly speaking, this is a hack:
@@ -699,36 +698,35 @@ public class CallResolver
 			return;
 		}
 
-		boolean isStatic = context.scope.getContainingDeclaration() instanceof DeclarationDescriptorWithVisibility && ((DeclarationDescriptorWithVisibility) context.scope.getContainingDeclaration()).isStatic();
+		boolean isStatic = isParentStatic(context.scope);
 		// static body
-		/*if(isStatic)
+		if(isStatic)
 		{
-			ReceiverDescriptor thisRef = candidateCall.getThisObject();
-			loop:
+			boolean isValid = false;
+			if(candidateCall.getThisObject() != ReceiverDescriptor.NO_RECEIVER)
 			{
-				if(thisRef instanceof ExpressionReceiver)
-				{
-					// fix for
-					//
-					// var myVar = 1
-					// static meth test()
-					// {
-					//    myVar = 1   // fail
-					//    this.myVar = 1  // fail
-					// }
+				isValid = true;
 
-					if(!(((ExpressionReceiver) thisRef).getExpression() instanceof NapileThisExpression))
-						break loop;
-				}
-
-				if(!candidate.isStatic())
+				if(candidateCall.getThisObject() instanceof ExpressionReceiver)
 				{
-					candidateCall.addStatus(ResolutionStatus.OTHER_ERROR);
-					context.tracing.instanceCallFromStatic(context.trace, candidate);
-					return;
+					NapileExpression expression = ((ExpressionReceiver) candidateCall.getThisObject()).getExpression();
+
+					if(expression instanceof NapileReferenceExpression)
+					{
+						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpression)expression);
+
+						isValid = !isParentStatic(ref);
+					}
 				}
 			}
-		}      */
+
+			if(isValid)
+			{
+				candidateCall.addStatus(ResolutionStatus.OTHER_ERROR);
+				context.tracing.instanceCallFromStatic(context.trace, candidate);
+				return;
+			}
+		}
 
 		if(!Visibilities.isVisible(candidate, context.scope.getContainingDeclaration()))
 		{
@@ -804,17 +802,13 @@ public class CallResolver
 
 		task.performAdvancedChecks(candidate, context.trace, context.tracing);
 
-		// 'super' cannot be passed as an argument, for receiver arguments expression typer does not track this
-		// See TaskPrioritizer for more
-		NapileSuperExpression superExpression = TaskPrioritizer.getReceiverSuper(candidateCall.getReceiverArgument());
-		if(superExpression != null)
-		{
-			context.trace.report(SUPER_IS_NOT_AN_EXPRESSION.on(superExpression, superExpression.getText()));
-			candidateCall.addStatus(ResolutionStatus.OTHER_ERROR);
-		}
-
-		recordAutoCastIfNecessary(candidateCall.getReceiverArgument(), candidateCall.getTrace());
 		recordAutoCastIfNecessary(candidateCall.getThisObject(), candidateCall.getTrace());
+	}
+
+	private static boolean isParentStatic(@Nullable DescriptorWithParent me)
+	{
+		DeclarationDescriptor parent = me == null ? null : me.getContainingDeclaration();
+		return parent instanceof DeclarationDescriptorWithVisibility && ((DeclarationDescriptorWithVisibility) parent).isStatic();
 	}
 
 	private <D extends CallableDescriptor, F extends D> ResolutionStatus inferTypeArguments(CallResolutionContext<D, F> context)
@@ -868,8 +862,6 @@ public class CallResolver
 
 		// Receiver
 		// Error is already reported if something is missing
-		ReceiverDescriptor receiverArgument = candidateCall.getReceiverArgument();
-
 
 		ConstraintSystem constraintSystemWithRightTypeParameters = constraintsSystem.replaceTypeVariables(new Function<TypeParameterDescriptor, TypeParameterDescriptor>()
 		{

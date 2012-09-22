@@ -30,10 +30,8 @@ import org.napile.compiler.lang.psi.NapileTypeArgumentList;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileValueArgumentList;
 import org.napile.compiler.lang.psi.ValueArgument;
-import org.napile.compiler.lang.resolve.ChainedTemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import com.google.common.collect.Lists;
 
 /**
  * CallTransformer treats specially 'variable as function' call case, other cases keeps unchanged (base realization).
@@ -93,32 +91,11 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 
 			assert candidate.getDescriptor() instanceof VariableDescriptor;
 
-			boolean hasReceiver = candidate.getReceiverArgument().exists();
 			Call variableCall = stripCallArguments(task);
-			if(!hasReceiver)
-			{
-				CallResolutionContext<CallableDescriptor, MethodDescriptor> context = CallResolutionContext.create(ResolvedCallImpl.create(candidate, candidateTrace), task, candidateTrace, task.tracing, variableCall);
-				return Collections.singleton(context);
-			}
-			Call variableCallWithoutReceiver = stripReceiver(variableCall);
-			CallResolutionContext<CallableDescriptor, MethodDescriptor> contextWithReceiver = createContextWithChainedTrace(candidate, variableCall, candidateTrace, task);
-
-			ResolutionCandidate<CallableDescriptor> candidateWithoutReceiver = ResolutionCandidate.create(candidate.getDescriptor(), candidate.getThisObject(), ReceiverDescriptor.NO_RECEIVER, ExplicitReceiverKind.NO_EXPLICIT_RECEIVER, false);
-
-			CallResolutionContext<CallableDescriptor, MethodDescriptor> contextWithoutReceiver = createContextWithChainedTrace(candidateWithoutReceiver, variableCallWithoutReceiver, candidateTrace, task);
-
-			contextWithoutReceiver.receiverForVariableAsFunctionSecondCall = variableCall.getExplicitReceiver();
-
-			return Lists.newArrayList(contextWithReceiver, contextWithoutReceiver);
+			CallResolutionContext<CallableDescriptor, MethodDescriptor> context = CallResolutionContext.create(ResolvedCallImpl.create(candidate, candidateTrace), task, candidateTrace, task.tracing, variableCall);
+			return Collections.singleton(context);
 		}
 
-		private CallResolutionContext<CallableDescriptor, MethodDescriptor> createContextWithChainedTrace(ResolutionCandidate<CallableDescriptor> candidate, Call call, TemporaryBindingTrace temporaryTrace, ResolutionTask<CallableDescriptor, MethodDescriptor> task)
-		{
-
-			ChainedTemporaryBindingTrace chainedTrace = ChainedTemporaryBindingTrace.create(temporaryTrace);
-			ResolvedCallImpl<CallableDescriptor> resolvedCall = ResolvedCallImpl.create(candidate, chainedTrace);
-			return CallResolutionContext.create(resolvedCall, task, chainedTrace, task.tracing, call);
-		}
 
 		private Call stripCallArguments(@NotNull ResolutionTask<CallableDescriptor, MethodDescriptor> task)
 		{

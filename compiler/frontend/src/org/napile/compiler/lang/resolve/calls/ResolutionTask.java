@@ -172,12 +172,6 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		}
 
 		@Override
-		public void missingReceiver(@NotNull BindingTrace trace, @NotNull ReceiverDescriptor expectedReceiver)
-		{
-			trace.report(MISSING_RECEIVER.on(reference, expectedReceiver.getType()));
-		}
-
-		@Override
 		public void wrongReceiverType(@NotNull BindingTrace trace, @NotNull ReceiverDescriptor receiverParameter, @NotNull ReceiverDescriptor receiverArgument)
 		{
 			if(receiverArgument instanceof ExpressionReceiver)
@@ -286,7 +280,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		@Override
 		public void instanceCallFromStatic(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
 		{
-			//TODO [VISTALL] invalid trace.report(INSTANCE_CALL_FROM_STATIC_CONTEXT.on(call.getCallElement()));
+			trace.report(INSTANCE_CALL_FROM_STATIC_CONTEXT.on(call.getCallElement()));
 		}
 
 		@Override

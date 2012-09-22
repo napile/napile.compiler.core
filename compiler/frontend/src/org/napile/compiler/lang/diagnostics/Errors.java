@@ -289,8 +289,8 @@ public interface Errors
 	AmbiguousDescriptorDiagnosticFactory OVERLOAD_RESOLUTION_AMBIGUITY = new AmbiguousDescriptorDiagnosticFactory();
 	AmbiguousDescriptorDiagnosticFactory NONE_APPLICABLE = new AmbiguousDescriptorDiagnosticFactory();
 	DiagnosticFactory1<PsiElement, ParameterDescriptor> NO_VALUE_FOR_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
-	DiagnosticFactory1<NapileReferenceExpression, JetType> MISSING_RECEIVER = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReferenceExpression> NO_RECEIVER_ADMITTED = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory1<NapileSimpleNameExpression, ClassifierDescriptor> NO_CLASS_OBJECT = DiagnosticFactory1.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<PsiElement> CREATING_AN_INSTANCE_OF_ABSTRACT_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR);
 

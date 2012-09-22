@@ -173,7 +173,7 @@ public class JetFunctionInsertHandler implements InsertHandler<LookupElement>
 						if(PsiTreeUtil.getParentOfType(element, NapileQualifiedExpression.class) != null)
 							return;
 
-						if(DescriptorUtils.isTopLevelFunction(functionDescriptor))
+						if(functionDescriptor.isStatic())
 						{
 							ApplicationManager.getApplication().runWriteAction(new Runnable()
 							{

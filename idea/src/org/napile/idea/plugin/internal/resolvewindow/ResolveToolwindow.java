@@ -303,12 +303,10 @@ public class ResolveToolwindow extends JPanel implements Disposable
 	{
 
 		CallableDescriptor resultingDescriptor = resolvedCall.getResultingDescriptor();
-		ReceiverDescriptor receiverArgument = resolvedCall.getReceiverArgument();
 		ReceiverDescriptor thisObject = resolvedCall.getThisObject();
 		Map<TypeParameterDescriptor, JetType> typeArguments = resolvedCall.getTypeArguments();
 		Map<ParameterDescriptor, ResolvedValueArgument> valueArguments = resolvedCall.getValueArguments();
 
-		renderReceiver(receiverArgument, thisObject, builder);
 		builder.append(resultingDescriptor.getName());
 		renderTypeArguments(typeArguments, builder);
 
@@ -329,7 +327,6 @@ public class ResolveToolwindow extends JPanel implements Disposable
 			builder.append("Result: \n").append(resultingDescriptor).append("\n");
 		}
 
-		builder.append("Receiver: \n").append(receiverArgument).append("\n");
 		builder.append("This object: \n").append(thisObject).append("\n");
 		builder.append("Type args: \n").append(typeArguments).append("\n");
 		builder.append("Value args: \n").append(valueArguments).append("\n");

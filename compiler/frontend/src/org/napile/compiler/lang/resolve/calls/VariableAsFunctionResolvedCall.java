@@ -68,13 +68,6 @@ public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<Met
 
 	@NotNull
 	@Override
-	public ReceiverDescriptor getReceiverArgument()
-	{
-		return variableCall.getReceiverArgument();
-	}
-
-	@NotNull
-	@Override
 	public ReceiverDescriptor getThisObject()
 	{
 		return variableCall.getThisObject();
