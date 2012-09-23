@@ -190,7 +190,7 @@ public class DeclarationsChecker
 		assert parent != null;
 
 		//TODO [VISTALL] rework for this(a : Int) : this()
-		Map<NapileTypeReference, JetType> classSpecifiers = makeTypeList(parent.getDelegationSpecifiers());
+		Map<NapileTypeReference, JetType> classSpecifiers = makeTypeList2(parent.getExtendTypeList());
 		Map<NapileTypeReference, JetType> constructorSpecifiers = makeTypeList(constructor.getDelegationSpecifiers());
 
 		for(Map.Entry<NapileTypeReference, JetType> classEntry : classSpecifiers.entrySet())
@@ -204,6 +204,19 @@ public class DeclarationsChecker
 			if(!classSpecifiers.values().contains(constructorEntry.getValue()))
 				trace.report(Errors.INVALID_SUPER_CALL.on(constructorEntry.getKey()));
 		}
+	}
+
+	@NotNull
+	private Map<NapileTypeReference, JetType> makeTypeList2(@NotNull List<NapileTypeReference> list)
+	{
+		Map<NapileTypeReference, JetType> types = new LinkedHashMap<NapileTypeReference, JetType>(list.size());
+		for(NapileTypeReference typeReference : list)
+		{
+			JetType type = trace.get(BindingContext.TYPE, typeReference);
+			types.put(typeReference, type);
+		}
+
+		return types;
 	}
 
 	@NotNull

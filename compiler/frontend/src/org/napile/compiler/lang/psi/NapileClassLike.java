@@ -16,6 +16,9 @@
 
 package org.napile.compiler.lang.psi;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
@@ -24,7 +27,7 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 /**
  * @author max
  */
-public interface NapileClassLike extends PsiNameIdentifierOwner, NapileDeclarationContainer<NapileDeclaration>, NapileModifierListOwner, NapileDelegationSpecifierListOwner
+public interface NapileClassLike extends PsiNameIdentifierOwner, NapileDeclarationContainer<NapileDeclaration>, NapileModifierListOwner, NapileElement
 {
 	NapileClassLike[] EMPTY_ARRAY = new NapileClassLike[0];
 
@@ -35,6 +38,11 @@ public interface NapileClassLike extends PsiNameIdentifierOwner, NapileDeclarati
 
 	@Nullable
 	NapileObjectDeclarationName getNameAsDeclaration();
+
+	NapileElement getExtendTypeListElement();
+
+	@NotNull
+	List<NapileTypeReference> getExtendTypeList();
 
 	@Nullable
 	NapileClassBody getBody();

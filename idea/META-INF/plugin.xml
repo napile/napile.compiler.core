@@ -147,6 +147,7 @@
 		<exportable serviceInterface="org.napile.idea.plugin.editor.JetEditorOptions"/>
 		<editorAppearanceConfigurable instance="org.napile.idea.plugin.editor.JetSettingEditorConfigurable"/>
 
+		<configurationType implementation="org.napile.idea.plugin.run.NapileConfigurationType"/>
 		<intentionAction>
 			<className>org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction</className>
 			<category>Napile</category>

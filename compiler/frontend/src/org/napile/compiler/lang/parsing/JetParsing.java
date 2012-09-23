@@ -421,15 +421,13 @@ public class JetParsing extends AbstractJetParsing
 		advance(); // CLASS_KEYWORD
 
 		if(!parseIdeTemplate())
-		{
 			expect(JetTokens.IDENTIFIER, "Class name expected", CLASS_NAME_RECOVERY_SET);
-		}
 		parseTypeParameterList();
 
 		if(at(JetTokens.COLON))
 		{
 			advance(); // COLON
-			parseDelegationSpecifierList();
+			parseTypeExtendList();
 		}
 
 		if(at(JetTokens.LBRACE))
@@ -1063,6 +1061,26 @@ public class JetParsing extends AbstractJetParsing
 		list.done(DELEGATION_SPECIFIER_LIST);
 	}
 
+	void parseTypeExtendList()
+	{
+		PsiBuilder.Marker list = mark();
+
+		while(true)
+		{
+			if(at(JetTokens.COMMA))
+			{
+				errorAndAdvance("Expecting a type");
+				continue;
+			}
+			parseTypeRef();
+			if(!at(JetTokens.COMMA))
+				break;
+			advance(); // COMMA
+		}
+
+		list.done(EXTEND_TYPE_LIST);
+	}
+
 	/*
 		 * attributes delegationSpecifier
 		 *
@@ -1072,9 +1090,6 @@ public class JetParsing extends AbstractJetParsing
 		 *   : explicitDelegation
 		 *   ;
 		 *
-		 * explicitDelegation
-		 *   : userType "by" element
-		 *   ;
 		 */
 	private void parseDelegationSpecifier()
 	{

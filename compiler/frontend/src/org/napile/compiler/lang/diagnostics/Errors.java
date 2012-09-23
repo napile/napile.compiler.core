@@ -245,7 +245,7 @@ public interface Errors
 	DiagnosticFactory1<NapileElement, JetType> CANNOT_CHECK_FOR_ERASED = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory2<NapileBinaryExpressionWithTypeRHS, JetType, JetType> UNCHECKED_CAST = DiagnosticFactory2.create(Severity.WARNING);
 
-	DiagnosticFactory3<NapileDelegationSpecifierList, TypeParameterDescriptor, ClassDescriptor, Collection<JetType>> INCONSISTENT_TYPE_PARAMETER_VALUES = DiagnosticFactory3.create(Severity.ERROR);
+	DiagnosticFactory3<NapileElement, TypeParameterDescriptor, ClassDescriptor, Collection<JetType>> INCONSISTENT_TYPE_PARAMETER_VALUES = DiagnosticFactory3.create(Severity.ERROR);
 
 	DiagnosticFactory3<NapileBinaryExpression, NapileSimpleNameExpression, JetType, JetType> EQUALITY_NOT_APPLICABLE = DiagnosticFactory3.create(Severity.ERROR);
 

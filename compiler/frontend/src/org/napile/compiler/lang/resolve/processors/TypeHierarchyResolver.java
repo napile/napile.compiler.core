@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.resolve.processors;
 
 import static org.napile.compiler.lang.diagnostics.Errors.CYCLIC_INHERITANCE_HIERARCHY;
-import static org.napile.compiler.lang.diagnostics.Errors.INCONSISTENT_TYPE_PARAMETER_VALUES;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +32,7 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -360,21 +360,30 @@ public class TypeHierarchyResolver
 			PsiElement psiElement = BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
 
 			PsiElement elementToMark = null;
-			if(psiElement instanceof NapileClassLike)
+			if(psiElement instanceof NapileClass)
 			{
-				NapileClassLike classOrObject = (NapileClassLike) psiElement;
-				for(NapileDelegationSpecifier delegationSpecifier : classOrObject.getDelegationSpecifiers())
+				NapileClass napileClass = (NapileClass) psiElement;
+				for(NapileTypeReference typeReference : napileClass.getExtendTypeList())
+				{
+					JetType supertype = trace.get(BindingContext.TYPE, typeReference);
+					if(supertype != null && supertype.getConstructor() == superclass.getTypeConstructor())
+						elementToMark = typeReference;
+				}
+			}
+			else if(psiElement instanceof NapileAnonymClass)
+			{
+				NapileAnonymClass anonymClass = (NapileAnonymClass) psiElement;
+				for(NapileDelegationSpecifier delegationSpecifier : anonymClass.getDelegationSpecifiers())
 				{
 					NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
 					if(typeReference == null)
 						continue;
 					JetType supertype = trace.get(BindingContext.TYPE, typeReference);
 					if(supertype != null && supertype.getConstructor() == superclass.getTypeConstructor())
-					{
 						elementToMark = typeReference;
-					}
 				}
 			}
+
 			if(elementToMark == null && psiElement instanceof PsiNameIdentifierOwner)
 			{
 				PsiNameIdentifierOwner namedElement = (PsiNameIdentifierOwner) psiElement;
@@ -424,10 +433,9 @@ public class TypeHierarchyResolver
 						DeclarationDescriptor containingDeclaration = typeParameterDescriptor.getContainingDeclaration();
 						assert containingDeclaration instanceof ClassDescriptor : containingDeclaration;
 						NapileClassLike psiElement = (NapileClassLike) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), mutableClassDescriptor);
-						NapileDelegationSpecifierList delegationSpecifierList = psiElement.getDelegationSpecifierList();
-						assert delegationSpecifierList != null;
-						//                        trace.getErrorHandler().genericError(delegationSpecifierList.getNode(), "Type parameter " + typeParameterDescriptor.getName() + " of " + containingDeclaration.getName() + " has inconsistent values: " + conflictingTypes);
-						trace.report(INCONSISTENT_TYPE_PARAMETER_VALUES.on(delegationSpecifierList, typeParameterDescriptor, (ClassDescriptor) containingDeclaration, conflictingTypes));
+						NapileElement extendTypeListElement = psiElement.getExtendTypeListElement();
+						assert extendTypeListElement != null;
+						trace.report(Errors.INCONSISTENT_TYPE_PARAMETER_VALUES.on(extendTypeListElement, typeParameterDescriptor, (ClassDescriptor) containingDeclaration, conflictingTypes));
 					}
 				}
 			}
@@ -440,17 +448,11 @@ public class TypeHierarchyResolver
 		{
 			NapileClass napileClass = entry.getKey();
 
-			for(NapileDelegationSpecifier delegationSpecifier : napileClass.getDelegationSpecifiers())
+			for(NapileTypeReference typeReference : napileClass.getExtendTypeList())
 			{
-				NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
-				if(typeReference != null)
-				{
-					JetType type = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
-					if(type != null)
-					{
+				JetType type = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
+				if(type != null)
 						descriptorResolver.checkBounds(typeReference, type, trace);
-					}
-				}
 			}
 
 			for(NapileTypeParameter jetTypeParameter : napileClass.getTypeParameters())

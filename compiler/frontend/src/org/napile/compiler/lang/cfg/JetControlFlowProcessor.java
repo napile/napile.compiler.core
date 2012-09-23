@@ -956,6 +956,8 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitAnonymClass(NapileAnonymClass objectDeclaration)
 		{
+			for(NapileDelegationSpecifier specifier : objectDeclaration.getDelegationSpecifiers())
+				value(specifier, inCondition);
 			visitClassOrObject(objectDeclaration);
 		}
 
@@ -975,10 +977,6 @@ public class JetControlFlowProcessor
 
 		private void visitClassOrObject(NapileClassLike classOrObject)
 		{
-			for(NapileDelegationSpecifier specifier : classOrObject.getDelegationSpecifiers())
-			{
-				value(specifier, inCondition);
-			}
 			List<NapileDeclaration> declarations = classOrObject.getDeclarations();
 			List<NapileProperty> properties = Lists.newArrayList();
 			for(NapileDeclaration declaration : declarations)
@@ -994,6 +992,9 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitClass(NapileClass klass)
 		{
+			for(NapileTypeReference typeReference : klass.getExtendTypeList())
+				value(typeReference, inCondition);
+
 			visitClassOrObject(klass);
 		}
 

@@ -173,7 +173,7 @@ public class TopDownAnalyzer
 	{
 		ModuleDescriptor moduleDescriptor = new ModuleDescriptor(Name.special("<dummy for object>"));
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.equalTo(object.getContainingFile()), false, true);
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.<NapileFile>equalTo(object.getContainingFile()), false, true);
 
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), moduleDescriptor);
 

@@ -126,18 +126,13 @@ public class DescriptorResolver
 			return Collections.emptyList();
 
 		List<JetType> result = Lists.newArrayList();
-		List<NapileDelegationSpecifier> delegationSpecifiers = jetClass.getDelegationSpecifiers();
+		List<NapileTypeReference> delegationSpecifiers = jetClass.getExtendTypeList();
 		if(delegationSpecifiers.isEmpty())
-		{
 			result.add(getDefaultSupertype(scope, jetClass, trace));
-		}
 		else
 		{
 			Collection<JetType> supertypes = resolveDelegationSpecifiers(scope, delegationSpecifiers, typeResolver, trace, false);
-			for(JetType supertype : supertypes)
-			{
-				result.add(supertype);
-			}
+			result.addAll(supertypes);
 		}
 		return result;
 	}
@@ -162,30 +157,22 @@ public class DescriptorResolver
 		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY, false);
 	}
 
-	public Collection<JetType> resolveDelegationSpecifiers(JetScope extensibleScope, List<NapileDelegationSpecifier> delegationSpecifiers, @NotNull TypeResolver resolver, BindingTrace trace, boolean checkBounds)
+	public Collection<JetType> resolveDelegationSpecifiers(JetScope extensibleScope, List<NapileTypeReference> delegationSpecifiers, @NotNull TypeResolver resolver, BindingTrace trace, boolean checkBounds)
 	{
 		if(delegationSpecifiers.isEmpty())
 		{
 			return Collections.emptyList();
 		}
 		Collection<JetType> result = Lists.newArrayList();
-		for(NapileDelegationSpecifier delegationSpecifier : delegationSpecifiers)
+		for(NapileTypeReference typeReference : delegationSpecifiers)
 		{
-			NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
-			if(typeReference != null)
+			result.add(resolver.resolveType(extensibleScope, typeReference, trace, checkBounds));
+			NapileTypeElement typeElement = typeReference.getTypeElement();
+			while(typeElement instanceof NapileNullableType)
 			{
-				result.add(resolver.resolveType(extensibleScope, typeReference, trace, checkBounds));
-				NapileTypeElement typeElement = typeReference.getTypeElement();
-				while(typeElement instanceof NapileNullableType)
-				{
-					NapileNullableType nullableType = (NapileNullableType) typeElement;
-					trace.report(NULLABLE_SUPERTYPE.on(nullableType));
-					typeElement = nullableType.getInnerType();
-				}
-			}
-			else
-			{
-				result.add(ErrorUtils.createErrorType("No type reference"));
+				NapileNullableType nullableType = (NapileNullableType) typeElement;
+				trace.report(NULLABLE_SUPERTYPE.on(nullableType));
+				typeElement = nullableType.getInnerType();
 			}
 		}
 		return result;
@@ -812,7 +799,7 @@ public class DescriptorResolver
 		parameterScope.changeLockLevel(WritableScope.LockLevel.BOTH);
 		constructorDescriptor.setParametersScope(parameterScope);
 
-		resolveDelegationSpecifiers(scope, constructor.getDelegationSpecifiers(), typeResolver, trace, true);
+		resolveDelegationSpecifiers(scope, constructor.getSuperCallTypeList(), typeResolver, trace, true);
 
 		return constructorDescriptor.initialize(classDescriptor.getTypeConstructor().getParameters(), resolveValueParameters(constructorDescriptor, parameterScope, constructor.getValueParameters(), trace), resolveVisibilityFromModifiers(modifierList));
 	}

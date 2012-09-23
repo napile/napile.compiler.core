@@ -68,6 +68,19 @@ public class NapileEnumEntry extends NapileNamedDeclarationStub<NapilePsiEnumEnt
 	}
 
 	@Override
+	public NapileElement getExtendTypeListElement()
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public List<NapileTypeReference> getExtendTypeList()
+	{
+		return Collections.emptyList();
+	}
+
+	@Override
 	public NapileClassBody getBody()
 	{
 		return (NapileClassBody) findChildByType(NapileNodeTypes.CLASS_BODY);
@@ -82,20 +95,6 @@ public class NapileEnumEntry extends NapileNamedDeclarationStub<NapilePsiEnumEnt
 			return Collections.emptyList();
 
 		return body.getDeclarations();
-	}
-
-	@Nullable
-	@Override
-	public NapileDelegationSpecifierList getDelegationSpecifierList()
-	{
-		return null;
-	}
-
-	@NotNull
-	@Override
-	public List<NapileDelegationSpecifier> getDelegationSpecifiers()
-	{
-		return Collections.emptyList();
 	}
 
 	@Nullable

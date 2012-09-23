@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.psi;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +82,20 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 	{
 		NapileDelegationSpecifierList list = getDelegationSpecifierList();
 		return list != null ? list.getDelegationSpecifiers() : Collections.<NapileDelegationSpecifier>emptyList();
+	}
+
+	public List<NapileTypeReference> getSuperCallTypeList()
+	{
+		List<NapileDelegationSpecifier> specifiers = getDelegationSpecifiers();
+		List<NapileTypeReference> list = new ArrayList<NapileTypeReference>(specifiers.size());
+		for(NapileDelegationSpecifier s : specifiers)
+		{
+			if(s instanceof NapileDelegatorToSuperCall)
+				list.add(s.getTypeReference());
+			else
+				throw new UnsupportedOperationException(s.getClass().getName());
+		}
+		return list;
 	}
 
 	@Override

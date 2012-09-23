@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.psi;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +35,7 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author abreslav
  */
-public class NapileAnonymClass extends NapileElementImpl implements NapileClassLike, NapileExpression, NapileNamedDeclaration
+public class NapileAnonymClass extends NapileElementImpl implements NapileClassLike, NapileExpression, NapileNamedDeclaration, NapileDelegationSpecifierListOwner
 {
 	private static final FqName FQ_NAME = new FqName("@anonym");
 
@@ -72,6 +73,28 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 	public NapileObjectDeclarationName getNameAsDeclaration()
 	{
 		return null;
+	}
+
+	@Override
+	public NapileElement getExtendTypeListElement()
+	{
+		return getDelegationSpecifierList();
+	}
+
+	@NotNull
+	@Override
+	public List<NapileTypeReference> getExtendTypeList()
+	{
+		List<NapileDelegationSpecifier> specifiers = getDelegationSpecifiers();
+		List<NapileTypeReference> list = new ArrayList<NapileTypeReference>(specifiers.size());
+		for(NapileDelegationSpecifier s : specifiers)
+		{
+			if(s instanceof NapileDelegatorToSuperCall)
+				list.add(s.getTypeReference());
+			else
+				throw new UnsupportedOperationException(s.getClass().getName());
+		}
+		return list;
 	}
 
 	@Override

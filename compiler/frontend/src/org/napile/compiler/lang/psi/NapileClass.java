@@ -111,19 +111,12 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 		return body.getStaticConstructors();
 	}
 
-	@Override
-	@Nullable
-	public NapileDelegationSpecifierList getDelegationSpecifierList()
-	{
-		return (NapileDelegationSpecifierList) findChildByType(NapileNodeTypes.DELEGATION_SPECIFIER_LIST);
-	}
-
-	@Override
 	@NotNull
-	public List<NapileDelegationSpecifier> getDelegationSpecifiers()
+	@Override
+	public List<NapileTypeReference> getExtendTypeList()
 	{
-		NapileDelegationSpecifierList list = getDelegationSpecifierList();
-		return list != null ? list.getDelegationSpecifiers() : Collections.<NapileDelegationSpecifier>emptyList();
+		NapileExtendTypeList ex = (NapileExtendTypeList)findChildByType(NapileNodeTypes.EXTEND_TYPE_LIST);
+		return ex == null ? Collections.<NapileTypeReference>emptyList() : ex.getTypeList();
 	}
 
 	@Override
@@ -136,6 +129,12 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 	public NapileObjectDeclarationName getNameAsDeclaration()
 	{
 		return (NapileObjectDeclarationName) findChildByType(NapileNodeTypes.OBJECT_DECLARATION_NAME);
+	}
+
+	@Override
+	public NapileElement getExtendTypeListElement()
+	{
+		return (NapileElement)findChildByType(NapileNodeTypes.EXTEND_TYPE_LIST);
 	}
 
 	@Override
@@ -214,16 +213,16 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 			return stub.getSuperNames();
 		}
 
-		final List<NapileDelegationSpecifier> specifiers = getDelegationSpecifiers();
-		if(specifiers.size() == 0)
+		final List<NapileTypeReference> types = getExtendTypeList();
+		if(types.size() == 0)
 			return Collections.emptyList();
 		List<String> result = new ArrayList<String>();
-		for(NapileDelegationSpecifier specifier : specifiers)
+		for(NapileTypeReference specifier : types)
 		{
-			final NapileUserType superType = specifier.getTypeAsUserType();
-			if(superType != null)
+			final NapileTypeElement superType = specifier.getTypeElement();
+			if(superType instanceof NapileUserType)
 			{
-				final String referencedName = superType.getReferencedName();
+				final String referencedName = ((NapileUserType)superType).getReferencedName();
 				if(referencedName != null)
 				{
 					addSuperName(result, referencedName);
@@ -236,20 +235,17 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 	private void addSuperName(List<String> result, String referencedName)
 	{
 		result.add(referencedName);
-		if(getContainingFile() instanceof NapileFile)
+		final NapileImportDirective directive = getContainingFile().findImportByAlias(referencedName);
+		if(directive != null)
 		{
-			final NapileImportDirective directive = ((NapileFile) getContainingFile()).findImportByAlias(referencedName);
-			if(directive != null)
+			NapileExpression reference = directive.getImportedReference();
+			while(reference instanceof NapileDotQualifiedExpression)
 			{
-				NapileExpression reference = directive.getImportedReference();
-				while(reference instanceof NapileDotQualifiedExpression)
-				{
-					reference = ((NapileDotQualifiedExpression) reference).getSelectorExpression();
-				}
-				if(reference instanceof NapileSimpleNameExpression)
-				{
-					result.add(((NapileSimpleNameExpression) reference).getReferencedName());
-				}
+				reference = ((NapileDotQualifiedExpression) reference).getSelectorExpression();
+			}
+			if(reference instanceof NapileSimpleNameExpression)
+			{
+				result.add(((NapileSimpleNameExpression) reference).getReferencedName());
 			}
 		}
 	}

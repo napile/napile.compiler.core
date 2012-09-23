@@ -59,6 +59,7 @@ public interface NapileNodeTypes
 	NapileNodeType ANNOTATION_LIST = new NapileNodeType("ANNOTATION_LIST", NapileAnnotationList.class);
 	NapileNodeType ANNOTATION_ENTRY = new NapileNodeType("ANNOTATION_ENTRY", NapileAnnotationEntry.class);
 
+	NapileNodeType EXTEND_TYPE_LIST = new NapileNodeType("EXTEND_TYPE_LIST", NapileExtendTypeList.class);
 	NapileNodeType TYPE_ARGUMENT_LIST = new NapileNodeType("TYPE_ARGUMENT_LIST", NapileTypeArgumentList.class);
 	NapileNodeType VALUE_ARGUMENT_LIST = new NapileNodeType("VALUE_ARGUMENT_LIST", NapileValueArgumentList.class);
 	NapileNodeType VALUE_ARGUMENT = new NapileNodeType("VALUE_ARGUMENT", NapileValueArgument.class);

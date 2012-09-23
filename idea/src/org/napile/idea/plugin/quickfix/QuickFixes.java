@@ -116,7 +116,6 @@ public class QuickFixes
 		JetIntentionActionFactory unresolvedReferenceFactory = ImportClassAndFunFix.createFactory();
 		factories.put(UNRESOLVED_REFERENCE, unresolvedReferenceFactory);
 
-		factories.put(SUPERTYPE_NOT_INITIALIZED_DEFAULT, ChangeToConstructorInvocationFix.createFactory());
 		factories.put(FUNCTION_CALL_EXPECTED, ChangeToFunctionInvocationFix.createFactory());
 
 		factories.put(CANNOT_CHANGE_ACCESS_PRIVILEGE, ChangeVisibilityModifierFix.createFactory());
