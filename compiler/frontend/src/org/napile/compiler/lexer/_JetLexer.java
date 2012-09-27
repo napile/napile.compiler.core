@@ -611,9 +611,9 @@ class _JetLexer implements FlexLexer {
     private IElementType commentStateToTokenType(int state) {
         switch (state) {
             case BLOCK_COMMENT:
-                return JetTokens.BLOCK_COMMENT;
+                return NapileTokens.BLOCK_COMMENT;
             case DOC_COMMENT:
-                return JetTokens.DOC_COMMENT;
+                return NapileTokens.DOC_COMMENT;
             default:
                 throw new IllegalArgumentException("Unexpected state: " + state);
         }
@@ -868,192 +868,192 @@ class _JetLexer implements FlexLexer {
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
         case 3: 
-          { return JetTokens.IDENTIFIER;
+          { return NapileTokens.IDENTIFIER;
           }
         case 101: break;
         case 11: 
-          { pushState(STRING); return JetTokens.OPEN_QUOTE;
+          { pushState(STRING); return NapileTokens.OPEN_QUOTE;
           }
         case 102: break;
         case 75: 
-          { return JetTokens.FOR_KEYWORD ;
+          { return NapileTokens.FOR_KEYWORD ;
           }
         case 103: break;
         case 97: 
-          { return JetTokens.RETURN_KEYWORD ;
+          { return NapileTokens.RETURN_KEYWORD ;
           }
         case 104: break;
         case 84: 
-          { return JetTokens.NULL_KEYWORD ;
+          { return NapileTokens.NULL_KEYWORD ;
           }
         case 105: break;
         case 35: 
           { if (lBraceCount == 0) {
                                              popState();
-                                             return JetTokens.LONG_TEMPLATE_ENTRY_END;
+                                             return NapileTokens.LONG_TEMPLATE_ENTRY_END;
                                            }
                                            lBraceCount--;
-                                           return JetTokens.RBRACE;
+                                           return NapileTokens.RBRACE;
           }
         case 106: break;
         case 15: 
-          { return JetTokens.LT        ;
+          { return NapileTokens.LT        ;
           }
         case 107: break;
         case 52: 
-          { return JetTokens.DO_KEYWORD ;
+          { return NapileTokens.DO_KEYWORD ;
           }
         case 108: break;
         case 19: 
-          { return JetTokens.PLUS      ;
+          { return NapileTokens.PLUS      ;
           }
         case 109: break;
         case 57: 
-          { return JetTokens.PLUSEQ    ;
+          { return NapileTokens.PLUSEQ    ;
           }
         case 110: break;
         case 89: 
-          { popState(); return JetTokens.THIS_KEYWORD;
+          { popState(); return NapileTokens.THIS_KEYWORD;
           }
         case 111: break;
         case 27: 
-          { return JetTokens.COMMA     ;
+          { return NapileTokens.COMMA     ;
           }
         case 112: break;
         case 16: 
-          { return JetTokens.GT        ;
+          { return NapileTokens.GT        ;
           }
         case 113: break;
         case 4: 
-          { return JetTokens.WHITE_SPACE;
+          { return NapileTokens.WHITE_SPACE;
           }
         case 114: break;
         case 24: 
-          { return JetTokens.RPAR      ;
+          { return NapileTokens.RPAR      ;
           }
         case 115: break;
         case 55: 
-          { return JetTokens.DOUBLE_ARROW;
+          { return NapileTokens.DOUBLE_ARROW;
           }
         case 116: break;
         case 83: 
-          { return JetTokens.TRUE_KEYWORD ;
+          { return NapileTokens.TRUE_KEYWORD ;
           }
         case 117: break;
         case 77: 
-          { return JetTokens.IDE_TEMPLATE_START    ;
+          { return NapileTokens.IDE_TEMPLATE_START    ;
           }
         case 118: break;
         case 37: 
-          { return JetTokens.FIELD_IDENTIFIER;
+          { return NapileTokens.FIELD_IDENTIFIER;
           }
         case 119: break;
         case 59: 
-          { return JetTokens.ANDAND    ;
+          { return NapileTokens.ANDAND    ;
           }
         case 120: break;
         case 63: 
-          { pushState(LONG_TEMPLATE_ENTRY); return JetTokens.LONG_TEMPLATE_ENTRY_START;
+          { pushState(LONG_TEMPLATE_ENTRY); return NapileTokens.LONG_TEMPLATE_ENTRY_START;
           }
         case 121: break;
         case 36: 
-          { return JetTokens.FLOAT_LITERAL;
+          { return NapileTokens.FLOAT_LITERAL;
           }
         case 122: break;
         case 38: 
-          { return JetTokens.EOL_COMMENT;
+          { return NapileTokens.EOL_COMMENT;
           }
         case 123: break;
         case 98: 
-          { return JetTokens.RETELL_KEYWORD ;
+          { return NapileTokens.RETELL_KEYWORD ;
           }
         case 124: break;
         case 88: 
-          { return JetTokens.WHEN_KEYWORD ;
+          { return NapileTokens.WHEN_KEYWORD ;
           }
         case 125: break;
         case 72: 
-          { pushState(RAW_STRING); return JetTokens.OPEN_QUOTE;
+          { pushState(RAW_STRING); return NapileTokens.OPEN_QUOTE;
           }
         case 126: break;
         case 25: 
-          { return JetTokens.COLON     ;
+          { return NapileTokens.COLON     ;
           }
         case 127: break;
         case 53: 
-          { return JetTokens.LTEQ      ;
+          { return NapileTokens.LTEQ      ;
           }
         case 128: break;
         case 45: 
-          { return JetTokens.ARROW     ;
+          { return NapileTokens.ARROW     ;
           }
         case 129: break;
         case 32: 
-          { popState(); return JetTokens.IDENTIFIER;
+          { popState(); return NapileTokens.IDENTIFIER;
           }
         case 130: break;
         case 21: 
-          { return JetTokens.LBRACKET  ;
+          { return NapileTokens.LBRACKET  ;
           }
         case 131: break;
         case 67: 
-          { yypushback(2); return JetTokens.INTEGER_LITERAL;
+          { yypushback(2); return NapileTokens.INTEGER_LITERAL;
           }
         case 132: break;
         case 10: 
-          { return JetTokens.CHARACTER_LITERAL;
+          { return NapileTokens.CHARACTER_LITERAL;
           }
         case 133: break;
         case 76: 
-          { return JetTokens.VAR_KEYWORD ;
+          { return NapileTokens.VAR_KEYWORD ;
           }
         case 134: break;
         case 54: 
-          { return JetTokens.GTEQ      ;
+          { return NapileTokens.GTEQ      ;
           }
         case 135: break;
         case 2: 
-          { return JetTokens.INTEGER_LITERAL;
+          { return NapileTokens.INTEGER_LITERAL;
           }
         case 136: break;
         case 13: 
-          { return JetTokens.RBRACE    ;
+          { return NapileTokens.RBRACE    ;
           }
         case 137: break;
         case 92: 
-          { return JetTokens.CLASS_KEYWORD ;
+          { return NapileTokens.CLASS_KEYWORD ;
           }
         case 138: break;
         case 73: 
-          { return JetTokens.TRY_KEYWORD ;
+          { return NapileTokens.TRY_KEYWORD ;
           }
         case 139: break;
         case 7: 
-          { return JetTokens.EXCL      ;
+          { return NapileTokens.EXCL      ;
           }
         case 140: break;
         case 42: 
-          { return JetTokens.EXCLEQ    ;
+          { return NapileTokens.EXCLEQ    ;
           }
         case 141: break;
         case 85: 
-          { return JetTokens.ENUM_KEYWORD ;
+          { return NapileTokens.ENUM_KEYWORD ;
           }
         case 142: break;
         case 46: 
-          { return JetTokens.MINUSEQ   ;
+          { return NapileTokens.MINUSEQ   ;
           }
         case 143: break;
         case 99: 
-          { return JetTokens.PACKAGE_KEYWORD ;
+          { return NapileTokens.PACKAGE_KEYWORD ;
           }
         case 144: break;
         case 90: 
-          { return JetTokens.THROW_KEYWORD ;
+          { return NapileTokens.THROW_KEYWORD ;
           }
         case 145: break;
         case 91: 
-          { return JetTokens.SUPER_KEYWORD ;
+          { return NapileTokens.SUPER_KEYWORD ;
           }
         case 146: break;
         case 66: 
@@ -1069,35 +1069,35 @@ class _JetLexer implements FlexLexer {
           }
         case 147: break;
         case 93: 
-          { return JetTokens.WHILE_KEYWORD ;
+          { return NapileTokens.WHILE_KEYWORD ;
           }
         case 148: break;
         case 44: 
-          { return JetTokens.MINUSMINUS;
+          { return NapileTokens.MINUSMINUS;
           }
         case 149: break;
         case 100: 
-          { return JetTokens.CONTINUE_KEYWORD ;
+          { return NapileTokens.CONTINUE_KEYWORD ;
           }
         case 150: break;
         case 70: 
-          { return JetTokens.NOT_IN;
+          { return NapileTokens.NOT_IN;
           }
         case 151: break;
         case 5: 
-          { return JetTokens.DIV       ;
+          { return NapileTokens.DIV       ;
           }
         case 152: break;
         case 78: 
-          { return JetTokens.IDE_TEMPLATE_END    ;
+          { return NapileTokens.IDE_TEMPLATE_END    ;
           }
         case 153: break;
         case 29: 
-          { return JetTokens.REGULAR_STRING_PART;
+          { return NapileTokens.REGULAR_STRING_PART;
           }
         case 154: break;
         case 18: 
-          { return JetTokens.QUEST     ;
+          { return NapileTokens.QUEST     ;
           }
         case 155: break;
         case 68: 
@@ -1107,23 +1107,23 @@ class _JetLexer implements FlexLexer {
           }
         case 156: break;
         case 60: 
-          { return JetTokens.OROR      ;
+          { return NapileTokens.OROR      ;
           }
         case 157: break;
         case 20: 
-          { return JetTokens.PERC      ;
+          { return NapileTokens.PERC      ;
           }
         case 158: break;
         case 71: 
-          { return JetTokens.EXCLEQEQEQ;
+          { return NapileTokens.EXCLEQEQEQ;
           }
         case 159: break;
         case 61: 
-          { return JetTokens.PERCEQ    ;
+          { return NapileTokens.PERCEQ    ;
           }
         case 160: break;
         case 43: 
-          { return JetTokens.RANGE     ;
+          { return NapileTokens.RANGE     ;
           }
         case 161: break;
         case 1: 
@@ -1133,23 +1133,23 @@ class _JetLexer implements FlexLexer {
         case 62: 
           { pushState(SHORT_TEMPLATE_ENTRY);
                                                         yypushback(yylength() - 1);
-                                                        return JetTokens.SHORT_TEMPLATE_ENTRY_START;
+                                                        return NapileTokens.SHORT_TEMPLATE_ENTRY_START;
           }
         case 163: break;
         case 69: 
-          { return JetTokens.NOT_IS;
+          { return NapileTokens.NOT_IS;
           }
         case 164: break;
         case 14: 
-          { return JetTokens.MUL       ;
+          { return NapileTokens.MUL       ;
           }
         case 165: break;
         case 22: 
-          { return JetTokens.RBRACKET  ;
+          { return NapileTokens.RBRACKET  ;
           }
         case 166: break;
         case 58: 
-          { return JetTokens.PLUSPLUS  ;
+          { return NapileTokens.PLUSPLUS  ;
           }
         case 167: break;
         case 39: 
@@ -1159,55 +1159,55 @@ class _JetLexer implements FlexLexer {
           }
         case 168: break;
         case 82: 
-          { return JetTokens.THIS_KEYWORD ;
+          { return NapileTokens.THIS_KEYWORD ;
           }
         case 169: break;
         case 96: 
-          { return JetTokens.ANONYM_KEYWORD ;
+          { return NapileTokens.ANONYM_KEYWORD ;
           }
         case 170: break;
         case 8: 
-          { return JetTokens.DOT       ;
+          { return NapileTokens.DOT       ;
           }
         case 171: break;
         case 26: 
-          { return JetTokens.SEMICOLON ;
+          { return NapileTokens.SEMICOLON ;
           }
         case 172: break;
         case 49: 
-          { return JetTokens.IF_KEYWORD ;
+          { return NapileTokens.IF_KEYWORD ;
           }
         case 173: break;
         case 64: 
-          { return JetTokens.ESCAPE_SEQUENCE;
+          { return NapileTokens.ESCAPE_SEQUENCE;
           }
         case 174: break;
         case 31: 
-          { popState(); return JetTokens.CLOSING_QUOTE;
+          { popState(); return NapileTokens.CLOSING_QUOTE;
           }
         case 175: break;
         case 17: 
-          { return JetTokens.EQ        ;
+          { return NapileTokens.EQ        ;
           }
         case 176: break;
         case 28: 
-          { return JetTokens.AT        ;
+          { return NapileTokens.AT        ;
           }
         case 177: break;
         case 74: 
-          { return JetTokens.AS_SAFE;
+          { return NapileTokens.AS_SAFE;
           }
         case 178: break;
         case 23: 
-          { return JetTokens.LPAR      ;
+          { return NapileTokens.LPAR      ;
           }
         case 179: break;
         case 9: 
-          { return JetTokens.MINUS     ;
+          { return NapileTokens.MINUS     ;
           }
         case 180: break;
         case 95: 
-          { return JetTokens.FALSE_KEYWORD ;
+          { return NapileTokens.FALSE_KEYWORD ;
           }
         case 181: break;
         case 65: 
@@ -1215,73 +1215,73 @@ class _JetLexer implements FlexLexer {
           }
         case 182: break;
         case 47: 
-          { return JetTokens.IS_KEYWORD ;
+          { return NapileTokens.IS_KEYWORD ;
           }
         case 183: break;
         case 30: 
-          { popState(); yypushback(1); return JetTokens.DANGLING_NEWLINE;
+          { popState(); yypushback(1); return NapileTokens.DANGLING_NEWLINE;
           }
         case 184: break;
         case 34: 
-          { lBraceCount++; return JetTokens.LBRACE;
+          { lBraceCount++; return NapileTokens.LBRACE;
           }
         case 185: break;
         case 81: 
-          { yypushback(3); return JetTokens.EXCL;
+          { yypushback(3); return NapileTokens.EXCL;
           }
         case 186: break;
         case 40: 
-          { return JetTokens.DIVEQ     ;
+          { return NapileTokens.DIVEQ     ;
           }
         case 187: break;
         case 86: 
-          { return JetTokens.ELSE_KEYWORD ;
+          { return NapileTokens.ELSE_KEYWORD ;
           }
         case 188: break;
         case 51: 
-          { return JetTokens.AS_KEYWORD ;
+          { return NapileTokens.AS_KEYWORD ;
           }
         case 189: break;
         case 48: 
-          { return JetTokens.IN_KEYWORD ;
+          { return NapileTokens.IN_KEYWORD ;
           }
         case 190: break;
         case 56: 
-          { return JetTokens.EQEQ      ;
+          { return NapileTokens.EQEQ      ;
           }
         case 191: break;
         case 79: 
-          { return JetTokens.EQEQEQ    ;
+          { return NapileTokens.EQEQEQ    ;
           }
         case 192: break;
         case 50: 
-          { return JetTokens.MULTEQ    ;
+          { return NapileTokens.MULTEQ    ;
           }
         case 193: break;
         case 41: 
           { if (zzCurrentPos == 0) {
-                return JetTokens.SHEBANG_COMMENT;
+                return NapileTokens.SHEBANG_COMMENT;
             }
             else {
                 yypushback(yylength() - 1);
-                return JetTokens.HASH;
+                return NapileTokens.HASH;
             }
           }
         case 194: break;
         case 12: 
-          { return JetTokens.LBRACE    ;
+          { return NapileTokens.LBRACE    ;
           }
         case 195: break;
         case 94: 
-          { return JetTokens.BREAK_KEYWORD ;
+          { return NapileTokens.BREAK_KEYWORD ;
           }
         case 196: break;
         case 87: 
-          { return JetTokens.METH_KEYWORD ;
+          { return NapileTokens.METH_KEYWORD ;
           }
         case 197: break;
         case 80: 
-          { return JetTokens.BLOCK_COMMENT;
+          { return NapileTokens.BLOCK_COMMENT;
           }
         case 198: break;
         case 33: 
@@ -1289,7 +1289,7 @@ class _JetLexer implements FlexLexer {
           }
         case 199: break;
         case 6: 
-          { return JetTokens.HASH      ;
+          { return NapileTokens.HASH      ;
           }
         case 200: break;
         default:

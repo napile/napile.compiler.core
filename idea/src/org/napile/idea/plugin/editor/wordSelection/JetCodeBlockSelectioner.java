@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.codeInsight.editorActions.wordSelection.BasicSelectioner;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.Editor;
@@ -63,7 +63,7 @@ public class JetCodeBlockSelectioner extends BasicSelectioner
 
 			if(child instanceof LeafPsiElement)
 			{
-				if(((LeafPsiElement) child).getElementType() == JetTokens.LBRACE)
+				if(((LeafPsiElement) child).getElementType() == NapileTokens.LBRACE)
 				{
 					int j = i + 1;
 
@@ -88,7 +88,7 @@ public class JetCodeBlockSelectioner extends BasicSelectioner
 
 			if(child instanceof LeafPsiElement)
 			{
-				if(((LeafPsiElement) child).getElementType() == JetTokens.RBRACE)
+				if(((LeafPsiElement) child).getElementType() == NapileTokens.RBRACE)
 				{
 					int j = i - 1;
 

@@ -46,7 +46,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
@@ -239,7 +239,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 					NapileBinaryExpression binaryExpression = (NapileBinaryExpression) callElement;
 					NapileSimpleNameExpression operationReference = binaryExpression.getOperationReference();
 
-					Name operationString = operationReference.getReferencedNameElementType() == JetTokens.IDENTIFIER ? Name.identifier(operationReference.getText()) : OperatorConventions.getNameForOperationSymbol((NapileToken) operationReference.getReferencedNameElementType());
+					Name operationString = operationReference.getReferencedNameElementType() == NapileTokens.IDENTIFIER ? Name.identifier(operationReference.getText()) : OperatorConventions.getNameForOperationSymbol((NapileToken) operationReference.getReferencedNameElementType());
 
 					NapileExpression right = binaryExpression.getRight();
 					if(right != null)

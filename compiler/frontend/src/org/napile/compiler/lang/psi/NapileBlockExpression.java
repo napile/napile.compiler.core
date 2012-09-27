@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -64,7 +64,7 @@ public class NapileBlockExpression extends NapileExpressionImpl implements Napil
 	@Nullable
 	public TextRange getLastBracketRange()
 	{
-		PsiElement rBrace = findChildByType(JetTokens.RBRACE);
+		PsiElement rBrace = findChildByType(NapileTokens.RBRACE);
 		return rBrace != null ? rBrace.getTextRange() : null;
 	}
 }

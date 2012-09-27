@@ -22,7 +22,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -37,7 +37,7 @@ public class NapileUserType extends NapileTypeElement
 
 	public boolean isAbsoluteInRootNamespace()
 	{
-		return findChildByType(JetTokens.PACKAGE_KEYWORD) != null;
+		return findChildByType(NapileTokens.PACKAGE_KEYWORD) != null;
 	}
 
 	@Override

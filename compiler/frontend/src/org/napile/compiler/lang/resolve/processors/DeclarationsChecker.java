@@ -44,7 +44,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -102,7 +102,7 @@ public class DeclarationsChecker
 		NapilePropertyAccessor getter = property.getGetter();
 		NapilePropertyAccessor setter = property.getSetter();
 		NapileModifierList modifierList = property.getModifierList();
-		ASTNode abstractNode = modifierList != null ? modifierList.getModifierNode(JetTokens.ABSTRACT_KEYWORD) : null;
+		ASTNode abstractNode = modifierList != null ? modifierList.getModifierNode(NapileTokens.ABSTRACT_KEYWORD) : null;
 
 		if(abstractNode != null)
 		{ //has abstract modifier

@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
@@ -44,7 +44,7 @@ public class NapileLabelExpression extends NapileExpressionImpl
 	@Nullable
 	public PsiElement getLabelNameElement()
 	{
-		return findChildByType(JetTokens.IDENTIFIER);
+		return findChildByType(NapileTokens.IDENTIFIER);
 	}
 
 	@Nullable

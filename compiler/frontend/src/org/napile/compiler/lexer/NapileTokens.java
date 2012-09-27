@@ -23,7 +23,7 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
-public interface JetTokens
+public interface NapileTokens
 {
 	NapileToken EOF = new NapileToken("EOF");
 

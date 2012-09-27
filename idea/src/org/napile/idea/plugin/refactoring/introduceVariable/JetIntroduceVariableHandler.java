@@ -36,7 +36,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
@@ -404,7 +404,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 							if(next != null)
 							{
 								PsiElement nextnext = next.getNextSibling();
-								if(nextnext != null && nextnext.getNode().getElementType() == JetTokens.ELSE_KEYWORD)
+								if(nextnext != null && nextnext.getNode().getElementType() == NapileTokens.ELSE_KEYWORD)
 								{
 									if(next instanceof PsiWhiteSpace)
 									{
@@ -518,7 +518,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 					@Override
 					public int compare(PsiElement element1, PsiElement element2)
 					{
-						if(element1.getNode().getElementType() == JetTokens.IDENTIFIER && element2.getNode().getElementType() == JetTokens.IDENTIFIER)
+						if(element1.getNode().getElementType() == NapileTokens.IDENTIFIER && element2.getNode().getElementType() == NapileTokens.IDENTIFIER)
 						{
 							if(element1.getParent() instanceof NapileSimpleNameExpression && element2.getParent() instanceof NapileSimpleNameExpression)
 							{

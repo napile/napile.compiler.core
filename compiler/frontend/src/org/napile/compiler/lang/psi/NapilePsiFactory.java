@@ -21,7 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.plugin.JetFileType;
 import com.intellij.lang.ASTNode;
@@ -78,7 +78,7 @@ public class NapilePsiFactory
 	public static ASTNode createColonNode(Project project)
 	{
 		NapileProperty property = createProperty(project, "final var x: Int");
-		return property.getNode().findChildByType(JetTokens.COLON);
+		return property.getNode().findChildByType(NapileTokens.COLON);
 	}
 
 	public static PsiElement createWhiteSpace(Project project)

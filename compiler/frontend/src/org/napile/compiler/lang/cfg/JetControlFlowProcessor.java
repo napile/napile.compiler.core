@@ -40,7 +40,7 @@ import org.napile.compiler.lang.resolve.constants.BoolValue;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -228,7 +228,7 @@ public class JetControlFlowProcessor
 		{
 			IElementType operationType = expression.getOperationReference().getReferencedNameElementType();
 			NapileExpression right = expression.getRight();
-			if(operationType == JetTokens.ANDAND)
+			if(operationType == NapileTokens.ANDAND)
 			{
 				value(expression.getLeft(), true);
 				Label resultLabel = builder.createUnboundLabel();
@@ -243,7 +243,7 @@ public class JetControlFlowProcessor
 					builder.read(expression);
 				}
 			}
-			else if(operationType == JetTokens.OROR)
+			else if(operationType == NapileTokens.OROR)
 			{
 				value(expression.getLeft(), true);
 				Label resultLabel = builder.createUnboundLabel();
@@ -258,7 +258,7 @@ public class JetControlFlowProcessor
 					builder.read(expression);
 				}
 			}
-			else if(operationType == JetTokens.EQ)
+			else if(operationType == NapileTokens.EQ)
 			{
 				NapileExpression left = NapilePsiUtil.deparenthesize(expression.getLeft());
 				if(right != null)
@@ -308,7 +308,7 @@ public class JetControlFlowProcessor
 					builder.unsupported(expression); // TODO
 				}
 			}
-			else if(operationType == JetTokens.ELVIS)
+			else if(operationType == NapileTokens.ELVIS)
 			{
 				builder.read(expression);
 				value(expression.getLeft(), false);
@@ -367,7 +367,7 @@ public class JetControlFlowProcessor
 
 		private boolean isIncrementOrDecrement(IElementType operationType)
 		{
-			return operationType == JetTokens.PLUSPLUS || operationType == JetTokens.MINUSMINUS;
+			return operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS;
 		}
 
 
@@ -568,7 +568,7 @@ public class JetControlFlowProcessor
 				builder.declare(loopParameter);
 				builder.write(loopParameter, loopParameter);
 			}
-			// TODO : primitive cases
+
 			Label loopExitPoint = builder.createUnboundLabel();
 			Label conditionEntryPoint = builder.createUnboundLabel();
 
@@ -761,7 +761,7 @@ public class JetControlFlowProcessor
 			//            PsiElement element = trace.get(BindingContext.DESCRIPTOR_TO_DECLARATION, resultingDescriptor);
 			//            if (element instanceof NapileNamedFunction) {
 			//                NapileNamedFunction namedFunction = (NapileNamedFunction) element;
-			//                if (namedFunction.hasModifier(JetTokens.INLINE_KEYWORD)) {
+			//                if (namedFunction.hasModifier(NapileTokens.INLINE_KEYWORD)) {
 			//                }
 			//            }
 
@@ -818,7 +818,7 @@ public class JetControlFlowProcessor
 		public void visitBinaryWithTypeRHSExpression(NapileBinaryExpressionWithTypeRHS expression)
 		{
 			IElementType operationType = expression.getOperationSign().getReferencedNameElementType();
-			if(operationType == JetTokens.COLON || operationType == JetTokens.AS_KEYWORD || operationType == JetTokens.AS_SAFE)
+			if(operationType == NapileTokens.COLON || operationType == NapileTokens.AS_KEYWORD || operationType == NapileTokens.AS_SAFE)
 			{
 				value(expression.getLeft(), false);
 				builder.read(expression);

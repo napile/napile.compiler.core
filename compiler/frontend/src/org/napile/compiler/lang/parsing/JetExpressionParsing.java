@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
 import com.google.common.collect.ImmutableMap;
 import com.intellij.lang.PsiBuilder;
@@ -38,11 +38,11 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class JetExpressionParsing extends AbstractJetParsing
 {
-	private static final TokenSet WHEN_CONDITION_RECOVERY_SET = TokenSet.create(JetTokens.RBRACE, JetTokens.IN_KEYWORD, JetTokens.NOT_IN, JetTokens.IS_KEYWORD, JetTokens.NOT_IS, JetTokens.ELSE_KEYWORD);
-	private static final TokenSet WHEN_CONDITION_RECOVERY_SET_WITH_ARROW = TokenSet.create(JetTokens.RBRACE, JetTokens.IN_KEYWORD, JetTokens.NOT_IN, JetTokens.IS_KEYWORD, JetTokens.NOT_IS, JetTokens.ELSE_KEYWORD, JetTokens.ARROW, JetTokens.DOT);
+	private static final TokenSet WHEN_CONDITION_RECOVERY_SET = TokenSet.create(NapileTokens.RBRACE, NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS, NapileTokens.ELSE_KEYWORD);
+	private static final TokenSet WHEN_CONDITION_RECOVERY_SET_WITH_ARROW = TokenSet.create(NapileTokens.RBRACE, NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS, NapileTokens.ELSE_KEYWORD, NapileTokens.ARROW, NapileTokens.DOT);
 
 
-	private static final ImmutableMap<String, NapileToken> KEYWORD_TEXTS = tokenSetToMap(JetTokens.KEYWORDS);
+	private static final ImmutableMap<String, NapileToken> KEYWORD_TEXTS = tokenSetToMap(NapileTokens.KEYWORDS);
 
 	private static ImmutableMap<String, NapileToken> tokenSetToMap(TokenSet tokens)
 	{
@@ -54,65 +54,65 @@ public class JetExpressionParsing extends AbstractJetParsing
 		return builder.build();
 	}
 
-	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(JetTokens.INTEGER_LITERAL, JetTokens.FLOAT_LITERAL, JetTokens.CHARACTER_LITERAL, JetTokens.OPEN_QUOTE, JetTokens.PACKAGE_KEYWORD, JetTokens.AS_KEYWORD, JetTokens.CLASS_KEYWORD, JetTokens.THIS_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.FOR_KEYWORD, JetTokens.NULL_KEYWORD, JetTokens.TRUE_KEYWORD, JetTokens.FALSE_KEYWORD, JetTokens.IS_KEYWORD, JetTokens.THROW_KEYWORD, JetTokens.RETURN_KEYWORD, JetTokens.BREAK_KEYWORD, JetTokens.CONTINUE_KEYWORD, JetTokens.ANONYM_KEYWORD, JetTokens.IF_KEYWORD, JetTokens.TRY_KEYWORD, JetTokens.ELSE_KEYWORD, JetTokens.WHILE_KEYWORD, JetTokens.DO_KEYWORD, JetTokens.WHEN_KEYWORD, JetTokens.RBRACKET, JetTokens.RBRACE, JetTokens.RPAR, JetTokens.PLUSPLUS, JetTokens.MINUSMINUS, JetTokens.EXCLEXCL,
+	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.OPEN_QUOTE, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.FOR_KEYWORD, NapileTokens.NULL_KEYWORD, NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.IS_KEYWORD, NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.BREAK_KEYWORD, NapileTokens.CONTINUE_KEYWORD, NapileTokens.ANONYM_KEYWORD, NapileTokens.IF_KEYWORD, NapileTokens.TRY_KEYWORD, NapileTokens.ELSE_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD, NapileTokens.WHEN_KEYWORD, NapileTokens.RBRACKET, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
 			//            MUL,
-			JetTokens.PLUS, JetTokens.MINUS, JetTokens.EXCL, JetTokens.DIV, JetTokens.PERC, JetTokens.LTEQ,
+			NapileTokens.PLUS, NapileTokens.MINUS, NapileTokens.EXCL, NapileTokens.DIV, NapileTokens.PERC, NapileTokens.LTEQ,
 			// TODO GTEQ,   foo<bar, baz>=x
-			JetTokens.EQEQEQ, JetTokens.EXCLEQEQEQ, JetTokens.EQEQ, JetTokens.EXCLEQ, JetTokens.ANDAND, JetTokens.OROR, JetTokens.SAFE_ACCESS, JetTokens.ELVIS, JetTokens.SEMICOLON, JetTokens.RANGE, JetTokens.EQ, JetTokens.MULTEQ, JetTokens.DIVEQ, JetTokens.PERCEQ, JetTokens.PLUSEQ, JetTokens.MINUSEQ, JetTokens.NOT_IN, JetTokens.NOT_IS, //HASH,
-			JetTokens.COLON);
+			NapileTokens.EQEQEQ, NapileTokens.EXCLEQEQEQ, NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.ANDAND, NapileTokens.OROR, NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.SEMICOLON, NapileTokens.RANGE, NapileTokens.EQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.NOT_IN, NapileTokens.NOT_IS, //HASH,
+			NapileTokens.COLON);
 
 	/*package*/ static final TokenSet EXPRESSION_FIRST = TokenSet.create(
 			// Prefix
-			JetTokens.MINUS, JetTokens.PLUS, JetTokens.MINUSMINUS, JetTokens.PLUSPLUS, JetTokens.EXCL, JetTokens.EXCLEXCL, // Joining complex tokens makes it necessary to put EXCLEXCL here
-			JetTokens.LBRACKET,
+			NapileTokens.MINUS, NapileTokens.PLUS, NapileTokens.MINUSMINUS, NapileTokens.PLUSPLUS, NapileTokens.EXCL, NapileTokens.EXCLEXCL, // Joining complex tokens makes it necessary to put EXCLEXCL here
+			NapileTokens.LBRACKET,
 			// Atomic
 
-			JetTokens.LPAR, // parenthesized
-			JetTokens.HASH, // Tuple
+			NapileTokens.LPAR, // parenthesized
+			NapileTokens.HASH, // Tuple
 
 			// literal constant
-			JetTokens.TRUE_KEYWORD, JetTokens.FALSE_KEYWORD, JetTokens.OPEN_QUOTE, JetTokens.INTEGER_LITERAL, JetTokens.CHARACTER_LITERAL, JetTokens.FLOAT_LITERAL, JetTokens.NULL_KEYWORD,
+			NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.OPEN_QUOTE, NapileTokens.INTEGER_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.NULL_KEYWORD,
 
-			JetTokens.LBRACE, // functionLiteral
+			NapileTokens.LBRACE, // functionLiteral
 
-			JetTokens.LPAR, // tuple
+			NapileTokens.LPAR, // tuple
 
-			JetTokens.THIS_KEYWORD, // this
-			JetTokens.SUPER_KEYWORD, // super
+			NapileTokens.THIS_KEYWORD, // this
+			NapileTokens.SUPER_KEYWORD, // super
 
-			JetTokens.IF_KEYWORD, // if
-			JetTokens.WHEN_KEYWORD, // when
-			JetTokens.TRY_KEYWORD, // try
-			JetTokens.ANONYM_KEYWORD, // object
-			JetTokens.LABEL_KEYWORD, // label
+			NapileTokens.IF_KEYWORD, // if
+			NapileTokens.WHEN_KEYWORD, // when
+			NapileTokens.TRY_KEYWORD, // try
+			NapileTokens.ANONYM_KEYWORD, // object
+			NapileTokens.LABEL_KEYWORD, // label
 
 			// jump
-			JetTokens.THROW_KEYWORD, JetTokens.RETURN_KEYWORD, JetTokens.CONTINUE_KEYWORD, JetTokens.BREAK_KEYWORD,
+			NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.CONTINUE_KEYWORD, NapileTokens.BREAK_KEYWORD,
 
 			// loop
-			JetTokens.FOR_KEYWORD, JetTokens.WHILE_KEYWORD, JetTokens.DO_KEYWORD,
+			NapileTokens.FOR_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD,
 
-			JetTokens.IDENTIFIER, // SimpleName
-			JetTokens.FIELD_IDENTIFIER, // Field reference
+			NapileTokens.IDENTIFIER, // SimpleName
+			NapileTokens.FIELD_IDENTIFIER, // Field reference
 
-			JetTokens.PACKAGE_KEYWORD, // for absolute qualified names
-			JetTokens.IDE_TEMPLATE_START);
+			NapileTokens.PACKAGE_KEYWORD, // for absolute qualified names
+			NapileTokens.IDE_TEMPLATE_START);
 
 	private static final TokenSet STATEMENT_FIRST = TokenSet.orSet(EXPRESSION_FIRST, TokenSet.create(
 			// declaration
-			JetTokens.LBRACKET, // attribute
-			JetTokens.METH_KEYWORD, JetTokens.VAR_KEYWORD, JetTokens.CLASS_KEYWORD), JetTokens.MODIFIER_KEYWORDS);
+			NapileTokens.LBRACKET, // attribute
+			NapileTokens.METH_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.CLASS_KEYWORD), NapileTokens.MODIFIER_KEYWORDS);
 
-	/*package*/ static final TokenSet EXPRESSION_FOLLOW = TokenSet.create(JetTokens.SEMICOLON, JetTokens.ARROW, JetTokens.COMMA, JetTokens.RBRACE, JetTokens.RPAR, JetTokens.RBRACKET, JetTokens.IDE_TEMPLATE_END);
+	/*package*/ static final TokenSet EXPRESSION_FOLLOW = TokenSet.create(NapileTokens.SEMICOLON, NapileTokens.ARROW, NapileTokens.COMMA, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.RBRACKET, NapileTokens.IDE_TEMPLATE_END);
 
 	@SuppressWarnings({"UnusedDeclaration"})
 	private enum Precedence
 	{
-		POSTFIX(JetTokens.PLUSPLUS, JetTokens.MINUSMINUS, JetTokens.EXCLEXCL,
+		POSTFIX(NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
 				//                HASH,
-				JetTokens.DOT, JetTokens.SAFE_ACCESS), // typeArguments? valueArguments : typeArguments : arrayAccess
+				NapileTokens.DOT, NapileTokens.SAFE_ACCESS), // typeArguments? valueArguments : typeArguments : arrayAccess
 
-		PREFIX(JetTokens.MINUS, JetTokens.PLUS, JetTokens.MINUSMINUS, JetTokens.PLUSPLUS, JetTokens.EXCL)
+		PREFIX(NapileTokens.MINUS, NapileTokens.PLUS, NapileTokens.MINUSMINUS, NapileTokens.PLUSPLUS, NapileTokens.EXCL)
 				{ // attributes
 
 					@Override
@@ -122,7 +122,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 					}
 				},
 
-		COLON_AS(JetTokens.COLON, JetTokens.AS_KEYWORD, JetTokens.AS_SAFE)
+		COLON_AS(NapileTokens.COLON, NapileTokens.AS_KEYWORD, NapileTokens.AS_SAFE)
 				{
 					@Override
 					public NapileNodeType parseRightHandSide(IElementType operation, JetExpressionParsing parser)
@@ -138,17 +138,17 @@ public class JetExpressionParsing extends AbstractJetParsing
 					}
 				},
 
-		MULTIPLICATIVE(JetTokens.MUL, JetTokens.DIV, JetTokens.PERC),
-		ADDITIVE(JetTokens.PLUS, JetTokens.MINUS),
-		RANGE(JetTokens.RANGE),
-		SIMPLE_NAME(JetTokens.IDENTIFIER),
-		ELVIS(JetTokens.ELVIS),
-		IN_OR_IS(JetTokens.IN_KEYWORD, JetTokens.NOT_IN, JetTokens.IS_KEYWORD, JetTokens.NOT_IS)
+		MULTIPLICATIVE(NapileTokens.MUL, NapileTokens.DIV, NapileTokens.PERC),
+		ADDITIVE(NapileTokens.PLUS, NapileTokens.MINUS),
+		RANGE(NapileTokens.RANGE),
+		SIMPLE_NAME(NapileTokens.IDENTIFIER),
+		ELVIS(NapileTokens.ELVIS),
+		IN_OR_IS(NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS)
 				{
 					@Override
 					public NapileNodeType parseRightHandSide(IElementType operation, JetExpressionParsing parser)
 					{
-						if(operation == JetTokens.IS_KEYWORD || operation == JetTokens.NOT_IS)
+						if(operation == NapileTokens.IS_KEYWORD || operation == NapileTokens.NOT_IS)
 						{
 							parser.myJetParsing.parseTypeRef();
 
@@ -158,12 +158,12 @@ public class JetExpressionParsing extends AbstractJetParsing
 						return super.parseRightHandSide(operation, parser);
 					}
 				},
-		COMPARISON(JetTokens.LT, JetTokens.GT, JetTokens.LTEQ, JetTokens.GTEQ),
-		EQUALITY(JetTokens.EQEQ, JetTokens.EXCLEQ, JetTokens.EQEQEQ, JetTokens.EXCLEQEQEQ),
-		CONJUNCTION(JetTokens.ANDAND),
-		DISJUNCTION(JetTokens.OROR),
-		//        ARROW(JetTokens.ARROW),
-		ASSIGNMENT(JetTokens.EQ, JetTokens.PLUSEQ, JetTokens.MINUSEQ, JetTokens.MULTEQ, JetTokens.DIVEQ, JetTokens.PERCEQ),;
+		COMPARISON(NapileTokens.LT, NapileTokens.GT, NapileTokens.LTEQ, NapileTokens.GTEQ),
+		EQUALITY(NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.EQEQEQ, NapileTokens.EXCLEQEQEQ),
+		CONJUNCTION(NapileTokens.ANDAND),
+		DISJUNCTION(NapileTokens.OROR),
+		//        ARROW(NapileTokens.ARROW),
+		ASSIGNMENT(NapileTokens.EQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ),;
 
 		static
 		{
@@ -206,7 +206,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 	}
 
-	public static final TokenSet ALLOW_NEWLINE_OPERATIONS = TokenSet.create(JetTokens.DOT, JetTokens.SAFE_ACCESS);
+	public static final TokenSet ALLOW_NEWLINE_OPERATIONS = TokenSet.create(NapileTokens.DOT, NapileTokens.SAFE_ACCESS);
 
 	public static final TokenSet ALL_OPERATIONS;
 
@@ -223,7 +223,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 	static
 	{
-		IElementType[] operations = JetTokens.OPERATIONS.getTypes();
+		IElementType[] operations = NapileTokens.OPERATIONS.getTypes();
 		Set<IElementType> opSet = new HashSet<IElementType>(Arrays.asList(operations));
 		IElementType[] usedOperations = ALL_OPERATIONS.getTypes();
 		Set<IElementType> usedSet = new HashSet<IElementType>(Arrays.asList(usedOperations));
@@ -333,7 +333,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		//        System.out.println("pre at "  + myBuilder.getTokenText());
 
-		if(at(JetTokens.LBRACKET))
+		if(at(NapileTokens.LBRACKET))
 		{
 			if(!parseLocalDeclaration())
 			{
@@ -392,7 +392,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				break;
 			}
-			else if(at(JetTokens.LBRACKET))
+			else if(at(NapileTokens.LBRACKET))
 			{
 				parseArrayAccess();
 				expression.done(ARRAY_ACCESS_EXPRESSION);
@@ -401,7 +401,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				expression.done(CALL_EXPRESSION);
 			}
-			else if(at(JetTokens.DOT))
+			else if(at(NapileTokens.DOT))
 			{
 				advance(); // DOT
 
@@ -409,7 +409,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 				expression.done(DOT_QUALIFIED_EXPRESSION);
 			}
-			else if(at(JetTokens.SAFE_ACCESS))
+			else if(at(NapileTokens.SAFE_ACCESS))
 			{
 				advance(); // SAFE_ACCESS
 
@@ -450,18 +450,18 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			parseCallWithClosure();
 		}
-		else if(at(JetTokens.LPAR))
+		else if(at(NapileTokens.LPAR))
 		{
 			parseValueArgumentList();
 			parseCallWithClosure();
 		}
-		else if(at(JetTokens.LT))
+		else if(at(NapileTokens.LT))
 		{
 			PsiBuilder.Marker typeArgumentList = mark();
 			if(myJetParsing.tryParseTypeArgumentList(TYPE_ARGUMENT_LIST_STOPPERS))
 			{
 				typeArgumentList.done(TYPE_ARGUMENT_LIST);
-				if(!myBuilder.newlineBeforeCurrentToken() && at(JetTokens.LPAR))
+				if(!myBuilder.newlineBeforeCurrentToken() && at(NapileTokens.LPAR))
 					parseValueArgumentList();
 				parseCallWithClosure();
 			}
@@ -511,7 +511,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		boolean success = false;
 		//        while (!myBuilder.newlineBeforeCurrentToken()
 		//                && (at(LBRACE)
-		while(at(JetTokens.LBRACE))
+		while(at(NapileTokens.LBRACE))
 		{
 			parseFunctionLiteral();
 
@@ -542,91 +542,91 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		//        System.out.println("atom at "  + myBuilder.getTokenText());
 
-		if(at(JetTokens.LPAR))
+		if(at(NapileTokens.LPAR))
 		{
 			parseParenthesizedExpression();
 		}
-		else if(at(JetTokens.IDE_TEMPLATE_START))
+		else if(at(NapileTokens.IDE_TEMPLATE_START))
 		{
 			myJetParsing.parseIdeTemplate();
 		}
-		else if(at(JetTokens.PACKAGE_KEYWORD))
+		else if(at(NapileTokens.PACKAGE_KEYWORD))
 		{
 			parseOneTokenExpression(ROOT_NAMESPACE);
 		}
-		else if(at(JetTokens.THIS_KEYWORD))
+		else if(at(NapileTokens.THIS_KEYWORD))
 		{
 			parseThisExpression();
 		}
-		else if(at(JetTokens.SUPER_KEYWORD))
+		else if(at(NapileTokens.SUPER_KEYWORD))
 		{
 			parseSuperExpression();
 		}
-		else if(at(JetTokens.ANONYM_KEYWORD))
+		else if(at(NapileTokens.ANONYM_KEYWORD))
 		{
 			parseObjectLiteral();
 		}
-		else if(at(JetTokens.THROW_KEYWORD))
+		else if(at(NapileTokens.THROW_KEYWORD))
 		{
 			parseThrow();
 		}
-		else if(at(JetTokens.RETURN_KEYWORD))
+		else if(at(NapileTokens.RETURN_KEYWORD))
 		{
 			parseReturn();
 		}
-		else if(at(JetTokens.CONTINUE_KEYWORD))
+		else if(at(NapileTokens.CONTINUE_KEYWORD))
 		{
 			parseJump(CONTINUE);
 		}
-		else if(at(JetTokens.BREAK_KEYWORD))
+		else if(at(NapileTokens.BREAK_KEYWORD))
 		{
 			parseJump(BREAK);
 		}
-		else if(at(JetTokens.IF_KEYWORD))
+		else if(at(NapileTokens.IF_KEYWORD))
 		{
 			parseIf();
 		}
-		else if(at(JetTokens.WHEN_KEYWORD))
+		else if(at(NapileTokens.WHEN_KEYWORD))
 		{
 			parseWhen();
 		}
-		else if(at(JetTokens.TRY_KEYWORD))
+		else if(at(NapileTokens.TRY_KEYWORD))
 		{
 			parseTry();
 		}
-		else if(at(JetTokens.FOR_KEYWORD))
+		else if(at(NapileTokens.FOR_KEYWORD))
 		{
 			parseFor();
 		}
-		else if(at(JetTokens.LABEL_KEYWORD))
+		else if(at(NapileTokens.LABEL_KEYWORD))
 		{
 			parseLabel0();
 		}
-		else if(at(JetTokens.WHILE_KEYWORD))
+		else if(at(NapileTokens.WHILE_KEYWORD))
 		{
 			parseWhile();
 		}
-		else if(at(JetTokens.DO_KEYWORD))
+		else if(at(NapileTokens.DO_KEYWORD))
 		{
 			parseDoWhile();
 		}
-		else if(atSet(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.VAR_KEYWORD))
+		else if(atSet(NapileTokens.CLASS_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.VAR_KEYWORD))
 		{
 			parseLocalDeclaration();
 		}
-		else if(at(JetTokens.FIELD_IDENTIFIER))
+		else if(at(NapileTokens.FIELD_IDENTIFIER))
 		{
 			parseSimpleNameExpression();
 		}
-		else if(at(JetTokens.IDENTIFIER))
+		else if(at(NapileTokens.IDENTIFIER))
 		{
 			parseSimpleNameExpression();
 		}
-		else if(at(JetTokens.LBRACE))
+		else if(at(NapileTokens.LBRACE))
 		{
 			parseFunctionLiteral();
 		}
-		else if(at(JetTokens.OPEN_QUOTE))
+		else if(at(NapileTokens.OPEN_QUOTE))
 		{
 			parseStringTemplate();
 		}
@@ -644,7 +644,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseStringTemplate()
 	{
-		assert _at(JetTokens.OPEN_QUOTE);
+		assert _at(NapileTokens.OPEN_QUOTE);
 
 		PsiBuilder.Marker template = mark();
 
@@ -652,20 +652,20 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		while(!eof())
 		{
-			if(at(JetTokens.CLOSING_QUOTE) || at(JetTokens.DANGLING_NEWLINE))
+			if(at(NapileTokens.CLOSING_QUOTE) || at(NapileTokens.DANGLING_NEWLINE))
 			{
 				break;
 			}
 			parseStringTemplateElement();
 		}
 
-		if(at(JetTokens.DANGLING_NEWLINE))
+		if(at(NapileTokens.DANGLING_NEWLINE))
 		{
 			errorAndAdvance("Expecting '\"'");
 		}
 		else
 		{
-			expect(JetTokens.CLOSING_QUOTE, "Expecting '\"'");
+			expect(NapileTokens.CLOSING_QUOTE, "Expecting '\"'");
 		}
 		template.done(STRING_TEMPLATE);
 	}
@@ -684,24 +684,24 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseStringTemplateElement()
 	{
-		if(at(JetTokens.REGULAR_STRING_PART))
+		if(at(NapileTokens.REGULAR_STRING_PART))
 		{
 			PsiBuilder.Marker mark = mark();
 			advance(); // REGULAR_STRING_PART
 			mark.done(LITERAL_STRING_TEMPLATE_ENTRY);
 		}
-		else if(at(JetTokens.ESCAPE_SEQUENCE))
+		else if(at(NapileTokens.ESCAPE_SEQUENCE))
 		{
 			PsiBuilder.Marker mark = mark();
 			advance(); // ESCAPE_SEQUENCE
 			mark.done(ESCAPE_STRING_TEMPLATE_ENTRY);
 		}
-		else if(at(JetTokens.SHORT_TEMPLATE_ENTRY_START))
+		else if(at(NapileTokens.SHORT_TEMPLATE_ENTRY_START))
 		{
 			PsiBuilder.Marker entry = mark();
 			advance(); // SHORT_TEMPLATE_ENTRY_START
 
-			if(at(JetTokens.THIS_KEYWORD))
+			if(at(NapileTokens.THIS_KEYWORD))
 			{
 				PsiBuilder.Marker thisExpression = mark();
 				PsiBuilder.Marker reference = mark();
@@ -720,14 +720,14 @@ public class JetExpressionParsing extends AbstractJetParsing
 				else
 				{
 					PsiBuilder.Marker reference = mark();
-					expect(JetTokens.IDENTIFIER, "Expecting a name");
+					expect(NapileTokens.IDENTIFIER, "Expecting a name");
 					reference.done(REFERENCE_EXPRESSION);
 				}
 			}
 
 			entry.done(SHORT_STRING_TEMPLATE_ENTRY);
 		}
-		else if(at(JetTokens.LONG_TEMPLATE_ENTRY_START))
+		else if(at(NapileTokens.LONG_TEMPLATE_ENTRY_START))
 		{
 			PsiBuilder.Marker longTemplateEntry = mark();
 
@@ -735,7 +735,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			parseExpression();
 
-			expect(JetTokens.LONG_TEMPLATE_ENTRY_END, "Expecting '}'", TokenSet.create(JetTokens.CLOSING_QUOTE, JetTokens.DANGLING_NEWLINE, JetTokens.REGULAR_STRING_PART, JetTokens.ESCAPE_SEQUENCE, JetTokens.SHORT_TEMPLATE_ENTRY_START));
+			expect(NapileTokens.LONG_TEMPLATE_ENTRY_END, "Expecting '}'", TokenSet.create(NapileTokens.CLOSING_QUOTE, NapileTokens.DANGLING_NEWLINE, NapileTokens.REGULAR_STRING_PART, NapileTokens.ESCAPE_SEQUENCE, NapileTokens.SHORT_TEMPLATE_ENTRY_START));
 			longTemplateEntry.done(LONG_STRING_TEMPLATE_ENTRY);
 		}
 		else
@@ -758,23 +758,23 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private boolean parseLiteralConstant()
 	{
-		if(at(JetTokens.TRUE_KEYWORD) || at(JetTokens.FALSE_KEYWORD))
+		if(at(NapileTokens.TRUE_KEYWORD) || at(NapileTokens.FALSE_KEYWORD))
 		{
 			parseOneTokenExpression(BOOLEAN_CONSTANT);
 		}
-		else if(at(JetTokens.INTEGER_LITERAL))
+		else if(at(NapileTokens.INTEGER_LITERAL))
 		{
 			parseOneTokenExpression(INTEGER_CONSTANT);
 		}
-		else if(at(JetTokens.CHARACTER_LITERAL))
+		else if(at(NapileTokens.CHARACTER_LITERAL))
 		{
 			parseOneTokenExpression(CHARACTER_CONSTANT);
 		}
-		else if(at(JetTokens.FLOAT_LITERAL))
+		else if(at(NapileTokens.FLOAT_LITERAL))
 		{
 			parseOneTokenExpression(FLOAT_CONSTANT);
 		}
-		else if(at(JetTokens.NULL_KEYWORD))
+		else if(at(NapileTokens.NULL_KEYWORD))
 		{
 			parseOneTokenExpression(NULL);
 		}
@@ -794,7 +794,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseWhen()
 	{
-		assert _at(JetTokens.WHEN_KEYWORD);
+		assert _at(NapileTokens.WHEN_KEYWORD);
 
 		PsiBuilder.Marker when = mark();
 
@@ -802,11 +802,11 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		// Parse condition
 		myBuilder.disableNewlines();
-		if(at(JetTokens.LPAR))
+		if(at(NapileTokens.LPAR))
 		{
-			advanceAt(JetTokens.LPAR);
+			advanceAt(NapileTokens.LPAR);
 
-			int valPos = matchTokenStreamPredicate(new FirstBefore(new At(JetTokens.VAR_KEYWORD), new AtSet(JetTokens.RPAR, JetTokens.LBRACE, JetTokens.RBRACE, JetTokens.SEMICOLON, JetTokens.EQ)));
+			int valPos = matchTokenStreamPredicate(new FirstBefore(new At(NapileTokens.VAR_KEYWORD), new AtSet(NapileTokens.RPAR, NapileTokens.LBRACE, NapileTokens.RBRACE, NapileTokens.SEMICOLON, NapileTokens.EQ)));
 			if(valPos >= 0)
 			{
 				PsiBuilder.Marker property = mark();
@@ -819,20 +819,20 @@ public class JetExpressionParsing extends AbstractJetParsing
 				parseExpression();
 			}
 
-			expect(JetTokens.RPAR, "Expecting ')'");
+			expect(NapileTokens.RPAR, "Expecting ')'");
 		}
 		myBuilder.restoreNewlinesState();
 
 		// Parse when block
 		myBuilder.enableNewlines();
-		expect(JetTokens.LBRACE, "Expecting '{'");
+		expect(NapileTokens.LBRACE, "Expecting '{'");
 
-		while(!eof() && !at(JetTokens.RBRACE))
+		while(!eof() && !at(NapileTokens.RBRACE))
 		{
 			parseWhenEntry();
 		}
 
-		expect(JetTokens.RBRACE, "Expecting '}'");
+		expect(NapileTokens.RBRACE, "Expecting '}'");
 		myBuilder.restoreNewlinesState();
 
 		when.done(WHEN);
@@ -849,16 +849,16 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker entry = mark();
 
-		if(at(JetTokens.ELSE_KEYWORD))
+		if(at(NapileTokens.ELSE_KEYWORD))
 		{
 			advance(); // ELSE_KEYWORD
 
-			if(!at(JetTokens.ARROW))
+			if(!at(NapileTokens.ARROW))
 			{
-				errorUntil("Expecting '->'", TokenSet.create(JetTokens.ARROW, JetTokens.RBRACE, JetTokens.EOL_OR_SEMICOLON));
+				errorUntil("Expecting '->'", TokenSet.create(NapileTokens.ARROW, NapileTokens.RBRACE, NapileTokens.EOL_OR_SEMICOLON));
 			}
 
-			if(at(JetTokens.ARROW))
+			if(at(NapileTokens.ARROW))
 			{
 				advance(); // ARROW
 
@@ -882,7 +882,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 
 		entry.done(WHEN_ENTRY);
-		consumeIf(JetTokens.SEMICOLON);
+		consumeIf(NapileTokens.SEMICOLON);
 	}
 
 	/*
@@ -894,15 +894,15 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			while(true)
 			{
-				while(at(JetTokens.COMMA))
+				while(at(NapileTokens.COMMA))
 					errorAndAdvance("Expecting a when-condition");
 				parseWhenCondition();
-				if(!at(JetTokens.COMMA))
+				if(!at(NapileTokens.COMMA))
 					break;
 				advance(); // COMMA
 			}
 		}
-		expect(JetTokens.ARROW, "Expecting '->' or 'when'", WHEN_CONDITION_RECOVERY_SET);
+		expect(NapileTokens.ARROW, "Expecting '->' or 'when'", WHEN_CONDITION_RECOVERY_SET);
 		if(atSet(WHEN_CONDITION_RECOVERY_SET))
 		{
 			error("Expecting an element");
@@ -925,7 +925,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker condition = mark();
 		myBuilder.disableNewlines();
-		if(at(JetTokens.IN_KEYWORD) || at(JetTokens.NOT_IN))
+		if(at(NapileTokens.IN_KEYWORD) || at(NapileTokens.NOT_IN))
 		{
 			PsiBuilder.Marker mark = mark();
 			advance(); // IN_KEYWORD or NOT_IN
@@ -942,7 +942,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 			condition.done(WHEN_CONDITION_IN_RANGE);
 		}
-		else if(at(JetTokens.IS_KEYWORD) || at(JetTokens.NOT_IS))
+		else if(at(NapileTokens.IS_KEYWORD) || at(NapileTokens.NOT_IS))
 		{
 			advance(); // IS_KEYWORD or NOT_IS
 
@@ -978,7 +978,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseArrayAccess()
 	{
-		assert _at(JetTokens.LBRACKET);
+		assert _at(NapileTokens.LBRACKET);
 
 		PsiBuilder.Marker indices = mark();
 
@@ -987,20 +987,20 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		while(true)
 		{
-			if(at(JetTokens.COMMA))
+			if(at(NapileTokens.COMMA))
 				errorAndAdvance("Expecting an index element");
-			if(at(JetTokens.RBRACKET))
+			if(at(NapileTokens.RBRACKET))
 			{
 				error("Expecting an index element");
 				break;
 			}
 			parseExpression();
-			if(!at(JetTokens.COMMA))
+			if(!at(NapileTokens.COMMA))
 				break;
 			advance(); // COMMA
 		}
 
-		expect(JetTokens.RBRACKET, "Expecting ']'");
+		expect(NapileTokens.RBRACKET, "Expecting ']'");
 		myBuilder.restoreNewlinesState();
 
 		indices.done(INDICES);
@@ -1012,13 +1012,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 	public void parseSimpleNameExpression()
 	{
 		PsiBuilder.Marker simpleName = mark();
-		if(at(JetTokens.FIELD_IDENTIFIER))
+		if(at(NapileTokens.FIELD_IDENTIFIER))
 		{
 			advance(); //
 		}
 		else
 		{
-			expect(JetTokens.IDENTIFIER, "Expecting an identifier");
+			expect(NapileTokens.IDENTIFIER, "Expecting an identifier");
 		}
 		simpleName.done(REFERENCE_EXPRESSION);
 	}
@@ -1060,7 +1060,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 	private void parseFunctionLiteral(boolean preferBlock)
 	{
-		assert _at(JetTokens.LBRACE);
+		assert _at(NapileTokens.LBRACE);
 
 		PsiBuilder.Marker literalExpression = mark();
 
@@ -1071,14 +1071,14 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		boolean paramsFound = false;
 
-		if(at(JetTokens.ARROW))
+		if(at(NapileTokens.ARROW))
 		{
 			//   { -> ...}
 			advance(); // ARROW
 			mark().done(VALUE_PARAMETER_LIST);
 			paramsFound = true;
 		}
-		else if(at(JetTokens.LPAR))
+		else if(at(NapileTokens.LPAR))
 		{
 			// Look for ARROW after matching RPAR
 			//   {(a, b) -> ...}
@@ -1089,7 +1089,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 				PsiBuilder.Marker rollbackMarker = mark();
 				parseFunctionLiteralParametersAndType();
 
-				paramsFound = preferParamsToExpressions ? rollbackOrDrop(rollbackMarker, JetTokens.ARROW, "An -> is expected", JetTokens.RBRACE) : rollbackOrDropAt(rollbackMarker, JetTokens.ARROW);
+				paramsFound = preferParamsToExpressions ? rollbackOrDrop(rollbackMarker, NapileTokens.ARROW, "An -> is expected", NapileTokens.RBRACE) : rollbackOrDropAt(rollbackMarker, NapileTokens.ARROW);
 			}
 
 			if(!paramsFound)
@@ -1101,17 +1101,17 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 		else
 		{
-			if(at(JetTokens.IDENTIFIER))
+			if(at(NapileTokens.IDENTIFIER))
 			{
 				// Try to parse a simple name list followed by an ARROW
 				//   {a -> ...}
 				//   {a, b -> ...}
 				PsiBuilder.Marker rollbackMarker = mark();
-				boolean preferParamsToExpressions = (lookahead(1) == JetTokens.COMMA);
+				boolean preferParamsToExpressions = (lookahead(1) == NapileTokens.COMMA);
 				parseFunctionLiteralShorthandParameterList();
 				parseOptionalFunctionLiteralType();
 
-				paramsFound = preferParamsToExpressions ? rollbackOrDrop(rollbackMarker, JetTokens.ARROW, "An -> is expected", JetTokens.RBRACE) : rollbackOrDropAt(rollbackMarker, JetTokens.ARROW);
+				paramsFound = preferParamsToExpressions ? rollbackOrDrop(rollbackMarker, NapileTokens.ARROW, "An -> is expected", NapileTokens.RBRACE) : rollbackOrDropAt(rollbackMarker, NapileTokens.ARROW);
 			}
 			if(!paramsFound && atSet(JetParsing.TYPE_REF_FIRST))
 			{
@@ -1127,7 +1127,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				literal.drop();
 				parseStatements();
-				expect(JetTokens.RBRACE, "Expecting '}'");
+				expect(NapileTokens.RBRACE, "Expecting '}'");
 				literalExpression.done(BLOCK);
 				myBuilder.restoreNewlinesState();
 
@@ -1139,7 +1139,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		parseStatements();
 		body.done(BLOCK);
 
-		expect(JetTokens.RBRACE, "Expecting '}'");
+		expect(NapileTokens.RBRACE, "Expecting '}'");
 		myBuilder.restoreNewlinesState();
 
 		literal.done(FUNCTION_LITERAL);
@@ -1192,22 +1192,22 @@ public class JetExpressionParsing extends AbstractJetParsing
 			//            int parameterNamePos = matchTokenStreamPredicate(new LastBefore(new At(IDENTIFIER), new AtOffset(doubleArrowPos)));
 			//            createTruncatedBuilder(parameterNamePos).parseModifierList(MODIFIER_LIST, false);
 
-			expect(JetTokens.IDENTIFIER, "Expecting parameter name", TokenSet.create(JetTokens.ARROW));
+			expect(NapileTokens.IDENTIFIER, "Expecting parameter name", TokenSet.create(NapileTokens.ARROW));
 
 			parameter.done(VALUE_PARAMETER);
 
-			if(at(JetTokens.COLON))
+			if(at(NapileTokens.COLON))
 			{
 				PsiBuilder.Marker errorMarker = mark();
 				advance(); // COLON
 				myJetParsing.parseTypeRef();
 				errorMarker.error("To specify a type of a parameter or a return type, use the full notation: {(parameter : Type) : ReturnType -> ...}");
 			}
-			else if(at(JetTokens.ARROW))
+			else if(at(NapileTokens.ARROW))
 			{
 				break;
 			}
-			else if(at(JetTokens.COMMA))
+			else if(at(NapileTokens.COMMA))
 			{
 				advance(); // COMMA
 			}
@@ -1225,10 +1225,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 	// parsed as parameters in function literal
 	private boolean isConfirmedParametersByComma()
 	{
-		assert _at(JetTokens.LPAR);
+		assert _at(NapileTokens.LPAR);
 		PsiBuilder.Marker lparMarker = mark();
 		advance(); // LPAR
-		int comma = matchTokenStreamPredicate(new FirstBefore(new At(JetTokens.COMMA), new AtSet(JetTokens.ARROW, JetTokens.RPAR)));
+		int comma = matchTokenStreamPredicate(new FirstBefore(new At(NapileTokens.COMMA), new AtSet(NapileTokens.ARROW, NapileTokens.RPAR)));
 		lparMarker.rollbackTo();
 		return comma > 0;
 	}
@@ -1241,15 +1241,15 @@ public class JetExpressionParsing extends AbstractJetParsing
 		// it to function params if possible.
 		boolean preferParamsToExpressions = false;
 
-		int lastDot = matchTokenStreamPredicate(new LastBefore(new At(JetTokens.DOT), new AtSet(JetTokens.ARROW, JetTokens.RPAR)));
+		int lastDot = matchTokenStreamPredicate(new LastBefore(new At(NapileTokens.DOT), new AtSet(NapileTokens.ARROW, NapileTokens.RPAR)));
 		if(lastDot >= 0)
 		{
 			createTruncatedBuilder(lastDot).parseTypeRef();
-			if(at(JetTokens.DOT))
+			if(at(NapileTokens.DOT))
 			{
 				advance(); // DOT
 
-				if(at(JetTokens.LPAR))
+				if(at(NapileTokens.LPAR))
 				{
 					preferParamsToExpressions = isConfirmedParametersByComma();
 				}
@@ -1258,7 +1258,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 		}
 
-		return preferParamsToExpressions ? rollbackOrDrop(rollbackMarker, JetTokens.ARROW, "An -> is expected", JetTokens.RBRACE) : rollbackOrDropAt(rollbackMarker, JetTokens.ARROW);
+		return preferParamsToExpressions ? rollbackOrDrop(rollbackMarker, NapileTokens.ARROW, "An -> is expected", NapileTokens.RBRACE) : rollbackOrDropAt(rollbackMarker, NapileTokens.ARROW);
 	}
 
 	private void parseFunctionLiteralParametersAndType()
@@ -1272,10 +1272,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseOptionalFunctionLiteralType()
 	{
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
-			if(at(JetTokens.ARROW))
+			if(at(NapileTokens.ARROW))
 			{
 				error("Expecting a type");
 			}
@@ -1292,34 +1292,34 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private void parseFunctionLiteralParameterList()
 	{
 		PsiBuilder.Marker list = mark();
-		expect(JetTokens.LPAR, "Expecting a parameter list in parentheses (...)", TokenSet.create(JetTokens.ARROW, JetTokens.COLON));
+		expect(NapileTokens.LPAR, "Expecting a parameter list in parentheses (...)", TokenSet.create(NapileTokens.ARROW, NapileTokens.COLON));
 
 		myBuilder.disableNewlines();
 
-		if(!at(JetTokens.RPAR))
+		if(!at(NapileTokens.RPAR))
 		{
 			while(true)
 			{
-				if(at(JetTokens.COMMA))
+				if(at(NapileTokens.COMMA))
 					errorAndAdvance("Expecting a parameter declaration");
 
 				PsiBuilder.Marker parameter = mark();
-				int parameterNamePos = matchTokenStreamPredicate(new LastBefore(new At(JetTokens.IDENTIFIER), new AtSet(JetTokens.COMMA, JetTokens.RPAR, JetTokens.COLON, JetTokens.ARROW)));
+				int parameterNamePos = matchTokenStreamPredicate(new LastBefore(new At(NapileTokens.IDENTIFIER), new AtSet(NapileTokens.COMMA, NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.ARROW)));
 				createTruncatedBuilder(parameterNamePos).parseModifierList(MODIFIER_LIST);
 
-				expect(JetTokens.IDENTIFIER, "Expecting parameter declaration");
+				expect(NapileTokens.IDENTIFIER, "Expecting parameter declaration");
 
-				if(at(JetTokens.COLON))
+				if(at(NapileTokens.COLON))
 				{
 					advance(); // COLON
 					myJetParsing.parseTypeRef();
 				}
 				parameter.done(VALUE_PARAMETER);
-				if(!at(JetTokens.COMMA))
+				if(!at(NapileTokens.COMMA))
 					break;
 				advance(); // COMMA
 
-				if(at(JetTokens.RPAR))
+				if(at(NapileTokens.RPAR))
 				{
 					error("Expecting a parameter declaration");
 					break;
@@ -1329,7 +1329,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		myBuilder.restoreNewlinesState();
 
-		expect(JetTokens.RPAR, "Expecting ')", TokenSet.create(JetTokens.ARROW, JetTokens.COLON));
+		expect(NapileTokens.RPAR, "Expecting ')", TokenSet.create(NapileTokens.ARROW, NapileTokens.COLON));
 		list.done(VALUE_PARAMETER_LIST);
 	}
 
@@ -1339,9 +1339,9 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	public void parseStatements()
 	{
-		while(at(JetTokens.SEMICOLON))
+		while(at(NapileTokens.SEMICOLON))
 			advance(); // SEMICOLON
-		while(!eof() && !at(JetTokens.RBRACE))
+		while(!eof() && !at(NapileTokens.RBRACE))
 		{
 			if(!atSet(STATEMENT_FIRST))
 			{
@@ -1351,18 +1351,18 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				parseStatement();
 			}
-			if(at(JetTokens.SEMICOLON))
+			if(at(NapileTokens.SEMICOLON))
 			{
-				while(at(JetTokens.SEMICOLON))
+				while(at(NapileTokens.SEMICOLON))
 					advance(); // SEMICOLON
 			}
-			else if(at(JetTokens.RBRACE))
+			else if(at(NapileTokens.RBRACE))
 			{
 				break;
 			}
 			else if(!myBuilder.newlineBeforeCurrentToken())
 			{
-				errorUntil("Unexpected tokens (use ';' to separate expressions on the same line)", TokenSet.create(JetTokens.EOL_OR_SEMICOLON));
+				errorUntil("Unexpected tokens (use ';' to separate expressions on the same line)", TokenSet.create(NapileTokens.EOL_OR_SEMICOLON));
 			}
 		}
 	}
@@ -1406,11 +1406,11 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			declType = myJetParsing.parseClass();
 		}
-		else if(keywordToken == JetTokens.METH_KEYWORD)
+		else if(keywordToken == NapileTokens.METH_KEYWORD)
 		{
 			declType = myJetParsing.parseMethod();
 		}
-		else if(keywordToken == JetTokens.VAR_KEYWORD)
+		else if(keywordToken == NapileTokens.VAR_KEYWORD)
 		{
 			declType = myJetParsing.parseProperty(true);
 		}
@@ -1424,18 +1424,18 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseDoWhile()
 	{
-		assert _at(JetTokens.DO_KEYWORD);
+		assert _at(NapileTokens.DO_KEYWORD);
 
 		PsiBuilder.Marker loop = mark();
 
 		advance(); // DO_KEYWORD
 
-		if(!at(JetTokens.WHILE_KEYWORD))
+		if(!at(NapileTokens.WHILE_KEYWORD))
 		{
 			parseControlStructureBody();
 		}
 
-		if(expect(JetTokens.WHILE_KEYWORD, "Expecting 'while' followed by a post-condition"))
+		if(expect(NapileTokens.WHILE_KEYWORD, "Expecting 'while' followed by a post-condition"))
 		{
 			parseCondition();
 		}
@@ -1445,13 +1445,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 	private void parseLabel0()
 	{
-		assert _at(JetTokens.LABEL_KEYWORD);
+		assert _at(NapileTokens.LABEL_KEYWORD);
 
 		PsiBuilder.Marker marker = mark();
 
 		advance();
 
-		if(!at(JetTokens.IDENTIFIER))
+		if(!at(NapileTokens.IDENTIFIER))
 			error("Identifier expected");
 		else
 			advance();
@@ -1467,7 +1467,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseWhile()
 	{
-		assert _at(JetTokens.WHILE_KEYWORD);
+		assert _at(NapileTokens.WHILE_KEYWORD);
 
 		PsiBuilder.Marker loop = mark();
 
@@ -1489,36 +1489,36 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseFor()
 	{
-		assert _at(JetTokens.FOR_KEYWORD);
+		assert _at(NapileTokens.FOR_KEYWORD);
 
 		PsiBuilder.Marker loop = mark();
 
 		advance(); // FOR_KEYWORD
 
 		myBuilder.disableNewlines();
-		expect(JetTokens.LPAR, "Expecting '(' to open a loop range", TokenSet.create(JetTokens.RPAR,  JetTokens.VAR_KEYWORD, JetTokens.IDENTIFIER));
+		expect(NapileTokens.LPAR, "Expecting '(' to open a loop range", TokenSet.create(NapileTokens.RPAR,  NapileTokens.VAR_KEYWORD, NapileTokens.IDENTIFIER));
 
 		PsiBuilder.Marker parameter = mark();
-		if(at(JetTokens.VAR_KEYWORD))
+		if(at(NapileTokens.VAR_KEYWORD))
 			advance(); // VAL_KEYWORD or VAR_KEYWORD
 		if(!myJetParsing.parseIdeTemplate())
 		{
-			expect(JetTokens.IDENTIFIER, "Expecting a variable name", TokenSet.create(JetTokens.COLON));
+			expect(NapileTokens.IDENTIFIER, "Expecting a variable name", TokenSet.create(NapileTokens.COLON));
 		}
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 			myJetParsing.parseTypeRef();
 		}
 		parameter.done(LOOP_PARAMETER);
 
-		expect(JetTokens.IN_KEYWORD, "Expecting 'in'");
+		expect(NapileTokens.IN_KEYWORD, "Expecting 'in'");
 
 		PsiBuilder.Marker range = mark();
 		parseExpression();
 		range.done(LOOP_RANGE);
 
-		expectNoAdvance(JetTokens.RPAR, "Expecting ')'");
+		expectNoAdvance(NapileTokens.RPAR, "Expecting ')'");
 		myBuilder.restoreNewlinesState();
 
 		parseControlStructureBody();
@@ -1531,7 +1531,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	 */
 	private void parseExpressionPreferringBlocks()
 	{
-		if(at(JetTokens.LBRACE))
+		if(at(NapileTokens.LBRACE))
 		{
 			parseFunctionLiteral(true);
 		}
@@ -1547,7 +1547,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private void parseControlStructureBody()
 	{
 		PsiBuilder.Marker body = mark();
-		if(!at(JetTokens.SEMICOLON))
+		if(!at(NapileTokens.SEMICOLON))
 		{
 			parseExpressionPreferringBlocks();
 		}
@@ -1568,7 +1568,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseTry()
 	{
-		assert _at(JetTokens.TRY_KEYWORD);
+		assert _at(NapileTokens.TRY_KEYWORD);
 
 		PsiBuilder.Marker tryExpression = mark();
 
@@ -1577,19 +1577,19 @@ public class JetExpressionParsing extends AbstractJetParsing
 		myJetParsing.parseBlock();
 
 		boolean catchOrFinally = false;
-		while(at(JetTokens.CATCH_KEYWORD))
+		while(at(NapileTokens.CATCH_KEYWORD))
 		{
 			catchOrFinally = true;
 			PsiBuilder.Marker catchBlock = mark();
 			advance(); // CATCH_KEYWORD
 
-			myJetParsing.parseValueParameterList(false, TokenSet.create(JetTokens.LBRACE, JetTokens.FINALLY_KEYWORD, JetTokens.CATCH_KEYWORD));
+			myJetParsing.parseValueParameterList(false, TokenSet.create(NapileTokens.LBRACE, NapileTokens.FINALLY_KEYWORD, NapileTokens.CATCH_KEYWORD));
 
 			myJetParsing.parseBlock();
 			catchBlock.done(CATCH);
 		}
 
-		if(at(JetTokens.FINALLY_KEYWORD))
+		if(at(NapileTokens.FINALLY_KEYWORD))
 		{
 			catchOrFinally = true;
 			PsiBuilder.Marker finallyBlock = mark();
@@ -1616,7 +1616,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseIf()
 	{
-		assert _at(JetTokens.IF_KEYWORD);
+		assert _at(NapileTokens.IF_KEYWORD);
 
 		PsiBuilder.Marker marker = mark();
 
@@ -1625,22 +1625,22 @@ public class JetExpressionParsing extends AbstractJetParsing
 		parseCondition();
 
 		PsiBuilder.Marker thenBranch = mark();
-		if(!at(JetTokens.ELSE_KEYWORD) && !at(JetTokens.SEMICOLON))
+		if(!at(NapileTokens.ELSE_KEYWORD) && !at(NapileTokens.SEMICOLON))
 		{
 			parseExpressionPreferringBlocks();
 		}
-		if(at(JetTokens.SEMICOLON) && lookahead(1) == JetTokens.ELSE_KEYWORD)
+		if(at(NapileTokens.SEMICOLON) && lookahead(1) == NapileTokens.ELSE_KEYWORD)
 		{
 			advance(); // SEMICOLON
 		}
 		thenBranch.done(THEN);
 
-		if(at(JetTokens.ELSE_KEYWORD))
+		if(at(NapileTokens.ELSE_KEYWORD))
 		{
 			advance(); // ELSE_KEYWORD
 
 			PsiBuilder.Marker elseBranch = mark();
-			if(!at(JetTokens.SEMICOLON))
+			if(!at(NapileTokens.SEMICOLON))
 			{
 				parseExpressionPreferringBlocks();
 			}
@@ -1656,13 +1656,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private void parseCondition()
 	{
 		myBuilder.disableNewlines();
-		expect(JetTokens.LPAR, "Expecting a condition in parentheses '(...)'");
+		expect(NapileTokens.LPAR, "Expecting a condition in parentheses '(...)'");
 
 		PsiBuilder.Marker condition = mark();
 		parseExpression();
 		condition.done(CONDITION);
 
-		expect(JetTokens.RPAR, "Expecting ')");
+		expect(NapileTokens.RPAR, "Expecting ')");
 		myBuilder.restoreNewlinesState();
 	}
 
@@ -1672,13 +1672,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseJump(NapileNodeType type)
 	{
-		assert _at(JetTokens.BREAK_KEYWORD) || _at(JetTokens.CONTINUE_KEYWORD);
+		assert _at(NapileTokens.BREAK_KEYWORD) || _at(NapileTokens.CONTINUE_KEYWORD);
 
 		PsiBuilder.Marker marker = mark();
 
 		advance(); // BREAK_KEYWORD or CONTINUE_KEYWORD
 
-		if(type == BREAK && at(JetTokens.IDENTIFIER))
+		if(type == BREAK && at(NapileTokens.IDENTIFIER))
 			parseOneTokenExpression(LABEL_REFERENCE);
 
 		marker.done(type);
@@ -1689,14 +1689,14 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseReturn()
 	{
-		assert _at(JetTokens.RETURN_KEYWORD);
+		assert _at(NapileTokens.RETURN_KEYWORD);
 
 		PsiBuilder.Marker returnExpression = mark();
 
 		advance(); // RETURN_KEYWORD
 
 
-		if(atSet(EXPRESSION_FIRST) && !at(JetTokens.EOL_OR_SEMICOLON))
+		if(atSet(EXPRESSION_FIRST) && !at(NapileTokens.EOL_OR_SEMICOLON))
 			parseExpression();
 
 		returnExpression.done(RETURN);
@@ -1707,7 +1707,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseThrow()
 	{
-		assert _at(JetTokens.THROW_KEYWORD);
+		assert _at(NapileTokens.THROW_KEYWORD);
 
 		PsiBuilder.Marker marker = mark();
 
@@ -1723,13 +1723,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseParenthesizedExpression()
 	{
-		assert _at(JetTokens.LPAR);
+		assert _at(NapileTokens.LPAR);
 
 		PsiBuilder.Marker mark = mark();
 
 		myBuilder.disableNewlines();
 		advance(); // LPAR
-		if(at(JetTokens.RPAR))
+		if(at(NapileTokens.RPAR))
 		{
 			error("Expecting an expression");
 		}
@@ -1738,7 +1738,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			parseExpression();
 		}
 
-		expect(JetTokens.RPAR, "Expecting ')'");
+		expect(NapileTokens.RPAR, "Expecting ')'");
 		myBuilder.restoreNewlinesState();
 
 		mark.done(PARENTHESIZED);
@@ -1750,7 +1750,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseThisExpression()
 	{
-		assert _at(JetTokens.THIS_KEYWORD);
+		assert _at(NapileTokens.THIS_KEYWORD);
 		PsiBuilder.Marker mark = mark();
 
 		PsiBuilder.Marker thisReference = mark();
@@ -1765,14 +1765,14 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseSuperExpression()
 	{
-		assert _at(JetTokens.SUPER_KEYWORD);
+		assert _at(NapileTokens.SUPER_KEYWORD);
 		PsiBuilder.Marker mark = mark();
 
 		PsiBuilder.Marker superReference = mark();
 		advance(); // SUPER_KEYWORD
 		superReference.done(REFERENCE_EXPRESSION);
 
-		if(at(JetTokens.LT))
+		if(at(NapileTokens.LT))
 		{
 			// This may be "super < foo" or "super<foo>", thus the backtracking
 			PsiBuilder.Marker supertype = mark();
@@ -1782,7 +1782,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			myJetParsing.parseTypeRef();
 
-			if(at(JetTokens.GT))
+			if(at(NapileTokens.GT))
 			{
 				advance(); // GT
 				supertype.drop();
@@ -1806,19 +1806,19 @@ public class JetExpressionParsing extends AbstractJetParsing
 		PsiBuilder.Marker list = mark();
 
 		myBuilder.disableNewlines();
-		expect(JetTokens.LPAR, "Expecting an argument list", EXPRESSION_FOLLOW);
+		expect(NapileTokens.LPAR, "Expecting an argument list", EXPRESSION_FOLLOW);
 
-		if(!at(JetTokens.RPAR))
+		if(!at(NapileTokens.RPAR))
 		{
 			while(true)
 			{
-				while(at(JetTokens.COMMA))
+				while(at(NapileTokens.COMMA))
 					errorAndAdvance("Expecting an argument");
 				parseValueArgument();
-				if(!at(JetTokens.COMMA))
+				if(!at(NapileTokens.COMMA))
 					break;
 				advance(); // COMMA
-				if(at(JetTokens.RPAR))
+				if(at(NapileTokens.RPAR))
 				{
 					error("Expecting an argument");
 					break;
@@ -1826,7 +1826,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 		}
 
-		expect(JetTokens.RPAR, "Expecting ')'", EXPRESSION_FOLLOW);
+		expect(NapileTokens.RPAR, "Expecting ')'", EXPRESSION_FOLLOW);
 		myBuilder.restoreNewlinesState();
 
 		list.done(VALUE_ARGUMENT_LIST);
@@ -1838,7 +1838,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private void parseValueArgument()
 	{
 		PsiBuilder.Marker argument = mark();
-		if(at(JetTokens.IDENTIFIER) && lookahead(1) == JetTokens.EQ)
+		if(at(NapileTokens.IDENTIFIER) && lookahead(1) == NapileTokens.EQ)
 		{
 			PsiBuilder.Marker argName = mark();
 			PsiBuilder.Marker reference = mark();
@@ -1847,7 +1847,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			argName.done(VALUE_ARGUMENT_NAME);
 			advance(); // EQ
 		}
-		if(at(JetTokens.MUL))
+		if(at(NapileTokens.MUL))
 		{
 			advance(); // MUL
 		}

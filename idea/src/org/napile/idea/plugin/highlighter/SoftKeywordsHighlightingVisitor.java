@@ -21,7 +21,7 @@ package org.napile.idea.plugin.highlighter;
 
 import org.napile.compiler.lang.psi.NapileFunctionLiteral;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.application.ApplicationManager;
@@ -43,16 +43,16 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 		if(element instanceof LeafPsiElement)
 		{
 			IElementType elementType = ((LeafPsiElement) element).getElementType();
-			if(JetTokens.SOFT_KEYWORDS.contains(elementType))
+			if(NapileTokens.SOFT_KEYWORDS.contains(elementType))
 			{
 				TextAttributesKey attributes = JetHighlightingColors.KEYWORD;
-				if(JetTokens.MODIFIER_KEYWORDS.contains(elementType))
+				if(NapileTokens.MODIFIER_KEYWORDS.contains(elementType))
 				{
 					attributes = JetHighlightingColors.BUILTIN_ANNOTATION;
 				}
 				holder.createInfoAnnotation(element, null).setTextAttributes(attributes);
 			}
-			if(JetTokens.SAFE_ACCESS.equals(elementType))
+			if(NapileTokens.SAFE_ACCESS.equals(elementType))
 			{
 				holder.createInfoAnnotation(element, null).setTextAttributes(JetHighlightingColors.SAFE_ACCESS);
 			}

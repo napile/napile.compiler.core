@@ -75,7 +75,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -139,7 +139,7 @@ public class CallResolver
 			return OverloadResolutionResultsImpl.nameNotFound();
 		}
 		List<CallableDescriptorCollector<? extends VariableDescriptor>> callableDescriptorCollectors = Lists.newArrayList();
-		if(nameExpression.getReferencedNameElementType() == JetTokens.FIELD_IDENTIFIER)
+		if(nameExpression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER)
 		{
 			referencedName = Name.identifier(referencedName.getName().substring(1));
 			callableDescriptorCollectors.add(CallableDescriptorCollectors.PROPERTIES);

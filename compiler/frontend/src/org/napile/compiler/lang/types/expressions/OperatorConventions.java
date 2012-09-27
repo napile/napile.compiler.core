@@ -19,7 +19,7 @@ package org.napile.compiler.lang.types.expressions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableMap;
@@ -51,25 +51,25 @@ public class OperatorConventions
 
 	public static final ImmutableSet<Name> NUMBER_CONVERSIONS = ImmutableSet.of(DOUBLE, FLOAT, LONG, INT, SHORT, BYTE, CHAR);
 
-	public static final ImmutableBiMap<NapileToken, Name> UNARY_OPERATION_NAMES = ImmutableBiMap.<NapileToken, Name>builder().put(JetTokens.PLUSPLUS, Name.identifier("inc")).put(JetTokens.MINUSMINUS, Name.identifier("dec")).put(JetTokens.PLUS, Name.identifier("plus")).put(JetTokens.MINUS, Name.identifier("minus")).put(JetTokens.EXCL, Name.identifier("not")).build();
+	public static final ImmutableBiMap<NapileToken, Name> UNARY_OPERATION_NAMES = ImmutableBiMap.<NapileToken, Name>builder().put(NapileTokens.PLUSPLUS, Name.identifier("inc")).put(NapileTokens.MINUSMINUS, Name.identifier("dec")).put(NapileTokens.PLUS, Name.identifier("plus")).put(NapileTokens.MINUS, Name.identifier("minus")).put(NapileTokens.EXCL, Name.identifier("not")).build();
 
-	public static final ImmutableBiMap<NapileToken, Name> BINARY_OPERATION_NAMES = ImmutableBiMap.<NapileToken, Name>builder().put(JetTokens.MUL, Name.identifier("times")).put(JetTokens.PLUS, Name.identifier("plus")).put(JetTokens.MINUS, Name.identifier("minus")).put(JetTokens.DIV, Name.identifier("div")).put(JetTokens.PERC, Name.identifier("mod")).put(JetTokens.ARROW, Name.identifier("arrow")).put(JetTokens.RANGE, Name.identifier("rangeTo")).build();
+	public static final ImmutableBiMap<NapileToken, Name> BINARY_OPERATION_NAMES = ImmutableBiMap.<NapileToken, Name>builder().put(NapileTokens.MUL, Name.identifier("times")).put(NapileTokens.PLUS, Name.identifier("plus")).put(NapileTokens.MINUS, Name.identifier("minus")).put(NapileTokens.DIV, Name.identifier("div")).put(NapileTokens.PERC, Name.identifier("mod")).put(NapileTokens.ARROW, Name.identifier("arrow")).put(NapileTokens.RANGE, Name.identifier("rangeTo")).build();
 
-	public static final ImmutableSet<NapileToken> NOT_OVERLOADABLE = ImmutableSet.<NapileToken>of(JetTokens.ANDAND, JetTokens.OROR, JetTokens.ELVIS);
+	public static final ImmutableSet<NapileToken> NOT_OVERLOADABLE = ImmutableSet.<NapileToken>of(NapileTokens.ANDAND, NapileTokens.OROR, NapileTokens.ELVIS);
 
-	public static final ImmutableSet<NapileToken> INCREMENT_OPERATIONS = ImmutableSet.<NapileToken>of(JetTokens.PLUSPLUS, JetTokens.MINUSMINUS);
+	public static final ImmutableSet<NapileToken> INCREMENT_OPERATIONS = ImmutableSet.<NapileToken>of(NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS);
 
-	public static final ImmutableSet<NapileToken> COMPARISON_OPERATIONS = ImmutableSet.<NapileToken>of(JetTokens.LT, JetTokens.GT, JetTokens.LTEQ, JetTokens.GTEQ);
+	public static final ImmutableSet<NapileToken> COMPARISON_OPERATIONS = ImmutableSet.<NapileToken>of(NapileTokens.LT, NapileTokens.GT, NapileTokens.LTEQ, NapileTokens.GTEQ);
 
-	public static final ImmutableSet<NapileToken> EQUALS_OPERATIONS = ImmutableSet.<NapileToken>of(JetTokens.EQEQ, JetTokens.EXCLEQ);
+	public static final ImmutableSet<NapileToken> EQUALS_OPERATIONS = ImmutableSet.<NapileToken>of(NapileTokens.EQEQ, NapileTokens.EXCLEQ);
 
-	public static final ImmutableSet<NapileToken> IN_OPERATIONS = ImmutableSet.<NapileToken>of(JetTokens.IN_KEYWORD, JetTokens.NOT_IN);
+	public static final ImmutableSet<NapileToken> IN_OPERATIONS = ImmutableSet.<NapileToken>of(NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN);
 
-	public static final ImmutableBiMap<NapileToken, Name> ASSIGNMENT_OPERATIONS = ImmutableBiMap.<NapileToken, Name>builder().put(JetTokens.MULTEQ, Name.identifier("timesAssign")).put(JetTokens.DIVEQ, Name.identifier("divAssign")).put(JetTokens.PERCEQ, Name.identifier("modAssign")).put(JetTokens.PLUSEQ, Name.identifier("plusAssign")).put(JetTokens.MINUSEQ, Name.identifier("minusAssign")).build();
+	public static final ImmutableBiMap<NapileToken, Name> ASSIGNMENT_OPERATIONS = ImmutableBiMap.<NapileToken, Name>builder().put(NapileTokens.MULTEQ, Name.identifier("timesAssign")).put(NapileTokens.DIVEQ, Name.identifier("divAssign")).put(NapileTokens.PERCEQ, Name.identifier("modAssign")).put(NapileTokens.PLUSEQ, Name.identifier("plusAssign")).put(NapileTokens.MINUSEQ, Name.identifier("minusAssign")).build();
 
-	public static final ImmutableMap<NapileToken, NapileToken> ASSIGNMENT_OPERATION_COUNTERPARTS = ImmutableMap.<NapileToken, NapileToken>builder().put(JetTokens.MULTEQ, JetTokens.MUL).put(JetTokens.DIVEQ, JetTokens.DIV).put(JetTokens.PERCEQ, JetTokens.PERC).put(JetTokens.PLUSEQ, JetTokens.PLUS).put(JetTokens.MINUSEQ, JetTokens.MINUS).build();
+	public static final ImmutableMap<NapileToken, NapileToken> ASSIGNMENT_OPERATION_COUNTERPARTS = ImmutableMap.<NapileToken, NapileToken>builder().put(NapileTokens.MULTEQ, NapileTokens.MUL).put(NapileTokens.DIVEQ, NapileTokens.DIV).put(NapileTokens.PERCEQ, NapileTokens.PERC).put(NapileTokens.PLUSEQ, NapileTokens.PLUS).put(NapileTokens.MINUSEQ, NapileTokens.MINUS).build();
 
-	public static final ImmutableBiMap<NapileToken, Name> BOOLEAN_OPERATIONS = ImmutableBiMap.<NapileToken, Name>builder().put(JetTokens.ANDAND, Name.identifier("and")).put(JetTokens.OROR, Name.identifier("or")).build();
+	public static final ImmutableBiMap<NapileToken, Name> BOOLEAN_OPERATIONS = ImmutableBiMap.<NapileToken, Name>builder().put(NapileTokens.ANDAND, Name.identifier("and")).put(NapileTokens.OROR, Name.identifier("or")).build();
 
 	@Nullable
 	public static Name getNameForOperationSymbol(@NotNull NapileToken token)

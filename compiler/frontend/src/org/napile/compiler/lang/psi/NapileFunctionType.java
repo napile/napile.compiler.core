@@ -23,7 +23,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
@@ -36,7 +36,7 @@ import com.intellij.psi.tree.IElementType;
 public class NapileFunctionType extends NapileTypeElement
 {
 
-	public static final NapileToken RETURN_TYPE_SEPARATOR = JetTokens.ARROW;
+	public static final NapileToken RETURN_TYPE_SEPARATOR = NapileTokens.ARROW;
 
 	public NapileFunctionType(@NotNull ASTNode node)
 	{
@@ -98,7 +98,7 @@ public class NapileFunctionType extends NapileTypeElement
 		while(child != null)
 		{
 			IElementType tt = child.getNode().getElementType();
-			if(tt == JetTokens.LPAR || tt == RETURN_TYPE_SEPARATOR)
+			if(tt == NapileTokens.LPAR || tt == RETURN_TYPE_SEPARATOR)
 				break;
 			if(child instanceof NapileTypeReference)
 			{

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -170,7 +170,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 	@NotNull
 	public PsiElement getObjectKeyword()
 	{
-		return findNotNullChildByType(JetTokens.ANONYM_KEYWORD);
+		return findNotNullChildByType(NapileTokens.ANONYM_KEYWORD);
 	}
 
 	@Override

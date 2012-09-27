@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
@@ -76,7 +76,7 @@ public class NapileValueArgument extends NapileElementImpl implements ValueArgum
 	@Override
 	public LeafPsiElement getSpreadElement()
 	{
-		ASTNode node = getNode().findChildByType(JetTokens.MUL);
+		ASTNode node = getNode().findChildByType(NapileTokens.MUL);
 		return node == null ? null : (LeafPsiElement) node.getPsi();
 	}
 }

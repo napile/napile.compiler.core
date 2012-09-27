@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.codeInsight.template.EverywhereContextType;
 import com.intellij.codeInsight.template.TemplateContextType;
@@ -61,7 +61,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 			else if(element instanceof LeafPsiElement)
 			{
 				IElementType elementType = ((LeafPsiElement) element).getElementType();
-				if(elementType == JetTokens.IDENTIFIER)
+				if(elementType == NapileTokens.IDENTIFIER)
 				{
 					if(element.getParent() instanceof NapileReferenceExpression)
 					{

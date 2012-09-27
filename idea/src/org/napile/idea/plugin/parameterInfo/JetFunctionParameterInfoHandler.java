@@ -39,7 +39,7 @@ import org.napile.compiler.lang.resolve.JetVisibilityChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import com.intellij.codeInsight.CodeInsightBundle;
@@ -77,14 +77,14 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 	@Override
 	public IElementType getActualParameterDelimiterType()
 	{
-		return JetTokens.COMMA;
+		return NapileTokens.COMMA;
 	}
 
 	@NotNull
 	@Override
 	public IElementType getActualParametersRBraceType()
 	{
-		return JetTokens.RBRACE;
+		return NapileTokens.RBRACE;
 	}
 
 	@NotNull
@@ -154,7 +154,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		int i = 0;
 		while(child != null && child.getStartOffset() < offset)
 		{
-			if(child.getElementType() == JetTokens.COMMA)
+			if(child.getElementType() == NapileTokens.COMMA)
 				++i;
 			child = child.getTreeNext();
 		}

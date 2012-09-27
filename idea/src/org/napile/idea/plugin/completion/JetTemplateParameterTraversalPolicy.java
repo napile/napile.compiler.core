@@ -19,7 +19,7 @@ package org.napile.idea.plugin.completion;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileIdeTemplate;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
 import com.intellij.codeInsight.completion.TemplateParameterTraversalPolicy;
 import com.intellij.openapi.editor.Editor;
@@ -53,7 +53,7 @@ public class JetTemplateParameterTraversalPolicy implements TemplateParameterTra
 		}
 		PsiDocumentManager.getInstance(project).commitAllDocuments();
 
-		NapileToken terminatingToken = next ? JetTokens.IDE_TEMPLATE_START : JetTokens.IDE_TEMPLATE_END;
+		NapileToken terminatingToken = next ? NapileTokens.IDE_TEMPLATE_START : NapileTokens.IDE_TEMPLATE_END;
 
 		SelectionModel selModel = editor.getSelectionModel();
 		PsiElement first = file.findElementAt((selModel.getSelectionStart() + selModel.getSelectionEnd()) / 2);
@@ -104,7 +104,7 @@ public class JetTemplateParameterTraversalPolicy implements TemplateParameterTra
 	private static void selectTemplate(Editor editor, SelectionModel selModel, PsiElement current, boolean next)
 	{
 		PsiElement match = goToNextPrevElement(goToNextPrevElement(current, next), next);
-		NapileToken expected = next ? JetTokens.IDE_TEMPLATE_END : JetTokens.IDE_TEMPLATE_START;
+		NapileToken expected = next ? NapileTokens.IDE_TEMPLATE_END : NapileTokens.IDE_TEMPLATE_START;
 		if(expected != match.getNode().getElementType())
 			return;
 

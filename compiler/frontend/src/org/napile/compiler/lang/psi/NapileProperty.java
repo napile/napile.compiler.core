@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.search.LocalSearchScope;
@@ -104,7 +104,7 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 		while(node != null)
 		{
 			IElementType tt = node.getElementType();
-			if(tt == JetTokens.COLON)
+			if(tt == NapileTokens.COLON)
 			{
 				passedColon = true;
 			}
@@ -152,13 +152,13 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 	@Nullable
 	public NapileExpression getInitializer()
 	{
-		return PsiTreeUtil.getNextSiblingOfType(findChildByType(JetTokens.EQ), NapileExpression.class);
+		return PsiTreeUtil.getNextSiblingOfType(findChildByType(NapileTokens.EQ), NapileExpression.class);
 	}
 
 	@NotNull
 	public ASTNode getVarNode()
 	{
-		ASTNode node = getNode().findChildByType(JetTokens.VAR_KEYWORD);
+		ASTNode node = getNode().findChildByType(NapileTokens.VAR_KEYWORD);
 		assert node != null : "Var should always exist for property";
 		return node;
 	}

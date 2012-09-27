@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
@@ -40,7 +40,7 @@ public class NapileWhenEntry extends NapileElementImpl
 	@Nullable
 	public PsiElement getElseKeywordElement()
 	{
-		return findChildByType(JetTokens.ELSE_KEYWORD);
+		return findChildByType(NapileTokens.ELSE_KEYWORD);
 	}
 
 	@Nullable

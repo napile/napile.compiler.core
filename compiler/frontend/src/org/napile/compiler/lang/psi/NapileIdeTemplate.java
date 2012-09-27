@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
@@ -48,7 +48,7 @@ public class NapileIdeTemplate extends NapileElementImpl
 	@Nullable
 	public String getPlaceholderText()
 	{
-		PsiElement idElement = findChildByType(JetTokens.IDENTIFIER);
+		PsiElement idElement = findChildByType(NapileTokens.IDENTIFIER);
 		return idElement == null ? null : idElement.getText();
 	}
 }

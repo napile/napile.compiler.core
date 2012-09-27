@@ -25,7 +25,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.formatting.Alignment;
 import com.intellij.formatting.Block;
@@ -127,7 +127,7 @@ public class JetBlock extends AbstractBlock
 
 	private static Indent indentIfNotBrace(@NotNull ASTNode child)
 	{
-		return child.getElementType() == JetTokens.RBRACE || child.getElementType() == JetTokens.LBRACE ? Indent.getNoneIndent() : Indent.getNormalIndent();
+		return child.getElementType() == NapileTokens.RBRACE || child.getElementType() == NapileTokens.LBRACE ? Indent.getNoneIndent() : Indent.getNormalIndent();
 	}
 
 	private static ASTNode getPrevWithoutWhitespace(ASTNode node)
@@ -204,11 +204,11 @@ public class JetBlock extends AbstractBlock
 		IElementType parentType = myNode.getElementType();
 		if(parentType == NapileNodeTypes.VALUE_PARAMETER_LIST)
 		{
-			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS, NapileNodeTypes.VALUE_PARAMETER, JetTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, JetTokens.LPAR, JetTokens.RPAR);
+			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS, NapileNodeTypes.VALUE_PARAMETER, NapileTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, NapileTokens.LPAR, NapileTokens.RPAR);
 		}
 		else if(parentType == NapileNodeTypes.VALUE_ARGUMENT_LIST)
 		{
-			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS_IN_CALLS, NapileNodeTypes.VALUE_ARGUMENT, JetTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, JetTokens.LPAR, JetTokens.RPAR);
+			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS_IN_CALLS, NapileNodeTypes.VALUE_ARGUMENT, NapileTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, NapileTokens.LPAR, NapileTokens.RPAR);
 		}
 
 		// Construct information about children alignment
@@ -271,9 +271,9 @@ public class JetBlock extends AbstractBlock
 	}
 
 	static ASTIndentStrategy[] INDENT_RULES = new ASTIndentStrategy[]{
-			ASTIndentStrategy.forNode("No indent for braces in blocks").in(NapileNodeTypes.BLOCK, NapileNodeTypes.CLASS_BODY, NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION).forType(JetTokens.RBRACE, JetTokens.LBRACE).set(Indent.getNoneIndent()),
+			ASTIndentStrategy.forNode("No indent for braces in blocks").in(NapileNodeTypes.BLOCK, NapileNodeTypes.CLASS_BODY, NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION).forType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNoneIndent()),
 
-			ASTIndentStrategy.forNode("Indent for block content").in(NapileNodeTypes.BLOCK, NapileNodeTypes.CLASS_BODY, NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION).notForType(JetTokens.RBRACE, JetTokens.LBRACE).set(Indent.getNormalIndent()),
+			ASTIndentStrategy.forNode("Indent for block content").in(NapileNodeTypes.BLOCK, NapileNodeTypes.CLASS_BODY, NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION).notForType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNormalIndent()),
 
 			ASTIndentStrategy.forNode("Indent for property accessors").in(NapileNodeTypes.PROPERTY).forType(NapileNodeTypes.PROPERTY_ACCESSOR).set(Indent.getNormalIndent()),
 
@@ -327,7 +327,7 @@ public class JetBlock extends AbstractBlock
 			if(parentType == NapileNodeTypes.VALUE_PARAMETER_LIST || parentType == NapileNodeTypes.VALUE_ARGUMENT_LIST)
 			{
 				ASTNode prev = getPrevWithoutWhitespace(child);
-				if(childType == JetTokens.RPAR && (prev == null || prev.getElementType() != TokenType.ERROR_ELEMENT))
+				if(childType == NapileTokens.RPAR && (prev == null || prev.getElementType() != TokenType.ERROR_ELEMENT))
 				{
 					return Indent.getNoneIndent();
 				}

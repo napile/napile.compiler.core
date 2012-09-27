@@ -54,7 +54,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -184,7 +184,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
 		IElementType operationType = operationSign.getReferencedNameElementType();
 		JetType result;
-		if(operationType == JetTokens.EQ)
+		if(operationType == NapileTokens.EQ)
 		{
 			result = visitAssignment(expression, context);
 		}

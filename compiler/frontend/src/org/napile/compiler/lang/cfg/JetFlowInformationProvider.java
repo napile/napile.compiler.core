@@ -40,7 +40,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.plugin.JetMainDetector;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -403,7 +403,7 @@ public class JetFlowInformationProvider
 			if(variable instanceof NapileSimpleNameExpression)
 			{
 				NapileSimpleNameExpression simpleNameExpression = (NapileSimpleNameExpression) variable;
-				if(simpleNameExpression.getReferencedNameElementType() != JetTokens.FIELD_IDENTIFIER)
+				if(simpleNameExpression.getReferencedNameElementType() != NapileTokens.FIELD_IDENTIFIER)
 				{
 					if(((PropertyDescriptor) variableDescriptor).getModality() != Modality.FINAL)
 					{
@@ -471,7 +471,7 @@ public class JetFlowInformationProvider
 	private boolean isBackingFieldReference(@Nullable NapileElement element, boolean[] error, boolean reportError)
 	{
 		error[0] = false;
-		if(element instanceof NapileSimpleNameExpression && ((NapileSimpleNameExpression) element).getReferencedNameElementType() == JetTokens.FIELD_IDENTIFIER)
+		if(element instanceof NapileSimpleNameExpression && ((NapileSimpleNameExpression) element).getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER)
 		{
 			return true;
 		}
@@ -535,7 +535,7 @@ public class JetFlowInformationProvider
 					NapileElement element = ((WriteValueInstruction) instruction).getElement();
 					if(variableUseState != VariableUseState.LAST_READ)
 					{
-						if(element instanceof NapileBinaryExpression && ((NapileBinaryExpression) element).getOperationToken() == JetTokens.EQ)
+						if(element instanceof NapileBinaryExpression && ((NapileBinaryExpression) element).getOperationToken() == NapileTokens.EQ)
 						{
 							NapileExpression right = ((NapileBinaryExpression) element).getRight();
 							if(right != null)
@@ -546,7 +546,7 @@ public class JetFlowInformationProvider
 						else if(element instanceof NapilePostfixExpression)
 						{
 							IElementType operationToken = ((NapilePostfixExpression) element).getOperationReference().getReferencedNameElementType();
-							if(operationToken == JetTokens.PLUSPLUS || operationToken == JetTokens.MINUSMINUS)
+							if(operationToken == NapileTokens.PLUSPLUS || operationToken == NapileTokens.MINUSMINUS)
 							{
 								trace.report(Errors.UNUSED_CHANGED_VALUE.on(element, element));
 							}

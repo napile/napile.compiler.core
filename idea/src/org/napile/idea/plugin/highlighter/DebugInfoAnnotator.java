@@ -20,7 +20,7 @@ import static org.napile.compiler.lang.resolve.BindingContext.AMBIGUOUS_REFERENC
 import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
 import static org.napile.compiler.lang.resolve.BindingContext.LABEL_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
-import static org.napile.compiler.lexer.JetTokens.*;
+import static org.napile.compiler.lexer.NapileTokens.*;
 
 import java.util.Collection;
 import java.util.Set;
@@ -38,7 +38,7 @@ import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.google.common.collect.Sets;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -111,7 +111,7 @@ public class DebugInfoAnnotator implements Annotator
 									return;
 								}
 							}
-							else if(nameExpression.getReferencedNameElementType() == JetTokens.THIS_KEYWORD)
+							else if(nameExpression.getReferencedNameElementType() == NapileTokens.THIS_KEYWORD)
 							{
 								return;
 							}

@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lexer.JetLexer;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
@@ -52,40 +52,40 @@ public class JetHighlighter extends SyntaxHighlighterBase
 	{
 		keys = new HashMap<IElementType, TextAttributesKey>();
 
-		fillMap(keys, JetTokens.KEYWORDS, JetHighlightingColors.KEYWORD);
+		fillMap(keys, NapileTokens.KEYWORDS, JetHighlightingColors.KEYWORD);
 
-		keys.put(JetTokens.AS_SAFE, JetHighlightingColors.KEYWORD);
+		keys.put(NapileTokens.AS_SAFE, JetHighlightingColors.KEYWORD);
 
-		keys.put(JetTokens.INTEGER_LITERAL, JetHighlightingColors.NUMBER);
-		keys.put(JetTokens.FLOAT_LITERAL, JetHighlightingColors.NUMBER);
+		keys.put(NapileTokens.INTEGER_LITERAL, JetHighlightingColors.NUMBER);
+		keys.put(NapileTokens.FLOAT_LITERAL, JetHighlightingColors.NUMBER);
 
-		fillMap(keys, JetTokens.OPERATIONS.minus(TokenSet.create(JetTokens.IDENTIFIER)).minus(JetTokens.KEYWORDS), JetHighlightingColors.OPERATOR_SIGN);
-		keys.put(JetTokens.LPAR, JetHighlightingColors.PARENTHESIS);
-		keys.put(JetTokens.RPAR, JetHighlightingColors.PARENTHESIS);
-		keys.put(JetTokens.LBRACE, JetHighlightingColors.BRACES);
-		keys.put(JetTokens.RBRACE, JetHighlightingColors.BRACES);
-		keys.put(JetTokens.LBRACKET, JetHighlightingColors.BRACKETS);
-		keys.put(JetTokens.RBRACKET, JetHighlightingColors.BRACKETS);
-		keys.put(JetTokens.COMMA, JetHighlightingColors.COMMA);
-		keys.put(JetTokens.SEMICOLON, JetHighlightingColors.SEMICOLON);
-		keys.put(JetTokens.DOT, JetHighlightingColors.DOT);
-		keys.put(JetTokens.ARROW, JetHighlightingColors.ARROW);
+		fillMap(keys, NapileTokens.OPERATIONS.minus(TokenSet.create(NapileTokens.IDENTIFIER)).minus(NapileTokens.KEYWORDS), JetHighlightingColors.OPERATOR_SIGN);
+		keys.put(NapileTokens.LPAR, JetHighlightingColors.PARENTHESIS);
+		keys.put(NapileTokens.RPAR, JetHighlightingColors.PARENTHESIS);
+		keys.put(NapileTokens.LBRACE, JetHighlightingColors.BRACES);
+		keys.put(NapileTokens.RBRACE, JetHighlightingColors.BRACES);
+		keys.put(NapileTokens.LBRACKET, JetHighlightingColors.BRACKETS);
+		keys.put(NapileTokens.RBRACKET, JetHighlightingColors.BRACKETS);
+		keys.put(NapileTokens.COMMA, JetHighlightingColors.COMMA);
+		keys.put(NapileTokens.SEMICOLON, JetHighlightingColors.SEMICOLON);
+		keys.put(NapileTokens.DOT, JetHighlightingColors.DOT);
+		keys.put(NapileTokens.ARROW, JetHighlightingColors.ARROW);
 
-		keys.put(JetTokens.OPEN_QUOTE, JetHighlightingColors.STRING);
-		keys.put(JetTokens.CLOSING_QUOTE, JetHighlightingColors.STRING);
-		keys.put(JetTokens.REGULAR_STRING_PART, JetHighlightingColors.STRING);
-		keys.put(JetTokens.LONG_TEMPLATE_ENTRY_END, JetHighlightingColors.STRING_ESCAPE);
-		keys.put(JetTokens.LONG_TEMPLATE_ENTRY_START, JetHighlightingColors.STRING_ESCAPE);
-		keys.put(JetTokens.SHORT_TEMPLATE_ENTRY_START, JetHighlightingColors.STRING_ESCAPE);
+		keys.put(NapileTokens.OPEN_QUOTE, JetHighlightingColors.STRING);
+		keys.put(NapileTokens.CLOSING_QUOTE, JetHighlightingColors.STRING);
+		keys.put(NapileTokens.REGULAR_STRING_PART, JetHighlightingColors.STRING);
+		keys.put(NapileTokens.LONG_TEMPLATE_ENTRY_END, JetHighlightingColors.STRING_ESCAPE);
+		keys.put(NapileTokens.LONG_TEMPLATE_ENTRY_START, JetHighlightingColors.STRING_ESCAPE);
+		keys.put(NapileTokens.SHORT_TEMPLATE_ENTRY_START, JetHighlightingColors.STRING_ESCAPE);
 
-		keys.put(JetTokens.ESCAPE_SEQUENCE, JetHighlightingColors.STRING_ESCAPE);
+		keys.put(NapileTokens.ESCAPE_SEQUENCE, JetHighlightingColors.STRING_ESCAPE);
 
-		keys.put(JetTokens.CHARACTER_LITERAL, JetHighlightingColors.STRING);
+		keys.put(NapileTokens.CHARACTER_LITERAL, JetHighlightingColors.STRING);
 
-		keys.put(JetTokens.EOL_COMMENT, JetHighlightingColors.LINE_COMMENT);
-		keys.put(JetTokens.SHEBANG_COMMENT, JetHighlightingColors.LINE_COMMENT);
-		keys.put(JetTokens.BLOCK_COMMENT, JetHighlightingColors.BLOCK_COMMENT);
-		keys.put(JetTokens.DOC_COMMENT, JetHighlightingColors.DOC_COMMENT);
+		keys.put(NapileTokens.EOL_COMMENT, JetHighlightingColors.LINE_COMMENT);
+		keys.put(NapileTokens.SHEBANG_COMMENT, JetHighlightingColors.LINE_COMMENT);
+		keys.put(NapileTokens.BLOCK_COMMENT, JetHighlightingColors.BLOCK_COMMENT);
+		keys.put(NapileTokens.DOC_COMMENT, JetHighlightingColors.DOC_COMMENT);
 
 		keys.put(TokenType.BAD_CHARACTER, JetHighlightingColors.BAD_CHARACTER);
 	}

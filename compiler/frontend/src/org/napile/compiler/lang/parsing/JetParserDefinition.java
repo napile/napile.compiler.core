@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementType;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.lexer.JetLexer;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
@@ -73,21 +73,21 @@ public class JetParserDefinition implements ParserDefinition
 	@NotNull
 	public TokenSet getWhitespaceTokens()
 	{
-		return JetTokens.WHITESPACES;
+		return NapileTokens.WHITESPACES;
 	}
 
 	@Override
 	@NotNull
 	public TokenSet getCommentTokens()
 	{
-		return JetTokens.COMMENTS;
+		return NapileTokens.COMMENTS;
 	}
 
 	@Override
 	@NotNull
 	public TokenSet getStringLiteralElements()
 	{
-		return JetTokens.STRINGS;
+		return NapileTokens.STRINGS;
 	}
 
 	@Override

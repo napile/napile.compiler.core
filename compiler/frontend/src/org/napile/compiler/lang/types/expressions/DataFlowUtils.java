@@ -41,7 +41,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.tree.IElementType;
 
@@ -83,7 +83,7 @@ public class DataFlowUtils
 					{
 						DataFlowInfo rightInfo = extractDataFlowInfoFromCondition(expressionRight, conditionValue, context);
 						DataFlowInfo.CompositionOperator operator;
-						if(operationToken == JetTokens.ANDAND)
+						if(operationToken == NapileTokens.ANDAND)
 						{
 							operator = conditionValue ? DataFlowInfo.AND : DataFlowInfo.OR;
 						}
@@ -114,11 +114,11 @@ public class DataFlowUtils
 					DataFlowValue rightValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(right, rhsType, bindingContext);
 
 					Boolean equals = null;
-					if(operationToken == JetTokens.EQEQ || operationToken == JetTokens.EQEQEQ)
+					if(operationToken == NapileTokens.EQEQ || operationToken == NapileTokens.EQEQEQ)
 					{
 						equals = true;
 					}
-					else if(operationToken == JetTokens.EXCLEQ || operationToken == JetTokens.EXCLEQEQEQ)
+					else if(operationToken == NapileTokens.EXCLEQ || operationToken == NapileTokens.EXCLEQEQEQ)
 					{
 						equals = false;
 					}
@@ -140,7 +140,7 @@ public class DataFlowUtils
 			public void visitUnaryExpression(NapileUnaryExpression expression)
 			{
 				IElementType operationTokenType = expression.getOperationReference().getReferencedNameElementType();
-				if(operationTokenType == JetTokens.EXCL)
+				if(operationTokenType == NapileTokens.EXCL)
 				{
 					NapileExpression baseExpression = expression.getBaseExpression();
 					if(baseExpression != null)

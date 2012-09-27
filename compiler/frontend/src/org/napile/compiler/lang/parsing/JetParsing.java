@@ -26,7 +26,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -43,21 +43,21 @@ public class JetParsing extends AbstractJetParsing
 
 	static
 	{
-		for(IElementType softKeyword : JetTokens.MODIFIER_KEYWORDS.getTypes())
+		for(IElementType softKeyword : NapileTokens.MODIFIER_KEYWORDS.getTypes())
 		{
 			MODIFIER_KEYWORD_MAP.put(((NapileKeywordToken) softKeyword).getValue(), softKeyword);
 		}
 	}
 
-	public static final TokenSet CLASS_KEYWORDS = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD, JetTokens.RETELL_KEYWORD);
-	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.METH_KEYWORD, JetTokens.IDENTIFIER);
+	public static final TokenSet CLASS_KEYWORDS = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.ENUM_KEYWORD, NapileTokens.RETELL_KEYWORD);
+	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.IDENTIFIER);
 
-	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(JetTokens.LT, JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE), CLASS_KEYWORDS);
-	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(JetTokens.LPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.GT);
-	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.COMMA, JetTokens.RPAR);
-	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(JetTokens.DOT, JetTokens.EOL_OR_SEMICOLON);
-	/*package*/ static final TokenSet TYPE_REF_FIRST = TokenSet.create(JetTokens.LBRACKET, JetTokens.IDENTIFIER, JetTokens.METH_KEYWORD, JetTokens.LPAR, JetTokens.THIS_KEYWORD, JetTokens.HASH);
-	private static final TokenSet RECEIVER_TYPE_TERMINATORS = TokenSet.create(JetTokens.DOT, JetTokens.SAFE_ACCESS);
+	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(NapileTokens.LT, NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE), CLASS_KEYWORDS);
+	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.GT);
+	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.COLON, NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.RPAR);
+	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.DOT, NapileTokens.EOL_OR_SEMICOLON);
+	/*package*/ static final TokenSet TYPE_REF_FIRST = TokenSet.create(NapileTokens.LBRACKET, NapileTokens.IDENTIFIER, NapileTokens.METH_KEYWORD, NapileTokens.LPAR, NapileTokens.THIS_KEYWORD, NapileTokens.HASH);
+	private static final TokenSet RECEIVER_TYPE_TERMINATORS = TokenSet.create(NapileTokens.DOT, NapileTokens.SAFE_ACCESS);
 
 	static JetParsing createForTopLevel(SemanticWhitespaceAwarePsiBuilder builder)
 	{
@@ -120,9 +120,9 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private void parseToplevelDeclarations(boolean insideBlock)
 	{
-		while(!eof() && (!insideBlock || !at(JetTokens.RBRACE)))
+		while(!eof() && (!insideBlock || !at(NapileTokens.RBRACE)))
 		{
-			if(at(JetTokens.IMPORT_KEYWORD))
+			if(at(NapileTokens.IMPORT_KEYWORD))
 			{
 				parseImportDirective();
 			}
@@ -148,14 +148,14 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker firstEntry = mark();
 		parseModifierList(MODIFIER_LIST);
 
-		if(at(JetTokens.PACKAGE_KEYWORD))
+		if(at(NapileTokens.PACKAGE_KEYWORD))
 		{
 			advance(); // PACKAGE_KEYWORD
 
 
 			parseNamespaceName();
 
-			if(at(JetTokens.LBRACE))
+			if(at(NapileTokens.LBRACE))
 			{
 				// Because it's blocked namespace and it will be parsed as one of top level objects
 				firstEntry.rollbackTo();
@@ -165,7 +165,7 @@ public class JetParsing extends AbstractJetParsing
 
 			firstEntry.drop();
 
-			consumeIf(JetTokens.SEMICOLON);
+			consumeIf(NapileTokens.SEMICOLON);
 		}
 		else
 		{
@@ -188,7 +188,7 @@ public class JetParsing extends AbstractJetParsing
 			}
 
 			PsiBuilder.Marker nsName = mark();
-			if(expect(JetTokens.IDENTIFIER, "Package name must be a '.'-separated identifier list", NAMESPACE_NAME_RECOVERY_SET))
+			if(expect(NapileTokens.IDENTIFIER, "Package name must be a '.'-separated identifier list", NAMESPACE_NAME_RECOVERY_SET))
 			{
 				nsName.done(REFERENCE_EXPRESSION);
 			}
@@ -197,7 +197,7 @@ public class JetParsing extends AbstractJetParsing
 				nsName.drop();
 			}
 
-			if(at(JetTokens.DOT))
+			if(at(NapileTokens.DOT))
 			{
 				advance(); // DOT
 			}
@@ -215,26 +215,26 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private void parseImportDirective()
 	{
-		assert _at(JetTokens.IMPORT_KEYWORD);
+		assert _at(NapileTokens.IMPORT_KEYWORD);
 		PsiBuilder.Marker importDirective = mark();
 		advance(); // IMPORT_KEYWORD
 
 		PsiBuilder.Marker qualifiedName = mark();
-		if(at(JetTokens.PACKAGE_KEYWORD))
+		if(at(NapileTokens.PACKAGE_KEYWORD))
 		{
 			advance(); // PACKAGE_KEYWORD
-			expect(JetTokens.DOT, "Expecting '.'", TokenSet.create(JetTokens.IDENTIFIER, JetTokens.MUL, JetTokens.SEMICOLON));
+			expect(NapileTokens.DOT, "Expecting '.'", TokenSet.create(NapileTokens.IDENTIFIER, NapileTokens.MUL, NapileTokens.SEMICOLON));
 		}
 
 		PsiBuilder.Marker reference = mark();
-		expect(JetTokens.IDENTIFIER, "Expecting qualified name");
+		expect(NapileTokens.IDENTIFIER, "Expecting qualified name");
 		reference.done(REFERENCE_EXPRESSION);
-		while(at(JetTokens.DOT) && lookahead(1) != JetTokens.MUL)
+		while(at(NapileTokens.DOT) && lookahead(1) != NapileTokens.MUL)
 		{
 			advance(); // DOT
 
 			reference = mark();
-			if(expect(JetTokens.IDENTIFIER, "Qualified name must be a '.'-separated identifier list", TokenSet.create(JetTokens.AS_KEYWORD, JetTokens.DOT, JetTokens.SEMICOLON)))
+			if(expect(NapileTokens.IDENTIFIER, "Qualified name must be a '.'-separated identifier list", TokenSet.create(NapileTokens.AS_KEYWORD, NapileTokens.DOT, NapileTokens.SEMICOLON)))
 			{
 				reference.done(REFERENCE_EXPRESSION);
 			}
@@ -249,26 +249,26 @@ public class JetParsing extends AbstractJetParsing
 		}
 		qualifiedName.drop();
 
-		if(at(JetTokens.DOT))
+		if(at(NapileTokens.DOT))
 		{
 			advance(); // DOT
-			assert _at(JetTokens.MUL);
+			assert _at(NapileTokens.MUL);
 			advance(); // MUL
 			handleUselessRename();
 		}
-		if(at(JetTokens.AS_KEYWORD))
+		if(at(NapileTokens.AS_KEYWORD))
 		{
 			advance(); // AS_KEYWORD
-			expect(JetTokens.IDENTIFIER, "Expecting identifier", TokenSet.create(JetTokens.SEMICOLON));
+			expect(NapileTokens.IDENTIFIER, "Expecting identifier", TokenSet.create(NapileTokens.SEMICOLON));
 		}
-		consumeIf(JetTokens.SEMICOLON);
+		consumeIf(NapileTokens.SEMICOLON);
 		importDirective.done(IMPORT_DIRECTIVE);
 	}
 
 	private void parseImportDirectives()
 	{
 		// TODO: Duplicate with parsing imports in parseToplevelDeclarations
-		while(at(JetTokens.IMPORT_KEYWORD))
+		while(at(NapileTokens.IMPORT_KEYWORD))
 		{
 			parseImportDirective();
 		}
@@ -276,11 +276,11 @@ public class JetParsing extends AbstractJetParsing
 
 	private void handleUselessRename()
 	{
-		if(at(JetTokens.AS_KEYWORD))
+		if(at(NapileTokens.AS_KEYWORD))
 		{
 			PsiBuilder.Marker as = mark();
 			advance(); // AS_KEYWORD
-			consumeIf(JetTokens.IDENTIFIER);
+			consumeIf(NapileTokens.IDENTIFIER);
 			as.error("Cannot rename a all imported items to one identifier");
 		}
 	}
@@ -331,11 +331,11 @@ public class JetParsing extends AbstractJetParsing
 		boolean empty = true;
 		while(!eof())
 		{
-			if(atSet(JetTokens.MODIFIER_KEYWORDS))
+			if(atSet(NapileTokens.MODIFIER_KEYWORDS))
 			{
 				advance(); // MODIFIER
 			}
-			else if(at(JetTokens.AT))
+			else if(at(NapileTokens.AT))
 			{
 				parseAnnotations();
 			}
@@ -367,7 +367,7 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker annotation = mark();
 		myBuilder.disableNewlines();
 
-		while(at(JetTokens.AT))
+		while(at(NapileTokens.AT))
 			parseAnnotationEntry();
 
 		myBuilder.restoreNewlinesState();
@@ -383,7 +383,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private void parseAnnotationEntry()
 	{
-		assert _at(JetTokens.AT);
+		assert _at(NapileTokens.AT);
 
 		PsiBuilder.Marker attribute = mark();
 
@@ -397,7 +397,7 @@ public class JetParsing extends AbstractJetParsing
 
 		parseTypeArgumentList();
 
-		if(at(JetTokens.LPAR))
+		if(at(NapileTokens.LPAR))
 		{
 			myExpressionParsing.parseValueArgumentList();
 		}
@@ -421,20 +421,20 @@ public class JetParsing extends AbstractJetParsing
 		advance(); // CLASS_KEYWORD
 
 		if(!parseIdeTemplate())
-			expect(JetTokens.IDENTIFIER, "Class name expected", CLASS_NAME_RECOVERY_SET);
+			expect(NapileTokens.IDENTIFIER, "Class name expected", CLASS_NAME_RECOVERY_SET);
 		parseTypeParameterList();
 
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 			parseTypeExtendList();
 		}
 
-		if(at(JetTokens.LBRACE))
+		if(at(NapileTokens.LBRACE))
 		{
-			if(lastKeyword == JetTokens.ENUM_KEYWORD)
+			if(lastKeyword == NapileTokens.ENUM_KEYWORD)
 				parseEnumBody();
-			else if(lastKeyword == JetTokens.RETELL_KEYWORD)
+			else if(lastKeyword == NapileTokens.RETELL_KEYWORD)
 				parseRetellClassBody();
 			else
 				parseClassBody();
@@ -450,7 +450,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private void parseEnumBody()
 	{
-		if(!at(JetTokens.LBRACE))
+		if(!at(NapileTokens.LBRACE))
 			return;
 
 		PsiBuilder.Marker classBody = mark();
@@ -460,17 +460,17 @@ public class JetParsing extends AbstractJetParsing
 
 		if(!parseIdeTemplate())
 		{
-			while(!eof() && !at(JetTokens.RBRACE))
+			while(!eof() && !at(NapileTokens.RBRACE))
 			{
 				PsiBuilder.Marker entryOrMember = mark();
 
-				TokenSet constructorNameFollow = TokenSet.create(JetTokens.SEMICOLON, JetTokens.COLON, JetTokens.LPAR, JetTokens.LT, JetTokens.LBRACE);
+				TokenSet constructorNameFollow = TokenSet.create(NapileTokens.SEMICOLON, NapileTokens.COLON, NapileTokens.LPAR, NapileTokens.LT, NapileTokens.LBRACE);
 				int lastId = findLastBefore(ENUM_MEMBER_FIRST, constructorNameFollow, false);
 
 				createTruncatedBuilder(lastId).parseModifierList(MODIFIER_LIST);
 
 				IElementType type;
-				if(at(JetTokens.IDENTIFIER))
+				if(at(NapileTokens.IDENTIFIER))
 				{
 					parseEnumEntry();
 					type = ENUM_ENTRY;
@@ -492,7 +492,7 @@ public class JetParsing extends AbstractJetParsing
 			}
 		}
 
-		expect(JetTokens.RBRACE, "Expecting '}' to close enum body");
+		expect(NapileTokens.RBRACE, "Expecting '}' to close enum body");
 		myBuilder.restoreNewlinesState();
 
 		classBody.done(CLASS_BODY);
@@ -505,12 +505,12 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private void parseEnumEntry()
 	{
-		assert _at(JetTokens.IDENTIFIER);
+		assert _at(NapileTokens.IDENTIFIER);
 
 		advance();
 
 		parseTypeArgumentList();
-		if(at(JetTokens.LPAR))
+		if(at(NapileTokens.LPAR))
 		{
 			PsiBuilder.Marker callExpression = mark();
 
@@ -519,15 +519,15 @@ public class JetParsing extends AbstractJetParsing
 			callExpression.done(CONSTRUCTOR_CALLEE);
 		}
 
-		if(at(JetTokens.LBRACE))
+		if(at(NapileTokens.LBRACE))
 			parseClassBody();
 
-		consumeIf(JetTokens.SEMICOLON);
+		consumeIf(NapileTokens.SEMICOLON);
 	}
 
 	private void parseRetellClassBody()
 	{
-		if(!at(JetTokens.LBRACE))
+		if(!at(NapileTokens.LBRACE))
 			return;
 
 		PsiBuilder.Marker classBody = mark();
@@ -537,11 +537,11 @@ public class JetParsing extends AbstractJetParsing
 
 		if(!parseIdeTemplate())
 		{
-			while(!eof() && !at(JetTokens.RBRACE))
+			while(!eof() && !at(NapileTokens.RBRACE))
 			{
 				PsiBuilder.Marker entryMarker = mark();
 
-				if(at(JetTokens.IDENTIFIER))
+				if(at(NapileTokens.IDENTIFIER))
 				{
 					parseRetellEntry();
 					entryMarker.done(RETELL_ENTRY);
@@ -554,7 +554,7 @@ public class JetParsing extends AbstractJetParsing
 			}
 		}
 
-		expect(JetTokens.RBRACE, "Expecting '}' to close retell body");
+		expect(NapileTokens.RBRACE, "Expecting '}' to close retell body");
 		myBuilder.restoreNewlinesState();
 
 		classBody.done(CLASS_BODY);
@@ -562,11 +562,11 @@ public class JetParsing extends AbstractJetParsing
 
 	private void parseRetellEntry()
 	{
-		assert _at(JetTokens.IDENTIFIER);
+		assert _at(NapileTokens.IDENTIFIER);
 
 		advance();
 
-		if(at(JetTokens.EQ))
+		if(at(NapileTokens.EQ))
 		{
 			advance();
 
@@ -575,7 +575,7 @@ public class JetParsing extends AbstractJetParsing
 		else
 			error("'=' Expected");
 
-		consumeIf(JetTokens.SEMICOLON);
+		consumeIf(NapileTokens.SEMICOLON);
 	}
 
 	/*
@@ -587,20 +587,20 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker body = mark();
 
 		myBuilder.enableNewlines();
-		expect(JetTokens.LBRACE, "Expecting a class body", TokenSet.create(JetTokens.LBRACE));
+		expect(NapileTokens.LBRACE, "Expecting a class body", TokenSet.create(NapileTokens.LBRACE));
 
 		if(!parseIdeTemplate())
 		{
 			while(!eof())
 			{
-				if(at(JetTokens.RBRACE))
+				if(at(NapileTokens.RBRACE))
 				{
 					break;
 				}
 				parseMemberDeclaration();
 			}
 		}
-		expect(JetTokens.RBRACE, "Missing '}");
+		expect(NapileTokens.RBRACE, "Missing '}");
 		myBuilder.restoreNewlinesState();
 
 		body.done(CLASS_BODY);
@@ -629,7 +629,7 @@ public class JetParsing extends AbstractJetParsing
 
 		IElementType declType = null;
 		// ugly
-		if(at(JetTokens.STATIC_KEYWORD) && lookahead(1) == JetTokens.LBRACE)
+		if(at(NapileTokens.STATIC_KEYWORD) && lookahead(1) == NapileTokens.LBRACE)
 			declType = parseStaticConstructor();
 		else
 		{
@@ -640,7 +640,7 @@ public class JetParsing extends AbstractJetParsing
 
 		if(declType == null)
 		{
-			errorWithRecovery("Expecting member declaration", TokenSet.create(JetTokens.RBRACE));
+			errorWithRecovery("Expecting member declaration", TokenSet.create(NapileTokens.RBRACE));
 			decl.drop();
 		}
 		else
@@ -653,11 +653,11 @@ public class JetParsing extends AbstractJetParsing
 		IElementType declType = null;
 		if(CLASS_KEYWORDS.contains(keywordToken))
 			declType = parseClass();
-		else if(keywordToken == JetTokens.METH_KEYWORD)
+		else if(keywordToken == NapileTokens.METH_KEYWORD)
 			declType = parseMethod();
-		else if(keywordToken == JetTokens.THIS_KEYWORD)
+		else if(keywordToken == NapileTokens.THIS_KEYWORD)
 			declType = parseConstructor();
-		else if(keywordToken == JetTokens.VAR_KEYWORD)
+		else if(keywordToken == NapileTokens.VAR_KEYWORD)
 			declType = parseProperty();
 
 		return declType;
@@ -670,17 +670,17 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	void parseObject()
 	{
-		assert _at(JetTokens.ANONYM_KEYWORD);
+		assert _at(NapileTokens.ANONYM_KEYWORD);
 
 		advance(); // OBJECT_KEYWORD
 
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 			parseDelegationSpecifierList();
 		}
 
-		if(at(JetTokens.LBRACE))
+		if(at(NapileTokens.LBRACE))
 			parseClassBody();
 	}
 
@@ -692,10 +692,10 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker list = mark();
 		while(true)
 		{
-			if(at(JetTokens.COMMA))
+			if(at(NapileTokens.COMMA))
 				errorAndAdvance("Expecting a this or super constructor call");
 			parseInitializer();
-			if(!at(JetTokens.COMMA))
+			if(!at(NapileTokens.COMMA))
 				break;
 			advance(); // COMMA
 		}
@@ -714,7 +714,7 @@ public class JetParsing extends AbstractJetParsing
 		parseAnnotations();
 
 		IElementType type;
-		if(at(JetTokens.THIS_KEYWORD))
+		if(at(NapileTokens.THIS_KEYWORD))
 		{
 			PsiBuilder.Marker mark = mark();
 			advance(); // THIS_KEYWORD
@@ -730,7 +730,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			errorWithRecovery("Expecting constructor call (this(...)) or supertype initializer", TokenSet.create(JetTokens.LBRACE, JetTokens.COMMA));
+			errorWithRecovery("Expecting constructor call (this(...)) or supertype initializer", TokenSet.create(NapileTokens.LBRACE, NapileTokens.COMMA));
 			initializer.drop();
 			return;
 		}
@@ -756,7 +756,7 @@ public class JetParsing extends AbstractJetParsing
 
 	IElementType parseProperty(boolean local)
 	{
-		if(at(JetTokens.VAR_KEYWORD))
+		if(at(NapileTokens.VAR_KEYWORD))
 			advance(); // VAR_KEYWORD
 		else
 			errorAndAdvance("Expecting 'var'");
@@ -766,11 +766,11 @@ public class JetParsing extends AbstractJetParsing
 		myBuilder.disableJoiningComplexTokens();
 
 		if(!parseIdeTemplate())
-			expect(JetTokens.IDENTIFIER, "Expecting identifier");
+			expect(NapileTokens.IDENTIFIER, "Expecting identifier");
 
 		myBuilder.restoreJoiningComplexTokensState();
 
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 			if(!parseIdeTemplate())
@@ -781,7 +781,7 @@ public class JetParsing extends AbstractJetParsing
 
 		if(local)
 		{
-			if(at(JetTokens.EQ))
+			if(at(NapileTokens.EQ))
 			{
 				advance(); // EQ
 				myExpressionParsing.parseExpression();
@@ -790,27 +790,27 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			if(at(JetTokens.EQ))
+			if(at(NapileTokens.EQ))
 			{
 				advance(); // EQ
 				myExpressionParsing.parseExpression();
-				consumeIf(JetTokens.SEMICOLON);
+				consumeIf(NapileTokens.SEMICOLON);
 			}
 
 			if(parsePropertyGetterOrSetter())
 			{
 				parsePropertyGetterOrSetter();
 			}
-			if(!atSet(JetTokens.EOL_OR_SEMICOLON, JetTokens.RBRACE))
+			if(!atSet(NapileTokens.EOL_OR_SEMICOLON, NapileTokens.RBRACE))
 			{
-				if(getLastToken() != JetTokens.SEMICOLON)
+				if(getLastToken() != NapileTokens.SEMICOLON)
 				{
-					errorUntil("Property getter or setter expected", TokenSet.create(JetTokens.EOL_OR_SEMICOLON));
+					errorUntil("Property getter or setter expected", TokenSet.create(NapileTokens.EOL_OR_SEMICOLON));
 				}
 			}
 			else
 			{
-				consumeIf(JetTokens.SEMICOLON);
+				consumeIf(NapileTokens.SEMICOLON);
 			}
 		}
 
@@ -834,22 +834,22 @@ public class JetParsing extends AbstractJetParsing
 
 		parseModifierList(MODIFIER_LIST);
 
-		if(!at(JetTokens.GET_KEYWORD) && !at(JetTokens.SET_KEYWORD))
+		if(!at(NapileTokens.GET_KEYWORD) && !at(NapileTokens.SET_KEYWORD))
 		{
 			getterOrSetter.rollbackTo();
 			return false;
 		}
 
-		boolean setter = at(JetTokens.SET_KEYWORD);
+		boolean setter = at(NapileTokens.SET_KEYWORD);
 		advance(); // GET_KEYWORD or SET_KEYWORD
 
-		if(!at(JetTokens.LPAR))
+		if(!at(NapileTokens.LPAR))
 		{
 			// Account for Jet-114 (val a : int get {...})
-			TokenSet ACCESSOR_FIRST_OR_PROPERTY_END = TokenSet.orSet(JetTokens.MODIFIER_KEYWORDS, TokenSet.create(JetTokens.LBRACKET, JetTokens.GET_KEYWORD, JetTokens.SET_KEYWORD, JetTokens.EOL_OR_SEMICOLON, JetTokens.RBRACE));
+			TokenSet ACCESSOR_FIRST_OR_PROPERTY_END = TokenSet.orSet(NapileTokens.MODIFIER_KEYWORDS, TokenSet.create(NapileTokens.LBRACKET, NapileTokens.GET_KEYWORD, NapileTokens.SET_KEYWORD, NapileTokens.EOL_OR_SEMICOLON, NapileTokens.RBRACE));
 			if(!atSet(ACCESSOR_FIRST_OR_PROPERTY_END))
 			{
-				errorUntil("Accessor body expected", TokenSet.orSet(ACCESSOR_FIRST_OR_PROPERTY_END, TokenSet.create(JetTokens.LBRACE, JetTokens.LPAR, JetTokens.EQ)));
+				errorUntil("Accessor body expected", TokenSet.orSet(ACCESSOR_FIRST_OR_PROPERTY_END, TokenSet.create(NapileTokens.LBRACE, NapileTokens.LPAR, NapileTokens.EQ)));
 			}
 			else
 			{
@@ -859,15 +859,15 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		myBuilder.disableNewlines();
-		expect(JetTokens.LPAR, "Expecting '('", TokenSet.create(JetTokens.RPAR, JetTokens.IDENTIFIER, JetTokens.COLON, JetTokens.LBRACE, JetTokens.EQ));
+		expect(NapileTokens.LPAR, "Expecting '('", TokenSet.create(NapileTokens.RPAR, NapileTokens.IDENTIFIER, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.EQ));
 		if(setter)
 		{
 			PsiBuilder.Marker parameterList = mark();
 			PsiBuilder.Marker setterParameter = mark();
-			parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(JetTokens.IDENTIFIER), TokenSet.create(JetTokens.RPAR, JetTokens.COMMA, JetTokens.COLON));
-			expect(JetTokens.IDENTIFIER, "Expecting parameter name", TokenSet.create(JetTokens.RPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.EQ));
+			parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(NapileTokens.IDENTIFIER), TokenSet.create(NapileTokens.RPAR, NapileTokens.COMMA, NapileTokens.COLON));
+			expect(NapileTokens.IDENTIFIER, "Expecting parameter name", TokenSet.create(NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.EQ));
 
-			if(at(JetTokens.COLON))
+			if(at(NapileTokens.COLON))
 			{
 				advance();
 
@@ -876,12 +876,12 @@ public class JetParsing extends AbstractJetParsing
 			setterParameter.done(VALUE_PARAMETER);
 			parameterList.done(VALUE_PARAMETER_LIST);
 		}
-		if(!at(JetTokens.RPAR))
-			errorUntil("Expecting ')'", TokenSet.create(JetTokens.RPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.EQ, JetTokens.EOL_OR_SEMICOLON));
-		expect(JetTokens.RPAR, "Expecting ')'", TokenSet.create(JetTokens.RPAR, JetTokens.COLON, JetTokens.LBRACE, JetTokens.EQ));
+		if(!at(NapileTokens.RPAR))
+			errorUntil("Expecting ')'", TokenSet.create(NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.EQ, NapileTokens.EOL_OR_SEMICOLON));
+		expect(NapileTokens.RPAR, "Expecting ')'", TokenSet.create(NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.EQ));
 		myBuilder.restoreNewlinesState();
 
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance();
 
@@ -907,27 +907,27 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	IElementType parseMethod()
 	{
-		assert _at(JetTokens.METH_KEYWORD);
+		assert _at(NapileTokens.METH_KEYWORD);
 
 		advance(); // METH_KEYWORD
 
 		// Recovery for the case of class A { fun| }
-		if(at(JetTokens.RBRACE))
+		if(at(NapileTokens.RBRACE))
 		{
 			error("Function body expected");
 			return METHOD;
 		}
 
 		if(!parseIdeTemplate())
-			expect(JetTokens.IDENTIFIER, "Expecting identifier");
+			expect(NapileTokens.IDENTIFIER, "Expecting identifier");
 
-		TokenSet valueParametersFollow = TokenSet.create(JetTokens.COLON, JetTokens.EQ, JetTokens.LBRACE, JetTokens.SEMICOLON, JetTokens.RPAR);
+		TokenSet valueParametersFollow = TokenSet.create(NapileTokens.COLON, NapileTokens.EQ, NapileTokens.LBRACE, NapileTokens.SEMICOLON, NapileTokens.RPAR);
 
 		parseTypeParameterList();
 
 		parseValueParameterList(false, valueParametersFollow);
 
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 
@@ -937,11 +937,11 @@ public class JetParsing extends AbstractJetParsing
 			}
 		}
 
-		if(at(JetTokens.SEMICOLON))
+		if(at(NapileTokens.SEMICOLON))
 		{
 			advance(); // SEMICOLON
 		}
-		else if(at(JetTokens.EQ) || at(JetTokens.LBRACE))
+		else if(at(NapileTokens.EQ) || at(NapileTokens.LBRACE))
 		{
 			parseFunctionBody();
 		}
@@ -951,7 +951,7 @@ public class JetParsing extends AbstractJetParsing
 
 	private NapileNodeType parseStaticConstructor()
 	{
-		assert _at(JetTokens.STATIC_KEYWORD);
+		assert _at(NapileTokens.STATIC_KEYWORD);
 
 		advance(); // STATIC_KEYWORD
 
@@ -967,13 +967,13 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private NapileNodeType parseConstructor()
 	{
-		assert _at(JetTokens.THIS_KEYWORD);
+		assert _at(NapileTokens.THIS_KEYWORD);
 
 		advance(); // THIS_KEYWORD
 
-		parseValueParameterList(false, TokenSet.create(JetTokens.COLON, JetTokens.LBRACE, JetTokens.SEMICOLON));
+		parseValueParameterList(false, TokenSet.create(NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.SEMICOLON));
 
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 
@@ -981,13 +981,13 @@ public class JetParsing extends AbstractJetParsing
 			//parseInitializerList();
 		}
 
-		if(at(JetTokens.LBRACE))
+		if(at(NapileTokens.LBRACE))
 		{
 			parseBlock();
 		}
 		else
 		{
-			consumeIf(JetTokens.SEMICOLON);
+			consumeIf(NapileTokens.SEMICOLON);
 		}
 
 		return CONSTRUCTOR;
@@ -1002,15 +1002,15 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private void parseFunctionBody()
 	{
-		if(at(JetTokens.LBRACE))
+		if(at(NapileTokens.LBRACE))
 		{
 			parseBlock();
 		}
-		else if(at(JetTokens.EQ))
+		else if(at(NapileTokens.EQ))
 		{
 			advance(); // EQ
 			myExpressionParsing.parseExpression();
-			consumeIf(JetTokens.SEMICOLON);
+			consumeIf(NapileTokens.SEMICOLON);
 		}
 		else
 		{
@@ -1028,11 +1028,11 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker block = mark();
 
 		myBuilder.enableNewlines();
-		expect(JetTokens.LBRACE, "Expecting '{' to open a block");
+		expect(NapileTokens.LBRACE, "Expecting '{' to open a block");
 
 		myExpressionParsing.parseStatements();
 
-		expect(JetTokens.RBRACE, "Expecting '}");
+		expect(NapileTokens.RBRACE, "Expecting '}");
 		myBuilder.restoreNewlinesState();
 
 		block.done(BLOCK);
@@ -1047,13 +1047,13 @@ public class JetParsing extends AbstractJetParsing
 
 		while(true)
 		{
-			if(at(JetTokens.COMMA))
+			if(at(NapileTokens.COMMA))
 			{
 				errorAndAdvance("Expecting a delegation specifier");
 				continue;
 			}
 			parseDelegationSpecifier();
-			if(!at(JetTokens.COMMA))
+			if(!at(NapileTokens.COMMA))
 				break;
 			advance(); // COMMA
 		}
@@ -1067,13 +1067,13 @@ public class JetParsing extends AbstractJetParsing
 
 		while(true)
 		{
-			if(at(JetTokens.COMMA))
+			if(at(NapileTokens.COMMA))
 			{
 				errorAndAdvance("Expecting a type");
 				continue;
 			}
 			parseTypeRef();
-			if(!at(JetTokens.COMMA))
+			if(!at(NapileTokens.COMMA))
 				break;
 			advance(); // COMMA
 		}
@@ -1099,7 +1099,7 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker reference = mark();
 		parseTypeRef();
 
-		if(at(JetTokens.LPAR))
+		if(at(NapileTokens.LPAR))
 		{
 			reference.done(CONSTRUCTOR_CALLEE);
 			myExpressionParsing.parseValueArgumentList();
@@ -1121,24 +1121,24 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker list = mark();
 		boolean result = false;
-		if(at(JetTokens.LT))
+		if(at(NapileTokens.LT))
 		{
 			myBuilder.disableNewlines();
 			advance(); // LT
 
 			while(true)
 			{
-				if(at(JetTokens.COMMA))
+				if(at(NapileTokens.COMMA))
 					errorAndAdvance("Expecting type parameter declaration");
 
 				parseTypeParameter();
 
-				if(!at(JetTokens.COMMA))
+				if(!at(NapileTokens.COMMA))
 					break;
 				advance(); // COMMA
 			}
 
-			expect(JetTokens.GT, "Missing '>'");
+			expect(NapileTokens.GT, "Missing '>'");
 			myBuilder.restoreNewlinesState();
 			result = true;
 		}
@@ -1162,34 +1162,34 @@ public class JetParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker mark = mark();
 
-		parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(JetTokens.IDENTIFIER), TokenSet.create(JetTokens.COMMA, JetTokens.GT, JetTokens.COLON));
+		parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(NapileTokens.IDENTIFIER), TokenSet.create(NapileTokens.COMMA, NapileTokens.GT, NapileTokens.COLON));
 
-		expect(JetTokens.IDENTIFIER, "Type parameter name expected", TokenSet.EMPTY);
+		expect(NapileTokens.IDENTIFIER, "Type parameter name expected", TokenSet.EMPTY);
 
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 
 			parseTypeRef();
 		}
-		else if(at(JetTokens.LBRACKET))
+		else if(at(NapileTokens.LBRACKET))
 		{
 			advance(); // LBRACKET
 
 			while(true)
 			{
-				if(at(JetTokens.COMMA))
+				if(at(NapileTokens.COMMA))
 					errorAndAdvance("Expecting type declaration");
 
 				parseTypeRef();
 
-				if(!at(JetTokens.COMMA))
+				if(!at(NapileTokens.COMMA))
 					break;
 
 				advance(); // COMMA
 			}
 
-			expect(JetTokens.RBRACKET, "Missing ']'");
+			expect(NapileTokens.RBRACKET, "Missing ']'");
 		}
 
 		mark.done(TYPE_PARAMETER);
@@ -1232,11 +1232,11 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker typeRefMarker = mark();
 		parseAnnotations();
 
-		if(at(JetTokens.IDENTIFIER) || at(JetTokens.PACKAGE_KEYWORD))
+		if(at(NapileTokens.IDENTIFIER) || at(NapileTokens.PACKAGE_KEYWORD))
 		{
 			parseUserType();
 		}
-		else if(at(JetTokens.LPAR))
+		else if(at(NapileTokens.LPAR))
 		{
 			PsiBuilder.Marker functionOrParenthesizedType = mark();
 
@@ -1244,10 +1244,10 @@ public class JetParsing extends AbstractJetParsing
 			advance(); // LPAR
 			parseTypeRefContents(TokenSet.EMPTY).drop(); // parenthesized types, no reference element around it is needed
 
-			if(at(JetTokens.RPAR))
+			if(at(NapileTokens.RPAR))
 			{
 				advance(); // RPAR
-				if(at(JetTokens.ARROW))
+				if(at(NapileTokens.ARROW))
 				{
 					// It's a function type with one parameter specified
 					//    (A) -> B
@@ -1271,16 +1271,16 @@ public class JetParsing extends AbstractJetParsing
 				parseFunctionType();
 			}
 		}
-		else if(at(JetTokens.THIS_KEYWORD))
+		else if(at(NapileTokens.THIS_KEYWORD))
 		{
 			parseSelfType();
 		}
 		else
 		{
-			errorWithRecovery("Type expected", TokenSet.orSet(CLASS_KEYWORDS, TokenSet.create(JetTokens.EQ, JetTokens.COMMA, JetTokens.GT, JetTokens.RBRACKET, JetTokens.DOT, JetTokens.RPAR, JetTokens.RBRACE, JetTokens.LBRACE, JetTokens.SEMICOLON), extraRecoverySet));
+			errorWithRecovery("Type expected", TokenSet.orSet(CLASS_KEYWORDS, TokenSet.create(NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.GT, NapileTokens.RBRACKET, NapileTokens.DOT, NapileTokens.RPAR, NapileTokens.RBRACE, NapileTokens.LBRACE, NapileTokens.SEMICOLON), extraRecoverySet));
 		}
 
-		while(at(JetTokens.QUEST))
+		while(at(NapileTokens.QUEST))
 		{
 			PsiBuilder.Marker precede = typeRefMarker.precede();
 
@@ -1290,7 +1290,7 @@ public class JetParsing extends AbstractJetParsing
 			typeRefMarker = precede;
 		}
 
-		if(at(JetTokens.DOT))
+		if(at(NapileTokens.DOT))
 		{
 			// This is a receiver for a function type
 			//  A.(B) -> C
@@ -1301,7 +1301,7 @@ public class JetParsing extends AbstractJetParsing
 
 			advance(); // DOT
 
-			if(at(JetTokens.LPAR))
+			if(at(NapileTokens.LPAR))
 			{
 				parseFunctionTypeContents().drop();
 			}
@@ -1326,16 +1326,16 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker userType = mark();
 
-		if(at(JetTokens.PACKAGE_KEYWORD))
+		if(at(NapileTokens.PACKAGE_KEYWORD))
 		{
 			advance(); // PACKAGE_KEYWORD
-			expect(JetTokens.DOT, "Expecting '.'", TokenSet.create(JetTokens.IDENTIFIER));
+			expect(NapileTokens.DOT, "Expecting '.'", TokenSet.create(NapileTokens.IDENTIFIER));
 		}
 
 		PsiBuilder.Marker reference = mark();
 		while(true)
 		{
-			if(expect(JetTokens.IDENTIFIER, "Expecting type name", TokenSet.orSet(JetExpressionParsing.EXPRESSION_FIRST, JetExpressionParsing.EXPRESSION_FOLLOW)))
+			if(expect(NapileTokens.IDENTIFIER, "Expecting type name", TokenSet.orSet(JetExpressionParsing.EXPRESSION_FIRST, JetExpressionParsing.EXPRESSION_FOLLOW)))
 			{
 				reference.done(REFERENCE_EXPRESSION);
 			}
@@ -1346,11 +1346,11 @@ public class JetParsing extends AbstractJetParsing
 			}
 
 			parseTypeArgumentList();
-			if(!at(JetTokens.DOT))
+			if(!at(NapileTokens.DOT))
 			{
 				break;
 			}
-			if(lookahead(1) == JetTokens.LPAR)
+			if(lookahead(1) == NapileTokens.LPAR)
 			{
 				// This may be a receiver for a function type
 				//   Int.(Int) -> Int
@@ -1375,7 +1375,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private void parseSelfType()
 	{
-		assert _at(JetTokens.THIS_KEYWORD);
+		assert _at(NapileTokens.THIS_KEYWORD);
 
 		PsiBuilder.Marker type = mark();
 		advance(); // THIS_KEYWORD
@@ -1387,7 +1387,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private PsiBuilder.Marker parseTypeArgumentList()
 	{
-		if(!at(JetTokens.LT))
+		if(!at(NapileTokens.LT))
 			return null;
 
 		PsiBuilder.Marker list = mark();
@@ -1407,12 +1407,12 @@ public class JetParsing extends AbstractJetParsing
 		{
 			parseTypeRef(extraRecoverySet);
 
-			if(!at(JetTokens.COMMA))
+			if(!at(NapileTokens.COMMA))
 				break;
 			advance(); // COMMA
 		}
 
-		boolean atGT = at(JetTokens.GT);
+		boolean atGT = at(NapileTokens.GT);
 		if(!atGT)
 		{
 			error("Expecting a '>'");
@@ -1443,7 +1443,7 @@ public class JetParsing extends AbstractJetParsing
 
 	private PsiBuilder.Marker parseFunctionTypeContents()
 	{
-		assert _at(JetTokens.LPAR) : tt();
+		assert _at(NapileTokens.LPAR) : tt();
 		PsiBuilder.Marker functionType = mark();
 
 		//        advance(); // LPAR
@@ -1460,7 +1460,7 @@ public class JetParsing extends AbstractJetParsing
 		//        if (at(COLON)) {
 		//            advance(); // COLON // expect(COLON, "Expecting ':' followed by a return type", TYPE_REF_FIRST);
 
-		expect(JetTokens.ARROW, "Expecting '->' to specify return type of a function type", TYPE_REF_FIRST);
+		expect(NapileTokens.ARROW, "Expecting '->' to specify return type of a function type", TYPE_REF_FIRST);
 		parseTypeRef();
 		//        }
 
@@ -1485,19 +1485,19 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker parameters = mark();
 
 		myBuilder.disableNewlines();
-		expect(JetTokens.LPAR, "Expecting '(", recoverySet);
+		expect(NapileTokens.LPAR, "Expecting '(", recoverySet);
 
 		if(!parseIdeTemplate())
 		{
-			if(!at(JetTokens.RPAR) && !atSet(recoverySet))
+			if(!at(NapileTokens.RPAR) && !atSet(recoverySet))
 			{
 				while(true)
 				{
-					if(at(JetTokens.COMMA))
+					if(at(NapileTokens.COMMA))
 					{
 						errorAndAdvance("Expecting a parameter declaration");
 					}
-					else if(at(JetTokens.RPAR))
+					else if(at(NapileTokens.RPAR))
 					{
 						error("Expecting a parameter declaration");
 						break;
@@ -1516,14 +1516,14 @@ public class JetParsing extends AbstractJetParsing
 					{
 						parseValueParameter();
 					}
-					if(!at(JetTokens.COMMA))
+					if(!at(NapileTokens.COMMA))
 						break;
 					advance(); // COMMA
 				}
 			}
 		}
 
-		expect(JetTokens.RPAR, "Expecting ')'", recoverySet);
+		expect(NapileTokens.RPAR, "Expecting ')'", recoverySet);
 		myBuilder.restoreNewlinesState();
 
 		parameters.done(VALUE_PARAMETER_LIST);
@@ -1548,7 +1548,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker parameter = mark();
 
-		if(at(JetTokens.IDENTIFIER) && (lookahead(1) == JetTokens.COMMA || lookahead(1) == JetTokens.RPAR))
+		if(at(NapileTokens.IDENTIFIER) && (lookahead(1) == NapileTokens.COMMA || lookahead(1) == NapileTokens.RPAR))
 		{
 			PsiBuilder.Marker refMark = mark();
 			advance();
@@ -1558,9 +1558,9 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(JetTokens.IDENTIFIER), TokenSet.create(JetTokens.COMMA, JetTokens.RPAR, JetTokens.COLON));
+			parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(NapileTokens.IDENTIFIER), TokenSet.create(NapileTokens.COMMA, NapileTokens.RPAR, NapileTokens.COLON));
 
-			if(at(JetTokens.VAR_KEYWORD))
+			if(at(NapileTokens.VAR_KEYWORD))
 			{
 				advance(); // VAR_KEYWORD | VAL_KEYWORD
 			}
@@ -1583,9 +1583,9 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	private boolean parseFunctionParameterRest()
 	{
-		expect(JetTokens.IDENTIFIER, "Parameter name expected", PARAMETER_NAME_RECOVERY_SET);
+		expect(NapileTokens.IDENTIFIER, "Parameter name expected", PARAMETER_NAME_RECOVERY_SET);
 
-		if(at(JetTokens.COLON))
+		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 			parseTypeRef();
@@ -1596,7 +1596,7 @@ public class JetParsing extends AbstractJetParsing
 			return false;
 		}
 
-		if(at(JetTokens.EQ))
+		if(at(NapileTokens.EQ))
 		{
 			advance(); // EQ
 			myExpressionParsing.parseExpression();
@@ -1610,7 +1610,7 @@ public class JetParsing extends AbstractJetParsing
 	boolean parseIdeTemplate()
 	{
 		@Nullable NapileNodeType nodeType = IDE_TEMPLATE_EXPRESSION;
-		if(at(JetTokens.IDE_TEMPLATE_START))
+		if(at(NapileTokens.IDE_TEMPLATE_START))
 		{
 			PsiBuilder.Marker mark = null;
 			if(nodeType != null)
@@ -1618,8 +1618,8 @@ public class JetParsing extends AbstractJetParsing
 				mark = mark();
 			}
 			advance();
-			expect(JetTokens.IDENTIFIER, "Expecting identifier inside template");
-			expect(JetTokens.IDE_TEMPLATE_END, "Expecting IDE template end after identifier");
+			expect(NapileTokens.IDENTIFIER, "Expecting identifier inside template");
+			expect(NapileTokens.IDE_TEMPLATE_END, "Expecting IDE template end after identifier");
 			if(nodeType != null)
 			{
 				mark.done(nodeType);

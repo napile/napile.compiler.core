@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -83,8 +83,8 @@ public class NapileArrayAccessExpression extends NapileReferenceExpression
 
 	public List<TextRange> getBracketRanges()
 	{
-		PsiElement lBracket = getIndicesNode().findChildByType(JetTokens.LBRACKET);
-		PsiElement rBracket = getIndicesNode().findChildByType(JetTokens.RBRACKET);
+		PsiElement lBracket = getIndicesNode().findChildByType(NapileTokens.LBRACKET);
+		PsiElement rBracket = getIndicesNode().findChildByType(NapileTokens.RBRACKET);
 		if(lBracket == null || rBracket == null)
 		{
 			return Collections.emptyList();

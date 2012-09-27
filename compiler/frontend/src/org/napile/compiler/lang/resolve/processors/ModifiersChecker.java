@@ -30,7 +30,7 @@ import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
 import com.google.common.collect.Lists;
@@ -45,9 +45,9 @@ public class ModifiersChecker
 {
 	// not create new list every checks - it good for compiler, but as plugin create leaks
 	@NotNull
-	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CLASS = Arrays.asList(JetTokens.OVERRIDE_KEYWORD, JetTokens.NATIVE_KEYWORD);
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CLASS = Arrays.asList(NapileTokens.OVERRIDE_KEYWORD, NapileTokens.NATIVE_KEYWORD);
 	@NotNull
-	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(JetTokens.ABSTRACT_KEYWORD, JetTokens.NATIVE_KEYWORD, JetTokens.STATIC_KEYWORD, JetTokens.OVERRIDE_KEYWORD, JetTokens.FINAL_KEYWORD);
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.STATIC_KEYWORD, NapileTokens.OVERRIDE_KEYWORD, NapileTokens.FINAL_KEYWORD);
 
 	@NotNull
 	private BindingTrace trace;
@@ -70,8 +70,8 @@ public class ModifiersChecker
 
 			if(clazz.getParent() instanceof NapileFile)
 			{
-				checkIllegalInThisContextModifiers(clazz, Arrays.asList(JetTokens.HERITABLE_KEYWORD));
-				checkRedundant(clazz, Arrays.asList(JetTokens.STATIC_KEYWORD));
+				checkIllegalInThisContextModifiers(clazz, Arrays.asList(NapileTokens.HERITABLE_KEYWORD));
+				checkRedundant(clazz, Arrays.asList(NapileTokens.STATIC_KEYWORD));
 			}
 
 			checkIllegalInThisContextModifiers(clazz, INVALID_MODIFIERS_FOR_CLASS);
@@ -120,8 +120,8 @@ public class ModifiersChecker
 	protected void checkMethod(NapileNamedFunction method, SimpleMethodDescriptor methodDescriptor)
 	{
 		DeclarationDescriptor containingDescriptor = methodDescriptor.getContainingDeclaration();
-		ASTNode abstractModifier = method.getModifierNode(JetTokens.ABSTRACT_KEYWORD);
-		ASTNode nativeModifier = method.getModifierNode(JetTokens.NATIVE_KEYWORD);
+		ASTNode abstractModifier = method.getModifierNode(NapileTokens.ABSTRACT_KEYWORD);
+		ASTNode nativeModifier = method.getModifierNode(NapileTokens.NATIVE_KEYWORD);
 
 		checkDeclaredTypeInPublicMember(method, methodDescriptor);
 
@@ -157,9 +157,9 @@ public class ModifiersChecker
 	@SuppressWarnings("unchecked")
 	private void checkModalityModifiers(@NotNull NapileDeclaration declaration)
 	{
-		checkCompatibility(declaration, Lists.newArrayList(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD), Lists.<NapileToken>newArrayList(JetTokens.ABSTRACT_KEYWORD));
+		checkCompatibility(declaration, Lists.newArrayList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.FINAL_KEYWORD), Lists.<NapileToken>newArrayList(NapileTokens.ABSTRACT_KEYWORD));
 
-		checkCompatibility(declaration, Lists.newArrayList(JetTokens.ABSTRACT_KEYWORD, JetTokens.NATIVE_KEYWORD));
+		checkCompatibility(declaration, Lists.newArrayList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD));
 	}
 
 	private void checkCompatibility(@NotNull NapileDeclaration declaration, Collection<NapileKeywordToken> availableModifiers, Collection<NapileToken>... availableCombinations)
@@ -194,14 +194,14 @@ public class ModifiersChecker
 	public void checkAccessors(NapileProperty property, PropertyDescriptor propertyDescriptor)
 	{
 		for(NapilePropertyAccessor accessor : property.getAccessors())
-			checkIllegalInThisContextModifiers(accessor, Sets.newHashSet(JetTokens.ABSTRACT_KEYWORD, JetTokens.FINAL_KEYWORD, JetTokens.OVERRIDE_KEYWORD));
+			checkIllegalInThisContextModifiers(accessor, Sets.newHashSet(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.FINAL_KEYWORD, NapileTokens.OVERRIDE_KEYWORD));
 
 		NapilePropertyAccessor getter = property.getGetter();
 		PropertyGetterDescriptor getterDescriptor = propertyDescriptor.getGetter();
 		NapileModifierList getterModifierList = getter != null ? getter.getModifierList() : null;
 		if(getterModifierList != null && getterDescriptor != null)
 		{
-			Map<NapileKeywordToken, ASTNode> nodes = getNodesCorrespondingToModifiers(getterModifierList, Sets.newHashSet(JetTokens.COVERED_KEYWORD, JetTokens.LOCAL_KEYWORD));
+			Map<NapileKeywordToken, ASTNode> nodes = getNodesCorrespondingToModifiers(getterModifierList, Sets.newHashSet(NapileTokens.COVERED_KEYWORD, NapileTokens.LOCAL_KEYWORD));
 			if(getterDescriptor.getVisibility() != propertyDescriptor.getVisibility())
 				for(ASTNode node : nodes.values())
 					trace.report(Errors.GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY.on(node.getPsi()));

@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
@@ -188,9 +188,9 @@ public class PositioningStrategies
 		}
 	};
 
-	public static final PositioningStrategy<NapileModifierListOwner> ABSTRACT_MODIFIER = positionModifier(JetTokens.ABSTRACT_KEYWORD);
+	public static final PositioningStrategy<NapileModifierListOwner> ABSTRACT_MODIFIER = positionModifier(NapileTokens.ABSTRACT_KEYWORD);
 
-	public static final PositioningStrategy<NapileModifierListOwner> OVERRIDE_MODIFIER = positionModifier(JetTokens.OVERRIDE_KEYWORD);
+	public static final PositioningStrategy<NapileModifierListOwner> OVERRIDE_MODIFIER = positionModifier(NapileTokens.OVERRIDE_KEYWORD);
 
 	public static PositioningStrategy<NapileModifierListOwner> positionModifier(final NapileKeywordToken token)
 	{
@@ -226,7 +226,7 @@ public class PositioningStrategies
 		@Override
 		public List<TextRange> mark(@NotNull NapileModifierListOwner element)
 		{
-			List<NapileKeywordToken> visibilityTokens = Lists.newArrayList(JetTokens.LOCAL_KEYWORD, JetTokens.COVERED_KEYWORD, JetTokens.HERITABLE_KEYWORD);
+			List<NapileKeywordToken> visibilityTokens = Lists.newArrayList(NapileTokens.LOCAL_KEYWORD, NapileTokens.COVERED_KEYWORD, NapileTokens.HERITABLE_KEYWORD);
 			List<TextRange> result = Lists.newArrayList();
 			for(NapileKeywordToken token : visibilityTokens)
 			{
@@ -237,9 +237,9 @@ public class PositioningStrategies
 			}
 			if(result.isEmpty())
 			{
-				if(element.hasModifier(JetTokens.OVERRIDE_KEYWORD))
+				if(element.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
 				{
-					result.add(element.getModifierList().getModifierNode(JetTokens.OVERRIDE_KEYWORD).getTextRange());
+					result.add(element.getModifierList().getModifierNode(NapileTokens.OVERRIDE_KEYWORD).getTextRange());
 				}
 			}
 			return result;

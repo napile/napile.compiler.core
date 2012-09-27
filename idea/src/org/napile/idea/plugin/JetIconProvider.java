@@ -39,7 +39,7 @@ import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.idea.plugin.util.RunUtil;
 import com.intellij.ide.IconProvider;
@@ -96,7 +96,7 @@ public class JetIconProvider extends IconProvider
 					icon = JetIcons.ENUM;
 					break;
 				default:
-					icon = napileClass.hasModifier(JetTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_CLASS : JetIcons.CLASS;
+					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_CLASS : JetIcons.CLASS;
 			}
 
 			if(descriptor != null)
@@ -108,7 +108,7 @@ public class JetIconProvider extends IconProvider
 						icon = JetIcons.REPEATABLE_ANNOTATION;
 				}
 				else if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.THROWABLE))
-					icon = napileClass.hasModifier(JetTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_THROWABLE : JetIcons.THROWABLE;
+					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_THROWABLE : JetIcons.THROWABLE;
 
 				for(SimpleMethodDescriptor m : descriptor.getFunctions())
 					if(RunUtil.isRunPoint(m))
@@ -147,11 +147,11 @@ public class JetIconProvider extends IconProvider
 
 		if(modifierList != null && BitUtil.isSet(flags, Iconable.ICON_FLAG_VISIBILITY))
 		{
-			if(modifierList.hasModifier(JetTokens.LOCAL_KEYWORD))
+			if(modifierList.hasModifier(NapileTokens.LOCAL_KEYWORD))
 				icon.setIcon(PlatformIcons.PRIVATE_ICON, 1);
-			else if(modifierList.hasModifier(JetTokens.COVERED_KEYWORD))
+			else if(modifierList.hasModifier(NapileTokens.COVERED_KEYWORD))
 				icon.setIcon(PlatformIcons.PROTECTED_ICON, 1);
-			else if(modifierList.hasModifier(JetTokens.HERITABLE_KEYWORD))
+			else if(modifierList.hasModifier(NapileTokens.HERITABLE_KEYWORD))
 				icon.setIcon(JetIcons.C_HERITABLE, 1);
 			else
 				icon.setIcon(PlatformIcons.PUBLIC_ICON, 1);

@@ -24,7 +24,7 @@ import static org.napile.compiler.NapileNodeTypes.METHOD;
 import static org.napile.compiler.NapileNodeTypes.NAMESPACE_HEADER;
 import static org.napile.compiler.NapileNodeTypes.PROPERTY;
 import static org.napile.compiler.NapileNodeTypes.VALUE_PARAMETER;
-import static org.napile.compiler.lexer.JetTokens.*;
+import static org.napile.compiler.lexer.NapileTokens.*;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.plugin.JetLanguage;

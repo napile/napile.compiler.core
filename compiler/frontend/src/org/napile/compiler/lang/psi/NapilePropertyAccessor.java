@@ -22,7 +22,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -51,12 +51,12 @@ public class NapilePropertyAccessor extends NapileDeclarationImpl implements Nap
 
 	public boolean isSetter()
 	{
-		return findChildByType(JetTokens.SET_KEYWORD) != null;
+		return findChildByType(NapileTokens.SET_KEYWORD) != null;
 	}
 
 	public boolean isGetter()
 	{
-		return findChildByType(JetTokens.GET_KEYWORD) != null;
+		return findChildByType(NapileTokens.GET_KEYWORD) != null;
 	}
 
 	@Nullable
@@ -93,7 +93,7 @@ public class NapilePropertyAccessor extends NapileDeclarationImpl implements Nap
 	@Override
 	public boolean hasBlockBody()
 	{
-		return findChildByType(JetTokens.EQ) == null;
+		return findChildByType(NapileTokens.EQ) == null;
 	}
 
 	@Override
@@ -118,18 +118,18 @@ public class NapilePropertyAccessor extends NapileDeclarationImpl implements Nap
 	@NotNull
 	public PsiElement getNamePlaceholder()
 	{
-		PsiElement get = findChildByType(JetTokens.GET_KEYWORD);
+		PsiElement get = findChildByType(NapileTokens.GET_KEYWORD);
 		if(get != null)
 		{
 			return get;
 		}
-		return findChildByType(JetTokens.SET_KEYWORD);
+		return findChildByType(NapileTokens.SET_KEYWORD);
 	}
 
 	@Nullable
 	@Override
 	public NapileExpression getInitializer()
 	{
-		return PsiTreeUtil.getNextSiblingOfType(findChildByType(JetTokens.EQ), NapileExpression.class);
+		return PsiTreeUtil.getNextSiblingOfType(findChildByType(NapileTokens.EQ), NapileExpression.class);
 	}
 }

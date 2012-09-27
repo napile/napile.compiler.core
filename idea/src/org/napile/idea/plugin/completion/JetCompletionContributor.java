@@ -34,7 +34,7 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.completion.weigher.JetCompletionSorting;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.idea.plugin.references.JetSimpleNameReference;
@@ -189,7 +189,7 @@ public class JetCompletionContributor extends CompletionContributor
 		}
 
 		PsiElement element = parameters.getPosition();
-		if(element.getNode().getElementType() == JetTokens.IDENTIFIER)
+		if(element.getNode().getElementType() == NapileTokens.IDENTIFIER)
 		{
 			if(element.getParent() instanceof NapileSimpleNameExpression)
 			{

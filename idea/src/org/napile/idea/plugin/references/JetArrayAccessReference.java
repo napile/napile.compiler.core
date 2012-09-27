@@ -30,7 +30,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -104,12 +104,12 @@ class JetArrayAccessReference extends JetPsiReference implements MultiRangeRefer
 		List<TextRange> list = new ArrayList<TextRange>();
 
 		NapileContainerNode indices = expression.getIndicesNode();
-		TextRange textRange = indices.getNode().findChildByType(JetTokens.LBRACKET).getTextRange();
+		TextRange textRange = indices.getNode().findChildByType(NapileTokens.LBRACKET).getTextRange();
 		TextRange lBracketRange = textRange.shiftRight(-expression.getTextOffset());
 
 		list.add(lBracketRange);
 
-		ASTNode rBracket = indices.getNode().findChildByType(JetTokens.RBRACKET);
+		ASTNode rBracket = indices.getNode().findChildByType(NapileTokens.RBRACKET);
 		if(rBracket != null)
 		{
 			textRange = rBracket.getTextRange();

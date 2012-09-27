@@ -62,7 +62,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.psi.PsiElement;
@@ -304,35 +304,35 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitBinaryExpression(NapileBinaryExpression expression, StackValue receiver)
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
-		if(opToken == JetTokens.EQ)
+		if(opToken == NapileTokens.EQ)
 			return generateAssignmentExpression(expression);
-		/*else if(JetTokens.AUGMENTED_ASSIGNMENTS.contains(opToken))
+		/*else if(NapileTokens.AUGMENTED_ASSIGNMENTS.contains(opToken))
 		{
 			return generateAugmentedAssignment(expression);
 		}
-		else if(opToken == JetTokens.ANDAND)
+		else if(opToken == NapileTokens.ANDAND)
 		{
 			return generateBooleanAnd(expression);
 		}
-		else if(opToken == JetTokens.OROR)
+		else if(opToken == NapileTokens.OROR)
 		{
 			return generateBooleanOr(expression);
 		}
-		else if(opToken == JetTokens.EQEQ || opToken == JetTokens.EXCLEQ ||
-				opToken == JetTokens.EQEQEQ || opToken == JetTokens.EXCLEQEQEQ)
+		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ ||
+				opToken == NapileTokens.EQEQEQ || opToken == NapileTokens.EXCLEQEQEQ)
 		{
 			return generateEquals(expression.getLeft(), expression.getRight(), opToken);
 		}
-		else if(opToken == JetTokens.LT || opToken == JetTokens.LTEQ ||
-				opToken == JetTokens.GT || opToken == JetTokens.GTEQ)
+		else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ ||
+				opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
 		{
 			return generateCompareOp(expression.getLeft(), expression.getRight(), opToken, expressionType(expression.getLeft()));
 		}
-		else if(opToken == JetTokens.ELVIS)
+		else if(opToken == NapileTokens.ELVIS)
 		{
 			return generateElvis(expression);
 		}
-		else if(opToken == JetTokens.IN_KEYWORD || opToken == JetTokens.NOT_IN)
+		else if(opToken == NapileTokens.IN_KEYWORD || opToken == NapileTokens.NOT_IN)
 		{
 			return generateIn(expression);
 		}
@@ -469,7 +469,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			PropertyDescriptor propertyDescriptor = (PropertyDescriptor) descriptor;
 
 			boolean isStatic = propertyDescriptor.isStatic();
-			final boolean directToField = expression.getReferencedNameElementType() == JetTokens.FIELD_IDENTIFIER;
+			final boolean directToField = expression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER;
 			NapileExpression r = getReceiverForSelector(expression);
 			final boolean isSuper = r instanceof NapileSuperExpression;
 

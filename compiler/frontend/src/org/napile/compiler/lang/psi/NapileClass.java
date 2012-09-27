@@ -27,7 +27,7 @@ import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
@@ -44,7 +44,7 @@ import com.intellij.util.IncorrectOperationException;
  */
 public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStub> implements NapileClassLike
 {
-	private static final TokenSet CLASS_DECL_KEYWORDS = TokenSet.create(JetTokens.CLASS_KEYWORD, JetTokens.ENUM_KEYWORD, JetTokens.RETELL_KEYWORD);
+	private static final TokenSet CLASS_DECL_KEYWORDS = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.ENUM_KEYWORD, NapileTokens.RETELL_KEYWORD);
 
 	public NapileClass(@NotNull ASTNode node)
 	{
@@ -60,9 +60,9 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 	{
 		PsiElement element = findNotNullChildByType(CLASS_DECL_KEYWORDS);
 		IElementType elementType = element.getNode().getElementType();
-		if(elementType == JetTokens.RETELL_KEYWORD)
+		if(elementType == NapileTokens.RETELL_KEYWORD)
 			return ClassKind.RETELL;
-		else if(elementType == JetTokens.ENUM_KEYWORD)
+		else if(elementType == NapileTokens.ENUM_KEYWORD)
 			return ClassKind.ENUM_CLASS;
 		else
 			return ClassKind.CLASS;

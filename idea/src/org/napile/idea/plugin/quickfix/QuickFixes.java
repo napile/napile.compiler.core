@@ -17,8 +17,8 @@
 package org.napile.idea.plugin.quickfix;
 
 import static org.napile.compiler.lang.diagnostics.Errors.*;
-import static org.napile.compiler.lexer.JetTokens.ABSTRACT_KEYWORD;
-import static org.napile.compiler.lexer.JetTokens.OVERRIDE_KEYWORD;
+import static org.napile.compiler.lexer.NapileTokens.ABSTRACT_KEYWORD;
+import static org.napile.compiler.lexer.NapileTokens.OVERRIDE_KEYWORD;
 
 import java.util.Collection;
 

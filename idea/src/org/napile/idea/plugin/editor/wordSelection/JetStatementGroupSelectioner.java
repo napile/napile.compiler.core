@@ -23,7 +23,7 @@ import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileWhenEntry;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.codeInsight.editorActions.wordSelection.BasicSelectioner;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.util.TextRange;
@@ -66,7 +66,7 @@ public class JetStatementGroupSelectioner extends BasicSelectioner
 
 			if(sibling instanceof LeafPsiElement)
 			{
-				if(((LeafPsiElement) sibling).getElementType() == JetTokens.LBRACE)
+				if(((LeafPsiElement) sibling).getElementType() == NapileTokens.LBRACE)
 				{
 					break;
 				}
@@ -97,7 +97,7 @@ public class JetStatementGroupSelectioner extends BasicSelectioner
 
 			if(sibling instanceof LeafPsiElement)
 			{
-				if(((LeafPsiElement) sibling).getElementType() == JetTokens.RBRACE)
+				if(((LeafPsiElement) sibling).getElementType() == NapileTokens.RBRACE)
 				{
 					break;
 				}

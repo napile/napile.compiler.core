@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -65,6 +65,6 @@ public class NapileIsExpression extends NapileExpressionImpl
 
 	public boolean isNegated()
 	{
-		return getOperationReference().getReferencedNameElementType() == JetTokens.NOT_IS;
+		return getOperationReference().getReferencedNameElementType() == NapileTokens.NOT_IS;
 	}
 }

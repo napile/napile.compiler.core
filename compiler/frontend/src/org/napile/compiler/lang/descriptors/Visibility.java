@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import com.google.common.collect.Sets;
 
@@ -31,7 +31,7 @@ import com.google.common.collect.Sets;
  */
 public enum  Visibility
 {
-	LOCAL(JetTokens.LOCAL_KEYWORD, false)
+	LOCAL(NapileTokens.LOCAL_KEYWORD, false)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -58,7 +58,7 @@ public enum  Visibility
 		}
 	},
 
-	COVERED(JetTokens.COVERED_KEYWORD, true)
+	COVERED(NapileTokens.COVERED_KEYWORD, true)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
@@ -80,7 +80,7 @@ public enum  Visibility
 		}
 	},
 
-	HERITABLE(JetTokens.HERITABLE_KEYWORD, true)
+	HERITABLE(NapileTokens.HERITABLE_KEYWORD, true)
 	{
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)

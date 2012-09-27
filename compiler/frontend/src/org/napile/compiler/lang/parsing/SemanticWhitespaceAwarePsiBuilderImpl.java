@@ -19,7 +19,7 @@ package org.napile.compiler.lang.parsing;
 
 import java.util.Stack;
 
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.impl.PsiBuilderAdapter;
 import com.intellij.psi.TokenType;
@@ -31,7 +31,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter implements SemanticWhitespaceAwarePsiBuilder
 {
-	private final TokenSet complexTokens = TokenSet.create(JetTokens.SAFE_ACCESS, JetTokens.ELVIS, JetTokens.EXCLEXCL);
+	private final TokenSet complexTokens = TokenSet.create(NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.EXCLEXCL);
 	private final Stack<Boolean> joinComplexTokens = new Stack<Boolean>();
 
 	private final Stack<Boolean> newlinesEnabled = new Stack<Boolean>();
@@ -57,7 +57,7 @@ public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter imp
 		{
 			IElementType previousToken = rawLookup(-i);
 
-			if(previousToken == JetTokens.BLOCK_COMMENT || previousToken == JetTokens.DOC_COMMENT || previousToken == JetTokens.EOL_COMMENT || previousToken == JetTokens.SHEBANG_COMMENT)
+			if(previousToken == NapileTokens.BLOCK_COMMENT || previousToken == NapileTokens.DOC_COMMENT || previousToken == NapileTokens.EOL_COMMENT || previousToken == NapileTokens.SHEBANG_COMMENT)
 			{
 				continue;
 			}
@@ -137,19 +137,19 @@ public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter imp
 
 	private IElementType getJoinedTokenType(IElementType rawTokenType, int rawLookupSteps)
 	{
-		if(rawTokenType == JetTokens.QUEST)
+		if(rawTokenType == NapileTokens.QUEST)
 		{
 			IElementType nextRawToken = rawLookup(rawLookupSteps);
-			if(nextRawToken == JetTokens.DOT)
-				return JetTokens.SAFE_ACCESS;
-			if(nextRawToken == JetTokens.COLON)
-				return JetTokens.ELVIS;
+			if(nextRawToken == NapileTokens.DOT)
+				return NapileTokens.SAFE_ACCESS;
+			if(nextRawToken == NapileTokens.COLON)
+				return NapileTokens.ELVIS;
 		}
-		else if(rawTokenType == JetTokens.EXCL)
+		else if(rawTokenType == NapileTokens.EXCL)
 		{
 			IElementType nextRawToken = rawLookup(rawLookupSteps);
-			if(nextRawToken == JetTokens.EXCL)
-				return JetTokens.EXCLEXCL;
+			if(nextRawToken == NapileTokens.EXCL)
+				return NapileTokens.EXCLEXCL;
 		}
 		return rawTokenType;
 	}
@@ -184,9 +184,9 @@ public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter imp
 		IElementType tokenType = getTokenType();
 		if(complexTokens.contains(tokenType))
 		{
-			if(tokenType == JetTokens.ELVIS)
+			if(tokenType == NapileTokens.ELVIS)
 				return "?:";
-			if(tokenType == JetTokens.SAFE_ACCESS)
+			if(tokenType == NapileTokens.SAFE_ACCESS)
 				return "?.";
 		}
 		return super.getTokenText();

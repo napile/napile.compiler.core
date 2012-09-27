@@ -52,7 +52,7 @@ import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
@@ -355,7 +355,7 @@ public class ExpressionTypingServices
 						{
 							NapileBinaryExpression binaryExpression = (NapileBinaryExpression) statementExpression;
 							IElementType operationType = binaryExpression.getOperationToken();
-							if(operationType == JetTokens.EQ || OperatorConventions.ASSIGNMENT_OPERATIONS.containsKey(operationType))
+							if(operationType == NapileTokens.EQ || OperatorConventions.ASSIGNMENT_OPERATIONS.containsKey(operationType))
 							{
 								mightBeUnit = true;
 							}

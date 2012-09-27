@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
@@ -55,7 +55,7 @@ public class NapileFunctionLiteral extends NapileMethodNotStubbed
 
 	public boolean hasParameterSpecification()
 	{
-		return findChildByType(JetTokens.ARROW) != null;
+		return findChildByType(NapileTokens.ARROW) != null;
 	}
 
 	@Override
@@ -67,19 +67,19 @@ public class NapileFunctionLiteral extends NapileMethodNotStubbed
 	@NotNull
 	public ASTNode getOpenBraceNode()
 	{
-		return getNode().findChildByType(JetTokens.LBRACE);
+		return getNode().findChildByType(NapileTokens.LBRACE);
 	}
 
 	@Nullable
 	@IfNotParsed
 	public ASTNode getClosingBraceNode()
 	{
-		return getNode().findChildByType(JetTokens.RBRACE);
+		return getNode().findChildByType(NapileTokens.RBRACE);
 	}
 
 	@Nullable
 	public ASTNode getArrowNode()
 	{
-		return getNode().findChildByType(JetTokens.ARROW);
+		return getNode().findChildByType(NapileTokens.ARROW);
 	}
 }

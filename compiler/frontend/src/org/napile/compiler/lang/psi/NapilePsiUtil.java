@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
@@ -53,7 +53,7 @@ public class NapilePsiUtil
 		if(expression instanceof NapileBinaryExpressionWithTypeRHS)
 		{
 			NapileSimpleNameExpression operationSign = ((NapileBinaryExpressionWithTypeRHS) expression).getOperationSign();
-			if(JetTokens.COLON.equals(operationSign.getReferencedNameElementType()))
+			if(NapileTokens.COLON.equals(operationSign.getReferencedNameElementType()))
 			{
 				expression = ((NapileBinaryExpressionWithTypeRHS) expression).getLeft();
 			}
@@ -349,7 +349,7 @@ public class NapilePsiUtil
 	public static boolean isSafeCall(@NotNull Call call)
 	{
 		ASTNode callOperationNode = call.getCallOperationNode();
-		return callOperationNode != null && callOperationNode.getElementType() == JetTokens.SAFE_ACCESS;
+		return callOperationNode != null && callOperationNode.getElementType() == NapileTokens.SAFE_ACCESS;
 	}
 
 	public static boolean isFunctionLiteralWithoutDeclaredParameterTypes(NapileExpression expression)
@@ -371,6 +371,6 @@ public class NapilePsiUtil
 			if(owner.getParent() instanceof NapileFile)
 				return true;
 		NapileModifierList modifierList = owner.getModifierList();
-		return modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD);
+		return modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD);
 	}
 }

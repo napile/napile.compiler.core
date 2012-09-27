@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction;
 import com.intellij.codeInsight.template.impl.TemplateManagerImpl;
 import com.intellij.codeInsight.template.impl.TemplateState;
@@ -125,7 +125,7 @@ public class JetInplaceVariableIntroducer extends InplaceVariableIntroducer<Napi
 							PsiDocumentManager.getInstance(myProject).commitDocument(myEditor.getDocument());
 							if(myExprTypeCheckbox.isSelected())
 							{
-								ASTNode identifier = myProperty.getNode().findChildByType(JetTokens.IDENTIFIER);
+								ASTNode identifier = myProperty.getNode().findChildByType(NapileTokens.IDENTIFIER);
 								if(identifier != null)
 								{
 									TextRange range = identifier.getTextRange();
@@ -163,7 +163,7 @@ public class JetInplaceVariableIntroducer extends InplaceVariableIntroducer<Napi
 						{
 							if(myExprTypeCheckbox.isSelected())
 							{
-								ASTNode identifier = myProperty.getNode().findChildByType(JetTokens.IDENTIFIER);
+								ASTNode identifier = myProperty.getNode().findChildByType(NapileTokens.IDENTIFIER);
 								if(identifier != null)
 								{
 									TextRange range = identifier.getTextRange();

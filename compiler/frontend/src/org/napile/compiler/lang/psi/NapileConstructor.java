@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
@@ -107,7 +107,7 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 	@Override
 	public boolean hasBlockBody()
 	{
-		return findChildByType(JetTokens.EQ) == null;
+		return findChildByType(NapileTokens.EQ) == null;
 	}
 
 	@Override
@@ -154,6 +154,6 @@ public class NapileConstructor extends NapileDeclarationImpl implements NapileDe
 	@Override
 	public PsiElement getNameIdentifier()
 	{
-		return findNotNullChildByType(JetTokens.THIS_KEYWORD);
+		return findNotNullChildByType(NapileTokens.THIS_KEYWORD);
 	}
 }

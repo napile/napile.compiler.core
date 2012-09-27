@@ -52,7 +52,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import com.google.common.collect.Lists;
@@ -98,7 +98,7 @@ public class DescriptorResolver
 		int index = 0;
 		for(NapileTypeParameter typeParameter : classElement.getTypeParameters())
 		{
-			TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(descriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(JetTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
+			TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(descriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(NapileTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
 			trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
 			typeParameters.add(typeParameterDescriptor);
 			index++;
@@ -182,7 +182,7 @@ public class DescriptorResolver
 	public SimpleMethodDescriptor resolveFunctionDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedFunction function, final BindingTrace trace)
 	{
 		NapileModifierList modifierList = function.getModifierList();
-		final SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, function.getModifierList(), trace), NapilePsiUtil.safeName(function.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD), modifierList != null && modifierList.hasModifier(JetTokens.NATIVE_KEYWORD));
+		final SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, function.getModifierList(), trace), NapilePsiUtil.safeName(function.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD), modifierList != null && modifierList.hasModifier(NapileTokens.NATIVE_KEYWORD));
 		WritableScope innerScope = new WritableScopeImpl(scope, functionDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
 
 		List<TypeParameterDescriptorImpl> typeParameterDescriptors = resolveTypeParameters(functionDescriptor, innerScope, function.getTypeParameters(), trace);
@@ -304,7 +304,7 @@ public class DescriptorResolver
 
 	private TypeParameterDescriptorImpl resolveTypeParameter(DeclarationDescriptor containingDescriptor, WritableScope extensibleScope, NapileTypeParameter typeParameter, int index, BindingTrace trace)
 	{
-		TypeParameterDescriptorImpl typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(containingDescriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(JetTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
+		TypeParameterDescriptorImpl typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(containingDescriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(NapileTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
 
 		extensibleScope.addTypeParameterDescriptor(typeParameterDescriptor);
 		trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
@@ -509,7 +509,7 @@ public class DescriptorResolver
 	{
 		NapileModifierList modifierList = property.getModifierList();
 
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), Modality.OPEN), resolveVisibilityFromModifiers(property.getModifierList()), NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(JetTokens.STATIC_KEYWORD));
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), Modality.OPEN), resolveVisibilityFromModifiers(property.getModifierList()), NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD));
 
 		List<TypeParameterDescriptorImpl> typeParameterDescriptors;
 		JetScope scopeWithTypeParameters;
@@ -636,14 +636,14 @@ public class DescriptorResolver
 	{
 		if(modifierList == null)
 			return defaultModality;
-		boolean hasAbstractModifier = modifierList.hasModifier(JetTokens.ABSTRACT_KEYWORD);
-		boolean hasOverrideModifier = modifierList.hasModifier(JetTokens.OVERRIDE_KEYWORD);
+		boolean hasAbstractModifier = modifierList.hasModifier(NapileTokens.ABSTRACT_KEYWORD);
+		boolean hasOverrideModifier = modifierList.hasModifier(NapileTokens.OVERRIDE_KEYWORD);
 
 		if(hasAbstractModifier)
 		{
 			return Modality.ABSTRACT;
 		}
-		boolean hasFinalModifier = modifierList.hasModifier(JetTokens.FINAL_KEYWORD);
+		boolean hasFinalModifier = modifierList.hasModifier(NapileTokens.FINAL_KEYWORD);
 		if(hasOverrideModifier && !hasFinalModifier && !(defaultModality == Modality.ABSTRACT))
 		{
 			return Modality.OPEN;
@@ -660,11 +660,11 @@ public class DescriptorResolver
 	{
 		if(modifierList == null)
 			return Visibility.PUBLIC;
-		if(modifierList.hasModifier(JetTokens.LOCAL_KEYWORD))
+		if(modifierList.hasModifier(NapileTokens.LOCAL_KEYWORD))
 			return Visibility.LOCAL;
-		if(modifierList.hasModifier(JetTokens.COVERED_KEYWORD))
+		if(modifierList.hasModifier(NapileTokens.COVERED_KEYWORD))
 			return Visibility.COVERED;
-		if(modifierList.hasModifier(JetTokens.HERITABLE_KEYWORD))
+		if(modifierList.hasModifier(NapileTokens.HERITABLE_KEYWORD))
 			return Visibility.HERITABLE;
 		return Visibility.PUBLIC;
 	}

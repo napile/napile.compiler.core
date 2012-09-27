@@ -79,7 +79,7 @@ import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
@@ -261,7 +261,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			IElementType operationType = expression.getOperationSign().getReferencedNameElementType();
 
 			boolean tryWithNoExpectedType = true;
-			if(ExpressionTypingUtils.isTypeFlexible(left) || operationType == JetTokens.COLON)
+			if(ExpressionTypingUtils.isTypeFlexible(left) || operationType == NapileTokens.COLON)
 			{
 				TemporaryBindingTrace temporaryTraceWithExpectedType = TemporaryBindingTrace.create(context.trace);
 				ExpressionTypingContext contextWithTemporaryTrace = context.replaceBindingTrace(temporaryTraceWithExpectedType).replaceExpectedType(targetType);
@@ -282,7 +282,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				{
 					checkBinaryWithTypeRHS(expression, contextWithNoExpectedType, targetType, typeInfo.getType());
 					dataFlowInfo = typeInfo.getDataFlowInfo();
-					if(operationType == JetTokens.AS_KEYWORD)
+					if(operationType == NapileTokens.AS_KEYWORD)
 					{
 						DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(left, typeInfo.getType(), context.trace.getBindingContext());
 						dataFlowInfo = dataFlowInfo.establishSubtyping(new DataFlowValue[]{value}, targetType);
@@ -290,7 +290,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				}
 			}
 
-			result = operationType == JetTokens.AS_SAFE ? TypeUtils.makeNullable(targetType) : targetType;
+			result = operationType == NapileTokens.AS_SAFE ? TypeUtils.makeNullable(targetType) : targetType;
 		}
 		else
 		{
@@ -303,7 +303,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	{
 		NapileSimpleNameExpression operationSign = expression.getOperationSign();
 		IElementType operationType = operationSign.getReferencedNameElementType();
-		if(operationType == JetTokens.COLON)
+		if(operationType == NapileTokens.COLON)
 		{
 			if(targetType != TypeUtils.NO_EXPECTED_TYPE && !JetTypeChecker.INSTANCE.isSubtypeOf(actualType, targetType))
 			{
@@ -312,7 +312,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			}
 			return true;
 		}
-		else if(operationType == JetTokens.AS_KEYWORD || operationType == JetTokens.AS_SAFE)
+		else if(operationType == NapileTokens.AS_KEYWORD || operationType == NapileTokens.AS_SAFE)
 		{
 			checkForCastImpossibility(expression, actualType, targetType, context);
 			return true;
@@ -658,7 +658,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		JetType selectorReturnType = selectorReturnTypeInfo.getType();
 
 		//TODO move further
-		if(expression.getOperationSign() == JetTokens.SAFE_ACCESS)
+		if(expression.getOperationSign() == NapileTokens.SAFE_ACCESS)
 		{
 			if(selectorReturnType != null && !selectorReturnType.isNullable() && !TypeUtils.isEqualFqName(selectorReturnType, NapileLangPackage.NULL))
 			{
@@ -938,7 +938,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		IElementType operationType = operationSign.getReferencedNameElementType();
 
 		// Special case for expr!!
-		if(operationType == JetTokens.EXCLEXCL)
+		if(operationType == NapileTokens.EXCLEXCL)
 		{
 			return visitExclExclExpression(expression, context);
 		}
@@ -961,7 +961,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 
 		// a[i]++/-- takes special treatment because it is actually let j = i, arr = a in arr.set(j, a.get(j).inc())
-		if((operationType == JetTokens.PLUSPLUS || operationType == JetTokens.MINUSMINUS) && baseExpression instanceof NapileArrayAccessExpression)
+		if((operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS) && baseExpression instanceof NapileArrayAccessExpression)
 		{
 			NapileExpression stubExpression = ExpressionTypingUtils.createStubExpressionOfNecessaryType(baseExpression.getProject(), type, context.trace);
 			resolveArrayAccessSetMethod((NapileArrayAccessExpression) baseExpression, stubExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE).replaceBindingTrace(TemporaryBindingTrace.create(context.trace)), context.trace);
@@ -980,7 +980,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		// Computing the return type
 		JetType returnType = resolutionResults.getResultingDescriptor().getReturnType();
 		JetType result;
-		if(operationType == JetTokens.PLUSPLUS || operationType == JetTokens.MINUSMINUS)
+		if(operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS)
 		{
 			if(TypeUtils.isEqualFqName(returnType, NapileLangPackage.NULL))
 			{
@@ -1016,7 +1016,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		NapileExpression baseExpression = expression.getBaseExpression();
 		assert baseExpression != null;
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
-		assert operationSign.getReferencedNameElementType() == JetTokens.EXCLEXCL;
+		assert operationSign.getReferencedNameElementType() == NapileTokens.EXCLEXCL;
 
 		JetType expectedType;
 		if(context.expectedType != TypeUtils.NO_EXPECTED_TYPE)
@@ -1096,7 +1096,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		JetType result = null;
 		IElementType operationType = operationSign.getReferencedNameElementType();
-		if(operationType == JetTokens.IDENTIFIER)
+		if(operationType == NapileTokens.IDENTIFIER)
 		{
 			Name referencedName = operationSign.getReferencedNameAsName();
 			if(referencedName != null)
@@ -1108,7 +1108,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			result = getTypeForBinaryCall(context.scope, OperatorConventions.BINARY_OPERATION_NAMES.get(operationType), context, expression);
 		}
-		else if(operationType == JetTokens.EQ)
+		else if(operationType == NapileTokens.EQ)
 		{
 			result = visitAssignment(expression, contextWithExpectedType);
 		}
@@ -1166,7 +1166,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				}
 				result = booleanType;
 			}
-			else if(operationType == JetTokens.EQEQEQ || operationType == JetTokens.EXCLEQEQEQ)
+			else if(operationType == NapileTokens.EQEQEQ || operationType == NapileTokens.EXCLEQEQEQ)
 			{
 				ensureNonemptyIntersectionOfOperandTypes(expression, context);
 
@@ -1187,8 +1187,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			{
 				JetType leftType = facade.getTypeInfo(left, context.replaceScope(context.scope)).getType();
 				WritableScopeImpl leftScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Left scope of && or ||");
-				DataFlowInfo flowInfoLeft = DataFlowUtils.extractDataFlowInfoFromCondition(left, operationType == JetTokens.ANDAND, context);  // TODO: This gets computed twice: here and in extractDataFlowInfoFromCondition() for the whole condition
-				WritableScopeImpl rightScope = operationType == JetTokens.ANDAND ? leftScope : ExpressionTypingUtils.newWritableScopeImpl(context, "Right scope of && or ||");
+				DataFlowInfo flowInfoLeft = DataFlowUtils.extractDataFlowInfoFromCondition(left, operationType == NapileTokens.ANDAND, context);  // TODO: This gets computed twice: here and in extractDataFlowInfoFromCondition() for the whole condition
+				WritableScopeImpl rightScope = operationType == NapileTokens.ANDAND ? leftScope : ExpressionTypingUtils.newWritableScopeImpl(context, "Right scope of && or ||");
 				JetType rightType = right == null ? null : facade.getTypeInfo(right, context.replaceDataFlowInfo(flowInfoLeft).replaceScope(rightScope)).getType();
 				if(leftType != null && !ExpressionTypingUtils.isBoolean(leftType))
 				{
@@ -1200,7 +1200,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				}
 				result = booleanType;
 			}
-			else if(operationType == JetTokens.ELVIS)
+			else if(operationType == NapileTokens.ELVIS)
 			{
 				JetType leftType = facade.getTypeInfo(left, context.replaceScope(context.scope)).getType();
 				JetType rightType = right == null ? null : facade.getTypeInfo(right, contextWithExpectedType.replaceScope(context.scope)).getType();
@@ -1279,7 +1279,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		Nullability nullability = context.dataFlowInfo.getNullability(value);
 
 		boolean expressionIsAlways;
-		boolean equality = operationSign.getReferencedNameElementType() == JetTokens.EQEQ || operationSign.getReferencedNameElementType() == JetTokens.EQEQEQ;
+		boolean equality = operationSign.getReferencedNameElementType() == NapileTokens.EQEQ || operationSign.getReferencedNameElementType() == NapileTokens.EQEQEQ;
 
 		if(nullability == Nullability.NULL)
 		{

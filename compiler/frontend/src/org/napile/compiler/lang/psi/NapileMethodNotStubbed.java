@@ -22,7 +22,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -75,7 +75,7 @@ abstract public class NapileMethodNotStubbed extends NapileTypeParameterListOwne
 		while(child != null)
 		{
 			IElementType tt = child.getNode().getElementType();
-			if(tt == JetTokens.COLON)
+			if(tt == NapileTokens.COLON)
 			{
 				colonPassed = true;
 			}

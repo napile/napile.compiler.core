@@ -34,7 +34,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lexer.JetLexer;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.text.StringUtil;
@@ -230,7 +230,7 @@ public class JetNameSuggester
 
 		JetLexer lexer = new JetLexer();
 		lexer.start(name, 0, name.length());
-		if(lexer.getTokenType() != JetTokens.IDENTIFIER)
+		if(lexer.getTokenType() != NapileTokens.IDENTIFIER)
 			return false;
 		lexer.advance();
 		return lexer.getTokenType() == null;

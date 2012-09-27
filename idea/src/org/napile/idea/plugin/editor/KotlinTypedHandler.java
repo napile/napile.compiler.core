@@ -18,7 +18,7 @@ package org.napile.idea.plugin.editor;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.codeInsight.CodeInsightSettings;
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.openapi.editor.Editor;
@@ -46,7 +46,7 @@ public class KotlinTypedHandler extends TypedHandlerDelegate
 			PsiDocumentManager.getInstance(project).commitAllDocuments();
 			int offset = editor.getCaretModel().getOffset();
 			PsiElement previousElement = file.findElementAt(offset - 1);
-			if(previousElement instanceof LeafPsiElement && ((LeafPsiElement) previousElement).getElementType() == JetTokens.LONG_TEMPLATE_ENTRY_START)
+			if(previousElement instanceof LeafPsiElement && ((LeafPsiElement) previousElement).getElementType() == NapileTokens.LONG_TEMPLATE_ENTRY_START)
 			{
 				editor.getDocument().insertString(offset, "}");
 			}

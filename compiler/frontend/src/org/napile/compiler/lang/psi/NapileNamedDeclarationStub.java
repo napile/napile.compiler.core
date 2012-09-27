@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
@@ -79,7 +79,7 @@ abstract class NapileNamedDeclarationStub<T extends NamedStub> extends NapileDec
 	@Override
 	public PsiElement getNameIdentifier()
 	{
-		return findChildByType(JetTokens.IDENTIFIER);
+		return findChildByType(NapileTokens.IDENTIFIER);
 	}
 
 	@Override

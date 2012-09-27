@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
@@ -35,7 +35,7 @@ public class NapileWhenConditionInRange extends NapileWhenCondition
 
 	public boolean isNegated()
 	{
-		return getNode().findChildByType(JetTokens.NOT_IN) != null;
+		return getNode().findChildByType(NapileTokens.NOT_IN) != null;
 	}
 
 	@Nullable

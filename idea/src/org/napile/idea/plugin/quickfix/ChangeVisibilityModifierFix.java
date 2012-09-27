@@ -25,7 +25,7 @@ import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
 import org.napile.idea.plugin.JetBundle;
@@ -75,8 +75,8 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<NapileModifi
 			return;
 		NapileKeywordToken modifier = findVisibilityChangeTo((NapileFile) file);
 		NapileToken[] modifiersThanCanBeReplaced = new NapileKeywordToken[]{
-				JetTokens.LOCAL_KEYWORD,
-				JetTokens.COVERED_KEYWORD
+				NapileTokens.LOCAL_KEYWORD,
+				NapileTokens.COVERED_KEYWORD
 		};
 		element.replace(AddModifierFix.addModifier(element, modifier, modifiersThanCanBeReplaced, project, true));
 	}
@@ -117,7 +117,7 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<NapileModifi
 		NapileKeywordToken modifier = null;
 		if(maxVisibility == Visibility.COVERED)
 		{
-			modifier = JetTokens.COVERED_KEYWORD;
+			modifier = NapileTokens.COVERED_KEYWORD;
 		}
 
 		return modifier;

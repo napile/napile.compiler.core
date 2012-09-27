@@ -268,7 +268,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 
 /*	private static void collectInheritingClasses(NapileClass element, Collection<LineMarkerInfo> result)
 	{
-		if(!element.hasModifier(JetTokens.OPEN_KEYWORD))
+		if(!element.hasModifier(NapileTokens.OPEN_KEYWORD))
 		{
 			return;
 		}

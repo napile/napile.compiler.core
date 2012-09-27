@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
@@ -70,14 +70,14 @@ public class NapileClassBody extends NapileElementImpl implements NapileDeclarat
 	@Nullable
 	public PsiElement getRBrace()
 	{
-		final ASTNode[] children = getNode().getChildren(TokenSet.create(JetTokens.RBRACE));
+		final ASTNode[] children = getNode().getChildren(TokenSet.create(NapileTokens.RBRACE));
 		return children.length == 1 ? children[0].getPsi() : null;
 	}
 
 	@Nullable
 	public PsiElement getLBrace()
 	{
-		final ASTNode[] children = getNode().getChildren(TokenSet.create(JetTokens.LBRACE));
+		final ASTNode[] children = getNode().getChildren(TokenSet.create(NapileTokens.LBRACE));
 		return children.length == 1 ? children[0].getPsi() : null;
 	}
 }

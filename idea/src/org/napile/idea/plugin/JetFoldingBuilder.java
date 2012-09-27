@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
 import com.intellij.lang.folding.FoldingDescriptor;
@@ -54,13 +54,13 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 		{
 			descriptors.add(new FoldingDescriptor(node, textRange));
 		}
-		else if(node.getElementType() == JetTokens.IDE_TEMPLATE_START)
+		else if(node.getElementType() == NapileTokens.IDE_TEMPLATE_START)
 		{
 			ASTNode next = node.getTreeNext();
 			if(next != null)
 			{
 				ASTNode nextNext = next.getTreeNext();
-				if(nextNext != null && nextNext.getElementType() == JetTokens.IDE_TEMPLATE_END)
+				if(nextNext != null && nextNext.getElementType() == NapileTokens.IDE_TEMPLATE_END)
 				{
 					TextRange range = new TextRange(node.getStartOffset(), nextNext.getStartOffset() + nextNext.getTextLength());
 					descriptors.add(new FoldingDescriptor(next, range, null, Collections.<Object>emptySet(), true));
@@ -85,7 +85,7 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 	{
 		ASTNode prev = astNode.getTreePrev();
 		ASTNode next = astNode.getTreeNext();
-		if(prev != null && next != null && prev.getElementType() == JetTokens.IDE_TEMPLATE_START && next.getElementType() == JetTokens.IDE_TEMPLATE_END)
+		if(prev != null && next != null && prev.getElementType() == NapileTokens.IDE_TEMPLATE_START && next.getElementType() == NapileTokens.IDE_TEMPLATE_END)
 		{
 			return astNode.getText();
 		}

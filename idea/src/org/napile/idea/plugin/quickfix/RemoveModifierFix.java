@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
 import org.napile.idea.plugin.JetBundle;
@@ -55,7 +55,7 @@ public class RemoveModifierFix extends JetIntentionAction<NapileModifierListOwne
 		{
 			return JetBundle.message("remove.redundant.modifier", modifier.getValue());
 		}
-		if(element != null && (modifier == JetTokens.ABSTRACT_KEYWORD))
+		if(element != null && (modifier == NapileTokens.ABSTRACT_KEYWORD))
 		{
 			return JetBundle.message("make.element.not.modifier", AddModifierFix.getElementName(element), modifier.getValue());
 		}

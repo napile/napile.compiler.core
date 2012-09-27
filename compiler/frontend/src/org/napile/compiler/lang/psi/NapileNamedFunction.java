@@ -25,7 +25,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
@@ -85,7 +85,7 @@ public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJet
 	@Nullable
 	public PsiElement getEqualsToken()
 	{
-		return findChildByType(JetTokens.EQ);
+		return findChildByType(NapileTokens.EQ);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJet
 		while(child != null)
 		{
 			IElementType tt = child.getNode().getElementType();
-			if(tt == JetTokens.COLON)
+			if(tt == NapileTokens.COLON)
 			{
 				colonPassed = true;
 			}

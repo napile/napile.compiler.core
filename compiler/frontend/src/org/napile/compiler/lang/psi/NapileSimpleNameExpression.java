@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.parsing.JetExpressionParsing;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -34,7 +34,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class NapileSimpleNameExpression extends NapileReferenceExpression
 {
-	public static final TokenSet REFERENCE_TOKENS = TokenSet.create(JetTokens.IDENTIFIER, JetTokens.FIELD_IDENTIFIER, JetTokens.THIS_KEYWORD, JetTokens.SUPER_KEYWORD);
+	public static final TokenSet REFERENCE_TOKENS = TokenSet.create(NapileTokens.IDENTIFIER, NapileTokens.FIELD_IDENTIFIER, NapileTokens.THIS_KEYWORD, NapileTokens.SUPER_KEYWORD);
 
 	public NapileSimpleNameExpression(@NotNull ASTNode node)
 	{
@@ -134,7 +134,7 @@ public class NapileSimpleNameExpression extends NapileReferenceExpression
 	@Nullable
 	public PsiElement getIdentifier()
 	{
-		return findChildByType(JetTokens.IDENTIFIER);
+		return findChildByType(NapileTokens.IDENTIFIER);
 	}
 
 	@Nullable

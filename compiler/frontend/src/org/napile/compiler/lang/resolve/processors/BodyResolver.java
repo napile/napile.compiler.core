@@ -53,7 +53,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 import org.napile.compiler.util.slicedmap.WritableSlice;
@@ -375,7 +375,7 @@ public class BodyResolver
 				if(expression instanceof NapileSimpleNameExpression)
 				{
 					NapileSimpleNameExpression simpleNameExpression = (NapileSimpleNameExpression) expression;
-					if(simpleNameExpression.getReferencedNameElementType() == JetTokens.FIELD_IDENTIFIER)
+					if(simpleNameExpression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER)
 					{
 						// This check may be considered redundant as long as $x is only accessible from accessors to $x
 						if(descriptor == propertyDescriptor)

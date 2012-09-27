@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.completion;
 
-import static org.napile.compiler.lexer.JetTokens.*;
+import static org.napile.compiler.lexer.NapileTokens.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
 import org.napile.idea.plugin.completion.handlers.JetFunctionInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetKeywordInsertHandler;
@@ -77,7 +77,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 			new ParentFilter(new ClassFilter(NapileConstantExpression.class)), // or
 			new LeftNeighbour(new TextFilter("."))));
 
-	private final static ElementFilter NOT_IDENTIFIER_FILTER = new NotFilter(new AndFilter(new LeafElementFilter(JetTokens.IDENTIFIER), new NotFilter(new ParentFilter(new ClassFilter(NapileReferenceExpression.class)))));
+	private final static ElementFilter NOT_IDENTIFIER_FILTER = new NotFilter(new AndFilter(new LeafElementFilter(NapileTokens.IDENTIFIER), new NotFilter(new ParentFilter(new ClassFilter(NapileReferenceExpression.class)))));
 
 	private final static List<String> FUNCTION_KEYWORDS = Lists.newArrayList(GET_KEYWORD.toString(), SET_KEYWORD.toString());
 
@@ -216,7 +216,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 				}
 				if(ps instanceof LeafPsiElement)
 				{
-					return ((LeafPsiElement) ps).getElementType() == JetTokens.CLASS_KEYWORD;
+					return ((LeafPsiElement) ps).getElementType() == NapileTokens.CLASS_KEYWORD;
 				}
 			}
 			return false;

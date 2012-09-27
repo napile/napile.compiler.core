@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.editor;
 
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.codeInsight.editorActions.QuoteHandler;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.highlighter.HighlighterIterator;
@@ -33,13 +33,13 @@ public class KotlinQuoteHandler implements QuoteHandler
 	{
 		IElementType tokenType = iterator.getTokenType();
 
-		if(tokenType == JetTokens.CHARACTER_LITERAL)
+		if(tokenType == NapileTokens.CHARACTER_LITERAL)
 		{
 			int start = iterator.getStart();
 			int end = iterator.getEnd();
 			return end - start >= 1 && offset == end - 1;
 		}
-		else if(tokenType == JetTokens.CLOSING_QUOTE)
+		else if(tokenType == NapileTokens.CLOSING_QUOTE)
 		{
 			return true;
 		}
@@ -51,7 +51,7 @@ public class KotlinQuoteHandler implements QuoteHandler
 	{
 		final IElementType tokenType = iterator.getTokenType();
 
-		if(tokenType == JetTokens.OPEN_QUOTE)
+		if(tokenType == NapileTokens.OPEN_QUOTE)
 		{
 			int start = iterator.getStart();
 			return offset == start;
@@ -69,11 +69,11 @@ public class KotlinQuoteHandler implements QuoteHandler
 	public boolean isInsideLiteral(HighlighterIterator iterator)
 	{
 		final IElementType tokenType = iterator.getTokenType();
-		return tokenType == JetTokens.REGULAR_STRING_PART ||
-				tokenType == JetTokens.OPEN_QUOTE ||
-				tokenType == JetTokens.CLOSING_QUOTE ||
-				tokenType == JetTokens.SHORT_TEMPLATE_ENTRY_START ||
-				tokenType == JetTokens.LONG_TEMPLATE_ENTRY_END ||
-				tokenType == JetTokens.LONG_TEMPLATE_ENTRY_START;
+		return tokenType == NapileTokens.REGULAR_STRING_PART ||
+				tokenType == NapileTokens.OPEN_QUOTE ||
+				tokenType == NapileTokens.CLOSING_QUOTE ||
+				tokenType == NapileTokens.SHORT_TEMPLATE_ENTRY_START ||
+				tokenType == NapileTokens.LONG_TEMPLATE_ENTRY_END ||
+				tokenType == NapileTokens.LONG_TEMPLATE_ENTRY_START;
 	}
 }

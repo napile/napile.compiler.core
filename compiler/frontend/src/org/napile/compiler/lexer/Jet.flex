@@ -5,7 +5,7 @@ import com.intellij.lexer.*;
 import com.intellij.psi.*;
 import com.intellij.psi.tree.IElementType;
 
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 
 %%
 

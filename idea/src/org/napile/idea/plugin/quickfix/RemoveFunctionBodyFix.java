@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.JetBundle;
 import com.intellij.extapi.psi.ASTDelegatePsiElement;
 import com.intellij.openapi.editor.Editor;
@@ -90,7 +90,7 @@ public class RemoveFunctionBodyFix extends JetIntentionAction<NapileMethod>
 
 	private static boolean removePossiblyEquationSign(@NotNull ASTDelegatePsiElement element, @Nullable PsiElement possiblyEq)
 	{
-		if(possiblyEq instanceof LeafPsiElement && ((LeafPsiElement) possiblyEq).getElementType() == JetTokens.EQ)
+		if(possiblyEq instanceof LeafPsiElement && ((LeafPsiElement) possiblyEq).getElementType() == NapileTokens.EQ)
 		{
 			QuickFixUtil.removePossiblyWhiteSpace(element, possiblyEq.getNextSibling());
 			element.deleteChildInternal(possiblyEq.getNode());

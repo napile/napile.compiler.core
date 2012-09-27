@@ -16,8 +16,8 @@
 
 package org.napile.idea.plugin.quickfix;
 
-import static org.napile.compiler.lexer.JetTokens.ABSTRACT_KEYWORD;
-import static org.napile.compiler.lexer.JetTokens.FINAL_KEYWORD;
+import static org.napile.compiler.lexer.NapileTokens.ABSTRACT_KEYWORD;
+import static org.napile.compiler.lexer.NapileTokens.FINAL_KEYWORD;
 
 import java.util.HashMap;
 import java.util.Map;

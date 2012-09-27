@@ -19,7 +19,7 @@ package org.napile.idea.plugin.completion.handlers;
 import java.util.Set;
 
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Sets;
 import com.intellij.codeInsight.TailType;
 import com.intellij.codeInsight.completion.InsertHandler;
@@ -34,7 +34,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 public class JetKeywordInsertHandler implements InsertHandler<LookupElement>
 {
 
-	private final static Set<String> NO_SPACE_AFTER = Sets.newHashSet(JetTokens.THIS_KEYWORD.toString(), JetTokens.SUPER_KEYWORD.toString(), JetTokens.THIS_KEYWORD.toString(), JetTokens.FALSE_KEYWORD.toString(), JetTokens.NULL_KEYWORD.toString(), JetTokens.BREAK_KEYWORD.toString(), JetTokens.CONTINUE_KEYWORD.toString());
+	private final static Set<String> NO_SPACE_AFTER = Sets.newHashSet(NapileTokens.THIS_KEYWORD.toString(), NapileTokens.SUPER_KEYWORD.toString(), NapileTokens.THIS_KEYWORD.toString(), NapileTokens.FALSE_KEYWORD.toString(), NapileTokens.NULL_KEYWORD.toString(), NapileTokens.BREAK_KEYWORD.toString(), NapileTokens.CONTINUE_KEYWORD.toString());
 
 	@Override
 	public void handleInsert(InsertionContext context, LookupElement item)
@@ -46,7 +46,7 @@ public class JetKeywordInsertHandler implements InsertHandler<LookupElement>
 			return;
 		}
 
-		if(keyword.equals(JetTokens.RETURN_KEYWORD.toString()))
+		if(keyword.equals(NapileTokens.RETURN_KEYWORD.toString()))
 		{
 			PsiElement element = context.getFile().findElementAt(context.getStartOffset());
 			if(element != null)

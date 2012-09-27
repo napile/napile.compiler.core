@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 
@@ -46,7 +46,7 @@ public class NapileImportDirective extends NapileElementImpl
 
 	public boolean isAbsoluteInRootNamespace()
 	{
-		return findChildByType(JetTokens.PACKAGE_KEYWORD) != null;
+		return findChildByType(NapileTokens.PACKAGE_KEYWORD) != null;
 	}
 
 	@Nullable
@@ -64,9 +64,9 @@ public class NapileImportDirective extends NapileElementImpl
 		while(childNode != null)
 		{
 			IElementType tt = childNode.getElementType();
-			if(tt == JetTokens.AS_KEYWORD)
+			if(tt == NapileTokens.AS_KEYWORD)
 				asPassed = true;
-			if(asPassed && tt == JetTokens.IDENTIFIER)
+			if(asPassed && tt == NapileTokens.IDENTIFIER)
 			{
 				return childNode;
 			}
@@ -89,6 +89,6 @@ public class NapileImportDirective extends NapileElementImpl
 
 	public boolean isAllUnder()
 	{
-		return getNode().findChildByType(JetTokens.MUL) != null;
+		return getNode().findChildByType(NapileTokens.MUL) != null;
 	}
 }

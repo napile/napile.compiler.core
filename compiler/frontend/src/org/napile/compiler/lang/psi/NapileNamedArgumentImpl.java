@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -37,6 +37,6 @@ public class NapileNamedArgumentImpl extends NapileValueArgument
 
 	private ASTNode getParameterNameNode()
 	{
-		return getNode().findChildByType(JetTokens.IDENTIFIER);
+		return getNode().findChildByType(NapileTokens.IDENTIFIER);
 	}
 }

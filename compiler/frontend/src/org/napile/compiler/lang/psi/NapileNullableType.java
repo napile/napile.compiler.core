@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -35,7 +35,7 @@ public class NapileNullableType extends NapileTypeElement
 	@NotNull
 	public ASTNode getQuestionMarkNode()
 	{
-		return getNode().findChildByType(JetTokens.QUEST);
+		return getNode().findChildByType(NapileTokens.QUEST);
 	}
 
 	@NotNull

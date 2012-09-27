@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.PsiJetParameterStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.ArrayFactory;
@@ -84,7 +84,7 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 		ASTNode child = getNode().getFirstChildNode();
 		while(child != null)
 		{
-			if(child.getElementType() == JetTokens.EQ)
+			if(child.getElementType() == NapileTokens.EQ)
 				passedEQ = true;
 			if(passedEQ && child.getPsi() instanceof NapileExpression)
 			{
@@ -105,12 +105,12 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 		}
 
 		NapileModifierList modifierList = getModifierList();
-		return modifierList != null && modifierList.getModifierNode(JetTokens.VARARG_KEYWORD) != null;
+		return modifierList != null && modifierList.getModifierNode(NapileTokens.VARARG_KEYWORD) != null;
 	}
 
 	@Nullable
 	public ASTNode getVarNode()
 	{
-		return getNode().findChildByType(JetTokens.VAR_KEYWORD);
+		return getNode().findChildByType(NapileTokens.VAR_KEYWORD);
 	}
 }

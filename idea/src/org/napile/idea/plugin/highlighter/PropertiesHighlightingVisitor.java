@@ -26,7 +26,7 @@ import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.psi.PsiElement;
 
@@ -51,7 +51,7 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		}
 
 		highlightProperty(expression, (VariableDescriptor) target, false);
-		if(expression.getReferencedNameElementType() == JetTokens.FIELD_IDENTIFIER)
+		if(expression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER)
 			JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.BACKING_FIELD_ACCESS);
 	}
 

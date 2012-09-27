@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
 import com.intellij.lang.PsiBuilder;
@@ -36,7 +36,7 @@ import com.intellij.psi.tree.TokenSet;
 
 	static
 	{
-		for(IElementType type : JetTokens.SOFT_KEYWORDS.getTypes())
+		for(IElementType type : NapileTokens.SOFT_KEYWORDS.getTypes())
 		{
 			NapileKeywordToken keywordToken = (NapileKeywordToken) type;
 			assert keywordToken.isSoft();
@@ -46,7 +46,7 @@ import com.intellij.psi.tree.TokenSet;
 
 	static
 	{
-		for(IElementType token : JetTokens.KEYWORDS.getTypes())
+		for(IElementType token : NapileTokens.KEYWORDS.getTypes())
 		{
 			assert token instanceof NapileKeywordToken : "Must be NapileKeywordToken: " + token;
 			assert !((NapileKeywordToken) token).isSoft() : "Must not be soft: " + token;
@@ -64,7 +64,7 @@ import com.intellij.psi.tree.TokenSet;
 	{
 		int i = 1;
 		int currentOffset = myBuilder.getCurrentOffset();
-		while(i <= currentOffset && JetTokens.WHITE_SPACE_OR_COMMENT_BIT_SET.contains(myBuilder.rawLookup(-i)))
+		while(i <= currentOffset && NapileTokens.WHITE_SPACE_OR_COMMENT_BIT_SET.contains(myBuilder.rawLookup(-i)))
 		{
 			i++;
 		}
@@ -115,7 +115,7 @@ import com.intellij.psi.tree.TokenSet;
 	protected void errorWithRecovery(String message, TokenSet recoverySet)
 	{
 		IElementType tt = tt();
-		if(recoverySet == null || recoverySet.contains(tt) || (recoverySet.contains(JetTokens.EOL_OR_SEMICOLON) && (eof() || tt == JetTokens.SEMICOLON || myBuilder.newlineBeforeCurrentToken())))
+		if(recoverySet == null || recoverySet.contains(tt) || (recoverySet.contains(NapileTokens.EOL_OR_SEMICOLON) && (eof() || tt == NapileTokens.SEMICOLON || myBuilder.newlineBeforeCurrentToken())))
 		{
 			error(message);
 		}
@@ -180,11 +180,11 @@ import com.intellij.psi.tree.TokenSet;
 	{
 		if(token == expectation)
 			return true;
-		if(expectation == JetTokens.EOL_OR_SEMICOLON)
+		if(expectation == NapileTokens.EOL_OR_SEMICOLON)
 		{
 			if(eof())
 				return true;
-			if(token == JetTokens.SEMICOLON)
+			if(token == NapileTokens.SEMICOLON)
 				return true;
 			if(myBuilder.newlineBeforeCurrentToken())
 				return true;
@@ -197,7 +197,7 @@ import com.intellij.psi.tree.TokenSet;
 		if(_at(expectation))
 			return true;
 		IElementType token = tt();
-		if(token == JetTokens.IDENTIFIER && expectation instanceof NapileKeywordToken)
+		if(token == NapileTokens.IDENTIFIER && expectation instanceof NapileKeywordToken)
 		{
 			NapileKeywordToken expectedKeyword = (NapileKeywordToken) expectation;
 			if(expectedKeyword.isSoft() && expectedKeyword.getValue().equals(myBuilder.getTokenText()))
@@ -206,12 +206,12 @@ import com.intellij.psi.tree.TokenSet;
 				return true;
 			}
 		}
-		if(expectation == JetTokens.IDENTIFIER && token instanceof NapileKeywordToken)
+		if(expectation == NapileTokens.IDENTIFIER && token instanceof NapileKeywordToken)
 		{
 			NapileKeywordToken keywordToken = (NapileKeywordToken) token;
 			if(keywordToken.isSoft())
 			{
-				myBuilder.remapCurrentToken(JetTokens.IDENTIFIER);
+				myBuilder.remapCurrentToken(NapileTokens.IDENTIFIER);
 				return true;
 			}
 		}
@@ -234,11 +234,11 @@ import com.intellij.psi.tree.TokenSet;
 		IElementType token = tt();
 		if(set.contains(token))
 			return true;
-		if(set.contains(JetTokens.EOL_OR_SEMICOLON))
+		if(set.contains(NapileTokens.EOL_OR_SEMICOLON))
 		{
 			if(eof())
 				return true;
-			if(token == JetTokens.SEMICOLON)
+			if(token == NapileTokens.SEMICOLON)
 				return true;
 			if(myBuilder.newlineBeforeCurrentToken())
 				return true;
@@ -256,7 +256,7 @@ import com.intellij.psi.tree.TokenSet;
 		if(_atSet(set))
 			return true;
 		IElementType token = tt();
-		if(token == JetTokens.IDENTIFIER)
+		if(token == NapileTokens.IDENTIFIER)
 		{
 			NapileKeywordToken keywordToken = SOFT_KEYWORD_TEXTS.get(myBuilder.getTokenText());
 			if(keywordToken != null && set.contains(keywordToken))
@@ -268,11 +268,11 @@ import com.intellij.psi.tree.TokenSet;
 		else
 		{
 			// We know at this point that <code>set</code> does not contain <code>token</code>
-			if(set.contains(JetTokens.IDENTIFIER) && token instanceof NapileKeywordToken)
+			if(set.contains(NapileTokens.IDENTIFIER) && token instanceof NapileKeywordToken)
 			{
 				if(((NapileKeywordToken) token).isSoft())
 				{
-					myBuilder.remapCurrentToken(JetTokens.IDENTIFIER);
+					myBuilder.remapCurrentToken(NapileTokens.IDENTIFIER);
 					return true;
 				}
 			}
@@ -294,8 +294,8 @@ import com.intellij.psi.tree.TokenSet;
 	// TODO: Migrate to predicates
 	protected void skipUntil(TokenSet tokenSet)
 	{
-		boolean stopAtEolOrSemi = tokenSet.contains(JetTokens.EOL_OR_SEMICOLON);
-		while(!eof() && !tokenSet.contains(tt()) && !(stopAtEolOrSemi && at(JetTokens.EOL_OR_SEMICOLON)))
+		boolean stopAtEolOrSemi = tokenSet.contains(NapileTokens.EOL_OR_SEMICOLON);
+		while(!eof() && !tokenSet.contains(tt()) && !(stopAtEolOrSemi && at(NapileTokens.EOL_OR_SEMICOLON)))
 		{
 			advance();
 		}
@@ -332,46 +332,46 @@ import com.intellij.psi.tree.TokenSet;
 			{
 				break;
 			}
-			if(at(JetTokens.LPAR))
+			if(at(NapileTokens.LPAR))
 			{
 				openParentheses++;
-				opens.push(JetTokens.LPAR);
+				opens.push(NapileTokens.LPAR);
 			}
-			else if(at(JetTokens.LT))
+			else if(at(NapileTokens.LT))
 			{
 				openAngleBrackets++;
-				opens.push(JetTokens.LT);
+				opens.push(NapileTokens.LT);
 			}
-			else if(at(JetTokens.LBRACE))
+			else if(at(NapileTokens.LBRACE))
 			{
 				openBraces++;
-				opens.push(JetTokens.LBRACE);
+				opens.push(NapileTokens.LBRACE);
 			}
-			else if(at(JetTokens.LBRACKET))
+			else if(at(NapileTokens.LBRACKET))
 			{
 				openBrackets++;
-				opens.push(JetTokens.LBRACKET);
+				opens.push(NapileTokens.LBRACKET);
 			}
-			else if(at(JetTokens.RPAR))
+			else if(at(NapileTokens.RPAR))
 			{
 				openParentheses--;
-				if(opens.isEmpty() || opens.pop() != JetTokens.LPAR)
+				if(opens.isEmpty() || opens.pop() != NapileTokens.LPAR)
 				{
-					if(pattern.handleUnmatchedClosing(JetTokens.RPAR))
+					if(pattern.handleUnmatchedClosing(NapileTokens.RPAR))
 					{
 						break;
 					}
 				}
 			}
-			else if(at(JetTokens.GT))
+			else if(at(NapileTokens.GT))
 			{
 				openAngleBrackets--;
 			}
-			else if(at(JetTokens.RBRACE))
+			else if(at(NapileTokens.RBRACE))
 			{
 				openBraces--;
 			}
-			else if(at(JetTokens.RBRACKET))
+			else if(at(NapileTokens.RBRACKET))
 			{
 				openBrackets--;
 			}

@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -62,7 +62,7 @@ public abstract class NapileQualifiedExpression extends NapileExpressionImpl
 	@NotNull
 	public ASTNode getOperationTokenNode()
 	{
-		ASTNode operationNode = getNode().findChildByType(JetTokens.OPERATIONS);
+		ASTNode operationNode = getNode().findChildByType(NapileTokens.OPERATIONS);
 		assert operationNode != null;
 		return operationNode;
 	}

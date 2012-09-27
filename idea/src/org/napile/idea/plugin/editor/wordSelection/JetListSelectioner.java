@@ -23,7 +23,7 @@ import org.napile.compiler.lang.psi.NapileParameterList;
 import org.napile.compiler.lang.psi.NapileTypeArgumentList;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
 import org.napile.compiler.lang.psi.NapileValueArgumentList;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.codeInsight.editorActions.wordSelection.BasicSelectioner;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.Editor;
@@ -48,8 +48,8 @@ public class JetListSelectioner extends BasicSelectioner
 	public List<TextRange> select(PsiElement e, CharSequence editorText, int cursorOffset, Editor editor)
 	{
 		ASTNode node = e.getNode();
-		ASTNode startNode = node.findChildByType(TokenSet.create(JetTokens.LPAR, JetTokens.LT));
-		ASTNode endNode = node.findChildByType(TokenSet.create(JetTokens.RPAR, JetTokens.GT));
+		ASTNode startNode = node.findChildByType(TokenSet.create(NapileTokens.LPAR, NapileTokens.LT));
+		ASTNode endNode = node.findChildByType(TokenSet.create(NapileTokens.RPAR, NapileTokens.GT));
 		if(startNode != null && endNode != null)
 		{
 			return Arrays.asList(new TextRange(startNode.getStartOffset() + 1, endNode.getStartOffset()));

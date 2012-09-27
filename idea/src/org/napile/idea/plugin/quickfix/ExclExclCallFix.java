@@ -21,7 +21,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePostfixExpression;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.JetBundle;
 import com.intellij.codeInsight.CodeInsightUtilBase;
 import com.intellij.codeInsight.intention.IntentionAction;
@@ -133,13 +133,13 @@ public class ExclExclCallFix implements IntentionAction
 		if(elementAtCaret instanceof LeafPsiElement)
 		{
 			LeafPsiElement leafElement = (LeafPsiElement) elementAtCaret;
-			if(leafElement.getElementType() == JetTokens.EXCLEXCL)
+			if(leafElement.getElementType() == NapileTokens.EXCLEXCL)
 			{
 				return elementAtCaret;
 			}
 
 			LeafPsiElement prevLeaf = (LeafPsiElement) PsiTreeUtil.prevLeaf(leafElement);
-			if(prevLeaf != null && prevLeaf.getElementType() == JetTokens.EXCLEXCL)
+			if(prevLeaf != null && prevLeaf.getElementType() == NapileTokens.EXCLEXCL)
 			{
 				return prevLeaf;
 			}
@@ -172,7 +172,7 @@ public class ExclExclCallFix implements IntentionAction
 
 	private static NapileExpression getExpressionForIntroduceCall(PsiElement problemElement)
 	{
-		if(problemElement instanceof LeafPsiElement && ((LeafPsiElement) problemElement).getElementType() == JetTokens.DOT)
+		if(problemElement instanceof LeafPsiElement && ((LeafPsiElement) problemElement).getElementType() == NapileTokens.DOT)
 		{
 			PsiElement sibling = problemElement.getPrevSibling();
 			if(sibling instanceof NapileExpression)

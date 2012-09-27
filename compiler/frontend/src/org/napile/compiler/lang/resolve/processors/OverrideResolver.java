@@ -36,7 +36,7 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lexer.JetTokens;
+import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.util.CommonSuppliers;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -515,7 +515,7 @@ public class OverrideResolver
 		}
 
 		NapileModifierList modifierList = member.getModifierList();
-		ASTNode overrideNode = modifierList != null ? modifierList.getModifierNode(JetTokens.OVERRIDE_KEYWORD) : null;
+		ASTNode overrideNode = modifierList != null ? modifierList.getModifierNode(NapileTokens.OVERRIDE_KEYWORD) : null;
 		boolean hasOverrideModifier = overrideNode != null;
 
 		boolean finalOverriddenError = false;
@@ -625,7 +625,7 @@ public class OverrideResolver
 		{
 			// No check if the function is not marked as 'override'
 			NapileModifierListOwner declaration = (NapileModifierListOwner) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared);
-			if(!declaration.hasModifier(JetTokens.OVERRIDE_KEYWORD))
+			if(!declaration.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
 			{
 				return;
 			}
