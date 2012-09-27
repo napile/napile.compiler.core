@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 
 import org.jetbrains.jet.utils.Progress;
 import org.napile.asm.LangVersion;
+import org.napile.asm.io.AsmWriterOption;
 import org.napile.asm.io.xml.out.AsmXmlTextWriter;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
@@ -155,6 +156,7 @@ public class BytecodeToolwindow extends JPanel implements Disposable
 		StringBuilder answer = new StringBuilder();
 
 		AsmXmlTextWriter writer = new AsmXmlTextWriter();
+		writer.enableOption(AsmWriterOption.INSTRUCTION_INDEX_IN_COMMENT);
 		for(ClassNode classNode : state.getClassNodes().values())
 			answer.append(writer.write(LangVersion.CURRENT, classNode));
 

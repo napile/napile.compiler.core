@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.Label;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.VariableRef;
@@ -23,104 +22,154 @@ public class InstructionAdapter implements Iterable<Instruction>
 	private final List<Instruction> instructions = new ArrayList<Instruction>();
 
 	private int maxLocals;
-	private int maxStacks;
 
 	public InstructionAdapter()
-	{}
-
-	public void load(int index)
 	{
-		instructions.add(new LoadInstruction(index));
 	}
 
-	public void store(int index)
+	@NotNull
+	public LoadInstruction load(int index)
 	{
-		instructions.add(new StoreInstruction(index));
+		return add(new LoadInstruction(index));
 	}
 
-	public void newInt(int value)
+	@NotNull
+	public StoreInstruction store(int index)
 	{
-		instructions.add(new NewIntInstruction(value));
+		return add(new StoreInstruction(index));
 	}
 
-	public void newString(@NotNull String value)
+	@NotNull
+	public NewIntInstruction newInt(int value)
 	{
-		instructions.add(new NewStringInstruction(value));
+		return add(new NewIntInstruction(value));
 	}
 
-	public void invokeSpecial(MethodRef methodRef)
+	@NotNull
+	public NewStringInstruction newString(@NotNull String value)
 	{
-		instructions.add(new InvokeSpecialInstruction(methodRef));
+		return add(new NewStringInstruction(value));
 	}
 
-	public void invokeStatic(MethodRef methodRef)
+	@NotNull
+	public InvokeSpecialInstruction invokeSpecial(MethodRef methodRef)
 	{
-		instructions.add(new InvokeStaticInstruction(methodRef));
+		return add(new InvokeSpecialInstruction(methodRef));
 	}
 
-	public void invokeVirtual(MethodRef methodRef)
+	@NotNull
+	public InvokeStaticInstruction invokeStatic(MethodRef methodRef)
 	{
-		instructions.add(new InvokeVirtualInstruction(methodRef));
+		return add(new InvokeStaticInstruction(methodRef));
 	}
 
-	public void putToVar(VariableRef variableRef)
+	@NotNull
+	public InvokeVirtualInstruction invokeVirtual(MethodRef methodRef)
 	{
-		instructions.add(new PutToVariableInstruction(variableRef));
+		return add(new InvokeVirtualInstruction(methodRef));
 	}
 
-	public void putToStaticVar(VariableRef variableRef)
+	@NotNull
+	public PutToVariableInstruction putToVar(VariableRef variableRef)
 	{
-		instructions.add(new PutToStaticVariableInstruction(variableRef));
+		return add(new PutToVariableInstruction(variableRef));
 	}
 
-	public void getVar(VariableRef variableRef)
+	@NotNull
+	public PutToStaticVariableInstruction putToStaticVar(VariableRef variableRef)
 	{
-		instructions.add(new GetVariableInstruction(variableRef));
+		return add(new PutToStaticVariableInstruction(variableRef));
 	}
 
-	public void getStaticVar(VariableRef variableRef)
+	@NotNull
+	public GetVariableInstruction getVar(VariableRef variableRef)
 	{
-		instructions.add(new GetStaticVariableInstruction(variableRef));
+		return add(new GetVariableInstruction(variableRef));
 	}
 
-	public void newObject(TypeNode typeNode)
+	@NotNull
+	public GetStaticVariableInstruction getStaticVar(VariableRef variableRef)
 	{
-		instructions.add(new NewObjectInstruction(typeNode));
+		return add(new GetStaticVariableInstruction(variableRef));
 	}
 
-	public void returnVal()
+	@NotNull
+	public NewObjectInstruction newObject(TypeNode typeNode)
 	{
-		instructions.add(new ReturnInstruction());
+		return add(new NewObjectInstruction(typeNode));
 	}
 
-	public void swap()
+	@NotNull
+	public ReturnInstruction returnVal()
 	{
-		instructions.add(new SwapInstruction());
+		return add(new ReturnInstruction());
 	}
 
-	public void pop()
+	@NotNull
+	public SwapInstruction swap()
 	{
-		instructions.add(new PopInstruction());
+		return add(new SwapInstruction());
 	}
 
-	public void dup()
+	@NotNull
+	public PopInstruction pop()
 	{
-		instructions.add(new DupInstruction());
+		return add(new PopInstruction());
 	}
 
-	public void throwVal()
+	@NotNull
+	public DupInstruction dup()
 	{
-		instructions.add(new ThrowInstruction());
+		return add(new DupInstruction());
 	}
 
-	public void mark(Label label)
+	@NotNull
+	public ThrowInstruction throwVal()
 	{
-		maxStacks ++;
+		return add(new ThrowInstruction());
+	}
+
+	@NotNull
+	public JumpIfInstruction jumpIf(int val)
+	{
+		return add(new JumpIfInstruction(val));
+	}
+
+	@NotNull
+	public JumpInstruction jump(int val)
+	{
+		return add(new JumpInstruction(val));
+	}
+
+	@NotNull
+	public ReservedInstruction reserve()
+	{
+		return add(new ReservedInstruction());
+	}
+
+	public int size()
+	{
+		return instructions.size();
+	}
+
+	public void replace(@NotNull Instruction instruction1, @NotNull Instruction instruction2)
+	{
+		int i = instructions.indexOf(instruction1);
+		if(i < 0)
+			throw new IndexOutOfBoundsException();
+
+		instructions.set(i, instruction2);
+	}
+
+	private <T extends Instruction> T add(T t)
+	{
+		instructions.add(t);
+		return t;
 	}
 
 	public void visitLocalVariable(String name)
 	{
-		maxLocals ++;
+		maxLocals++;
 	}
 
 	@NotNull
@@ -130,6 +179,7 @@ public class InstructionAdapter implements Iterable<Instruction>
 	}
 
 	@Override
+	@NotNull
 	public Iterator<Instruction> iterator()
 	{
 		return instructions.iterator();

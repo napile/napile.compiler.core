@@ -10,6 +10,8 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
  */
 public interface TypeConstants
 {
+	TypeNode BOOL = new TypeNode(false, new ClassTypeNode(NapileLangPackage.BOOL));
+
 	TypeNode NULL = new TypeNode(false, new ClassTypeNode(NapileLangPackage.NULL));
 
 	TypeNode ANY = new TypeNode(false, new ClassTypeNode(NapileLangPackage.ANY));

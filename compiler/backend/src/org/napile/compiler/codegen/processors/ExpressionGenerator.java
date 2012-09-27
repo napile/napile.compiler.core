@@ -25,8 +25,10 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.Label;
 import org.napile.asm.adapters.InstructionAdapter;
+import org.napile.asm.adapters.ReservedInstruction;
+import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
+import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
@@ -37,7 +39,15 @@ import org.napile.compiler.codegen.processors.codegen.IntrinsicMethod;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
-import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -154,6 +164,89 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitIfExpression(NapileIfExpression expression, StackValue receiver)
+	{
+		TypeNode asmType = expressionType(expression);
+
+		NapileExpression thenExpression = expression.getThen();
+		NapileExpression elseExpression = expression.getElse();
+
+		if(thenExpression == null && elseExpression == null)
+			throw new CompilationException("Both brunches of if/else are null", null, expression);
+
+		if(isEmptyExpression(thenExpression))
+		{
+			if(isEmptyExpression(elseExpression))
+			{
+				if(!asmType.equals(TypeConstants.NULL))
+					throw new CompilationException("Completely empty 'if' is expected to have Null type", null, expression);
+
+				StackValue.putNull(instructs);
+				return StackValue.onStack(asmType);
+			}
+			StackValue condition = gen(expression.getCondition());
+			return generateSingleBranchIf(condition, elseExpression, false);
+		}
+		else
+		{
+			if(isEmptyExpression(elseExpression))
+			{
+				StackValue condition = gen(expression.getCondition());
+				return generateSingleBranchIf(condition, thenExpression, true);
+			}
+		}
+
+
+		StackValue condition = gen(expression.getCondition());
+
+		condition.put(TypeConstants.BOOL, instructs);
+
+		StackValue.putTrue(instructs);
+
+		ReservedInstruction ifSlot = instructs.reserve();
+
+		gen(thenExpression, asmType);
+
+		ReservedInstruction afterIfSlot = instructs.reserve();
+
+		int elseStartIndex = instructs.size();
+
+		gen(elseExpression, asmType);
+
+		int afterIfStartIndex = instructs.size();
+
+		// replace ifSlot - by jump_if - index is start 'else' block
+		instructs.replace(ifSlot, new JumpIfInstruction(elseStartIndex));
+		// at end of 'then' block ignore 'else' block
+		instructs.replace(afterIfSlot, new JumpInstruction(afterIfStartIndex));
+
+		return StackValue.onStack(asmType);
+	}
+
+	private StackValue generateSingleBranchIf(StackValue condition, NapileExpression expression, boolean inverse)
+	{
+		TypeNode expressionType = expressionType(expression);
+		TypeNode targetType = expressionType;
+		if(!expressionType.equals(TypeConstants.NULL))
+			targetType = TypeConstants.ANY;
+
+	/*	Label elseLabel = new Label();
+		condition.condJump(elseLabel, inverse, v);
+
+		gen(expression, expressionType);
+		StackValue.coerce(expressionType, targetType, v);
+
+		Label end = new Label();
+		v.goTo(end);
+
+		v.mark(elseLabel);
+		StackValue.putTuple0Instance(v);
+
+		v.mark(end);    */
+		return StackValue.onStack(targetType);
+	}
+
+	@Override
 	public StackValue visitReturnExpression(NapileReturnExpression expression, StackValue receiver)
 	{
 		final NapileExpression returnedExpression = expression.getReturnedExpression();
@@ -163,6 +256,11 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 			doFinallyOnReturn();
 
+			if(isInstanceConstructor)
+				StackValue.local(0, returnType);
+			else
+				StackValue.putNull(instructs);
+
 			instructs.returnVal();
 		}
 		else
@@ -170,7 +268,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			if(isInstanceConstructor)
 				StackValue.local(0, returnType);
 			else
-				StackValue.nullInstance().put(returnType, instructs);
+				StackValue.putNull(instructs);
 
 			instructs.returnVal();
 		}
@@ -615,8 +713,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	private StackValue generateBlock(List<NapileElement> statements)
 	{
-		final Label blockEnd = new Label();
-
 		List<Function<StackValue, Void>> leaveTasks = Lists.newArrayList();
 
 		StackValue answer = StackValue.none();
@@ -626,15 +722,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			NapileElement statement = iterator.next();
 
 			if(statement instanceof NapileProperty)
-				generateLocalVariableDeclaration((NapileProperty) statement, null, leaveTasks);
+				generateLocalVariableDeclaration((NapileProperty) statement, leaveTasks);
 
 			if(!iterator.hasNext())
 				answer = gen(statement);
 			else
 				gen(statement, TypeConstants.NULL);
 		}
-
-		instructs.mark(blockEnd);
 
 		for(Function<StackValue, Void> task : Lists.reverse(leaveTasks))
 			task.fun(answer);
@@ -699,13 +793,10 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		return StackValue.local(0, TypeTransformer.toAsmType(calleeContainingClass.getDefaultType()));
 	}
 
-	private void generateLocalVariableDeclaration(@NotNull final NapileProperty variableDeclaration, final @Nullable Label blockEnd, @NotNull List<Function<StackValue, Void>> leaveTasks)
+	private void generateLocalVariableDeclaration(@NotNull final NapileProperty variableDeclaration, @NotNull List<Function<StackValue, Void>> leaveTasks)
 	{
 		final VariableDescriptor variableDescriptor = bindingTrace.get(BindingContext.VARIABLE, variableDeclaration);
 		assert variableDescriptor != null;
-
-		final Label scopeStart = new Label();
-		instructs.mark(scopeStart);
 
 		final TypeNode type = asmType(variableDescriptor.getType());
 		int index = myFrameMap.enter(variableDescriptor, type);
@@ -800,17 +891,17 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		StackValue lastValue = gen(expr);
 
-		if(lastValue.getType() != TypeConstants.NULL)
+		/*if(lastValue.getType() != TypeConstants.NULL)
 		{
 			lastValue.put(returnType, instructs);
 			instructs.returnVal();
 		}
-		else if(!endsWithReturn(expr))
+		else */if(!endsWithReturn(expr))
 		{
 			if(isInstanceConstructor)
 				StackValue.local(0, returnType).put(returnType, instructs);
 			else
-				StackValue.nullInstance().put(TypeConstants.NULL, instructs);
+				StackValue.putNull(instructs);
 			instructs.returnVal();
 		}
 	}
@@ -832,6 +923,20 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		}
 
 		return bodyExpression instanceof NapileReturnExpression;
+	}
+
+	private static boolean isEmptyExpression(NapileElement expr)
+	{
+		if(expr == null)
+			return true;
+		if(expr instanceof NapileBlockExpression)
+		{
+			NapileBlockExpression blockExpression = (NapileBlockExpression) expr;
+			List<NapileElement> statements = blockExpression.getStatements();
+			if(statements.size() == 0 || statements.size() == 1 && isEmptyExpression(statements.get(0)))
+				return true;
+		}
+		return false;
 	}
 
 	@NotNull

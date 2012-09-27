@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
-package org.napile.asm;
+package org.napile.asm.adapters;
+
+import org.napile.asm.tree.members.bytecode.Instruction;
+import org.napile.asm.tree.members.bytecode.InstructionVisitor;
 
 /**
  * @author VISTALL
- * @date 0:32/20.09.12
+ * @date 16:42/27.09.12
  */
-public class Label
+public class ReservedInstruction implements Instruction
 {
+	@Override
+	public <T> void accept(InstructionVisitor<T> visitor, T a2)
+	{
+		throw new UnsupportedOperationException();
+	}
 }

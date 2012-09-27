@@ -24,6 +24,7 @@ import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
+import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -90,9 +91,19 @@ public abstract class StackValue
 		return new CollectionElement(typeNode, getCall, setCall, expressionGenerator);
 	}
 
-	public static StackValue nullInstance()
+	public static void putTrue(InstructionAdapter adapter)
 	{
-		return Null.INSTANCE;
+		Bool.TRUE.put(TypeConstants.BOOL, adapter);
+	}
+
+	public static void putFalse(InstructionAdapter adapter)
+	{
+		Bool.FALSE.put(TypeConstants.BOOL, adapter);
+	}
+
+	public static void putNull(InstructionAdapter adapter)
+	{
+		Null.INSTANCE.put(TypeConstants.NULL, adapter);
 	}
 
 	private final TypeNode type;
