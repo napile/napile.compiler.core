@@ -19,6 +19,11 @@ package org.napile.idea.plugin.highlighter;
 import java.awt.Color;
 import java.awt.Font;
 
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
+import org.napile.compiler.lang.descriptors.PropertyParameterDescriptorImpl;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.SyntaxHighlighterColors;
 import com.intellij.openapi.editor.colors.CodeInsightColors;
@@ -122,5 +127,17 @@ public class JetHighlightingColors
 
 	private JetHighlightingColors()
 	{
+	}
+
+	@NotNull
+	protected static TextAttributesKey getAttributes(DeclarationDescriptor declarationDescriptor)
+	{
+		if(declarationDescriptor instanceof LocalVariableDescriptor)
+			return LOCAL_VARIABLE;
+		if(declarationDescriptor instanceof PropertyParameterDescriptorImpl)
+			return PARAMETER;
+		if(declarationDescriptor instanceof VariableDescriptor)
+			return ((VariableDescriptor) declarationDescriptor).isStatic() ? STATIC_PROPERTY : INSTANCE_PROPERTY;
+		throw new IllegalArgumentException("invalid : " + declarationDescriptor);
 	}
 }

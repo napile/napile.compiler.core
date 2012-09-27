@@ -24,7 +24,6 @@ import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -114,15 +113,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 				holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(JetHighlightingColors.WRAPPED_INTO_REF);
 			}
 
-			if(descriptor instanceof LocalVariableDescriptor)
-			{
-				JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.LOCAL_VARIABLE);
-			}
-
-			if(descriptor instanceof ParameterDescriptor)
-			{
-				JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.PARAMETER);
-			}
+			JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.getAttributes(descriptor));
 		}
 	}
 }
