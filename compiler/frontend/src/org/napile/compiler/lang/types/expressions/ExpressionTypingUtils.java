@@ -56,7 +56,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -101,7 +100,7 @@ public class ExpressionTypingUtils
 
 	public static boolean isBoolean(@NotNull JetType type)
 	{
-		return JetTypeChecker.INSTANCE.isSubtypeOf(type, TypeUtils.getTypeOfClassOrErrorType(type.getMemberScope(), NapileLangPackage.BOOL, false));
+		return TypeUtils.isEqualFqName(type, NapileLangPackage.BOOL);
 	}
 
 	public static boolean ensureBooleanResult(NapileExpression operationSign, Name name, JetType resultType, ExpressionTypingContext context)

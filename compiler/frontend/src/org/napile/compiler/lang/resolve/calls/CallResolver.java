@@ -717,6 +717,20 @@ public class CallResolver
 
 						isValid = !isParentStatic(ref);
 					}
+					else if(expression instanceof NapilePostfixExpression && ((NapilePostfixExpression) expression).getBaseExpression() instanceof NapileReferenceExpression)
+					{
+						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpression)((NapilePostfixExpression) expression).getBaseExpression());
+
+						isValid = !isParentStatic(ref);
+					}
+					/*else if(expression instanceof NapileDotQualifiedExpression && ((NapileDotQualifiedExpression) expression).getReceiverExpression() instanceof NapileReferenceExpression)
+					{
+						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpression)((NapileDotQualifiedExpression) expression).getReceiverExpression());
+
+						isValid = !isParentStatic(ref);
+					} */
+					else if(expression instanceof NapileConstantExpression)
+						isValid = false;
 				}
 			}
 
