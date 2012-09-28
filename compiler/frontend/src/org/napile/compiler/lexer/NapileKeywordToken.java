@@ -44,7 +44,7 @@ public class NapileKeywordToken extends NapileToken
 	private final String myValue;
 	private final boolean myIsSoft;
 
-	private NapileKeywordToken(@NotNull @NonNls String value, boolean isSoft)
+	protected NapileKeywordToken(@NotNull @NonNls String value, boolean isSoft)
 	{
 		super(value);
 		myValue = value;
