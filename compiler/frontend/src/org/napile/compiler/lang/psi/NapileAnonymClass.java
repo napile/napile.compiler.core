@@ -88,12 +88,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 		List<NapileDelegationSpecifier> specifiers = getDelegationSpecifiers();
 		List<NapileTypeReference> list = new ArrayList<NapileTypeReference>(specifiers.size());
 		for(NapileDelegationSpecifier s : specifiers)
-		{
-			if(s instanceof NapileDelegatorToSuperCall)
-				list.add(s.getTypeReference());
-			else
-				throw new UnsupportedOperationException(s.getClass().getName());
-		}
+			list.add(s.getTypeReference());
 		return list;
 	}
 
