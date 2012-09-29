@@ -24,28 +24,19 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileProperty;
-import org.napile.compiler.lang.psi.NapilePropertyAccessor;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
-import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lexer.NapileTokens;
-import com.intellij.lang.ASTNode;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -99,7 +90,7 @@ public class DeclarationsChecker
 
 	private void checkPropertyAbstractness(NapileProperty property, PropertyDescriptor propertyDescriptor, ClassDescriptor classDescriptor)
 	{
-		NapilePropertyAccessor getter = property.getGetter();
+		/*NapilePropertyAccessor getter = property.getGetter();
 		NapilePropertyAccessor setter = property.getSetter();
 		NapileModifierList modifierList = property.getModifierList();
 		ASTNode abstractNode = modifierList != null ? modifierList.getModifierNode(NapileTokens.ABSTRACT_KEYWORD) : null;
@@ -141,12 +132,12 @@ public class DeclarationsChecker
 			{
 				trace.report(Errors.ABSTRACT_PROPERTY_WITH_SETTER.on(setter));
 			}
-		}
+		}  */
 	}
 
 	private void checkPropertyInitializer(NapileProperty property, PropertyDescriptor propertyDescriptor, @NotNull ClassDescriptor classDescriptor)
 	{
-		NapilePropertyAccessor getter = property.getGetter();
+		/*NapilePropertyAccessor getter = property.getGetter();
 		NapilePropertyAccessor setter = property.getSetter();
 		boolean hasAccessorImplementation = (getter != null && getter.getBodyExpression() != null) || (setter != null && setter.getBodyExpression() != null);
 
@@ -180,7 +171,7 @@ public class DeclarationsChecker
 		else if(!backingFieldRequired)
 		{
 			trace.report(Errors.PROPERTY_INITIALIZER_NO_BACKING_FIELD.on(initializer));
-		}
+		}   */
 	}
 
 	private void checkConstructor(NapileConstructor constructor, ConstructorDescriptor constructorDescriptor)

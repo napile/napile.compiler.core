@@ -59,15 +59,11 @@ public class QuickFixes
 
 		factories.put(ABSTRACT_PROPERTY_NOT_IN_CLASS, removeAbstractModifierFactory);
 
-		JetIntentionActionFactory removePartsFromPropertyFactory = RemovePartsFromPropertyFix.createFactory();
 		factories.put(ABSTRACT_PROPERTY_WITH_INITIALIZER, removeAbstractModifierFactory);
-		factories.put(ABSTRACT_PROPERTY_WITH_INITIALIZER, removePartsFromPropertyFactory);
 
 		factories.put(ABSTRACT_PROPERTY_WITH_GETTER, removeAbstractModifierFactory);
-		factories.put(ABSTRACT_PROPERTY_WITH_GETTER, removePartsFromPropertyFactory);
 
 		factories.put(ABSTRACT_PROPERTY_WITH_SETTER, removeAbstractModifierFactory);
-		factories.put(ABSTRACT_PROPERTY_WITH_SETTER, removePartsFromPropertyFactory);
 
 		factories.put(MUST_BE_INITIALIZED_OR_BE_ABSTRACT, addAbstractModifierFactory);
 
@@ -105,7 +101,7 @@ public class QuickFixes
 		factories.put(REDUNDANT_MODIFIER_WITH_MODIFIER, removeRedundantModifierFactory);
 
 		JetIntentionActionFactory removeModifierFactory = RemoveModifierFix.createRemoveModifierFactory();
-		factories.put(GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY, removeModifierFactory);
+
 		factories.put(REDUNDANT_MODIFIER_IN_GETTER, removeRedundantModifierFactory);
 		factories.put(ILLEGAL_MODIFIER, removeModifierFactory);
 

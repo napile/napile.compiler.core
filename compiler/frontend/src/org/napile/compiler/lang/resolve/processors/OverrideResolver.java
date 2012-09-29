@@ -708,23 +708,8 @@ public class OverrideResolver
 			visibility = Visibility.PUBLIC;
 		}
 
-		if(memberDescriptor instanceof PropertyDescriptor)
-		{
-			((PropertyDescriptor) memberDescriptor).setVisibility(visibility);
-			for(PropertyAccessorDescriptor accessor : ((PropertyDescriptor) memberDescriptor).getAccessors())
-			{
-				resolveUnknownVisibilityForMember(null, accessor, trace);
-			}
-		}
-		else if(memberDescriptor instanceof MethodDescriptorImpl)
-		{
+		if(memberDescriptor instanceof MethodDescriptorImpl)
 			((MethodDescriptorImpl) memberDescriptor).setVisibility(visibility);
-		}
-		else
-		{
-			assert memberDescriptor instanceof PropertyAccessorDescriptor;
-			((PropertyAccessorDescriptor) memberDescriptor).setVisibility(visibility);
-		}
 	}
 
 	private static void resolveUnknownVisibilityForOverriddenDescriptors(@NotNull Collection<? extends CallableMemberDescriptor> descriptors, @NotNull BindingTrace trace)

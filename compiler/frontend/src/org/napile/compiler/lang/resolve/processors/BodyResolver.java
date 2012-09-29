@@ -31,21 +31,26 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
-import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.resolve.scopes.WritableScope;
-import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -325,45 +330,10 @@ public class BodyResolver
 
 			NapileExpression initializer = property.getInitializer();
 			if(initializer != null)
-			{
 				resolvePropertyInitializer(property, propertyDescriptor, initializer, declaringScope);
-			}
-
-			resolvePropertyAccessors(property, propertyDescriptor);
 		}
 	}
 
-	private JetScope makeScopeForPropertyAccessor(@NotNull NapilePropertyAccessor accessor, PropertyDescriptor propertyDescriptor)
-	{
-		JetScope declaringScope = context.getDeclaringScopes().get(accessor);
-
-		JetScope propertyDeclarationInnerScope = descriptorResolver.getPropertyDeclarationInnerScope(declaringScope, propertyDescriptor.getTypeParameters(), trace);
-		WritableScope accessorScope = new WritableScopeImpl(propertyDeclarationInnerScope, declaringScope.getContainingDeclaration(), new TraceBasedRedeclarationHandler(trace), "Accessor scope");
-		accessorScope.changeLockLevel(WritableScope.LockLevel.READING);
-
-		return accessorScope;
-	}
-
-	private void resolvePropertyAccessors(NapileProperty property, PropertyDescriptor propertyDescriptor)
-	{
-		ObservableBindingTrace fieldAccessTrackingTrace = createFieldTrackingTrace(propertyDescriptor);
-
-		NapilePropertyAccessor getter = property.getGetter();
-		PropertyGetterDescriptor getterDescriptor = propertyDescriptor.getGetter();
-		if(getter != null && getterDescriptor != null)
-		{
-			JetScope accessorScope = makeScopeForPropertyAccessor(getter, propertyDescriptor);
-			resolveFunctionBody(fieldAccessTrackingTrace, getter, getterDescriptor, accessorScope);
-		}
-
-		NapilePropertyAccessor setter = property.getSetter();
-		PropertySetterDescriptor setterDescriptor = propertyDescriptor.getSetter();
-		if(setter != null && setterDescriptor != null)
-		{
-			JetScope accessorScope = makeScopeForPropertyAccessor(setter, propertyDescriptor);
-			resolveFunctionBody(fieldAccessTrackingTrace, setter, setterDescriptor, accessorScope);
-		}
-	}
 
 	private ObservableBindingTrace createFieldTrackingTrace(final PropertyDescriptor propertyDescriptor)
 	{

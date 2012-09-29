@@ -92,8 +92,6 @@ public interface Errors
 	SimpleDiagnosticFactory<NapilePropertyAccessor> ABSTRACT_PROPERTY_WITH_GETTER = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapilePropertyAccessor> ABSTRACT_PROPERTY_WITH_SETTER = SimpleDiagnosticFactory.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<PsiElement> GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY = SimpleDiagnosticFactory.create(Severity.ERROR);
-
 	SimpleDiagnosticFactory<PsiElement> INSTANCE_CALL_FROM_STATIC_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileProperty> MUST_BE_INITIALIZED = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
@@ -150,8 +148,7 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileTypeReference> INVALID_SUPER_CALL = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileTypeReference> LOCAL_EXTENSION_PROPERTY = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapilePropertyAccessor> LOCAL_VARIABLE_WITH_GETTER = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapilePropertyAccessor> LOCAL_VARIABLE_WITH_SETTER = SimpleDiagnosticFactory.create(Severity.ERROR);
+
 	SimpleDiagnosticFactory<NapilePropertyAccessor> VAL_WITH_SETTER = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileArrayAccessExpression> NO_GET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);

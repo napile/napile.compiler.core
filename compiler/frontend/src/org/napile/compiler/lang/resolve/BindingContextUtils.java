@@ -232,12 +232,10 @@ public class BindingContextUtils
 
 	public static void recordFunctionDeclarationToDescriptor(@NotNull BindingTrace trace, @NotNull PsiElement psiElement, @NotNull SimpleMethodDescriptor function)
 	{
-
 		if(function.getKind() != CallableMemberDescriptor.Kind.DECLARATION)
-		{
 			throw new IllegalArgumentException("function of kind " + function.getKind() + " cannot have declaration");
-		}
 
 		trace.record(BindingContext.METHOD, psiElement, function);
+		trace.record(BindingContext.FQNAME_TO_METHOD_DESCRIPTOR, DescriptorUtils.getFQName(function).toSafe(), function);
 	}
 }

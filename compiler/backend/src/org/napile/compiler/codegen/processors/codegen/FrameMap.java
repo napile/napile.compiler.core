@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.Triple;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import com.google.common.collect.Lists;
 
@@ -121,50 +122,36 @@ public class FrameMap
 			return "inconsistent";
 		}
 
-		class Tuple3<A, B, C>
-		{
-			private final A _1;
-			private final B _2;
-			private final C _3;
-
-			Tuple3(A _1, B _2, C _3)
-			{
-				this._1 = _1;
-				this._2 = _2;
-				this._3 = _3;
-			}
-		}
-
-		List<Tuple3<DeclarationDescriptor, Integer, Integer>> descriptors = Lists.newArrayList();
+		List<Triple<DeclarationDescriptor, Integer, Integer>> descriptors = Lists.newArrayList();
 
 		for(Object descriptor0 : myVarIndex.keys())
 		{
 			DeclarationDescriptor descriptor = (DeclarationDescriptor) descriptor0;
 			int varIndex = myVarIndex.get(descriptor);
 			int varSize = myVarSizes.get(descriptor);
-			descriptors.add(new Tuple3<DeclarationDescriptor, Integer, Integer>(descriptor, varIndex, varSize));
+			descriptors.add(new Triple<DeclarationDescriptor, Integer, Integer>(descriptor, varIndex, varSize));
 		}
 
-		Collections.sort(descriptors, new Comparator<Tuple3<DeclarationDescriptor, Integer, Integer>>()
+		Collections.sort(descriptors, new Comparator<Triple<DeclarationDescriptor, Integer, Integer>>()
 		{
 			@Override
-			public int compare(Tuple3<DeclarationDescriptor, Integer, Integer> left, Tuple3<DeclarationDescriptor, Integer, Integer> right)
+			public int compare(Triple<DeclarationDescriptor, Integer, Integer> left, Triple<DeclarationDescriptor, Integer, Integer> right)
 			{
-				return left._2 - right._2;
+				return left.b - right.b;
 			}
 		});
 
 		sb.append("size=").append(myMaxIndex);
 
 		boolean first = true;
-		for(Tuple3<DeclarationDescriptor, Integer, Integer> t : descriptors)
+		for(Triple<DeclarationDescriptor, Integer, Integer> t : descriptors)
 		{
 			if(!first)
 			{
 				sb.append(", ");
 			}
 			first = false;
-			sb.append(t._1).append(",i=").append(t._2).append(",s=").append(t._3);
+			sb.append(t.a).append(",i=").append(t.b).append(",s=").append(t.c);
 		}
 
 		return sb.toString();

@@ -18,8 +18,6 @@ package org.napile.compiler.lang.types.expressions;
 
 import static org.napile.compiler.lang.diagnostics.Errors.ASSIGNMENT_OPERATOR_SHOULD_RETURN_UNIT;
 import static org.napile.compiler.lang.diagnostics.Errors.ASSIGN_OPERATOR_AMBIGUITY;
-import static org.napile.compiler.lang.diagnostics.Errors.LOCAL_VARIABLE_WITH_GETTER;
-import static org.napile.compiler.lang.diagnostics.Errors.LOCAL_VARIABLE_WITH_SETTER;
 import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
 import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
 import static org.napile.compiler.lang.resolve.BindingContext.AMBIGUOUS_REFERENCE_TARGET;
@@ -107,18 +105,6 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	@Override
 	public JetTypeInfo visitProperty(NapileProperty property, ExpressionTypingContext context)
 	{
-		NapilePropertyAccessor getter = property.getGetter();
-		if(getter != null)
-		{
-			context.trace.report(LOCAL_VARIABLE_WITH_GETTER.on(getter));
-		}
-
-		NapilePropertyAccessor setter = property.getSetter();
-		if(setter != null)
-		{
-			context.trace.report(LOCAL_VARIABLE_WITH_SETTER.on(setter));
-		}
-
 		VariableDescriptor propertyDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(scope.getContainingDeclaration(), scope, property, context.dataFlowInfo, context.trace);
 		NapileExpression initializer = property.getInitializer();
 		if(property.getPropertyTypeRef() != null && initializer != null)

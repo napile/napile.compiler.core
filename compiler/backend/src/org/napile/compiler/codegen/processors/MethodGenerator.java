@@ -25,6 +25,7 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
+import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.impl.InvokeSpecialInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
@@ -39,6 +40,8 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.ReferenceParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileCallElement;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
@@ -110,8 +113,6 @@ public class MethodGenerator
 			}
 		}
 
-		//TODO [VISTALL] super calls
-
 		return constructorNode;
 	}
 
@@ -136,6 +137,8 @@ public class MethodGenerator
 	{
 		MethodNode methodNode = gen(methodDescriptor);
 
+		genReferenceParameters(methodDescriptor, methodNode.instructions);
+
 		NapileExpression expression = declarationWithBody.getBodyExpression();
 		if(expression != null)
 		{
@@ -153,5 +156,26 @@ public class MethodGenerator
 		}
 
 		return methodNode;
+	}
+
+	public static void genReferenceParameters(@NotNull CallableDescriptor callableDescriptor, List<Instruction> instructions)
+	{
+		InstructionAdapter adapter = new InstructionAdapter();
+		for(ParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
+			if(parameterDescriptor instanceof ReferenceParameterDescriptor)
+			{
+				PropertyDescriptor propertyDescriptor = ((ReferenceParameterDescriptor) parameterDescriptor).getReferenceProperty();
+				if(propertyDescriptor == null)
+					continue;
+
+				TypeNode typeNode = TypeTransformer.toAsmType(propertyDescriptor.getType());
+
+				if(!propertyDescriptor.isStatic())
+					StackValue.local(0, typeNode).put(TypeConstants.ANY, adapter);
+				StackValue.local(callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter);
+				StackValue.property(propertyDescriptor).store(typeNode, adapter);
+			}
+
+		instructions.addAll(adapter.getInstructions());
 	}
 }

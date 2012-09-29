@@ -204,10 +204,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitExpression(expression, data);
 	}
 
-	//    public R visitNewExpression(JetNewExpression expression, D data) {
-	//        return visitExpression(expression, data);
-	//    }
-	//
 	public R visitReturnExpression(NapileReturnExpression expression, D data)
 	{
 		return visitExpression(expression, data);

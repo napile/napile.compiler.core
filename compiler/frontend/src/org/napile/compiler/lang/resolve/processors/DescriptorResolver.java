@@ -181,6 +181,8 @@ public class DescriptorResolver
 	@NotNull
 	public SimpleMethodDescriptor resolveFunctionDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedFunction function, final BindingTrace trace)
 	{
+		NapileSimpleNameExpression referenceExpression = function.getVariableRef();
+
 		NapileModifierList modifierList = function.getModifierList();
 		final SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, function.getModifierList(), trace), NapilePsiUtil.safeName(function.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD), modifierList != null && modifierList.hasModifier(NapileTokens.NATIVE_KEYWORD));
 		WritableScope innerScope = new WritableScopeImpl(scope, functionDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
@@ -196,13 +198,9 @@ public class DescriptorResolver
 		NapileTypeReference returnTypeRef = function.getReturnTypeRef();
 		JetType returnType;
 		if(returnTypeRef != null)
-		{
 			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, true);
-		}
 		else if(function.hasBlockBody())
-		{
 			returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
-		}
 		else
 		{
 			final NapileExpression bodyExpression = function.getBodyExpression();
@@ -223,7 +221,10 @@ public class DescriptorResolver
 				returnType = ErrorUtils.createErrorType("No type, no body");
 			}
 		}
-		boolean hasBody = function.getBodyExpression() != null;
+
+		if(referenceExpression != null)
+			expressionTypingServices.safeGetType(scope, referenceExpression, TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
+
 		Modality modality = resolveModalityFromModifiers(function.getModifierList(), Modality.OPEN);
 		Visibility visibility = resolveVisibilityFromModifiers(function.getModifierList());
 
@@ -474,7 +475,7 @@ public class DescriptorResolver
 		NapileModifierList modifierList = objectDeclaration.getModifierList();
 		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(modifierList, trace), Modality.FINAL, resolveVisibilityFromModifiers(modifierList), NapilePsiUtil.safeName(objectDeclaration.getName()), CallableMemberDescriptor.Kind.DECLARATION, false);
 		propertyDescriptor.setType(classDescriptor.getDefaultType(), Collections.<TypeParameterDescriptor>emptyList(), DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
-		propertyDescriptor.initialize(createDefaultGetter(propertyDescriptor), null);
+
 		NapileObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();
 		if(nameAsDeclaration != null)
 		{
@@ -512,14 +513,11 @@ public class DescriptorResolver
 		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), Modality.OPEN), resolveVisibilityFromModifiers(property.getModifierList()), NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD));
 
 		List<TypeParameterDescriptorImpl> typeParameterDescriptors;
-		JetScope scopeWithTypeParameters;
-		JetType receiverType = null;
 
 		{
 			List<NapileTypeParameter> typeParameters = property.getTypeParameters();
 			if(typeParameters.isEmpty())
 			{
-				scopeWithTypeParameters = scope;
 				typeParameterDescriptors = Collections.emptyList();
 			}
 			else
@@ -528,20 +526,16 @@ public class DescriptorResolver
 				typeParameterDescriptors = resolveTypeParameters(containingDeclaration, writableScope, typeParameters, trace);
 				writableScope.changeLockLevel(WritableScope.LockLevel.READING);
 				resolveGenericBounds(property, writableScope, typeParameterDescriptors, trace);
-				scopeWithTypeParameters = writableScope;
 			}
 		}
+
 		JetScope propertyScope = getPropertyDeclarationInnerScope(scope, typeParameterDescriptors, trace);
 
 		JetType type = getVariableType(propertyScope, property, DataFlowInfo.EMPTY, true, trace);
 
 		propertyDescriptor.setType(type, typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
 
-		PropertyGetterDescriptor getter = resolvePropertyGetterDescriptor(scopeWithTypeParameters, property, propertyDescriptor, trace);
-		PropertySetterDescriptor setter = resolvePropertySetterDescriptor(scopeWithTypeParameters, property, propertyDescriptor, trace);
-
-		propertyDescriptor.initialize(getter, setter);
-
+		trace.record(BindingContext.FQNAME_TO_VARIABLE_DESCRIPTOR, DescriptorUtils.getFQName(propertyDescriptor).toSafe(), propertyDescriptor);
 		trace.record(BindingContext.VARIABLE, property, propertyDescriptor);
 		return propertyDescriptor;
 	}
@@ -559,7 +553,6 @@ public class DescriptorResolver
 			entryType = ErrorUtils.createErrorType("Expression expected");
 
 		propertyDescriptor.setType(entryType, Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
-		propertyDescriptor.initialize(null, null);
 
 		trace.record(BindingContext.VARIABLE, retellEntry, propertyDescriptor);
 		return propertyDescriptor;
@@ -569,7 +562,7 @@ public class DescriptorResolver
 	static boolean hasBody(NapileProperty property)
 	{
 		boolean hasBody = property.getInitializer() != null;
-		if(!hasBody)
+		/*if(!hasBody)
 		{
 			NapilePropertyAccessor getter = property.getGetter();
 			if(getter != null && getter.getBodyExpression() != null)
@@ -581,7 +574,7 @@ public class DescriptorResolver
 			{
 				hasBody = true;
 			}
-		}
+		} */
 		return hasBody;
 	}
 
@@ -667,125 +660,6 @@ public class DescriptorResolver
 		if(modifierList.hasModifier(NapileTokens.HERITABLE_KEYWORD))
 			return Visibility.HERITABLE;
 		return Visibility.PUBLIC;
-	}
-
-	@Nullable
-	private PropertySetterDescriptor resolvePropertySetterDescriptor(@NotNull JetScope scope, @NotNull NapileProperty property, @NotNull PropertyDescriptor propertyDescriptor, BindingTrace trace)
-	{
-		NapilePropertyAccessor setter = property.getSetter();
-		PropertySetterDescriptor setterDescriptor = null;
-		if(setter != null)
-		{
-			List<AnnotationDescriptor> annotations = annotationResolver.resolveAnnotations(scope, setter.getModifierList(), trace);
-			NapileElement parameter = setter.getParameter();
-
-			setterDescriptor = new PropertySetterDescriptor(propertyDescriptor, annotations, resolveModalityFromModifiers(setter.getModifierList(), propertyDescriptor.getModality()), resolveVisibilityFromModifiers(setter.getModifierList()), setter.getBodyExpression() != null, false, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
-			if(parameter instanceof NapilePropertyParameter)
-			{
-				NapilePropertyParameter propertyParameter = (NapilePropertyParameter) parameter;
-
-				// This check is redundant: the parser does not allow a default value, but we'll keep it just in case
-				NapileExpression defaultValue = propertyParameter.getDefaultValue();
-				if(defaultValue != null)
-				{
-					trace.report(SETTER_PARAMETER_WITH_DEFAULT_VALUE.on(defaultValue));
-				}
-
-				JetType type;
-				NapileTypeReference typeReference = propertyParameter.getTypeReference();
-				if(typeReference == null)
-				{
-					type = propertyDescriptor.getType(); // TODO : this maybe unknown at this point
-				}
-				else
-				{
-					type = typeResolver.resolveType(scope, typeReference, trace, true);
-					JetType inType = propertyDescriptor.getType();
-					if(inType != null)
-					{
-						if(!TypeUtils.equalTypes(type, inType))
-						{
-							trace.report(WRONG_SETTER_PARAMETER_TYPE.on(typeReference, inType, type));
-						}
-					}
-					else
-					{
-						// TODO : the same check may be needed later???
-					}
-				}
-
-				MutableParameterDescriptor valueParameterDescriptor = resolveValueParameterDescriptor(scope, setterDescriptor, propertyParameter, 0, type, trace);
-				setterDescriptor.initialize(valueParameterDescriptor);
-			}
-			else
-			{
-				setterDescriptor.initializeDefault();
-			}
-
-			setterDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL));
-			trace.record(BindingContext.PROPERTY_ACCESSOR, setter, setterDescriptor);
-		}
-		else
-			setterDescriptor = createDefaultSetter(propertyDescriptor, scope);
-
-		if(propertyDescriptor.getModality() == Modality.FINAL)
-		{
-			if(setter != null)
-			{
-				//                trace.getErrorHandler().genericError(setter.asElement().getNode(), "A 'val'-property cannot have a setter");
-				trace.report(VAL_WITH_SETTER.on(setter));
-			}
-		}
-		return setterDescriptor;
-	}
-
-	private PropertySetterDescriptor createDefaultSetter(PropertyDescriptor propertyDescriptor, JetScope scope)
-	{
-		PropertySetterDescriptor setterDescriptor;
-		setterDescriptor = new PropertySetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), propertyDescriptor.getModality(), propertyDescriptor.getVisibility(), false, true, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
-		setterDescriptor.initializeDefault();
-		setterDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL));
-		return setterDescriptor;
-	}
-
-	@Nullable
-	private PropertyGetterDescriptor resolvePropertyGetterDescriptor(@NotNull JetScope scope, @NotNull NapileProperty property, @NotNull PropertyDescriptor propertyDescriptor, BindingTrace trace)
-	{
-		PropertyGetterDescriptor getterDescriptor;
-		NapilePropertyAccessor getter = property.getGetter();
-		if(getter != null)
-		{
-			List<AnnotationDescriptor> annotations = annotationResolver.resolveAnnotations(scope, getter.getModifierList(), trace);
-
-			JetType outType = propertyDescriptor.getType();
-			JetType returnType = outType;
-			NapileTypeReference returnTypeReference = getter.getReturnTypeReference();
-			if(returnTypeReference != null)
-			{
-				returnType = typeResolver.resolveType(scope, returnTypeReference, trace, true);
-				if(outType != null && !TypeUtils.equalTypes(returnType, outType))
-				{
-					trace.report(WRONG_GETTER_RETURN_TYPE.on(returnTypeReference, propertyDescriptor.getReturnType(), outType));
-				}
-			}
-
-			getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, annotations, resolveModalityFromModifiers(getter.getModifierList(), propertyDescriptor.getModality()), resolveVisibilityFromModifiers(getter.getModifierList()), getter.getBodyExpression() != null, false, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
-			getterDescriptor.initialize(returnType);
-			trace.record(BindingContext.PROPERTY_ACCESSOR, getter, getterDescriptor);
-		}
-		else
-		{
-			getterDescriptor = createDefaultGetter(propertyDescriptor);
-			getterDescriptor.initialize(propertyDescriptor.getType());
-		}
-		return getterDescriptor;
-	}
-
-	public static PropertyGetterDescriptor createDefaultGetter(PropertyDescriptor propertyDescriptor)
-	{
-		PropertyGetterDescriptor getterDescriptor;
-		getterDescriptor = new PropertyGetterDescriptor(propertyDescriptor, Collections.<AnnotationDescriptor>emptyList(), propertyDescriptor.getModality(), propertyDescriptor.getVisibility(), false, true, CallableMemberDescriptor.Kind.DECLARATION, propertyDescriptor.isStatic());
-		return getterDescriptor;
 	}
 
 	@NotNull

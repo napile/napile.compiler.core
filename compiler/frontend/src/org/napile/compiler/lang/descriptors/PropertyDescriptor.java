@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
@@ -47,8 +46,6 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 
 	private ReceiverDescriptor expectedThisObject;
 	private List<TypeParameterDescriptor> typeParameters;
-	private PropertyGetterDescriptor getter;
-	private PropertySetterDescriptor setter;
 
 	private PropertyDescriptor(@Nullable PropertyDescriptor original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic)
 	{
@@ -77,12 +74,6 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		this.typeParameters = Lists.newArrayList(typeParameters);
 
 		this.expectedThisObject = isStatic ? ReceiverDescriptor.NO_RECEIVER : expectedThisObject;
-	}
-
-	public void initialize(@Nullable PropertyGetterDescriptor getter, @Nullable PropertySetterDescriptor setter)
-	{
-		this.getter = getter;
-		this.setter = setter;
 	}
 
 	public void setVisibility(@NotNull Visibility visibility)
@@ -116,33 +107,6 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 	public Visibility getVisibility()
 	{
 		return visibility;
-	}
-
-	@Nullable
-	public PropertyGetterDescriptor getGetter()
-	{
-		return getter;
-	}
-
-	@Nullable
-	public PropertySetterDescriptor getSetter()
-	{
-		return setter;
-	}
-
-	@NotNull
-	public List<PropertyAccessorDescriptor> getAccessors()
-	{
-		List<PropertyAccessorDescriptor> r = Lists.newArrayListWithCapacity(2);
-		if(getter != null)
-		{
-			r.add(getter);
-		}
-		if(setter != null)
-		{
-			r.add(setter);
-		}
-		return r;
 	}
 
 	@Override
@@ -180,29 +144,6 @@ public class PropertyDescriptor extends VariableDescriptorImpl implements Callab
 		}
 
 		substitutedDescriptor.setType(outType, substitutedTypeParameters, substitutedExpectedThisObject);
-
-		PropertyGetterDescriptor newGetter = getter == null ? null : new PropertyGetterDescriptor(substitutedDescriptor, Lists.newArrayList(getter.getAnnotations()), DescriptorUtils.convertModality(getter.getModality(), false), getter.getVisibility(), getter.hasBody(), getter.isDefault(), kind, getter.getOriginal(), false);
-		if(newGetter != null)
-		{
-			JetType returnType = getter.getReturnType();
-			newGetter.initialize(returnType != null ? substitutor.substitute(returnType) : null);
-		}
-		PropertySetterDescriptor newSetter = setter == null ? null : new PropertySetterDescriptor(substitutedDescriptor, Lists.newArrayList(setter.getAnnotations()), DescriptorUtils.convertModality(setter.getModality(), false), setter.getVisibility(), setter.hasBody(), setter.isDefault(), kind, setter.getOriginal(), false);
-		if(newSetter != null)
-		{
-			List<ParameterDescriptor> substitutedValueParameters = FunctionDescriptorUtil.getSubstitutedValueParameters(newSetter, setter, substitutor);
-			if(substitutedValueParameters == null)
-			{
-				return null;
-			}
-			if(substitutedValueParameters.size() != 1)
-			{
-				throw new IllegalStateException();
-			}
-			newSetter.initialize(substitutedValueParameters.get(0));
-		}
-
-		substitutedDescriptor.initialize(newGetter, newSetter);
 
 		if(copyOverrides)
 		{

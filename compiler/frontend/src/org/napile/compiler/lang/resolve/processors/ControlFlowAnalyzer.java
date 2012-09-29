@@ -23,7 +23,6 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.cfg.JetFlowInformationProvider;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.*;
@@ -94,7 +93,7 @@ public class ControlFlowAnalyzer
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
 				continue;
 			PropertyDescriptor propertyDescriptor = entry.getValue();
-			checkProperty(property, propertyDescriptor);
+			//checkProperty(property, propertyDescriptor);
 		}
 	}
 
@@ -103,16 +102,6 @@ public class ControlFlowAnalyzer
 		// A pseudocode of class initialization corresponds to a class
 		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider((NapileDeclaration) klass, trace);
 		flowInformationProvider.markUninitializedVariables(topDownAnalysisParameters.isDeclaredLocally());
-	}
-
-	private void checkProperty(NapileProperty property, PropertyDescriptor propertyDescriptor)
-	{
-		for(NapilePropertyAccessor accessor : property.getAccessors())
-		{
-			PropertyAccessorDescriptor accessorDescriptor = accessor.isGetter() ? propertyDescriptor.getGetter() : propertyDescriptor.getSetter();
-			assert accessorDescriptor != null;
-			checkFunction(accessor, accessorDescriptor.getReturnType());
-		}
 	}
 
 	private void checkFunction(NapileDeclarationWithBody function, final @NotNull JetType expectedReturnType)

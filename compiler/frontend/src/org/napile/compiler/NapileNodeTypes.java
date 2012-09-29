@@ -111,11 +111,12 @@ public interface NapileNodeTypes
 	NapileNodeType BLOCK = new NapileNodeType("BLOCK", NapileBlockExpression.class);
 	NapileNodeType FUNCTION_LITERAL_EXPRESSION = new NapileNodeType("FUNCTION_LITERAL_EXPRESSION", NapileFunctionLiteralExpression.class);
 	NapileNodeType FUNCTION_LITERAL = new NapileNodeType("FUNCTION_LITERAL", NapileFunctionLiteral.class);
-	NapileNodeType ANNOTATED_EXPRESSION = new NapileNodeType("ANNOTATED_EXPRESSION", NapileAnnotatedExpression.class);
+	//NapileNodeType ANNOTATED_EXPRESSION = new NapileNodeType("ANNOTATED_EXPRESSION", NapileAnnotatedExpression.class);
 
 	NapileNodeType REFERENCE_EXPRESSION = new NapileNodeType("REFERENCE_EXPRESSION", NapileSimpleNameExpression.class);
 	NapileNodeType OPERATION_REFERENCE = new NapileNodeType("OPERATION_REFERENCE", NapileSimpleNameExpression.class);
 	NapileNodeType LABEL_REFERENCE = new NapileNodeType("LABEL_REFERENCE", NapileSimpleNameExpression.class);
+	NapileNodeType VARIABLE_REFERENCE = new NapileNodeType("VARIABLE_REFERENCE", NapileSimpleNameExpression.class);
 
 	NapileNodeType THIS_EXPRESSION = new NapileNodeType("THIS_EXPRESSION", NapileThisExpression.class);
 	NapileNodeType SUPER_EXPRESSION = new NapileNodeType("SUPER_EXPRESSION", NapileSuperExpression.class);

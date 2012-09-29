@@ -388,10 +388,10 @@ public class JetFlowInformationProvider
 				return false;
 			PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
 			assert property instanceof NapileProperty;
-			if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.FINAL && ((NapileProperty) property).getSetter() == null)
+			/*if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.FINAL && ((NapileProperty) property).getSetter() == null)
 			{
 				return false;
-			}
+			}   */
 			NapileExpression variable = expression;
 			if(expression instanceof NapileDotQualifiedExpression)
 			{

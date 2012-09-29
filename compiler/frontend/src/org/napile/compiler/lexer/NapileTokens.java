@@ -111,8 +111,6 @@ public interface NapileTokens
 	NapileToken OROR = new NapileToken("OROR");
 	NapileToken SAFE_ACCESS = new NapileToken("SAFE_ACCESS");
 	NapileToken ELVIS = new NapileToken("ELVIS");
-	//    NapileToken MAP         = new NapileToken("MAP");
-	//    NapileToken FILTER      = new NapileToken("FILTER");
 	NapileToken QUEST = new NapileToken("QUEST");
 	NapileToken COLON = new NapileToken("COLON");
 	NapileToken SEMICOLON = new NapileToken("SEMICOLON");

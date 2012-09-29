@@ -113,7 +113,6 @@ public class ModifiersChecker
 
 			checkModalityModifiers(property);
 			checkDeclaredTypeInPublicMember(property, propertyDescriptor);
-			checkAccessors(property, propertyDescriptor);
 		}
 	}
 
@@ -189,26 +188,6 @@ public class ModifiersChecker
 
 		for(NapileKeywordToken token : presentModifiers)
 			trace.report(Errors.REDUNDANT_MODIFIER.on(declaration.getModifierNode(token).getPsi()));
-	}
-
-	public void checkAccessors(NapileProperty property, PropertyDescriptor propertyDescriptor)
-	{
-		for(NapilePropertyAccessor accessor : property.getAccessors())
-			checkIllegalInThisContextModifiers(accessor, Sets.newHashSet(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.FINAL_KEYWORD, NapileTokens.OVERRIDE_KEYWORD));
-
-		NapilePropertyAccessor getter = property.getGetter();
-		PropertyGetterDescriptor getterDescriptor = propertyDescriptor.getGetter();
-		NapileModifierList getterModifierList = getter != null ? getter.getModifierList() : null;
-		if(getterModifierList != null && getterDescriptor != null)
-		{
-			Map<NapileKeywordToken, ASTNode> nodes = getNodesCorrespondingToModifiers(getterModifierList, Sets.newHashSet(NapileTokens.COVERED_KEYWORD, NapileTokens.LOCAL_KEYWORD));
-			if(getterDescriptor.getVisibility() != propertyDescriptor.getVisibility())
-				for(ASTNode node : nodes.values())
-					trace.report(Errors.GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY.on(node.getPsi()));
-			else
-				for(ASTNode node : nodes.values())
-					trace.report(Errors.REDUNDANT_MODIFIER_IN_GETTER.on(node.getPsi()));
-		}
 	}
 
 	public void checkIllegalInThisContextModifiers(@NotNull NapileDeclaration declaration, Collection<NapileKeywordToken> illegalModifiers)

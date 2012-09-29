@@ -32,6 +32,7 @@ import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -39,6 +40,8 @@ import com.intellij.psi.util.PsiTreeUtil;
  */
 public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJetFunctionStub> implements NapileMethod, NapileWithExpressionInitializer
 {
+	private static final TokenSet SET_AND_GET_KEYWORDS = TokenSet.create(NapileTokens.SET_KEYWORD, NapileTokens.GET_KEYWORD);
+
 	public NapileNamedFunction(@NotNull ASTNode node)
 	{
 		super(node);
@@ -47,6 +50,33 @@ public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJet
 	public NapileNamedFunction(@NotNull PsiJetFunctionStub stub)
 	{
 		super(stub, JetStubElementTypes.METHOD);
+	}
+
+	@Override
+	public String getName()
+	{
+		PsiJetFunctionStub stub = getStub();
+		if(stub != null)
+			return stub.getName();
+
+		PsiElement psiElement = findChildByType(SET_AND_GET_KEYWORDS);
+		if(psiElement != null)
+		{
+			NapileSimpleNameExpression ref = getVariableRef();
+			assert ref != null;
+			return ref.getReferencedName() + "$" + psiElement.getText();
+		}
+		else
+		{
+			PsiElement identifier = getNameIdentifier();
+			if(identifier != null)
+			{
+				String text = identifier.getText();
+				return text != null ? NapilePsiUtil.unquoteIdentifier(text) : null;
+			}
+			else
+				return null;
+		}
 	}
 
 	@Override
@@ -59,21 +89,6 @@ public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJet
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitNamedFunction(this, data);
-	}
-
-	public boolean hasTypeParameterListBeforeFunctionName()
-	{
-		NapileTypeParameterList typeParameterList = getTypeParameterList();
-		if(typeParameterList == null)
-		{
-			return false;
-		}
-		PsiElement nameIdentifier = getNameIdentifier();
-		if(nameIdentifier == null)
-		{
-			return false;
-		}
-		return nameIdentifier.getTextOffset() > typeParameterList.getTextOffset();
 	}
 
 	@Override
@@ -133,6 +148,13 @@ public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJet
 		return ItemPresentationProviders.getItemPresentation(this);
 	}
 
+	@Nullable
+	@Override
+	public NapileSimpleNameExpression getVariableRef()
+	{
+		return (NapileSimpleNameExpression) findChildByType(NapileNodeTypes.VARIABLE_REFERENCE);
+	}
+
 	@Override
 	@Nullable
 	public NapileParameterList getValueParameterList()
@@ -152,7 +174,11 @@ public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJet
 	@Nullable
 	public NapileExpression getBodyExpression()
 	{
-		return findChildByClass(NapileExpression.class);
+		NapileExpression[] ex = findChildrenByClass(NapileExpression.class);
+		for(NapileExpression e : ex)
+			if(e.getNode().getElementType() != NapileNodeTypes.VARIABLE_REFERENCE)
+				return e;
+		return null;
 	}
 
 	@Override

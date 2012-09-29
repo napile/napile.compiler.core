@@ -122,7 +122,6 @@ public class DefaultErrorMessages
 
 		MAP.put(INSTANCE_CALL_FROM_STATIC_CONTEXT, "Instance call from static context");
 
-		MAP.put(GETTER_VISIBILITY_DIFFERS_FROM_PROPERTY_VISIBILITY, "Getter visibility must be the same as property visibility");
 		MAP.put(MUST_BE_INITIALIZED, "Property must be initialized");
 		MAP.put(MUST_BE_INITIALIZED_OR_BE_ABSTRACT, "Property must be initialized or be abstract");
 		MAP.put(PROPERTY_INITIALIZER_NO_BACKING_FIELD, "Initializer is not allowed here because this property has no backing field");
@@ -173,8 +172,7 @@ public class DefaultErrorMessages
 		MAP.put(ILLEGAL_ESCAPE_SEQUENCE, "Illegal escape sequence");
 
 		MAP.put(LOCAL_EXTENSION_PROPERTY, "Local extension properties are not allowed");
-		MAP.put(LOCAL_VARIABLE_WITH_GETTER, "Local variables are not allowed to have getters");
-		MAP.put(LOCAL_VARIABLE_WITH_SETTER, "Local variables are not allowed to have setters");
+
 		MAP.put(VAL_WITH_SETTER, "A 'val'-property cannot have a setter");
 
 		MAP.put(NO_GET_METHOD, "No get method providing array access");

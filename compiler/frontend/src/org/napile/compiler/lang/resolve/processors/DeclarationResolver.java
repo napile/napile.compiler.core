@@ -207,10 +207,6 @@ public class DeclarationResolver
 
 					context.getProperties().put(property, propertyDescriptor);
 					context.getDeclaringScopes().put(property, scope);
-					if(property.getGetter() != null)
-						context.getDeclaringScopes().put(property.getGetter(), scope);
-					if(property.getSetter() != null)
-						context.getDeclaringScopes().put(property.getSetter(), scope);
 				}
 
 				@Override
@@ -238,7 +234,6 @@ public class DeclarationResolver
 					mutableClassDescriptor.createTypeConstructor();
 
 					propertyDescriptor.setType(new JetTypeImpl(mutableClassDescriptor), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
-					propertyDescriptor.initialize(null, null);
 
 					context.getEnumEntries().put(enumEntry, mutableClassDescriptor);
 

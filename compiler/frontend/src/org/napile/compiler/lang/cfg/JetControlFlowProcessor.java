@@ -802,10 +802,6 @@ public class JetControlFlowProcessor
 				value(initializer, false);
 				builder.write(property, property);
 			}
-			for(NapilePropertyAccessor accessor : property.getAccessors())
-			{
-				value(accessor, false);
-			}
 		}
 
 		@Override

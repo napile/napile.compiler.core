@@ -16,10 +16,6 @@
 
 package org.napile.compiler.lang.psi;
 
-import static org.napile.compiler.NapileNodeTypes.PROPERTY_ACCESSOR;
-
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
@@ -113,36 +109,6 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 				return (NapileTypeReference) node.getPsi();
 			}
 			node = node.getTreeNext();
-		}
-
-		return null;
-	}
-
-	@NotNull
-	public List<NapilePropertyAccessor> getAccessors()
-	{
-		return findChildrenByType(PROPERTY_ACCESSOR);
-	}
-
-	@Nullable
-	public NapilePropertyAccessor getGetter()
-	{
-		for(NapilePropertyAccessor accessor : getAccessors())
-		{
-			if(accessor.isGetter())
-				return accessor;
-		}
-
-		return null;
-	}
-
-	@Nullable
-	public NapilePropertyAccessor getSetter()
-	{
-		for(NapilePropertyAccessor accessor : getAccessors())
-		{
-			if(accessor.isSetter())
-				return accessor;
 		}
 
 		return null;

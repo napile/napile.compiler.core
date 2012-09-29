@@ -440,18 +440,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			return null;
 		}
 
-		@Override
-		public Void visitPropertyGetterDescriptor(PropertyGetterDescriptor descriptor, StringBuilder data)
-		{
-			return visitFunctionDescriptor(descriptor, data);
-		}
-
-		@Override
-		public Void visitPropertySetterDescriptor(PropertySetterDescriptor descriptor, StringBuilder data)
-		{
-			return visitFunctionDescriptor(descriptor, data);
-		}
-
 		private void renderWhereSuffix(@NotNull CallableMemberDescriptor callable, @NotNull StringBuilder builder)
 		{
 			boolean first = true;

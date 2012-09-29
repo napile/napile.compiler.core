@@ -275,8 +275,6 @@ public class JetBlock extends AbstractBlock
 
 			ASTIndentStrategy.forNode("Indent for block content").in(NapileNodeTypes.BLOCK, NapileNodeTypes.CLASS_BODY, NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION).notForType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNormalIndent()),
 
-			ASTIndentStrategy.forNode("Indent for property accessors").in(NapileNodeTypes.PROPERTY).forType(NapileNodeTypes.PROPERTY_ACCESSOR).set(Indent.getNormalIndent()),
-
 			ASTIndentStrategy.forNode("For a single statement if 'for'").in(NapileNodeTypes.BODY).notForType(NapileNodeTypes.BLOCK).set(Indent.getNormalIndent()),
 
 			ASTIndentStrategy.forNode("For the entry in when").forType(NapileNodeTypes.WHEN_ENTRY).set(Indent.getNormalIndent()),

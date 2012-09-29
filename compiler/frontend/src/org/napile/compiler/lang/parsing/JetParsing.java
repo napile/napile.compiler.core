@@ -57,7 +57,6 @@ public class JetParsing extends AbstractJetParsing
 	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.COLON, NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.RPAR);
 	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.DOT, NapileTokens.EOL_OR_SEMICOLON);
 	/*package*/ static final TokenSet TYPE_REF_FIRST = TokenSet.create(NapileTokens.LBRACKET, NapileTokens.IDENTIFIER, NapileTokens.METH_KEYWORD, NapileTokens.LPAR, NapileTokens.THIS_KEYWORD, NapileTokens.HASH);
-	private static final TokenSet RECEIVER_TYPE_TERMINATORS = TokenSet.create(NapileTokens.DOT, NapileTokens.SAFE_ACCESS);
 
 	static JetParsing createForTopLevel(SemanticWhitespaceAwarePsiBuilder builder)
 	{
@@ -779,121 +778,16 @@ public class JetParsing extends AbstractJetParsing
 			}
 		}
 
-		if(local)
+		if(at(NapileTokens.EQ))
 		{
-			if(at(NapileTokens.EQ))
-			{
-				advance(); // EQ
-				myExpressionParsing.parseExpression();
-				// "val a = 1; b" must not be an infix call of b on "val ...;"
-			}
+			advance(); // EQ
+			myExpressionParsing.parseExpression();
+			consumeIf(NapileTokens.SEMICOLON);
 		}
-		else
-		{
-			if(at(NapileTokens.EQ))
-			{
-				advance(); // EQ
-				myExpressionParsing.parseExpression();
-				consumeIf(NapileTokens.SEMICOLON);
-			}
-
-			if(parsePropertyGetterOrSetter())
-			{
-				parsePropertyGetterOrSetter();
-			}
-			if(!atSet(NapileTokens.EOL_OR_SEMICOLON, NapileTokens.RBRACE))
-			{
-				if(getLastToken() != NapileTokens.SEMICOLON)
-				{
-					errorUntil("Property getter or setter expected", TokenSet.create(NapileTokens.EOL_OR_SEMICOLON));
-				}
-			}
-			else
-			{
-				consumeIf(NapileTokens.SEMICOLON);
-			}
-		}
-
 
 		return PROPERTY;
 	}
 
-	/*
-		 * getterOrSetter
-		 *   : modifiers ("get" | "set")
-		 *   :
-		 *        (     "get" "(" ")"
-		 *           |
-		 *              "set" "(" modifiers parameter ")"
-		 *        ) functionBody
-		 *   ;
-		 */
-	private boolean parsePropertyGetterOrSetter()
-	{
-		PsiBuilder.Marker getterOrSetter = mark();
-
-		parseModifierList(MODIFIER_LIST);
-
-		if(!at(NapileTokens.GET_KEYWORD) && !at(NapileTokens.SET_KEYWORD))
-		{
-			getterOrSetter.rollbackTo();
-			return false;
-		}
-
-		boolean setter = at(NapileTokens.SET_KEYWORD);
-		advance(); // GET_KEYWORD or SET_KEYWORD
-
-		if(!at(NapileTokens.LPAR))
-		{
-			// Account for Jet-114 (val a : int get {...})
-			TokenSet ACCESSOR_FIRST_OR_PROPERTY_END = TokenSet.orSet(NapileTokens.MODIFIER_KEYWORDS, TokenSet.create(NapileTokens.LBRACKET, NapileTokens.GET_KEYWORD, NapileTokens.SET_KEYWORD, NapileTokens.EOL_OR_SEMICOLON, NapileTokens.RBRACE));
-			if(!atSet(ACCESSOR_FIRST_OR_PROPERTY_END))
-			{
-				errorUntil("Accessor body expected", TokenSet.orSet(ACCESSOR_FIRST_OR_PROPERTY_END, TokenSet.create(NapileTokens.LBRACE, NapileTokens.LPAR, NapileTokens.EQ)));
-			}
-			else
-			{
-				getterOrSetter.done(PROPERTY_ACCESSOR);
-				return true;
-			}
-		}
-
-		myBuilder.disableNewlines();
-		expect(NapileTokens.LPAR, "Expecting '('", TokenSet.create(NapileTokens.RPAR, NapileTokens.IDENTIFIER, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.EQ));
-		if(setter)
-		{
-			PsiBuilder.Marker parameterList = mark();
-			PsiBuilder.Marker setterParameter = mark();
-			parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(NapileTokens.IDENTIFIER), TokenSet.create(NapileTokens.RPAR, NapileTokens.COMMA, NapileTokens.COLON));
-			expect(NapileTokens.IDENTIFIER, "Expecting parameter name", TokenSet.create(NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.EQ));
-
-			if(at(NapileTokens.COLON))
-			{
-				advance();
-
-				parseTypeRef();
-			}
-			setterParameter.done(VALUE_PARAMETER);
-			parameterList.done(VALUE_PARAMETER_LIST);
-		}
-		if(!at(NapileTokens.RPAR))
-			errorUntil("Expecting ')'", TokenSet.create(NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.EQ, NapileTokens.EOL_OR_SEMICOLON));
-		expect(NapileTokens.RPAR, "Expecting ')'", TokenSet.create(NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.EQ));
-		myBuilder.restoreNewlinesState();
-
-		if(at(NapileTokens.COLON))
-		{
-			advance();
-
-			parseTypeRef();
-		}
-
-		parseFunctionBody();
-
-		getterOrSetter.done(PROPERTY_ACCESSOR);
-
-		return true;
-	}
 
 	/*
 		 * function
@@ -914,12 +808,30 @@ public class JetParsing extends AbstractJetParsing
 		// Recovery for the case of class A { fun| }
 		if(at(NapileTokens.RBRACE))
 		{
-			error("Function body expected");
+			error("Method body expected");
 			return METHOD;
 		}
 
 		if(!parseIdeTemplate())
-			expect(NapileTokens.IDENTIFIER, "Expecting identifier");
+		{
+			PsiBuilder.Marker marker = mark();
+			if(at(NapileTokens.IDENTIFIER))
+				advance();
+
+			if(at(NapileTokens.DOT))
+			{
+				marker.done(VARIABLE_REFERENCE);
+
+				advance();
+
+				if(at(NapileTokens.SET_KEYWORD) || at(NapileTokens.GET_KEYWORD))
+					advance();
+				else
+					error("Expected 'set' or 'get'");
+			}
+			else
+				marker.drop();
+		}
 
 		TokenSet valueParametersFollow = TokenSet.create(NapileTokens.COLON, NapileTokens.EQ, NapileTokens.LBRACE, NapileTokens.SEMICOLON, NapileTokens.RPAR);
 
@@ -932,9 +844,7 @@ public class JetParsing extends AbstractJetParsing
 			advance(); // COLON
 
 			if(!parseIdeTemplate())
-			{
 				parseTypeRef();
-			}
 		}
 
 		if(at(NapileTokens.SEMICOLON))
@@ -1613,17 +1523,11 @@ public class JetParsing extends AbstractJetParsing
 		if(at(NapileTokens.IDE_TEMPLATE_START))
 		{
 			PsiBuilder.Marker mark = null;
-			if(nodeType != null)
-			{
-				mark = mark();
-			}
+			mark = mark();
 			advance();
 			expect(NapileTokens.IDENTIFIER, "Expecting identifier inside template");
 			expect(NapileTokens.IDE_TEMPLATE_END, "Expecting IDE template end after identifier");
-			if(nodeType != null)
-			{
-				mark.done(nodeType);
-			}
+			mark.done(nodeType);
 			return true;
 		}
 		else

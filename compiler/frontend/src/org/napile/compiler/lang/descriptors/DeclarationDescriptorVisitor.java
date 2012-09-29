@@ -42,8 +42,4 @@ public interface DeclarationDescriptorVisitor<R, D>
 	R visitPropertyParameterDescriptor(ParameterDescriptor descriptor, D data);
 
 	R visitReferenceParameterDescriptor(ReferenceParameterDescriptor descriptor, D data);
-
-	R visitPropertyGetterDescriptor(PropertyGetterDescriptor descriptor, D data);
-
-	R visitPropertySetterDescriptor(PropertySetterDescriptor descriptor, D data);
 }

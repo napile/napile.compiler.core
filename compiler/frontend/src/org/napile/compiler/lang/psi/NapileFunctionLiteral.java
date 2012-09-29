@@ -82,4 +82,11 @@ public class NapileFunctionLiteral extends NapileMethodNotStubbed
 	{
 		return getNode().findChildByType(NapileTokens.ARROW);
 	}
+
+	@Nullable
+	@Override
+	public NapileReferenceExpression getVariableRef()
+	{
+		return null;
+	}
 }

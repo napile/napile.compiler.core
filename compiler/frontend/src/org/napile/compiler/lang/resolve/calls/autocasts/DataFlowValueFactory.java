@@ -155,8 +155,8 @@ public class DataFlowValueFactory
 				return false;
 			if(!isFinal(propertyDescriptor))
 				return false;
-			if(!hasDefaultGetter(propertyDescriptor))
-				return false;
+			/*if(!hasDefaultGetter(propertyDescriptor))
+				return false;*/
 		}
 		return true;
 	}
@@ -194,9 +194,9 @@ public class DataFlowValueFactory
 		return isInternal((DeclarationDescriptorWithVisibility) containingDeclaration);
 	}
 
-	private static boolean hasDefaultGetter(PropertyDescriptor propertyDescriptor)
+	/*private static boolean hasDefaultGetter(PropertyDescriptor propertyDescriptor)
 	{
 		PropertyGetterDescriptor getter = propertyDescriptor.getGetter();
 		return getter == null || getter.isDefault();
-	}
+	} */
 }

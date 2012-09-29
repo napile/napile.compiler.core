@@ -151,7 +151,7 @@ public interface BindingContext
 			}
 			if(propertyDescriptor.getModality() == Modality.ABSTRACT)
 				return false;
-			PropertyGetterDescriptor getter = propertyDescriptor.getGetter();
+			/*PropertyGetterDescriptor getter = propertyDescriptor.getGetter();
 			PropertySetterDescriptor setter = propertyDescriptor.getSetter();
 			if(getter == null)
 			{
@@ -168,7 +168,7 @@ public interface BindingContext
 			else if(!getter.hasBody() && getter.getModality() != Modality.ABSTRACT)
 			{
 				return true;
-			}
+			}      */
 			return backingFieldRequired;
 		}
 	};
@@ -195,7 +195,6 @@ public interface BindingContext
 	WritableSlice<PsiElement, ConstructorDescriptor> CONSTRUCTOR = Slices.<PsiElement, ConstructorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapilePropertyParameter, VariableDescriptor> VALUE_PARAMETER = Slices.<NapilePropertyParameter, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<NapilePropertyAccessor, PropertyAccessorDescriptor> PROPERTY_ACCESSOR = Slices.<NapilePropertyAccessor, PropertyAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 
 	// normalize value to getOriginal(value)
 	WritableSlice<NapileObjectDeclarationName, PropertyDescriptor> OBJECT_DECLARATION = Slices.<NapileObjectDeclarationName, PropertyDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
@@ -208,18 +207,30 @@ public interface BindingContext
 			CONSTRUCTOR,
 			VARIABLE,
 			VALUE_PARAMETER,
-			PROPERTY_ACCESSOR,
 			OBJECT_DECLARATION
 	};
+
+	WritableSlice<FqName, ClassDescriptor> FQNAME_TO_CLASS_DESCRIPTOR = new BasicWritableSlice<FqName, ClassDescriptor>(RewritePolicy.DO_NOTHING, true);
+	WritableSlice<FqName, MethodDescriptor> FQNAME_TO_METHOD_DESCRIPTOR = new BasicWritableSlice<FqName, MethodDescriptor>(RewritePolicy.DO_NOTHING, true);
+	WritableSlice<FqName, PropertyDescriptor> FQNAME_TO_VARIABLE_DESCRIPTOR = new BasicWritableSlice<FqName, PropertyDescriptor>(RewritePolicy.DO_NOTHING, true);
+
+	WritableSlice<FqName, NamespaceDescriptor> FQNAME_TO_NAMESPACE_DESCRIPTOR = new BasicWritableSlice<FqName, NamespaceDescriptor>(RewritePolicy.DO_NOTHING);
+
+	WritableSlice[] FQNAME_TO_DESCRIPTORS = new WritableSlice[]
+	{
+		FQNAME_TO_CLASS_DESCRIPTOR,
+		FQNAME_TO_METHOD_DESCRIPTOR,
+		FQNAME_TO_VARIABLE_DESCRIPTOR
+	};
+
+	ReadOnlySlice<FqName, DeclarationDescriptor> FQNAME_TO_DESCRIPTOR = Slices.<FqName, DeclarationDescriptor>sliceBuilder().setFurtherLookupSlices(FQNAME_TO_DESCRIPTORS).build();
 
 	ReadOnlySlice<PsiElement, DeclarationDescriptor> DECLARATION_TO_DESCRIPTOR = Slices.<PsiElement, DeclarationDescriptor>sliceBuilder().setFurtherLookupSlices(DECLARATIONS_TO_DESCRIPTORS).build();
 
 	WritableSlice<NapileReferenceExpression, PsiElement> LABEL_TARGET = Slices.<NapileReferenceExpression, PsiElement>sliceBuilder().build();
-	WritableSlice<NapilePropertyParameter, PropertyDescriptor> VALUE_PARAMETER_AS_PROPERTY = Slices.<NapilePropertyParameter, PropertyDescriptor>sliceBuilder().build();
 
-	WritableSlice<FqName, ClassDescriptor> FQNAME_TO_CLASS_DESCRIPTOR = new BasicWritableSlice<FqName, ClassDescriptor>(RewritePolicy.DO_NOTHING, true);
-	WritableSlice<FqName, NamespaceDescriptor> FQNAME_TO_NAMESPACE_DESCRIPTOR = new BasicWritableSlice<FqName, NamespaceDescriptor>(RewritePolicy.DO_NOTHING);
 	WritableSlice<NapileFile, NamespaceDescriptor> FILE_TO_NAMESPACE = Slices.createSimpleSlice();
+
 	WritableSlice<NamespaceDescriptor, Collection<NapileFile>> NAMESPACE_TO_FILES = Slices.createSimpleSlice();
 
 	/**
