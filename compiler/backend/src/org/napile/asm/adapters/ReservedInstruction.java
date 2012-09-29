@@ -26,7 +26,7 @@ import org.napile.asm.tree.members.bytecode.InstructionVisitor;
 public class ReservedInstruction implements Instruction
 {
 	@Override
-	public <T> void accept(InstructionVisitor<T> visitor, T a2)
+	public <T, R> R accept(InstructionVisitor<T, R> visitor, T a2)
 	{
 		throw new UnsupportedOperationException();
 	}
