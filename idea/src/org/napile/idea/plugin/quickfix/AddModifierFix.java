@@ -27,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.psi.NapilePropertyAccessor;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
@@ -67,10 +66,7 @@ public class AddModifierFix extends JetIntentionAction<NapileModifierListOwner>
 				name = nameIdentifier.getText();
 			}
 		}
-		else if(modifierListOwner instanceof NapilePropertyAccessor)
-		{
-			name = ((NapilePropertyAccessor) modifierListOwner).getNamePlaceholder().getText();
-		}
+
 		if(name == null)
 		{
 			name = modifierListOwner.getText();

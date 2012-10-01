@@ -41,9 +41,11 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.lib.NapileReflectPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -79,6 +81,7 @@ import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -198,6 +201,42 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		context.labelResolver.exitLabeledElement(expression);
 
 		return JetTypeInfo.create(null, context.dataFlowInfo);
+	}
+
+	@Override
+	public JetTypeInfo visitClassOfExpression(NapileClassOfExpression expression, ExpressionTypingContext context)
+	{
+		NapileTypeReference typeReference = expression.getTypeReference();
+		if(typeReference == null)
+			return DataFlowUtils.checkType(ErrorUtils.createErrorType("Type expected"), expression, context, context.dataFlowInfo);
+
+		ClassDescriptor classDescriptor = context.scope.getClass(NapileReflectPackage.CLASS);
+		if(classDescriptor == null)
+			return DataFlowUtils.checkType(ErrorUtils.createErrorType("'napile.reflect.Class' import expected"), expression, context, context.dataFlowInfo);
+
+		JetType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
+
+		JetType returnType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>singletonList(targetType), classDescriptor.getMemberScope(Collections.singletonList(targetType)));
+
+		return DataFlowUtils.checkType(returnType, expression, context, context.dataFlowInfo);
+	}
+
+	@Override
+	public JetTypeInfo visitTypeOfExpression(NapileTypeOfExpression expression, ExpressionTypingContext context)
+	{
+		NapileTypeReference typeReference = expression.getTypeReference();
+		if(typeReference == null)
+			return DataFlowUtils.checkType(ErrorUtils.createErrorType("Type expected"), expression, context, context.dataFlowInfo);
+
+		ClassDescriptor classDescriptor = context.scope.getClass(NapileReflectPackage.TYPE);
+		if(classDescriptor == null)
+			return DataFlowUtils.checkType(ErrorUtils.createErrorType("'napile.reflect.Type' import expected"), expression, context, context.dataFlowInfo);
+
+		JetType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
+
+		JetType returnType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>singletonList(targetType), classDescriptor.getMemberScope(Collections.singletonList(targetType)));
+
+		return DataFlowUtils.checkType(returnType, expression, context, context.dataFlowInfo);
 	}
 
 	@Override
@@ -438,21 +477,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			}
 		}
 		return false;
-	}
-
-	@NotNull
-	private List<JetType> checkArgumentTypes(@NotNull List<JetType> argumentTypes, @NotNull List<NapileExpression> arguments, @NotNull List<JetType> expectedArgumentTypes, @NotNull ExpressionTypingContext context)
-	{
-		if(arguments.size() == 0 || argumentTypes.size() != arguments.size() || expectedArgumentTypes.size() != arguments.size())
-		{
-			return argumentTypes;
-		}
-		List<JetType> result = Lists.newArrayListWithCapacity(arguments.size());
-		for(int i = 0, argumentTypesSize = argumentTypes.size(); i < argumentTypesSize; i++)
-		{
-			result.add(DataFlowUtils.checkType(argumentTypes.get(i), arguments.get(i), context.replaceExpectedType(expectedArgumentTypes.get(i))));
-		}
-		return result;
 	}
 
 	@Override

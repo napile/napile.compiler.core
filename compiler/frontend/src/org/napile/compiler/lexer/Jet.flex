@@ -278,13 +278,8 @@ LONG_TEMPLATE_ENTRY_END=\}
 ">="         { return JetTokens.GTEQ      ; }
 "=="         { return JetTokens.EQEQ      ; }
 "!="         { return JetTokens.EXCLEQ    ; }
-//"!!"         { return JetTokens.EXCLEXCL  ; }
 "&&"         { return JetTokens.ANDAND    ; }
 "||"         { return JetTokens.OROR      ; }
-//"?."         { return JetTokens.SAFE_ACCESS;}
-//"?:"         { return JetTokens.ELVIS     ; }
-//".*"         { return JetTokens.MAP       ; }
-//".?"         { return JetTokens.FILTER    ; }
 "*="         { return JetTokens.MULTEQ    ; }
 "/="         { return JetTokens.DIVEQ     ; }
 "%="         { return JetTokens.PERCEQ    ; }

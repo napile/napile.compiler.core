@@ -46,10 +46,6 @@ public final class NapileModifiableBlockHelper
 
 				return shouldChangeModificationCount(function);
 			}
-			else if(declaration instanceof NapilePropertyAccessor)
-			{
-				return takePartInDeclarationTypeInference(declaration);
-			}
 			else if(declaration instanceof NapileProperty)
 			{
 				NapileProperty property = (NapileProperty) declaration;

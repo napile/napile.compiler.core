@@ -620,7 +620,7 @@ public class JetFlowInformationProvider
 				if(!(instruction instanceof ReadValueInstruction))
 					return;
 				NapileElement element = ((ReadValueInstruction) instruction).getElement();
-				if(!(element instanceof NapileFunctionLiteralExpression || element instanceof NapileConstantExpression || element instanceof NapileStringTemplateExpression || element instanceof NapileSimpleNameExpression))
+				if(!(element instanceof NapileFunctionLiteralExpression || element instanceof NapileConstantExpression || element instanceof NapileClassOfExpression || element instanceof NapileStringTemplateExpression || element instanceof NapileSimpleNameExpression))
 				{
 					return;
 				}

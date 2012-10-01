@@ -117,7 +117,7 @@ public class ControlFlowAnalyzer
 		flowInformationProvider.checkDefiniteReturn(expectedReturnType);
 
 		// Property accessor is checked through initialization of a class check (at 'checkClassOrObject')
-		flowInformationProvider.markUninitializedVariables(topDownAnalysisParameters.isDeclaredLocally() || function instanceof NapilePropertyAccessor);
+		flowInformationProvider.markUninitializedVariables(topDownAnalysisParameters.isDeclaredLocally());
 
 		flowInformationProvider.markUnusedVariables();
 

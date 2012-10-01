@@ -179,6 +179,18 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
+		public void visitClassOfExpression(NapileClassOfExpression expression)
+		{
+			builder.read(expression);
+		}
+
+		@Override
+		public void visitTypeOfExpression(NapileTypeOfExpression expression)
+		{
+			builder.read(expression);
+		}
+
+		@Override
 		public void visitConstantExpression(NapileConstantExpression expression)
 		{
 			builder.read(expression);
@@ -649,7 +661,7 @@ public class JetControlFlowProcessor
 			{
 				subroutine = ((NapileFunctionLiteralExpression) subroutine).getFunctionLiteral();
 			}
-			if(subroutine instanceof NapileMethod || subroutine instanceof NapilePropertyAccessor)
+			if(subroutine instanceof NapileMethod)
 			{
 				if(returnedExpression == null)
 				{
@@ -802,12 +814,6 @@ public class JetControlFlowProcessor
 				value(initializer, false);
 				builder.write(property, property);
 			}
-		}
-
-		@Override
-		public void visitPropertyAccessor(NapilePropertyAccessor accessor)
-		{
-			processLocalDeclaration(accessor);
 		}
 
 		@Override

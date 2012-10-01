@@ -53,7 +53,7 @@ public class JetParsing extends AbstractJetParsing
 	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.IDENTIFIER);
 
 	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(NapileTokens.LT, NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE), CLASS_KEYWORDS);
-	private static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.GT);
+	public static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.GT);
 	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.COLON, NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.RPAR);
 	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.DOT, NapileTokens.EOL_OR_SEMICOLON);
 	/*package*/ static final TokenSet TYPE_REF_FIRST = TokenSet.create(NapileTokens.LBRACKET, NapileTokens.IDENTIFIER, NapileTokens.METH_KEYWORD, NapileTokens.LPAR, NapileTokens.THIS_KEYWORD, NapileTokens.HASH);

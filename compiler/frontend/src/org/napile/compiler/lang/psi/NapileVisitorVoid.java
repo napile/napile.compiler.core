@@ -366,11 +366,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitJetElement(list);
 	}
 
-	public void visitPropertyAccessor(NapilePropertyAccessor accessor)
-	{
-		visitDeclaration(accessor);
-	}
-
 	private void visitTypeElement(NapileTypeElement type)
 	{
 		visitJetElement(type);
@@ -479,5 +474,15 @@ public class NapileVisitorVoid extends PsiElementVisitor
 	public void visitReferenceParameter(NapileReferenceParameter napileReferenceParameter)
 	{
 		visitJetElement(napileReferenceParameter);
+	}
+
+	public void visitClassOfExpression(NapileClassOfExpression classOfExpression)
+	{
+		visitExpression(classOfExpression);
+	}
+
+	public void visitTypeOfExpression(NapileTypeOfExpression typeOfExpression)
+	{
+		visitExpression(typeOfExpression);
 	}
 }

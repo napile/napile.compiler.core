@@ -72,7 +72,6 @@ public interface NapileNodeTypes
 	NapileNodeType NULLABLE_TYPE = new NapileNodeType("NULLABLE_TYPE", NapileNullableType.class);
 
 	// TODO: review
-	NapileNodeType PROPERTY_ACCESSOR = new NapileNodeType("PROPERTY_ACCESSOR", NapilePropertyAccessor.class);
 	NapileNodeType INITIALIZER_LIST = new NapileNodeType("INITIALIZER_LIST", NapileInitializerList.class);
 	NapileNodeType THIS_CALL = new NapileNodeType("THIS_CALL", NapileDelegatorToThisCall.class);
 	NapileNodeType THIS_CONSTRUCTOR_REFERENCE = new NapileNodeType("THIS_CONSTRUCTOR_REFERENCE", NapileThisReferenceExpression.class);
@@ -90,6 +89,8 @@ public interface NapileNodeTypes
 	NapileNodeType LITERAL_STRING_TEMPLATE_ENTRY = new NapileNodeType("LITERAL_STRING_TEMPLATE_ENTRY", NapileLiteralStringTemplateEntry.class);
 	NapileNodeType ESCAPE_STRING_TEMPLATE_ENTRY = new NapileNodeType("ESCAPE_STRING_TEMPLATE_ENTRY", NapileEscapeStringTemplateEntry.class);
 
+	NapileNodeType CLASS_OF = new NapileNodeType("CLASS_OF", NapileClassOfExpression.class);
+	NapileNodeType TYPE_OF = new NapileNodeType("TYPE_OF", NapileTypeOfExpression.class);
 	NapileNodeType PARENTHESIZED = new NapileNodeType("PARENTHESIZED", NapileParenthesizedExpression.class);
 	NapileNodeType RETURN = new NapileNodeType("RETURN", NapileReturnExpression.class);
 	NapileNodeType THROW = new NapileNodeType("THROW", NapileThrowExpression.class);

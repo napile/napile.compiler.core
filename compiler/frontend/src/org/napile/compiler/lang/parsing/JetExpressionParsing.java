@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.ImmutableMap;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -610,6 +610,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			parseDoWhile();
 		}
+		else if(at(NapileTokens.CLASS_OF_KEYWORD))
+			parseClassOrTypeOf(CLASS_OF);
+		else if(at(NapileTokens.TYPE_OF_KEYWORD))
+			parseClassOrTypeOf(TYPE_OF);
 		else if(atSet(NapileTokens.CLASS_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.VAR_KEYWORD))
 		{
 			parseLocalDeclaration();
@@ -670,6 +674,21 @@ public class JetExpressionParsing extends AbstractJetParsing
 		template.done(STRING_TEMPLATE);
 	}
 
+	private void parseClassOrTypeOf(IElementType done)
+	{
+		PsiBuilder.Marker marker = mark();
+
+		advance();
+
+		if(expect(NapileTokens.LPAR, "'(' expected"))
+		{
+			myJetParsing.parseTypeRef(JetParsing.TYPE_PARAMETER_GT_RECOVERY_SET);
+
+			expect(NapileTokens.RPAR, "') expected");
+		}
+
+		marker.done(done);
+	}
 	/*
 		 * stringTemplateElement
 		 *   : RegularStringPart

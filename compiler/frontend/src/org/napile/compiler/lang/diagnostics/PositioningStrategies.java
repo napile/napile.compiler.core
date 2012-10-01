@@ -57,12 +57,7 @@ public class PositioningStrategies
 				returnTypeRef = property.getPropertyTypeRef();
 				nameNode = getNameNode(property);
 			}
-			else if(declaration instanceof NapilePropertyAccessor)
-			{
-				NapilePropertyAccessor accessor = (NapilePropertyAccessor) declaration;
-				returnTypeRef = accessor.getReturnTypeReference();
-				nameNode = accessor.getNamePlaceholder().getNode();
-			}
+
 			if(returnTypeRef != null)
 				return markElement(returnTypeRef);
 			if(nameNode != null)

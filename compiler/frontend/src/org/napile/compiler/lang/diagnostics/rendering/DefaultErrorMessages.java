@@ -117,8 +117,6 @@ public class DefaultErrorMessages
 
 		MAP.put(ABSTRACT_PROPERTY_NOT_IN_CLASS, "A property may be abstract only when defined in a class or trait");
 		MAP.put(ABSTRACT_PROPERTY_WITH_INITIALIZER, "Property with initializer cannot be abstract");
-		MAP.put(ABSTRACT_PROPERTY_WITH_GETTER, "Property with getter implementation cannot be abstract");
-		MAP.put(ABSTRACT_PROPERTY_WITH_SETTER, "Property with setter implementation cannot be abstract");
 
 		MAP.put(INSTANCE_CALL_FROM_STATIC_CONTEXT, "Instance call from static context");
 
@@ -172,8 +170,6 @@ public class DefaultErrorMessages
 		MAP.put(ILLEGAL_ESCAPE_SEQUENCE, "Illegal escape sequence");
 
 		MAP.put(LOCAL_EXTENSION_PROPERTY, "Local extension properties are not allowed");
-
-		MAP.put(VAL_WITH_SETTER, "A 'val'-property cannot have a setter");
 
 		MAP.put(NO_GET_METHOD, "No get method providing array access");
 		MAP.put(NO_SET_METHOD, "No set method providing array access");

@@ -86,8 +86,6 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 	private static final String IF_ELSE_ONELINE_TEMPLATE = "if (<#<condition>#>) <#<value>#> else <#<value>#>";
 	private static final String METH_TEMPLATE = "meth <#<name>#>(<#<params>#>) : <#<returnType>#>\n{\n<#<body>#>\n}";
 	private static final String METH_NO_RETURN_TEMPLATE = "meth <#<name>#>(<#<params>#>)\n{\n<#<body>#>\n}";
-	private static final String VAL_SIMPLE_TEMPLATE = "val <#<name>#> = <#<value>#>";
-	private static final String VAL_WITH_TYPE_TEMPLATE = "val <#<name>#> : <#<valType>#> = <#<value>#>";
 	private static final String VAL_WITH_GETTER_TEMPLATE = "val <#<name>#> : <#<valType>#>\nget() {\n<#<body>#>\n}";
 	private static final String VAR_SIMPLE_TEMPLATE = "var <#<name>#> = <#<value>#>";
 	private static final String VAR_WITH_TYPE_TEMPLATE = "var <#<name>#> : <#<varType>#> = <#<initial>#>";
@@ -345,8 +343,8 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		// templates
 		registerScopeKeywordsCompletion(new InWhenFilter(), WHEN_ENTRY_TEMPLATE);
 		registerScopeKeywordsCompletion(new InTopFilter(), CLASS_TEMPLATE, ENUM_TEMPLATE);
-		registerScopeKeywordsCompletion(new InClassBodyFilter(), METH_TEMPLATE, METH_NO_RETURN_TEMPLATE, VAL_WITH_TYPE_TEMPLATE, VAL_WITH_GETTER_TEMPLATE, VAR_WITH_TYPE_TEMPLATE, VAR_WITH_GETTER_AND_SETTER_TEMPLATE, CLASS_TEMPLATE, ENUM_TEMPLATE);
-		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), IF_TEMPLATE, IF_ELSE_TEMPLATE, IF_ELSE_ONELINE_TEMPLATE, METH_TEMPLATE, VAL_SIMPLE_TEMPLATE, VAR_SIMPLE_TEMPLATE, CLASS_TEMPLATE, FOR_TEMPLATE, WHEN_TEMPLATE, WHILE_TEMPLATE, DO_WHILE_TEMPLATE, ENUM_TEMPLATE);
+		registerScopeKeywordsCompletion(new InClassBodyFilter(), METH_TEMPLATE, METH_NO_RETURN_TEMPLATE, VAL_WITH_GETTER_TEMPLATE, VAR_WITH_TYPE_TEMPLATE, VAR_WITH_GETTER_AND_SETTER_TEMPLATE, CLASS_TEMPLATE, ENUM_TEMPLATE);
+		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), IF_TEMPLATE, IF_ELSE_TEMPLATE, IF_ELSE_ONELINE_TEMPLATE, METH_TEMPLATE, VAR_SIMPLE_TEMPLATE, CLASS_TEMPLATE, FOR_TEMPLATE, WHEN_TEMPLATE, WHILE_TEMPLATE, DO_WHILE_TEMPLATE, ENUM_TEMPLATE);
 		registerScopeKeywordsCompletion(new InPropertyBodyFilter(), IF_ELSE_ONELINE_TEMPLATE, WHEN_TEMPLATE);
 	}
 

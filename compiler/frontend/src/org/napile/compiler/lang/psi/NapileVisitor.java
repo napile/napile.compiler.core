@@ -359,11 +359,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitJetElement(list, data);
 	}
 
-	public R visitPropertyAccessor(NapilePropertyAccessor accessor, D data)
-	{
-		return visitDeclaration(accessor, data);
-	}
-
 	private R visitTypeElement(NapileTypeElement type, D data)
 	{
 		return visitJetElement(type, data);
@@ -477,5 +472,15 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	public R visitReferenceParameter(NapileReferenceParameter napileReferenceParameter, D data)
 	{
 		return visitJetElement(napileReferenceParameter, data);
+	}
+
+	public R visitClassOfExpression(NapileClassOfExpression classOfExpression, D data)
+	{
+		return visitExpression(classOfExpression, data);
+	}
+
+	public R visitTypeOfExpression(NapileTypeOfExpression typeOfExpression, D data)
+	{
+		return visitExpression(typeOfExpression, data);
 	}
 }

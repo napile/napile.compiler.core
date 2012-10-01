@@ -61,10 +61,6 @@ public class QuickFixes
 
 		factories.put(ABSTRACT_PROPERTY_WITH_INITIALIZER, removeAbstractModifierFactory);
 
-		factories.put(ABSTRACT_PROPERTY_WITH_GETTER, removeAbstractModifierFactory);
-
-		factories.put(ABSTRACT_PROPERTY_WITH_SETTER, removeAbstractModifierFactory);
-
 		factories.put(MUST_BE_INITIALIZED_OR_BE_ABSTRACT, addAbstractModifierFactory);
 
 		JetIntentionActionFactory addAbstractToClassFactory = AddModifierFix.createFactory(ABSTRACT_KEYWORD, NapileClass.class);
@@ -91,9 +87,6 @@ public class QuickFixes
 		factories.put(USELESS_CAST_STATIC_ASSERT_IS_FINE, ReplaceOperationInBinaryExpressionFix.createChangeCastToStaticAssertFactory());
 		factories.put(USELESS_CAST, RemoveRightPartOfBinaryExpressionFix.createRemoveCastFactory());
 
-		JetIntentionActionFactory changeAccessorTypeFactory = ChangeAccessorTypeFix.createFactory();
-		factories.put(WRONG_SETTER_PARAMETER_TYPE, changeAccessorTypeFactory);
-		factories.put(WRONG_GETTER_RETURN_TYPE, changeAccessorTypeFactory);
 
 		factories.put(USELESS_ELVIS, RemoveRightPartOfBinaryExpressionFix.createRemoveElvisOperatorFactory());
 
