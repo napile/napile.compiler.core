@@ -43,7 +43,6 @@ import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
-import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemImpl;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintsUtil;
@@ -179,14 +178,6 @@ public class ExpressionTypingUtils
 		trace.record(PROCESSED, expression);
 		trace.record(EXPRESSION_TYPE, expression, type);
 		return expression;
-	}
-
-	public static boolean isVariableIterable(@NotNull ExpressionTypingServices expressionTypingServices, @NotNull Project project, @NotNull VariableDescriptor variableDescriptor, @NotNull JetScope scope)
-	{
-		NapileExpression expression = NapilePsiFactory.createExpression(project, "fake");
-		ExpressionReceiver expressionReceiver = new ExpressionReceiver(expression, variableDescriptor.getType());
-		ExpressionTypingContext context = ExpressionTypingContext.newContext(expressionTypingServices, new BindingTraceContext(), scope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false);
-		return ControlStructureTypingVisitor.checkIterableConvention(expressionReceiver, context) != null;
 	}
 
 	/**

@@ -24,6 +24,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -42,7 +43,6 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
-import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -304,9 +304,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		{
 			ExpressionReceiver loopRangeReceiver = ExpressionTypingUtils.getExpressionReceiver(facade, loopRange, context.replaceScope(context.scope));
 			if(loopRangeReceiver != null)
-			{
 				expectedParameterType = checkIterableConvention(loopRangeReceiver, context);
-			}
 		}
 
 		WritableScope loopScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Scope with for-loop index");
@@ -382,42 +380,15 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		{
 			MethodDescriptor iteratorMethod = iteratorResolutionResults.getResultingCall().getResultingDescriptor();
 
-			context.trace.record(BindingContext.LOOP_RANGE_ITERATOR, loopRangeExpression, iteratorMethod);
+			FqName fqName = new FqName("napile.util.Iterator");
 
 			JetType iteratorType = iteratorMethod.getReturnType();
-			MethodDescriptor hasNextMethod = checkHasNextFunctionSupport(loopRangeExpression, iteratorType, context);
-			boolean hasNextFunctionSupported = hasNextMethod != null;
-			VariableDescriptor hasNextProperty = checkHasNextPropertySupport(loopRangeExpression, iteratorType, context);
-			boolean hasNextPropertySupported = hasNextProperty != null;
-			if(hasNextFunctionSupported && hasNextPropertySupported && !ErrorUtils.isErrorType(iteratorType))
-			{
-				// TODO : overload resolution rules impose priorities here???
-				context.trace.report(Errors.HAS_NEXT_PROPERTY_AND_FUNCTION_AMBIGUITY.on(loopRangeExpression));
-			}
-			else if(!hasNextFunctionSupported && !hasNextPropertySupported)
-			{
-				context.trace.report(Errors.HAS_NEXT_MISSING.on(loopRangeExpression));
-			}
-			else
-			{
-				context.trace.record(BindingContext.LOOP_RANGE_HAS_NEXT, loopRange.getExpression(), hasNextFunctionSupported ? hasNextMethod : hasNextProperty);
-			}
+			if(!TypeUtils.isEqualFqName(iteratorType, fqName) || iteratorType.getArguments().size() != 1)
+				return ErrorUtils.createErrorType("Invalid iteration type");
 
-			OverloadResolutionResults<MethodDescriptor> nextResolutionResults = context.resolveExactSignature(new TransientReceiver(iteratorType), Name.identifier("next"), Collections.<JetType>emptyList());
-			if(nextResolutionResults.isAmbiguity())
-			{
-				context.trace.report(Errors.NEXT_AMBIGUITY.on(loopRangeExpression));
-			}
-			else if(nextResolutionResults.isNothing())
-			{
-				context.trace.report(Errors.NEXT_MISSING.on(loopRangeExpression));
-			}
-			else
-			{
-				MethodDescriptor nextMethod = nextResolutionResults.getResultingCall().getResultingDescriptor();
-				context.trace.record(BindingContext.LOOP_RANGE_NEXT, loopRange.getExpression(), nextMethod);
-				return nextMethod.getReturnType();
-			}
+			context.trace.record(BindingContext.LOOP_RANGE_ITERATOR, loopRangeExpression, iteratorMethod);
+
+			return iteratorType.getArguments().get(0);
 		}
 		else
 		{
@@ -444,54 +415,6 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		BindingTrace fakeTrace = new BindingTraceContext();
 		Call call = CallMaker.makeCall(fake, receiver, null, fake, Collections.<ValueArgument>emptyList());
 		return context.replaceBindingTrace(fakeTrace).resolveCallWithGivenName(call, fake, name);
-	}
-
-	@Nullable
-	private static MethodDescriptor checkHasNextFunctionSupport(@NotNull NapileExpression loopRange, @NotNull JetType iteratorType, ExpressionTypingContext context)
-	{
-		OverloadResolutionResults<MethodDescriptor> hasNextResolutionResults = context.resolveExactSignature(new TransientReceiver(iteratorType), Name.identifier("hasNext"), Collections.<JetType>emptyList());
-		if(hasNextResolutionResults.isAmbiguity())
-		{
-			context.trace.report(Errors.HAS_NEXT_FUNCTION_AMBIGUITY.on(loopRange));
-		}
-		else if(hasNextResolutionResults.isNothing())
-		{
-			return null;
-		}
-		else
-		{
-			assert hasNextResolutionResults.isSuccess();
-			JetType hasNextReturnType = hasNextResolutionResults.getResultingDescriptor().getReturnType();
-			if(!ExpressionTypingUtils.isBoolean(hasNextReturnType))
-			{
-				context.trace.report(Errors.HAS_NEXT_FUNCTION_TYPE_MISMATCH.on(loopRange, hasNextReturnType));
-			}
-		}
-		return hasNextResolutionResults.getResultingCall().getResultingDescriptor();
-	}
-
-	@Nullable
-	private static VariableDescriptor checkHasNextPropertySupport(@NotNull NapileExpression loopRange, @NotNull JetType iteratorType, ExpressionTypingContext context)
-	{
-		VariableDescriptor hasNextProperty = DescriptorUtils.filterNonExtensionProperty(iteratorType.getMemberScope().getProperties(Name.identifier("hasNext")));
-		if(hasNextProperty == null)
-		{
-			return null;
-		}
-		else
-		{
-			JetType hasNextReturnType = hasNextProperty.getType();
-			if(hasNextReturnType == null)
-			{
-				// TODO : accessibility
-				context.trace.report(Errors.HAS_NEXT_MUST_BE_READABLE.on(loopRange));
-			}
-			else if(!ExpressionTypingUtils.isBoolean(hasNextReturnType))
-			{
-				context.trace.report(Errors.HAS_NEXT_PROPERTY_TYPE_MISMATCH.on(loopRange, hasNextReturnType));
-			}
-		}
-		return hasNextProperty;
 	}
 
 	@Override

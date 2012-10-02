@@ -106,7 +106,7 @@
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetAnyVariableMacro"/>
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetFunctionParametersMacro"/>
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetAnonymousSuperMacro"/>
-		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetIterableVariableMacro"/>
+
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetSuggestVariableNameMacro"/> -->
 
 		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>

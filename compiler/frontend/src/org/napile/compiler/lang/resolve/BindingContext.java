@@ -94,8 +94,6 @@ public interface BindingContext
 	WritableSlice<NapileExpression, DelegatingBindingTrace> TRACE_DELTAS_CACHE = Slices.createSimpleSlice();
 
 	WritableSlice<NapileExpression, MethodDescriptor> LOOP_RANGE_ITERATOR = Slices.createSimpleSlice();
-	WritableSlice<NapileExpression, CallableDescriptor> LOOP_RANGE_HAS_NEXT = Slices.createSimpleSlice();
-	WritableSlice<NapileExpression, MethodDescriptor> LOOP_RANGE_NEXT = Slices.createSimpleSlice();
 
 	WritableSlice<NapileExpression, ResolvedCall<MethodDescriptor>> INDEXED_LVALUE_GET = Slices.createSimpleSlice();
 	WritableSlice<NapileExpression, ResolvedCall<MethodDescriptor>> INDEXED_LVALUE_SET = Slices.createSimpleSlice();

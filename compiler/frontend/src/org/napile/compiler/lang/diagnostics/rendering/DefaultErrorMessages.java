@@ -197,14 +197,6 @@ public class DefaultErrorMessages
 		MAP.put(WRONG_GETTER_RETURN_TYPE, "Getter return type must be equal to the type of the property, i.e. ''{0}''", RENDER_TYPE, RENDER_TYPE);
 		MAP.put(NO_GENERICS_IN_SUPERTYPE_SPECIFIER, "Generic arguments of the base type must be specified");
 
-		MAP.put(HAS_NEXT_PROPERTY_AND_FUNCTION_AMBIGUITY, "An ambiguity between 'iterator().hasNext()' function and 'iterator().hasNext' property");
-		MAP.put(HAS_NEXT_MISSING, "Loop range must have an 'iterator().hasNext()' function or an 'iterator().hasNext' property");
-		MAP.put(HAS_NEXT_FUNCTION_AMBIGUITY, "Function 'iterator().hasNext()' is ambiguous for this expression");
-		MAP.put(HAS_NEXT_MUST_BE_READABLE, "The 'iterator().hasNext' property of the loop range must be readable");
-		MAP.put(HAS_NEXT_PROPERTY_TYPE_MISMATCH, "The type of ''iterator().hasNext'' property of the loop range must be idea.Boolean, but is {0}", RENDER_TYPE);
-		MAP.put(HAS_NEXT_FUNCTION_TYPE_MISMATCH, "The ''iterator().hasNext()'' function of the loop range must return idea.Boolean, but returns {0}", RENDER_TYPE);
-		MAP.put(NEXT_AMBIGUITY, "Function 'iterator().next()' is ambiguous for this expression");
-		MAP.put(NEXT_MISSING, "Loop range must have an 'iterator().next()' function");
 		MAP.put(ITERATOR_MISSING, "For-loop range must have an iterator() method");
 		MAP.put(ITERATOR_AMBIGUITY, "Method ''iterator()'' is ambiguous for this expression: {0}", AMBIGUOUS_CALLS);
 

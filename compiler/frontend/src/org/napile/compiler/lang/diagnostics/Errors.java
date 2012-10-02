@@ -173,14 +173,6 @@ public interface Errors
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> WRONG_GETTER_RETURN_TYPE = DiagnosticFactory2.create(Severity.ERROR);
 	SimpleDiagnosticFactory<PsiElement> NO_GENERICS_IN_SUPERTYPE_SPECIFIER = SimpleDiagnosticFactory.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileExpression> HAS_NEXT_PROPERTY_AND_FUNCTION_AMBIGUITY = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> HAS_NEXT_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> HAS_NEXT_FUNCTION_AMBIGUITY = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> HAS_NEXT_MUST_BE_READABLE = SimpleDiagnosticFactory.create(Severity.ERROR);
-	DiagnosticFactory1<NapileExpression, JetType> HAS_NEXT_PROPERTY_TYPE_MISMATCH = DiagnosticFactory1.create(Severity.ERROR);
-	DiagnosticFactory1<NapileExpression, JetType> HAS_NEXT_FUNCTION_TYPE_MISMATCH = DiagnosticFactory1.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> NEXT_AMBIGUITY = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> NEXT_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> ITERATOR_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
 	AmbiguousDescriptorDiagnosticFactory ITERATOR_AMBIGUITY = AmbiguousDescriptorDiagnosticFactory.create();
 
