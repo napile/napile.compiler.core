@@ -24,7 +24,6 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.TypeTransformer;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
@@ -36,11 +35,6 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
  */
 public class CallTransformer
 {
-	public static IntrinsicMethod findIntrinsicMethod(@NotNull CallableDescriptor callableDescriptor)
-	{
-		return null;
-	}
-
 	@NotNull
 	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor)
 	{

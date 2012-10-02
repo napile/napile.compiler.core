@@ -27,7 +27,7 @@ import org.napile.asm.tree.members.types.TypeNode;
  * @author VISTALL
  * @date 14:51/18.09.12
  */
-public class CallableMethod implements Callable
+public class CallableMethod
 {
 	public static enum CallType
 	{

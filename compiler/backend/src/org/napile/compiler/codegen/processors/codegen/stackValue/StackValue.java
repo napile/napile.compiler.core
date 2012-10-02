@@ -147,7 +147,7 @@ public abstract class StackValue
 		castTo(this.type, toType, v);
 	}
 
-	protected static void castTo(TypeNode fromType, TypeNode toType, InstructionAdapter v)
+	public static void castTo(TypeNode fromType, TypeNode toType, InstructionAdapter v)
 	{
 
 	}

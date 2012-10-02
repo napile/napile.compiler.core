@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
@@ -32,7 +31,6 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.types.TypeUtils;
 
 /**
  * @author VISTALL
@@ -47,16 +45,19 @@ public class NodeRefUtil
 
 	public static VariableRef ref(@NotNull PropertyDescriptor propertyDescriptor)
 	{
+		propertyDescriptor = propertyDescriptor.getOriginal();
 		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()));
 	}
 
 	public static MethodRef ref(CallableDescriptor descriptor)
 	{
+		descriptor = descriptor.getOriginal();
+
 		FqName fqName = DescriptorUtils.getFQName(descriptor).toSafe();
 		List<TypeNode> typeNodes = new ArrayList<TypeNode>(descriptor.getValueParameters().size());
 		for(ParameterDescriptor p : descriptor.getValueParameters())
 			typeNodes.add(TypeTransformer.toAsmType(p.getType()));
 
-		return new MethodRef(fqName, typeNodes, TypeUtils.isEqualFqName(descriptor.getReturnType(), NapileLangPackage.NULL) ? null : TypeTransformer.toAsmType(descriptor.getReturnType()));
+		return new MethodRef(fqName, typeNodes, TypeTransformer.toAsmType(descriptor.getReturnType()));
 	}
 }

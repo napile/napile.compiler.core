@@ -17,10 +17,12 @@
 package org.napile.compiler.codegen.processors;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.MethodNode;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
@@ -51,7 +53,7 @@ public class VariableCodegen
 		if(setter == null)
 		{
 			MethodNode setterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), setterFq.shortName().getName());
-
+			setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), "value", TypeTransformer.toAsmType(propertyDescriptor.getType())));
 			if(propertyDescriptor.isStatic())
 			{
 				setterMethodNode.instructions.add(new LoadInstruction(0));
@@ -63,6 +65,8 @@ public class VariableCodegen
 				setterMethodNode.instructions.add(new LoadInstruction(1));
 				setterMethodNode.instructions.add(new PutToVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
 			}
+
+			setterMethodNode.visitMaxs(0, propertyDescriptor.isStatic() ? 1 : 2);
 
 			classNode.members.add(setterMethodNode);
 		}
@@ -80,6 +84,7 @@ public class VariableCodegen
 		if(getter == null)
 		{
 			MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName().getName());
+			getterMethodNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 
 			if(propertyDescriptor.isStatic())
 			{
@@ -92,6 +97,8 @@ public class VariableCodegen
 				getterMethodNode.instructions.add(new GetVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
 				getterMethodNode.instructions.add(new ReturnInstruction());
 			}
+
+			getterMethodNode.visitMaxs(0, propertyDescriptor.isStatic() ? 0 : 1);
 
 			classNode.members.add(getterMethodNode);
 		}

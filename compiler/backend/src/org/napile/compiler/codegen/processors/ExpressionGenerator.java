@@ -16,8 +16,6 @@
 
 package org.napile.compiler.codegen.processors;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,10 +30,8 @@ import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
-import org.napile.compiler.codegen.processors.codegen.Callable;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.FrameMap;
-import org.napile.compiler.codegen.processors.codegen.IntrinsicMethod;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
@@ -148,6 +144,34 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitPrefixExpression(NapilePrefixExpression expression, StackValue receiver)
+	{
+		DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+
+		final CallableMethod callableMethod = CallTransformer.transformToCallable((MethodDescriptor) op);
+
+		if(!(op.getName().getName().equals("inc") || op.getName().getName().equals("dec")))
+			return invokeOperation(expression, (MethodDescriptor) op, callableMethod);
+
+		else
+		{
+			ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.get(BindingContext.RESOLVED_CALL, expression.getOperationReference());
+			assert resolvedCall != null;
+
+			StackValue value = gen(expression.getBaseExpression());
+			value.dupReceiver(instructs);
+			value.dupReceiver(instructs);
+
+			TypeNode type = expressionType(expression.getBaseExpression());
+			value.put(type, instructs);
+			callableMethod.invoke(instructs);
+			value.store(callableMethod.getReturnType(), instructs);
+			value.put(type, instructs);
+			return StackValue.onStack(type);
+		}
+	}
+
+	@Override
 	public StackValue visitThisExpression(NapileThisExpression expression, StackValue receiver)
 	{
 		final DeclarationDescriptor descriptor = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getInstanceReference());
@@ -230,19 +254,21 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		if(!expressionType.equals(TypeConstants.NULL))
 			targetType = TypeConstants.ANY;
 
-	/*	Label elseLabel = new Label();
-		condition.condJump(elseLabel, inverse, v);
+		condition.put(TypeConstants.BOOL, instructs);
+
+		if(inverse)
+			StackValue.putTrue(instructs);
+		else
+			StackValue.putFalse(instructs);
+
+		ReservedInstruction ifSlot = instructs.reserve();
 
 		gen(expression, expressionType);
-		StackValue.coerce(expressionType, targetType, v);
 
-		Label end = new Label();
-		v.goTo(end);
+		StackValue.castTo(expressionType, targetType, instructs);
 
-		v.mark(elseLabel);
-		StackValue.putTuple0Instance(v);
+		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
 
-		v.mark(end);    */
 		return StackValue.onStack(targetType);
 	}
 
@@ -339,15 +365,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		else */
 		{
 			DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-			final Callable callable = CallTransformer.transformToCallable((MethodDescriptor) op);
-			if(callable instanceof IntrinsicMethod)
-			{
-				IntrinsicMethod intrinsic = (IntrinsicMethod) callable;
+			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op);
 
-				return intrinsic.generate(this, instructs, expressionType(expression), expression, Arrays.asList(expression.getLeft(), expression.getRight()), receiver);
-			}
-			else
-				return invokeOperation(expression, (MethodDescriptor) op, (CallableMethod) callable);
+			return invokeOperation(expression, (MethodDescriptor) op, callable);
 		}
 	}
 
@@ -430,7 +450,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 		DeclarationDescriptor descriptor;
 		if(resolvedCall == null)
-			descriptor = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression);
+			descriptor = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
 		else
 		{
 			if(resolvedCall instanceof VariableAsFunctionResolvedCall)
@@ -442,22 +462,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			descriptor = resolvedCall.getResultingDescriptor();
 		}
 
-		IntrinsicMethod intrinsic = null;
-		if(descriptor instanceof CallableMemberDescriptor)
-		{
-			CallableMemberDescriptor memberDescriptor = (CallableMemberDescriptor) descriptor;
-			memberDescriptor = unwrapFakeOverride(memberDescriptor);
-
-			intrinsic = CallTransformer.findIntrinsicMethod(memberDescriptor);
-		}
-
-		if(intrinsic != null)
-		{
-			final TypeNode expectedType = expressionType(expression);
-			return intrinsic.generate(this, instructs, expectedType, expression, Collections.<NapileExpression>emptyList(), receiver);
-		}
-
-		assert descriptor != null;
 		final DeclarationDescriptor container = descriptor.getContainingDeclaration();
 
 		int index = lookupLocalIndex(descriptor);
@@ -573,8 +577,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 		//TODO [VISTALL] super<A>.foo();
 
-		Callable callable = CallTransformer.transformToCallable(fd);
-		final CallableMethod callableMethod = (CallableMethod) callable;
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(fd);
 
 		invokeMethodWithArguments(callableMethod, resolvedCall, call, receiver);
 
@@ -891,12 +894,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		StackValue lastValue = gen(expr);
 
-		/*if(lastValue.getType() != TypeConstants.NULL)
+		if(!lastValue.getType().equals(TypeConstants.NULL))
 		{
 			lastValue.put(returnType, instructs);
 			instructs.returnVal();
 		}
-		else */if(!endsWithReturn(expr))
+		else
+		if(!endsWithReturn(expr))
 		{
 			if(isInstanceConstructor)
 				StackValue.local(0, returnType).put(returnType, instructs);
