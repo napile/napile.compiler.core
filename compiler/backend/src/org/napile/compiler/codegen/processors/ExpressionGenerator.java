@@ -16,7 +16,9 @@
 
 package org.napile.compiler.codegen.processors;
 
+import java.util.ArrayDeque;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -91,6 +93,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	public final FrameMap frameMap;
 	@NotNull
 	private final TypeNode returnType;
+	@NotNull
+	private Deque<LoopCodegen<?>> loops = new ArrayDeque<LoopCodegen<?>>();
+
 	private final boolean isInstanceConstructor;
 
 	public ExpressionGenerator(@NotNull BindingTrace b, @NotNull CallableDescriptor d)
@@ -167,6 +172,21 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitDoWhileExpression(NapileDoWhileExpression expression, StackValue data)
 	{
 		return loopGen(new DoWhileLoopCodegen(expression));
+	}
+
+	@Override
+	public StackValue visitBreakExpression(NapileBreakExpression expression, StackValue data)
+	{
+		NapileSimpleNameExpression labelRef = expression.getTargetLabel();
+		if(labelRef != null)
+			throw new UnsupportedOperationException();
+		else
+		{
+			LoopCodegen<?> last = loops.getLast();
+
+			last.addBreak(instructs);
+		}
+		return StackValue.none();
 	}
 
 	@Override
@@ -782,7 +802,11 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	private <E extends NapileLoopExpression> StackValue loopGen(LoopCodegen<E> l)
 	{
+		loops.add(l);
+
 		l.gen(this, instructs, bindingTrace);
+
+		loops.getLast();
 
 		return StackValue.none();
 	}
