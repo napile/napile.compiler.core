@@ -37,6 +37,7 @@ public abstract class LoopCodegen<E extends NapileLoopExpression>
 	protected int firstPos;
 
 	private final List<ReservedInstruction> breakInstructions = new ArrayList<ReservedInstruction>();
+	private final List<ReservedInstruction> continueInstructions = new ArrayList<ReservedInstruction>();
 
 	protected LoopCodegen(@NotNull E expression)
 	{
@@ -64,6 +65,14 @@ public abstract class LoopCodegen<E extends NapileLoopExpression>
 		final int nextPosAfterLoop = instructions.size();
 		for(ReservedInstruction i : breakInstructions)
 			instructions.replace(i, new JumpInstruction(nextPosAfterLoop));
+
+		for(ReservedInstruction i : continueInstructions)
+			instructions.replace(i, new JumpInstruction(firstPos));
+	}
+
+	public void addContinue(@NotNull InstructionAdapter instructions)
+	{
+		continueInstructions.add(instructions.reserve());
 	}
 
 	public void addBreak(@NotNull InstructionAdapter instructions)

@@ -175,6 +175,16 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitContinueExpression(NapileContinueExpression expression, StackValue data)
+	{
+		LoopCodegen<?> last = loops.getLast();
+
+		last.addContinue(instructs);
+
+		return StackValue.none();
+	}
+
+	@Override
 	public StackValue visitBreakExpression(NapileBreakExpression expression, StackValue data)
 	{
 		NapileSimpleNameExpression labelRef = expression.getTargetLabel();
