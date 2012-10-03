@@ -358,11 +358,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 			doFinallyOnReturn();
 
-			if(isInstanceConstructor)
-				StackValue.local(0, returnType);
-			else
-				StackValue.putNull(instructs);
-
 			instructs.returnVal();
 		}
 		else
@@ -993,6 +988,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	public void returnExpression(@NotNull NapileExpression expr)
 	{
+		String text = expr.getText();
 		StackValue lastValue = gen(expr);
 
 		if(!lastValue.getType().equals(TypeConstants.NULL))
