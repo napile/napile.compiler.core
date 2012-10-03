@@ -988,7 +988,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	public void returnExpression(@NotNull NapileExpression expr)
 	{
-		String text = expr.getText();
 		StackValue lastValue = gen(expr);
 
 		if(!lastValue.getType().equals(TypeConstants.NULL))
