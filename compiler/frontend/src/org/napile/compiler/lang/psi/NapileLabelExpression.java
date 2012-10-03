@@ -26,7 +26,7 @@ import com.intellij.psi.PsiElement;
  * @author VISTALL
  * @date 20:49/08.09.12
  */
-public class NapileLabelExpression extends NapileExpressionImpl
+public class NapileLabelExpression extends NapileLoopExpression
 {
 	public NapileLabelExpression(@NotNull ASTNode node)
 	{
@@ -48,7 +48,8 @@ public class NapileLabelExpression extends NapileExpressionImpl
 	}
 
 	@Nullable
-	public NapileBlockExpression getExpression()
+	@Override
+	public NapileBlockExpression getBody()
 	{
 		return findChildByClass(NapileBlockExpression.class);
 	}

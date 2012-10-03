@@ -223,7 +223,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitLabelExpression(NapileLabelExpression expression)
 		{
-			NapileExpression body = expression.getExpression();
+			NapileExpression body = expression.getBody();
 			if(body == null)
 				return;
 

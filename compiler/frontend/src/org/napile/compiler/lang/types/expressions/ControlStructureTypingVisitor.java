@@ -154,7 +154,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitLabelExpression(NapileLabelExpression expression, ExpressionTypingContext context)
 	{
-		NapileExpression body = expression.getExpression();
+		NapileExpression body = expression.getBody();
 		if(body != null)
 		{
 			WritableScopeImpl scopeToExtend = ExpressionTypingUtils.newWritableScopeImpl(context, "Scope extended in while's condition");

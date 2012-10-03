@@ -190,7 +190,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitLabelExpression(NapileLabelExpression expression, ExpressionTypingContext context)
 	{
-		NapileExpression blockExpression = expression.getExpression();
+		NapileExpression blockExpression = expression.getBody();
 		if(blockExpression == null)
 			return JetTypeInfo.create(null, context.dataFlowInfo);
 
