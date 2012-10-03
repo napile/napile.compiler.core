@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.Triple;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import com.google.common.collect.Lists;
@@ -38,7 +37,7 @@ public class FrameMap
 	private final TObjectIntHashMap<DeclarationDescriptor> myVarSizes = new TObjectIntHashMap<DeclarationDescriptor>();
 	private int myMaxIndex = 0;
 
-	public int enter(DeclarationDescriptor descriptor, TypeNode type)
+	public int enter(DeclarationDescriptor descriptor)
 	{
 		int index = myMaxIndex;
 		myVarIndex.put(descriptor, index);
@@ -55,19 +54,19 @@ public class FrameMap
 		int oldIndex = myVarIndex.remove(descriptor);
 		if(oldIndex != myMaxIndex)
 		{
-			throw new IllegalStateException("descriptor can be left only if it is last");
+			throw new IllegalStateException("descriptor can be left only if it is last: " + descriptor);
 		}
 		return oldIndex;
 	}
 
-	public int enterTemp(TypeNode type)
+	public int enterTemp()
 	{
 		int result = myMaxIndex;
 		myMaxIndex += 1;
 		return result;
 	}
 
-	public void leaveTemp(TypeNode type)
+	public void leaveTemp()
 	{
 		myMaxIndex -= 1;
 	}

@@ -108,9 +108,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		frameMap = new FrameMap();
 
 		if(!d.isStatic())
-			frameMap.enterTemp(TypeConstants.ANY);
+			frameMap.enterTemp();
 		for(ParameterDescriptor p : d.getValueParameters())
-			frameMap.enter(p, null);
+			frameMap.enter(p);
 	}
 
 	@Override
@@ -905,7 +905,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		assert variableDescriptor != null;
 
 		final TypeNode type = asmType(variableDescriptor.getType());
-		int index = frameMap.enter(variableDescriptor, type);
+		int index = frameMap.enter(variableDescriptor);
 
 		leaveTasks.add(new Function<StackValue, Void>()
 		{
@@ -922,14 +922,12 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	private void initializeLocalVariable(@NotNull NapileProperty variableDeclaration, @NotNull Function<VariableDescriptor, Void> generateInitializer)
 	{
-		VariableDescriptor variableDescriptor = bindingTrace.get(BindingContext.VARIABLE, variableDeclaration);
+		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variableDeclaration);
 
 		int index = lookupLocalIndex(variableDescriptor);
 
 		if(index < 0)
 			throw new IllegalStateException("Local variable not found for " + variableDescriptor);
-
-		assert variableDescriptor != null;
 
 		generateInitializer.fun(variableDescriptor);
 
