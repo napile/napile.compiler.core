@@ -44,6 +44,11 @@ public abstract class LoopCodegen<E extends NapileLoopExpression>
 		this.expression = expression;
 	}
 
+	public String getName()
+	{
+		return null;
+	}
+
 	protected void beforeLoop(ExpressionGenerator gen, InstructionAdapter instructions)
 	{
 		firstPos = instructions.size();

@@ -41,6 +41,7 @@ import org.napile.compiler.codegen.processors.codegen.FrameMap;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.codegen.processors.codegen.loopGen.DoWhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.ForLoopCodegen;
+import org.napile.compiler.codegen.processors.codegen.loopGen.LabelLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.LoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.WhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
@@ -71,6 +72,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;
+import com.intellij.openapi.util.Comparing;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.Function;
@@ -175,6 +177,12 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitLabelExpression(NapileLabelExpression expression, StackValue data)
+	{
+		return loopGen(new LabelLoopCodegen(expression));
+	}
+
+	@Override
 	public StackValue visitContinueExpression(NapileContinueExpression expression, StackValue data)
 	{
 		LoopCodegen<?> last = loops.getLast();
@@ -187,15 +195,28 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitBreakExpression(NapileBreakExpression expression, StackValue data)
 	{
+		LoopCodegen<?> targetLoop = null;
 		NapileSimpleNameExpression labelRef = expression.getTargetLabel();
 		if(labelRef != null)
-			throw new UnsupportedOperationException();
-		else
 		{
-			LoopCodegen<?> last = loops.getLast();
-
-			last.addBreak(instructs);
+			Iterator<LoopCodegen<?>> it = loops.descendingIterator();
+			while(it.hasNext())
+			{
+				LoopCodegen<?> e = it.next();
+				if(Comparing.equal(e.getName(), expression.getLabelName()))
+				{
+					targetLoop = e;
+					break;
+				}
+			}
 		}
+		else
+			targetLoop = loops.getLast();
+
+		assert targetLoop != null;
+
+		targetLoop.addBreak(instructs);
+
 		return StackValue.none();
 	}
 
