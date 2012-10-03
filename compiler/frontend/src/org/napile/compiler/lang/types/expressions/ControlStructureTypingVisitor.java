@@ -383,7 +383,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			FqName fqName = new FqName("napile.util.Iterator");
 
 			JetType iteratorType = iteratorMethod.getReturnType();
-			if(!TypeUtils.isEqualFqName(iteratorType, fqName) || iteratorType.getArguments().size() != 1)
+			if(!JetTypeChecker.INSTANCE.isSubtypeOf(iteratorType, TypeUtils.getTypeOfClassOrErrorType(context.scope, fqName)) || iteratorType.getArguments().size() != 1)
 				return ErrorUtils.createErrorType("Invalid iteration type");
 
 			context.trace.record(BindingContext.LOOP_RANGE_ITERATOR, loopRangeExpression, iteratorMethod);
