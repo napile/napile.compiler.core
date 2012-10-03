@@ -16,6 +16,7 @@
 
 package org.napile.compiler.codegen.processors;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +26,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.adapters.ReservedInstruction;
+import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
@@ -33,6 +37,9 @@ import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.FrameMap;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
+import org.napile.compiler.codegen.processors.codegen.loopGen.ForLoopCodegen;
+import org.napile.compiler.codegen.processors.codegen.loopGen.LoopCodegen;
+import org.napile.compiler.codegen.processors.codegen.loopGen.WhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -74,13 +81,13 @@ import com.intellij.util.Function;
 public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 {
 	@NotNull
-	private final BindingTrace bindingTrace;
+	public final BindingTrace bindingTrace;
 	@NotNull
 	private final Map<NapileElement, Local> tempVariables = new HashMap<NapileElement, Local>();
 	@NotNull
 	private final InstructionAdapter instructs = new InstructionAdapter();
 	@NotNull
-	private final FrameMap myFrameMap;
+	public final FrameMap frameMap;
 	@NotNull
 	private final TypeNode returnType;
 	private final boolean isInstanceConstructor;
@@ -90,12 +97,12 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		bindingTrace = b;
 		isInstanceConstructor = d instanceof ConstructorDescriptor;
 		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(((ClassDescriptor) d.getContainingDeclaration()).getDefaultType()) : TypeTransformer.toAsmType(d.getReturnType());
-		myFrameMap = new FrameMap();
+		frameMap = new FrameMap();
 
 		if(!d.isStatic())
-			myFrameMap.enterTemp(TypeConstants.ANY);
+			frameMap.enterTemp(TypeConstants.ANY);
 		for(ParameterDescriptor p : d.getValueParameters())
-			myFrameMap.enter(p, null);
+			frameMap.enter(p, null);
 	}
 
 	@Override
@@ -141,6 +148,18 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		List<NapileElement> statements = expression.getStatements();
 		return generateBlock(statements);
+	}
+
+	@Override
+	public StackValue visitForExpression(NapileForExpression expression, StackValue data)
+	{
+		return loopGen(new ForLoopCodegen(expression));
+	}
+
+	@Override
+	public StackValue visitWhileExpression(NapileWhileExpression expression, StackValue data)
+	{
+		return loopGen(new WhileLoopCodegen(expression));
 	}
 
 	@Override
@@ -343,13 +362,33 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		else if(opToken == NapileTokens.OROR)
 		{
 			return generateBooleanOr(expression);
-		}
-		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ ||
-				opToken == NapileTokens.EQEQEQ || opToken == NapileTokens.EXCLEQEQEQ)
+		} */
+		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ /*|| opToken == NapileTokens.EQEQEQ || opToken == NapileTokens.EXCLEQEQEQ*/)
 		{
-			return generateEquals(expression.getLeft(), expression.getRight(), opToken);
+			NapileExpression left = expression.getLeft();
+			NapileExpression right = expression.getRight();
+
+			JetType leftJetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, left);
+			TypeNode leftType = asmType(leftJetType);
+
+			JetType rightJetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, right);
+			TypeNode rightType = asmType(rightJetType);
+
+			gen(left, leftType);
+
+			gen(right, rightType);
+
+			DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op);
+			callable.invoke(instructs);
+
+			// revert bool
+			if(opToken == NapileTokens.EXCLEQ)
+				instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
+
+			return StackValue.onStack(TypeConstants.BOOL);
 		}
-		else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ ||
+	/*	else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ ||
 				opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
 		{
 			return generateCompareOp(expression.getLeft(), expression.getRight(), opToken, expressionType(expression.getLeft()));
@@ -568,7 +607,8 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		genThisAndReceiverFromResolvedCall(StackValue.none(), resolvedCall, callable);
 		pushMethodArguments(resolvedCall, callable.getValueParameterTypes());
 		callable.invoke(instructs);
-		return returnValueAsStackValue(op, callable.getReturnType());
+
+		return StackValue.onStack(callable.getReturnType());
 	}
 
 	private StackValue invokeFunction(Call call, StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall)
@@ -583,7 +623,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 		final TypeNode callReturnType = callableMethod.getReturnType();
 
-		return returnValueAsStackValue(fd, callReturnType);
+		return StackValue.onStack(callReturnType);
 	}
 
 	private void doFinallyOnReturn()
@@ -627,11 +667,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			callableMethod.invoke(instructs);
 		else
 			callableMethod.invokeWithDefault(instructs, mask);
-	}
-
-	private StackValue returnValueAsStackValue(MethodDescriptor fd, TypeNode callReturnType)
-	{
-		return StackValue.none(); //TODO
 	}
 
 	private void genThisAndReceiverFromResolvedCall(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, CallableMethod callableMethod)
@@ -739,6 +774,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		return answer;
 	}
 
+	private <E extends NapileLoopExpression> StackValue loopGen(LoopCodegen<E> l)
+	{
+		l.gen(this, instructs, bindingTrace);
+
+		return StackValue.none();
+	}
+
 	@Nullable
 	private static NapileExpression getReceiverForSelector(PsiElement expression)
 	{
@@ -802,14 +844,14 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		assert variableDescriptor != null;
 
 		final TypeNode type = asmType(variableDescriptor.getType());
-		int index = myFrameMap.enter(variableDescriptor, type);
+		int index = frameMap.enter(variableDescriptor, type);
 
 		leaveTasks.add(new Function<StackValue, Void>()
 		{
 			@Override
 			public Void fun(StackValue answer)
 			{
-				int index = myFrameMap.leave(variableDescriptor);
+				int index = frameMap.leave(variableDescriptor);
 
 				getInstructs().visitLocalVariable(variableDescriptor.getName().getName());
 				return null;
@@ -835,7 +877,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	public int lookupLocalIndex(DeclarationDescriptor descriptor)
 	{
-		return myFrameMap.getIndex(descriptor);
+		return frameMap.getIndex(descriptor);
 	}
 
 	public void gen(NapileElement expr, TypeNode type)
@@ -899,8 +941,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			lastValue.put(returnType, instructs);
 			instructs.returnVal();
 		}
-		else
-		if(!endsWithReturn(expr))
+		else if(!endsWithReturn(expr))
 		{
 			if(isInstanceConstructor)
 				StackValue.local(0, returnType).put(returnType, instructs);
