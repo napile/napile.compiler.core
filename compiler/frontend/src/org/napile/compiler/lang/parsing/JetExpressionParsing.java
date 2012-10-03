@@ -1697,6 +1697,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		advance(); // BREAK_KEYWORD or CONTINUE_KEYWORD
 
+		//TODO [VISTALL] rework it
 		if(type == BREAK && at(NapileTokens.IDENTIFIER))
 			parseOneTokenExpression(LABEL_REFERENCE);
 
