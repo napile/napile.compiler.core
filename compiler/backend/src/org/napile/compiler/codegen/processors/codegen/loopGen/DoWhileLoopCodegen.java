@@ -18,40 +18,37 @@ package org.napile.compiler.codegen.processors.codegen.loopGen;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.adapters.InstructionAdapter;
+import org.napile.asm.adapters.ReservedInstruction;
+import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
-import org.napile.compiler.lang.psi.NapileLoopExpression;
-import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.codegen.processors.codegen.TypeConstants;
+import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.lang.psi.NapileDoWhileExpression;
 
 /**
  * @author VISTALL
- * @date 21:16/02.10.12
+ * @date 15:04/03.10.12
  */
-public abstract class LoopCodegen<E extends NapileLoopExpression>
+public class DoWhileLoopCodegen extends LoopCodegen<NapileDoWhileExpression>
 {
-	protected final E expression;
-	protected int firstPos;
-
-	protected LoopCodegen(@NotNull E expression)
+	public DoWhileLoopCodegen(@NotNull NapileDoWhileExpression expression)
 	{
-		this.expression = expression;
+		super(expression);
 	}
 
-	protected void beforeLoop(ExpressionGenerator gen, InstructionAdapter instructions)
-	{
-		firstPos = instructions.size();
-	}
-
+	@Override
 	protected void afterLoop(ExpressionGenerator gen, InstructionAdapter instructions)
 	{
+		gen.gen(expression.getCondition(), TypeConstants.BOOL);
 
-	}
+		StackValue.putTrue(instructions);
 
-	public void gen(@NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructions, @NotNull BindingTrace bindingTrace)
-	{
-		beforeLoop(gen, instructions);
+		ReservedInstruction reserve = instructions.reserve();
 
-		gen.gen(expression.getBody());
+		instructions.jump(firstPos);
 
-		afterLoop(gen, instructions);
+		int nextPos = instructions.size();
+
+		instructions.replace(reserve, new JumpIfInstruction(nextPos));
 	}
 }

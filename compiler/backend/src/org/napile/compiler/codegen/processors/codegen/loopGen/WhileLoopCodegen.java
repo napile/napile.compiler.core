@@ -32,7 +32,6 @@ import org.napile.compiler.lang.psi.NapileWhileExpression;
 public class WhileLoopCodegen extends LoopCodegen<NapileWhileExpression>
 {
 	private ReservedInstruction ifSlot;
-	private int firstPos;
 
 	public WhileLoopCodegen(@NotNull NapileWhileExpression expression)
 	{
@@ -42,11 +41,12 @@ public class WhileLoopCodegen extends LoopCodegen<NapileWhileExpression>
 	@Override
 	protected void beforeLoop(ExpressionGenerator gen, InstructionAdapter instructions)
 	{
-		firstPos = instructions.size();
+		super.beforeLoop(gen, instructions);
 
 		gen.gen(expression.getCondition(), TypeConstants.BOOL);
 
 		StackValue.putTrue(instructions);
+
 		ifSlot = instructions.reserve();
 	}
 

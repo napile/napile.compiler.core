@@ -37,6 +37,7 @@ import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.FrameMap;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
+import org.napile.compiler.codegen.processors.codegen.loopGen.DoWhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.ForLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.LoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.WhileLoopCodegen;
@@ -163,6 +164,12 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitDoWhileExpression(NapileDoWhileExpression expression, StackValue data)
+	{
+		return loopGen(new DoWhileLoopCodegen(expression));
+	}
+
+	@Override
 	public StackValue visitPrefixExpression(NapilePrefixExpression expression, StackValue receiver)
 	{
 		DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
@@ -171,7 +178,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 		if(!(op.getName().getName().equals("inc") || op.getName().getName().equals("dec")))
 			return invokeOperation(expression, (MethodDescriptor) op, callableMethod);
-
 		else
 		{
 			ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.get(BindingContext.RESOLVED_CALL, expression.getOperationReference());
