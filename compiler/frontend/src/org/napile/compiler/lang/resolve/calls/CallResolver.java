@@ -700,7 +700,7 @@ public class CallResolver
 
 		boolean isStatic = isParentStatic(context.scope);
 		// static body
-		if(isStatic)
+	/*	if(isStatic)
 		{
 			boolean isValid = false;
 			if(candidateCall.getThisObject() != ReceiverDescriptor.NO_RECEIVER)
@@ -723,12 +723,12 @@ public class CallResolver
 
 						isValid = !isParentStatic(ref);
 					}
-					/*else if(expression instanceof NapileDotQualifiedExpression && ((NapileDotQualifiedExpression) expression).getReceiverExpression() instanceof NapileReferenceExpression)
+					else if(expression instanceof NapileDotQualifiedExpression && ((NapileDotQualifiedExpression) expression).getReceiverExpression() instanceof NapileReferenceExpression)
 					{
 						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpression)((NapileDotQualifiedExpression) expression).getReceiverExpression());
 
 						isValid = !isParentStatic(ref);
-					} */
+					}
 					else if(expression instanceof NapileConstantExpression)
 						isValid = false;
 				}
@@ -740,7 +740,7 @@ public class CallResolver
 				context.tracing.instanceCallFromStatic(context.trace, candidate);
 				return;
 			}
-		}
+		}   */
 
 		if(!Visibilities.isVisible(candidate, context.scope.getContainingDeclaration()))
 		{
