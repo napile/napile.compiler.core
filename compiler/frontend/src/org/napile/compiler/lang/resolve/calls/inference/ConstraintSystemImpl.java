@@ -233,7 +233,7 @@ public class ConstraintSystemImpl implements ConstraintSystem
 		TypeConstructor typeConstructor = subjectType.getConstructor();
 		List<JetType> subjectArguments = subjectType.getArguments();
 		List<JetType> constrainingArguments = constrainingType.getArguments();
-		List<TypeParameterDescriptor> parameters = typeConstructor.getParameters();
+
 		for(int i = 0; i < subjectArguments.size(); i++)
 			addConstraint(subjectArguments.get(i), constrainingArguments.get(i), constraintPosition);
 	}

@@ -71,12 +71,12 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		firstPos = instructions.size();
 
 		instructions.load(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
+		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
 		StackValue.putTrue(instructions);
 		jumpIfSlot = instructions.reserve();
 
 		instructions.load(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode("E"))));
+		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode("E"))));
 		instructions.store(loopParameterIndex);
 	}
 

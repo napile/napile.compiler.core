@@ -38,10 +38,10 @@ public class Property extends StackValue
 		staticVar = s;
 		// convert 'A.var' -> A + var$set -> A.var$set
 		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + "$set"));
-		setter = new MethodRef(setterFq, Collections.singletonList(getType()), TypeConstants.NULL);
+		setter = new MethodRef(setterFq, Collections.singletonList(getType()), Collections.<TypeNode>emptyList(), TypeConstants.NULL);
 		// convert 'A.var' -> A + var$get -> A.var$get
 		FqName getterFq = fqName.parent().child(Name.identifier(fqName.shortName() + "$get"));
-		getter = new MethodRef(getterFq, Collections.<TypeNode>emptyList(),getType());
+		getter = new MethodRef(getterFq, Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), getType());
 	}
 
 	@Override

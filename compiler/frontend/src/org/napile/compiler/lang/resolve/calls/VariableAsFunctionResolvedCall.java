@@ -20,11 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
+import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 
@@ -99,6 +101,13 @@ public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<Met
 	public Map<TypeParameterDescriptor, JetType> getTypeArguments()
 	{
 		return functionCall.getTypeArguments();
+	}
+
+	@Nullable
+	@Override
+	public ConstraintSystem getConstraintSystem()
+	{
+		return null;
 	}
 
 	@NotNull

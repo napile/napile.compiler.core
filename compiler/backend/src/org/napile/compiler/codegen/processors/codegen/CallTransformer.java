@@ -24,10 +24,16 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.TypeTransformer;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
+import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
+import org.napile.compiler.lang.resolve.calls.inference.TypeConstraints;
+import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
@@ -35,8 +41,35 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
  */
 public class CallTransformer
 {
+	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall)
+	{
+		MethodDescriptor fd = (MethodDescriptor) resolvedCall.getResultingDescriptor();
+
+		List<TypeNode> typeArguments = new ArrayList<TypeNode>(fd.getTypeParameters().size());
+
+		for(JetType type : resolvedCall.getTypeArguments().values())
+			typeArguments.add(TypeTransformer.toAsmType(type));
+
+		ConstraintSystem constraintSystem = resolvedCall.getConstraintSystem();
+		if(constraintSystem != null && constraintSystem.isSuccessful())
+		{
+			assert typeArguments.size() == 0;
+
+			for(TypeParameterDescriptor typeParameterDescriptor : constraintSystem.getTypeVariables())
+			{
+				TypeConstraints typeConstants = constraintSystem.getTypeConstraints(typeParameterDescriptor);
+
+				assert typeConstants != null && typeConstants.getUpperBounds().size() == 1;
+
+				typeArguments.add(TypeTransformer.toAsmType(typeConstants.getUpperBounds().iterator().next()));
+			}
+		}
+
+		return transformToCallable(fd, typeArguments);
+	}
+
 	@NotNull
-	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor)
+	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments)
 	{
 		CallableMethod.CallType type = CallableMethod.CallType.VIRTUAL;
 		if(methodDescriptor instanceof ConstructorDescriptor)
@@ -58,6 +91,6 @@ public class CallTransformer
 		for(ParameterDescriptor p : originalMethodDescriptor.getValueParameters())
 			parametersToByteCode.add(TypeTransformer.toAsmType(p.getType()));
 
-		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks);
+		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks);
 	}
 }

@@ -17,6 +17,7 @@
 package org.napile.compiler.codegen.processors;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +50,7 @@ public class NodeRefUtil
 		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()));
 	}
 
+	//FIXME [VISTALL] this method is needed? use CallTransformer?
 	public static MethodRef ref(CallableDescriptor descriptor)
 	{
 		descriptor = descriptor.getOriginal();
@@ -58,6 +60,6 @@ public class NodeRefUtil
 		for(ParameterDescriptor p : descriptor.getValueParameters())
 			typeNodes.add(TypeTransformer.toAsmType(p.getType()));
 
-		return new MethodRef(fqName, typeNodes, TypeTransformer.toAsmType(descriptor.getReturnType()));
+		return new MethodRef(fqName, typeNodes, Collections.<TypeNode>emptyList(), TypeTransformer.toAsmType(descriptor.getReturnType()));
 	}
 }

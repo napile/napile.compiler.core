@@ -46,8 +46,8 @@ public class CollectionElement extends StackValue
 		this.setCall = setCall;
 		this.expressionGenerator = expressionGenerator;
 
-		getCallableMethod = getCall == null ? null : CallTransformer.transformToCallable(getCall.getResultingDescriptor());
-		setCallableMethod = setCall == null ? null : CallTransformer.transformToCallable(setCall.getResultingDescriptor());
+		getCallableMethod = getCall == null ? null : CallTransformer.transformToCallable(getCall);
+		setCallableMethod = setCall == null ? null : CallTransformer.transformToCallable(setCall);
 	}
 
 	@Override
