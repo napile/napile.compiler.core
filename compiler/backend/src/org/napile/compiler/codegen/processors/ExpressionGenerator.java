@@ -221,6 +221,21 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitIsExpression(NapileIsExpression expression, StackValue data)
+	{
+		gen(expression.getLeftHandSide(), TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeftHandSide())));
+
+		JetType rightType = bindingTrace.safeGet(BindingContext.TYPE, expression.getTypeRef());
+
+		instructs.is(TypeTransformer.toAsmType(rightType));
+
+		if(expression.isNegated())
+			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
+
+		return StackValue.onStack(TypeConstants.BOOL);
+	}
+
+	@Override
 	public StackValue visitPrefixExpression(NapilePrefixExpression expression, StackValue receiver)
 	{
 		DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
@@ -598,7 +613,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		TypeNode typeNode = expressionType(classOfExpression);
 
-		instructs.classOf(typeNode.arguments.get(0));
+		instructs.classOf(TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.TYPE, classOfExpression.getTypeReference())));
 
 		return StackValue.onStack(typeNode);
 	}
@@ -608,7 +623,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		TypeNode typeNode = expressionType(typeOfExpression);
 
-		instructs.typeOf(typeNode.arguments.get(0));
+		instructs.typeOf(TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.TYPE, typeOfExpression.getTypeReference())));
 
 		return StackValue.onStack(typeNode);
 	}
