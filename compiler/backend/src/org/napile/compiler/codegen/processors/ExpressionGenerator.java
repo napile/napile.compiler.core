@@ -595,6 +595,26 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public StackValue visitClassOfExpression(NapileClassOfExpression classOfExpression, StackValue data)
+	{
+		TypeNode typeNode = expressionType(classOfExpression);
+
+		instructs.classOf(typeNode.arguments.get(0));
+
+		return StackValue.onStack(typeNode);
+	}
+
+	@Override
+	public StackValue visitTypeOfExpression(NapileTypeOfExpression typeOfExpression, StackValue data)
+	{
+		TypeNode typeNode = expressionType(typeOfExpression);
+
+		instructs.typeOf(typeNode.arguments.get(0));
+
+		return StackValue.onStack(typeNode);
+	}
+
 	private StackValue generateAssignmentExpression(NapileBinaryExpression expression)
 	{
 		StackValue stackValue = gen(expression.getLeft());
