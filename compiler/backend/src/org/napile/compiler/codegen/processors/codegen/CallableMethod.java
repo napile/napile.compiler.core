@@ -19,8 +19,8 @@ package org.napile.compiler.codegen.processors.codegen;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.MethodRef;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 
 /**

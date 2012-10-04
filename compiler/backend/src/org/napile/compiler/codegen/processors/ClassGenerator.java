@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.ConstructorNode;
@@ -31,6 +30,7 @@ import org.napile.asm.tree.members.StaticConstructorNode;
 import org.napile.asm.tree.members.TypeParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;

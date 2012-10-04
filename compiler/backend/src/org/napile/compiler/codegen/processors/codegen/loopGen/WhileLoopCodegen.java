@@ -17,8 +17,8 @@
 package org.napile.compiler.codegen.processors.codegen.loopGen;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.adapters.InstructionAdapter;
-import org.napile.asm.adapters.ReservedInstruction;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
+import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;

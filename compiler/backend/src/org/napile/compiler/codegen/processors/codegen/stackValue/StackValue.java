@@ -18,8 +18,8 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.TypeTransformer;

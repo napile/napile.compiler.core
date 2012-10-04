@@ -1,7 +1,7 @@
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
-import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 

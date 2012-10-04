@@ -26,11 +26,11 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.adapters.InstructionAdapter;
-import org.napile.asm.adapters.ReservedInstruction;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
+import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.asm.tree.members.types.TypeNode;

@@ -20,13 +20,13 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.adapters.InstructionAdapter;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.MethodRef;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.impl.InvokeSpecialInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PopInstruction;

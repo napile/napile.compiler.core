@@ -19,10 +19,10 @@ package org.napile.compiler.codegen.processors.codegen.loopGen;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.adapters.InstructionAdapter;
-import org.napile.asm.adapters.ReservedInstruction;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
+import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;

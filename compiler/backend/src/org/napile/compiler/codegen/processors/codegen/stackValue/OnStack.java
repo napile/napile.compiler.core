@@ -16,7 +16,7 @@
 
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
-import org.napile.asm.adapters.InstructionAdapter;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 
 public class OnStack extends StackValue
