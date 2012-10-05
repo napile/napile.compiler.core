@@ -415,7 +415,12 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
 		if(opToken == NapileTokens.EQ)
-			return generateAssignmentExpression(expression);
+		{
+			StackValue stackValue = gen(expression.getLeft());
+			gen(expression.getRight(), stackValue.getType());
+			stackValue.store(stackValue.getType(), instructs);
+			return StackValue.none();
+		}
 		/*else if(NapileTokens.AUGMENTED_ASSIGNMENTS.contains(opToken))
 		{
 			return generateAugmentedAssignment(expression);
@@ -423,11 +428,44 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		else if(opToken == NapileTokens.ANDAND)
 		{
 			return generateBooleanAnd(expression);
-		}
+		} */
 		else if(opToken == NapileTokens.OROR)
 		{
-			return generateBooleanOr(expression);
-		} */
+			gen(expression.getLeft(), TypeConstants.BOOL);
+
+			StackValue.putTrue(instructs);
+
+			ReservedInstruction ifSlot = instructs.reserve();
+
+			// result
+			StackValue.putTrue(instructs);
+
+			ReservedInstruction skipNextSlot = instructs.reserve();
+
+			// is first is failed - jump to right part
+			instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
+
+			gen(expression.getRight(), TypeConstants.BOOL);
+
+			StackValue.putTrue(instructs);
+
+			ReservedInstruction ifSlot2 = instructs.reserve();
+
+			StackValue.putTrue(instructs);
+
+			ReservedInstruction skipNextSlot2 = instructs.reserve();
+
+			// jump to false
+			instructs.replace(ifSlot2, new JumpIfInstruction(instructs.size()));
+
+			StackValue.putFalse(instructs);
+
+			// skips instructions - jump over expression
+			instructs.replace(skipNextSlot, new JumpInstruction(instructs.size()));
+			instructs.replace(skipNextSlot2, new JumpInstruction(instructs.size()));
+
+			return StackValue.onStack(TypeConstants.BOOL);
+		}
 		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ /*|| opToken == NapileTokens.EQEQEQ || opToken == NapileTokens.EXCLEQEQEQ*/)
 		{
 			NapileExpression left = expression.getLeft();
@@ -626,14 +664,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		instructs.typeOf(TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.TYPE, typeOfExpression.getTypeReference())));
 
 		return StackValue.onStack(typeNode);
-	}
-
-	private StackValue generateAssignmentExpression(NapileBinaryExpression expression)
-	{
-		StackValue stackValue = gen(expression.getLeft());
-		gen(expression.getRight(), stackValue.getType());
-		stackValue.store(stackValue.getType(), instructs);
-		return StackValue.none();
 	}
 
 	public StackValue intermediateValueForProperty(PropertyDescriptor propertyDescriptor, final boolean forceField, @Nullable NapileSuperExpression superExpression)
