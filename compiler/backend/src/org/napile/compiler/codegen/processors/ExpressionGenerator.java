@@ -35,6 +35,7 @@ import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.CompilationException;
+import org.napile.compiler.codegen.processors.codegen.BinaryOperationCodegen;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.FrameMap;
@@ -424,48 +425,11 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		/*else if(NapileTokens.AUGMENTED_ASSIGNMENTS.contains(opToken))
 		{
 			return generateAugmentedAssignment(expression);
-		}
+		}  */
 		else if(opToken == NapileTokens.ANDAND)
-		{
-			return generateBooleanAnd(expression);
-		} */
+			return BinaryOperationCodegen.genAndAnd(expression, this, instructs);
 		else if(opToken == NapileTokens.OROR)
-		{
-			gen(expression.getLeft(), TypeConstants.BOOL);
-
-			StackValue.putTrue(instructs);
-
-			ReservedInstruction ifSlot = instructs.reserve();
-
-			// result
-			StackValue.putTrue(instructs);
-
-			ReservedInstruction skipNextSlot = instructs.reserve();
-
-			// is first is failed - jump to right part
-			instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
-
-			gen(expression.getRight(), TypeConstants.BOOL);
-
-			StackValue.putTrue(instructs);
-
-			ReservedInstruction ifSlot2 = instructs.reserve();
-
-			StackValue.putTrue(instructs);
-
-			ReservedInstruction skipNextSlot2 = instructs.reserve();
-
-			// jump to false
-			instructs.replace(ifSlot2, new JumpIfInstruction(instructs.size()));
-
-			StackValue.putFalse(instructs);
-
-			// skips instructions - jump over expression
-			instructs.replace(skipNextSlot, new JumpInstruction(instructs.size()));
-			instructs.replace(skipNextSlot2, new JumpInstruction(instructs.size()));
-
-			return StackValue.onStack(TypeConstants.BOOL);
-		}
+			return BinaryOperationCodegen.genOrOr(expression, this, instructs);
 		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ /*|| opToken == NapileTokens.EQEQEQ || opToken == NapileTokens.EXCLEQEQEQ*/)
 		{
 			NapileExpression left = expression.getLeft();
