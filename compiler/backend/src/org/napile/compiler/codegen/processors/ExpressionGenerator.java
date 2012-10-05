@@ -528,6 +528,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
         JetType type = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression.getLeft());(expression);
 		}
 		else */
+		else
 		{
 			DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
 			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList());
