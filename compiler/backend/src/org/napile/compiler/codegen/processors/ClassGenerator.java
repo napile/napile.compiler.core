@@ -242,6 +242,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 				}
 
 				constructorNode.instructions.addAll(gen.getInstructs().getInstructions());
+				constructorNode.tryCatchBlockNodes.addAll(gen.getInstructs().getTryCatchBlockNodes());
 
 				constructorNode.maxLocals = size + gen.getInstructs().getMaxLocals() + constructorDescriptor.getValueParameters().size();
 			}

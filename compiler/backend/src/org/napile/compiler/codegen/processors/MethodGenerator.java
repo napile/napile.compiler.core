@@ -165,6 +165,7 @@ public class MethodGenerator
 			methodNode.maxLocals = val;
 
 			methodNode.instructions.addAll(adapter.getInstructions());
+			methodNode.tryCatchBlockNodes.addAll(adapter.getTryCatchBlockNodes());
 		}
 
 		return methodNode;

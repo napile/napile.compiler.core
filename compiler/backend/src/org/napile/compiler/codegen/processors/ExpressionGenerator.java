@@ -17,6 +17,7 @@
 package org.napile.compiler.codegen.processors;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
@@ -33,6 +34,9 @@ import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
+import org.napile.asm.tree.members.bytecode.tryCatch.CatchBlock;
+import org.napile.asm.tree.members.bytecode.tryCatch.TryBlock;
+import org.napile.asm.tree.members.bytecode.tryCatch.TryCatchBlockNode;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.codegen.BinaryOperationCodegen;
@@ -96,7 +100,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	@NotNull
 	private final TypeNode returnType;
 	@NotNull
-	private Deque<LoopCodegen<?>> loops = new ArrayDeque<LoopCodegen<?>>();
+	private final Deque<LoopCodegen<?>> loops = new ArrayDeque<LoopCodegen<?>>();
 
 	private final boolean isInstanceConstructor;
 
@@ -198,6 +202,41 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
 		TypeNode expectedAsmType = TypeTransformer.toAsmType(jetType);
+
+		final int tryStartIndex = instructs.size();
+
+		gen(expression.getTryBlock());
+
+		List<ReservedInstruction> jumpOutInstructions = new ArrayList<ReservedInstruction>(2);
+		jumpOutInstructions.add(instructs.reserve());
+
+		TryBlock tryBlock = new TryBlock(tryStartIndex, instructs.size());
+		List<CatchBlock> catchBlocks = new ArrayList<CatchBlock>(2);
+
+		for(NapileCatchClause catchClause : expression.getCatchClauses())
+		{
+			VariableDescriptor catchParameter = (VariableDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, catchClause.getCatchParameter());
+
+			int index = frameMap.enter(catchParameter);
+
+			instructs.visitLocalVariable(catchClause.getName());
+
+			int startCatchIndex = instructs.size();
+
+			gen(catchClause.getCatchBody());
+
+			jumpOutInstructions.add(instructs.reserve());
+
+			catchBlocks.add(new CatchBlock(startCatchIndex, instructs.size(), index, TypeTransformer.toAsmType(catchParameter.getType())));
+
+			frameMap.leave(catchParameter);
+		}
+
+		final int nextIndex = instructs.size();
+		for(ReservedInstruction r : jumpOutInstructions)
+			instructs.replace(r, new JumpInstruction(nextIndex));
+
+		instructs.tryCatch(new TryCatchBlockNode(tryBlock, catchBlocks));
 
 		return StackValue.onStack(expectedAsmType);
 	}

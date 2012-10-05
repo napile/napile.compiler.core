@@ -17,5 +17,7 @@ public interface TypeConstants
 
 	TypeNode ANY = new TypeNode(false, new ClassTypeNode(NapileLangPackage.ANY));
 
+	TypeNode THROWABLE = new TypeNode(false, new ClassTypeNode(NapileLangPackage.THROWABLE));
+
 	TypeNode ITERATOR__ANY__ = new TypeNode(false, new ClassTypeNode(CodeTodo.ITERATOR)).visitArgument(ANY);
 }

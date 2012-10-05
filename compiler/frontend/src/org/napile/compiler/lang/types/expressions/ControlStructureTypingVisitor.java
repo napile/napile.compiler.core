@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.CodeTodo;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -381,7 +380,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			MethodDescriptor iteratorMethod = iteratorResolutionResults.getResultingCall().getResultingDescriptor();
 
 			JetType iteratorType = iteratorMethod.getReturnType();
-			if(!JetTypeChecker.INSTANCE.isSubtypeOf(iteratorType, TypeUtils.getTypeOfClassOrErrorType(context.scope, CodeTodo.ITERATOR)) || iteratorType.getArguments().size() != 1)
+			if(/*!JetTypeChecker.INSTANCE.isSubtypeOf(iteratorType, TypeUtils.getTypeOfClassOrErrorType(context.scope, CodeTodo.ITERATOR)) || */iteratorType.getArguments().size() != 1)
 				return ErrorUtils.createErrorType("Invalid iteration type");
 
 			context.trace.record(BindingContext.LOOP_RANGE_ITERATOR, loopRangeExpression, iteratorMethod);
