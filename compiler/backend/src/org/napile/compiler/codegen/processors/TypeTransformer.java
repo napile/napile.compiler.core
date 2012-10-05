@@ -44,7 +44,7 @@ public class TypeTransformer
 		if(jetType.getConstructor() instanceof SelfTypeConstructor)
 			typeConstructorNode = new ThisTypeNode();
 		else if(jetType.getConstructor() instanceof MethodTypeConstructor)
-			throw new IllegalArgumentException("MethodTypeConstructor is not supported for not");
+			throw new IllegalArgumentException("MethodTypeConstructor is not supported for now");
 		else if(owner instanceof ClassDescriptor)
 			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());
 		else if(owner instanceof TypeParameterDescriptor)
