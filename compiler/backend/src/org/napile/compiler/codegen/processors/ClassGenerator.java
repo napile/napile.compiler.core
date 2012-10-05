@@ -243,8 +243,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 				constructorNode.instructions.addAll(gen.getInstructs().getInstructions());
 
-				final int maxLocals = size + gen.getInstructs().getMaxLocals() + constructorDescriptor.getValueParameters().size();
-				constructorNode.visitMaxs(maxLocals, maxLocals);
+				constructorNode.maxLocals = size + gen.getInstructs().getMaxLocals() + constructorDescriptor.getValueParameters().size();
 			}
 
 			// next static properties
@@ -262,7 +261,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 			{
 				StaticConstructorNode staticConstructorNode = new StaticConstructorNode();
 				staticConstructorNode.instructions.addAll(instructions);
-				staticConstructorNode.visitMaxs(size, size);
+				staticConstructorNode.maxLocals = size;
 
 				//TODO [VISTALL] add codegen from bodies
 

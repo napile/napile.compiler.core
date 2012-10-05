@@ -66,7 +66,7 @@ public class VariableCodegen
 				setterMethodNode.instructions.add(new PutToVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
 			}
 
-			setterMethodNode.visitMaxs(0, propertyDescriptor.isStatic() ? 1 : 2);
+			setterMethodNode.maxLocals = propertyDescriptor.isStatic() ? 1 : 2;
 
 			classNode.members.add(setterMethodNode);
 		}
@@ -98,7 +98,7 @@ public class VariableCodegen
 				getterMethodNode.instructions.add(new ReturnInstruction());
 			}
 
-			getterMethodNode.visitMaxs(0, propertyDescriptor.isStatic() ? 0 : 1);
+			getterMethodNode.maxLocals = propertyDescriptor.isStatic() ? 0 : 1;
 
 			classNode.members.add(getterMethodNode);
 		}

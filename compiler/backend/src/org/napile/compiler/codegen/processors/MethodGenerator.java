@@ -162,7 +162,7 @@ public class MethodGenerator
 			int val = adapter.getMaxLocals() + methodDescriptor.getValueParameters().size();
 			if(!methodDescriptor.isStatic())
 				val ++;
-			methodNode.visitMaxs(val, val);
+			methodNode.maxLocals = val;
 
 			methodNode.instructions.addAll(adapter.getInstructions());
 		}
