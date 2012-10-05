@@ -539,6 +539,54 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitPostfixExpression(NapilePostfixExpression expression, StackValue receiver)
+	{
+		if(expression.getOperationReference().getReferencedNameElementType() == NapileTokens.EXCLEXCL)
+		{
+			NapileExpression baseExpression = expression.getBaseExpression();
+			JetType type = bindingTrace.get(BindingContext.EXPRESSION_TYPE, baseExpression);
+			StackValue base = genQualified(receiver, baseExpression);
+			if(type != null && type.isNullable())
+			{
+				/*base.put(base.type, v);
+				v.dup();
+				Label ok = new Label();
+				v.ifnonnull(ok);
+				v.invokestatic("jet/runtime/Intrinsics", "throwNpe", "()V");
+				v.mark(ok);
+				return StackValue.onStack(base.type);  */
+				throw new UnsupportedOperationException();
+			}
+			else
+				return base;
+		}
+		DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+		if(op instanceof MethodDescriptor)
+		{
+			if(op.getName().getName().equals("inc") || op.getName().getName().equals("dec"))
+			{
+				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.get(BindingContext.RESOLVED_CALL, expression.getOperationReference());
+				assert resolvedCall != null;
+
+				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall);
+
+				StackValue value = gen(expression.getBaseExpression());
+				value.dupReceiver(instructs);
+
+				TypeNode type = expressionType(expression.getBaseExpression());
+				value.put(type, instructs);
+
+				instructs.dup();
+
+				callable.invoke(instructs);
+				value.store(callable.getReturnType(), instructs);
+				return StackValue.onStack(type);
+			}
+		}
+		throw new UnsupportedOperationException("Don't know how to generate this postfix expression");
+	}
+
+	@Override
 	public StackValue visitCallExpression(NapileCallExpression expression, StackValue receiver)
 	{
 		final NapileExpression callee = expression.getCalleeExpression();

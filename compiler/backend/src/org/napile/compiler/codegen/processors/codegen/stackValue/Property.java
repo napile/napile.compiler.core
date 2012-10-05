@@ -70,10 +70,4 @@ public class Property extends StackValue
 		if(!staticVar)
 			v.dup();
 	}
-
-	@Override
-	public int receiverSize()
-	{
-		return staticVar ? 0 : 1;
-	}
 }

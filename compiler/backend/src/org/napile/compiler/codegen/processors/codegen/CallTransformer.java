@@ -89,7 +89,7 @@ public class CallTransformer
 
 		FqName fqName = DescriptorUtils.getFQName(methodDescriptor).toSafe();
 
-		MethodDescriptor originalMethodDescriptor = unwrapFakeOverride(methodDescriptor);
+		MethodDescriptor originalMethodDescriptor = unwrapFakeOverride(methodDescriptor).getOriginal();
 
 		// it used for save in bytecode/checks - for example, original 'E'(type parameter) and caller is 'napile.lang.Int'
 		List<TypeNode> parametersToByteCode = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());

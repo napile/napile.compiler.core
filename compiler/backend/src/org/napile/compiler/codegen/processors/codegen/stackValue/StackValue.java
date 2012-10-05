@@ -137,11 +137,6 @@ public abstract class StackValue
 	{
 	}
 
-	public int receiverSize()
-	{
-		return 0;
-	}
-
 	protected void castTo(TypeNode toType, InstructionAdapter v)
 	{
 		castTo(this.type, toType, v);
