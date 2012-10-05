@@ -40,6 +40,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.lib.NapileReflectPackage;
 import org.napile.asm.resolve.name.Name;
@@ -1142,19 +1143,13 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 		else if(OperatorConventions.COMPARISON_OPERATIONS.contains(operationType))
 		{
-			JetType compareToReturnType = getTypeForBinaryCall(context.scope, Name.identifier("compareTo"), context, expression);
+			JetType compareToReturnType = getTypeForBinaryCall(context.scope, OperatorConventions.COMPARE_TO, context, expression);
 			if(compareToReturnType != null)
 			{
-				TypeConstructor constructor = compareToReturnType.getConstructor();
-
-				if(TypeUtils.isEqualFqName(compareToReturnType, NapileLangPackage.INT))
-				{
+				if(TypeUtils.isEqualFqName(compareToReturnType, NapileConditionPackage.COMPARE_RESULT))
 					result = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.BOOL, false);
-				}
 				else
-				{
 					context.trace.report(COMPARE_TO_TYPE_MISMATCH.on(operationSign, compareToReturnType));
-				}
 			}
 		}
 		else

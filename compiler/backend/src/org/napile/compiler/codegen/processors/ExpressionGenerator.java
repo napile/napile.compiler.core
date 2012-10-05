@@ -478,12 +478,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
 		if(opToken == NapileTokens.EQ)
-		{
-			StackValue stackValue = gen(expression.getLeft());
-			gen(expression.getRight(), stackValue.getType());
-			stackValue.store(stackValue.getType(), instructs);
-			return StackValue.none();
-		}
+			return BinaryOperationCodegen.genEq(expression, this, instructs);
 		else if(NapileTokens.AUGMENTED_ASSIGNMENTS.contains(opToken))
 			return BinaryOperationCodegen.genAugmentedAssignment(expression, this, instructs);
 		else if(opToken == NapileTokens.ANDAND)
@@ -491,35 +486,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		else if(opToken == NapileTokens.OROR)
 			return BinaryOperationCodegen.genOrOr(expression, this, instructs);
 		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ /*|| opToken == NapileTokens.EQEQEQ || opToken == NapileTokens.EXCLEQEQEQ*/)
-		{
-			NapileExpression left = expression.getLeft();
-			NapileExpression right = expression.getRight();
-
-			JetType leftJetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, left);
-			TypeNode leftType = TypeTransformer.toAsmType(leftJetType);
-
-			JetType rightJetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, right);
-			TypeNode rightType = TypeTransformer.toAsmType(rightJetType);
-
-			gen(left, leftType);
-
-			gen(right, rightType);
-
-			DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList());
-			callable.invoke(instructs);
-
-			// revert bool
-			if(opToken == NapileTokens.EXCLEQ)
-				instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
-
-			return StackValue.onStack(TypeConstants.BOOL);
-		}
-	/*	else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ ||
-				opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
-		{
-			return generateCompareOp(expression.getLeft(), expression.getRight(), opToken, expressionType(expression.getLeft()));
-		}  */
+			return BinaryOperationCodegen.genEqEq(expression, this, instructs);
+		else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ || opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
+			return BinaryOperationCodegen.genGeLe(expression, this, instructs);
 		else if(opToken == NapileTokens.ELVIS)
 			return BinaryOperationCodegen.genElvis(expression, this, instructs);
 		/*else if(opToken == NapileTokens.IN_KEYWORD || opToken == NapileTokens.NOT_IN)
