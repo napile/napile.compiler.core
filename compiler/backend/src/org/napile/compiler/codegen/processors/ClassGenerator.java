@@ -21,7 +21,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
@@ -31,23 +33,18 @@ import org.napile.asm.tree.members.TypeParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
+import org.napile.asm.tree.members.bytecode.impl.InvokeSpecialInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
+import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileProperty;
-import org.napile.compiler.lang.psi.NapileRetellEntry;
-import org.napile.compiler.lang.psi.NapileTreeVisitor;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
@@ -103,6 +100,53 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		classNodes.put(fqName, classNode);
 
 		return super.visitClass(klass, classNode);
+	}
+
+	@Override
+	public Void visitEnumEntry(NapileEnumEntry enumEntry, Node parent)
+	{
+		// class generation
+		assert parent instanceof ClassNode;
+
+		ClassNode parentClassNode = (ClassNode) parent;
+
+		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, enumEntry);
+
+		ClassNode classNode = new ClassNode(Modifier.list(Modifier.STATIC, Modifier.FINAL), parentClassNode.name.parent().child(Name.identifier(parentClassNode.name.shortName() + FqNameGenerator.SEPARATOR + classDescriptor.getName())));
+		classNodes.put(classNode.name, classNode);
+		for(JetType superType : classDescriptor.getSupertypes())
+			classNode.supers.add(TypeTransformer.toAsmType(superType));
+
+		// variable generation
+		PropertyDescriptor propertyDescriptor = (PropertyDescriptor) bindingTrace.safeGet(BindingContext.VARIABLE, enumEntry);
+		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName().getName());
+		variableNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
+		parentClassNode.members.add(variableNode);
+
+		VariableCodegen.getSetterAndGetter(propertyDescriptor, parentClassNode, bindingTrace);
+
+		NapileExpression initExpression = enumEntry.getCalleeExpression();
+		if(initExpression == null)
+		{
+			ConstructorNode constructorNode = new ConstructorNode(Modifier.EMPTY);
+			constructorNode.maxLocals = 1;
+			constructorNode.instructions.add(new LoadInstruction(0));
+			constructorNode.instructions.add(new InvokeSpecialInstruction(NodeRefUtil.constructorRef(parentClassNode.name)));
+			constructorNode.instructions.add(new ReturnInstruction());
+
+			classNode.members.add(constructorNode);
+
+			InstructionAdapter instructions = new InstructionAdapter();
+			instructions.newObject(new TypeNode(false, new ClassTypeNode(classNode.name)));
+			instructions.invokeSpecial(NodeRefUtil.constructorRef(classNode.name));
+			instructions.putToStaticVar(NodeRefUtil.ref(propertyDescriptor));
+
+			propertiesStaticInit.putValue(parentClassNode, instructions);
+		}
+		else
+			throw new UnsupportedOperationException("EnumEntries with constructor calls is not supported");
+
+		return visitJetElement(enumEntry, classNode);
 	}
 
 	@Override

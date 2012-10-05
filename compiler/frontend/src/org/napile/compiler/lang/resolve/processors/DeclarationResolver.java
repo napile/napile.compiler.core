@@ -233,6 +233,8 @@ public class DeclarationResolver
 					mutableClassDescriptor.addSupertype(new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), ownerDescription.getTypeConstructor(), false, typeResolver.resolveTypes(scope, enumEntry.getTypeArguments(), trace, false), scope));
 					mutableClassDescriptor.createTypeConstructor();
 
+					trace.record(BindingContext.CLASS, enumEntry, mutableClassDescriptor);
+
 					propertyDescriptor.setType(new JetTypeImpl(mutableClassDescriptor), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
 
 					context.getEnumEntries().put(enumEntry, mutableClassDescriptor);

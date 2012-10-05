@@ -28,6 +28,7 @@ import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
@@ -39,6 +40,11 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
  */
 public class NodeRefUtil
 {
+	public static MethodRef constructorRef(@NotNull FqName fqName)
+	{
+		return new MethodRef(fqName.child(Name.identifier("this")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new ClassTypeNode(fqName)));
+	}
+
 	public static VariableRef ref(@NotNull ClassNode classNode, @NotNull VariableNode variableNode)
 	{
 		return new VariableRef(classNode.name.child(Name.identifier(variableNode.name)), variableNode.returnType);
