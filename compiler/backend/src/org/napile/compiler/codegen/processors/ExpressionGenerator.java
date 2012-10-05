@@ -125,7 +125,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			@Override
 			public Void fun(VariableDescriptor descriptor)
 			{
-				TypeNode varType = asmType(descriptor.getType());
+				TypeNode varType = TypeTransformer.toAsmType(descriptor.getType());
 				gen(initializer, varType);
 				return null;
 			}
@@ -190,6 +190,30 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		last.addContinue(instructs);
 
 		return StackValue.none();
+	}
+
+	@Override
+	public StackValue visitTryExpression(NapileTryExpression expression, StackValue data)
+	{
+		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+
+		TypeNode expectedAsmType = TypeTransformer.toAsmType(jetType);
+
+		return StackValue.onStack(expectedAsmType);
+	}
+
+	@Override
+	public StackValue visitThrowExpression(NapileThrowExpression expression, StackValue data)
+	{
+		NapileExpression throwExp = expression.getThrownExpression();
+
+		assert throwExp != null;
+
+		gen(throwExp, TypeConstants.THROWABLE);
+
+		instructs.throwVal();
+
+		return StackValue.onStack(TypeConstants.THROWABLE);
 	}
 
 	@Override
@@ -435,10 +459,10 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			NapileExpression right = expression.getRight();
 
 			JetType leftJetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, left);
-			TypeNode leftType = asmType(leftJetType);
+			TypeNode leftType = TypeTransformer.toAsmType(leftJetType);
 
 			JetType rightJetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, right);
-			TypeNode rightType = asmType(rightJetType);
+			TypeNode rightType = TypeTransformer.toAsmType(rightJetType);
 
 			gen(left, leftType);
 
@@ -596,7 +620,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 							receiver = generateThisOrOuter((ClassDescriptor) propertyDescriptor.getContainingDeclaration(), false);
 					}
 					JetType receiverType = bindingTrace.get(BindingContext.EXPRESSION_TYPE, r);
-					receiver.put(receiverType != null && !isSuper ? asmType(receiverType) : TypeConstants.ANY, instructs);
+					receiver.put(receiverType != null && !isSuper ? TypeTransformer.toAsmType(receiverType) : TypeConstants.ANY, instructs);
 				}
 			}
 			return iValue;
@@ -754,7 +778,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		{
 			final JetType outType = ((VariableDescriptor) descriptor).getType();
 
-			return StackValue.local(index, asmType(outType));
+			return StackValue.local(index, TypeTransformer.toAsmType(outType));
 		}
 		else
 			return StackValue.local(index, TypeConstants.ANY);
@@ -884,7 +908,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		if(descriptor instanceof ClassReceiver)
 		{
-			TypeNode exprType = asmType(descriptor.getType());
+			TypeNode exprType = TypeTransformer.toAsmType(descriptor.getType());
 			ClassReceiver classReceiver = (ClassReceiver) descriptor;
 			ClassDescriptor classReceiverDeclarationDescriptor = classReceiver.getDeclarationDescriptor();
 
@@ -899,7 +923,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		else if(descriptor instanceof AutoCastReceiver)
 		{
 			AutoCastReceiver autoCastReceiver = (AutoCastReceiver) descriptor;
-			TypeNode intermediateType = asmType(autoCastReceiver.getType());
+			TypeNode intermediateType = TypeTransformer.toAsmType(autoCastReceiver.getType());
 			generateFromResolvedCall(autoCastReceiver.getOriginal(), intermediateType);
 			StackValue.onStack(intermediateType).put(type, instructs);
 		}
@@ -920,7 +944,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		final VariableDescriptor variableDescriptor = bindingTrace.get(BindingContext.VARIABLE, variableDeclaration);
 		assert variableDescriptor != null;
 
-		final TypeNode type = asmType(variableDescriptor.getType());
+		final TypeNode type = TypeTransformer.toAsmType(variableDescriptor.getType());
 		int index = frameMap.enter(variableDescriptor);
 
 		leaveTasks.add(new Function<StackValue, Void>()
@@ -1049,12 +1073,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 				return true;
 		}
 		return false;
-	}
-
-	@NotNull
-	private static TypeNode asmType(@NotNull JetType jetType)
-	{
-		return TypeTransformer.toAsmType(jetType);
 	}
 
 	@NotNull
