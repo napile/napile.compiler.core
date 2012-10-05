@@ -48,7 +48,6 @@ import org.napile.compiler.codegen.processors.codegen.loopGen.WhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -459,14 +458,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 				opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
 		{
 			return generateCompareOp(expression.getLeft(), expression.getRight(), opToken, expressionType(expression.getLeft()));
-		}
+		}  */
 		else if(opToken == NapileTokens.ELVIS)
+			return BinaryOperationCodegen.genElvis(expression, this, instructs);
+		/*else if(opToken == NapileTokens.IN_KEYWORD || opToken == NapileTokens.NOT_IN)
 		{
-			return generateElvis(expression);
-		}
-		else if(opToken == NapileTokens.IN_KEYWORD || opToken == NapileTokens.NOT_IN)
-		{
-			return generateIn(expression);
+				return final Type exprType = expressionType(expression);
+        JetType type = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression.getLeft());(expression);
 		}
 		else */
 		{
@@ -1026,14 +1024,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 				StackValue.putNull(instructs);
 			instructs.returnVal();
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T extends CallableMemberDescriptor> T unwrapFakeOverride(T member)
-	{
-		while(member.getKind() == CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
-			member = (T) member.getOverriddenDescriptors().iterator().next();
-		return member;
 	}
 
 	private static boolean endsWithReturn(NapileElement bodyExpression)

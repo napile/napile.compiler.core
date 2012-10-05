@@ -25,6 +25,7 @@ import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
@@ -44,6 +45,7 @@ public class CallTransformer
 	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall)
 	{
 		MethodDescriptor fd = (MethodDescriptor) resolvedCall.getResultingDescriptor();
+		fd = unwrapFakeOverride(fd);
 
 		List<TypeNode> typeArguments = new ArrayList<TypeNode>(fd.getTypeParameters().size());
 
@@ -68,6 +70,14 @@ public class CallTransformer
 		return transformToCallable(fd, typeArguments);
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <T extends CallableMemberDescriptor> T unwrapFakeOverride(T member)
+	{
+		while(member.getKind() == CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
+			member = (T) member.getOverriddenDescriptors().iterator().next();
+		return member;
+	}
+
 	@NotNull
 	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments)
 	{
@@ -79,7 +89,7 @@ public class CallTransformer
 
 		FqName fqName = DescriptorUtils.getFQName(methodDescriptor).toSafe();
 
-		MethodDescriptor originalMethodDescriptor = methodDescriptor.getOriginal();
+		MethodDescriptor originalMethodDescriptor = unwrapFakeOverride(methodDescriptor);
 
 		// it used for save in bytecode/checks - for example, original 'E'(type parameter) and caller is 'napile.lang.Int'
 		List<TypeNode> parametersToByteCode = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());

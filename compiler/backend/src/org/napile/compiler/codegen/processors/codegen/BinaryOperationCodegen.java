@@ -16,14 +16,25 @@
 
 package org.napile.compiler.codegen.processors.codegen;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
+import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
@@ -31,6 +42,33 @@ import org.napile.compiler.lang.psi.NapileBinaryExpression;
  */
 public class BinaryOperationCodegen
 {
+	private static final MethodRef ANY_EQUALS = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("equals")), Arrays.asList(new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY))), Collections.<TypeNode>emptyList(), TypeConstants.BOOL);
+
+	public static StackValue genElvis(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	{
+		final TypeNode exprType = gen.expressionType(expression);
+		JetType type = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeft());
+		final TypeNode leftType = TypeTransformer.toAsmType(type);
+
+		gen.gen(expression.getLeft(), leftType);
+
+		instructs.dup();
+
+		StackValue.putNull(instructs);
+
+		instructs.invokeVirtual(ANY_EQUALS);
+
+		StackValue.putTrue(instructs);
+
+		ReservedInstruction ifSlot = instructs.reserve();
+
+		gen.gen(expression.getRight(), exprType);
+
+		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
+
+		return StackValue.onStack(exprType);
+	}
+
 	public static StackValue genAndAnd(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
 	{
 		gen.gen(expression.getLeft(), TypeConstants.BOOL);
