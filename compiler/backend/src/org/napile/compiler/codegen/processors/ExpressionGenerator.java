@@ -484,10 +484,8 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			stackValue.store(stackValue.getType(), instructs);
 			return StackValue.none();
 		}
-		/*else if(NapileTokens.AUGMENTED_ASSIGNMENTS.contains(opToken))
-		{
-			return generateAugmentedAssignment(expression);
-		}  */
+		else if(NapileTokens.AUGMENTED_ASSIGNMENTS.contains(opToken))
+			return BinaryOperationCodegen.genAugmentedAssignment(expression, this, instructs);
 		else if(opToken == NapileTokens.ANDAND)
 			return BinaryOperationCodegen.genAndAnd(expression, this, instructs);
 		else if(opToken == NapileTokens.OROR)
@@ -871,9 +869,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			return StackValue.local(index, TypeConstants.ANY);
 	}
 
-	private int pushMethodArguments(@NotNull ResolvedCall resolvedCall, List<TypeNode> valueParameterTypes)
+	public int pushMethodArguments(@NotNull ResolvedCall<?> resolvedCall, List<TypeNode> valueParameterTypes)
 	{
-		@SuppressWarnings("unchecked") List<ResolvedValueArgument> valueArguments = resolvedCall.getValueArgumentsByIndex();
+		List<ResolvedValueArgument> valueArguments = resolvedCall.getValueArgumentsByIndex();
 		CallableDescriptor fd = resolvedCall.getResultingDescriptor();
 
 		if(fd.getValueParameters().size() != valueArguments.size())

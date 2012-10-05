@@ -32,8 +32,12 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.JetType;
 
 /**
@@ -43,6 +47,34 @@ import org.napile.compiler.lang.types.JetType;
 public class BinaryOperationCodegen
 {
 	private static final MethodRef ANY_EQUALS = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("equals")), Arrays.asList(new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY))), Collections.<TypeNode>emptyList(), TypeConstants.BOOL);
+
+	public static StackValue genAugmentedAssignment(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	{
+		final NapileExpression lhs = expression.getLeft();
+
+		TypeNode lhsType = gen.expressionType(lhs);
+
+		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
+
+		final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall);
+
+		StackValue value = gen.gen(expression.getLeft());
+		value.dupReceiver(instructs);
+		value.put(lhsType, instructs);
+		StackValue receiver = StackValue.onStack(lhsType);
+
+		if(!(resolvedCall.getResultingDescriptor() instanceof ConstructorDescriptor))
+		{ // otherwise already
+			receiver = StackValue.receiver(resolvedCall, receiver, gen, callable);
+			receiver.put(receiver.getType(), instructs);
+		}
+
+		gen.pushMethodArguments(resolvedCall, callable.getValueParameterTypes());
+		callable.invoke(instructs);
+		value.store(callable.getReturnType(), instructs);
+
+		return StackValue.none();
+	}
 
 	public static StackValue genElvis(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
 	{
