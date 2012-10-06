@@ -18,7 +18,11 @@ public interface TypeConstants
 
 	TypeNode ANY = new TypeNode(false, new ClassTypeNode(NapileLangPackage.ANY));
 
+	TypeNode STRING = new TypeNode(false, new ClassTypeNode(NapileLangPackage.STRING));
+
 	TypeNode THROWABLE = new TypeNode(false, new ClassTypeNode(NapileLangPackage.THROWABLE));
+
+	TypeNode STRING_BUILDER = new TypeNode(false, new ClassTypeNode(CodeTodo.STRING_BUILDER));
 
 	TypeNode COMPARE_RESULT = new TypeNode(false, new ClassTypeNode(NapileConditionPackage.COMPARE_RESULT));
 

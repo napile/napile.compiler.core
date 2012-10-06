@@ -452,7 +452,8 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitStringTemplateExpression(NapileStringTemplateExpression expression, StackValue receiver)
 	{
 		StringBuilder constantValue = new StringBuilder("");
-		for(NapileStringTemplateEntry entry : expression.getEntries())
+		final NapileStringTemplateEntry[] entries = expression.getEntries();
+		for(NapileStringTemplateEntry entry : entries)
 		{
 			if(entry instanceof NapileLiteralStringTemplateEntry)
 				constantValue.append(entry.getText());
@@ -470,7 +471,27 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			return StackValue.constant(constantValue.toString(), type);
 		}
 		else
+		{
+			/*instructs.newObject(TypeConstants.STRING_BUILDER);
+			instructs.invokeSpecial(NodeRefUtil.constructorRef(CodeTodo.STRING_BUILDER));
+
+			for(NapileStringTemplateEntry entry : entries)
+			{
+				if(entry instanceof NapileStringTemplateEntryWithExpression)
+				{
+					invokeAppend(entry.getExpression());
+				}
+				else
+				{
+					String text = entry instanceof NapileEscapeStringTemplateEntry ? ((NapileEscapeStringTemplateEntry) entry).getUnescapedValue() : entry.getText();
+					v.aconst(text);
+					genInvokeAppendMethod(v, JAVA_STRING_TYPE);
+				}
+			}
+			v.invokevirtual("java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
+			return StackValue.onStack(TypeConstants.STRING); */
 			throw new UnsupportedOperationException();
+		}
 	}
 
 	@Override

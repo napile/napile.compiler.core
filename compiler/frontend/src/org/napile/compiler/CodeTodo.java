@@ -26,4 +26,5 @@ import org.napile.asm.resolve.name.FqName;
 public class CodeTodo
 {
 	public static final FqName ITERATOR  = new FqName("napile.util.Iterator");
+	public static final FqName STRING_BUILDER  = new FqName("napile.lang.StringBuilder");
 }
