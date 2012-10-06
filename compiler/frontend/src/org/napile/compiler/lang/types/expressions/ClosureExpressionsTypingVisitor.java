@@ -191,7 +191,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	{
 		NapileFunctionLiteral functionLiteral = expression.getFunctionLiteral();
 
-		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), Name.special("<anonymous>"), CallableMemberDescriptor.Kind.DECLARATION, false, false);
+		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), NapileFunctionLiteral.FQ_NAME.shortName(), CallableMemberDescriptor.Kind.DECLARATION, false, false);
 
 		List<ParameterDescriptor> parameterDescriptors = createValueParameterDescriptors(context, functionLiteral, functionDescriptor, functionTypeExpected);
 
