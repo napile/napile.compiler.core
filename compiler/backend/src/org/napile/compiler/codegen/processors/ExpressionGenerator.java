@@ -533,8 +533,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		{
 			if(op.getName().getName().equals("inc") || op.getName().getName().equals("dec"))
 			{
-				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.get(BindingContext.RESOLVED_CALL, expression.getOperationReference());
-				assert resolvedCall != null;
+				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
 				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall);
 
@@ -544,7 +543,17 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 				TypeNode type = expressionType(expression.getBaseExpression());
 				value.put(type, instructs);
 
-				instructs.dup();
+				switch(value.receiverSize())
+				{
+					case 0:
+						instructs.dup();
+						break;
+					case 1:
+						instructs.dup1x1();
+						break;
+					default:
+						throw new UnsupportedOperationException("Unknown receiver size " + value.receiverSize());
+				}
 
 				callable.invoke(instructs);
 				value.store(callable.getReturnType(), instructs);

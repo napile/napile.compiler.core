@@ -71,6 +71,12 @@ public class Property extends StackValue
 	}
 
 	@Override
+	public int receiverSize()
+	{
+		return staticVar ? 0 : 1;
+	}
+
+	@Override
 	public void dupReceiver(InstructionAdapter v)
 	{
 		if(!staticVar)

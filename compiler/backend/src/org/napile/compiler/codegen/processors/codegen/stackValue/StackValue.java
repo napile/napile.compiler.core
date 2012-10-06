@@ -136,6 +136,11 @@ public abstract class StackValue
 		throw new UnsupportedOperationException("cannot store to value " + this);
 	}
 
+	public int receiverSize()
+	{
+		return 0;
+	}
+
 	public void dupReceiver(InstructionAdapter v)
 	{
 	}
