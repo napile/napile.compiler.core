@@ -65,6 +65,12 @@ public class Property extends StackValue
 	}
 
 	@Override
+	public void popReturnValue(InstructionAdapter v)
+	{
+		v.pop();
+	}
+
+	@Override
 	public void dupReceiver(InstructionAdapter v)
 	{
 		if(!staticVar)

@@ -137,6 +137,12 @@ public abstract class StackValue
 	{
 	}
 
+	// pop return value, is is property , getter return null(or other type), and we dont needed it
+	public void popReturnValue(InstructionAdapter v)
+	{
+
+	}
+
 	protected void castTo(TypeNode toType, InstructionAdapter v)
 	{
 		castTo(this.type, toType, v);

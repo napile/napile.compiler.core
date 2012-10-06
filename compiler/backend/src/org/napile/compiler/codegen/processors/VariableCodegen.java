@@ -23,12 +23,13 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
-import org.napile.asm.tree.members.bytecode.impl.PutToStaticVariableInstruction;
-import org.napile.asm.tree.members.bytecode.impl.PutToVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
+import org.napile.compiler.codegen.processors.codegen.TypeConstants;
+import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
@@ -53,19 +54,27 @@ public class VariableCodegen
 		if(setter == null)
 		{
 			MethodNode setterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), setterFq.shortName().getName());
+			setterMethodNode.returnType = TypeConstants.NULL;
 			setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), "value", TypeTransformer.toAsmType(propertyDescriptor.getType())));
+
+			InstructionAdapter instructions = new InstructionAdapter();
 			if(propertyDescriptor.isStatic())
 			{
-				setterMethodNode.instructions.add(new LoadInstruction(0));
-				setterMethodNode.instructions.add(new PutToStaticVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
+				instructions.load(0);
+				instructions.putToStaticVar(NodeRefUtil.ref(propertyDescriptor));
+				StackValue.putNull(instructions);
+				instructions.returnVal();
 			}
 			else
 			{
-				setterMethodNode.instructions.add(new LoadInstruction(0));
-				setterMethodNode.instructions.add(new LoadInstruction(1));
-				setterMethodNode.instructions.add(new PutToVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
+				instructions.load(0);
+				instructions.load(1);
+				instructions.putToVar(NodeRefUtil.ref(propertyDescriptor));
+				StackValue.putNull(instructions);
+				instructions.returnVal();
 			}
 
+			setterMethodNode.instructions.addAll(instructions.getInstructions());
 			setterMethodNode.maxLocals = propertyDescriptor.isStatic() ? 1 : 2;
 
 			classNode.members.add(setterMethodNode);
