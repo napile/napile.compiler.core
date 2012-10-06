@@ -10,6 +10,7 @@ import org.napile.compiler.codegen.processors.codegen.TypeConstants;
  * @author VISTALL
  * @date 14:23/19.09.12
  */
+@Deprecated
 public class Null extends StackValue
 {
 	public static final Null INSTANCE = new Null();

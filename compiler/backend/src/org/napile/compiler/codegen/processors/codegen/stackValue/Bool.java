@@ -27,6 +27,7 @@ import org.napile.compiler.codegen.processors.codegen.TypeConstants;
  * @author VISTALL
  * @date 14:04/27.09.12
  */
+@Deprecated
 public class Bool extends StackValue
 {
 	public static final Bool TRUE = new Bool("TRUE");

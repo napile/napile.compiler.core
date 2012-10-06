@@ -91,16 +91,19 @@ public abstract class StackValue
 		return new CollectionElement(typeNode, getCall, setCall, expressionGenerator);
 	}
 
+	@Deprecated
 	public static void putTrue(InstructionAdapter adapter)
 	{
 		Bool.TRUE.put(TypeConstants.BOOL, adapter);
 	}
 
+	@Deprecated
 	public static void putFalse(InstructionAdapter adapter)
 	{
 		Bool.FALSE.put(TypeConstants.BOOL, adapter);
 	}
 
+	@Deprecated
 	public static void putNull(InstructionAdapter adapter)
 	{
 		Null.INSTANCE.put(TypeConstants.NULL, adapter);
