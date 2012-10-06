@@ -27,15 +27,7 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileProperty;
-import org.napile.compiler.lang.psi.NapileRetellEntry;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -118,7 +110,7 @@ public class JetIconProvider extends IconProvider
 					}
 			}
 		}
-		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry || psiElement instanceof NapileProperty)
+		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry || psiElement instanceof NapileProperty || psiElement instanceof NapilePropertyParameter)
 			icon = JetIcons.VARIABLE;
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isFinal, isRunnable);
