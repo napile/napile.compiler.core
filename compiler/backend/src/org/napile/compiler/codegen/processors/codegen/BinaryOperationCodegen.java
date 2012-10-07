@@ -195,7 +195,6 @@ public class BinaryOperationCodegen
 		gen.pushMethodArguments(resolvedCall, callable.getValueParameterTypes());
 		callable.invoke(instructs);
 		value.store(callable.getReturnType(), instructs);
-		value.popReturnValue(instructs);
 
 		return StackValue.none();
 	}

@@ -62,12 +62,8 @@ public class Property extends StackValue
 			instructionAdapter.invokeStatic(setter);
 		else
 			instructionAdapter.invokeVirtual(setter);
-	}
 
-	@Override
-	public void popReturnValue(InstructionAdapter v)
-	{
-		v.pop();
+		instructionAdapter.pop();
 	}
 
 	@Override

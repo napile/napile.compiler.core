@@ -579,7 +579,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 				callable.invoke(instructs);
 				value.store(callable.getReturnType(), instructs);
-				value.popReturnValue(instructs);
+
 				return StackValue.onStack(type);
 			}
 		}
