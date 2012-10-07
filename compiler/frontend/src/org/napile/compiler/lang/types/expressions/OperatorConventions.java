@@ -65,8 +65,6 @@ public class OperatorConventions
 
 	public static final ImmutableSet<NapileToken> IN_OPERATIONS = ImmutableSet.<NapileToken>of(NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN);
 
-	public static final ImmutableBiMap<NapileToken, Name> ASSIGNMENT_OPERATIONS = ImmutableBiMap.<NapileToken, Name>builder().put(NapileTokens.MULTEQ, Name.identifier("timesAssign")).put(NapileTokens.DIVEQ, Name.identifier("divAssign")).put(NapileTokens.PERCEQ, Name.identifier("modAssign")).put(NapileTokens.PLUSEQ, Name.identifier("plusAssign")).put(NapileTokens.MINUSEQ, Name.identifier("minusAssign")).build();
-
 	public static final ImmutableMap<NapileToken, NapileToken> ASSIGNMENT_OPERATION_COUNTERPARTS = ImmutableMap.<NapileToken, NapileToken>builder().put(NapileTokens.MULTEQ, NapileTokens.MUL).put(NapileTokens.DIVEQ, NapileTokens.DIV).put(NapileTokens.PERCEQ, NapileTokens.PERC).put(NapileTokens.PLUSEQ, NapileTokens.PLUS).put(NapileTokens.MINUSEQ, NapileTokens.MINUS).build();
 
 	public static final ImmutableBiMap<NapileToken, Name> BOOLEAN_OPERATIONS = ImmutableBiMap.<NapileToken, Name>builder().put(NapileTokens.ANDAND, Name.identifier("and")).put(NapileTokens.OROR, Name.identifier("or")).build();
@@ -78,9 +76,6 @@ public class OperatorConventions
 		if(name != null)
 			return name;
 		name = BINARY_OPERATION_NAMES.get(token);
-		if(name != null)
-			return name;
-		name = ASSIGNMENT_OPERATIONS.get(token);
 		if(name != null)
 			return name;
 		if(COMPARISON_OPERATIONS.contains(token))

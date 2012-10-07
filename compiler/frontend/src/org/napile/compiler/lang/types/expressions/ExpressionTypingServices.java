@@ -355,7 +355,7 @@ public class ExpressionTypingServices
 						{
 							NapileBinaryExpression binaryExpression = (NapileBinaryExpression) statementExpression;
 							IElementType operationType = binaryExpression.getOperationToken();
-							if(operationType == NapileTokens.EQ || OperatorConventions.ASSIGNMENT_OPERATIONS.containsKey(operationType))
+							if(operationType == NapileTokens.EQ || OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(operationType))
 							{
 								mightBeUnit = true;
 							}

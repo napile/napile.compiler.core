@@ -16,14 +16,9 @@
 
 package org.napile.compiler.lang.types.expressions;
 
-import static org.napile.compiler.lang.diagnostics.Errors.ASSIGNMENT_OPERATOR_SHOULD_RETURN_UNIT;
-import static org.napile.compiler.lang.diagnostics.Errors.ASSIGN_OPERATOR_AMBIGUITY;
 import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
 import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
-import static org.napile.compiler.lang.resolve.BindingContext.AMBIGUOUS_REFERENCE_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.VARIABLE_REASSIGNMENT;
-
-import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +26,6 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
@@ -45,7 +39,6 @@ import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalyzer;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResultsUtil;
-import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
@@ -53,7 +46,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lexer.NapileTokens;
-import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 
@@ -174,7 +166,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		{
 			result = visitAssignment(expression, context);
 		}
-		else if(OperatorConventions.ASSIGNMENT_OPERATIONS.containsKey(operationType))
+		else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(operationType))
 		{
 			result = visitAssignmentOperation(expression, context);
 		}
@@ -211,41 +203,13 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		}
 		ExpressionReceiver receiver = new ExpressionReceiver(left, leftType);
 
-		// We check that defined only one of '+=' and '+' operations, and call it (in the case '+' we then also assign)
-		// Check for '+='
-		Name name = OperatorConventions.ASSIGNMENT_OPERATIONS.get(operationType);
-		TemporaryBindingTrace assignmentOperationTrace = TemporaryBindingTrace.create(context.trace);
-		OverloadResolutionResults<MethodDescriptor> assignmentOperationDescriptors = basic.getResolutionResultsForBinaryCall(scope, name, context.replaceBindingTrace(assignmentOperationTrace), expression, receiver);
-		JetType assignmentOperationType = OverloadResolutionResultsUtil.getResultType(assignmentOperationDescriptors);
-
 		// Check for '+'
 		Name counterpartName = OperatorConventions.BINARY_OPERATION_NAMES.get(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.get(operationType));
 		TemporaryBindingTrace binaryOperationTrace = TemporaryBindingTrace.create(context.trace);
 		OverloadResolutionResults<MethodDescriptor> binaryOperationDescriptors = basic.getResolutionResultsForBinaryCall(scope, counterpartName, context.replaceBindingTrace(binaryOperationTrace), expression, receiver);
 		JetType binaryOperationType = OverloadResolutionResultsUtil.getResultType(binaryOperationDescriptors);
 
-		JetType type = assignmentOperationType != null ? assignmentOperationType : binaryOperationType;
-		if(assignmentOperationType != null && binaryOperationType != null)
-		{
-			OverloadResolutionResults<MethodDescriptor> ambiguityResolutionResults = OverloadResolutionResultsUtil.ambiguity(assignmentOperationDescriptors, binaryOperationDescriptors);
-			context.trace.report(ASSIGN_OPERATOR_AMBIGUITY.on(operationSign, ambiguityResolutionResults.getResultingCalls()));
-			Collection<DeclarationDescriptor> descriptors = Sets.newHashSet();
-			for(ResolvedCall<? extends MethodDescriptor> call : ambiguityResolutionResults.getResultingCalls())
-			{
-				descriptors.add(call.getResultingDescriptor());
-			}
-			facade.getTypeInfo(right, context);
-			context.trace.record(AMBIGUOUS_REFERENCE_TARGET, operationSign, descriptors);
-		}
-		else if(assignmentOperationType != null)
-		{
-			assignmentOperationTrace.commit();
-			if(!TypeUtils.isEqualFqName(assignmentOperationType, NapileLangPackage.NULL))
-			{
-				context.trace.report(ASSIGNMENT_OPERATOR_SHOULD_RETURN_UNIT.on(operationSign, assignmentOperationDescriptors.getResultingDescriptor(), operationSign));
-			}
-		}
-		else
+		if(binaryOperationType != null)
 		{
 			binaryOperationTrace.commit();
 			context.trace.record(VARIABLE_REASSIGNMENT, expression);
@@ -255,9 +219,12 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 				basic.resolveArrayAccessSetMethod((NapileArrayAccessExpression) left, right, contextForResolve, context.trace);
 			}
 		}
+		else
+			context.trace.report(UNRESOLVED_REFERENCE.on(operationSign, counterpartName.getName() + " is not resolved"));
+
 		basic.checkLValue(context.trace, expression.getLeft());
 		temporaryBindingTrace.commit();
-		return checkAssignmentType(type, expression, contextWithExpectedType);
+		return checkAssignmentType(binaryOperationType, expression, contextWithExpectedType);
 	}
 
 	protected JetType visitAssignment(NapileBinaryExpression expression, ExpressionTypingContext contextWithExpectedType)

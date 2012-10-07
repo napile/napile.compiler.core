@@ -73,6 +73,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;
@@ -500,7 +501,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
 		if(opToken == NapileTokens.EQ)
 			return BinaryOperationCodegen.genEq(expression, this, instructs);
-		else if(NapileTokens.AUGMENTED_ASSIGNMENTS.contains(opToken))
+		else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(opToken))
 			return BinaryOperationCodegen.genAugmentedAssignment(expression, this, instructs);
 		else if(opToken == NapileTokens.ANDAND)
 			return BinaryOperationCodegen.genAndAnd(expression, this, instructs);

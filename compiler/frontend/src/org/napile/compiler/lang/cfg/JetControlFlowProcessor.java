@@ -299,7 +299,7 @@ public class JetControlFlowProcessor
 					builder.unsupported(expression); // TODO
 				}
 			}
-			else if(OperatorConventions.ASSIGNMENT_OPERATIONS.containsKey(operationType))
+			else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(operationType))
 			{
 				NapileExpression left = NapilePsiUtil.deparenthesize(expression.getLeft());
 				if(left != null)

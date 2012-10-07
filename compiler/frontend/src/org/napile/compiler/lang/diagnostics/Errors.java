@@ -151,7 +151,7 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileArrayAccessExpression> NO_SET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
 
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> INC_DEC_SHOULD_NOT_RETURN_UNIT = SimpleDiagnosticFactory.create(Severity.ERROR);
-	DiagnosticFactory2<NapileSimpleNameExpression, DeclarationDescriptor, NapileSimpleNameExpression> ASSIGNMENT_OPERATOR_SHOULD_RETURN_UNIT = DiagnosticFactory2.create(Severity.ERROR);
+
 	AmbiguousDescriptorDiagnosticFactory ASSIGN_OPERATOR_AMBIGUITY = AmbiguousDescriptorDiagnosticFactory.create();
 
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> EQUALS_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);

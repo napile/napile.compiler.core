@@ -175,7 +175,7 @@ public class DefaultErrorMessages
 		MAP.put(NO_SET_METHOD, "No set method providing array access");
 
 		MAP.put(INC_DEC_SHOULD_NOT_RETURN_UNIT, "Functions inc(), dec() shouldn't return Unit to be used by operators ++, --");
-		MAP.put(ASSIGNMENT_OPERATOR_SHOULD_RETURN_UNIT, "Function ''{0}'' should return Unit to be used by corresponding operator ''{1}''", NAME, ELEMENT_TEXT);
+
 		MAP.put(ASSIGN_OPERATOR_AMBIGUITY, "Assignment operators ambiguity: {0}", AMBIGUOUS_CALLS);
 
 		MAP.put(EQUALS_MISSING, "No method 'equals(idea.Any?) : idea.Boolean' available");

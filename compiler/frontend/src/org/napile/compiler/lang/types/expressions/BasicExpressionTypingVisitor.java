@@ -1137,7 +1137,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			result = visitAssignment(expression, contextWithExpectedType);
 		}
-		else if(OperatorConventions.ASSIGNMENT_OPERATIONS.containsKey(operationType))
+		else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(operationType))
 		{
 			result = visitAssignmentOperation(expression, contextWithExpectedType);
 		}
