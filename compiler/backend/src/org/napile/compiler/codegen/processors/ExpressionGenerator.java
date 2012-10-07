@@ -357,7 +357,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 				if(!asmType.equals(TypeConstants.NULL))
 					throw new CompilationException("Completely empty 'if' is expected to have Null type", null, expression);
 
-				StackValue.putNull(instructs);
+				instructs.putNull();
 				return StackValue.onStack(asmType);
 			}
 			StackValue condition = gen(expression.getCondition());
@@ -377,7 +377,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 		condition.put(TypeConstants.BOOL, instructs);
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ifSlot = instructs.reserve();
 
@@ -409,9 +409,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		condition.put(TypeConstants.BOOL, instructs);
 
 		if(inverse)
-			StackValue.putTrue(instructs);
+			instructs.putTrue();
 		else
-			StackValue.putFalse(instructs);
+			instructs.putFalse();
 
 		ReservedInstruction ifSlot = instructs.reserve();
 
@@ -439,9 +439,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		else
 		{
 			if(isInstanceConstructor)
-				StackValue.local(0, returnType);
+				instructs.load(0);
 			else
-				StackValue.putNull(instructs);
+				instructs.putNull();
 
 			instructs.returnVal();
 		}
@@ -1129,9 +1129,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		else if(!endsWithReturn(expr))
 		{
 			if(isInstanceConstructor)
-				StackValue.local(0, returnType).put(returnType, instructs);
+				instructs.load(0);
 			else
-				StackValue.putNull(instructs);
+				instructs.putNull();
 			instructs.returnVal();
 		}
 	}

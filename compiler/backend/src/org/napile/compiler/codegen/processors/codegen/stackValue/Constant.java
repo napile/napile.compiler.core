@@ -7,7 +7,7 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 
 public class Constant extends StackValue
 {
-	private Object value;
+	private final Object value;
 
 	public Constant(Object value, TypeNode typeNode)
 	{
@@ -22,7 +22,7 @@ public class Constant extends StackValue
 		ClassTypeNode classTypeNode = (ClassTypeNode) getType().typeConstructorNode;
 
 		if(value == null)
-			StackValue.putNull(instructionAdapter);
+			instructionAdapter.putNull();
 		else if(classTypeNode.className.equals(NapileLangPackage.INT))
 			instructionAdapter.newInt((Integer) value);
 		else if(classTypeNode.className.equals(NapileLangPackage.STRING))
@@ -30,9 +30,9 @@ public class Constant extends StackValue
 		else if(classTypeNode.className.equals(NapileLangPackage.BOOL))
 		{
 			if(value == Boolean.TRUE)
-				StackValue.putTrue(instructionAdapter);
+				instructionAdapter.putTrue();
 			else
-				StackValue.putFalse(instructionAdapter);
+				instructionAdapter.putFalse();
 		}
 		else
 			throw new IllegalArgumentException(value.getClass().getName() + " "  + type);

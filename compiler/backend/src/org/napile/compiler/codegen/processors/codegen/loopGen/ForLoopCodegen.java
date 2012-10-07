@@ -30,7 +30,6 @@ import org.napile.compiler.CodeTodo;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.NodeRefUtil;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
-import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.NapileForExpression;
@@ -72,7 +71,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 
 		instructions.load(loopIteratorIndex);
 		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
-		StackValue.putTrue(instructions);
+		instructions.putTrue();
 		jumpIfSlot = instructions.reserve();
 
 		instructions.load(loopIteratorIndex);

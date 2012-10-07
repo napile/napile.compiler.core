@@ -95,12 +95,12 @@ public class BinaryOperationCodegen
 
 		instructs.invokeVirtual(ANY_EQUALS);
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ifSlot = instructs.reserve();
 
 		// if is equal - property - put true and jump over
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction jumpSlot = instructs.reserve();
 
@@ -119,17 +119,17 @@ public class BinaryOperationCodegen
 
 		instructs.invokeVirtual(ANY_EQUALS);
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ifSlot = instructs.reserve();
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction jumpSlot = instructs.reserve();
 
 		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
 
-		StackValue.putFalse(instructs);
+		instructs.putFalse();
 
 		// jump - ignored else
 		instructs.replace(jumpSlot, new JumpInstruction(instructs.size()));
@@ -209,11 +209,11 @@ public class BinaryOperationCodegen
 
 		instructs.dup();
 
-		StackValue.putNull(instructs);
+		instructs.putNull();
 
 		instructs.invokeVirtual(ANY_EQUALS);
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ifSlot = instructs.reserve();
 
@@ -228,17 +228,17 @@ public class BinaryOperationCodegen
 	{
 		gen.gen(expression.getLeft(), TypeConstants.BOOL);
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ifSlot = instructs.reserve();
 
 		gen.gen(expression.getRight(), TypeConstants.BOOL);
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ifSlot2 = instructs.reserve();
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ignoreFalseSlot = instructs.reserve();
 
@@ -246,7 +246,7 @@ public class BinaryOperationCodegen
 		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
 		instructs.replace(ifSlot2, new JumpIfInstruction(instructs.size()));
 
-		StackValue.putFalse(instructs);
+		instructs.putFalse();
 
 		instructs.replace(ignoreFalseSlot, new JumpInstruction(instructs.size()));
 
@@ -257,12 +257,12 @@ public class BinaryOperationCodegen
 	{
 		gen.gen(expression.getLeft(), TypeConstants.BOOL);
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ifSlot = instructs.reserve();
 
 		// result
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction skipNextSlot = instructs.reserve();
 
@@ -271,11 +271,11 @@ public class BinaryOperationCodegen
 
 		gen.gen(expression.getRight(), TypeConstants.BOOL);
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction ifSlot2 = instructs.reserve();
 
-		StackValue.putTrue(instructs);
+		instructs.putTrue();
 
 		ReservedInstruction skipNextSlot2 = instructs.reserve();
 
@@ -283,7 +283,7 @@ public class BinaryOperationCodegen
 		instructs.replace(ifSlot2, new JumpIfInstruction(instructs.size()));
 
 		// result
-		StackValue.putFalse(instructs);
+		instructs.putFalse();
 
 		// skips instructions - jump over expression
 		instructs.replace(skipNextSlot, new JumpInstruction(instructs.size()));

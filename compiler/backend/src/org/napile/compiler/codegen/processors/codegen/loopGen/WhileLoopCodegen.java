@@ -22,7 +22,6 @@ import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
-import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.psi.NapileWhileExpression;
 
 /**
@@ -45,7 +44,7 @@ public class WhileLoopCodegen extends LoopCodegen<NapileWhileExpression>
 
 		gen.gen(expression.getCondition(), TypeConstants.BOOL);
 
-		StackValue.putTrue(instructions);
+		instructions.putTrue();
 
 		ifSlot = instructions.reserve();
 	}
