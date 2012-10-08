@@ -41,7 +41,7 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.plugin.JetMainDetector;
+import org.napile.compiler.util.RunUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
@@ -572,13 +572,12 @@ public class JetFlowInformationProvider
 								PsiElement psiElement = element.getParent().getParent();
 								if(psiElement instanceof NapileMethod)
 								{
-									boolean isMain = (psiElement instanceof NapileNamedFunction) && JetMainDetector.isMain((NapileNamedFunction) psiElement);
 									if(psiElement instanceof NapileFunctionLiteral)
 										return;
 									DeclarationDescriptor descriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, psiElement);
 									assert descriptor instanceof MethodDescriptor : psiElement.getText();
 									MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
-									if(!isMain &&
+									if(!RunUtil.isRunPoint(methodDescriptor) &&
 											!methodDescriptor.getModality().isOverridable() &&
 											methodDescriptor.getOverriddenDescriptors().isEmpty())
 									{

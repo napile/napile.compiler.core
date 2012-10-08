@@ -33,7 +33,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
-import org.napile.idea.plugin.util.RunUtil;
+import org.napile.compiler.util.RunUtil;
 import com.intellij.ide.IconProvider;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Iconable;

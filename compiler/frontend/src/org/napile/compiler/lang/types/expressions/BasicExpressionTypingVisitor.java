@@ -661,6 +661,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitQualifiedExpression(NapileQualifiedExpression expression, ExpressionTypingContext context)
 	{
+		String text = expression.getText();
 		// TODO : functions as values
 		NapileExpression selectorExpression = expression.getSelectorExpression();
 		NapileExpression receiverExpression = expression.getReceiverExpression();
