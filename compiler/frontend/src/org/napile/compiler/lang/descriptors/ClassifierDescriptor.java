@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.descriptors;
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -39,4 +40,7 @@ public interface ClassifierDescriptor extends DeclarationDescriptorNonRoot
 
 	@NotNull
 	Collection<JetType> getSupertypes();
+
+	@NotNull
+	Set<ConstructorDescriptor> getConstructors();
 }

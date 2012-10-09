@@ -24,7 +24,6 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
-import org.napile.asm.tree.members.TypeParameterNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
@@ -43,7 +42,6 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.ReferenceParameterDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileCallElement;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
@@ -54,8 +52,6 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.TypeUtils;
 
 /**
  * @author VISTALL
@@ -77,7 +73,7 @@ public class MethodGenerator
 		// delegation list is empty - if no extends
 		if(delegationSpecifiers.isEmpty())
 		{
-			ClassDescriptor classDescriptor = constructorDescriptor.getContainingDeclaration();
+			ClassDescriptor classDescriptor = (ClassDescriptor) constructorDescriptor.getContainingDeclaration();
 			// napile.lang.Any cant call self constructor
 			if(!DescriptorUtils.getFQName(classDescriptor).equals(NapileLangPackage.ANY))
 			{
@@ -124,16 +120,9 @@ public class MethodGenerator
 	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor)
 	{
 		MethodNode methodNode = new MethodNode(ModifierGenerator.gen(methodDescriptor), methodDescriptor.getName().getName());
-		methodNode.returnType = TypeUtils.isEqualFqName(methodDescriptor.getReturnType(), NapileLangPackage.NULL) ? null : TypeTransformer.toAsmType(methodDescriptor.getReturnType());
+		methodNode.returnType = TypeTransformer.toAsmType(methodDescriptor.getReturnType());
 
-		for(TypeParameterDescriptor typeParameterDescriptor : methodDescriptor.getTypeParameters())
-		{
-			TypeParameterNode typeParameterNode = new TypeParameterNode(typeParameterDescriptor.getName().getName());
-			for(JetType superType : typeParameterDescriptor.getUpperBounds())
-				typeParameterNode.supers.add(TypeTransformer.toAsmType(superType));
-
-			methodNode.typeParameters.add(typeParameterNode);
-		}
+		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode);
 
 		for(ParameterDescriptor declaration : methodDescriptor.getValueParameters())
 		{

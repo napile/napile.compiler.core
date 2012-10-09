@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve.processors;
+package org.napile.compiler.lang.resolve.processors.members;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
@@ -81,9 +81,8 @@ public class AnnotationResolver
 	public List<AnnotationDescriptor> resolveAnnotations(@NotNull JetScope scope, @Nullable NapileModifierList modifierList, BindingTrace trace)
 	{
 		if(modifierList == null)
-		{
 			return Collections.emptyList();
-		}
+
 		return resolveAnnotations(scope, modifierList.getAnnotationEntries(), trace);
 	}
 
@@ -114,7 +113,7 @@ public class AnnotationResolver
 				if(descriptor instanceof ConstructorDescriptor)
 				{
 					ConstructorDescriptor constructor = (ConstructorDescriptor) descriptor;
-					ClassDescriptor classDescriptor = constructor.getContainingDeclaration();
+					ClassifierDescriptor classDescriptor = constructor.getContainingDeclaration();
 					if(!AnnotationUtils.isAnnotation(classDescriptor))
 					{
 						trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(entryElement, classDescriptor.getName().getName()));

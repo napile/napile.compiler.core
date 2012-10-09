@@ -466,7 +466,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 			builder.append(renderKeyword(NapileTokens.THIS_KEYWORD));
 
-			ClassDescriptor classDescriptor = constructorDescriptor.getContainingDeclaration();
+			ClassifierDescriptor classDescriptor = constructorDescriptor.getContainingDeclaration();
 			renderTypeParameters(classDescriptor.getTypeConstructor().getParameters(), builder);
 			renderValueParameters(constructorDescriptor, builder);
 			return null;

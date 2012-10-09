@@ -34,6 +34,7 @@ public class NapileValueArgument extends NapileElementImpl implements ValueArgum
 		super(node);
 	}
 
+	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
 		visitor.visitArgument(this);

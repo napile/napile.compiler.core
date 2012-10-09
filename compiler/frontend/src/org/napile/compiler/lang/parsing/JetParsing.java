@@ -1072,7 +1072,7 @@ public class JetParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker mark = mark();
 
-		parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(NapileTokens.IDENTIFIER), TokenSet.create(NapileTokens.COMMA, NapileTokens.GT, NapileTokens.COLON));
+		parseModifierList(MODIFIER_LIST);
 
 		expect(NapileTokens.IDENTIFIER, "Type parameter name expected", TokenSet.EMPTY);
 
@@ -1101,6 +1101,9 @@ public class JetParsing extends AbstractJetParsing
 
 			expect(NapileTokens.RBRACKET, "Missing ']'");
 		}
+
+		while(at(NapileTokens.LPAR))
+			parseValueParameterList(true, TokenSet.EMPTY);
 
 		mark.done(TYPE_PARAMETER);
 	}
@@ -1335,12 +1338,6 @@ public class JetParsing extends AbstractJetParsing
 		return atGT;
 	}
 
-	private void parseModifierListWithShortAnnotations(NapileNodeType modifierList, TokenSet lookFor, TokenSet stopAt)
-	{
-		int lastId = findLastBefore(lookFor, stopAt, false);
-		createTruncatedBuilder(lastId).parseModifierList(modifierList);
-	}
-
 	/*
 		 * functionType
 		 *   : (type ".")? "(" (parameter | modifiers type){","}? ")" "->" type?
@@ -1412,6 +1409,7 @@ public class JetParsing extends AbstractJetParsing
 						error("Expecting a parameter declaration");
 						break;
 					}
+
 					if(isFunctionTypeContents)
 					{
 						if(!tryParseValueParameter())
@@ -1423,9 +1421,8 @@ public class JetParsing extends AbstractJetParsing
 						}
 					}
 					else
-					{
 						parseValueParameter();
-					}
+
 					if(!at(NapileTokens.COMMA))
 						break;
 					advance(); // COMMA
@@ -1468,7 +1465,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			parseModifierListWithShortAnnotations(MODIFIER_LIST, TokenSet.create(NapileTokens.IDENTIFIER), TokenSet.create(NapileTokens.COMMA, NapileTokens.RPAR, NapileTokens.COLON));
+			parseModifierList(MODIFIER_LIST);
 
 			if(at(NapileTokens.VAR_KEYWORD))
 			{

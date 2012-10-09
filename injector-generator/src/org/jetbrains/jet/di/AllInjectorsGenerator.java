@@ -28,7 +28,7 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.TopDownAnalyzer;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
 import org.napile.compiler.lang.resolve.processors.ControlFlowAnalyzer;
-import org.napile.compiler.lang.resolve.processors.DeclarationsChecker;
+import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import com.intellij.openapi.project.Project;
@@ -95,11 +95,11 @@ public class AllInjectorsGenerator
 	private static void generateInjectorForJvmCodegen() throws IOException
 	{
 		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
-		generator.addParameter(BindingTrace.class);
+		generator.addPublicParameter(BindingTrace.class);
 		generator.addParameter(DiType.listOf(NapileFile.class));
 		generator.addParameter(Project.class);
-		generator.addField(false, BindingContext.class, "bindingContext", new GivenExpression("bindingTrace.getBindingContext()"));
-		generator.addPublicParameter(BindingTrace.class);
+		generator.addField(true, BindingContext.class, "bindingContext", new GivenExpression("bindingTrace.getBindingContext()"));
+
 		generator.generate("compiler/backend/src", "org.napile.compiler.di", "InjectorForJvmCodegen");
 	}
 

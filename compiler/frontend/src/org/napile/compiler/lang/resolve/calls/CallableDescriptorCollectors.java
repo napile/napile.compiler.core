@@ -25,7 +25,6 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
@@ -75,11 +74,8 @@ public class CallableDescriptorCollectors
 		private void addConstructors(JetScope scope, Name name, Collection<MethodDescriptor> methods)
 		{
 			ClassifierDescriptor classifier = scope.getClassifier(name);
-			if(classifier instanceof ClassDescriptor && !ErrorUtils.isError(classifier.getTypeConstructor()))
-			{
-				ClassDescriptor classDescriptor = (ClassDescriptor) classifier;
-				methods.addAll(classDescriptor.getConstructors());
-			}
+			if(classifier != null && !ErrorUtils.isError(classifier.getTypeConstructor()))
+				methods.addAll(classifier.getConstructors());
 		}
 	};
 

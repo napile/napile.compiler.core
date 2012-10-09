@@ -18,6 +18,7 @@ package org.napile.compiler.codegen.processors;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,6 @@ import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.Node;
 import org.napile.asm.tree.members.StaticConstructorNode;
-import org.napile.asm.tree.members.TypeParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
@@ -43,7 +43,6 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -88,14 +87,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		for(JetType superType : classDescriptor.getSupertypes())
 			classNode.supers.add(TypeTransformer.toAsmType(superType));
 
-		for(TypeParameterDescriptor typeParameterDescriptor : classDescriptor.getTypeConstructor().getParameters())
-		{
-			TypeParameterNode typeParameterNode = new TypeParameterNode(typeParameterDescriptor.getName().getName());
-			for(JetType superType : typeParameterDescriptor.getUpperBounds())
-				typeParameterNode.supers.add(TypeTransformer.toAsmType(superType));
-
-			classNode.typeParameters.add(typeParameterNode);
-		}
+		TypeParameterCodegen.gen(classDescriptor.getTypeConstructor().getParameters(), classNode);
 
 		classNodes.put(fqName, classNode);
 
@@ -137,8 +129,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 			classNode.members.add(constructorNode);
 
 			InstructionAdapter instructions = new InstructionAdapter();
-			instructions.newObject(new TypeNode(false, new ClassTypeNode(classNode.name)));
-			instructions.invokeSpecial(NodeRefUtil.constructorRef(classNode.name));
+			instructions.newObject(new TypeNode(false, new ClassTypeNode(classNode.name)), Collections.<TypeNode>emptyList());
 			instructions.putToStaticVar(NodeRefUtil.ref(propertyDescriptor));
 
 			propertiesStaticInit.putValue(parentClassNode, instructions);

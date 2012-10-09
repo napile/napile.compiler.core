@@ -191,9 +191,9 @@ public class CallResolver
 				@Override
 				public <D extends CallableDescriptor> boolean performAdvancedChecks(D descriptor, BindingTrace trace, TracingStrategy tracing)
 				{
-					if(descriptor instanceof ConstructorDescriptor)
+					if(descriptor instanceof ConstructorDescriptor && descriptor.getContainingDeclaration() instanceof ClassDescriptor)
 					{
-						Modality modality = ((ConstructorDescriptor) descriptor).getContainingDeclaration().getModality();
+						Modality modality = ((ClassDescriptor) descriptor.getContainingDeclaration()).getModality();
 						if(modality == Modality.ABSTRACT)
 						{
 							tracing.instantiationOfAbstractClass(trace);
@@ -238,9 +238,9 @@ public class CallResolver
 					declarationDescriptor = constructedType.getConstructor().getDeclarationDescriptor();
 				}
 
-				if(declarationDescriptor instanceof ClassDescriptor)
+				if(declarationDescriptor instanceof ClassifierDescriptor)
 				{
-					ClassDescriptor classDescriptor = (ClassDescriptor) declarationDescriptor;
+					ClassifierDescriptor classDescriptor = (ClassifierDescriptor) declarationDescriptor;
 					Set<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
 					if(constructors.isEmpty())
 					{

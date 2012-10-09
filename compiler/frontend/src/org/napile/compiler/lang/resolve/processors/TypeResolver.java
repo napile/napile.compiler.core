@@ -39,6 +39,7 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -58,7 +59,6 @@ import com.intellij.psi.util.PsiTreeUtil;
  */
 public class TypeResolver
 {
-
 	private AnnotationResolver annotationResolver;
 	private DescriptorResolver descriptorResolver;
 	private QualifiedExpressionResolver qualifiedExpressionResolver;

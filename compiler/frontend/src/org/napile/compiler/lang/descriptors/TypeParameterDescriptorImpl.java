@@ -18,6 +18,7 @@ package org.napile.compiler.lang.descriptors;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,13 +44,10 @@ import com.google.common.collect.Sets;
  */
 public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImpl implements TypeParameterDescriptor
 {
-	public static TypeParameterDescriptorImpl createForFurtherModification(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
-	{
-		return new TypeParameterDescriptorImpl(containingDeclaration, annotations, reified, name, index);
-	}
-
 	// 0-based
 	private final int index;
+
+	private Set<ConstructorDescriptor> constructorDescriptors = new HashSet<ConstructorDescriptor>(0);
 
 	private final Set<JetType> upperBounds;
 	private JetType upperBoundsAsType;
@@ -60,7 +58,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 
 	private boolean initialized = false;
 
-	private TypeParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
+	public TypeParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
 	{
 		super(containingDeclaration, annotations, name);
 		this.index = index;
@@ -96,6 +94,13 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	{
 		checkUninitialized();
 		initialized = true;
+	}
+
+	public void addConstructor(@NotNull ConstructorDescriptor constructorDescriptor)
+	{
+		constructorDescriptors.add(constructorDescriptor);
+
+		constructorDescriptor.setReturnType(getDefaultType());
 	}
 
 	@Override
@@ -218,6 +223,13 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	public Collection<JetType> getSupertypes()
 	{
 		return Collections.emptySet();
+	}
+
+	@NotNull
+	@Override
+	public Set<ConstructorDescriptor> getConstructors()
+	{
+		return constructorDescriptors;
 	}
 
 	@Override

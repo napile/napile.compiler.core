@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.descriptors;
 
 import java.util.List;
-import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -34,8 +33,6 @@ public interface ClassDescriptor extends ClassifierDescriptor, ClassOrNamespaceD
 	@NotNull
 	JetScope getMemberScope(List<JetType> typeArguments);
 
-	@NotNull
-	Set<ConstructorDescriptor> getConstructors();
 
 	@Override
 	@NotNull

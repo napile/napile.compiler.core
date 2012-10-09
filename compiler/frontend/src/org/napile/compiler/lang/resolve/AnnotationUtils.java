@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.types.TypeUtils;
@@ -30,7 +30,7 @@ import org.napile.compiler.lang.types.TypeUtils;
  */
 public class AnnotationUtils
 {
-	public static boolean isAnnotation(@NotNull ClassDescriptor annotated)
+	public static boolean isAnnotation(@NotNull ClassifierDescriptor annotated)
 	{
 		return NapileAnnotationPackage.ANNOTATION.equals(DescriptorUtils.getFQName(annotated)) || hasAnnotation(annotated, NapileAnnotationPackage.ANNOTATION);
 	}

@@ -16,24 +16,25 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
-import static org.napile.compiler.lang.diagnostics.Errors.*;
-import static org.napile.compiler.lang.resolve.BindingContext.CONSTRUCTOR;
+import static org.napile.compiler.lang.diagnostics.Errors.CONSTRUCTOR_CONFLICT;
+import static org.napile.compiler.lang.diagnostics.Errors.NO_GENERICS_IN_SUPERTYPE_SPECIFIER;
+import static org.napile.compiler.lang.diagnostics.Errors.NULLABLE_SUPERTYPE;
+import static org.napile.compiler.lang.diagnostics.Errors.UPPER_BOUND_VIOLATED;
+import static org.napile.compiler.lang.diagnostics.Errors.VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.diagnostics.DiagnosticUtils;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -41,6 +42,8 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
+import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
+import org.napile.compiler.lang.resolve.processors.members.TypeParameterResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
@@ -56,8 +59,6 @@ import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -71,6 +72,8 @@ public class DescriptorResolver
 	private AnnotationResolver annotationResolver;
 	@NotNull
 	private ExpressionTypingServices expressionTypingServices;
+	@NotNull
+	private TypeParameterResolver typeParameterResolver;
 
 	@Inject
 	public void setTypeResolver(@NotNull TypeResolver typeResolver)
@@ -90,27 +93,22 @@ public class DescriptorResolver
 		this.expressionTypingServices = expressionTypingServices;
 	}
 
+	@Inject
+	public void setTypeParameterResolver(@NotNull TypeParameterResolver typeParameterResolver)
+	{
+		this.typeParameterResolver = typeParameterResolver;
+	}
 
 	public void resolveMutableClassDescriptor(@NotNull NapileClass classElement, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
 	{
-		// TODO : Where-clause
-		List<TypeParameterDescriptor> typeParameters = Lists.newArrayList();
-		int index = 0;
-		for(NapileTypeParameter typeParameter : classElement.getTypeParameters())
-		{
-			TypeParameterDescriptor typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(descriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(NapileTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
-			trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
-			typeParameters.add(typeParameterDescriptor);
-			index++;
-		}
-		descriptor.setTypeParameterDescriptors(typeParameters);
+		descriptor.setTypeParameterDescriptors(typeParameterResolver.resolveTypeParameters(descriptor, (WritableScope) descriptor.getScopeForSupertypeResolution(), classElement.getTypeParameters(), trace));
 
 		descriptor.setModality(resolveModalityFromModifiers(classElement.getModifierList(), Modality.OPEN));
+
 		descriptor.setVisibility(resolveVisibilityFromModifiers(classElement.getModifierList()));
 
 		trace.record(BindingContext.CLASS, classElement, descriptor);
 	}
-
 
 	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileClassLike jetClass, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
 	{
@@ -187,9 +185,9 @@ public class DescriptorResolver
 		final SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, function.getModifierList(), trace), NapilePsiUtil.safeName(function.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD), modifierList != null && modifierList.hasModifier(NapileTokens.NATIVE_KEYWORD));
 		WritableScope innerScope = new WritableScopeImpl(scope, functionDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
 
-		List<TypeParameterDescriptorImpl> typeParameterDescriptors = resolveTypeParameters(functionDescriptor, innerScope, function.getTypeParameters(), trace);
+		List<TypeParameterDescriptor> typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(functionDescriptor, innerScope, function.getTypeParameters(), trace);
 		innerScope.changeLockLevel(WritableScope.LockLevel.BOTH);
-		resolveGenericBounds(function, innerScope, typeParameterDescriptors, trace);
+		typeParameterResolver.postResolving(function, innerScope, typeParameterDescriptors, trace);
 
 		List<ParameterDescriptor> parameterDescriptors = resolveValueParameters(functionDescriptor, innerScope, function.getValueParameters(), trace);
 
@@ -235,7 +233,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	private List<ParameterDescriptor> resolveValueParameters(MethodDescriptor methodDescriptor, WritableScope parameterScope, List<NapileElement> valueParameters, BindingTrace trace)
+	public List<ParameterDescriptor> resolveValueParameters(MethodDescriptor methodDescriptor, WritableScope parameterScope, List<NapileElement> valueParameters, BindingTrace trace)
 	{
 		List<ParameterDescriptor> result = new ArrayList<ParameterDescriptor>();
 		for(int i = 0, valueParametersSize = valueParameters.size(); i < valueParametersSize; i++)
@@ -290,120 +288,6 @@ public class DescriptorResolver
 
 		trace.record(BindingContext.VALUE_PARAMETER, valueParameter, valueParameterDescriptor);
 		return valueParameterDescriptor;
-	}
-
-	public List<TypeParameterDescriptorImpl> resolveTypeParameters(DeclarationDescriptor containingDescriptor, WritableScope extensibleScope, List<NapileTypeParameter> typeParameters, BindingTrace trace)
-	{
-		List<TypeParameterDescriptorImpl> result = new ArrayList<TypeParameterDescriptorImpl>();
-		for(int i = 0, typeParametersSize = typeParameters.size(); i < typeParametersSize; i++)
-		{
-			NapileTypeParameter typeParameter = typeParameters.get(i);
-			result.add(resolveTypeParameter(containingDescriptor, extensibleScope, typeParameter, i, trace));
-		}
-		return result;
-	}
-
-	private TypeParameterDescriptorImpl resolveTypeParameter(DeclarationDescriptor containingDescriptor, WritableScope extensibleScope, NapileTypeParameter typeParameter, int index, BindingTrace trace)
-	{
-		TypeParameterDescriptorImpl typeParameterDescriptor = TypeParameterDescriptorImpl.createForFurtherModification(containingDescriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(NapileTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
-
-		extensibleScope.addTypeParameterDescriptor(typeParameterDescriptor);
-		trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
-		return typeParameterDescriptor;
-	}
-
-	public static ConstructorDescriptor createConstructorForObject(@Nullable PsiElement object, @NotNull ClassDescriptor classDescriptor, @NotNull BindingTrace trace)
-	{
-		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), false);
-
-		// TODO : make the constructor private?
-		// TODO check set classDescriptor.getVisibility()
-		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
-
-		if(object != null)
-		{
-			try
-			{
-				trace.record(CONSTRUCTOR, object, constructorDescriptor);
-			}
-			catch(RuntimeException e)
-			{
-				throw new RuntimeException(e.getMessage() + " at " + DiagnosticUtils.atLocation(object), e);
-			}
-		}
-		return constructorDescriptor;
-	}
-
-	static final class UpperBoundCheckerTask
-	{
-		NapileTypeReference upperBound;
-		JetType upperBoundType;
-		boolean isClassObjectConstraint;
-
-		private UpperBoundCheckerTask(NapileTypeReference upperBound, JetType upperBoundType, boolean classObjectConstraint)
-		{
-			this.upperBound = upperBound;
-			this.upperBoundType = upperBoundType;
-			isClassObjectConstraint = classObjectConstraint;
-		}
-	}
-
-	public void resolveGenericBounds(@NotNull NapileTypeParameterListOwner declaration, JetScope scope, List<TypeParameterDescriptorImpl> parameters, BindingTrace trace)
-	{
-		List<UpperBoundCheckerTask> deferredUpperBoundCheckerTasks = Lists.newArrayList();
-
-		List<NapileTypeParameter> typeParameters = declaration.getTypeParameters();
-		Map<Name, TypeParameterDescriptorImpl> parameterByName = Maps.newHashMap();
-		for(int i = 0; i < typeParameters.size(); i++)
-		{
-			NapileTypeParameter jetTypeParameter = typeParameters.get(i);
-			TypeParameterDescriptorImpl typeParameterDescriptor = parameters.get(i);
-
-			parameterByName.put(typeParameterDescriptor.getName(), typeParameterDescriptor);
-
-			for(NapileTypeReference extendsBound : jetTypeParameter.getExtendsBound())
-			{
-				JetType type = typeResolver.resolveType(scope, extendsBound, trace, false);
-				typeParameterDescriptor.addUpperBound(type);
-				deferredUpperBoundCheckerTasks.add(new UpperBoundCheckerTask(extendsBound, type, false));
-			}
-		}
-
-		for(TypeParameterDescriptorImpl parameter : parameters)
-		{
-			parameter.addDefaultUpperBound(scope);
-
-			parameter.setInitialized();
-
-			if(false)
-			{
-				PsiElement nameIdentifier = typeParameters.get(parameter.getIndex()).getNameIdentifier();
-				if(nameIdentifier != null)
-				{
-					trace.report(CONFLICTING_UPPER_BOUNDS.on(nameIdentifier, parameter));
-				}
-			}
-		}
-
-		for(UpperBoundCheckerTask checkerTask : deferredUpperBoundCheckerTasks)
-		{
-			checkUpperBoundType(checkerTask.upperBound, checkerTask.upperBoundType, checkerTask.isClassObjectConstraint, trace);
-		}
-	}
-
-	private static void checkUpperBoundType(NapileTypeReference upperBound, JetType upperBoundType, boolean isClassObjectConstraint, BindingTrace trace)
-	{
-		if(!TypeUtils.canHaveSubtypes(JetTypeChecker.INSTANCE, upperBoundType))
-		{
-			if(isClassObjectConstraint)
-			{
-				trace.report(FINAL_CLASS_OBJECT_UPPER_BOUND.on(upperBound, upperBoundType));
-			}
-			else
-			{
-				trace.report(FINAL_UPPER_BOUND.on(upperBound, upperBoundType));
-			}
-		}
 	}
 
 	@NotNull
@@ -512,7 +396,7 @@ public class DescriptorResolver
 
 		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), resolveModalityFromModifiers(property.getModifierList(), Modality.OPEN), resolveVisibilityFromModifiers(property.getModifierList()), NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD));
 
-		List<TypeParameterDescriptorImpl> typeParameterDescriptors;
+		List<TypeParameterDescriptor> typeParameterDescriptors;
 
 		{
 			List<NapileTypeParameter> typeParameters = property.getTypeParameters();
@@ -523,9 +407,9 @@ public class DescriptorResolver
 			else
 			{
 				WritableScope writableScope = new WritableScopeImpl(scope, containingDeclaration, new TraceBasedRedeclarationHandler(trace), "Scope with type parameters of a property");
-				typeParameterDescriptors = resolveTypeParameters(containingDeclaration, writableScope, typeParameters, trace);
+				typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(containingDeclaration, writableScope, typeParameters, trace);
 				writableScope.changeLockLevel(WritableScope.LockLevel.READING);
-				resolveGenericBounds(property, writableScope, typeParameterDescriptors, trace);
+				typeParameterResolver.postResolving(property, writableScope, typeParameterDescriptors, trace);
 			}
 		}
 
@@ -556,26 +440,6 @@ public class DescriptorResolver
 
 		trace.record(BindingContext.VARIABLE, retellEntry, propertyDescriptor);
 		return propertyDescriptor;
-	}
-
-	/*package*/
-	static boolean hasBody(NapileProperty property)
-	{
-		boolean hasBody = property.getInitializer() != null;
-		/*if(!hasBody)
-		{
-			NapilePropertyAccessor getter = property.getGetter();
-			if(getter != null && getter.getBodyExpression() != null)
-			{
-				hasBody = true;
-			}
-			NapilePropertyAccessor setter = property.getSetter();
-			if(!hasBody && setter != null && setter.getBodyExpression() != null)
-			{
-				hasBody = true;
-			}
-		} */
-		return hasBody;
 	}
 
 	@NotNull
@@ -688,7 +552,7 @@ public class DescriptorResolver
 		return constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
 	}
 
-	public static void checkBounds(@NotNull NapileTypeReference typeReference, @NotNull JetType type, BindingTrace trace)
+	public void checkBounds(@NotNull NapileTypeReference typeReference, @NotNull JetType type, BindingTrace trace)
 	{
 		if(ErrorUtils.isErrorType(type))
 			return;
@@ -720,14 +584,53 @@ public class DescriptorResolver
 		}
 	}
 
-	public static void checkBounds(@NotNull NapileTypeReference jetTypeArgument, @NotNull JetType typeArgument, @NotNull TypeParameterDescriptor typeParameterDescriptor, @NotNull TypeSubstitutor substitutor, BindingTrace trace)
+	public void checkBounds(@NotNull NapileTypeReference jetTypeArgument, @NotNull JetType typeArgument, @NotNull TypeParameterDescriptor typeParameterDescriptor, @NotNull TypeSubstitutor substitutor, BindingTrace trace)
 	{
 		for(JetType bound : typeParameterDescriptor.getUpperBounds())
 		{
 			JetType substitutedBound = substitutor.safeSubstitute(bound);
 			if(!JetTypeChecker.INSTANCE.isSubtypeOf(typeArgument, substitutedBound))
-			{
 				trace.report(UPPER_BOUND_VIOLATED.on(jetTypeArgument, substitutedBound, typeArgument));
+			else
+			{
+				Set<ConstructorDescriptor> constructorDescriptors = typeParameterDescriptor.getConstructors();
+				Set<ConstructorDescriptor> targetTypeConstructors = typeArgument.getConstructor().getDeclarationDescriptor().getConstructors();
+
+				if(!constructorDescriptors.isEmpty())
+				{
+					for(ConstructorDescriptor targetToSearch : constructorDescriptors)
+					{
+						boolean find = false;
+
+						for(ConstructorDescriptor temp : targetTypeConstructors)
+						{
+							loop:
+							{
+								List<ParameterDescriptor> l1 = targetToSearch.getValueParameters();
+								List<ParameterDescriptor> l2 = temp.getValueParameters();
+
+								if(l1.size() != l2.size())
+									continue;
+
+								for(int i = 0; i < l1.size(); i++)
+								{
+									ParameterDescriptor p1 = l1.get(i);
+									ParameterDescriptor p2 = l2.get(i);
+
+									if(!JetTypeChecker.INSTANCE.isSubtypeOf(p2.getType(), p1.getType()))
+										break loop;
+								}
+								find = true;
+							}
+						}
+
+						if(!find)
+						{
+							trace.report(CONSTRUCTOR_CONFLICT.on(jetTypeArgument));
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

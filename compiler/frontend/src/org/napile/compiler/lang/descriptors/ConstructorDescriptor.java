@@ -35,12 +35,12 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 	public static final Name NAME = Name.identifier("this");
 	private JetScope parametersScope;
 
-	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
+	public ConstructorDescriptor(@NotNull ClassifierDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
 	{
 		super(containingDeclaration, annotations, NAME, Kind.DECLARATION, isStatic, false);
 	}
 
-	public ConstructorDescriptor(@NotNull ClassDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
+	public ConstructorDescriptor(@NotNull ClassifierDescriptor containingDeclaration, @NotNull ConstructorDescriptor original, @NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
 	{
 		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION, isStatic, false);
 	}
@@ -52,7 +52,7 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 	}
 
 	@NotNull
-	private static ReceiverDescriptor getExpectedThisObject(@NotNull ClassDescriptor descriptor)
+	private static ReceiverDescriptor getExpectedThisObject(@NotNull ClassifierDescriptor descriptor)
 	{
 		DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
 		return DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration);
@@ -60,9 +60,9 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 
 	@NotNull
 	@Override
-	public ClassDescriptor getContainingDeclaration()
+	public ClassifierDescriptor getContainingDeclaration()
 	{
-		return (ClassDescriptor) super.getContainingDeclaration();
+		return (ClassifierDescriptor) super.getContainingDeclaration();
 	}
 
 	@NotNull

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve.processors;
+package org.napile.compiler.lang.resolve.processors.checkers;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,14 +25,30 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ClassKind;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.Modality;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
+import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
-import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
@@ -141,7 +157,7 @@ public class ModifiersChecker
 	{
 		boolean hasDeferredType;
 		if(member instanceof NapileProperty)
-			hasDeferredType = ((NapileProperty) member).getPropertyTypeRef() == null && DescriptorResolver.hasBody((NapileProperty) member);
+			hasDeferredType = ((NapileProperty) member).getPropertyTypeRef() == null && ((NapileProperty) member).getInitializer() != null;
 		else
 		{
 			assert member instanceof NapileMethod;

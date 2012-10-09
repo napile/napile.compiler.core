@@ -192,14 +192,8 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	public void setTypeParameterDescriptors(List<TypeParameterDescriptor> typeParameters)
 	{
 		if(this.getTypeParameters() != null)
-		{
 			throw new IllegalStateException();
-		}
-		this.typeParameters = new ArrayList<TypeParameterDescriptor>(typeParameters.size());
-		for(TypeParameterDescriptor typeParameterDescriptor : typeParameters)
-		{
-			this.getTypeParameters().add(typeParameterDescriptor);
-		}
+		this.typeParameters = new ArrayList<TypeParameterDescriptor>(typeParameters);
 	}
 
 	public void lockScopes()

@@ -68,6 +68,12 @@ public class NapileTypeParameter extends NapileNamedDeclarationStub<PsiJetTypePa
 	}
 
 	@NotNull
+	public NapileParameterList[] getConstructorParameterLists()
+	{
+		return findChildrenByClass(NapileParameterList.class);
+	}
+
+	@NotNull
 	@Override
 	public IStubElementType getElementType()
 	{

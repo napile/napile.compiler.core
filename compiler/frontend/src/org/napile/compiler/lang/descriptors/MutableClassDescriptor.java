@@ -122,10 +122,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	public void setTypeParameterDescriptors(List<TypeParameterDescriptor> typeParameters)
 	{
 		super.setTypeParameterDescriptors(typeParameters);
-		for(TypeParameterDescriptor typeParameterDescriptor : typeParameters)
-		{
-			scopeForSupertypeResolution.addTypeParameterDescriptor(typeParameterDescriptor);
-		}
+
 		scopeForSupertypeResolution.changeLockLevel(WritableScope.LockLevel.READING);
 	}
 

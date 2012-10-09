@@ -763,8 +763,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			JetType expressionType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
 			type = TypeTransformer.toAsmType(expressionType);
-			instructs.newObject(type);
-			instructs.dup();
 
 			//final ClassDescriptor classDescriptor = ((ConstructorDescriptor) constructorDescriptor).getContainingDeclaration();
 
@@ -772,9 +770,11 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 			receiver.put(receiver.getType(), instructs);
 
-			invokeMethodWithArguments(method, expression, StackValue.none());
+			ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getCalleeExpression());
 
-			instructs.pop();// calling constructor - it return THIS, remove for now
+			pushMethodArguments(resolvedCall, method.getValueParameterTypes());
+
+			instructs.newObject(type, method.getValueParameterTypes());
 		}
 		else
 		{

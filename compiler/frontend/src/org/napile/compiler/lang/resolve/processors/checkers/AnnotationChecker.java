@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve.processors;
+package org.napile.compiler.lang.resolve.processors.checkers;
 
 import javax.inject.Inject;
 

@@ -40,6 +40,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
+import org.napile.compiler.lang.resolve.processors.members.TypeParameterResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -64,6 +65,8 @@ public class TypeHierarchyResolver
 	private ImportsResolver importsResolver;
 	@NotNull
 	private DescriptorResolver descriptorResolver;
+	@NotNull
+	private TypeParameterResolver typeParameterResolver;
 	@NotNull
 	private NamespaceFactoryImpl namespaceFactory;
 	@NotNull
@@ -94,6 +97,12 @@ public class TypeHierarchyResolver
 	public void setNamespaceFactory(@NotNull NamespaceFactoryImpl namespaceFactory)
 	{
 		this.namespaceFactory = namespaceFactory;
+	}
+
+	@Inject
+	public void setTypeParameterResolver(@NotNull TypeParameterResolver typeParameterResolver)
+	{
+		this.typeParameterResolver = typeParameterResolver;
 	}
 
 	@Inject
@@ -188,28 +197,6 @@ public class TypeHierarchyResolver
 					owner.addClassifierDescriptor(mutableClassDescriptor);
 				}
 
-				@Override
-				public void visitAnonymClass(NapileAnonymClass declaration)
-				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
-					context.getAnonymous().put(declaration, mutableClassDescriptor);
-
-					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
-
-					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
-
-					createConstructorForObject(declaration, mutableClassDescriptor);
-					owner.addObjectDescriptor(mutableClassDescriptor);
-					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
-				}
-
-				private ConstructorDescriptor createConstructorForObject(@NotNull NapileDelegationSpecifierListOwner object, MutableClassDescriptor mutableClassDescriptor)
-				{
-					ConstructorDescriptor constructorDescriptor = DescriptorResolver.createConstructorForObject(object, mutableClassDescriptor, trace);
-					mutableClassDescriptor.addConstructor(constructorDescriptor);
-					return constructorDescriptor;
-				}
-
 				private void prepareForDeferredCall(@NotNull JetScope outerScope, @NotNull WithDeferredResolve withDeferredResolve, @NotNull NapileDeclarationContainer container)
 				{
 					forDeferredResolve.add(container);
@@ -251,7 +238,7 @@ public class TypeHierarchyResolver
 			NapileClass napileClass = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 
-			descriptorResolver.resolveGenericBounds(napileClass, descriptor.getScopeForSupertypeResolution(), (List) descriptor.getTypeConstructor().getParameters(), trace);
+			typeParameterResolver.postResolving(napileClass, descriptor.getScopeForSupertypeResolution(), descriptor.getTypeConstructor().getParameters(), trace);
 			descriptorResolver.resolveSupertypesForMutableClassDescriptor(napileClass, descriptor, trace);
 		}
 

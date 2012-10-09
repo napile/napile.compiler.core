@@ -54,6 +54,7 @@ public class CallableMethod
 		switch(callType)
 		{
 			case SPECIAL:
+				//throw new IllegalArgumentException("InvokeSpecial call of constructor - replaced by NewObject");
 				instructionAdapter.invokeSpecial(methodRef);
 				break;
 			case STATIC:
