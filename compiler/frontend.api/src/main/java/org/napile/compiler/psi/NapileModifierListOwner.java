@@ -14,11 +14,23 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.psi;
+
+import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lexer.NapileToken;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
 
 /**
- * @author Nikolay Krasko
+ * @author svtk
  */
-public interface NapileDeclaration extends NapileExpression, NapileModifierListOwner
+public interface NapileModifierListOwner extends PsiElement
 {
+	@Nullable
+	NapileModifierList getModifierList();
+
+	boolean hasModifier(NapileToken modifier);
+
+	ASTNode getModifierNode(NapileToken token);
 }

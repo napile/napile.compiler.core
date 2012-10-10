@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.psi.NapileElement;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;

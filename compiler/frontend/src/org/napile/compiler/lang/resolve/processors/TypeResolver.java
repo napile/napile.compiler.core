@@ -51,6 +51,8 @@ import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.SelfTypeConstructorImpl;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.util.lazy.LazyValue;
 import com.intellij.psi.util.PsiTreeUtil;
 

@@ -34,7 +34,7 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.codegen.CompilationErrorHandler;
 import org.napile.compiler.codegen.GenerationState;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.Disposable;

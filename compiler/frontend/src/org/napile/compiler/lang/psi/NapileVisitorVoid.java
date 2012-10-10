@@ -16,6 +16,11 @@
 
 package org.napile.compiler.lang.psi;
 
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
@@ -48,7 +53,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitNamedDeclaration(constructor);
 	}
 
-	public void visitNamedMethod(NapileNamedFunction function)
+	public void visitNamedMethod(NapileNamedMethod function)
 	{
 		visitNamedDeclaration(function);
 	}

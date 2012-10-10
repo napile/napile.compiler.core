@@ -17,8 +17,8 @@
 package org.napile.compiler.lang.psi.stubs.elements;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetFileStubImpl;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.stubs.DefaultStubBuilder;
 import com.intellij.psi.stubs.StubElement;

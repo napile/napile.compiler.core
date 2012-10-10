@@ -19,7 +19,7 @@ package org.napile.idea.plugin.stubindex;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
@@ -28,7 +28,7 @@ import com.intellij.psi.stubs.StubIndexKey;
 /**
  * @author Nikolay Krasko
  */
-public class JetAllShortFunctionNameIndex extends StringStubIndexExtension<NapileNamedFunction>
+public class JetAllShortFunctionNameIndex extends StringStubIndexExtension<NapileNamedMethod>
 {
 	private static final JetShortClassNameIndex ourInstance = new JetShortClassNameIndex();
 
@@ -39,13 +39,13 @@ public class JetAllShortFunctionNameIndex extends StringStubIndexExtension<Napil
 
 	@NotNull
 	@Override
-	public StubIndexKey<String, NapileNamedFunction> getKey()
+	public StubIndexKey<String, NapileNamedMethod> getKey()
 	{
 		return JetIndexKeys.FUNCTIONS_SHORT_NAME_KEY;
 	}
 
 	@Override
-	public Collection<NapileNamedFunction> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
+	public Collection<NapileNamedMethod> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
 	{
 		return super.get(s, project, new JetSourceFilterScope(scope));
 	}

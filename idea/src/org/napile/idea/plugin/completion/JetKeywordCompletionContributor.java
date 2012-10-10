@@ -24,8 +24,9 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.completion.handlers.JetFunctionInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetKeywordInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetTemplateInsertHandler;

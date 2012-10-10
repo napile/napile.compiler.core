@@ -53,6 +53,9 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
@@ -252,7 +255,7 @@ public class ExpressionTypingServices
 				}
 
 				@Override
-				public Void visitNamedFunction(NapileNamedFunction function, NapileDeclarationWithBody outerFunction)
+				public Void visitNamedFunction(NapileNamedMethod function, NapileDeclarationWithBody outerFunction)
 				{
 					return super.visitNamedFunction(function, function);
 				}

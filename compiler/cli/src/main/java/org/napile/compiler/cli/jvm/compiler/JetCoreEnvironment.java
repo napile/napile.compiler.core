@@ -21,13 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NapileFileType;
+import org.napile.compiler.NapileXmlFileType;
 import org.napile.compiler.cli.jvm.JVMConfigurationKeys;
 import org.napile.compiler.config.CommonConfigurationKeys;
 import org.napile.compiler.config.CompilerConfiguration;
 import org.napile.compiler.lang.parsing.JetParserDefinition;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.JetFilesProvider;
-import org.napile.compiler.plugin.JetFileType;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.core.CoreApplicationEnvironment;
 import com.intellij.core.CoreJavaFileManager;
 import com.intellij.mock.MockApplication;
@@ -60,7 +61,8 @@ public class JetCoreEnvironment
 		this.configuration.setReadOnly(true);
 
 		this.applicationEnvironment = new CoreApplicationEnvironment(parentDisposable);
-		applicationEnvironment.registerFileType(JetFileType.INSTANCE, JetFileType.INSTANCE.getDefaultExtension());
+		applicationEnvironment.registerFileType(NapileFileType.INSTANCE, NapileFileType.INSTANCE.getDefaultExtension());
+		applicationEnvironment.registerFileType(NapileXmlFileType.INSTANCE, NapileXmlFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerParserDefinition(new JetParserDefinition());
 
 		projectEnvironment = new JetCoreProjectEnvironment(parentDisposable, applicationEnvironment);
@@ -134,7 +136,7 @@ public class JetCoreEnvironment
 		{
 			throw new CompileEnvironmentException("File/directory not found: " + path);
 		}
-		if(!vFile.isDirectory() && vFile.getFileType() != JetFileType.INSTANCE)
+		if(!vFile.isDirectory() && vFile.getFileType() != NapileFileType.INSTANCE)
 		{
 			throw new CompileEnvironmentException("Not a Kotlin file: " + path);
 		}

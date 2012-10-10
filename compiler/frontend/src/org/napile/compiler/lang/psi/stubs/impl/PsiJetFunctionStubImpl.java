@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi.stubs.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubBase;
@@ -29,7 +29,7 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetFunctionStubImpl extends StubBase<NapileNamedFunction> implements PsiJetFunctionStub
+public class PsiJetFunctionStubImpl extends StubBase<NapileNamedMethod> implements PsiJetFunctionStub
 {
 	private final StringRef nameRef;
 

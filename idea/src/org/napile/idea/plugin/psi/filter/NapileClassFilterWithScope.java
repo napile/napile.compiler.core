@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.psi.filter;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileClassLike;
 import com.intellij.psi.search.GlobalSearchScope;
 
 /**

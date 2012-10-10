@@ -34,7 +34,7 @@ import org.napile.compiler.lang.cfg.pseudocode.VariableDeclarationInstruction;
 import org.napile.compiler.lang.cfg.pseudocode.WriteValueInstruction;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContext;
 import com.google.common.collect.Maps;

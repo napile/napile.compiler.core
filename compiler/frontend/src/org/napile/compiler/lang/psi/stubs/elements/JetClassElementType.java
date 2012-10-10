@@ -22,7 +22,8 @@ import java.util.List;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassImpl;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetClassStubImpl;
@@ -47,13 +48,13 @@ public class JetClassElementType extends JetStubElementType<PsiJetClassStub, Nap
 	@Override
 	public NapileClass createPsi(@NotNull PsiJetClassStub stub)
 	{
-		return new NapileClass(stub);
+		return new NapileClassImpl(stub);
 	}
 
 	@Override
 	public NapileClass createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileClass(node);
+		return new NapileClassImpl(node);
 	}
 
 	@Override

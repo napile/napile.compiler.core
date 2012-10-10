@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.stubindex;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.plugin.JetFileType;
+import org.napile.compiler.NapileFileType;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
@@ -51,6 +51,6 @@ public class JetSourceFilterScope extends DelegatingGlobalSearchScope
 			return myIndex.isInLibraryClasses(file);
 		}
 
-		return file.getFileType().equals(JetFileType.INSTANCE) && (myIndex.isInSourceContent(file) || myIndex.isInLibrarySource(file));
+		return file.getFileType().equals(NapileFileType.INSTANCE) && (myIndex.isInSourceContent(file) || myIndex.isInLibrarySource(file));
 	}
 }

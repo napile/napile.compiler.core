@@ -32,7 +32,14 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileCallElement;
+import org.napile.compiler.lang.psi.NapileConstantExpression;
+import org.napile.compiler.lang.psi.NapileConstructorCalleeExpression;
+import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
+import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
+import org.napile.compiler.lang.psi.NapileValueArgument;
+import org.napile.compiler.lang.psi.NapileValueArgumentList;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.JetVisibilityChecker;
@@ -40,6 +47,8 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import com.intellij.codeInsight.CodeInsightBundle;
@@ -245,7 +254,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 			NapileValueArgumentList argumentList = (NapileValueArgumentList) parameterOwner;
 			if(descriptor instanceof MethodDescriptor)
 			{
-				NapileFile file = (NapileFile) argumentList.getContainingFile();
+				NapileFile file = argumentList.getContainingFile();
 				BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(file);
 				MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 				StringBuilder builder = new StringBuilder();

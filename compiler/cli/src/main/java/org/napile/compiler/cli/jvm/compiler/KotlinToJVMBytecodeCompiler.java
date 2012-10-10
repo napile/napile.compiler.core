@@ -41,7 +41,7 @@ import org.napile.compiler.cli.common.messages.CompilerMessageSeverity;
 import org.napile.compiler.cli.jvm.JVMConfigurationKeys;
 import org.napile.compiler.codegen.CompilationErrorHandler;
 import org.napile.compiler.codegen.GenerationState;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.psi.NapileFile;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.intellij.openapi.project.Project;

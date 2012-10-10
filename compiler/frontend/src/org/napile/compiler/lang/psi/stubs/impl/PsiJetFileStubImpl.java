@@ -16,9 +16,9 @@
 
 package org.napile.compiler.lang.psi.stubs.impl;
 
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.stubs.PsiJetFileStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.psi.stubs.PsiFileStubImpl;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.util.io.StringRef;

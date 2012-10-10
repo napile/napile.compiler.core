@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.psi;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.descriptors.ClassKind;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.lexer.NapileTokens;
@@ -42,26 +43,27 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author max
  */
-public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStub> implements NapileClassLike
+public class NapileClassImpl extends NapileTypeParameterListOwnerStub<PsiJetClassStub> implements NapileClass
 {
 	private static final TokenSet CLASS_DECL_KEYWORDS = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.ENUM_KEYWORD, NapileTokens.RETELL_KEYWORD);
 
-	public NapileClass(@NotNull ASTNode node)
+	public NapileClassImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileClass(@NotNull final PsiJetClassStub stub)
+	public NapileClassImpl(@NotNull final PsiJetClassStub stub)
 	{
 		super(stub, JetStubElementTypes.CLASS);
 	}
 
+	@Override
 	public ClassKind getKind()
 	{
 		PsiElement element = findNotNullChildByType(CLASS_DECL_KEYWORDS);
 		IElementType elementType = element.getNode().getElementType();
 		if(elementType == NapileTokens.RETELL_KEYWORD)
-			return ClassKind.RETELL;
+			return ClassKind.RETELL_CLASS;
 		else if(elementType == NapileTokens.ENUM_KEYWORD)
 			return ClassKind.ENUM_CLASS;
 		else
@@ -91,6 +93,7 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 		return visitor.visitClass(this, data);
 	}
 
+	@Override
 	@NotNull
 	public NapileConstructor[] getConstructors()
 	{
@@ -101,6 +104,7 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 		return body.getConstructors();
 	}
 
+	@Override
 	@NotNull
 	public NapileStaticConstructor[] getStaticConstructors()
 	{
@@ -173,7 +177,8 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 	}
 
 	@Nullable
-	private String getQualifiedName()
+	@Override
+	public String getQualifiedName()
 	{
 		PsiJetClassStub stub = getStub();
 		if(stub != null)
@@ -204,6 +209,7 @@ public class NapileClass extends NapileTypeParameterListOwnerStub<PsiJetClassStu
 	 *
 	 * @return the list of possible superclass names
 	 */
+	@Override
 	@NotNull
 	public List<String> getSuperNames()
 	{

@@ -21,8 +21,13 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileKeywordToken;
+import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileModifierListOwner;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -45,9 +50,9 @@ public class PositioningStrategies
 		{
 			NapileTypeReference returnTypeRef = null;
 			ASTNode nameNode = null;
-			if(declaration instanceof NapileNamedFunction)
+			if(declaration instanceof NapileNamedMethod)
 			{
-				NapileMethod function = (NapileNamedFunction) declaration;
+				NapileMethod function = (NapileNamedMethod) declaration;
 				returnTypeRef = function.getReturnTypeRef();
 				nameNode = getNameNode(function);
 			}
@@ -93,9 +98,9 @@ public class PositioningStrategies
 		@Override
 		public List<TextRange> mark(@NotNull PsiNameIdentifierOwner element)
 		{
-			if(element instanceof NapileNamedFunction)
+			if(element instanceof NapileNamedMethod)
 			{
-				NapileNamedFunction function = (NapileNamedFunction) element;
+				NapileNamedMethod function = (NapileNamedMethod) element;
 				PsiElement endOfSignatureElement;
 				NapileParameterList valueParameterList = function.getValueParameterList();
 				NapileElement returnTypeRef = function.getReturnTypeRef();

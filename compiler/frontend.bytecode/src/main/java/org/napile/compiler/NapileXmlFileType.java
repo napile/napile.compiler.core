@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,60 +14,79 @@
  * limitations under the License.
  */
 
-/*
- * @author max
- */
-package org.napile.compiler.plugin;
+package org.napile.compiler;
 
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
-import com.intellij.openapi.fileTypes.LanguageFileType;
-import com.intellij.openapi.util.IconLoader;
+import org.jetbrains.annotations.Nullable;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.util.NotNullLazyValue;
+import com.intellij.openapi.vfs.VirtualFile;
 
-public class JetFileType extends LanguageFileType
+/**
+ * @author VISTALL
+ * @date 18:02/09.10.12
+ */
+public class NapileXmlFileType implements FileType
 {
-	public static final JetFileType INSTANCE = new JetFileType();
-	private final NotNullLazyValue<Icon> myIcon = new NotNullLazyValue<Icon>()
+	private static final NotNullLazyValue<Icon> ICON = new NotNullLazyValue<Icon>()
 	{
 		@NotNull
 		@Override
 		protected Icon compute()
 		{
-			return IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
+			return AllIcons.FileTypes.JavaClass;
 		}
 	};
 
-	private JetFileType()
-	{
-		super(JetLanguage.INSTANCE);
-	}
+	public static final FileType INSTANCE = new NapileXmlFileType();
 
-	@Override
 	@NotNull
+	@Override
 	public String getName()
 	{
-		return JetLanguage.NAME;
+		return "NXML";
 	}
 
-	@Override
 	@NotNull
+	@Override
 	public String getDescription()
 	{
-		return "Napile source file";
+		return "Napile Xml Bytecode File";
 	}
 
-	@Override
 	@NotNull
+	@Override
 	public String getDefaultExtension()
 	{
-		return "ns";
+		return "nxml";
 	}
 
+	@Nullable
 	@Override
 	public Icon getIcon()
 	{
-		return myIcon.getValue();
+		return ICON.getValue();
+	}
+
+	@Override
+	public boolean isBinary()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isReadOnly()
+	{
+		return false;
+	}
+
+	@Nullable
+	@Override
+	public String getCharset(@NotNull VirtualFile virtualFile, byte[] bytes)
+	{
+		return "UTF-8";
 	}
 }

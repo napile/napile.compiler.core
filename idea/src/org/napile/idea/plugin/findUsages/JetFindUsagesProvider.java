@@ -17,11 +17,11 @@
 package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
@@ -58,7 +58,7 @@ public class JetFindUsagesProvider implements FindUsagesProvider
 	@Override
 	public String getType(@NotNull PsiElement psiElement)
 	{
-		if(psiElement instanceof NapileNamedFunction)
+		if(psiElement instanceof NapileNamedMethod)
 			return "method";
 		if(psiElement instanceof NapileRetellEntry)
 			return "retell entry";

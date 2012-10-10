@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.resolve;
 
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.NamespaceType;

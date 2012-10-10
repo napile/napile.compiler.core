@@ -28,11 +28,11 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -76,9 +76,9 @@ public enum LineMarkers
 					ClassDescriptor ownerDescriptor = (ClassDescriptor)descriptor.getContainingDeclaration();
 
 					List<NapileElement> list = new ArrayList<NapileElement>();
-					for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
+					for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
 					{
-						NapileNamedFunction namedFunction = entry.getKey();
+						NapileNamedMethod namedFunction = entry.getKey();
 						SimpleMethodDescriptor methodDescriptor = entry.getValue();
 
 						ClassDescriptor methodOwnerDescription = (ClassDescriptor) methodDescriptor.getContainingDeclaration();
@@ -126,9 +126,9 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					List<NapileElement> list = new ArrayList<NapileElement>();
-					for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
+					for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
 					{
-						NapileNamedFunction namedFunction = entry.getKey();
+						NapileNamedMethod namedFunction = entry.getKey();
 						SimpleMethodDescriptor methodDescriptor = entry.getValue();
 
 						if(methodDescriptor.getOverriddenDescriptors().contains(descriptor))

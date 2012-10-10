@@ -16,6 +16,10 @@
 
 package org.napile.compiler.lang.psi;
 
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
@@ -49,7 +53,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitNamedDeclaration(constructor, data);
 	}
 
-	public R visitNamedFunction(NapileNamedFunction function, D data)
+	public R visitNamedFunction(NapileNamedMethod function, D data)
 	{
 		return visitNamedDeclaration(function, data);
 	}

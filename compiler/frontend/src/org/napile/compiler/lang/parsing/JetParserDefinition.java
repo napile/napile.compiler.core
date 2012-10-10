@@ -20,13 +20,13 @@
 package org.napile.compiler.lang.parsing;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.psi.NapileFileImpl;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementType;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.lexer.JetLexer;
 import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
@@ -47,7 +47,7 @@ public class JetParserDefinition implements ParserDefinition
 	@NotNull
 	public static JetParserDefinition getInstance()
 	{
-		return (JetParserDefinition) LanguageParserDefinitions.INSTANCE.forLanguage(JetLanguage.INSTANCE);
+		return (JetParserDefinition) LanguageParserDefinitions.INSTANCE.forLanguage(NapileLanguage.INSTANCE);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class JetParserDefinition implements ParserDefinition
 	@Override
 	public PsiFile createFile(FileViewProvider fileViewProvider)
 	{
-		return new NapileFile(fileViewProvider);
+		return new NapileFileImpl(fileViewProvider);
 	}
 
 	@Override

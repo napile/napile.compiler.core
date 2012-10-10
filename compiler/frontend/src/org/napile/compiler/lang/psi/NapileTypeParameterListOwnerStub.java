@@ -29,7 +29,7 @@ import com.intellij.psi.stubs.NamedStub;
 /**
  * @author Nikolay Krasko
  */
-abstract class NapileTypeParameterListOwnerStub<T extends NamedStub> extends NapileNamedDeclarationStub<T> implements NapileTypeParameterListOwner
+public abstract class NapileTypeParameterListOwnerStub<T extends NamedStub> extends NapileNamedDeclarationStub<T> implements NapileTypeParameterListOwner
 {
 	public NapileTypeParameterListOwnerStub(@NotNull T stub, @NotNull IStubElementType nodeType)
 	{

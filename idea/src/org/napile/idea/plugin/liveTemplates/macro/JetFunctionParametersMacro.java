@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.idea.plugin.JetBundle;
 import com.intellij.codeInsight.template.Expression;

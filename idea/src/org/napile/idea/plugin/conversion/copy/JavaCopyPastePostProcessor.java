@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.j2k.Converter;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.editor.JetEditorOptions;
 import com.intellij.codeInsight.editorActions.CopyPastePostProcessor;
 import com.intellij.codeInsight.editorActions.TextBlockTransferableData;

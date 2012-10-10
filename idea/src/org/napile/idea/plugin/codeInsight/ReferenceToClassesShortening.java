@@ -21,8 +21,6 @@ import java.util.List;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNullableType;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileTypeArgumentList;
@@ -33,6 +31,8 @@ import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 
@@ -48,7 +48,7 @@ public class ReferenceToClassesShortening
 		{
 			return;
 		}
-		final NapileFile file = (NapileFile) elementsToCompact.get(0).getContainingFile();
+		final NapileFile file = elementsToCompact.get(0).getContainingFile();
 		final BindingContext bc = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(file).getBindingContext();
 		for(NapileElement element : elementsToCompact)
 		{

@@ -23,8 +23,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.napile.compiler.lang.psi.NapileFile;
+import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.resolve.JetFilesProvider;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Function;
 
@@ -46,12 +47,14 @@ public class CliJetFilesProvider extends JetFilesProvider
 		this.environment = environment;
 	}
 
+	@NotNull
 	@Override
 	public Function<NapileFile, Collection<NapileFile>> sampleToAllFilesInModule()
 	{
 		return all_files;
 	}
 
+	@NotNull
 	@Override
 	public List<NapileFile> allInScope(GlobalSearchScope scope)
 	{
@@ -59,9 +62,7 @@ public class CliJetFilesProvider extends JetFilesProvider
 		for(NapileFile file : environment.getSourceFiles())
 		{
 			if(scope.contains(file.getVirtualFile()))
-			{
 				answer.add(file);
-			}
 		}
 		return answer;
 	}

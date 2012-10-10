@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.napile.compiler.lang.psi.Call.CallType;
+import org.napile.compiler.psi.NapileExpression;
 
 /**
  * @author svtk

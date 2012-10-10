@@ -2,6 +2,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.psi.NapileDeclaration;
 import com.intellij.psi.PsiNameIdentifierOwner;
 
 /**

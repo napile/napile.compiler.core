@@ -19,9 +19,11 @@ package org.napile.idea.plugin.liveTemplates;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileExpression;
 import com.intellij.codeInsight.template.EverywhereContextType;
 import com.intellij.codeInsight.template.TemplateContextType;
 import com.intellij.psi.PsiComment;
@@ -47,7 +49,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 	@Override
 	public boolean isInContext(@NotNull PsiFile file, int offset)
 	{
-		if(PsiUtilBase.getLanguageAtOffset(file, offset).isKindOf(JetLanguage.INSTANCE))
+		if(PsiUtilBase.getLanguageAtOffset(file, offset).isKindOf(NapileLanguage.INSTANCE))
 		{
 			PsiElement element = file.findElementAt(offset);
 			if(element instanceof PsiWhiteSpace || element instanceof PsiComment)
@@ -90,7 +92,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 	{
 		public Generic()
 		{
-			super("KOTLIN", JetLanguage.NAME, EverywhereContextType.class);
+			super("KOTLIN", NapileLanguage.NAME, EverywhereContextType.class);
 		}
 
 		@Override
@@ -123,7 +125,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 					}
 					continue;
 				}
-				if(e instanceof NapileProperty || e instanceof NapileNamedFunction || e instanceof NapileClassLike)
+				if(e instanceof NapileProperty || e instanceof NapileNamedMethod || e instanceof NapileClassLike)
 				{
 					return false;
 				}
@@ -156,7 +158,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 					}
 					continue;
 				}
-				if(e instanceof NapileProperty || e instanceof NapileNamedFunction)
+				if(e instanceof NapileProperty || e instanceof NapileNamedMethod)
 				{
 					return false;
 				}

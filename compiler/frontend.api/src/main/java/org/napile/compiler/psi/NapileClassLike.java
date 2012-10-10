@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.psi;
 
 import java.util.List;
 
@@ -22,6 +22,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.psi.NapileClassBody;
+import org.napile.compiler.lang.psi.NapileObjectDeclarationName;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.psi.PsiNameIdentifierOwner;
 
 /**

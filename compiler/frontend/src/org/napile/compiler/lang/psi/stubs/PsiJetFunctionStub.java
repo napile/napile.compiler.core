@@ -17,13 +17,13 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import com.intellij.psi.stubs.NamedStub;
 
 /**
  * @author Nikolay Krasko
  */
-public interface PsiJetFunctionStub extends NamedStub<NapileNamedFunction>
+public interface PsiJetFunctionStub extends NamedStub<NapileNamedMethod>
 {
 	@NotNull
 	String[] getAnnotations();

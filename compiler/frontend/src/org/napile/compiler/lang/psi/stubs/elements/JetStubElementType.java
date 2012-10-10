@@ -18,11 +18,11 @@ package org.napile.compiler.lang.psi.stubs.elements;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFunctionLiteral;
 import org.napile.compiler.lang.psi.NapileWithExpressionInitializer;
-import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
@@ -37,7 +37,7 @@ public abstract class JetStubElementType<StubT extends StubElement, PsiT extends
 
 	public JetStubElementType(@NotNull @NonNls String debugName)
 	{
-		super(debugName, JetLanguage.INSTANCE);
+		super(debugName, NapileLanguage.INSTANCE);
 	}
 
 	public abstract PsiT createPsiFromAst(@NotNull ASTNode node);

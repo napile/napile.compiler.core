@@ -25,12 +25,12 @@ import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -79,7 +79,7 @@ public interface BodiesResolveContext
 		}
 
 		@Override
-		public Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods()
+		public Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods()
 		{
 			return Collections.emptyMap();
 		}
@@ -114,7 +114,7 @@ public interface BodiesResolveContext
 
 	Map<NapileRetellEntry, PropertyDescriptor> getRetellEntries();
 
-	Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods();
+	Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods();
 
 	Map<NapileDeclaration, JetScope> getDeclaringScopes();
 

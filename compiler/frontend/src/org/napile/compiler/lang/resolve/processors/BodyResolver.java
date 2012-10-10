@@ -63,6 +63,9 @@ import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 import org.napile.compiler.util.slicedmap.WritableSlice;
@@ -381,9 +384,9 @@ public class BodyResolver
 
 	private void resolveFunctionBodies()
 	{
-		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
+		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
 		{
-			NapileNamedFunction declaration = entry.getKey();
+			NapileNamedMethod declaration = entry.getKey();
 			SimpleMethodDescriptor descriptor = entry.getValue();
 
 			computeDeferredType(descriptor.getReturnType());

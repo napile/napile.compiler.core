@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.cfg;
 
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileElement;
 
 /**
  * @author abreslav

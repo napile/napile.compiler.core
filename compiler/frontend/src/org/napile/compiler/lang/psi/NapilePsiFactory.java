@@ -21,9 +21,12 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lexer.NapileKeywordToken;
-import org.napile.compiler.plugin.JetFileType;
+import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
@@ -106,7 +109,7 @@ public class NapilePsiFactory
 	@NotNull
 	public static NapileFile createFile(Project project, String fileName, String text)
 	{
-		return (NapileFile) PsiFileFactory.getInstance(project).createFileFromText(fileName, JetFileType.INSTANCE, text, LocalTimeCounter.currentTime(), false);
+		return (NapileFile) PsiFileFactory.getInstance(project).createFileFromText(fileName, NapileFileType.INSTANCE, text, LocalTimeCounter.currentTime(), false);
 	}
 
 	public static NapileProperty createProperty(Project project, String name, String type, boolean isVar, @Nullable String initializer)
@@ -153,7 +156,7 @@ public class NapilePsiFactory
 		return (NapileSimpleNameExpression) createProperty(project, name, null, false, name).getInitializer();
 	}
 
-	public static NapileNamedFunction createFunction(Project project, String funDecl)
+	public static NapileNamedMethod createFunction(Project project, String funDecl)
 	{
 		return createClassDeclaration(project, funDecl);
 	}
@@ -167,13 +170,13 @@ public class NapilePsiFactory
 
 	public static NapileExpression createEmptyBody(Project project)
 	{
-		NapileNamedFunction function = createFunction(project, "meth foo() {}");
+		NapileNamedMethod function = createFunction(project, "meth foo() {}");
 		return function.getBodyExpression();
 	}
 
 	public static NapilePropertyParameter createParameter(Project project, String name, String type)
 	{
-		NapileNamedFunction function = createFunction(project, "meth foo(" + name + " : " + type + ") {}");
+		NapileNamedMethod function = createFunction(project, "meth foo(" + name + " : " + type + ") {}");
 		return (NapilePropertyParameter)function.getValueParameters().get(0);
 	}
 

@@ -24,6 +24,8 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.Call.CallType;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;

@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
-
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
+package org.napile.compiler.psi;
 
 /**
  * @author Nikolay Krasko
  */
-public interface NapileDeclarationContainer<T extends NapileDeclaration>
+public interface NapileDeclaration extends NapileExpression, NapileModifierListOwner
 {
-	@NotNull
-	List<T> getDeclarations();
 }

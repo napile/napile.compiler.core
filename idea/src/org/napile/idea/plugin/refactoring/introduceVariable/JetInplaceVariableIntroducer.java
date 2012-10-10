@@ -28,7 +28,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lexer.NapileTokens;

@@ -18,8 +18,8 @@ package org.napile.compiler.codegen.processors;
 
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.util.slicedmap.Slices;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 

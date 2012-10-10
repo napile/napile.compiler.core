@@ -53,6 +53,7 @@
 		<lang.importOptimizer language="NAPILE" implementationClass="org.napile.idea.plugin.editor.importOptimizer.JetImportOptimizer"/>
 
 		<fileTypeFactory implementation="org.napile.idea.plugin.JetFileFactory"/>
+		<filetype.decompiler filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileDecompiler" />
 
 		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetSyntaxHighlighterFactory"/>
 		<lang.braceMatcher language="NAPILE" implementationClass="org.napile.idea.plugin.JetPairMatcher"/>
@@ -122,8 +123,8 @@
 
 		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.linemarker.NewLineMarkerProvider"/>
 		<iconProvider implementation="org.napile.idea.plugin.JetIconProvider"/>
-		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetFunctionPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedFunction"/>
-		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetClassPresenter" forClass="org.napile.compiler.lang.psi.NapileClass"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetFunctionPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedMethod"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetClassPresenter" forClass="org.napile.compiler.psi.NapileClassImpl"/>
 		<elementDescriptionProvider implementation="org.napile.idea.plugin.findUsages.JetElementDescriptionProvider"/>
 		<findUsagesHandlerFactory implementation="org.napile.idea.plugin.findUsages.KotlinFindUsagesHandlerFactory"/>
 

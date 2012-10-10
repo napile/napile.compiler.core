@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package org.napile.backend;
+package org.napile.compiler.psi;
 
-import org.napile.asm.resolve.name.FqName;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
- * @author VISTALL
- * @date 10:23/09.08.12
+ * @author Nikolay Krasko
  */
-public class FqTest
+public interface NapileDeclarationContainer<T extends NapileDeclaration>
 {
-	public static void main(String... arg)
-	{
-		FqName qFqName = new FqName("napile.lang.Int") ;
-
-		System.out.println(qFqName.parent().getFqName());
-	}
+	@NotNull
+	List<T> getDeclarations();
 }

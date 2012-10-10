@@ -25,13 +25,12 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
@@ -42,7 +41,8 @@ import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.intellij.openapi.project.Project;
@@ -120,7 +120,7 @@ public class ImportsResolver
 		}
 		Map<NapileImportDirective, DeclarationDescriptor> resolvedDirectives = Maps.newHashMap();
 		Collection<NapileImportDirective> defaultImportDirectives = Lists.newArrayList();
-		for(ImportPath path : JetLanguage.DEFAULT_IMPORTS)
+		for(ImportPath path : NapileLanguage.DEFAULT_IMPORTS)
 			defaultImportDirectives.add(NapilePsiFactory.createImportDirective(project, path));
 
 		for(NapileImportDirective defaultImportDirective : defaultImportDirectives)

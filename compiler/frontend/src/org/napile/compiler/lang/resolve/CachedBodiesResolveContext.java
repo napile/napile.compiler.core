@@ -24,8 +24,17 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileFile;
 
 /**
  * A storage for the part of {@see TopDownAnalysisContext} collected during headers analysis that will be used during resolution of
@@ -41,7 +50,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileProperty, PropertyDescriptor> properties;
 	private final Map<NapileRetellEntry, PropertyDescriptor> retellEnties;
 	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries;
-	private final Map<NapileNamedFunction, SimpleMethodDescriptor> functions;
+	private final Map<NapileNamedMethod, SimpleMethodDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
 	private
@@ -99,7 +108,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods()
+	public Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods()
 	{
 		return functions;
 	}

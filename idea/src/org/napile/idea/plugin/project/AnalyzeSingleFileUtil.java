@@ -18,8 +18,8 @@ package org.napile.idea.plugin.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.psi.NapileFile;
 
 /**
  * @author Pavel Talanov

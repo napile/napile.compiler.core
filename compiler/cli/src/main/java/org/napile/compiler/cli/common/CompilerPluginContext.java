@@ -19,8 +19,8 @@ package org.napile.compiler.cli.common;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.openapi.project.Project;
 
 /**

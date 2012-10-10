@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,31 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.psi;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.NapileToken;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
+import org.napile.compiler.lang.psi.NapileImportDirective;
+import org.napile.compiler.lang.psi.NapileNamespaceHeader;
+import com.intellij.psi.PsiFile;
 
 /**
- * @author svtk
+ * @author VISTALL
+ * @date 20:02/09.10.12
  */
-public interface NapileModifierListOwner extends PsiElement
+public interface NapileFile extends NapileDeclarationContainer<NapileClass>, PsiFile
 {
 	@Nullable
-	NapileModifierList getModifierList();
+	NapileNamespaceHeader getNamespaceHeader();
 
-	boolean hasModifier(NapileToken modifier);
+	@Nullable
+	String getPackageName();
 
-	ASTNode getModifierNode(NapileToken token);
+	@Nullable
+	NapileImportDirective findImportByAlias(@NotNull String name);
+
+	@NotNull
+	List<NapileImportDirective> getImportDirectives();
 }

@@ -26,6 +26,9 @@ import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
@@ -38,16 +41,16 @@ import com.intellij.psi.util.PsiTreeUtil;
 /**
  * @author max
  */
-public class NapileNamedFunction extends NapileTypeParameterListOwnerStub<PsiJetFunctionStub> implements NapileMethod, NapileWithExpressionInitializer
+public class NapileNamedMethod extends NapileTypeParameterListOwnerStub<PsiJetFunctionStub> implements NapileMethod, NapileWithExpressionInitializer
 {
 	private static final TokenSet SET_AND_GET_KEYWORDS = TokenSet.create(NapileTokens.SET_KEYWORD, NapileTokens.GET_KEYWORD);
 
-	public NapileNamedFunction(@NotNull ASTNode node)
+	public NapileNamedMethod(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileNamedFunction(@NotNull PsiJetFunctionStub stub)
+	public NapileNamedMethod(@NotNull PsiJetFunctionStub stub)
 	{
 		super(stub, JetStubElementTypes.METHOD);
 	}

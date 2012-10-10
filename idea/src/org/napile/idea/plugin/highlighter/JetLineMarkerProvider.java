@@ -28,11 +28,11 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.JetFunctionPsiElementCellRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
@@ -75,15 +75,15 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 
 	private static PsiElement getPsiClassFirstChild(PsiElement element)
 	{
-		if(!(element instanceof NapileClass))
+		if(!(element instanceof NapileClassImpl))
 		{
 			element = element.getParent();
-			if(!(element instanceof NapileClass))
+			if(!(element instanceof NapileClassImpl))
 			{
 				return null;
 			}
 		}
-		final PsiClass lightClass = JetLightClass.wrapDelegate((NapileClass) element).getDelegate();
+		final PsiClass lightClass = JetLightClass.wrapDelegate((NapileClassImpl) element).getDelegate();
 		final PsiElement[] children = lightClass.getChildren();
 		return children.length > 0 ? children[0] : null;
 	}
@@ -108,7 +108,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 		if(file == null)
 			return null;
 
-		if(!(element instanceof NapileNamedFunction || element instanceof NapileProperty))
+		if(!(element instanceof NapileNamedMethod || element instanceof NapileProperty))
 			return null;
 
 		final BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(file).getBindingContext();
@@ -228,7 +228,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 		}
 
 		final String implementsOrOverrides = allOverriddenAbstract ? "implements" : "overrides";
-		final String memberKind = element instanceof NapileNamedFunction ? "function" : "property";
+		final String memberKind = element instanceof NapileNamedMethod ? "function" : "property";
 
 
 		StringBuilder builder = new StringBuilder();
@@ -261,12 +261,12 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 		}
 		/*for(PsiElement element : elements)
 		{
-			if(element instanceof NapileClass)
-				collectInheritingClasses((NapileClass) element, result);
+			if(element instanceof NapileClassImpl)
+				collectInheritingClasses((NapileClassImpl) element, result);
 		}  */
 	}
 
-/*	private static void collectInheritingClasses(NapileClass element, Collection<LineMarkerInfo> result)
+/*	private static void collectInheritingClasses(NapileClassImpl element, Collection<LineMarkerInfo> result)
 	{
 		if(!element.hasModifier(NapileTokens.OPEN_KEYWORD))
 		{

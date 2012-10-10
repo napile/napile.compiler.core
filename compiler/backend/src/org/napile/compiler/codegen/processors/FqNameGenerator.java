@@ -24,11 +24,11 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
@@ -85,7 +85,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	}
 
 	@Override
-	public Void visitNamedFunction(NapileNamedFunction function, FqName data)
+	public Void visitNamedFunction(NapileNamedMethod function, FqName data)
 	{
 		record(function, data.child(NapilePsiUtil.safeName(function.getName())));
 		return super.visitNamedFunction(function, data);

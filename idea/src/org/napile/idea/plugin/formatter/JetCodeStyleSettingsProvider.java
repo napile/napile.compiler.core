@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.formatter;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.NapileLanguage;
 import com.intellij.application.options.CodeStyleAbstractConfigurable;
 import com.intellij.application.options.CodeStyleAbstractPanel;
 import com.intellij.application.options.TabbedLanguageCodeStylePanel;
@@ -33,13 +33,13 @@ public class JetCodeStyleSettingsProvider extends CodeStyleSettingsProvider
 	@Override
 	public String getConfigurableDisplayName()
 	{
-		return JetLanguage.NAME;
+		return NapileLanguage.NAME;
 	}
 
 	@Override
 	public Language getLanguage()
 	{
-		return JetLanguage.INSTANCE;
+		return NapileLanguage.INSTANCE;
 	}
 
 	@Override
@@ -52,12 +52,12 @@ public class JetCodeStyleSettingsProvider extends CodeStyleSettingsProvider
 	@Override
 	public Configurable createSettingsPage(CodeStyleSettings settings, CodeStyleSettings originalSettings)
 	{
-		return new CodeStyleAbstractConfigurable(settings, originalSettings, JetLanguage.NAME)
+		return new CodeStyleAbstractConfigurable(settings, originalSettings, NapileLanguage.NAME)
 		{
 			@Override
 			protected CodeStyleAbstractPanel createPanel(CodeStyleSettings settings)
 			{
-				return new TabbedLanguageCodeStylePanel(JetLanguage.INSTANCE, getCurrentSettings(), settings)
+				return new TabbedLanguageCodeStylePanel(NapileLanguage.INSTANCE, getCurrentSettings(), settings)
 				{
 					@Override
 					protected void initTabs(CodeStyleSettings settings)

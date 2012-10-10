@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.diagnostics;
 
-import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lexer.NapileKeywordToken;

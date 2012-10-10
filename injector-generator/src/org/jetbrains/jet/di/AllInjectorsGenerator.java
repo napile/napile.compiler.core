@@ -19,7 +19,6 @@ package org.jetbrains.jet.di;
 import java.io.IOException;
 
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
@@ -28,9 +27,10 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.TopDownAnalyzer;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
 import org.napile.compiler.lang.resolve.processors.ControlFlowAnalyzer;
-import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
+import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.openapi.project.Project;
 
 /**

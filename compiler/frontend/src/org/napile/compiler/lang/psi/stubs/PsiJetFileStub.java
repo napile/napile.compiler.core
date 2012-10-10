@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.psi.stubs.PsiFileStub;
 
 /**

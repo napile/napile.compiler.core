@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.formatter;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.NapileLanguage;
 import com.intellij.application.options.IndentOptionsEditor;
 import com.intellij.application.options.SmartIndentOptionsEditor;
 import com.intellij.lang.Language;
@@ -34,7 +34,7 @@ public class JetLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 	@Override
 	public Language getLanguage()
 	{
-		return JetLanguage.INSTANCE;
+		return NapileLanguage.INSTANCE;
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class JetLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 	@Override
 	public String getLanguageName()
 	{
-		return JetLanguage.NAME;
+		return NapileLanguage.NAME;
 	}
 
 	@Override

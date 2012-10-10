@@ -27,15 +27,15 @@ import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.CodeInsightActionHandler;
@@ -68,7 +68,7 @@ public class GotoSuperActionHandler implements CodeInsightActionHandler
 		PsiElement element = file.findElementAt(editor.getCaretModel().getOffset());
 		if(element == null)
 			return;
-		@SuppressWarnings("unchecked") NapileNamedDeclaration funOrClass = PsiTreeUtil.getParentOfType(element, NapileNamedFunction.class, NapileClass.class, NapileProperty.class);
+		@SuppressWarnings("unchecked") NapileNamedDeclaration funOrClass = PsiTreeUtil.getParentOfType(element, NapileNamedMethod.class, NapileClass.class, NapileProperty.class);
 		if(funOrClass == null)
 			return;
 

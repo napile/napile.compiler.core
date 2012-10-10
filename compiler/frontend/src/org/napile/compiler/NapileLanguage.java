@@ -14,18 +14,32 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
-
-import org.jetbrains.annotations.NotNull;
-
-/**
- * @author Nikolay Krasko
+/*
+ * @author max
  */
-public interface NapileExpression extends NapileElement
+package org.napile.compiler;
+
+import org.napile.asm.resolve.ImportPath;
+import com.intellij.lang.Language;
+
+public class NapileLanguage extends Language
 {
-	@Override
-	void accept(@NotNull NapileVisitorVoid visitor);
+	public static final ImportPath[] DEFAULT_IMPORTS = new ImportPath[]
+	{
+		new ImportPath("napile.lang.*")
+	};
+
+	public static NapileLanguage INSTANCE = new NapileLanguage();
+	public static String NAME = "Napile";
+
+	private NapileLanguage()
+	{
+		super("NAPILE");
+	}
 
 	@Override
-	<R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data);
+	public String getDisplayName()
+	{
+		return NAME;
+	}
 }

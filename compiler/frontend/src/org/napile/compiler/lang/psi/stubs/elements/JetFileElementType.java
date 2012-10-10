@@ -18,9 +18,9 @@ package org.napile.compiler.lang.psi.stubs.elements;
 
 import java.io.IOException;
 
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.lang.psi.stubs.PsiJetFileStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetFileStubImpl;
-import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.psi.StubBuilder;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -38,7 +38,7 @@ public class JetFileElementType extends IStubFileElementType<PsiJetFileStub>
 
 	public JetFileElementType()
 	{
-		super("napile.FILE", JetLanguage.INSTANCE);
+		super("napile.FILE", NapileLanguage.INSTANCE);
 	}
 
 	@Override

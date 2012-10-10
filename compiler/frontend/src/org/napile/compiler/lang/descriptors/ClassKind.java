@@ -22,8 +22,9 @@ package org.napile.compiler.lang.descriptors;
 public enum ClassKind
 {
 	CLASS,
-	RETELL,
+	RETELL_CLASS,
 	ENUM_CLASS,
+
 	ENUM_ENTRY,
 	ANONYM_CLASS
 }

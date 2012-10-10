@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import org.napile.compiler.lang.psi.stubs.impl.PsiJetFunctionStubImpl;
 import com.intellij.lang.ASTNode;
@@ -34,7 +34,7 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub, NapileNamedFunction>
+public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub, NapileNamedMethod>
 {
 
 	public JetMethodElementType(@NotNull @NonNls String debugName)
@@ -43,15 +43,15 @@ public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub,
 	}
 
 	@Override
-	public NapileNamedFunction createPsiFromAst(@NotNull ASTNode node)
+	public NapileNamedMethod createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileNamedFunction(node);
+		return new NapileNamedMethod(node);
 	}
 
 	@Override
-	public NapileNamedFunction createPsi(@NotNull PsiJetFunctionStub stub)
+	public NapileNamedMethod createPsi(@NotNull PsiJetFunctionStub stub)
 	{
-		return new NapileNamedFunction(stub);
+		return new NapileNamedMethod(stub);
 	}
 
 	@Override
@@ -60,9 +60,9 @@ public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub,
 		if(super.shouldCreateStub(node))
 		{
 			PsiElement psi = node.getPsi();
-			if(psi instanceof NapileNamedFunction)
+			if(psi instanceof NapileNamedMethod)
 			{
-				NapileNamedFunction function = (NapileNamedFunction) psi;
+				NapileNamedMethod function = (NapileNamedMethod) psi;
 				return function.getName() != null;
 			}
 		}
@@ -71,7 +71,7 @@ public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub,
 	}
 
 	@Override
-	public PsiJetFunctionStub createStub(@NotNull NapileNamedFunction psi, @NotNull StubElement parentStub)
+	public PsiJetFunctionStub createStub(@NotNull NapileNamedMethod psi, @NotNull StubElement parentStub)
 	{
 		return new PsiJetFunctionStubImpl(JetStubElementTypes.METHOD, parentStub, psi.getName());
 	}
