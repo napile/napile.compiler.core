@@ -20,6 +20,7 @@ import static org.napile.compiler.lang.diagnostics.Errors.CYCLIC_INHERITANCE_HIE
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -196,6 +198,27 @@ public class TypeHierarchyResolver
 
 					owner.addClassifierDescriptor(mutableClassDescriptor);
 				}
+
+				@Override
+				public void visitAnonymClass(NapileAnonymClass declaration)
+				{
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
+					context.getAnonymous().put(declaration, mutableClassDescriptor);
+
+					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
+
+					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
+
+					ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(mutableClassDescriptor, Collections.<AnnotationDescriptor>emptyList(), false);
+					constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
+					mutableClassDescriptor.addConstructor(constructorDescriptor);
+
+					trace.record(BindingContext.CONSTRUCTOR, declaration, constructorDescriptor);
+
+					owner.addObjectDescriptor(mutableClassDescriptor);
+					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
+				}
+
 
 				private void prepareForDeferredCall(@NotNull JetScope outerScope, @NotNull WithDeferredResolve withDeferredResolve, @NotNull NapileDeclarationContainer container)
 				{
