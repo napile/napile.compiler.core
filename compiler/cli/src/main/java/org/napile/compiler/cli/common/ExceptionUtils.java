@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jetbrains.jet.utils;
+package org.napile.compiler.cli.common;
 
 import java.io.Closeable;
 

@@ -17,7 +17,7 @@
 /*
  * @author max
  */
-package org.jetbrains.jet.utils;
+package org.napile.compiler.codegen;
 
 public interface Progress
 {

@@ -26,7 +26,7 @@ import java.util.Collections;
 
 import javax.swing.JPanel;
 
-import org.jetbrains.jet.utils.Progress;
+import org.napile.compiler.codegen.Progress;
 import org.napile.asm.LangVersion;
 import org.napile.asm.io.AsmWriterOption;
 import org.napile.asm.io.xml.out.AsmXmlTextWriter;

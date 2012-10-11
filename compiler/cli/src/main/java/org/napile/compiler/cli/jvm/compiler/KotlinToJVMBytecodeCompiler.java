@@ -25,8 +25,8 @@ import java.util.LinkedList;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.utils.ExceptionUtils;
-import org.jetbrains.jet.utils.Progress;
+import org.napile.compiler.cli.common.ExceptionUtils;
+import org.napile.compiler.codegen.Progress;
 import org.napile.asm.LangVersion;
 import org.napile.asm.io.xml.out.AsmXmlFileWriter;
 import org.napile.asm.tree.members.ClassNode;
