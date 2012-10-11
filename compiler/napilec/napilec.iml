@@ -6,6 +6,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="intellij-core" level="project" />
+    <orderEntry type="module" module-name="frontend" />
   </component>
 </module>
 

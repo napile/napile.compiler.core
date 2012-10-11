@@ -16,11 +16,13 @@
 
 package org.napile.compiler.codegen.processors.codegen;
 
+import gnu.trove.TObjectIntHashMap;
+import gnu.trove.TObjectIntIterator;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.napile.compiler.codegen.processors.Triple;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -31,8 +33,8 @@ import com.google.common.collect.Lists;
  */
 public class FrameMap
 {
-	private final Map<DeclarationDescriptor, Integer> myVarIndex = new HashMap<DeclarationDescriptor, Integer>();
-	private final Map<DeclarationDescriptor, Integer> myVarSizes = new HashMap<DeclarationDescriptor, Integer>();
+	private final TObjectIntHashMap<DeclarationDescriptor> myVarIndex = new TObjectIntHashMap<DeclarationDescriptor>();
+	private final TObjectIntHashMap<DeclarationDescriptor> myVarSizes = new TObjectIntHashMap<DeclarationDescriptor>();
 	private int myMaxIndex = 0;
 
 	public int enter(DeclarationDescriptor descriptor)
@@ -71,7 +73,42 @@ public class FrameMap
 
 	public int getIndex(DeclarationDescriptor descriptor)
 	{
-		return myVarIndex.containsKey(descriptor) ? myVarIndex.get(descriptor) : -1;
+		return myVarIndex.contains(descriptor) ? myVarIndex.get(descriptor) : -1;
+	}
+
+	public Mark mark()
+	{
+		return new Mark(myMaxIndex);
+	}
+
+	public class Mark
+	{
+		private final int myIndex;
+
+		public Mark(int index)
+		{
+			myIndex = index;
+		}
+
+		public void dropTo()
+		{
+			List<DeclarationDescriptor> descriptorsToDrop = new ArrayList<DeclarationDescriptor>();
+			TObjectIntIterator<DeclarationDescriptor> iterator = myVarIndex.iterator();
+			while(iterator.hasNext())
+			{
+				iterator.advance();
+				if(iterator.value() >= myIndex)
+				{
+					descriptorsToDrop.add(iterator.key());
+				}
+			}
+			for(DeclarationDescriptor declarationDescriptor : descriptorsToDrop)
+			{
+				myVarIndex.remove(declarationDescriptor);
+				myVarSizes.remove(declarationDescriptor);
+			}
+			myMaxIndex = myIndex;
+		}
 	}
 
 	@Override
@@ -86,8 +123,9 @@ public class FrameMap
 
 		List<Triple<DeclarationDescriptor, Integer, Integer>> descriptors = Lists.newArrayList();
 
-		for(DeclarationDescriptor descriptor : myVarIndex.keySet())
+		for(Object descriptor0 : myVarIndex.keys())
 		{
+			DeclarationDescriptor descriptor = (DeclarationDescriptor) descriptor0;
 			int varIndex = myVarIndex.get(descriptor);
 			int varSize = myVarSizes.get(descriptor);
 			descriptors.add(new Triple<DeclarationDescriptor, Integer, Integer>(descriptor, varIndex, varSize));
