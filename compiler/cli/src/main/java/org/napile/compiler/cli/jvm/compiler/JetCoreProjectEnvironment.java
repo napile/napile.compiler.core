@@ -19,40 +19,23 @@ import java.io.File;
 
 import org.jetbrains.annotations.NotNull;
 import com.intellij.core.CoreApplicationEnvironment;
-import com.intellij.core.CoreJavaFileManager;
 import com.intellij.core.CorePackageIndex;
 import com.intellij.core.CoreProjectEnvironment;
 import com.intellij.mock.MockFileIndexFacade;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.roots.PackageIndex;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.impl.file.impl.JavaFileManager;
 
 public class JetCoreProjectEnvironment extends CoreProjectEnvironment
 {
-	private final JavaFileManager myFileManager;
 	private final PackageIndex myPackageIndex;
 
 	public JetCoreProjectEnvironment(Disposable parentDisposable, CoreApplicationEnvironment applicationEnvironment)
 	{
 		super(parentDisposable, applicationEnvironment);
 
-		myPackageIndex = createCorePackageIndex();
+		myPackageIndex = new CorePackageIndex();
 		myProject.registerService(PackageIndex.class, myPackageIndex);
-
-		myFileManager = createCoreFileManager();
-		myProject.registerService(JavaFileManager.class, myFileManager);
-	}
-
-
-	protected JavaFileManager createCoreFileManager()
-	{
-		return new CoreJavaFileManager(myPsiManager);
-	}
-
-	protected PackageIndex createCorePackageIndex()
-	{
-		return new CorePackageIndex();
 	}
 
 	public void addJarToClassPath(File path)
@@ -69,7 +52,7 @@ public class JetCoreProjectEnvironment extends CoreProjectEnvironment
 	public void addSourcesToClasspath(@NotNull VirtualFile root)
 	{
 		assert root.isDirectory();
-		((CoreJavaFileManager) myFileManager).addToClasspath(root);
+
 		((CorePackageIndex) myPackageIndex).addToClasspath(root);
 		((MockFileIndexFacade) myFileIndexFacade).addLibraryRoot(root);
 	}

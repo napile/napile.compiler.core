@@ -189,8 +189,9 @@ public class TypeHierarchyResolver
 			declaration.accept(new NapileVisitorVoid()
 			{
 				@Override
-				public void visitJetFile(NapileFile file)
+				public void visitNapileFile(NapileFile file)
 				{
+					System.out.println(file.getClass().getName());
 					NamespaceDescriptorImpl namespaceDescriptor = namespaceFactory.createNamespaceDescriptorPathIfNeeded(file, outerScope, RedeclarationHandler.DO_NOTHING);
 					context.getNamespaceDescriptors().put(file, namespaceDescriptor);
 

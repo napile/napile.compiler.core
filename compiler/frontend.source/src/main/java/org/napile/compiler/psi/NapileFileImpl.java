@@ -111,7 +111,7 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 	{
 		if(visitor instanceof NapileVisitorVoid)
 		{
-			((NapileVisitorVoid) visitor).visitJetFile(this);
+			((NapileVisitorVoid) visitor).visitNapileFile(this);
 		}
 		else
 		{

@@ -39,15 +39,15 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 
-public class JetParserDefinition implements ParserDefinition
+public class NapileParserDefinition implements ParserDefinition
 {
-	public JetParserDefinition()
+	public NapileParserDefinition()
 	{}
 
 	@NotNull
-	public static JetParserDefinition getInstance()
+	public static NapileParserDefinition getInstance()
 	{
-		return (JetParserDefinition) LanguageParserDefinitions.INSTANCE.forLanguage(NapileLanguage.INSTANCE);
+		return (NapileParserDefinition) LanguageParserDefinitions.INSTANCE.forLanguage(NapileLanguage.INSTANCE);
 	}
 
 	@Override

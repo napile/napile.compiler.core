@@ -26,20 +26,17 @@ import org.napile.compiler.NapileFileType;
 import org.napile.compiler.cli.jvm.JVMConfigurationKeys;
 import org.napile.compiler.config.CommonConfigurationKeys;
 import org.napile.compiler.config.CompilerConfiguration;
-import org.napile.compiler.lang.parsing.JetParserDefinition;
+import org.napile.compiler.lang.parsing.NapileParserDefinition;
 import org.napile.compiler.lang.resolve.JetFilesProvider;
 import org.napile.compiler.psi.NapileFile;
 import com.intellij.core.CoreApplicationEnvironment;
-import com.intellij.core.CoreJavaFileManager;
 import com.intellij.mock.MockApplication;
 import com.intellij.mock.MockProject;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.impl.file.impl.JavaFileManager;
 
 /**
  * @author yole
@@ -63,13 +60,12 @@ public class JetCoreEnvironment
 		this.applicationEnvironment = new CoreApplicationEnvironment(parentDisposable);
 		applicationEnvironment.registerFileType(NapileFileType.INSTANCE, NapileFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerFileType(NXmlFileType.INSTANCE, NXmlFileType.INSTANCE.getDefaultExtension());
-		applicationEnvironment.registerParserDefinition(new JetParserDefinition());
+		applicationEnvironment.registerParserDefinition(new NapileParserDefinition());
 
 		projectEnvironment = new JetCoreProjectEnvironment(parentDisposable, applicationEnvironment);
 
 		MockProject project = projectEnvironment.getProject();
 		project.registerService(JetFilesProvider.class, new CliJetFilesProvider(this));
-		project.registerService(CoreJavaFileManager.class, (CoreJavaFileManager) ServiceManager.getService(project, JavaFileManager.class));
 
 		for(File path : configuration.getList(JVMConfigurationKeys.CLASSPATH_KEY))
 			addToClasspath(path);

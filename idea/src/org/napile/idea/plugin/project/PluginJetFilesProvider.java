@@ -86,7 +86,7 @@ public class PluginJetFilesProvider extends JetFilesProvider
 								return true;
 
 							final FileType fileType = FileTypeManager.getInstance().getFileTypeByFile(file);
-							if(fileType != NapileFileType.INSTANCE)
+							if(fileType != NapileFileType.INSTANCE && fileType != NXmlFileType.INSTANCE)
 								return true;
 							PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
 							if(psiFile instanceof NapileFile)
