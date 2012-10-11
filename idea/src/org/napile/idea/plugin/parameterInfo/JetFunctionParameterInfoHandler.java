@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.cli.jvm.compiler.TipsManager;
+import org.napile.compiler.common.TipsManager;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;

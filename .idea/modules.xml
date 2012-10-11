@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/compiler/backend/backend.iml" filepath="$PROJECT_DIR$/compiler/backend/backend.iml" group="compiler" />
-      <module fileurl="file://$PROJECT_DIR$/compiler/cli/cli.iml" filepath="$PROJECT_DIR$/compiler/cli/cli.iml" group="compiler" />
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend/frontend.iml" filepath="$PROJECT_DIR$/compiler/frontend/frontend.iml" group="compiler/frontend" />
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend.api/frontend.api.iml" filepath="$PROJECT_DIR$/compiler/frontend.api/frontend.api.iml" group="compiler/frontend" />
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend.bytecode/frontend.bytecode.iml" filepath="$PROJECT_DIR$/compiler/frontend.bytecode/frontend.bytecode.iml" group="compiler/frontend" />

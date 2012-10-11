@@ -19,7 +19,6 @@ package org.jetbrains.jet.di;
 import java.io.IOException;
 
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
-import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
@@ -30,7 +29,6 @@ import org.napile.compiler.lang.resolve.processors.ControlFlowAnalyzer;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.psi.NapileFile;
 import com.intellij.openapi.project.Project;
 
 /**
@@ -46,8 +44,6 @@ public class AllInjectorsGenerator
 		generateInjectorForTopDownAnalyzerBasic();
 
 		generateMacroInjector();
-
-		generateInjectorForJvmCodegen();
 
 		generateInjectorForBodyResolve();
 	}
@@ -89,18 +85,6 @@ public class AllInjectorsGenerator
 		generator.addPublicParameter(Project.class);
 
 		generator.generate("compiler/frontend/src", "org.napile.compiler.di", "InjectorForMacros");
-	}
-
-
-	private static void generateInjectorForJvmCodegen() throws IOException
-	{
-		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
-		generator.addPublicParameter(BindingTrace.class);
-		generator.addParameter(DiType.listOf(NapileFile.class));
-		generator.addParameter(Project.class);
-		generator.addField(true, BindingContext.class, "bindingContext", new GivenExpression("bindingTrace.getBindingContext()"));
-
-		generator.generate("compiler/backend/src", "org.napile.compiler.di", "InjectorForJvmCodegen");
 	}
 
 	private static void generateInjectorForBodyResolve() throws IOException

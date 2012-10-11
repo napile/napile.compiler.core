@@ -10,14 +10,6 @@
       <maximumStackSize value="2" />
       <properties />
     </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="512" />
-      <maximumStackSize value="2" />
-      <properties />
-    </buildFile>
   </component>
 </project>
 

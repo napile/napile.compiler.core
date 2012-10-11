@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.references;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.cli.jvm.compiler.TipsManager;
+import org.napile.compiler.common.TipsManager;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;

@@ -27,9 +27,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.Main;
 import org.napile.compiler.NapileFileType;
-import org.napile.compiler.cli.common.CLICompiler;
-import org.napile.compiler.cli.jvm.K2JVMCompiler;
 import com.intellij.compiler.impl.javaCompiler.ModuleChunk;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.SimpleJavaParameters;
@@ -140,7 +139,7 @@ public class JetCompiler implements TranslatingCompiler
 			@Override
 			public Integer invoke(PrintStream stream)
 			{
-				return CLICompiler.doMainNoExit(stream, new K2JVMCompiler(), arguments).getCode();
+				return Main.doMainNoExit(stream, arguments).getCode();
 			}
 		});
 	}
@@ -168,7 +167,7 @@ public class JetCompiler implements TranslatingCompiler
 	{
 		final SimpleJavaParameters params = new SimpleJavaParameters();
 		params.setJdk(new SimpleJavaSdkType().createJdk("tmp", SystemProperties.getJavaHome()));
-		params.setMainClass("org.napile.compiler.cli.jvm.K2JVMCompiler");
+		params.setMainClass("org.napile.compiler.Main");
 
 		for(String arg : arguments)
 			params.getProgramParametersList().add(arg);
