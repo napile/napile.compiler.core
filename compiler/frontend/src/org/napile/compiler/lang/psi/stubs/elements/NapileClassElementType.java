@@ -22,11 +22,10 @@ import java.util.List;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
 import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.psi.NapileClassImpl;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
-import org.napile.compiler.lang.psi.stubs.impl.PsiJetClassStubImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -37,16 +36,16 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetClassElementType extends JetStubElementType<PsiJetClassStub, NapileClass>
+public class NapileClassElementType extends NapileStubElementType<NapilePsiClassStub, NapileClass>
 {
 
-	public JetClassElementType(@NotNull @NonNls String debugName)
+	public NapileClassElementType(@NotNull @NonNls String debugName)
 	{
 		super(debugName);
 	}
 
 	@Override
-	public NapileClass createPsi(@NotNull PsiJetClassStub stub)
+	public NapileClass createPsi(@NotNull NapilePsiClassStub stub)
 	{
 		return new NapileClassImpl(stub);
 	}
@@ -58,15 +57,15 @@ public class JetClassElementType extends JetStubElementType<PsiJetClassStub, Nap
 	}
 
 	@Override
-	public PsiJetClassStub createStub(@NotNull NapileClass psi, StubElement parentStub)
+	public NapilePsiClassStub createStub(@NotNull NapileClass psi, StubElement parentStub)
 	{
 		FqName fqName = NapilePsiUtil.getFQName(psi);
 
-		return new PsiJetClassStubImpl(JetStubElementTypes.CLASS, parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames());
+		return new NapilePsiClassStub(NapileStubElementTypes.CLASS, parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames());
 	}
 
 	@Override
-	public void serialize(PsiJetClassStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiClassStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
 		dataStream.writeName(stub.getQualifiedName());
@@ -80,7 +79,7 @@ public class JetClassElementType extends JetStubElementType<PsiJetClassStub, Nap
 	}
 
 	@Override
-	public PsiJetClassStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiClassStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
 		StringRef qualifiedName = dataStream.readName();
@@ -90,11 +89,11 @@ public class JetClassElementType extends JetStubElementType<PsiJetClassStub, Nap
 		for(int i = 0; i < superCount; i++)
 			superNames[i] = dataStream.readName();
 
-		return new PsiJetClassStubImpl(JetStubElementTypes.CLASS, parentStub, qualifiedName, name, superNames);
+		return new NapilePsiClassStub(NapileStubElementTypes.CLASS, parentStub, qualifiedName, name, superNames);
 	}
 
 	@Override
-	public void indexStub(PsiJetClassStub stub, IndexSink sink)
+	public void indexStub(NapilePsiClassStub stub, IndexSink sink)
 	{
 		StubIndexServiceFactory.getInstance().indexClass(stub, sink);
 	}

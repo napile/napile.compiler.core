@@ -32,6 +32,7 @@ import org.napile.compiler.psi.NapileClassLike;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.psi.NapileModifierList;
 import org.napile.compiler.psi.NapileModifierListOwner;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.text.StringUtil;

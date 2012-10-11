@@ -810,7 +810,7 @@ public class JetControlFlowProcessor
 		//        }
 
 		@Override
-		public void visitProperty(NapileProperty property)
+		public void visitVariable(NapileVariable property)
 		{
 			builder.declare(property);
 			NapileExpression initializer = property.getInitializer();
@@ -948,7 +948,7 @@ public class JetControlFlowProcessor
 			List<NapileDeclaration> functions = Lists.newArrayList();
 			for(NapileDeclaration localDeclaration : declarations)
 			{
-				if(!(localDeclaration instanceof NapileProperty) )
+				if(!(localDeclaration instanceof NapileVariable) )
 				{
 					functions.add(localDeclaration);
 				}
@@ -985,13 +985,13 @@ public class JetControlFlowProcessor
 		private void visitClassOrObject(NapileClassLike classOrObject)
 		{
 			List<NapileDeclaration> declarations = classOrObject.getDeclarations();
-			List<NapileProperty> properties = Lists.newArrayList();
+			List<NapileVariable> properties = Lists.newArrayList();
 			for(NapileDeclaration declaration : declarations)
 			{
-				if(declaration instanceof NapileProperty)
+				if(declaration instanceof NapileVariable)
 				{
 					value(declaration, inCondition);
-					properties.add((NapileProperty) declaration);
+					properties.add((NapileVariable) declaration);
 				}
 			}
 		}

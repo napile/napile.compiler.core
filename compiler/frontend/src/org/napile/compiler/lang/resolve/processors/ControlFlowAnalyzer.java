@@ -91,9 +91,9 @@ public class ControlFlowAnalyzer
 			checkFunction(constructor, TypeUtils.NO_EXPECTED_TYPE);
 		}
 
-		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
 		{
-			NapileProperty property = entry.getKey();
+			NapileVariable property = entry.getKey();
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
 				continue;
 			PropertyDescriptor propertyDescriptor = entry.getValue();

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs.impl;
+package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.stubs.PsiJetParameterStub;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
@@ -27,27 +27,25 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetParameterStubImpl extends StubBase<NapilePropertyParameter> implements PsiJetParameterStub
+public class NapilePsiMethodParameterStub extends StubBase<NapilePropertyParameter> implements NamedStub<NapilePropertyParameter>
 {
 	private final StringRef name;
-	private final boolean isMutable;
 	private final boolean isVarArg;
 	private final StringRef typeText;
 	private final StringRef defaultValueText;
 
-	public PsiJetParameterStubImpl(IStubElementType elementType, StubElement parent, StringRef name, boolean isMutable, boolean isVarArg, StringRef typeText, StringRef defaultValueText)
+	public NapilePsiMethodParameterStub(IStubElementType elementType, StubElement parent, StringRef name, boolean isVarArg, StringRef typeText, StringRef defaultValueText)
 	{
 		super(parent, elementType);
 		this.name = name;
-		this.isMutable = isMutable;
 		this.isVarArg = isVarArg;
 		this.typeText = typeText;
 		this.defaultValueText = defaultValueText;
 	}
 
-	public PsiJetParameterStubImpl(IStubElementType elementType, StubElement parent, String name, boolean isMutable, boolean isVarArg, String typeText, String defaultValueText)
+	public NapilePsiMethodParameterStub(IStubElementType elementType, StubElement parent, String name, boolean isVarArg, String typeText, String defaultValueText)
 	{
-		this(elementType, parent, StringRef.fromString(name), isMutable, isVarArg, StringRef.fromString(typeText), StringRef.fromString(defaultValueText));
+		this(elementType, parent, StringRef.fromString(name), isVarArg, StringRef.fromString(typeText), StringRef.fromString(defaultValueText));
 	}
 
 	@Override
@@ -56,26 +54,17 @@ public class PsiJetParameterStubImpl extends StubBase<NapilePropertyParameter> i
 		return StringRef.toString(name);
 	}
 
-	@Override
-	public boolean isMutable()
-	{
-		return isMutable;
-	}
-
-	@Override
 	public boolean isVarArg()
 	{
 		return isVarArg;
 	}
 
 	@Nullable
-	@Override
 	public String getTypeText()
 	{
 		return StringRef.toString(typeText);
 	}
 
-	@Override
 	public String getDefaultValueText()
 	{
 		return StringRef.toString(defaultValueText);
@@ -85,9 +74,9 @@ public class PsiJetParameterStubImpl extends StubBase<NapilePropertyParameter> i
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("PsiJetParameterStubImpl[");
+		builder.append("NapilePsiMethodParameterStub[");
 
-		builder.append(isMutable() ? "var " : "val ");
+		builder.append("var ");
 
 		if(isVarArg())
 		{

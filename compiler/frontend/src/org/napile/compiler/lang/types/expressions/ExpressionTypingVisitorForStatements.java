@@ -99,7 +99,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitProperty(NapileProperty property, ExpressionTypingContext context)
+	public JetTypeInfo visitVariable(NapileVariable property, ExpressionTypingContext context)
 	{
 		VariableDescriptor propertyDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(scope.getContainingDeclaration(), scope, property, context.dataFlowInfo, context.trace);
 		NapileExpression initializer = property.getInitializer();

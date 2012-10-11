@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.psi;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +23,11 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.psi.NapileAnnotationEntry;
+import org.napile.compiler.lang.psi.NapileAnnotationList;
+import org.napile.compiler.lang.psi.NapileElementImpl;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lexer.NapileToken;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
@@ -30,9 +35,9 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileModifierList extends NapileElementImpl
+public class NapileModifierListImpl extends NapileElementImpl implements NapileModifierList
 {
-	public NapileModifierList(@NotNull ASTNode node)
+	public NapileModifierListImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -49,12 +54,14 @@ public class NapileModifierList extends NapileElementImpl
 		return visitor.visitModifierList(this, data);
 	}
 
+	@Override
 	@NotNull
 	public List<NapileAnnotationList> getAnnotations()
 	{
 		return findChildrenByType(NapileNodeTypes.ANNOTATION_LIST);
 	}
 
+	@Override
 	@NotNull
 	public List<NapileAnnotationEntry> getAnnotationEntries()
 	{
@@ -69,11 +76,13 @@ public class NapileModifierList extends NapileElementImpl
 		return answer != null ? answer : Collections.<NapileAnnotationEntry>emptyList();
 	}
 
+	@Override
 	public boolean hasModifier(NapileToken token)
 	{
 		return getModifierNode(token) != null;
 	}
 
+	@Override
 	@Nullable
 	public ASTNode getModifierNode(NapileToken token)
 	{

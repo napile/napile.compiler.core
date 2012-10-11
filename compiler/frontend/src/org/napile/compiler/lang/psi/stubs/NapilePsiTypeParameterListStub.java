@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs.impl;
+package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
-import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterListStub;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
@@ -26,9 +25,9 @@ import com.intellij.psi.stubs.StubElement;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetTypeParameterListStubImpl extends StubBase<NapileTypeParameterList> implements PsiJetTypeParameterListStub
+public class NapilePsiTypeParameterListStub extends StubBase<NapileTypeParameterList>
 {
-	public PsiJetTypeParameterListStubImpl(@NotNull IStubElementType elementType, final StubElement parent)
+	public NapilePsiTypeParameterListStub(@NotNull IStubElementType elementType, final StubElement parent)
 	{
 		super(parent, elementType);
 	}
@@ -36,6 +35,6 @@ public class PsiJetTypeParameterListStubImpl extends StubBase<NapileTypeParamete
 	@Override
 	public String toString()
 	{
-		return "PsiJetTypeParameterListStubImpl";
+		return "NapilePsiTypeParameterListStub";
 	}
 }

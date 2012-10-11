@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
-import org.napile.compiler.NapileXmlFileType;
 import org.napile.compiler.lang.resolve.JetFilesProvider;
 import org.napile.compiler.psi.NapileFile;
 import com.google.common.collect.Sets;
@@ -130,7 +130,7 @@ public class PluginJetFilesProvider extends JetFilesProvider
 			protected void acceptFile(VirtualFile file, String fileRoot, String filePath)
 			{
 				final FileType fileType = fileTypeManager.getFileTypeByFile(file);
-				if(fileType != NapileFileType.INSTANCE && fileType != NapileXmlFileType.INSTANCE)
+				if(fileType != NapileFileType.INSTANCE && fileType != NXmlFileType.INSTANCE)
 					return;
 
 				if(scope.accept(file))

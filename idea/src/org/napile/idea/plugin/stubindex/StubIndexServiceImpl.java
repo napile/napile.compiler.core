@@ -16,9 +16,9 @@
 
 package org.napile.idea.plugin.stubindex;
 
-import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
-import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
-import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
 import org.napile.compiler.lang.psi.stubs.elements.StubIndexService;
 import com.intellij.psi.stubs.IndexSink;
 
@@ -27,39 +27,31 @@ import com.intellij.psi.stubs.IndexSink;
  */
 public class StubIndexServiceImpl implements StubIndexService
 {
-
 	@Override
-	public void indexClass(PsiJetClassStub stub, IndexSink sink)
+	public void indexClass(NapilePsiClassStub stub, IndexSink sink)
 	{
 		String name = stub.getName();
 		if(name != null)
-		{
-			sink.occurrence(JetIndexKeys.SHORT_NAME_KEY, name);
-		}
+			sink.occurrence(JetIndexKeys.CLASSES_SHORT_NAME_KEY, name);
 
 		String fqn = stub.getQualifiedName();
 		if(fqn != null)
-		{
 			sink.occurrence(JetIndexKeys.FQN_KEY, fqn);
-		}
-
-		for(String superName : stub.getSuperNames())
-		{
-			sink.occurrence(JetIndexKeys.SUPERCLASS_NAME_KEY, superName);
-		}
 	}
 
 	@Override
-	public void indexMethod(PsiJetFunctionStub stub, IndexSink sink)
+	public void indexMethod(NapilePsiMethodStub stub, IndexSink sink)
 	{
 		String name = stub.getName();
 		if(name != null)
-			sink.occurrence(JetIndexKeys.FUNCTIONS_SHORT_NAME_KEY, name);
+			sink.occurrence(JetIndexKeys.METHODS_SHORT_NAME_KEY, name);
 	}
 
 	@Override
-	public void indexProperty(PsiJetPropertyStub stub, IndexSink sink)
+	public void indexVariable(NapilePsiVariableStub stub, IndexSink sink)
 	{
-
+		String name = stub.getName();
+		if(name != null)
+			sink.occurrence(JetIndexKeys.VARIABLES_SHORT_NAME_KEY, name);
 	}
 }

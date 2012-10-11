@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.stubs.NapilePsiEnumEntryStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.psi.NapileClassLike;
 import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileElement;
@@ -44,7 +44,7 @@ public class NapileEnumEntry extends NapileNamedDeclarationStub<NapilePsiEnumEnt
 
 	public NapileEnumEntry(@NotNull NapilePsiEnumEntryStub stub)
 	{
-		super(stub, JetStubElementTypes.ENUM_ENTRY);
+		super(stub, NapileStubElementTypes.ENUM_ENTRY);
 	}
 
 	@Override

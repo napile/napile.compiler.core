@@ -35,7 +35,7 @@ import org.napile.compiler.lang.cfg.pseudocode.WriteValueInstruction;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -235,7 +235,7 @@ public class PseudocodeVariablesData
 		if(instruction instanceof WriteValueInstruction)
 		{
 			VariableInitState enterInitState = enterInstructionData.get(variable);
-			VariableInitState initializationAtThisElement = VariableInitState.create(((WriteValueInstruction) instruction).getElement() instanceof NapileProperty, enterInitState);
+			VariableInitState initializationAtThisElement = VariableInitState.create(((WriteValueInstruction) instruction).getElement() instanceof NapileVariable, enterInitState);
 			exitInstructionData.put(variable, initializationAtThisElement);
 		}
 		else

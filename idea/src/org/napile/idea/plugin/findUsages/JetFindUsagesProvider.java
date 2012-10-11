@@ -17,12 +17,12 @@
 package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
 import com.intellij.lang.cacheBuilder.WordsScanner;
@@ -70,7 +70,7 @@ public class JetFindUsagesProvider implements FindUsagesProvider
 			return "class";
 		if(psiElement instanceof NapilePropertyParameter)
 			return "parameter";
-		if(psiElement instanceof NapileProperty)
+		if(psiElement instanceof NapileVariable)
 			return "property";
 		return "";
 	}

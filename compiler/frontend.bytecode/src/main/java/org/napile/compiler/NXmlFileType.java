@@ -29,7 +29,7 @@ import com.intellij.openapi.vfs.VirtualFile;
  * @author VISTALL
  * @date 18:02/09.10.12
  */
-public class NapileXmlFileType implements FileType
+public class NXmlFileType implements FileType
 {
 	private static final NotNullLazyValue<Icon> ICON = new NotNullLazyValue<Icon>()
 	{
@@ -41,7 +41,7 @@ public class NapileXmlFileType implements FileType
 		}
 	};
 
-	public static final FileType INSTANCE = new NapileXmlFileType();
+	public static final FileType INSTANCE = new NXmlFileType();
 
 	@NotNull
 	@Override

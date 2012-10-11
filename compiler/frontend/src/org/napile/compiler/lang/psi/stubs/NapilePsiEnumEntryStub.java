@@ -16,13 +16,31 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
+import com.intellij.psi.stubs.StubBase;
+import com.intellij.psi.stubs.StubElement;
+import com.intellij.util.io.StringRef;
 
 /**
  * @author VISTALL
  * @date 19:52/27.08.12
  */
-public interface NapilePsiEnumEntryStub extends NamedStub<NapileEnumEntry>
+public class NapilePsiEnumEntryStub extends StubBase<NapileEnumEntry> implements NamedStub<NapileEnumEntry>
 {
+	private final StringRef stringRef;
+
+	public NapilePsiEnumEntryStub(StubElement parent, StringRef stringRef)
+	{
+		super(parent, NapileStubElementTypes.ENUM_ENTRY);
+		this.stringRef = stringRef;
+	}
+
+	@Nullable
+	public String getName()
+	{
+		return StringRef.toString(stringRef);
+	}
 }

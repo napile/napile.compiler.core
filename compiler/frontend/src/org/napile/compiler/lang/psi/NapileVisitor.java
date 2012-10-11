@@ -20,6 +20,7 @@ import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileModifierList;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
@@ -58,7 +59,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitNamedDeclaration(function, data);
 	}
 
-	public R visitProperty(NapileProperty property, D data)
+	public R visitVariable(NapileVariable property, D data)
 	{
 		return visitNamedDeclaration(property, data);
 	}

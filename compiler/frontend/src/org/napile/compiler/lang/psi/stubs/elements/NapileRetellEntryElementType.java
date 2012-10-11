@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.stubs.NapilePsiRetellEntryStub;
-import org.napile.compiler.lang.psi.stubs.impl.NapilePsiRetellEntryStubImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -34,7 +33,7 @@ import com.intellij.util.io.StringRef;
  * @author VISTALL
  * @date 23:44/05.09.12
  */
-public class NapileRetellEntryElementType extends JetStubElementType<NapilePsiRetellEntryStub, NapileRetellEntry>
+public class NapileRetellEntryElementType extends NapileStubElementType<NapilePsiRetellEntryStub, NapileRetellEntry>
 {
 	public NapileRetellEntryElementType(@NotNull @NonNls String debugName)
 	{
@@ -56,7 +55,7 @@ public class NapileRetellEntryElementType extends JetStubElementType<NapilePsiRe
 	@Override
 	public NapilePsiRetellEntryStub createStub(@NotNull NapileRetellEntry psi, StubElement parentStub)
 	{
-		return new NapilePsiRetellEntryStubImpl(parentStub, StringRef.fromString(psi.getName()));
+		return new NapilePsiRetellEntryStub(parentStub, StringRef.fromString(psi.getName()));
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class NapileRetellEntryElementType extends JetStubElementType<NapilePsiRe
 	public NapilePsiRetellEntryStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		return new NapilePsiRetellEntryStubImpl(parentStub, name);
+		return new NapilePsiRetellEntryStub(parentStub, name);
 	}
 
 	@Override

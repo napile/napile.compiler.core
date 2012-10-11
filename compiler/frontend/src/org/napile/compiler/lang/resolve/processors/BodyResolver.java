@@ -323,9 +323,9 @@ public class BodyResolver
 
 	private void resolvePropertyDeclarationBodies()
 	{
-		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : this.context.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : this.context.getProperties().entrySet())
 		{
-			NapileProperty property = entry.getKey();
+			NapileVariable property = entry.getKey();
 			if(!context.completeAnalysisNeeded(property))
 				continue;
 
@@ -365,7 +365,7 @@ public class BodyResolver
 		});
 	}
 
-	private void resolvePropertyInitializer(NapileProperty property, PropertyDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
+	private void resolvePropertyInitializer(NapileVariable property, PropertyDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
 	{
 		//JetFlowInformationProvider flowInformationProvider = context.getDescriptorResolver().computeFlowData(property, initializer); // TODO : flow JET-15
 		JetType expectedTypeForInitializer = property.getPropertyTypeRef() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;

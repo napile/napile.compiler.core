@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lang.psi.stubs.PsiJetParameterListStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.NapilePsiParameterListStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.psi.NapileElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
@@ -31,16 +31,16 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * @author max
  */
-public class NapileParameterList extends NapileElementImplStub<PsiJetParameterListStub>
+public class NapileParameterList extends NapileElementImplStub<NapilePsiParameterListStub>
 {
-	private static final TokenSet PARAMETER_TYPES = TokenSet.create(JetStubElementTypes.VALUE_PARAMETER, NapileNodeTypes.REFERENCE_PARAMETER);
+	private static final TokenSet PARAMETER_TYPES = TokenSet.create(NapileStubElementTypes.VALUE_PARAMETER, NapileNodeTypes.REFERENCE_PARAMETER);
 
 	public NapileParameterList(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileParameterList(@NotNull PsiJetParameterListStub stub, @NotNull IStubElementType nodeType)
+	public NapileParameterList(@NotNull NapilePsiParameterListStub stub, @NotNull IStubElementType nodeType)
 	{
 		super(stub, nodeType);
 	}
@@ -49,7 +49,7 @@ public class NapileParameterList extends NapileElementImplStub<PsiJetParameterLi
 	@Override
 	public IStubElementType getElementType()
 	{
-		return JetStubElementTypes.VALUE_PARAMETER_LIST;
+		return NapileStubElementTypes.VALUE_PARAMETER_LIST;
 	}
 
 	@Override

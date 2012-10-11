@@ -19,19 +19,19 @@ package org.napile.compiler.lang.psi.stubs.elements;
 /**
  * @author Nikolay Krasko
  */
-public interface JetStubElementTypes
+public interface NapileStubElementTypes
 {
-	JetFileElementType FILE = new JetFileElementType();
+	NapileFileElementType FILE = new NapileFileElementType();
 
-	JetClassElementType CLASS = new JetClassElementType("CLASS");
-	JetMethodElementType METHOD = new JetMethodElementType("METHOD");
-	JetPropertyElementType PROPERTY = new JetPropertyElementType("PROPERTY");
+	NapileClassElementType CLASS = new NapileClassElementType("CLASS");
+	NapileMethodElementType METHOD = new NapileMethodElementType("METHOD");
+	NapileVariableElementType VARIABLE = new NapileVariableElementType("PROPERTY");
 	NapileEnumEntryElementType ENUM_ENTRY = new NapileEnumEntryElementType("ENUM_ENTRY");
 	NapileRetellEntryElementType RETELL_ENTRY = new NapileRetellEntryElementType("RETELL_ENTRY");
 
-	JetParameterElementType VALUE_PARAMETER = new JetParameterElementType("VALUE_PARAMETER");
-	JetParameterListElementType VALUE_PARAMETER_LIST = new JetParameterListElementType("VALUE_PARAMETER_LIST");
+	NapileParameterElementType VALUE_PARAMETER = new NapileParameterElementType("VALUE_PARAMETER");
+	NapileParameterListElementType VALUE_PARAMETER_LIST = new NapileParameterListElementType("VALUE_PARAMETER_LIST");
 
-	JetTypeParameterElementType TYPE_PARAMETER = new JetTypeParameterElementType("TYPE_PARAMETER");
-	JetTypeParameterListElementType TYPE_PARAMETER_LIST = new JetTypeParameterListElementType("TYPE_PARAMETER_LIST");
+	NapileTypeParameterElementType TYPE_PARAMETER = new NapileTypeParameterElementType("TYPE_PARAMETER");
+	NapileTypeParameterListElementType TYPE_PARAMETER_LIST = new NapileTypeParameterListElementType("TYPE_PARAMETER_LIST");
 }

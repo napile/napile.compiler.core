@@ -33,7 +33,7 @@ import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -57,7 +57,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
 	private final Map<NapileNamedMethod, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
-	private final Map<NapileProperty, PropertyDescriptor> properties = Maps.newLinkedHashMap();
+	private final Map<NapileVariable, PropertyDescriptor> properties = Maps.newLinkedHashMap();
 	private final Map<NapileRetellEntry, PropertyDescriptor> retellEntries = Maps.newLinkedHashMap();
 	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
@@ -152,7 +152,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileProperty, PropertyDescriptor> getProperties()
+	public Map<NapileVariable, PropertyDescriptor> getProperties()
 	{
 		return properties;
 	}

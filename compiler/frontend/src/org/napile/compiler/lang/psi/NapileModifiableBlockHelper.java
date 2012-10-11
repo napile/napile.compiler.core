@@ -47,9 +47,9 @@ public final class NapileModifiableBlockHelper
 
 				return shouldChangeModificationCount(function);
 			}
-			else if(declaration instanceof NapileProperty)
+			else if(declaration instanceof NapileVariable)
 			{
-				NapileProperty property = (NapileProperty) declaration;
+				NapileVariable property = (NapileVariable) declaration;
 				if(property.getPropertyTypeRef() != null)
 				{
 					return takePartInDeclarationTypeInference(property);
@@ -80,9 +80,9 @@ public final class NapileModifiableBlockHelper
 					return true;
 				}
 			}
-			else if(declaration instanceof NapileProperty)
+			else if(declaration instanceof NapileVariable)
 			{
-				NapileProperty property = (NapileProperty) declaration;
+				NapileVariable property = (NapileVariable) declaration;
 				if(property.getPropertyTypeRef() == null)
 				{
 					return true;

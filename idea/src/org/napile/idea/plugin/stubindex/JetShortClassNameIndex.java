@@ -41,7 +41,7 @@ public class JetShortClassNameIndex extends StringStubIndexExtension<NapileClass
 	@Override
 	public StubIndexKey<String, NapileClassLike> getKey()
 	{
-		return JetIndexKeys.SHORT_NAME_KEY;
+		return JetIndexKeys.CLASSES_SHORT_NAME_KEY;
 	}
 
 	@Override

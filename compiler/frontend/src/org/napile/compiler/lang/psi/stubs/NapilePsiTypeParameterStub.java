@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs.impl;
+package org.napile.compiler.lang.psi.stubs;
 
 import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetTypeParameterElementType;
+import org.napile.compiler.lang.psi.stubs.elements.NapileTypeParameterElementType;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.Function;
@@ -28,12 +28,12 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetTypeParameterStubImpl extends StubBase<NapileTypeParameter> implements PsiJetTypeParameterStub
+public class NapilePsiTypeParameterStub extends StubBase<NapileTypeParameter> implements NamedStub<NapileTypeParameter>
 {
 	private final StringRef name;
 	private final StringRef[] extendBoundTypeText;
 
-	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, StringRef name, StringRef[] extendBoundTypeText)
+	public NapilePsiTypeParameterStub(NapileTypeParameterElementType type, final StubElement parent, StringRef name, StringRef[] extendBoundTypeText)
 	{
 		super(parent, type);
 
@@ -41,12 +41,11 @@ public class PsiJetTypeParameterStubImpl extends StubBase<NapileTypeParameter> i
 		this.extendBoundTypeText = extendBoundTypeText;
 	}
 
-	public PsiJetTypeParameterStubImpl(JetTypeParameterElementType type, final StubElement parent, String name, StringRef[] extendBoundTypeText)
+	public NapilePsiTypeParameterStub(NapileTypeParameterElementType type, final StubElement parent, String name, StringRef[] extendBoundTypeText)
 	{
 		this(type, parent, StringRef.fromString(name), extendBoundTypeText);
 	}
 
-	@Override
 	public StringRef[] getExtendBoundTypeText()
 	{
 		return extendBoundTypeText;
@@ -62,7 +61,7 @@ public class PsiJetTypeParameterStubImpl extends StubBase<NapileTypeParameter> i
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("PsiJetTypeParameterStubImpl[");
+		builder.append("NapilePsiTypeParameterStub[");
 
 		builder.append("name=").append(getName());
 		builder.append(" extendText=").append(StringUtil.join(extendBoundTypeText, new Function<StringRef, String>()

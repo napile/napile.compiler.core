@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs.impl;
+package org.napile.compiler.lang.psi.stubs;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.psi.stubs.elements.NapileClassElementType;
 import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetClassElementType;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.ArrayUtil;
@@ -33,18 +33,18 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetClassStubImpl extends StubBase<NapileClass> implements PsiJetClassStub
+public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedStub<NapileClass>
 {
 	private final StringRef qualifiedName;
 	private final StringRef name;
 	private final StringRef[] superNames;
 
-	public PsiJetClassStubImpl(JetClassElementType type, StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames)
+	public NapilePsiClassStub(NapileClassElementType type, StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames)
 	{
 		this(type, parent, StringRef.fromString(qualifiedName), StringRef.fromString(name), wrapStrings(superNames));
 	}
 
-	public PsiJetClassStubImpl(JetClassElementType type, StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames)
+	public NapilePsiClassStub(NapileClassElementType type, StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames)
 	{
 		super(parent, type);
 		this.qualifiedName = qualifiedName;
@@ -62,7 +62,6 @@ public class PsiJetClassStubImpl extends StubBase<NapileClass> implements PsiJet
 		return refs;
 	}
 
-	@Override
 	public String getQualifiedName()
 	{
 		return StringRef.toString(qualifiedName);
@@ -75,7 +74,6 @@ public class PsiJetClassStubImpl extends StubBase<NapileClass> implements PsiJet
 	}
 
 	@NotNull
-	@Override
 	public List<String> getSuperNames()
 	{
 		List<String> result = new ArrayList<String>();
@@ -90,7 +88,7 @@ public class PsiJetClassStubImpl extends StubBase<NapileClass> implements PsiJet
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("PsiJetClassStubImpl[");
+		builder.append("NapilePsiClassStub[");
 
 		builder.append("name=").append(getName());
 		builder.append(" fqn=").append(getQualifiedName());

@@ -37,10 +37,10 @@ import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lexer.NapileKeywordToken;
@@ -119,9 +119,9 @@ public class ModifiersChecker
 			checkModalityModifiers(constructor);
 		}
 
-		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
 		{
-			NapileProperty property = entry.getKey();
+			NapileVariable property = entry.getKey();
 			PropertyDescriptor propertyDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
@@ -156,8 +156,8 @@ public class ModifiersChecker
 	private void checkDeclaredTypeInPublicMember(NapileNamedDeclaration member, CallableMemberDescriptor memberDescriptor)
 	{
 		boolean hasDeferredType;
-		if(member instanceof NapileProperty)
-			hasDeferredType = ((NapileProperty) member).getPropertyTypeRef() == null && ((NapileProperty) member).getInitializer() != null;
+		if(member instanceof NapileVariable)
+			hasDeferredType = ((NapileVariable) member).getPropertyTypeRef() == null && ((NapileVariable) member).getInitializer() != null;
 		else
 		{
 			assert member instanceof NapileMethod;

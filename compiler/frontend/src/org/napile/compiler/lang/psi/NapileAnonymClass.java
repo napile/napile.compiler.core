@@ -32,6 +32,7 @@ import org.napile.compiler.psi.NapileClassLike;
 import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileModifierListImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
@@ -98,7 +99,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 
 	@Override
 	@Nullable
-	public NapileModifierList getModifierList()
+	public NapileModifierListImpl getModifierList()
 	{
 		return null;
 	}

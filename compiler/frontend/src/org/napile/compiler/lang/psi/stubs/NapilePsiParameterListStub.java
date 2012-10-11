@@ -16,14 +16,24 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import com.intellij.psi.stubs.NamedStub;
-import com.intellij.util.io.StringRef;
+import org.napile.compiler.lang.psi.NapileParameterList;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.StubBase;
+import com.intellij.psi.stubs.StubElement;
 
 /**
  * @author Nikolay Krasko
  */
-public interface PsiJetTypeParameterStub extends NamedStub<NapileTypeParameter>
+public class NapilePsiParameterListStub extends StubBase<NapileParameterList>
 {
-	StringRef[] getExtendBoundTypeText();
+	public NapilePsiParameterListStub(IStubElementType elementType, StubElement parent)
+	{
+		super(parent, elementType);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "NapilePsiParameterListStub";
+	}
 }

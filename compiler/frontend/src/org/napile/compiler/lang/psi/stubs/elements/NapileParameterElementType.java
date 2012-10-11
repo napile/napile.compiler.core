@@ -20,11 +20,10 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.stubs.PsiJetParameterStub;
-import org.napile.compiler.lang.psi.stubs.impl.PsiJetParameterStubImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodParameterStub;
+import org.napile.compiler.psi.NapileExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -35,9 +34,9 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetParameterElementType extends JetStubElementType<PsiJetParameterStub, NapilePropertyParameter>
+public class NapileParameterElementType extends NapileStubElementType<NapilePsiMethodParameterStub, NapilePropertyParameter>
 {
-	public JetParameterElementType(@NotNull @NonNls String debugName)
+	public NapileParameterElementType(@NotNull @NonNls String debugName)
 	{
 		super(debugName);
 	}
@@ -49,50 +48,48 @@ public class JetParameterElementType extends JetStubElementType<PsiJetParameterS
 	}
 
 	@Override
-	public NapilePropertyParameter createPsi(@NotNull PsiJetParameterStub stub)
+	public NapilePropertyParameter createPsi(@NotNull NapilePsiMethodParameterStub stub)
 	{
-		return new NapilePropertyParameter(stub, JetStubElementTypes.VALUE_PARAMETER);
+		return new NapilePropertyParameter(stub, NapileStubElementTypes.VALUE_PARAMETER);
 	}
 
 	@Override
-	public PsiJetParameterStub createStub(@NotNull NapilePropertyParameter psi, StubElement parentStub)
+	public NapilePsiMethodParameterStub createStub(@NotNull NapilePropertyParameter psi, StubElement parentStub)
 	{
 		NapileTypeReference typeReference = psi.getTypeReference();
 		NapileExpression defaultValue = psi.getDefaultValue();
 
-		return new PsiJetParameterStubImpl(JetStubElementTypes.VALUE_PARAMETER, parentStub, psi.getName(), false, psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
+		return new NapilePsiMethodParameterStub(NapileStubElementTypes.VALUE_PARAMETER, parentStub, psi.getName(), psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
 	}
 
 	@Override
 	public boolean shouldCreateStub(ASTNode node)
 	{
-		return node.getElementType() == JetStubElementTypes.VALUE_PARAMETER;
+		return node.getElementType() == NapileStubElementTypes.VALUE_PARAMETER;
 	}
 
 	@Override
-	public void serialize(PsiJetParameterStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiMethodParameterStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
-		dataStream.writeBoolean(stub.isMutable());
 		dataStream.writeBoolean(stub.isVarArg());
 		dataStream.writeName(stub.getTypeText());
 		dataStream.writeName(stub.getDefaultValueText());
 	}
 
 	@Override
-	public PsiJetParameterStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiMethodParameterStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		boolean isMutable = dataStream.readBoolean();
 		boolean isVarArg = dataStream.readBoolean();
 		StringRef typeText = dataStream.readName();
 		StringRef defaultValueText = dataStream.readName();
 
-		return new PsiJetParameterStubImpl(JetStubElementTypes.VALUE_PARAMETER, parentStub, name, isMutable, isVarArg, typeText, defaultValueText);
+		return new NapilePsiMethodParameterStub(NapileStubElementTypes.VALUE_PARAMETER, parentStub, name, isVarArg, typeText, defaultValueText);
 	}
 
 	@Override
-	public void indexStub(PsiJetParameterStub stub, IndexSink sink)
+	public void indexStub(NapilePsiMethodParameterStub stub, IndexSink sink)
 	{
 		// No index
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs;
+package org.napile.compiler.psi;
 
-import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import com.intellij.psi.stubs.NamedStub;
+import com.intellij.psi.PsiElement;
 
 /**
- * @author Nikolay Krasko
+ * @author VISTALL
+ * @date 13:55/11.10.12
+ *
+ * @see com.intellij.psi.PsiCompiledElement
  */
-public interface PsiJetParameterStub extends NamedStub<NapilePropertyParameter>
+public interface NXmlElement extends PsiElement
 {
-	boolean isMutable();
-
-	boolean isVarArg();
-
-	@Nullable
-	String getTypeText();
-
-	@Nullable
-	String getDefaultValueText();
+	PsiElement getMirror();
 }

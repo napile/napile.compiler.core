@@ -22,13 +22,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileNamespaceHeader;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.impl.PsiFileEx;
+import com.intellij.psi.impl.source.PsiFileWithStubSupport;
 
 /**
  * @author VISTALL
  * @date 20:02/09.10.12
  */
-public interface NapileFile extends NapileDeclarationContainer<NapileClass>, PsiFile
+public interface NapileFile extends NapileDeclarationContainer<NapileClass>, PsiFileWithStubSupport, PsiFileEx
 {
 	@Nullable
 	NapileNamespaceHeader getNamespaceHeader();

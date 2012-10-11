@@ -19,10 +19,11 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lang.psi.stubs.PsiJetParameterStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodParameterStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileModifierList;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.ArrayFactory;
@@ -30,7 +31,7 @@ import com.intellij.util.ArrayFactory;
 /**
  * @author max
  */
-public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetParameterStub>
+public class NapilePropertyParameter extends NapileNamedDeclarationStub<NapilePsiMethodParameterStub>
 {
 	public static final NapilePropertyParameter[] EMPTY_ARRAY = new NapilePropertyParameter[0];
 
@@ -48,7 +49,7 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 		super(node);
 	}
 
-	public NapilePropertyParameter(@NotNull PsiJetParameterStub stub, @NotNull IStubElementType nodeType)
+	public NapilePropertyParameter(@NotNull NapilePsiMethodParameterStub stub, @NotNull IStubElementType nodeType)
 	{
 		super(stub, nodeType);
 	}
@@ -57,7 +58,7 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 	@Override
 	public IStubElementType getElementType()
 	{
-		return JetStubElementTypes.VALUE_PARAMETER;
+		return NapileStubElementTypes.VALUE_PARAMETER;
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<PsiJetPa
 
 	public boolean isVarArg()
 	{
-		PsiJetParameterStub stub = getStub();
+		NapilePsiMethodParameterStub stub = getStub();
 		if(stub != null)
 		{
 			return stub.isVarArg();

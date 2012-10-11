@@ -21,6 +21,8 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.NapileToken;
 import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.psi.NapileModifierListImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
@@ -42,9 +44,9 @@ abstract class NapileDeclarationStub<T extends StubElement> extends NapileElemen
 
 	@Override
 	@Nullable
-	public NapileModifierList getModifierList()
+	public NapileModifierListImpl getModifierList()
 	{
-		return (NapileModifierList) findChildByType(NapileNodeTypes.MODIFIER_LIST);
+		return (NapileModifierListImpl) findChildByType(NapileNodeTypes.MODIFIER_LIST);
 	}
 
 	@Override

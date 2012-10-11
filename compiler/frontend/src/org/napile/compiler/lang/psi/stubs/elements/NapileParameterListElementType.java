@@ -21,8 +21,7 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileParameterList;
-import org.napile.compiler.lang.psi.stubs.PsiJetParameterListStub;
-import org.napile.compiler.lang.psi.stubs.impl.PsiJetParameterListStubImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiParameterListStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -32,9 +31,9 @@ import com.intellij.psi.stubs.StubOutputStream;
 /**
  * @author Nikolay Krasko
  */
-public class JetParameterListElementType extends JetStubElementType<PsiJetParameterListStub, NapileParameterList>
+public class NapileParameterListElementType extends NapileStubElementType<NapilePsiParameterListStub, NapileParameterList>
 {
-	public JetParameterListElementType(@NotNull @NonNls String debugName)
+	public NapileParameterListElementType(@NotNull @NonNls String debugName)
 	{
 		super(debugName);
 	}
@@ -46,31 +45,31 @@ public class JetParameterListElementType extends JetStubElementType<PsiJetParame
 	}
 
 	@Override
-	public NapileParameterList createPsi(@NotNull PsiJetParameterListStub stub)
+	public NapileParameterList createPsi(@NotNull NapilePsiParameterListStub stub)
 	{
-		return new NapileParameterList(stub, JetStubElementTypes.VALUE_PARAMETER_LIST);
+		return new NapileParameterList(stub, NapileStubElementTypes.VALUE_PARAMETER_LIST);
 	}
 
 	@Override
-	public PsiJetParameterListStub createStub(@NotNull NapileParameterList psi, StubElement parentStub)
+	public NapilePsiParameterListStub createStub(@NotNull NapileParameterList psi, StubElement parentStub)
 	{
-		return new PsiJetParameterListStubImpl(JetStubElementTypes.VALUE_PARAMETER_LIST, parentStub);
+		return new NapilePsiParameterListStub(NapileStubElementTypes.VALUE_PARAMETER_LIST, parentStub);
 	}
 
 	@Override
-	public void serialize(PsiJetParameterListStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiParameterListStub stub, StubOutputStream dataStream) throws IOException
 	{
 		// Nothing to serialize
 	}
 
 	@Override
-	public PsiJetParameterListStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiParameterListStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
-		return new PsiJetParameterListStubImpl(JetStubElementTypes.VALUE_PARAMETER_LIST, parentStub);
+		return new NapilePsiParameterListStub(NapileStubElementTypes.VALUE_PARAMETER_LIST, parentStub);
 	}
 
 	@Override
-	public void indexStub(PsiJetParameterListStub stub, IndexSink sink)
+	public void indexStub(NapilePsiParameterListStub stub, IndexSink sink)
 	{
 		// No index
 	}

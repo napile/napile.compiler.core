@@ -21,6 +21,7 @@ import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.psi.NapileModifierList;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
@@ -58,7 +59,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitNamedDeclaration(function);
 	}
 
-	public void visitProperty(NapileProperty property)
+	public void visitVariable(NapileVariable property)
 	{
 		visitNamedDeclaration(property);
 	}

@@ -21,8 +21,7 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
-import org.napile.compiler.lang.psi.stubs.impl.PsiJetFunctionStubImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IndexSink;
@@ -34,10 +33,10 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub, NapileNamedMethod>
+public class NapileMethodElementType extends NapileStubElementType<NapilePsiMethodStub, NapileNamedMethod>
 {
 
-	public JetMethodElementType(@NotNull @NonNls String debugName)
+	public NapileMethodElementType(@NotNull @NonNls String debugName)
 	{
 		super(debugName);
 	}
@@ -49,7 +48,7 @@ public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub,
 	}
 
 	@Override
-	public NapileNamedMethod createPsi(@NotNull PsiJetFunctionStub stub)
+	public NapileNamedMethod createPsi(@NotNull NapilePsiMethodStub stub)
 	{
 		return new NapileNamedMethod(stub);
 	}
@@ -71,26 +70,26 @@ public class JetMethodElementType extends JetStubElementType<PsiJetFunctionStub,
 	}
 
 	@Override
-	public PsiJetFunctionStub createStub(@NotNull NapileNamedMethod psi, @NotNull StubElement parentStub)
+	public NapilePsiMethodStub createStub(@NotNull NapileNamedMethod psi, @NotNull StubElement parentStub)
 	{
-		return new PsiJetFunctionStubImpl(JetStubElementTypes.METHOD, parentStub, psi.getName());
+		return new NapilePsiMethodStub(NapileStubElementTypes.METHOD, parentStub, psi.getName());
 	}
 
 	@Override
-	public void serialize(PsiJetFunctionStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiMethodStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
 	}
 
 	@Override
-	public PsiJetFunctionStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiMethodStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		return new PsiJetFunctionStubImpl(JetStubElementTypes.METHOD, parentStub, name);
+		return new NapilePsiMethodStub(NapileStubElementTypes.METHOD, parentStub, name);
 	}
 
 	@Override
-	public void indexStub(PsiJetFunctionStub stub, IndexSink sink)
+	public void indexStub(NapilePsiMethodStub stub, IndexSink sink)
 	{
 		StubIndexServiceFactory.getInstance().indexMethod(stub, sink);
 	}

@@ -191,7 +191,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		public boolean isAcceptable(Object element, PsiElement context)
 		{
 			//noinspection unchecked
-			return PsiTreeUtil.getParentOfType(context, NapileClassBody.class, true, NapileBlockExpression.class, NapileProperty.class, NapileParameterList.class) != null;
+			return PsiTreeUtil.getParentOfType(context, NapileClassBody.class, true, NapileBlockExpression.class, NapileVariable.class, NapileParameterList.class) != null;
 		}
 
 		@Override
@@ -229,7 +229,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		{
 			if(!(element instanceof PsiElement))
 				return false;
-			NapileProperty property = PsiTreeUtil.getParentOfType(context, NapileProperty.class, false);
+			NapileVariable property = PsiTreeUtil.getParentOfType(context, NapileVariable.class, false);
 			return property != null && isAfterName(property, (PsiElement) element);
 		}
 
@@ -239,7 +239,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 			return true;
 		}
 
-		private static boolean isAfterName(@NotNull NapileProperty property, @NotNull PsiElement element)
+		private static boolean isAfterName(@NotNull NapileVariable property, @NotNull PsiElement element)
 		{
 			for(PsiElement child = property.getFirstChild(); child != null; child = child.getNextSibling())
 			{

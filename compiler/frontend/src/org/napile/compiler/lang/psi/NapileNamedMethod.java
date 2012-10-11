@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
@@ -41,7 +41,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 /**
  * @author max
  */
-public class NapileNamedMethod extends NapileTypeParameterListOwnerStub<PsiJetFunctionStub> implements NapileMethod, NapileWithExpressionInitializer
+public class NapileNamedMethod extends NapileTypeParameterListOwnerStub<NapilePsiMethodStub> implements NapileMethod, NapileWithExpressionInitializer
 {
 	private static final TokenSet SET_AND_GET_KEYWORDS = TokenSet.create(NapileTokens.SET_KEYWORD, NapileTokens.GET_KEYWORD);
 
@@ -50,15 +50,15 @@ public class NapileNamedMethod extends NapileTypeParameterListOwnerStub<PsiJetFu
 		super(node);
 	}
 
-	public NapileNamedMethod(@NotNull PsiJetFunctionStub stub)
+	public NapileNamedMethod(@NotNull NapilePsiMethodStub stub)
 	{
-		super(stub, JetStubElementTypes.METHOD);
+		super(stub, NapileStubElementTypes.METHOD);
 	}
 
 	@Override
 	public String getName()
 	{
-		PsiJetFunctionStub stub = getStub();
+		NapilePsiMethodStub stub = getStub();
 		if(stub != null)
 			return stub.getName();
 
@@ -142,7 +142,7 @@ public class NapileNamedMethod extends NapileTypeParameterListOwnerStub<PsiJetFu
 	@Override
 	public IStubElementType getElementType()
 	{
-		return JetStubElementTypes.METHOD;
+		return NapileStubElementTypes.METHOD;
 	}
 
 	@Override

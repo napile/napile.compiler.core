@@ -20,11 +20,10 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
-import org.napile.compiler.lang.psi.stubs.impl.PsiJetPropertyStubImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
+import org.napile.compiler.psi.NapileExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IndexSink;
@@ -36,23 +35,23 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetPropertyElementType extends JetStubElementType<PsiJetPropertyStub, NapileProperty>
+public class NapileVariableElementType extends NapileStubElementType<NapilePsiVariableStub, NapileVariable>
 {
-	public JetPropertyElementType(@NotNull @NonNls String debugName)
+	public NapileVariableElementType(@NotNull @NonNls String debugName)
 	{
 		super(debugName);
 	}
 
 	@Override
-	public NapileProperty createPsiFromAst(@NotNull ASTNode node)
+	public NapileVariable createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileProperty(node);
+		return new NapileVariable(node);
 	}
 
 	@Override
-	public NapileProperty createPsi(@NotNull PsiJetPropertyStub stub)
+	public NapileVariable createPsi(@NotNull NapilePsiVariableStub stub)
 	{
-		return new NapileProperty(stub, JetStubElementTypes.PROPERTY);
+		return new NapileVariable(stub, NapileStubElementTypes.VARIABLE);
 	}
 
 	@Override
@@ -61,9 +60,9 @@ public class JetPropertyElementType extends JetStubElementType<PsiJetPropertyStu
 		if(super.shouldCreateStub(node))
 		{
 			PsiElement psi = node.getPsi();
-			if(psi instanceof NapileProperty)
+			if(psi instanceof NapileVariable)
 			{
-				NapileProperty property = (NapileProperty) psi;
+				NapileVariable property = (NapileVariable) psi;
 				return property.getName() != null;
 			}
 		}
@@ -72,18 +71,18 @@ public class JetPropertyElementType extends JetStubElementType<PsiJetPropertyStu
 	}
 
 	@Override
-	public PsiJetPropertyStub createStub(@NotNull NapileProperty psi, StubElement parentStub)
+	public NapilePsiVariableStub createStub(@NotNull NapileVariable psi, StubElement parentStub)
 	{
 		NapileTypeReference typeRef = psi.getPropertyTypeRef();
 		NapileExpression expression = psi.getInitializer();
 
 		assert !psi.isLocal() : "Should not store local property";
 
-		return new PsiJetPropertyStubImpl(JetStubElementTypes.PROPERTY, parentStub, psi.getName(), typeRef != null ? typeRef.getText() : null, expression != null ? expression.getText() : null);
+		return new NapilePsiVariableStub(NapileStubElementTypes.VARIABLE, parentStub, psi.getName(), typeRef != null ? typeRef.getText() : null, expression != null ? expression.getText() : null);
 	}
 
 	@Override
-	public void serialize(PsiJetPropertyStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiVariableStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
 		dataStream.writeName(stub.getTypeText());
@@ -91,18 +90,18 @@ public class JetPropertyElementType extends JetStubElementType<PsiJetPropertyStu
 	}
 
 	@Override
-	public PsiJetPropertyStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiVariableStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
 		StringRef typeText = dataStream.readName();
 		StringRef inferenceBodyText = dataStream.readName();
 
-		return new PsiJetPropertyStubImpl(JetStubElementTypes.PROPERTY, parentStub, name, typeText, inferenceBodyText);
+		return new NapilePsiVariableStub(NapileStubElementTypes.VARIABLE, parentStub, name, typeText, inferenceBodyText);
 	}
 
 	@Override
-	public void indexStub(PsiJetPropertyStub stub, IndexSink sink)
+	public void indexStub(NapilePsiVariableStub stub, IndexSink sink)
 	{
-		StubIndexServiceFactory.getInstance().indexProperty(stub, sink);
+		StubIndexServiceFactory.getInstance().indexVariable(stub, sink);
 	}
 }

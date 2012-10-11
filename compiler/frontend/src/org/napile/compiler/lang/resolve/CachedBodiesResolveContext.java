@@ -28,7 +28,7 @@ import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.psi.NapileClass;
@@ -47,7 +47,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileClass, MutableClassDescriptor> classes;
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
-	private final Map<NapileProperty, PropertyDescriptor> properties;
+	private final Map<NapileVariable, PropertyDescriptor> properties;
 	private final Map<NapileRetellEntry, PropertyDescriptor> retellEnties;
 	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries;
 	private final Map<NapileNamedMethod, SimpleMethodDescriptor> functions;
@@ -90,7 +90,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileProperty, PropertyDescriptor> getProperties()
+	public Map<NapileVariable, PropertyDescriptor> getProperties()
 	{
 		return properties;
 	}

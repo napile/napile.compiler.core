@@ -26,8 +26,8 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -43,7 +43,7 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author max
  */
-public class NapileClassImpl extends NapileTypeParameterListOwnerStub<PsiJetClassStub> implements NapileClass
+public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiClassStub> implements NapileClass
 {
 	private static final TokenSet CLASS_DECL_KEYWORDS = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.ENUM_KEYWORD, NapileTokens.RETELL_KEYWORD);
 
@@ -52,9 +52,9 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<PsiJetClas
 		super(node);
 	}
 
-	public NapileClassImpl(@NotNull final PsiJetClassStub stub)
+	public NapileClassImpl(@NotNull final NapilePsiClassStub stub)
 	{
-		super(stub, JetStubElementTypes.CLASS);
+		super(stub, NapileStubElementTypes.CLASS);
 	}
 
 	@Override
@@ -151,7 +151,7 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<PsiJetClas
 	@Override
 	public IStubElementType getElementType()
 	{
-		return JetStubElementTypes.CLASS;
+		return NapileStubElementTypes.CLASS;
 	}
 
 	@Override
@@ -180,7 +180,7 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<PsiJetClas
 	@Override
 	public String getQualifiedName()
 	{
-		PsiJetClassStub stub = getStub();
+		NapilePsiClassStub stub = getStub();
 		if(stub != null)
 		{
 			return stub.getQualifiedName();
@@ -213,7 +213,7 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<PsiJetClas
 	@NotNull
 	public List<String> getSuperNames()
 	{
-		PsiJetClassStub stub = getStub();
+		NapilePsiClassStub stub = getStub();
 		if(stub != null)
 		{
 			return stub.getSuperNames();

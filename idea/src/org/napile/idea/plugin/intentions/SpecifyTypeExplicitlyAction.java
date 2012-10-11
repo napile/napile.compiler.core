@@ -30,7 +30,7 @@ import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileParameterList;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileTypeReference;
@@ -78,9 +78,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		{
 			return;
 		}
-		if(parent instanceof NapileProperty)
+		if(parent instanceof NapileVariable)
 		{
-			NapileProperty property = (NapileProperty) parent;
+			NapileVariable property = (NapileVariable) parent;
 			if(property.getPropertyTypeRef() == null)
 			{
 				addTypeAnnotation(project, property, type);
@@ -128,9 +128,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 			return false;
 		}
 		NapileNamedDeclaration declaration = (NapileNamedDeclaration) parent;
-		if(declaration instanceof NapileProperty && !PsiTreeUtil.isAncestor(((NapileProperty) declaration).getInitializer(), element, false))
+		if(declaration instanceof NapileVariable && !PsiTreeUtil.isAncestor(((NapileVariable) declaration).getInitializer(), element, false))
 		{
-			if(((NapileProperty) declaration).getPropertyTypeRef() != null)
+			if(((NapileVariable) declaration).getPropertyTypeRef() != null)
 			{
 				setText(JetBundle.message("specify.type.explicitly.remove.action.name"));
 				return true;
@@ -211,7 +211,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		return true;
 	}
 
-	public static void addTypeAnnotation(Project project, NapileProperty property, @NotNull JetType exprType)
+	public static void addTypeAnnotation(Project project, NapileVariable property, @NotNull JetType exprType)
 	{
 		if(property.getPropertyTypeRef() != null)
 			return;
@@ -278,7 +278,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		sibling.getParent().getNode().removeRange(sibling.getNode(), nextSibling == null ? null : nextSibling.getNode());
 	}
 
-	public static void removeTypeAnnotation(NapileProperty property)
+	public static void removeTypeAnnotation(NapileVariable property)
 	{
 		removeTypeAnnotation(property, property.getPropertyTypeRef());
 	}

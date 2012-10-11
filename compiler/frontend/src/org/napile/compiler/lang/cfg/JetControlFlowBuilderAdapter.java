@@ -24,7 +24,7 @@ import org.napile.compiler.lang.cfg.pseudocode.Pseudocode;
 import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileThrowExpression;
 
@@ -245,7 +245,7 @@ public class JetControlFlowBuilderAdapter implements JetControlFlowBuilder
 	}
 
 	@Override
-	public void declare(@NotNull NapileProperty property)
+	public void declare(@NotNull NapileVariable property)
 	{
 		assert builder != null;
 		builder.declare(property);

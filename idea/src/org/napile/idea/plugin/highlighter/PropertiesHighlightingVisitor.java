@@ -21,7 +21,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
@@ -56,7 +56,7 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 	}
 
 	@Override
-	public void visitProperty(@NotNull NapileProperty property)
+	public void visitVariable(@NotNull NapileVariable property)
 	{
 		PsiElement nameIdentifier = property.getNameIdentifier();
 		if(nameIdentifier == null)
@@ -68,7 +68,7 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			highlightProperty(nameIdentifier, propertyDescriptor, Boolean.TRUE.equals(backingFieldRequired));
 		}
 
-		super.visitProperty(property);
+		super.visitVariable(property);
 	}
 
 	@Override

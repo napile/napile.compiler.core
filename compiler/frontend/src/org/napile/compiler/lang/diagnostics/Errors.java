@@ -91,15 +91,15 @@ public interface Errors
 	SimpleDiagnosticFactory<LeafPsiElement> NON_VARARG_SPREAD = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileExpression> MANY_FUNCTION_LITERAL_ARGUMENTS = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileProperty> PROPERTY_WITH_NO_TYPE_NO_INITIALIZER = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	SimpleDiagnosticFactory<NapileVariable> PROPERTY_WITH_NO_TYPE_NO_INITIALIZER = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
-	SimpleDiagnosticFactory<NapileProperty> ABSTRACT_PROPERTY_NOT_IN_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
+	SimpleDiagnosticFactory<NapileVariable> ABSTRACT_PROPERTY_NOT_IN_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	SimpleDiagnosticFactory<NapileExpression> ABSTRACT_PROPERTY_WITH_INITIALIZER = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<PsiElement> INSTANCE_CALL_FROM_STATIC_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileProperty> MUST_BE_INITIALIZED = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
-	SimpleDiagnosticFactory<NapileProperty> MUST_BE_INITIALIZED_OR_BE_ABSTRACT = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	SimpleDiagnosticFactory<NapileVariable> MUST_BE_INITIALIZED = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	SimpleDiagnosticFactory<NapileVariable> MUST_BE_INITIALIZED_OR_BE_ABSTRACT = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
 	SimpleDiagnosticFactory<NapileExpression> PROPERTY_INITIALIZER_NO_BACKING_FIELD = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory2<NapileModifierListOwner, String, ClassDescriptor> ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
@@ -124,7 +124,7 @@ public interface Errors
 
 	DiagnosticFactory1<NapileSimpleNameExpression, VariableDescriptor> UNINITIALIZED_VARIABLE = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, ParameterDescriptor> UNINITIALIZED_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
-	UnusedElementDiagnosticFactory<NapileProperty, VariableDescriptor> UNUSED_VARIABLE = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
+	UnusedElementDiagnosticFactory<NapileVariable, VariableDescriptor> UNUSED_VARIABLE = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 	UnusedElementDiagnosticFactory<NapilePropertyParameter, VariableDescriptor> UNUSED_PARAMETER = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 	UnusedElementDiagnosticFactory<NapileNamedDeclaration, DeclarationDescriptor> ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> VARIABLE_WITH_REDUNDANT_INITIALIZER = DiagnosticFactory1.create(Severity.WARNING);
@@ -250,11 +250,11 @@ public interface Errors
 
 	DiagnosticFactory2<NapileNamedDeclaration, CallableMemberDescriptor, CallableMemberDescriptor> RETURN_TYPE_MISMATCH_ON_OVERRIDE = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.DECLARATION_RETURN_TYPE);
 
-	DiagnosticFactory2<NapileProperty, PropertyDescriptor, PropertyDescriptor> VAR_OVERRIDDEN_BY_VAL = DiagnosticFactory2.create(Severity.ERROR, new PositioningStrategy<NapileProperty>()
+	DiagnosticFactory2<NapileVariable, PropertyDescriptor, PropertyDescriptor> VAR_OVERRIDDEN_BY_VAL = DiagnosticFactory2.create(Severity.ERROR, new PositioningStrategy<NapileVariable>()
 	{
 		@NotNull
 		@Override
-		public List<TextRange> mark(@NotNull NapileProperty property)
+		public List<TextRange> mark(@NotNull NapileVariable property)
 		{
 			return markNode(property.getVarNode());
 		}

@@ -19,8 +19,7 @@ package org.napile.compiler.lang.psi.stubs.elements;
 import java.io.IOException;
 
 import org.napile.compiler.NapileLanguage;
-import org.napile.compiler.lang.psi.stubs.PsiJetFileStub;
-import org.napile.compiler.lang.psi.stubs.impl.PsiJetFileStubImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import com.intellij.psi.StubBuilder;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -32,11 +31,11 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetFileElementType extends IStubFileElementType<PsiJetFileStub>
+public class NapileFileElementType extends IStubFileElementType<NapilePsiFileStub>
 {
-	public static final int STUB_VERSION = 20;
+	public static final int STUB_VERSION = 22;
 
-	public JetFileElementType()
+	public NapileFileElementType()
 	{
 		super("napile.FILE", NapileLanguage.INSTANCE);
 	}
@@ -44,7 +43,7 @@ public class JetFileElementType extends IStubFileElementType<PsiJetFileStub>
 	@Override
 	public StubBuilder getBuilder()
 	{
-		return new JetFileStubBuilder();
+		return new NapileFileStubBuilder();
 	}
 
 	@Override
@@ -60,21 +59,20 @@ public class JetFileElementType extends IStubFileElementType<PsiJetFileStub>
 	}
 
 	@Override
-	public void serialize(final PsiJetFileStub stub, final StubOutputStream dataStream) throws IOException
+	public void serialize(final NapilePsiFileStub stub, final StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getPackageName());
 	}
 
 	@Override
-	public PsiJetFileStub deserialize(final StubInputStream dataStream, final StubElement parentStub) throws IOException
+	public NapilePsiFileStub deserialize(final StubInputStream dataStream, final StubElement parentStub) throws IOException
 	{
 		StringRef packName = dataStream.readName();
-		return new PsiJetFileStubImpl(null, packName);
+		return new NapilePsiFileStub(null, packName);
 	}
 
-
 	@Override
-	public void indexStub(final PsiJetFileStub stub, final IndexSink sink)
+	public void indexStub(final NapilePsiFileStub stub, final IndexSink sink)
 	{
 		// Don't index file
 	}

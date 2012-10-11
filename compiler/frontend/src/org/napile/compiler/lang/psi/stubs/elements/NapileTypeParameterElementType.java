@@ -22,8 +22,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterStub;
-import org.napile.compiler.lang.psi.stubs.impl.PsiJetTypeParameterStubImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -34,9 +33,9 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class JetTypeParameterElementType extends JetStubElementType<PsiJetTypeParameterStub, NapileTypeParameter>
+public class NapileTypeParameterElementType extends NapileStubElementType<NapilePsiTypeParameterStub, NapileTypeParameter>
 {
-	public JetTypeParameterElementType(@NotNull @NonNls String debugName)
+	public NapileTypeParameterElementType(@NotNull @NonNls String debugName)
 	{
 		super(debugName);
 	}
@@ -48,24 +47,24 @@ public class JetTypeParameterElementType extends JetStubElementType<PsiJetTypePa
 	}
 
 	@Override
-	public NapileTypeParameter createPsi(@NotNull PsiJetTypeParameterStub stub)
+	public NapileTypeParameter createPsi(@NotNull NapilePsiTypeParameterStub stub)
 	{
-		return new NapileTypeParameter(stub, JetStubElementTypes.TYPE_PARAMETER);
+		return new NapileTypeParameter(stub, NapileStubElementTypes.TYPE_PARAMETER);
 	}
 
 	@Override
-	public PsiJetTypeParameterStub createStub(@NotNull NapileTypeParameter psi, StubElement parentStub)
+	public NapilePsiTypeParameterStub createStub(@NotNull NapileTypeParameter psi, StubElement parentStub)
 	{
 		NapileTypeReference[] extendsBound = psi.getExtendsBound();
 		StringRef[] stringRefs = StringRef.createArray(extendsBound.length);
 		for(int i = 0; i < extendsBound.length; i++)
 			stringRefs[i] = StringRef.fromString(extendsBound[i].getText());
 
-		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, psi.getName(), stringRefs);
+		return new NapilePsiTypeParameterStub(NapileStubElementTypes.TYPE_PARAMETER, parentStub, psi.getName(), stringRefs);
 	}
 
 	@Override
-	public void serialize(PsiJetTypeParameterStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiTypeParameterStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
 		StringRef[] refs = stub.getExtendBoundTypeText();
@@ -75,7 +74,7 @@ public class JetTypeParameterElementType extends JetStubElementType<PsiJetTypePa
 	}
 
 	@Override
-	public PsiJetTypeParameterStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiTypeParameterStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
 		int count = dataStream.readInt();
@@ -84,11 +83,11 @@ public class JetTypeParameterElementType extends JetStubElementType<PsiJetTypePa
 		for(int i = 0; i < count; i++)
 			refs[i] = dataStream.readName();
 
-		return new PsiJetTypeParameterStubImpl(JetStubElementTypes.TYPE_PARAMETER, parentStub, name, refs);
+		return new NapilePsiTypeParameterStub(NapileStubElementTypes.TYPE_PARAMETER, parentStub, name, refs);
 	}
 
 	@Override
-	public void indexStub(PsiJetTypeParameterStub stub, IndexSink sink)
+	public void indexStub(NapilePsiTypeParameterStub stub, IndexSink sink)
 	{
 		// No index
 	}

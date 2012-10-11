@@ -28,7 +28,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
@@ -116,7 +116,7 @@ public class BindingContextUtils
 	public static VariableDescriptor extractVariableDescriptorIfAny(@NotNull BindingContext bindingContext, @Nullable NapileElement element, boolean onlyReference)
 	{
 		DeclarationDescriptor descriptor = null;
-		if(!onlyReference && (element instanceof NapileProperty || element instanceof NapilePropertyParameter))
+		if(!onlyReference && (element instanceof NapileVariable || element instanceof NapilePropertyParameter))
 		{
 			descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
 		}

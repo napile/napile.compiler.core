@@ -16,9 +16,9 @@
 
 package org.napile.compiler.lang.psi.stubs.elements;
 
-import org.napile.compiler.lang.psi.stubs.PsiJetClassStub;
-import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
-import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
 import com.intellij.psi.stubs.IndexSink;
 
 /**
@@ -33,24 +33,24 @@ public interface StubIndexService
 	StubIndexService NO_INDEX_SERVICE = new StubIndexService()
 	{
 		@Override
-		public void indexClass(PsiJetClassStub stub, IndexSink sink)
+		public void indexClass(NapilePsiClassStub stub, IndexSink sink)
 		{
 		}
 
 		@Override
-		public void indexMethod(PsiJetFunctionStub stub, IndexSink sink)
+		public void indexMethod(NapilePsiMethodStub stub, IndexSink sink)
 		{
 		}
 
 		@Override
-		public void indexProperty(PsiJetPropertyStub stub, IndexSink sink)
+		public void indexVariable(NapilePsiVariableStub stub, IndexSink sink)
 		{
 		}
 	};
 
-	void indexClass(PsiJetClassStub stub, IndexSink sink);
+	void indexClass(NapilePsiClassStub stub, IndexSink sink);
 
-	void indexMethod(PsiJetFunctionStub stub, IndexSink sink);
+	void indexMethod(NapilePsiMethodStub stub, IndexSink sink);
 
-	void indexProperty(PsiJetPropertyStub stub, IndexSink sink);
+	void indexVariable(NapilePsiVariableStub stub, IndexSink sink);
 }

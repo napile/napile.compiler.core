@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs.impl;
+package org.napile.compiler.lang.psi.stubs;
 
-import org.napile.compiler.lang.psi.NapileProperty;
-import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
+import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
@@ -26,14 +26,14 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetPropertyStubImpl extends StubBase<NapileProperty> implements PsiJetPropertyStub
+public class NapilePsiVariableStub extends StubBase<NapileVariable> implements NamedStub<NapileVariable>
 {
 	private final StringRef name;
 
 	private final StringRef typeText;
 	private final StringRef inferenceBodyText;
 
-	public PsiJetPropertyStubImpl(IStubElementType elementType, StubElement parent, StringRef name,  StringRef typeText, StringRef inferenceBodyText)
+	public NapilePsiVariableStub(IStubElementType elementType, StubElement parent, StringRef name, StringRef typeText, StringRef inferenceBodyText)
 	{
 		super(parent, elementType);
 
@@ -42,24 +42,21 @@ public class PsiJetPropertyStubImpl extends StubBase<NapileProperty> implements 
 		this.inferenceBodyText = inferenceBodyText;
 	}
 
-	public PsiJetPropertyStubImpl(IStubElementType elementType, StubElement parent, String name,String typeText, String inferenceBodyText)
+	public NapilePsiVariableStub(IStubElementType elementType, StubElement parent, String name, String typeText, String inferenceBodyText)
 	{
 		this(elementType, parent, StringRef.fromString(name), StringRef.fromString(typeText), StringRef.fromString(inferenceBodyText));
 	}
 
-	@Override
 	public String getTypeText()
 	{
 		return StringRef.toString(typeText);
 	}
 
-	@Override
 	public String getInferenceBodyText()
 	{
 		return StringRef.toString(inferenceBodyText);
 	}
 
-	@Override
 	public String getName()
 	{
 		return StringRef.toString(name);
@@ -70,7 +67,7 @@ public class PsiJetPropertyStubImpl extends StubBase<NapileProperty> implements 
 	{
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("PsiJetPropertyStubImpl[");
+		builder.append("NapilePsiVariableStub[");
 		builder.append("name=").append(getName());
 		builder.append(" typeText=").append(getTypeText());
 		builder.append(" bodyText=").append(getInferenceBodyText());

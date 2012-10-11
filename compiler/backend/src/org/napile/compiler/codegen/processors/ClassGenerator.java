@@ -194,7 +194,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	}
 
 	@Override
-	public Void visitProperty(NapileProperty property, Node parent)
+	public Void visitVariable(NapileVariable property, Node parent)
 	{
 		assert parent instanceof ClassNode;
 

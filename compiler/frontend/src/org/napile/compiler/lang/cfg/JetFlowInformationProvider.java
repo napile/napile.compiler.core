@@ -313,7 +313,7 @@ public class JetFlowInformationProvider
 	private boolean checkValReassignment(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull VariableInitState enterInitState, @NotNull Collection<VariableDescriptor> varWithValReassignErrorGenerated)
 	{
 		boolean isInitializedNotHere = enterInitState.isInitialized;
-		if(expression.getParent() instanceof NapileProperty && ((NapileProperty) expression).getInitializer() != null)
+		if(expression.getParent() instanceof NapileVariable && ((NapileVariable) expression).getInitializer() != null)
 		{
 			isInitializedNotHere = false;
 		}
@@ -391,8 +391,8 @@ public class JetFlowInformationProvider
 			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
 				return false;
 			PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
-			assert property instanceof NapileProperty;
-			/*if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.FINAL && ((NapileProperty) property).getSetter() == null)
+			assert property instanceof NapileVariable;
+			/*if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.FINAL && ((NapileVariable) property).getSetter() == null)
 			{
 				return false;
 			}   */
@@ -567,9 +567,9 @@ public class JetFlowInformationProvider
 							return;
 						if(!VariableUseState.isUsed(variableUseState))
 						{
-							if(element instanceof NapileProperty)
+							if(element instanceof NapileVariable)
 							{
-								trace.report(Errors.UNUSED_VARIABLE.on((NapileProperty) element, variableDescriptor));
+								trace.report(Errors.UNUSED_VARIABLE.on((NapileVariable) element, variableDescriptor));
 							}
 							else if(element instanceof NapilePropertyParameter)
 							{
@@ -590,13 +590,13 @@ public class JetFlowInformationProvider
 								}
 							}
 						}
-						else if(variableUseState == VariableUseState.ONLY_WRITTEN_NEVER_READ && element instanceof NapileProperty)
+						else if(variableUseState == VariableUseState.ONLY_WRITTEN_NEVER_READ && element instanceof NapileVariable)
 						{
 							trace.report(Errors.ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE.on((NapileNamedDeclaration) element, variableDescriptor));
 						}
-						else if(variableUseState == VariableUseState.LAST_WRITTEN && element instanceof NapileProperty)
+						else if(variableUseState == VariableUseState.LAST_WRITTEN && element instanceof NapileVariable)
 						{
-							NapileExpression initializer = ((NapileProperty) element).getInitializer();
+							NapileExpression initializer = ((NapileVariable) element).getInitializer();
 							if(initializer != null)
 							{
 								trace.report(Errors.VARIABLE_WITH_REDUNDANT_INITIALIZER.on(initializer, variableDescriptor));

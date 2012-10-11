@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.psi.NapileFile;
@@ -108,7 +108,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 		if(file == null)
 			return null;
 
-		if(!(element instanceof NapileNamedMethod || element instanceof NapileProperty))
+		if(!(element instanceof NapileNamedMethod || element instanceof NapileVariable))
 			return null;
 
 		final BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(file).getBindingContext();

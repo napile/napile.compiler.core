@@ -14,14 +14,28 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs;
+package org.napile.compiler.lang.psi.stubs.elements;
 
-import org.napile.compiler.lang.psi.NapileTypeParameterList;
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
+import org.napile.compiler.psi.NapileFile;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.stubs.DefaultStubBuilder;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.util.io.StringRef;
 
 /**
  * @author Nikolay Krasko
  */
-public interface PsiJetTypeParameterListStub extends StubElement<NapileTypeParameterList>
+public class NapileFileStubBuilder extends DefaultStubBuilder
 {
+	@Override
+	protected StubElement createStubForFile(@NotNull PsiFile file)
+	{
+		if(!(file instanceof NapileFile))
+			return super.createStubForFile(file);
+
+		NapileFile jetFile = (NapileFile) file;
+		return new NapilePsiFileStub(jetFile, StringRef.fromString(jetFile.getPackageName()));
+	}
 }

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs.impl;
+package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.stubs.PsiJetFunctionStub;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.ArrayUtil;
@@ -29,16 +29,16 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetFunctionStubImpl extends StubBase<NapileNamedMethod> implements PsiJetFunctionStub
+public class NapilePsiMethodStub extends StubBase<NapileNamedMethod> implements NamedStub<NapileNamedMethod>
 {
 	private final StringRef nameRef;
 
-	public PsiJetFunctionStubImpl(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable String name)
+	public NapilePsiMethodStub(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable String name)
 	{
 		this(elementType, parent, StringRef.fromString(name));
 	}
 
-	public PsiJetFunctionStubImpl(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable StringRef nameRef)
+	public NapilePsiMethodStub(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable StringRef nameRef)
 	{
 		super(parent, elementType);
 
@@ -52,7 +52,6 @@ public class PsiJetFunctionStubImpl extends StubBase<NapileNamedMethod> implemen
 	}
 
 	@NotNull
-	@Override
 	public String[] getAnnotations()
 	{
 		// TODO (stubs)
@@ -63,7 +62,7 @@ public class PsiJetFunctionStubImpl extends StubBase<NapileNamedMethod> implemen
 	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
-		builder.append("PsiJetFunctionStubImpl[");
+		builder.append("NapilePsiMethodStub[");
 
 		builder.append("name=").append(getName());
 

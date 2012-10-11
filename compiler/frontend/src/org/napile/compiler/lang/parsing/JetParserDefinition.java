@@ -22,9 +22,9 @@ package org.napile.compiler.lang.parsing;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.NapileNodeType;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.psi.NapileFileImpl;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementType;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementType;
 import org.napile.compiler.lexer.JetLexer;
 import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
@@ -66,7 +66,7 @@ public class JetParserDefinition implements ParserDefinition
 	@Override
 	public IFileElementType getFileNodeType()
 	{
-		return JetStubElementTypes.FILE;
+		return NapileStubElementTypes.FILE;
 	}
 
 	@Override
@@ -94,9 +94,9 @@ public class JetParserDefinition implements ParserDefinition
 	@NotNull
 	public PsiElement createElement(ASTNode astNode)
 	{
-		if(astNode.getElementType() instanceof JetStubElementType)
+		if(astNode.getElementType() instanceof NapileStubElementType)
 		{
-			return ((JetStubElementType) astNode.getElementType()).createPsiFromAst(astNode);
+			return ((NapileStubElementType) astNode.getElementType()).createPsiFromAst(astNode);
 		}
 
 		return ((NapileNodeType) astNode.getElementType()).createPsi(astNode);

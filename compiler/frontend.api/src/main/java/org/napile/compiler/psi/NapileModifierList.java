@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,31 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs;
+package org.napile.compiler.psi;
 
 import java.util.List;
 
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.psi.NapileClass;
-import com.intellij.psi.stubs.NamedStub;
+import org.napile.compiler.lang.psi.NapileAnnotationEntry;
+import org.napile.compiler.lang.psi.NapileAnnotationList;
+import org.napile.compiler.lexer.NapileToken;
+import com.intellij.lang.ASTNode;
 
 /**
- * @author Nikolay Krasko
+ * @author VISTALL
+ * @date 21:52/10.10.12
  */
-public interface PsiJetClassStub extends NamedStub<NapileClass>
+public interface NapileModifierList extends NapileElement
 {
-	@NonNls
-	@Nullable
-	String getQualifiedName();
+	@NotNull
+	List<NapileAnnotationList> getAnnotations();
 
 	@NotNull
-	List<String> getSuperNames();
+	List<NapileAnnotationEntry> getAnnotationEntries();
+
+	boolean hasModifier(NapileToken token);
+
+	@Nullable
+	ASTNode getModifierNode(NapileToken token);
 }

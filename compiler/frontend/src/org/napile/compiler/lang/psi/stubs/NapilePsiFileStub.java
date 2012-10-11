@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs.impl;
+package org.napile.compiler.lang.psi.stubs;
 
-import org.napile.compiler.lang.psi.stubs.PsiJetFileStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.psi.NapileFile;
 import com.intellij.psi.stubs.PsiFileStubImpl;
 import com.intellij.psi.tree.IStubFileElementType;
@@ -26,17 +25,16 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class PsiJetFileStubImpl extends PsiFileStubImpl<NapileFile> implements PsiJetFileStub
+public class NapilePsiFileStub extends PsiFileStubImpl<NapileFile>
 {
 	private final StringRef packageName;
 
-	public PsiJetFileStubImpl(NapileFile jetFile, StringRef packageName)
+	public NapilePsiFileStub(NapileFile jetFile, StringRef packageName)
 	{
 		super(jetFile);
 		this.packageName = packageName;
 	}
 
-	@Override
 	public String getPackageName()
 	{
 		return StringRef.toString(packageName);
@@ -45,7 +43,7 @@ public class PsiJetFileStubImpl extends PsiFileStubImpl<NapileFile> implements P
 	@Override
 	public IStubFileElementType getType()
 	{
-		return JetStubElementTypes.FILE;
+		return NapileStubElementTypes.FILE;
 	}
 
 	@Override
@@ -53,7 +51,7 @@ public class PsiJetFileStubImpl extends PsiFileStubImpl<NapileFile> implements P
 	{
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("PsiJetFileStubImpl[");
+		builder.append("NapilePsiFileStub[");
 
 
 		builder.append("package=").append(getPackageName());

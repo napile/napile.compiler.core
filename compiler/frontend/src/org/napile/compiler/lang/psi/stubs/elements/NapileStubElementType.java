@@ -32,10 +32,10 @@ import com.intellij.psi.util.PsiTreeUtil;
 /**
  * @author Nikolay Krasko
  */
-public abstract class JetStubElementType<StubT extends StubElement, PsiT extends PsiElement> extends IStubElementType<StubT, PsiT>
+public abstract class NapileStubElementType<StubT extends StubElement, PsiT extends PsiElement> extends IStubElementType<StubT, PsiT>
 {
 
-	public JetStubElementType(@NotNull @NonNls String debugName)
+	public NapileStubElementType(@NotNull @NonNls String debugName)
 	{
 		super(debugName, NapileLanguage.INSTANCE);
 	}

@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
-import org.napile.compiler.NapileXmlFileType;
 import org.napile.compiler.cli.jvm.JVMConfigurationKeys;
 import org.napile.compiler.config.CommonConfigurationKeys;
 import org.napile.compiler.config.CompilerConfiguration;
@@ -62,7 +62,7 @@ public class JetCoreEnvironment
 
 		this.applicationEnvironment = new CoreApplicationEnvironment(parentDisposable);
 		applicationEnvironment.registerFileType(NapileFileType.INSTANCE, NapileFileType.INSTANCE.getDefaultExtension());
-		applicationEnvironment.registerFileType(NapileXmlFileType.INSTANCE, NapileXmlFileType.INSTANCE.getDefaultExtension());
+		applicationEnvironment.registerFileType(NXmlFileType.INSTANCE, NXmlFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerParserDefinition(new JetParserDefinition());
 
 		projectEnvironment = new JetCoreProjectEnvironment(parentDisposable, applicationEnvironment);

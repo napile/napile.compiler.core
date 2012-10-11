@@ -20,36 +20,36 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterListStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterListStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author max
  */
-public class NapileTypeParameterList extends NapileElementImplStub<PsiJetTypeParameterListStub>
+public class NapileTypeParameterList extends NapileElementImplStub<NapilePsiTypeParameterListStub>
 {
 	public NapileTypeParameterList(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileTypeParameterList(@NotNull PsiJetTypeParameterListStub stub, @NotNull IStubElementType nodeType)
+	public NapileTypeParameterList(@NotNull NapilePsiTypeParameterListStub stub, @NotNull IStubElementType nodeType)
 	{
 		super(stub, nodeType);
 	}
 
 	public List<NapileTypeParameter> getParameters()
 	{
-		return Arrays.asList(getStubOrPsiChildren(JetStubElementTypes.TYPE_PARAMETER, NapileTypeParameter.ARRAY_FACTORY));
+		return Arrays.asList(getStubOrPsiChildren(NapileStubElementTypes.TYPE_PARAMETER, NapileTypeParameter.ARRAY_FACTORY));
 	}
 
 	@NotNull
 	@Override
 	public IStubElementType getElementType()
 	{
-		return JetStubElementTypes.TYPE_PARAMETER_LIST;
+		return NapileStubElementTypes.TYPE_PARAMETER_LIST;
 	}
 
 	@Override

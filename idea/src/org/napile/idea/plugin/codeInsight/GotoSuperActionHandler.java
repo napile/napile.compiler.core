@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -68,7 +68,7 @@ public class GotoSuperActionHandler implements CodeInsightActionHandler
 		PsiElement element = file.findElementAt(editor.getCaretModel().getOffset());
 		if(element == null)
 			return;
-		@SuppressWarnings("unchecked") NapileNamedDeclaration funOrClass = PsiTreeUtil.getParentOfType(element, NapileNamedMethod.class, NapileClass.class, NapileProperty.class);
+		@SuppressWarnings("unchecked") NapileNamedDeclaration funOrClass = PsiTreeUtil.getParentOfType(element, NapileNamedMethod.class, NapileClass.class, NapileVariable.class);
 		if(funOrClass == null)
 			return;
 

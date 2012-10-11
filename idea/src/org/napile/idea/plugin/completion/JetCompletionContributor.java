@@ -27,7 +27,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibilities;
-import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.psi.NapileModifierListImpl;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
@@ -144,7 +144,7 @@ public class JetCompletionContributor extends CompletionContributor
 
 	private static boolean isOnlyKeywordCompletion(PsiElement position)
 	{
-		return PsiTreeUtil.getParentOfType(position, NapileModifierList.class) != null;
+		return PsiTreeUtil.getParentOfType(position, NapileModifierListImpl.class) != null;
 	}
 
 

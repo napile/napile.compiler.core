@@ -121,7 +121,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
-	public StackValue visitProperty(NapileProperty property, StackValue receiver)
+	public StackValue visitVariable(NapileVariable property, StackValue receiver)
 	{
 		final NapileExpression initializer = property.getInitializer();
 		if(initializer == null)
@@ -945,8 +945,8 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		{
 			NapileElement statement = iterator.next();
 
-			if(statement instanceof NapileProperty)
-				generateLocalVariableDeclaration((NapileProperty) statement, leaveTasks);
+			if(statement instanceof NapileVariable)
+				generateLocalVariableDeclaration((NapileVariable) statement, leaveTasks);
 
 			if(!iterator.hasNext())
 				answer = gen(statement);
@@ -1028,7 +1028,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		return StackValue.local(0, TypeTransformer.toAsmType(calleeContainingClass.getDefaultType()));
 	}
 
-	private void generateLocalVariableDeclaration(@NotNull final NapileProperty variableDeclaration, @NotNull List<Function<StackValue, Void>> leaveTasks)
+	private void generateLocalVariableDeclaration(@NotNull final NapileVariable variableDeclaration, @NotNull List<Function<StackValue, Void>> leaveTasks)
 	{
 		final VariableDescriptor variableDescriptor = bindingTrace.get(BindingContext.VARIABLE, variableDeclaration);
 		assert variableDescriptor != null;
@@ -1049,7 +1049,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		});
 	}
 
-	private void initializeLocalVariable(@NotNull NapileProperty variableDeclaration, @NotNull Function<VariableDescriptor, Void> generateInitializer)
+	private void initializeLocalVariable(@NotNull NapileVariable variableDeclaration, @NotNull Function<VariableDescriptor, Void> generateInitializer)
 	{
 		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variableDeclaration);
 

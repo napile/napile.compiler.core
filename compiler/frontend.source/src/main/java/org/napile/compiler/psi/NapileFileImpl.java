@@ -29,7 +29,7 @@ import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileNamespaceHeader;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.psi.stubs.PsiJetFileStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.fileTypes.FileType;
@@ -98,7 +98,7 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 	@Override
 	public String getPackageName()
 	{
-		PsiJetFileStub stub = (PsiJetFileStub) getStub();
+		NapilePsiFileStub stub = (NapilePsiFileStub) getStub();
 		if(stub != null)
 			return stub.getPackageName();
 

@@ -21,26 +21,44 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileLanguage;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.PsiElementBase;
+import com.intellij.psi.impl.source.SourceTreeToPsiMap;
+import com.intellij.psi.impl.source.tree.TreeElement;
 import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
  * @date 19:36/09.10.12
  */
-public abstract class NXmlElementBase extends PsiElementBase
+public abstract class NXmlElementBase extends PsiElementBase implements NXmlElement
 {
+	private static final Logger LOGGER = Logger.getInstance(NXmlElementBase.class);
+
 	private final PsiManager psiManager;
+	private volatile TreeElement mirror = null;
 
 	public NXmlElementBase(PsiManager psiManager)
 	{
 		this.psiManager = psiManager;
 	}
 
-	public abstract void appendMirrorText(int indent, StringBuilder builder);
+	public abstract void setMirror(@NotNull TreeElement element);
+
+	@Override
+	public PsiElement getMirror()
+	{
+		TreeElement mirror = this.mirror;
+		if(mirror == null)
+		{
+			((NXmlFileImpl) getContainingFile()).getMirror();
+			mirror = this.mirror;
+		}
+		return SourceTreeToPsiMap.treeElementToPsi(mirror);
+	}
 
 	@NotNull
 	@Override
@@ -59,7 +77,7 @@ public abstract class NXmlElementBase extends PsiElementBase
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return new PsiElement[0];
+		return PsiElement.EMPTY_ARRAY;
 	}
 
 	@Override
@@ -69,47 +87,68 @@ public abstract class NXmlElementBase extends PsiElementBase
 	}
 
 	@Override
-	public TextRange getTextRange()
+	public final TextRange getTextRange()
 	{
-		return TextRange.EMPTY_RANGE;
+		PsiElement mirror = getMirror();
+		return mirror != null ? mirror.getTextRange() : TextRange.EMPTY_RANGE;
 	}
 
 	@Override
-	public int getStartOffsetInParent()
+	public final int getStartOffsetInParent()
 	{
-		return 0;
+		PsiElement mirror = getMirror();
+		return mirror != null ? mirror.getStartOffsetInParent() : -1;
 	}
 
 	@Override
 	public int getTextLength()
 	{
-		return 0;
+		String text = getText();
+		if(text == null)
+		{
+			LOGGER.error("getText() == null, element = " + this + ", parent = " + getParent());
+			return 0;
+		}
+		return text.length();
 	}
 
-	@Nullable
 	@Override
-	public PsiElement findElementAt(int i)
+	public PsiElement findElementAt(int offset)
 	{
 		return null;
 	}
 
 	@Override
-	public int getTextOffset()
+	public final int getTextOffset()
 	{
-		return 0;
+		PsiElement mirror = getMirror();
+		return mirror != null ? mirror.getTextOffset() : -1;
 	}
 
 	@Override
 	public String getText()
 	{
-		return null;
+		PsiElement mirror = getMirror();
+		return mirror != null ? mirror.getText() : null;
 	}
 
-	@NotNull
 	@Override
+	@NotNull
 	public char[] textToCharArray()
 	{
-		return new char[0];
+		return getMirror().textToCharArray();
+	}
+
+	@Override
+	public boolean textMatches(@NotNull CharSequence text)
+	{
+		return getText().equals(text.toString());
+	}
+
+	@Override
+	public boolean textMatches(@NotNull PsiElement element)
+	{
+		return getText().equals(element.getText());
 	}
 
 	@Override

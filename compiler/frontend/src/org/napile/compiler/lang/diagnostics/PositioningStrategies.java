@@ -27,6 +27,7 @@ import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileModifierList;
 import org.napile.compiler.psi.NapileModifierListOwner;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
@@ -56,9 +57,9 @@ public class PositioningStrategies
 				returnTypeRef = function.getReturnTypeRef();
 				nameNode = getNameNode(function);
 			}
-			else if(declaration instanceof NapileProperty)
+			else if(declaration instanceof NapileVariable)
 			{
-				NapileProperty property = (NapileProperty) declaration;
+				NapileVariable property = (NapileVariable) declaration;
 				returnTypeRef = property.getPropertyTypeRef();
 				nameNode = getNameNode(property);
 			}
@@ -123,9 +124,9 @@ public class PositioningStrategies
 				}
 				return markRange(new TextRange(function.getTextRange().getStartOffset(), endOfSignatureElement.getTextRange().getEndOffset()));
 			}
-			else if(element instanceof NapileProperty)
+			else if(element instanceof NapileVariable)
 			{
-				NapileProperty property = (NapileProperty) element;
+				NapileVariable property = (NapileVariable) element;
 				PsiElement endOfSignatureElement;
 				NapileTypeReference propertyTypeRef = property.getPropertyTypeRef();
 				PsiElement nameIdentifier = property.getNameIdentifier();

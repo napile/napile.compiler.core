@@ -27,11 +27,11 @@ import com.intellij.psi.PsiManager;
 
 /**
  * @author VISTALL
- * @date 9:31/10.10.12
+ * @date 22:03/10.10.12
  */
 public abstract class NXmlElementImpl extends NXmlElementBase implements NapileElement
 {
-	public NXmlElementImpl(PsiManager psiManager)
+	public NXmlElementImpl(@NotNull PsiManager psiManager)
 	{
 		super(psiManager);
 	}
@@ -46,7 +46,7 @@ public abstract class NXmlElementImpl extends NXmlElementBase implements NapileE
 	}
 
 	@Override
-	public <D> void acceptChildren(@NotNull NapileTreeVisitor<D> visitor, D data)
+	public final <D> void acceptChildren(@NotNull NapileTreeVisitor<D> visitor, D data)
 	{
 		PsiElement child = getFirstChild();
 		while(child != null)
@@ -70,7 +70,7 @@ public abstract class NXmlElementImpl extends NXmlElementBase implements NapileE
 	}
 
 	@Override
-	public NapileFile getContainingFile() throws PsiInvalidElementAccessException
+	public final NapileFile getContainingFile() throws PsiInvalidElementAccessException
 	{
 		return (NapileFile) super.getContainingFile();
 	}

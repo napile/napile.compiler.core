@@ -20,8 +20,8 @@
 package org.napile.idea.plugin;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
-import org.napile.compiler.NapileXmlFileType;
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
 import com.intellij.openapi.fileTypes.FileTypeFactory;
 
@@ -33,6 +33,6 @@ public class JetFileFactory extends FileTypeFactory
 	{
 		consumer.consume(NapileFileType.INSTANCE);
 
-		consumer.consume(NapileXmlFileType.INSTANCE);
+		consumer.consume(NXmlFileType.INSTANCE);
 	}
 }

@@ -133,11 +133,11 @@
 
 		<problemFileHighlightFilter implementation="org.napile.idea.plugin.codeInsight.problems.DefaultProblemFileHighlightFilter" />
 
-		<stubElementTypeHolder class="org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes"/>
+		<stubElementTypeHolder class="org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes"/>
 		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetShortClassNameIndex"/>
 		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetFullClassNameIndex"/>
-		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetAllShortFunctionNameIndex"/>
-		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetSuperClassIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.NapileAllShortMethodNameIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.NapileAllShortVariableNameIndex"/>
 
 		<referencesSearch implementation="org.napile.idea.plugin.search.KotlinReferencesSearcher"/>
 

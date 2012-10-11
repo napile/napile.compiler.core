@@ -19,8 +19,8 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lang.psi.stubs.PsiJetPropertyStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.psi.NapileFile;
@@ -35,14 +35,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 /**
  * @author max
  */
-public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPropertyStub> implements NapileWithExpressionInitializer
+public class NapileVariable extends NapileTypeParameterListOwnerStub<NapilePsiVariableStub> implements NapileWithExpressionInitializer
 {
-	public NapileProperty(@NotNull ASTNode node)
+	public NapileVariable(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileProperty(@NotNull PsiJetPropertyStub stub, @NotNull IStubElementType nodeType)
+	public NapileVariable(@NotNull NapilePsiVariableStub stub, @NotNull IStubElementType nodeType)
 	{
 		super(stub, nodeType);
 	}
@@ -50,20 +50,20 @@ public class NapileProperty extends NapileTypeParameterListOwnerStub<PsiJetPrope
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitProperty(this);
+		visitor.visitVariable(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitProperty(this, data);
+		return visitor.visitVariable(this, data);
 	}
 
 	@NotNull
 	@Override
 	public IStubElementType getElementType()
 	{
-		return JetStubElementTypes.PROPERTY;
+		return NapileStubElementTypes.VARIABLE;
 	}
 
 	public boolean isLocal()

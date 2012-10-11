@@ -44,6 +44,7 @@ import org.napile.compiler.psi.NapileClassLike;
 import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileDeclarationContainer;
 import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.psi.NapileModifierList;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -205,7 +206,7 @@ public class DeclarationResolver
 				}
 
 				@Override
-				public void visitProperty(NapileProperty property)
+				public void visitVariable(NapileVariable property)
 				{
 					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptor(ownerDescription, scope, property, trace);
 

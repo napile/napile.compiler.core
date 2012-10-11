@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.stubs;
+package org.napile.compiler.psi;
 
-import org.napile.compiler.lang.psi.NapileParameterList;
-import com.intellij.psi.stubs.StubElement;
+import org.jetbrains.annotations.NotNull;
+import org.napile.asm.tree.members.Node;
+import com.intellij.psi.PsiManager;
 
 /**
- * @author Nikolay Krasko
+ * @author VISTALL
+ * @date 9:31/10.10.12
  */
-public interface PsiJetParameterListStub extends StubElement<NapileParameterList>
+public abstract class NXmlNodeBasedElementImpl<N extends Node> extends NXmlElementImpl
 {
+	protected final N node;
+
+	public NXmlNodeBasedElementImpl(@NotNull PsiManager psiManager, @NotNull N node)
+	{
+		super(psiManager);
+		this.node = node;
+	}
 }
