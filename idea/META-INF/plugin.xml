@@ -25,10 +25,7 @@
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift T"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
-		<action id="ConvertJavaToNapile" class="org.napile.idea.plugin.actions.JavaToKotlinAction" text="Convert Java File to Napile File">
-			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift J"/>
-			<add-to-group group-id="RefactoringMenu" anchor="last"/>
-		</action>
+
 		<action id="ToggleJetErrorReporting" class="org.napile.idea.plugin.actions.ToggleErrorReportingAction" text="Error Reporting Enabled">
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift E"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
@@ -118,7 +115,6 @@
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetListSelectioner"/>
 		<typedHandler implementation="org.napile.idea.plugin.editor.KotlinTypedHandler"/>
 
-		<copyPastePostProcessor implementation="org.napile.idea.plugin.conversion.copy.JavaCopyPastePostProcessor"/>
 		<documentationProvider implementation="org.napile.idea.plugin.JetQuickDocumentationProvider"/>
 
 		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.linemarker.NewLineMarkerProvider"/>
