@@ -45,6 +45,7 @@ public class JetCoreEnvironment
 
 	private final CoreApplicationEnvironment applicationEnvironment;
 	private final JetCoreProjectEnvironment projectEnvironment;
+
 	private final List<NapileFile> sourceFiles = new ArrayList<NapileFile>();
 
 	private final CompilerConfiguration configuration;

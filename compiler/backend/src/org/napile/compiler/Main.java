@@ -36,7 +36,7 @@ public class Main
 
 	public static void main(String... args)
 	{
-		doMain( args);
+		doMain(args);
 	}
 
 	public static void doMain(@NotNull String[] args)
