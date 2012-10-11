@@ -20,6 +20,7 @@ import static org.napile.compiler.lang.diagnostics.Errors.CYCLIC_INHERITANCE_HIE
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,8 +33,14 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
+import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -48,6 +55,11 @@ import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileDeclarationContainer;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileFile;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -171,7 +183,7 @@ public class TypeHierarchyResolver
 			declaration.accept(new NapileVisitorVoid()
 			{
 				@Override
-				public void visitJetFile(NapileFile file)
+				public void visitNapileFile(NapileFile file)
 				{
 					NamespaceDescriptorImpl namespaceDescriptor = namespaceFactory.createNamespaceDescriptorPathIfNeeded(file, outerScope, RedeclarationHandler.DO_NOTHING);
 					context.getNamespaceDescriptors().put(file, namespaceDescriptor);
