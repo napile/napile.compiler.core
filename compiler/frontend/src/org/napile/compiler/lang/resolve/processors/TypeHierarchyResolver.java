@@ -31,22 +31,9 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptorLite;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
-import org.napile.compiler.lang.descriptors.NamespaceLikeBuilder;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.WithDeferredResolve;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -61,11 +48,6 @@ import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileClassLike;
-import org.napile.compiler.psi.NapileDeclarationContainer;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileFile;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -189,9 +171,8 @@ public class TypeHierarchyResolver
 			declaration.accept(new NapileVisitorVoid()
 			{
 				@Override
-				public void visitNapileFile(NapileFile file)
+				public void visitJetFile(NapileFile file)
 				{
-					System.out.println(file.getClass().getName());
 					NamespaceDescriptorImpl namespaceDescriptor = namespaceFactory.createNamespaceDescriptorPathIfNeeded(file, outerScope, RedeclarationHandler.DO_NOTHING);
 					context.getNamespaceDescriptors().put(file, namespaceDescriptor);
 
@@ -215,6 +196,27 @@ public class TypeHierarchyResolver
 
 					owner.addClassifierDescriptor(mutableClassDescriptor);
 				}
+
+				@Override
+				public void visitAnonymClass(NapileAnonymClass declaration)
+				{
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
+					context.getAnonymous().put(declaration, mutableClassDescriptor);
+
+					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
+
+					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
+
+					ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(mutableClassDescriptor, Collections.<AnnotationDescriptor>emptyList(), false);
+					constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
+					mutableClassDescriptor.addConstructor(constructorDescriptor);
+
+					trace.record(BindingContext.CONSTRUCTOR, declaration, constructorDescriptor);
+
+					owner.addObjectDescriptor(mutableClassDescriptor);
+					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
+				}
+
 
 				private void prepareForDeferredCall(@NotNull JetScope outerScope, @NotNull WithDeferredResolve withDeferredResolve, @NotNull NapileDeclarationContainer container)
 				{
