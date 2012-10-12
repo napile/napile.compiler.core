@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.lexer.NapileLexer;
 import org.napile.compiler.lang.psi.NapileCallExpression;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -31,7 +32,6 @@ import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lexer.JetLexer;
 import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.psi.NapileFile;
@@ -228,7 +228,7 @@ public class JetNameSuggester
 		if(name == null || name.isEmpty())
 			return false;
 
-		JetLexer lexer = new JetLexer();
+		NapileLexer lexer = new NapileLexer();
 		lexer.start(name, 0, name.length());
 		if(lexer.getTokenType() != NapileTokens.IDENTIFIER)
 			return false;

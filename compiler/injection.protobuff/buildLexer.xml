@@ -1,4 +1,4 @@
-<project name="NapileLex" default="lexer">
+<project name="ProtobufLex" default="lexer">
 	<property name="home" value="${basedir}"/>
 	<!--
 		  This script relies on a custom JFlex that is available in the sources of IntelliJ IDEA Community Edition
@@ -42,6 +42,6 @@
 
 	<target name="lexer">
 		<echo message="${flex.base}"/>
-		<flex flexfile="${home}/src/main/java/org/napile/compiler/lang/lexer/_NapileLexer.flex" destdir="${home}/src/main/java/org/napile/compiler/lang/lexer/"/>
+		<flex flexfile="${home}/src/main/java/org/napile/compiler/injection/protobuf/lexer/_Protobuf.flex" destdir="${home}/src/main/java/org/napile/compiler/injection/protobuf/lexer/"/>
 	</target>
 </project>

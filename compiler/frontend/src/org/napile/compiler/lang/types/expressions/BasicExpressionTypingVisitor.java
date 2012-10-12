@@ -45,6 +45,7 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.lib.NapileReflectPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -84,6 +85,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileCodeInjectionExpression;
 import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
@@ -216,7 +218,11 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		ClassDescriptor classDescriptor = context.scope.getClass(NapileReflectPackage.CLASS);
 		if(classDescriptor == null)
-			return DataFlowUtils.checkType(ErrorUtils.createErrorType("'napile.reflect.Class' import expected"), expression, context, context.dataFlowInfo);
+		{
+			context.trace.report(Errors.NAPILE_LANG_CLASS_IMPORT_EXPECTED.on(expression));
+
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+		}
 
 		JetType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
 
@@ -234,13 +240,30 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		ClassDescriptor classDescriptor = context.scope.getClass(NapileReflectPackage.TYPE);
 		if(classDescriptor == null)
-			return DataFlowUtils.checkType(ErrorUtils.createErrorType("'napile.reflect.Type' import expected"), expression, context, context.dataFlowInfo);
+		{
+			context.trace.report(Errors.NAPILE_LANG_TYPE_IMPORT_EXPECTED.on(expression));
+
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+		}
 
 		JetType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
 
 		JetType returnType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>singletonList(targetType), classDescriptor.getMemberScope(Collections.singletonList(targetType)));
 
 		return DataFlowUtils.checkType(returnType, expression, context, context.dataFlowInfo);
+	}
+
+	@Override
+	public JetTypeInfo visitCodeInjection(NapileCodeInjectionExpression expression, ExpressionTypingContext context)
+	{
+		CodeInjection codeInjection = expression.getCodeInjection();
+		if(codeInjection == null)
+		{
+			context.trace.report(Errors.UNKNOWN_INJECTION.on(expression));
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+		}
+
+		return DataFlowUtils.checkType(codeInjection.getReturnType(context.expectedType, context.trace, context.scope), expression, context, context.dataFlowInfo);
 	}
 
 	@Override

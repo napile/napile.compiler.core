@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2012 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.injection;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * @author VISTALL
- * @date 10:38/28.09.12
+/*
+ * @author max
  */
-public class CodeInjectionManager
+package org.napile.compiler.lang.lexer;
+
+import java.io.Reader;
+
+import com.intellij.lexer.FlexAdapter;
+
+public class NapileLexer extends FlexAdapter
 {
-	public static final CodeInjectionManager INSTANCE = new CodeInjectionManager();
-
-	private List<CodeInjection> list = new ArrayList<CodeInjection>();
-
-
+	public NapileLexer()
+	{
+		super(new _NapileLexer((Reader) null));
+	}
 }

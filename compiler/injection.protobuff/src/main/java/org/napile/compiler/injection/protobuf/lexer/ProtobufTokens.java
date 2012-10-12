@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-/*
- * @author max
+package org.napile.compiler.injection.protobuf.lexer;
+
+import com.intellij.psi.TokenType;
+
+/**
+ * @author VISTALL
+ * @date 11:48/12.10.12
  */
-package org.napile.compiler.lexer;
-
-import java.io.Reader;
-
-import com.intellij.lexer.FlexAdapter;
-
-public class JetLexer extends FlexAdapter
+public interface ProtobufTokens extends TokenType
 {
-	public JetLexer()
-	{
-		super(new _JetLexer((Reader) null));
-	}
+	ProtobufToken MESSAGE_KEYWORD = new ProtobufToken("MESSAGE_KEYWORD");
+
+	ProtobufToken IDENTIFIER = new ProtobufToken("IDENTIFIER");
 }

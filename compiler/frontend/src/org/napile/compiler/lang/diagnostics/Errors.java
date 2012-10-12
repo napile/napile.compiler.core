@@ -67,6 +67,10 @@ public interface Errors
 	SimpleDiagnosticFactory<PsiElement> REDUNDANT_MODIFIER_IN_GETTER = SimpleDiagnosticFactory.create(Severity.WARNING);
 	SimpleDiagnosticFactory<PsiElement> REDUNDANT_MODIFIER = SimpleDiagnosticFactory.create(Severity.WARNING);
 
+	SimpleDiagnosticFactory<PsiElement> NAPILE_LANG_CLASS_IMPORT_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
+	SimpleDiagnosticFactory<PsiElement> NAPILE_LANG_TYPE_IMPORT_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
+	SimpleDiagnosticFactory<PsiElement> UNKNOWN_INJECTION = SimpleDiagnosticFactory.create(Severity.ERROR);
+
 	SimpleDiagnosticFactory<NapileExpression> TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReturnExpression> RETURN_NOT_ALLOWED = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> LABEL_NAME_CLASH = SimpleDiagnosticFactory.create(Severity.WARNING);

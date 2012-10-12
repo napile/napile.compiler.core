@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ package org.napile.compiler.lang.parsing;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.NapileNodeType;
+import org.napile.compiler.lang.lexer.NapileLexer;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.psi.NapileFileImpl;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementType;
-import org.napile.compiler.lexer.JetLexer;
 import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
@@ -54,7 +54,7 @@ public class NapileParserDefinition implements ParserDefinition
 	@NotNull
 	public Lexer createLexer(Project project)
 	{
-		return new JetLexer();
+		return new NapileLexer();
 	}
 
 	@Override

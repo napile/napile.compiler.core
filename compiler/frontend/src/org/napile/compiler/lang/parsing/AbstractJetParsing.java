@@ -20,9 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -42,6 +43,12 @@ import com.intellij.psi.tree.TokenSet;
 			assert keywordToken.isSoft();
 			SOFT_KEYWORD_TEXTS.put(keywordToken.getValue(), keywordToken);
 		}
+
+		for(IElementType type : CodeInjectionManager.INSTANCE.getInjectionTokens().getTypes())
+		{
+			NapileKeywordToken keywordToken = (NapileKeywordToken) type;
+			SOFT_KEYWORD_TEXTS.put(keywordToken.getValue(), keywordToken);
+		}
 	}
 
 	static
@@ -53,7 +60,7 @@ import com.intellij.psi.tree.TokenSet;
 		}
 	}
 
-	protected final SemanticWhitespaceAwarePsiBuilder myBuilder;
+	private final SemanticWhitespaceAwarePsiBuilder myBuilder;
 
 	public AbstractJetParsing(SemanticWhitespaceAwarePsiBuilder builder)
 	{
@@ -76,7 +83,7 @@ import com.intellij.psi.tree.TokenSet;
 		return expect(expectation, message, null);
 	}
 
-	protected PsiBuilder.Marker mark()
+	public PsiBuilder.Marker mark()
 	{
 		return myBuilder.mark();
 	}
@@ -408,6 +415,11 @@ import com.intellij.psi.tree.TokenSet;
 	protected JetParsing createTruncatedBuilder(int eofPosition)
 	{
 		return create(new TruncatedSemanticWhitespaceAwarePsiBuilder(myBuilder, eofPosition));
+	}
+
+	public SemanticWhitespaceAwarePsiBuilder getBuilder()
+	{
+		return myBuilder;
 	}
 
 	protected class AtOffset extends AbstractTokenStreamPredicate

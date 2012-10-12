@@ -89,6 +89,10 @@ public class DefaultErrorMessages
 		MAP.put(REDUNDANT_MODIFIER_IN_GETTER, "Visibility modifiers are redundant in getter");
 		MAP.put(REDUNDANT_MODIFIER, "Redundant modifier");
 
+		MAP.put(NAPILE_LANG_CLASS_IMPORT_EXPECTED, "'napile.reflect.Class' import expected");
+		MAP.put(NAPILE_LANG_TYPE_IMPORT_EXPECTED, "'napile.reflect.Type' import expected");
+		MAP.put(UNKNOWN_INJECTION, "Unknown injection");
+
 		MAP.put(TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM, "Type checking has run into a recursive problem. Easiest workaround: specify types of your declarations explicitly"); // TODO: message
 		MAP.put(RETURN_NOT_ALLOWED, "'return' is not allowed here");
 		MAP.put(LABEL_NAME_CLASH, "There is more than one label with such a name in this scope");

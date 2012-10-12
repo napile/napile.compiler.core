@@ -22,6 +22,8 @@
     <orderEntry type="module" module-name="frontend.api" />
     <orderEntry type="module" module-name="frontend.bytecode" />
     <orderEntry type="module" module-name="frontend.source" />
+    <orderEntry type="module" module-name="injection.api" />
+    <orderEntry type="module" module-name="injection.protobuff" />
   </component>
 </module>
 

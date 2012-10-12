@@ -14,27 +14,45 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.injection;
+package org.napile.compiler.lang.parsing.injection;
 
 import org.jetbrains.annotations.NotNull;
 
 /**
  * @author VISTALL
- * @date 21:50/27.09.12
+ * @date 12:39/12.10.12
  */
-public interface CodeInjection
+public class FragmentCharSequence implements CharSequence
 {
-	/**
-	 * Returning name of injection
-	 * Case-sensitive
-	 *   .xml
-	 *   {
-	 *
-	 *   }
-	 *
-	 * `xml` - is name(without dot)
-	 * @return
-	 */
-	@NotNull
-	String getName();
+	private final CharSequence parent;
+	private final int offset;
+
+	public FragmentCharSequence(@NotNull CharSequence parent, int offset)
+	{
+		this.parent = parent;
+		this.offset = offset;
+	}
+
+	@Override
+	public int length()
+	{
+		return parent.length() - offset;
+	}
+
+	@Override
+	public char charAt(int index)
+	{
+		return parent.charAt(offset + index);
+	}
+
+	@Override
+	public CharSequence subSequence(int start, int end)
+	{
+		return parent.subSequence(offset + start, offset + end);
+	}
+
+	public int getOffset()
+	{
+		return offset;
+	}
 }

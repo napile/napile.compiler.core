@@ -19,6 +19,7 @@
  */
 package org.napile.idea.plugin.highlighter;
 
+import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import org.napile.compiler.lang.psi.NapileFunctionLiteral;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import org.napile.compiler.lexer.NapileTokens;
@@ -43,7 +44,7 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 		if(element instanceof LeafPsiElement)
 		{
 			IElementType elementType = ((LeafPsiElement) element).getElementType();
-			if(NapileTokens.SOFT_KEYWORDS.contains(elementType))
+			if(NapileTokens.SOFT_KEYWORDS.contains(elementType) || CodeInjectionManager.INSTANCE.getInjectionTokens().contains(elementType))
 			{
 				TextAttributesKey attributes = JetHighlightingColors.KEYWORD;
 				if(NapileTokens.MODIFIER_KEYWORDS.contains(elementType))

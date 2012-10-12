@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.findUsages;
+package org.napile.compiler.injection.protobuf.psi;
 
-import org.napile.compiler.lang.lexer.NapileLexer;
-import org.napile.compiler.lexer.NapileTokens;
-import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
-import com.intellij.psi.tree.TokenSet;
+import org.jetbrains.annotations.NotNull;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.lang.ASTNode;
 
 /**
- * @author yole
+ * @author VISTALL
+ * @date 12:54/12.10.12
  */
-public class JetWordsScanner extends DefaultWordsScanner
+public class ProtobufMessageBlock extends ASTWrapperPsiElement
 {
-	public JetWordsScanner()
+	public ProtobufMessageBlock(@NotNull ASTNode node)
 	{
-		super(new NapileLexer(), TokenSet.create(NapileTokens.IDENTIFIER), NapileTokens.COMMENTS, NapileTokens.STRINGS);
+		super(node);
 	}
 }

@@ -14,6 +14,7 @@
     <orderEntry type="module" module-name="frontend.bytecode" exported="" />
     <orderEntry type="module" module-name="frontend.api" exported="" />
     <orderEntry type="module" module-name="frontend.source" exported="" />
+    <orderEntry type="module" module-name="injection.api" />
   </component>
 </module>
 

@@ -76,6 +76,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			NapileTokens.LBRACE, // functionLiteral
 
 			NapileTokens.LPAR, // tuple
+			NapileTokens.DOT, // injection
 
 			NapileTokens.THIS_KEYWORD, // this
 			NapileTokens.SUPER_KEYWORD, // super
@@ -349,21 +350,21 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 		else
 		{
-			myBuilder.disableJoiningComplexTokens();
+			getBuilder().disableJoiningComplexTokens();
 			if(atSet(Precedence.PREFIX.getOperations()))
 			{
 				PsiBuilder.Marker expression = mark();
 
 				parseOperationReference();
 
-				myBuilder.restoreJoiningComplexTokensState();
+				getBuilder().restoreJoiningComplexTokensState();
 
 				parsePrefixExpression();
 				expression.done(PREFIX_EXPRESSION);
 			}
 			else
 			{
-				myBuilder.restoreJoiningComplexTokensState();
+				getBuilder().restoreJoiningComplexTokensState();
 				parsePostfixExpression();
 			}
 		}
@@ -461,7 +462,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			if(myJetParsing.tryParseTypeArgumentList(TYPE_ARGUMENT_LIST_STOPPERS))
 			{
 				typeArgumentList.done(TYPE_ARGUMENT_LIST);
-				if(!myBuilder.newlineBeforeCurrentToken() && at(NapileTokens.LPAR))
+				if(!getBuilder().newlineBeforeCurrentToken() && at(NapileTokens.LPAR))
 					parseValueArgumentList();
 				parseCallWithClosure();
 			}
@@ -486,7 +487,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker mark = mark();
 		parseAtomicExpression();
-		if(!myBuilder.newlineBeforeCurrentToken() && parseCallSuffix())
+		if(!getBuilder().newlineBeforeCurrentToken() && parseCallSuffix())
 		{
 			mark.done(CALL_EXPRESSION);
 		}
@@ -542,7 +543,9 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		//        System.out.println("atom at "  + myBuilder.getTokenText());
 
-		if(at(NapileTokens.LPAR))
+		if(at(NapileTokens.DOT))
+			new CodeInjectionParser(this);
+		else if(at(NapileTokens.LPAR))
 		{
 			parseParenthesizedExpression();
 		}
@@ -730,10 +733,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 			else
 			{
-				NapileToken keyword = KEYWORD_TEXTS.get(myBuilder.getTokenText());
+				NapileToken keyword = KEYWORD_TEXTS.get(getBuilder().getTokenText());
 				if(keyword != null)
 				{
-					myBuilder.remapCurrentToken(keyword);
+					getBuilder().remapCurrentToken(keyword);
 					errorAndAdvance("Keyword cannot be used as a reference");
 				}
 				else
@@ -820,7 +823,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		advance(); // WHEN_KEYWORD
 
 		// Parse condition
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		if(at(NapileTokens.LPAR))
 		{
 			advanceAt(NapileTokens.LPAR);
@@ -840,10 +843,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			expect(NapileTokens.RPAR, "Expecting ')'");
 		}
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		// Parse when block
-		myBuilder.enableNewlines();
+		getBuilder().enableNewlines();
 		expect(NapileTokens.LBRACE, "Expecting '{'");
 
 		while(!eof() && !at(NapileTokens.RBRACE))
@@ -852,7 +855,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 
 		expect(NapileTokens.RBRACE, "Expecting '}'");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		when.done(WHEN);
 	}
@@ -943,7 +946,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private void parseWhenCondition()
 	{
 		PsiBuilder.Marker condition = mark();
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		if(at(NapileTokens.IN_KEYWORD) || at(NapileTokens.NOT_IN))
 		{
 			PsiBuilder.Marker mark = mark();
@@ -987,7 +990,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 			condition.done(WHEN_CONDITION_EXPRESSION);
 		}
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 	}
 
 	/*
@@ -1001,7 +1004,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker indices = mark();
 
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		advance(); // LBRACKET
 
 		while(true)
@@ -1020,7 +1023,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 
 		expect(NapileTokens.RBRACKET, "Expecting ']'");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		indices.done(INDICES);
 	}
@@ -1085,7 +1088,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker literal = mark();
 
-		myBuilder.enableNewlines();
+		getBuilder().enableNewlines();
 		advance(); // LBRACE
 
 		boolean paramsFound = false;
@@ -1148,7 +1151,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 				parseStatements();
 				expect(NapileTokens.RBRACE, "Expecting '}'");
 				literalExpression.done(BLOCK);
-				myBuilder.restoreNewlinesState();
+				getBuilder().restoreNewlinesState();
 
 				return;
 			}
@@ -1159,7 +1162,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		body.done(BLOCK);
 
 		expect(NapileTokens.RBRACE, "Expecting '}'");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		literal.done(FUNCTION_LITERAL);
 		literalExpression.done(FUNCTION_LITERAL_EXPRESSION);
@@ -1313,7 +1316,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		PsiBuilder.Marker list = mark();
 		expect(NapileTokens.LPAR, "Expecting a parameter list in parentheses (...)", TokenSet.create(NapileTokens.ARROW, NapileTokens.COLON));
 
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 
 		if(!at(NapileTokens.RPAR))
 		{
@@ -1346,7 +1349,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 		}
 
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		expect(NapileTokens.RPAR, "Expecting ')", TokenSet.create(NapileTokens.ARROW, NapileTokens.COLON));
 		list.done(VALUE_PARAMETER_LIST);
@@ -1379,7 +1382,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				break;
 			}
-			else if(!myBuilder.newlineBeforeCurrentToken())
+			else if(!getBuilder().newlineBeforeCurrentToken())
 			{
 				errorUntil("Unexpected tokens (use ';' to separate expressions on the same line)", TokenSet.create(NapileTokens.EOL_OR_SEMICOLON));
 			}
@@ -1514,7 +1517,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		advance(); // FOR_KEYWORD
 
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		expect(NapileTokens.LPAR, "Expecting '(' to open a loop range", TokenSet.create(NapileTokens.RPAR,  NapileTokens.VAR_KEYWORD, NapileTokens.IDENTIFIER));
 
 		PsiBuilder.Marker parameter = mark();
@@ -1538,7 +1541,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		range.done(LOOP_RANGE);
 
 		expectNoAdvance(NapileTokens.RPAR, "Expecting ')'");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		parseControlStructureBody();
 
@@ -1674,7 +1677,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseCondition()
 	{
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		expect(NapileTokens.LPAR, "Expecting a condition in parentheses '(...)'");
 
 		PsiBuilder.Marker condition = mark();
@@ -1682,7 +1685,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		condition.done(CONDITION);
 
 		expect(NapileTokens.RPAR, "Expecting ')");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 	}
 
 	/*
@@ -1747,7 +1750,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker mark = mark();
 
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		advance(); // LPAR
 		if(at(NapileTokens.RPAR))
 		{
@@ -1759,7 +1762,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 
 		expect(NapileTokens.RPAR, "Expecting ')'");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		mark.done(PARENTHESIZED);
 	}
@@ -1797,7 +1800,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			// This may be "super < foo" or "super<foo>", thus the backtracking
 			PsiBuilder.Marker supertype = mark();
 
-			myBuilder.disableNewlines();
+			getBuilder().disableNewlines();
 			advance(); // LT
 
 			myJetParsing.parseTypeRef();
@@ -1811,7 +1814,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				supertype.rollbackTo();
 			}
-			myBuilder.restoreNewlinesState();
+			getBuilder().restoreNewlinesState();
 		}
 		mark.done(SUPER_EXPRESSION);
 	}
@@ -1825,7 +1828,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker list = mark();
 
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		expect(NapileTokens.LPAR, "Expecting an argument list", EXPRESSION_FOLLOW);
 
 		if(!at(NapileTokens.RPAR))
@@ -1847,7 +1850,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 
 		expect(NapileTokens.RPAR, "Expecting ')'", EXPRESSION_FOLLOW);
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		list.done(VALUE_ARGUMENT_LIST);
 	}
@@ -1902,6 +1905,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 	private boolean interruptedWithNewLine()
 	{
-		return !ALLOW_NEWLINE_OPERATIONS.contains(tt()) && myBuilder.newlineBeforeCurrentToken();
+		return !ALLOW_NEWLINE_OPERATIONS.contains(tt()) && getBuilder().newlineBeforeCurrentToken();
 	}
 }

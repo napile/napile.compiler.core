@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lexer.JetLexer;
+import org.napile.compiler.lang.lexer.NapileLexer;
 import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -39,7 +39,7 @@ public class JetHighlighter extends SyntaxHighlighterBase
 	@NotNull
 	public Lexer getHighlightingLexer()
 	{
-		return new JetLexer();
+		return new NapileLexer();
 	}
 
 	@NotNull

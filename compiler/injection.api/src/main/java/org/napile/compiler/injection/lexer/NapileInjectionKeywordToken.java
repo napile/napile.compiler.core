@@ -14,7 +14,7 @@ public class NapileInjectionKeywordToken extends NapileKeywordToken
 	@NotNull
 	public final CodeInjection codeInjection;
 
-	private NapileInjectionKeywordToken(@NotNull @NonNls String value, @NotNull CodeInjection codeInjection)
+	public NapileInjectionKeywordToken(@NotNull @NonNls String value, @NotNull CodeInjection codeInjection)
 	{
 		super(value, true);
 		this.codeInjection = codeInjection;

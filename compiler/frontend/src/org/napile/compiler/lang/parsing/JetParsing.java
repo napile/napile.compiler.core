@@ -180,7 +180,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		while(true)
 		{
-			if(myBuilder.newlineBeforeCurrentToken())
+			if(getBuilder().newlineBeforeCurrentToken())
 			{
 				errorWithRecovery("Package name must be a '.'-separated identifier list placed on a single line", NAMESPACE_NAME_RECOVERY_SET);
 				break;
@@ -364,12 +364,12 @@ public class JetParsing extends AbstractJetParsing
 	public boolean parseAnnotations()
 	{
 		PsiBuilder.Marker annotation = mark();
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 
 		while(at(NapileTokens.AT))
 			parseAnnotationEntry();
 
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		annotation.done(ANNOTATION_LIST);
 		return true;
@@ -454,7 +454,7 @@ public class JetParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker classBody = mark();
 
-		myBuilder.enableNewlines();
+		getBuilder().enableNewlines();
 		advance(); // LBRACE
 
 		if(!parseIdeTemplate())
@@ -492,7 +492,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		expect(NapileTokens.RBRACE, "Expecting '}' to close enum body");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		classBody.done(CLASS_BODY);
 	}
@@ -531,7 +531,7 @@ public class JetParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker classBody = mark();
 
-		myBuilder.enableNewlines();
+		getBuilder().enableNewlines();
 		advance(); // LBRACE
 
 		if(!parseIdeTemplate())
@@ -554,7 +554,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		expect(NapileTokens.RBRACE, "Expecting '}' to close retell body");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		classBody.done(CLASS_BODY);
 	}
@@ -585,7 +585,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker body = mark();
 
-		myBuilder.enableNewlines();
+		getBuilder().enableNewlines();
 		expect(NapileTokens.LBRACE, "Expecting a class body", TokenSet.create(NapileTokens.LBRACE));
 
 		if(!parseIdeTemplate())
@@ -600,7 +600,7 @@ public class JetParsing extends AbstractJetParsing
 			}
 		}
 		expect(NapileTokens.RBRACE, "Missing '}");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		body.done(CLASS_BODY);
 	}
@@ -762,12 +762,12 @@ public class JetParsing extends AbstractJetParsing
 
 		parseTypeParameterList();
 
-		myBuilder.disableJoiningComplexTokens();
+		getBuilder().disableJoiningComplexTokens();
 
 		if(!parseIdeTemplate())
 			expect(NapileTokens.IDENTIFIER, "Expecting identifier");
 
-		myBuilder.restoreJoiningComplexTokensState();
+		getBuilder().restoreJoiningComplexTokensState();
 
 		if(at(NapileTokens.COLON))
 		{
@@ -937,13 +937,13 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker block = mark();
 
-		myBuilder.enableNewlines();
+		getBuilder().enableNewlines();
 		expect(NapileTokens.LBRACE, "Expecting '{' to open a block");
 
 		myExpressionParsing.parseStatements();
 
 		expect(NapileTokens.RBRACE, "Expecting '}");
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		block.done(BLOCK);
 	}
@@ -1033,7 +1033,7 @@ public class JetParsing extends AbstractJetParsing
 		boolean result = false;
 		if(at(NapileTokens.LT))
 		{
-			myBuilder.disableNewlines();
+			getBuilder().disableNewlines();
 			advance(); // LT
 
 			while(true)
@@ -1049,7 +1049,7 @@ public class JetParsing extends AbstractJetParsing
 			}
 
 			expect(NapileTokens.GT, "Missing '>'");
-			myBuilder.restoreNewlinesState();
+			getBuilder().restoreNewlinesState();
 			result = true;
 		}
 		list.done(TYPE_PARAMETER_LIST);
@@ -1313,7 +1313,7 @@ public class JetParsing extends AbstractJetParsing
 
 	boolean tryParseTypeArgumentList(TokenSet extraRecoverySet)
 	{
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		advance(); // LT
 
 		while(true)
@@ -1334,7 +1334,7 @@ public class JetParsing extends AbstractJetParsing
 		{
 			advance(); // GT
 		}
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 		return atGT;
 	}
 
@@ -1391,7 +1391,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker parameters = mark();
 
-		myBuilder.disableNewlines();
+		getBuilder().disableNewlines();
 		expect(NapileTokens.LPAR, "Expecting '(", recoverySet);
 
 		if(!parseIdeTemplate())
@@ -1431,7 +1431,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		expect(NapileTokens.RPAR, "Expecting ')'", recoverySet);
-		myBuilder.restoreNewlinesState();
+		getBuilder().restoreNewlinesState();
 
 		parameters.done(VALUE_PARAMETER_LIST);
 	}

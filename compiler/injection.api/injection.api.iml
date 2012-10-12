@@ -7,8 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="frontend" />
-    <orderEntry type="module" module-name="injection.api" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="intellij-core" level="project" />
+    <orderEntry type="module" module-name="frontend" exported="" />
   </component>
 </module>
 

@@ -21,9 +21,14 @@ package org.napile.compiler;
 
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.psi.NapileCodeInjectionExpression;
 import org.napile.compiler.psi.NapileModifierListImpl;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.Language;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.IReparseableElementType;
 
 public interface NapileNodeTypes
 {
@@ -112,6 +117,21 @@ public interface NapileNodeTypes
 	NapileNodeType BLOCK = new NapileNodeType("BLOCK", NapileBlockExpression.class);
 	NapileNodeType FUNCTION_LITERAL_EXPRESSION = new NapileNodeType("FUNCTION_LITERAL_EXPRESSION", NapileFunctionLiteralExpression.class);
 	NapileNodeType FUNCTION_LITERAL = new NapileNodeType("FUNCTION_LITERAL", NapileFunctionLiteral.class);
+	NapileNodeType CODE_INJECTION = new NapileNodeType("CODE_INJECTION", NapileCodeInjectionExpression.class);
+	IReparseableElementType CODE_INJECTION_BLOCK = new IReparseableElementType("CODE_INJECTION", NapileLanguage.INSTANCE)
+	{
+		@Override
+		public ASTNode createNode(final CharSequence text)
+		{
+			return new CodeInjectionBlock(this, text);
+		}
+
+		@Override
+		public boolean isParsable(final CharSequence buffer, Language fileLanguage, final Project project)
+		{
+			return true;
+		}
+	};
 	//NapileNodeType ANNOTATED_EXPRESSION = new NapileNodeType("ANNOTATED_EXPRESSION", NapileAnnotatedExpression.class);
 
 	NapileNodeType REFERENCE_EXPRESSION = new NapileNodeType("REFERENCE_EXPRESSION", NapileSimpleNameExpression.class);
