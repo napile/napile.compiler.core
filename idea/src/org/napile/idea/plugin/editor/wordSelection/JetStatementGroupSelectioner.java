@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.napile.compiler.lang.psi.NapileBlockExpression;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileWhenEntry;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
 import org.napile.compiler.lexer.NapileTokens;

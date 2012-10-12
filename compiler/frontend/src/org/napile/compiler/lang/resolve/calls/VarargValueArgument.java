@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.ValueArgument;
 import com.google.common.collect.Lists;
 

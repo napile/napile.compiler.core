@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.resolve;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.psi.NapileFile;
 import com.google.common.base.Predicate;
 
 /**

@@ -39,6 +39,12 @@ import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileDeclarationContainer;
+import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.psi.NapileModifierList;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -169,7 +175,7 @@ public class DeclarationResolver
 			declaration.accept(new NapileVisitorVoid()
 			{
 				@Override
-				public void visitNamedMethod(NapileNamedFunction function)
+				public void visitNamedMethod(NapileNamedMethod function)
 				{
 					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveFunctionDescriptor(ownerDescription, scope, function, trace);
 					ownerDescription.getBuilder().addMethodDescriptor(functionDescriptor);
@@ -200,7 +206,7 @@ public class DeclarationResolver
 				}
 
 				@Override
-				public void visitProperty(NapileProperty property)
+				public void visitVariable(NapileVariable property)
 				{
 					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptor(ownerDescription, scope, property, trace);
 

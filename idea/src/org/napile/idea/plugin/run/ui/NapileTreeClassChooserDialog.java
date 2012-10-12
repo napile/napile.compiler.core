@@ -22,7 +22,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileClassLike;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.projectView.NapileClassTreeNode;
 import org.napile.idea.plugin.psi.filter.NapileClassFilterWithScope;

@@ -22,6 +22,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileExpression;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;

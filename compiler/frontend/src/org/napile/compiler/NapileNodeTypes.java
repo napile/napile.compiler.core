@@ -20,42 +20,42 @@
 package org.napile.compiler;
 
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.psi.NapileModifierListImpl;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 
 public interface NapileNodeTypes
 {
-	IFileElementType JET_FILE = new IFileElementType(JetLanguage.INSTANCE);
+	IFileElementType JET_FILE = new IFileElementType(NapileLanguage.INSTANCE);
 
-	IElementType CLASS = JetStubElementTypes.CLASS;
-	IElementType METHOD = JetStubElementTypes.METHOD;
-	IElementType PROPERTY = JetStubElementTypes.PROPERTY;
+	IElementType CLASS = NapileStubElementTypes.CLASS;
+	IElementType METHOD = NapileStubElementTypes.METHOD;
+	IElementType PROPERTY = NapileStubElementTypes.VARIABLE;
 
 	NapileNodeType ANONYM_CLASS = new NapileNodeType("ANONYM_CLASS", NapileAnonymClass.class);
 	NapileNodeType OBJECT_DECLARATION_NAME = new NapileNodeType("OBJECT_DECLARATION_NAME", NapileObjectDeclarationName.class);
 
 	NapileNodeType CONSTRUCTOR = new NapileNodeType("CONSTRUCTOR", NapileConstructor.class);
 	NapileNodeType STATIC_CONSTRUCTOR = new NapileNodeType("STATIC_CONSTRUCTOR", NapileStaticConstructor.class);
-	IElementType ENUM_ENTRY = JetStubElementTypes.ENUM_ENTRY;
-	IElementType RETELL_ENTRY = JetStubElementTypes.RETELL_ENTRY;
+	IElementType ENUM_ENTRY = NapileStubElementTypes.ENUM_ENTRY;
+	IElementType RETELL_ENTRY = NapileStubElementTypes.RETELL_ENTRY;
 
-	IElementType TYPE_PARAMETER_LIST = JetStubElementTypes.TYPE_PARAMETER_LIST;
-	IElementType TYPE_PARAMETER = JetStubElementTypes.TYPE_PARAMETER;
+	IElementType TYPE_PARAMETER_LIST = NapileStubElementTypes.TYPE_PARAMETER_LIST;
+	IElementType TYPE_PARAMETER = NapileStubElementTypes.TYPE_PARAMETER;
 
 	NapileNodeType DELEGATION_SPECIFIER_LIST = new NapileNodeType("DELEGATION_SPECIFIER_LIST", NapileDelegationSpecifierList.class);
 
 	NapileNodeType DELEGATOR_SUPER_CALL = new NapileNodeType("DELEGATOR_SUPER_CALL", NapileDelegatorToSuperCall.class);
 	NapileNodeType DELEGATOR_SUPER_CLASS = new NapileNodeType("DELEGATOR_SUPER_CLASS", NapileDelegatorToSuperClass.class);
 	NapileNodeType CONSTRUCTOR_CALLEE = new NapileNodeType("CONSTRUCTOR_CALLEE", NapileConstructorCalleeExpression.class);
-	IElementType VALUE_PARAMETER_LIST = JetStubElementTypes.VALUE_PARAMETER_LIST;
-	IElementType VALUE_PARAMETER = JetStubElementTypes.VALUE_PARAMETER;
+	IElementType VALUE_PARAMETER_LIST = NapileStubElementTypes.VALUE_PARAMETER_LIST;
+	IElementType VALUE_PARAMETER = NapileStubElementTypes.VALUE_PARAMETER;
 	IElementType REFERENCE_PARAMETER = new NapileNodeType("REFERENCE_PARAMETER", NapileReferenceParameter.class);
 
 	NapileNodeType CLASS_BODY = new NapileNodeType("CLASS_BODY", NapileClassBody.class);
 	NapileNodeType IMPORT_DIRECTIVE = new NapileNodeType("IMPORT_DIRECTIVE", NapileImportDirective.class);
-	NapileNodeType MODIFIER_LIST = new NapileNodeType("MODIFIER_LIST", NapileModifierList.class);
+	NapileNodeType MODIFIER_LIST = new NapileNodeType("MODIFIER_LIST", NapileModifierListImpl.class);
 	NapileNodeType ANNOTATION_LIST = new NapileNodeType("ANNOTATION_LIST", NapileAnnotationList.class);
 	NapileNodeType ANNOTATION_ENTRY = new NapileNodeType("ANNOTATION_ENTRY", NapileAnnotationEntry.class);
 

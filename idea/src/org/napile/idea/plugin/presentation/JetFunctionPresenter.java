@@ -22,8 +22,8 @@ import javax.swing.Icon;
 
 import org.apache.commons.lang.StringUtils;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTypeReference;
@@ -40,10 +40,10 @@ import com.intellij.openapi.util.Iconable;
 /**
  * @author Nikolay Krasko
  */
-public class JetFunctionPresenter implements ItemPresentationProvider<NapileNamedFunction>
+public class JetFunctionPresenter implements ItemPresentationProvider<NapileNamedMethod>
 {
 	@Override
-	public ItemPresentation getPresentation(final NapileNamedFunction function)
+	public ItemPresentation getPresentation(final NapileNamedMethod function)
 	{
 		return new ColoredItemPresentation()
 		{

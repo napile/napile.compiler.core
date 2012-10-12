@@ -28,15 +28,15 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.psi.NapileClass;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -66,9 +66,9 @@ public class DeclarationsChecker
 			checkConstructor(constructor, constructorDescriptor);
 		}
 
-		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
 		{
-			NapileProperty property = entry.getKey();
+			NapileVariable property = entry.getKey();
 			PropertyDescriptor propertyDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
@@ -78,7 +78,7 @@ public class DeclarationsChecker
 		}
 	}
 
-	private void checkProperty(NapileProperty property, PropertyDescriptor propertyDescriptor)
+	private void checkProperty(NapileVariable property, PropertyDescriptor propertyDescriptor)
 	{
 		DeclarationDescriptor containingDeclaration = propertyDescriptor.getContainingDeclaration();
 		ClassDescriptor classDescriptor = (containingDeclaration instanceof ClassDescriptor) ? (ClassDescriptor) containingDeclaration : null;
@@ -88,11 +88,11 @@ public class DeclarationsChecker
 		checkPropertyInitializer(property, propertyDescriptor, classDescriptor);
 	}
 
-	private void checkPropertyAbstractness(NapileProperty property, PropertyDescriptor propertyDescriptor, ClassDescriptor classDescriptor)
+	private void checkPropertyAbstractness(NapileVariable property, PropertyDescriptor propertyDescriptor, ClassDescriptor classDescriptor)
 	{
 		/*NapilePropertyAccessor getter = property.getGetter();
 		NapilePropertyAccessor setter = property.getSetter();
-		NapileModifierList modifierList = property.getModifierList();
+		NapileModifierListImpl modifierList = property.getModifierList();
 		ASTNode abstractNode = modifierList != null ? modifierList.getModifierNode(NapileTokens.ABSTRACT_KEYWORD) : null;
 
 		if(abstractNode != null)
@@ -104,7 +104,7 @@ public class DeclarationsChecker
 			}
 			if(!(classDescriptor.getModality() == Modality.ABSTRACT) && classDescriptor.getKind() != ClassKind.ENUM_CLASS)
 			{
-				NapileClass classElement = (NapileClass) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
+				NapileClassImpl classElement = (NapileClassImpl) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
 				String name = property.getName();
 				trace.report(Errors.ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS.on(property, name != null ? name : "", classDescriptor));
 				return;
@@ -135,7 +135,7 @@ public class DeclarationsChecker
 		}  */
 	}
 
-	private void checkPropertyInitializer(NapileProperty property, PropertyDescriptor propertyDescriptor, @NotNull ClassDescriptor classDescriptor)
+	private void checkPropertyInitializer(NapileVariable property, PropertyDescriptor propertyDescriptor, @NotNull ClassDescriptor classDescriptor)
 	{
 		/*NapilePropertyAccessor getter = property.getGetter();
 		NapilePropertyAccessor setter = property.getSetter();

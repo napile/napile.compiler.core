@@ -23,7 +23,7 @@ import static org.napile.compiler.lexer.NapileTokens.OVERRIDE_KEYWORD;
 import java.util.Collection;
 
 import org.napile.compiler.lang.diagnostics.AbstractDiagnosticFactory;
-import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.psi.NapileClass;
 import org.napile.idea.plugin.codeInsight.ImplementMethodsHandler;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

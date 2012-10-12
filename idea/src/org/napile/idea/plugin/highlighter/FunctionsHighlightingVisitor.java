@@ -21,6 +21,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.psi.NapileExpression;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.psi.PsiElement;
 
@@ -36,7 +37,7 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 	}
 
 	@Override
-	public void visitNamedMethod(NapileNamedFunction function)
+	public void visitNamedMethod(NapileNamedMethod function)
 	{
 		PsiElement nameIdentifier = function.getNameIdentifier();
 		if(nameIdentifier != null)

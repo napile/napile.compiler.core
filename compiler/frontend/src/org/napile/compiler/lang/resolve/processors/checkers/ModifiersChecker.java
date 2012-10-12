@@ -35,20 +35,20 @@ import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileFile;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
@@ -94,9 +94,9 @@ public class ModifiersChecker
 			checkModalityModifiers(clazz);
 		}
 
-		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
+		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
 		{
-			NapileNamedFunction function = entry.getKey();
+			NapileNamedMethod function = entry.getKey();
 			SimpleMethodDescriptor functionDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
@@ -119,9 +119,9 @@ public class ModifiersChecker
 			checkModalityModifiers(constructor);
 		}
 
-		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
 		{
-			NapileProperty property = entry.getKey();
+			NapileVariable property = entry.getKey();
 			PropertyDescriptor propertyDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
@@ -132,7 +132,7 @@ public class ModifiersChecker
 		}
 	}
 
-	protected void checkMethod(NapileNamedFunction method, SimpleMethodDescriptor methodDescriptor)
+	protected void checkMethod(NapileNamedMethod method, SimpleMethodDescriptor methodDescriptor)
 	{
 		DeclarationDescriptor containingDescriptor = methodDescriptor.getContainingDeclaration();
 		ASTNode abstractModifier = method.getModifierNode(NapileTokens.ABSTRACT_KEYWORD);
@@ -156,8 +156,8 @@ public class ModifiersChecker
 	private void checkDeclaredTypeInPublicMember(NapileNamedDeclaration member, CallableMemberDescriptor memberDescriptor)
 	{
 		boolean hasDeferredType;
-		if(member instanceof NapileProperty)
-			hasDeferredType = ((NapileProperty) member).getPropertyTypeRef() == null && ((NapileProperty) member).getInitializer() != null;
+		if(member instanceof NapileVariable)
+			hasDeferredType = ((NapileVariable) member).getPropertyTypeRef() == null && ((NapileVariable) member).getInitializer() != null;
 		else
 		{
 			assert member instanceof NapileMethod;

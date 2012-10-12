@@ -24,8 +24,9 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.completion.handlers.JetFunctionInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetKeywordInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetTemplateInsertHandler;
@@ -190,7 +191,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		public boolean isAcceptable(Object element, PsiElement context)
 		{
 			//noinspection unchecked
-			return PsiTreeUtil.getParentOfType(context, NapileClassBody.class, true, NapileBlockExpression.class, NapileProperty.class, NapileParameterList.class) != null;
+			return PsiTreeUtil.getParentOfType(context, NapileClassBody.class, true, NapileBlockExpression.class, NapileVariable.class, NapileParameterList.class) != null;
 		}
 
 		@Override
@@ -228,7 +229,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		{
 			if(!(element instanceof PsiElement))
 				return false;
-			NapileProperty property = PsiTreeUtil.getParentOfType(context, NapileProperty.class, false);
+			NapileVariable property = PsiTreeUtil.getParentOfType(context, NapileVariable.class, false);
 			return property != null && isAfterName(property, (PsiElement) element);
 		}
 
@@ -238,7 +239,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 			return true;
 		}
 
-		private static boolean isAfterName(@NotNull NapileProperty property, @NotNull PsiElement element)
+		private static boolean isAfterName(@NotNull NapileVariable property, @NotNull PsiElement element)
 		{
 			for(PsiElement child = property.getFirstChild(); child != null; child = child.getNextSibling())
 			{

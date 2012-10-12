@@ -19,8 +19,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="backend" />
     <orderEntry type="module" module-name="frontend" />
-    <orderEntry type="module" module-name="java2napile" />
-    <orderEntry type="module" module-name="cli" />
+    <orderEntry type="module" module-name="frontend.api" />
+    <orderEntry type="module" module-name="frontend.bytecode" />
+    <orderEntry type="module" module-name="frontend.source" />
   </component>
 </module>
 

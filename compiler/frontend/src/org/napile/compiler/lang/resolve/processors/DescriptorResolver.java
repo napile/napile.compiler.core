@@ -56,6 +56,12 @@ import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.psi.NapileModifierListOwner;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import com.google.common.collect.Lists;
@@ -177,7 +183,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public SimpleMethodDescriptor resolveFunctionDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedFunction function, final BindingTrace trace)
+	public SimpleMethodDescriptor resolveFunctionDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethod function, final BindingTrace trace)
 	{
 		NapileSimpleNameExpression referenceExpression = function.getVariableRef();
 
@@ -322,7 +328,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptor resolveLocalVariableDescriptor(DeclarationDescriptor containingDeclaration, JetScope scope, NapileProperty property, DataFlowInfo dataFlowInfo, BindingTrace trace)
+	public VariableDescriptor resolveLocalVariableDescriptor(DeclarationDescriptor containingDeclaration, JetScope scope, NapileVariable property, DataFlowInfo dataFlowInfo, BindingTrace trace)
 	{
 		VariableDescriptorImpl variableDescriptor = resolveLocalVariableDescriptorWithType(containingDeclaration, property, null, trace);
 
@@ -332,7 +338,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptorImpl resolveLocalVariableDescriptorWithType(DeclarationDescriptor containingDeclaration, NapileProperty property, JetType type, BindingTrace trace)
+	public VariableDescriptorImpl resolveLocalVariableDescriptorWithType(DeclarationDescriptor containingDeclaration, NapileVariable property, JetType type, BindingTrace trace)
 	{
 		VariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.createAnnotationStubs(property.getModifierList(), trace), NapilePsiUtil.safeName(property.getName()), type, resolveModality(property));
 		trace.record(BindingContext.VARIABLE, property, variableDescriptor);
@@ -390,7 +396,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public PropertyDescriptor resolvePropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileProperty property, BindingTrace trace)
+	public PropertyDescriptor resolvePropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable property, BindingTrace trace)
 	{
 		NapileModifierList modifierList = property.getModifierList();
 
@@ -443,7 +449,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	private JetType getVariableType(@NotNull final JetScope scope, @NotNull final NapileProperty property, @NotNull final DataFlowInfo dataFlowInfo, boolean allowDeferred, final BindingTrace trace)
+	private JetType getVariableType(@NotNull final JetScope scope, @NotNull final NapileVariable property, @NotNull final DataFlowInfo dataFlowInfo, boolean allowDeferred, final BindingTrace trace)
 	{
 		// TODO : receiver?
 		NapileTypeReference propertyTypeRef = property.getPropertyTypeRef();

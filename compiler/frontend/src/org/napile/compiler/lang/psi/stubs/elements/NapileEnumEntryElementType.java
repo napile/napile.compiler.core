@@ -21,7 +21,6 @@ import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.stubs.NapilePsiEnumEntryStub;
-import org.napile.compiler.lang.psi.stubs.impl.NapilePsiEnumEntryStubImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -33,7 +32,7 @@ import com.intellij.util.io.StringRef;
  * @author VISTALL
  * @date 20:45/27.08.12
  */
-public class NapileEnumEntryElementType extends JetStubElementType<NapilePsiEnumEntryStub, NapileEnumEntry>
+public class NapileEnumEntryElementType extends NapileStubElementType<NapilePsiEnumEntryStub, NapileEnumEntry>
 {
 	public NapileEnumEntryElementType(@NotNull String debugName)
 	{
@@ -55,7 +54,7 @@ public class NapileEnumEntryElementType extends JetStubElementType<NapilePsiEnum
 	@Override
 	public NapilePsiEnumEntryStub createStub(@NotNull NapileEnumEntry psi, StubElement parentStub)
 	{
-		return new NapilePsiEnumEntryStubImpl(parentStub, StringRef.fromString(psi.getName()));
+		return new NapilePsiEnumEntryStub(parentStub, StringRef.fromString(psi.getName()));
 	}
 
 	@Override
@@ -68,7 +67,7 @@ public class NapileEnumEntryElementType extends JetStubElementType<NapilePsiEnum
 	public NapilePsiEnumEntryStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		return new NapilePsiEnumEntryStubImpl(parentStub, name);
+		return new NapilePsiEnumEntryStub(parentStub, name);
 	}
 
 	@Override

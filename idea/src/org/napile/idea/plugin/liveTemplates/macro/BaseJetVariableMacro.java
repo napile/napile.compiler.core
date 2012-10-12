@@ -23,19 +23,19 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.cli.jvm.compiler.TipsManager;
+import org.napile.compiler.common.TipsManager;
 import org.napile.compiler.di.InjectorForMacros;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
@@ -100,7 +100,7 @@ public abstract class BaseJetVariableMacro extends Macro
 			PsiElement declaration = BindingContextUtils.descriptorToDeclaration(bc, declarationDescriptor);
 			assert declaration == null || declaration instanceof PsiNamedElement;
 
-			if(declaration instanceof NapileProperty || declaration instanceof NapilePropertyParameter)
+			if(declaration instanceof NapileVariable || declaration instanceof NapilePropertyParameter)
 			{
 				declarations.add((NapileNamedDeclaration) declaration);
 			}

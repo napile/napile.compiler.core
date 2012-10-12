@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
@@ -39,7 +39,7 @@ public class JetMoveFilesOrDirectoriesHandler extends MoveFilesOrDirectoriesHand
 	{
 		if(!(clazz.getParent() instanceof NapileFile))
 			return false;
-		NapileFile file = (NapileFile) clazz.getContainingFile();
+		NapileFile file = clazz.getContainingFile();
 		List<NapileClass> declarations = file.getDeclarations();
 		for(NapileClass declaration : declarations)
 		{

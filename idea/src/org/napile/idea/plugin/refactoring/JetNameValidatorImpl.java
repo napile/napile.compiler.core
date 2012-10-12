@@ -19,13 +19,13 @@ package org.napile.idea.plugin.refactoring;
 import java.util.Collection;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.cli.jvm.compiler.TipsManager;
+import org.napile.compiler.common.TipsManager;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;

@@ -27,7 +27,15 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.OverridingUtil;
@@ -37,6 +45,7 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileModifierListOwner;
 import org.napile.compiler.util.CommonSuppliers;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -541,7 +550,7 @@ public class OverrideResolver
 
 					if(!haveFinalModality(overridden) && haveFinalModality(declared) && !kindMismatchError)
 					{
-						trace.report(VAR_OVERRIDDEN_BY_VAL.on((NapileProperty) member, (PropertyDescriptor) declared, (PropertyDescriptor) overridden));
+						trace.report(VAR_OVERRIDDEN_BY_VAL.on((NapileVariable) member, (PropertyDescriptor) declared, (PropertyDescriptor) overridden));
 						kindMismatchError = true;
 					}
 				}

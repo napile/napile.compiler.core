@@ -24,9 +24,9 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.formatting.Alignment;
 import com.intellij.formatting.Block;
 import com.intellij.formatting.ChildAttributes;
@@ -195,7 +195,7 @@ public class JetBlock extends AbstractBlock
 	@NotNull
 	protected Map<ASTNode, Alignment> createChildrenAlignments()
 	{
-		CommonCodeStyleSettings jetCommonSettings = mySettings.getCommonSettings(JetLanguage.INSTANCE);
+		CommonCodeStyleSettings jetCommonSettings = mySettings.getCommonSettings(NapileLanguage.INSTANCE);
 
 		// Prepare default null strategy
 		ASTAlignmentStrategy strategy = ASTAlignmentStrategy.getNullStrategy();

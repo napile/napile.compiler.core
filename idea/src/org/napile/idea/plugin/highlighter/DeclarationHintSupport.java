@@ -21,11 +21,11 @@ import java.awt.Point;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.hint.HintManager;
@@ -74,7 +74,7 @@ public class DeclarationHintSupport extends AbstractProjectComponent
 
 			Editor editor = e.getEditor();
 			PsiFile psiFile = PsiDocumentManager.getInstance(myProject).getPsiFile(editor.getDocument());
-			if(psiFile == null || psiFile.getLanguage() != JetLanguage.INSTANCE)
+			if(psiFile == null || psiFile.getLanguage() != NapileLanguage.INSTANCE)
 				return;
 
 			if(DumbService.getInstance(psiFile.getProject()).isDumb())

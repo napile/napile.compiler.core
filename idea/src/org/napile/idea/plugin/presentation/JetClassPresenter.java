@@ -19,7 +19,7 @@ package org.napile.idea.plugin.presentation;
 import javax.swing.Icon;
 
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.idea.plugin.JetIconProvider;
 import com.intellij.navigation.ColoredItemPresentation;

@@ -22,9 +22,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
@@ -34,7 +34,7 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.compiler.util.QualifiedNamesUtil;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import org.napile.idea.plugin.references.JetPsiReference;
@@ -167,7 +167,7 @@ public class ImportInsertHelper
 
 	public static boolean isDefaultImport(ImportPath importPath)
 	{
-		for(ImportPath defaultJetImport : JetLanguage.DEFAULT_IMPORTS)
+		for(ImportPath defaultJetImport : NapileLanguage.DEFAULT_IMPORTS)
 		{
 			if(QualifiedNamesUtil.isImported(defaultJetImport, importPath))
 			{

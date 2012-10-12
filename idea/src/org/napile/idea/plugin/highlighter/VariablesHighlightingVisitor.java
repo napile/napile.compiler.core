@@ -27,9 +27,9 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileProperty;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -67,10 +67,10 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 	}
 
 	@Override
-	public void visitProperty(@NotNull NapileProperty property)
+	public void visitVariable(@NotNull NapileVariable property)
 	{
 		visitVariableDeclaration(property);
-		super.visitProperty(property);
+		super.visitVariable(property);
 	}
 
 	@Override

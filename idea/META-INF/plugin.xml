@@ -25,10 +25,7 @@
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift T"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
-		<action id="ConvertJavaToNapile" class="org.napile.idea.plugin.actions.JavaToKotlinAction" text="Convert Java File to Napile File">
-			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift J"/>
-			<add-to-group group-id="RefactoringMenu" anchor="last"/>
-		</action>
+
 		<action id="ToggleJetErrorReporting" class="org.napile.idea.plugin.actions.ToggleErrorReportingAction" text="Error Reporting Enabled">
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift E"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
@@ -53,10 +50,11 @@
 		<lang.importOptimizer language="NAPILE" implementationClass="org.napile.idea.plugin.editor.importOptimizer.JetImportOptimizer"/>
 
 		<fileTypeFactory implementation="org.napile.idea.plugin.JetFileFactory"/>
+		<filetype.decompiler filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileDecompiler" />
 
 		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetSyntaxHighlighterFactory"/>
 		<lang.braceMatcher language="NAPILE" implementationClass="org.napile.idea.plugin.JetPairMatcher"/>
-		<lang.parserDefinition language="NAPILE" implementationClass="org.napile.compiler.lang.parsing.JetParserDefinition"/>
+		<lang.parserDefinition language="NAPILE" implementationClass="org.napile.compiler.lang.parsing.NapileParserDefinition"/>
 		<lang.commenter language="NAPILE" implementationClass="org.napile.idea.plugin.JetCommenter"/>
 		<lang.psiStructureViewFactory language="NAPILE" implementationClass="org.napile.idea.plugin.structureView.JetStructureViewFactory"/>
 		<lang.foldingBuilder language="NAPILE" implementationClass="org.napile.idea.plugin.JetFoldingBuilder"/>
@@ -117,13 +115,12 @@
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetListSelectioner"/>
 		<typedHandler implementation="org.napile.idea.plugin.editor.KotlinTypedHandler"/>
 
-		<copyPastePostProcessor implementation="org.napile.idea.plugin.conversion.copy.JavaCopyPastePostProcessor"/>
 		<documentationProvider implementation="org.napile.idea.plugin.JetQuickDocumentationProvider"/>
 
 		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.linemarker.NewLineMarkerProvider"/>
 		<iconProvider implementation="org.napile.idea.plugin.JetIconProvider"/>
-		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetFunctionPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedFunction"/>
-		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetClassPresenter" forClass="org.napile.compiler.lang.psi.NapileClass"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetFunctionPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedMethod"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetClassPresenter" forClass="org.napile.compiler.psi.NapileClassImpl"/>
 		<elementDescriptionProvider implementation="org.napile.idea.plugin.findUsages.JetElementDescriptionProvider"/>
 		<findUsagesHandlerFactory implementation="org.napile.idea.plugin.findUsages.KotlinFindUsagesHandlerFactory"/>
 
@@ -132,11 +129,11 @@
 
 		<problemFileHighlightFilter implementation="org.napile.idea.plugin.codeInsight.problems.DefaultProblemFileHighlightFilter" />
 
-		<stubElementTypeHolder class="org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes"/>
+		<stubElementTypeHolder class="org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes"/>
 		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetShortClassNameIndex"/>
 		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetFullClassNameIndex"/>
-		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetAllShortFunctionNameIndex"/>
-		<stubIndex implementation="org.napile.idea.plugin.stubindex.JetSuperClassIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.NapileAllShortMethodNameIndex"/>
+		<stubIndex implementation="org.napile.idea.plugin.stubindex.NapileAllShortVariableNameIndex"/>
 
 		<referencesSearch implementation="org.napile.idea.plugin.search.KotlinReferencesSearcher"/>
 

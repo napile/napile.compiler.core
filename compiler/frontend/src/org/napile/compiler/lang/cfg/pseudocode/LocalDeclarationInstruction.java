@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileDeclaration;
 import com.google.common.collect.Lists;
 
 /**

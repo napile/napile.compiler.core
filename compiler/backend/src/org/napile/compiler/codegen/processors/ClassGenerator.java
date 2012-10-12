@@ -47,6 +47,9 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
 import com.intellij.util.containers.MultiMap;
 
 /**
@@ -175,7 +178,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	}
 
 	@Override
-	public Void visitNamedFunction(NapileNamedFunction function, Node parent)
+	public Void visitNamedFunction(NapileNamedMethod function, Node parent)
 	{
 		assert parent instanceof ClassNode;
 
@@ -191,7 +194,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	}
 
 	@Override
-	public Void visitProperty(NapileProperty property, Node parent)
+	public Void visitVariable(NapileVariable property, Node parent)
 	{
 		assert parent instanceof ClassNode;
 

@@ -41,6 +41,11 @@ import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -713,7 +718,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitNamedMethod(NapileNamedFunction function)
+		public void visitNamedMethod(NapileNamedMethod function)
 		{
 			processLocalDeclaration(function);
 		}
@@ -771,8 +776,8 @@ public class JetControlFlowProcessor
 			//            assert resolvedCall != null;
 			//            CallableDescriptor resultingDescriptor = resolvedCall.getResultingDescriptor();
 			//            PsiElement element = trace.get(BindingContext.DESCRIPTOR_TO_DECLARATION, resultingDescriptor);
-			//            if (element instanceof NapileNamedFunction) {
-			//                NapileNamedFunction namedFunction = (NapileNamedFunction) element;
+			//            if (element instanceof NapileNamedMethod) {
+			//                NapileNamedMethod namedFunction = (NapileNamedMethod) element;
 			//                if (namedFunction.hasModifier(NapileTokens.INLINE_KEYWORD)) {
 			//                }
 			//            }
@@ -805,7 +810,7 @@ public class JetControlFlowProcessor
 		//        }
 
 		@Override
-		public void visitProperty(NapileProperty property)
+		public void visitVariable(NapileVariable property)
 		{
 			builder.declare(property);
 			NapileExpression initializer = property.getInitializer();
@@ -943,7 +948,7 @@ public class JetControlFlowProcessor
 			List<NapileDeclaration> functions = Lists.newArrayList();
 			for(NapileDeclaration localDeclaration : declarations)
 			{
-				if(!(localDeclaration instanceof NapileProperty) )
+				if(!(localDeclaration instanceof NapileVariable) )
 				{
 					functions.add(localDeclaration);
 				}
@@ -980,13 +985,13 @@ public class JetControlFlowProcessor
 		private void visitClassOrObject(NapileClassLike classOrObject)
 		{
 			List<NapileDeclaration> declarations = classOrObject.getDeclarations();
-			List<NapileProperty> properties = Lists.newArrayList();
+			List<NapileVariable> properties = Lists.newArrayList();
 			for(NapileDeclaration declaration : declarations)
 			{
-				if(declaration instanceof NapileProperty)
+				if(declaration instanceof NapileVariable)
 				{
 					value(declaration, inCondition);
-					properties.add((NapileProperty) declaration);
+					properties.add((NapileVariable) declaration);
 				}
 			}
 		}

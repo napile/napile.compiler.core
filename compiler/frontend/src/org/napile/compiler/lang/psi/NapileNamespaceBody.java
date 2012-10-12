@@ -19,6 +19,8 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileDeclarationContainer;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.util.PsiTreeUtil;
 

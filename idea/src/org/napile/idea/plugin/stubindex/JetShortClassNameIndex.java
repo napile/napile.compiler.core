@@ -19,7 +19,7 @@ package org.napile.idea.plugin.stubindex;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileClassLike;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
@@ -41,7 +41,7 @@ public class JetShortClassNameIndex extends StringStubIndexExtension<NapileClass
 	@Override
 	public StubIndexKey<String, NapileClassLike> getKey()
 	{
-		return JetIndexKeys.SHORT_NAME_KEY;
+		return JetIndexKeys.CLASSES_SHORT_NAME_KEY;
 	}
 
 	@Override

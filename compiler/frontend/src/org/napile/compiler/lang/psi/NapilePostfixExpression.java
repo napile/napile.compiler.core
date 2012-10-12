@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.psi.NapileExpression;
 import com.intellij.lang.ASTNode;
 
 /**

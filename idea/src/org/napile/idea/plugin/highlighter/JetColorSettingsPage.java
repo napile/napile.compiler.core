@@ -24,7 +24,7 @@ import java.util.Map;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.NapileLanguage;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.JetIcons;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -180,6 +180,6 @@ public class JetColorSettingsPage implements ColorSettingsPage
 	@Override
 	public String getDisplayName()
 	{
-		return JetLanguage.NAME;
+		return NapileLanguage.NAME;
 	}
 }

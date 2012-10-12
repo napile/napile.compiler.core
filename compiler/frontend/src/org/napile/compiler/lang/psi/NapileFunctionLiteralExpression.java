@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileModifierListImpl;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -86,7 +88,7 @@ public class NapileFunctionLiteralExpression extends NapileExpressionImpl implem
 
 	@Nullable
 	@Override
-	public NapileModifierList getModifierList()
+	public NapileModifierListImpl getModifierList()
 	{
 		return null;
 	}

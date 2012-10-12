@@ -35,7 +35,7 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFunctionLiteral;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import org.napile.compiler.lang.psi.NapileObjectLiteralExpression;

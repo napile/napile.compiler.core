@@ -39,14 +39,12 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo;
@@ -57,7 +55,9 @@ import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
 import org.napile.compiler.lang.resolve.calls.inference.BoundsOwner;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.plugin.JetFileType;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import org.napile.idea.plugin.internal.codewindow.BytecodeToolwindow;
@@ -102,7 +102,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 	{
 		super(new BorderLayout());
 		myProject = project;
-		myEditor = EditorFactory.getInstance().createEditor(EditorFactory.getInstance().createDocument(""), project, JetFileType.INSTANCE, true);
+		myEditor = EditorFactory.getInstance().createEditor(EditorFactory.getInstance().createDocument(""), project, NapileFileType.INSTANCE, true);
 		add(myEditor.getComponent());
 		myUpdateAlarm = new Alarm(Alarm.ThreadToUse.SWING_THREAD, this);
 		myUpdateAlarm.addRequest(new Runnable()

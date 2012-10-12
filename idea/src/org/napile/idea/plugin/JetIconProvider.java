@@ -27,13 +27,22 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapilePropertyParameter;
+import org.napile.compiler.lang.psi.NapileRetellEntry;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lexer.NapileTokens;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.psi.NapileModifierListOwner;
 import org.napile.compiler.util.RunUtil;
+import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.IconProvider;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Iconable;
@@ -66,7 +75,7 @@ public class JetIconProvider extends IconProvider
 
 			icon = file.getDeclarations().size() == 1 ? getIcon(file.getDeclarations().get(0), flags) : JetIcons.FILE;
 		}
-		else if(psiElement instanceof NapileNamedFunction)
+		else if(psiElement instanceof NapileNamedMethod)
 			icon = JetIcons.METHOD;
 		else if(psiElement instanceof NapileConstructor)
 			icon = JetIcons.CONSTRUCTOR;
@@ -81,7 +90,7 @@ public class JetIconProvider extends IconProvider
 
 			switch(napileClass.getKind())
 			{
-				case RETELL:
+				case RETELL_CLASS:
 					icon = JetIcons.RETELL;
 					break;
 				case ENUM_CLASS:
@@ -110,7 +119,7 @@ public class JetIconProvider extends IconProvider
 					}
 			}
 		}
-		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry || psiElement instanceof NapileProperty || psiElement instanceof NapilePropertyParameter)
+		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry || psiElement instanceof NapileVariable || psiElement instanceof NapilePropertyParameter)
 			icon = JetIcons.VARIABLE;
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isFinal, isRunnable);

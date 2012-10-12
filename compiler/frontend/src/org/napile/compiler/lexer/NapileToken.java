@@ -21,13 +21,13 @@ package org.napile.compiler.lexer;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.NapileLanguage;
 import com.intellij.psi.tree.IElementType;
 
 public class NapileToken extends IElementType
 {
 	public NapileToken(@NotNull @NonNls String debugName)
 	{
-		super(debugName, JetLanguage.INSTANCE);
+		super(debugName, NapileLanguage.INSTANCE);
 	}
 }

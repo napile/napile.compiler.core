@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.psi.filter;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileElement;
 import com.intellij.ide.util.TreeChooser;
 
 /**

@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.refactoring;
 
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.refactoring.introduceVariable.JetIntroduceVariableHandler;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
@@ -38,9 +38,9 @@ public class JetRefactoringSupportProvider extends RefactoringSupportProvider
 	@Override
 	public boolean isInplaceRenameAvailable(PsiElement element, PsiElement context)
 	{
-		if(element instanceof NapileProperty)
+		if(element instanceof NapileVariable)
 		{
-			NapileProperty property = (NapileProperty) element;
+			NapileVariable property = (NapileVariable) element;
 			if(property.isLocal())
 				return true;
 		}

@@ -1,6 +1,6 @@
 package org.napile.idea.plugin.refactoring.introduceVariable;
 
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
@@ -15,7 +15,7 @@ public class JetChangePropertyActions
 	{
 	}
 
-	public static void declareValueOrVariable(Project project, boolean isVariable, NapileProperty property)
+	public static void declareValueOrVariable(Project project, boolean isVariable, NapileVariable property)
 	{
 		ASTNode node;
 		if(isVariable)

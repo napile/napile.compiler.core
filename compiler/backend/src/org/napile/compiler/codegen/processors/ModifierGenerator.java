@@ -45,7 +45,7 @@ public class ModifierGenerator
 		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((DeclarationDescriptorWithVisibility) memberDescriptor)));
 		switch(memberDescriptor.getKind())
 		{
-			case RETELL:
+			case RETELL_CLASS:
 				list.add(Modifier.RETELL);
 				break;
 			case ENUM_CLASS:

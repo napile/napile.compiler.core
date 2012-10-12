@@ -20,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileModifierList;
 import com.intellij.lang.ASTNode;
 
 /**

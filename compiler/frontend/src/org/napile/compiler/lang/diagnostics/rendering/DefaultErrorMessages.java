@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.diagnostics.AbstractDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;

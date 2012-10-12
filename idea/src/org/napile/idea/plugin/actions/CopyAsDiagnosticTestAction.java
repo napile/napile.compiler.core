@@ -24,9 +24,9 @@ import java.awt.datatransfer.Transferable;
 import java.util.List;
 
 import org.napile.compiler.checkers.CheckerTestUtil;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.AnalyzingUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

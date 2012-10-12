@@ -21,7 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.Call;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileTypeArgumentList;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileValueArgumentList;

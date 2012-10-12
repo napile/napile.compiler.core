@@ -17,10 +17,10 @@
 package org.napile.idea.plugin.completion;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileIdeTemplate;
-import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.codeInsight.completion.TemplateParameterTraversalPolicy;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.ScrollType;

@@ -23,9 +23,8 @@ import java.lang.reflect.Constructor;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileElementImpl;
-import org.napile.compiler.plugin.JetLanguage;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.IElementType;
 
@@ -40,7 +39,7 @@ public class NapileNodeType extends IElementType
 
 	public NapileNodeType(@NotNull @NonNls String debugName, Class<? extends NapileElement> psiClass)
 	{
-		super(debugName, JetLanguage.INSTANCE);
+		super(debugName, NapileLanguage.INSTANCE);
 		try
 		{
 			myPsiFactory = psiClass != null ? psiClass.getConstructor(ASTNode.class) : null;

@@ -37,6 +37,9 @@ import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
@@ -205,7 +208,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				String[] suggestedNames = JetNameSuggester.suggestNames(expression, validator);
 				final LinkedHashSet<String> suggestedNamesSet = new LinkedHashSet<String>();
 				Collections.addAll(suggestedNamesSet, suggestedNames);
-				final Ref<NapileProperty> propertyRef = new Ref<NapileProperty>();
+				final Ref<NapileVariable> propertyRef = new Ref<NapileVariable>();
 				final ArrayList<NapileExpression> references = new ArrayList<NapileExpression>();
 				final Ref<NapileExpression> reference = new Ref<NapileExpression>();
 				final Runnable introduceRunnable = introduceVariable(project, expression, suggestedNames, allReplaces, commonContainer, commonParent, replaceOccurrence, propertyRef, references, reference, finalNoTypeInference, finalNeedParentheses, expressionType);
@@ -216,7 +219,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 					public void run()
 					{
 						ApplicationManager.getApplication().runWriteAction(introduceRunnable);
-						NapileProperty property = propertyRef.get();
+						NapileVariable property = propertyRef.get();
 						if(property != null)
 						{
 							editor.getCaretModel().moveToOffset(property.getTextOffset());
@@ -245,7 +248,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 		}
 	}
 
-	private static Runnable introduceVariable(final @NotNull Project project, final NapileExpression expression, final String[] suggestedNames, final List<NapileExpression> allReplaces, final PsiElement commonContainer, final PsiElement commonParent, final boolean replaceOccurrence, final Ref<NapileProperty> propertyRef, final ArrayList<NapileExpression> references, final Ref<NapileExpression> reference, final boolean noTypeInference, final boolean needParentheses, final JetType expressionType)
+	private static Runnable introduceVariable(final @NotNull Project project, final NapileExpression expression, final String[] suggestedNames, final List<NapileExpression> allReplaces, final PsiElement commonContainer, final PsiElement commonParent, final boolean replaceOccurrence, final Ref<NapileVariable> propertyRef, final ArrayList<NapileExpression> references, final Ref<NapileExpression> reference, final boolean noTypeInference, final boolean needParentheses, final JetType expressionType)
 	{
 		return new Runnable()
 		{
@@ -275,7 +278,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				{
 					variableText += expression.getText();
 				}
-				NapileProperty property = NapilePsiFactory.createProperty(project, variableText);
+				NapileVariable property = NapilePsiFactory.createProperty(project, variableText);
 				if(property == null)
 					return;
 				PsiElement anchor = calculateAnchor(commonParent, commonContainer, allReplaces);
@@ -285,7 +288,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 						commonContainer instanceof NapileClassBody);
 				if(!needBraces)
 				{
-					property = (NapileProperty) commonContainer.addBefore(property, anchor);
+					property = (NapileVariable) commonContainer.addBefore(property, anchor);
 					commonContainer.addBefore(NapilePsiFactory.createWhiteSpace(project, "\n"), anchor);
 				}
 				else
@@ -321,9 +324,9 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 								oldElement = body;
 							}
 						}
-						else if(commonContainer instanceof NapileNamedFunction)
+						else if(commonContainer instanceof NapileNamedMethod)
 						{
-							NapileExpression body = ((NapileNamedFunction) commonContainer).getBodyExpression();
+							NapileExpression body = ((NapileNamedMethod) commonContainer).getBodyExpression();
 							if(body != null)
 							{
 								oldElement = body;
@@ -356,7 +359,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 							reference.set((NapileExpression) elem);
 						}
 						emptyBody.addAfter(NapilePsiFactory.createWhiteSpace(project, "\n"), firstChild);
-						property = (NapileProperty) emptyBody.addAfter(property, firstChild);
+						property = (NapileVariable) emptyBody.addAfter(property, firstChild);
 						emptyBody.addAfter(NapilePsiFactory.createWhiteSpace(project, "\n"), firstChild);
 						actualExpression = reference.get();
 						diff = actualExpression.getTextRange().getStartOffset() - emptyBody.getTextRange().getStartOffset();
@@ -374,21 +377,21 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 					}
 					else
 					{
-						property = (NapileProperty) emptyBody.addAfter(property, firstChild);
+						property = (NapileVariable) emptyBody.addAfter(property, firstChild);
 						emptyBody.addAfter(NapilePsiFactory.createWhiteSpace(project, "\n"), firstChild);
 						emptyBody = (NapileExpression) anchor.replace(emptyBody);
 					}
 					for(PsiElement child : emptyBody.getChildren())
 					{
-						if(child instanceof NapileProperty)
+						if(child instanceof NapileVariable)
 						{
-							property = (NapileProperty) child;
+							property = (NapileVariable) child;
 						}
 					}
-					if(commonContainer instanceof NapileNamedFunction)
+					if(commonContainer instanceof NapileNamedMethod)
 					{
 						//we should remove equals sign
-						NapileNamedFunction function = (NapileNamedFunction) commonContainer;
+						NapileNamedMethod function = (NapileNamedMethod) commonContainer;
 						if(!function.hasDeclaredReturnType())
 						{
 							//todo: add return type
@@ -589,9 +592,9 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 			{
 				return parent;
 			}
-			else if(parent instanceof NapileNamedFunction)
+			else if(parent instanceof NapileNamedMethod)
 			{
-				NapileNamedFunction function = (NapileNamedFunction) parent;
+				NapileNamedMethod function = (NapileNamedMethod) parent;
 				if(function.getBodyExpression() == place)
 				{
 					return parent;
@@ -651,9 +654,9 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 					result = parent;
 				}
 			}
-			else if(parent instanceof NapileNamedFunction)
+			else if(parent instanceof NapileNamedMethod)
 			{
-				NapileNamedFunction function = (NapileNamedFunction) parent;
+				NapileNamedMethod function = (NapileNamedMethod) parent;
 				if(function.getBodyExpression() == place)
 				{
 					if(!(place instanceof NapileBlockExpression))

@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.psi;
 
+import org.napile.compiler.psi.NapileDeclaration;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -36,9 +37,9 @@ public final class NapileModifiableBlockHelper
 		NapileDeclaration declaration = PsiTreeUtil.getParentOfType(place, NapileDeclaration.class, true);
 		if(declaration != null)
 		{
-			if(declaration instanceof NapileNamedFunction)
+			if(declaration instanceof NapileNamedMethod)
 			{
-				NapileNamedFunction function = (NapileNamedFunction) declaration;
+				NapileNamedMethod function = (NapileNamedMethod) declaration;
 				if(function.hasDeclaredReturnType() || function.hasBlockBody())
 				{
 					return takePartInDeclarationTypeInference(function);
@@ -46,9 +47,9 @@ public final class NapileModifiableBlockHelper
 
 				return shouldChangeModificationCount(function);
 			}
-			else if(declaration instanceof NapileProperty)
+			else if(declaration instanceof NapileVariable)
 			{
-				NapileProperty property = (NapileProperty) declaration;
+				NapileVariable property = (NapileVariable) declaration;
 				if(property.getPropertyTypeRef() != null)
 				{
 					return takePartInDeclarationTypeInference(property);
@@ -71,17 +72,17 @@ public final class NapileModifiableBlockHelper
 		NapileDeclaration declaration = PsiTreeUtil.getParentOfType(place, NapileDeclaration.class, true);
 		if(declaration != null)
 		{
-			if(declaration instanceof NapileNamedFunction)
+			if(declaration instanceof NapileNamedMethod)
 			{
-				NapileNamedFunction function = (NapileNamedFunction) declaration;
+				NapileNamedMethod function = (NapileNamedMethod) declaration;
 				if(!function.hasDeclaredReturnType() && !function.hasBlockBody())
 				{
 					return true;
 				}
 			}
-			else if(declaration instanceof NapileProperty)
+			else if(declaration instanceof NapileVariable)
 			{
-				NapileProperty property = (NapileProperty) declaration;
+				NapileVariable property = (NapileVariable) declaration;
 				if(property.getPropertyTypeRef() == null)
 				{
 					return true;

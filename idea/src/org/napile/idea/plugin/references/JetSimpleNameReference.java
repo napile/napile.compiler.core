@@ -17,11 +17,11 @@
 package org.napile.idea.plugin.references;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.cli.jvm.compiler.TipsManager;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.common.TipsManager;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.completion.DescriptorLookupConverter;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.openapi.util.TextRange;

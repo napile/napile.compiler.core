@@ -16,13 +16,32 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
+import com.intellij.psi.stubs.StubBase;
+import com.intellij.psi.stubs.StubElement;
+import com.intellij.util.io.StringRef;
 
 /**
  * @author VISTALL
  * @date 23:41/05.09.12
  */
-public interface NapilePsiRetellEntryStub extends NamedStub<NapileRetellEntry>
+public class NapilePsiRetellEntryStub extends StubBase<NapileRetellEntry> implements NamedStub<NapileRetellEntry>
 {
+	private final StringRef stringRef;
+
+	public NapilePsiRetellEntryStub(StubElement parent, StringRef stringRef)
+	{
+		super(parent, NapileStubElementTypes.RETELL_ENTRY);
+		this.stringRef = stringRef;
+	}
+
+	@Nullable
+	@Override
+	public String getName()
+	{
+		return StringRef.toString(stringRef);
+	}
 }

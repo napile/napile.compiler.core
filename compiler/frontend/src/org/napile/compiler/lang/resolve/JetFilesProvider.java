@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.psi.NapileFile;
 import com.google.common.base.Predicate;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
@@ -70,7 +70,7 @@ public abstract class JetFilesProvider
 		@Override
 		public boolean apply(NapileFile psiFile)
 		{
-			return NapilePsiUtil.getFQName((NapileFile) psiFile).equals(name);
+			return NapilePsiUtil.getFQName(psiFile).equals(name);
 		}
 
 		public List<NapileFile> filter(Collection<NapileFile> allFiles)

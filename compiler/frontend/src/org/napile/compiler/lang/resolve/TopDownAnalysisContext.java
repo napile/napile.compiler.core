@@ -29,9 +29,19 @@ import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.WithDeferredResolve;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileEnumEntry;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileDeclarationContainer;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileFile;
 import com.google.common.collect.Maps;
 
 /**
@@ -46,8 +56,8 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 
 	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
-	private final Map<NapileNamedFunction, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
-	private final Map<NapileProperty, PropertyDescriptor> properties = Maps.newLinkedHashMap();
+	private final Map<NapileNamedMethod, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
+	private final Map<NapileVariable, PropertyDescriptor> properties = Maps.newLinkedHashMap();
 	private final Map<NapileRetellEntry, PropertyDescriptor> retellEntries = Maps.newLinkedHashMap();
 	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
@@ -142,7 +152,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileProperty, PropertyDescriptor> getProperties()
+	public Map<NapileVariable, PropertyDescriptor> getProperties()
 	{
 		return properties;
 	}
@@ -166,7 +176,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileNamedFunction, SimpleMethodDescriptor> getMethods()
+	public Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods()
 	{
 		return methods;
 	}

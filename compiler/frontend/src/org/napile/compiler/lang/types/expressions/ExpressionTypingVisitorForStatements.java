@@ -46,6 +46,10 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 
@@ -95,7 +99,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitProperty(NapileProperty property, ExpressionTypingContext context)
+	public JetTypeInfo visitVariable(NapileVariable property, ExpressionTypingContext context)
 	{
 		VariableDescriptor propertyDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(scope.getContainingDeclaration(), scope, property, context.dataFlowInfo, context.trace);
 		NapileExpression initializer = property.getInitializer();
@@ -119,7 +123,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitNamedFunction(NapileNamedFunction function, ExpressionTypingContext context)
+	public JetTypeInfo visitNamedFunction(NapileNamedMethod function, ExpressionTypingContext context)
 	{
 		SimpleMethodDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveFunctionDescriptor(scope.getContainingDeclaration(), scope, function, context.trace);
 		scope.addFunctionDescriptor(functionDescriptor);

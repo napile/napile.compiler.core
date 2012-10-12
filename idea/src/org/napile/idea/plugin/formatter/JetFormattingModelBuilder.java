@@ -27,7 +27,7 @@ import static org.napile.compiler.NapileNodeTypes.VALUE_PARAMETER;
 import static org.napile.compiler.lexer.NapileTokens.*;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.NapileLanguage;
 import com.intellij.formatting.FormattingModel;
 import com.intellij.formatting.FormattingModelBuilder;
 import com.intellij.formatting.FormattingModelProvider;
@@ -58,7 +58,7 @@ public class JetFormattingModelBuilder implements FormattingModelBuilder
 	private static SpacingBuilder createSpacingBuilder(CodeStyleSettings settings)
 	{
 		JetCodeStyleSettings jetSettings = settings.getCustomSettings(JetCodeStyleSettings.class);
-		CommonCodeStyleSettings jetCommonSettings = settings.getCommonSettings(JetLanguage.INSTANCE);
+		CommonCodeStyleSettings jetCommonSettings = settings.getCommonSettings(NapileLanguage.INSTANCE);
 
 		return new SpacingBuilder(settings)
 				// ============ Line breaks ==============

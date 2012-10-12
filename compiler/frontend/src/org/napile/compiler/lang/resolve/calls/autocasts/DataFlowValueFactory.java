@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileRootNamespaceExpression;

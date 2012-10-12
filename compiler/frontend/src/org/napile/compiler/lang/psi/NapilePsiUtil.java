@@ -27,6 +27,13 @@ import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.psi.NapileModifierListOwner;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
@@ -97,12 +104,12 @@ public class NapilePsiUtil
 	}
 
 	@Nullable
-	public static NapileNamedFunction getSurroundingFunction(@Nullable PsiElement element)
+	public static NapileNamedMethod getSurroundingFunction(@Nullable PsiElement element)
 	{
 		while(element != null)
 		{
-			if(element instanceof NapileNamedFunction)
-				return (NapileNamedFunction) element;
+			if(element instanceof NapileNamedMethod)
+				return (NapileNamedMethod) element;
 			if(element instanceof NapileClassLike || element instanceof NapileFile)
 				return null;
 			element = element.getParent();
@@ -184,7 +191,7 @@ public class NapilePsiUtil
 		{
 			firstPart = getFQName((NapileFile) parent);
 		}
-		else if(parent instanceof NapileNamedFunction || parent instanceof NapileClass || parent instanceof NapileAnonymClass)
+		else if(parent instanceof NapileNamedMethod || parent instanceof NapileClass || parent instanceof NapileAnonymClass)
 		{
 			firstPart = getFQName((NapileNamedDeclaration) parent);
 		}
@@ -299,7 +306,7 @@ public class NapilePsiUtil
 	public static void deleteClass(@NotNull NapileClassLike clazz)
 	{
 		CheckUtil.checkWritable(clazz);
-		NapileFile file = (NapileFile) clazz.getContainingFile();
+		NapileFile file = clazz.getContainingFile();
 		List<NapileClass> declarations = file.getDeclarations();
 		if(declarations.size() == 1)
 		{

@@ -19,7 +19,7 @@ package org.napile.idea.plugin.quickfix;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.idea.plugin.JetBundle;

@@ -31,6 +31,10 @@ import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileExpression;
 
 /**
  * @author svtk
@@ -68,9 +72,9 @@ public class ControlFlowAnalyzer
 			checkClassOrObject(objectDeclaration);
 		}
 
-		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
+		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
 		{
-			NapileNamedFunction function = entry.getKey();
+			NapileNamedMethod function = entry.getKey();
 			SimpleMethodDescriptor functionDescriptor = entry.getValue();
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
@@ -87,9 +91,9 @@ public class ControlFlowAnalyzer
 			checkFunction(constructor, TypeUtils.NO_EXPECTED_TYPE);
 		}
 
-		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
 		{
-			NapileProperty property = entry.getKey();
+			NapileVariable property = entry.getKey();
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
 				continue;
 			PropertyDescriptor propertyDescriptor = entry.getValue();

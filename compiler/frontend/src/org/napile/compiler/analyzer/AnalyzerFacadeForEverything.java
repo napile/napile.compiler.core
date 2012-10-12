@@ -18,11 +18,11 @@ package org.napile.compiler.analyzer;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.di.InjectorForBodyResolve;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
+import org.napile.compiler.psi.NapileFile;
 import com.google.common.base.Predicate;
 import com.intellij.openapi.project.Project;
 

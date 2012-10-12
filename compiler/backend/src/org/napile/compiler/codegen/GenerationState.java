@@ -25,17 +25,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.jet.utils.Progress;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.codegen.processors.ClassGenerator;
 import org.napile.compiler.codegen.processors.FqNameGenerator;
-import org.napile.compiler.di.InjectorForJvmCodegen;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.openapi.project.Project;
 
 public class GenerationState
@@ -44,7 +42,7 @@ public class GenerationState
 	@NotNull
 	private final List<NapileFile> files;
 	@NotNull
-	private final InjectorForJvmCodegen injector;
+	private final BindingTrace bindingTrace;
 
 	private Map<FqName, ClassNode> classNodes = new LinkedHashMap<FqName, ClassNode>();
 
@@ -55,9 +53,7 @@ public class GenerationState
 		this.progress = progress;
 		this.files = files;
 
-		final DelegatingBindingTrace trace = new DelegatingBindingTrace(exhaust.getBindingContext());
-
-		this.injector = new InjectorForJvmCodegen(trace, this.files, project);
+		this.bindingTrace = new DelegatingBindingTrace(exhaust.getBindingContext());
 	}
 
 	private void markUsed()
@@ -74,22 +70,11 @@ public class GenerationState
 		return progress;
 	}
 
-	@NotNull
-	public InjectorForJvmCodegen getInjector()
-	{
-		return injector;
-	}
-
-	public BindingContext getBindingContext()
-	{
-		return injector.getBindingContext();
-	}
-
 	public void compileAndGenerate(@NotNull CompilationErrorHandler errorHandler)
 	{
 		markUsed();
 
-		FqNameGenerator fqNameGenerator = new FqNameGenerator(injector.getBindingTrace());
+		FqNameGenerator fqNameGenerator = new FqNameGenerator(bindingTrace);
 
 		List<NapileClass> classes = new ArrayList<NapileClass>();
 		for(NapileFile napileFile : files)
@@ -98,7 +83,7 @@ public class GenerationState
 		for(NapileClass napileClass : classes)
 			napileClass.accept(fqNameGenerator, null);
 
-		ClassGenerator classGenerator = new ClassGenerator(injector.getBindingTrace(), classNodes);
+		ClassGenerator classGenerator = new ClassGenerator(bindingTrace, classNodes);
 
 		for(NapileClass napileClass : classes)
 			napileClass.accept(classGenerator, null);
@@ -106,11 +91,6 @@ public class GenerationState
 		classGenerator.addPropertiesInitToConstructors();
 
 		classNodes = classGenerator.getClassNodes();
-	}
-
-	public void destroy()
-	{
-		injector.destroy();
 	}
 
 	public Map<FqName, ClassNode> getClassNodes()

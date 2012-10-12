@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.util;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.plugin.JetFileType;
+import org.napile.compiler.NapileFileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
@@ -34,7 +34,7 @@ public class FileRootUtil
 		FileTypeManager fileTypeManager = FileTypeManager.getInstance();
 		if(file.isDirectory())
 			return false;
-		if(file.getFileType() != JetFileType.INSTANCE)
+		if(file.getFileType() != NapileFileType.INSTANCE)
 			return false;
 		if(fileTypeManager.isFileIgnored(file))
 			return false;

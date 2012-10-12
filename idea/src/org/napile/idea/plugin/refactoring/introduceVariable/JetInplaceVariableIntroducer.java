@@ -28,8 +28,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lexer.NapileTokens;
 import org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction;
@@ -59,7 +59,7 @@ public class JetInplaceVariableIntroducer extends InplaceVariableIntroducer<Napi
 {
 
 	private final boolean myReplaceOccurrence;
-	private final NapileProperty myProperty;
+	private final NapileVariable myProperty;
 	private final boolean isVar;
 	private final boolean myDoNotChangeVar;
 	@Nullable
@@ -68,7 +68,7 @@ public class JetInplaceVariableIntroducer extends InplaceVariableIntroducer<Napi
 	private JCheckBox myVarCheckbox;
 	private JCheckBox myExprTypeCheckbox;
 
-	public JetInplaceVariableIntroducer(PsiNamedElement elementToRename, Editor editor, Project project, String title, NapileExpression[] occurrences, @Nullable NapileExpression expr, boolean replaceOccurrence, NapileProperty property, boolean isVar, boolean doNotChangeVar, @Nullable JetType exprType, boolean noTypeInference)
+	public JetInplaceVariableIntroducer(PsiNamedElement elementToRename, Editor editor, Project project, String title, NapileExpression[] occurrences, @Nullable NapileExpression expr, boolean replaceOccurrence, NapileVariable property, boolean isVar, boolean doNotChangeVar, @Nullable JetType exprType, boolean noTypeInference)
 	{
 		super(elementToRename, editor, project, title, occurrences, expr);
 		this.myReplaceOccurrence = replaceOccurrence;

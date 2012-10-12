@@ -21,10 +21,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.psi.NapileDeclaration;
+import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileReferenceParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
@@ -70,9 +70,9 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 			if(text == null)
 				return;
 			JetCodeStyleSettings settings = CodeStyleSettingsManager.getInstance(getProject()).getCurrentSettings().getCustomSettings(JetCodeStyleSettings.class);
-			if(declaration instanceof NapileProperty)
+			if(declaration instanceof NapileVariable)
 			{
-				NapileProperty property = (NapileProperty) declaration;
+				NapileVariable property = (NapileVariable) declaration;
 				NapileTypeReference ref = property.getPropertyTypeRef();
 				if(ref != null)
 				{

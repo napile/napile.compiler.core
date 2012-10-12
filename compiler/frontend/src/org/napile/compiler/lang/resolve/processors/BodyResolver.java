@@ -63,6 +63,9 @@ import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileExpression;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 import org.napile.compiler.util.slicedmap.WritableSlice;
@@ -320,9 +323,9 @@ public class BodyResolver
 
 	private void resolvePropertyDeclarationBodies()
 	{
-		for(Map.Entry<NapileProperty, PropertyDescriptor> entry : this.context.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : this.context.getProperties().entrySet())
 		{
-			NapileProperty property = entry.getKey();
+			NapileVariable property = entry.getKey();
 			if(!context.completeAnalysisNeeded(property))
 				continue;
 
@@ -362,7 +365,7 @@ public class BodyResolver
 		});
 	}
 
-	private void resolvePropertyInitializer(NapileProperty property, PropertyDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
+	private void resolvePropertyInitializer(NapileVariable property, PropertyDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
 	{
 		//JetFlowInformationProvider flowInformationProvider = context.getDescriptorResolver().computeFlowData(property, initializer); // TODO : flow JET-15
 		JetType expectedTypeForInitializer = property.getPropertyTypeRef() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;
@@ -381,9 +384,9 @@ public class BodyResolver
 
 	private void resolveFunctionBodies()
 	{
-		for(Map.Entry<NapileNamedFunction, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
+		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
 		{
-			NapileNamedFunction declaration = entry.getKey();
+			NapileNamedMethod declaration = entry.getKey();
 			SimpleMethodDescriptor descriptor = entry.getValue();
 
 			computeDeferredType(descriptor.getReturnType());

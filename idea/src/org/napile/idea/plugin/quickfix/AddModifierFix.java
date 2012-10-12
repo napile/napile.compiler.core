@@ -25,11 +25,12 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.psi.NapileModifierList;
-import org.napile.compiler.lang.psi.NapileModifierListOwner;
+import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.psi.NapileModifierListImpl;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.psi.NapileModifierListOwner;
 import org.napile.idea.plugin.JetBundle;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.editor.Editor;
@@ -103,7 +104,7 @@ public class AddModifierFix extends JetIntentionAction<NapileModifierListOwner>
 	{
 		NapileModifierListOwner newElement = (NapileModifierListOwner) (element.copy());
 
-		NapileModifierList modifierList = newElement.getModifierList();
+		NapileModifierListImpl modifierList = (NapileModifierListImpl)newElement.getModifierList();
 		NapileModifierList listWithModifier = NapilePsiFactory.createModifier(project, modifier);
 		PsiElement whiteSpace = NapilePsiFactory.createWhiteSpace(project);
 		if(modifierList == null)

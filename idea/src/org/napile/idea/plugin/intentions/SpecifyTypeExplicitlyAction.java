@@ -26,18 +26,18 @@ import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileNamedFunction;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileParameterList;
-import org.napile.compiler.lang.psi.NapileProperty;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
@@ -78,9 +78,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		{
 			return;
 		}
-		if(parent instanceof NapileProperty)
+		if(parent instanceof NapileVariable)
 		{
-			NapileProperty property = (NapileProperty) parent;
+			NapileVariable property = (NapileVariable) parent;
 			if(property.getPropertyTypeRef() == null)
 			{
 				addTypeAnnotation(project, property, type);
@@ -102,9 +102,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 				removeTypeAnnotation(parameter);
 			}
 		}
-		else if(parent instanceof NapileNamedFunction)
+		else if(parent instanceof NapileNamedMethod)
 		{
-			NapileNamedFunction function = (NapileNamedFunction) parent;
+			NapileNamedMethod function = (NapileNamedMethod) parent;
 			assert function.getReturnTypeRef() == null;
 			addTypeAnnotation(project, function, type);
 		}
@@ -128,9 +128,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 			return false;
 		}
 		NapileNamedDeclaration declaration = (NapileNamedDeclaration) parent;
-		if(declaration instanceof NapileProperty && !PsiTreeUtil.isAncestor(((NapileProperty) declaration).getInitializer(), element, false))
+		if(declaration instanceof NapileVariable && !PsiTreeUtil.isAncestor(((NapileVariable) declaration).getInitializer(), element, false))
 		{
-			if(((NapileProperty) declaration).getPropertyTypeRef() != null)
+			if(((NapileVariable) declaration).getPropertyTypeRef() != null)
 			{
 				setText(JetBundle.message("specify.type.explicitly.remove.action.name"));
 				return true;
@@ -140,7 +140,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 				setText(JetBundle.message("specify.type.explicitly.add.action.name"));
 			}
 		}
-		else if(declaration instanceof NapileNamedFunction && ((NapileNamedFunction) declaration).getReturnTypeRef() == null && !((NapileNamedFunction) declaration).hasBlockBody())
+		else if(declaration instanceof NapileNamedMethod && ((NapileNamedMethod) declaration).getReturnTypeRef() == null && !((NapileNamedMethod) declaration).hasBlockBody())
 		{
 			setText(JetBundle.message("specify.type.explicitly.add.return.type.action.name"));
 		}
@@ -211,7 +211,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		return true;
 	}
 
-	public static void addTypeAnnotation(Project project, NapileProperty property, @NotNull JetType exprType)
+	public static void addTypeAnnotation(Project project, NapileVariable property, @NotNull JetType exprType)
 	{
 		if(property.getPropertyTypeRef() != null)
 			return;
@@ -278,7 +278,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		sibling.getParent().getNode().removeRange(sibling.getNode(), nextSibling == null ? null : nextSibling.getNode());
 	}
 
-	public static void removeTypeAnnotation(NapileProperty property)
+	public static void removeTypeAnnotation(NapileVariable property)
 	{
 		removeTypeAnnotation(property, property.getPropertyTypeRef());
 	}

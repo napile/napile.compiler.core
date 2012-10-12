@@ -526,7 +526,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				case ENUM_CLASS:
 					keyword = NapileTokens.ENUM_KEYWORD;
 					break;
-				case RETELL:
+				case RETELL_CLASS:
 					keyword = NapileTokens.RETELL_KEYWORD;
 					break;
 				default:

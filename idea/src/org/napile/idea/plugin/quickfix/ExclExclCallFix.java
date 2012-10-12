@@ -17,11 +17,11 @@
 package org.napile.idea.plugin.quickfix;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePostfixExpression;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.JetBundle;
 import com.intellij.codeInsight.CodeInsightUtilBase;
 import com.intellij.codeInsight.intention.IntentionAction;

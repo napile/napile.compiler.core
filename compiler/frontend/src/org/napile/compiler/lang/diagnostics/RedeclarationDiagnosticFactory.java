@@ -19,8 +19,8 @@ package org.napile.compiler.lang.diagnostics;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 

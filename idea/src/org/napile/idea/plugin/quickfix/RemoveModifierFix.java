@@ -19,11 +19,12 @@ package org.napile.idea.plugin.quickfix;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.psi.NapileModifierList;
-import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.psi.NapileModifierListImpl;
 import org.napile.compiler.lexer.NapileKeywordToken;
 import org.napile.compiler.lexer.NapileToken;
+import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileModifierListOwner;
 import org.napile.idea.plugin.JetBundle;
 import com.intellij.extapi.psi.ASTDelegatePsiElement;
 import com.intellij.lang.ASTNode;
@@ -72,7 +73,7 @@ public class RemoveModifierFix extends JetIntentionAction<NapileModifierListOwne
 	@NotNull
 	private static <T extends NapileModifierListOwner> T removeModifier(T element, NapileToken modifier)
 	{
-		NapileModifierList modifierList = element.getModifierList();
+		NapileModifierListImpl modifierList = (NapileModifierListImpl)element.getModifierList();
 		assert modifierList != null;
 		removeModifierFromList(modifierList, modifier);
 		if(modifierList.getFirstChild() == null)
@@ -86,7 +87,7 @@ public class RemoveModifierFix extends JetIntentionAction<NapileModifierListOwne
 	}
 
 	@NotNull
-	private static NapileModifierList removeModifierFromList(@NotNull NapileModifierList modifierList, NapileToken modifier)
+	private static NapileModifierList removeModifierFromList(@NotNull NapileModifierListImpl modifierList, NapileToken modifier)
 	{
 		assert modifierList.hasModifier(modifier);
 		ASTNode modifierNode = modifierList.getModifierNode(modifier);

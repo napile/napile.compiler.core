@@ -17,7 +17,9 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.plugin.JetLanguage;
+import org.napile.compiler.NapileLanguage;
+import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.psi.NapileFile;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -39,7 +41,7 @@ public class NapileElementImpl extends ASTWrapperPsiElement implements NapileEle
 	@Override
 	public Language getLanguage()
 	{
-		return JetLanguage.INSTANCE;
+		return NapileLanguage.INSTANCE;
 	}
 
 	@Override
@@ -68,9 +70,7 @@ public class NapileElementImpl extends ASTWrapperPsiElement implements NapileEle
 		while(child != null)
 		{
 			if(child instanceof NapileElement)
-			{
 				((NapileElement) child).accept(visitor, data);
-			}
 			child = child.getNextSibling();
 		}
 	}

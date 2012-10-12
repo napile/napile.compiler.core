@@ -17,8 +17,8 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.stubs.PsiJetTypeParameterStub;
-import org.napile.compiler.lang.psi.stubs.elements.JetStubElementTypes;
+import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.ArrayFactory;
@@ -26,7 +26,7 @@ import com.intellij.util.ArrayFactory;
 /**
  * @author max
  */
-public class NapileTypeParameter extends NapileNamedDeclarationStub<PsiJetTypeParameterStub>
+public class NapileTypeParameter extends NapileNamedDeclarationStub<NapilePsiTypeParameterStub>
 {
 	public static final NapileTypeParameter[] EMPTY_ARRAY = new NapileTypeParameter[0];
 
@@ -44,7 +44,7 @@ public class NapileTypeParameter extends NapileNamedDeclarationStub<PsiJetTypePa
 		super(node);
 	}
 
-	public NapileTypeParameter(@NotNull PsiJetTypeParameterStub stub, @NotNull IStubElementType nodeType)
+	public NapileTypeParameter(@NotNull NapilePsiTypeParameterStub stub, @NotNull IStubElementType nodeType)
 	{
 		super(stub, nodeType);
 	}
@@ -77,6 +77,6 @@ public class NapileTypeParameter extends NapileNamedDeclarationStub<PsiJetTypePa
 	@Override
 	public IStubElementType getElementType()
 	{
-		return JetStubElementTypes.TYPE_PARAMETER;
+		return NapileStubElementTypes.TYPE_PARAMETER;
 	}
 }

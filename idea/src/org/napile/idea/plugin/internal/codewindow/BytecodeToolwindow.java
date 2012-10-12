@@ -26,7 +26,7 @@ import java.util.Collections;
 
 import javax.swing.JPanel;
 
-import org.jetbrains.jet.utils.Progress;
+import org.napile.compiler.codegen.Progress;
 import org.napile.asm.LangVersion;
 import org.napile.asm.io.AsmWriterOption;
 import org.napile.asm.io.xml.out.AsmXmlTextWriter;
@@ -34,7 +34,7 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.codegen.CompilationErrorHandler;
 import org.napile.compiler.codegen.GenerationState;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.Disposable;
