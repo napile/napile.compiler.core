@@ -86,6 +86,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, klass);
 
 		ClassNode classNode = new ClassNode(ModifierGenerator.gen(classDescriptor), fqName);
+		AnnotationCodegen.convert(bindingTrace, classDescriptor, classNode);
 
 		for(JetType superType : classDescriptor.getSupertypes())
 			classNode.supers.add(TypeTransformer.toAsmType(superType));

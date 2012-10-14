@@ -112,7 +112,7 @@ public class TypeParameterResolver
 
 	private TypeParameterDescriptorImpl resolveTypeParameter(DeclarationDescriptor containingDescriptor, WritableScope extensibleScope, NapileTypeParameter typeParameter, int index, BindingTrace trace)
 	{
-		TypeParameterDescriptorImpl typeParameterDescriptor = new TypeParameterDescriptorImpl(containingDescriptor, annotationResolver.createAnnotationStubs(typeParameter.getModifierList(), trace), typeParameter.hasModifier(NapileTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
+		TypeParameterDescriptorImpl typeParameterDescriptor = new TypeParameterDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(extensibleScope, typeParameter.getModifierList(), trace), typeParameter.hasModifier(NapileTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
 
 		extensibleScope.addTypeParameterDescriptor(typeParameterDescriptor);
 		trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);

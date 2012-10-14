@@ -107,6 +107,14 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	private final boolean isInstanceConstructor;
 
+	public ExpressionGenerator(@NotNull BindingTrace b, @NotNull TypeNode r)
+	{
+		bindingTrace = b;
+		isInstanceConstructor = false;
+		returnType = r;
+		frameMap = new FrameMap();
+	}
+
 	public ExpressionGenerator(@NotNull BindingTrace b, @NotNull CallableDescriptor d)
 	{
 		bindingTrace = b;
@@ -610,7 +618,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		}
 		else
 		{
-			Call call = bindingTrace.get(BindingContext.CALL, expression.getCalleeExpression());
 			if(resolvedCall instanceof VariableAsFunctionResolvedCall)
 			{
 				throw new UnsupportedOperationException();
@@ -619,7 +626,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 				//	return invokeFunction(call, receiver, functionCall);
 			}
 			else
-				return invokeFunction(call, receiver, resolvedCall);
+				return invokeFunction(receiver, resolvedCall);
 		}
 	}
 
@@ -801,11 +808,11 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(callable.getReturnType());
 	}
 
-	private StackValue invokeFunction(Call call, StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall)
+	private StackValue invokeFunction(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall)
 	{
 		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall);
 
-		invokeMethodWithArguments(callableMethod, resolvedCall, call, receiver);
+		invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
 
 		final TypeNode callReturnType = callableMethod.getReturnType();
 
@@ -820,13 +827,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	public void invokeMethodWithArguments(@NotNull CallableMethod callableMethod, NapileCallElement expression, StackValue receiver)
 	{
 		NapileExpression calleeExpression = expression.getCalleeExpression();
-		Call call = bindingTrace.safeGet(BindingContext.CALL, calleeExpression);
+
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, calleeExpression);
 
-		invokeMethodWithArguments(callableMethod, resolvedCall, call, receiver);
+		invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
 	}
 
-	protected void invokeMethodWithArguments(@NotNull CallableMethod callableMethod, @NotNull ResolvedCall<? extends CallableDescriptor> resolvedCall, @NotNull Call call, @NotNull StackValue receiver)
+	public void invokeMethodWithArguments(@NotNull CallableMethod callableMethod, @NotNull ResolvedCall<? extends CallableDescriptor> resolvedCall, @NotNull StackValue receiver)
 	{
 		/*final Type calleeType = callableMethod.getGenerateCalleeType();
 		if(calleeType != null)

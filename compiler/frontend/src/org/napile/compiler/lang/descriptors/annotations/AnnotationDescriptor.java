@@ -16,10 +16,9 @@
 
 package org.napile.compiler.lang.descriptors.annotations;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.JetType;
 
 /**
@@ -28,7 +27,7 @@ import org.napile.compiler.lang.types.JetType;
 public class AnnotationDescriptor
 {
 	private JetType annotationType;
-	private List<CompileTimeConstant<?>> valueArguments;
+	private ResolvedCall<ConstructorDescriptor> resolvedCall;
 
 	@NotNull
 	public JetType getType()
@@ -36,19 +35,18 @@ public class AnnotationDescriptor
 		return annotationType;
 	}
 
-	@NotNull
-	public List<CompileTimeConstant<?>> getValueArguments()
-	{
-		return valueArguments;
-	}
-
 	public void setAnnotationType(@NotNull JetType annotationType)
 	{
 		this.annotationType = annotationType;
 	}
 
-	public void setValueArguments(@NotNull List<CompileTimeConstant<?>> valueArguments)
+	public ResolvedCall<ConstructorDescriptor> getResolvedCall()
 	{
-		this.valueArguments = valueArguments;
+		return resolvedCall;
+	}
+
+	public void setResolvedCall(ResolvedCall<ConstructorDescriptor> resolvedCall)
+	{
+		this.resolvedCall = resolvedCall;
 	}
 }

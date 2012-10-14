@@ -197,9 +197,6 @@ public interface BindingContext
 	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapilePropertyParameter, VariableDescriptor> VALUE_PARAMETER = Slices.<NapilePropertyParameter, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 
-	// normalize value to getOriginal(value)
-	WritableSlice<NapileObjectDeclarationName, PropertyDescriptor> OBJECT_DECLARATION = Slices.<NapileObjectDeclarationName, PropertyDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-
 	WritableSlice[] DECLARATIONS_TO_DESCRIPTORS = new WritableSlice[]{
 			NAMESPACE,
 			CLASS,
@@ -207,8 +204,7 @@ public interface BindingContext
 			METHOD,
 			CONSTRUCTOR,
 			VARIABLE,
-			VALUE_PARAMETER,
-			OBJECT_DECLARATION
+			VALUE_PARAMETER
 	};
 
 	WritableSlice<FqName, ClassDescriptor> FQNAME_TO_CLASS_DESCRIPTOR = new BasicWritableSlice<FqName, ClassDescriptor>(RewritePolicy.DO_NOTHING, true);
