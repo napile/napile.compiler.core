@@ -517,7 +517,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			return BinaryOperationCodegen.genAndAnd(expression, this, instructs);
 		else if(opToken == NapileTokens.OROR)
 			return BinaryOperationCodegen.genOrOr(expression, this, instructs);
-		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ /*|| opToken == NapileTokens.EQEQEQ || opToken == NapileTokens.EXCLEQEQEQ*/)
+		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ)
 			return BinaryOperationCodegen.genEqEq(expression, this, instructs);
 		else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ || opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
 			return BinaryOperationCodegen.genGeLe(expression, this, instructs);

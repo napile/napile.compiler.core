@@ -1212,13 +1212,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				}
 				result = booleanType;
 			}
-			else if(operationType == NapileTokens.EQEQEQ || operationType == NapileTokens.EXCLEQEQEQ)
-			{
-				ensureNonemptyIntersectionOfOperandTypes(expression, context);
-
-				// TODO : Check comparison pointlessness
-				result = booleanType;
-			}
 			else if(OperatorConventions.IN_OPERATIONS.contains(operationType))
 			{
 				if(right == null)
@@ -1325,7 +1318,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		Nullability nullability = context.dataFlowInfo.getNullability(value);
 
 		boolean expressionIsAlways;
-		boolean equality = operationSign.getReferencedNameElementType() == NapileTokens.EQEQ || operationSign.getReferencedNameElementType() == NapileTokens.EQEQEQ;
+		boolean equality = operationSign.getReferencedNameElementType() == NapileTokens.EQEQ;
 
 		if(nullability == Nullability.NULL)
 		{

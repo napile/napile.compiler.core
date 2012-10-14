@@ -114,11 +114,11 @@ public class DataFlowUtils
 					DataFlowValue rightValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(right, rhsType, bindingContext);
 
 					Boolean equals = null;
-					if(operationToken == NapileTokens.EQEQ || operationToken == NapileTokens.EQEQEQ)
+					if(operationToken == NapileTokens.EQEQ)
 					{
 						equals = true;
 					}
-					else if(operationToken == NapileTokens.EXCLEQ || operationToken == NapileTokens.EXCLEQEQEQ)
+					else if(operationToken == NapileTokens.EXCLEQ)
 					{
 						equals = false;
 					}

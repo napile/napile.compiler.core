@@ -526,7 +526,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		}
 		else
 		{
-			if(expectedType != TypeUtils.NO_EXPECTED_TYPE && expectedType != null && !TypeUtils.isEqualFqName(expectedType, NapileLangPackage.NULL))
+			if(expectedType != TypeUtils.NO_EXPECTED_TYPE && !TypeUtils.isEqualFqName(expectedType, NapileLangPackage.NULL))
 			{
 				context.trace.report(Errors.RETURN_TYPE_MISMATCH.on(expression, expectedType));
 			}

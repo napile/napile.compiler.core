@@ -100,10 +100,8 @@ public interface NapileTokens
 	NapileToken GT = new NapileToken("GT");
 	NapileToken LTEQ = new NapileToken("LTEQ");
 	NapileToken GTEQ = new NapileToken("GTEQ");
-	NapileToken EQEQEQ = new NapileToken("EQEQEQ");
 	NapileToken ARROW = new NapileToken("ARROW");
 	NapileToken DOUBLE_ARROW = new NapileToken("DOUBLE_ARROW");
-	NapileToken EXCLEQEQEQ = new NapileToken("EXCLEQEQEQ");
 	NapileToken EQEQ = new NapileToken("EQEQ");
 	NapileToken EXCLEQ = new NapileToken("EXCLEQ");
 	NapileToken EXCLEXCL = new NapileToken("EXCLEXCL");
@@ -169,7 +167,7 @@ public interface NapileTokens
 	TokenSet COMMENTS = TokenSet.create(EOL_COMMENT, BLOCK_COMMENT, DOC_COMMENT, SHEBANG_COMMENT);
 
 	TokenSet STRINGS = TokenSet.create(CHARACTER_LITERAL, REGULAR_STRING_PART);
-	TokenSet OPERATIONS = TokenSet.create(AS_KEYWORD, AS_SAFE, IS_KEYWORD, IN_KEYWORD, DOT, PLUSPLUS, MINUSMINUS, EXCLEXCL, MUL, PLUS, MINUS, EXCL, DIV, PERC, LT, GT, LTEQ, GTEQ, EQEQEQ, EXCLEQEQEQ, EQEQ, EXCLEQ, ANDAND, OROR, SAFE_ACCESS, ELVIS,
+	TokenSet OPERATIONS = TokenSet.create(AS_KEYWORD, AS_SAFE, IS_KEYWORD, IN_KEYWORD, DOT, PLUSPLUS, MINUSMINUS, EXCLEXCL, MUL, PLUS, MINUS, EXCL, DIV, PERC, LT, GT, LTEQ, GTEQ, EQEQ, EXCLEQ, ANDAND, OROR, SAFE_ACCESS, ELVIS,
 			//            MAP, FILTER,
 			COLON, RANGE, EQ, MULTEQ, DIVEQ, PERCEQ, PLUSEQ, MINUSEQ, NOT_IN, NOT_IS,
 			//            HASH,

@@ -58,7 +58,7 @@ import com.intellij.psi.tree.TokenSet;
 public class DebugInfoAnnotator implements Annotator
 {
 
-	public static final TokenSet EXCLUDED = TokenSet.create(COLON, AS_KEYWORD, AS_SAFE, IS_KEYWORD, NOT_IS, OROR, ANDAND, EQ, EQEQEQ, EXCLEQEQEQ, ELVIS, EXCLEXCL);
+	public static final TokenSet EXCLUDED = TokenSet.create(COLON, AS_KEYWORD, AS_SAFE, IS_KEYWORD, NOT_IS, OROR, ANDAND, EQ, ELVIS, EXCLEXCL);
 
 	public static boolean isDebugInfoEnabled()
 	{

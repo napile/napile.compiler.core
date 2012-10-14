@@ -58,7 +58,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			//            MUL,
 			NapileTokens.PLUS, NapileTokens.MINUS, NapileTokens.EXCL, NapileTokens.DIV, NapileTokens.PERC, NapileTokens.LTEQ,
 			// TODO GTEQ,   foo<bar, baz>=x
-			NapileTokens.EQEQEQ, NapileTokens.EXCLEQEQEQ, NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.ANDAND, NapileTokens.OROR, NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.SEMICOLON, NapileTokens.RANGE, NapileTokens.EQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.NOT_IN, NapileTokens.NOT_IS, //HASH,
+			NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.ANDAND, NapileTokens.OROR, NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.SEMICOLON, NapileTokens.RANGE, NapileTokens.EQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.NOT_IN, NapileTokens.NOT_IS, //HASH,
 			NapileTokens.COLON);
 
 	/*package*/ static final TokenSet EXPRESSION_FIRST = TokenSet.create(
@@ -160,7 +160,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 					}
 				},
 		COMPARISON(NapileTokens.LT, NapileTokens.GT, NapileTokens.LTEQ, NapileTokens.GTEQ),
-		EQUALITY(NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.EQEQEQ, NapileTokens.EXCLEQEQEQ),
+		EQUALITY(NapileTokens.EQEQ, NapileTokens.EXCLEQ),
 		CONJUNCTION(NapileTokens.ANDAND),
 		DISJUNCTION(NapileTokens.OROR),
 		//        ARROW(NapileTokens.ARROW),

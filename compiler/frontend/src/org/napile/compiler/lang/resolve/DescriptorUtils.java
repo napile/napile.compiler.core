@@ -254,7 +254,7 @@ public class DescriptorUtils
 		{
 			expectedType = descriptor.getReturnType();
 		}
-		return expectedType != null ? expectedType : TypeUtils.NO_EXPECTED_TYPE;
+		return expectedType;
 	}
 
 	public static boolean isObject(@NotNull ClassifierDescriptor classifier)

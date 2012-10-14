@@ -267,8 +267,6 @@ LONG_TEMPLATE_ENTRY_END=\}
 
 "<#<"        { return NapileTokens.IDE_TEMPLATE_START    ; }
 ">#>"        { return NapileTokens.IDE_TEMPLATE_END    ; }
-"==="        { return NapileTokens.EQEQEQ    ; }
-"!=="        { return NapileTokens.EXCLEQEQEQ; }
 "!in"        { return NapileTokens.NOT_IN; }
 "!is"        { return NapileTokens.NOT_IS; }
 "as?"        { return NapileTokens.AS_SAFE; }
