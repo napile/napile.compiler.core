@@ -16,9 +16,15 @@
 
 package org.napile.compiler.codegen.processors;
 
+import java.util.Map;
+
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.Modifier;
+import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
+import org.napile.asm.tree.members.types.constructors.MethodTypeNode;
 import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeConstructorNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
@@ -44,7 +50,16 @@ public class TypeTransformer
 		if(jetType.getConstructor() instanceof SelfTypeConstructor)
 			typeConstructorNode = new ThisTypeNode();
 		else if(jetType.getConstructor() instanceof MethodTypeConstructor)
-			throw new IllegalArgumentException("MethodTypeConstructor is not supported for now");
+		{
+			MethodTypeConstructor methodTypeConstructor = (MethodTypeConstructor)jetType.getConstructor();
+			typeConstructorNode = new MethodTypeNode();
+
+			MethodTypeNode methodTypeNode = (MethodTypeNode) typeConstructorNode;
+
+			methodTypeNode.returnType = toAsmType(methodTypeConstructor.getReturnType());
+			for(Map.Entry<Name, JetType> entry : methodTypeConstructor.getParameterTypes().entrySet())
+				methodTypeNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, entry.getKey(), toAsmType(entry.getValue())));
+		}
 		else if(owner instanceof ClassDescriptor)
 			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());
 		else if(owner instanceof TypeParameterDescriptor)
