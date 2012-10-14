@@ -61,8 +61,7 @@ public interface NapileNodeTypes
 	NapileNodeType CLASS_BODY = new NapileNodeType("CLASS_BODY", NapileClassBody.class);
 	NapileNodeType IMPORT_DIRECTIVE = new NapileNodeType("IMPORT_DIRECTIVE", NapileImportDirective.class);
 	NapileNodeType MODIFIER_LIST = new NapileNodeType("MODIFIER_LIST", NapileModifierListImpl.class);
-	NapileNodeType ANNOTATION_LIST = new NapileNodeType("ANNOTATION_LIST", NapileAnnotationList.class);
-	NapileNodeType ANNOTATION_ENTRY = new NapileNodeType("ANNOTATION_ENTRY", NapileAnnotationEntry.class);
+	NapileNodeType ANNOTATION = new NapileNodeType("ANNOTATION", NapileAnnotation.class);
 
 	NapileNodeType EXTEND_TYPE_LIST = new NapileNodeType("EXTEND_TYPE_LIST", NapileExtendTypeList.class);
 	NapileNodeType TYPE_ARGUMENT_LIST = new NapileNodeType("TYPE_ARGUMENT_LIST", NapileTypeArgumentList.class);

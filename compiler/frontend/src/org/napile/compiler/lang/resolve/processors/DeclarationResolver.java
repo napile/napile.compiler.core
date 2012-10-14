@@ -136,7 +136,7 @@ public class DeclarationResolver
 		NapileModifierList modifierList = jetClass.getModifierList();
 		if(modifierList != null)
 		{
-			descriptor.getAnnotations().addAll(annotationResolver.resolveAnnotations(descriptor.getScopeForSupertypeResolution(), modifierList.getAnnotationEntries(), trace));
+			descriptor.getAnnotations().addAll(annotationResolver.resolveAnnotations(descriptor.getScopeForSupertypeResolution(), modifierList.getAnnotations(), trace));
 		}
 	}
 

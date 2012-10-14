@@ -16,13 +16,8 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.psi.NapileExpression;
 import com.intellij.lang.ASTNode;
 
@@ -52,22 +47,5 @@ public class NapileAnnotatedExpression extends NapileExpressionImpl
 	public NapileExpression getBaseExpression()
 	{
 		return findChildByClass(NapileExpression.class);
-	}
-
-	public List<NapileAnnotationList> getAttributeAnnotations()
-	{
-		return findChildrenByType(NapileNodeTypes.ANNOTATION_LIST);
-	}
-
-	public List<NapileAnnotationEntry> getAttributes()
-	{
-		List<NapileAnnotationEntry> answer = null;
-		for(NapileAnnotationList annotationList : getAttributeAnnotations())
-		{
-			if(answer == null)
-				answer = new ArrayList<NapileAnnotationEntry>();
-			answer.addAll(annotationList.getEntries());
-		}
-		return answer != null ? answer : Collections.<NapileAnnotationEntry>emptyList();
 	}
 }

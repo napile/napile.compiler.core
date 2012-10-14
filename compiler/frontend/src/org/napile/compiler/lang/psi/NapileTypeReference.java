@@ -16,8 +16,6 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -50,26 +48,15 @@ public class NapileTypeReference extends NapileElementImpl
 		return visitor.visitTypeReference(this, data);
 	}
 
-	public List<NapileAnnotationList> getAttributeAnnotations()
-	{
-		return findChildrenByType(NapileNodeTypes.ANNOTATION_LIST);
-	}
-
 	@Nullable
 	public NapileTypeElement getTypeElement()
 	{
 		return findChildByClass(NapileTypeElement.class);
 	}
 
-	public List<NapileAnnotationEntry> getAnnotations()
+	@NotNull
+	public List<NapileAnnotation> getAnnotations()
 	{
-		List<NapileAnnotationEntry> answer = null;
-		for(NapileAnnotationList annotationList : getAttributeAnnotations())
-		{
-			if(answer == null)
-				answer = new ArrayList<NapileAnnotationEntry>();
-			answer.addAll(annotationList.getEntries());
-		}
-		return answer != null ? answer : Collections.<NapileAnnotationEntry>emptyList();
+		return findChildrenByType(NapileNodeTypes.ANNOTATION);
 	}
 }

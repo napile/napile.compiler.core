@@ -79,7 +79,7 @@ public interface BindingContext
 		}
 	};
 
-	WritableSlice<NapileAnnotationEntry, AnnotationDescriptor> ANNOTATION = Slices.createSimpleSlice();
+	WritableSlice<NapileAnnotation, AnnotationDescriptor> ANNOTATION = Slices.createSimpleSlice();
 
 	WritableSlice<NapileExpression, CompileTimeConstant<?>> COMPILE_TIME_VALUE = Slices.createSimpleSlice();
 	WritableSlice<NapileTypeReference, JetType> TYPE = Slices.createSimpleSlice();

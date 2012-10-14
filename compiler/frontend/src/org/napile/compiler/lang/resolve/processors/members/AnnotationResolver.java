@@ -30,7 +30,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileAnnotationEntry;
+import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
 import org.napile.compiler.psi.NapileModifierList;
 import org.napile.compiler.psi.NapileElement;
@@ -83,16 +83,16 @@ public class AnnotationResolver
 		if(modifierList == null)
 			return Collections.emptyList();
 
-		return resolveAnnotations(scope, modifierList.getAnnotationEntries(), trace);
+		return resolveAnnotations(scope, modifierList.getAnnotations(), trace);
 	}
 
 	@NotNull
-	public List<AnnotationDescriptor> resolveAnnotations(@NotNull JetScope scope, @NotNull List<NapileAnnotationEntry> annotationEntryElements, BindingTrace trace)
+	public List<AnnotationDescriptor> resolveAnnotations(@NotNull JetScope scope, @NotNull List<NapileAnnotation> annotationEntryElements, BindingTrace trace)
 	{
 		if(annotationEntryElements.isEmpty())
 			return Collections.emptyList();
 		List<AnnotationDescriptor> result = Lists.newArrayList();
-		for(NapileAnnotationEntry entryElement : annotationEntryElements)
+		for(NapileAnnotation entryElement : annotationEntryElements)
 		{
 			AnnotationDescriptor descriptor = new AnnotationDescriptor();
 			resolveAnnotationStub(scope, entryElement, descriptor, trace);
@@ -102,7 +102,7 @@ public class AnnotationResolver
 		return result;
 	}
 
-	public void resolveAnnotationStub(@NotNull JetScope scope, @NotNull NapileAnnotationEntry entryElement, @NotNull AnnotationDescriptor annotationDescriptor, BindingTrace trace)
+	public void resolveAnnotationStub(@NotNull JetScope scope, @NotNull NapileAnnotation entryElement, @NotNull AnnotationDescriptor annotationDescriptor, BindingTrace trace)
 	{
 		OverloadResolutionResults<MethodDescriptor> results = callResolver.resolveFunctionCall(trace, scope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, entryElement), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 		if(results.isSuccess())
@@ -177,7 +177,7 @@ public class AnnotationResolver
 			//            }
 			//
 			//            @Override
-			//            public CompileTimeConstant visitAnnotationEntry(NapileAnnotationEntry annotationEntry, Void nothing) {
+			//            public CompileTimeConstant visitAnnotationEntry(NapileAnnotation annotationEntry, Void nothing) {
 			//                return super.visitAnnotationEntry(annotationEntry, null); // TODO
 			//            }
 
@@ -214,14 +214,14 @@ public class AnnotationResolver
 		{
 			return Collections.emptyList();
 		}
-		return createAnnotationStubs(modifierList.getAnnotationEntries(), trace);
+		return createAnnotationStubs(modifierList.getAnnotations(), trace);
 	}
 
 	@NotNull
-	public List<AnnotationDescriptor> createAnnotationStubs(List<NapileAnnotationEntry> annotations, BindingTrace trace)
+	public List<AnnotationDescriptor> createAnnotationStubs(List<NapileAnnotation> annotations, BindingTrace trace)
 	{
 		List<AnnotationDescriptor> result = Lists.newArrayList();
-		for(NapileAnnotationEntry annotation : annotations)
+		for(NapileAnnotation annotation : annotations)
 		{
 			AnnotationDescriptor annotationDescriptor = new AnnotationDescriptor();
 			result.add(annotationDescriptor);

@@ -28,9 +28,9 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileAnnotationEntry extends NapileElementImpl implements NapileCallElement
+public class NapileAnnotation extends NapileElementImpl implements NapileCallElement
 {
-	public NapileAnnotationEntry(@NotNull ASTNode node)
+	public NapileAnnotation(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -38,13 +38,13 @@ public class NapileAnnotationEntry extends NapileElementImpl implements NapileCa
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitAnnotationEntry(this);
+		visitor.visitAnnotation(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitAnnotationEntry(this, data);
+		return visitor.visitAnnotation(this, data);
 	}
 
 

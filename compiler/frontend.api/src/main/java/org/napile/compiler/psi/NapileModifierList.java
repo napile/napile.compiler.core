@@ -20,8 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileAnnotationEntry;
-import org.napile.compiler.lang.psi.NapileAnnotationList;
+import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
 
@@ -32,10 +31,7 @@ import com.intellij.lang.ASTNode;
 public interface NapileModifierList extends NapileElement
 {
 	@NotNull
-	List<NapileAnnotationList> getAnnotations();
-
-	@NotNull
-	List<NapileAnnotationEntry> getAnnotationEntries();
+	List<NapileAnnotation> getAnnotations();
 
 	boolean hasModifier(NapileToken token);
 

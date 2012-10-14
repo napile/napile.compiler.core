@@ -16,20 +16,16 @@
 
 package org.napile.compiler.psi;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lang.psi.NapileAnnotationEntry;
-import org.napile.compiler.lang.psi.NapileAnnotationList;
+import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.psi.NapileElementImpl;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lexer.NapileToken;
-import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -56,24 +52,9 @@ public class NapileModifierListImpl extends NapileElementImpl implements NapileM
 
 	@Override
 	@NotNull
-	public List<NapileAnnotationList> getAnnotations()
+	public List<NapileAnnotation> getAnnotations()
 	{
-		return findChildrenByType(NapileNodeTypes.ANNOTATION_LIST);
-	}
-
-	@Override
-	@NotNull
-	public List<NapileAnnotationEntry> getAnnotationEntries()
-	{
-		List<NapileAnnotationEntry> entries = findChildrenByType(NapileNodeTypes.ANNOTATION_ENTRY);
-		List<NapileAnnotationEntry> answer = entries.isEmpty() ? null : Lists.newArrayList(entries);
-		for(NapileAnnotationList annotationList : getAnnotations())
-		{
-			if(answer == null)
-				answer = new ArrayList<NapileAnnotationEntry>();
-			answer.addAll(annotationList.getEntries());
-		}
-		return answer != null ? answer : Collections.<NapileAnnotationEntry>emptyList();
+		return findChildrenByType(NapileNodeTypes.ANNOTATION);
 	}
 
 	@Override

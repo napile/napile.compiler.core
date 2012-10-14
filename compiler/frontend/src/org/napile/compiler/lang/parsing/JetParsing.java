@@ -363,15 +363,12 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	public boolean parseAnnotations()
 	{
-		PsiBuilder.Marker annotation = mark();
 		getBuilder().disableNewlines();
 
 		while(at(NapileTokens.AT))
-			parseAnnotationEntry();
+			parseAnnotation();
 
 		getBuilder().restoreNewlinesState();
-
-		annotation.done(ANNOTATION_LIST);
 		return true;
 	}
 
@@ -380,7 +377,7 @@ public class JetParsing extends AbstractJetParsing
 		 *   : "@" SimpleName{"."} typeArguments? valueArguments?
 		 *   ;
 		 */
-	private void parseAnnotationEntry()
+	private void parseAnnotation()
 	{
 		assert _at(NapileTokens.AT);
 
@@ -397,10 +394,9 @@ public class JetParsing extends AbstractJetParsing
 		parseTypeArgumentList();
 
 		if(at(NapileTokens.LPAR))
-		{
 			myExpressionParsing.parseValueArgumentList();
-		}
-		attribute.done(ANNOTATION_ENTRY);
+
+		attribute.done(ANNOTATION);
 	}
 
 	/*
