@@ -52,9 +52,9 @@ public class VariableCodegen
 		DeclarationDescriptor setter = bindingTrace.get(BindingContext.FQNAME_TO_DESCRIPTOR, setterFq);
 		if(setter == null)
 		{
-			MethodNode setterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), setterFq.shortName().getName());
+			MethodNode setterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), setterFq.shortName());
 			setterMethodNode.returnType = TypeConstants.NULL;
-			setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), "value", TypeTransformer.toAsmType(propertyDescriptor.getType())));
+			setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(propertyDescriptor.getType())));
 
 			InstructionAdapter instructions = new InstructionAdapter();
 			if(propertyDescriptor.isStatic())
@@ -91,7 +91,7 @@ public class VariableCodegen
 		DeclarationDescriptor getter = bindingTrace.get(BindingContext.FQNAME_TO_DESCRIPTOR, getterFq);
 		if(getter == null)
 		{
-			MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName().getName());
+			MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName());
 			getterMethodNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 
 			if(propertyDescriptor.isStatic())

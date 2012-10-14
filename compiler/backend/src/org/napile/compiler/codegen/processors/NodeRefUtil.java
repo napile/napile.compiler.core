@@ -47,7 +47,7 @@ public class NodeRefUtil
 
 	public static VariableRef ref(@NotNull ClassNode classNode, @NotNull VariableNode variableNode)
 	{
-		return new VariableRef(classNode.name.child(Name.identifier(variableNode.name)), variableNode.returnType);
+		return new VariableRef(classNode.name.child(variableNode.name), variableNode.returnType);
 	}
 
 	public static VariableRef ref(@NotNull PropertyDescriptor propertyDescriptor)

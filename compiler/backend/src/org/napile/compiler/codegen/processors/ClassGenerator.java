@@ -114,7 +114,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		// variable generation
 		PropertyDescriptor propertyDescriptor = (PropertyDescriptor) bindingTrace.safeGet(BindingContext.VARIABLE, enumEntry);
-		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName().getName());
+		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName());
 		variableNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 		parentClassNode.members.add(variableNode);
 
@@ -202,7 +202,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName().getName());
+		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName());
 		variableNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 		classNode.members.add(variableNode);
 
@@ -236,7 +236,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName().getName());
+		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(propertyDescriptor), propertyDescriptor.getName());
 		variableNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 		classNode.members.add(variableNode);
 

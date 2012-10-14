@@ -75,7 +75,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		jumpIfSlot = instructions.reserve();
 
 		instructions.load(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode("E"))));
+		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))));
 		instructions.store(loopParameterIndex);
 	}
 

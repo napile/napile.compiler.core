@@ -64,7 +64,7 @@ public class MethodGenerator
 		ConstructorNode constructorNode = new ConstructorNode(ModifierGenerator.gen(constructorDescriptor));
 		for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName().getName(), TypeTransformer.toAsmType(declaration.getType()));
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
 
 			constructorNode.parameters.add(methodParameterNode);
 		}
@@ -119,14 +119,14 @@ public class MethodGenerator
 	@NotNull
 	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor)
 	{
-		MethodNode methodNode = new MethodNode(ModifierGenerator.gen(methodDescriptor), methodDescriptor.getName().getName());
+		MethodNode methodNode = new MethodNode(ModifierGenerator.gen(methodDescriptor), methodDescriptor.getName());
 		methodNode.returnType = TypeTransformer.toAsmType(methodDescriptor.getReturnType());
 
 		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode);
 
 		for(ParameterDescriptor declaration : methodDescriptor.getValueParameters())
 		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName().getName(), TypeTransformer.toAsmType(declaration.getType()));
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
 
 			methodNode.parameters.add(methodParameterNode);
 		}

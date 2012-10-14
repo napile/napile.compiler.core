@@ -48,7 +48,7 @@ public class TypeTransformer
 		else if(owner instanceof ClassDescriptor)
 			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());
 		else if(owner instanceof TypeParameterDescriptor)
-			typeConstructorNode = new TypeParameterValueTypeNode(owner.getName().getName());
+			typeConstructorNode = new TypeParameterValueTypeNode(owner.getName());
 		else
 			throw new RuntimeException("invalid " + owner);
 

@@ -22,7 +22,7 @@ public class TypeParameterCodegen
 	{
 		for(TypeParameterDescriptor typeParameterDescriptor : typeParameters)
 		{
-			TypeParameterNode typeParameterNode = new TypeParameterNode(typeParameterDescriptor.getName().getName());
+			TypeParameterNode typeParameterNode = new TypeParameterNode(typeParameterDescriptor.getName());
 			for(JetType superType : typeParameterDescriptor.getUpperBounds())
 				typeParameterNode.supers.add(TypeTransformer.toAsmType(superType));
 
@@ -31,7 +31,7 @@ public class TypeParameterCodegen
 				List<MethodParameterNode> parameterNodes = new ArrayList<MethodParameterNode>(constructorDescriptor.getValueParameters().size());
 				for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 				{
-					MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName().getName(), TypeTransformer.toAsmType(declaration.getType()));
+					MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
 
 					parameterNodes.add(methodParameterNode);
 				}
