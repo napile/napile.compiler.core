@@ -164,7 +164,7 @@ public interface NapileNodeTypes
 	NapileNodeType WHEN_CONDITION_IS_PATTERN = new NapileNodeType("WHEN_CONDITION_IS_PATTERN", NapileWhenConditionIsPattern.class);
 	NapileNodeType WHEN_CONDITION_EXPRESSION = new NapileNodeType("WHEN_CONDITION_WITH_EXPRESSION", NapileWhenConditionWithExpression.class);
 
-	NapileNodeType NAMESPACE_HEADER = new NapileNodeType("NAMESPACE_HEADER", NapileNamespaceHeader.class);
+	NapileNodeType PACKAGE = new NapileNodeType("PACKAGE", NapilePackageImpl.class);
 
 	NapileNodeType IDE_TEMPLATE_EXPRESSION = new NapileNodeType("IDE_TEMPLATE_EXPRESSION", NapileIdeTemplate.class);
 }

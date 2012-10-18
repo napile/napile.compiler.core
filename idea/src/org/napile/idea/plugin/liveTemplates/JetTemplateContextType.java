@@ -57,7 +57,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 			{
 				return false;
 			}
-			else if(PsiTreeUtil.getParentOfType(element, NapileNamespaceHeader.class) != null || PsiTreeUtil.getParentOfType(element, NapileImportDirective.class) != null)
+			else if(PsiTreeUtil.getParentOfType(element, NapilePackageImpl.class) != null || PsiTreeUtil.getParentOfType(element, NapileImportDirective.class) != null)
 			{
 				return false;
 			}

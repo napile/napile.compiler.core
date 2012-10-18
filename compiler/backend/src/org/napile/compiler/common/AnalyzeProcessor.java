@@ -42,10 +42,10 @@ import com.intellij.util.Function;
  * @author abreslav
  * @author alex.tkachman
  */
-public class CompilerProcessor2
+public class AnalyzeProcessor
 {
 
-	private CompilerProcessor2()
+	private AnalyzeProcessor()
 	{
 	}
 
@@ -71,36 +71,28 @@ public class CompilerProcessor2
 	@Nullable
 	public static GenerationState analyzeAndGenerate(JetCoreEnvironment environment)
 	{
-		return analyzeAndGenerate(environment, environment.getConfiguration().get(CompilerConfigurationKeys.STUBS, false));
-	}
-
-	@Nullable
-	public static GenerationState analyzeAndGenerate(JetCoreEnvironment environment, boolean stubs)
-	{
-		AnalyzeExhaust exhaust = analyze(environment, stubs);
+		AnalyzeExhaust exhaust = analyze(environment);
 
 		if(exhaust == null)
-		{
 			return null;
-		}
 
 		exhaust.throwIfError();
 
-		return generate(environment, exhaust, stubs);
+		return generate(environment, exhaust);
 	}
 
 	@Nullable
-	private static AnalyzeExhaust analyze(final JetCoreEnvironment environment, boolean stubs)
+	private static AnalyzeExhaust analyze(final JetCoreEnvironment environment)
 	{
 		AnalyzerWithCompilerReport analyzerWithCompilerReport = new AnalyzerWithCompilerReport(environment.getConfiguration().get(CompilerConfigurationKeys.MESSAGE_COLLECTOR_KEY));
-		final Predicate<NapileFile> filesToAnalyzeCompletely = stubs ? Predicates.<NapileFile>alwaysFalse() : Predicates.<NapileFile>alwaysTrue();
+		final Predicate<NapileFile> filesToAnalyzeCompletely = Predicates.<NapileFile>alwaysTrue();
 		analyzerWithCompilerReport.analyzeAndReport(new Function<Void, AnalyzeExhaust>()
 		{
 			@NotNull
 			@Override
 			public AnalyzeExhaust fun(Void v)
 			{
-				return AnalyzerFacade.analyzeFilesWithJavaIntegration(environment.getProject(), environment.getSourceFiles(), filesToAnalyzeCompletely, true);
+				return AnalyzerFacade.analyzeFiles(environment.getProject(), environment.getSourceFiles(), filesToAnalyzeCompletely);
 			}
 		}, environment.getSourceFiles());
 
@@ -108,7 +100,7 @@ public class CompilerProcessor2
 	}
 
 	@NotNull
-	private static GenerationState generate(final JetCoreEnvironment environment, AnalyzeExhaust exhaust, boolean stubs)
+	private static GenerationState generate(final JetCoreEnvironment environment, AnalyzeExhaust exhaust)
 	{
 		Project project = environment.getProject();
 		Progress backendProgress = new Progress()

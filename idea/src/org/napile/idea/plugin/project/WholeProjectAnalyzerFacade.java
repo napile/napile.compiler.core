@@ -18,7 +18,7 @@ package org.napile.idea.plugin.project;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
-import org.napile.compiler.lang.resolve.JetFilesProvider;
+import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import org.napile.compiler.psi.NapileFile;
 
 /**
@@ -37,6 +37,6 @@ public final class WholeProjectAnalyzerFacade
 	@NotNull
 	public static AnalyzeExhaust analyzeProjectWithCacheOnAFile(@NotNull NapileFile file)
 	{
-		return AnalyzerFacadeWithCache.analyzeFileWithCache(file, JetFilesProvider.getInstance(file.getProject()).sampleToAllFilesInModule());
+		return AnalyzerFacadeWithCache.analyzeFileWithCache(file, NapileFilesProvider.getInstance(file.getProject()).sampleToAllFilesInModule());
 	}
 }

@@ -83,7 +83,7 @@ public class JetGotoClassContributor implements GotoClassContributor
 				}
 				else if(classOrObject instanceof NapileClass)
 				{
-					items.add((NapileClass) classOrObject);
+					items.add(classOrObject);
 				}
 				else
 				{

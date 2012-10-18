@@ -1,0 +1,9 @@
+package gen
+
+class Test
+{
+	meth a()
+	{
+		var b = B()
+	}
+}

@@ -140,7 +140,7 @@ public class JetParsing extends AbstractJetParsing
 	private void parsePreamble()
 	{		/*
 		 * namespaceHeader
-         *   : modifiers "namespace" SimpleName{"."} SEMI?
+         *   : modifiers "package" SimpleName{"."} SEMI?
          *   ;
          */
 		PsiBuilder.Marker namespaceHeader = mark();
@@ -158,7 +158,7 @@ public class JetParsing extends AbstractJetParsing
 			{
 				// Because it's blocked namespace and it will be parsed as one of top level objects
 				firstEntry.rollbackTo();
-				namespaceHeader.done(NAMESPACE_HEADER);
+				namespaceHeader.done(PACKAGE);
 				return;
 			}
 
@@ -170,7 +170,7 @@ public class JetParsing extends AbstractJetParsing
 		{
 			firstEntry.rollbackTo();
 		}
-		namespaceHeader.done(NAMESPACE_HEADER);
+		namespaceHeader.done(PACKAGE);
 
 		parseImportDirectives();
 	}

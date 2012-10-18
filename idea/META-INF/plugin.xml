@@ -37,7 +37,7 @@
 	<extensions defaultExtensionNs="com.intellij">
 		<applicationService serviceInterface="org.napile.compiler.lang.psi.stubs.elements.StubIndexService" serviceImplementation="org.napile.idea.plugin.stubindex.StubIndexServiceImpl"/>
 
-		<projectService serviceInterface="org.napile.compiler.lang.resolve.JetFilesProvider" serviceImplementation="org.napile.idea.plugin.project.PluginJetFilesProvider"/>
+		<projectService serviceInterface="org.napile.compiler.lang.resolve.NapileFilesProvider" serviceImplementation="org.napile.idea.plugin.project.PluginJetFilesProvider"/>
 
 		<projectService serviceInterface="org.napile.idea.plugin.caches.JetShortNamesCache" serviceImplementation="org.napile.idea.plugin.caches.JetShortNamesCache" />
 
@@ -50,7 +50,6 @@
 		<lang.importOptimizer language="NAPILE" implementationClass="org.napile.idea.plugin.editor.importOptimizer.JetImportOptimizer"/>
 
 		<fileTypeFactory implementation="org.napile.idea.plugin.JetFileFactory"/>
-		<filetype.decompiler filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileDecompiler" />
 
 		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetSyntaxHighlighterFactory"/>
 		<lang.braceMatcher language="NAPILE" implementationClass="org.napile.idea.plugin.JetPairMatcher"/>
@@ -145,6 +144,13 @@
 		<editorAppearanceConfigurable instance="org.napile.idea.plugin.editor.JetSettingEditorConfigurable"/>
 
 		<configurationType implementation="org.napile.idea.plugin.run.NapileConfigurationType"/>
+
+		<!--NXML support-->
+		<filetype.decompiler filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileDecompiler" />
+		<fileType.fileViewProviderFactory filetype="NXML" implementationClass="org.napile.compiler.psi.file.NXmlFileViewProviderFactory"/>
+		<filetype.stubBuilder filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileStubBuilder"/>
+		<syntaxHighlighter key="NXML" implementationClass="org.napile.idea.plugin.highlighter.JetHighlighter"/>
+
 		<intentionAction>
 			<className>org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction</className>
 			<category>Napile</category>

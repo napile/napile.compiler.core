@@ -36,7 +36,7 @@ import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorParent;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileNamespaceHeader;
+import org.napile.compiler.lang.psi.NapilePackageImpl;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -71,7 +71,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 	@NotNull
 	public NamespaceDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull NapileFile file, @NotNull JetScope outerScope, @NotNull RedeclarationHandler handler)
 	{
-		NapileNamespaceHeader namespaceHeader = file.getNamespaceHeader();
+		NapilePackageImpl namespaceHeader = file.getNamespaceHeader();
 
 		if(moduleDescriptor.getRootNamespaceDescriptorImpl() == null)
 		{

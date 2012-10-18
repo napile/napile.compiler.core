@@ -97,8 +97,6 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey STATIC_PROPERTY = TextAttributesKey.createTextAttributesKey("NAPILE_NAMESPACE_PROPERTY", CodeInsightColors.STATIC_FIELD_ATTRIBUTES.getDefaultAttributes());
 
-	public static final TextAttributesKey PROPERTY_WITH_BACKING_FIELD = TextAttributesKey.createTextAttributesKey("NAPILE_PROPERTY_WITH_BACKING_FIELD", new TextAttributes(null, null, null, null, 0));
-
 	public static final TextAttributesKey BACKING_FIELD_ACCESS = TextAttributesKey.createTextAttributesKey("NAPILE_BACKING_FIELD_ACCESS", new TextAttributes());
 
 	public static final TextAttributesKey EXTENSION_PROPERTY = TextAttributesKey.createTextAttributesKey("NAPILE_EXTENSION_PROPERTY", new TextAttributes());

@@ -34,7 +34,7 @@ import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.lang.psi.NapileImportDirective;
-import org.napile.compiler.lang.psi.NapileNamespaceHeader;
+import org.napile.compiler.lang.psi.NapilePackageImpl;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.psi.file.NXmlFileViewProvider;
@@ -57,7 +57,6 @@ import com.intellij.psi.PsiInvalidElementAccessException;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.PsiManagerEx;
 import com.intellij.psi.impl.PsiManagerImpl;
-import com.intellij.psi.impl.java.stubs.impl.PsiJavaFileStubImpl;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
 import com.intellij.psi.search.PsiElementProcessor;
@@ -66,6 +65,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubTree;
 import com.intellij.psi.stubs.StubTreeLoader;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.io.StringRef;
 
 /**
  * @author VISTALL
@@ -73,7 +73,7 @@ import com.intellij.util.IncorrectOperationException;
  * <p/>
  * Stub & Mirror system was 'copied' from IDEA CE
  */
-public class NXmlFileImpl extends NXmlElementBase implements NapileFile
+public class NXmlFileImpl extends NXmlElementBase<NapileClass> implements NapileFile
 {
 	private static final Logger LOGGER = Logger.getInstance(NXmlElementBase.class);
 
@@ -84,7 +84,7 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile
 	private SoftReference<StubTree> stubTreeSoftRef;
 	private final Object stubLock = new Object();
 
-	private PsiElement mirrorElement;
+	private NapileFile mirrorElement;
 	private String text;
 
 	public NXmlFileImpl(PsiManagerImpl manager, FileViewProvider viewProvider)
@@ -94,7 +94,8 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile
 		fileViewProvider = viewProvider;
 	}
 
-	public PsiElement getMirror()
+	@Override
+	public NapileFile getMirror()
 	{
 		synchronized(MIRROR_LOCK)
 		{
@@ -139,39 +140,40 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile
 		}
 
 		if(psiFile == null)
-			psiFile = new NXmlFileImpl((PsiManagerImpl) manager, new NXmlFileViewProvider(manager, file, true, NapileLanguage.INSTANCE));
+			psiFile = new NXmlFileImpl((PsiManagerImpl) manager, new NXmlFileViewProvider(manager, file));
 
 		psiFile.getMirror();
 		return psiFile.text;
 	}
 
-	@Override
 	public void setMirror(@NotNull TreeElement element)
 	{
-		PsiElement mirrorFile = SourceTreeToPsiMap.treeElementToPsi(element);
+		NapileFile mirrorFile = (NapileFile) SourceTreeToPsiMap.treeElementToPsi(element);
 
-		if(mirrorFile instanceof NapileFile)
-		{
-			String packageName = ((NapileFile) mirrorFile).getPackageName();
-
-			System.out.println(packageName);
-		}
+		assert mirrorFile != null;
 
 		mirrorElement = mirrorFile;
 	}
 
-	@Nullable
+	@NotNull
 	@Override
-	public NapileNamespaceHeader getNamespaceHeader()
+	public PsiElement[] getChildren()
 	{
-		return null;
+		return getMirror().getChildren();
+	}
+
+	@NotNull
+	@Override
+	public NapilePackageImpl getNamespaceHeader()
+	{
+		return getMirror().getNamespaceHeader();
 	}
 
 	@Nullable
 	@Override
 	public String getPackageName()
 	{
-		return null;
+		return getMirror().getPackageName();
 	}
 
 	@Nullable
@@ -192,7 +194,7 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile
 	@Override
 	public List<NapileClass> getDeclarations()
 	{
-		return Collections.emptyList();
+		return getMirror().getDeclarations();
 	}
 
 	@NotNull
@@ -310,7 +312,7 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile
 			// Must be corrupted classfile
 			LOGGER.info("Class file is corrupted: " + getVirtualFile().getPresentableUrl());
 
-			StubTree emptyTree = new StubTree(new PsiJavaFileStubImpl("corrupted.classfiles", true));
+			StubTree emptyTree = new StubTree(new NapilePsiFileStub(this, StringRef.fromString("unknown"), true));
 			setStubTree(emptyTree);
 			resetMirror();
 			return emptyTree;

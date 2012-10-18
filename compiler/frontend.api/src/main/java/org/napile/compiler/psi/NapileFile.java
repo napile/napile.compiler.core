@@ -21,7 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileImportDirective;
-import org.napile.compiler.lang.psi.NapileNamespaceHeader;
+import org.napile.compiler.lang.psi.NapilePackageImpl;
 import com.intellij.psi.impl.PsiFileEx;
 import com.intellij.psi.impl.source.PsiFileWithStubSupport;
 
@@ -31,8 +31,8 @@ import com.intellij.psi.impl.source.PsiFileWithStubSupport;
  */
 public interface NapileFile extends NapileDeclarationContainer<NapileClass>, PsiFileWithStubSupport, PsiFileEx
 {
-	@Nullable
-	NapileNamespaceHeader getNamespaceHeader();
+	@NotNull
+	NapilePackageImpl getNamespaceHeader();
 
 	@Nullable
 	String getPackageName();

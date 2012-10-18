@@ -29,7 +29,7 @@ import org.napile.compiler.lang.psi.NapileTypeParameterListOwner;
  * @author VISTALL
  * @date 21:23/09.10.12
  */
-public interface NapileClass extends NapileElement, NapileDeclaration, NapileNamedDeclaration, NapileTypeParameterListOwner, NapileClassLike
+public interface NapileClass extends NapileNamedDeclaration, NapileTypeParameterListOwner, NapileClassLike
 {
 	String getQualifiedName();
 

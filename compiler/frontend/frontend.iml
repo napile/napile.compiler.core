@@ -10,11 +10,11 @@
     <orderEntry type="library" exported="" scope="PROVIDED" name="intellij-core" level="project" />
     <orderEntry type="library" name="javax.inject" level="project" />
     <orderEntry type="library" exported="" name="napile.asm" level="project" />
-    <orderEntry type="library" name="dom4j" level="project" />
+    <orderEntry type="library" exported="" name="dom4j" level="project" />
     <orderEntry type="module" module-name="frontend.bytecode" exported="" />
     <orderEntry type="module" module-name="frontend.api" exported="" />
     <orderEntry type="module" module-name="frontend.source" exported="" />
-    <orderEntry type="module" module-name="injection.api" />
+    <orderEntry type="module" module-name="injection.api" exported="" />
   </component>
 </module>
 

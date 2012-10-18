@@ -18,13 +18,12 @@ package org.napile.idea.plugin.highlighter;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -50,7 +49,7 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			return;
 		}
 
-		highlightProperty(expression, (VariableDescriptor) target, false);
+		JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.getAttributes(target));
 		if(expression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER)
 			JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.BACKING_FIELD_ACCESS);
 	}
@@ -62,11 +61,8 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		if(nameIdentifier == null)
 			return;
 		VariableDescriptor propertyDescriptor = bindingContext.get(BindingContext.VARIABLE, property);
-		if(propertyDescriptor instanceof PropertyDescriptor)
-		{
-			Boolean backingFieldRequired = bindingContext.get(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) propertyDescriptor);
-			highlightProperty(nameIdentifier, propertyDescriptor, Boolean.TRUE.equals(backingFieldRequired));
-		}
+		if(propertyDescriptor != null)
+			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(propertyDescriptor));
 
 		super.visitVariable(property);
 	}
@@ -80,7 +76,7 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 
 		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VARIABLE, enumEntry);
 		if(variableDescriptor != null)
-			highlightProperty(nameIdentifier, variableDescriptor, Boolean.FALSE);
+			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(variableDescriptor));
 
 		super.visitEnumEntry(enumEntry);
 	}
@@ -94,16 +90,8 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 
 		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VARIABLE, retellEntry);
 		if(variableDescriptor != null)
-			highlightProperty(nameIdentifier, variableDescriptor, Boolean.FALSE);
+			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(variableDescriptor));
 
 		super.visitRetellEntry(retellEntry);
-	}
-
-	private void highlightProperty(@NotNull PsiElement elementToHighlight, @NotNull VariableDescriptor descriptor, boolean withBackingField)
-	{
-		JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.getAttributes(descriptor));
-
-		if(withBackingField)
-			holder.createInfoAnnotation(elementToHighlight, "This property has a backing field").setTextAttributes(JetHighlightingColors.PROPERTY_WITH_BACKING_FIELD);
 	}
 }

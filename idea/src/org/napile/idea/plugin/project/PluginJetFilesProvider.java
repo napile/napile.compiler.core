@@ -27,9 +27,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
-import org.napile.compiler.lang.resolve.JetFilesProvider;
+import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import org.napile.compiler.psi.NapileFile;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.compiler.ex.CompilerPathsEx;
@@ -48,7 +47,7 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Function;
 
-public class PluginJetFilesProvider extends JetFilesProvider
+public class PluginJetFilesProvider extends NapileFilesProvider
 {
 	private final Project project;
 
@@ -86,7 +85,7 @@ public class PluginJetFilesProvider extends JetFilesProvider
 								return true;
 
 							final FileType fileType = FileTypeManager.getInstance().getFileTypeByFile(file);
-							if(fileType != NapileFileType.INSTANCE && fileType != NXmlFileType.INSTANCE)
+							if(fileType != NapileFileType.INSTANCE)
 								return true;
 							PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
 							if(psiFile instanceof NapileFile)
@@ -130,7 +129,7 @@ public class PluginJetFilesProvider extends JetFilesProvider
 			protected void acceptFile(VirtualFile file, String fileRoot, String filePath)
 			{
 				final FileType fileType = fileTypeManager.getFileTypeByFile(file);
-				if(fileType != NapileFileType.INSTANCE && fileType != NXmlFileType.INSTANCE)
+				if(fileType != NapileFileType.INSTANCE)
 					return;
 
 				if(scope.accept(file))

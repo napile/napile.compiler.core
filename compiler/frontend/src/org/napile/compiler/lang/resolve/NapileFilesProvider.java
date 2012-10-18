@@ -33,23 +33,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Function;
 
-public abstract class JetFilesProvider
+public abstract class NapileFilesProvider
 {
-	public static JetFilesProvider getInstance(Project project)
+	public static NapileFilesProvider getInstance(Project project)
 	{
-		return ServiceManager.getService(project, JetFilesProvider.class);
-	}
-
-	public final Function<NapileFile, List<NapileFile>> allNamespaceFiles()
-	{
-		return new Function<NapileFile, List<NapileFile>>()
-		{
-			@Override
-			public List<NapileFile> fun(NapileFile file)
-			{
-				return new SameJetFilePredicate(file).filter(sampleToAllFilesInModule().fun(file));
-			}
-		};
+		return ServiceManager.getService(project, NapileFilesProvider.class);
 	}
 
 	@NotNull

@@ -6,7 +6,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="intellij-core" level="project" />
-    <orderEntry type="module" module-name="frontend" />
+    <orderEntry type="module" module-name="backend" />
+    <orderEntry type="module" module-name="injection.protobuff" />
   </component>
 </module>
 

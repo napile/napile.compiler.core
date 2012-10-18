@@ -27,7 +27,7 @@ import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
-import org.napile.compiler.lang.resolve.JetFilesProvider;
+import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import org.napile.compiler.psi.NapileFile;
 import com.google.common.base.Predicates;
 import com.intellij.openapi.diagnostic.Logger;
@@ -100,7 +100,7 @@ public final class AnalyzerFacadeWithCache
 							assert context != null : "Headers resolver should prepare and stored information for bodies resolve";
 
 							// Need to resolve bodies in given file and all in the same package
-							AnalyzeExhaust exhaust = AnalyzerFacade.analyzeBodiesInFiles(file.getProject(), new JetFilesProvider.SameJetFilePredicate(file), new DelegatingBindingTrace(analyzeExhaustHeaders.getBindingContext()), context);
+							AnalyzeExhaust exhaust = AnalyzerFacade.analyzeBodiesInFiles(file.getProject(), new NapileFilesProvider.SameJetFilePredicate(file), new DelegatingBindingTrace(analyzeExhaustHeaders.getBindingContext()), context);
 
 							return new Result<AnalyzeExhaust>(exhaust, PsiModificationTracker.MODIFICATION_COUNT);
 						}

@@ -27,7 +27,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.JetFilesProvider;
+import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.psi.NapileClassLike;
 import org.napile.compiler.psi.NapileElement;
@@ -66,7 +66,7 @@ public class JetShortNamesCache
 	{
 		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile()).getBindingContext();
 
-		JetFilesProvider jetFilesProvider = JetFilesProvider.getInstance(project);
+		NapileFilesProvider jetFilesProvider = NapileFilesProvider.getInstance(project);
 
 		Map<NapileClassLike, ClassDescriptor> result = new HashMap<NapileClassLike, ClassDescriptor>();
 

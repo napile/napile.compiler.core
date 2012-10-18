@@ -36,6 +36,6 @@ public class NapileFileStubBuilder extends DefaultStubBuilder
 			return super.createStubForFile(file);
 
 		NapileFile jetFile = (NapileFile) file;
-		return new NapilePsiFileStub(jetFile, StringRef.fromString(jetFile.getPackageName()));
+		return new NapilePsiFileStub(jetFile, StringRef.fromString(jetFile.getPackageName()), false);
 	}
 }

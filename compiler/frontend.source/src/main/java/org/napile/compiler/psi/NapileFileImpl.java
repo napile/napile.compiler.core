@@ -27,7 +27,7 @@ import org.napile.compiler.NapileFileType;
 import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.psi.NapileImportDirective;
-import org.napile.compiler.lang.psi.NapileNamespaceHeader;
+import org.napile.compiler.lang.psi.NapilePackageImpl;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import com.intellij.extapi.psi.PsiFileBase;
@@ -85,13 +85,12 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 		return null;
 	}
 
-	// scripts has no namespace header
-	@Nullable
+	@NotNull
 	@Override
-	public NapileNamespaceHeader getNamespaceHeader()
+	public NapilePackageImpl getNamespaceHeader()
 	{
-		ASTNode ast = getNode().findChildByType(NapileNodeTypes.NAMESPACE_HEADER);
-		return ast != null ? (NapileNamespaceHeader) ast.getPsi() : null;
+		ASTNode ast = getNode().findChildByType(NapileNodeTypes.PACKAGE);
+		return ast != null ? (NapilePackageImpl) ast.getPsi() : null;
 	}
 
 	@Nullable
@@ -102,7 +101,7 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 		if(stub != null)
 			return stub.getPackageName();
 
-		NapileNamespaceHeader statement = getNamespaceHeader();
+		NapilePackageImpl statement = getNamespaceHeader();
 		return statement != null ? statement.getQualifiedName() : null;
 	}
 

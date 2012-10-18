@@ -1,0 +1,8 @@
+package napile.lang
+
+class Null
+{
+	final static var INSTANCE : Null  = Null()
+
+	local this()
+}

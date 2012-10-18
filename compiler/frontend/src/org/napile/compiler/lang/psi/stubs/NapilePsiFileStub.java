@@ -28,11 +28,13 @@ import com.intellij.util.io.StringRef;
 public class NapilePsiFileStub extends PsiFileStubImpl<NapileFile>
 {
 	private final StringRef packageName;
+	private final boolean compiled;
 
-	public NapilePsiFileStub(NapileFile jetFile, StringRef packageName)
+	public NapilePsiFileStub(NapileFile jetFile, StringRef packageName, boolean compiled)
 	{
 		super(jetFile);
 		this.packageName = packageName;
+		this.compiled = compiled;
 	}
 
 	public String getPackageName()
@@ -55,8 +57,14 @@ public class NapilePsiFileStub extends PsiFileStubImpl<NapileFile>
 
 
 		builder.append("package=").append(getPackageName());
+		builder.append("compiled=").append(isCompiled());
 		builder.append("]");
 
 		return builder.toString();
+	}
+
+	public boolean isCompiled()
+	{
+		return compiled;
 	}
 }

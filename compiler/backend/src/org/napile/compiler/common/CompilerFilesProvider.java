@@ -24,22 +24,21 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.JetFilesProvider;
+import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import org.napile.compiler.psi.NapileFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Function;
 
-public class CompilerFilesProvider extends JetFilesProvider
+public class CompilerFilesProvider extends NapileFilesProvider
 {
 	private final JetCoreEnvironment environment;
-	private Function<NapileFile, Collection<NapileFile>> all_files = new Function<NapileFile, Collection<NapileFile>>()
+	private final Function<NapileFile, Collection<NapileFile>> files = new Function<NapileFile, Collection<NapileFile>>()
 	{
 		@Override
 		public Collection<NapileFile> fun(NapileFile file)
 		{
 			return environment.getSourceFiles();
 		}
-
 	};
 
 	public CompilerFilesProvider(JetCoreEnvironment environment)
@@ -51,7 +50,7 @@ public class CompilerFilesProvider extends JetFilesProvider
 	@Override
 	public Function<NapileFile, Collection<NapileFile>> sampleToAllFilesInModule()
 	{
-		return all_files;
+		return files;
 	}
 
 	@NotNull

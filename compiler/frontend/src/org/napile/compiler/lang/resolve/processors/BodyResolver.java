@@ -62,7 +62,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lexer.NapileTokens;
 import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
@@ -339,30 +338,6 @@ public class BodyResolver
 			if(initializer != null)
 				resolvePropertyInitializer(property, propertyDescriptor, initializer, declaringScope);
 		}
-	}
-
-
-	private ObservableBindingTrace createFieldTrackingTrace(final PropertyDescriptor propertyDescriptor)
-	{
-		return new ObservableBindingTrace(trace).addHandler(BindingContext.REFERENCE_TARGET, new ObservableBindingTrace.RecordHandler<NapileReferenceExpression, DeclarationDescriptor>()
-		{
-			@Override
-			public void handleRecord(WritableSlice<NapileReferenceExpression, DeclarationDescriptor> slice, NapileReferenceExpression expression, DeclarationDescriptor descriptor)
-			{
-				if(expression instanceof NapileSimpleNameExpression)
-				{
-					NapileSimpleNameExpression simpleNameExpression = (NapileSimpleNameExpression) expression;
-					if(simpleNameExpression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER)
-					{
-						// This check may be considered redundant as long as $x is only accessible from accessors to $x
-						if(descriptor == propertyDescriptor)
-						{ // TODO : original?
-							trace.record(BindingContext.BACKING_FIELD_REQUIRED, propertyDescriptor); // TODO: this trace?
-						}
-					}
-				}
-			}
-		});
 	}
 
 	private void resolvePropertyInitializer(NapileVariable property, PropertyDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)

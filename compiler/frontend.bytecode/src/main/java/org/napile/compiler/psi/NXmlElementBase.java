@@ -34,7 +34,7 @@ import com.intellij.util.IncorrectOperationException;
  * @author VISTALL
  * @date 19:36/09.10.12
  */
-public abstract class NXmlElementBase extends PsiElementBase implements NXmlElement
+public abstract class NXmlElementBase<E extends NapileDeclaration> extends PsiElementBase implements NapileDeclarationContainer<E>
 {
 	private static final Logger LOGGER = Logger.getInstance(NXmlElementBase.class);
 
@@ -46,9 +46,6 @@ public abstract class NXmlElementBase extends PsiElementBase implements NXmlElem
 		this.psiManager = psiManager;
 	}
 
-	public abstract void setMirror(@NotNull TreeElement element);
-
-	@Override
 	public PsiElement getMirror()
 	{
 		TreeElement mirror = this.mirror;
@@ -73,18 +70,8 @@ public abstract class NXmlElementBase extends PsiElementBase implements NXmlElem
 		return psiManager;
 	}
 
-	@NotNull
 	@Override
-	public PsiElement[] getChildren()
-	{
-		return PsiElement.EMPTY_ARRAY;
-	}
-
-	@Override
-	public PsiElement getParent()
-	{
-		return null;
-	}
+	public abstract PsiElement getParent();
 
 	@Override
 	public final TextRange getTextRange()

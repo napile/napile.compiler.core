@@ -62,13 +62,15 @@ public class NapileFileElementType extends IStubFileElementType<NapilePsiFileStu
 	public void serialize(final NapilePsiFileStub stub, final StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getPackageName());
+		dataStream.writeBoolean(stub.isCompiled());
 	}
 
 	@Override
 	public NapilePsiFileStub deserialize(final StubInputStream dataStream, final StubElement parentStub) throws IOException
 	{
 		StringRef packName = dataStream.readName();
-		return new NapilePsiFileStub(null, packName);
+		boolean compiled = dataStream.readBoolean();
+		return new NapilePsiFileStub(null, packName, compiled);
 	}
 
 	@Override

@@ -32,6 +32,6 @@ public class NXmlFileViewProviderFactory implements FileViewProviderFactory
 	@Override
 	public FileViewProvider createFileViewProvider(@NotNull VirtualFile virtualFile, Language language, @NotNull PsiManager psiManager, boolean b)
 	{
-		return new NXmlFileViewProvider(psiManager, virtualFile, b, language);
+		return new NXmlFileViewProvider(psiManager, virtualFile);
 	}
 }

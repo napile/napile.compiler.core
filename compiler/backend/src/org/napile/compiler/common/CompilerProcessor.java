@@ -33,7 +33,6 @@ import org.napile.compiler.common.messages.CompilerMessageSeverity;
 import org.napile.compiler.common.messages.MessageRenderer;
 import org.napile.compiler.common.messages.MessageUtil;
 import org.napile.compiler.common.messages.PrintingMessageCollector;
-import org.napile.compiler.config.CommonConfigurationKeys;
 import org.napile.compiler.config.CompilerConfiguration;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
@@ -120,7 +119,7 @@ public class CompilerProcessor
 		errStream.print(messageRenderer.renderPreamble());
 		printVersionIfNeeded(errStream, arguments, messageRenderer);
 		PrintingMessageCollector messageCollector = new PrintingMessageCollector(errStream, messageRenderer, arguments.isVerbose());
-		Disposable rootDisposable = CompileEnvironmentUtil.createMockDisposable();
+		Disposable rootDisposable = Disposer.newDisposable();
 		try
 		{
 			return doExecute(arguments, messageCollector, rootDisposable);
@@ -144,15 +143,11 @@ public class CompilerProcessor
 			if(freeArg.contains(File.pathSeparator))
 			{
 				List<String> sourcePathsSplitByPathSeparator = Arrays.asList(freeArg.split(StringUtil.escapeToRegexp(File.pathSeparator)));
-				configuration.addAll(CommonConfigurationKeys.SOURCE_ROOTS_KEY, sourcePathsSplitByPathSeparator);
+				configuration.addAll(CompilerConfigurationKeys.SOURCE_ROOTS_KEY, sourcePathsSplitByPathSeparator);
 			}
 			else
-				configuration.add(CommonConfigurationKeys.SOURCE_ROOTS_KEY, freeArg);
+				configuration.add(CompilerConfigurationKeys.SOURCE_ROOTS_KEY, freeArg);
 		}
-
-		boolean builtins = arguments.builtins;
-
-		configuration.put(CompilerConfigurationKeys.STUBS, builtins);
 
 		configuration.put(CompilerConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector);
 
@@ -163,7 +158,7 @@ public class CompilerProcessor
 
 			boolean noErrors;
 			JetCoreEnvironment environment = new JetCoreEnvironment(rootDisposable, configuration);
-			noErrors = CompilerProcessor2.compileBunchOfSources(environment, outputDir);
+			noErrors = AnalyzeProcessor.compileBunchOfSources(environment, outputDir);
 
 			return noErrors ? OK : COMPILATION_ERROR;
 		}

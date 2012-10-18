@@ -17,8 +17,8 @@
 package org.napile.compiler.psi.file;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NapileLanguage;
 import org.napile.compiler.psi.NXmlFileImpl;
-import com.intellij.lang.Language;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
@@ -35,9 +35,9 @@ import com.intellij.psi.impl.PsiManagerImpl;
  */
 public class NXmlFileViewProvider extends SingleRootFileViewProvider
 {
-	public NXmlFileViewProvider(@NotNull PsiManager manager, @NotNull VirtualFile virtualFile, boolean physical, @NotNull Language language)
+	public NXmlFileViewProvider(@NotNull PsiManager manager, @NotNull VirtualFile virtualFile)
 	{
-		super(manager, virtualFile, physical, language);
+		super(manager, virtualFile, true, NapileLanguage.INSTANCE);
 	}
 
 	@Override
@@ -45,19 +45,7 @@ public class NXmlFileViewProvider extends SingleRootFileViewProvider
 	{
 		final FileIndexFacade fileIndex = ServiceManager.getService(project, FileIndexFacade.class);
 		if(fileIndex.isInLibraryClasses(vFile) || !fileIndex.isInSource(vFile))
-		{
-			String name = vFile.getName();
-
-			// skip inners & anonymous
-			int dotIndex = name.lastIndexOf('.');
-			if(dotIndex < 0)
-				dotIndex = name.length();
-			int index = name.lastIndexOf('$', dotIndex);
-			if(index >= 0)
-				return null;
-
 			return new NXmlFileImpl((PsiManagerImpl) PsiManager.getInstance(project), this);
-		}
 		return null;
 	}
 }

@@ -21,7 +21,7 @@ import static org.napile.compiler.NapileNodeTypes.BLOCK;
 import static org.napile.compiler.NapileNodeTypes.CLASS_BODY;
 import static org.napile.compiler.NapileNodeTypes.IMPORT_DIRECTIVE;
 import static org.napile.compiler.NapileNodeTypes.METHOD;
-import static org.napile.compiler.NapileNodeTypes.NAMESPACE_HEADER;
+import static org.napile.compiler.NapileNodeTypes.PACKAGE;
 import static org.napile.compiler.NapileNodeTypes.PROPERTY;
 import static org.napile.compiler.NapileNodeTypes.VALUE_PARAMETER;
 import static org.napile.compiler.lexer.NapileTokens.*;
@@ -62,7 +62,7 @@ public class JetFormattingModelBuilder implements FormattingModelBuilder
 
 		return new SpacingBuilder(settings)
 				// ============ Line breaks ==============
-				.after(NAMESPACE_HEADER).blankLines(1)
+				.after(PACKAGE).blankLines(1)
 
 				.between(IMPORT_DIRECTIVE, IMPORT_DIRECTIVE).lineBreakInCode().after(IMPORT_DIRECTIVE).blankLines(1)
 

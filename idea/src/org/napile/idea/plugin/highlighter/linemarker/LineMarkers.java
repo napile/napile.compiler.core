@@ -181,6 +181,8 @@ public enum LineMarkers
 					BindingContext bindingContext = analyzeExhaust.getBindingContext();
 					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
 
+					assert classDeclaration != null;
+
 					List<NapileElement> result = new ArrayList<NapileElement>();
 
 					Map<NapileClassLike, ClassDescriptor> res = JetShortNamesCache.getInstance(napileClass.getProject()).getAllClassesAndDescriptors(napileClass, napileClass.getResolveScope());

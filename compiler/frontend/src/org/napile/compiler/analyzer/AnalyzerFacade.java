@@ -42,18 +42,13 @@ public class AnalyzerFacade
 	}
 
 	@NotNull
-	public static AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely)
-	{
-		return analyzeFilesWithJavaIntegration(project, files, filesToAnalyzeCompletely, true);
-	}
-
-	@NotNull
 	public static AnalyzeExhaust analyzeBodiesInFiles(@NotNull Project project, @NotNull Predicate<NapileFile> filesForBodiesResolve, @NotNull BindingTrace headersTraceContext, @NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		return AnalyzerFacadeForEverything.analyzeBodiesInFilesWithJavaIntegration(project, filesForBodiesResolve, headersTraceContext, bodiesResolveContext);
 	}
 
-	public static AnalyzeExhaust analyzeFilesWithJavaIntegration(Project project, Collection<NapileFile> files, Predicate<NapileFile> filesToAnalyzeCompletely, boolean storeContextForBodiesResolve)
+	@NotNull
+	public static AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely)
 	{
 		BindingTraceContext bindingTraceContext = new BindingTraceContext();
 
@@ -65,8 +60,8 @@ public class AnalyzerFacade
 		try
 		{
 			injector.getTopDownAnalyzer().analyzeFiles(files);
-			BodiesResolveContext bodiesResolveContext = storeContextForBodiesResolve ? new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()) : null;
-			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), bodiesResolveContext);
+
+			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()));
 		}
 		finally
 		{

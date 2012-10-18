@@ -32,7 +32,7 @@ public class CallReceiver extends StackValue
 	private final ResolvedCall<? extends CallableDescriptor> resolvedCall;
 	final StackValue receiver;
 	private final ExpressionGenerator codegen;
-	private final CallableMethod callableMethod;
+	//private final CallableMethod callableMethod;
 
 	public CallReceiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionGenerator codegen, CallableMethod callableMethod)
 	{
@@ -40,7 +40,7 @@ public class CallReceiver extends StackValue
 		this.resolvedCall = resolvedCall;
 		this.receiver = receiver;
 		this.codegen = codegen;
-		this.callableMethod = callableMethod;
+		//this.callableMethod = callableMethod;
 	}
 
 	private static TypeNode calcType(ResolvedCall<? extends CallableDescriptor> resolvedCall, ExpressionGenerator codegen, CallableMethod callableMethod)

@@ -31,9 +31,6 @@ public class CompilerArguments
 	@Argument(value = "classpath", description = "classpath to use when compiling")
 	public String classpath;
 
-	@Argument(value = "builtins", description = "compile builtin classes (internal)")
-	public boolean builtins;
-
 	@Argument(value = "output", description = "output directory")
 	public String outputDir;
 

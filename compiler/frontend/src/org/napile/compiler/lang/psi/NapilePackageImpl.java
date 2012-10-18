@@ -31,9 +31,9 @@ import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 /**
  * @author abreslav
  */
-public class NapileNamespaceHeader extends NapileReferenceExpression
+public class NapilePackageImpl extends NapileReferenceExpression
 {
-	public NapileNamespaceHeader(@NotNull ASTNode node)
+	public NapilePackageImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}

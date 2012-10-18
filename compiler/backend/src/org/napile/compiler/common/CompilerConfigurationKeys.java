@@ -30,7 +30,7 @@ public interface CompilerConfigurationKeys
 {
 	CompilerConfigurationKey<MessageCollector> MESSAGE_COLLECTOR_KEY = CompilerConfigurationKey.create("message collector");
 
-	CompilerConfigurationKey<List<File>> CLASSPATH_KEY = CompilerConfigurationKey.create("classpath");
+	CompilerConfigurationKey<List<String>> SOURCE_ROOTS_KEY = CompilerConfigurationKey.create("source roots");
 
-	CompilerConfigurationKey<Boolean> STUBS = CompilerConfigurationKey.create("stubs");
+	CompilerConfigurationKey<List<File>> CLASSPATH_KEY = CompilerConfigurationKey.create("classpath");
 }

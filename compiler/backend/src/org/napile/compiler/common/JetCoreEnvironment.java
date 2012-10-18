@@ -23,17 +23,24 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
-import org.napile.compiler.config.CommonConfigurationKeys;
 import org.napile.compiler.config.CompilerConfiguration;
 import org.napile.compiler.lang.parsing.NapileParserDefinition;
-import org.napile.compiler.lang.resolve.JetFilesProvider;
+import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.psi.file.NXmlFileViewProviderFactory;
 import com.intellij.core.CoreApplicationEnvironment;
 import com.intellij.mock.MockApplication;
 import com.intellij.mock.MockProject;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeExtension;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.PackageIndex;
+import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileVisitor;
+import com.intellij.psi.FileTypeFileViewProviders;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 
@@ -42,7 +49,7 @@ import com.intellij.psi.PsiManager;
  */
 public class JetCoreEnvironment
 {
-
+	private final Disposable parentDisposable;
 	private final CoreApplicationEnvironment applicationEnvironment;
 	private final JetCoreProjectEnvironment projectEnvironment;
 
@@ -54,6 +61,7 @@ public class JetCoreEnvironment
 
 	public JetCoreEnvironment(Disposable parentDisposable, @NotNull CompilerConfiguration configuration)
 	{
+		this.parentDisposable = parentDisposable;
 		this.configuration = configuration.copy();
 		this.configuration.setReadOnly(true);
 
@@ -61,19 +69,55 @@ public class JetCoreEnvironment
 		applicationEnvironment.registerFileType(NapileFileType.INSTANCE, NapileFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerFileType(NXmlFileType.INSTANCE, NXmlFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerParserDefinition(new NapileParserDefinition());
+		addExplicitExtension(FileTypeFileViewProviders.INSTANCE, NXmlFileType.INSTANCE, new NXmlFileViewProviderFactory());
 
 		projectEnvironment = new JetCoreProjectEnvironment(parentDisposable, applicationEnvironment);
 
-		MockProject project = projectEnvironment.getProject();
-		project.registerService(JetFilesProvider.class, new CompilerFilesProvider(this));
+
+		final MockProject project = projectEnvironment.getProject();
+		project.registerService(NapileFilesProvider.class, new CompilerFilesProvider(this));
 
 		for(File path : configuration.getList(CompilerConfigurationKeys.CLASSPATH_KEY))
 			addToClasspath(path);
 
-		for(String path : configuration.getList(CommonConfigurationKeys.SOURCE_ROOTS_KEY))
+		for(String path : configuration.getList(CompilerConfigurationKeys.SOURCE_ROOTS_KEY))
 			addSources(path);
 
+		PackageIndex packageIndex = PackageIndex.getInstance(project);
+
+		VirtualFile[] virtualFiles = packageIndex.getDirectoriesByPackageName("gen", true);
+
+		for(VirtualFile v : virtualFiles)
+		{
+			VfsUtilCore.visitChildrenRecursively(v, new VirtualFileVisitor()
+			{
+				@Override
+				public boolean visitFile(@NotNull VirtualFile file)
+				{
+					if(file.isDirectory())
+						return true;
+					PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
+					System.out.println(psiFile.getClass().getName());
+					return super.visitFile(file);
+				}
+			});
+		}
+
 		initialized = true;
+	}
+
+
+	protected <T> void addExplicitExtension(final FileTypeExtension<T> instance, final FileType fileType, final T object)
+	{
+		instance.addExplicitExtension(fileType, object);
+		Disposer.register(parentDisposable, new Disposable()
+		{
+			@Override
+			public void dispose()
+			{
+				instance.removeExplicitExtension(fileType, object);
+			}
+		});
 	}
 
 	public CompilerConfiguration getConfiguration()
@@ -101,9 +145,7 @@ public class JetCoreEnvironment
 			if(files != null)
 			{
 				for(File child : files)
-				{
 					addSources(child);
-				}
 			}
 		}
 		else
@@ -113,9 +155,7 @@ public class JetCoreEnvironment
 			{
 				PsiFile psiFile = PsiManager.getInstance(getProject()).findFile(fileByPath);
 				if(psiFile instanceof NapileFile)
-				{
 					sourceFiles.add((NapileFile) psiFile);
-				}
 			}
 		}
 	}
@@ -123,19 +163,14 @@ public class JetCoreEnvironment
 	private void addSources(String path)
 	{
 		if(path == null)
-		{
 			return;
-		}
 
 		VirtualFile vFile = applicationEnvironment.getLocalFileSystem().findFileByPath(path);
 		if(vFile == null)
-		{
 			throw new CompileEnvironmentException("File/directory not found: " + path);
-		}
+
 		if(!vFile.isDirectory() && vFile.getFileType() != NapileFileType.INSTANCE)
-		{
 			throw new CompileEnvironmentException("Not a Kotlin file: " + path);
-		}
 
 		addSources(new File(path));
 	}
@@ -143,13 +178,10 @@ public class JetCoreEnvironment
 	public void addToClasspath(File path)
 	{
 		if(initialized)
-		{
 			throw new IllegalStateException("Cannot add class path when JetCoreEnvironment is already initialized");
-		}
+
 		if(path.isFile())
-		{
 			projectEnvironment.addJarToClassPath(path);
-		}
 		else
 		{
 			final VirtualFile root = applicationEnvironment.getLocalFileSystem().findFileByPath(path.getAbsolutePath());

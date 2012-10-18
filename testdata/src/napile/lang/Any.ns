@@ -1,0 +1,6 @@
+package napile.lang
+
+class Any
+{
+	this()
+}
