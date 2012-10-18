@@ -85,6 +85,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileArrayOfExpression;
 import org.napile.compiler.psi.NapileCodeInjectionExpression;
 import org.napile.compiler.psi.NapileDeclaration;
 import org.napile.compiler.psi.NapileElement;
@@ -251,6 +252,24 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		JetType returnType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>singletonList(targetType), classDescriptor.getMemberScope(Collections.singletonList(targetType)));
 
 		return DataFlowUtils.checkType(returnType, expression, context, context.dataFlowInfo);
+	}
+
+	@Override
+	public JetTypeInfo visitArrayOfExpression(NapileArrayOfExpression arrayExpression, ExpressionTypingContext context)
+	{
+		ClassDescriptor classDescriptor = context.scope.getClass(NapileLangPackage.ARRAY);
+		if(classDescriptor == null)
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+
+		NapileExpression[] expressions = arrayExpression.getValues();
+		Set<JetType> types = new HashSet<JetType>(expressions.length);
+		for(NapileExpression exp : expressions)
+			types.add(context.expressionTypingServices.safeGetType(context.scope, exp, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace));
+
+		JetType typeArgument = TypeUtils.intersect(JetTypeChecker.INSTANCE, types, context.scope);
+		JetType returnType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>singletonList(typeArgument), classDescriptor.getMemberScope(Collections.singletonList(typeArgument)));
+
+		return DataFlowUtils.checkType(returnType, arrayExpression, context, context.dataFlowInfo);
 	}
 
 	@Override

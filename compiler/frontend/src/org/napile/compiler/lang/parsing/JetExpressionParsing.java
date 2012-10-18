@@ -18,11 +18,8 @@ package org.napile.compiler.lang.parsing;
 
 import static org.napile.compiler.NapileNodeTypes.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.napile.compiler.NapileNodeType;
@@ -64,18 +61,16 @@ public class JetExpressionParsing extends AbstractJetParsing
 	/*package*/ static final TokenSet EXPRESSION_FIRST = TokenSet.create(
 			// Prefix
 			NapileTokens.MINUS, NapileTokens.PLUS, NapileTokens.MINUSMINUS, NapileTokens.PLUSPLUS, NapileTokens.EXCL, NapileTokens.EXCLEXCL, // Joining complex tokens makes it necessary to put EXCLEXCL here
-			NapileTokens.LBRACKET,
-			// Atomic
+			NapileTokens.LBRACE,
 
 			NapileTokens.LPAR, // parenthesized
-			NapileTokens.HASH, // Tuple
+			NapileTokens.HASH, // method targeting
 
 			// literal constant
 			NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.OPEN_QUOTE, NapileTokens.INTEGER_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.NULL_KEYWORD,
 
 			NapileTokens.LBRACE, // functionLiteral
 
-			NapileTokens.LPAR, // tuple
 			NapileTokens.DOT, // injection
 
 			NapileTokens.THIS_KEYWORD, // this
@@ -243,30 +238,11 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 
 	private final JetParsing myJetParsing;
-	private TokenSet decomposerExpressionFollow = null;
 
 	public JetExpressionParsing(SemanticWhitespaceAwarePsiBuilder builder, JetParsing jetParsing)
 	{
 		super(builder);
 		myJetParsing = jetParsing;
-	}
-
-	private TokenSet getDecomposerExpressionFollow()
-	{
-		// TODO : memoize
-		if(decomposerExpressionFollow == null)
-		{
-			List<IElementType> elvisFollow = new ArrayList<IElementType>();
-			Precedence precedence = Precedence.ELVIS;
-			while(precedence != null)
-			{
-				IElementType[] types = precedence.getOperations().getTypes();
-				Collections.addAll(elvisFollow, types);
-				precedence = precedence.higher;
-			}
-			decomposerExpressionFollow = TokenSet.orSet(EXPRESSION_FOLLOW, TokenSet.create(elvisFollow.toArray(new IElementType[elvisFollow.size()])));
-		}
-		return decomposerExpressionFollow;
 	}
 
 	/*
@@ -523,7 +499,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 	/*
 		 * atomicExpression
-		 *   : tupleLiteral // or parenthesized element
 		 *   : "this" label?
 		 *   : "super" ("<" type ">")? label?
 		 *   : objectLiteral
@@ -617,15 +592,9 @@ public class JetExpressionParsing extends AbstractJetParsing
 			parseClassOrTypeOf(CLASS_OF);
 		else if(at(NapileTokens.TYPE_OF_KEYWORD))
 			parseClassOrTypeOf(TYPE_OF);
-		else if(atSet(NapileTokens.CLASS_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.VAR_KEYWORD))
-		{
-			parseLocalDeclaration();
-		}
-		else if(at(NapileTokens.FIELD_IDENTIFIER))
-		{
-			parseSimpleNameExpression();
-		}
-		else if(at(NapileTokens.IDENTIFIER))
+		else if(at(NapileTokens.ARRAY_OF_KEYWORD))
+			parseArrayExpression();
+		else if(at(NapileTokens.FIELD_IDENTIFIER) || at(NapileTokens.IDENTIFIER))
 		{
 			parseSimpleNameExpression();
 		}
@@ -1739,6 +1708,33 @@ public class JetExpressionParsing extends AbstractJetParsing
 		parseExpression();
 
 		marker.done(THROW);
+	}
+
+	/*
+	 * "arrayOf" "(" expression ("," expression)* ")"
+	 */
+	private void parseArrayExpression()
+	{
+		PsiBuilder.Marker mark = mark();
+
+		advance();
+
+		if(expect(NapileTokens.LPAR, "'(' expected"))
+		{
+			while(!at(NapileTokens.RPAR) && !eof())
+			{
+				parseExpression();
+
+				if(at(NapileTokens.COMMA))
+					advance();
+				else
+					break;
+			}
+
+			expect(NapileTokens.RPAR, "')' expected");
+		}
+
+		mark.done(ARRAY);
 	}
 
 	/*

@@ -21,6 +21,7 @@ package org.napile.compiler;
 
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.psi.NapileArrayOfExpressionImpl;
 import org.napile.compiler.psi.NapileCodeInjectionExpression;
 import org.napile.compiler.psi.NapileModifierListImpl;
 import com.intellij.lang.ASTNode;
@@ -102,6 +103,7 @@ public interface NapileNodeTypes
 	NapileNodeType CATCH = new NapileNodeType("CATCH", NapileCatchClause.class);
 	NapileNodeType FINALLY = new NapileNodeType("FINALLY", NapileFinallySection.class);
 	NapileNodeType FOR = new NapileNodeType("FOR", NapileForExpression.class);
+	NapileNodeType ARRAY = new NapileNodeType("ARRAY", NapileArrayOfExpressionImpl.class);
 	NapileNodeType WHILE = new NapileNodeType("WHILE", NapileWhileExpression.class);
 	NapileNodeType DO_WHILE = new NapileNodeType("DO_WHILE", NapileDoWhileExpression.class);
 	NapileNodeType LOOP_PARAMETER = new NapileNodeType("LOOP_PARAMETER", NapilePropertyParameter.class); // TODO: Do we need separate type?
@@ -111,6 +113,7 @@ public interface NapileNodeTypes
 	NapileNodeType FUNCTION_LITERAL_EXPRESSION = new NapileNodeType("FUNCTION_LITERAL_EXPRESSION", NapileFunctionLiteralExpression.class);
 	NapileNodeType FUNCTION_LITERAL = new NapileNodeType("FUNCTION_LITERAL", NapileFunctionLiteral.class);
 	NapileNodeType CODE_INJECTION = new NapileNodeType("CODE_INJECTION", NapileCodeInjectionExpression.class);
+
 	IReparseableElementType CODE_INJECTION_BLOCK = new IReparseableElementType("CODE_INJECTION", NapileLanguage.INSTANCE)
 	{
 		@Override

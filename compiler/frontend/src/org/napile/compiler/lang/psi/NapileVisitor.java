@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.psi;
 
+import org.napile.compiler.psi.NapileArrayOfExpression;
 import org.napile.compiler.psi.NapileClass;
 import org.napile.compiler.psi.NapileCodeInjectionExpression;
 import org.napile.compiler.psi.NapileDeclaration;
@@ -473,5 +474,10 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	public R visitCodeInjection(NapileCodeInjectionExpression codeInjection, D data)
 	{
 		return visitExpression(codeInjection, data);
+	}
+
+	public R visitArrayOfExpression(NapileArrayOfExpression arrayExpression, D data)
+	{
+		return visitExpression(arrayExpression, data);
 	}
 }
