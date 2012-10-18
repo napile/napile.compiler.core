@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.Any">
+	<constructor>
+		<modifiers>
+			<final/>
+		</modifiers>
+		<code max_locals="1">
+			<load val="0"/>
+			<return/>
+		</code>
+	</constructor>
+</class>
