@@ -48,7 +48,7 @@ public class NapileIsExpression extends NapileExpressionImpl
 	@NotNull
 	public NapileExpression getLeftHandSide()
 	{
-		return findChildByClass(NapileExpression.class);
+		return findNotNullChildByClass(NapileExpression.class);
 	}
 
 	@Nullable

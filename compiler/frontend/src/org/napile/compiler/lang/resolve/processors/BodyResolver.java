@@ -274,12 +274,6 @@ public class BodyResolver
 			}
 
 			@Override
-			public void visitDelegationToThisCall(NapileDelegatorToThisCall thisCall)
-			{
-				throw new IllegalStateException("This-calls should be prohibited by the parser");
-			}
-
-			@Override
 			public void visitJetElement(NapileElement element)
 			{
 				throw new UnsupportedOperationException(element.getText() + " : " + element);

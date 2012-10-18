@@ -32,7 +32,7 @@ import com.intellij.psi.tree.IReparseableElementType;
 
 public interface NapileNodeTypes
 {
-	IFileElementType JET_FILE = new IFileElementType(NapileLanguage.INSTANCE);
+	IFileElementType NAPILE_FILE = new IFileElementType(NapileLanguage.INSTANCE);
 
 	IElementType CLASS = NapileStubElementTypes.CLASS;
 	IElementType METHOD = NapileStubElementTypes.METHOD;
@@ -75,12 +75,6 @@ public interface NapileNodeTypes
 	NapileNodeType SELF_TYPE = new NapileNodeType("SELF_TYPE", NapileSelfType.class);
 	NapileNodeType NULLABLE_TYPE = new NapileNodeType("NULLABLE_TYPE", NapileNullableType.class);
 
-	// TODO: review
-	NapileNodeType INITIALIZER_LIST = new NapileNodeType("INITIALIZER_LIST", NapileInitializerList.class);
-	NapileNodeType THIS_CALL = new NapileNodeType("THIS_CALL", NapileDelegatorToThisCall.class);
-	NapileNodeType THIS_CONSTRUCTOR_REFERENCE = new NapileNodeType("THIS_CONSTRUCTOR_REFERENCE", NapileThisReferenceExpression.class);
-
-	// TODO: Not sure if we need separate NT for each kind of constants
 	NapileNodeType NULL = new NapileNodeType("NULL", NapileConstantExpression.class);
 	NapileNodeType BOOLEAN_CONSTANT = new NapileNodeType("BOOLEAN_CONSTANT", NapileConstantExpression.class);
 	NapileNodeType FLOAT_CONSTANT = new NapileNodeType("FLOAT_CONSTANT", NapileConstantExpression.class);
@@ -131,7 +125,6 @@ public interface NapileNodeTypes
 			return true;
 		}
 	};
-	//NapileNodeType ANNOTATED_EXPRESSION = new NapileNodeType("ANNOTATED_EXPRESSION", NapileAnnotatedExpression.class);
 
 	NapileNodeType REFERENCE_EXPRESSION = new NapileNodeType("REFERENCE_EXPRESSION", NapileSimpleNameExpression.class);
 	NapileNodeType OPERATION_REFERENCE = new NapileNodeType("OPERATION_REFERENCE", NapileSimpleNameExpression.class);
@@ -142,7 +135,7 @@ public interface NapileNodeTypes
 	NapileNodeType SUPER_EXPRESSION = new NapileNodeType("SUPER_EXPRESSION", NapileSuperExpression.class);
 	NapileNodeType BINARY_EXPRESSION = new NapileNodeType("BINARY_EXPRESSION", NapileBinaryExpression.class);
 	NapileNodeType BINARY_WITH_TYPE = new NapileNodeType("BINARY_WITH_TYPE", NapileBinaryExpressionWithTypeRHS.class);
-	NapileNodeType IS_EXPRESSION = new NapileNodeType("BINARY_WITH_PATTERN", NapileIsExpression.class); // TODO:
+	NapileNodeType IS_EXPRESSION = new NapileNodeType("IS_EXPRESSION", NapileIsExpression.class);
 	NapileNodeType PREFIX_EXPRESSION = new NapileNodeType("PREFIX_EXPRESSION", NapilePrefixExpression.class);
 	NapileNodeType POSTFIX_EXPRESSION = new NapileNodeType("POSTFIX_EXPRESSION", NapilePostfixExpression.class);
 	NapileNodeType CALL_EXPRESSION = new NapileNodeType("CALL_EXPRESSION", NapileCallExpression.class);
@@ -152,7 +145,6 @@ public interface NapileNodeTypes
 	NapileNodeType DOT_QUALIFIED_EXPRESSION = new NapileNodeType("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpression.class);
 	NapileNodeType HASH_QUALIFIED_EXPRESSION = new NapileNodeType("HASH_QUALIFIED_EXPRESSION", NapileHashQualifiedExpression.class);
 	NapileNodeType SAFE_ACCESS_EXPRESSION = new NapileNodeType("SAFE_ACCESS_EXPRESSION", NapileSafeQualifiedExpression.class);
-	//    NapileNodeType PREDICATE_EXPRESSION      = new NapileNodeType("PREDICATE_EXPRESSION", JetPredicateExpression.class);
 
 	NapileNodeType OBJECT_LITERAL = new NapileNodeType("OBJECT_LITERAL", NapileObjectLiteralExpression.class);
 	NapileNodeType ROOT_NAMESPACE = new NapileNodeType("ROOT_NAMESPACE", NapileRootNamespaceExpression.class);

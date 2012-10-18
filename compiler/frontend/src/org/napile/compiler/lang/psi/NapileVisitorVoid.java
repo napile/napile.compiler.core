@@ -145,11 +145,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitDelegationSpecifier(specifier);
 	}
 
-	public void visitDelegationToThisCall(NapileDelegatorToThisCall thisCall)
-	{
-		visitDelegationSpecifier(thisCall);
-	}
-
 	public void visitTypeReference(NapileTypeReference typeReference)
 	{
 		visitJetElement(typeReference);
@@ -274,11 +269,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitExpression(expression);
 	}
 
-	public void visitAnnotatedExpression(NapileAnnotatedExpression expression)
-	{
-		visitExpression(expression);
-	}
-
 	public void visitCallExpression(NapileCallExpression expression)
 	{
 		visitExpression(expression);
@@ -361,11 +351,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 	public void visitParenthesizedExpression(NapileParenthesizedExpression expression)
 	{
 		visitExpression(expression);
-	}
-
-	public void visitInitializerList(NapileInitializerList list)
-	{
-		visitJetElement(list);
 	}
 
 	private void visitTypeElement(NapileTypeElement type)

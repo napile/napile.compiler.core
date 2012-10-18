@@ -140,11 +140,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitDelegationSpecifier(specifier, data);
 	}
 
-	public R visitDelegationToThisCall(NapileDelegatorToThisCall thisCall, D data)
-	{
-		return visitDelegationSpecifier(thisCall, data);
-	}
-
 	public R visitTypeReference(NapileTypeReference typeReference, D data)
 	{
 		return visitJetElement(typeReference, data);
@@ -265,11 +260,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitExpression(expression, data);
 	}
 
-	public R visitAnnotatedExpression(NapileAnnotatedExpression expression, D data)
-	{
-		return visitExpression(expression, data);
-	}
-
 	public R visitCallExpression(NapileCallExpression expression, D data)
 	{
 		return visitExpression(expression, data);
@@ -353,11 +343,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	public R visitParenthesizedExpression(NapileParenthesizedExpression expression, D data)
 	{
 		return visitExpression(expression, data);
-	}
-
-	public R visitInitializerList(NapileInitializerList list, D data)
-	{
-		return visitJetElement(list, data);
 	}
 
 	private R visitTypeElement(NapileTypeElement type, D data)

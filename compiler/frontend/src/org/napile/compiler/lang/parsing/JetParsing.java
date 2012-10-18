@@ -110,7 +110,7 @@ public class JetParsing extends AbstractJetParsing
 
 		parseToplevelDeclarations(false);
 
-		fileMarker.done(JET_FILE);
+		fileMarker.done(NAPILE_FILE);
 	}
 
 
@@ -677,61 +677,6 @@ public class JetParsing extends AbstractJetParsing
 
 		if(at(NapileTokens.LBRACE))
 			parseClassBody();
-	}
-
-	/*
-		 * initializer{","}
-		 */
-	private void parseInitializerList()
-	{
-		PsiBuilder.Marker list = mark();
-		while(true)
-		{
-			if(at(NapileTokens.COMMA))
-				errorAndAdvance("Expecting a this or super constructor call");
-			parseInitializer();
-			if(!at(NapileTokens.COMMA))
-				break;
-			advance(); // COMMA
-		}
-		list.done(INITIALIZER_LIST);
-	}
-
-	/*
-		 * initializer
-		 *   : attributes "this" valueArguments
-		 *   : attributes constructorInvocation // type parameters may (must?) be omitted
-		 *   ;
-		 */
-	private void parseInitializer()
-	{
-		PsiBuilder.Marker initializer = mark();
-		parseAnnotations();
-
-		IElementType type;
-		if(at(NapileTokens.THIS_KEYWORD))
-		{
-			PsiBuilder.Marker mark = mark();
-			advance(); // THIS_KEYWORD
-			mark.done(THIS_CONSTRUCTOR_REFERENCE);
-			type = THIS_CALL;
-		}
-		else if(atSet(TYPE_REF_FIRST))
-		{
-			PsiBuilder.Marker reference = mark();
-			parseTypeRef();
-			reference.done(CONSTRUCTOR_CALLEE);
-			type = DELEGATOR_SUPER_CALL;
-		}
-		else
-		{
-			errorWithRecovery("Expecting constructor call (this(...)) or supertype initializer", TokenSet.create(NapileTokens.LBRACE, NapileTokens.COMMA));
-			initializer.drop();
-			return;
-		}
-		myExpressionParsing.parseValueArgumentList();
-
-		initializer.done(type);
 	}
 
 	/*

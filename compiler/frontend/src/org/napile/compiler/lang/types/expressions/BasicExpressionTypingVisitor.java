@@ -1447,16 +1447,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.STRING, false), expression, contextWithExpectedType, context.dataFlowInfo);
 	}
 
-	@Override
-	public JetTypeInfo visitAnnotatedExpression(NapileAnnotatedExpression expression, ExpressionTypingContext data)
-	{
-		NapileExpression baseExpression = expression.getBaseExpression();
-		if(baseExpression == null)
-		{
-			return JetTypeInfo.create(null, data.dataFlowInfo);
-		}
-		return facade.getTypeInfo(baseExpression, data);
-	}
 
 	@Override
 	public JetTypeInfo visitJetElement(NapileElement element, ExpressionTypingContext context)

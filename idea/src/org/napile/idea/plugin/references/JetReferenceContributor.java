@@ -21,7 +21,6 @@ import static com.intellij.patterns.PlatformPatterns.psiElement;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileArrayAccessExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.psi.NapileThisReferenceExpression;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceContributor;
@@ -46,16 +45,6 @@ public class JetReferenceContributor extends PsiReferenceContributor
 				return new PsiReference[]{
 						new JetSimpleNameReference((NapileSimpleNameExpression) element)
 				};
-			}
-		});
-
-		registrar.registerReferenceProvider(psiElement(NapileThisReferenceExpression.class), new PsiReferenceProvider()
-		{
-			@NotNull
-			@Override
-			public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext processingContext)
-			{
-				return new PsiReference[]{new JetThisReference((NapileThisReferenceExpression) element)};
 			}
 		});
 

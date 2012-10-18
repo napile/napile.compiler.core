@@ -261,26 +261,6 @@ public class CallResolver
 					return checkArgumentTypesAndFail(context);
 				}
 			}
-			else if(calleeExpression instanceof NapileThisReferenceExpression)
-			{
-				functionReference = (NapileThisReferenceExpression) calleeExpression;
-				DeclarationDescriptor containingDeclaration = context.scope.getContainingDeclaration();
-				if(containingDeclaration instanceof ConstructorDescriptor)
-				{
-					containingDeclaration = containingDeclaration.getContainingDeclaration();
-				}
-				assert containingDeclaration instanceof ClassDescriptor;
-				ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
-
-				Set<ConstructorDescriptor> constructors = classDescriptor.getConstructors();
-				if(constructors.isEmpty())
-				{
-					context.trace.report(NO_CONSTRUCTOR.on(reportAbsenceOn));
-					return checkArgumentTypesAndFail(context);
-				}
-				List<ResolutionCandidate<CallableDescriptor>> candidates = ResolutionCandidate.<CallableDescriptor>convertCollection(constructors, NapilePsiUtil.isSafeCall(context.call));
-				prioritizedTasks = Collections.singletonList(new ResolutionTask<CallableDescriptor, MethodDescriptor>(candidates, functionReference, context)); // !! DataFlowInfo.EMPTY
-			}
 			else if(calleeExpression != null)
 			{
 				// Here we handle the case where the callee expression must be something of type function, e.g. (foo.bar())(1, 2)
