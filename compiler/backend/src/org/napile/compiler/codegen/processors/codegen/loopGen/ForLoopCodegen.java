@@ -19,6 +19,7 @@ package org.napile.compiler.codegen.processors.codegen.loopGen;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
@@ -70,7 +71,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		firstPos = instructions.size();
 
 		instructions.load(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
+		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE));
 		instructions.putTrue();
 		jumpIfSlot = instructions.reserve();
 

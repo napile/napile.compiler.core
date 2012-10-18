@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
@@ -53,7 +54,7 @@ import com.intellij.psi.tree.IElementType;
  */
 public class BinaryOperationCodegen
 {
-	private static final MethodRef ANY_EQUALS = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("equals")), Arrays.asList(new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY))), Collections.<TypeNode>emptyList(), TypeConstants.BOOL);
+	private static final MethodRef ANY_EQUALS = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("equals")), Arrays.asList(new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY))), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE);
 
 	private static final Property GREATER = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("GREATER")), TypeConstants.COMPARE_RESULT, true);
 	private static final Property EQUAL = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("EQUAL")), TypeConstants.COMPARE_RESULT, true);
@@ -84,7 +85,7 @@ public class BinaryOperationCodegen
 		else if(opToken == NapileTokens.LTEQ)
 			gtOrLtEq(LOWER, instructs);
 
-		return StackValue.onStack(TypeConstants.BOOL);
+		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
 	private static void gtOrLtEq(@NotNull Property property, @NotNull InstructionAdapter instructs)
@@ -166,9 +167,9 @@ public class BinaryOperationCodegen
 
 		// revert bool
 		if(opToken == NapileTokens.EXCLEQ)
-			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
+			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE));
 
-		return StackValue.onStack(TypeConstants.BOOL);
+		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
 	public static StackValue genAugmentedAssignment(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
@@ -226,13 +227,13 @@ public class BinaryOperationCodegen
 
 	public static StackValue genAndAnd(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
 	{
-		gen.gen(expression.getLeft(), TypeConstants.BOOL);
+		gen.gen(expression.getLeft(), AsmConstants.BOOL_TYPE);
 
 		instructs.putTrue();
 
 		ReservedInstruction ifSlot = instructs.reserve();
 
-		gen.gen(expression.getRight(), TypeConstants.BOOL);
+		gen.gen(expression.getRight(), AsmConstants.BOOL_TYPE);
 
 		instructs.putTrue();
 
@@ -250,12 +251,12 @@ public class BinaryOperationCodegen
 
 		instructs.replace(ignoreFalseSlot, new JumpInstruction(instructs.size()));
 
-		return StackValue.onStack(TypeConstants.BOOL);
+		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
 	public static StackValue genOrOr(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
 	{
-		gen.gen(expression.getLeft(), TypeConstants.BOOL);
+		gen.gen(expression.getLeft(), AsmConstants.BOOL_TYPE);
 
 		instructs.putTrue();
 
@@ -269,7 +270,7 @@ public class BinaryOperationCodegen
 		// is first is failed - jump to right part
 		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
 
-		gen.gen(expression.getRight(), TypeConstants.BOOL);
+		gen.gen(expression.getRight(), AsmConstants.BOOL_TYPE);
 
 		instructs.putTrue();
 
@@ -289,6 +290,6 @@ public class BinaryOperationCodegen
 		instructs.replace(skipNextSlot, new JumpInstruction(instructs.size()));
 		instructs.replace(skipNextSlot2, new JumpInstruction(instructs.size()));
 
-		return StackValue.onStack(TypeConstants.BOOL);
+		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 }

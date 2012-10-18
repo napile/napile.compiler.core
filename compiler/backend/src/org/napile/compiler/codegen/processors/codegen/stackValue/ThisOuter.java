@@ -16,10 +16,10 @@
 
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
+import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
-import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 
 public class ThisOuter extends StackValue
@@ -30,7 +30,7 @@ public class ThisOuter extends StackValue
 
 	public ThisOuter(ExpressionGenerator codegen, ClassDescriptor descriptor, boolean isSuper)
 	{
-		super(TypeConstants.ANY);
+		super(AsmConstants.ANY_TYPE);
 		this.codegen = codegen;
 		this.descriptor = descriptor;
 		this.isSuper = isSuper;

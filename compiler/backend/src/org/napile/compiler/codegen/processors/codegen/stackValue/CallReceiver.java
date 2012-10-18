@@ -16,12 +16,12 @@
 
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
+import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
-import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
@@ -57,7 +57,7 @@ public class CallReceiver extends StackValue
 				return TypeTransformer.toAsmType(descriptor.getExpectedThisObject().getType());
 		}
 		else
-			return TypeConstants.NULL;
+			return AsmConstants.NULL_TYPE;
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
@@ -33,7 +34,6 @@ import org.napile.asm.tree.members.bytecode.impl.PopInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
-import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
@@ -82,7 +82,7 @@ public class MethodGenerator
 					case CLASS:
 					case ENUM_CLASS:
 						constructorNode.instructions.add(new LoadInstruction(0));
-						constructorNode.instructions.add(new InvokeSpecialInstruction(new MethodRef(NapileLangPackage.ANY.child(ConstructorDescriptor.NAME), Collections.<TypeNode>emptyList(),Collections.<TypeNode>emptyList(), TypeConstants.NULL)));
+						constructorNode.instructions.add(new InvokeSpecialInstruction(new MethodRef(NapileLangPackage.ANY.child(ConstructorDescriptor.NAME), Collections.<TypeNode>emptyList(),Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE)));
 						constructorNode.instructions.add(new PopInstruction());
 						break;
 					default:
@@ -174,7 +174,7 @@ public class MethodGenerator
 				TypeNode typeNode = TypeTransformer.toAsmType(propertyDescriptor.getType());
 
 				if(!propertyDescriptor.isStatic())
-					StackValue.local(0, typeNode).put(TypeConstants.ANY, adapter);
+					StackValue.local(0, typeNode).put(AsmConstants.ANY_TYPE, adapter);
 				StackValue.local(callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter);
 				StackValue.property(propertyDescriptor).store(typeNode, adapter);
 			}

@@ -19,12 +19,12 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 
 public class Property extends StackValue
 {
@@ -38,7 +38,7 @@ public class Property extends StackValue
 		staticVar = s;
 		// convert 'A.var' -> A + var$set -> A.var$set
 		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + "$set"));
-		setter = new MethodRef(setterFq, Collections.singletonList(getType()), Collections.<TypeNode>emptyList(), TypeConstants.NULL);
+		setter = new MethodRef(setterFq, Collections.singletonList(getType()), Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE);
 		// convert 'A.var' -> A + var$get -> A.var$get
 		FqName getterFq = fqName.parent().child(Name.identifier(fqName.shortName() + "$get"));
 		getter = new MethodRef(getterFq, Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), getType());

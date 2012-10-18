@@ -17,6 +17,7 @@
 package org.napile.compiler.codegen.processors;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
@@ -28,7 +29,6 @@ import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
-import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
@@ -53,7 +53,7 @@ public class VariableCodegen
 		if(setter == null)
 		{
 			MethodNode setterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), setterFq.shortName());
-			setterMethodNode.returnType = TypeConstants.NULL;
+			setterMethodNode.returnType = AsmConstants.NULL_TYPE;
 			setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(propertyDescriptor.getType())));
 
 			InstructionAdapter instructions = new InstructionAdapter();

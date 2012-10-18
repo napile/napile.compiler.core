@@ -18,6 +18,7 @@ package org.napile.compiler.codegen.processors;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
@@ -38,6 +40,7 @@ import org.napile.asm.tree.members.bytecode.tryCatch.CatchBlock;
 import org.napile.asm.tree.members.bytecode.tryCatch.TryBlock;
 import org.napile.asm.tree.members.bytecode.tryCatch.TryCatchBlockNode;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
 import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.codegen.BinaryOperationCodegen;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
@@ -75,6 +78,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.psi.NapileArrayOfExpression;
 import org.napile.compiler.psi.NapileElement;
 import org.napile.compiler.psi.NapileExpression;
 import com.google.common.collect.Lists;
@@ -304,9 +308,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		instructs.is(TypeTransformer.toAsmType(rightType));
 
 		if(expression.isNegated())
-			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), TypeConstants.BOOL));
+			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE));
 
-		return StackValue.onStack(TypeConstants.BOOL);
+		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
 	@Override
@@ -365,7 +369,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		{
 			if(isEmptyExpression(elseExpression))
 			{
-				if(!asmType.equals(TypeConstants.NULL))
+				if(!asmType.equals(AsmConstants.NULL_TYPE))
 					throw new CompilationException("Completely empty 'if' is expected to have Null type", null, expression);
 
 				instructs.putNull();
@@ -386,7 +390,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 		StackValue condition = gen(expression.getCondition());
 
-		condition.put(TypeConstants.BOOL, instructs);
+		condition.put(AsmConstants.BOOL_TYPE, instructs);
 
 		instructs.putTrue();
 
@@ -414,10 +418,10 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		TypeNode expressionType = expressionType(expression);
 		TypeNode targetType = expressionType;
-		if(!expressionType.equals(TypeConstants.NULL))
-			targetType = TypeConstants.ANY;
+		if(!expressionType.equals(AsmConstants.NULL_TYPE))
+			targetType = AsmConstants.ANY_TYPE;
 
-		condition.put(TypeConstants.BOOL, instructs);
+		condition.put(AsmConstants.BOOL_TYPE, instructs);
 
 		if(inverse)
 			instructs.putTrue();
@@ -716,7 +720,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 							receiver = generateThisOrOuter((ClassDescriptor) propertyDescriptor.getContainingDeclaration(), false);
 					}
 					JetType receiverType = bindingTrace.get(BindingContext.EXPRESSION_TYPE, r);
-					receiver.put(receiverType != null && !isSuper ? TypeTransformer.toAsmType(receiverType) : TypeConstants.ANY, instructs);
+					receiver.put(receiverType != null && !isSuper ? TypeTransformer.toAsmType(receiverType) : AsmConstants.ANY_TYPE, instructs);
 				}
 			}
 			return iValue;
@@ -744,6 +748,33 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		TypeNode typeNode = expressionType(typeOfExpression);
 
 		instructs.typeOf(TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.TYPE, typeOfExpression.getTypeReference())));
+
+		return StackValue.onStack(typeNode);
+	}
+
+	@Override
+	public StackValue visitArrayOfExpression(NapileArrayOfExpression arrayExpression, StackValue data)
+	{
+		TypeNode typeNode = expressionType(arrayExpression);
+
+		NapileExpression[] expressions = arrayExpression.getValues();
+
+		instructs.newInt(expressions.length);
+
+		instructs.newObject(typeNode, Collections.singletonList(AsmConstants.INT_TYPE));
+
+		// set ref need return 'this' not real type
+		MethodRef setRef = new MethodRef(NapileLangPackage.ARRAY.child(Name.identifier("set")), Arrays.<TypeNode>asList(AsmConstants.INT_TYPE, new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), Collections.<TypeNode>emptyList(), typeNode);
+		for(int i = 0; i < expressions.length; i++)
+		{
+			NapileExpression expression = expressions[i];
+
+			instructs.newInt(i);
+
+			gen(expression, expressionType(expression));
+
+			instructs.invokeVirtual(setRef); // set - put to stack this object
+		}
 
 		return StackValue.onStack(typeNode);
 	}
@@ -877,7 +908,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			return StackValue.local(index, TypeTransformer.toAsmType(outType));
 		}
 		else
-			return StackValue.local(index, TypeConstants.ANY);
+			return StackValue.local(index, AsmConstants.ANY_TYPE);
 	}
 
 	public int pushMethodArguments(@NotNull ResolvedCall<?> resolvedCall, List<TypeNode> valueParameterTypes)
@@ -958,7 +989,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			if(!iterator.hasNext())
 				answer = gen(statement);
 			else
-				gen(statement, TypeConstants.NULL);
+				gen(statement, AsmConstants.NULL_TYPE);
 		}
 
 		for(Function<StackValue, Void> task : Lists.reverse(leaveTasks))
@@ -1131,7 +1162,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	{
 		StackValue lastValue = gen(expr);
 
-		if(!lastValue.getType().equals(TypeConstants.NULL))
+		if(!lastValue.getType().equals(AsmConstants.NULL_TYPE))
 		{
 			lastValue.put(returnType, instructs);
 			instructs.returnVal();

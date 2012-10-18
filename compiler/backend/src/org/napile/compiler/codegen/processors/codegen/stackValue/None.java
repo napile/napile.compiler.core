@@ -16,9 +16,9 @@
 
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
+import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 
 /**
  * @author VISTALL
@@ -30,7 +30,7 @@ public class None extends StackValue
 
 	public None()
 	{
-		super(TypeConstants.NULL);
+		super(AsmConstants.NULL_TYPE);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package org.napile.compiler.codegen.processors.codegen;
 
+import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.tree.members.types.TypeNode;
@@ -10,13 +11,9 @@ import org.napile.compiler.CodeTodo;
  * @author VISTALL
  * @date 20:37/17.09.12
  */
+@Deprecated
 public interface TypeConstants
 {
-	TypeNode BOOL = new TypeNode(false, new ClassTypeNode(NapileLangPackage.BOOL));
-
-	TypeNode NULL = new TypeNode(false, new ClassTypeNode(NapileLangPackage.NULL));
-
-	TypeNode ANY = new TypeNode(false, new ClassTypeNode(NapileLangPackage.ANY));
 
 	TypeNode STRING = new TypeNode(false, new ClassTypeNode(NapileLangPackage.STRING));
 
@@ -26,5 +23,5 @@ public interface TypeConstants
 
 	TypeNode COMPARE_RESULT = new TypeNode(false, new ClassTypeNode(NapileConditionPackage.COMPARE_RESULT));
 
-	TypeNode ITERATOR__ANY__ = new TypeNode(false, new ClassTypeNode(CodeTodo.ITERATOR)).visitArgument(ANY);
+	TypeNode ITERATOR__ANY__ = new TypeNode(false, new ClassTypeNode(CodeTodo.ITERATOR)).visitArgument(AsmConstants.ANY_TYPE);
 }
