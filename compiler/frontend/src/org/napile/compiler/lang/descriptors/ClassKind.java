@@ -26,5 +26,7 @@ public enum ClassKind
 	ENUM_CLASS,
 
 	ENUM_ENTRY,
-	ANONYM_CLASS
+	ANONYM_CLASS;
+
+	public static final ClassKind[] VALUES = values();
 }

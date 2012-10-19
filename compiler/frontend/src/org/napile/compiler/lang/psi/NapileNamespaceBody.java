@@ -16,11 +16,8 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author max
@@ -34,9 +31,9 @@ public class NapileNamespaceBody extends NapileElementImpl implements NapileDecl
 
 	@NotNull
 	@Override
-	public List<NapileDeclaration> getDeclarations()
+	public NapileDeclaration[] getDeclarations()
 	{
-		return PsiTreeUtil.getChildrenOfTypeAsList(this, NapileDeclaration.class);
+		return findChildrenByClass(NapileDeclaration.class);
 	}
 
 	@Override

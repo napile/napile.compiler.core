@@ -82,11 +82,11 @@ public class NapileEnumEntryImpl extends NapileNamedDeclarationStub<NapilePsiEnu
 
 	@NotNull
 	@Override
-	public List<NapileDeclaration> getDeclarations()
+	public NapileDeclaration[] getDeclarations()
 	{
 		NapileClassBody body = getBody();
 		if(body == null)
-			return Collections.emptyList();
+			return NapileDeclaration.EMPTY_ARRAY;
 
 		return body.getDeclarations();
 	}

@@ -16,8 +16,6 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,5 +24,5 @@ import org.jetbrains.annotations.NotNull;
 public interface NapileDeclarationContainer<T extends NapileDeclaration>
 {
 	@NotNull
-	List<T> getDeclarations();
+	T[] getDeclarations();
 }

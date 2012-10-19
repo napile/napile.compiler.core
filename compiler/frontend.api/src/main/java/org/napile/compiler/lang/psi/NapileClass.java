@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassKind;
+import com.intellij.util.ArrayFactory;
 
 /**
  * @author VISTALL
@@ -27,8 +28,20 @@ import org.napile.compiler.lang.descriptors.ClassKind;
  */
 public interface NapileClass extends NapileNamedDeclaration, NapileTypeParameterListOwner, NapileClassLike
 {
+	NapileClass[] EMPTY_ARRAY = new NapileClass[0];
+
+	ArrayFactory<NapileClass> ARRAY_FACTORY = new ArrayFactory<NapileClass>()
+	{
+		@Override
+		public NapileClass[] create(int count)
+		{
+			return count == 0 ? EMPTY_ARRAY : new NapileClass[count];
+		}
+	};
+
 	String getQualifiedName();
 
+	@NotNull
 	ClassKind getKind();
 
 	@NotNull

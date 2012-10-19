@@ -26,10 +26,9 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
@@ -136,11 +135,11 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 
 	@Override
 	@NotNull
-	public List<NapileDeclaration> getDeclarations()
+	public NapileDeclaration[] getDeclarations()
 	{
 		NapileClassBody body = getBody();
 		if(body == null)
-			return Collections.emptyList();
+			return NapileDeclaration.EMPTY_ARRAY;
 
 		return body.getDeclarations();
 	}

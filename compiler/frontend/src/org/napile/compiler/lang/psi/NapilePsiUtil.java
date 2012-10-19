@@ -300,8 +300,8 @@ public class NapilePsiUtil
 	{
 		CheckUtil.checkWritable(clazz);
 		NapileFile file = clazz.getContainingFile();
-		List<NapileClass> declarations = file.getDeclarations();
-		if(declarations.size() == 1)
+		NapileClass[] declarations = file.getDeclarations();
+		if(declarations.length == 1)
 		{
 			file.delete();
 		}

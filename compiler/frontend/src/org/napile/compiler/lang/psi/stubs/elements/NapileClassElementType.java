@@ -22,6 +22,7 @@ import java.util.List;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -61,12 +62,13 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 	{
 		FqName fqName = NapilePsiUtil.getFQName(psi);
 
-		return new NapilePsiClassStub(parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames());
+		return new NapilePsiClassStub(parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames(), psi.getKind());
 	}
 
 	@Override
 	public void serialize(NapilePsiClassStub stub, StubOutputStream dataStream) throws IOException
 	{
+		dataStream.writeVarInt(stub.getKind().ordinal());
 		dataStream.writeName(stub.getName());
 		dataStream.writeName(stub.getQualifiedName());
 
@@ -81,6 +83,7 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 	@Override
 	public NapilePsiClassStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
+		int index = dataStream.readVarInt();
 		StringRef name = dataStream.readName();
 		StringRef qualifiedName = dataStream.readName();
 
@@ -89,7 +92,7 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 		for(int i = 0; i < superCount; i++)
 			superNames[i] = dataStream.readName();
 
-		return new NapilePsiClassStub(parentStub, qualifiedName, name, superNames);
+		return new NapilePsiClassStub(parentStub, qualifiedName, name, superNames, ClassKind.VALUES[index]);
 	}
 
 	@Override

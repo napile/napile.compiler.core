@@ -32,11 +32,13 @@ import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePackageImpl;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
 public class NapileFileImpl extends PsiFileBase implements NapileFile
@@ -61,9 +63,13 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 
 	@NotNull
 	@Override
-	public List<NapileClass> getDeclarations()
+	public NapileClass[] getDeclarations()
 	{
-		return PsiTreeUtil.getChildrenOfTypeAsList(this, NapileClass.class);
+		final StubElement<?> stub = getStub();
+		if(stub != null)
+			return stub.getChildrenByType(NapileStubElementTypes.CLASS, NapileClass.ARRAY_FACTORY);
+
+		return calcTreeElement().getChildrenAsPsiElements(NapileStubElementTypes.CLASS, NapileClass.ARRAY_FACTORY);
 	}
 
 	@NotNull

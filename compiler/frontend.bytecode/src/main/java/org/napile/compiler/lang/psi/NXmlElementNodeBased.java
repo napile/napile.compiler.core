@@ -21,7 +21,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.tree.members.AbstractMemberNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
@@ -57,8 +56,8 @@ public abstract class NXmlElementNodeBased<N extends AbstractMemberNode<?>, E ex
 
 	@NotNull
 	@Override
-	public List<NapileDeclaration> getDeclarations()
+	public NapileDeclaration[] getDeclarations()
 	{
-		return PsiTreeUtil.getChildrenOfTypeAsList(this, NapileDeclaration.class);
+		return findChildrenByClass(NapileDeclaration.class);
 	}
 }

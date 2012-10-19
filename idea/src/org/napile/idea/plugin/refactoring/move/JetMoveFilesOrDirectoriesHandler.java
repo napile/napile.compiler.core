@@ -17,7 +17,6 @@
 package org.napile.idea.plugin.refactoring.move;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -40,7 +39,7 @@ public class JetMoveFilesOrDirectoriesHandler extends MoveFilesOrDirectoriesHand
 		if(!(clazz.getParent() instanceof NapileFile))
 			return false;
 		NapileFile file = clazz.getContainingFile();
-		List<NapileClass> declarations = file.getDeclarations();
+		NapileClass[] declarations = file.getDeclarations();
 		for(NapileClass declaration : declarations)
 		{
 			if(declaration != null && declaration != clazz)

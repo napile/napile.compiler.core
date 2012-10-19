@@ -21,4 +21,5 @@ package org.napile.compiler.lang.psi;
  */
 public interface NapileDeclaration extends NapileExpression, NapileModifierListOwner
 {
+	NapileDeclaration[] EMPTY_ARRAY = new NapileDeclaration[0];
 }

@@ -105,13 +105,11 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 
 		if(current instanceof NapileFile)
 		{
-			List<NapileClass> declarations = ((NapileFile) current).getDeclarations();
+			NapileClass[] declarations = ((NapileFile) current).getDeclarations();
 			String nameWithoutExtension = virtualFile != null ? virtualFile.getNameWithoutExtension() : file.getName();
-			if(declarations.size() == 1 && declarations.get(0) != null &&
-					nameWithoutExtension.equals(declarations.get(0).getName()))
-			{
-				current = declarations.get(0);
-			}
+			if(declarations.length == 1 && declarations[0] != null &&
+					nameWithoutExtension.equals(declarations[0].getName()))
+				current = declarations[0];
 		}
 
 		return current != null ? current : file;

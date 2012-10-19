@@ -121,7 +121,7 @@ public class TypeHierarchyResolver
 		{
 			// TODO: Very temp code - main goal is to remove recursion from collectNamespacesAndClassifiers
 			Queue<NapileDeclarationContainer> forDeferredResolve = new LinkedList<NapileDeclarationContainer>();
-			forDeferredResolve.addAll(collectNamespacesAndClassifiers(outerScope, owner, declarations));
+			forDeferredResolve.addAll(collectNamespacesAndClassifiers(outerScope, owner, declarations.toArray(new PsiElement[declarations.size()])));
 
 			while(!forDeferredResolve.isEmpty())
 			{
@@ -166,7 +166,7 @@ public class TypeHierarchyResolver
 	}
 
 	@Nullable
-	private Collection<NapileDeclarationContainer> collectNamespacesAndClassifiers(@NotNull final JetScope outerScope, @NotNull final NamespaceLikeBuilder owner, @NotNull Iterable<? extends PsiElement> declarations)
+	private Collection<NapileDeclarationContainer> collectNamespacesAndClassifiers(@NotNull final JetScope outerScope, @NotNull final NamespaceLikeBuilder owner, @NotNull PsiElement[] declarations)
 	{
 		final Collection<NapileDeclarationContainer> forDeferredResolve = new ArrayList<NapileDeclarationContainer>();
 

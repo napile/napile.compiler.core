@@ -65,7 +65,7 @@ public class JetIconProvider extends IconProvider
 		{
 			NapileFile file = (NapileFile) psiElement;
 
-			icon = file.getDeclarations().size() == 1 ? getIcon(file.getDeclarations().get(0), flags) : JetIcons.FILE;
+			icon = file.getDeclarations().length == 1 ? getIcon(file.getDeclarations()[0], flags) : JetIcons.FILE;
 		}
 		else if(psiElement instanceof NapileNamedMethod)
 			icon = JetIcons.METHOD;

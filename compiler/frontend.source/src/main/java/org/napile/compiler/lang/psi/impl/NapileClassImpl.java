@@ -58,9 +58,14 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 		super(stub, NapileStubElementTypes.CLASS);
 	}
 
+	@NotNull
 	@Override
 	public ClassKind getKind()
 	{
+		NapilePsiClassStub stub = getStub();
+		if(stub != null)
+			return stub.getKind();
+
 		PsiElement element = findNotNullChildByType(CLASS_DECL_KEYWORDS);
 		IElementType elementType = element.getNode().getElementType();
 		if(elementType == NapileTokens.RETELL_KEYWORD)
@@ -73,11 +78,11 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 
 	@NotNull
 	@Override
-	public List<NapileDeclaration> getDeclarations()
+	public NapileDeclaration[] getDeclarations()
 	{
 		NapileClassBody body = (NapileClassBody) findChildByType(NapileNodes.CLASS_BODY);
 		if(body == null)
-			return Collections.emptyList();
+			return NapileDeclaration.EMPTY_ARRAY;
 
 		return body.getDeclarations();
 	}

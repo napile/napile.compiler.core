@@ -944,7 +944,7 @@ public class JetControlFlowProcessor
 			NapileAnonymClass declaration = expression.getObjectDeclaration();
 			value(declaration, inCondition);
 
-			List<NapileDeclaration> declarations = declaration.getDeclarations();
+			NapileDeclaration[] declarations = declaration.getDeclarations();
 			List<NapileDeclaration> functions = Lists.newArrayList();
 			for(NapileDeclaration localDeclaration : declarations)
 			{
@@ -984,7 +984,7 @@ public class JetControlFlowProcessor
 
 		private void visitClassOrObject(NapileClassLike classOrObject)
 		{
-			List<NapileDeclaration> declarations = classOrObject.getDeclarations();
+			NapileDeclaration[] declarations = classOrObject.getDeclarations();
 			List<NapileVariable> properties = Lists.newArrayList();
 			for(NapileDeclaration declaration : declarations)
 			{

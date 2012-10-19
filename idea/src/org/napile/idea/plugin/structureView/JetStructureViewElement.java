@@ -16,9 +16,6 @@
 
 package org.napile.idea.plugin.structureView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,13 +24,13 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.ide.structureView.StructureViewTreeElement;
@@ -142,10 +139,8 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		else if(myElement instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) myElement;
-			List<NapileDeclaration> declarations = new ArrayList<NapileDeclaration>();
 
-			declarations.addAll(napileClass.getDeclarations());
-			return wrapDeclarations(declarations);
+			return wrapDeclarations(napileClass.getDeclarations());
 		}
 		else if(myElement instanceof NapileClassLike)
 		{
@@ -179,12 +174,12 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		return text;
 	}
 
-	private TreeElement[] wrapDeclarations(List<? extends NapileDeclaration> declarations)
+	private TreeElement[] wrapDeclarations(NapileDeclaration[] declarations)
 	{
-		TreeElement[] result = new TreeElement[declarations.size()];
-		for(int i = 0; i < declarations.size(); i++)
+		TreeElement[] result = new TreeElement[declarations.length];
+		for(int i = 0; i < declarations.length; i++)
 		{
-			result[i] = new JetStructureViewElement(declarations.get(i), context);
+			result[i] = new JetStructureViewElement(declarations[i], context);
 		}
 		return result;
 	}

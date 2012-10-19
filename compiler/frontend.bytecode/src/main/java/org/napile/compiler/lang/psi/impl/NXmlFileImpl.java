@@ -39,8 +39,8 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePackageImpl;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.impl.file.NXmlFileViewProvider;
+import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import com.intellij.ide.caches.FileContent;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.FileASTNode;
@@ -210,7 +210,7 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 
 	@NotNull
 	@Override
-	public List<NapileClass> getDeclarations()
+	public NapileClass[] getDeclarations()
 	{
 		return getMirror().getDeclarations();
 	}

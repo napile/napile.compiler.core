@@ -20,6 +20,7 @@
 package org.napile.compiler.codegen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +31,10 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.codegen.processors.ClassGenerator;
 import org.napile.compiler.codegen.processors.FqNameGenerator;
-import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
 import com.intellij.openapi.project.Project;
 
 public class GenerationState
@@ -78,7 +79,7 @@ public class GenerationState
 
 		List<NapileClass> classes = new ArrayList<NapileClass>();
 		for(NapileFile napileFile : files)
-			classes.addAll(napileFile.getDeclarations());
+			classes.addAll(Arrays.asList(napileFile.getDeclarations()));
 
 		for(NapileClass napileClass : classes)
 			napileClass.accept(fqNameGenerator, null);

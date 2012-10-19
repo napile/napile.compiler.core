@@ -16,8 +16,6 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
@@ -128,18 +126,18 @@ public class NapilePsiFactory
 	private static <T> T createClassDeclaration(Project project, String text)
 	{
 		NapileFile file = createFile(project, "class A {" + text + "}");
-		List<NapileClass> dcls = file.getDeclarations();
-		assert dcls.size() == 1 : dcls.size();
+		NapileClass[] dcls = file.getDeclarations();
+		assert dcls.length == 1 : dcls.length;
 
-		return (T) dcls.get(0).getDeclarations().get(0);
+		return (T) dcls[0].getDeclarations()[0];
 	}
 
 	private static <T> T createDeclaration(Project project, String text, Class<T> clazz)
 	{
 		NapileFile file = createFile(project, text);
-		List<NapileClass> dcls = file.getDeclarations();
-		assert dcls.size() == 1 : dcls.size();
-		@SuppressWarnings("unchecked") T result = (T) dcls.get(0);
+		NapileClass[] dcls = file.getDeclarations();
+		assert dcls.length == 1 : dcls.length;
+		@SuppressWarnings("unchecked") T result = (T) dcls[0];
 		return result;
 	}
 

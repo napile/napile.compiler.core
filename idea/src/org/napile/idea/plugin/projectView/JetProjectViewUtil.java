@@ -47,8 +47,8 @@ public final class JetProjectViewUtil
 	{
 		if(settings.isShowMembers())
 		{
-			List<? extends NapileDeclaration> declarations = napileClass.getDeclarations();
-			List<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>(declarations.size());
+			NapileDeclaration[] declarations = napileClass.getDeclarations();
+			List<AbstractTreeNode> result = new ArrayList<AbstractTreeNode>(declarations.length);
 
 			for(NapileDeclaration declaration : declarations)
 			{
@@ -100,7 +100,7 @@ public final class JetProjectViewUtil
 	@Nullable
 	public static NapileClass getClassIfHeSingle(@NotNull NapileFile file)
 	{
-		List<NapileClass> list = file.getDeclarations();
-		return list.size() == 1 ? list.get(0) : null;
+		NapileClass[] list = file.getDeclarations();
+		return list.length == 1 ? list[0] : null;
 	}
 }
