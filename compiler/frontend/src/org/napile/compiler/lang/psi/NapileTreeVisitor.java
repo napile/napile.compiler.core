@@ -16,8 +16,6 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.napile.compiler.psi.NapileElement;
-
 /**
  * @author svtk
  */

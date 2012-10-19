@@ -55,13 +55,18 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileClassLike;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileModifierList;
-import org.napile.compiler.psi.NapileModifierListOwner;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileModifierListOwner;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import com.google.common.collect.Lists;
@@ -239,12 +244,12 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public List<ParameterDescriptor> resolveValueParameters(MethodDescriptor methodDescriptor, WritableScope parameterScope, List<NapileElement> valueParameters, BindingTrace trace)
+	public List<ParameterDescriptor> resolveValueParameters(MethodDescriptor methodDescriptor, WritableScope parameterScope, NapileElement[] valueParameters, BindingTrace trace)
 	{
 		List<ParameterDescriptor> result = new ArrayList<ParameterDescriptor>();
-		for(int i = 0, valueParametersSize = valueParameters.size(); i < valueParametersSize; i++)
+		for(int i = 0, valueParametersSize = valueParameters.length; i < valueParametersSize; i++)
 		{
-			NapileElement parameter = valueParameters.get(i);
+			NapileElement parameter = valueParameters[i];
 			if(parameter instanceof NapilePropertyParameter)
 			{
 				NapileTypeReference typeReference = ((NapilePropertyParameter) parameter).getTypeReference();
@@ -349,11 +354,7 @@ public class DescriptorResolver
 	public VariableDescriptor resolveAnonymDeclaration(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileClassLike objectDeclaration, @NotNull ClassDescriptor classDescriptor, BindingTrace trace, @NotNull JetScope scope)
 	{
 		VariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, objectDeclaration.getModifierList(), trace), NapilePsiUtil.safeName(objectDeclaration.getName()), classDescriptor.getDefaultType(), Modality.FINAL);
-		NapileObjectDeclarationName nameAsDeclaration = objectDeclaration.getNameAsDeclaration();
-		if(nameAsDeclaration != null)
-		{
-			trace.record(BindingContext.VARIABLE, nameAsDeclaration, variableDescriptor);
-		}
+
 		return variableDescriptor;
 	}
 
@@ -376,8 +377,8 @@ public class DescriptorResolver
 		List<TypeParameterDescriptor> typeParameterDescriptors;
 
 		{
-			List<NapileTypeParameter> typeParameters = property.getTypeParameters();
-			if(typeParameters.isEmpty())
+			NapileTypeParameter[] typeParameters = property.getTypeParameters();
+			if(typeParameters.length == 0)
 			{
 				typeParameterDescriptors = Collections.emptyList();
 			}

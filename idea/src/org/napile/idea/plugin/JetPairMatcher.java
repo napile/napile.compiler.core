@@ -21,7 +21,7 @@ package org.napile.idea.plugin;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.BracePair;
 import com.intellij.lang.PairedBraceMatcher;
 import com.intellij.psi.PsiFile;

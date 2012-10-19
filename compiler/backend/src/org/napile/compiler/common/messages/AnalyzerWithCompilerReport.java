@@ -33,7 +33,7 @@ import org.napile.compiler.lang.psi.NapileIdeTemplate;
 import org.napile.compiler.lang.resolve.AnalyzingUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;

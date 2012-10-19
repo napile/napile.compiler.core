@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -45,6 +45,6 @@ public class NapileObjectLiteralExpression extends NapileExpressionImpl
 	@NotNull
 	public NapileAnonymClass getObjectDeclaration()
 	{
-		return (NapileAnonymClass) findChildByType(NapileNodeTypes.ANONYM_CLASS);
+		return (NapileAnonymClass) findChildByType(NapileNodes.ANONYM_CLASS);
 	}
 }

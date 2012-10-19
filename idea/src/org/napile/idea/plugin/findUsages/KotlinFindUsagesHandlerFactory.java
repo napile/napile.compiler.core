@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileMethod;
 import com.intellij.find.findUsages.FindUsagesHandler;
 import com.intellij.find.findUsages.FindUsagesHandlerFactory;

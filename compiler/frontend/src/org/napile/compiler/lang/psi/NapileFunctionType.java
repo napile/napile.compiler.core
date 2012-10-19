@@ -17,15 +17,13 @@
 package org.napile.compiler.lang.psi;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -82,14 +80,14 @@ public class NapileFunctionType extends NapileTypeElement
 	@Nullable
 	public NapileParameterList getParameterList()
 	{
-		return (NapileParameterList) findChildByType(NapileNodeTypes.VALUE_PARAMETER_LIST);
+		return (NapileParameterList) findChildByType(NapileNodes.VALUE_PARAMETER_LIST);
 	}
 
 	@NotNull
-	public List<NapileElement> getParameters()
+	public NapileElement[] getParameters()
 	{
 		NapileParameterList list = getParameterList();
-		return list != null ? list.getParameters() : Collections.<NapileElement>emptyList();
+		return list != null ? list.getParameters() : NapileElement.EMPTY_ARRAY;
 	}
 
 	@Nullable

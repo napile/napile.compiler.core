@@ -16,8 +16,8 @@
 
 package org.napile.idea.plugin.quickfix;
 
-import static org.napile.compiler.lexer.NapileTokens.ABSTRACT_KEYWORD;
-import static org.napile.compiler.lexer.NapileTokens.FINAL_KEYWORD;
+import static org.napile.compiler.lang.lexer.NapileTokens.ABSTRACT_KEYWORD;
+import static org.napile.compiler.lang.lexer.NapileTokens.FINAL_KEYWORD;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +25,12 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.psi.NapileModifierList;
-import org.napile.compiler.psi.NapileModifierListImpl;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
-import org.napile.compiler.lexer.NapileKeywordToken;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.psi.NapileModifierListOwner;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.idea.plugin.JetBundle;
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.openapi.editor.Editor;

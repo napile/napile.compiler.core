@@ -18,7 +18,7 @@ package org.napile.idea.plugin.quickfix;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;

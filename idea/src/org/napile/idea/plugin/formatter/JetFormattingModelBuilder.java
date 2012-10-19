@@ -16,18 +16,18 @@
 
 package org.napile.idea.plugin.formatter;
 
-import static org.napile.compiler.NapileNodeTypes.BINARY_EXPRESSION;
-import static org.napile.compiler.NapileNodeTypes.BLOCK;
-import static org.napile.compiler.NapileNodeTypes.CLASS_BODY;
-import static org.napile.compiler.NapileNodeTypes.IMPORT_DIRECTIVE;
-import static org.napile.compiler.NapileNodeTypes.METHOD;
-import static org.napile.compiler.NapileNodeTypes.PACKAGE;
-import static org.napile.compiler.NapileNodeTypes.PROPERTY;
-import static org.napile.compiler.NapileNodeTypes.VALUE_PARAMETER;
-import static org.napile.compiler.lexer.NapileTokens.*;
+import static org.napile.compiler.lang.lexer.NapileNodes.BINARY_EXPRESSION;
+import static org.napile.compiler.lang.lexer.NapileNodes.BLOCK;
+import static org.napile.compiler.lang.lexer.NapileNodes.CLASS_BODY;
+import static org.napile.compiler.lang.lexer.NapileNodes.IMPORT_DIRECTIVE;
+import static org.napile.compiler.lang.lexer.NapileNodes.METHOD;
+import static org.napile.compiler.lang.lexer.NapileNodes.PACKAGE;
+import static org.napile.compiler.lang.lexer.NapileNodes.VARIABLE;
+import static org.napile.compiler.lang.lexer.NapileNodes.VALUE_PARAMETER;
+import static org.napile.compiler.lang.lexer.NapileTokens.*;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileLanguage;
+import org.napile.compiler.lang.NapileLanguage;
 import com.intellij.formatting.FormattingModel;
 import com.intellij.formatting.FormattingModelBuilder;
 import com.intellij.formatting.FormattingModelProvider;
@@ -66,7 +66,7 @@ public class JetFormattingModelBuilder implements FormattingModelBuilder
 
 				.between(IMPORT_DIRECTIVE, IMPORT_DIRECTIVE).lineBreakInCode().after(IMPORT_DIRECTIVE).blankLines(1)
 
-				.before(METHOD).lineBreakInCode().before(PROPERTY).lineBreakInCode().between(METHOD, METHOD).blankLines(1).between(METHOD, PROPERTY).blankLines(1)
+				.before(METHOD).lineBreakInCode().before(VARIABLE).lineBreakInCode().between(METHOD, METHOD).blankLines(1).between(METHOD, VARIABLE).blankLines(1)
 
 				.afterInside(LBRACE, BLOCK).lineBreakInCode().beforeInside(RBRACE, CLASS_BODY).lineBreakInCode().beforeInside(RBRACE, BLOCK).lineBreakInCode()
 
@@ -79,7 +79,7 @@ public class JetFormattingModelBuilder implements FormattingModelBuilder
 
 						// TODO: Ask for better API
 						// Type of the declaration colon
-				.beforeInside(COLON, PROPERTY).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, PROPERTY).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, METHOD).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, METHOD).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON);
+				.beforeInside(COLON, VARIABLE).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, VARIABLE).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, METHOD).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, METHOD).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON);
 	}
 
 	@Override

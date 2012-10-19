@@ -16,13 +16,9 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -51,7 +47,7 @@ public class NapileCatchClause extends NapileElementImpl
 	@IfNotParsed
 	public NapileParameterList getParameterList()
 	{
-		return (NapileParameterList) findChildByType(NapileNodeTypes.VALUE_PARAMETER_LIST);
+		return (NapileParameterList) findChildByType(NapileNodes.VALUE_PARAMETER_LIST);
 	}
 
 	@Nullable
@@ -61,8 +57,8 @@ public class NapileCatchClause extends NapileElementImpl
 		NapileParameterList list = getParameterList();
 		if(list == null)
 			return null;
-		List<NapileElement> parameters = list.getParameters();
-		return parameters.size() == 1 ? parameters.get(0) : null;
+		NapileElement[] parameters = list.getParameters();
+		return parameters.length == 1 ? parameters[0] : null;
 	}
 
 

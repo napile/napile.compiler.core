@@ -19,7 +19,7 @@ package org.napile.compiler.lang.diagnostics;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiErrorElement;
@@ -83,7 +83,7 @@ public abstract class AbstractDiagnostic<E extends PsiElement> implements Parame
 			return false;
 		if(hasSyntaxErrors(psiElement))
 			return false;
-		if(psiElement.getNode().findChildByType(NapileNodeTypes.IDE_TEMPLATE_EXPRESSION) != null)
+		if(psiElement.getNode().findChildByType(NapileNodes.IDE_TEMPLATE_EXPRESSION) != null)
 			return false;
 		return true;
 	}

@@ -18,7 +18,7 @@ package org.napile.idea.plugin.refactoring.copy;
 
 import java.util.ArrayList;
 
-import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.idea.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;

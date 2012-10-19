@@ -40,11 +40,13 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileClassLike;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.util.RunUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -392,7 +394,7 @@ public class JetFlowInformationProvider
 				return false;
 			PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
 			assert property instanceof NapileVariable;
-			/*if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.FINAL && ((NapileVariable) property).getSetter() == null)
+			/*if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.FINAL && ((NapileVariableImpl) property).getSetter() == null)
 			{
 				return false;
 			}   */
@@ -576,7 +578,7 @@ public class JetFlowInformationProvider
 								PsiElement psiElement = element.getParent().getParent();
 								if(psiElement instanceof NapileMethod)
 								{
-									if(psiElement instanceof NapileFunctionLiteral)
+									if(psiElement instanceof NapileAnonymMethodImpl)
 										return;
 									DeclarationDescriptor descriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, psiElement);
 									assert descriptor instanceof MethodDescriptor : psiElement.getText();

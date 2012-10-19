@@ -26,14 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileClassLike;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileFile;
-import org.napile.compiler.psi.NapileModifierList;
-import org.napile.compiler.psi.NapileModifierListOwner;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
@@ -247,9 +240,9 @@ public class NapilePsiUtil
 				}
 			}
 		}
-		if(parent instanceof NapileFunctionLiteral)
+		if(parent instanceof NapileAnonymMethodImpl)
 		{
-			NapileFunctionLiteral functionLiteral = (NapileFunctionLiteral) parent;
+			NapileAnonymMethodImpl functionLiteral = (NapileAnonymMethodImpl) parent;
 			if(functionLiteral.getBodyExpression() == block)
 			{
 				return parent;
@@ -289,7 +282,7 @@ public class NapilePsiUtil
 			}
 			if(expression == null)
 			{
-				expression = getDirectParentOfTypeForBlock(block, NapileFunctionLiteral.class);
+				expression = getDirectParentOfTypeForBlock(block, NapileAnonymMethodImpl.class);
 			}
 			if(expression == null)
 			{

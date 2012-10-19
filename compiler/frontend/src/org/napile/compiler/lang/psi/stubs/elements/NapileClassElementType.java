@@ -24,8 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileClassImpl;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.impl.NapileClassImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -47,7 +47,7 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 	@Override
 	public NapileClass createPsi(@NotNull NapilePsiClassStub stub)
 	{
-		return new NapileClassImpl(stub);
+		return getPsiFactory(stub).createClass(stub);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 	{
 		FqName fqName = NapilePsiUtil.getFQName(psi);
 
-		return new NapilePsiClassStub(NapileStubElementTypes.CLASS, parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames());
+		return new NapilePsiClassStub(parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames());
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 		for(int i = 0; i < superCount; i++)
 			superNames[i] = dataStream.readName();
 
-		return new NapilePsiClassStub(NapileStubElementTypes.CLASS, parentStub, qualifiedName, name, superNames);
+		return new NapilePsiClassStub(parentStub, qualifiedName, name, superNames);
 	}
 
 	@Override

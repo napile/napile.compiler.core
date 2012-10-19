@@ -19,7 +19,7 @@ package org.napile.idea.plugin.run.ui;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.psi.filter.NapileClassFilterWithScope;
 import org.napile.idea.plugin.util.IdeRunUtil;

@@ -16,14 +16,7 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.napile.compiler.psi.NapileArrayOfExpression;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileCodeInjectionExpression;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileFile;
-import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.impl.NapileCodeInjectionExpression;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
@@ -421,12 +414,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 
 	public void visitAnonymClass(NapileAnonymClass declaration)
 	{
-		visitNamedDeclaration(declaration);
-	}
-
-	public void visitObjectDeclarationName(NapileObjectDeclarationName declaration)
-	{
-		visitNamedDeclaration(declaration);
+		visitDeclaration(declaration);
 	}
 
 	public void visitStringTemplateEntry(NapileStringTemplateEntry entry)

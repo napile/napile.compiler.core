@@ -20,10 +20,11 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.impl.NapileVariableImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
-import org.napile.compiler.psi.NapileExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IndexSink;
@@ -45,13 +46,13 @@ public class NapileVariableElementType extends NapileStubElementType<NapilePsiVa
 	@Override
 	public NapileVariable createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileVariable(node);
+		return new NapileVariableImpl(node);
 	}
 
 	@Override
 	public NapileVariable createPsi(@NotNull NapilePsiVariableStub stub)
 	{
-		return new NapileVariable(stub, NapileStubElementTypes.VARIABLE);
+		return getPsiFactory(stub).createVariable(stub);
 	}
 
 	@Override
@@ -76,9 +77,8 @@ public class NapileVariableElementType extends NapileStubElementType<NapilePsiVa
 		NapileTypeReference typeRef = psi.getPropertyTypeRef();
 		NapileExpression expression = psi.getInitializer();
 
-		assert !psi.isLocal() : "Should not store local property";
 
-		return new NapilePsiVariableStub(NapileStubElementTypes.VARIABLE, parentStub, psi.getName(), typeRef != null ? typeRef.getText() : null, expression != null ? expression.getText() : null);
+		return new NapilePsiVariableStub(parentStub, psi.getName(), typeRef != null ? typeRef.getText() : null, expression != null ? expression.getText() : null);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class NapileVariableElementType extends NapileStubElementType<NapilePsiVa
 		StringRef typeText = dataStream.readName();
 		StringRef inferenceBodyText = dataStream.readName();
 
-		return new NapilePsiVariableStub(NapileStubElementTypes.VARIABLE, parentStub, name, typeText, inferenceBodyText);
+		return new NapilePsiVariableStub(parentStub, name, typeText, inferenceBodyText);
 	}
 
 	@Override

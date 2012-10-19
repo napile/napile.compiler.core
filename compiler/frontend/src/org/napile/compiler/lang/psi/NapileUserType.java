@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -54,7 +54,7 @@ public class NapileUserType extends NapileTypeElement
 
 	public NapileTypeArgumentList getTypeArgumentList()
 	{
-		return (NapileTypeArgumentList) findChildByType(NapileNodeTypes.TYPE_ARGUMENT_LIST);
+		return (NapileTypeArgumentList) findChildByType(NapileNodes.TYPE_ARGUMENT_LIST);
 	}
 
 	@NotNull
@@ -69,13 +69,13 @@ public class NapileUserType extends NapileTypeElement
 	@IfNotParsed
 	public NapileSimpleNameExpression getReferenceExpression()
 	{
-		return (NapileSimpleNameExpression) findChildByType(NapileNodeTypes.REFERENCE_EXPRESSION);
+		return (NapileSimpleNameExpression) findChildByType(NapileNodes.REFERENCE_EXPRESSION);
 	}
 
 	@Nullable
 	public NapileUserType getQualifier()
 	{
-		return (NapileUserType) findChildByType(NapileNodeTypes.USER_TYPE);
+		return (NapileUserType) findChildByType(NapileNodes.USER_TYPE);
 	}
 
 	@Nullable

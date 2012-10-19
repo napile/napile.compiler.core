@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.resolve.NapileFilesProvider;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.Function;
 

@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.cfg.pseudocode.JetControlFlowInstructionsGenerator;
 import org.napile.compiler.lang.cfg.pseudocode.LocalDeclarationInstruction;
 import org.napile.compiler.lang.cfg.pseudocode.Pseudocode;
@@ -40,12 +40,17 @@ import org.napile.compiler.lang.resolve.constants.BoolValue;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileClassLike;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -84,21 +89,16 @@ public class JetControlFlowProcessor
 		{
 			NapileDeclarationWithBody declarationWithBody = (NapileDeclarationWithBody) subroutine;
 			CFPVisitor cfpVisitor = new CFPVisitor(false);
-			List<NapileElement> valueParameters = declarationWithBody.getValueParameters();
+			NapileElement[] valueParameters = declarationWithBody.getValueParameters();
 			for(NapileElement valueParameter : valueParameters)
-			{
 				valueParameter.accept(cfpVisitor);
-			}
+
 			NapileExpression bodyExpression = declarationWithBody.getBodyExpression();
 			if(bodyExpression != null)
-			{
 				bodyExpression.accept(cfpVisitor);
-			}
 		}
 		else
-		{
 			subroutine.accept(new CFPVisitor(false));
-		}
 		return builder.exitSubroutine(subroutine);
 	}
 
@@ -524,7 +524,7 @@ public class JetControlFlowProcessor
 				value(condition, true);
 			}
 			boolean conditionIsTrueConstant = false;
-			if(condition instanceof NapileConstantExpression && condition.getNode().getElementType() == NapileNodeTypes.BOOLEAN_CONSTANT)
+			if(condition instanceof NapileConstantExpression && condition.getNode().getElementType() == NapileNodes.BOOLEAN_CONSTANT)
 			{
 				if(BoolValue.TRUE == new CompileTimeConstantResolver().getBooleanValue(condition.getText()))
 				{
@@ -661,7 +661,7 @@ public class JetControlFlowProcessor
 			}
 			NapileElement subroutine = builder.getReturnSubroutine();
 
-			//todo cache NapileFunctionLiteral instead
+			//todo cache NapileAnonymMethodImpl instead
 			if(subroutine instanceof NapileFunctionLiteralExpression)
 			{
 				subroutine = ((NapileFunctionLiteralExpression) subroutine).getFunctionLiteral();
@@ -726,7 +726,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression)
 		{
-			NapileFunctionLiteral functionLiteral = expression.getFunctionLiteral();
+			NapileAnonymMethodImpl functionLiteral = expression.getFunctionLiteral();
 			processLocalDeclaration(functionLiteral);
 			builder.read(expression);
 		}
@@ -776,8 +776,8 @@ public class JetControlFlowProcessor
 			//            assert resolvedCall != null;
 			//            CallableDescriptor resultingDescriptor = resolvedCall.getResultingDescriptor();
 			//            PsiElement element = trace.get(BindingContext.DESCRIPTOR_TO_DECLARATION, resultingDescriptor);
-			//            if (element instanceof NapileNamedMethod) {
-			//                NapileNamedMethod namedFunction = (NapileNamedMethod) element;
+			//            if (element instanceof NapileNamedMethodImpl) {
+			//                NapileNamedMethodImpl namedFunction = (NapileNamedMethodImpl) element;
 			//                if (namedFunction.hasModifier(NapileTokens.INLINE_KEYWORD)) {
 			//                }
 			//            }

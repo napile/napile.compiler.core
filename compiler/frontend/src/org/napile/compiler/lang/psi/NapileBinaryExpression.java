@@ -18,8 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -76,7 +75,7 @@ public class NapileBinaryExpression extends NapileExpressionImpl implements Napi
 	@NotNull
 	public NapileSimpleNameExpression getOperationReference()
 	{
-		return (NapileSimpleNameExpression) findChildByType(NapileNodeTypes.OPERATION_REFERENCE);
+		return (NapileSimpleNameExpression) findChildByType(NapileNodes.OPERATION_REFERENCE);
 	}
 
 	public IElementType getOperationToken()

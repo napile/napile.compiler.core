@@ -16,8 +16,8 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.stubs.elements.NapileTypeParameterElementType;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
@@ -33,17 +33,17 @@ public class NapilePsiTypeParameterStub extends StubBase<NapileTypeParameter> im
 	private final StringRef name;
 	private final StringRef[] extendBoundTypeText;
 
-	public NapilePsiTypeParameterStub(NapileTypeParameterElementType type, final StubElement parent, StringRef name, StringRef[] extendBoundTypeText)
+	public NapilePsiTypeParameterStub(final StubElement parent, StringRef name, StringRef[] extendBoundTypeText)
 	{
-		super(parent, type);
+		super(parent, NapileStubElementTypes.TYPE_PARAMETER);
 
 		this.name = name;
 		this.extendBoundTypeText = extendBoundTypeText;
 	}
 
-	public NapilePsiTypeParameterStub(NapileTypeParameterElementType type, final StubElement parent, String name, StringRef[] extendBoundTypeText)
+	public NapilePsiTypeParameterStub(final StubElement parent, String name, StringRef[] extendBoundTypeText)
 	{
-		this(type, parent, StringRef.fromString(name), extendBoundTypeText);
+		this(parent, StringRef.fromString(name), extendBoundTypeText);
 	}
 
 	public StringRef[] getExtendBoundTypeText()

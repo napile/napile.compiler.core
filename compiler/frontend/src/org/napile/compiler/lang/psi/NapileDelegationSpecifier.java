@@ -18,7 +18,8 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -46,7 +47,7 @@ public class NapileDelegationSpecifier extends NapileElementImpl
 	@Nullable
 	public NapileTypeReference getTypeReference()
 	{
-		return (NapileTypeReference) findChildByType(NapileNodeTypes.TYPE_REFERENCE);
+		return (NapileTypeReference) findChildByType(NapileNodes.TYPE_REFERENCE);
 	}
 
 	@Nullable

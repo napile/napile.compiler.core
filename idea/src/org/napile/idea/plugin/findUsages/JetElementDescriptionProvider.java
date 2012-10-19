@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileElement;
 import com.intellij.psi.ElementDescriptionLocation;
 import com.intellij.psi.ElementDescriptionProvider;
 import com.intellij.psi.PsiElement;

@@ -16,14 +16,11 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileModifierListImpl;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -49,14 +46,14 @@ public class NapileFunctionLiteralExpression extends NapileExpressionImpl implem
 	}
 
 	@NotNull
-	public NapileFunctionLiteral getFunctionLiteral()
+	public NapileAnonymMethodImpl getFunctionLiteral()
 	{
-		return (NapileFunctionLiteral) findChildByType(NapileNodeTypes.FUNCTION_LITERAL);
+		return (NapileAnonymMethodImpl) findChildByType(NapileNodes.FUNCTION_LITERAL);
 	}
 
 	@NotNull
 	@Override
-	public List<NapileElement> getValueParameters()
+	public NapileElement[] getValueParameters()
 	{
 		return getFunctionLiteral().getValueParameters();
 	}
@@ -77,13 +74,6 @@ public class NapileFunctionLiteralExpression extends NapileExpressionImpl implem
 	public boolean hasDeclaredReturnType()
 	{
 		return getFunctionLiteral().getReturnTypeRef() != null;
-	}
-
-	@NotNull
-	@Override
-	public NapileElement asElement()
-	{
-		return this;
 	}
 
 	@Nullable

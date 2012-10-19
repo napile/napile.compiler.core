@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
 import com.intellij.lang.folding.FoldingDescriptor;
@@ -50,7 +50,7 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 	{
 		TextRange textRange = node.getTextRange();
 		IElementType type = node.getElementType();
-		if((type == NapileNodeTypes.BLOCK || type == NapileNodeTypes.CLASS_BODY) && !isOneLine(textRange, document))
+		if((type == NapileNodes.BLOCK || type == NapileNodes.CLASS_BODY) && !isOneLine(textRange, document))
 		{
 			descriptors.add(new FoldingDescriptor(node, textRange));
 		}

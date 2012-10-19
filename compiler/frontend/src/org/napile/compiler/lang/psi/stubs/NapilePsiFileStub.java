@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.psi.stubs.PsiFileStubImpl;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.util.io.StringRef;
@@ -29,12 +29,14 @@ public class NapilePsiFileStub extends PsiFileStubImpl<NapileFile>
 {
 	private final StringRef packageName;
 	private final boolean compiled;
+	private final NapilePsiFromStubFactory stubFactory;
 
 	public NapilePsiFileStub(NapileFile jetFile, StringRef packageName, boolean compiled)
 	{
 		super(jetFile);
 		this.packageName = packageName;
 		this.compiled = compiled;
+		this.stubFactory = compiled ? new NXmlPsiFromStubFactory() : new SourcePsiFromStubFactory();
 	}
 
 	public String getPackageName()
@@ -66,5 +68,10 @@ public class NapilePsiFileStub extends PsiFileStubImpl<NapileFile>
 	public boolean isCompiled()
 	{
 		return compiled;
+	}
+
+	public NapilePsiFromStubFactory getStubFactory()
+	{
+		return stubFactory;
 	}
 }

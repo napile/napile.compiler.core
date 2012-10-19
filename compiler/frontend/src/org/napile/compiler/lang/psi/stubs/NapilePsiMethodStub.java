@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi.stubs;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import com.intellij.psi.stubs.IStubElementType;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
@@ -33,14 +33,14 @@ public class NapilePsiMethodStub extends StubBase<NapileNamedMethod> implements 
 {
 	private final StringRef nameRef;
 
-	public NapilePsiMethodStub(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable String name)
+	public NapilePsiMethodStub(@NotNull StubElement parent, @Nullable String name)
 	{
-		this(elementType, parent, StringRef.fromString(name));
+		this(parent, StringRef.fromString(name));
 	}
 
-	public NapilePsiMethodStub(@NotNull IStubElementType elementType, @NotNull StubElement parent, @Nullable StringRef nameRef)
+	public NapilePsiMethodStub(@NotNull StubElement parent, @Nullable StringRef nameRef)
 	{
-		super(parent, elementType);
+		super(parent, NapileStubElementTypes.METHOD);
 
 		this.nameRef = nameRef;
 	}

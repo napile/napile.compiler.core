@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -46,6 +46,6 @@ public class NapileValueArgumentList extends NapileElementImpl
 
 	public List<NapileValueArgument> getArguments()
 	{
-		return findChildrenByType(NapileNodeTypes.VALUE_ARGUMENT);
+		return findChildrenByType(NapileNodes.VALUE_ARGUMENT);
 	}
 }

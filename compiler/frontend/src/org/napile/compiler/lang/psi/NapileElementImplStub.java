@@ -17,9 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileLanguage;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.NapileLanguage;
 import com.intellij.extapi.psi.StubBasedPsiElementBase;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;

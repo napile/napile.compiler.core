@@ -22,8 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import com.google.common.collect.Sets;
 
 /**

@@ -44,7 +44,7 @@ import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.lib.NapileReflectPackage;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
@@ -84,12 +84,13 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileArrayOfExpression;
-import org.napile.compiler.psi.NapileCodeInjectionExpression;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileArrayOfExpression;
+import org.napile.compiler.lang.psi.impl.NapileCodeInjectionExpression;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
@@ -295,23 +296,23 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		CompileTimeConstantResolver compileTimeConstantResolver = context.getCompileTimeConstantResolver();
 
 		CompileTimeConstant<?> value;
-		if(elementType == NapileNodeTypes.INTEGER_CONSTANT)
+		if(elementType == NapileNodes.INTEGER_CONSTANT)
 		{
 			value = compileTimeConstantResolver.getIntegerValue(text, context.expectedType);
 		}
-		else if(elementType == NapileNodeTypes.FLOAT_CONSTANT)
+		else if(elementType == NapileNodes.FLOAT_CONSTANT)
 		{
 			value = compileTimeConstantResolver.getFloatValue(text, context.expectedType);
 		}
-		else if(elementType == NapileNodeTypes.BOOLEAN_CONSTANT)
+		else if(elementType == NapileNodes.BOOLEAN_CONSTANT)
 		{
 			value = compileTimeConstantResolver.getBooleanValue(text);
 		}
-		else if(elementType == NapileNodeTypes.CHARACTER_CONSTANT)
+		else if(elementType == NapileNodes.CHARACTER_CONSTANT)
 		{
 			value = compileTimeConstantResolver.getCharValue(text, context.expectedType);
 		}
-		else if(elementType == NapileNodeTypes.NULL)
+		else if(elementType == NapileNodes.NULL)
 		{
 			value = compileTimeConstantResolver.getNullValue(context.expectedType);
 		}
@@ -1318,11 +1319,11 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	private void checkSenselessComparisonWithNull(@NotNull NapileBinaryExpression expression, @NotNull NapileExpression left, @NotNull NapileExpression right, @NotNull ExpressionTypingContext context)
 	{
 		NapileExpression expr;
-		if(left instanceof NapileConstantExpression && left.getNode().getElementType() == NapileNodeTypes.NULL)
+		if(left instanceof NapileConstantExpression && left.getNode().getElementType() == NapileNodes.NULL)
 		{
 			expr = right;
 		}
-		else if(right instanceof NapileConstantExpression && right.getNode().getElementType() == NapileNodeTypes.NULL)
+		else if(right instanceof NapileConstantExpression && right.getNode().getElementType() == NapileNodes.NULL)
 		{
 			expr = left;
 		}

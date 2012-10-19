@@ -20,9 +20,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
@@ -39,7 +38,7 @@ public class NapileWhenExpression extends NapileExpressionImpl
 	@NotNull
 	public List<NapileWhenEntry> getEntries()
 	{
-		return findChildrenByType(NapileNodeTypes.WHEN_ENTRY);
+		return findChildrenByType(NapileNodes.WHEN_ENTRY);
 	}
 
 	@Nullable

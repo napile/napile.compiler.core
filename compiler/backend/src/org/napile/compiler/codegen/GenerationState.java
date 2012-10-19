@@ -32,8 +32,8 @@ import org.napile.compiler.codegen.processors.ClassGenerator;
 import org.napile.compiler.codegen.processors.FqNameGenerator;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.openapi.project.Project;
 
 public class GenerationState

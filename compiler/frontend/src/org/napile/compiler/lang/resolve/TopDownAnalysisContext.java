@@ -29,19 +29,9 @@ import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.WithDeferredResolve;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.psi.NapileRetellEntry;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileDeclarationContainer;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileFile;
 import com.google.common.collect.Maps;
 
 /**

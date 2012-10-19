@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.util.RunUtil;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;

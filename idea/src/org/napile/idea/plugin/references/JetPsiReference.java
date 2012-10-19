@@ -28,7 +28,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;

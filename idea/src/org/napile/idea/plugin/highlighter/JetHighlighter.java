@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileLexer;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;

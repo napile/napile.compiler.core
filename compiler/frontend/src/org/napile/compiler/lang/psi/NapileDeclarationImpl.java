@@ -18,10 +18,8 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -38,7 +36,7 @@ abstract class NapileDeclarationImpl extends NapileExpressionImpl implements Nap
 	@Nullable
 	public NapileModifierList getModifierList()
 	{
-		return (NapileModifierList) findChildByType(NapileNodeTypes.MODIFIER_LIST);
+		return (NapileModifierList) findChildByType(NapileNodes.MODIFIER_LIST);
 	}
 
 	@Override

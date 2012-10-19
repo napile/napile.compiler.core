@@ -31,17 +31,17 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileCallElement;
 import org.napile.compiler.lang.psi.NapileClassBody;
-import org.napile.compiler.lang.psi.NapileFunctionLiteral;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
 import org.napile.compiler.lang.psi.NapileOperationExpression;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileStatementExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import com.intellij.codeInsight.unwrap.ScopeHighlighter;
 import com.intellij.openapi.editor.Editor;
@@ -105,7 +105,7 @@ public class JetRefactoringUtil
 			return;
 		}
 		ArrayList<NapileExpression> expressions = new ArrayList<NapileExpression>();
-		while(element != null && !(element instanceof NapileBlockExpression && !(element.getParent() instanceof NapileFunctionLiteral)) &&
+		while(element != null && !(element instanceof NapileBlockExpression && !(element.getParent() instanceof NapileAnonymMethodImpl)) &&
 				!(element instanceof NapileNamedMethod) && !(element instanceof NapileClassBody))
 		{
 			if(element instanceof NapileExpression && !(element instanceof NapileStatementExpression))

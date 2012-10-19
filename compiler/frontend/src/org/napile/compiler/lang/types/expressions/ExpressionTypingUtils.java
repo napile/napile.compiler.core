@@ -30,12 +30,12 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -124,23 +124,23 @@ public class ExpressionTypingUtils
 	@Nullable
 	public static JetType getDefaultType(IElementType constantType, JetScope jetScope)
 	{
-		if(constantType == NapileNodeTypes.INTEGER_CONSTANT)
+		if(constantType == NapileNodes.INTEGER_CONSTANT)
 		{
 			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.INT, false);
 		}
-		else if(constantType == NapileNodeTypes.FLOAT_CONSTANT)
+		else if(constantType == NapileNodes.FLOAT_CONSTANT)
 		{
 			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.DOUBLE, false);
 		}
-		else if(constantType == NapileNodeTypes.BOOLEAN_CONSTANT)
+		else if(constantType == NapileNodes.BOOLEAN_CONSTANT)
 		{
 			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.BOOL, false);
 		}
-		else if(constantType == NapileNodeTypes.CHARACTER_CONSTANT)
+		else if(constantType == NapileNodes.CHARACTER_CONSTANT)
 		{
 			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.CHAR, false);
 		}
-		else if(constantType == NapileNodeTypes.NULL)
+		else if(constantType == NapileNodes.NULL)
 		{
 			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, false);
 		}
@@ -155,7 +155,7 @@ public class ExpressionTypingUtils
 		if(expression == null)
 			return false;
 
-		return TokenSet.create(NapileNodeTypes.INTEGER_CONSTANT, NapileNodeTypes.FLOAT_CONSTANT).contains(expression.getNode().getElementType());
+		return TokenSet.create(NapileNodes.INTEGER_CONSTANT, NapileNodes.FLOAT_CONSTANT).contains(expression.getNode().getElementType());
 	}
 
 	public static void checkWrappingInRef(NapileSimpleNameExpression expression, ExpressionTypingContext context)

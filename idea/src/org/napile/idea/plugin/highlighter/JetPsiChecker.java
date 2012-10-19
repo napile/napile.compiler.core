@@ -33,7 +33,7 @@ import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
 import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.idea.plugin.quickfix.JetIntentionActionFactory;
 import org.napile.idea.plugin.quickfix.QuickFixes;

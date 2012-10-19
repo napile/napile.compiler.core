@@ -19,15 +19,15 @@
  */
 package org.napile.compiler.lang.parsing;
 
-import static org.napile.compiler.NapileNodeTypes.*;
+import static org.napile.compiler.lang.lexer.NapileNodes.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileNode;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -324,7 +324,7 @@ public class JetParsing extends AbstractJetParsing
 	 * <p/>
 	 * Feeds modifiers (not attributes) into the passed consumer, if it is not null
 	 */
-	boolean parseModifierList(NapileNodeType nodeType)
+	boolean parseModifierList(NapileNode nodeType)
 	{
 		PsiBuilder.Marker list = mark();
 		boolean empty = true;
@@ -726,7 +726,7 @@ public class JetParsing extends AbstractJetParsing
 			consumeIf(NapileTokens.SEMICOLON);
 		}
 
-		return PROPERTY;
+		return VARIABLE;
 	}
 
 
@@ -800,7 +800,7 @@ public class JetParsing extends AbstractJetParsing
 		return METHOD;
 	}
 
-	private NapileNodeType parseStaticConstructor()
+	private NapileNode parseStaticConstructor()
 	{
 		assert _at(NapileTokens.STATIC_KEYWORD);
 
@@ -816,7 +816,7 @@ public class JetParsing extends AbstractJetParsing
 		 *   : modifiers "this" functionParameters (":" initializer{","}) block?
 		 *   ;
 		 */
-	private NapileNodeType parseConstructor()
+	private NapileNode parseConstructor()
 	{
 		assert _at(NapileTokens.THIS_KEYWORD);
 
@@ -1457,7 +1457,7 @@ public class JetParsing extends AbstractJetParsing
 		*/
 	boolean parseIdeTemplate()
 	{
-		@Nullable NapileNodeType nodeType = IDE_TEMPLATE_EXPRESSION;
+		@Nullable NapileNode nodeType = IDE_TEMPLATE_EXPRESSION;
 		if(at(NapileTokens.IDE_TEMPLATE_START))
 		{
 			PsiBuilder.Marker mark = null;

@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.psi.file;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NXmlFileImpl;
+import org.napile.compiler.lang.psi.impl.NXmlFileImpl;
 import com.intellij.openapi.fileTypes.BinaryFileDecompiler;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;

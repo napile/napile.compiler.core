@@ -43,7 +43,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileModifierList;
 
 /**
  * @author abreslav

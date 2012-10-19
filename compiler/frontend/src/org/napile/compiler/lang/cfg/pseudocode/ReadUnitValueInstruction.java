@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.cfg.pseudocode;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
 
 /**
  * @author abreslav

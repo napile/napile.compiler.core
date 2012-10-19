@@ -16,10 +16,10 @@
 
 package org.napile.compiler.lang.diagnostics;
 
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.psi.NapileVariable;
 
 /**
  * @author svtk

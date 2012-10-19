@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.actions.JetAddImportAction;
 import org.napile.idea.plugin.caches.JetShortNamesCache;

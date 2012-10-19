@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
-import org.napile.compiler.lexer.NapileKeywordToken;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;

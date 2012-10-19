@@ -19,7 +19,7 @@ package org.napile.compiler.lang.parsing;
 
 import java.util.Stack;
 
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.impl.PsiBuilderAdapter;
 import com.intellij.psi.TokenType;

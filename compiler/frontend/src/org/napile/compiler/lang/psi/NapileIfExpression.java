@@ -18,8 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -48,18 +47,18 @@ public class NapileIfExpression extends NapileExpressionImpl
 	@IfNotParsed
 	public NapileExpression getCondition()
 	{
-		return findExpressionUnder(NapileNodeTypes.CONDITION);
+		return findExpressionUnder(NapileNodes.CONDITION);
 	}
 
 	@Nullable
 	public NapileExpression getThen()
 	{
-		return findExpressionUnder(NapileNodeTypes.THEN);
+		return findExpressionUnder(NapileNodes.THEN);
 	}
 
 	@Nullable
 	public NapileExpression getElse()
 	{
-		return findExpressionUnder(NapileNodeTypes.ELSE);
+		return findExpressionUnder(NapileNodes.ELSE);
 	}
 }

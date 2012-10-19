@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.napile.compiler.lang.psi.NapileBlockExpression;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileWhenEntry;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.codeInsight.editorActions.wordSelection.BasicSelectioner;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.util.TextRange;

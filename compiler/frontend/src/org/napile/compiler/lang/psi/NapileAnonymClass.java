@@ -25,14 +25,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.psi.NapileClassLike;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileModifierListImpl;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
@@ -69,13 +66,6 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 
 	@Override
 	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
-	{
-		return null;
-	}
-
-	@Override
-	@Nullable
-	public NapileObjectDeclarationName getNameAsDeclaration()
 	{
 		return null;
 	}
@@ -120,7 +110,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 	@Nullable
 	public NapileDelegationSpecifierList getDelegationSpecifierList()
 	{
-		return (NapileDelegationSpecifierList) findChildByType(NapileNodeTypes.DELEGATION_SPECIFIER_LIST);
+		return (NapileDelegationSpecifierList) findChildByType(NapileNodes.DELEGATION_SPECIFIER_LIST);
 	}
 
 	@Override
@@ -141,7 +131,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 	@Override
 	public NapileClassBody getBody()
 	{
-		return (NapileClassBody) findChildByType(NapileNodeTypes.CLASS_BODY);
+		return (NapileClassBody) findChildByType(NapileNodes.CLASS_BODY);
 	}
 
 	@Override

@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -51,13 +51,13 @@ public class NapileDelegatorToSuperCall extends NapileDelegationSpecifier implem
 	@Override
 	public NapileConstructorCalleeExpression getCalleeExpression()
 	{
-		return (NapileConstructorCalleeExpression) findChildByType(NapileNodeTypes.CONSTRUCTOR_CALLEE);
+		return (NapileConstructorCalleeExpression) findChildByType(NapileNodes.CONSTRUCTOR_CALLEE);
 	}
 
 	@Nullable
 	public NapileValueArgumentList getValueArgumentList()
 	{
-		return (NapileValueArgumentList) findChildByType(NapileNodeTypes.VALUE_ARGUMENT_LIST);
+		return (NapileValueArgumentList) findChildByType(NapileNodes.VALUE_ARGUMENT_LIST);
 	}
 
 	@NotNull

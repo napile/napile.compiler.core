@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -34,6 +34,6 @@ public abstract class NapileInstanceExpression extends NapileExpressionImpl impl
 	@NotNull
 	public NapileReferenceExpression getInstanceReference()
 	{
-		return (NapileReferenceExpression) findChildByType(NapileNodeTypes.REFERENCE_EXPRESSION);
+		return (NapileReferenceExpression) findChildByType(NapileNodes.REFERENCE_EXPRESSION);
 	}
 }

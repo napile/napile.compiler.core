@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import com.intellij.psi.stubs.IStubElementType;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
@@ -34,18 +34,18 @@ public class NapilePsiMethodParameterStub extends StubBase<NapilePropertyParamet
 	private final StringRef typeText;
 	private final StringRef defaultValueText;
 
-	public NapilePsiMethodParameterStub(IStubElementType elementType, StubElement parent, StringRef name, boolean isVarArg, StringRef typeText, StringRef defaultValueText)
+	public NapilePsiMethodParameterStub(StubElement parent, StringRef name, boolean isVarArg, StringRef typeText, StringRef defaultValueText)
 	{
-		super(parent, elementType);
+		super(parent, NapileStubElementTypes.VALUE_PARAMETER);
 		this.name = name;
 		this.isVarArg = isVarArg;
 		this.typeText = typeText;
 		this.defaultValueText = defaultValueText;
 	}
 
-	public NapilePsiMethodParameterStub(IStubElementType elementType, StubElement parent, String name, boolean isVarArg, String typeText, String defaultValueText)
+	public NapilePsiMethodParameterStub(StubElement parent, String name, boolean isVarArg, String typeText, String defaultValueText)
 	{
-		this(elementType, parent, StringRef.fromString(name), isVarArg, StringRef.fromString(typeText), StringRef.fromString(defaultValueText));
+		this(parent, StringRef.fromString(name), isVarArg, StringRef.fromString(typeText), StringRef.fromString(defaultValueText));
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 import com.google.common.collect.Lists;

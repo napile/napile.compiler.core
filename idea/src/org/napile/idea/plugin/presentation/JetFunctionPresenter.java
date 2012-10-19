@@ -16,26 +16,25 @@
 
 package org.napile.idea.plugin.presentation;
 
-import java.util.Collection;
-
 import javax.swing.Icon;
 
-import org.apache.commons.lang.StringUtils;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.lang.psi.NapileReferenceParameter;
+import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.QualifiedNamesUtil;
 import org.napile.idea.plugin.JetIconProvider;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.intellij.navigation.ColoredItemPresentation;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProvider;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Iconable;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.Function;
 
 /**
  * @author Nikolay Krasko
@@ -57,30 +56,34 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 			public String getPresentableText()
 			{
 				StringBuilder presentation = new StringBuilder(function.getName());
-
-				Collection<String> paramsStrings = Collections2.transform(function.getValueParameters(), new Function<NapileElement, String>()
+				presentation.append("(");
+				presentation.append(StringUtil.join(function.getValueParameters(), new Function<NapileElement, String>()
 				{
 					@Override
-					public String apply(NapileElement parameter)
+					public String fun(NapileElement element)
 					{
-						if(parameter instanceof NapilePropertyParameter)
+						if(element instanceof NapilePropertyParameter)
 						{
-							NapileTypeReference reference = ((NapilePropertyParameter) parameter).getTypeReference();
+							NapileTypeReference reference = ((NapilePropertyParameter) element).getTypeReference();
 							if(reference != null)
 							{
 								String text = reference.getText();
 								if(text != null)
-								{
 									return text;
-								}
 							}
+						}
+						else if(element instanceof NapileReferenceParameter)
+						{
+							NapileSimpleNameExpression ref = ((NapileReferenceParameter) element).getReferenceExpression();
+							if(ref != null)
+								return ref.getText();
 						}
 
 						return "?";
 					}
-				});
+				}, ", "));
 
-				presentation.append("(").append(StringUtils.join(paramsStrings, ",")).append(")");
+				presentation.append(")");
 				return presentation.toString();
 			}
 

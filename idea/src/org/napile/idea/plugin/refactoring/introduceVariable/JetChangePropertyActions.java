@@ -1,7 +1,7 @@
 package org.napile.idea.plugin.refactoring.introduceVariable;
 
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
+import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 

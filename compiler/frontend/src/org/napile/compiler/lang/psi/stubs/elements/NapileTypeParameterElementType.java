@@ -20,9 +20,10 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileTypeParameterImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -43,13 +44,13 @@ public class NapileTypeParameterElementType extends NapileStubElementType<Napile
 	@Override
 	public NapileTypeParameter createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileTypeParameter(node);
+		return new NapileTypeParameterImpl(node);
 	}
 
 	@Override
 	public NapileTypeParameter createPsi(@NotNull NapilePsiTypeParameterStub stub)
 	{
-		return new NapileTypeParameter(stub, NapileStubElementTypes.TYPE_PARAMETER);
+		return getPsiFactory(stub).createTypeParameter(stub);
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class NapileTypeParameterElementType extends NapileStubElementType<Napile
 		for(int i = 0; i < extendsBound.length; i++)
 			stringRefs[i] = StringRef.fromString(extendsBound[i].getText());
 
-		return new NapilePsiTypeParameterStub(NapileStubElementTypes.TYPE_PARAMETER, parentStub, psi.getName(), stringRefs);
+		return new NapilePsiTypeParameterStub(parentStub, psi.getName(), stringRefs);
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class NapileTypeParameterElementType extends NapileStubElementType<Napile
 		for(int i = 0; i < count; i++)
 			refs[i] = dataStream.readName();
 
-		return new NapilePsiTypeParameterStub(NapileStubElementTypes.TYPE_PARAMETER, parentStub, name, refs);
+		return new NapilePsiTypeParameterStub(parentStub, name, refs);
 	}
 
 	@Override

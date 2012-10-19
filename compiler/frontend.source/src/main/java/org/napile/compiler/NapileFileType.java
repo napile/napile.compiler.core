@@ -22,6 +22,7 @@ package org.napile.compiler;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.NapileLanguage;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.NotNullLazyValue;

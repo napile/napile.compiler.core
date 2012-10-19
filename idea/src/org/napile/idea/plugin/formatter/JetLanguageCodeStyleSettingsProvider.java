@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.formatter;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileLanguage;
+import org.napile.compiler.lang.NapileLanguage;
 import com.intellij.application.options.IndentOptionsEditor;
 import com.intellij.application.options.SmartIndentOptionsEditor;
 import com.intellij.lang.Language;

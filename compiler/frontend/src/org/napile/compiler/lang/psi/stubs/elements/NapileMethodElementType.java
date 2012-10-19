@@ -21,9 +21,9 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.impl.NapileNamedMethodImpl;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
@@ -44,35 +44,19 @@ public class NapileMethodElementType extends NapileStubElementType<NapilePsiMeth
 	@Override
 	public NapileNamedMethod createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileNamedMethod(node);
+		return new NapileNamedMethodImpl(node);
 	}
 
 	@Override
 	public NapileNamedMethod createPsi(@NotNull NapilePsiMethodStub stub)
 	{
-		return new NapileNamedMethod(stub);
-	}
-
-	@Override
-	public boolean shouldCreateStub(ASTNode node)
-	{
-		if(super.shouldCreateStub(node))
-		{
-			PsiElement psi = node.getPsi();
-			if(psi instanceof NapileNamedMethod)
-			{
-				NapileNamedMethod function = (NapileNamedMethod) psi;
-				return function.getName() != null;
-			}
-		}
-
-		return false;
+		return getPsiFactory(stub).createNamedMethod(stub);
 	}
 
 	@Override
 	public NapilePsiMethodStub createStub(@NotNull NapileNamedMethod psi, @NotNull StubElement parentStub)
 	{
-		return new NapilePsiMethodStub(NapileStubElementTypes.METHOD, parentStub, psi.getName());
+		return new NapilePsiMethodStub(parentStub, psi.getName());
 	}
 
 	@Override
@@ -85,7 +69,7 @@ public class NapileMethodElementType extends NapileStubElementType<NapilePsiMeth
 	public NapilePsiMethodStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		return new NapilePsiMethodStub(NapileStubElementTypes.METHOD, parentStub, name);
+		return new NapilePsiMethodStub(parentStub, name);
 	}
 
 	@Override

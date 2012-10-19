@@ -28,10 +28,10 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction;
 import com.intellij.codeInsight.template.impl.TemplateManagerImpl;
 import com.intellij.codeInsight.template.impl.TemplateState;

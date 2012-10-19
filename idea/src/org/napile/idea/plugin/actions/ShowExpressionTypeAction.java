@@ -16,11 +16,11 @@
 
 package org.napile.idea.plugin.actions;
 
-import org.napile.compiler.NapileLanguage;
+import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.CodeInsightUtilBase;
 import com.intellij.codeInsight.hint.HintManager;

@@ -17,14 +17,14 @@
 package org.napile.idea.plugin;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileLanguage;
+import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileLabelExpression;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;

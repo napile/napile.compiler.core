@@ -35,12 +35,11 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFunctionLiteral;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import org.napile.compiler.lang.psi.NapileObjectLiteralExpression;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
@@ -58,6 +57,7 @@ import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Predicate;
@@ -126,7 +126,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, ExpressionTypingContext context)
 	{
-		NapileFunctionLiteral functionLiteral = expression.getFunctionLiteral();
+		NapileAnonymMethodImpl functionLiteral = expression.getFunctionLiteral();
 		NapileBlockExpression bodyExpression = functionLiteral.getBodyExpression();
 		if(bodyExpression == null)
 			return null;
@@ -189,9 +189,9 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 
 	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileFunctionLiteralExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)
 	{
-		NapileFunctionLiteral functionLiteral = expression.getFunctionLiteral();
+		NapileAnonymMethodImpl functionLiteral = expression.getFunctionLiteral();
 
-		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), NapileFunctionLiteral.FQ_NAME.shortName(), CallableMemberDescriptor.Kind.DECLARATION, false, false);
+		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), functionLiteral.getNameAsName(), CallableMemberDescriptor.Kind.DECLARATION, false, false);
 
 		List<ParameterDescriptor> parameterDescriptors = createValueParameterDescriptors(context, functionLiteral, functionDescriptor, functionTypeExpected);
 
@@ -202,10 +202,10 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		return functionDescriptor;
 	}
 
-	private List<ParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileFunctionLiteral functionLiteral, MethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
+	private List<ParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileAnonymMethodImpl functionLiteral, MethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
 	{
 		List<ParameterDescriptor> parameterDescriptors = Lists.newArrayList();
-		List<NapileElement> declaredValueParameters = functionLiteral.getValueParameters();
+		NapileElement[] declaredValueParameters = functionLiteral.getValueParameters();
 
 		List<ParameterDescriptor> expectedValueParameters = (functionTypeExpected) ? FunctionDescriptorUtil.getValueParameters(functionDescriptor, context.expectedType) : null;
 
@@ -219,9 +219,9 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		}
 		else
 		{
-			for(int i = 0; i < declaredValueParameters.size(); i++)
+			for(int i = 0; i < declaredValueParameters.length; i++)
 			{
-				NapileElement declaredParameter = declaredValueParameters.get(i);
+				NapileElement declaredParameter = declaredValueParameters[i];
 				if(!(declaredParameter instanceof NapilePropertyParameter))
 					continue;
 				NapilePropertyParameter propertyParameter = (NapilePropertyParameter) declaredParameter;

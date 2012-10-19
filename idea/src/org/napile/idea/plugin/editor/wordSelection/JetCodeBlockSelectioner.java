@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.codeInsight.editorActions.wordSelection.BasicSelectioner;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.Editor;

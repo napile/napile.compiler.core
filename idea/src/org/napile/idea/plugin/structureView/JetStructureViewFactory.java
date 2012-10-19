@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.structureView;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.ide.structureView.StructureViewBuilder;
 import com.intellij.ide.structureView.StructureViewModel;
 import com.intellij.ide.structureView.TreeBasedStructureViewBuilder;

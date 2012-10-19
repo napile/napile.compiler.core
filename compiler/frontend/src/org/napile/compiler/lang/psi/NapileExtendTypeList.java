@@ -19,7 +19,8 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -47,6 +48,6 @@ public class NapileExtendTypeList extends NapileElementImpl
 
 	public List<NapileTypeReference> getTypeList()
 	{
-		return findChildrenByType(NapileNodeTypes.TYPE_REFERENCE);
+		return findChildrenByType(NapileNodes.TYPE_REFERENCE);
 	}
 }

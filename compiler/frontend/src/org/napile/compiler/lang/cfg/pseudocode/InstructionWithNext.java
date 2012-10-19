@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileElement;
 
 /**
  * @author abreslav

@@ -22,10 +22,10 @@ package org.napile.compiler.lang.psi;
  */
 
 /**
- * This is an interface to show that {@link org.napile.compiler.psi.NapileExpression} is not
+ * This is an interface to show that {@link org.napile.compiler.lang.psi.NapileExpression} is not
  * actually an expression (in meaning that this expression can be placed after "val x = ").
  * This is possibly redundant interface, all inheritors of this interface should be refactored that they are not
- * {@link org.napile.compiler.psi.NapileExpression}, after such refactoring, this interface can be removed.
+ * {@link org.napile.compiler.lang.psi.NapileExpression}, after such refactoring, this interface can be removed.
  */
 public interface NapileStatementExpression
 {

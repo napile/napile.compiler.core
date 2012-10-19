@@ -24,9 +24,9 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileLanguage;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.NapileLanguage;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.formatting.Alignment;
 import com.intellij.formatting.Block;
 import com.intellij.formatting.ChildAttributes;
@@ -54,7 +54,7 @@ public class JetBlock extends AbstractBlock
 
 	private List<Block> mySubBlocks;
 
-	private static final TokenSet CODE_BLOCKS = TokenSet.create(NapileNodeTypes.BLOCK, NapileNodeTypes.CLASS_BODY, NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION, NapileNodeTypes.FUNCTION_LITERAL);
+	private static final TokenSet CODE_BLOCKS = TokenSet.create(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.FUNCTION_LITERAL_EXPRESSION, NapileNodes.FUNCTION_LITERAL);
 
 	// private static final List<IndentWhitespaceRule>
 
@@ -113,7 +113,7 @@ public class JetBlock extends AbstractBlock
 		Wrap wrap = null;
 
 		// Affects to spaces around operators...
-		if(child.getElementType() == NapileNodeTypes.OPERATION_REFERENCE)
+		if(child.getElementType() == NapileNodes.OPERATION_REFERENCE)
 		{
 			ASTNode operationNode = child.getFirstChildNode();
 			if(operationNode != null)
@@ -153,20 +153,20 @@ public class JetBlock extends AbstractBlock
 	{
 		final IElementType type = getNode().getElementType();
 		if(CODE_BLOCKS.contains(type) ||
-				type == NapileNodeTypes.WHEN ||
-				type == NapileNodeTypes.IF ||
-				type == NapileNodeTypes.FOR ||
-				type == NapileNodeTypes.WHILE ||
-				type == NapileNodeTypes.DO_WHILE)
+				type == NapileNodes.WHEN ||
+				type == NapileNodes.IF ||
+				type == NapileNodes.FOR ||
+				type == NapileNodes.WHILE ||
+				type == NapileNodes.DO_WHILE)
 		{
 
 			return new ChildAttributes(Indent.getNormalIndent(), null);
 		}
-		else if(type == NapileNodeTypes.DOT_QUALIFIED_EXPRESSION)
+		else if(type == NapileNodes.DOT_QUALIFIED_EXPRESSION)
 		{
 			return new ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null);
 		}
-		else if(type == NapileNodeTypes.VALUE_PARAMETER_LIST || type == NapileNodeTypes.VALUE_ARGUMENT_LIST)
+		else if(type == NapileNodes.VALUE_PARAMETER_LIST || type == NapileNodes.VALUE_ARGUMENT_LIST)
 		{
 			// Child index 1 - cursor is after ( - parameter alignment should be recreated
 			// Child index 0 - before expression - know nothing about it
@@ -202,13 +202,13 @@ public class JetBlock extends AbstractBlock
 
 		// Redefine list of strategies for some special elements
 		IElementType parentType = myNode.getElementType();
-		if(parentType == NapileNodeTypes.VALUE_PARAMETER_LIST)
+		if(parentType == NapileNodes.VALUE_PARAMETER_LIST)
 		{
-			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS, NapileNodeTypes.VALUE_PARAMETER, NapileTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, NapileTokens.LPAR, NapileTokens.RPAR);
+			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS, NapileNodes.VALUE_PARAMETER, NapileTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, NapileTokens.LPAR, NapileTokens.RPAR);
 		}
-		else if(parentType == NapileNodeTypes.VALUE_ARGUMENT_LIST)
+		else if(parentType == NapileNodes.VALUE_ARGUMENT_LIST)
 		{
-			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS_IN_CALLS, NapileNodeTypes.VALUE_ARGUMENT, NapileTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, NapileTokens.LPAR, NapileTokens.RPAR);
+			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS_IN_CALLS, NapileNodes.VALUE_ARGUMENT, NapileTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, NapileTokens.LPAR, NapileTokens.RPAR);
 		}
 
 		// Construct information about children alignment
@@ -271,17 +271,17 @@ public class JetBlock extends AbstractBlock
 	}
 
 	static ASTIndentStrategy[] INDENT_RULES = new ASTIndentStrategy[]{
-			ASTIndentStrategy.forNode("No indent for braces in blocks").in(NapileNodeTypes.BLOCK, NapileNodeTypes.CLASS_BODY, NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION).forType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNoneIndent()),
+			ASTIndentStrategy.forNode("No indent for braces in blocks").in(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.FUNCTION_LITERAL_EXPRESSION).forType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNoneIndent()),
 
-			ASTIndentStrategy.forNode("Indent for block content").in(NapileNodeTypes.BLOCK, NapileNodeTypes.CLASS_BODY, NapileNodeTypes.FUNCTION_LITERAL_EXPRESSION).notForType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNormalIndent()),
+			ASTIndentStrategy.forNode("Indent for block content").in(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.FUNCTION_LITERAL_EXPRESSION).notForType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNormalIndent()),
 
-			ASTIndentStrategy.forNode("For a single statement if 'for'").in(NapileNodeTypes.BODY).notForType(NapileNodeTypes.BLOCK).set(Indent.getNormalIndent()),
+			ASTIndentStrategy.forNode("For a single statement if 'for'").in(NapileNodes.BODY).notForType(NapileNodes.BLOCK).set(Indent.getNormalIndent()),
 
-			ASTIndentStrategy.forNode("For the entry in when").forType(NapileNodeTypes.WHEN_ENTRY).set(Indent.getNormalIndent()),
+			ASTIndentStrategy.forNode("For the entry in when").forType(NapileNodes.WHEN_ENTRY).set(Indent.getNormalIndent()),
 
-			ASTIndentStrategy.forNode("For single statement in THEN and ELSE").in(NapileNodeTypes.THEN, NapileNodeTypes.ELSE).notForType(NapileNodeTypes.BLOCK).set(Indent.getNormalIndent()),
+			ASTIndentStrategy.forNode("For single statement in THEN and ELSE").in(NapileNodes.THEN, NapileNodes.ELSE).notForType(NapileNodes.BLOCK).set(Indent.getNormalIndent()),
 
-			ASTIndentStrategy.forNode("Indent for parts").in(NapileNodeTypes.PROPERTY, NapileNodeTypes.METHOD, NapileNodeTypes.CONSTRUCTOR).set(Indent.getNoneIndent()),
+			ASTIndentStrategy.forNode("Indent for parts").in(NapileNodes.VARIABLE, NapileNodes.METHOD, NapileNodes.CONSTRUCTOR).set(Indent.getNoneIndent()),
 	};
 
 	@Nullable
@@ -301,7 +301,7 @@ public class JetBlock extends AbstractBlock
 
 		// TODO: Try to rewrite other rules to declarative style
 
-		if(childParent != null && childParent.getElementType() == NapileNodeTypes.WHEN_ENTRY)
+		if(childParent != null && childParent.getElementType() == NapileNodes.WHEN_ENTRY)
 		{
 			ASTNode prev = getPrevWithoutWhitespace(child);
 			if(prev != null && prev.getText().equals("->"))
@@ -310,7 +310,7 @@ public class JetBlock extends AbstractBlock
 			}
 		}
 
-		if(childParent != null && childParent.getElementType() == NapileNodeTypes.DOT_QUALIFIED_EXPRESSION)
+		if(childParent != null && childParent.getElementType() == NapileNodes.DOT_QUALIFIED_EXPRESSION)
 		{
 			if(childParent.getFirstChildNode() != child && childParent.getLastChildNode() != child)
 			{
@@ -322,7 +322,7 @@ public class JetBlock extends AbstractBlock
 		{
 			IElementType parentType = childParent.getElementType();
 
-			if(parentType == NapileNodeTypes.VALUE_PARAMETER_LIST || parentType == NapileNodeTypes.VALUE_ARGUMENT_LIST)
+			if(parentType == NapileNodes.VALUE_PARAMETER_LIST || parentType == NapileNodes.VALUE_ARGUMENT_LIST)
 			{
 				ASTNode prev = getPrevWithoutWhitespace(child);
 				if(childType == NapileTokens.RPAR && (prev == null || prev.getElementType() != TokenType.ERROR_ELEMENT))
@@ -333,7 +333,7 @@ public class JetBlock extends AbstractBlock
 				return Indent.getContinuationWithoutFirstIndent();
 			}
 
-			if(parentType == NapileNodeTypes.TYPE_PARAMETER_LIST || parentType == NapileNodeTypes.TYPE_ARGUMENT_LIST)
+			if(parentType == NapileNodes.TYPE_PARAMETER_LIST || parentType == NapileNodes.TYPE_ARGUMENT_LIST)
 			{
 				return Indent.getContinuationWithoutFirstIndent();
 			}

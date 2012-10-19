@@ -17,9 +17,9 @@
 package org.napile.compiler.lang.cfg.pseudocode;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
+import org.napile.compiler.lang.psi.NapileVariable;
 
 /**
  * @author svtk

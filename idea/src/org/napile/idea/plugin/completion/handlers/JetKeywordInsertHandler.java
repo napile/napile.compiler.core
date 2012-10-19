@@ -19,7 +19,7 @@ package org.napile.idea.plugin.completion.handlers;
 import java.util.Set;
 
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.google.common.collect.Sets;
 import com.intellij.codeInsight.TailType;
 import com.intellij.codeInsight.completion.InsertHandler;

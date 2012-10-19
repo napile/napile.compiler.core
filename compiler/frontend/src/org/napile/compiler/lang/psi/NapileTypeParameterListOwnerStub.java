@@ -16,12 +16,9 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.NamedStub;
@@ -45,16 +42,16 @@ public abstract class NapileTypeParameterListOwnerStub<T extends NamedStub> exte
 	@Override
 	public NapileTypeParameterList getTypeParameterList()
 	{
-		return (NapileTypeParameterList) findChildByType(NapileNodeTypes.TYPE_PARAMETER_LIST);
+		return (NapileTypeParameterList) findChildByType(NapileNodes.TYPE_PARAMETER_LIST);
 	}
 
 	@Override
 	@NotNull
-	public List<NapileTypeParameter> getTypeParameters()
+	public NapileTypeParameter[] getTypeParameters()
 	{
 		NapileTypeParameterList list = getTypeParameterList();
 		if(list == null)
-			return Collections.emptyList();
+			return NapileTypeParameter.EMPTY_ARRAY;
 
 		return list.getParameters();
 	}

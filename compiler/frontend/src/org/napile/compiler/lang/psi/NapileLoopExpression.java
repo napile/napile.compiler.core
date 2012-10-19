@@ -18,8 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -35,6 +34,6 @@ public abstract class NapileLoopExpression extends NapileExpressionImpl implemen
 	@Nullable
 	public NapileExpression getBody()
 	{
-		return findExpressionUnder(NapileNodeTypes.BODY);
+		return findExpressionUnder(NapileNodes.BODY);
 	}
 }

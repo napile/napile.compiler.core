@@ -20,13 +20,13 @@
 package org.napile.compiler.lang.parsing;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileLanguage;
-import org.napile.compiler.NapileNodeType;
+import org.napile.compiler.lang.NapileLanguage;
+import org.napile.compiler.lang.lexer.NapileNode;
 import org.napile.compiler.lang.lexer.NapileLexer;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
-import org.napile.compiler.psi.NapileFileImpl;
+import org.napile.compiler.lang.psi.impl.NapileFileImpl;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementType;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
@@ -99,7 +99,7 @@ public class NapileParserDefinition implements ParserDefinition
 			return ((NapileStubElementType) astNode.getElementType()).createPsiFromAst(astNode);
 		}
 
-		return ((NapileNodeType) astNode.getElementType()).createPsi(astNode);
+		return ((NapileNode) astNode.getElementType()).createPsi(astNode);
 	}
 
 	@Override

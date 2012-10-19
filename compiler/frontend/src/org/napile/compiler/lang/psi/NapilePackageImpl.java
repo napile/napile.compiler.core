@@ -21,7 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -41,8 +41,8 @@ public class NapilePackageImpl extends NapileReferenceExpression
 	@NotNull
 	public List<NapileSimpleNameExpression> getParentNamespaceNames()
 	{
-		List<NapileSimpleNameExpression> parentParts = findChildrenByType(NapileNodeTypes.REFERENCE_EXPRESSION);
-		NapileSimpleNameExpression lastPart = (NapileSimpleNameExpression) findLastChildByType(NapileNodeTypes.REFERENCE_EXPRESSION);
+		List<NapileSimpleNameExpression> parentParts = findChildrenByType(NapileNodes.REFERENCE_EXPRESSION);
+		NapileSimpleNameExpression lastPart = (NapileSimpleNameExpression) findLastChildByType(NapileNodes.REFERENCE_EXPRESSION);
 		parentParts.remove(lastPart);
 		return parentParts;
 	}
@@ -50,7 +50,7 @@ public class NapilePackageImpl extends NapileReferenceExpression
 	@Nullable
 	public NapileSimpleNameExpression getLastPartExpression()
 	{
-		return (NapileSimpleNameExpression) findLastChildByType(NapileNodeTypes.REFERENCE_EXPRESSION);
+		return (NapileSimpleNameExpression) findLastChildByType(NapileNodes.REFERENCE_EXPRESSION);
 	}
 
 	@NotNull
@@ -71,7 +71,7 @@ public class NapilePackageImpl extends NapileReferenceExpression
 	@Nullable
 	public PsiElement getNameIdentifier()
 	{
-		NapileSimpleNameExpression lastPart = (NapileSimpleNameExpression) findLastChildByType(NapileNodeTypes.REFERENCE_EXPRESSION);
+		NapileSimpleNameExpression lastPart = (NapileSimpleNameExpression) findLastChildByType(NapileNodes.REFERENCE_EXPRESSION);
 		if(lastPart == null)
 		{
 			return null;

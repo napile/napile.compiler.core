@@ -31,7 +31,7 @@ import org.napile.compiler.codegen.Progress;
 import org.napile.compiler.common.messages.AnalyzerWithCompilerReport;
 import org.napile.compiler.common.messages.CompilerMessageLocation;
 import org.napile.compiler.common.messages.CompilerMessageSeverity;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.intellij.openapi.project.Project;

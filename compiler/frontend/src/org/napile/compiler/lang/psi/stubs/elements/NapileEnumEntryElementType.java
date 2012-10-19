@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileEnumEntry;
+import org.napile.compiler.lang.psi.NapileEnumEntryImpl;
 import org.napile.compiler.lang.psi.stubs.NapilePsiEnumEntryStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
@@ -42,13 +43,13 @@ public class NapileEnumEntryElementType extends NapileStubElementType<NapilePsiE
 	@Override
 	public NapileEnumEntry createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileEnumEntry(node);
+		return new NapileEnumEntryImpl(node);
 	}
 
 	@Override
 	public NapileEnumEntry createPsi(@NotNull NapilePsiEnumEntryStub stub)
 	{
-		return new NapileEnumEntry(stub);
+		return getPsiFactory(stub).createEnumEntry(stub);
 	}
 
 	@Override

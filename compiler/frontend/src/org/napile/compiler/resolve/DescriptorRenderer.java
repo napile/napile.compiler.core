@@ -36,8 +36,8 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Function;
 

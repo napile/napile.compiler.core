@@ -3,7 +3,7 @@ package org.napile.compiler.injection.lexer;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
 
 /**
  * @author VISTALL

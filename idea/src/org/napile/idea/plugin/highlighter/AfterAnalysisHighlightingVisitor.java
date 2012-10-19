@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.highlighter;
 
-import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.resolve.BindingContext;
 import com.intellij.lang.annotation.AnnotationHolder;
 

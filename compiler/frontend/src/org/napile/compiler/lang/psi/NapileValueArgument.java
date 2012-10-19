@@ -18,9 +18,8 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
@@ -59,7 +58,7 @@ public class NapileValueArgument extends NapileElementImpl implements ValueArgum
 	@Nullable
 	public NapileValueArgumentName getArgumentName()
 	{
-		return (NapileValueArgumentName) findChildByType(NapileNodeTypes.VALUE_ARGUMENT_NAME);
+		return (NapileValueArgumentName) findChildByType(NapileNodes.VALUE_ARGUMENT_NAME);
 	}
 
 	@Override

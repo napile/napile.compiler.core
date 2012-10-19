@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.completion;
 
-import static org.napile.compiler.lexer.NapileTokens.*;
+import static org.napile.compiler.lang.lexer.NapileTokens.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,9 +24,11 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.completion.handlers.JetFunctionInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetKeywordInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetTemplateInsertHandler;
@@ -144,7 +146,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		public boolean isAcceptable(Object element, PsiElement context)
 		{
 			//noinspection unchecked
-			return PsiTreeUtil.getParentOfType(context, NapileFile.class, false, NapileClassBody.class, NapileBlockExpression.class, NapileMethod.class) != null && PsiTreeUtil.getParentOfType(context, NapileParameterList.class, NapileTypeParameterList.class) == null;
+			return PsiTreeUtil.getParentOfType(context, NapileFile.class, false, NapileClassBody.class, NapileBlockExpression.class, NapileMethod.class) != null && PsiTreeUtil.getParentOfType(context, NapileParameterList.class, NapileTypeParameterListImpl.class) == null;
 		}
 
 		@Override

@@ -16,9 +16,9 @@
 
 package org.napile.idea.plugin.stubindex;
 
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.psi.stubs.StubIndexKey;
 
 /**

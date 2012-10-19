@@ -29,7 +29,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lang.resolve.NapileFilesProvider;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.compiler.ex.CompilerPathsEx;
 import com.intellij.openapi.fileTypes.FileType;

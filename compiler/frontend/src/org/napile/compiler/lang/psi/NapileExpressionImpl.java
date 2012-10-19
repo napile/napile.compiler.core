@@ -17,8 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNode;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -43,7 +42,7 @@ public abstract class NapileExpressionImpl extends NapileElementImpl implements 
 		return visitor.visitExpression(this, data);
 	}
 
-	protected NapileExpression findExpressionUnder(NapileNodeType type)
+	protected NapileExpression findExpressionUnder(NapileNode type)
 	{
 		NapileContainerNode containerNode = (NapileContainerNode) findChildByType(type);
 		if(containerNode == null)

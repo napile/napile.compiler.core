@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileRetellEntry;
+import org.napile.compiler.lang.psi.NapileRetellEntryImpl;
 import org.napile.compiler.lang.psi.stubs.NapilePsiRetellEntryStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
@@ -43,13 +44,13 @@ public class NapileRetellEntryElementType extends NapileStubElementType<NapilePs
 	@Override
 	public NapileRetellEntry createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileRetellEntry(node);
+		return new NapileRetellEntryImpl(node);
 	}
 
 	@Override
 	public NapileRetellEntry createPsi(@NotNull NapilePsiRetellEntryStub stub)
 	{
-		return new NapileRetellEntry(stub);
+		return getPsiFactory(stub).createRetellEntry(stub);
 	}
 
 	@Override

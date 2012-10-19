@@ -18,14 +18,11 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMethodParameterStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileModifierList;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.util.ArrayFactory;
 
 /**
@@ -49,16 +46,9 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<NapilePs
 		super(node);
 	}
 
-	public NapilePropertyParameter(@NotNull NapilePsiMethodParameterStub stub, @NotNull IStubElementType nodeType)
+	public NapilePropertyParameter(@NotNull NapilePsiMethodParameterStub stub)
 	{
-		super(stub, nodeType);
-	}
-
-	@NotNull
-	@Override
-	public IStubElementType getElementType()
-	{
-		return NapileStubElementTypes.VALUE_PARAMETER;
+		super(stub, NapileStubElementTypes.VALUE_PARAMETER);
 	}
 
 	@Override
@@ -76,7 +66,7 @@ public class NapilePropertyParameter extends NapileNamedDeclarationStub<NapilePs
 	@Nullable
 	public NapileTypeReference getTypeReference()
 	{
-		return (NapileTypeReference) findChildByType(NapileNodeTypes.TYPE_REFERENCE);
+		return (NapileTypeReference) findChildByType(NapileNodes.TYPE_REFERENCE);
 	}
 
 	@Nullable

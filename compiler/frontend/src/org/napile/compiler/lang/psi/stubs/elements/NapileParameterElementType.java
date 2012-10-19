@@ -20,10 +20,11 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMethodParameterStub;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -50,7 +51,7 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiM
 	@Override
 	public NapilePropertyParameter createPsi(@NotNull NapilePsiMethodParameterStub stub)
 	{
-		return new NapilePropertyParameter(stub, NapileStubElementTypes.VALUE_PARAMETER);
+		return getPsiFactory(stub).createParameter(stub);
 	}
 
 	@Override
@@ -59,13 +60,13 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiM
 		NapileTypeReference typeReference = psi.getTypeReference();
 		NapileExpression defaultValue = psi.getDefaultValue();
 
-		return new NapilePsiMethodParameterStub(NapileStubElementTypes.VALUE_PARAMETER, parentStub, psi.getName(), psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
+		return new NapilePsiMethodParameterStub(parentStub, psi.getName(), psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
 	}
 
 	@Override
 	public boolean shouldCreateStub(ASTNode node)
 	{
-		return node.getElementType() == NapileStubElementTypes.VALUE_PARAMETER;
+		return node.getTreeParent().getElementType() == NapileNodes.VALUE_ARGUMENT_LIST;
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiM
 		StringRef typeText = dataStream.readName();
 		StringRef defaultValueText = dataStream.readName();
 
-		return new NapilePsiMethodParameterStub(NapileStubElementTypes.VALUE_PARAMETER, parentStub, name, isVarArg, typeText, defaultValueText);
+		return new NapilePsiMethodParameterStub(parentStub, name, isVarArg, typeText, defaultValueText);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import static org.napile.idea.plugin.projectView.JetProjectViewUtil.canRepresent
 
 import java.util.Collection;
 
-import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectView;

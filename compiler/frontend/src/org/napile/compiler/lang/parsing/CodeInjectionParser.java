@@ -17,11 +17,11 @@
 package org.napile.compiler.lang.parsing;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.injection.lexer.NapileInjectionKeywordToken;
 import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.TokenSet;
 
@@ -76,7 +76,7 @@ public class CodeInjectionParser
 
 		parent.expect(NapileTokens.RBRACE, "'}' expected");
 
-		marker.done(NapileNodeTypes.CODE_INJECTION);
+		marker.done(NapileNodes.CODE_INJECTION);
 	}
 
 	private void skipBody()
@@ -91,6 +91,6 @@ public class CodeInjectionParser
 
 			parent.advance();
 		}
-		m.done(NapileNodeTypes.CODE_INJECTION_BLOCK);
+		m.done(NapileNodes.CODE_INJECTION_BLOCK);
 	}
 }

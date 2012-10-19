@@ -16,13 +16,7 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.napile.compiler.psi.NapileArrayOfExpression;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileCodeInjectionExpression;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.impl.NapileCodeInjectionExpression;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
@@ -419,11 +413,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	public R visitAnonymClass(NapileAnonymClass element, D data)
 	{
 		return visitNamedDeclaration(element, data);
-	}
-
-	public R visitObjectDeclarationName(NapileObjectDeclarationName declarationName, D data)
-	{
-		return visitNamedDeclaration(declarationName, data);
 	}
 
 	public R visitStringTemplateEntry(NapileStringTemplateEntry entry, D data)

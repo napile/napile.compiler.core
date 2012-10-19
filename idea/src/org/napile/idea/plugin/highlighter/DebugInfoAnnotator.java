@@ -20,13 +20,13 @@ import static org.napile.compiler.lang.resolve.BindingContext.AMBIGUOUS_REFERENC
 import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
 import static org.napile.compiler.lang.resolve.BindingContext.LABEL_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
-import static org.napile.compiler.lexer.NapileTokens.*;
+import static org.napile.compiler.lang.lexer.NapileTokens.*;
 
 import java.util.Collection;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.UnresolvedReferenceDiagnosticFactory;
@@ -36,9 +36,9 @@ import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.google.common.collect.Sets;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -103,7 +103,7 @@ public class DebugInfoAnnotator implements Annotator
 						{
 							NapileSimpleNameExpression nameExpression = (NapileSimpleNameExpression) expression;
 							IElementType elementType = expression.getNode().getElementType();
-							if(elementType == NapileNodeTypes.OPERATION_REFERENCE)
+							if(elementType == NapileNodes.OPERATION_REFERENCE)
 							{
 								IElementType referencedNameElementType = nameExpression.getReferencedNameElementType();
 								if(EXCLUDED.contains(referencedNameElementType))

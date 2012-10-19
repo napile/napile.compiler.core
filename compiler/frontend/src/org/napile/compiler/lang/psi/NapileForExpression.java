@@ -18,8 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -48,13 +47,13 @@ public class NapileForExpression extends NapileLoopExpression
 	@IfNotParsed
 	public NapilePropertyParameter getLoopParameter()
 	{
-		return (NapilePropertyParameter) findChildByType(NapileNodeTypes.LOOP_PARAMETER);
+		return (NapilePropertyParameter) findChildByType(NapileNodes.VALUE_PARAMETER);
 	}
 
 	@Nullable
 	@IfNotParsed
 	public NapileExpression getLoopRange()
 	{
-		return findExpressionUnder(NapileNodeTypes.LOOP_RANGE);
+		return findExpressionUnder(NapileNodes.LOOP_RANGE);
 	}
 }

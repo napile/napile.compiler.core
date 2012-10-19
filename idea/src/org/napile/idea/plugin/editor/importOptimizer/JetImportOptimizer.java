@@ -36,7 +36,7 @@ import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.util.QualifiedNamesUtil;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 import com.intellij.lang.ImportOptimizer;

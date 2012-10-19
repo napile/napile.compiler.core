@@ -47,13 +47,13 @@ public class NapileParameterListElementType extends NapileStubElementType<Napile
 	@Override
 	public NapileParameterList createPsi(@NotNull NapilePsiParameterListStub stub)
 	{
-		return new NapileParameterList(stub, NapileStubElementTypes.VALUE_PARAMETER_LIST);
+		return new NapileParameterList(stub);
 	}
 
 	@Override
 	public NapilePsiParameterListStub createStub(@NotNull NapileParameterList psi, StubElement parentStub)
 	{
-		return new NapilePsiParameterListStub(NapileStubElementTypes.VALUE_PARAMETER_LIST, parentStub);
+		return new NapilePsiParameterListStub(parentStub);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class NapileParameterListElementType extends NapileStubElementType<Napile
 	@Override
 	public NapilePsiParameterListStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
-		return new NapilePsiParameterListStub(NapileStubElementTypes.VALUE_PARAMETER_LIST, parentStub);
+		return new NapilePsiParameterListStub(parentStub);
 	}
 
 	@Override

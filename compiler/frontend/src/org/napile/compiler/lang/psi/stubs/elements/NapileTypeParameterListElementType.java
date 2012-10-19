@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
+import org.napile.compiler.lang.psi.NapileTypeParameterListImpl;
 import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterListStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
@@ -41,19 +42,19 @@ public class NapileTypeParameterListElementType extends NapileStubElementType<Na
 	@Override
 	public NapileTypeParameterList createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileTypeParameterList(node);
+		return new NapileTypeParameterListImpl(node);
 	}
 
 	@Override
 	public NapileTypeParameterList createPsi(@NotNull NapilePsiTypeParameterListStub stub)
 	{
-		return new NapileTypeParameterList(stub, NapileStubElementTypes.TYPE_PARAMETER_LIST);
+		return getPsiFactory(stub).createTypeParameterList(stub);
 	}
 
 	@Override
 	public NapilePsiTypeParameterListStub createStub(@NotNull NapileTypeParameterList psi, StubElement parentStub)
 	{
-		return new NapilePsiTypeParameterListStub(NapileStubElementTypes.TYPE_PARAMETER_LIST, parentStub);
+		return new NapilePsiTypeParameterListStub(parentStub);
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class NapileTypeParameterListElementType extends NapileStubElementType<Na
 	@Override
 	public NapilePsiTypeParameterListStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
-		return new NapilePsiTypeParameterListStub(NapileStubElementTypes.TYPE_PARAMETER_LIST, parentStub);
+		return new NapilePsiTypeParameterListStub(parentStub);
 	}
 
 	@Override

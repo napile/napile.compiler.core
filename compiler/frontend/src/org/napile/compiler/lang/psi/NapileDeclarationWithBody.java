@@ -16,13 +16,8 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
 
 /**
  * @author abreslav
@@ -37,9 +32,6 @@ public interface NapileDeclarationWithBody extends NapileDeclaration
 	boolean hasDeclaredReturnType();
 
 	@NotNull
-	NapileElement asElement();
-
-	@NotNull
-	List<NapileElement> getValueParameters();
+	NapileElement[] getValueParameters();
 }
 

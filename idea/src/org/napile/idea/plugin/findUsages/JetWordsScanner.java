@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.findUsages;
 
 import org.napile.compiler.lang.lexer.NapileLexer;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.psi.tree.TokenSet;
 

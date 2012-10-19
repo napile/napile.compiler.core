@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -46,7 +46,7 @@ public class NapileBreakExpression extends NapileExpressionImpl implements Napil
 	@Nullable
 	public NapileSimpleNameExpression getTargetLabel()
 	{
-		return (NapileSimpleNameExpression) findChildByType(NapileNodeTypes.LABEL_REFERENCE);
+		return (NapileSimpleNameExpression) findChildByType(NapileNodes.LABEL_REFERENCE);
 	}
 
 	@Nullable

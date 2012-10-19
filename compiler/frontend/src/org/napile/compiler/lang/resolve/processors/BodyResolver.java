@@ -62,9 +62,13 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 import org.napile.compiler.util.slicedmap.WritableSlice;
@@ -407,7 +411,7 @@ public class BodyResolver
 			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, methodDescriptor, DataFlowInfo.EMPTY, null, trace);
 		}
 
-		List<NapileElement> valueParameters = function.getValueParameters();
+		NapileElement[] valueParameters = function.getValueParameters();
 		List<ParameterDescriptor> parameterDescriptors = methodDescriptor.getValueParameters();
 
 		checkDefaultParameterValues(valueParameters, parameterDescriptors, functionInnerScope);
@@ -415,14 +419,14 @@ public class BodyResolver
 		assert methodDescriptor.getReturnType() != null;
 	}
 
-	private void checkDefaultParameterValues(List<NapileElement> valueParameters, List<ParameterDescriptor> parameterDescriptors, JetScope declaringScope)
+	private void checkDefaultParameterValues(NapileElement[] valueParameters, List<ParameterDescriptor> parameterDescriptors, JetScope declaringScope)
 	{
-		for(int i = 0; i < valueParameters.size(); i++)
+		for(int i = 0; i < valueParameters.length; i++)
 		{
 			ParameterDescriptor parameterDescriptor = parameterDescriptors.get(i);
 			if(parameterDescriptor.hasDefaultValue())
 			{
-				NapileElement jetParameter = valueParameters.get(i);
+				NapileElement jetParameter = valueParameters[i];
 				NapileExpression defaultValue = jetParameter instanceof NapilePropertyParameter ? ((NapilePropertyParameter) jetParameter).getDefaultValue() : null;
 				if(defaultValue != null)
 					expressionTypingServices.getType(declaringScope, defaultValue, parameterDescriptor.getType(), DataFlowInfo.EMPTY, trace);

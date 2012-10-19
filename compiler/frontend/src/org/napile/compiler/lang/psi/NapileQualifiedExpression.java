@@ -18,9 +18,8 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 

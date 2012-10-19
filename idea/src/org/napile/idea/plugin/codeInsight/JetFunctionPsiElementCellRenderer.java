@@ -17,8 +17,8 @@
 package org.napile.idea.plugin.codeInsight;
 
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import com.intellij.ide.util.DefaultPsiElementCellRenderer;
 import com.intellij.psi.PsiElement;

@@ -20,9 +20,9 @@
 package org.napile.idea.plugin.highlighter;
 
 import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
-import org.napile.compiler.lang.psi.NapileFunctionLiteral;
+import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.application.ApplicationManager;
@@ -65,7 +65,7 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 	{
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;
-		NapileFunctionLiteral functionLiteral = expression.getFunctionLiteral();
+		NapileAnonymMethodImpl functionLiteral = expression.getFunctionLiteral();
 		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
 		if(closingBraceNode != null)

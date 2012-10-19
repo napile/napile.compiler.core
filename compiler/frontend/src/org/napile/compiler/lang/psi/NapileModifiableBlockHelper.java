@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.napile.compiler.psi.NapileDeclaration;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -57,7 +56,7 @@ public final class NapileModifiableBlockHelper
 
 				return shouldChangeModificationCount(property);
 			}
-			else if(declaration instanceof NapileFunctionLiteral)
+			else if(declaration instanceof NapileAnonymMethodImpl)
 			{
 				// TODO: Check return type
 				return shouldChangeModificationCount(declaration);

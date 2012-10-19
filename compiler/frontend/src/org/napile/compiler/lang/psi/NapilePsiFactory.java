@@ -22,12 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
 import org.napile.compiler.NapileFileType;
-import org.napile.compiler.lexer.NapileKeywordToken;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileClass;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.psi.NapileFile;
-import org.napile.compiler.psi.NapileModifierList;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
@@ -178,7 +174,7 @@ public class NapilePsiFactory
 	public static NapilePropertyParameter createParameter(Project project, String name, String type)
 	{
 		NapileNamedMethod function = createFunction(project, "meth foo(" + name + " : " + type + ") {}");
-		return (NapilePropertyParameter)function.getValueParameters().get(0);
+		return (NapilePropertyParameter)function.getValueParameters()[0];
 	}
 
 	@NotNull

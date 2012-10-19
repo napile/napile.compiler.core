@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.napile.compiler.lang.psi.NapileVariable;
-import com.intellij.psi.stubs.IStubElementType;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
@@ -33,18 +33,18 @@ public class NapilePsiVariableStub extends StubBase<NapileVariable> implements N
 	private final StringRef typeText;
 	private final StringRef inferenceBodyText;
 
-	public NapilePsiVariableStub(IStubElementType elementType, StubElement parent, StringRef name, StringRef typeText, StringRef inferenceBodyText)
+	public NapilePsiVariableStub(StubElement parent, StringRef name, StringRef typeText, StringRef inferenceBodyText)
 	{
-		super(parent, elementType);
+		super(parent, NapileStubElementTypes.VARIABLE);
 
 		this.name = name;
 		this.typeText = typeText;
 		this.inferenceBodyText = inferenceBodyText;
 	}
 
-	public NapilePsiVariableStub(IStubElementType elementType, StubElement parent, String name, String typeText, String inferenceBodyText)
+	public NapilePsiVariableStub(StubElement parent, String name, String typeText, String inferenceBodyText)
 	{
-		this(elementType, parent, StringRef.fromString(name), StringRef.fromString(typeText), StringRef.fromString(inferenceBodyText));
+		this(parent, StringRef.fromString(name), StringRef.fromString(typeText), StringRef.fromString(inferenceBodyText));
 	}
 
 	public String getTypeText()

@@ -16,16 +16,11 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.stubs.NapilePsiParameterListStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
-import org.napile.compiler.psi.NapileElement;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
@@ -33,23 +28,16 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class NapileParameterList extends NapileElementImplStub<NapilePsiParameterListStub>
 {
-	private static final TokenSet PARAMETER_TYPES = TokenSet.create(NapileStubElementTypes.VALUE_PARAMETER, NapileNodeTypes.REFERENCE_PARAMETER);
+	private static final TokenSet PARAMETER_TYPES = TokenSet.create(NapileStubElementTypes.VALUE_PARAMETER, NapileNodes.REFERENCE_PARAMETER);
 
 	public NapileParameterList(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileParameterList(@NotNull NapilePsiParameterListStub stub, @NotNull IStubElementType nodeType)
+	public NapileParameterList(@NotNull NapilePsiParameterListStub stub)
 	{
-		super(stub, nodeType);
-	}
-
-	@NotNull
-	@Override
-	public IStubElementType getElementType()
-	{
-		return NapileStubElementTypes.VALUE_PARAMETER_LIST;
+		super(stub, NapileStubElementTypes.VALUE_PARAMETER_LIST);
 	}
 
 	@Override
@@ -64,8 +52,8 @@ public class NapileParameterList extends NapileElementImplStub<NapilePsiParamete
 		return visitor.visitParameterList(this, data);
 	}
 
-	public List<NapileElement> getParameters()
+	public NapileElement[] getParameters()
 	{
-		return Arrays.asList(getStubOrPsiChildren(PARAMETER_TYPES, NapileElement.ARRAY_FACTORY));
+		return getStubOrPsiChildren(PARAMETER_TYPES, NapileElement.ARRAY_FACTORY);
 	}
 }

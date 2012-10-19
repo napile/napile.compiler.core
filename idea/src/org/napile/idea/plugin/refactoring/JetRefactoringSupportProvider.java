@@ -16,11 +16,8 @@
 
 package org.napile.idea.plugin.refactoring;
 
-import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.refactoring.introduceVariable.JetIntroduceVariableHandler;
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
-import com.intellij.psi.PsiElement;
 import com.intellij.refactoring.RefactoringActionHandler;
 
 /**
@@ -33,23 +30,5 @@ public class JetRefactoringSupportProvider extends RefactoringSupportProvider
 	public RefactoringActionHandler getIntroduceVariableHandler()
 	{
 		return new JetIntroduceVariableHandler();
-	}
-
-	@Override
-	public boolean isInplaceRenameAvailable(PsiElement element, PsiElement context)
-	{
-		if(element instanceof NapileVariable)
-		{
-			NapileVariable property = (NapileVariable) element;
-			if(property.isLocal())
-				return true;
-		}
-		else if(element instanceof NapileMethod)
-		{
-			NapileMethod function = (NapileMethod) element;
-			if(function.isLocal())
-				return true;
-		}
-		return false;
 	}
 }

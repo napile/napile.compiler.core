@@ -18,7 +18,7 @@ package org.napile.compiler.lang.resolve.calls.autocasts;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.NapileNodeTypes;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileRootNamespaceExpression;
@@ -59,7 +59,7 @@ public class DataFlowValueFactory
 		if(expression instanceof NapileConstantExpression)
 		{
 			NapileConstantExpression constantExpression = (NapileConstantExpression) expression;
-			if(constantExpression.getNode().getElementType() == NapileNodeTypes.NULL)
+			if(constantExpression.getNode().getElementType() == NapileNodes.NULL)
 				return new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(type.getMemberScope(), NapileLangPackage.NULL, true), false, Nullability.NULL);
 		}
 		if(TypeUtils.isEqualFqName(type, NapileLangPackage.NULL))

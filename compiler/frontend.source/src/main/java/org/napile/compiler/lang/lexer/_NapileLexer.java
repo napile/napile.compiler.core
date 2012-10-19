@@ -4,7 +4,6 @@ package org.napile.compiler.lang.lexer;
 
 import java.util.Stack;
 
-import org.napile.compiler.lexer.NapileTokens;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;

@@ -20,24 +20,24 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileParameterList;
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
-import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.resolve.DescriptorRenderer;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
@@ -144,7 +144,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 		{
 			setText(JetBundle.message("specify.type.explicitly.add.return.type.action.name"));
 		}
-		else if(declaration instanceof NapilePropertyParameter && NapileNodeTypes.LOOP_PARAMETER == declaration.getNode().getElementType())
+		else if(declaration instanceof NapilePropertyParameter && NapileNodes.VALUE_PARAMETER == declaration.getNode().getElementType())
 		{
 			if(((NapilePropertyParameter) declaration).getTypeReference() != null)
 			{

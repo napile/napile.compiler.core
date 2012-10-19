@@ -16,15 +16,15 @@
 
 package org.napile.compiler.lang.parsing;
 
-import static org.napile.compiler.NapileNodeTypes.*;
+import static org.napile.compiler.lang.lexer.NapileNodes.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.napile.compiler.NapileNodeType;
-import org.napile.compiler.lexer.NapileToken;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileNode;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.google.common.collect.ImmutableMap;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
@@ -121,7 +121,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		COLON_AS(NapileTokens.COLON, NapileTokens.AS_KEYWORD, NapileTokens.AS_SAFE)
 				{
 					@Override
-					public NapileNodeType parseRightHandSide(IElementType operation, JetExpressionParsing parser)
+					public NapileNode parseRightHandSide(IElementType operation, JetExpressionParsing parser)
 					{
 						parser.myJetParsing.parseTypeRef();
 						return BINARY_WITH_TYPE;
@@ -142,7 +142,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		IN_OR_IS(NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS)
 				{
 					@Override
-					public NapileNodeType parseRightHandSide(IElementType operation, JetExpressionParsing parser)
+					public NapileNode parseRightHandSide(IElementType operation, JetExpressionParsing parser)
 					{
 						if(operation == NapileTokens.IS_KEYWORD || operation == NapileTokens.NOT_IS)
 						{
@@ -190,7 +190,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 * @param parser    the parser object
 		 * @return node type of the result
 		 */
-		public NapileNodeType parseRightHandSide(IElementType operation, JetExpressionParsing parser)
+		public NapileNode parseRightHandSide(IElementType operation, JetExpressionParsing parser)
 		{
 			parseHigherPrecedence(parser);
 			return BINARY_EXPRESSION;
@@ -295,7 +295,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			parseOperationReference();
 
-			NapileNodeType resultType = precedence.parseRightHandSide(operation, this);
+			NapileNode resultType = precedence.parseRightHandSide(operation, this);
 			expression.done(resultType);
 			expression = expression.precede();
 		}
@@ -803,7 +803,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 				PsiBuilder.Marker property = mark();
 				myJetParsing.parseModifierList(MODIFIER_LIST);
 				myJetParsing.parseProperty(true);
-				property.done(PROPERTY);
+				property.done(VARIABLE);
 			}
 			else
 			{
@@ -1501,7 +1501,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			advance(); // COLON
 			myJetParsing.parseTypeRef();
 		}
-		parameter.done(LOOP_PARAMETER);
+		parameter.done(VARIABLE);
 
 		expect(NapileTokens.IN_KEYWORD, "Expecting 'in'");
 
@@ -1661,7 +1661,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 * : "continue"
 		 * : "break" getEntryPoint?
 		 */
-	private void parseJump(NapileNodeType type)
+	private void parseJump(NapileNode type)
 	{
 		assert _at(NapileTokens.BREAK_KEYWORD) || _at(NapileTokens.CONTINUE_KEYWORD);
 
@@ -1886,7 +1886,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		literal.done(OBJECT_LITERAL);
 	}
 
-	private void parseOneTokenExpression(NapileNodeType type)
+	private void parseOneTokenExpression(NapileNode type)
 	{
 		PsiBuilder.Marker mark = mark();
 		advance();

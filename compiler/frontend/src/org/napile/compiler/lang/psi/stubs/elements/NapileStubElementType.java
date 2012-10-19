@@ -18,14 +18,17 @@ package org.napile.compiler.lang.psi.stubs.elements;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NapileLanguage;
+import org.napile.compiler.lang.NapileLanguage;
+import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
-import org.napile.compiler.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFunctionLiteral;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileWithExpressionInitializer;
+import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiFromStubFactory;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -34,7 +37,6 @@ import com.intellij.psi.util.PsiTreeUtil;
  */
 public abstract class NapileStubElementType<StubT extends StubElement, PsiT extends PsiElement> extends IStubElementType<StubT, PsiT>
 {
-
 	public NapileStubElementType(@NotNull @NonNls String debugName)
 	{
 		super(debugName, NapileLanguage.INSTANCE);
@@ -45,7 +47,23 @@ public abstract class NapileStubElementType<StubT extends StubElement, PsiT exte
 	@Override
 	public String getExternalId()
 	{
-		return "idea." + toString();
+		return "napile." + toString();
+	}
+
+	@NotNull
+	public NapilePsiFromStubFactory getPsiFactory(StubBase<?> stub)
+	{
+		StubElement<?> stubElement = stub;
+
+		while(stubElement != null)
+		{
+			if(stubElement instanceof NapilePsiFileStub)
+				return ((NapilePsiFileStub) stubElement).getStubFactory();
+			else
+				stubElement = stubElement.getParentStub();
+		}
+
+		throw new UnsupportedOperationException("Can find factory");
 	}
 
 	@Override
@@ -54,7 +72,7 @@ public abstract class NapileStubElementType<StubT extends StubElement, PsiT exte
 		PsiElement psi = node.getPsi();
 
 		// Do not create stubs inside function literals
-		if(PsiTreeUtil.getParentOfType(psi, NapileFunctionLiteral.class) != null)
+		if(PsiTreeUtil.getParentOfType(psi, NapileAnonymMethodImpl.class) != null)
 		{
 			return false;
 		}

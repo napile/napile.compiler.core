@@ -18,9 +18,9 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileNodeTypes;
-import org.napile.compiler.lexer.NapileTokens;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -55,13 +55,13 @@ public class NapileIsExpression extends NapileExpressionImpl
 	@IfNotParsed
 	public NapileTypeReference getTypeRef()
 	{
-		return (NapileTypeReference) findChildByType(NapileNodeTypes.TYPE_REFERENCE);
+		return (NapileTypeReference) findChildByType(NapileNodes.TYPE_REFERENCE);
 	}
 
 	@NotNull
 	public NapileSimpleNameExpression getOperationReference()
 	{
-		return (NapileSimpleNameExpression) findChildByType(NapileNodeTypes.OPERATION_REFERENCE);
+		return (NapileSimpleNameExpression) findChildByType(NapileNodes.OPERATION_REFERENCE);
 	}
 
 	public boolean isNegated()

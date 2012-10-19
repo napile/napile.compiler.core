@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileWhenCondition;
 import org.napile.compiler.lang.psi.NapileWhenConditionWithExpression;
 import org.napile.compiler.lang.psi.NapileWhenEntry;

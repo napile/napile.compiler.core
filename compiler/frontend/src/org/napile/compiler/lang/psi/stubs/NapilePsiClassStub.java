@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.stubs.elements.NapileClassElementType;
-import org.napile.compiler.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
@@ -39,14 +39,14 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 	private final StringRef name;
 	private final StringRef[] superNames;
 
-	public NapilePsiClassStub(NapileClassElementType type, StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames)
+	public NapilePsiClassStub(StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames)
 	{
-		this(type, parent, StringRef.fromString(qualifiedName), StringRef.fromString(name), wrapStrings(superNames));
+		this(parent, StringRef.fromString(qualifiedName), StringRef.fromString(name), wrapStrings(superNames));
 	}
 
-	public NapilePsiClassStub(NapileClassElementType type, StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames)
+	public NapilePsiClassStub(StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames)
 	{
-		super(parent, type);
+		super(parent, NapileStubElementTypes.CLASS);
 		this.qualifiedName = qualifiedName;
 		this.name = name;
 		this.superNames = superNames;

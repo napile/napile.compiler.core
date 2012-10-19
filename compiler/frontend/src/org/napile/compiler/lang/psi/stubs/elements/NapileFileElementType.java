@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi.stubs.elements;
 
 import java.io.IOException;
 
-import org.napile.compiler.NapileLanguage;
+import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import com.intellij.psi.StubBuilder;
 import com.intellij.psi.stubs.IndexSink;

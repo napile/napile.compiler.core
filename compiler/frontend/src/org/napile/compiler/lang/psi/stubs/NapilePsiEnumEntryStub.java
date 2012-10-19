@@ -39,6 +39,7 @@ public class NapilePsiEnumEntryStub extends StubBase<NapileEnumEntry> implements
 	}
 
 	@Nullable
+	@Override
 	public String getName()
 	{
 		return StringRef.toString(stringRef);

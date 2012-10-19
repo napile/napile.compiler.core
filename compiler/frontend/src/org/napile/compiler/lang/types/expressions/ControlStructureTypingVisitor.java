@@ -48,9 +48,10 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
-import org.napile.compiler.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -484,7 +485,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 
 		JetType expectedType = TypeUtils.NO_EXPECTED_TYPE;
 		NapileExpression parentDeclaration = PsiTreeUtil.getParentOfType(expression, NapileDeclaration.class);
-		if(parentDeclaration instanceof NapileFunctionLiteral)
+		if(parentDeclaration instanceof NapileAnonymMethodImpl)
 		{
 			parentDeclaration = (NapileFunctionLiteralExpression) parentDeclaration.getParent();
 		}

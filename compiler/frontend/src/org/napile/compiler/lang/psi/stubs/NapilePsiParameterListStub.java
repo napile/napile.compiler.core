@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.napile.compiler.lang.psi.NapileParameterList;
-import com.intellij.psi.stubs.IStubElementType;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 
@@ -26,9 +26,9 @@ import com.intellij.psi.stubs.StubElement;
  */
 public class NapilePsiParameterListStub extends StubBase<NapileParameterList>
 {
-	public NapilePsiParameterListStub(IStubElementType elementType, StubElement parent)
+	public NapilePsiParameterListStub(StubElement parent)
 	{
-		super(parent, elementType);
+		super(parent, NapileStubElementTypes.VALUE_PARAMETER_LIST);
 	}
 
 	@Override

@@ -18,16 +18,15 @@ package org.napile.idea.plugin.projectView;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.psi.NapileDeclaration;
-import org.napile.compiler.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileReferenceParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.formatter.JetCodeStyleSettings;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ViewSettings;
@@ -88,7 +87,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 			{
 				NapileMethod function = (NapileMethod) declaration;
 				text += "(";
-				List<NapileElement> parameters = function.getValueParameters();
+				NapileElement[] parameters = function.getValueParameters();
 				for(NapileElement parameter : parameters)
 				{
 					if(parameter instanceof NapilePropertyParameter)
@@ -112,7 +111,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 						text += parameter.getText();
 					text += ", ";
 				}
-				if(parameters.size() > 0)
+				if(parameters.length > 0)
 					text = text.substring(0, text.length() - 2);
 				text += ")";
 				NapileTypeReference typeReference = function.getReturnTypeRef();
@@ -130,7 +129,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 			{
 				NapileConstructor function = (NapileConstructor) declaration;
 				text += "(";
-				List<NapileElement> parameters = function.getValueParameters();
+				NapileElement[] parameters = function.getValueParameters();
 				for(NapileElement parameter : parameters)
 				{
 					if(parameter instanceof NapilePropertyParameter)
@@ -154,7 +153,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 						text += parameter.getText();
 					text += ", ";
 				}
-				if(parameters.size() > 0)
+				if(parameters.length > 0)
 					text = text.substring(0, text.length() - 2);
 				text += ")";
 			}

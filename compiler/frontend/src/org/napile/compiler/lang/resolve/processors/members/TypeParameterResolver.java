@@ -35,9 +35,7 @@ import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileParameterList;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterListOwner;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
@@ -49,7 +47,9 @@ import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lexer.NapileTokens;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
 
 /**
@@ -99,12 +99,12 @@ public class TypeParameterResolver
 		this.descriptorResolver = descriptorResolver;
 	}
 
-	public List<TypeParameterDescriptor> resolveTypeParameters(DeclarationDescriptor containingDescriptor, WritableScope extensibleScope, List<NapileTypeParameter> typeParameters, BindingTrace trace)
+	public List<TypeParameterDescriptor> resolveTypeParameters(DeclarationDescriptor containingDescriptor, WritableScope extensibleScope, NapileTypeParameter[] typeParameters, BindingTrace trace)
 	{
 		List<TypeParameterDescriptor> result = new ArrayList<TypeParameterDescriptor>();
-		for(int i = 0, typeParametersSize = typeParameters.size(); i < typeParametersSize; i++)
+		for(int i = 0, typeParametersSize = typeParameters.length; i < typeParametersSize; i++)
 		{
-			NapileTypeParameter typeParameter = typeParameters.get(i);
+			NapileTypeParameter typeParameter = typeParameters[i];
 			result.add(resolveTypeParameter(containingDescriptor, extensibleScope, typeParameter, i, trace));
 		}
 		return result;
@@ -128,10 +128,10 @@ public class TypeParameterResolver
 
 	private void resolveConstructors(@NotNull NapileTypeParameterListOwner declaration, JetScope scope, List<TypeParameterDescriptor> parameters, BindingTrace trace)
 	{
-		List<NapileTypeParameter> typeParameters = declaration.getTypeParameters();
+		NapileTypeParameter[] typeParameters = declaration.getTypeParameters();
 		for(int i = 0; i < parameters.size(); i++)
 		{
-			NapileTypeParameter typeParameter = typeParameters.get(i);
+			NapileTypeParameter typeParameter = typeParameters[i];
 			TypeParameterDescriptor typeParameterDescriptor = parameters.get(i);
 
 			for(NapileParameterList parameterList : typeParameter.getConstructorParameterLists())
@@ -156,10 +156,10 @@ public class TypeParameterResolver
 	{
 		List<UpperBoundCheckerTask> deferredUpperBoundCheckerTasks = Lists.newArrayList();
 
-		List<NapileTypeParameter> typeParameters = declaration.getTypeParameters();
-		for(int i = 0; i < typeParameters.size(); i++)
+		NapileTypeParameter[] typeParameters = declaration.getTypeParameters();
+		for(int i = 0; i < typeParameters.length; i++)
 		{
-			NapileTypeParameter jetTypeParameter = typeParameters.get(i);
+			NapileTypeParameter jetTypeParameter = typeParameters[i];
 			TypeParameterDescriptor typeParameterDescriptor = parameters.get(i);
 
 			for(NapileTypeReference extendsBound : jetTypeParameter.getExtendsBound())

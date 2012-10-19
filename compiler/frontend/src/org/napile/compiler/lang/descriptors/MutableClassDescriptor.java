@@ -49,7 +49,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 
 	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope outerScope, ClassKind kind, Name name, boolean isStatic)
 	{
-		super(containingDeclaration, kind, false);
+		super(containingDeclaration, kind, isStatic);
 
 		RedeclarationHandler redeclarationHandler = RedeclarationHandler.DO_NOTHING;
 
