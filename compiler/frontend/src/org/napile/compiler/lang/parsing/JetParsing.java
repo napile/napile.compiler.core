@@ -145,7 +145,7 @@ public class JetParsing extends AbstractJetParsing
          */
 		PsiBuilder.Marker namespaceHeader = mark();
 		PsiBuilder.Marker firstEntry = mark();
-		parseModifierList(MODIFIER_LIST);
+		parseModifierList();
 
 		if(at(NapileTokens.PACKAGE_KEYWORD))
 		{
@@ -299,7 +299,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker decl = mark();
 
-		parseModifierList(MODIFIER_LIST);
+		parseModifierList();
 
 		IElementType keywordToken = tt();
 		IElementType declType = null;
@@ -324,7 +324,7 @@ public class JetParsing extends AbstractJetParsing
 	 * <p/>
 	 * Feeds modifiers (not attributes) into the passed consumer, if it is not null
 	 */
-	boolean parseModifierList(NapileNode nodeType)
+	boolean parseModifierList()
 	{
 		PsiBuilder.Marker list = mark();
 		boolean empty = true;
@@ -350,7 +350,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			list.done(nodeType);
+			list.done(MODIFIER_LIST);
 		}
 		return !empty;
 	}
@@ -462,7 +462,7 @@ public class JetParsing extends AbstractJetParsing
 				TokenSet constructorNameFollow = TokenSet.create(NapileTokens.SEMICOLON, NapileTokens.COLON, NapileTokens.LPAR, NapileTokens.LT, NapileTokens.LBRACE);
 				int lastId = findLastBefore(ENUM_MEMBER_FIRST, constructorNameFollow, false);
 
-				createTruncatedBuilder(lastId).parseModifierList(MODIFIER_LIST);
+				createTruncatedBuilder(lastId).parseModifierList();
 
 				IElementType type;
 				if(at(NapileTokens.IDENTIFIER))
@@ -628,7 +628,7 @@ public class JetParsing extends AbstractJetParsing
 			declType = parseStaticConstructor();
 		else
 		{
-			parseModifierList(MODIFIER_LIST);
+			parseModifierList();
 
 			declType = parseMemberDeclarationRest();
 		}
@@ -1013,7 +1013,7 @@ public class JetParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker mark = mark();
 
-		parseModifierList(MODIFIER_LIST);
+		parseModifierList();
 
 		expect(NapileTokens.IDENTIFIER, "Type parameter name expected", TokenSet.EMPTY);
 
@@ -1356,7 +1356,7 @@ public class JetParsing extends AbstractJetParsing
 						if(!tryParseValueParameter())
 						{
 							PsiBuilder.Marker valueParameter = mark();
-							parseModifierList(MODIFIER_LIST); // lazy, out, ref
+							parseModifierList(); // lazy, out, ref
 							parseTypeRef();
 							valueParameter.done(VALUE_PARAMETER);
 						}
@@ -1406,7 +1406,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			parseModifierList(MODIFIER_LIST);
+			parseModifierList();
 
 			if(at(NapileTokens.VAR_KEYWORD))
 			{

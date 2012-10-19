@@ -801,7 +801,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			if(valPos >= 0)
 			{
 				PsiBuilder.Marker property = mark();
-				myJetParsing.parseModifierList(MODIFIER_LIST);
+				myJetParsing.parseModifierList();
 				myJetParsing.parseProperty(true);
 				property.done(VARIABLE);
 			}
@@ -1021,7 +1021,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker decl = mark();
 
-		myJetParsing.parseModifierList(MODIFIER_LIST);
+		myJetParsing.parseModifierList();
 
 		IElementType declType = parseLocalDeclarationRest();
 
@@ -1296,7 +1296,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 				PsiBuilder.Marker parameter = mark();
 				int parameterNamePos = matchTokenStreamPredicate(new LastBefore(new At(NapileTokens.IDENTIFIER), new AtSet(NapileTokens.COMMA, NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.ARROW)));
-				createTruncatedBuilder(parameterNamePos).parseModifierList(MODIFIER_LIST);
+				createTruncatedBuilder(parameterNamePos).parseModifierList();
 
 				expect(NapileTokens.IDENTIFIER, "Expecting parameter declaration");
 
@@ -1490,18 +1490,21 @@ public class JetExpressionParsing extends AbstractJetParsing
 		expect(NapileTokens.LPAR, "Expecting '(' to open a loop range", TokenSet.create(NapileTokens.RPAR,  NapileTokens.VAR_KEYWORD, NapileTokens.IDENTIFIER));
 
 		PsiBuilder.Marker parameter = mark();
+
+		myJetParsing.parseModifierList();
+
 		if(at(NapileTokens.VAR_KEYWORD))
-			advance(); // VAL_KEYWORD or VAR_KEYWORD
+			advance(); // VAR_KEYWORD
+
 		if(!myJetParsing.parseIdeTemplate())
-		{
 			expect(NapileTokens.IDENTIFIER, "Expecting a variable name", TokenSet.create(NapileTokens.COLON));
-		}
+
 		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
 			myJetParsing.parseTypeRef();
 		}
-		parameter.done(VARIABLE);
+		parameter.done(VALUE_PARAMETER);
 
 		expect(NapileTokens.IN_KEYWORD, "Expecting 'in'");
 
