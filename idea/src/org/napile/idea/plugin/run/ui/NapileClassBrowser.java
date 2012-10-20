@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.psi.filter.NapileClassFilterWithScope;
-import org.napile.idea.plugin.util.IdeRunUtil;
+import org.napile.idea.plugin.util.IdePsiUtil;
 import com.intellij.execution.ExecutionBundle;
 import com.intellij.execution.configuration.BrowseModuleValueActionListener;
 import com.intellij.execution.ui.ConfigurationModuleSelector;
@@ -111,7 +111,7 @@ public abstract class NapileClassBrowser extends BrowseModuleValueActionListener
 					@Override
 					public Boolean compute()
 					{
-						return IdeRunUtil.hasClassPoint(aClass);
+						return IdePsiUtil.hasClassPoint(aClass);
 					}
 				});
 			}

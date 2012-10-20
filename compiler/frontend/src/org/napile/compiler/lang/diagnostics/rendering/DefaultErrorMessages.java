@@ -97,6 +97,7 @@ public class DefaultErrorMessages
 		MAP.put(RETURN_NOT_ALLOWED, "'return' is not allowed here");
 		MAP.put(LABEL_NAME_CLASH, "There is more than one label with such a name in this scope");
 		MAP.put(EXPRESSION_EXPECTED_NAMESPACE_FOUND, "Expression expected, but a namespace name found");
+		MAP.put(TARGET_IS_DEPRECATED, "Target ''{0}'' is deprecated. Reason ''{1}''", NAME);
 
 		MAP.put(CANNOT_IMPORT_FROM_ELEMENT, "Cannot import from ''{0}''", NAME);
 		MAP.put(CANNOT_BE_IMPORTED, "Cannot import ''{0}'', need static methods or properties", NAME);

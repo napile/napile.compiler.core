@@ -83,6 +83,7 @@ public interface Errors
 	DiagnosticFactory1<NapileSimpleNameExpression, DeclarationDescriptor> CANNOT_BE_IMPORTED = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> USELESS_HIDDEN_IMPORT = SimpleDiagnosticFactory.create(Severity.WARNING);
 	SimpleDiagnosticFactory<NapileExpression> USELESS_SIMPLE_IMPORT = SimpleDiagnosticFactory.create(Severity.WARNING);
+	DiagnosticFactory1<NapileReferenceExpression, String> TARGET_IS_DEPRECATED = DiagnosticFactory1.create(Severity.WARNING);
 
 	SimpleDiagnosticFactory<NapilePropertyParameter> CANNOT_INFER_PARAMETER_TYPE = SimpleDiagnosticFactory.create(Severity.ERROR);
 

@@ -22,6 +22,7 @@ import java.util.Collection;
 
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
+import org.napile.idea.plugin.util.IdePsiUtil;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectView;
 import com.intellij.ide.projectView.ViewSettings;
@@ -82,5 +83,11 @@ public class NapileClassTreeNode extends AbstractPsiBasedNode<NapileClass>
 	public int getWeight()
 	{
 		return 20;
+	}
+
+	@Override
+	protected boolean isDeprecated()
+	{
+		return IdePsiUtil.isDeprecated(getValue());
 	}
 }

@@ -66,14 +66,14 @@ public class ControlFlowAnalyzer
 		{
 			if(!bodiesResolveContext.completeAnalysisNeeded(aClass))
 				continue;
-			checkClassOrObject(aClass);
+			checkClassLike(aClass);
 		}
 
 		for(NapileAnonymClass objectDeclaration : bodiesResolveContext.getAnonymous().keySet())
 		{
 			if(!bodiesResolveContext.completeAnalysisNeeded(objectDeclaration))
 				continue;
-			checkClassOrObject(objectDeclaration);
+			checkClassLike(objectDeclaration);
 		}
 
 		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
@@ -105,7 +105,7 @@ public class ControlFlowAnalyzer
 		}
 	}
 
-	private void checkClassOrObject(NapileClassLike klass)
+	private void checkClassLike(NapileClassLike klass)
 	{
 		// A pseudocode of class initialization corresponds to a class
 		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider((NapileDeclaration) klass, trace);

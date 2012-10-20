@@ -188,11 +188,12 @@ public class BodyResolver
 	{
 		resolveBehaviorDeclarationBodies(bodiesResolveContext);
 
+		annotationChecker.processFirst(bodiesResolveContext);
 		enumEntryChecker.process(bodiesResolveContext);
 		controlFlowAnalyzer.process(bodiesResolveContext);
 		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
-		annotationChecker.process(bodiesResolveContext);
+		annotationChecker.processLater(bodiesResolveContext);
 	}
 
 	private void resolveDelegationSpecifierLists()

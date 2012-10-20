@@ -28,6 +28,7 @@ import org.napile.compiler.lang.psi.NapileReferenceParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.formatter.JetCodeStyleSettings;
+import org.napile.idea.plugin.util.IdePsiUtil;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ViewSettings;
 import com.intellij.ide.projectView.impl.nodes.AbstractPsiBasedNode;
@@ -160,5 +161,11 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 
 			data.setPresentableText(text);
 		}
+	}
+
+	@Override
+	protected boolean isDeprecated()
+	{
+		return IdePsiUtil.isDeprecated(getValue());
 	}
 }

@@ -127,6 +127,8 @@ public interface BindingContext
 	WritableSlice<NapileExpression, Boolean> PROCESSED = Slices.createSimpleSetSlice();
 	WritableSlice<NapileElement, Boolean> STATEMENT = Slices.createRemovableSetSlice();
 
+	WritableSlice<DeclarationDescriptor, Boolean> DEPRECATED = Slices.createSimpleSetSlice();
+
 	WritableSlice<VariableDescriptor, Boolean> CAPTURED_IN_CLOSURE = Slices.createSimpleSetSlice();
 
 	//    enum DeferredTypeKey {DEFERRED_TYPE_KEY}
@@ -134,6 +136,7 @@ public interface BindingContext
 
 	WritableSlice<Box<DeferredType>, Boolean> DEFERRED_TYPE = Slices.createCollectiveSetSlice();
 
+	@Deprecated
 	WritableSlice<PropertyDescriptor, Boolean> BACKING_FIELD_REQUIRED = new Slices.SetSlice<PropertyDescriptor>(RewritePolicy.DO_NOTHING)
 	{
 		@Override
