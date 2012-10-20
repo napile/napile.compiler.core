@@ -37,7 +37,7 @@ import org.napile.compiler.lang.psi.NXmlElementBase;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
-import org.napile.compiler.lang.psi.NapilePackageImpl;
+import org.napile.compiler.lang.psi.NapilePackageImplImpl;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.impl.file.NXmlFileViewProvider;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
@@ -182,7 +182,7 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 
 	@NotNull
 	@Override
-	public NapilePackageImpl getNamespaceHeader()
+	public NapilePackageImplImpl getNamespaceHeader()
 	{
 		return getMirror().getNamespaceHeader();
 	}

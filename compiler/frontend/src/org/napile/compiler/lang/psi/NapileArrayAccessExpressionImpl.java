@@ -34,9 +34,9 @@ import com.intellij.psi.util.PsiTreeUtil;
 /**
  * @author max
  */
-public class NapileArrayAccessExpression extends NapileReferenceExpression
+public class NapileArrayAccessExpressionImpl extends NapileReferenceExpressionImpl
 {
-	public NapileArrayAccessExpression(@NotNull ASTNode node)
+	public NapileArrayAccessExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}

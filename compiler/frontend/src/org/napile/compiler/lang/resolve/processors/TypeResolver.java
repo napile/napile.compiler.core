@@ -202,7 +202,7 @@ public class TypeResolver
 				}
 
 				@Override
-				public void visitFunctionType(NapileFunctionType type)
+				public void visitFunctionType(NapileMethodType type)
 				{
 					NapileElement[] parameters = type.getParameters();
 					Map<Name, JetType> parameterTypes = new LinkedHashMap<Name, JetType>(parameters.length);

@@ -260,7 +260,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitExpression(expression, data);
 	}
 
-	public R visitArrayAccessExpression(NapileArrayAccessExpression expression, D data)
+	public R visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, D data)
 	{
 		return visitReferenceExpression(expression, data);
 	}
@@ -350,7 +350,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitTypeElement(type, data);
 	}
 
-	public R visitFunctionType(NapileFunctionType type, D data)
+	public R visitFunctionType(NapileMethodType type, D data)
 	{
 		return visitTypeElement(type, data);
 	}

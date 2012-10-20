@@ -32,12 +32,11 @@ import com.intellij.psi.tree.IElementType;
 /**
  * @author max
  */
-public class NapileFunctionType extends NapileTypeElement
+public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMethodType
 {
-
 	public static final NapileToken RETURN_TYPE_SEPARATOR = NapileTokens.ARROW;
 
-	public NapileFunctionType(@NotNull ASTNode node)
+	public NapileMethodTypeImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -47,11 +46,6 @@ public class NapileFunctionType extends NapileTypeElement
 	public List<NapileTypeReference> getTypeArguments()
 	{
 		ArrayList<NapileTypeReference> result = Lists.newArrayList();
-		NapileTypeReference receiverTypeRef = getReceiverTypeRef();
-		if(receiverTypeRef != null)
-		{
-			result.add(receiverTypeRef);
-		}
 		for(NapileElement jetParameter : getParameters())
 		{
 			if(jetParameter instanceof NapilePropertyParameter)
@@ -77,12 +71,14 @@ public class NapileFunctionType extends NapileTypeElement
 		return visitor.visitFunctionType(this, data);
 	}
 
+	@Override
 	@Nullable
 	public NapileParameterList getParameterList()
 	{
 		return (NapileParameterList) findChildByType(NapileNodes.VALUE_PARAMETER_LIST);
 	}
 
+	@Override
 	@NotNull
 	public NapileElement[] getParameters()
 	{
@@ -90,25 +86,7 @@ public class NapileFunctionType extends NapileTypeElement
 		return list != null ? list.getParameters() : NapileElement.EMPTY_ARRAY;
 	}
 
-	@Nullable
-	public NapileTypeReference getReceiverTypeRef()
-	{
-		PsiElement child = getFirstChild();
-		while(child != null)
-		{
-			IElementType tt = child.getNode().getElementType();
-			if(tt == NapileTokens.LPAR || tt == RETURN_TYPE_SEPARATOR)
-				break;
-			if(child instanceof NapileTypeReference)
-			{
-				return (NapileTypeReference) child;
-			}
-			child = child.getNextSibling();
-		}
-
-		return null;
-	}
-
+	@Override
 	@Nullable
 	public NapileTypeReference getReturnTypeRef()
 	{

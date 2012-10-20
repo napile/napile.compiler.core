@@ -223,14 +223,14 @@ public class CallMaker
 		return makeCall(expression, baseAsReceiver, null, expression.getOperationReference(), Collections.<ValueArgument>emptyList());
 	}
 
-	public static Call makeArraySetCall(@NotNull ReceiverDescriptor arrayAsReceiver, @NotNull NapileArrayAccessExpression arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull CallType callType)
+	public static Call makeArraySetCall(@NotNull ReceiverDescriptor arrayAsReceiver, @NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull CallType callType)
 	{
 		List<NapileExpression> arguments = Lists.newArrayList(arrayAccessExpression.getIndexExpressions());
 		arguments.add(rightHandSide);
 		return makeCallWithExpressions(arrayAccessExpression, arrayAsReceiver, null, arrayAccessExpression, arguments, callType);
 	}
 
-	public static Call makeArrayGetCall(@NotNull ReceiverDescriptor arrayAsReceiver, @NotNull NapileArrayAccessExpression arrayAccessExpression, @NotNull CallType callType)
+	public static Call makeArrayGetCall(@NotNull ReceiverDescriptor arrayAsReceiver, @NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull CallType callType)
 	{
 		return makeCallWithExpressions(arrayAccessExpression, arrayAsReceiver, null, arrayAccessExpression, arrayAccessExpression.getIndexExpressions(), callType);
 	}

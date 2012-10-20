@@ -29,7 +29,7 @@ import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
-import org.napile.compiler.lang.psi.NapilePackageImpl;
+import org.napile.compiler.lang.psi.NapilePackageImplImpl;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
@@ -95,10 +95,10 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 
 	@NotNull
 	@Override
-	public NapilePackageImpl getNamespaceHeader()
+	public NapilePackageImplImpl getNamespaceHeader()
 	{
 		ASTNode ast = getNode().findChildByType(NapileNodes.PACKAGE);
-		return ast != null ? (NapilePackageImpl) ast.getPsi() : null;
+		return ast != null ? (NapilePackageImplImpl) ast.getPsi() : null;
 	}
 
 	@Nullable
@@ -109,7 +109,7 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 		if(stub != null)
 			return stub.getPackageName();
 
-		NapilePackageImpl statement = getNamespaceHeader();
+		NapilePackageImplImpl statement = getNamespaceHeader();
 		return statement != null ? statement.getQualifiedName() : null;
 	}
 

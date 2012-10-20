@@ -18,18 +18,18 @@ package org.napile.compiler.lang.resolve.calls;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileReferenceExpression;
+import org.napile.compiler.lang.psi.NapileReferenceExpressionImpl;
 
 /**
  * This class is used to wrap an expression that occurs in a reference position, such as a function literal, into a reference expression
  *
  * @author abreslav
  */
-public class NapileFakeReference extends NapileReferenceExpression
+public class NapileFakeReferenceImpl extends NapileReferenceExpressionImpl
 {
 	private final NapileElement actualElement;
 
-	public NapileFakeReference(@NotNull NapileElement actualElement)
+	public NapileFakeReferenceImpl(@NotNull NapileElement actualElement)
 	{
 		super(actualElement.getNode());
 		this.actualElement = actualElement;

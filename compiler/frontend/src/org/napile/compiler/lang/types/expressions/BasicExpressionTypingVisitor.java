@@ -1033,10 +1033,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 
 		// a[i]++/-- takes special treatment because it is actually let j = i, arr = a in arr.set(j, a.get(j).inc())
-		if((operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS) && baseExpression instanceof NapileArrayAccessExpression)
+		if((operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS) && baseExpression instanceof NapileArrayAccessExpressionImpl)
 		{
 			NapileExpression stubExpression = ExpressionTypingUtils.createStubExpressionOfNecessaryType(baseExpression.getProject(), type, context.trace);
-			resolveArrayAccessSetMethod((NapileArrayAccessExpression) baseExpression, stubExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE).replaceBindingTrace(TemporaryBindingTrace.create(context.trace)), context.trace);
+			resolveArrayAccessSetMethod((NapileArrayAccessExpressionImpl) baseExpression, stubExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE).replaceBindingTrace(TemporaryBindingTrace.create(context.trace)), context.trace);
 		}
 
 		ExpressionReceiver receiver = new ExpressionReceiver(baseExpression, type);
@@ -1143,9 +1143,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	private void checkLValue(BindingTrace trace, NapileExpression expressionWithParenthesis, boolean canBeThis)
 	{
 		NapileExpression expression = NapilePsiUtil.deparenthesize(expressionWithParenthesis);
-		if(expression instanceof NapileArrayAccessExpression)
+		if(expression instanceof NapileArrayAccessExpressionImpl)
 		{
-			checkLValue(trace, ((NapileArrayAccessExpression) expression).getArrayExpression(), true);
+			checkLValue(trace, ((NapileArrayAccessExpressionImpl) expression).getArrayExpression(), true);
 			return;
 		}
 		if(canBeThis && expression instanceof NapileThisExpression)
@@ -1374,7 +1374,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitArrayAccessExpression(NapileArrayAccessExpression expression, ExpressionTypingContext context)
+	public JetTypeInfo visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, ExpressionTypingContext context)
 	{
 		JetType type = resolveArrayAccessGetMethod(expression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
 		DataFlowUtils.checkType(type, expression, context);
@@ -1476,19 +1476,19 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Nullable
-        /*package*/ JetType resolveArrayAccessSetMethod(@NotNull NapileArrayAccessExpression arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult)
+        /*package*/ JetType resolveArrayAccessSetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult)
 	{
 		return resolveArrayAccessSpecialMethod(arrayAccessExpression, rightHandSide, context, traceForResolveResult, false);
 	}
 
 	@Nullable
-        /*package*/ JetType resolveArrayAccessGetMethod(@NotNull NapileArrayAccessExpression arrayAccessExpression, @NotNull ExpressionTypingContext context)
+        /*package*/ JetType resolveArrayAccessGetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull ExpressionTypingContext context)
 	{
 		return resolveArrayAccessSpecialMethod(arrayAccessExpression, null, context, context.trace, true);
 	}
 
 	@Nullable
-	private JetType resolveArrayAccessSpecialMethod(@NotNull NapileArrayAccessExpression arrayAccessExpression, @Nullable NapileExpression rightHandSide, //only for 'set' method
+	private JetType resolveArrayAccessSpecialMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @Nullable NapileExpression rightHandSide, //only for 'set' method
 			@NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult, boolean isGet)
 	{
 		JetType arrayType = facade.getTypeInfo(arrayAccessExpression.getArrayExpression(), context).getType();

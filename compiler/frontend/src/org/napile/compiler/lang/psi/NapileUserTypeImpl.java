@@ -28,13 +28,14 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileUserType extends NapileTypeElement
+public class NapileUserTypeImpl extends NapileElementImpl implements NapileUserType
 {
-	public NapileUserType(@NotNull ASTNode node)
+	public NapileUserTypeImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
+	@Override
 	public boolean isAbsoluteInRootNamespace()
 	{
 		return findChildByType(NapileTokens.PACKAGE_KEYWORD) != null;
@@ -52,6 +53,7 @@ public class NapileUserType extends NapileTypeElement
 		return visitor.visitUserType(this, data);
 	}
 
+	@Override
 	public NapileTypeArgumentList getTypeArgumentList()
 	{
 		return (NapileTypeArgumentList) findChildByType(NapileNodes.TYPE_ARGUMENT_LIST);
@@ -65,6 +67,7 @@ public class NapileUserType extends NapileTypeElement
 		return typeArgumentList == null ? Collections.<NapileTypeReference>emptyList() : typeArgumentList.getArguments();
 	}
 
+	@Override
 	@Nullable
 	@IfNotParsed
 	public NapileSimpleNameExpression getReferenceExpression()
@@ -72,12 +75,14 @@ public class NapileUserType extends NapileTypeElement
 		return (NapileSimpleNameExpression) findChildByType(NapileNodes.REFERENCE_EXPRESSION);
 	}
 
+	@Override
 	@Nullable
 	public NapileUserType getQualifier()
 	{
 		return (NapileUserType) findChildByType(NapileNodes.USER_TYPE);
 	}
 
+	@Override
 	@Nullable
 	public String getReferencedName()
 	{

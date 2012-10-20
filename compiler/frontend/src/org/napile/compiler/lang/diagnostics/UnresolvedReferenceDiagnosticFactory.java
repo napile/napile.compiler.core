@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileArrayAccessExpression;
+import org.napile.compiler.lang.psi.NapileArrayAccessExpressionImpl;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import com.intellij.openapi.util.TextRange;
 
@@ -37,9 +37,9 @@ public class UnresolvedReferenceDiagnosticFactory extends DiagnosticFactory1<Nap
 			@Override
 			public List<TextRange> mark(@NotNull NapileReferenceExpression element)
 			{
-				if(element instanceof NapileArrayAccessExpression)
+				if(element instanceof NapileArrayAccessExpressionImpl)
 				{
-					List<TextRange> ranges = ((NapileArrayAccessExpression) element).getBracketRanges();
+					List<TextRange> ranges = ((NapileArrayAccessExpressionImpl) element).getBracketRanges();
 					if(!ranges.isEmpty())
 					{
 						return ranges;

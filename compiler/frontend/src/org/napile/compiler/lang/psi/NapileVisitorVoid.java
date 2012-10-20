@@ -268,7 +268,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitExpression(expression);
 	}
 
-	public void visitArrayAccessExpression(NapileArrayAccessExpression expression)
+	public void visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression)
 	{
 		visitReferenceExpression(expression);
 	}
@@ -357,7 +357,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitTypeElement(type);
 	}
 
-	public void visitFunctionType(NapileFunctionType type)
+	public void visitFunctionType(NapileMethodType type)
 	{
 		visitTypeElement(type);
 	}

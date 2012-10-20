@@ -16,44 +16,52 @@
 
 package org.napile.compiler.lang.psi;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.psi.stubs.NapilePsiParameterListStub;
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author max
  */
-public class NapileParameterList extends NapileElementImplStub<NapilePsiParameterListStub>
+public class NapileNullableTypeImpl extends NapileElementImpl implements NapileTypeElement, NapileNullableType
 {
-	private static final TokenSet PARAMETER_TYPES = TokenSet.create(NapileStubElementTypes.VALUE_PARAMETER, NapileNodes.REFERENCE_PARAMETER);
-
-	public NapileParameterList(@NotNull ASTNode node)
+	public NapileNullableTypeImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileParameterList(@NotNull NapilePsiParameterListStub stub)
+	@Override
+	@NotNull
+	public ASTNode getQuestionMarkNode()
 	{
-		super(stub, NapileStubElementTypes.VALUE_PARAMETER_LIST);
+		return getNode().findChildByType(NapileTokens.QUEST);
+	}
+
+	@NotNull
+	@Override
+	public List<NapileTypeReference> getTypeArguments()
+	{
+		return getInnerType().getTypeArguments();
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitParameterList(this);
+		visitor.visitNullableType(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitParameterList(this, data);
+		return visitor.visitNullableType(this, data);
 	}
 
-	public NapileElement[] getParameters()
+	@Override
+	@NotNull
+	public NapileTypeElement getInnerType()
 	{
-		return getStubOrPsiChildren(PARAMETER_TYPES, NapileElement.ARRAY_FACTORY);
+		return findNotNullChildByClass(NapileTypeElement.class);
 	}
 }

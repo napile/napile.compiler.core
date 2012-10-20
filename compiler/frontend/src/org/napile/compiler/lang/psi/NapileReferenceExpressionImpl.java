@@ -16,37 +16,16 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 
 /**
- * @author max
+ * @author abreslav
  */
-public class NapileTypeArgumentList extends NapileElementImpl
+public abstract class NapileReferenceExpressionImpl extends NapileExpressionImpl implements NapileReferenceExpression
 {
-	public NapileTypeArgumentList(@NotNull ASTNode node)
+	public NapileReferenceExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
-	}
-
-	@Override
-	public void accept(@NotNull NapileVisitorVoid visitor)
-	{
-		visitor.visitTypeArgumentList(this);
-	}
-
-	@Override
-	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
-	{
-		return visitor.visitTypeArgumentList(this, data);
-	}
-
-	public List<NapileTypeReference> getArguments()
-	{
-		return findChildrenByType(NapileNodes.TYPE_REFERENCE);
 	}
 }

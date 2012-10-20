@@ -636,7 +636,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
-	public StackValue visitArrayAccessExpression(NapileArrayAccessExpression expression, StackValue receiver)
+	public StackValue visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, StackValue receiver)
 	{
 		MethodDescriptor operationDescriptor = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
 		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor, Collections.<TypeNode>emptyList());

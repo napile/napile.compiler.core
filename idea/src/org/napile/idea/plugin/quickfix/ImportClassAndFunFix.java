@@ -216,7 +216,7 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 			@Override
 			public JetIntentionAction<NapileSimpleNameExpression> createAction(@NotNull Diagnostic diagnostic)
 			{
-				// There could be different psi elements (i.e. NapileArrayAccessExpression), but we can fix only NapileSimpleNameExpression case
+				// There could be different psi elements (i.e. NapileArrayAccessExpressionImpl), but we can fix only NapileSimpleNameExpressionImpl case
 				if(diagnostic.getPsiElement() instanceof NapileSimpleNameExpression)
 				{
 					NapileSimpleNameExpression psiElement = (NapileSimpleNameExpression) diagnostic.getPsiElement();

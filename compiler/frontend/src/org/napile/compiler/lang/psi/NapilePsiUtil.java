@@ -146,7 +146,7 @@ public class NapilePsiUtil
 		}
 	}
 
-	private static FqName getFQName(NapilePackageImpl header)
+	private static FqName getFQName(NapilePackageImplImpl header)
 	{
 		StringBuilder builder = new StringBuilder();
 		for(NapileSimpleNameExpression nameExpression : header.getParentNamespaceNames())

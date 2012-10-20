@@ -19,7 +19,7 @@ package org.napile.idea.plugin.references;
 import static com.intellij.patterns.PlatformPatterns.psiElement;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileArrayAccessExpression;
+import org.napile.compiler.lang.psi.NapileArrayAccessExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -48,13 +48,13 @@ public class JetReferenceContributor extends PsiReferenceContributor
 			}
 		});
 
-		registrar.registerReferenceProvider(psiElement(NapileArrayAccessExpression.class), new PsiReferenceProvider()
+		registrar.registerReferenceProvider(psiElement(NapileArrayAccessExpressionImpl.class), new PsiReferenceProvider()
 		{
 			@NotNull
 			@Override
 			public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext processingContext)
 			{
-				return JetArrayAccessReference.create((NapileArrayAccessExpression) element);
+				return JetArrayAccessReference.create((NapileArrayAccessExpressionImpl) element);
 			}
 		});
 	}

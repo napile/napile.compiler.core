@@ -66,16 +66,16 @@ public interface NapileNodes
 	NapileNode ANNOTATION = new NapileNode("ANNOTATION", NapileAnnotation.class);
 
 	NapileNode EXTEND_TYPE_LIST = new NapileNode("EXTEND_TYPE_LIST", NapileExtendTypeList.class);
-	NapileNode TYPE_ARGUMENT_LIST = new NapileNode("TYPE_ARGUMENT_LIST", NapileTypeArgumentList.class);
+	NapileNode TYPE_ARGUMENT_LIST = new NapileNode("TYPE_ARGUMENT_LIST", NapileTypeArgumentListImpl.class);
 	NapileNode VALUE_ARGUMENT_LIST = new NapileNode("VALUE_ARGUMENT_LIST", NapileValueArgumentList.class);
 	NapileNode VALUE_ARGUMENT = new NapileNode("VALUE_ARGUMENT", NapileValueArgument.class);
 	NapileNode VALUE_ARGUMENT_NAME = new NapileNode("VALUE_ARGUMENT_NAME", NapileValueArgumentName.class);
 	NapileNode TYPE_REFERENCE = new NapileNode("TYPE_REFERENCE", NapileTypeReferenceImpl.class);
 
-	NapileNode USER_TYPE = new NapileNode("USER_TYPE", NapileUserType.class);
-	NapileNode FUNCTION_TYPE = new NapileNode("FUNCTION_TYPE", NapileFunctionType.class);
-	NapileNode SELF_TYPE = new NapileNode("SELF_TYPE", NapileSelfType.class);
-	NapileNode NULLABLE_TYPE = new NapileNode("NULLABLE_TYPE", NapileNullableType.class);
+	NapileNode USER_TYPE = new NapileNode("USER_TYPE", NapileUserTypeImpl.class);
+	NapileNode FUNCTION_TYPE = new NapileNode("METHOD_TYPE", NapileMethodTypeImpl.class);
+	NapileNode SELF_TYPE = new NapileNode("SELF_TYPE", NapileSelfTypeImpl.class);
+	NapileNode NULLABLE_TYPE = new NapileNode("NULLABLE_TYPE", NapileNullableTypeImpl.class);
 
 	NapileNode NULL = new NapileNode("NULL", NapileConstantExpression.class);
 	NapileNode BOOLEAN_CONSTANT = new NapileNode("BOOLEAN_CONSTANT", NapileConstantExpression.class);
@@ -129,10 +129,10 @@ public interface NapileNodes
 		}
 	};
 
-	NapileNode REFERENCE_EXPRESSION = new NapileNode("REFERENCE_EXPRESSION", NapileSimpleNameExpression.class);
-	NapileNode OPERATION_REFERENCE = new NapileNode("OPERATION_REFERENCE", NapileSimpleNameExpression.class);
-	NapileNode LABEL_REFERENCE = new NapileNode("LABEL_REFERENCE", NapileSimpleNameExpression.class);
-	NapileNode VARIABLE_REFERENCE = new NapileNode("VARIABLE_REFERENCE", NapileSimpleNameExpression.class);
+	NapileNode REFERENCE_EXPRESSION = new NapileNode("REFERENCE_EXPRESSION", NapileSimpleNameExpressionImpl.class);
+	NapileNode OPERATION_REFERENCE = new NapileNode("OPERATION_REFERENCE", NapileSimpleNameExpressionImpl.class);
+	NapileNode LABEL_REFERENCE = new NapileNode("LABEL_REFERENCE", NapileSimpleNameExpressionImpl.class);
+	NapileNode VARIABLE_REFERENCE = new NapileNode("VARIABLE_REFERENCE", NapileSimpleNameExpressionImpl.class);
 
 	NapileNode THIS_EXPRESSION = new NapileNode("THIS_EXPRESSION", NapileThisExpression.class);
 	NapileNode SUPER_EXPRESSION = new NapileNode("SUPER_EXPRESSION", NapileSuperExpression.class);
@@ -143,7 +143,7 @@ public interface NapileNodes
 	NapileNode POSTFIX_EXPRESSION = new NapileNode("POSTFIX_EXPRESSION", NapilePostfixExpression.class);
 	NapileNode CALL_EXPRESSION = new NapileNode("CALL_EXPRESSION", NapileCallExpression.class);
 	NapileNode LABEL_EXPRESSION = new NapileNode("LABEL_EXPRESSION", NapileLabelExpression.class);
-	NapileNode ARRAY_ACCESS_EXPRESSION = new NapileNode("ARRAY_ACCESS_EXPRESSION", NapileArrayAccessExpression.class);
+	NapileNode ARRAY_ACCESS_EXPRESSION = new NapileNode("ARRAY_ACCESS_EXPRESSION", NapileArrayAccessExpressionImpl.class);
 	NapileNode INDICES = new NapileNode("INDICES", NapileContainerNode.class);
 	NapileNode DOT_QUALIFIED_EXPRESSION = new NapileNode("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpression.class);
 	NapileNode HASH_QUALIFIED_EXPRESSION = new NapileNode("HASH_QUALIFIED_EXPRESSION", NapileHashQualifiedExpression.class);
@@ -159,7 +159,7 @@ public interface NapileNodes
 	NapileNode WHEN_CONDITION_IS_PATTERN = new NapileNode("WHEN_CONDITION_IS_PATTERN", NapileWhenConditionIsPattern.class);
 	NapileNode WHEN_CONDITION_EXPRESSION = new NapileNode("WHEN_CONDITION_WITH_EXPRESSION", NapileWhenConditionWithExpression.class);
 
-	NapileNode PACKAGE = new NapileNode("PACKAGE", NapilePackageImpl.class);
+	NapileNode PACKAGE = new NapileNode("PACKAGE", NapilePackageImplImpl.class);
 
 	NapileNode IDE_TEMPLATE_EXPRESSION = new NapileNode("IDE_TEMPLATE_EXPRESSION", NapileIdeTemplate.class);
 }

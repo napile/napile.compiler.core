@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileParameterList;
+import org.napile.compiler.lang.psi.NapileParameterListImpl;
 import org.napile.compiler.lang.psi.stubs.NapilePsiParameterListStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
@@ -41,13 +42,13 @@ public class NapileParameterListElementType extends NapileStubElementType<Napile
 	@Override
 	public NapileParameterList createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileParameterList(node);
+		return new NapileParameterListImpl(node);
 	}
 
 	@Override
 	public NapileParameterList createPsi(@NotNull NapilePsiParameterListStub stub)
 	{
-		return new NapileParameterList(stub);
+		return new NapileParameterListImpl(stub);
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,21 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
-import com.intellij.lang.ASTNode;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * @author max
+ * @author VISTALL
+ * @date 7:59/20.10.12
  */
-public abstract class NapileTypeElement extends NapileElementImpl
+public interface NapileMethodType extends NapileTypeElement
 {
-	public NapileTypeElement(@NotNull ASTNode node)
-	{
-		super(node);
-	}
+	@Nullable
+	NapileParameterList getParameterList();
 
 	@NotNull
-	public abstract List<NapileTypeReference> getTypeArguments();
+	NapileElement[] getParameters();
+
+	@Nullable
+	NapileTypeReference getReturnTypeRef();
 }

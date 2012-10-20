@@ -225,7 +225,7 @@ public class CallResolver
 				{
 					PsiElement parent = context.call.getCallElement().getParent().getParent();
 					declarationDescriptor = context.trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, parent);
-					functionReference = new NapileFakeReference(context.call.getCalleeExpression());
+					functionReference = new NapileFakeReferenceImpl(context.call.getCalleeExpression());
 				}
 				else
 				{
@@ -234,7 +234,7 @@ public class CallResolver
 					NapileTypeReference typeReference = expression.getTypeReference();
 					if(typeReference == null)
 						return checkArgumentTypesAndFail(context); // No type there
-					functionReference = new NapileFakeReference(typeReference);
+					functionReference = new NapileFakeReferenceImpl(typeReference);
 
 					JetType constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
 					declarationDescriptor = constructedType.getConstructor().getDeclarationDescriptor();
@@ -287,7 +287,7 @@ public class CallResolver
 				// strictly speaking, this is a hack:
 				// we need to pass a reference, but there's no reference in the PSI,
 				// so we wrap what we have into a fake reference and pass it on (unwrap on the other end)
-				functionReference = new NapileFakeReference(calleeExpression);
+				functionReference = new NapileFakeReferenceImpl(calleeExpression);
 
 				prioritizedTasks = Collections.singletonList(new ResolutionTask<CallableDescriptor, MethodDescriptor>(Collections.singleton(resolutionCandidate), functionReference, context));
 			}
@@ -693,21 +693,21 @@ public class CallResolver
 				{
 					NapileExpression expression = ((ExpressionReceiver) candidateCall.getThisObject()).getExpression();
 
-					if(expression instanceof NapileReferenceExpression)
+					if(expression instanceof NapileReferenceExpressionImpl)
 					{
-						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpression)expression);
+						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpressionImpl)expression);
 
 						isValid = !isParentStatic(ref);
 					}
-					else if(expression instanceof NapilePostfixExpression && ((NapilePostfixExpression) expression).getBaseExpression() instanceof NapileReferenceExpression)
+					else if(expression instanceof NapilePostfixExpression && ((NapilePostfixExpression) expression).getBaseExpression() instanceof NapileReferenceExpressionImpl)
 					{
-						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpression)((NapilePostfixExpression) expression).getBaseExpression());
+						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpressionImpl)((NapilePostfixExpression) expression).getBaseExpression());
 
 						isValid = !isParentStatic(ref);
 					}
-					else if(expression instanceof NapileDotQualifiedExpression && ((NapileDotQualifiedExpression) expression).getReceiverExpression() instanceof NapileReferenceExpression)
+					else if(expression instanceof NapileDotQualifiedExpression && ((NapileDotQualifiedExpression) expression).getReceiverExpression() instanceof NapileReferenceExpressionImpl)
 					{
-						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpression)((NapileDotQualifiedExpression) expression).getReceiverExpression());
+						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpressionImpl)((NapileDotQualifiedExpression) expression).getReceiverExpression());
 
 						isValid = !isParentStatic(ref);
 					}

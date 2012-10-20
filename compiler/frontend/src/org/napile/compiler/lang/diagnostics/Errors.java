@@ -160,8 +160,8 @@ public interface Errors
 
 	SimpleDiagnosticFactory<NapileTypeReference> LOCAL_EXTENSION_PROPERTY = SimpleDiagnosticFactory.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileArrayAccessExpression> NO_GET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
-	SimpleDiagnosticFactory<NapileArrayAccessExpression> NO_SET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
+	SimpleDiagnosticFactory<NapileArrayAccessExpressionImpl> NO_GET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
+	SimpleDiagnosticFactory<NapileArrayAccessExpressionImpl> NO_SET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
 
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> INC_DEC_SHOULD_NOT_RETURN_UNIT = SimpleDiagnosticFactory.create(Severity.ERROR);
 

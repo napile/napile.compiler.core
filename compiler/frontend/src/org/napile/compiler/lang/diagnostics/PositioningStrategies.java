@@ -215,11 +215,11 @@ public class PositioningStrategies
 		};
 	}
 
-	public static PositioningStrategy<NapileArrayAccessExpression> ARRAY_ACCESS = new PositioningStrategy<NapileArrayAccessExpression>()
+	public static PositioningStrategy<NapileArrayAccessExpressionImpl> ARRAY_ACCESS = new PositioningStrategy<NapileArrayAccessExpressionImpl>()
 	{
 		@NotNull
 		@Override
-		public List<TextRange> mark(@NotNull NapileArrayAccessExpression element)
+		public List<TextRange> mark(@NotNull NapileArrayAccessExpressionImpl element)
 		{
 			return markElement(element.getIndicesNode());
 		}

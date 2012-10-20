@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.psi.PsiElement;
 
 /**

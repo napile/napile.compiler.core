@@ -16,28 +16,26 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.psi.impl.PsiFileEx;
-import com.intellij.psi.impl.source.PsiFileWithStubSupport;
 
 /**
  * @author VISTALL
- * @date 20:02/09.10.12
+ * @date 7:55/20.10.12
  */
-public interface NapileFile extends NapileDeclarationContainer<NapileClass>, PsiFileWithStubSupport, PsiFileEx
+public interface NapileUserType extends NapileTypeElement
 {
-	@NotNull
-	NapilePackageImplImpl getNamespaceHeader();
+	boolean isAbsoluteInRootNamespace();
 
 	@Nullable
-	String getPackageName();
+	NapileTypeArgumentList getTypeArgumentList();
 
 	@Nullable
-	NapileImportDirective findImportByAlias(@NotNull String name);
+	@IfNotParsed
+	NapileSimpleNameExpression getReferenceExpression();
 
-	@NotNull
-	List<NapileImportDirective> getImportDirectives();
+	@Nullable
+	NapileUserType getQualifier();
+
+	@Nullable
+	String getReferencedName();
 }

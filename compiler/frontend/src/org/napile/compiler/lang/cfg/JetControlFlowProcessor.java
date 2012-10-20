@@ -286,9 +286,9 @@ public class JetControlFlowProcessor
 				{
 					builder.write(expression, left);
 				}
-				else if(left instanceof NapileArrayAccessExpression)
+				else if(left instanceof NapileArrayAccessExpressionImpl)
 				{
-					NapileArrayAccessExpression arrayAccessExpression = (NapileArrayAccessExpression) left;
+					NapileArrayAccessExpressionImpl arrayAccessExpression = (NapileArrayAccessExpressionImpl) left;
 					visitAssignToArrayAccess(expression, arrayAccessExpression);
 				}
 				else if(left instanceof NapileQualifiedExpression)
@@ -315,7 +315,7 @@ public class JetControlFlowProcessor
 				{
 					value(right, false);
 				}
-				if(left instanceof NapileSimpleNameExpression || left instanceof NapileArrayAccessExpression)
+				if(left instanceof NapileSimpleNameExpression || left instanceof NapileArrayAccessExpressionImpl)
 				{
 					value(expression.getOperationReference(), false);
 					builder.write(expression, left);
@@ -350,7 +350,7 @@ public class JetControlFlowProcessor
 			}
 		}
 
-		private void visitAssignToArrayAccess(NapileBinaryExpression expression, NapileArrayAccessExpression arrayAccessExpression)
+		private void visitAssignToArrayAccess(NapileBinaryExpression expression, NapileArrayAccessExpressionImpl arrayAccessExpression)
 		{
 			for(NapileExpression index : arrayAccessExpression.getIndexExpressions())
 			{
@@ -848,7 +848,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitArrayAccessExpression(NapileArrayAccessExpression expression)
+		public void visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression)
 		{
 			for(NapileExpression index : expression.getIndexExpressions())
 			{

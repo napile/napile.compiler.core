@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.psi.NapileArrayAccessExpression;
+import org.napile.compiler.lang.psi.NapileArrayAccessExpressionImpl;
 import org.napile.compiler.lang.psi.NapileContainerNode;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -45,15 +45,15 @@ import com.intellij.psi.ResolveResult;
  */
 class JetArrayAccessReference extends JetPsiReference implements MultiRangeReference
 {
-	private NapileArrayAccessExpression expression;
+	private NapileArrayAccessExpressionImpl expression;
 
-	public static PsiReference[] create(NapileArrayAccessExpression expression)
+	public static PsiReference[] create(NapileArrayAccessExpressionImpl expression)
 	{
 		NapileContainerNode indicesNode = expression.getIndicesNode();
 		return indicesNode == null ? PsiReference.EMPTY_ARRAY : new PsiReference[]{new JetArrayAccessReference(expression)};
 	}
 
-	public JetArrayAccessReference(@NotNull NapileArrayAccessExpression expression)
+	public JetArrayAccessReference(@NotNull NapileArrayAccessExpressionImpl expression)
 	{
 		super(expression);
 		this.expression = expression;

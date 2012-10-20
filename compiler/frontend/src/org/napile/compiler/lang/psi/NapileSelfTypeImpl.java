@@ -16,50 +16,38 @@
 
 package org.napile.compiler.lang.psi;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileNullableType extends NapileTypeElement
+public class NapileSelfTypeImpl extends NapileElementImpl implements NapileSelfType
 {
-	public NapileNullableType(@NotNull ASTNode node)
+	public NapileSelfTypeImpl(@NotNull ASTNode node)
 	{
 		super(node);
-	}
-
-	@NotNull
-	public ASTNode getQuestionMarkNode()
-	{
-		return getNode().findChildByType(NapileTokens.QUEST);
 	}
 
 	@NotNull
 	@Override
 	public List<NapileTypeReference> getTypeArguments()
 	{
-		return getInnerType().getTypeArguments();
+		return Collections.emptyList();
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitNullableType(this);
+		visitor.visitSelfType(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitNullableType(this, data);
-	}
-
-	@NotNull
-	public NapileTypeElement getInnerType()
-	{
-		return findChildByClass(NapileTypeElement.class);
+		return visitor.visitSelfType(this, data);
 	}
 }

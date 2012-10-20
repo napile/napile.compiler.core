@@ -16,38 +16,38 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileSelfType extends NapileTypeElement
+public class NapileTypeArgumentListImpl extends NapileElementImpl implements NapileTypeArgumentList
 {
-	public NapileSelfType(@NotNull ASTNode node)
+	public NapileTypeArgumentListImpl(@NotNull ASTNode node)
 	{
 		super(node);
-	}
-
-	@NotNull
-	@Override
-	public List<NapileTypeReference> getTypeArguments()
-	{
-		return Collections.emptyList();
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitSelfType(this);
+		visitor.visitTypeArgumentList(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitSelfType(this, data);
+		return visitor.visitTypeArgumentList(this, data);
+	}
+
+	@NotNull
+	@Override
+	public List<NapileTypeReference> getArguments()
+	{
+		return findChildrenByType(NapileNodes.TYPE_REFERENCE);
 	}
 }

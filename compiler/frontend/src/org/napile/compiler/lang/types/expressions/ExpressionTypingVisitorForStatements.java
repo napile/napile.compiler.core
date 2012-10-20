@@ -220,10 +220,10 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		{
 			binaryOperationTrace.commit();
 			context.trace.record(VARIABLE_REASSIGNMENT, expression);
-			if(left instanceof NapileArrayAccessExpression)
+			if(left instanceof NapileArrayAccessExpressionImpl)
 			{
 				ExpressionTypingContext contextForResolve = context.replaceScope(scope).replaceBindingTrace(TemporaryBindingTrace.create(contextWithExpectedType.trace));
-				basic.resolveArrayAccessSetMethod((NapileArrayAccessExpression) left, right, contextForResolve, context.trace);
+				basic.resolveArrayAccessSetMethod((NapileArrayAccessExpressionImpl) left, right, contextForResolve, context.trace);
 			}
 		}
 		else
@@ -239,9 +239,9 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
 		NapileExpression left = NapilePsiUtil.deparenthesize(expression.getLeft());
 		NapileExpression right = expression.getRight();
-		if(left instanceof NapileArrayAccessExpression)
+		if(left instanceof NapileArrayAccessExpressionImpl)
 		{
-			NapileArrayAccessExpression arrayAccessExpression = (NapileArrayAccessExpression) left;
+			NapileArrayAccessExpressionImpl arrayAccessExpression = (NapileArrayAccessExpressionImpl) left;
 			if(right == null)
 				return null;
 			JetType assignmentType = basic.resolveArrayAccessSetMethod(arrayAccessExpression, right, context.replaceScope(scope), context.trace);

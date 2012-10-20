@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.psi.NapilePackageImpl;
+import org.napile.compiler.lang.psi.NapilePackageImplImpl;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -106,7 +106,7 @@ public final class TipsManager
 		JetScope resolutionScope = context.get(BindingContext.RESOLUTION_SCOPE, expression);
 		if(resolutionScope != null)
 		{
-			if(expression.getParent() instanceof NapileImportDirective || expression.getParent() instanceof NapilePackageImpl)
+			if(expression.getParent() instanceof NapileImportDirective || expression.getParent() instanceof NapilePackageImplImpl)
 			{
 				return excludeNonPackageDescriptors(resolutionScope.getAllDescriptors());
 			}
@@ -131,7 +131,7 @@ public final class TipsManager
 	}
 
 	@NotNull
-	public static Collection<DeclarationDescriptor> getReferenceVariants(NapilePackageImpl expression, BindingContext context)
+	public static Collection<DeclarationDescriptor> getReferenceVariants(NapilePackageImplImpl expression, BindingContext context)
 	{
 		JetScope resolutionScope = context.get(BindingContext.RESOLUTION_SCOPE, expression);
 		if(resolutionScope != null)

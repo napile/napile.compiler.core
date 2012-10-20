@@ -19,7 +19,6 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 

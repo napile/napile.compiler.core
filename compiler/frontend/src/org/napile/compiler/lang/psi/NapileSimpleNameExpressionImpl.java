@@ -32,11 +32,11 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * @author max
  */
-public class NapileSimpleNameExpression extends NapileReferenceExpression
+public class NapileSimpleNameExpressionImpl extends NapileReferenceExpressionImpl implements NapileSimpleNameExpression
 {
 	public static final TokenSet REFERENCE_TOKENS = TokenSet.create(NapileTokens.IDENTIFIER, NapileTokens.FIELD_IDENTIFIER, NapileTokens.THIS_KEYWORD, NapileTokens.SUPER_KEYWORD);
 
-	public NapileSimpleNameExpression(@NotNull ASTNode node)
+	public NapileSimpleNameExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -46,6 +46,7 @@ public class NapileSimpleNameExpression extends NapileReferenceExpression
 	 *
 	 * @return receiver expression
 	 */
+	@Override
 	@Nullable
 	public NapileExpression getReceiverExpression()
 	{
@@ -83,6 +84,7 @@ public class NapileSimpleNameExpression extends NapileReferenceExpression
 		return qualifiedExpression.getFirstChild() == this;
 	}
 
+	@Override
 	public boolean isImportDirectiveExpression()
 	{
 		PsiElement parent = getParent();
@@ -96,6 +98,7 @@ public class NapileSimpleNameExpression extends NapileReferenceExpression
 		}
 	}
 
+	@Override
 	@Nullable
 	@IfNotParsed
 	public String getReferencedName()
@@ -104,6 +107,7 @@ public class NapileSimpleNameExpression extends NapileReferenceExpression
 		return text != null ? NapilePsiUtil.unquoteIdentifierOrFieldReference(text) : null;
 	}
 
+	@Override
 	public Name getReferencedNameAsName()
 	{
 		String name = getReferencedName();
@@ -114,6 +118,7 @@ public class NapileSimpleNameExpression extends NapileReferenceExpression
 		return name != null ? Name.identifierNoValidate(name) : null;
 	}
 
+	@Override
 	@NotNull
 	public PsiElement getReferencedNameElement()
 	{
@@ -131,12 +136,14 @@ public class NapileSimpleNameExpression extends NapileReferenceExpression
 		return this;
 	}
 
+	@Override
 	@Nullable
 	public PsiElement getIdentifier()
 	{
 		return findChildByType(NapileTokens.IDENTIFIER);
 	}
 
+	@Override
 	@Nullable
 	@IfNotParsed
 	public IElementType getReferencedNameElementType()
