@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.injection.lexer.NapileInjectionKeywordToken;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
@@ -38,7 +36,7 @@ public class CodeInjectionManager
 	private CodeInjectionManager()
 	{
 		List<IElementType> tokens = new ArrayList<IElementType>();
-		try
+		/*try
 		{
 			Class<?> clazz = Class.forName("org.napile.compiler.injection.protobuf.ProtobufCodeInjection");
 
@@ -49,7 +47,7 @@ public class CodeInjectionManager
 		catch(Exception e)
 		{
 			e.printStackTrace();
-		}
+		}  */
 
 		injectionTokens = TokenSet.create(tokens.toArray(new IElementType[tokens.size()]));
 	}

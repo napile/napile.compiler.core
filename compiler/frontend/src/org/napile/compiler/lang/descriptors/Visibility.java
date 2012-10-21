@@ -16,14 +16,16 @@
 
 package org.napile.compiler.lang.descriptors;
 
+import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqNameUnsafe;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import com.google.common.collect.Sets;
 
 /**
@@ -40,7 +42,7 @@ public enum  Visibility
 			while(parent != null)
 			{
 				parent = parent.getContainingDeclaration();
-				if((parent instanceof ClassDescriptor && !DescriptorUtils.isClassObject(parent)) || parent instanceof NamespaceDescriptor)
+				if((parent instanceof ClassDescriptor) || parent instanceof NamespaceDescriptor)
 				{
 					break;
 				}
@@ -63,20 +65,32 @@ public enum  Visibility
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
 		{
-			ClassDescriptor classDescriptor = DescriptorUtils.getParentOfType(what, ClassDescriptor.class);
-			if(classDescriptor == null)
+			NamespaceDescriptor whatPackage = DescriptorUtils.getParentOfType(what, NamespaceDescriptor.class, false);
+			if(whatPackage == null)
 				return false;
 
-			ClassDescriptor fromClass = DescriptorUtils.getParentOfType(from, ClassDescriptor.class, false);
-			if(fromClass == null)
+			NamespaceDescriptor fromPackage = DescriptorUtils.getParentOfType(from, NamespaceDescriptor.class, false);
+			if(fromPackage == null)
 				return false;
 
-			FqNameUnsafe p1 = DescriptorUtils.getFQName(classDescriptor).parent();
-			FqNameUnsafe p2 = DescriptorUtils.getFQName(fromClass).parent();
+			FqNameUnsafe p1 = DescriptorUtils.getFQName(whatPackage);
+			FqNameUnsafe p2 = DescriptorUtils.getFQName(fromPackage);
 			if(p1.isRoot() && p2.isRoot())
 				return true;
 
-			return p2.getFqName().startsWith(p1.getFqName());
+			List<Name> paths1 = p1.pathSegments();
+			List<Name> paths2 = p2.pathSegments();
+
+			if(paths2.size() < paths1.size())
+				return false;
+			for(int i = 0; i < paths1.size(); i++)
+			{
+				Name name1 = paths1.get(i);
+				Name name2 = paths2.get(i);
+				if(!name1.equals(name2))
+					return false;
+			}
+			return true;
 		}
 	},
 

@@ -317,9 +317,4 @@ public class DescriptorUtils
 		return false;
 	}
 
-	@Deprecated
-	public static boolean isClassObject(@NotNull DeclarationDescriptor descriptor)
-	{
-		return false;
-	}
 }
