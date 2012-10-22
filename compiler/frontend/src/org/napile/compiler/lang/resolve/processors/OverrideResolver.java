@@ -175,19 +175,6 @@ public class OverrideResolver
 				}
 			});
 		}
-		for(CallableMemberDescriptor memberDescriptor : classDescriptor.getAllCallableMembers())
-		{
-			NapileDeclaration declaration = null;
-			if(memberDescriptor.getKind() != CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
-			{
-				PsiElement element = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), memberDescriptor);
-				if(element instanceof NapileDeclaration)
-				{
-					declaration = (NapileDeclaration) element;
-				}
-			}
-			resolveUnknownVisibilityForMember(declaration, memberDescriptor, trace);
-		}
 	}
 
 	public interface DescriptorSink
@@ -690,41 +677,6 @@ public class OverrideResolver
 		return descriptor.getModality() == Modality.FINAL;
 	}
 
-	public static void resolveUnknownVisibilityForMember(@Nullable NapileDeclaration member, @NotNull CallableMemberDescriptor memberDescriptor, @NotNull BindingTrace trace)
-	{
-		resolveUnknownVisibilityForOverriddenDescriptors(memberDescriptor.getOverriddenDescriptors(), trace);
-		if(memberDescriptor.getVisibility() != Visibility.INHERITED)
-		{
-			return;
-		}
-
-		Visibility visibility = findMaxVisibility(memberDescriptor.getOverriddenDescriptors());
-		if(visibility == null)
-		{
-			if(member != null)
-			{
-				trace.report(CANNOT_INFER_VISIBILITY.on(member));
-			}
-			visibility = Visibility.PUBLIC;
-		}
-
-		if(memberDescriptor instanceof MethodDescriptorImpl)
-			((MethodDescriptorImpl) memberDescriptor).setVisibility(visibility);
-	}
-
-	private static void resolveUnknownVisibilityForOverriddenDescriptors(@NotNull Collection<? extends CallableMemberDescriptor> descriptors, @NotNull BindingTrace trace)
-	{
-		for(CallableMemberDescriptor descriptor : descriptors)
-		{
-			if(descriptor.getVisibility() == Visibility.INHERITED)
-			{
-				PsiElement element = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), descriptor);
-				NapileDeclaration declaration = (element instanceof NapileDeclaration) ? (NapileDeclaration) element : null;
-				resolveUnknownVisibilityForMember(declaration, descriptor, trace);
-			}
-		}
-	}
-
 	@Nullable
 	private static Visibility findMaxVisibility(@NotNull Collection<? extends CallableMemberDescriptor> descriptors)
 	{
@@ -736,7 +688,7 @@ public class OverrideResolver
 		for(CallableMemberDescriptor descriptor : descriptors)
 		{
 			Visibility visibility = descriptor.getVisibility();
-			assert visibility != Visibility.INHERITED;
+
 			if(maxVisibility == null)
 			{
 				maxVisibility = visibility;

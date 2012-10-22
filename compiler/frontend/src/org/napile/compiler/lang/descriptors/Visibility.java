@@ -133,16 +133,6 @@ public enum  Visibility
 		}
 	},
 
-	@Deprecated
-	INHERITED(null, false)
-	{
-		@Override
-		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
-		{
-			throw new IllegalStateException("Visibility is unknown yet"); //This method shouldn't be invoked for INHERITED visibility
-		}
-	},
-
 	/* Visibility for fake override invisible members (they are created for better error reporting) */
 	INVISIBLE_FAKE(null, false)
 	{
