@@ -13,7 +13,7 @@
 	</project-components>
 
 	<actions>
-		<action id="Napile.NewFile" class="org.napile.idea.plugin.actions.NewKotlinFileAction">
+		<action id="Napile.NewClass" class="org.napile.idea.plugin.actions.NewKotlinFileAction">
 			<add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
 		</action>
 
