@@ -83,7 +83,6 @@ IDENTIFIER = {PLAIN_IDENTIFIER}|{ESCAPED_IDENTIFIER}
 FIELD_IDENTIFIER = \${IDENTIFIER}
 
 EOL_COMMENT="/""/"[^\n]*
-SHEBANG_COMMENT="#!"[^\n]*
 
 INTEGER_LITERAL={DECIMAL_INTEGER_LITERAL}|{HEX_INTEGER_LITERAL}|{BIN_INTEGER_LITERAL}
 DECIMAL_INTEGER_LITERAL=(0|([1-9]({DIGIT})*))
@@ -212,15 +211,6 @@ LONG_TEMPLATE_ENTRY_END=\}
 ({WHITE_SPACE_CHAR})+ { return NapileTokens.WHITE_SPACE; }
 
 {EOL_COMMENT} { return NapileTokens.EOL_COMMENT; }
-{SHEBANG_COMMENT} {
-            if (zzCurrentPos == 0) {
-                return NapileTokens.SHEBANG_COMMENT;
-            }
-            else {
-                yypushback(yylength() - 1);
-                return NapileTokens.HASH;
-            }
-          }
 
 {INTEGER_LITERAL}\.\. { yypushback(2); return NapileTokens.INTEGER_LITERAL; }
 {INTEGER_LITERAL} { return NapileTokens.INTEGER_LITERAL; }

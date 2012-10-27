@@ -1232,15 +1232,7 @@ class _NapileLexer implements FlexLexer {
           { return NapileTokens.RBRACKET  ;
           }
         case 185: break;
-        case 41: 
-          { if (zzCurrentPos == 0) {
-                return NapileTokens.SHEBANG_COMMENT;
-            }
-            else {
-                yypushback(yylength() - 1);
-                return NapileTokens.HASH;
-            }
-          }
+
         case 186: break;
         case 60: 
           { return NapileTokens.OROR      ;

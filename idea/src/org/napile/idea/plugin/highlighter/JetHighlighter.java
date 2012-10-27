@@ -83,7 +83,6 @@ public class JetHighlighter extends SyntaxHighlighterBase
 		keys.put(NapileTokens.CHARACTER_LITERAL, JetHighlightingColors.STRING);
 
 		keys.put(NapileTokens.EOL_COMMENT, JetHighlightingColors.LINE_COMMENT);
-		keys.put(NapileTokens.SHEBANG_COMMENT, JetHighlightingColors.LINE_COMMENT);
 		keys.put(NapileTokens.BLOCK_COMMENT, JetHighlightingColors.BLOCK_COMMENT);
 		keys.put(NapileTokens.DOC_COMMENT, JetHighlightingColors.DOC_COMMENT);
 

@@ -57,7 +57,7 @@ public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter imp
 		{
 			IElementType previousToken = rawLookup(-i);
 
-			if(previousToken == NapileTokens.BLOCK_COMMENT || previousToken == NapileTokens.DOC_COMMENT || previousToken == NapileTokens.EOL_COMMENT || previousToken == NapileTokens.SHEBANG_COMMENT)
+			if(previousToken == NapileTokens.BLOCK_COMMENT || previousToken == NapileTokens.DOC_COMMENT || previousToken == NapileTokens.EOL_COMMENT)
 			{
 				continue;
 			}
