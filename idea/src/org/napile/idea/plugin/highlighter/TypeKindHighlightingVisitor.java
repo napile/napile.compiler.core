@@ -23,6 +23,7 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
@@ -52,6 +53,8 @@ class TypeKindHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			return;
 		if(JetPsiChecker.isNamesHighlightingEnabled())
 		{
+			if(NapileTokens.KEYWORDS.contains(expression.getReferencedNameElementType()))
+				return;
 			DeclarationDescriptor referenceTarget = bindingContext.get(BindingContext.REFERENCE_TARGET, expression);
 			if(referenceTarget instanceof ConstructorDescriptor)
 			{
