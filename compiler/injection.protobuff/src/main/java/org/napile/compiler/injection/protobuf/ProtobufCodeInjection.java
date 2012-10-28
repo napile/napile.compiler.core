@@ -20,18 +20,22 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.injection.protobuf.lexer.ProtobufLexer;
-import org.napile.compiler.injection.protobuf.lexer.ProtobufNodeTokens;
-import org.napile.compiler.injection.protobuf.psi.ProtobufMessageBlock;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.Language;
+import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.TokenSet;
+import protobuf.PbLanguage;
+import protobuf.lang.PbTokenTypes;
+import protobuf.lang.lexer.PbMergingLexer;
+import protobuf.lang.parser.PbParser;
+import protobuf.lang.psi.PbPsiCreator;
 
 /**
  * @author VISTALL
@@ -39,19 +43,18 @@ import com.intellij.psi.PsiElement;
  */
 public class ProtobufCodeInjection extends CodeInjection
 {
-	@Override
-	public void parse(@NotNull PsiBuilder builder)
-	{
-		PsiBuilder.Marker marker = builder.mark();
-		builder.advanceLexer();
-		marker.done(ProtobufNodeTokens.MESSAGE_BLOCK);
-	}
-
 	@NotNull
 	@Override
 	public String getName()
 	{
 		return "protobuf";
+	}
+
+	@NotNull
+	@Override
+	public Language getLanguage()
+	{
+		return PbLanguage.INSTANCE;
 	}
 
 	@NotNull
@@ -65,13 +68,40 @@ public class ProtobufCodeInjection extends CodeInjection
 	@Override
 	public Lexer createLexer(Project project)
 	{
-		return new ProtobufLexer();
+		return new PbMergingLexer();
+	}
+
+	@Override
+	public PsiParser createParser(Project project)
+	{
+		return new PbParser();
+	}
+
+	@NotNull
+	@Override
+	public TokenSet getWhitespaceTokens()
+	{
+		return PbTokenTypes.WHITE_SPACES;
+	}
+
+	@NotNull
+	@Override
+	public TokenSet getCommentTokens()
+	{
+		return PbTokenTypes.COMMENTS;
+	}
+
+	@NotNull
+	@Override
+	public TokenSet getStringLiteralElements()
+	{
+		return PbTokenTypes.STRING_LITERALS;
 	}
 
 	@NotNull
 	@Override
 	public PsiElement createElement(ASTNode astNode)
 	{
-		return new ProtobufMessageBlock(astNode);
+		return PbPsiCreator.createElement(astNode);
 	}
 }

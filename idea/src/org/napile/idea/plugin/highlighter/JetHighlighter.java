@@ -37,12 +37,14 @@ public class JetHighlighter extends SyntaxHighlighterBase
 	private static final Map<IElementType, TextAttributesKey> keys;
 
 	@NotNull
+	@Override
 	public Lexer getHighlightingLexer()
 	{
 		return new NapileLexer();
 	}
 
 	@NotNull
+	@Override
 	public TextAttributesKey[] getTokenHighlights(IElementType tokenType)
 	{
 		return pack(keys.get(tokenType));

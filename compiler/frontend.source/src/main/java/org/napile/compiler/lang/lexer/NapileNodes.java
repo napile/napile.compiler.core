@@ -19,19 +19,14 @@
  */
 package org.napile.compiler.lang.lexer;
 
-import org.napile.compiler.CodeInjectionBlock;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.lang.psi.impl.NapileArrayOfExpressionImpl;
-import org.napile.compiler.lang.psi.impl.NapileCodeInjectionExpression;
+import org.napile.compiler.lang.psi.impl.NapileInjectionExpressionImpl;
 import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.openapi.project.Project;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
-import com.intellij.psi.tree.IReparseableElementType;
 
 public interface NapileNodes
 {
@@ -112,29 +107,14 @@ public interface NapileNodes
 	NapileNode BLOCK = new NapileNode("BLOCK", NapileBlockExpression.class);
 	NapileNode FUNCTION_LITERAL_EXPRESSION = new NapileNode("FUNCTION_LITERAL_EXPRESSION", NapileFunctionLiteralExpression.class);
 	NapileNode FUNCTION_LITERAL = new NapileNode("FUNCTION_LITERAL", NapileAnonymMethodImpl.class);
-	NapileNode CODE_INJECTION = new NapileNode("CODE_INJECTION", NapileCodeInjectionExpression.class);
-
-	IReparseableElementType CODE_INJECTION_BLOCK = new IReparseableElementType("CODE_INJECTION", NapileLanguage.INSTANCE)
-	{
-		@Override
-		public ASTNode createNode(final CharSequence text)
-		{
-			return new CodeInjectionBlock(this, text);
-		}
-
-		@Override
-		public boolean isParsable(final CharSequence buffer, Language fileLanguage, final Project project)
-		{
-			return true;
-		}
-	};
-
 	NapileNode REFERENCE_EXPRESSION = new NapileNode("REFERENCE_EXPRESSION", NapileSimpleNameExpressionImpl.class);
+
 	NapileNode OPERATION_REFERENCE = new NapileNode("OPERATION_REFERENCE", NapileSimpleNameExpressionImpl.class);
 	NapileNode LABEL_REFERENCE = new NapileNode("LABEL_REFERENCE", NapileSimpleNameExpressionImpl.class);
 	NapileNode VARIABLE_REFERENCE = new NapileNode("VARIABLE_REFERENCE", NapileSimpleNameExpressionImpl.class);
-
 	NapileNode THIS_EXPRESSION = new NapileNode("THIS_EXPRESSION", NapileThisExpression.class);
+
+	NapileNode INJECTION_EXPRESSION = new NapileNode("INJECTION_EXPRESSION", NapileInjectionExpressionImpl.class);
 	NapileNode SUPER_EXPRESSION = new NapileNode("SUPER_EXPRESSION", NapileSuperExpression.class);
 	NapileNode BINARY_EXPRESSION = new NapileNode("BINARY_EXPRESSION", NapileBinaryExpression.class);
 	NapileNode BINARY_WITH_TYPE = new NapileNode("BINARY_WITH_TYPE", NapileBinaryExpressionWithTypeRHS.class);

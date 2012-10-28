@@ -109,6 +109,7 @@ public class JetPsiChecker implements Annotator
 				new FunctionsHighlightingVisitor(holder, bindingContext),
 				new VariablesHighlightingVisitor(holder, bindingContext),
 				new TypeKindHighlightingVisitor(holder, bindingContext),
+				new InjectionHighlightingVisitor(holder, bindingContext),
 		};
 	}
 

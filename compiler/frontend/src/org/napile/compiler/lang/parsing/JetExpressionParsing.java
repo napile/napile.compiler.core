@@ -71,7 +71,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			NapileTokens.LBRACE, // functionLiteral
 
-			NapileTokens.DOT, // injection
+			NapileTokens.INJECTION_START, // injection
 
 			NapileTokens.THIS_KEYWORD, // this
 			NapileTokens.SUPER_KEYWORD, // super
@@ -238,11 +238,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 
 	private final JetParsing myJetParsing;
+	private final CodeInjectionParser codeInjectionParser;
 
 	public JetExpressionParsing(SemanticWhitespaceAwarePsiBuilder builder, JetParsing jetParsing)
 	{
 		super(builder);
 		myJetParsing = jetParsing;
+		codeInjectionParser = new CodeInjectionParser(this);
 	}
 
 	/*
@@ -518,8 +520,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		//        System.out.println("atom at "  + myBuilder.getTokenText());
 
-		if(at(NapileTokens.DOT))
-			new CodeInjectionParser(this);
+		if(at(NapileTokens.INJECTION_START))
+			codeInjectionParser.parse();
 		else if(at(NapileTokens.LPAR))
 		{
 			parseParenthesizedExpression();

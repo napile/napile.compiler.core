@@ -9,7 +9,9 @@
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend.source/frontend.source.iml" filepath="$PROJECT_DIR$/compiler/frontend.source/frontend.source.iml" group="compiler/frontend" />
       <module fileurl="file://$PROJECT_DIR$/idea/idea.napile-lang.iml" filepath="$PROJECT_DIR$/idea/idea.napile-lang.iml" />
       <module fileurl="file://$PROJECT_DIR$/compiler/injection.api/injection.api.iml" filepath="$PROJECT_DIR$/compiler/injection.api/injection.api.iml" group="compiler/injection" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/injection.idea/injection.idea.iml" filepath="$PROJECT_DIR$/compiler/injection.idea/injection.idea.iml" />
       <module fileurl="file://$PROJECT_DIR$/compiler/injection.protobuff/injection.protobuff.iml" filepath="$PROJECT_DIR$/compiler/injection.protobuff/injection.protobuff.iml" group="compiler/injection" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/injection.protobuff.idea/injection.protobuff.idea.iml" filepath="$PROJECT_DIR$/compiler/injection.protobuff.idea/injection.protobuff.idea.iml" />
       <module fileurl="file://$PROJECT_DIR$/injector-generator/injector-generator.iml" filepath="$PROJECT_DIR$/injector-generator/injector-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/napile.compiler.iml" filepath="$PROJECT_DIR$/napile.compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/compiler/napilec/napilec.iml" filepath="$PROJECT_DIR$/compiler/napilec/napilec.iml" group="compiler" />

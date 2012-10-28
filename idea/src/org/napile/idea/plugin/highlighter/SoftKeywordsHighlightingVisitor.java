@@ -19,14 +19,12 @@
  */
 package org.napile.idea.plugin.highlighter;
 
-import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -44,19 +42,11 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 		if(element instanceof LeafPsiElement)
 		{
 			IElementType elementType = ((LeafPsiElement) element).getElementType();
-			if(NapileTokens.SOFT_KEYWORDS.contains(elementType) || CodeInjectionManager.INSTANCE.getInjectionTokens().contains(elementType))
-			{
-				TextAttributesKey attributes = JetHighlightingColors.KEYWORD;
-				if(NapileTokens.MODIFIER_KEYWORDS.contains(elementType))
-				{
-					attributes = JetHighlightingColors.BUILTIN_ANNOTATION;
-				}
-				holder.createInfoAnnotation(element, null).setTextAttributes(attributes);
-			}
+			if(NapileTokens.SOFT_KEYWORDS.contains(elementType))
+				holder.createInfoAnnotation(element, null).setTextAttributes(JetHighlightingColors.KEYWORD);
+
 			if(NapileTokens.SAFE_ACCESS.equals(elementType))
-			{
 				holder.createInfoAnnotation(element, null).setTextAttributes(JetHighlightingColors.SAFE_ACCESS);
-			}
 		}
 	}
 

@@ -16,12 +16,12 @@
 
 package org.napile.compiler.lang.parsing.injection;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
+import org.napile.compiler.injection.CodeInjection;
 
 /**
  * @author VISTALL
@@ -31,30 +31,31 @@ public class CodeInjectionManager
 {
 	public static final CodeInjectionManager INSTANCE = new CodeInjectionManager();
 
-	private final TokenSet injectionTokens;
+	private Map<String, CodeInjection> codeInjections = new HashMap<String, CodeInjection>();
 
 	private CodeInjectionManager()
 	{
-		List<IElementType> tokens = new ArrayList<IElementType>();
-		/*try
+		try
 		{
 			Class<?> clazz = Class.forName("org.napile.compiler.injection.protobuf.ProtobufCodeInjection");
 
 			CodeInjection injection = (CodeInjection) clazz.newInstance();
 
-			tokens.add(new NapileInjectionKeywordToken(injection.getName(), injection));
+			codeInjections.put(injection.getName(), injection);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-		}  */
-
-		injectionTokens = TokenSet.create(tokens.toArray(new IElementType[tokens.size()]));
+		}
 	}
 
-	@NotNull
-	public TokenSet getInjectionTokens()
+	public CodeInjection getInjection(@NotNull String name)
 	{
-		return injectionTokens;
+		return codeInjections.get(name);
+	}
+
+	public Collection<CodeInjection> getCodeInjections()
+	{
+		return codeInjections.values();
 	}
 }

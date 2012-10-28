@@ -72,7 +72,7 @@ public interface Errors
 
 	SimpleDiagnosticFactory<PsiElement> NAPILE_LANG_CLASS_IMPORT_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<PsiElement> NAPILE_LANG_TYPE_IMPORT_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<PsiElement> UNKNOWN_INJECTION = SimpleDiagnosticFactory.create(Severity.ERROR);
+	SimpleDiagnosticFactory<NapileInjectionExpression> UNKNOWN_INJECTION = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.INJECTION_NAME);
 
 	SimpleDiagnosticFactory<NapileExpression> TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReturnExpression> RETURN_NOT_ALLOWED = SimpleDiagnosticFactory.create(Severity.ERROR);

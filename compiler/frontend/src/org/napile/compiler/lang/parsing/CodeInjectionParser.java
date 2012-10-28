@@ -18,12 +18,7 @@ package org.napile.compiler.lang.parsing;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.injection.lexer.NapileInjectionKeywordToken;
-import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
-import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
@@ -36,61 +31,20 @@ public class CodeInjectionParser
 	public CodeInjectionParser(@NotNull AbstractJetParsing parent)
 	{
 		this.parent = parent;
-
-		parse();
 	}
 
 	public void parse()
 	{
 		PsiBuilder.Marker marker = parent.mark();
 
-		parent.advance(); // advance dot
+		parent.advance(); // injection start
 
-		boolean val = parent.atSet(CodeInjectionManager.INSTANCE.getInjectionTokens());
-		CodeInjection codeInjection = null;
-		if(val)
-			codeInjection = ((NapileInjectionKeywordToken) parent.tt()).codeInjection;
+		parent.advance(); // {
 
-		parent.advance();
+		parent.advance(); // block
 
-		if(parent.expect(NapileTokens.LBRACE, "'{' expected"))
-		{
-			skipBody();
-			/*if(codeInjection == null)
-				skipBody();
-			else
-			{*/
-				/*final PsiBuilderFactory factory = PsiBuilderFactory.getInstance();
+		parent.advance(); // }
 
-				FragmentCharSequence f = new FragmentCharSequence(parent.getBuilder().getOriginalText(), parent.getBuilder().getCurrentOffset());
-
-				PsiBuilder builder = factory.createBuilder(codeInjection, codeInjection.createLexer(parent.getBuilder().getProject()), f);
-
-				codeInjection.parse(builder);  */
-
-				//ASTNode node = builder.getTreeBuilt();
-
-				//System.out.println(node);
-			//}
-		}
-
-		parent.expect(NapileTokens.RBRACE, "'}' expected");
-
-		marker.done(NapileNodes.CODE_INJECTION);
-	}
-
-	private void skipBody()
-	{
-		PsiBuilder.Marker m = parent.mark();
-		while(!parent.eof())
-		{
-			if(parent.tt() == NapileTokens.LBRACE)
-				parent.skipUntil(TokenSet.create(NapileTokens.RBRACE));
-			else if(parent.tt() == NapileTokens.RBRACE)
-				break;
-
-			parent.advance();
-		}
-		m.done(NapileNodes.CODE_INJECTION_BLOCK);
+		marker.done(NapileNodes.INJECTION_EXPRESSION);
 	}
 }

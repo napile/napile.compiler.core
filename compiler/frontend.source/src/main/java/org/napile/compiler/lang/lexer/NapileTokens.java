@@ -19,8 +19,15 @@
  */
 package org.napile.compiler.lang.lexer;
 
+import org.napile.compiler.injection.CodeInjection;
+import org.napile.compiler.lang.psi.NapileInjectionExpression;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.Language;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
+import com.intellij.psi.impl.source.tree.LazyParseablePsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.ILazyParseableElementType;
 import com.intellij.psi.tree.TokenSet;
 
 public interface NapileTokens
@@ -122,6 +129,28 @@ public interface NapileTokens
 	NapileToken NOT_IS = NapileKeywordToken.keyword("NOT_IS");
 	NapileToken HASH = new NapileToken("HASH");
 	NapileToken AT = new NapileToken("AT");
+
+	IElementType INJECTION_START = new NapileToken("INJECTION_START");
+
+	IElementType INJECTION_BLOCK = new ILazyParseableElementType("INJECTION_BLOCK")
+	{
+		@Override
+		protected Language getLanguageForParser(PsiElement psi)
+		{
+			NapileInjectionExpression injectionExpression = (NapileInjectionExpression) psi;
+			CodeInjection codeInjection = injectionExpression.getCodeInjection();
+			if(codeInjection == null)
+				return psi.getLanguage();
+			else
+				return codeInjection.getLanguage();
+		}
+
+		@Override
+		public ASTNode createNode(final CharSequence text)
+		{
+			return new LazyParseablePsiElement(this, text);
+		}
+	};
 
 	NapileToken IDE_TEMPLATE_START = new NapileToken("IDE_TEMPLATE_START");
 	NapileToken IDE_TEMPLATE_END = new NapileToken("IDE_TEMPLATE_END");

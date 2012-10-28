@@ -22,14 +22,11 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiParser;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IFileElementType;
-import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
@@ -51,46 +48,20 @@ public abstract class CodeInjection implements ParserDefinition
 	@NotNull
 	public abstract String getName();
 
-	public abstract void parse(@NotNull PsiBuilder builder);
+	@NotNull
+	public abstract Language getLanguage();
 
 	@NotNull
 	public abstract JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope);
 
 	@Override
-	public final PsiParser createParser(Project project)
+	public final IFileElementType getFileNodeType()
 	{
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public IFileElementType getFileNodeType()
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@NotNull
-	@Override
-	public TokenSet getWhitespaceTokens()
-	{
-		return TokenSet.EMPTY;
-	}
-
-	@NotNull
-	@Override
-	public TokenSet getCommentTokens()
-	{
-		return TokenSet.EMPTY;
-	}
-
-	@NotNull
-	@Override
-	public TokenSet getStringLiteralElements()
-	{
-		return TokenSet.EMPTY;
-	}
-
-	@Override
-	public PsiFile createFile(FileViewProvider fileViewProvider)
+	public final PsiFile createFile(FileViewProvider fileViewProvider)
 	{
 		throw new UnsupportedOperationException();
 	}

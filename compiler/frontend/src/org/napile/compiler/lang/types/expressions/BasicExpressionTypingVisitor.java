@@ -44,11 +44,12 @@ import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.lib.NapileReflectPackage;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -84,13 +85,6 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileArrayOfExpression;
-import org.napile.compiler.lang.psi.impl.NapileCodeInjectionExpression;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
@@ -274,7 +268,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitCodeInjection(NapileCodeInjectionExpression expression, ExpressionTypingContext context)
+	public JetTypeInfo visitInjectionExpression(NapileInjectionExpression expression, ExpressionTypingContext context)
 	{
 		CodeInjection codeInjection = expression.getCodeInjection();
 		if(codeInjection == null)

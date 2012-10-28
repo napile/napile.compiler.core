@@ -24,7 +24,9 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.config.CompilerConfiguration;
+import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.parsing.NapileParserDefinition;
+import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.impl.file.NXmlFileViewProviderFactory;
@@ -69,6 +71,9 @@ public class JetCoreEnvironment
 		applicationEnvironment.registerFileType(NapileFileType.INSTANCE, NapileFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerFileType(NXmlFileType.INSTANCE, NXmlFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerParserDefinition(new NapileParserDefinition());
+		for(CodeInjection injection : CodeInjectionManager.INSTANCE.getCodeInjections())
+			applicationEnvironment.registerParserDefinition(injection);
+
 		addExplicitExtension(FileTypeFileViewProviders.INSTANCE, NXmlFileType.INSTANCE, new NXmlFileViewProviderFactory());
 
 		projectEnvironment = new JetCoreProjectEnvironment(parentDisposable, applicationEnvironment);

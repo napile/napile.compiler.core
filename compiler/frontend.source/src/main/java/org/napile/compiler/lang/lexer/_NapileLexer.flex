@@ -1,11 +1,10 @@
 package org.napile.compiler.lang.lexer;
 
-import java.util.*;
-import com.intellij.lexer.*;
-import com.intellij.psi.*;
-import com.intellij.psi.tree.IElementType;
+import java.util.Stack;
 
-import org.napile.compiler.lexer.NapileTokens;
+import com.intellij.lexer.FlexLexer;
+import com.intellij.psi.TokenType;
+import com.intellij.psi.tree.IElementType;
 
 %%
 
@@ -34,6 +33,11 @@ import org.napile.compiler.lexer.NapileTokens;
     
     private int commentStart;
     private int commentDepth;
+
+	private int injectionBraceCount;
+	private int injectionStart;
+	private int injectionStart2;
+	private boolean isInjectionBlock;
 
     private void pushState(int state) {
         states.push(new State(yystate(), lBraceCount));
@@ -65,7 +69,7 @@ import org.napile.compiler.lexer.NapileTokens;
   return;
 %eof}
 
-%xstate STRING RAW_STRING SHORT_TEMPLATE_ENTRY BLOCK_COMMENT DOC_COMMENT
+%xstate STRING RAW_STRING SHORT_TEMPLATE_ENTRY BLOCK_COMMENT DOC_COMMENT INJECTION INJECTION_BLOCK
 %state LONG_TEMPLATE_ENTRY
 
 DIGIT=[0-9]
@@ -206,6 +210,74 @@ LONG_TEMPLATE_ENTRY_END=\}
     .|{WHITE_SPACE_CHAR} {}
 }
 
+// Injections
+"/" {IDENTIFIER} "/"
+{
+	pushState(INJECTION);
+
+	injectionStart = getTokenStart();
+
+	return NapileTokens.INJECTION_START;
+}
+
+<INJECTION>
+{
+	"{"
+	{
+		if(!isInjectionBlock)
+		{
+			isInjectionBlock = true;
+
+			pushState(INJECTION_BLOCK);
+
+			injectionStart2 = getTokenStart() + 1;
+
+			return NapileTokens.LBRACE;
+		}
+	}
+
+	"}"
+	{
+		if(isInjectionBlock)
+		{
+			isInjectionBlock = false;
+			popState();
+			return NapileTokens.RBRACE;
+		}
+	}
+
+	.|{WHITE_SPACE_CHAR} {}
+}
+
+<INJECTION_BLOCK>
+{
+	"{"
+	{
+		injectionBraceCount ++;
+	}
+
+	<<EOF>>
+	{
+		popState();
+		zzStartRead = injectionStart2;
+		return NapileTokens.INJECTION_BLOCK;
+    }
+
+	"}"
+	{
+		if(injectionBraceCount > 0)
+			injectionBraceCount --;
+		else
+		{
+			popState();
+			yypushback(1);
+			zzStartRead = injectionStart2;
+			return NapileTokens.INJECTION_BLOCK;
+		}
+	}
+
+	.|{WHITE_SPACE_CHAR} {}
+}
 // Mere mortals
 
 ({WHITE_SPACE_CHAR})+ { return NapileTokens.WHITE_SPACE; }

@@ -11,6 +11,11 @@
 			<implementation-class>org.napile.idea.plugin.highlighter.DeclarationHintSupport</implementation-class>
 		</component>        -->
 	</project-components>
+	<application-components>
+		<component>
+			<implementation-class>org.napile.idea.plugin.IdeaInjectionSupportManager</implementation-class>
+		</component>
+	</application-components>
 
 	<actions>
 		<action id="Napile.NewClass" class="org.napile.idea.plugin.actions.NewKotlinFileAction">
@@ -36,7 +41,6 @@
 
 	<extensions defaultExtensionNs="com.intellij">
 		<applicationService serviceInterface="org.napile.compiler.lang.psi.stubs.elements.StubIndexService" serviceImplementation="org.napile.idea.plugin.stubindex.StubIndexServiceImpl"/>
-
 		<projectService serviceInterface="org.napile.compiler.lang.resolve.NapileFilesProvider" serviceImplementation="org.napile.idea.plugin.project.PluginJetFilesProvider"/>
 
 		<projectService serviceInterface="org.napile.idea.plugin.caches.JetShortNamesCache" serviceImplementation="org.napile.idea.plugin.caches.JetShortNamesCache" />

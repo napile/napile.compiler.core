@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -41,12 +40,6 @@ import com.intellij.psi.tree.TokenSet;
 		{
 			NapileKeywordToken keywordToken = (NapileKeywordToken) type;
 			assert keywordToken.isSoft();
-			SOFT_KEYWORD_TEXTS.put(keywordToken.getValue(), keywordToken);
-		}
-
-		for(IElementType type : CodeInjectionManager.INSTANCE.getInjectionTokens().getTypes())
-		{
-			NapileKeywordToken keywordToken = (NapileKeywordToken) type;
 			SOFT_KEYWORD_TEXTS.put(keywordToken.getValue(), keywordToken);
 		}
 	}

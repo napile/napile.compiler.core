@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.diagnostics;
 
 
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,19 @@ public class PositioningStrategies
 {
 
 	public static final PositioningStrategy<PsiElement> DEFAULT = new PositioningStrategy<PsiElement>();
+
+	public static final PositioningStrategy<NapileInjectionExpression> INJECTION_NAME = new PositioningStrategy<NapileInjectionExpression>()
+	{
+		@NotNull
+		@Override
+		public List<TextRange> mark(@NotNull NapileInjectionExpression declaration)
+		{
+			PsiElement first = declaration.getFirstChild();
+			String text = first.getText();
+
+			return Collections.singletonList(new TextRange(first.getTextOffset() + 1, first.getTextOffset() + text.lastIndexOf("/")));
+		}
+	};
 
 	public static final PositioningStrategy<NapileDeclaration> DECLARATION_RETURN_TYPE = new PositioningStrategy<NapileDeclaration>()
 	{
