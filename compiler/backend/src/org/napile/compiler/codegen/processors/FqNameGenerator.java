@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -41,8 +42,6 @@ import org.napile.compiler.lang.psi.NapileVariable;
  */
 public class FqNameGenerator extends NapileTreeVisitor<FqName>
 {
-	public static final String SEPARATOR = "$";
-
 	@NotNull
 	private final BindingTrace bindingTrace;
 
@@ -70,7 +69,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 		else
 		{
 			final Name shortName = fqName.shortName();
-			fqName = fqName.parent().child(Name.identifier(shortName.getName() + SEPARATOR + klass.getName()));
+			fqName = fqName.parent().child(Name.identifier(shortName.getName() + AsmConstants.ANONYM_SPLITTER + klass.getName()));
 		}
 
 		record(klass, fqName);
@@ -100,8 +99,8 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 		else
 			anonymMethodCounts.put(data, ++ anonymCount);
 
-		data = data.child(Name.identifier("anonym" + SEPARATOR + anonymCount));
-		record(expression, data);
+		data = data.child(Name.identifier("anonym" + AsmConstants.ANONYM_SPLITTER + anonymCount));
+		record(expression.getAnonymMethod(), data);
 		return super.visitFunctionLiteralExpression(expression, data);
 	}
 
@@ -114,7 +113,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 		else
 			anonymClassCounts.put(data, ++ anonymCount);
 
-		data = data.parent().child(Name.identifier(data.shortName() + SEPARATOR + anonymCount));
+		data = data.parent().child(Name.identifier(data.shortName() + AsmConstants.ANONYM_SPLITTER + anonymCount));
 		record(element, data);
 		return super.visitAnonymClass(element, data);
 	}

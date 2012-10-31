@@ -195,7 +195,7 @@ public class ExpressionTypingServices
 		if(function instanceof NapileFunctionLiteralExpression)
 		{
 			NapileFunctionLiteralExpression functionLiteralExpression = (NapileFunctionLiteralExpression) function;
-			NapileBlockExpression blockExpression = functionLiteralExpression.getBodyExpression();
+			NapileBlockExpression blockExpression = functionLiteralExpression.getAnonymMethod().getBodyExpression();
 			assert blockExpression != null;
 			getBlockReturnedType(newContext.scope, blockExpression, CoercionStrategy.COERCION_TO_UNIT, context, trace);
 		}
@@ -253,7 +253,7 @@ public class ExpressionTypingServices
 				@Override
 				public Void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, NapileDeclarationWithBody outerFunction)
 				{
-					return super.visitFunctionLiteralExpression(expression, expression.getFunctionLiteral());
+					return super.visitFunctionLiteralExpression(expression, expression.getAnonymMethod());
 				}
 
 				@Override

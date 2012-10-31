@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
@@ -61,7 +62,9 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -77,11 +80,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileArrayOfExpression;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileVariable;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.util.Comparing;
@@ -269,6 +267,20 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		instructs.throwVal();
 
 		return StackValue.onStack(TypeConstants.THROWABLE);
+	}
+
+	@Override
+	public StackValue visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, StackValue data)
+	{
+		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, expression.getAnonymMethod());
+
+		SimpleMethodDescriptor methodDescriptor = bindingTrace.safeGet(BindingContext.METHOD, expression);
+
+		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+
+		instructs.linkMethod(NodeRefUtil.ref(methodDescriptor, fqName));
+
+		return StackValue.onStack(TypeTransformer.toAsmType(jetType));
 	}
 
 	@Override
@@ -625,10 +637,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		{
 			if(resolvedCall instanceof VariableAsFunctionResolvedCall)
 			{
-				throw new UnsupportedOperationException();
-				//	VariableAsFunctionResolvedCall variableAsFunctionResolvedCall = (VariableAsFunctionResolvedCall) resolvedCall;
-				//	ResolvedCallWithTrace<FunctionDescriptor> functionCall = variableAsFunctionResolvedCall.getFunctionCall();
-				//	return invokeFunction(call, receiver, functionCall);
+				VariableAsFunctionResolvedCall variableAsFunctionResolvedCall = (VariableAsFunctionResolvedCall) resolvedCall;
+
+				return invokeFunction(receiver, variableAsFunctionResolvedCall.getFunctionCall());
 			}
 			else
 				return invokeFunction(receiver, resolvedCall);

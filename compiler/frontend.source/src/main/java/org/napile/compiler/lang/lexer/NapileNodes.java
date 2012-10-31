@@ -105,8 +105,8 @@ public interface NapileNodes
 	NapileNode LOOP_RANGE = new NapileNode("LOOP_RANGE", NapileContainerNode.class);
 	NapileNode BODY = new NapileNode("BODY", NapileContainerNode.class);
 	NapileNode BLOCK = new NapileNode("BLOCK", NapileBlockExpression.class);
-	NapileNode FUNCTION_LITERAL_EXPRESSION = new NapileNode("FUNCTION_LITERAL_EXPRESSION", NapileFunctionLiteralExpression.class);
-	NapileNode FUNCTION_LITERAL = new NapileNode("FUNCTION_LITERAL", NapileAnonymMethodImpl.class);
+	NapileNode FUNCTION_LITERAL_EXPRESSION = new NapileNode("ANONYM_METHOD_EXPRESSION", NapileFunctionLiteralExpression.class);
+	NapileNode FUNCTION_LITERAL = new NapileNode("ANONYM_METHOD", NapileAnonymMethodImpl.class);
 	NapileNode REFERENCE_EXPRESSION = new NapileNode("REFERENCE_EXPRESSION", NapileSimpleNameExpressionImpl.class);
 
 	NapileNode OPERATION_REFERENCE = new NapileNode("OPERATION_REFERENCE", NapileSimpleNameExpressionImpl.class);
@@ -115,6 +115,7 @@ public interface NapileNodes
 	NapileNode THIS_EXPRESSION = new NapileNode("THIS_EXPRESSION", NapileThisExpression.class);
 
 	NapileNode INJECTION_EXPRESSION = new NapileNode("INJECTION_EXPRESSION", NapileInjectionExpressionImpl.class);
+	NapileNode LINK_METHOD_EXPRESSION = new NapileNode("LINK_METHOD_EXPRESSION", NapileLinkMethodExpressionImpl.class);
 	NapileNode SUPER_EXPRESSION = new NapileNode("SUPER_EXPRESSION", NapileSuperExpression.class);
 	NapileNode BINARY_EXPRESSION = new NapileNode("BINARY_EXPRESSION", NapileBinaryExpression.class);
 	NapileNode BINARY_WITH_TYPE = new NapileNode("BINARY_WITH_TYPE", NapileBinaryExpressionWithTypeRHS.class);
@@ -126,7 +127,6 @@ public interface NapileNodes
 	NapileNode ARRAY_ACCESS_EXPRESSION = new NapileNode("ARRAY_ACCESS_EXPRESSION", NapileArrayAccessExpressionImpl.class);
 	NapileNode INDICES = new NapileNode("INDICES", NapileContainerNode.class);
 	NapileNode DOT_QUALIFIED_EXPRESSION = new NapileNode("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpression.class);
-	NapileNode HASH_QUALIFIED_EXPRESSION = new NapileNode("HASH_QUALIFIED_EXPRESSION", NapileHashQualifiedExpression.class);
 	NapileNode SAFE_ACCESS_EXPRESSION = new NapileNode("SAFE_ACCESS_EXPRESSION", NapileSafeQualifiedExpression.class);
 
 	NapileNode OBJECT_LITERAL = new NapileNode("OBJECT_LITERAL", NapileObjectLiteralExpression.class);

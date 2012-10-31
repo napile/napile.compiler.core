@@ -47,7 +47,7 @@ public class VariableCodegen
 	{
 		FqName fqName = DescriptorUtils.getFQName(propertyDescriptor).toSafe();
 
-		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + FqNameGenerator.SEPARATOR + "set"));
+		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + AsmConstants.ANONYM_SPLITTER + "set"));
 
 		DeclarationDescriptor setter = bindingTrace.get(BindingContext.FQNAME_TO_DESCRIPTOR, setterFq);
 		if(setter == null)
@@ -84,10 +84,10 @@ public class VariableCodegen
 
 			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext2.FQNAME_TO_DESCRIPTOR, setterFq);
 
-			classNode.members.add(MethodGenerator.gen((MethodDescriptor)setter, method, bindingTrace));
+			classNode.members.add(MethodGenerator.gen((MethodDescriptor)setter, setter.getName(), method, bindingTrace));
 		}
 
-		FqName getterFq = fqName.parent().child(Name.identifier(fqName.shortName() + FqNameGenerator.SEPARATOR + "get"));
+		FqName getterFq = fqName.parent().child(Name.identifier(fqName.shortName() + AsmConstants.ANONYM_SPLITTER + "get"));
 		DeclarationDescriptor getter = bindingTrace.get(BindingContext.FQNAME_TO_DESCRIPTOR, getterFq);
 		if(getter == null)
 		{
@@ -116,7 +116,7 @@ public class VariableCodegen
 
 			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext2.FQNAME_TO_DESCRIPTOR, getterFq);
 
-			classNode.members.add(MethodGenerator.gen((MethodDescriptor)getter, method, bindingTrace));
+			classNode.members.add(MethodGenerator.gen((MethodDescriptor)getter, getter.getName(), method, bindingTrace));
 		}
 	}
 }

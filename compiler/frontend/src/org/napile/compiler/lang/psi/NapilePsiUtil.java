@@ -357,7 +357,7 @@ public class NapilePsiUtil
 		if(!(expression instanceof NapileFunctionLiteralExpression))
 			return false;
 		NapileFunctionLiteralExpression functionLiteral = (NapileFunctionLiteralExpression) expression;
-		for(NapileElement parameter : functionLiteral.getValueParameters())
+		for(NapileElement parameter : functionLiteral.getAnonymMethod().getValueParameters())
 		{
 			if(parameter instanceof NapilePropertyParameter && ((NapilePropertyParameter) parameter).getTypeReference() != null)
 				return false;

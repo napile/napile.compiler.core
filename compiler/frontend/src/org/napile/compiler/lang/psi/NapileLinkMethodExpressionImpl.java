@@ -17,27 +17,33 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileHashQualifiedExpression extends NapileQualifiedExpression
+public class NapileLinkMethodExpressionImpl extends NapileExpressionImpl
 {
-	public NapileHashQualifiedExpression(@NotNull ASTNode node)
+	public NapileLinkMethodExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
+	}
+
+	public NapileDotQualifiedExpression getLinkedMethod()
+	{
+		return (NapileDotQualifiedExpression) findChildByType(NapileNodes.DOT_QUALIFIED_EXPRESSION);
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitHashQualifiedExpression(this);
+		visitor.visitLinkMethodExpression(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitHashQualifiedExpression(this, data);
+		return visitor.visitLinkMethodExpression(this, data);
 	}
 }

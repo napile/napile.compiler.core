@@ -187,7 +187,7 @@ public interface BindingContext
 		{
 			isBlock = valueNotFound ? false : isBlock;
 			assert isBlock != null;
-			return isBlock && !expression.getFunctionLiteral().hasParameterSpecification();
+			return isBlock && !expression.getAnonymMethod().hasParameterSpecification();
 		}
 	};
 

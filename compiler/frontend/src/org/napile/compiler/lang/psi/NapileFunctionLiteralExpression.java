@@ -17,16 +17,13 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.lexer.NapileToken;
-import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileFunctionLiteralExpression extends NapileExpressionImpl implements NapileDeclarationWithBody
+public class NapileFunctionLiteralExpression extends NapileExpressionImpl
 {
 	public NapileFunctionLiteralExpression(@NotNull ASTNode node)
 	{
@@ -46,52 +43,8 @@ public class NapileFunctionLiteralExpression extends NapileExpressionImpl implem
 	}
 
 	@NotNull
-	public NapileAnonymMethodImpl getFunctionLiteral()
+	public NapileAnonymMethodImpl getAnonymMethod()
 	{
 		return (NapileAnonymMethodImpl) findChildByType(NapileNodes.FUNCTION_LITERAL);
-	}
-
-	@NotNull
-	@Override
-	public NapileElement[] getValueParameters()
-	{
-		return getFunctionLiteral().getValueParameters();
-	}
-
-	@Override
-	public NapileBlockExpression getBodyExpression()
-	{
-		return getFunctionLiteral().getBodyExpression();
-	}
-
-	@Override
-	public boolean hasBlockBody()
-	{
-		return getFunctionLiteral().hasBlockBody();
-	}
-
-	@Override
-	public boolean hasDeclaredReturnType()
-	{
-		return getFunctionLiteral().getReturnTypeRef() != null;
-	}
-
-	@Nullable
-	@Override
-	public NapileModifierListImpl getModifierList()
-	{
-		return null;
-	}
-
-	@Override
-	public boolean hasModifier(NapileToken modifier)
-	{
-		return false;
-	}
-
-	@Override
-	public ASTNode getModifierNode(NapileToken token)
-	{
-		return null;
 	}
 }

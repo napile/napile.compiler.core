@@ -126,7 +126,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, ExpressionTypingContext context)
 	{
-		NapileAnonymMethodImpl functionLiteral = expression.getFunctionLiteral();
+		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 		NapileBlockExpression bodyExpression = functionLiteral.getBodyExpression();
 		if(bodyExpression == null)
 			return null;
@@ -148,7 +148,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		if(returnTypeRef != null)
 		{
 			returnType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, returnTypeRef, context.trace, true);
-			context.expressionTypingServices.checkFunctionReturnType(expression, context.replaceScope(functionInnerScope).
+			context.expressionTypingServices.checkFunctionReturnType(expression.getAnonymMethod(), context.replaceScope(functionInnerScope).
 					replaceExpectedType(returnType).replaceBindingTrace(temporaryTrace), temporaryTrace);
 		}
 		else
@@ -189,14 +189,13 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 
 	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileFunctionLiteralExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)
 	{
-		NapileAnonymMethodImpl functionLiteral = expression.getFunctionLiteral();
+		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 
 		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), functionLiteral.getNameAsName(), CallableMemberDescriptor.Kind.DECLARATION, false, false);
 
 		List<ParameterDescriptor> parameterDescriptors = createValueParameterDescriptors(context, functionLiteral, functionDescriptor, functionTypeExpected);
 
-		functionDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), parameterDescriptors,
-                                      /*unsubstitutedReturnType = */ null, Modality.FINAL, Visibility.LOCAL2);
+		functionDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), parameterDescriptors, null, Modality.FINAL, Visibility.LOCAL);
 		context.trace.record(BindingContext.METHOD, expression, functionDescriptor);
 		BindingContextUtils.recordFunctionDeclarationToDescriptor(context.trace, expression, functionDescriptor);
 		return functionDescriptor;

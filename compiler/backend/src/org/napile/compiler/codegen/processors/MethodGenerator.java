@@ -22,6 +22,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
@@ -43,15 +44,15 @@ import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.ReferenceParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileCallElement;
+import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
 import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
 import org.napile.compiler.lang.psi.NapileDelegatorToSuperCall;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileExpression;
 
 /**
  * @author VISTALL
@@ -117,9 +118,9 @@ public class MethodGenerator
 	}
 
 	@NotNull
-	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor)
+	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name realName)
 	{
-		MethodNode methodNode = new MethodNode(ModifierGenerator.gen(methodDescriptor), methodDescriptor.getName());
+		MethodNode methodNode = new MethodNode(ModifierGenerator.gen(methodDescriptor), realName);
 		methodNode.returnType = TypeTransformer.toAsmType(methodDescriptor.getReturnType());
 
 		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode);
@@ -135,9 +136,9 @@ public class MethodGenerator
 	}
 
 	@NotNull
-	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace bindingTrace)
+	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name name, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace bindingTrace)
 	{
-		MethodNode methodNode = gen(methodDescriptor);
+		MethodNode methodNode = gen(methodDescriptor, name);
 
 		genReferenceParameters(methodDescriptor, methodNode.instructions);
 

@@ -29,7 +29,8 @@ import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.codegen.processors.codegen.CallTransformer;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -56,12 +57,15 @@ public class NodeRefUtil
 		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()));
 	}
 
-	//FIXME [VISTALL] this method is needed? use CallTransformer?
-	public static MethodRef ref(CallableDescriptor descriptor)
+	public static MethodRef ref(@NotNull MethodDescriptor descriptor)
 	{
-		descriptor = descriptor.getOriginal();
+		return ref(descriptor, DescriptorUtils.getFQName(descriptor).toSafe());
+	}
 
-		FqName fqName = DescriptorUtils.getFQName(descriptor).toSafe();
+	public static MethodRef ref(@NotNull MethodDescriptor descriptor, @NotNull FqName fqName)
+	{
+		descriptor = CallTransformer.unwrapFakeOverride(descriptor);
+
 		List<TypeNode> typeNodes = new ArrayList<TypeNode>(descriptor.getValueParameters().size());
 		for(ParameterDescriptor p : descriptor.getValueParameters())
 			typeNodes.add(TypeTransformer.toAsmType(p.getType()));

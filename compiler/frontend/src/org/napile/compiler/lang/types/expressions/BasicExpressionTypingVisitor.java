@@ -692,8 +692,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitHashQualifiedExpression(NapileHashQualifiedExpression expression, ExpressionTypingContext context)
+	public JetTypeInfo visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression, ExpressionTypingContext context)
 	{
+		NapileDotQualifiedExpression dotExp = expression.getLinkedMethod();
 		context.trace.report(UNSUPPORTED.on(expression, getClass().getCanonicalName()));
 		return JetTypeInfo.create(null, context.dataFlowInfo);
 	}
@@ -701,8 +702,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitQualifiedExpression(NapileQualifiedExpression expression, ExpressionTypingContext context)
 	{
-		String text = expression.getText();
-		// TODO : functions as values
 		NapileExpression selectorExpression = expression.getSelectorExpression();
 		NapileExpression receiverExpression = expression.getReceiverExpression();
 		ExpressionTypingContext contextWithNoExpectedType = context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);

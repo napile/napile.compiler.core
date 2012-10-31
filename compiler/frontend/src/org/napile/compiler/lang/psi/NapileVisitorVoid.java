@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.napile.compiler.lang.psi.impl.NapileInjectionExpressionImpl;
 import com.intellij.psi.PsiElementVisitor;
 
 /**
@@ -278,9 +277,9 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitExpression(expression);
 	}
 
-	public void visitHashQualifiedExpression(NapileHashQualifiedExpression expression)
+	public void visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression)
 	{
-		visitQualifiedExpression(expression);
+		visitExpression(expression);
 	}
 
 	public void visitDotQualifiedExpression(NapileDotQualifiedExpression expression)

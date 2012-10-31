@@ -293,7 +293,7 @@ public class JetControlFlowProcessor
 				}
 				else if(left instanceof NapileQualifiedExpression)
 				{
-					assert !(left instanceof NapileHashQualifiedExpression) : left; // TODO
+					assert !(left instanceof NapileLinkMethodExpressionImpl) : left; // TODO
 					NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) left;
 					value(qualifiedExpression.getReceiverExpression(), false);
 					value(expression.getOperationReference(), false);
@@ -664,7 +664,7 @@ public class JetControlFlowProcessor
 			//todo cache NapileAnonymMethodImpl instead
 			if(subroutine instanceof NapileFunctionLiteralExpression)
 			{
-				subroutine = ((NapileFunctionLiteralExpression) subroutine).getFunctionLiteral();
+				subroutine = ((NapileFunctionLiteralExpression) subroutine).getAnonymMethod();
 			}
 			if(subroutine instanceof NapileMethod)
 			{
@@ -726,7 +726,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression)
 		{
-			NapileAnonymMethodImpl functionLiteral = expression.getFunctionLiteral();
+			NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 			processLocalDeclaration(functionLiteral);
 			builder.read(expression);
 		}

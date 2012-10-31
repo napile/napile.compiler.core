@@ -55,7 +55,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			//            MUL,
 			NapileTokens.PLUS, NapileTokens.MINUS, NapileTokens.EXCL, NapileTokens.DIV, NapileTokens.PERC, NapileTokens.LTEQ,
 			// TODO GTEQ,   foo<bar, baz>=x
-			NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.ANDAND, NapileTokens.OROR, NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.SEMICOLON, NapileTokens.RANGE, NapileTokens.EQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.NOT_IN, NapileTokens.NOT_IS, //HASH,
+			NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.ANDAND, NapileTokens.OROR, NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.SEMICOLON, NapileTokens.RANGE, NapileTokens.EQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.NOT_IN, NapileTokens.NOT_IS,
 			NapileTokens.COLON);
 
 	/*package*/ static final TokenSet EXPRESSION_FIRST = TokenSet.create(
@@ -105,7 +105,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private enum Precedence
 	{
 		POSTFIX(NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
-				//                HASH,
 				NapileTokens.DOT, NapileTokens.SAFE_ACCESS), // typeArguments? valueArguments : typeArguments : arrayAccess
 
 		PREFIX(NapileTokens.MINUS, NapileTokens.PLUS, NapileTokens.MINUSMINUS, NapileTokens.PLUSPLUS, NapileTokens.EXCL)
@@ -396,13 +395,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 				expression.done(SAFE_ACCESS_EXPRESSION);
 			}
-			//            else if (at(HASH)) {
-			//                advance(); // HASH
-			//
-			//                expect(IDENTIFIER, "Expecting property or function name");
-			//
-			//                expression.done(HASH_QUALIFIED_EXPRESSION);
-			//            }
 			else if(atSet(Precedence.POSTFIX.getOperations()))
 			{
 				parseOperationReference();
@@ -596,6 +588,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 			parseClassOrTypeOf(TYPE_OF);
 		else if(at(NapileTokens.ARRAY_OF_KEYWORD))
 			parseArrayExpression();
+		else if(at(NapileTokens.HASH))
+			parseLinkMethodExpression();
 		else if(at(NapileTokens.FIELD_IDENTIFIER) || at(NapileTokens.IDENTIFIER))
 		{
 			parseSimpleNameExpression();
@@ -997,6 +991,28 @@ public class JetExpressionParsing extends AbstractJetParsing
 		getBuilder().restoreNewlinesState();
 
 		indices.done(INDICES);
+	}
+
+	public void parseLinkMethodExpression()
+	{
+		PsiBuilder.Marker marker = mark();
+
+		advance();
+
+		PsiBuilder.Marker dotMarker = mark();
+		while(true)
+		{
+			parseSimpleNameExpression();
+
+			if(at(NapileTokens.DOT))
+				advance();
+			else
+				break;
+		}
+
+		dotMarker.done(DOT_QUALIFIED_EXPRESSION);
+
+		marker.done(LINK_METHOD_EXPRESSION);
 	}
 
 	/*

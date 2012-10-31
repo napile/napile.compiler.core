@@ -55,7 +55,7 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 	{
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;
-		NapileAnonymMethodImpl functionLiteral = expression.getFunctionLiteral();
+		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
 		if(closingBraceNode != null)

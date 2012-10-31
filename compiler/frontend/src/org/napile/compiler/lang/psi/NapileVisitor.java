@@ -269,9 +269,9 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitExpression(expression, data);
 	}
 
-	public R visitHashQualifiedExpression(NapileHashQualifiedExpression expression, D data)
+	public R visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression, D data)
 	{
-		return visitQualifiedExpression(expression, data);
+		return visitExpression(expression, data);
 	}
 
 	public R visitDotQualifiedExpression(NapileDotQualifiedExpression expression, D data)

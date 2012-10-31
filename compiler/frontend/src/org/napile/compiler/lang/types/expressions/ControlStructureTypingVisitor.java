@@ -247,11 +247,11 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		if(body instanceof NapileFunctionLiteralExpression)
 		{
 			NapileFunctionLiteralExpression function = (NapileFunctionLiteralExpression) body;
-			if(!function.getFunctionLiteral().hasParameterSpecification())
+			if(!function.getAnonymMethod().hasParameterSpecification())
 			{
 				WritableScope writableScope = ExpressionTypingUtils.newWritableScopeImpl(context, "do..while body scope");
 				conditionScope = writableScope;
-				context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(writableScope, function.getFunctionLiteral().getBodyExpression().getStatements(), CoercionStrategy.NO_COERCION, context, context.trace);
+				context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(writableScope, function.getAnonymMethod().getBodyExpression().getStatements(), CoercionStrategy.NO_COERCION, context, context.trace);
 				context.trace.record(BindingContext.BLOCK, function);
 			}
 			else
