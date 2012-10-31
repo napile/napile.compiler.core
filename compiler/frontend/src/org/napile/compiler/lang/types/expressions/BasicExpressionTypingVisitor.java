@@ -31,11 +31,14 @@ import static org.napile.compiler.lang.types.expressions.OperatorConventions.INT
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.LONG;
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.SHORT;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
@@ -74,17 +77,10 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
-import org.napile.compiler.lang.types.CommonSupertypes;
-import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeInfo;
-import org.napile.compiler.lang.types.NamespaceType;
-import org.napile.compiler.lang.types.SubstitutionUtils;
-import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.lang.types.*;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
@@ -694,9 +690,74 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression, ExpressionTypingContext context)
 	{
-		NapileDotQualifiedExpression dotExp = expression.getLinkedMethod();
-		context.trace.report(UNSUPPORTED.on(expression, getClass().getCanonicalName()));
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		NapileSimpleNameExpression target = expression.getTarget();
+		if(target == null)
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+
+		NapileTypeList typeList = expression.getTypeList();
+		List<JetType> parameterTypes = Collections.emptyList();
+		if(typeList != null)
+		{
+			List<NapileTypeReference> typeReferences = typeList.getTypeList();
+			parameterTypes = new ArrayList<JetType>(typeReferences.size());
+			for(NapileTypeReference typeReference : typeReferences)
+				parameterTypes.add(context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, false));
+		}
+
+		MethodDescriptor targetMethod = null;
+		Collection<MethodDescriptor> methodDescriptors = context.scope.getFunctions(target.getReferencedNameAsName());
+
+		if(!parameterTypes.isEmpty())
+		{
+			Collection<MethodDescriptor> targets = new ArrayList<MethodDescriptor>(2);
+			for(MethodDescriptor methodDescriptor : methodDescriptors)
+			{
+				List<ParameterDescriptor> parameters = methodDescriptor.getValueParameters();
+				if(parameters.size() != parameterTypes.size())
+					continue;
+
+				boolean find = true;
+				for(int i = 0; i < parameters.size(); i++)
+				{
+					JetType expectedType = parameterTypes.get(i);
+					JetType foundType = parameters.get(i).getType();
+					if(!JetTypeChecker.INSTANCE.equalTypes(foundType, expectedType))
+						find = false;
+				}
+
+				if(find)
+					targets.add(methodDescriptor);
+			}
+
+			methodDescriptors = targets;
+		}
+
+		if(methodDescriptors.size() == 1)
+			targetMethod = methodDescriptors.iterator().next();
+
+		if(targetMethod != null)
+		{
+			Map<Name, JetType> valueParameters = new LinkedHashMap<Name, JetType>(targetMethod.getValueParameters().size());
+			for(ParameterDescriptor parameterDescriptor : targetMethod.getValueParameters())
+				valueParameters.put(parameterDescriptor.getName(), parameterDescriptor.getType());
+
+			context.trace.record(BindingContext.REFERENCE_TARGET, target, targetMethod);
+
+			return JetTypeInfo.create(new JetTypeImpl(new MethodTypeConstructorImpl(targetMethod.getReturnType(), valueParameters), context.scope), context.dataFlowInfo);
+
+		}
+		else
+		{
+			if(methodDescriptors.isEmpty())
+				context.trace.report(Errors.UNRESOLVED_REFERENCE.on(target));
+			else if(methodDescriptors.size() > 1)
+			{
+				context.trace.record(BindingContext.AMBIGUOUS_REFERENCE_TARGET, target, methodDescriptors);
+				context.trace.report(Errors.AMBIGUOUS_LINK_METHOD.on(target, methodDescriptors));
+			}
+
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+		}
 	}
 
 	@Override

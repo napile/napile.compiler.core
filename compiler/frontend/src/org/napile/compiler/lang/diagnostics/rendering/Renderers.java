@@ -123,9 +123,20 @@ public class Renderers
 		{
 			StringBuilder stringBuilder = new StringBuilder("\n");
 			for(ResolvedCall<? extends CallableDescriptor> call : argument)
-			{
 				stringBuilder.append(DescriptorRenderer.TEXT.render(call.getResultingDescriptor())).append("\n");
-			}
+			return stringBuilder.toString();
+		}
+	};
+
+	public static final Renderer<Collection<? extends CallableDescriptor>> AMBIGUOUS_DESCRIPTIONS = new Renderer<Collection<? extends CallableDescriptor>>()
+	{
+		@NotNull
+		@Override
+		public String render(@NotNull Collection<? extends CallableDescriptor> argument)
+		{
+			StringBuilder stringBuilder = new StringBuilder("\n");
+			for(CallableDescriptor call : argument)
+				stringBuilder.append(DescriptorRenderer.TEXT.render(call)).append("\n");
 			return stringBuilder.toString();
 		}
 	};

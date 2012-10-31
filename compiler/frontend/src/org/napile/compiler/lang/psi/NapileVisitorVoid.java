@@ -326,11 +326,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitJetElement(typeArgumentList);
 	}
 
-	public void visitExtendListList(NapileExtendTypeList extendList)
-	{
-		visitJetElement(extendList);
-	}
-
 	public void visitThisExpression(NapileThisExpression expression)
 	{
 		visitExpression(expression);

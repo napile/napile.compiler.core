@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2012 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,19 +19,20 @@ package org.napile.compiler.lang.diagnostics;
 import java.util.Collection;
 
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import com.intellij.psi.PsiElement;
 
 /**
- * @author VISTALL
+ * @author abreslav
  */
-public class AmbiguousDescriptorDiagnosticFactory extends DiagnosticFactory1<PsiElement, Collection<? extends CallableDescriptor>>
+public class AmbiguousDescriptorCallDiagnosticFactory extends DiagnosticFactory1<PsiElement, Collection<? extends ResolvedCall<? extends CallableDescriptor>>>
 {
-	public static AmbiguousDescriptorDiagnosticFactory create()
+	public static AmbiguousDescriptorCallDiagnosticFactory create()
 	{
-		return new AmbiguousDescriptorDiagnosticFactory();
+		return new AmbiguousDescriptorCallDiagnosticFactory();
 	}
 
-	public AmbiguousDescriptorDiagnosticFactory()
+	public AmbiguousDescriptorCallDiagnosticFactory()
 	{
 		super(Severity.ERROR, PositioningStrategies.DEFAULT);
 	}

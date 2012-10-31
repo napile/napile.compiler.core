@@ -166,8 +166,6 @@ public interface Errors
 
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> INC_DEC_SHOULD_NOT_RETURN_UNIT = SimpleDiagnosticFactory.create(Severity.ERROR);
 
-	AmbiguousDescriptorDiagnosticFactory ASSIGN_OPERATOR_AMBIGUITY = AmbiguousDescriptorDiagnosticFactory.create();
-
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> EQUALS_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileBinaryExpression> ASSIGNMENT_IN_EXPRESSION_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileRootNamespaceExpression> NAMESPACE_IS_NOT_AN_EXPRESSION = SimpleDiagnosticFactory.create(Severity.ERROR);
@@ -188,7 +186,8 @@ public interface Errors
 	SimpleDiagnosticFactory<PsiElement> NO_GENERICS_IN_SUPERTYPE_SPECIFIER = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileExpression> ITERATOR_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
-	AmbiguousDescriptorDiagnosticFactory ITERATOR_AMBIGUITY = AmbiguousDescriptorDiagnosticFactory.create();
+	AmbiguousDescriptorCallDiagnosticFactory ITERATOR_AMBIGUITY = AmbiguousDescriptorCallDiagnosticFactory.create();
+	AmbiguousDescriptorDiagnosticFactory AMBIGUOUS_LINK_METHOD = AmbiguousDescriptorDiagnosticFactory.create();
 
 	DiagnosticFactory1<NapileSimpleNameExpression, JetType> COMPARE_TO_TYPE_MISMATCH = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, JetType> CALLEE_NOT_A_FUNCTION = DiagnosticFactory1.create(Severity.ERROR);
@@ -286,8 +285,8 @@ public interface Errors
 	DiagnosticFactory3<NapileExpression, String, JetType, JetType> RESULT_TYPE_MISMATCH = DiagnosticFactory3.create(Severity.ERROR);
 	DiagnosticFactory3<NapileReferenceExpression, String, String, String> UNSAFE_INFIX_CALL = DiagnosticFactory3.create(Severity.ERROR);
 
-	AmbiguousDescriptorDiagnosticFactory OVERLOAD_RESOLUTION_AMBIGUITY = new AmbiguousDescriptorDiagnosticFactory();
-	AmbiguousDescriptorDiagnosticFactory NONE_APPLICABLE = new AmbiguousDescriptorDiagnosticFactory();
+	AmbiguousDescriptorCallDiagnosticFactory OVERLOAD_RESOLUTION_AMBIGUITY = new AmbiguousDescriptorCallDiagnosticFactory();
+	AmbiguousDescriptorCallDiagnosticFactory NONE_APPLICABLE = new AmbiguousDescriptorCallDiagnosticFactory();
 	DiagnosticFactory1<PsiElement, ParameterDescriptor> NO_VALUE_FOR_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReferenceExpression> NO_RECEIVER_ADMITTED = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, ClassifierDescriptor> NO_CLASS_OBJECT = DiagnosticFactory1.create(Severity.ERROR);

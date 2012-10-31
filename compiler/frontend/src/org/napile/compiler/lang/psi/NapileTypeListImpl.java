@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.diagnostics;
+package org.napile.compiler.lang.psi;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
+ * @date 0:26/23.09.12
  */
-public class AmbiguousDescriptorDiagnosticFactory extends DiagnosticFactory1<PsiElement, Collection<? extends CallableDescriptor>>
+public class NapileTypeListImpl extends NapileElementImpl implements NapileTypeList
 {
-	public static AmbiguousDescriptorDiagnosticFactory create()
+	public NapileTypeListImpl(@NotNull ASTNode node)
 	{
-		return new AmbiguousDescriptorDiagnosticFactory();
+		super(node);
 	}
 
-	public AmbiguousDescriptorDiagnosticFactory()
+	@Override
+	@NotNull
+	public List<NapileTypeReference> getTypeList()
 	{
-		super(Severity.ERROR, PositioningStrategies.DEFAULT);
+		return findChildrenByType(NapileNodes.TYPE_REFERENCE);
 	}
 }

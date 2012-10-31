@@ -999,18 +999,33 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		advance();
 
-		PsiBuilder.Marker dotMarker = mark();
-		while(true)
+		parseSimpleNameExpression();
+
+		if(at(NapileTokens.LPAR))
 		{
-			parseSimpleNameExpression();
+			PsiBuilder.Marker list = mark();
 
-			if(at(NapileTokens.DOT))
+			advance();
+
+			while(true)
+			{
+				if(at(NapileTokens.COMMA))
+				{
+					errorAndAdvance("Expecting a type");
+					continue;
+				}
+
+				myJetParsing.parseTypeRef();
+				if(!at(NapileTokens.COMMA))
+					break;
+
 				advance();
-			else
-				break;
-		}
+			}
 
-		dotMarker.done(DOT_QUALIFIED_EXPRESSION);
+			expect(NapileTokens.RPAR, "')' expected");
+
+			list.done(LINK_METHOD_TYPE_LIST);
+		}
 
 		marker.done(LINK_METHOD_EXPRESSION);
 	}

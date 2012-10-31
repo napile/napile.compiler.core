@@ -319,11 +319,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitJetElement(typeArgumentList, data);
 	}
 
-	public R visitExtendListList(NapileExtendTypeList extendTypeList, D data)
-	{
-		return visitJetElement(extendTypeList, data);
-	}
-
 	public R visitThisExpression(NapileThisExpression expression, D data)
 	{
 		return visitExpression(expression, data);

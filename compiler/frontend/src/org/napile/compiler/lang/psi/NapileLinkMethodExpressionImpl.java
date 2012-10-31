@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.lexer.NapileNodes;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -30,9 +30,16 @@ public class NapileLinkMethodExpressionImpl extends NapileExpressionImpl
 		super(node);
 	}
 
-	public NapileDotQualifiedExpression getLinkedMethod()
+	@Nullable
+	public NapileSimpleNameExpression getTarget()
 	{
-		return (NapileDotQualifiedExpression) findChildByType(NapileNodes.DOT_QUALIFIED_EXPRESSION);
+		return findChildByClass(NapileSimpleNameExpression.class);
+	}
+
+	@Nullable
+	public NapileTypeList getTypeList()
+	{
+		return findChildByClass(NapileTypeList.class);
 	}
 
 	@Override

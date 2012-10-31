@@ -19,6 +19,7 @@ package org.napile.compiler.lang.resolve.calls;
 import static org.napile.compiler.lang.diagnostics.Errors.*;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -141,11 +142,10 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		@Override
 		public <D extends CallableDescriptor> void recordAmbiguity(BindingTrace trace, Collection<ResolvedCallWithTrace<D>> candidates)
 		{
-			Collection<D> descriptors = Sets.newHashSet();
+			Collection<D> descriptors = new HashSet<D>(candidates.size());
 			for(ResolvedCallWithTrace<D> candidate : candidates)
-			{
 				descriptors.add(candidate.getCandidateDescriptor());
-			}
+
 			trace.record(BindingContext.AMBIGUOUS_REFERENCE_TARGET, reference, descriptors);
 		}
 

@@ -60,7 +60,8 @@ public interface NapileNodes
 	NapileNode MODIFIER_LIST = new NapileNode("MODIFIER_LIST", NapileModifierListImpl.class);
 	NapileNode ANNOTATION = new NapileNode("ANNOTATION", NapileAnnotation.class);
 
-	NapileNode EXTEND_TYPE_LIST = new NapileNode("EXTEND_TYPE_LIST", NapileExtendTypeList.class);
+	NapileNode EXTEND_TYPE_LIST = new NapileNode("EXTEND_TYPE_LIST", NapileTypeListImpl.class);
+	NapileNode LINK_METHOD_TYPE_LIST = new NapileNode("LINK_METHOD_TYPE_LIST", NapileTypeListImpl.class);
 	NapileNode TYPE_ARGUMENT_LIST = new NapileNode("TYPE_ARGUMENT_LIST", NapileTypeArgumentListImpl.class);
 	NapileNode VALUE_ARGUMENT_LIST = new NapileNode("VALUE_ARGUMENT_LIST", NapileValueArgumentList.class);
 	NapileNode VALUE_ARGUMENT = new NapileNode("VALUE_ARGUMENT", NapileValueArgument.class);

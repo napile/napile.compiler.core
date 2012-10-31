@@ -181,8 +181,6 @@ public class DefaultErrorMessages
 
 		MAP.put(INC_DEC_SHOULD_NOT_RETURN_UNIT, "Functions inc(), dec() shouldn't return Unit to be used by operators ++, --");
 
-		MAP.put(ASSIGN_OPERATOR_AMBIGUITY, "Assignment operators ambiguity: {0}", AMBIGUOUS_CALLS);
-
 		MAP.put(EQUALS_MISSING, "No method 'equals(idea.Any?) : idea.Boolean' available");
 		MAP.put(ASSIGNMENT_IN_EXPRESSION_CONTEXT, "Assignments are not expressions, and only expressions are allowed in this context");
 		MAP.put(NAMESPACE_IS_NOT_AN_EXPRESSION, "'namespace' is not an expression, it can only be used on the left-hand side of a dot ('.')");
@@ -192,6 +190,7 @@ public class DefaultErrorMessages
 		MAP.put(NO_THIS, "'this' is not defined in this context");
 		MAP.put(SUPER_NOT_AVAILABLE, "No supertypes are accessible in this context");
 		MAP.put(AMBIGUOUS_SUPER, "Many supertypes available, please specify the one you mean in angle brackets, e.g. 'super<Foo>'");
+		MAP.put(AMBIGUOUS_LINK_METHOD, "More that one linking target. Remove other methods or use '#target(Type1, Type2)", AMBIGUOUS_DESCRIPTIONS);
 		MAP.put(ABSTRACT_SUPER_CALL, "Abstract member cannot be accessed directly");
 		MAP.put(NOT_A_SUPERTYPE, "Not a supertype");
 		MAP.put(TYPE_ARGUMENTS_REDUNDANT_IN_SUPER_QUALIFIER, "Type arguments do not need to be specified in a 'super' qualifier");

@@ -24,6 +24,7 @@ import static org.napile.compiler.lang.lexer.NapileNodes.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNode;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -422,7 +423,7 @@ public class JetParsing extends AbstractJetParsing
 		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
-			parseTypeExtendList();
+			parseTypeList(EXTEND_TYPE_LIST);
 		}
 
 		if(at(NapileTokens.LBRACE))
@@ -912,7 +913,7 @@ public class JetParsing extends AbstractJetParsing
 		list.done(DELEGATION_SPECIFIER_LIST);
 	}
 
-	void parseTypeExtendList()
+	void parseTypeList(@NotNull IElementType doneElement)
 	{
 		PsiBuilder.Marker list = mark();
 
@@ -929,7 +930,7 @@ public class JetParsing extends AbstractJetParsing
 			advance(); // COMMA
 		}
 
-		list.done(EXTEND_TYPE_LIST);
+		list.done(doneElement);
 	}
 
 	/*

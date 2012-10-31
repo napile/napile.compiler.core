@@ -284,6 +284,21 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression, StackValue data)
+	{
+		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+
+		MethodDescriptor target = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getTarget());
+
+		if(target.isStatic())
+			instructs.linkStaticMethod(NodeRefUtil.ref(target));
+		else
+			instructs.linkMethod(NodeRefUtil.ref(target));
+
+		return StackValue.onStack(TypeTransformer.toAsmType(jetType));
+	}
+
+	@Override
 	public StackValue visitBreakExpression(NapileBreakExpression expression, StackValue data)
 	{
 		LoopCodegen<?> targetLoop = null;

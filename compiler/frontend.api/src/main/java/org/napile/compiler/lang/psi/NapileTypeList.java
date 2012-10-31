@@ -19,35 +19,13 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.psi.NapileTypeReference;
-import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 0:26/23.09.12
+ * @date 17:32/31.10.12
  */
-public class NapileExtendTypeList extends NapileElementImpl
+public interface NapileTypeList extends NapileElement
 {
-	public NapileExtendTypeList(@NotNull ASTNode node)
-	{
-		super(node);
-	}
-
-	@Override
-	public void accept(@NotNull NapileVisitorVoid visitor)
-	{
-		visitor.visitExtendListList(this);
-	}
-
-	@Override
-	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
-	{
-		return visitor.visitExtendListList(this, data);
-	}
-
-	public List<NapileTypeReference> getTypeList()
-	{
-		return findChildrenByType(NapileNodes.TYPE_REFERENCE);
-	}
+	@NotNull
+	List<NapileTypeReference> getTypeList();
 }

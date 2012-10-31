@@ -47,8 +47,6 @@ public class IdeErrorMessages
 	{
 		MAP.put(TYPE_MISMATCH, "<html>Type mismatch.<table><tr><td>Required:</td><td>{0}</td></tr><tr><td>Found:</td><td>{1}</td></tr></table></html>", IdeRenderers.HTML_RENDER_TYPE, IdeRenderers.HTML_RENDER_TYPE);
 
-		MAP.put(ASSIGN_OPERATOR_AMBIGUITY, "<html>Assignment operators ambiguity. All these functions match.<ul>{0}</ul></table></html>", IdeRenderers.HTML_AMBIGUOUS_CALLS);
-
 		MAP.put(TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS, "<html>Type inference failed: {0}</html>", IdeRenderers.HTML_TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS_RENDERER);
 		MAP.put(TYPE_INFERENCE_NO_INFORMATION_FOR_PARAMETER, "<html>Type inference failed: {0}</html>", IdeRenderers.HTML_TYPE_INFERENCE_NO_INFORMATION_FOR_PARAMETER_RENDERER);
 		MAP.put(TYPE_INFERENCE_TYPE_CONSTRUCTOR_MISMATCH, "<html>Type inference failed: {0}</html>", IdeRenderers.HTML_TYPE_INFERENCE_TYPE_CONSTRUCTOR_MISMATCH_RENDERER);
