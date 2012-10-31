@@ -18,6 +18,7 @@ package org.napile.compiler.lang.types.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -90,5 +91,29 @@ public class MethodTypeConstructorImpl implements MethodTypeConstructor
 	public Map<Name, JetType> getParameterTypes()
 	{
 		return parameterTypes;
+	}
+
+	public boolean equals(Object o)
+	{
+		if(o == null || o.getClass() != MethodTypeConstructorImpl.class)
+			return false;
+		MethodTypeConstructor oConstructor = (MethodTypeConstructor) o;
+		if(!returnType.equals(oConstructor.getReturnType()))
+			return false;
+
+		if(parameterTypes.size() != oConstructor.getParameterTypes().size())
+			return false;
+
+		Iterator<Map.Entry<Name, JetType>> it1 = parameterTypes.entrySet().iterator();
+		Iterator<Map.Entry<Name, JetType>> it2 = oConstructor.getParameterTypes().entrySet().iterator();
+		while(it1.hasNext() && it2.hasNext())
+		{
+			Map.Entry<Name, JetType> entry1 = it1.next();
+			Map.Entry<Name, JetType> entry2 = it2.next();
+
+			if(!entry1.equals(entry2))
+				return false;
+		}
+		return true;
 	}
 }

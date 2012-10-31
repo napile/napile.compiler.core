@@ -114,14 +114,7 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 
 		JetTypeImpl type = (JetTypeImpl) o;
 
-		// TODO
-		return nullable == type.nullable && JetTypeChecker.INSTANCE.equalTypes(this, type);
-		//        if (nullable != type.nullable) return false;
-		//        if (arguments != null ? !arguments.equals(type.arguments) : type.arguments != null) return false;
-		//        if (constructor != null ? !constructor.equals(type.constructor) : type.constructor != null) return false;
-		//        if (memberScope != null ? !memberScope.equals(type.memberScope) : type.memberScope != null) return false;
-
-		//        return true;
+		return JetTypeChecker.INSTANCE.equalTypes(this, type);
 	}
 
 	@Override

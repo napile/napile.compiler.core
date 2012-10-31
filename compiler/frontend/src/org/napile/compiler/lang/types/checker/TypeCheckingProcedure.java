@@ -92,9 +92,7 @@ public class TypeCheckingProcedure
 
 		for(int i = 0; i < type1Arguments.size(); i++)
 		{
-			TypeParameterDescriptor typeParameter1 = constructor1.getParameters().get(i);
 			JetType typeProjection1 = type1Arguments.get(i);
-			TypeParameterDescriptor typeParameter2 = constructor2.getParameters().get(i);
 			JetType typeProjection2 = type2Arguments.get(i);
 
 			if(!constraints.assertEqualTypes(typeProjection1, typeProjection2, this))
