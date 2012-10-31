@@ -64,7 +64,7 @@ public class CompilationException extends RuntimeException
 			@Override
 			public String compute()
 			{
-				StringBuilder message = new StringBuilder("Back-end (JVM) Internal error: ").append(CompilationException.super.getMessage()).append("\n");
+				StringBuilder message = new StringBuilder("Internal error: ").append(CompilationException.super.getMessage()).append("\n");
 				Throwable cause = getCause();
 				if(cause != null)
 				{
