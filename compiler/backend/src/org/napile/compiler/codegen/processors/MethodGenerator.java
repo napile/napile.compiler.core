@@ -93,7 +93,7 @@ public class MethodGenerator
 		{
 			for(NapileDelegationToSuperCall specifier : delegationSpecifiers)
 			{
-				ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, ((NapileDelegationToSuperCall) specifier).getCalleeExpression());
+				ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
 
 				ExpressionGenerator generator = new ExpressionGenerator(bindingTrace, constructorDescriptor);
 
