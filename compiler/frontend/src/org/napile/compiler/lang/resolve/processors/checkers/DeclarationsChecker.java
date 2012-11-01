@@ -37,6 +37,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.types.SelfTypeConstructor;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -180,21 +181,28 @@ public class DeclarationsChecker
 
 		assert parent != null;
 
-		//TODO [VISTALL] rework for this(a : Int) : this()
 		Map<NapileTypeReference, JetType> classSpecifiers = makeTypeList2(parent.getExtendTypeList());
 		Map<NapileTypeReference, JetType> constructorSpecifiers = makeTypeList(constructor.getDelegationSpecifiers());
 
-		for(Map.Entry<NapileTypeReference, JetType> classEntry : classSpecifiers.entrySet())
-		{
-			if(!constructorSpecifiers.values().contains(classEntry.getValue()))
-				trace.report(Errors.MISSED_SUPER_CALL.on(constructor.getNameIdentifier(), classEntry.getValue()));
-		}
-
+		boolean thisCall = false;
 		for(Map.Entry<NapileTypeReference, JetType> constructorEntry : constructorSpecifiers.entrySet())
 		{
-			if(!classSpecifiers.values().contains(constructorEntry.getValue()))
+			if(constructorEntry.getValue().getConstructor() instanceof SelfTypeConstructor)
+			{
+				thisCall = true;
+				continue;
+			}
+
+			if(thisCall || !classSpecifiers.values().contains(constructorEntry.getValue()))
 				trace.report(Errors.INVALID_SUPER_CALL.on(constructorEntry.getKey()));
 		}
+
+		if(!thisCall)
+			for(Map.Entry<NapileTypeReference, JetType> classEntry : classSpecifiers.entrySet())
+			{
+				if(!constructorSpecifiers.values().contains(classEntry.getValue()))
+					trace.report(Errors.MISSED_SUPER_CALL.on(constructor.getNameIdentifier(), classEntry.getValue()));
+			}
 	}
 
 	@NotNull

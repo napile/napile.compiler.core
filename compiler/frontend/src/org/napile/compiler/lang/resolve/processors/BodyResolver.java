@@ -205,14 +205,14 @@ public class BodyResolver
 
 				assert constructorDescriptor != null;
 
-				resolveDelegationSpecifierList(napileConstructor, constructorDescriptor, constructorDescriptor.getParametersScope());
+				resolveDelegationSpecifierList(napileConstructor, constructorDescriptor, constructorDescriptor.getParametersScope(), false);
 			}
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
+			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution(), true);
 	}
 
-	private void resolveDelegationSpecifierList(final NapileDelegationSpecifierListOwner jetElement, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull JetScope jetScope)
+	private void resolveDelegationSpecifierList(final NapileDelegationSpecifierListOwner jetElement, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull JetScope jetScope, boolean checkSupers)
 	{
 		if(!context.completeAnalysisNeeded(jetElement))
 			return;
@@ -292,14 +292,14 @@ public class BodyResolver
 		if(jetElement instanceof NapileEnumEntry)
 			parentEnum = Collections.singleton(((ClassDescriptor) declarationDescriptor.getContainingDeclaration().getContainingDeclaration()).getTypeConstructor());
 
-		checkSupertypeList(supertypes, parentEnum);
+		if(checkSupers)
+			checkSupertypeList(supertypes, parentEnum);
 	}
 
 	// allowedFinalSupertypes typically contains a enum type of which supertypeOwner is an entry
 	private void checkSupertypeList(@NotNull Map<NapileTypeReference, JetType> supertypes, Set<TypeConstructor> allowedFinalSupertypes)
 	{
 		Set<TypeConstructor> typeConstructors = Sets.newHashSet();
-		boolean classAppeared = false;
 		for(Map.Entry<NapileTypeReference, JetType> entry : supertypes.entrySet())
 		{
 			NapileTypeReference typeReference = entry.getKey();
