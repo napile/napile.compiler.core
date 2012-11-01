@@ -933,35 +933,20 @@ public class JetParsing extends AbstractJetParsing
 		list.done(doneElement);
 	}
 
-	/*
-		 * attributes delegationSpecifier
-		 *
-		 * delegationSpecifier
-		 *   : constructorInvocation // type and constructor arguments
-		 *   : userType
-		 *   : explicitDelegation
-		 *   ;
-		 *
-		 */
 	private void parseDelegationSpecifier()
 	{
-		PsiBuilder.Marker delegator = mark();
-		parseAnnotations();
+		PsiBuilder.Marker marker = mark();
 
 		PsiBuilder.Marker reference = mark();
 		parseTypeRef();
+		reference.done(CONSTRUCTOR_CALLEE);
 
 		if(at(NapileTokens.LPAR))
-		{
-			reference.done(CONSTRUCTOR_CALLEE);
 			myExpressionParsing.parseValueArgumentList();
-			delegator.done(DELEGATOR_SUPER_CALL);
-		}
 		else
-		{
-			reference.drop();
-			delegator.done(DELEGATOR_SUPER_CLASS);
-		}
+			error("'(' expected");
+
+		marker.done(DELEGATOR_SUPER_CALL);
 	}
 
 	/*

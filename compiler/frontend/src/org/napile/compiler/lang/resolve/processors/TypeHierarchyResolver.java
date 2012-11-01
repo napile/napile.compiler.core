@@ -385,7 +385,7 @@ public class TypeHierarchyResolver
 			else if(psiElement instanceof NapileAnonymClass)
 			{
 				NapileAnonymClass anonymClass = (NapileAnonymClass) psiElement;
-				for(NapileDelegationSpecifier delegationSpecifier : anonymClass.getDelegationSpecifiers())
+				for(NapileDelegationToSuperCall delegationSpecifier : anonymClass.getDelegationSpecifiers())
 				{
 					NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
 					if(typeReference == null)

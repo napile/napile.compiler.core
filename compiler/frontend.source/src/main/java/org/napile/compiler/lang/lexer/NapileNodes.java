@@ -48,8 +48,7 @@ public interface NapileNodes
 
 	NapileNode DELEGATION_SPECIFIER_LIST = new NapileNode("DELEGATION_SPECIFIER_LIST", NapileDelegationSpecifierList.class);
 
-	NapileNode DELEGATOR_SUPER_CALL = new NapileNode("DELEGATOR_SUPER_CALL", NapileDelegatorToSuperCall.class);
-	NapileNode DELEGATOR_SUPER_CLASS = new NapileNode("DELEGATOR_SUPER_CLASS", NapileDelegatorToSuperClass.class);
+	NapileNode DELEGATOR_SUPER_CALL = new NapileNode("DELEGATOR_SUPER_CALL", NapileDelegationToSuperCall.class);
 	NapileNode CONSTRUCTOR_CALLEE = new NapileNode("CONSTRUCTOR_CALLEE", NapileConstructorCalleeExpression.class);
 	IElementType VALUE_PARAMETER_LIST = NapileStubElementTypes.VALUE_PARAMETER_LIST;
 	IElementType VALUE_PARAMETER = NapileStubElementTypes.VALUE_PARAMETER;

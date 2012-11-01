@@ -120,11 +120,7 @@ public interface Errors
 
 	SimpleDiagnosticFactory<NapileNamedDeclaration> PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
-	SimpleDiagnosticFactory<NapileDelegatorToSuperClass> SUPERTYPE_NOT_INITIALIZED = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileDelegatorToSuperClass> SUPERTYPE_NOT_INITIALIZED_DEFAULT = SimpleDiagnosticFactory.create(Severity.ERROR);
-
-	SimpleDiagnosticFactory<NapileDelegatorToSuperClass> INITIALIZER_WITH_NO_ARGUMENTS = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileDelegationSpecifier> MANY_CALLS_TO_THIS = SimpleDiagnosticFactory.create(Severity.ERROR);
+	SimpleDiagnosticFactory<NapileTypeReference> MANY_CALLS_TO_THIS = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory1<NapileModifierListOwner, CallableMemberDescriptor> NOTHING_TO_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.OVERRIDE_MODIFIER);
 	DiagnosticFactory3<PsiNameIdentifierOwner, CallableMemberDescriptor, CallableMemberDescriptor, DeclarationDescriptor> VIRTUAL_MEMBER_HIDDEN = DiagnosticFactory3.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 	DiagnosticFactory3<NapileModifierListOwner, CallableMemberDescriptor, CallableDescriptor, DeclarationDescriptor> CANNOT_OVERRIDE_INVISIBLE_MEMBER = DiagnosticFactory3.create(Severity.ERROR, PositioningStrategies.OVERRIDE_MODIFIER);

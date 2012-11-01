@@ -43,11 +43,9 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.ReferenceParameterDescriptor;
-import org.napile.compiler.lang.psi.NapileCallElement;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
-import org.napile.compiler.lang.psi.NapileDelegatorToSuperCall;
+import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -70,7 +68,7 @@ public class MethodGenerator
 			constructorNode.parameters.add(methodParameterNode);
 		}
 
-		List<NapileDelegationSpecifier> delegationSpecifiers = napileConstructor.getDelegationSpecifiers();
+		List<NapileDelegationToSuperCall> delegationSpecifiers = napileConstructor.getDelegationSpecifiers();
 		// delegation list is empty - if no extends
 		if(delegationSpecifiers.isEmpty())
 		{
@@ -93,24 +91,19 @@ public class MethodGenerator
 		}
 		else
 		{
-			for(NapileDelegationSpecifier specifier : delegationSpecifiers)
+			for(NapileDelegationToSuperCall specifier : delegationSpecifiers)
 			{
-				if(specifier instanceof NapileDelegatorToSuperCall)
-				{
-					ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, ((NapileDelegatorToSuperCall) specifier).getCalleeExpression());
+				ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, ((NapileDelegationToSuperCall) specifier).getCalleeExpression());
 
-					ExpressionGenerator generator = new ExpressionGenerator(bindingTrace, constructorDescriptor);
+				ExpressionGenerator generator = new ExpressionGenerator(bindingTrace, constructorDescriptor);
 
-					CallableMethod method = CallTransformer.transformToCallable(call);
+				CallableMethod method = CallTransformer.transformToCallable(call);
 
-					generator.invokeMethodWithArguments(method, (NapileCallElement) specifier, StackValue.none());
+				generator.invokeMethodWithArguments(method, specifier, StackValue.none());
 
-					constructorNode.instructions.add(new LoadInstruction(0));
-					constructorNode.instructions.addAll(generator.getInstructs().getInstructions());
-					constructorNode.instructions.add(new PopInstruction());
-				}
-				else
-					throw new UnsupportedOperationException(specifier.getClass().toString());
+				constructorNode.instructions.add(new LoadInstruction(0));
+				constructorNode.instructions.addAll(generator.getInstructs().getInstructions());
+				constructorNode.instructions.add(new PopInstruction());
 			}
 		}
 

@@ -963,7 +963,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitAnonymClass(NapileAnonymClass objectDeclaration)
 		{
-			for(NapileDelegationSpecifier specifier : objectDeclaration.getDelegationSpecifiers())
+			for(NapileDelegationToSuperCall specifier : objectDeclaration.getDelegationSpecifiers())
 				value(specifier, inCondition);
 			visitClassOrObject(objectDeclaration);
 		}
@@ -1006,7 +1006,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitDelegationToSuperCallSpecifier(NapileDelegatorToSuperCall call)
+		public void visitDelegationToSuperCallSpecifier(NapileDelegationToSuperCall call)
 		{
 			List<? extends ValueArgument> valueArguments = call.getValueArguments();
 			for(ValueArgument valueArgument : valueArguments)

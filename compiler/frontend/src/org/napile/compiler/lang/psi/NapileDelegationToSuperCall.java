@@ -27,9 +27,9 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileDelegatorToSuperCall extends NapileDelegationSpecifier implements NapileCallElement
+public class NapileDelegationToSuperCall extends NapileElementImpl implements NapileCallElement
 {
-	public NapileDelegatorToSuperCall(@NotNull ASTNode node)
+	public NapileDelegationToSuperCall(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -73,10 +73,24 @@ public class NapileDelegatorToSuperCall extends NapileDelegationSpecifier implem
 		return Collections.emptyList();
 	}
 
-	@Override
 	public NapileTypeReference getTypeReference()
 	{
 		return getCalleeExpression().getTypeReference();
+	}
+
+	@Nullable
+	public NapileUserType getTypeAsUserType()
+	{
+		final NapileTypeReference reference = getTypeReference();
+		if(reference != null)
+		{
+			final NapileTypeElement element = reference.getTypeElement();
+			if(element instanceof NapileUserType)
+			{
+				return ((NapileUserType) element);
+			}
+		}
+		return null;
 	}
 
 	@NotNull

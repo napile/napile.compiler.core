@@ -138,9 +138,6 @@ public class DefaultErrorMessages
 
 		MAP.put(PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE, "Public or protected member should have specified type");
 
-		MAP.put(SUPERTYPE_NOT_INITIALIZED, "This type has a constructor, and thus must be initialized here");
-		MAP.put(SUPERTYPE_NOT_INITIALIZED_DEFAULT, "Constructor invocation should be explicitly specified");
-		MAP.put(INITIALIZER_WITH_NO_ARGUMENTS, "Constructor arguments required");
 		MAP.put(MANY_CALLS_TO_THIS, "Only one call to 'this(...)' is allowed");
 		MAP.put(NOTHING_TO_OVERRIDE, "''{0}'' overrides nothing", NAME);
 		MAP.put(VIRTUAL_MEMBER_HIDDEN, "''{0}'' hides member of supertype ''{2}'' and needs ''override'' modifier", NAME, NAME, NAME);

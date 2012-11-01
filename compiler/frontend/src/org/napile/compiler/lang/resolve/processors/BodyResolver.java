@@ -18,12 +18,9 @@ package org.napile.compiler.lang.resolve.processors;
 
 import static org.napile.compiler.lang.diagnostics.Errors.FINAL_SUPERTYPE;
 import static org.napile.compiler.lang.diagnostics.Errors.SUPERTYPE_APPEARS_TWICE;
-import static org.napile.compiler.lang.diagnostics.Errors.SUPERTYPE_NOT_INITIALIZED;
-import static org.napile.compiler.lang.diagnostics.Errors.SUPERTYPE_NOT_INITIALIZED_DEFAULT;
 import static org.napile.compiler.lang.resolve.BindingContext.DEFERRED_TYPE;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +28,6 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
@@ -48,7 +44,6 @@ import org.napile.compiler.lang.resolve.ObservableBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
-import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
@@ -57,24 +52,14 @@ import org.napile.compiler.lang.resolve.processors.checkers.ModifiersChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
-import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 import org.napile.compiler.util.slicedmap.WritableSlice;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.Queue;
 
 /**
@@ -217,83 +202,14 @@ public class BodyResolver
 		if(!context.completeAnalysisNeeded(jetElement))
 			return;
 
-		final Map<NapileTypeReference, JetType> supertypes = Maps.newLinkedHashMap();
-		NapileVisitorVoid visitor = new NapileVisitorVoid()
+		for(NapileDelegationToSuperCall call : jetElement.getDelegationSpecifiers())
 		{
-			private void recordSupertype(NapileTypeReference typeReference, JetType supertype)
-			{
-				if(supertype == null)
-					return;
-				supertypes.put(typeReference, supertype);
-			}
+			NapileTypeReference typeReference = call.getTypeReference();
+			if(typeReference == null)
+				return;
 
-			@Override
-			public void visitDelegationToSuperCallSpecifier(NapileDelegatorToSuperCall call)
-			{
-				NapileValueArgumentList valueArgumentList = call.getValueArgumentList();
-				PsiElement elementToMark = valueArgumentList == null ? call : valueArgumentList;
-
-				NapileTypeReference typeReference = call.getTypeReference();
-				if(typeReference == null)
-					return;
-
-				OverloadResolutionResults<MethodDescriptor> results = callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
-				if(results.isSuccess())
-				{
-					JetType supertype = results.getResultingDescriptor().getReturnType();
-					recordSupertype(typeReference, supertype);
-				}
-				else
-				{
-					recordSupertype(typeReference, trace.getBindingContext().get(BindingContext.TYPE, typeReference));
-				}
-			}
-
-			@Override
-			public void visitDelegationToSuperClassSpecifier(NapileDelegatorToSuperClass specifier)
-			{
-				NapileTypeReference typeReference = specifier.getTypeReference();
-				JetType supertype = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
-				recordSupertype(typeReference, supertype);
-				if(supertype == null)
-					return;
-				ClassDescriptor classDescriptor = TypeUtils.getClassDescriptor(supertype);
-				if(classDescriptor == null)
-					return;
-				if(!classDescriptor.getConstructors().isEmpty() && !ErrorUtils.isError(classDescriptor.getTypeConstructor()) )
-				{
-					boolean hasConstructorWithoutParams = false;
-					for(ConstructorDescriptor constructor : classDescriptor.getConstructors())
-						if(constructor.getValueParameters().isEmpty())
-							hasConstructorWithoutParams = true;
-
-					if(!hasConstructorWithoutParams)
-					{
-						trace.report(SUPERTYPE_NOT_INITIALIZED.on(specifier));
-					}
-					else
-					{
-						trace.report(SUPERTYPE_NOT_INITIALIZED_DEFAULT.on(specifier));
-					}
-				}
-			}
-
-			@Override
-			public void visitJetElement(NapileElement element)
-			{
-				throw new UnsupportedOperationException(element.getText() + " : " + element);
-			}
-		};
-
-		for(NapileDelegationSpecifier delegationSpecifier : jetElement.getDelegationSpecifiers())
-			delegationSpecifier.accept(visitor);
-
-		Set<TypeConstructor> parentEnum = Collections.emptySet();
-		if(jetElement instanceof NapileEnumEntry)
-			parentEnum = Collections.singleton(((ClassDescriptor) declarationDescriptor.getContainingDeclaration().getContainingDeclaration()).getTypeConstructor());
-
-		if(checkSupers)
-			checkSupertypeList(supertypes, parentEnum);
+			callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+		}
 	}
 
 	// allowedFinalSupertypes typically contains a enum type of which supertypeOwner is an entry

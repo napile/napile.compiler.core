@@ -119,19 +119,9 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitJetElement(list, data);
 	}
 
-	public R visitDelegationSpecifier(NapileDelegationSpecifier specifier, D data)
+	public R visitDelegationToSuperCallSpecifier(NapileDelegationToSuperCall call, D data)
 	{
-		return visitJetElement(specifier, data);
-	}
-
-	public R visitDelegationToSuperCallSpecifier(NapileDelegatorToSuperCall call, D data)
-	{
-		return visitDelegationSpecifier(call, data);
-	}
-
-	public R visitDelegationToSuperClassSpecifier(NapileDelegatorToSuperClass specifier, D data)
-	{
-		return visitDelegationSpecifier(specifier, data);
+		return visitJetElement(call, data);
 	}
 
 	public R visitTypeReference(NapileTypeReference typeReference, D data)

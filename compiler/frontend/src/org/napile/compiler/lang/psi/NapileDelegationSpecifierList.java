@@ -44,8 +44,8 @@ public class NapileDelegationSpecifierList extends NapileElementImpl
 		return visitor.visitDelegationSpecifierList(this, data);
 	}
 
-	public List<NapileDelegationSpecifier> getDelegationSpecifiers()
+	public List<NapileDelegationToSuperCall> getDelegationSpecifiers()
 	{
-		return PsiTreeUtil.getChildrenOfTypeAsList(this, NapileDelegationSpecifier.class);
+		return PsiTreeUtil.getChildrenOfTypeAsList(this, NapileDelegationToSuperCall.class);
 	}
 }

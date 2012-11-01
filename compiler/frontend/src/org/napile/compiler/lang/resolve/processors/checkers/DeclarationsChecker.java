@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.resolve.processors.checkers;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,19 +25,20 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.Modality;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDelegationSpecifier;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -56,126 +58,73 @@ public class DeclarationsChecker
 
 	public void process(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
+		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : bodiesResolveContext.getClasses().entrySet())
+		{
+			NapileClass aClass = entry.getKey();
+			//MutableClassDescriptor classDescriptor = entry.getValue();
+
+			if(!bodiesResolveContext.completeAnalysisNeeded(aClass))
+				continue;
+
+			checkSuperListForFinalClasses(aClass.getExtendTypeList());
+			checkSuperListForDuplicates(aClass.getExtendTypeList());
+		}
+
+		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : bodiesResolveContext.getAnonymous().entrySet())
+		{
+			NapileAnonymClass anonymClass = entry.getKey();
+			//MutableClassDescriptor classDescriptor = entry.getValue();
+
+			if(!bodiesResolveContext.completeAnalysisNeeded(anonymClass))
+				continue;
+
+			checkSuperListForFinalClasses(anonymClass.getExtendTypeList());
+			checkSuperListForDuplicates(anonymClass.getExtendTypeList());
+		}
+
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
 		{
 			NapileConstructor constructor = entry.getKey();
-			ConstructorDescriptor constructorDescriptor = entry.getValue();
+			//ConstructorDescriptor constructorDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(constructor))
 				continue;
 
-			checkConstructor(constructor, constructorDescriptor);
-		}
-
-		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
-		{
-			NapileVariable property = entry.getKey();
-			PropertyDescriptor propertyDescriptor = entry.getValue();
-
-			if(!bodiesResolveContext.completeAnalysisNeeded(property))
-				continue;
-
-			checkProperty(property, propertyDescriptor);
+			checkConstructor(constructor);
 		}
 	}
 
-	private void checkProperty(NapileVariable property, PropertyDescriptor propertyDescriptor)
+	private void checkSuperListForFinalClasses(@NotNull List<NapileTypeReference> typeReferences)
 	{
-		DeclarationDescriptor containingDeclaration = propertyDescriptor.getContainingDeclaration();
-		ClassDescriptor classDescriptor = (containingDeclaration instanceof ClassDescriptor) ? (ClassDescriptor) containingDeclaration : null;
+		for(NapileTypeReference typeReference : typeReferences)
+		{
+			JetType jetType = trace.safeGet(BindingContext.TYPE, typeReference);
 
-		checkPropertyAbstractness(property, propertyDescriptor, classDescriptor);
-
-		checkPropertyInitializer(property, propertyDescriptor, classDescriptor);
+			ClassifierDescriptor classifierDescriptor = jetType.getConstructor().getDeclarationDescriptor();
+			if(classifierDescriptor instanceof ClassDescriptor)
+			{
+				if(((ClassDescriptor) classifierDescriptor).getModality() == Modality.FINAL)
+					trace.report(Errors.FINAL_SUPERTYPE.on(typeReference));
+			}
+			else
+				trace.report(Errors.INVALID_SUPER_CALL.on(typeReference));
+		}
 	}
 
-	private void checkPropertyAbstractness(NapileVariable property, PropertyDescriptor propertyDescriptor, ClassDescriptor classDescriptor)
+	private void checkSuperListForDuplicates(@NotNull List<NapileTypeReference> typeReferences)
 	{
-		/*NapilePropertyAccessor getter = property.getGetter();
-		NapilePropertyAccessor setter = property.getSetter();
-		NapileModifierListImpl modifierList = property.getModifierList();
-		ASTNode abstractNode = modifierList != null ? modifierList.getModifierNode(NapileTokens.ABSTRACT_KEYWORD) : null;
-
-		if(abstractNode != null)
-		{ //has abstract modifier
-			if(classDescriptor == null)
-			{
-				trace.report(Errors.ABSTRACT_PROPERTY_NOT_IN_CLASS.on(property));
-				return;
-			}
-			if(!(classDescriptor.getModality() == Modality.ABSTRACT) && classDescriptor.getKind() != ClassKind.ENUM_CLASS)
-			{
-				NapileClassImpl classElement = (NapileClassImpl) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
-				String name = property.getName();
-				trace.report(Errors.ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS.on(property, name != null ? name : "", classDescriptor));
-				return;
-			}
-		}
-
-		if(propertyDescriptor.getModality() == Modality.ABSTRACT)
+		List<JetType> list = new ArrayList<JetType>(typeReferences.size());
+		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType returnType = propertyDescriptor.getReturnType();
-			if(returnType instanceof DeferredType)
-			{
-				returnType = ((DeferredType) returnType).getActualType();
-			}
-
-			NapileExpression initializer = property.getInitializer();
-			if(initializer != null)
-			{
-				trace.report(Errors.ABSTRACT_PROPERTY_WITH_INITIALIZER.on(initializer));
-			}
-			if(getter != null && getter.getBodyExpression() != null)
-			{
-				trace.report(Errors.ABSTRACT_PROPERTY_WITH_GETTER.on(getter));
-			}
-			if(setter != null && setter.getBodyExpression() != null)
-			{
-				trace.report(Errors.ABSTRACT_PROPERTY_WITH_SETTER.on(setter));
-			}
-		}  */
+			JetType jetType = trace.safeGet(BindingContext.TYPE, typeReference);
+			if(list.contains(jetType))
+				trace.report(Errors.SUPERTYPE_APPEARS_TWICE.on(typeReference));
+			else
+				list.add(jetType);
+		}
 	}
 
-	private void checkPropertyInitializer(NapileVariable property, PropertyDescriptor propertyDescriptor, @NotNull ClassDescriptor classDescriptor)
-	{
-		/*NapilePropertyAccessor getter = property.getGetter();
-		NapilePropertyAccessor setter = property.getSetter();
-		boolean hasAccessorImplementation = (getter != null && getter.getBodyExpression() != null) || (setter != null && setter.getBodyExpression() != null);
-
-		if(propertyDescriptor.getModality() == Modality.ABSTRACT)
-		{
-			if(property.getInitializer() == null && property.getPropertyTypeRef() == null)
-			{
-				trace.report(Errors.PROPERTY_WITH_NO_TYPE_NO_INITIALIZER.on(property));
-			}
-			return;
-		}
-
-		NapileExpression initializer = property.getInitializer();
-		boolean backingFieldRequired = trace.getBindingContext().safeGet(BindingContext.BACKING_FIELD_REQUIRED, propertyDescriptor);
-
-		if(initializer == null)
-		{
-			boolean error = false;
-			if(backingFieldRequired && !trace.getBindingContext().safeGet(BindingContext.IS_INITIALIZED, propertyDescriptor))
-			{
-				error = true;
-				if(hasAccessorImplementation || propertyDescriptor.isStatic())
-					trace.report(Errors.MUST_BE_INITIALIZED.on(property));
-				else
-					trace.report(Errors.MUST_BE_INITIALIZED_OR_BE_ABSTRACT.on(property));
-			}
-
-			if(!error && property.getPropertyTypeRef() == null)
-				trace.report(Errors.PROPERTY_WITH_NO_TYPE_NO_INITIALIZER.on(property));
-		}
-		else if(!backingFieldRequired)
-		{
-			trace.report(Errors.PROPERTY_INITIALIZER_NO_BACKING_FIELD.on(initializer));
-		}   */
-	}
-
-	private void checkConstructor(NapileConstructor constructor, ConstructorDescriptor constructorDescriptor)
+	private void checkConstructor(NapileConstructor constructor)
 	{
 		NapileClass parent = PsiTreeUtil.getParentOfType(constructor, NapileClass.class);
 
@@ -193,7 +142,9 @@ public class DeclarationsChecker
 				continue;
 			}
 
-			if(thisCall || !classSpecifiers.values().contains(constructorEntry.getValue()))
+			if(thisCall)
+				trace.report(Errors.MANY_CALLS_TO_THIS.on(constructorEntry.getKey()));
+			else if(!classSpecifiers.values().contains(constructorEntry.getValue()))
 				trace.report(Errors.INVALID_SUPER_CALL.on(constructorEntry.getKey()));
 		}
 
@@ -219,10 +170,10 @@ public class DeclarationsChecker
 	}
 
 	@NotNull
-	private Map<NapileTypeReference, JetType> makeTypeList(@NotNull List<NapileDelegationSpecifier> list)
+	private Map<NapileTypeReference, JetType> makeTypeList(@NotNull List<NapileDelegationToSuperCall> list)
 	{
 		Map<NapileTypeReference, JetType> types = new LinkedHashMap<NapileTypeReference, JetType>(list.size());
-		for(NapileDelegationSpecifier delegationSpecifier : list)
+		for(NapileDelegationToSuperCall delegationSpecifier : list)
 		{
 			JetType type = trace.get(BindingContext.TYPE, delegationSpecifier.getTypeReference());
 			types.put(delegationSpecifier.getTypeReference(), type);

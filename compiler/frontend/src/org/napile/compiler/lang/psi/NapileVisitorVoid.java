@@ -123,19 +123,9 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitJetElement(list);
 	}
 
-	public void visitDelegationSpecifier(NapileDelegationSpecifier specifier)
+	public void visitDelegationToSuperCallSpecifier(NapileDelegationToSuperCall call)
 	{
-		visitJetElement(specifier);
-	}
-
-	public void visitDelegationToSuperCallSpecifier(NapileDelegatorToSuperCall call)
-	{
-		visitDelegationSpecifier(call);
-	}
-
-	public void visitDelegationToSuperClassSpecifier(NapileDelegatorToSuperClass specifier)
-	{
-		visitDelegationSpecifier(specifier);
+		visitJetElement(call);
 	}
 
 	public void visitTypeReference(NapileTypeReference typeReference)

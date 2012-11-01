@@ -51,7 +51,7 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 	}
 
 	@Override
-	public void visitDelegationToSuperCallSpecifier(NapileDelegatorToSuperCall call)
+	public void visitDelegationToSuperCallSpecifier(NapileDelegationToSuperCall call)
 	{
 		NapileConstructorCalleeExpression calleeExpression = call.getCalleeExpression();
 		NapileTypeReference typeRef = calleeExpression.getTypeReference();

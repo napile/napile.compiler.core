@@ -31,5 +31,5 @@ public interface NapileDelegationSpecifierListOwner extends NapileElement
 	NapileDelegationSpecifierList getDelegationSpecifierList();
 
 	@NotNull
-	List<NapileDelegationSpecifier> getDelegationSpecifiers();
+	List<NapileDelegationToSuperCall> getDelegationSpecifiers();
 }
