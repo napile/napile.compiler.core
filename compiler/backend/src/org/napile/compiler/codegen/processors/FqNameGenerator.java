@@ -23,18 +23,16 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.resolve.BindingTrace;
 
 /**
  * @author VISTALL
@@ -120,9 +118,6 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 
 	private void record(NapileDeclaration declaration, FqName fqName)
 	{
-		DeclarationDescriptor descriptor = bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
-
-		bindingTrace.record(BindingContext2.DESCRIPTOR_TO_FQ_NAME, descriptor, fqName);
 		bindingTrace.record(BindingContext2.DECLARATION_TO_FQ_NAME, declaration, fqName);
 		bindingTrace.record(BindingContext2.FQNAME_TO_DESCRIPTOR, fqName, declaration);
 	}

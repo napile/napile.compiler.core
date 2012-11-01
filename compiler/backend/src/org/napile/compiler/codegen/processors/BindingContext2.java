@@ -17,7 +17,6 @@
 package org.napile.compiler.codegen.processors;
 
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.util.slicedmap.Slices;
@@ -29,9 +28,6 @@ import org.napile.compiler.util.slicedmap.WritableSlice;
  */
 public interface BindingContext2
 {
-	// this is needed?
-	WritableSlice<DeclarationDescriptor, FqName> DESCRIPTOR_TO_FQ_NAME = Slices.createSimpleSlice();
-
 	WritableSlice<NapileDeclaration, FqName> DECLARATION_TO_FQ_NAME = Slices.createSimpleSlice();
 
 	WritableSlice<FqName, NapileElement> FQNAME_TO_DESCRIPTOR = Slices.createSimpleSlice();
