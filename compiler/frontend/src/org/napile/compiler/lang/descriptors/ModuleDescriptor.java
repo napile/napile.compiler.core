@@ -27,7 +27,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 /**
  * @author abreslav
  */
-public class ModuleDescriptor extends DeclarationDescriptorImpl implements ClassOrNamespaceDescriptor, NamespaceDescriptorParent
+public class ModuleDescriptor extends DeclarationDescriptorImpl implements NamespaceDescriptorParent
 {
 	private NamespaceDescriptor rootNamepsace;
 

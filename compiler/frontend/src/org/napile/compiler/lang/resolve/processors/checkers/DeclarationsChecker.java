@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.resolve.processors.checkers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +30,14 @@ import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -61,19 +65,31 @@ public class DeclarationsChecker
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : bodiesResolveContext.getClasses().entrySet())
 		{
 			NapileClass aClass = entry.getKey();
-			//MutableClassDescriptor classDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(aClass))
 				continue;
 
 			checkSuperListForFinalClasses(aClass.getExtendTypeList());
 			checkSuperListForDuplicates(aClass.getExtendTypeList());
+
+			for(NapileTypeParameter typeParameter : aClass.getTypeParameters())
+				checkSuperListForDuplicates(Arrays.asList(typeParameter.getExtendsBound()));
+		}
+
+		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
+		{
+			NapileNamedMethod method = entry.getKey();
+
+			if(!bodiesResolveContext.completeAnalysisNeeded(method))
+				continue;
+
+			for(NapileTypeParameter typeParameter : method.getTypeParameters())
+				checkSuperListForDuplicates(Arrays.asList(typeParameter.getExtendsBound()));
 		}
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : bodiesResolveContext.getAnonymous().entrySet())
 		{
 			NapileAnonymClass anonymClass = entry.getKey();
-			//MutableClassDescriptor classDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(anonymClass))
 				continue;
@@ -85,7 +101,6 @@ public class DeclarationsChecker
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
 		{
 			NapileConstructor constructor = entry.getKey();
-			//ConstructorDescriptor constructorDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(constructor))
 				continue;

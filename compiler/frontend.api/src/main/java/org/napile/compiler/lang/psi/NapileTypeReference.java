@@ -27,6 +27,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface NapileTypeReference extends NapileElement
 {
+	NapileTypeReference[] EMPTY_ARRAY = new NapileTypeReference[0];
+
 	@Nullable
 	NapileTypeElement getTypeElement();
 

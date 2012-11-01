@@ -24,7 +24,7 @@ import org.napile.compiler.lang.types.NamespaceType;
 /**
  * @author abreslav
  */
-public interface NamespaceDescriptor extends Annotated, Named, FqNamed, ClassOrNamespaceDescriptor, NamespaceDescriptorParent
+public interface NamespaceDescriptor extends Annotated, Named, FqNamed, NamespaceDescriptorParent
 {
 	@NotNull
 	JetScope getMemberScope();
