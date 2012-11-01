@@ -39,8 +39,6 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
 	private final Map<NapileVariable, PropertyDescriptor> properties;
-	private final Map<NapileRetellEntry, PropertyDescriptor> retellEnties;
-	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries;
 	private final Map<NapileNamedMethod, SimpleMethodDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
@@ -54,9 +52,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 		objects = Collections.unmodifiableMap(context.getAnonymous());
 		constructors = Collections.unmodifiableMap(context.getConstructors());
 		properties = Collections.unmodifiableMap(context.getProperties());
-		retellEnties = Collections.unmodifiableMap(context.getRetellEntries());
 		functions = Collections.unmodifiableMap(context.getMethods());
-		enumEntries = Collections.unmodifiableMap(context.getEnumEntries());
 		declaringScopes = Collections.unmodifiableMap(context.getDeclaringScopes());
 
 		topDownAnalysisParameters = context.getTopDownAnalysisParameters();
@@ -84,18 +80,6 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	public Map<NapileVariable, PropertyDescriptor> getProperties()
 	{
 		return properties;
-	}
-
-	@Override
-	public Map<NapileRetellEntry, PropertyDescriptor> getRetellEntries()
-	{
-		return retellEnties;
-	}
-
-	@Override
-	public Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries()
-	{
-		return enumEntries;
 	}
 
 	@Override

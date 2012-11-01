@@ -19,8 +19,6 @@ package org.napile.idea.plugin.highlighter;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
-import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -65,33 +63,5 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(propertyDescriptor));
 
 		super.visitVariable(property);
-	}
-
-	@Override
-	public void visitEnumEntry(@NotNull NapileEnumEntry enumEntry)
-	{
-		PsiElement nameIdentifier = enumEntry.getNameIdentifier();
-		if(nameIdentifier == null)
-			return;
-
-		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VARIABLE, enumEntry);
-		if(variableDescriptor != null)
-			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(variableDescriptor));
-
-		super.visitEnumEntry(enumEntry);
-	}
-
-	@Override
-	public void visitRetellEntry(@NotNull NapileRetellEntry retellEntry)
-	{
-		PsiElement nameIdentifier = retellEntry.getNameIdentifier();
-		if(nameIdentifier == null)
-			return;
-
-		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VARIABLE, retellEntry);
-		if(variableDescriptor != null)
-			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(variableDescriptor));
-
-		super.visitRetellEntry(retellEntry);
 	}
 }

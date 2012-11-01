@@ -45,7 +45,7 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCallImpl;
 import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 

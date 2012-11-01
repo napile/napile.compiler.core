@@ -33,7 +33,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.ide.util.MemberChooser;

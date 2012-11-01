@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.resolve;
+package org.napile.compiler.render;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -520,19 +520,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitClassDescriptor(ClassDescriptor descriptor, StringBuilder builder)
 		{
-			NapileKeywordToken keyword;
-			switch(descriptor.getKind())
-			{
-				case ENUM_CLASS:
-					keyword = NapileTokens.ENUM_KEYWORD;
-					break;
-				case RETELL_CLASS:
-					keyword = NapileTokens.RETELL_KEYWORD;
-					break;
-				default:
-					keyword = NapileTokens.CLASS_KEYWORD;
-			}
-			renderClassDescriptor(descriptor, builder, keyword);
+			renderClassDescriptor(descriptor, builder, NapileTokens.CLASS_KEYWORD);
 			return null;
 		}
 

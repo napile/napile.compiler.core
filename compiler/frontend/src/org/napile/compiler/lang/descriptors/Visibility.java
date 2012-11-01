@@ -25,6 +25,7 @@ import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import com.google.common.collect.Sets;
 
@@ -153,15 +154,30 @@ public enum  Visibility
 		this.keyword = keyword;
 	}
 
+	@NotNull
+	public static Visibility resolve(@NotNull NapileModifierListOwner modifierListOwner)
+	{
+		if(modifierListOwner.hasModifier(NapileTokens.ENUM_KEYWORD))
+			return PUBLIC;
+		if(modifierListOwner.hasModifier(NapileTokens.LOCAL_KEYWORD))
+			return LOCAL;
+		if(modifierListOwner.hasModifier(NapileTokens.COVERED_KEYWORD))
+			return COVERED;
+		if(modifierListOwner.hasModifier(NapileTokens.HERITABLE_KEYWORD))
+			return HERITABLE;
+		return PUBLIC;
+	}
+
 	public boolean isPublicAPI()
 	{
 		return isPublicAPI;
 	}
 
-	// if it call it always not null
 	@NotNull
 	public NapileKeywordToken getKeyword()
 	{
+		if(keyword == null)
+			throw new IllegalArgumentException("Keyword is null. Don't use this visibility for rendering or etc. This: " + name());
 		return keyword;
 	}
 

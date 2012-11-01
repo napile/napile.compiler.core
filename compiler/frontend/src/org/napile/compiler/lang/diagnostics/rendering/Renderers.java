@@ -39,7 +39,7 @@ import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;

@@ -24,20 +24,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 
@@ -46,8 +41,6 @@ import com.intellij.util.IncorrectOperationException;
  */
 public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiClassStub> implements NapileClass
 {
-	private static final TokenSet CLASS_DECL_KEYWORDS = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.ENUM_KEYWORD, NapileTokens.RETELL_KEYWORD);
-
 	public NapileClassImpl(@NotNull ASTNode node)
 	{
 		super(node);
@@ -56,24 +49,6 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 	public NapileClassImpl(@NotNull final NapilePsiClassStub stub)
 	{
 		super(stub, NapileStubElementTypes.CLASS);
-	}
-
-	@NotNull
-	@Override
-	public ClassKind getKind()
-	{
-		NapilePsiClassStub stub = getStub();
-		if(stub != null)
-			return stub.getKind();
-
-		PsiElement element = findNotNullChildByType(CLASS_DECL_KEYWORDS);
-		IElementType elementType = element.getNode().getElementType();
-		if(elementType == NapileTokens.RETELL_KEYWORD)
-			return ClassKind.RETELL_CLASS;
-		else if(elementType == NapileTokens.ENUM_KEYWORD)
-			return ClassKind.ENUM_CLASS;
-		else
-			return ClassKind.CLASS;
 	}
 
 	@NotNull

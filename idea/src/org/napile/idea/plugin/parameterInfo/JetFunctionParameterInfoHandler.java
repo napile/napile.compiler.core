@@ -40,7 +40,7 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import com.intellij.codeInsight.CodeInsightBundle;
 import com.intellij.codeInsight.lookup.LookupElement;

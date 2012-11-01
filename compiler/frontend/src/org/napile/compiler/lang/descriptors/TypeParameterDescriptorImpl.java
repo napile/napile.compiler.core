@@ -35,7 +35,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.compiler.util.lazy.LazyValue;
 import com.google.common.collect.Sets;
 

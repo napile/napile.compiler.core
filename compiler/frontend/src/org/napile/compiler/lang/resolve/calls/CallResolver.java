@@ -219,25 +219,15 @@ public class CallResolver
 
 				prioritizedTasks = Lists.newArrayList();
 
-				DeclarationDescriptor declarationDescriptor = null;
-				if(context.call.getCallElement() instanceof NapileEnumEntry)
-				{
-					PsiElement parent = context.call.getCallElement().getParent().getParent();
-					declarationDescriptor = context.trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, parent);
-					functionReference = new NapileFakeReferenceImpl(context.call.getCalleeExpression());
-				}
-				else
-				{
-					NapileConstructorCalleeExpression expression = (NapileConstructorCalleeExpression) calleeExpression;
+				NapileConstructorCalleeExpression expression = (NapileConstructorCalleeExpression) calleeExpression;
 
-					NapileTypeReference typeReference = expression.getTypeReference();
-					if(typeReference == null)
-						return checkArgumentTypesAndFail(context); // No type there
-					functionReference = new NapileFakeReferenceImpl(typeReference);
+				NapileTypeReference typeReference = expression.getTypeReference();
+				if(typeReference == null)
+					return checkArgumentTypesAndFail(context); // No type there
+				functionReference = new NapileFakeReferenceImpl(typeReference);
 
-					JetType constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
-					declarationDescriptor = constructedType.getConstructor().getDeclarationDescriptor();
-				}
+				JetType constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
+				DeclarationDescriptor declarationDescriptor = constructedType.getConstructor().getDeclarationDescriptor();
 
 				if(declarationDescriptor instanceof ClassifierDescriptor)
 				{

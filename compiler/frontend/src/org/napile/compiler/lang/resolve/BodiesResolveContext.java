@@ -41,12 +41,6 @@ public interface BodiesResolveContext
 		}
 
 		@Override
-		public Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries()
-		{
-			return Collections.emptyMap();
-		}
-
-		@Override
 		public Map<NapileAnonymClass, MutableClassDescriptor> getAnonymous()
 		{
 			return Collections.emptyMap();
@@ -60,12 +54,6 @@ public interface BodiesResolveContext
 
 		@Override
 		public Map<NapileVariable, PropertyDescriptor> getProperties()
-		{
-			return Collections.emptyMap();
-		}
-
-		@Override
-		public Map<NapileRetellEntry, PropertyDescriptor> getRetellEntries()
 		{
 			return Collections.emptyMap();
 		}
@@ -96,15 +84,11 @@ public interface BodiesResolveContext
 
 	Map<NapileClass, MutableClassDescriptor> getClasses();
 
-	Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries();
-
 	Map<NapileAnonymClass, MutableClassDescriptor> getAnonymous();
 
 	Map<NapileConstructor, ConstructorDescriptor> getConstructors();
 
 	Map<NapileVariable, PropertyDescriptor> getProperties();
-
-	Map<NapileRetellEntry, PropertyDescriptor> getRetellEntries();
 
 	Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods();
 

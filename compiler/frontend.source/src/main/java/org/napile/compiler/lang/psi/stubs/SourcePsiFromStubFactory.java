@@ -51,13 +51,6 @@ public class SourcePsiFromStubFactory implements NapilePsiFromStubFactory
 
 	@NotNull
 	@Override
-	public NapileEnumEntry createEnumEntry(NapilePsiEnumEntryStub stub)
-	{
-		return new NapileEnumEntryImpl(stub);
-	}
-
-	@NotNull
-	@Override
 	public NapilePropertyParameter createParameter(NapilePsiMethodParameterStub stub)
 	{
 		return new NapilePropertyParameter(stub);
@@ -75,12 +68,5 @@ public class SourcePsiFromStubFactory implements NapilePsiFromStubFactory
 	public NapileTypeParameter createTypeParameter(NapilePsiTypeParameterStub stub)
 	{
 		return new NapileTypeParameterImpl(stub);
-	}
-
-	@NotNull
-	@Override
-	public NapileRetellEntry createRetellEntry(NapilePsiRetellEntryStub stub)
-	{
-		return new NapileRetellEntryImpl(stub);
 	}
 }

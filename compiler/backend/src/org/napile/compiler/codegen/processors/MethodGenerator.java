@@ -79,7 +79,6 @@ public class MethodGenerator
 				switch(classDescriptor.getKind())
 				{
 					case CLASS:
-					case ENUM_CLASS:
 						constructorNode.instructions.add(new LoadInstruction(0));
 						constructorNode.instructions.add(new InvokeSpecialInstruction(new MethodRef(NapileLangPackage.ANY.child(ConstructorDescriptor.NAME), Collections.<TypeNode>emptyList(),Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE)));
 						constructorNode.instructions.add(new PopInstruction());

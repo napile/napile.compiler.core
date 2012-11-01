@@ -19,7 +19,6 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.ClassKind;
 import com.intellij.util.ArrayFactory;
 
 /**
@@ -40,9 +39,6 @@ public interface NapileClass extends NapileNamedDeclaration, NapileTypeParameter
 	};
 
 	String getQualifiedName();
-
-	@NotNull
-	ClassKind getKind();
 
 	@NotNull
 	NapileConstructor[] getConstructors();

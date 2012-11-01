@@ -26,7 +26,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.hint.HintManagerImpl;

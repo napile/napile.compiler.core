@@ -30,7 +30,7 @@ import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.JetIconProvider;
 import org.napile.idea.plugin.completion.handlers.JetClassInsertHandler;
 import org.napile.idea.plugin.completion.handlers.JetFunctionInsertHandler;

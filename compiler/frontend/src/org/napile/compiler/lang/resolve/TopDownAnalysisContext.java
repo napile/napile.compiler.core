@@ -48,8 +48,6 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
 	private final Map<NapileNamedMethod, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
 	private final Map<NapileVariable, PropertyDescriptor> properties = Maps.newLinkedHashMap();
-	private final Map<NapileRetellEntry, PropertyDescriptor> retellEntries = Maps.newLinkedHashMap();
-	private final Map<NapileEnumEntry, MutableClassDescriptor> enumEntries = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
 
 	// File scopes - package scope extended with imports
@@ -145,18 +143,6 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	public Map<NapileVariable, PropertyDescriptor> getProperties()
 	{
 		return properties;
-	}
-
-	@Override
-	public Map<NapileRetellEntry, PropertyDescriptor> getRetellEntries()
-	{
-		return retellEntries;
-	}
-
-	@Override
-	public Map<NapileEnumEntry, MutableClassDescriptor> getEnumEntries()
-	{
-		return enumEntries;
 	}
 
 	@Override

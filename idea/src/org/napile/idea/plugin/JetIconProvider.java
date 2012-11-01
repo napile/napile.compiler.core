@@ -80,17 +80,7 @@ public class JetIconProvider extends IconProvider
 			AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileClass.getContainingFile());
 			MutableClassDescriptor descriptor = (MutableClassDescriptor) analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileClass);
 
-			switch(napileClass.getKind())
-			{
-				case RETELL_CLASS:
-					icon = JetIcons.RETELL;
-					break;
-				case ENUM_CLASS:
-					icon = JetIcons.ENUM;
-					break;
-				default:
-					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_CLASS : JetIcons.CLASS;
-			}
+			icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_CLASS : JetIcons.CLASS;
 
 			if(descriptor != null)
 			{
@@ -111,7 +101,7 @@ public class JetIconProvider extends IconProvider
 					}
 			}
 		}
-		else if(psiElement instanceof NapileEnumEntry || psiElement instanceof NapileRetellEntry || psiElement instanceof NapileVariable || psiElement instanceof NapilePropertyParameter)
+		else if(psiElement instanceof NapileVariable || psiElement instanceof NapilePropertyParameter)
 			icon = JetIcons.VARIABLE;
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isFinal, isRunnable);

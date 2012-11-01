@@ -33,7 +33,7 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 
 /**
  * @author Evgeny Gerashchenko

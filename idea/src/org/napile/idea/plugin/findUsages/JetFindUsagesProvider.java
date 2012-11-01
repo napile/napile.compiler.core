@@ -17,10 +17,8 @@
 package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
@@ -60,10 +58,6 @@ public class JetFindUsagesProvider implements FindUsagesProvider
 	{
 		if(psiElement instanceof NapileNamedMethod)
 			return "method";
-		if(psiElement instanceof NapileRetellEntry)
-			return "retell entry";
-		if(psiElement instanceof NapileEnumEntry)
-			return "enum entry";
 		if(psiElement instanceof NapileConstructor)
 			return "constructor";
 		if(psiElement instanceof NapileClass)

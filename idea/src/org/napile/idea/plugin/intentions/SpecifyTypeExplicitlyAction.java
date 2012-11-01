@@ -30,7 +30,7 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;

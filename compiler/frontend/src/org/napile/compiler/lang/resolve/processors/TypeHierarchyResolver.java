@@ -50,8 +50,6 @@ import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -190,7 +188,7 @@ public class TypeHierarchyResolver
 				@Override
 				public void visitClass(NapileClass klass)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, klass.getKind(), NapilePsiUtil.safeName(klass.getName()), NapilePsiUtil.isStatic(klass));
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.CLASS, NapilePsiUtil.safeName(klass.getName()), NapilePsiUtil.isStatic(klass));
 					context.getClasses().put(klass, mutableClassDescriptor);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(klass), mutableClassDescriptor);
 
@@ -221,7 +219,6 @@ public class TypeHierarchyResolver
 					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
 				}
 
-
 				private void prepareForDeferredCall(@NotNull JetScope outerScope, @NotNull WithDeferredResolve withDeferredResolve, @NotNull NapileDeclarationContainer container)
 				{
 					forDeferredResolve.add(container);
@@ -247,10 +244,9 @@ public class TypeHierarchyResolver
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
-			NapileAnonymClass objectDeclaration = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 			descriptor.setModality(Modality.FINAL);
-			descriptor.setVisibility(DescriptorResolver.resolveVisibilityFromModifiers(objectDeclaration.getModifierList()));
+			descriptor.setVisibility(Visibility.PUBLIC);
 			descriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
 			descriptor.createTypeConstructor();
 		}

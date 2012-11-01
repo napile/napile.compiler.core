@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.openapi.util.text.StringUtil;
@@ -39,20 +38,18 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 	private final StringRef qualifiedName;
 	private final StringRef name;
 	private final StringRef[] superNames;
-	private final ClassKind classKind;
 
-	public NapilePsiClassStub(StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames, ClassKind classKind)
+	public NapilePsiClassStub(StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames)
 	{
-		this(parent, StringRef.fromString(qualifiedName), StringRef.fromString(name), wrapStrings(superNames), classKind);
+		this(parent, StringRef.fromString(qualifiedName), StringRef.fromString(name), wrapStrings(superNames));
 	}
 
-	public NapilePsiClassStub(StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames, ClassKind classKind)
+	public NapilePsiClassStub(StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames)
 	{
 		super(parent, NapileStubElementTypes.CLASS);
 		this.qualifiedName = qualifiedName;
 		this.name = name;
 		this.superNames = superNames;
-		this.classKind = classKind;
 	}
 
 	private static StringRef[] wrapStrings(List<String> names)
@@ -68,11 +65,6 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 	public String getQualifiedName()
 	{
 		return StringRef.toString(qualifiedName);
-	}
-
-	public ClassKind getKind()
-	{
-		return classKind;
 	}
 
 	@Override
@@ -100,7 +92,6 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 
 		builder.append("name=").append(getName());
 		builder.append(" fqn=").append(getQualifiedName());
-		builder.append(" classKind=").append(getKind());
 		builder.append(" superNames=").append("[").append(StringUtil.join(ArrayUtil.toStringArray(getSuperNames()))).append("]");
 
 		builder.append("]");

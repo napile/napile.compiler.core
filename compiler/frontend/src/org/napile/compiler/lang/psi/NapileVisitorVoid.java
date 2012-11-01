@@ -98,16 +98,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitNamedDeclaration(parameter);
 	}
 
-	public void visitEnumEntry(NapileEnumEntry enumEntry)
-	{
-		visitJetElement(enumEntry);
-	}
-
-	public void visitRetellEntry(NapileRetellEntry retellEntry)
-	{
-		visitJetElement(retellEntry);
-	}
-
 	public void visitParameterList(NapileParameterList list)
 	{
 		visitJetElement(list);

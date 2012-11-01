@@ -300,9 +300,6 @@ LONG_TEMPLATE_ENTRY_END=\}
 "break"      { return NapileTokens.BREAK_KEYWORD ;}
 
 "class"      { return NapileTokens.CLASS_KEYWORD ;}
-"enum"       { return NapileTokens.ENUM_KEYWORD ;}
-"retell"       { return NapileTokens.RETELL_KEYWORD ;}
-
 "var"        { return NapileTokens.VAR_KEYWORD ;}
 "meth"       { return NapileTokens.METH_KEYWORD ;}
 

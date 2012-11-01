@@ -18,7 +18,6 @@ package org.napile.compiler.lang.resolve.processors;
 
 import static org.napile.compiler.lang.diagnostics.Errors.REDECLARATION;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -28,8 +27,14 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
+import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -37,17 +42,6 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileDeclarationContainer;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileModifierList;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileVariable;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -160,15 +154,6 @@ public class DeclarationResolver
 
 			resolveInsideDeclarations(object, classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
-
-
-		for(Map.Entry<NapileEnumEntry, MutableClassDescriptor> entry : context.getEnumEntries().entrySet())
-		{
-			NapileEnumEntry enumEntry = entry.getKey();
-			MutableClassDescriptor enumEntryDescriptor = entry.getValue();
-
-			resolveInsideDeclarations(enumEntry, enumEntryDescriptor.getScopeForMemberResolution(), enumEntryDescriptor);
-		}
 	}
 
 	private void resolveInsideDeclarations(@NotNull NapileDeclarationContainer<NapileDeclaration> declarationOwner, final @NotNull JetScope scope, final @NotNull MutableClassDescriptor ownerDescription)
@@ -217,40 +202,6 @@ public class DeclarationResolver
 
 					context.getProperties().put(property, propertyDescriptor);
 					context.getDeclaringScopes().put(property, scope);
-				}
-
-				@Override
-				public void visitRetellEntry(NapileRetellEntry retellEntry)
-				{
-					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptor(ownerDescription, scope, retellEntry, trace);
-
-					ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
-
-					context.getRetellEntries().put(retellEntry, propertyDescriptor);
-					context.getDeclaringScopes().put(retellEntry, scope);
-				}
-
-				@Override
-				public void visitEnumEntry(NapileEnumEntry enumEntry)
-				{
-					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(ownerDescription, new ArrayList<AnnotationDescriptor>(), Modality.FINAL, Visibility.PUBLIC, NapilePsiUtil.safeName(enumEntry.getName()), CallableMemberDescriptor.Kind.DECLARATION, true);
-					trace.record(BindingContext.VARIABLE, enumEntry, propertyDescriptor);
-
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(ownerDescription, scope, ClassKind.ENUM_ENTRY, propertyDescriptor.getName(), true);
-					mutableClassDescriptor.setModality(Modality.FINAL);
-					mutableClassDescriptor.setVisibility(Visibility.PUBLIC);
-					mutableClassDescriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>());
-					mutableClassDescriptor.addSupertype(new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), ownerDescription.getTypeConstructor(), false, typeResolver.resolveTypes(scope, enumEntry.getTypeArguments(), trace, false), scope));
-					mutableClassDescriptor.createTypeConstructor();
-
-					trace.record(BindingContext.CLASS, enumEntry, mutableClassDescriptor);
-
-					propertyDescriptor.setType(new JetTypeImpl(mutableClassDescriptor), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
-
-					context.getEnumEntries().put(enumEntry, mutableClassDescriptor);
-
-					context.getDeclaringScopes().put(enumEntry, scope);
-					ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
 				}
 			});
 		}

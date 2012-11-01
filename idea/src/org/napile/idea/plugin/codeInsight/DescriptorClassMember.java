@@ -19,7 +19,7 @@ package org.napile.idea.plugin.codeInsight;
 import javax.swing.JTree;
 
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import com.intellij.codeInsight.generation.ClassMember;
 import com.intellij.codeInsight.generation.MemberChooserObject;
 import com.intellij.ui.SimpleColoredComponent;

@@ -42,20 +42,7 @@ public class ModifierGenerator
 	@NotNull
 	public static Modifier[] gen(@NotNull ClassDescriptor memberDescriptor)
 	{
-		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((DeclarationDescriptorWithVisibility) memberDescriptor)));
-		switch(memberDescriptor.getKind())
-		{
-			case RETELL_CLASS:
-				list.add(Modifier.RETELL);
-				break;
-			case ENUM_CLASS:
-				list.add(Modifier.ENUM);
-				break;
-			default:
-				break;
-		}
-
-		return list.isEmpty() ? Modifier.EMPTY : list.toArray(new Modifier[list.size()]);
+		return gen((DeclarationDescriptorWithVisibility) memberDescriptor);
 	}
 
 	public static Modifier[] gen(@NotNull MethodDescriptor methodDescriptor)

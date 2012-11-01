@@ -42,7 +42,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
 import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
 import org.napile.idea.plugin.refactoring.JetIntroduceHandlerBase;

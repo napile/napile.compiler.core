@@ -96,7 +96,6 @@ public class OverrideResolver
 		Set<MutableClassDescriptor> ourClasses = new HashSet<MutableClassDescriptor>();
 		ourClasses.addAll(context.getClasses().values());
 		ourClasses.addAll(context.getAnonymous().values());
-		ourClasses.addAll(context.getEnumEntries().values());
 
 		Set<ClassifierDescriptor> processed = new HashSet<ClassifierDescriptor>();
 
@@ -344,8 +343,6 @@ public class OverrideResolver
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-			checkOverridesInAClass(entry.getValue(), entry.getKey());
-		for(Map.Entry<NapileEnumEntry, MutableClassDescriptor> entry : context.getEnumEntries().entrySet())
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
 	}
 

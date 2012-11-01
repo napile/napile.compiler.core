@@ -50,10 +50,9 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
-	public static final TokenSet CLASS_KEYWORDS = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.ENUM_KEYWORD, NapileTokens.RETELL_KEYWORD);
 	private static final TokenSet ENUM_MEMBER_FIRST = TokenSet.create(NapileTokens.CLASS_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.IDENTIFIER);
 
-	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(NapileTokens.LT, NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE), CLASS_KEYWORDS);
+	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(NapileTokens.LT, NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE));
 	public static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.GT);
 	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.COLON, NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.RPAR);
 	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.DOT, NapileTokens.EOL_OR_SEMICOLON);
@@ -305,7 +304,7 @@ public class JetParsing extends AbstractJetParsing
 		IElementType keywordToken = tt();
 		IElementType declType = null;
 
-		if(CLASS_KEYWORDS.contains(keywordToken))
+		if(keywordToken == NapileTokens.CLASS_KEYWORD)
 			declType = parseClass();
 
 		if(declType == null)
@@ -412,8 +411,6 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	IElementType parseClass()
 	{
-		IElementType lastKeyword = tt();
-
 		advance(); // CLASS_KEYWORD
 
 		if(!parseIdeTemplate())
@@ -427,151 +424,9 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		if(at(NapileTokens.LBRACE))
-		{
-			if(lastKeyword == NapileTokens.ENUM_KEYWORD)
-				parseEnumBody();
-			else if(lastKeyword == NapileTokens.RETELL_KEYWORD)
-				parseRetellClassBody();
-			else
-				parseClassBody();
-		}
-
-		return CLASS;
-	}
-
-	/*
-		 * enumClassBody
-		 *   : "{" enumEntry* "}"
-		 *   ;
-		 */
-	private void parseEnumBody()
-	{
-		if(!at(NapileTokens.LBRACE))
-			return;
-
-		PsiBuilder.Marker classBody = mark();
-
-		getBuilder().enableNewlines();
-		advance(); // LBRACE
-
-		if(!parseIdeTemplate())
-		{
-			while(!eof() && !at(NapileTokens.RBRACE))
-			{
-				PsiBuilder.Marker entryOrMember = mark();
-
-				TokenSet constructorNameFollow = TokenSet.create(NapileTokens.SEMICOLON, NapileTokens.COLON, NapileTokens.LPAR, NapileTokens.LT, NapileTokens.LBRACE);
-				int lastId = findLastBefore(ENUM_MEMBER_FIRST, constructorNameFollow, false);
-
-				createTruncatedBuilder(lastId).parseModifierList();
-
-				IElementType type;
-				if(at(NapileTokens.IDENTIFIER))
-				{
-					parseEnumEntry();
-					type = ENUM_ENTRY;
-				}
-				else
-				{
-					type = parseMemberDeclarationRest();
-				}
-
-				if(type == null)
-				{
-					errorAndAdvance("Expecting an enum entry or member declaration");
-					entryOrMember.drop();
-				}
-				else
-				{
-					entryOrMember.done(type);
-				}
-			}
-		}
-
-		expect(NapileTokens.RBRACE, "Expecting '}' to close enum body");
-		getBuilder().restoreNewlinesState();
-
-		classBody.done(CLASS_BODY);
-	}
-
-	/*
-		 * enumEntry
-		 *   : typeParameters? valueArguments? typeConstraints classBody?
-		 *   ;
-		 */
-	private void parseEnumEntry()
-	{
-		assert _at(NapileTokens.IDENTIFIER);
-
-		advance();
-
-		parseTypeArgumentList();
-		if(at(NapileTokens.LPAR))
-		{
-			PsiBuilder.Marker callExpression = mark();
-
-			myExpressionParsing.parseValueArgumentList();
-
-			callExpression.done(CONSTRUCTOR_CALLEE);
-		}
-
-		if(at(NapileTokens.LBRACE))
 			parseClassBody();
 
-		consumeIf(NapileTokens.SEMICOLON);
-	}
-
-	private void parseRetellClassBody()
-	{
-		if(!at(NapileTokens.LBRACE))
-			return;
-
-		PsiBuilder.Marker classBody = mark();
-
-		getBuilder().enableNewlines();
-		advance(); // LBRACE
-
-		if(!parseIdeTemplate())
-		{
-			while(!eof() && !at(NapileTokens.RBRACE))
-			{
-				PsiBuilder.Marker entryMarker = mark();
-
-				if(at(NapileTokens.IDENTIFIER))
-				{
-					parseRetellEntry();
-					entryMarker.done(RETELL_ENTRY);
-				}
-				else
-				{
-					errorAndAdvance("Expecting identifier");
-					entryMarker.drop();
-				}
-			}
-		}
-
-		expect(NapileTokens.RBRACE, "Expecting '}' to close retell body");
-		getBuilder().restoreNewlinesState();
-
-		classBody.done(CLASS_BODY);
-	}
-
-	private void parseRetellEntry()
-	{
-		assert _at(NapileTokens.IDENTIFIER);
-
-		advance();
-
-		if(at(NapileTokens.EQ))
-		{
-			advance();
-
-			myExpressionParsing.parseExpression();
-		}
-		else
-			error("'=' Expected");
-
-		consumeIf(NapileTokens.SEMICOLON);
+		return CLASS;
 	}
 
 	/*
@@ -647,7 +502,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		IElementType keywordToken = tt();
 		IElementType declType = null;
-		if(CLASS_KEYWORDS.contains(keywordToken))
+		if(keywordToken == NapileTokens.CLASS_KEYWORD)
 			declType = parseClass();
 		else if(keywordToken == NapileTokens.METH_KEYWORD)
 			declType = parseMethod();
@@ -1117,7 +972,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else
 		{
-			errorWithRecovery("Type expected", TokenSet.orSet(CLASS_KEYWORDS, TokenSet.create(NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.GT, NapileTokens.RBRACKET, NapileTokens.DOT, NapileTokens.RPAR, NapileTokens.RBRACE, NapileTokens.LBRACE, NapileTokens.SEMICOLON), extraRecoverySet));
+			errorWithRecovery("Type expected", TokenSet.orSet(TokenSet.create(NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.GT, NapileTokens.RBRACKET, NapileTokens.DOT, NapileTokens.RPAR, NapileTokens.RBRACE, NapileTokens.LBRACE, NapileTokens.SEMICOLON), extraRecoverySet));
 		}
 
 		while(at(NapileTokens.QUEST))

@@ -30,7 +30,7 @@ import org.napile.compiler.lang.diagnostics.rendering.DiagnosticFactoryToRendere
 import org.napile.compiler.lang.diagnostics.rendering.DiagnosticRenderer;
 import org.napile.compiler.lang.diagnostics.rendering.DispatchingDiagnosticRenderer;
 import org.napile.compiler.lang.diagnostics.rendering.Renderer;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 
 
 /**

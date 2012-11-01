@@ -26,6 +26,7 @@ import com.google.common.collect.Maps;
 /**
  * @author svtk
  */
+@Deprecated
 public class Visibilities
 {
 

@@ -18,10 +18,8 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileEnumEntry;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.NapileRetellEntry;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
 import org.napile.compiler.lang.psi.NapileVariable;
@@ -42,9 +40,6 @@ public interface NapilePsiFromStubFactory
 	NapileVariable createVariable(NapilePsiVariableStub stub);
 
 	@NotNull
-	NapileEnumEntry createEnumEntry(NapilePsiEnumEntryStub stub);
-
-	@NotNull
 	NapilePropertyParameter createParameter(NapilePsiMethodParameterStub stub);
 
 	@NotNull
@@ -52,7 +47,4 @@ public interface NapilePsiFromStubFactory
 
 	@NotNull
 	NapileTypeParameter createTypeParameter(NapilePsiTypeParameterStub stub);
-
-	@NotNull
-	NapileRetellEntry createRetellEntry(NapilePsiRetellEntryStub stub);
 }

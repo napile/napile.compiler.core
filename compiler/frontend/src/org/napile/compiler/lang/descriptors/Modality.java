@@ -16,34 +16,32 @@
 
 package org.napile.compiler.lang.descriptors;
 
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileModifierListOwner;
+
 /**
  * @author abreslav
  */
 public enum Modality
 {
 	// THE ORDER OF ENTRIES MATTERS HERE
-	FINAL(false),
-	OPEN(true),
-	ABSTRACT(true);
+	FINAL,
+	OPEN,
+	ABSTRACT;
 
-	private final boolean overridable;
-
-	private Modality(boolean overridable)
+	@NotNull
+	public static Modality resolve(@NotNull NapileModifierListOwner modifierList)
 	{
-		this.overridable = overridable;
+		if(modifierList.hasModifier(NapileTokens.ABSTRACT_KEYWORD))
+			return ABSTRACT;
+		if(modifierList.hasModifier(NapileTokens.FINAL_KEYWORD) || modifierList.hasModifier(NapileTokens.ENUM_KEYWORD))
+			return FINAL;
+		return OPEN;
 	}
 
 	public boolean isOverridable()
 	{
-		return overridable;
-	}
-
-	public static Modality convertFromFlags(boolean _abstract, boolean open)
-	{
-		if(_abstract)
-			return ABSTRACT;
-		if(open)
-			return OPEN;
-		return FINAL;
+		return this != FINAL;
 	}
 }

@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.NapileLabelExpression;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.lang.java.JavaDocumentationProvider;

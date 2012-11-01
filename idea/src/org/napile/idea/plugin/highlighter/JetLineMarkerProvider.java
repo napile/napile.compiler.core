@@ -33,7 +33,7 @@ import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.JetFunctionPsiElementCellRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.google.common.collect.Lists;

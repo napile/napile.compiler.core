@@ -31,7 +31,6 @@ import org.napile.compiler.lang.resolve.processors.QualifiedExpressionResolver;
 import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
-import org.napile.compiler.lang.resolve.processors.checkers.EnumEntryChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.ModifiersChecker;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.processors.members.TypeParameterResolver;
@@ -56,7 +55,6 @@ public class InjectorForBodyResolve
 	private OverloadingConflictResolver overloadingConflictResolver;
 	private ControlFlowAnalyzer controlFlowAnalyzer;
 	private DeclarationsChecker declarationsChecker;
-	private EnumEntryChecker enumEntryChecker;
 	private ModifiersChecker modifiersChecker;
 
 	public InjectorForBodyResolve(@NotNull Project project,@NotNull TopDownAnalysisParameters topDownAnalysisParameters,@NotNull BindingTrace bindingTrace)
@@ -76,7 +74,6 @@ public class InjectorForBodyResolve
 		this.overloadingConflictResolver = new OverloadingConflictResolver();
 		this.controlFlowAnalyzer = new ControlFlowAnalyzer();
 		this.declarationsChecker = new DeclarationsChecker();
-		this.enumEntryChecker = new EnumEntryChecker();
 		this.modifiersChecker = new ModifiersChecker();
 
 		this.bodyResolver.setAnnotationChecker(annotationChecker);
@@ -84,7 +81,6 @@ public class InjectorForBodyResolve
 		this.bodyResolver.setControlFlowAnalyzer(controlFlowAnalyzer);
 		this.bodyResolver.setDeclarationsChecker(declarationsChecker);
 		this.bodyResolver.setDescriptorResolver(descriptorResolver);
-		this.bodyResolver.setEnumEntryChecker(enumEntryChecker);
 		this.bodyResolver.setExpressionTypingServices(expressionTypingServices);
 		this.bodyResolver.setModifiersChecker(modifiersChecker);
 		this.bodyResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
@@ -121,9 +117,6 @@ public class InjectorForBodyResolve
 		controlFlowAnalyzer.setTrace(bindingTrace);
 
 		declarationsChecker.setTrace(bindingTrace);
-
-		enumEntryChecker.setCallResolver(callResolver);
-		enumEntryChecker.setTrace(bindingTrace);
 
 		modifiersChecker.setTrace(bindingTrace);
 

@@ -16,14 +16,11 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
-import static org.napile.compiler.lang.diagnostics.Errors.FINAL_SUPERTYPE;
-import static org.napile.compiler.lang.diagnostics.Errors.SUPERTYPE_APPEARS_TWICE;
 import static org.napile.compiler.lang.resolve.BindingContext.DEFERRED_TYPE;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -47,19 +44,16 @@ import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
-import org.napile.compiler.lang.resolve.processors.checkers.EnumEntryChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.ModifiersChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 import org.napile.compiler.util.slicedmap.WritableSlice;
-import com.google.common.collect.Sets;
 import com.intellij.util.containers.Queue;
 
 /**
@@ -87,8 +81,6 @@ public class BodyResolver
 	private AnnotationChecker annotationChecker;
 	@NotNull
 	private ModifiersChecker modifiersChecker;
-	@NotNull
-	private EnumEntryChecker enumEntryChecker;
 
 	@Inject
 	public void setTopDownAnalysisParameters(@NotNull TopDownAnalysisParameters topDownAnalysisParameters)
@@ -144,12 +136,6 @@ public class BodyResolver
 		this.modifiersChecker = modifiersChecker;
 	}
 
-	@Inject
-	public void setEnumEntryChecker(@NotNull EnumEntryChecker enumEntryChecker)
-	{
-		this.enumEntryChecker = enumEntryChecker;
-	}
-
 	private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		// Initialize context
@@ -174,7 +160,6 @@ public class BodyResolver
 		resolveBehaviorDeclarationBodies(bodiesResolveContext);
 
 		annotationChecker.processFirst(bodiesResolveContext);
-		enumEntryChecker.process(bodiesResolveContext);
 		controlFlowAnalyzer.process(bodiesResolveContext);
 		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
@@ -183,21 +168,14 @@ public class BodyResolver
 
 	private void resolveDelegationSpecifierLists()
 	{
-		for(Map.Entry<NapileClass, MutableClassDescriptor> classEntry : context.getClasses().entrySet())
-			for(NapileConstructor napileConstructor : classEntry.getKey().getConstructors())
-			{
-				ConstructorDescriptor constructorDescriptor = (ConstructorDescriptor) trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileConstructor);
-
-				assert constructorDescriptor != null;
-
-				resolveDelegationSpecifierList(napileConstructor, constructorDescriptor, constructorDescriptor.getParametersScope(), false);
-			}
+		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : context.getConstructors().entrySet())
+			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getParametersScope());
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution(), true);
+			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
 	}
 
-	private void resolveDelegationSpecifierList(final NapileDelegationSpecifierListOwner jetElement, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull JetScope jetScope, boolean checkSupers)
+	private void resolveDelegationSpecifierList(final NapileDelegationSpecifierListOwner jetElement, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull JetScope jetScope)
 	{
 		if(!context.completeAnalysisNeeded(jetElement))
 			return;
@@ -211,29 +189,6 @@ public class BodyResolver
 			callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 		}
 	}
-
-	// allowedFinalSupertypes typically contains a enum type of which supertypeOwner is an entry
-	private void checkSupertypeList(@NotNull Map<NapileTypeReference, JetType> supertypes, Set<TypeConstructor> allowedFinalSupertypes)
-	{
-		Set<TypeConstructor> typeConstructors = Sets.newHashSet();
-		for(Map.Entry<NapileTypeReference, JetType> entry : supertypes.entrySet())
-		{
-			NapileTypeReference typeReference = entry.getKey();
-			JetType supertype = entry.getValue();
-
-			TypeConstructor constructor = supertype.getConstructor();
-			if(!typeConstructors.add(constructor))
-			{
-				trace.report(SUPERTYPE_APPEARS_TWICE.on(typeReference));
-			}
-
-			if(constructor.isSealed() && !allowedFinalSupertypes.contains(constructor))
-			{
-				trace.report(FINAL_SUPERTYPE.on(typeReference));
-			}
-		}
-	}
-
 
 	private void resolvePropertyDeclarationBodies()
 	{

@@ -28,7 +28,7 @@ import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 
 /**
  * @author abreslav

@@ -27,7 +27,7 @@ import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.T
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TextRenderer.TextElement;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintPosition;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;

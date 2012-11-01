@@ -22,10 +22,7 @@ package org.napile.compiler.lang.descriptors;
 public enum ClassKind
 {
 	CLASS,
-	RETELL_CLASS,
-	ENUM_CLASS,
 
-	ENUM_ENTRY,
 	ANONYM_CLASS;
 
 	public static final ClassKind[] VALUES = values();

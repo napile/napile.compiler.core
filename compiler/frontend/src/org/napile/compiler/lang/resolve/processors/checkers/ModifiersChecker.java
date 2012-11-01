@@ -27,7 +27,6 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
@@ -35,10 +34,6 @@ import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -46,9 +41,13 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
@@ -61,9 +60,13 @@ public class ModifiersChecker
 {
 	// not create new list every checks - it good for compiler, but as plugin create leaks
 	@NotNull
-	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CLASS = Arrays.asList(NapileTokens.OVERRIDE_KEYWORD, NapileTokens.NATIVE_KEYWORD);
+	private static final List<NapileKeywordToken> VISIBILITY_MODIFIERS = Arrays.asList(NapileTokens.ENUM_KEYWORD, NapileTokens.LOCAL_KEYWORD, NapileTokens.HERITABLE_KEYWORD, NapileTokens.COVERED_KEYWORD);
 	@NotNull
-	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.STATIC_KEYWORD, NapileTokens.OVERRIDE_KEYWORD, NapileTokens.FINAL_KEYWORD);
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CLASS = Arrays.asList(NapileTokens.OVERRIDE_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.ENUM_KEYWORD);
+	@NotNull
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.STATIC_KEYWORD, NapileTokens.OVERRIDE_KEYWORD, NapileTokens.FINAL_KEYWORD, NapileTokens.ENUM_KEYWORD);
+	@NotNull
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_METHOD = Arrays.asList(NapileTokens.ENUM_KEYWORD);
 
 	@NotNull
 	private BindingTrace trace;
@@ -102,6 +105,7 @@ public class ModifiersChecker
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
 
+			checkIllegalInThisContextModifiers(function, INVALID_MODIFIERS_FOR_METHOD);
 			checkModalityModifiers(function);
 			checkMethod(function, functionDescriptor);
 			checkDeclaredTypeInPublicMember(function, functionDescriptor);
@@ -141,9 +145,8 @@ public class ModifiersChecker
 		checkDeclaredTypeInPublicMember(method, methodDescriptor);
 
 		ClassDescriptor classDescriptor = (ClassDescriptor) containingDescriptor;
-		boolean inEnum = classDescriptor.getKind() == ClassKind.ENUM_CLASS;
 		boolean inAbstractClass = classDescriptor.getModality() == Modality.ABSTRACT;
-		if(abstractModifier != null && !inAbstractClass && !inEnum)
+		if(abstractModifier != null && !inAbstractClass)
 			trace.report(Errors.ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS.on(method, methodDescriptor.getName().getName(), classDescriptor));
 
 		if(method.getBodyExpression() != null && (abstractModifier != null || nativeModifier != null))
@@ -165,7 +168,7 @@ public class ModifiersChecker
 			hasDeferredType = function.getReturnTypeRef() == null && function.getBodyExpression() != null && !function.hasBlockBody();
 		}
 
-		if(memberDescriptor.getVisibility().isPublicAPI() && memberDescriptor.getOverriddenDescriptors().size() == 0 && hasDeferredType)
+		if(memberDescriptor.getVisibility().isPublicAPI() && memberDescriptor.getOverriddenDescriptors().size() == 0 && hasDeferredType && !member.hasModifier(NapileTokens.ENUM_KEYWORD))
 			trace.report(Errors.PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE.on(member));
 	}
 
@@ -175,6 +178,8 @@ public class ModifiersChecker
 		checkCompatibility(declaration, Lists.newArrayList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.FINAL_KEYWORD), Lists.<NapileToken>newArrayList(NapileTokens.ABSTRACT_KEYWORD));
 
 		checkCompatibility(declaration, Lists.newArrayList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD));
+
+		checkCompatibility(declaration, VISIBILITY_MODIFIERS);
 	}
 
 	private void checkCompatibility(@NotNull NapileDeclaration declaration, Collection<NapileKeywordToken> availableModifiers, Collection<NapileToken>... availableCombinations)

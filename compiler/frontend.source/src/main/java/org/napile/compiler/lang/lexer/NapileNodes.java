@@ -40,8 +40,6 @@ public interface NapileNodes
 
 	NapileNode CONSTRUCTOR = new NapileNode("CONSTRUCTOR", NapileConstructorImpl.class);
 	NapileNode STATIC_CONSTRUCTOR = new NapileNode("STATIC_CONSTRUCTOR", NapileStaticConstructor.class);
-	IElementType ENUM_ENTRY = NapileStubElementTypes.ENUM_ENTRY;
-	IElementType RETELL_ENTRY = NapileStubElementTypes.RETELL_ENTRY;
 
 	IElementType TYPE_PARAMETER_LIST = NapileStubElementTypes.TYPE_PARAMETER_LIST;
 	IElementType TYPE_PARAMETER = NapileStubElementTypes.TYPE_PARAMETER;

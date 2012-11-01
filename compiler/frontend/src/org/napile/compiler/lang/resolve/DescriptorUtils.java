@@ -262,7 +262,7 @@ public class DescriptorUtils
 		if(classifier instanceof ClassDescriptor)
 		{
 			ClassDescriptor clazz = (ClassDescriptor) classifier;
-			return clazz.getKind() == ClassKind.ANONYM_CLASS || clazz.getKind() == ClassKind.ENUM_ENTRY;
+			return clazz.getKind() == ClassKind.ANONYM_CLASS;
 		}
 		else if(classifier instanceof TypeParameterDescriptor)
 		{

@@ -34,7 +34,7 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.psi.PsiElement;
 

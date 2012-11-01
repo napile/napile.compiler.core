@@ -33,7 +33,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
-import org.napile.compiler.resolve.DescriptorRenderer;
+import org.napile.compiler.render.DescriptorRenderer;
 import com.google.common.collect.Lists;
 
 /**
