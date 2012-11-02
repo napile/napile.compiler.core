@@ -19,7 +19,6 @@ package org.napile.compiler.lang.resolve.constants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationArgumentVisitor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
@@ -58,12 +57,6 @@ public class ShortValue implements CompileTimeConstant<Short>
 	public JetType getType(@NotNull JetScope jetScope)
 	{
 		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.SHORT, false);
-	}
-
-	@Override
-	public <R, D> R accept(AnnotationArgumentVisitor<R, D> visitor, D data)
-	{
-		return visitor.visitShortValue(this, data);
 	}
 
 	@Override

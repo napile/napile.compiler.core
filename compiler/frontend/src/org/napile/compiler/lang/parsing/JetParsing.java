@@ -621,10 +621,10 @@ public class JetParsing extends AbstractJetParsing
 
 				advance();
 
-				if(at(NapileTokens.SET_KEYWORD) || at(NapileTokens.GET_KEYWORD))
+				if(atSet(NapileTokens.PROPERTY_KEYWORDS))
 					advance();
 				else
-					error("Expected 'set' or 'get'");
+					error("Expected 'set', 'get' or 'lazy'");
 			}
 			else
 				marker.drop();

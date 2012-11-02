@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.resolve.constants;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationArgumentVisitor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -46,12 +45,6 @@ public class ErrorValue implements CompileTimeConstant<Void>
 	public JetType getType(@NotNull JetScope jetScope)
 	{
 		return ErrorUtils.createErrorType(message);
-	}
-
-	@Override
-	public <R, D> R accept(AnnotationArgumentVisitor<R, D> visitor, D data)
-	{
-		return visitor.visitErrorValue(this, data);
 	}
 
 	@NotNull

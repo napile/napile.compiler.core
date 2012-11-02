@@ -18,7 +18,6 @@ package org.napile.compiler.lang.resolve.constants;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationArgumentVisitor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 
@@ -31,6 +30,4 @@ public interface CompileTimeConstant<T>
 
 	@Nullable
 	JetType getType(@NotNull JetScope jetScope);
-
-	<R, D> R accept(AnnotationArgumentVisitor<R, D> visitor, D data);
 }
