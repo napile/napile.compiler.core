@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -45,18 +44,7 @@ public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMet
 	@Override
 	public List<NapileTypeReference> getTypeArguments()
 	{
-		ArrayList<NapileTypeReference> result = Lists.newArrayList();
-		for(NapileElement jetParameter : getParameters())
-		{
-			if(jetParameter instanceof NapilePropertyParameter)
-				result.add(((NapilePropertyParameter) jetParameter).getTypeReference());
-		}
-		NapileTypeReference returnTypeRef = getReturnTypeRef();
-		if(returnTypeRef != null)
-		{
-			result.add(returnTypeRef);
-		}
-		return result;
+		return Collections.emptyList();
 	}
 
 	@Override
