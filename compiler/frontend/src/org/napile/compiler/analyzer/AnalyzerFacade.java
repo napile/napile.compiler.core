@@ -54,7 +54,7 @@ public class AnalyzerFacade
 
 		final ModuleDescriptor owner = new ModuleDescriptor(Name.special("<module>"));
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false, false);
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false);
 
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceContext), owner);
 		try

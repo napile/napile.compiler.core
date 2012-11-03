@@ -39,7 +39,7 @@ public class AnalyzerFacadeForEverything
 	public static AnalyzeExhaust analyzeBodiesInFilesWithJavaIntegration(Project project, Predicate<NapileFile> filesToAnalyzeCompletely, @NotNull BindingTrace traceContext, @NotNull BodiesResolveContext bodiesResolveContext)
 	{
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false, false);
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false);
 
 		bodiesResolveContext.setTopDownAnalysisParameters(topDownAnalysisParameters);
 

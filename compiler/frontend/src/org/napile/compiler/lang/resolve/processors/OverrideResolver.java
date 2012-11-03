@@ -348,9 +348,6 @@ public class OverrideResolver
 
 	protected void checkOverridesInAClass(@NotNull MutableClassDescriptor classDescriptor, @NotNull NapileClassLike klass)
 	{
-		if(topDownAnalysisParameters.isAnalyzingBootstrapLibrary())
-			return;
-
 		// Check overrides for internal consistency
 		for(CallableMemberDescriptor member : classDescriptor.getDeclaredCallableMembers())
 		{

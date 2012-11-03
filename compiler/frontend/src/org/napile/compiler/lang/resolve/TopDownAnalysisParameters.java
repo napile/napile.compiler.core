@@ -29,13 +29,11 @@ public class TopDownAnalysisParameters
 {
 	@NotNull
 	private final Predicate<NapileFile> analyzeCompletely;
-	private final boolean analyzingBootstrapLibrary;
 	private final boolean declaredLocally;
 
-	public TopDownAnalysisParameters(@NotNull Predicate<NapileFile> analyzeCompletely, boolean analyzingBootstrapLibrary, boolean declaredLocally)
+	public TopDownAnalysisParameters(@NotNull Predicate<NapileFile> analyzeCompletely, boolean declaredLocally)
 	{
 		this.analyzeCompletely = analyzeCompletely;
-		this.analyzingBootstrapLibrary = analyzingBootstrapLibrary;
 		this.declaredLocally = declaredLocally;
 	}
 
@@ -43,11 +41,6 @@ public class TopDownAnalysisParameters
 	public Predicate<NapileFile> getAnalyzeCompletely()
 	{
 		return analyzeCompletely;
-	}
-
-	public boolean isAnalyzingBootstrapLibrary()
-	{
-		return analyzingBootstrapLibrary;
 	}
 
 	public boolean isDeclaredLocally()

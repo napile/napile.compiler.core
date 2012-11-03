@@ -142,10 +142,7 @@ public class TopDownAnalyzer
 
 		overloadResolver.process();
 
-		if(!topDownAnalysisParameters.isAnalyzingBootstrapLibrary())
-		{
-			bodyResolver.resolveBodies(context);
-		}
+		bodyResolver.resolveBodies(context);
 
 		context.debug("Exit");
 		context.printDebugOutput(System.out);
@@ -173,7 +170,7 @@ public class TopDownAnalyzer
 	{
 		ModuleDescriptor moduleDescriptor = new ModuleDescriptor(Name.special("<dummy for object>"));
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.<NapileFile>equalTo(object.getContainingFile()), false, true);
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.<NapileFile>equalTo(object.getContainingFile()), true);
 
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), moduleDescriptor);
 
