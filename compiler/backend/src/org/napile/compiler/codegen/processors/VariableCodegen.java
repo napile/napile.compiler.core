@@ -25,17 +25,23 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
+import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
+import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
+import org.napile.compiler.codegen.processors.codegen.BinaryOperationCodegen;
+import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.PropertyAccessUtil;
 
 /**
  * @author VISTALL
@@ -47,6 +53,13 @@ public class VariableCodegen
 	{
 		FqName fqName = DescriptorUtils.getFQName(propertyDescriptor).toSafe();
 
+		getSetter(propertyDescriptor, classNode, bindingTrace, fqName);
+
+		genGetter(propertyDescriptor, classNode, bindingTrace, fqName);
+	}
+
+	private static void getSetter(PropertyDescriptor propertyDescriptor, ClassNode classNode, BindingTrace bindingTrace, FqName fqName)
+	{
 		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + AsmConstants.ANONYM_SPLITTER + "set"));
 
 		DeclarationDescriptor setter = bindingTrace.get(BindingContext.FQNAME_TO_DESCRIPTOR, setterFq);
@@ -82,41 +95,98 @@ public class VariableCodegen
 		{
 			assert setter instanceof MethodDescriptor;
 
-			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext2.FQNAME_TO_DESCRIPTOR, setterFq);
+			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext.FQNAME_TO_DESCRIPTOR, setterFq);
 
-			classNode.members.add(MethodGenerator.gen((MethodDescriptor)setter, setter.getName(), method, bindingTrace));
+			classNode.members.add(MethodGenerator.gen((MethodDescriptor) setter, setter.getName(), method, bindingTrace));
 		}
+	}
 
+	private static void genGetter(PropertyDescriptor propertyDescriptor, ClassNode classNode, BindingTrace bindingTrace, FqName fqName)
+	{
 		FqName getterFq = fqName.parent().child(Name.identifier(fqName.shortName() + AsmConstants.ANONYM_SPLITTER + "get"));
 		DeclarationDescriptor getter = bindingTrace.get(BindingContext.FQNAME_TO_DESCRIPTOR, getterFq);
 		if(getter == null)
 		{
-			MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName());
-			getterMethodNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
-
-			if(propertyDescriptor.isStatic())
+			//TODO [VISTALL] make LazyType, current version is not thread safe
+			MethodDescriptor lazyMethodDescriptor = PropertyAccessUtil.get(bindingTrace, propertyDescriptor, NapileTokens.LAZY_KEYWORD);
+			if(lazyMethodDescriptor == null)
 			{
-				getterMethodNode.instructions.add(new GetStaticVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
-				getterMethodNode.instructions.add(new ReturnInstruction());
+				MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName());
+				getterMethodNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
+
+				if(propertyDescriptor.isStatic())
+				{
+					getterMethodNode.instructions.add(new GetStaticVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
+					getterMethodNode.instructions.add(new ReturnInstruction());
+				}
+				else
+				{
+					getterMethodNode.instructions.add(new LoadInstruction(0));
+					getterMethodNode.instructions.add(new GetVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
+					getterMethodNode.instructions.add(new ReturnInstruction());
+				}
+
+				getterMethodNode.maxLocals = propertyDescriptor.isStatic() ? 0 : 1;
+
+				classNode.members.add(getterMethodNode);
 			}
 			else
 			{
-				getterMethodNode.instructions.add(new LoadInstruction(0));
-				getterMethodNode.instructions.add(new GetVariableInstruction(NodeRefUtil.ref(propertyDescriptor)));
-				getterMethodNode.instructions.add(new ReturnInstruction());
+				MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName());
+				getterMethodNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
+
+				InstructionAdapter adapter = new InstructionAdapter();
+				if(!propertyDescriptor.isStatic())
+					adapter.visitLocalVariable("this");
+
+				final StackValue varStackValue = StackValue.variable(propertyDescriptor);
+
+				if(!propertyDescriptor.isStatic())
+					adapter.load(0);
+
+				varStackValue.put(getterMethodNode.returnType, adapter);
+
+				adapter.dup();
+
+				adapter.putNull();
+
+				adapter.invokeVirtual(BinaryOperationCodegen.ANY_EQUALS);
+
+				adapter.putTrue();
+
+				ReservedInstruction reservedInstruction = adapter.reserve();
+
+				if(!propertyDescriptor.isStatic())
+					adapter.load(0);
+
+				adapter.dup();
+
+				adapter.invokeVirtual(NodeRefUtil.ref(lazyMethodDescriptor));
+
+				varStackValue.store(getterMethodNode.returnType, adapter);
+
+				adapter.returnVal();
+
+				adapter.replace(reservedInstruction, new JumpIfInstruction(adapter.size()));
+
+				if(!propertyDescriptor.isStatic())
+					adapter.load(0);
+
+				varStackValue.put(getterMethodNode.returnType, adapter);
+
+				adapter.returnVal();
+
+				getterMethodNode.putInstructions(adapter);
+				classNode.members.add(getterMethodNode);
 			}
-
-			getterMethodNode.maxLocals = propertyDescriptor.isStatic() ? 0 : 1;
-
-			classNode.members.add(getterMethodNode);
 		}
 		else
 		{
 			assert getter instanceof MethodDescriptor;
 
-			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext2.FQNAME_TO_DESCRIPTOR, getterFq);
+			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext.FQNAME_TO_DESCRIPTOR, getterFq);
 
-			classNode.members.add(MethodGenerator.gen((MethodDescriptor)getter, getter.getName(), method, bindingTrace));
+			classNode.members.add(MethodGenerator.gen((MethodDescriptor) getter, getter.getName(), method, bindingTrace));
 		}
 	}
 }

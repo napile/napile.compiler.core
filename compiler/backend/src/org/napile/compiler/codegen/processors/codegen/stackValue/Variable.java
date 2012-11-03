@@ -43,9 +43,9 @@ public class Variable extends StackValue
 	public void put(TypeNode type, InstructionAdapter instructionAdapter)
 	{
 		if(staticVar)
-			instructionAdapter.getVar(variableRef);
-		else
 			instructionAdapter.getStaticVar(variableRef);
+		else
+			instructionAdapter.getVar(variableRef);
 
 		castTo(type, instructionAdapter);
 	}
@@ -54,9 +54,9 @@ public class Variable extends StackValue
 	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
 	{
 		if(staticVar)
-			instructionAdapter.putToVar(variableRef);
-		else
 			instructionAdapter.putToStaticVar(variableRef);
+		else
+			instructionAdapter.putToVar(variableRef);
 	}
 
 	@Override

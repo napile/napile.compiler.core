@@ -14,23 +14,45 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
-
-import org.jetbrains.annotations.Nullable;
-import com.intellij.psi.PsiElement;
+package org.napile.compiler.lang.descriptors;
 
 /**
  * @author VISTALL
- * @date 15:20/19.10.12
+ * @date 10:08/03.11.12
  */
-public interface NapileNamedMethod extends NapileMethod, NapileWithExpressionInitializer
+public class PropertyAccessInfo
 {
-	@Nullable
-	NapileSimpleNameExpression getVariableRef();
+	private MethodDescriptor set;
+	private MethodDescriptor get;
+	private MethodDescriptor lazy;
 
-	@Nullable
-	PsiElement getEqualsToken();
+	public MethodDescriptor getSet()
+	{
+		return set;
+	}
 
-	@Nullable
-	PsiElement getPropertyDescriptor();
+	public void setSet(MethodDescriptor set)
+	{
+		this.set = set;
+	}
+
+	public MethodDescriptor getGet()
+	{
+		return get;
+	}
+
+	public void setGet(MethodDescriptor get)
+	{
+		this.get = get;
+	}
+
+	public MethodDescriptor getLazy()
+	{
+		return lazy;
+	}
+
+	public void setLazy(MethodDescriptor lazy)
+	{
+		this.lazy = lazy;
+	}
 }

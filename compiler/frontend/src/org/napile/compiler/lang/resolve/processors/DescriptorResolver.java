@@ -153,7 +153,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public SimpleMethodDescriptor resolveFunctionDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethod function, final BindingTrace trace)
+	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethod function, final BindingTrace trace)
 	{
 		NapileSimpleNameExpression referenceExpression = function.getVariableRef();
 

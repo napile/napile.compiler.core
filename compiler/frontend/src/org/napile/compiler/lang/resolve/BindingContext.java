@@ -18,6 +18,7 @@ package org.napile.compiler.lang.resolve;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,11 +34,6 @@ import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.slicedmap.BasicWritableSlice;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
@@ -120,6 +116,7 @@ public interface BindingContext
 	WritableSlice<ParameterDescriptor, Boolean> AUTO_CREATED_IT = Slices.createSimpleSetSlice();
 	//WritableSlice<NapileExpression, DeclarationDescriptor> VARIABLE_ASSIGNMENT = Slices.createSimpleSlice();
 	WritableSlice<NapileExpression, DataFlowInfo> DATAFLOW_INFO_AFTER_CONDITION = Slices.createSimpleSlice();
+	WritableSlice<VariableDescriptor, Map<ClassDescriptor, PropertyAccessInfo>> PROPERTY_ACCESS_INFO = Slices.createSimpleSlice();
 
 	/**
 	 * Has type of current expression has been already resolved

@@ -30,7 +30,6 @@ import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -38,8 +37,6 @@ import com.intellij.psi.util.PsiTreeUtil;
  */
 public class NapileNamedMethodImpl extends NapileTypeParameterListOwnerStub<NapilePsiMethodStub> implements NapileNamedMethod
 {
-	private static final TokenSet SET_AND_GET_KEYWORDS = TokenSet.create(NapileTokens.SET_KEYWORD, NapileTokens.GET_KEYWORD);
-
 	public NapileNamedMethodImpl(@NotNull ASTNode node)
 	{
 		super(node);
@@ -57,7 +54,7 @@ public class NapileNamedMethodImpl extends NapileTypeParameterListOwnerStub<Napi
 		if(stub != null)
 			return stub.getName();
 
-		PsiElement psiElement = findChildByType(SET_AND_GET_KEYWORDS);
+		PsiElement psiElement = findChildByType(NapileTokens.PROPERTY_KEYWORDS);
 		if(psiElement != null)
 		{
 			NapileSimpleNameExpression ref = getVariableRef();
@@ -100,6 +97,13 @@ public class NapileNamedMethodImpl extends NapileTypeParameterListOwnerStub<Napi
 	public PsiElement getEqualsToken()
 	{
 		return findChildByType(NapileTokens.EQ);
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getPropertyDescriptor()
+	{
+		return findChildByType(NapileTokens.PROPERTY_KEYWORDS);
 	}
 
 	@Override

@@ -45,6 +45,7 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.ModifiersChecker;
+import org.napile.compiler.lang.resolve.processors.checkers.PropertiesChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
@@ -81,6 +82,8 @@ public class BodyResolver
 	private AnnotationChecker annotationChecker;
 	@NotNull
 	private ModifiersChecker modifiersChecker;
+	@NotNull
+	private PropertiesChecker propertiesChecker;
 
 	@Inject
 	public void setTopDownAnalysisParameters(@NotNull TopDownAnalysisParameters topDownAnalysisParameters)
@@ -136,6 +139,12 @@ public class BodyResolver
 		this.modifiersChecker = modifiersChecker;
 	}
 
+	@Inject
+	public void setPropertiesChecker(@NotNull PropertiesChecker propertiesChecker)
+	{
+		this.propertiesChecker = propertiesChecker;
+	}
+
 	private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		// Initialize context
@@ -161,6 +170,7 @@ public class BodyResolver
 
 		annotationChecker.processFirst(bodiesResolveContext);
 		controlFlowAnalyzer.process(bodiesResolveContext);
+		propertiesChecker.process(bodiesResolveContext);
 		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
 		annotationChecker.processLater(bodiesResolveContext);

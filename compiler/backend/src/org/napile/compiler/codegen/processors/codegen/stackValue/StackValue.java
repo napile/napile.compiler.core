@@ -70,6 +70,13 @@ public abstract class StackValue
 		return new OnStack(type);
 	}
 
+	@NotNull
+	public static StackValue variable(@NotNull PropertyDescriptor propertyDescriptor)
+	{
+		return new Variable(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()), propertyDescriptor.isStatic());
+	}
+
+	@NotNull
 	public static StackValue variable(@NotNull FqName fqName, @NotNull TypeNode type, boolean staticVar)
 	{
 		return new Variable(fqName, type, staticVar);

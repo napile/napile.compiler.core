@@ -165,7 +165,7 @@ public class DeclarationResolver
 				@Override
 				public void visitNamedMethod(NapileNamedMethod function)
 				{
-					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveFunctionDescriptor(ownerDescription, scope, function, trace);
+					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveMethodDescriptor(ownerDescription, scope, function, trace);
 					ownerDescription.getBuilder().addMethodDescriptor(functionDescriptor);
 
 					context.getMethods().put(function, functionDescriptor);

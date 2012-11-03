@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
-
-import org.jetbrains.annotations.Nullable;
-import com.intellij.psi.PsiElement;
-
 /**
  * @author VISTALL
- * @date 15:20/19.10.12
+ * @date 11:44/03.11.12
  */
-public interface NapileNamedMethod extends NapileMethod, NapileWithExpressionInitializer
+public class A
 {
-	@Nullable
-	NapileSimpleNameExpression getVariableRef();
+	public void main()
+	{
+		a();
+	}
 
-	@Nullable
-	PsiElement getEqualsToken();
+	private void a()
+	{
 
-	@Nullable
-	PsiElement getPropertyDescriptor();
+	}
 }

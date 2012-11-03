@@ -30,6 +30,7 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
@@ -82,7 +83,7 @@ public class CallTransformer
 	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments)
 	{
 		CallableMethod.CallType type = CallableMethod.CallType.VIRTUAL;
-		if(methodDescriptor instanceof ConstructorDescriptor)
+		if(methodDescriptor instanceof ConstructorDescriptor || methodDescriptor.getVisibility() == Visibility.LOCAL)
 			type = CallableMethod.CallType.SPECIAL;
 		else if(methodDescriptor.isStatic())
 			type = CallableMethod.CallType.STATIC;

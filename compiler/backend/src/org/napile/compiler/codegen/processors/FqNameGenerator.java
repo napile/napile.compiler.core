@@ -115,6 +115,5 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	private void record(NapileDeclaration declaration, FqName fqName)
 	{
 		bindingTrace.record(BindingContext2.DECLARATION_TO_FQ_NAME, declaration, fqName);
-		bindingTrace.record(BindingContext2.FQNAME_TO_DESCRIPTOR, fqName, declaration);
 	}
 }
