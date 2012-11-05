@@ -21,12 +21,11 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
+import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -148,57 +147,9 @@ public class DataFlowValueFactory
 
 	public static boolean isStableVariable(@NotNull VariableDescriptor variableDescriptor)
 	{
-		if(variableDescriptor.getModality() != Modality.FINAL)
-			return false;
-		if(variableDescriptor instanceof PropertyDescriptor)
-		{
-			PropertyDescriptor propertyDescriptor = (PropertyDescriptor) variableDescriptor;
-			if(!isInternal(propertyDescriptor))
-				return false;
-			if(!isFinal(propertyDescriptor))
-				return false;
-			/*if(!hasDefaultGetter(propertyDescriptor))
-				return false;*/
-		}
-		return true;
-	}
-
-	private static boolean isFinal(PropertyDescriptor propertyDescriptor)
-	{
-		DeclarationDescriptor containingDeclaration = propertyDescriptor.getContainingDeclaration();
-		if(containingDeclaration instanceof ClassDescriptor)
-		{
-			ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
-			if(classDescriptor.getModality().isOverridable() && propertyDescriptor.getModality().isOverridable())
-				return false;
-		}
-		else
-		{
-			if(propertyDescriptor.getModality().isOverridable())
-			{
-				throw new IllegalStateException("Property outside a class must not be overridable: " + propertyDescriptor.getName());
-			}
-		}
-		return true;
-	}
-
-	private static boolean isInternal(@NotNull DeclarationDescriptorWithVisibility descriptor)
-	{
-		if(Visibility.INTERNAL_VISIBILITIES.contains(descriptor.getVisibility()))
+		if(variableDescriptor.getModality() == Modality.FINAL || variableDescriptor instanceof LocalVariableDescriptor || variableDescriptor instanceof ParameterDescriptor)
 			return true;
 
-		DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
-		if(!(containingDeclaration instanceof DeclarationDescriptorWithVisibility))
-		{
-			return false;
-		}
-
-		return isInternal((DeclarationDescriptorWithVisibility) containingDeclaration);
+		return false;
 	}
-
-	/*private static boolean hasDefaultGetter(PropertyDescriptor propertyDescriptor)
-	{
-		PropertyGetterDescriptor getter = propertyDescriptor.getGetter();
-		return getter == null || getter.isDefault();
-	} */
 }
