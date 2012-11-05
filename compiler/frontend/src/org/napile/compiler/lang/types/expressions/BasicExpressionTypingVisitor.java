@@ -57,7 +57,6 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.JetModuleUtil;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -77,7 +76,15 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
-import org.napile.compiler.lang.types.*;
+import org.napile.compiler.lang.types.CommonSupertypes;
+import org.napile.compiler.lang.types.ErrorUtils;
+import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NamespaceType;
+import org.napile.compiler.lang.types.SubstitutionUtils;
+import org.napile.compiler.lang.types.TypeConstructor;
+import org.napile.compiler.lang.types.TypeSubstitutor;
+import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
@@ -1455,18 +1462,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		context.trace.report(DECLARATION_IN_ILLEGAL_CONTEXT.on(dcl));
 		return JetTypeInfo.create(null, context.dataFlowInfo);
 	}
-
-	@Override
-	public JetTypeInfo visitRootNamespaceExpression(NapileRootNamespaceExpression expression, ExpressionTypingContext context)
-	{
-		if(context.namespacesAllowed)
-		{
-			return DataFlowUtils.checkType(JetModuleUtil.getRootNamespaceType(expression), expression, context, context.dataFlowInfo);
-		}
-		context.trace.report(NAMESPACE_IS_NOT_AN_EXPRESSION.on(expression));
-		return JetTypeInfo.create(null, context.dataFlowInfo);
-	}
-
 
 	@Override
 	public JetTypeInfo visitStringTemplateExpression(NapileStringTemplateExpression expression, ExpressionTypingContext contextWithExpectedType)

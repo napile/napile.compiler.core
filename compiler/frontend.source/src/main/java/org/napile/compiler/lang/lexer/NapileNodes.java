@@ -128,7 +128,6 @@ public interface NapileNodes
 	NapileNode SAFE_ACCESS_EXPRESSION = new NapileNode("SAFE_ACCESS_EXPRESSION", NapileSafeQualifiedExpression.class);
 
 	NapileNode OBJECT_LITERAL = new NapileNode("OBJECT_LITERAL", NapileObjectLiteralExpression.class);
-	NapileNode ROOT_NAMESPACE = new NapileNode("ROOT_NAMESPACE", NapileRootNamespaceExpression.class);
 
 	NapileNode WHEN = new NapileNode("WHEN", NapileWhenExpression.class);
 	NapileNode WHEN_ENTRY = new NapileNode("WHEN_ENTRY", NapileWhenEntry.class);

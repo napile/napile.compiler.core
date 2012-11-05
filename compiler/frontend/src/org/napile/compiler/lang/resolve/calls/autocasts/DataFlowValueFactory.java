@@ -18,7 +18,6 @@ package org.napile.compiler.lang.resolve.calls.autocasts;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -28,15 +27,14 @@ import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
 import org.napile.compiler.lang.psi.NapileQualifiedExpression;
-import org.napile.compiler.lang.psi.NapileRootNamespaceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.JetModuleUtil;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
@@ -144,10 +142,6 @@ public class DataFlowValueFactory
 				return Pair.create((Object) ((ClassDescriptor) declarationDescriptor).getImplicitReceiver(), true);
 			}
 			return Pair.create(null, true);
-		}
-		else if(expression instanceof NapileRootNamespaceExpression)
-		{
-			return Pair.create((Object) JetModuleUtil.getRootNamespaceType(expression), allowNamespaces);
 		}
 		return Pair.create(null, false);
 	}

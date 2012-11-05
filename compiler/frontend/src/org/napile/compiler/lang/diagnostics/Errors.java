@@ -164,7 +164,6 @@ public interface Errors
 
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> EQUALS_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileBinaryExpression> ASSIGNMENT_IN_EXPRESSION_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileRootNamespaceExpression> NAMESPACE_IS_NOT_AN_EXPRESSION = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSuperExpression, String> SUPER_IS_NOT_AN_EXPRESSION = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileDeclaration> DECLARATION_IN_ILLEGAL_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> SETTER_PARAMETER_WITH_DEFAULT_VALUE = SimpleDiagnosticFactory.create(Severity.ERROR);
