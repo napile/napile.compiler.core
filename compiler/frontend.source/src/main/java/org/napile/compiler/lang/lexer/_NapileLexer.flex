@@ -343,7 +343,6 @@ LONG_TEMPLATE_ENTRY_END=\}
 "+="         { return NapileTokens.PLUSEQ    ; }
 "-="         { return NapileTokens.MINUSEQ   ; }
 "->"         { return NapileTokens.ARROW     ; }
-"=>"         { return NapileTokens.DOUBLE_ARROW; }
 ".."         { return NapileTokens.RANGE     ; }
 "["          { return NapileTokens.LBRACKET  ; }
 "]"          { return NapileTokens.RBRACKET  ; }
