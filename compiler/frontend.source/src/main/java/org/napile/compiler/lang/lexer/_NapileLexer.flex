@@ -302,13 +302,13 @@ LONG_TEMPLATE_ENTRY_END=\}
 "class"      { return NapileTokens.CLASS_KEYWORD ;}
 "var"        { return NapileTokens.VAR_KEYWORD ;}
 "meth"       { return NapileTokens.METH_KEYWORD ;}
+"this"       { return NapileTokens.THIS_KEYWORD ;}
 
 "throw"      { return NapileTokens.THROW_KEYWORD ;}
 "false"      { return NapileTokens.FALSE_KEYWORD ;}
 "super"      { return NapileTokens.SUPER_KEYWORD ;}
 "when"       { return NapileTokens.WHEN_KEYWORD ;}
 "true"       { return NapileTokens.TRUE_KEYWORD ;}
-"this"       { return NapileTokens.THIS_KEYWORD ;}
 "null"       { return NapileTokens.NULL_KEYWORD ;}
 "else"       { return NapileTokens.ELSE_KEYWORD ;}
 "try"        { return NapileTokens.TRY_KEYWORD ;}
