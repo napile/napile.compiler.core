@@ -22,6 +22,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
@@ -107,7 +108,7 @@ public class JetIconProvider extends IconProvider
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isFinal, isRunnable);
 	}
 
-	public static Icon modifyIcon(NapileModifierListOwner modifierList, Icon baseIcon, int flags, boolean isFinal, boolean isRunnable)
+	public static Icon modifyIcon(@Nullable NapileModifierListOwner modifierList, Icon baseIcon, int flags, boolean isFinal, boolean isRunnable)
 	{
 		RowIcon icon = new RowIcon(2);
 
