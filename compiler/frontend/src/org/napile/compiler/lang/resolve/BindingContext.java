@@ -124,8 +124,6 @@ public interface BindingContext
 	WritableSlice<NapileExpression, Boolean> PROCESSED = Slices.createSimpleSetSlice();
 	WritableSlice<NapileElement, Boolean> STATEMENT = Slices.createRemovableSetSlice();
 
-	WritableSlice<DeclarationDescriptor, Boolean> DEPRECATED = Slices.createSimpleSetSlice();
-
 	WritableSlice<VariableDescriptor, Boolean> CAPTURED_IN_CLOSURE = Slices.createSimpleSetSlice();
 
 	//    enum DeferredTypeKey {DEFERRED_TYPE_KEY}

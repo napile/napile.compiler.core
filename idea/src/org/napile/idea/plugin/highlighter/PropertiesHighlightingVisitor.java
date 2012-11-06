@@ -47,9 +47,9 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			return;
 		}
 
-		JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.getAttributes(target));
+		JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.getAttributes(target), target);
 		if(expression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER)
-			JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.BACKING_FIELD_ACCESS);
+			JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.BACKING_FIELD_ACCESS, target);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			return;
 		VariableDescriptor propertyDescriptor = bindingContext.get(BindingContext.VARIABLE, property);
 		if(propertyDescriptor != null)
-			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(propertyDescriptor));
+			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(propertyDescriptor), propertyDescriptor);
 
 		super.visitVariable(property);
 	}

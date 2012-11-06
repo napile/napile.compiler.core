@@ -113,7 +113,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 				holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(JetHighlightingColors.WRAPPED_INTO_REF);
 			}
 
-			JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.getAttributes(descriptor));
+			JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.getAttributes(descriptor), variableDescriptor);
 		}
 	}
 }

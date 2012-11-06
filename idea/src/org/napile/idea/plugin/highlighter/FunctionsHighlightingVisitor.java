@@ -44,7 +44,7 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 		PsiElement nameIdentifier = function.getNameIdentifier();
 		if(nameIdentifier != null)
 		{
-			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.FUNCTION_DECLARATION);
+			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.FUNCTION_DECLARATION, null);
 		}
 
 		super.visitNamedMethod(function);
@@ -63,7 +63,7 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 				NapileSimpleNameExpression nameExpression = ((NapileUserType) typeElement).getReferenceExpression();
 				if(nameExpression != null)
 				{
-					JetPsiChecker.highlightName(holder, nameExpression, JetHighlightingColors.CONSTRUCTOR_CALL);
+					JetPsiChecker.highlightName(holder, nameExpression, JetHighlightingColors.CONSTRUCTOR_CALL, null);
 				}
 			}
 		}
@@ -81,14 +81,14 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 			{
 				if(calleeDescriptor instanceof ConstructorDescriptor)
 				{
-					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.CONSTRUCTOR_CALL);
+					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.CONSTRUCTOR_CALL, null);
 				}
 				else if(calleeDescriptor instanceof MethodDescriptor)
 				{
 					MethodDescriptor fun = (MethodDescriptor) calleeDescriptor;
-					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.METHOD_CALL);
+					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.METHOD_CALL, null);
 					if(fun.isStatic())
-						JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.STATIC_METHOD_CALL);
+						JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.STATIC_METHOD_CALL, null);
 				}
 			}
 		}

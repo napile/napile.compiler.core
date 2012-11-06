@@ -1,12 +1,14 @@
 package org.napile.idea.plugin.util;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.util.RunUtil;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
@@ -23,7 +25,7 @@ public class IdePsiUtil extends RunUtil
 		DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
 		if(descriptor == null)
 			return false;
-		return analyzeExhaust.getBindingContext().safeGet(BindingContext.DEPRECATED, descriptor);
+		return AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.DEPRECATED);
 	}
 
 	public static boolean hasClassPoint(@NotNull NapileClassLike classLike)

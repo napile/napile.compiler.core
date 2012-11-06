@@ -23,6 +23,8 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
+import org.napile.asm.lib.NapileAnnotationPackage;
+import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.diagnostics.RedeclarationDiagnosticFactory;
@@ -30,10 +32,10 @@ import org.napile.compiler.lang.diagnostics.Severity;
 import org.napile.compiler.lang.diagnostics.UnresolvedReferenceDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.UnusedElementDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
-import org.napile.compiler.lang.psi.NapileAnnotation;
-import org.napile.compiler.lang.psi.NapileReferenceExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileReferenceExpression;
+import org.napile.compiler.lang.resolve.AnnotationUtils;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import org.napile.idea.plugin.quickfix.JetIntentionActionFactory;
 import org.napile.idea.plugin.quickfix.QuickFixes;
@@ -44,6 +46,7 @@ import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.roots.ProjectFileIndex;
@@ -51,7 +54,6 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.MultiRangeReference;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.xml.util.XmlStringUtil;
 
 /**
@@ -83,14 +85,14 @@ public class JetPsiChecker implements Annotator
 		return !ApplicationManager.getApplication().isUnitTestMode() || namesHighlightingTest;
 	}
 
-	static void highlightName(@NotNull AnnotationHolder holder, @NotNull PsiElement psiElement, @NotNull TextAttributesKey attributesKey)
+	static void highlightName(@NotNull AnnotationHolder holder, @NotNull PsiElement psiElement, @NotNull TextAttributesKey attributesKey, Annotated annotated)
 	{
 		if(isNamesHighlightingEnabled())
 		{
-			if(PsiTreeUtil.getParentOfType(psiElement, NapileAnnotation.class) != null)
-				holder.createInfoAnnotation(new TextRange(psiElement.getNode().getStartOffset(), psiElement.getNode().getStartOffset() + psiElement.getTextLength()), null).setTextAttributes(attributesKey);
-			else
-				holder.createInfoAnnotation(psiElement, null).setTextAttributes(attributesKey);
+			holder.createInfoAnnotation(psiElement, null).setTextAttributes(attributesKey);
+
+			if(annotated != null && AnnotationUtils.hasAnnotation(annotated, NapileAnnotationPackage.DEPRECATED))
+				holder.createInfoAnnotation(psiElement, null).setTextAttributes(CodeInsightColors.DEPRECATED_ATTRIBUTES);
 		}
 	}
 
