@@ -90,7 +90,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 	private static final int UPDATE_DELAY = 500;
 	private static final String DEFAULT_TEXT = "/*\n" +
 			"Information about symbols resolved by\nKotlin compiler.\n" +
-			"No Kotlin source file is opened.\n" +
+			"No Napile source file is opened.\n" +
 			"*/";
 	private final Editor myEditor;
 	private final Alarm myUpdateAlarm;

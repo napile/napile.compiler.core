@@ -73,12 +73,12 @@ public class DataFlowValueFactory
 		return new DataFlowValue(receiver, type, true, getImmanentNullability(type));
 	}
 
-	@NotNull
+	/*@NotNull
 	public DataFlowValue createDataFlowValue(@NotNull VariableDescriptor variableDescriptor)
 	{
 		JetType type = variableDescriptor.getType();
 		return new DataFlowValue(variableDescriptor, type, isStableVariable(variableDescriptor), getImmanentNullability(type));
-	}
+	}  */
 
 	private Nullability getImmanentNullability(JetType type)
 	{
