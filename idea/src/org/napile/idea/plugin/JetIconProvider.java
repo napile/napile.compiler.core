@@ -59,7 +59,6 @@ public class JetIconProvider extends IconProvider
 	public Icon getIcon(@NotNull PsiElement psiElement, int flags)
 	{
 		Icon icon = null;
-		boolean isFinal = false;
 		boolean isRunnable = false;
 
 		if(psiElement instanceof NapileFile)
@@ -105,15 +104,16 @@ public class JetIconProvider extends IconProvider
 		else if(psiElement instanceof NapileVariable || psiElement instanceof NapilePropertyParameter)
 			icon = JetIcons.VARIABLE;
 
-		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isFinal, isRunnable);
+		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isRunnable);
 	}
 
-	public static Icon modifyIcon(@Nullable NapileModifierListOwner modifierList, Icon baseIcon, int flags, boolean isFinal, boolean isRunnable)
+	public static Icon modifyIcon(@Nullable NapileModifierListOwner modifierList, Icon baseIcon, int flags, boolean isRunnable)
 	{
 		RowIcon icon = new RowIcon(2);
 
 		if(baseIcon != null)
 		{
+			boolean isFinal = modifierList != null && modifierList.hasModifier(NapileTokens.FINAL_KEYWORD);
 			if(isFinal || isRunnable)
 			{
 				List<Icon> icons = new ArrayList<Icon>(2);
