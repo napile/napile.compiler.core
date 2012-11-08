@@ -35,18 +35,19 @@ public class CodeInjectionManager
 
 	private CodeInjectionManager()
 	{
-		try
-		{
-			Class<?> clazz = Class.forName("org.napile.compiler.injection.protobuf.ProtobufCodeInjection");
+		for(String className : new String[] {"org.napile.compiler.injection.protobuf.ProtobufCodeInjection", "org.napile.compiler.injection.regexp.RegexpCodeInjection"})
+			try
+			{
+				Class<?> clazz = Class.forName(className);
 
-			CodeInjection injection = (CodeInjection) clazz.newInstance();
+				CodeInjection injection = (CodeInjection) clazz.newInstance();
 
-			codeInjections.put(injection.getName(), injection);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+				codeInjections.put(injection.getName(), injection);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 	}
 
 	public CodeInjection getInjection(@NotNull String name)

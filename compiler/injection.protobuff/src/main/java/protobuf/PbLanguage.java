@@ -12,6 +12,6 @@ public class PbLanguage extends Language
 
 	public PbLanguage()
 	{
-		super("NAPILE-INJECTION-LANGUAGE");
+		super("NAPILE-INJECTION-PROTOBUF");
 	}
 }

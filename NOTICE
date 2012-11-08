@@ -1,7 +1,11 @@
-Base code get from Kotlin Github repo
+1. Base code get from Kotlin Github repo(https://github.com/jetbrains/kotlin)
 
-Some code getting from Intellij IDEA Community repo
+@authors: Kotlin Team, license: Apache 2.0
 
-Authors: Jetbrains Team, license: Apache 2.0
+2. Some code from Intellij IDEA Community repo(http://git.jetbrains.org)
 
-Some code from 'injection.protobuf ', author: Matveev Nikolay, license: Apache 2.0
+@authors: Jetbrains Team, license: Apache 2.0
+
+3. Some code from 'injection.protobuf'(http://code.google.com/p/protobuf/)
+
+@author: Matveev Nikolay, license: Apache 2.0

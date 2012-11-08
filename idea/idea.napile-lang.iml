@@ -26,6 +26,8 @@
     <orderEntry type="module" module-name="injection.idea" />
     <orderEntry type="module" module-name="injection.protobuff" />
     <orderEntry type="module" module-name="injection.protobuff.idea" />
+    <orderEntry type="module" module-name="injection.regexp" />
+    <orderEntry type="module" module-name="injection.regexp.idea" />
   </component>
 </module>
 
