@@ -20,6 +20,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.injection.CodeInjection;
+import org.napile.compiler.injection.protobuf.lang.PbLanguage;
+import org.napile.compiler.injection.protobuf.lang.PbTokenTypes;
+import org.napile.compiler.injection.protobuf.lang.lexer.PbMergingLexer;
+import org.napile.compiler.injection.protobuf.lang.parser.PbParser;
+import org.napile.compiler.injection.protobuf.lang.psi.PbPsiCreator;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -31,11 +36,6 @@ import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.TokenSet;
-import protobuf.PbLanguage;
-import protobuf.lang.PbTokenTypes;
-import protobuf.lang.lexer.PbMergingLexer;
-import protobuf.lang.parser.PbParser;
-import protobuf.lang.psi.PbPsiCreator;
 
 /**
  * @author VISTALL
@@ -47,7 +47,7 @@ public class ProtobufCodeInjection extends CodeInjection
 	@Override
 	public String getName()
 	{
-		return "protobuf";
+		return "org/napile/idea/injection/protobuf";
 	}
 
 	@NotNull

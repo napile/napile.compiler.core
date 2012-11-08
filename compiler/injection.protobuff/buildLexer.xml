@@ -42,6 +42,6 @@
 
 	<target name="lexer">
 		<echo message="${flex.base}"/>
-		<flex flexfile="${home}/src/main/java/org/napile/compiler/injection/protobuf/lexer/_Protobuf.flex" destdir="${home}/src/main/java/org/napile/compiler/injection/protobuf/lexer/"/>
+		<flex flexfile="${home}/src/main/java/org/napile/compiler/injection/org.napile.idea.injection.protobuf/lexer/_Protobuf.flex" destdir="${home}/src/main/java/org/napile/compiler/injection/org.napile.idea.injection.protobuf/lexer/"/>
 	</target>
 </project>

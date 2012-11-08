@@ -35,6 +35,7 @@ public class CodeInjectionManager
 
 	private CodeInjectionManager()
 	{
+		//TODO [VISTALL] rework it
 		for(String className : new String[] {"org.napile.compiler.injection.protobuf.ProtobufCodeInjection", "org.napile.compiler.injection.regexp.RegexpCodeInjection"})
 			try
 			{

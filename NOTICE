@@ -6,6 +6,6 @@
 
 @authors: Jetbrains Team, license: Apache 2.0
 
-3. Some code from 'injection.protobuf'(http://code.google.com/p/protobuf/)
+3. Some code from 'injection.org.napile.idea.injection.protobuf'(http://code.google.com/p/org.napile.idea.injection.protobuf/)
 
 @author: Matveev Nikolay, license: Apache 2.0

@@ -55,7 +55,8 @@ public class IdeaInjectionSupportManager implements ApplicationComponent
 	@Override
 	public void initComponent()
 	{
-		for(String className : new String[] {"protobuf.PbIdeaInjectionSupport", "org.napile.idea.plugin.injection.regexp.RegExpIdeaInjectionSupport"})
+		//TODO [VISTALL] rework it
+		for(String className : new String[] {"org.napile.idea.injection.protobuf.PbIdeaInjectionSupport", "org.napile.idea.plugin.injection.regexp.RegExpIdeaInjectionSupport"})
 			try
 			{
 				Class<?> clazz = Class.forName(className);
