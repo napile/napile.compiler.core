@@ -2,17 +2,17 @@ package org.napile.compiler.injection.regexp;
 
 import java.util.EnumSet;
 
-import org.intellij.lang.regexp.RegExpCapability;
-import org.intellij.lang.regexp.RegExpElementTypes;
-import org.intellij.lang.regexp.RegExpLanguage;
-import org.intellij.lang.regexp.RegExpLexer;
-import org.intellij.lang.regexp.RegExpParser;
-import org.intellij.lang.regexp.RegExpTT;
-import org.intellij.lang.regexp.psi.impl.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.injection.CodeInjection;
+import org.napile.compiler.injection.regexp.lang.parser.RegExpCapability;
+import org.napile.compiler.injection.regexp.lang.parser.RegExpElementTypes;
+import org.napile.compiler.injection.regexp.lang.RegExpLanguage;
+import org.napile.compiler.injection.regexp.lang.lexer.RegExpLexer;
+import org.napile.compiler.injection.regexp.lang.parser.RegExpParser;
+import org.napile.compiler.injection.regexp.lang.parser.RegExpTokens;
+import org.napile.compiler.injection.regexp.lang.psi.impl.*;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -34,7 +34,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class RegexpCodeInjection extends CodeInjection
 {
-	private static final TokenSet COMMENT_TOKENS = TokenSet.create(RegExpTT.COMMENT);
+	private static final TokenSet COMMENT_TOKENS = TokenSet.create(RegExpTokens.COMMENT);
 
 	@NotNull
 	@Override
@@ -75,7 +75,7 @@ public class RegexpCodeInjection extends CodeInjection
 	public TokenSet getWhitespaceTokens()
 	{
 		// trick to hide quote tokens from parser... should actually go into the lexer
-		return TokenSet.create(RegExpTT.QUOTE_BEGIN, RegExpTT.QUOTE_END, TokenType.WHITE_SPACE);
+		return TokenSet.create(RegExpTokens.QUOTE_BEGIN, RegExpTokens.QUOTE_END, TokenType.WHITE_SPACE);
 	}
 
 	@Override

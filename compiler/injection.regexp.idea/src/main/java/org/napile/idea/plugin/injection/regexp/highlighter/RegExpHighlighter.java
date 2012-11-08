@@ -19,7 +19,7 @@ package org.napile.idea.plugin.injection.regexp.highlighter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.intellij.lang.regexp.RegExpTT;
+import org.napile.compiler.injection.regexp.lang.parser.RegExpTokens;
 import org.jetbrains.annotations.NotNull;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
 import org.napile.idea.plugin.highlighter.SyntaxHighlighterUtil;
@@ -38,6 +38,7 @@ public class RegExpHighlighter implements InjectionSyntaxHighlighter
 {
 	private static final Map<IElementType, TextAttributesKey> keys1;
 
+	static final TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey("NAPILE-REGEXP.META", SyntaxHighlighterColors.NUMBER.getDefaultAttributes());
 	static final TextAttributesKey META = TextAttributesKey.createTextAttributesKey("REGEXP.META", SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
 	static final TextAttributesKey INVALID_CHARACTER_ESCAPE = TextAttributesKey.createTextAttributesKey("REGEXP.INVALID_STRING_ESCAPE", SyntaxHighlighterColors.INVALID_STRING_ESCAPE.getDefaultAttributes());
 	static final TextAttributesKey BAD_CHARACTER = TextAttributesKey.createTextAttributesKey("REGEXP.BAD_CHARACTER", HighlighterColors.BAD_CHARACTER.getDefaultAttributes());
@@ -55,43 +56,45 @@ public class RegExpHighlighter implements InjectionSyntaxHighlighter
 	{
 		keys1 = new HashMap<IElementType, TextAttributesKey>();
 
-		SyntaxHighlighterUtil.fillMap(keys1, RegExpTT.KEYWORDS, META);
+		SyntaxHighlighterUtil.fillMap(keys1, RegExpTokens.KEYWORDS, META);
 
 		keys1.put(StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN, INVALID_CHARACTER_ESCAPE);
 		keys1.put(StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN, INVALID_CHARACTER_ESCAPE);
 
 		keys1.put(TokenType.BAD_CHARACTER, BAD_CHARACTER);
-		keys1.put(RegExpTT.BAD_HEX_VALUE, INVALID_CHARACTER_ESCAPE);
-		keys1.put(RegExpTT.BAD_OCT_VALUE, INVALID_CHARACTER_ESCAPE);
+		keys1.put(RegExpTokens.BAD_HEX_VALUE, INVALID_CHARACTER_ESCAPE);
+		keys1.put(RegExpTokens.BAD_OCT_VALUE, INVALID_CHARACTER_ESCAPE);
 
-		keys1.put(RegExpTT.PROPERTY, CHAR_CLASS);
+		keys1.put(RegExpTokens.PROPERTY, CHAR_CLASS);
 
-		keys1.put(RegExpTT.ESC_CHARACTER, ESC_CHARACTER);
-		keys1.put(RegExpTT.UNICODE_CHAR, ESC_CHARACTER);
-		keys1.put(RegExpTT.HEX_CHAR, ESC_CHARACTER);
-		keys1.put(RegExpTT.OCT_CHAR, ESC_CHARACTER);
-		keys1.put(RegExpTT.CHAR_CLASS, ESC_CHARACTER);
-		keys1.put(RegExpTT.BOUNDARY, ESC_CHARACTER);
-		keys1.put(RegExpTT.CTRL, ESC_CHARACTER);
-		keys1.put(RegExpTT.ESC_CTRL_CHARACTER, ESC_CHARACTER);
+		keys1.put(RegExpTokens.ESC_CHARACTER, ESC_CHARACTER);
+		keys1.put(RegExpTokens.UNICODE_CHAR, ESC_CHARACTER);
+		keys1.put(RegExpTokens.HEX_CHAR, ESC_CHARACTER);
+		keys1.put(RegExpTokens.OCT_CHAR, ESC_CHARACTER);
+		keys1.put(RegExpTokens.CHAR_CLASS, ESC_CHARACTER);
+		keys1.put(RegExpTokens.BOUNDARY, ESC_CHARACTER);
+		keys1.put(RegExpTokens.CTRL, ESC_CHARACTER);
+		keys1.put(RegExpTokens.ESC_CTRL_CHARACTER, ESC_CHARACTER);
 
-		keys1.put(RegExpTT.REDUNDANT_ESCAPE, REDUNDANT_ESCAPE);
+		keys1.put(RegExpTokens.REDUNDANT_ESCAPE, REDUNDANT_ESCAPE);
 
-		keys1.put(RegExpTT.QUOTE_BEGIN, QUOTE_CHARACTER);
-		keys1.put(RegExpTT.QUOTE_END, QUOTE_CHARACTER);
+		keys1.put(RegExpTokens.QUOTE_BEGIN, QUOTE_CHARACTER);
+		keys1.put(RegExpTokens.QUOTE_END, QUOTE_CHARACTER);
 
-		keys1.put(RegExpTT.GROUP_BEGIN, PARENTHS);
-		keys1.put(RegExpTT.GROUP_END, PARENTHS);
+		keys1.put(RegExpTokens.GROUP_BEGIN, PARENTHS);
+		keys1.put(RegExpTokens.GROUP_END, PARENTHS);
 
-		keys1.put(RegExpTT.LBRACE, BRACES);
-		keys1.put(RegExpTT.RBRACE, BRACES);
+		keys1.put(RegExpTokens.LBRACE, BRACES);
+		keys1.put(RegExpTokens.RBRACE, BRACES);
 
-		keys1.put(RegExpTT.CLASS_BEGIN, BRACKETS);
-		keys1.put(RegExpTT.CLASS_END, BRACKETS);
+		keys1.put(RegExpTokens.NUMBER, NUMBER);
 
-		keys1.put(RegExpTT.COMMA, COMMA);
+		keys1.put(RegExpTokens.CLASS_BEGIN, BRACKETS);
+		keys1.put(RegExpTokens.CLASS_END, BRACKETS);
 
-		keys1.put(RegExpTT.COMMENT, COMMENT);
+		keys1.put(RegExpTokens.COMMA, COMMA);
+
+		keys1.put(RegExpTokens.COMMENT, COMMENT);
 	}
 
 	@NotNull
