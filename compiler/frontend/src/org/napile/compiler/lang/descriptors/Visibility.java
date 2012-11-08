@@ -157,8 +157,6 @@ public enum  Visibility
 	@NotNull
 	public static Visibility resolve(@NotNull NapileModifierListOwner modifierListOwner)
 	{
-		if(modifierListOwner.hasModifier(NapileTokens.ENUM_KEYWORD))
-			return PUBLIC;
 		if(modifierListOwner.hasModifier(NapileTokens.LOCAL_KEYWORD))
 			return LOCAL;
 		if(modifierListOwner.hasModifier(NapileTokens.COVERED_KEYWORD))

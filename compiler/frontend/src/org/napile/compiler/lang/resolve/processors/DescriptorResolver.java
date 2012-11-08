@@ -337,7 +337,7 @@ public class DescriptorResolver
 	{
 		NapileModifierList modifierList = property.getModifierList();
 
-		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), Modality.resolve(property), Visibility.resolve(property), NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, property.hasModifier(NapileTokens.STATIC_KEYWORD) || property.hasModifier(NapileTokens.ENUM_KEYWORD));
+		PropertyDescriptor propertyDescriptor = new PropertyDescriptor(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), Modality.resolve(property), Visibility.resolve(property), NapilePsiUtil.safeName(property.getName()), CallableMemberDescriptor.Kind.DECLARATION, property.hasModifier(NapileTokens.STATIC_KEYWORD));
 
 		List<TypeParameterDescriptor> typeParameterDescriptors;
 

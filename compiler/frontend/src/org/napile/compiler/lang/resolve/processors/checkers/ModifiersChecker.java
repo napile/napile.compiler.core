@@ -60,13 +60,13 @@ public class ModifiersChecker
 {
 	// not create new list every checks - it good for compiler, but as plugin create leaks
 	@NotNull
-	private static final List<NapileKeywordToken> VISIBILITY_MODIFIERS = Arrays.asList(NapileTokens.ENUM_KEYWORD, NapileTokens.LOCAL_KEYWORD, NapileTokens.HERITABLE_KEYWORD, NapileTokens.COVERED_KEYWORD);
+	private static final List<NapileKeywordToken> VISIBILITY_MODIFIERS = Arrays.asList(NapileTokens.LOCAL_KEYWORD, NapileTokens.HERITABLE_KEYWORD, NapileTokens.COVERED_KEYWORD);
 	@NotNull
-	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CLASS = Arrays.asList(NapileTokens.OVERRIDE_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.ENUM_KEYWORD);
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CLASS = Arrays.asList(NapileTokens.OVERRIDE_KEYWORD, NapileTokens.NATIVE_KEYWORD);
 	@NotNull
-	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.STATIC_KEYWORD, NapileTokens.OVERRIDE_KEYWORD, NapileTokens.FINAL_KEYWORD, NapileTokens.ENUM_KEYWORD);
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.STATIC_KEYWORD, NapileTokens.OVERRIDE_KEYWORD, NapileTokens.FINAL_KEYWORD);
 	@NotNull
-	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_METHOD = Arrays.asList(NapileTokens.ENUM_KEYWORD);
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_METHOD = Arrays.asList();
 
 	@NotNull
 	private BindingTrace trace;
@@ -168,7 +168,7 @@ public class ModifiersChecker
 			hasDeferredType = function.getReturnTypeRef() == null && function.getBodyExpression() != null && !function.hasBlockBody();
 		}
 
-		if(memberDescriptor.getVisibility().isPublicAPI() && memberDescriptor.getOverriddenDescriptors().size() == 0 && hasDeferredType && !member.hasModifier(NapileTokens.ENUM_KEYWORD))
+		if(memberDescriptor.getVisibility().isPublicAPI() && memberDescriptor.getOverriddenDescriptors().size() == 0 && hasDeferredType)
 			trace.report(Errors.PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE.on(member));
 	}
 

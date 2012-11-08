@@ -35,7 +35,7 @@ public enum Modality
 	{
 		if(modifierList.hasModifier(NapileTokens.ABSTRACT_KEYWORD))
 			return ABSTRACT;
-		if(modifierList.hasModifier(NapileTokens.FINAL_KEYWORD) || modifierList.hasModifier(NapileTokens.ENUM_KEYWORD))
+		if(modifierList.hasModifier(NapileTokens.FINAL_KEYWORD))
 			return FINAL;
 		return OPEN;
 	}
