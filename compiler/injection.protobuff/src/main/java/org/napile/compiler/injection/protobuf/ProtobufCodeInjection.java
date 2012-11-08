@@ -47,7 +47,7 @@ public class ProtobufCodeInjection extends CodeInjection
 	@Override
 	public String getName()
 	{
-		return "org/napile/idea/injection/protobuf";
+		return "protobuf";
 	}
 
 	@NotNull

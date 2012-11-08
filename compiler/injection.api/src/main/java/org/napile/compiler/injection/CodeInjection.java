@@ -37,7 +37,7 @@ public abstract class CodeInjection implements ParserDefinition
 	/**
 	 * Returning name of injection
 	 * Case-sensitive
-	 *   xml
+	 *   /xml/
 	 *   {
 	 *
 	 *   }
