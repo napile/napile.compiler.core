@@ -28,7 +28,7 @@ public class RegExpLexer extends FlexAdapter
 
 	public RegExpLexer(EnumSet<RegExpCapability> capabilities)
 	{
-		super(new _RegExLpexer(capabilities));
+		super(new _RegExpLexer(capabilities));
 		myCapabilities = capabilities;
 	}
 
@@ -38,9 +38,9 @@ public class RegExpLexer extends FlexAdapter
 		super.start(buffer, startOffset, endOffset, initialState & ~COMMENT_MODE);
 	}
 
-	public _RegExLpexer getFlex()
+	public _RegExpLexer getFlex()
 	{
-		return (_RegExLpexer) super.getFlex();
+		return (_RegExpLexer) super.getFlex();
 	}
 
 	public int getState()

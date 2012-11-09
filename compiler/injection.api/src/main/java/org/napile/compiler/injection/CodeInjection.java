@@ -63,7 +63,7 @@ public abstract class CodeInjection implements ParserDefinition
 	@Override
 	public final PsiFile createFile(FileViewProvider fileViewProvider)
 	{
-		throw new UnsupportedOperationException();
+		throw new IllegalArgumentException();
 	}
 
 	@Override

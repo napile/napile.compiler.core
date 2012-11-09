@@ -1,8 +1,8 @@
-package protobuf.lang.lexer;
+package org.napile.compiler.injection.protobuf.lang.lexer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import protobuf.lang.PbTokenTypes;
+import org.napile.compiler.injection.protobuf.lang.PbTokenTypes;
 
 %%
 
