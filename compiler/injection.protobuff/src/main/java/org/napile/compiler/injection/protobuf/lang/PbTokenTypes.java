@@ -110,29 +110,6 @@ public interface PbTokenTypes
 
     TokenSet OTHER_KEYWORDS = TokenSet.create(RPC,RETURNS,GROUP,EXTENSIONS,TO,MAX);//keywords
 
-    //Options
-    //--File settings
-    /*IElementType OPTIMIZE_FOR = new PbElementType("optimize for");
-    IElementType JAVA_PACKAGE = new PbElementType("java_package");
-    IElementType JAVA_OUTER_CLASSNAME = new PbElementType("java_outer_classname");
-    IElementType JAVA_MULTIPLE_FILES = new PbElementType("java_multiple_files");
-    IElementType CC_ABSTRACT_SERVICES = new PbElementType("cc_abstract_services");
-    IElementType JAVA_ABSTRACT_SERVICES = new PbElementType("java_abstract_services");
-    IElementType PY_ABSTRACT_SERVICES = new PbElementType("py_abstract_services");
-    TokenSet FILE_OPTIONS = TokenSet.create(OPTIMIZE_FOR,JAVA_PACKAGE,JAVA_OUTER_CLASSNAME,
-                                            JAVA_MULTIPLE_FILES,CC_ABSTRACT_SERVICES,
-                                            JAVA_ABSTRACT_SERVICES,PY_ABSTRACT_SERVICES); //keyword
-
-    //--Message settings
-    IElementType MESSAGE_SET_WIRE_FORMAT = new PbElementType("message set wire format");
-    TokenSet MESSAGE_OPTIONS = TokenSet.create(MESSAGE_SET_WIRE_FORMAT); //keyword
-    */
-
-    //--Field settings
-    //IElementType DEPRECATED = new PbElementType("deprecated");
-    //IElementType PACKED = new PbElementType("packed");
-    //IElementType DEFAULT = new PbElementType("default");
-    //TokenSet FIELD_OPTIONS = TokenSet.create(DEPRECATED,PACKED,DEFAULT);  //keyword
 
     TokenSet KEYWORDS = TokenSet.orSet(BUILT_IN_TYPES,
                                         /*FIELD_OPTIONS,*/
@@ -142,5 +119,5 @@ public interface PbTokenTypes
                                         OTHER_KEYWORDS
                                         );
     TokenSet IK = TokenSet.orSet(IDENTIFIERS,KEYWORDS);
-    TokenSet CONSTANT_LITERALS = TokenSet.orSet(STRING_LITERALS,NUMBERS,BOOL_VALUES,IK); //filed option value
+   // TokenSet CONSTANT_LITERALS = TokenSet.orSet(STRING_LITERALS,NUMBERS,BOOL_VALUES,IK); //filed option value
 }
