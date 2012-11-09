@@ -25,7 +25,7 @@
     <orderEntry type="module" module-name="injection.api" />
     <orderEntry type="module" module-name="injection.idea" />
     <orderEntry type="module" module-name="injection.protobuf" />
-    <orderEntry type="module" module-name="injection.protobuff.idea" />
+    <orderEntry type="module" module-name="injection.protobuf.idea" />
     <orderEntry type="module" module-name="injection.regexp" />
     <orderEntry type="module" module-name="injection.regexp.idea" />
   </component>

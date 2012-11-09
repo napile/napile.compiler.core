@@ -1,12 +1,12 @@
 package org.napile.compiler.injection.protobuf.lang.parser;
 
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.injection.protobuf.lang.parser.parsing.CompilationUnit;
+import org.napile.compiler.injection.protobuf.lang.parser.util.PbPatchedPsiBuilder;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
-import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.injection.protobuf.lang.parser.parsing.CompilationUnit;
-import org.napile.compiler.injection.protobuf.lang.parser.util.PbPatchedPsiBuilder;
 
 /**
  * @author Nikolay Matveev
