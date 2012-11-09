@@ -27,7 +27,7 @@ public class PbDefaultHighlighter
 	}
 
 	static final TextAttributes KEYWORD_ATTR = SyntaxHighlighterColors.KEYWORD.getDefaultAttributes().clone();	/*static{
-        KEYWORD_ATTR.setForegroundColor(new Color(0,0,67));
+		KEYWORD_ATTR.setForegroundColor(new Color(0,0,67));
         KEYWORD_ATTR.setFontType(Font.PLAIN);
     } */
 

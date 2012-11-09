@@ -9,17 +9,6 @@ import static org.napile.compiler.injection.protobuf.lang.psi.PbPsiEnums.Referen
 import java.io.File;
 
 import org.jetbrains.annotations.NotNull;
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.impl.source.resolve.ResolveCache;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.IncorrectOperationException;
 import org.napile.compiler.injection.protobuf.lang.PbTokenTypes;
 import org.napile.compiler.injection.protobuf.lang.psi.PbPsiElementVisitor;
 import org.napile.compiler.injection.protobuf.lang.psi.api.PbFile;
@@ -35,6 +24,17 @@ import org.napile.compiler.injection.protobuf.lang.psi.utils.PbPsiUtil;
 import org.napile.compiler.injection.protobuf.lang.resolve.PbResolveUtil;
 import org.napile.compiler.injection.protobuf.util.PbFileUtil;
 import org.napile.compiler.injection.protobuf.util.PbTextUtil;
+import com.intellij.lang.ASTNode;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.impl.source.resolve.ResolveCache;
+import com.intellij.util.ArrayUtil;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author Nikolay Matveev
@@ -166,7 +166,7 @@ public class PbRefImpl extends PbPsiElementImpl implements PbRef
 	@Override
 	public String getReferenceName()
 	{		/*switch (getRefKind()) {
-            case FILE:
+			case FILE:
             case PACKAGE:
             case MESSAGE_OR_GROUP:
             case MESSAGE_OR_ENUM_OR_GROUP:
