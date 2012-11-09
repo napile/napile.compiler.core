@@ -44,7 +44,7 @@
 		<flex flexfile="${home}/compiler/frontend.source/src/main/java/org/napile/compiler/lang/lexer/_NapileLexer.flex" destdir="${home}/compiler/frontend.source/src/main/java/org/napile/compiler/lang/lexer/"/>
 	</target>
 	<target name="protobuf-lexer">
-		<flex flexfile="${home}/compiler/injection.protobuff/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/_ProtobufLexer.flex" destdir="${home}/compiler/injection.protobuff/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/"/>
+		<flex flexfile="${home}/compiler/injection.protobuff/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/_ProtobufLexer.flex" destdir="${home}/compiler/injection.protobuf/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/"/>
 	</target>
 	<target name="regexp-lexer">
 		<flex flexfile="${home}/compiler/injection.regexp/src/main/java/org/napile/compiler/injection/regexp/lang/lexer/_RegExpLexer.flex" destdir="${home}/compiler/injection.regexp/src/main/java/org/napile/compiler/injection/regexp/lang/lexer/"/>
