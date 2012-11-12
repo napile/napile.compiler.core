@@ -14,28 +14,29 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.compiler.injection.text.lang.lexer;
 
 import org.jetbrains.annotations.NotNull;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 17:54/27.10.12
+ * @date 21:24/09.11.12
  */
-public interface InjectionSyntaxHighlighter
+public class TextParser implements PsiParser
 {
-	InjectionSyntaxHighlighter EMPTY = new InjectionSyntaxHighlighter()
-	{
-		@NotNull
-		@Override
-		public TextAttributesKey[] getTokenHighlights(IElementType iElementType)
-		{
-			return SyntaxHighlighterUtil.EMPTY;
-		}
-	};
-
 	@NotNull
-	TextAttributesKey[] getTokenHighlights(IElementType iElementType);
+	@Override
+	public ASTNode parse(IElementType root, PsiBuilder builder)
+	{
+		builder.setDebugMode(true);
+		PsiBuilder.Marker rootMarker = builder.mark();
+		while(!builder.eof())
+			builder.advanceLexer();
+		rootMarker.done(root);
+		return builder.getTreeBuilt();
+	}
 }

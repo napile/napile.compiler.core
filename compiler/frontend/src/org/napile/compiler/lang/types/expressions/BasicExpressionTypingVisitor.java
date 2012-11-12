@@ -271,7 +271,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitInjectionExpression(NapileInjectionExpression expression, ExpressionTypingContext context)
+	public JetTypeInfo visitInjectionExpression(NapileInjectionExpression expression, final ExpressionTypingContext context)
 	{
 		CodeInjection codeInjection = expression.getCodeInjection();
 		if(codeInjection == null)
@@ -279,6 +279,23 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			context.trace.report(Errors.UNKNOWN_INJECTION.on(expression));
 			return JetTypeInfo.create(null, context.dataFlowInfo);
 		}
+
+		PsiElement block = expression.getBlock();
+		if(block != null)
+			block.acceptChildren(new NapileVisitorVoid()
+			{
+				@Override
+				public void visitElement(PsiElement exp)
+				{
+					if(exp instanceof NapileElement)
+					{
+						ExpressionTypingContext c = ExpressionTypingContext.newContext(context.expressionTypingServices, context.trace, context.scope, context.dataFlowInfo, TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, true), false);
+						((NapileElement) exp).accept(BasicExpressionTypingVisitor.this, c);
+					}
+					else
+						exp.acceptChildren(this);
+				}
+			});
 
 		return DataFlowUtils.checkType(codeInjection.getReturnType(context.expectedType, context.trace, context.scope), expression, context, context.dataFlowInfo);
 	}

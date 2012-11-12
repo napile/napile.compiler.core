@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.compiler.injection.text.lang.lexer;
 
-import org.jetbrains.annotations.NotNull;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.psi.tree.IElementType;
+import java.io.Reader;
+
+import com.intellij.lexer.FlexAdapter;
 
 /**
  * @author VISTALL
- * @date 17:54/27.10.12
+ * @date 21:22/09.11.12
  */
-public interface InjectionSyntaxHighlighter
+public class TextLexer extends FlexAdapter
 {
-	InjectionSyntaxHighlighter EMPTY = new InjectionSyntaxHighlighter()
+	public TextLexer()
 	{
-		@NotNull
-		@Override
-		public TextAttributesKey[] getTokenHighlights(IElementType iElementType)
-		{
-			return SyntaxHighlighterUtil.EMPTY;
-		}
-	};
-
-	@NotNull
-	TextAttributesKey[] getTokenHighlights(IElementType iElementType);
+		super(new _TextLexer((Reader)null));
+	}
 }

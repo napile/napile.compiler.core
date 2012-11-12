@@ -56,7 +56,12 @@ public class IdeaInjectionSupportManager implements ApplicationComponent
 	public void initComponent()
 	{
 		//TODO [VISTALL] rework it
-		for(String className : new String[] {"org.napile.idea.injection.protobuf.PbIdeaInjectionSupport", "org.napile.idea.plugin.injection.regexp.RegExpIdeaInjectionSupport"})
+		for(String className : new String[]
+		{
+				"org.napile.idea.injection.protobuf.PbIdeaInjectionSupport",
+				"org.napile.idea.plugin.injection.regexp.RegExpIdeaInjectionSupport",
+				"org.napile.idea.plugin.injection.text.TextIdeaInjectionSupport"
+		})
 			try
 			{
 				Class<?> clazz = Class.forName(className);

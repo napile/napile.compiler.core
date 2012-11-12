@@ -49,4 +49,7 @@
 	<target name="regexp-lexer">
 		<flex flexfile="${home}/compiler/injection.regexp/src/main/java/org/napile/compiler/injection/regexp/lang/lexer/_RegExpLexer.flex" destdir="${home}/compiler/injection.regexp/src/main/java/org/napile/compiler/injection/regexp/lang/lexer/"/>
 	</target>
+	<target name="text-lexer">
+		<flex flexfile="${home}/compiler/injection.text/src/main/java/org/napile/compiler/injection/text/lang/lexer/_TextLexer.flex" destdir="${home}/compiler/injection.text/src/main/java/org/napile/compiler/injection/text/lang/lexer/"/>
+	</target>
 </project>

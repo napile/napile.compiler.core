@@ -16,9 +16,9 @@
 
 package org.napile.idea.plugin.highlighter;
 
-import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.resolve.BindingContext;
 import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.psi.PsiElement;
 
 abstract class AfterAnalysisHighlightingVisitor extends HighlightingVisitor
 {
@@ -31,7 +31,7 @@ abstract class AfterAnalysisHighlightingVisitor extends HighlightingVisitor
 	}
 
 	@Override
-	public void visitJetElement(NapileElement element)
+	public void visitElement(PsiElement element)
 	{
 		element.acceptChildren(this);
 	}

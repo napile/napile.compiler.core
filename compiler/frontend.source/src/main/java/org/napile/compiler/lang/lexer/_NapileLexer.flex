@@ -1,4 +1,4 @@
-package org.napile.compiler.lang.lexer;
+ package org.napile.compiler.lang.lexer;
 
 import java.util.Stack;
 

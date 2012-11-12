@@ -14,20 +14,29 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.injection.lang;
+package org.napile.compiler.injection.text;
 
-import com.intellij.lang.Language;
+import org.napile.compiler.injection.text.lang.lexer.TextLexer;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 20:21/09.11.12
+ * @date 21:47/09.11.12
  */
-public class TextLanguage extends Language
+public class LexerTest
 {
-	public static final TextLanguage INSTANCE = new TextLanguage();
-
-	protected TextLanguage()
+	public static void main(String... arg)
 	{
-		super("NAPILE-INJECTION-TEXT");
+		String str = "myVar is #{myVar}";
+
+		TextLexer textLexer = new TextLexer();
+		textLexer.start(str);
+
+		IElementType token = null;
+		while((token = textLexer.getTokenType()) != null)
+		{
+			System.out.println(token + " - " + textLexer.getTokenText());
+			textLexer.advance();
+		}
 	}
 }

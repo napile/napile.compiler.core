@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi.impl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.CodeInjection;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import org.napile.compiler.lang.psi.NapileExpressionImpl;
 import org.napile.compiler.lang.psi.NapileInjectionExpression;
@@ -59,5 +60,12 @@ public class NapileInjectionExpressionImpl extends NapileExpressionImpl implemen
 		String text = first.getText();
 		String str = first.getText().substring(1, text.lastIndexOf("/"));
 		return CodeInjectionManager.INSTANCE.getInjection(str);
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getBlock()
+	{
+		return findChildByType(NapileTokens.INJECTION_BLOCK);
 	}
 }

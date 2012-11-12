@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.compiler.injection.text.lang;
 
-import org.jetbrains.annotations.NotNull;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.psi.tree.IElementType;
+import com.intellij.lang.Language;
 
 /**
  * @author VISTALL
- * @date 17:54/27.10.12
+ * @date 20:21/09.11.12
  */
-public interface InjectionSyntaxHighlighter
+public class TextLanguage extends Language
 {
-	InjectionSyntaxHighlighter EMPTY = new InjectionSyntaxHighlighter()
-	{
-		@NotNull
-		@Override
-		public TextAttributesKey[] getTokenHighlights(IElementType iElementType)
-		{
-			return SyntaxHighlighterUtil.EMPTY;
-		}
-	};
+	public static final TextLanguage INSTANCE = new TextLanguage();
 
-	@NotNull
-	TextAttributesKey[] getTokenHighlights(IElementType iElementType);
+	protected TextLanguage()
+	{
+		super("NAPILE-INJECTION-TEXT");
+	}
 }

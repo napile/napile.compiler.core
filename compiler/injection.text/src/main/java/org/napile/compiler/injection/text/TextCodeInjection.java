@@ -20,11 +20,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.injection.lang.TextLanguage;
+import org.napile.compiler.injection.text.lang.TextLanguage;
+import org.napile.compiler.injection.text.lang.lexer.TextLexer;
+import org.napile.compiler.injection.text.lang.lexer.TextParser;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.PsiParser;
@@ -37,7 +40,7 @@ import com.intellij.psi.tree.TokenSet;
  * @author VISTALL
  * @date 20:19/09.11.12
  */
-public class TextInjection extends CodeInjection
+public class TextCodeInjection extends CodeInjection
 {
 	@NotNull
 	@Override
@@ -64,13 +67,13 @@ public class TextInjection extends CodeInjection
 	@Override
 	public Lexer createLexer(Project project)
 	{
-		return null;
+		return new TextLexer();
 	}
 
 	@Override
 	public PsiParser createParser(Project project)
 	{
-		return null;
+		return new TextParser();
 	}
 
 	@NotNull
@@ -98,6 +101,6 @@ public class TextInjection extends CodeInjection
 	@Override
 	public PsiElement createElement(ASTNode node)
 	{
-		return null;
+		return new ASTWrapperPsiElement(node);
 	}
 }

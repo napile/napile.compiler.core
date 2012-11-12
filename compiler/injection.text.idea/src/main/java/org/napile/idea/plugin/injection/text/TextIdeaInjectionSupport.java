@@ -14,21 +14,30 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.idea.plugin.injection.text;
 
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.CodeInjection;
-import com.intellij.psi.PsiElement;
+import org.napile.compiler.injection.text.TextCodeInjection;
+import org.napile.idea.plugin.IdeaInjectionSupport;
+import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
 
 /**
  * @author VISTALL
- * @date 13:19/27.10.12
+ * @date 21:28/09.11.12
  */
-public interface NapileInjectionExpression extends NapileExpression
+public class TextIdeaInjectionSupport implements IdeaInjectionSupport
 {
-	@Nullable
-	CodeInjection getCodeInjection();
+	private static final TextCodeInjection INSTANCE = new TextCodeInjection();
 
-	@Nullable
-	PsiElement getBlock();
+	@Override
+	public InjectionSyntaxHighlighter getSyntaxHighlighter()
+	{
+		return InjectionSyntaxHighlighter.EMPTY;
+	}
+
+	@Override
+	public CodeInjection getInjectionType()
+	{
+		return INSTANCE;
+	}
 }
