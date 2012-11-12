@@ -64,7 +64,7 @@
 		<lang.formatter language="NAPILE" implementationClass="org.napile.idea.plugin.formatter.JetFormattingModelBuilder"/>
 		<lang.findUsagesProvider language="NAPILE" implementationClass="org.napile.idea.plugin.findUsages.JetFindUsagesProvider"/>
 		<lang.refactoringSupport language="NAPILE" implementationClass="org.napile.idea.plugin.refactoring.JetRefactoringSupportProvider"/>
-		<quoteHandler fileType="NAPILE" className="org.napile.idea.plugin.editor.KotlinQuoteHandler"/>
+
 		<refactoring.moveHandler implementation="org.napile.idea.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler"/>
 		<refactoring.copyHandler implementation="org.napile.idea.plugin.refactoring.copy.JetCopyClassHandler"/>
 		<treeStructureProvider implementation="org.napile.idea.plugin.projectView.JetProjectViewProvider"/>

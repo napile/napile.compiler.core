@@ -68,8 +68,15 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
 import org.napile.compiler.lang.resolve.calls.autocasts.Nullability;
-import org.napile.compiler.lang.resolve.constants.*;
-import org.napile.compiler.lang.resolve.constants.StringValue;
+import org.napile.compiler.lang.resolve.constants.ByteValue;
+import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
+import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
+import org.napile.compiler.lang.resolve.constants.DoubleValue;
+import org.napile.compiler.lang.resolve.constants.ErrorValue;
+import org.napile.compiler.lang.resolve.constants.FloatValue;
+import org.napile.compiler.lang.resolve.constants.IntValue;
+import org.napile.compiler.lang.resolve.constants.LongValue;
+import org.napile.compiler.lang.resolve.constants.ShortValue;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
@@ -326,6 +333,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			value = compileTimeConstantResolver.getCharValue(text, context.expectedType);
 		}
+		else if(elementType == NapileNodes.STRING_CONSTANT)
+			value = compileTimeConstantResolver.getStringValue(text, context.expectedType);
 		else if(elementType == NapileNodes.NULL)
 		{
 			value = compileTimeConstantResolver.getNullValue(context.expectedType);
@@ -1479,60 +1488,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		context.trace.report(DECLARATION_IN_ILLEGAL_CONTEXT.on(dcl));
 		return JetTypeInfo.create(null, context.dataFlowInfo);
 	}
-
-	@Override
-	public JetTypeInfo visitStringTemplateExpression(NapileStringTemplateExpression expression, ExpressionTypingContext contextWithExpectedType)
-	{
-		final ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
-		final StringBuilder builder = new StringBuilder();
-		final CompileTimeConstant<?>[] value = new CompileTimeConstant<?>[1];
-		for(NapileStringTemplateEntry entry : expression.getEntries())
-		{
-			entry.accept(new NapileVisitorVoid()
-			{
-
-				@Override
-				public void visitStringTemplateEntryWithExpression(NapileStringTemplateEntryWithExpression entry)
-				{
-					NapileExpression entryExpression = entry.getExpression();
-					if(entryExpression != null)
-					{
-						facade.getTypeInfo(entryExpression, context);
-					}
-					value[0] = CompileTimeConstantResolver.OUT_OF_RANGE;
-				}
-
-				@Override
-				public void visitLiteralStringTemplateEntry(NapileLiteralStringTemplateEntry entry)
-				{
-					builder.append(entry.getText());
-				}
-
-				@Override
-				public void visitEscapeStringTemplateEntry(NapileEscapeStringTemplateEntry entry)
-				{
-					String text = entry.getText();
-
-					CompileTimeConstant<?> character = CompileTimeConstantResolver.escapedStringToCharValue(text);
-					if(character instanceof ErrorValue)
-					{
-						context.trace.report(ILLEGAL_ESCAPE_SEQUENCE.on(entry));
-						value[0] = CompileTimeConstantResolver.OUT_OF_RANGE;
-					}
-					else
-					{
-						builder.append(((CharValue) character).getValue());
-					}
-				}
-			});
-		}
-		if(value[0] != CompileTimeConstantResolver.OUT_OF_RANGE)
-		{
-			context.trace.record(BindingContext.COMPILE_TIME_VALUE, expression, new StringValue(builder.toString()));
-		}
-		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.STRING, false), expression, contextWithExpectedType, context.dataFlowInfo);
-	}
-
 
 	@Override
 	public JetTypeInfo visitJetElement(NapileElement element, ExpressionTypingContext context)

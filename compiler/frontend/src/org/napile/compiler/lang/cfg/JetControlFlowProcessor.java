@@ -968,20 +968,6 @@ public class JetControlFlowProcessor
 			visitClassOrObject(objectDeclaration);
 		}
 
-		@Override
-		public void visitStringTemplateExpression(NapileStringTemplateExpression expression)
-		{
-			for(NapileStringTemplateEntry entry : expression.getEntries())
-			{
-				if(entry instanceof NapileStringTemplateEntryWithExpression)
-				{
-					NapileStringTemplateEntryWithExpression entryWithExpression = (NapileStringTemplateEntryWithExpression) entry;
-					value(entryWithExpression.getExpression(), false);
-				}
-			}
-			builder.read(expression);
-		}
-
 		private void visitClassOrObject(NapileClassLike classOrObject)
 		{
 			NapileDeclaration[] declarations = classOrObject.getDeclarations();

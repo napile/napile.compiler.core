@@ -43,15 +43,7 @@ public interface NapileTokens
 	NapileToken INTEGER_LITERAL = new NapileToken("INTEGER_LITERAL");
 	NapileToken FLOAT_LITERAL = new NapileToken("FLOAT_CONSTANT");
 	NapileToken CHARACTER_LITERAL = new NapileToken("CHARACTER_LITERAL");
-
-	NapileToken CLOSING_QUOTE = new NapileToken("CLOSING_QUOTE");
-	NapileToken OPEN_QUOTE = new NapileToken("OPEN_QUOTE");
-	NapileToken REGULAR_STRING_PART = new NapileToken("REGULAR_STRING_PART");
-	NapileToken ESCAPE_SEQUENCE = new NapileToken("ESCAPE_SEQUENCE");
-	NapileToken SHORT_TEMPLATE_ENTRY_START = new NapileToken("SHORT_TEMPLATE_ENTRY_START");
-	NapileToken LONG_TEMPLATE_ENTRY_START = new NapileToken("LONG_TEMPLATE_ENTRY_START");
-	NapileToken LONG_TEMPLATE_ENTRY_END = new NapileToken("LONG_TEMPLATE_ENTRY_END");
-	NapileToken DANGLING_NEWLINE = new NapileToken("DANGLING_NEWLINE");
+	NapileToken STRING_LITERAL = new NapileToken("STRING_LITERAL");
 
 	NapileKeywordToken PACKAGE_KEYWORD = NapileKeywordToken.keyword("package");
 	NapileKeywordToken AS_KEYWORD = NapileKeywordToken.keyword("as");
@@ -194,7 +186,7 @@ public interface NapileTokens
 	TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
 	TokenSet COMMENTS = TokenSet.create(EOL_COMMENT, BLOCK_COMMENT, DOC_COMMENT);
 
-	TokenSet STRINGS = TokenSet.create(CHARACTER_LITERAL, REGULAR_STRING_PART);
+	TokenSet STRINGS = TokenSet.create(CHARACTER_LITERAL, STRING_LITERAL);
 	TokenSet OPERATIONS = TokenSet.create(AS_KEYWORD, AS_SAFE, IS_KEYWORD, IN_KEYWORD, DOT, PLUSPLUS, MINUSMINUS, EXCLEXCL, MUL, PLUS, MINUS, EXCL, DIV, PERC, LT, GT, LTEQ, GTEQ, EQEQ, EXCLEQ, ANDAND, OROR, SAFE_ACCESS, ELVIS,
 			//            MAP, FILTER,
 			COLON, RANGE, EQ, MULTEQ, DIVEQ, PERCEQ, PLUSEQ, MINUSEQ, NOT_IN, NOT_IS,

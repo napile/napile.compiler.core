@@ -334,11 +334,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitExpression(expression, data);
 	}
 
-	public R visitStringTemplateExpression(NapileStringTemplateExpression expression, D data)
-	{
-		return visitExpression(expression, data);
-	}
-
 	public R visitNamedDeclaration(NapileNamedDeclaration declaration, D data)
 	{
 		return visitDeclaration(declaration, data);
@@ -382,36 +377,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	public R visitAnonymClass(NapileAnonymClass element, D data)
 	{
 		return visitNamedDeclaration(element, data);
-	}
-
-	public R visitStringTemplateEntry(NapileStringTemplateEntry entry, D data)
-	{
-		return visitJetElement(entry, data);
-	}
-
-	public R visitStringTemplateEntryWithExpression(NapileStringTemplateEntryWithExpression entry, D data)
-	{
-		return visitStringTemplateEntry(entry, data);
-	}
-
-	public R visitBlockStringTemplateEntry(NapileBlockStringTemplateEntry entry, D data)
-	{
-		return visitStringTemplateEntryWithExpression(entry, data);
-	}
-
-	public R visitSimpleNameStringTemplateEntry(NapileSimpleNameStringTemplateEntry entry, D data)
-	{
-		return visitStringTemplateEntryWithExpression(entry, data);
-	}
-
-	public R visitLiteralStringTemplateEntry(NapileLiteralStringTemplateEntry entry, D data)
-	{
-		return visitStringTemplateEntry(entry, data);
-	}
-
-	public R visitEscapeStringTemplateEntry(NapileEscapeStringTemplateEntry entry, D data)
-	{
-		return visitStringTemplateEntry(entry, data);
 	}
 
 	public R visitReferenceParameter(NapileReferenceParameter napileReferenceParameter, D data)

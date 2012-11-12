@@ -74,13 +74,8 @@ public interface NapileNodes
 	NapileNode BOOLEAN_CONSTANT = new NapileNode("BOOLEAN_CONSTANT", NapileConstantExpression.class);
 	NapileNode FLOAT_CONSTANT = new NapileNode("FLOAT_CONSTANT", NapileConstantExpression.class);
 	NapileNode CHARACTER_CONSTANT = new NapileNode("CHARACTER_CONSTANT", NapileConstantExpression.class);
+	NapileNode STRING_CONSTANT = new NapileNode("STRING_CONSTANT", NapileConstantExpression.class);
 	NapileNode INTEGER_CONSTANT = new NapileNode("INTEGER_CONSTANT", NapileConstantExpression.class);
-
-	NapileNode STRING_TEMPLATE = new NapileNode("STRING_TEMPLATE", NapileStringTemplateExpression.class);
-	NapileNode LONG_STRING_TEMPLATE_ENTRY = new NapileNode("LONG_STRING_TEMPLATE_ENTRY", NapileBlockStringTemplateEntry.class);
-	NapileNode SHORT_STRING_TEMPLATE_ENTRY = new NapileNode("SHORT_STRING_TEMPLATE_ENTRY", NapileSimpleNameStringTemplateEntry.class);
-	NapileNode LITERAL_STRING_TEMPLATE_ENTRY = new NapileNode("LITERAL_STRING_TEMPLATE_ENTRY", NapileLiteralStringTemplateEntry.class);
-	NapileNode ESCAPE_STRING_TEMPLATE_ENTRY = new NapileNode("ESCAPE_STRING_TEMPLATE_ENTRY", NapileEscapeStringTemplateEntry.class);
 
 	NapileNode CLASS_OF = new NapileNode("CLASS_OF", NapileClassOfExpression.class);
 	NapileNode TYPE_OF = new NapileNode("TYPE_OF", NapileTypeOfExpression.class);

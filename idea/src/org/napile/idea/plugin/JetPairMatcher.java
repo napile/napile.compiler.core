@@ -31,7 +31,6 @@ public class JetPairMatcher implements PairedBraceMatcher
 {
 	private final BracePair[] pairs = new BracePair[]{
 			new BracePair(NapileTokens.LPAR, NapileTokens.RPAR, false),
-			new BracePair(NapileTokens.LONG_TEMPLATE_ENTRY_START, NapileTokens.LONG_TEMPLATE_ENTRY_END, false),
 			new BracePair(NapileTokens.LBRACE, NapileTokens.RBRACE, true),
 			new BracePair(NapileTokens.LBRACKET, NapileTokens.RBRACKET, false)
 	};

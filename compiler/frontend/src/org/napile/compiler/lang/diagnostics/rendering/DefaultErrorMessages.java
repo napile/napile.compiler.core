@@ -169,7 +169,6 @@ public class DefaultErrorMessages
 
 		MAP.put(NO_CONSTRUCTOR, "This class does not have a constructor");
 		MAP.put(NOT_A_CLASS, "Not a class");
-		MAP.put(ILLEGAL_ESCAPE_SEQUENCE, "Illegal escape sequence");
 
 		MAP.put(LOCAL_EXTENSION_PROPERTY, "Local extension properties are not allowed");
 

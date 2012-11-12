@@ -509,52 +509,6 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
-	public StackValue visitStringTemplateExpression(NapileStringTemplateExpression expression, StackValue receiver)
-	{
-		StringBuilder constantValue = new StringBuilder("");
-		final NapileStringTemplateEntry[] entries = expression.getEntries();
-		for(NapileStringTemplateEntry entry : entries)
-		{
-			if(entry instanceof NapileLiteralStringTemplateEntry)
-				constantValue.append(entry.getText());
-			else if(entry instanceof NapileEscapeStringTemplateEntry)
-				constantValue.append(((NapileEscapeStringTemplateEntry) entry).getUnescapedValue());
-			else
-			{
-				constantValue = null;
-				break;
-			}
-		}
-		if(constantValue != null)
-		{
-			final TypeNode type = expressionType(expression);
-			return StackValue.constant(constantValue.toString(), type);
-		}
-		else
-		{
-			/*instructs.newObject(TypeConstants.STRING_BUILDER);
-			instructs.invokeSpecial(NodeRefUtil.constructorRef(CodeTodo.STRING_BUILDER));
-
-			for(NapileStringTemplateEntry entry : entries)
-			{
-				if(entry instanceof NapileStringTemplateEntryWithExpression)
-				{
-					invokeAppend(entry.getExpression());
-				}
-				else
-				{
-					String text = entry instanceof NapileEscapeStringTemplateEntry ? ((NapileEscapeStringTemplateEntry) entry).getUnescapedValue() : entry.getText();
-					v.aconst(text);
-					genInvokeAppendMethod(v, JAVA_STRING_TYPE);
-				}
-			}
-			v.invokevirtual("java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
-			return StackValue.onStack(TypeConstants.STRING); */
-			throw new UnsupportedOperationException();
-		}
-	}
-
-	@Override
 	public StackValue visitBinaryExpression(NapileBinaryExpression expression, StackValue receiver)
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();

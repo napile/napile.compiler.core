@@ -51,7 +51,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		return builder.build();
 	}
 
-	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.OPEN_QUOTE, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.FOR_KEYWORD, NapileTokens.NULL_KEYWORD, NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.IS_KEYWORD, NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.BREAK_KEYWORD, NapileTokens.CONTINUE_KEYWORD, NapileTokens.ANONYM_KEYWORD, NapileTokens.IF_KEYWORD, NapileTokens.TRY_KEYWORD, NapileTokens.ELSE_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD, NapileTokens.WHEN_KEYWORD, NapileTokens.RBRACKET, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
+	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.FOR_KEYWORD, NapileTokens.NULL_KEYWORD, NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.IS_KEYWORD, NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.BREAK_KEYWORD, NapileTokens.CONTINUE_KEYWORD, NapileTokens.ANONYM_KEYWORD, NapileTokens.IF_KEYWORD, NapileTokens.TRY_KEYWORD, NapileTokens.ELSE_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD, NapileTokens.WHEN_KEYWORD, NapileTokens.RBRACKET, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
 			//            MUL,
 			NapileTokens.PLUS, NapileTokens.MINUS, NapileTokens.EXCL, NapileTokens.DIV, NapileTokens.PERC, NapileTokens.LTEQ,
 			// TODO GTEQ,   foo<bar, baz>=x
@@ -67,7 +67,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			NapileTokens.HASH, // method targeting
 
 			// literal constant
-			NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.OPEN_QUOTE, NapileTokens.INTEGER_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.NULL_KEYWORD,
+			NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.INTEGER_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.NULL_KEYWORD,
 
 			NapileTokens.LBRACE, // functionLiteral
 
@@ -593,48 +593,11 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			parseFunctionLiteral();
 		}
-		else if(at(NapileTokens.OPEN_QUOTE))
-		{
-			parseStringTemplate();
-		}
 		else if(!parseLiteralConstant())
 		{
 			// TODO: better recovery if FIRST(element) did not match
 			errorWithRecovery("Expecting an element", EXPRESSION_FOLLOW);
 		}
-	}
-
-	/*
-		 * stringTemplate
-		 *   : OPEN_QUOTE stringTemplateElement* CLOSING_QUOTE
-		 *   ;
-		 */
-	private void parseStringTemplate()
-	{
-		assert _at(NapileTokens.OPEN_QUOTE);
-
-		PsiBuilder.Marker template = mark();
-
-		advance(); // OPEN_QUOTE
-
-		while(!eof())
-		{
-			if(at(NapileTokens.CLOSING_QUOTE) || at(NapileTokens.DANGLING_NEWLINE))
-			{
-				break;
-			}
-			parseStringTemplateElement();
-		}
-
-		if(at(NapileTokens.DANGLING_NEWLINE))
-		{
-			errorAndAdvance("Expecting '\"'");
-		}
-		else
-		{
-			expect(NapileTokens.CLOSING_QUOTE, "Expecting '\"'");
-		}
-		template.done(STRING_TEMPLATE);
 	}
 
 	private void parseClassOrTypeOf(IElementType done)
@@ -652,79 +615,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		marker.done(done);
 	}
-	/*
-		 * stringTemplateElement
-		 *   : RegularStringPart
-		 *   : ShortTemplateEntrySTART (SimpleName | "this")
-		 *   : EscapeSequence
-		 *   : longTemplate
-		 *   ;
-		 *
-		 * longTemplate
-		 *   : "${" expression "}"
-		 *   ;
-		 */
-	private void parseStringTemplateElement()
-	{
-		if(at(NapileTokens.REGULAR_STRING_PART))
-		{
-			PsiBuilder.Marker mark = mark();
-			advance(); // REGULAR_STRING_PART
-			mark.done(LITERAL_STRING_TEMPLATE_ENTRY);
-		}
-		else if(at(NapileTokens.ESCAPE_SEQUENCE))
-		{
-			PsiBuilder.Marker mark = mark();
-			advance(); // ESCAPE_SEQUENCE
-			mark.done(ESCAPE_STRING_TEMPLATE_ENTRY);
-		}
-		else if(at(NapileTokens.SHORT_TEMPLATE_ENTRY_START))
-		{
-			PsiBuilder.Marker entry = mark();
-			advance(); // SHORT_TEMPLATE_ENTRY_START
-
-			if(at(NapileTokens.THIS_KEYWORD))
-			{
-				PsiBuilder.Marker thisExpression = mark();
-				PsiBuilder.Marker reference = mark();
-				advance(); // THIS_KEYWORD
-				reference.done(REFERENCE_EXPRESSION);
-				thisExpression.done(THIS_EXPRESSION);
-			}
-			else
-			{
-				NapileToken keyword = KEYWORD_TEXTS.get(getBuilder().getTokenText());
-				if(keyword != null)
-				{
-					getBuilder().remapCurrentToken(keyword);
-					errorAndAdvance("Keyword cannot be used as a reference");
-				}
-				else
-				{
-					PsiBuilder.Marker reference = mark();
-					expect(NapileTokens.IDENTIFIER, "Expecting a name");
-					reference.done(REFERENCE_EXPRESSION);
-				}
-			}
-
-			entry.done(SHORT_STRING_TEMPLATE_ENTRY);
-		}
-		else if(at(NapileTokens.LONG_TEMPLATE_ENTRY_START))
-		{
-			PsiBuilder.Marker longTemplateEntry = mark();
-
-			advance(); // LONG_TEMPLATE_ENTRY_START
-
-			parseExpression();
-
-			expect(NapileTokens.LONG_TEMPLATE_ENTRY_END, "Expecting '}'", TokenSet.create(NapileTokens.CLOSING_QUOTE, NapileTokens.DANGLING_NEWLINE, NapileTokens.REGULAR_STRING_PART, NapileTokens.ESCAPE_SEQUENCE, NapileTokens.SHORT_TEMPLATE_ENTRY_START));
-			longTemplateEntry.done(LONG_STRING_TEMPLATE_ENTRY);
-		}
-		else
-		{
-			errorAndAdvance("Unexpected token in a string template");
-		}
-	}
 
 	/*
 		 * literalConstant
@@ -741,29 +631,19 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private boolean parseLiteralConstant()
 	{
 		if(at(NapileTokens.TRUE_KEYWORD) || at(NapileTokens.FALSE_KEYWORD))
-		{
 			parseOneTokenExpression(BOOLEAN_CONSTANT);
-		}
 		else if(at(NapileTokens.INTEGER_LITERAL))
-		{
 			parseOneTokenExpression(INTEGER_CONSTANT);
-		}
 		else if(at(NapileTokens.CHARACTER_LITERAL))
-		{
 			parseOneTokenExpression(CHARACTER_CONSTANT);
-		}
 		else if(at(NapileTokens.FLOAT_LITERAL))
-		{
 			parseOneTokenExpression(FLOAT_CONSTANT);
-		}
+		else if(at(NapileTokens.STRING_LITERAL))
+			parseOneTokenExpression(STRING_CONSTANT);
 		else if(at(NapileTokens.NULL_KEYWORD))
-		{
 			parseOneTokenExpression(NULL);
-		}
 		else
-		{
 			return false;
-		}
 		return true;
 	}
 

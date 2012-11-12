@@ -14,23 +14,20 @@ import com.intellij.psi.tree.IElementType;
 
 %{
     private static final class State {
-        final int lBraceCount;
         final int state;
 
-        public State(int state, int lBraceCount) {
+        public State(int state) {
             this.state = state;
-            this.lBraceCount = lBraceCount;
         }
 
         @Override
         public String toString() {
-            return "yystate = " + state + (lBraceCount == 0 ? "" : "lBraceCount = " + lBraceCount);
+            return "yystate = " + state ;
         }
     }
 
     private final Stack<State> states = new Stack<State>();
-    private int lBraceCount;
-    
+
     private int commentStart;
     private int commentDepth;
 
@@ -40,14 +37,12 @@ import com.intellij.psi.tree.IElementType;
 	private boolean isInjectionBlock;
 
     private void pushState(int state) {
-        states.push(new State(yystate(), lBraceCount));
-        lBraceCount = 0;
+        states.push(new State(yystate()));
         yybegin(state);
     }
 
     private void popState() {
         State state = states.pop();
-        lBraceCount = state.lBraceCount;
         yybegin(state.state);
     }
 
@@ -69,7 +64,7 @@ import com.intellij.psi.tree.IElementType;
   return;
 %eof}
 
-%xstate STRING RAW_STRING SHORT_TEMPLATE_ENTRY BLOCK_COMMENT DOC_COMMENT INJECTION INJECTION_BLOCK
+%xstate STRING BLOCK_COMMENT DOC_COMMENT INJECTION INJECTION_BLOCK
 %state LONG_TEMPLATE_ENTRY
 
 DIGIT=[0-9]
@@ -109,61 +104,10 @@ HEX_SIGNIFICAND={HEX_INTEGER_LITERAL}|0[Xx]{HEX_DIGIT}*\.{HEX_DIGIT}+
 //HEX_SIGNIFICAND={HEX_INTEGER_LITERAL}|{HEX_INTEGER_LITERAL}\.|0[Xx]{HEX_DIGIT}*\.{HEX_DIGIT}+
 
 CHARACTER_LITERAL="'"([^\\\'\n]|{ESCAPE_SEQUENCE})*("'"|\\)?
-// TODO: introduce symbols (e.g. 'foo) as another way to write string literals
 STRING_LITERAL=\"([^\\\"\n]|{ESCAPE_SEQUENCE})*(\"|\\)?
 ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
 
-// ANY_ESCAPE_SEQUENCE = \\[^]
-THREE_QUO = (\"\"\")
-ONE_TWO_QUO = (\"[^\"]) | (\"\"[^\"])
-QUO_STRING_CHAR = [^\"] | {ONE_TWO_QUO}
-RAW_STRING_LITERAL = {THREE_QUO} {QUO_STRING_CHAR}* {THREE_QUO}?
-
-REGULAR_STRING_PART=[^\\\"\n\$]+
-SHORT_TEMPLATE_ENTRY=\${IDENTIFIER}
-LONELY_DOLLAR=\$
-LONG_TEMPLATE_ENTRY_START=\$\{
-LONG_TEMPLATE_ENTRY_END=\}
-
 %%
-
-// String templates
-
-{THREE_QUO}                      { pushState(RAW_STRING); return NapileTokens.OPEN_QUOTE; }
-<RAW_STRING> \n                  { return NapileTokens.REGULAR_STRING_PART; }
-<RAW_STRING> \"                  { return NapileTokens.REGULAR_STRING_PART; }
-<RAW_STRING> \\                  { return NapileTokens.REGULAR_STRING_PART; }
-<RAW_STRING> {THREE_QUO}         { popState(); return NapileTokens.CLOSING_QUOTE; }
-
-\"                          { pushState(STRING); return NapileTokens.OPEN_QUOTE; }
-<STRING> \n                 { popState(); yypushback(1); return NapileTokens.DANGLING_NEWLINE; }
-<STRING> \"                 { popState(); return NapileTokens.CLOSING_QUOTE; }
-<STRING> {ESCAPE_SEQUENCE}  { return NapileTokens.ESCAPE_SEQUENCE; }
-
-<STRING, RAW_STRING> {REGULAR_STRING_PART}         { return NapileTokens.REGULAR_STRING_PART; }
-<STRING, RAW_STRING> {SHORT_TEMPLATE_ENTRY}        {
-                                                        pushState(SHORT_TEMPLATE_ENTRY);
-                                                        yypushback(yylength() - 1);
-                                                        return NapileTokens.SHORT_TEMPLATE_ENTRY_START;
-                                                   }
-// Only *this* keyword is itself an expression valid in this position
-// *null*, *true* and *false* are also keywords and expression, but it does not make sense to put them
-// in a string template for it'd be easier to just type them in without a dollar
-<SHORT_TEMPLATE_ENTRY> "this"          { popState(); return NapileTokens.THIS_KEYWORD; }
-<SHORT_TEMPLATE_ENTRY> {IDENTIFIER}    { popState(); return NapileTokens.IDENTIFIER; }
-
-<STRING, RAW_STRING> {LONELY_DOLLAR}               { return NapileTokens.REGULAR_STRING_PART; }
-<STRING, RAW_STRING> {LONG_TEMPLATE_ENTRY_START}   { pushState(LONG_TEMPLATE_ENTRY); return NapileTokens.LONG_TEMPLATE_ENTRY_START; }
-
-<LONG_TEMPLATE_ENTRY> "{"              { lBraceCount++; return NapileTokens.LBRACE; }
-<LONG_TEMPLATE_ENTRY> "}"              {
-                                           if (lBraceCount == 0) {
-                                             popState();
-                                             return NapileTokens.LONG_TEMPLATE_ENTRY_END;
-                                           }
-                                           lBraceCount--;
-                                           return NapileTokens.RBRACE;
-                                       }
 
 // (Nested) comments
 
@@ -291,6 +235,7 @@ LONG_TEMPLATE_ENTRY_END=\}
 {HEX_DOUBLE_LITERAL} { return NapileTokens.FLOAT_LITERAL; }
 
 {CHARACTER_LITERAL} { return NapileTokens.CHARACTER_LITERAL; }
+{STRING_LITERAL}    { return NapileTokens.STRING_LITERAL; }
 
 "continue"   { return NapileTokens.CONTINUE_KEYWORD ;}
 "package"    { return NapileTokens.PACKAGE_KEYWORD ;}

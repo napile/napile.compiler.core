@@ -150,7 +150,6 @@ public interface Errors
 
 	SimpleDiagnosticFactory<PsiElement> NO_CONSTRUCTOR = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> NOT_A_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileEscapeStringTemplateEntry> ILLEGAL_ESCAPE_SEQUENCE = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	DiagnosticFactory1<PsiElement, JetType> MISSED_SUPER_CALL = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileTypeReference> INVALID_SUPER_CALL = SimpleDiagnosticFactory.create(Severity.ERROR);

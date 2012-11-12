@@ -76,7 +76,6 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 	private final static InsertHandler<LookupElement> FUNCTION_INSERT_HANDLER = new JetFunctionInsertHandler(JetFunctionInsertHandler.CaretPosition.AFTER_BRACKETS, JetFunctionInsertHandler.BracketType.PARENTHESIS);
 
 	private final static ElementFilter GENERAL_FILTER = new NotFilter(new OrFilter(new CommentFilter(), // or
-			new ParentFilter(new ClassFilter(NapileLiteralStringTemplateEntry.class)), // or
 			new ParentFilter(new ClassFilter(NapileConstantExpression.class)), // or
 			new LeftNeighbour(new TextFilter("."))));
 

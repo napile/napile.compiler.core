@@ -17,7 +17,6 @@
 package org.napile.idea.plugin.editor;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.codeInsight.CodeInsightSettings;
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
@@ -26,7 +25,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 
 /**
  * @author Evgeny Gerashchenko
@@ -46,10 +44,10 @@ public class KotlinTypedHandler extends TypedHandlerDelegate
 			PsiDocumentManager.getInstance(project).commitAllDocuments();
 			int offset = editor.getCaretModel().getOffset();
 			PsiElement previousElement = file.findElementAt(offset - 1);
-			if(previousElement instanceof LeafPsiElement && ((LeafPsiElement) previousElement).getElementType() == NapileTokens.LONG_TEMPLATE_ENTRY_START)
+			/*if(previousElement instanceof LeafPsiElement && ((LeafPsiElement) previousElement).getElementType() == NapileTokens.LONG_TEMPLATE_ENTRY_START)
 			{
 				editor.getDocument().insertString(offset, "}");
-			}
+			}       */
 			return Result.STOP;
 		}
 		return Result.CONTINUE;

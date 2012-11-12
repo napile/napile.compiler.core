@@ -16,15 +16,9 @@
 
 package org.napile.compiler.lang.resolve.constants;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.lang.psi.NapileEscapeStringTemplateEntry;
-import org.napile.compiler.lang.psi.NapileLiteralStringTemplateEntry;
-import org.napile.compiler.lang.psi.NapileStringTemplateEntry;
-import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
@@ -302,61 +296,15 @@ public class CompileTimeConstantResolver
 	}
 
 	@NotNull
-	public CompileTimeConstant<?> getRawStringValue(@NotNull String unescapedText, @NotNull JetType expectedType)
+	public CompileTimeConstant<?> getStringValue(@NotNull String unescapedText, @NotNull JetType expectedType)
 	{
-		CompileTimeConstant<?> error = checkNativeType("\"\"\"...\"\"\"", expectedType, "string", TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.STRING, false));
+		/*CompileTimeConstant<?> error = checkNativeType("\"...\"", expectedType, "string", TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.STRING, false));
 		if(error != null)
 		{
 			return error;
-		}
+		}   */
 
-		return new StringValue(unescapedText.substring(3, unescapedText.length() - 3));
-	}
-
-	@NotNull
-	public CompileTimeConstant<?> getEscapedStringValue(@NotNull List<NapileStringTemplateEntry> entries, @NotNull JetType expectedType)
-	{
-		CompileTimeConstant<?> error = checkNativeType("\"...\"", expectedType, "string", TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.STRING, false));
-		if(error != null)
-		{
-			return error;
-		}
-		final StringBuilder builder = new StringBuilder();
-		final CompileTimeConstant<?>[] result = new CompileTimeConstant<?>[1];
-		for(NapileStringTemplateEntry entry : entries)
-		{
-			entry.accept(new NapileVisitorVoid()
-			{
-				@Override
-				public void visitStringTemplateEntry(NapileStringTemplateEntry entry)
-				{
-					result[0] = new ErrorValue("String templates are not allowed in compile-time constants");
-				}
-
-				@Override
-				public void visitLiteralStringTemplateEntry(NapileLiteralStringTemplateEntry entry)
-				{
-					builder.append(entry.getText());
-				}
-
-				@Override
-				public void visitEscapeStringTemplateEntry(NapileEscapeStringTemplateEntry entry)
-				{
-					String text = entry.getText();
-					assert text.length() == 2 && text.charAt(0) == '\\';
-					Character character = translateEscape(text.charAt(1));
-					if(character != null)
-					{
-						builder.append(character);
-					}
-				}
-			});
-			if(result[0] != null)
-			{
-				return result[0];
-			}
-		}
-		return new StringValue(builder.toString());
+		return new StringValue(unescapedText.substring(1, unescapedText.length() - 1));
 	}
 
 	@NotNull

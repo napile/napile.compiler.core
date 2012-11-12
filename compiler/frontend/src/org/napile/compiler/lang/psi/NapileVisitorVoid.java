@@ -341,11 +341,6 @@ public void visitBlockExpression(NapileBlockExpression expression)
 		visitExpression(expression);
 	}
 
-	public void visitStringTemplateExpression(NapileStringTemplateExpression expression)
-	{
-		visitExpression(expression);
-	}
-
 	public void visitNamedDeclaration(NapileNamedDeclaration declaration)
 	{
 		visitDeclaration(declaration);
@@ -384,36 +379,6 @@ public void visitBlockExpression(NapileBlockExpression expression)
 	public void visitAnonymClass(NapileAnonymClass declaration)
 	{
 		visitDeclaration(declaration);
-	}
-
-	public void visitStringTemplateEntry(NapileStringTemplateEntry entry)
-	{
-		visitJetElement(entry);
-	}
-
-	public void visitStringTemplateEntryWithExpression(NapileStringTemplateEntryWithExpression entry)
-	{
-		visitStringTemplateEntry(entry);
-	}
-
-	public void visitBlockStringTemplateEntry(NapileBlockStringTemplateEntry entry)
-	{
-		visitStringTemplateEntryWithExpression(entry);
-	}
-
-	public void visitSimpleNameStringTemplateEntry(NapileSimpleNameStringTemplateEntry entry)
-	{
-		visitStringTemplateEntryWithExpression(entry);
-	}
-
-	public void visitLiteralStringTemplateEntry(NapileLiteralStringTemplateEntry entry)
-	{
-		visitStringTemplateEntry(entry);
-	}
-
-	public void visitEscapeStringTemplateEntry(NapileEscapeStringTemplateEntry entry)
-	{
-		visitStringTemplateEntry(entry);
 	}
 
 	public void visitReferenceParameter(NapileReferenceParameter napileReferenceParameter)

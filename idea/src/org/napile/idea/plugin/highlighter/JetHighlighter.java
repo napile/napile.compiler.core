@@ -73,16 +73,9 @@ public class JetHighlighter extends SyntaxHighlighterBase
 		keys.put(NapileTokens.DOT, JetHighlightingColors.DOT);
 		keys.put(NapileTokens.ARROW, JetHighlightingColors.ARROW);
 
-		keys.put(NapileTokens.OPEN_QUOTE, JetHighlightingColors.STRING);
-		keys.put(NapileTokens.CLOSING_QUOTE, JetHighlightingColors.STRING);
-		keys.put(NapileTokens.REGULAR_STRING_PART, JetHighlightingColors.STRING);
-		keys.put(NapileTokens.LONG_TEMPLATE_ENTRY_END, JetHighlightingColors.STRING_ESCAPE);
-		keys.put(NapileTokens.LONG_TEMPLATE_ENTRY_START, JetHighlightingColors.STRING_ESCAPE);
-		keys.put(NapileTokens.SHORT_TEMPLATE_ENTRY_START, JetHighlightingColors.STRING_ESCAPE);
-
-		keys.put(NapileTokens.ESCAPE_SEQUENCE, JetHighlightingColors.STRING_ESCAPE);
 
 		keys.put(NapileTokens.CHARACTER_LITERAL, JetHighlightingColors.STRING);
+		keys.put(NapileTokens.STRING_LITERAL, JetHighlightingColors.STRING);
 
 		keys.put(NapileTokens.EOL_COMMENT, JetHighlightingColors.LINE_COMMENT);
 		keys.put(NapileTokens.BLOCK_COMMENT, JetHighlightingColors.BLOCK_COMMENT);
