@@ -16,11 +16,9 @@
 
 package org.napile.idea.plugin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.CodeInjection;
+import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.openapi.components.ApplicationComponent;
 
@@ -30,26 +28,23 @@ import com.intellij.openapi.components.ApplicationComponent;
  */
 public class IdeaInjectionSupportManager implements ApplicationComponent
 {
-	public static IdeaInjectionSupportManager INSTANCE;
-
-	private final List<IdeaInjectionSupport> injectionSupports = new ArrayList<IdeaInjectionSupport>();
-
 	private IdeaInjectionSupportManager()
 	{
-		INSTANCE = this;
 	}
 
-	private void addInjectionSupport(IdeaInjectionSupport ideaInjectionSupport)
+	private void addInjectionSupport(IdeaInjectionSupport injectionSupport)
 	{
-		injectionSupports.add(ideaInjectionSupport);
-		CodeInjection c = ideaInjectionSupport.getInjectionType();
+		CodeInjection codeInjection = null;
+		for(CodeInjection c : CodeInjectionManager.INSTANCE.getCodeInjections())
+			if(c.getClass() == injectionSupport.getInjectionType())
+				codeInjection = c;
 
-		LanguageParserDefinitions.INSTANCE.addExplicitExtension(c.getLanguage(), c);
-	}
+		if(codeInjection == null)
+			return;
 
-	public List<IdeaInjectionSupport> getInjectionSupports()
-	{
-		return injectionSupports;
+		codeInjection.putUserData(IdeaInjectionSupport.IDEA_SUPPORT, injectionSupport);
+
+		LanguageParserDefinitions.INSTANCE.addExplicitExtension(codeInjection.getLanguage(), codeInjection);
 	}
 
 	@Override
@@ -57,11 +52,11 @@ public class IdeaInjectionSupportManager implements ApplicationComponent
 	{
 		//TODO [VISTALL] rework it
 		for(String className : new String[]
-		{
-				"org.napile.idea.injection.protobuf.PbIdeaInjectionSupport",
-				"org.napile.idea.plugin.injection.regexp.RegExpIdeaInjectionSupport",
-				"org.napile.idea.plugin.injection.text.TextIdeaInjectionSupport"
-		})
+				{
+						"org.napile.idea.injection.protobuf.PbIdeaInjectionSupport",
+						"org.napile.idea.plugin.injection.regexp.RegExpIdeaInjectionSupport",
+						"org.napile.idea.plugin.injection.text.TextIdeaInjectionSupport"
+				})
 			try
 			{
 				Class<?> clazz = Class.forName(className);
@@ -85,6 +80,6 @@ public class IdeaInjectionSupportManager implements ApplicationComponent
 	@Override
 	public String getComponentName()
 	{
-		return "IdeaInjectionSupportManager";
+		return IdeaInjectionSupportManager.class.getSimpleName();
 	}
 }

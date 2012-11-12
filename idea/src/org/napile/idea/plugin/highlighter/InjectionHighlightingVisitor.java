@@ -21,11 +21,10 @@ import org.napile.compiler.lang.diagnostics.PositioningStrategies;
 import org.napile.compiler.lang.psi.NapileInjectionExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.IdeaInjectionSupport;
-import org.napile.idea.plugin.IdeaInjectionSupportManager;
-import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
@@ -39,32 +38,33 @@ public class InjectionHighlightingVisitor extends AfterAnalysisHighlightingVisit
 	}
 
 	@Override
+	public void visitElement(PsiElement element)
+	{
+		super.visitElement(element);
+
+		NapileInjectionExpression exp = PsiTreeUtil.getParentOfType(element, NapileInjectionExpression.class);
+		if(exp != null)
+		{
+			CodeInjection injection = exp.getCodeInjection();
+			if(injection == null)
+				return;
+
+			InjectionSyntaxHighlighter syntaxHighlighter = IdeaInjectionSupport.SYNTAX_HIGHLIGHTER.getValue(injection);
+
+			TextAttributesKey[] key = syntaxHighlighter.getTokenHighlights(element.getNode().getElementType());
+			if(key.length > 0)
+				holder.createInfoAnnotation(element, null).setTextAttributes(key[0]);
+		}
+	}
+
+	@Override
 	public void visitInjectionExpression(NapileInjectionExpression injectionExpression)
 	{
+		super.visitInjectionExpression(injectionExpression);
+
 		CodeInjection codeInjection = injectionExpression.getCodeInjection();
 
 		if(codeInjection != null)
 			holder.createInfoAnnotation(PositioningStrategies.INJECTION_NAME.mark(injectionExpression).get(0), null).setTextAttributes(JetHighlightingColors.KEYWORD);
-
-		checkNode(injectionExpression.getNode());
-	}
-
-	private void checkNode(ASTNode parent)
-	{
-		ASTNode node = parent.getFirstChildNode();
-		while(node != null)
-		{
-			IElementType elementType = node.getElementType();
-			for(IdeaInjectionSupport injectionSupport : IdeaInjectionSupportManager.INSTANCE.getInjectionSupports())
-			{
-				TextAttributesKey[] key = injectionSupport.getSyntaxHighlighter().getTokenHighlights(elementType);
-				if(key.length > 0)
-					holder.createInfoAnnotation(node, null).setTextAttributes(key[0]);
-			}
-
-			checkNode(node);
-
-			node = node.getTreeNext();
-		}
 	}
 }

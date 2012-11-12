@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.injection.text;
 
-import org.napile.compiler.injection.CodeInjection;
+import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.text.TextCodeInjection;
 import org.napile.idea.plugin.IdeaInjectionSupport;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
@@ -25,19 +25,19 @@ import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
  * @author VISTALL
  * @date 21:28/09.11.12
  */
-public class TextIdeaInjectionSupport implements IdeaInjectionSupport
+public class TextIdeaInjectionSupport implements IdeaInjectionSupport<TextCodeInjection>
 {
-	private static final TextCodeInjection INSTANCE = new TextCodeInjection();
-
+	@NotNull
 	@Override
-	public InjectionSyntaxHighlighter getSyntaxHighlighter()
+	public InjectionSyntaxHighlighter createSyntaxHighlighter()
 	{
 		return InjectionSyntaxHighlighter.EMPTY;
 	}
 
+	@NotNull
 	@Override
-	public CodeInjection getInjectionType()
+	public Class<TextCodeInjection> getInjectionType()
 	{
-		return INSTANCE;
+		return TextCodeInjection.class;
 	}
 }

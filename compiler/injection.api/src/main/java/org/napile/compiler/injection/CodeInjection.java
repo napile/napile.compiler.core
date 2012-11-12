@@ -16,6 +16,9 @@
 
 package org.napile.compiler.injection;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -24,6 +27,8 @@ import org.napile.compiler.lang.types.JetType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
+import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.UserDataHolder;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IFileElementType;
@@ -32,8 +37,10 @@ import com.intellij.psi.tree.IFileElementType;
  * @author VISTALL
  * @date 21:50/27.09.12
  */
-public abstract class CodeInjection implements ParserDefinition
+public abstract class CodeInjection implements ParserDefinition, UserDataHolder
 {
+	private final Map<Key, Object> userData = new HashMap<Key, Object>();
+
 	/**
 	 * Returning name of injection
 	 * Case-sensitive
@@ -70,5 +77,18 @@ public abstract class CodeInjection implements ParserDefinition
 	public SpaceRequirements spaceExistanceTypeBetweenTokens(ASTNode astNode, ASTNode astNode1)
 	{
 		return SpaceRequirements.MAY;
+	}
+
+	@Nullable
+	@Override
+	public <T> T getUserData(@NotNull Key<T> key)
+	{
+		return key.get(userData);
+	}
+
+	@Override
+	public <T> void putUserData(@NotNull Key<T> key, @Nullable T value)
+	{
+		key.set(userData, value);
 	}
 }

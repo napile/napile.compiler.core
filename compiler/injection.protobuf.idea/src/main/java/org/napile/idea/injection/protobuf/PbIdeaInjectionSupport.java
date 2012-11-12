@@ -16,29 +16,29 @@
 
 package org.napile.idea.injection.protobuf;
 
-import org.napile.compiler.injection.CodeInjection;
+import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.protobuf.ProtobufCodeInjection;
+import org.napile.idea.injection.protobuf.highlighter.PbSyntaxHighlighter;
 import org.napile.idea.plugin.IdeaInjectionSupport;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
-import org.napile.idea.injection.protobuf.highlighter.PbSyntaxHighlighter;
 
 /**
  * @author VISTALL
  * @date 17:59/27.10.12
  */
-public class PbIdeaInjectionSupport implements IdeaInjectionSupport
+public class PbIdeaInjectionSupport implements IdeaInjectionSupport<ProtobufCodeInjection>
 {
-	private static final ProtobufCodeInjection CODE_INJECTION = new ProtobufCodeInjection();
-
+	@NotNull
 	@Override
-	public InjectionSyntaxHighlighter getSyntaxHighlighter()
+	public InjectionSyntaxHighlighter createSyntaxHighlighter()
 	{
 		return new PbSyntaxHighlighter();
 	}
 
+	@NotNull
 	@Override
-	public CodeInjection getInjectionType()
+	public Class<ProtobufCodeInjection> getInjectionType()
 	{
-		return CODE_INJECTION;
+		return ProtobufCodeInjection.class;
 	}
 }

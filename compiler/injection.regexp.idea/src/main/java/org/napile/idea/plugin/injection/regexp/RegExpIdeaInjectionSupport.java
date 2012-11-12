@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.injection.regexp;
 
-import org.napile.compiler.injection.CodeInjection;
+import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.regexp.RegexpCodeInjection;
 import org.napile.idea.plugin.IdeaInjectionSupport;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
@@ -26,19 +26,19 @@ import org.napile.idea.plugin.injection.regexp.highlighter.RegExpHighlighter;
  * @author VISTALL
  * @date 7:36/08.11.12
  */
-public class RegExpIdeaInjectionSupport implements IdeaInjectionSupport
+public class RegExpIdeaInjectionSupport implements IdeaInjectionSupport<RegexpCodeInjection>
 {
-	private static final RegexpCodeInjection CODE_INJECTION = new RegexpCodeInjection();
-
+	@NotNull
 	@Override
-	public InjectionSyntaxHighlighter getSyntaxHighlighter()
+	public InjectionSyntaxHighlighter createSyntaxHighlighter()
 	{
 		return new RegExpHighlighter();
 	}
 
+	@NotNull
 	@Override
-	public CodeInjection getInjectionType()
+	public Class<RegexpCodeInjection> getInjectionType()
 	{
-		return CODE_INJECTION;
+		return RegexpCodeInjection.class;
 	}
 }
