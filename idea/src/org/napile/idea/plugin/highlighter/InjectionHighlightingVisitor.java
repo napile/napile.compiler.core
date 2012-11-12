@@ -66,5 +66,9 @@ public class InjectionHighlightingVisitor extends AfterAnalysisHighlightingVisit
 
 		if(codeInjection != null)
 			holder.createInfoAnnotation(PositioningStrategies.INJECTION_NAME.mark(injectionExpression).get(0), null).setTextAttributes(JetHighlightingColors.KEYWORD);
+
+		PsiElement blockElement = injectionExpression.getBlock();
+		if(blockElement != null)
+			holder.createInfoAnnotation(blockElement, null).setTextAttributes(JetHighlightingColors.INJECTION_BLOCK);
 	}
 }

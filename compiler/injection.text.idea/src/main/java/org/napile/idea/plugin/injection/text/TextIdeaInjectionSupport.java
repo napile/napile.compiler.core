@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.text.TextCodeInjection;
 import org.napile.idea.plugin.IdeaInjectionSupport;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
+import org.napile.idea.plugin.injection.text.highlighter.TextHighlighter;
 
 /**
  * @author VISTALL
@@ -31,7 +32,7 @@ public class TextIdeaInjectionSupport implements IdeaInjectionSupport<TextCodeIn
 	@Override
 	public InjectionSyntaxHighlighter createSyntaxHighlighter()
 	{
-		return InjectionSyntaxHighlighter.EMPTY;
+		return new TextHighlighter();
 	}
 
 	@NotNull

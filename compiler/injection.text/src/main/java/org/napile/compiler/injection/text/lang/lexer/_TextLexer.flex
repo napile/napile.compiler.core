@@ -132,6 +132,6 @@ import com.intellij.psi.tree.IElementType;
 	. {}
 }
 
-.  {return TextTokens.TEXT_PART;}
+\r|\n|\r\n|.  {return TextTokens.TEXT_PART;}
 
 
