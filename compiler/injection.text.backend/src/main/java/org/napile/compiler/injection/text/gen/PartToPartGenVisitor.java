@@ -83,7 +83,6 @@ public class PartToPartGenVisitor extends TextPsiVisitor
 		NapileExpression exp = e.getExpression();
 
 		generator.gen(exp, AsmConstants.ANY_TYPE);
-		adapter.invokeVirtual(TO_STRING_REF);
 		adapter.invokeVirtual(PLUS_REF);
 	}
 
