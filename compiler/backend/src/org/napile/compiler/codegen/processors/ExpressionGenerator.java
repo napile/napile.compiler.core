@@ -55,6 +55,8 @@ import org.napile.compiler.codegen.processors.codegen.loopGen.LoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.WhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.codegen.processors.injection.InjectionCodegen;
+import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
@@ -324,6 +326,21 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		targetLoop.addBreak(instructs);
 
 		return StackValue.none();
+	}
+
+	@Override
+	public StackValue visitInjectionExpression(NapileInjectionExpression expression, StackValue data)
+	{
+		CodeInjection codeInjection = expression.getCodeInjection();
+		if(codeInjection == null)
+			return StackValue.none();
+
+		PsiElement block = expression.getBlock();
+		if(block == null)
+			return StackValue.none();
+
+		InjectionCodegen<?> injectionCodegen = InjectionCodegen.INJECTION_CODEGEN.getValue(codeInjection);
+		return injectionCodegen.gen(block, data, this);
 	}
 
 	@Override

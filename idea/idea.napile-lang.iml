@@ -30,6 +30,7 @@
     <orderEntry type="module" module-name="injection.regexp.idea" />
     <orderEntry type="module" module-name="injection.text" />
     <orderEntry type="module" module-name="injection.text.idea" />
+    <orderEntry type="module" module-name="injection.text.backend" />
   </component>
 </module>
 

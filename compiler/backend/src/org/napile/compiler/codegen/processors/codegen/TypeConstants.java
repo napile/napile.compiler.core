@@ -11,11 +11,9 @@ import org.napile.compiler.CodeTodo;
  * @author VISTALL
  * @date 20:37/17.09.12
  */
-@Deprecated
 public interface TypeConstants
 {
-
-	TypeNode STRING = new TypeNode(false, new ClassTypeNode(NapileLangPackage.STRING));
+	//TypeNode STRING = new TypeNode(false, new ClassTypeNode(NapileLangPackage.STRING));
 
 	TypeNode THROWABLE = new TypeNode(false, new ClassTypeNode(NapileLangPackage.THROWABLE));
 
