@@ -24,6 +24,7 @@ import org.napile.idea.plugin.IdeaInjectionSupport;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -65,7 +66,14 @@ public class InjectionHighlightingVisitor extends AfterAnalysisHighlightingVisit
 		CodeInjection codeInjection = injectionExpression.getCodeInjection();
 
 		if(codeInjection != null)
+		{
 			holder.createInfoAnnotation(PositioningStrategies.INJECTION_NAME.mark(injectionExpression).get(0), null).setTextAttributes(JetHighlightingColors.KEYWORD);
+
+			IdeaInjectionSupport<?> ideaInjectionSupport = IdeaInjectionSupport.IDEA_SUPPORT.getValue(codeInjection);
+			PsiElementVisitor elementVisitor = ideaInjectionSupport.createVisitorForAnnotator(holder);
+			if(elementVisitor != null)
+				injectionExpression.acceptChildren(elementVisitor);
+		}
 
 		PsiElement blockElement = injectionExpression.getBlock();
 		if(blockElement != null)

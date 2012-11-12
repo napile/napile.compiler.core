@@ -99,7 +99,14 @@ import com.intellij.psi.tree.IElementType;
 		}
 	}
 
-	. {}
+	.
+	{
+		if(!isInjectionBlock)
+		{
+			popState();
+			zzStartRead = injectionStart2;
+		}
+	}
 }
 
 <NAPILE_EXPRESSION_BLOCK>

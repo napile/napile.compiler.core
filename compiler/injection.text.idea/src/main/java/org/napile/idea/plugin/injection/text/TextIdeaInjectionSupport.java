@@ -17,28 +17,46 @@
 package org.napile.idea.plugin.injection.text;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.text.TextCodeInjection;
+import org.napile.compiler.injection.text.lang.psi.TextExpressionInsert;
+import org.napile.compiler.injection.text.lang.psi.TextPsiVisitor;
 import org.napile.idea.plugin.IdeaInjectionSupport;
-import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
-import org.napile.idea.plugin.injection.text.highlighter.TextHighlighter;
+import org.napile.idea.plugin.injection.text.highlighter.TextHighlighterColors;
+import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
 
 /**
  * @author VISTALL
  * @date 21:28/09.11.12
  */
-public class TextIdeaInjectionSupport implements IdeaInjectionSupport<TextCodeInjection>
+public class TextIdeaInjectionSupport extends IdeaInjectionSupport<TextCodeInjection>
 {
-	@NotNull
-	@Override
-	public InjectionSyntaxHighlighter createSyntaxHighlighter()
-	{
-		return new TextHighlighter();
-	}
-
 	@NotNull
 	@Override
 	public Class<TextCodeInjection> getInjectionType()
 	{
 		return TextCodeInjection.class;
+	}
+
+	@Nullable
+	@Override
+	public PsiElementVisitor createVisitorForAnnotator(@NotNull final AnnotationHolder holder)
+	{
+		return new TextPsiVisitor()
+		{
+			@Override
+			public void visitElement(PsiElement e)
+			{
+				e.acceptChildren(this);
+			}
+
+			@Override
+			public void visitTextInsertElement(TextExpressionInsert e)
+			{
+				holder.createInfoAnnotation(e, null).setTextAttributes(TextHighlighterColors.EXPRESSION_INSERT_COLORS);
+			}
+		};
 	}
 }

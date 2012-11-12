@@ -32,11 +32,41 @@ public class TextParser implements PsiParser
 	@Override
 	public ASTNode parse(IElementType root, PsiBuilder builder)
 	{
-		builder.setDebugMode(true);
 		PsiBuilder.Marker rootMarker = builder.mark();
 		while(!builder.eof())
-			builder.advanceLexer();
+			if(parseSpecificElements(builder))
+				builder.advanceLexer();
+
 		rootMarker.done(root);
 		return builder.getTreeBuilt();
+	}
+
+	private boolean parseSpecificElements(PsiBuilder builder)
+	{
+		IElementType token = builder.getTokenType();
+
+		if(token == TextTokens.HASH)
+		{
+			if(builder.lookAhead(1) == TextTokens.LBRACE)
+			{
+				PsiBuilder.Marker marker = builder.mark();
+				builder.advanceLexer(); // skip hash
+				builder.advanceLexer(); // skip lbrace
+
+				while(!builder.eof() && builder.getTokenType() != TextTokens.RBRACE)
+					builder.advanceLexer();
+
+				if(builder.getTokenType() == TextTokens.RBRACE)
+					builder.advanceLexer();
+
+				marker.done(TextNodes.EXPRESSION_INSERT);
+			}
+			else
+				builder.remapCurrentToken(TextTokens.TEXT_PART);
+		}
+		else if(token == TextTokens.LBRACE || token == TextTokens.RBRACE)
+			builder.remapCurrentToken(TextTokens.TEXT_PART);
+
+		return true;
 	}
 }

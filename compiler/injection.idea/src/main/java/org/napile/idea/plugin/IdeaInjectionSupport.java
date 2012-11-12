@@ -17,36 +17,71 @@
 package org.napile.idea.plugin;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
-import com.intellij.openapi.util.Key;
+import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.util.NotNullLazyKey;
+import com.intellij.psi.PsiElementVisitor;
 import com.intellij.util.NotNullFunction;
 
 /**
  * @author VISTALL
  * @date 17:58/27.10.12
  */
-public interface IdeaInjectionSupport<T extends CodeInjection>
+public abstract class IdeaInjectionSupport<T extends CodeInjection>
 {
-	Key<IdeaInjectionSupport<?>> IDEA_SUPPORT = Key.create("idea-support");
+	public static final IdeaInjectionSupport<CodeInjection> NOT_SUPPORTED_INJECTION = new IdeaInjectionSupport<CodeInjection>()
+	{
+		@NotNull
+		@Override
+		public Class<CodeInjection> getInjectionType()
+		{
+			return CodeInjection.class;
+		}
+	};
 
-	NotNullLazyKey<InjectionSyntaxHighlighter, CodeInjection> SYNTAX_HIGHLIGHTER = NotNullLazyKey.create("syntax-highlighter", new NotNullFunction<CodeInjection, InjectionSyntaxHighlighter>()
+	public static final NotNullLazyKey<IdeaInjectionSupport<?>, CodeInjection> IDEA_SUPPORT = NotNullLazyKey.create("idea-support", new NotNullFunction<CodeInjection, IdeaInjectionSupport<?>>()
+	{
+		@NotNull
+		@Override
+		public IdeaInjectionSupport<?> fun(CodeInjection dom)
+		{
+			IdeaInjectionSupport injectionSupport = null;
+			for(IdeaInjectionSupport it : IdeaInjectionSupportManager.getInstance())
+				if(it.getInjectionType() == dom.getClass())
+				{
+					injectionSupport = it;
+					break;
+				}
+
+			return injectionSupport == null ? NOT_SUPPORTED_INJECTION : injectionSupport;
+		}
+	});
+
+	public static final NotNullLazyKey<InjectionSyntaxHighlighter, CodeInjection> SYNTAX_HIGHLIGHTER = NotNullLazyKey.create("syntax-highlighter", new NotNullFunction<CodeInjection, InjectionSyntaxHighlighter>()
 	{
 		@NotNull
 		@Override
 		public InjectionSyntaxHighlighter fun(CodeInjection dom)
 		{
-			IdeaInjectionSupport support = IDEA_SUPPORT.get(dom);
-			if(support == null)
-				return InjectionSyntaxHighlighter.EMPTY;
-			return support.createSyntaxHighlighter();
+			return IDEA_SUPPORT.getValue(dom).createSyntaxHighlighter();
 		}
 	});
 
-	@NotNull
-	InjectionSyntaxHighlighter createSyntaxHighlighter();
 
 	@NotNull
-	Class<T> getInjectionType();
+	public abstract Class<T> getInjectionType();
+
+	@NotNull
+	public InjectionSyntaxHighlighter createSyntaxHighlighter()
+	{
+		return InjectionSyntaxHighlighter.EMPTY;
+	}
+
+	@Nullable
+	public PsiElementVisitor createVisitorForAnnotator(@NotNull AnnotationHolder holder)
+	{
+		return null;
+	}
 }

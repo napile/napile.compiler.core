@@ -26,7 +26,7 @@ import org.napile.idea.plugin.injection.regexp.highlighter.RegExpHighlighter;
  * @author VISTALL
  * @date 7:36/08.11.12
  */
-public class RegExpIdeaInjectionSupport implements IdeaInjectionSupport<RegexpCodeInjection>
+public class RegExpIdeaInjectionSupport extends IdeaInjectionSupport<RegexpCodeInjection>
 {
 	@NotNull
 	@Override

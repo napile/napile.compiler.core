@@ -22,7 +22,9 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.injection.text.lang.TextLanguage;
 import org.napile.compiler.injection.text.lang.lexer.TextLexer;
+import org.napile.compiler.injection.text.lang.lexer.TextNodes;
 import org.napile.compiler.injection.text.lang.lexer.TextParser;
+import org.napile.compiler.injection.text.lang.psi.TextExpressionInsert;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -101,6 +103,9 @@ public class TextCodeInjection extends CodeInjection
 	@Override
 	public PsiElement createElement(ASTNode node)
 	{
-		return new ASTWrapperPsiElement(node);
+		if(node.getElementType() == TextNodes.EXPRESSION_INSERT)
+			return new TextExpressionInsert(node);
+		else
+			return new ASTWrapperPsiElement(node);
 	}
 }

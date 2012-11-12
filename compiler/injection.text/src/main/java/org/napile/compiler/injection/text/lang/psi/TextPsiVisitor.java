@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.injection.text.highlighter;
+package org.napile.compiler.injection.text.lang.psi;
 
-import java.awt.Color;
-import java.awt.Font;
-
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.editor.markup.TextAttributes;
+import com.intellij.psi.PsiElementVisitor;
 
 /**
  * @author VISTALL
- * @date 15:37/12.11.12
+ * @date 16:07/12.11.12
  */
-public interface TextHighlighterColors
+public class TextPsiVisitor extends PsiElementVisitor
 {
-	TextAttributesKey EXPRESSION_INSERT_COLORS = TextAttributesKey.createTextAttributesKey("NAPILE-TEXT-EXPRESSION_RANGES", new TextAttributes(null, new Color(252, 255, 234), null, null, Font.PLAIN));
+	public void visitTextInsertElement(TextExpressionInsert e)
+	{
+		visitElement(e);
+	}
 }

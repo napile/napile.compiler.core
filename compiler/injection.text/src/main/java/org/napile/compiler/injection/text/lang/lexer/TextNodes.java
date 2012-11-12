@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.injection.text.highlighter;
+package org.napile.compiler.injection.text.lang.lexer;
 
-import java.awt.Color;
-import java.awt.Font;
-
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.editor.markup.TextAttributes;
+import org.napile.compiler.injection.text.lang.TextLanguage;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 15:37/12.11.12
+ * @date 15:56/12.11.12
  */
-public interface TextHighlighterColors
+public interface TextNodes
 {
-	TextAttributesKey EXPRESSION_INSERT_COLORS = TextAttributesKey.createTextAttributesKey("NAPILE-TEXT-EXPRESSION_RANGES", new TextAttributes(null, new Color(252, 255, 234), null, null, Font.PLAIN));
+	IElementType EXPRESSION_INSERT = new IElementType("EXPRESSION_INSERT", TextLanguage.INSTANCE);
 }

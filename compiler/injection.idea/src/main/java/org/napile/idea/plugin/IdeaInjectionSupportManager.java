@@ -16,40 +16,40 @@
 
 package org.napile.idea.plugin;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.ServiceManager;
 
 /**
  * @author VISTALL
  * @date 17:59/27.10.12
  */
-public class IdeaInjectionSupportManager implements ApplicationComponent
+public class IdeaInjectionSupportManager implements ApplicationComponent, Iterable<IdeaInjectionSupport<?>>
 {
-	private IdeaInjectionSupportManager()
+	public static IdeaInjectionSupportManager getInstance()
 	{
+		return ServiceManager.getService(IdeaInjectionSupportManager.class);
 	}
 
-	private void addInjectionSupport(IdeaInjectionSupport injectionSupport)
+	private final List<IdeaInjectionSupport<?>> list = new ArrayList<IdeaInjectionSupport<?>>();
+
+	private IdeaInjectionSupportManager()
 	{
-		CodeInjection codeInjection = null;
-		for(CodeInjection c : CodeInjectionManager.INSTANCE.getCodeInjections())
-			if(c.getClass() == injectionSupport.getInjectionType())
-				codeInjection = c;
-
-		if(codeInjection == null)
-			return;
-
-		codeInjection.putUserData(IdeaInjectionSupport.IDEA_SUPPORT, injectionSupport);
-
-		LanguageParserDefinitions.INSTANCE.addExplicitExtension(codeInjection.getLanguage(), codeInjection);
 	}
 
 	@Override
 	public void initComponent()
 	{
+		for(CodeInjection c : CodeInjectionManager.INSTANCE.getCodeInjections())
+			LanguageParserDefinitions.INSTANCE.addExplicitExtension(c.getLanguage(), c);
+
 		//TODO [VISTALL] rework it
 		for(String className : new String[]
 				{
@@ -61,9 +61,7 @@ public class IdeaInjectionSupportManager implements ApplicationComponent
 			{
 				Class<?> clazz = Class.forName(className);
 
-				IdeaInjectionSupport injection = (IdeaInjectionSupport) clazz.newInstance();
-
-				addInjectionSupport(injection);
+				list.add((IdeaInjectionSupport) clazz.newInstance());
 			}
 			catch(Exception e)
 			{
@@ -81,5 +79,11 @@ public class IdeaInjectionSupportManager implements ApplicationComponent
 	public String getComponentName()
 	{
 		return IdeaInjectionSupportManager.class.getSimpleName();
+	}
+
+	@Override
+	public Iterator<IdeaInjectionSupport<?>> iterator()
+	{
+		return list.iterator();
 	}
 }
