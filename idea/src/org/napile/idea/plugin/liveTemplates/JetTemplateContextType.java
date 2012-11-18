@@ -25,7 +25,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileModifierList;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.codeInsight.template.EverywhereContextType;
 import com.intellij.codeInsight.template.TemplateContextType;
@@ -128,7 +128,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 					}
 					continue;
 				}
-				if(e instanceof NapileVariable || e instanceof NapileNamedMethod || e instanceof NapileClassLike)
+				if(e instanceof NapileVariable || e instanceof NapileNamedMethodOrMacro || e instanceof NapileClassLike)
 				{
 					return false;
 				}
@@ -161,7 +161,7 @@ public abstract class JetTemplateContextType extends TemplateContextType
 					}
 					continue;
 				}
-				if(e instanceof NapileVariable || e instanceof NapileNamedMethod)
+				if(e instanceof NapileVariable || e instanceof NapileNamedMethodOrMacro)
 				{
 					return false;
 				}

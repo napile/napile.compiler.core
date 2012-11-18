@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
@@ -39,7 +39,13 @@ public class NXmlPsiFromStubFactory implements NapilePsiFromStubFactory
 
 	@NotNull
 	@Override
-	public NapileNamedMethod createNamedMethod(NapilePsiMethodStub stub)
+	public NapileNamedMethodOrMacro createNamedMethod(NapilePsiMethodOrMacroStub stub)
+	{
+		return null;
+	}
+
+	@Override
+	public NapileNamedMethodOrMacro createNamedMacro(NapilePsiMethodOrMacroStub stub)
 	{
 		return null;
 	}

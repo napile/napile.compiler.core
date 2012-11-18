@@ -46,7 +46,7 @@ import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -154,7 +154,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	}
 
 	@Override
-	public Void visitNamedFunction(NapileNamedMethod function, Node parent)
+	public Void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, Node parent)
 	{
 		assert parent instanceof ClassNode;
 
@@ -166,7 +166,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		classNode.members.add(methodNode);
 
-		return super.visitNamedFunction(function, parent);
+		return super.visitNamedMethodOrMacro(function, parent);
 	}
 
 	@Override

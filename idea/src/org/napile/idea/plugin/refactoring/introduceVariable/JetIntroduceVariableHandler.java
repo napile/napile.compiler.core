@@ -40,7 +40,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
@@ -326,9 +326,9 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 								oldElement = body;
 							}
 						}
-						else if(commonContainer instanceof NapileNamedMethod)
+						else if(commonContainer instanceof NapileNamedMethodOrMacro)
 						{
-							NapileExpression body = ((NapileNamedMethod) commonContainer).getBodyExpression();
+							NapileExpression body = ((NapileNamedMethodOrMacro) commonContainer).getBodyExpression();
 							if(body != null)
 							{
 								oldElement = body;
@@ -390,10 +390,10 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 							property = (NapileVariable) child;
 						}
 					}
-					if(commonContainer instanceof NapileNamedMethod)
+					if(commonContainer instanceof NapileNamedMethodOrMacro)
 					{
 						//we should remove equals sign
-						NapileNamedMethod function = (NapileNamedMethod) commonContainer;
+						NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) commonContainer;
 						if(!function.hasDeclaredReturnType())
 						{
 							//todo: add return type
@@ -594,9 +594,9 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 			{
 				return parent;
 			}
-			else if(parent instanceof NapileNamedMethod)
+			else if(parent instanceof NapileNamedMethodOrMacro)
 			{
-				NapileNamedMethod function = (NapileNamedMethod) parent;
+				NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) parent;
 				if(function.getBodyExpression() == place)
 				{
 					return parent;
@@ -656,9 +656,9 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 					result = parent;
 				}
 			}
-			else if(parent instanceof NapileNamedMethod)
+			else if(parent instanceof NapileNamedMethodOrMacro)
 			{
-				NapileNamedMethod function = (NapileNamedMethod) parent;
+				NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) parent;
 				if(function.getBodyExpression() == place)
 				{
 					if(!(place instanceof NapileBlockExpression))

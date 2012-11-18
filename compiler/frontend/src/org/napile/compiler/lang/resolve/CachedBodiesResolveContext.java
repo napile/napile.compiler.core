@@ -39,7 +39,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
 	private final Map<NapileVariable, PropertyDescriptor> properties;
-	private final Map<NapileNamedMethod, SimpleMethodDescriptor> functions;
+	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
 	private
@@ -83,7 +83,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods()
+	public Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods()
 	{
 		return functions;
 	}

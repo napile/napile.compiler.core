@@ -25,16 +25,16 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 12:09/18.11.12
+ * @date 12:14/18.11.12
  */
-public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl
+public class NapileNamedMacroImpl extends NapileNamedMethodOrMacroImpl
 {
-	public NapileNamedMethodImpl(@NotNull ASTNode node)
+	public NapileNamedMacroImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileNamedMethodImpl(@NotNull NapilePsiMethodOrMacroStub stub)
+	public NapileNamedMacroImpl(@NotNull NapilePsiMethodOrMacroStub stub)
 	{
 		super(stub, NapileStubElementTypes.METHOD);
 	}
@@ -42,12 +42,12 @@ public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitNamedMethod(this);
+		visitor.visitNamedMacro(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitNamedMethod(this, data);
+		return visitor.visitNamedMacro(this, data);
 	}
 }

@@ -32,10 +32,10 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeHighlighting.Pass;
@@ -76,9 +76,9 @@ public enum LineMarkers
 					ClassDescriptor ownerDescriptor = (ClassDescriptor)descriptor.getContainingDeclaration();
 
 					List<NapileElement> list = new ArrayList<NapileElement>();
-					for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
+					for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
 					{
-						NapileNamedMethod namedFunction = entry.getKey();
+						NapileNamedMethodOrMacro namedFunction = entry.getKey();
 						SimpleMethodDescriptor methodDescriptor = entry.getValue();
 
 						ClassDescriptor methodOwnerDescription = (ClassDescriptor) methodDescriptor.getContainingDeclaration();
@@ -126,9 +126,9 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					List<NapileElement> list = new ArrayList<NapileElement>();
-					for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
+					for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
 					{
-						NapileNamedMethod namedFunction = entry.getKey();
+						NapileNamedMethodOrMacro namedFunction = entry.getKey();
 						SimpleMethodDescriptor methodDescriptor = entry.getValue();
 
 						if(methodDescriptor.getOverriddenDescriptors().contains(descriptor))

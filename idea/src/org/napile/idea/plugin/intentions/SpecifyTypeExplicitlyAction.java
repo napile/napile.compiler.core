@@ -94,9 +94,9 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 				removeTypeAnnotation(parameter);
 			}
 		}
-		else if(parent instanceof NapileNamedMethod)
+		else if(parent instanceof NapileNamedMethodOrMacro)
 		{
-			NapileNamedMethod function = (NapileNamedMethod) parent;
+			NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) parent;
 			assert function.getReturnTypeRef() == null;
 			addTypeAnnotation(project, function, type);
 		}
@@ -132,7 +132,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 				setText(JetBundle.message("specify.type.explicitly.add.action.name"));
 			}
 		}
-		else if(declaration instanceof NapileNamedMethod && ((NapileNamedMethod) declaration).getReturnTypeRef() == null && !((NapileNamedMethod) declaration).hasBlockBody())
+		else if(declaration instanceof NapileNamedMethodOrMacro && ((NapileNamedMethodOrMacro) declaration).getReturnTypeRef() == null && !((NapileNamedMethodOrMacro) declaration).hasBlockBody())
 		{
 			setText(JetBundle.message("specify.type.explicitly.add.return.type.action.name"));
 		}

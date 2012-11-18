@@ -18,8 +18,8 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
@@ -29,18 +29,18 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class NapilePsiMethodStub extends StubBase<NapileNamedMethod> implements NamedStub<NapileNamedMethod>
+public class NapilePsiMethodOrMacroStub extends StubBase<NapileNamedMethodOrMacro> implements NamedStub<NapileNamedMethodOrMacro>
 {
 	private final StringRef nameRef;
 
-	public NapilePsiMethodStub(@NotNull StubElement parent, @Nullable String name)
+	public NapilePsiMethodOrMacroStub(@NotNull StubElement parent, @Nullable String name, @NotNull IStubElementType<NapilePsiMethodOrMacroStub, NapileNamedMethodOrMacro> elementType)
 	{
-		this(parent, StringRef.fromString(name));
+		this(parent, StringRef.fromString(name), elementType);
 	}
 
-	public NapilePsiMethodStub(@NotNull StubElement parent, @Nullable StringRef nameRef)
+	public NapilePsiMethodOrMacroStub(@NotNull StubElement parent, @Nullable StringRef nameRef, @NotNull IStubElementType<NapilePsiMethodOrMacroStub, NapileNamedMethodOrMacro> elementType)
 	{
-		super(parent, NapileStubElementTypes.METHOD);
+		super(parent, elementType);
 
 		this.nameRef = nameRef;
 	}

@@ -97,12 +97,12 @@ public class NapilePsiUtil
 	}
 
 	@Nullable
-	public static NapileNamedMethod getSurroundingFunction(@Nullable PsiElement element)
+	public static NapileNamedMethodOrMacro getSurroundingFunction(@Nullable PsiElement element)
 	{
 		while(element != null)
 		{
-			if(element instanceof NapileNamedMethod)
-				return (NapileNamedMethod) element;
+			if(element instanceof NapileNamedMethodOrMacro)
+				return (NapileNamedMethodOrMacro) element;
 			if(element instanceof NapileClassLike || element instanceof NapileFile)
 				return null;
 			element = element.getParent();
@@ -184,7 +184,7 @@ public class NapilePsiUtil
 		{
 			firstPart = getFQName((NapileFile) parent);
 		}
-		else if(parent instanceof NapileNamedMethod || parent instanceof NapileClass || parent instanceof NapileAnonymClass)
+		else if(parent instanceof NapileNamedMethodOrMacro || parent instanceof NapileClass || parent instanceof NapileAnonymClass)
 		{
 			firstPart = getFQName((NapileNamedDeclaration) parent);
 		}

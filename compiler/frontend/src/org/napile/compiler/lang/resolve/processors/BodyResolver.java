@@ -239,9 +239,9 @@ public class BodyResolver
 
 	private void resolveFunctionBodies()
 	{
-		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
+		for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
 		{
-			NapileNamedMethod declaration = entry.getKey();
+			NapileNamedMethodOrMacro declaration = entry.getKey();
 			SimpleMethodDescriptor descriptor = entry.getValue();
 
 			computeDeferredType(descriptor.getReturnType());

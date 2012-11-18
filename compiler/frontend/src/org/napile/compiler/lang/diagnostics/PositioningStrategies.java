@@ -31,7 +31,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
@@ -69,9 +69,9 @@ public class PositioningStrategies
 		{
 			NapileTypeReference returnTypeRef = null;
 			ASTNode nameNode = null;
-			if(declaration instanceof NapileNamedMethod)
+			if(declaration instanceof NapileNamedMethodOrMacro)
 			{
-				NapileMethod function = (NapileNamedMethod) declaration;
+				NapileMethod function = (NapileNamedMethodOrMacro) declaration;
 				returnTypeRef = function.getReturnTypeRef();
 				nameNode = getNameNode(function);
 			}
@@ -117,9 +117,9 @@ public class PositioningStrategies
 		@Override
 		public List<TextRange> mark(@NotNull PsiNameIdentifierOwner element)
 		{
-			if(element instanceof NapileNamedMethod)
+			if(element instanceof NapileNamedMethodOrMacro)
 			{
-				NapileNamedMethod function = (NapileNamedMethod) element;
+				NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) element;
 				PsiElement endOfSignatureElement;
 				NapileParameterList valueParameterList = function.getValueParameterList();
 				NapileElement returnTypeRef = function.getReturnTypeRef();

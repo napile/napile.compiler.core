@@ -163,7 +163,7 @@ public class DeclarationResolver
 			declaration.accept(new NapileVisitorVoid()
 			{
 				@Override
-				public void visitNamedMethod(NapileNamedMethod function)
+				public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function)
 				{
 					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveMethodDescriptor(ownerDescription, scope, function, trace);
 					ownerDescription.getBuilder().addMethodDescriptor(functionDescriptor);

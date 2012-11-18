@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
@@ -34,7 +34,9 @@ public interface NapilePsiFromStubFactory
 	NapileClass createClass(NapilePsiClassStub stub);
 
 	@NotNull
-	NapileNamedMethod createNamedMethod(NapilePsiMethodStub stub);
+	NapileNamedMethodOrMacro createNamedMethod(NapilePsiMethodOrMacroStub stub);
+
+	NapileNamedMethodOrMacro createNamedMacro(NapilePsiMethodOrMacroStub stub);
 
 	@NotNull
 	NapileVariable createVariable(NapilePsiVariableStub stub);

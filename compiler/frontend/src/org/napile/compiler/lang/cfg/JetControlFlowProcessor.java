@@ -27,30 +27,23 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.cfg.pseudocode.JetControlFlowInstructionsGenerator;
 import org.napile.compiler.lang.cfg.pseudocode.LocalDeclarationInstruction;
 import org.napile.compiler.lang.cfg.pseudocode.Pseudocode;
 import org.napile.compiler.lang.cfg.pseudocode.PseudocodeImpl;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.constants.BoolValue;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -215,14 +208,14 @@ public class JetControlFlowProcessor
 		public void visitSimpleNameExpression(NapileSimpleNameExpression expression)
 		{
 			builder.read(expression);
-			if(trace.safeGet(BindingContext.PROCESSED, expression))
+			/*if(trace.safeGet(BindingContext.PROCESSED, expression))
 			{
 				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
-				if(type != null && false)
+				if(false)
 				{
 					builder.jumpToError(expression);
 				}
-			}
+			} */
 		}
 
 		@Override
@@ -718,7 +711,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitNamedMethod(NapileNamedMethod function)
+		public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function)
 		{
 			processLocalDeclaration(function);
 		}
@@ -771,43 +764,37 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitCallExpression(NapileCallExpression expression)
 		{
-			//inline functions after M1
-			//            ResolvedCall<? extends CallableDescriptor> resolvedCall = trace.get(BindingContext.RESOLVED_CALL, expression.getCalleeExpression());
-			//            assert resolvedCall != null;
-			//            CallableDescriptor resultingDescriptor = resolvedCall.getResultingDescriptor();
-			//            PsiElement element = trace.get(BindingContext.DESCRIPTOR_TO_DECLARATION, resultingDescriptor);
-			//            if (element instanceof NapileNamedMethodImpl) {
-			//                NapileNamedMethodImpl namedFunction = (NapileNamedMethodImpl) element;
-			//                if (namedFunction.hasModifier(NapileTokens.INLINE_KEYWORD)) {
-			//                }
-			//            }
-
 			for(NapileTypeReference typeArgument : expression.getTypeArguments())
-			{
 				value(typeArgument, false);
-			}
 
 			visitCall(expression);
 
 			value(expression.getCalleeExpression(), false);
-			builder.read(expression);
-			if(trace.safeGet(BindingContext.PROCESSED, expression))
+
+			label :
 			{
-				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
-				if(type != null && false)
+				ResolvedCall<? extends CallableDescriptor> resolvedCall = trace.get(BindingContext.RESOLVED_CALL, expression.getCalleeExpression());
+				if(resolvedCall == null)
+					break label;
+
+				CallableDescriptor callableDescriptor = resolvedCall.getCandidateDescriptor();
+				if(callableDescriptor instanceof SimpleMethodDescriptor && ((SimpleMethodDescriptor) callableDescriptor).isMacro())
 				{
-					builder.jumpToError(expression);
+					NapileExpression bodyExp = trace.get(BindingContext.MACRO_BODY, callableDescriptor);
+					if(bodyExp == null)
+						break label;
+
+					builder.enterLoop(bodyExp, null, null);
+
+					value(bodyExp, inCondition);
+
+					builder.exitLoop(bodyExp);
+					return;
 				}
 			}
-		}
 
-		//        @Override
-		//        public void visitNewExpression(JetNewExpression expression) {
-		//            // TODO : Instantiated class is loaded
-		//            // TODO : type arguments?
-		//            visitCall(expression);
-		//            builder.read(expression);
-		//        }
+			builder.read(expression);
+		}
 
 		@Override
 		public void visitVariable(NapileVariable property)

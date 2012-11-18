@@ -191,13 +191,13 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	{
 		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 
-		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), functionLiteral.getNameAsName(), CallableMemberDescriptor.Kind.DECLARATION, false, false);
+		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), functionLiteral.getNameAsName(), CallableMemberDescriptor.Kind.DECLARATION, false, false, false);
 
 		List<ParameterDescriptor> parameterDescriptors = createValueParameterDescriptors(context, functionLiteral, functionDescriptor, functionTypeExpected);
 
 		functionDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), parameterDescriptors, null, Modality.FINAL, Visibility.LOCAL);
 		context.trace.record(BindingContext.METHOD, expression, functionDescriptor);
-		BindingContextUtils.recordFunctionDeclarationToDescriptor(context.trace, expression, functionDescriptor);
+		BindingContextUtils.recordMethodDeclarationToDescriptor(context.trace, expression, functionDescriptor);
 		return functionDescriptor;
 	}
 

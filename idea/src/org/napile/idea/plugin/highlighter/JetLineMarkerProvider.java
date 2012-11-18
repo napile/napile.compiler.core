@@ -28,10 +28,10 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.JetFunctionPsiElementCellRenderer;
@@ -108,7 +108,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 		if(file == null)
 			return null;
 
-		if(!(element instanceof NapileNamedMethod || element instanceof NapileVariable))
+		if(!(element instanceof NapileNamedMethodOrMacro || element instanceof NapileVariable))
 			return null;
 
 		final BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(file).getBindingContext();
@@ -228,7 +228,7 @@ public class JetLineMarkerProvider implements LineMarkerProvider
 		}
 
 		final String implementsOrOverrides = allOverriddenAbstract ? "implements" : "overrides";
-		final String memberKind = element instanceof NapileNamedMethod ? "function" : "property";
+		final String memberKind = element instanceof NapileNamedMethodOrMacro ? "function" : "property";
 
 
 		StringBuilder builder = new StringBuilder();

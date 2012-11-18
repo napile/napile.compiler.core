@@ -313,7 +313,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		if(at(NapileTokens.LBRACKET))
 		{
-			if(!parseLocalDeclaration())
+			if(!myJetParsing.parseMemberDeclaration(true))
 			{
 				//PsiBuilder.Marker expression = mark();
 				//myJetParsing.parseAnnotations();
@@ -673,7 +673,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				PsiBuilder.Marker property = mark();
 				myJetParsing.parseModifierList();
-				myJetParsing.parseProperty(true);
+				myJetParsing.parseProperty();
 				property.done(VARIABLE);
 			}
 			else
@@ -920,29 +920,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 			expect(NapileTokens.IDENTIFIER, "Expecting an identifier");
 		}
 		simpleName.done(REFERENCE_EXPRESSION);
-	}
-
-	/*
-		 * modifiers declarationRest
-		 */
-	private boolean parseLocalDeclaration()
-	{
-		PsiBuilder.Marker decl = mark();
-
-		myJetParsing.parseModifierList();
-
-		IElementType declType = parseLocalDeclarationRest();
-
-		if(declType != null)
-		{
-			decl.done(declType);
-			return true;
-		}
-		else
-		{
-			decl.rollbackTo();
-			return false;
-		}
 	}
 
 	/*
@@ -1274,7 +1251,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseStatement()
 	{
-		if(!parseLocalDeclaration())
+		if(!myJetParsing.parseMemberDeclaration(true))
 		{
 			if(!atSet(EXPRESSION_FIRST))
 			{
@@ -1287,34 +1264,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 	}
 
-	/*
-		 * declaration
-		 *   : function
-		 *   : property
-		 *   : extension
-		 *   : class
-		 *   : typedef
-		 *   : object
-		 *   ;
-		 */
-	private IElementType parseLocalDeclarationRest()
-	{
-		IElementType keywordToken = tt();
-		IElementType declType = null;
-		if(keywordToken == NapileTokens.CLASS_KEYWORD)
-		{
-			declType = myJetParsing.parseClass();
-		}
-		else if(keywordToken == NapileTokens.METH_KEYWORD)
-		{
-			declType = myJetParsing.parseMethod();
-		}
-		else if(keywordToken == NapileTokens.VAR_KEYWORD)
-		{
-			declType = myJetParsing.parseProperty(true);
-		}
-		return declType;
-	}
 
 	/*
 		 * doWhile

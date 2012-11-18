@@ -28,14 +28,18 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  */
 public class SimpleMethodDescriptorImpl extends MethodDescriptorImpl implements SimpleMethodDescriptor
 {
-	public SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
+	private final boolean macro;
+
+	public SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative, boolean macro)
 	{
 		super(containingDeclaration, annotations, name, kind, isStatic, isNative);
+		this.macro = macro;
 	}
 
-	private SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull SimpleMethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
+	private SimpleMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull SimpleMethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative, boolean macro)
 	{
 		super(containingDeclaration, original, annotations, name, kind, isStatic, isNative);
+		this.macro = macro;
 	}
 
 	@NotNull
@@ -46,19 +50,25 @@ public class SimpleMethodDescriptorImpl extends MethodDescriptorImpl implements 
 	}
 
 	@Override
+	public boolean isMacro()
+	{
+		return macro;
+	}
+
+	@Override
 	protected MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
 	{
 		if(preserveOriginal)
 		{
 			return new SimpleMethodDescriptorImpl(newOwner, getOriginal(),
 					// TODO : safeSubstitute
-					getAnnotations(), getName(), kind, isStatic(), isNative());
+					getAnnotations(), getName(), kind, isStatic(), isNative(), isMacro());
 		}
 		else
 		{
 			return new SimpleMethodDescriptorImpl(newOwner,
 					// TODO : safeSubstitute
-					getAnnotations(), getName(), kind, isStatic(), isNative());
+					getAnnotations(), getName(), kind, isStatic(), isNative(), isMacro());
 		}
 	}
 

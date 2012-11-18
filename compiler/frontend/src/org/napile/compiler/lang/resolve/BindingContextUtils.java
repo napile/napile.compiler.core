@@ -28,13 +28,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.NapileQualifiedExpression;
-import org.napile.compiler.lang.psi.NapileReferenceExpression;
-import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.Slices;
 import com.google.common.collect.Lists;
@@ -230,12 +224,12 @@ public class BindingContextUtils
 		return doGetDescriptorToDeclaration(context, clazz);
 	}
 
-	public static void recordFunctionDeclarationToDescriptor(@NotNull BindingTrace trace, @NotNull PsiElement psiElement, @NotNull SimpleMethodDescriptor function)
+	public static void recordMethodDeclarationToDescriptor(@NotNull BindingTrace trace, @NotNull PsiElement psiElement, @NotNull SimpleMethodDescriptor method)
 	{
-		if(function.getKind() != CallableMemberDescriptor.Kind.DECLARATION)
-			throw new IllegalArgumentException("function of kind " + function.getKind() + " cannot have declaration");
+		if(method.getKind() != CallableMemberDescriptor.Kind.DECLARATION)
+			throw new IllegalArgumentException("function of kind " + method.getKind() + " cannot have declaration");
 
-		trace.record(BindingContext.METHOD, psiElement, function);
-		trace.record(BindingContext.FQNAME_TO_METHOD_DESCRIPTOR, DescriptorUtils.getFQName(function).toSafe(), function);
+		trace.record(BindingContext.METHOD, psiElement, method);
+		trace.record(BindingContext.FQNAME_TO_METHOD_DESCRIPTOR, DescriptorUtils.getFQName(method).toSafe(), method);
 	}
 }

@@ -459,6 +459,48 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(asmType);
 	}
 
+	@Override
+	public StackValue visitWhenExpression(NapileWhenExpression expression, StackValue data)
+	{
+		JetType expType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+		NapileExpression subjectExpression = expression.getSubjectExpression();
+		if(subjectExpression != null)
+			gen(subjectExpression, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, subjectExpression)));
+
+		List<ReservedInstruction> jumpOut = new ArrayList<ReservedInstruction>(5);
+		List<NapileWhenEntry> entries = expression.getEntries();
+		for(NapileWhenEntry whenEntry : entries)
+		{
+			if(whenEntry.isElse())
+			{
+
+			}
+			else
+			{
+				NapileWhenCondition condition = whenEntry.getCondition();
+				if(condition instanceof NapileWhenConditionIsPattern)
+				{
+					throw new UnsupportedOperationException("'is' is not supported for now");
+				}
+				else if(condition instanceof NapileWhenConditionWithExpression)
+				{
+					NapileExpression exp = ((NapileWhenConditionWithExpression) condition).getExpression();
+					if(exp instanceof NapileConstantExpression)
+					{
+
+					}
+				}
+				else if(condition instanceof NapileWhenConditionInRange)
+				{
+					throw new UnsupportedOperationException("'in' is not supported for now");
+				}
+			}
+		}
+
+
+		return StackValue.onStack(TypeTransformer.toAsmType(expType));
+	}
+
 	private StackValue generateSingleBranchIf(StackValue condition, NapileExpression expression, boolean inverse)
 	{
 		TypeNode expressionType = expressionType(expression);

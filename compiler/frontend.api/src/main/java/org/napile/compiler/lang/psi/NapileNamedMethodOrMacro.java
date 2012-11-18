@@ -23,7 +23,7 @@ import com.intellij.psi.PsiElement;
  * @author VISTALL
  * @date 15:20/19.10.12
  */
-public interface NapileNamedMethod extends NapileMethod, NapileWithExpressionInitializer
+public interface NapileNamedMethodOrMacro extends NapileMethod, NapileWithExpressionInitializer
 {
 	@Nullable
 	NapileSimpleNameExpression getVariableRef();

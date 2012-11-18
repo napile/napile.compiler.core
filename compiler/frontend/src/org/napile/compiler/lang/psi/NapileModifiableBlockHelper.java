@@ -36,9 +36,9 @@ public final class NapileModifiableBlockHelper
 		NapileDeclaration declaration = PsiTreeUtil.getParentOfType(place, NapileDeclaration.class, true);
 		if(declaration != null)
 		{
-			if(declaration instanceof NapileNamedMethod)
+			if(declaration instanceof NapileNamedMethodOrMacro)
 			{
-				NapileNamedMethod function = (NapileNamedMethod) declaration;
+				NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) declaration;
 				if(function.hasDeclaredReturnType() || function.hasBlockBody())
 				{
 					return takePartInDeclarationTypeInference(function);
@@ -71,9 +71,9 @@ public final class NapileModifiableBlockHelper
 		NapileDeclaration declaration = PsiTreeUtil.getParentOfType(place, NapileDeclaration.class, true);
 		if(declaration != null)
 		{
-			if(declaration instanceof NapileNamedMethod)
+			if(declaration instanceof NapileNamedMethodOrMacro)
 			{
-				NapileNamedMethod function = (NapileNamedMethod) declaration;
+				NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) declaration;
 				if(!function.hasDeclaredReturnType() && !function.hasBlockBody())
 				{
 					return true;

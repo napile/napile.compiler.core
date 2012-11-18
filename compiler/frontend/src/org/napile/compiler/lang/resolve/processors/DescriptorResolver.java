@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -153,31 +154,30 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethod function, final BindingTrace trace)
+	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethodOrMacro method, final BindingTrace trace)
 	{
-		NapileSimpleNameExpression referenceExpression = function.getVariableRef();
+		NapileSimpleNameExpression referenceExpression = method.getVariableRef();
 
-		NapileModifierList modifierList = function.getModifierList();
-		final SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, function.getModifierList(), trace), NapilePsiUtil.safeName(function.getName()), CallableMemberDescriptor.Kind.DECLARATION, modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD), modifierList != null && modifierList.hasModifier(NapileTokens.NATIVE_KEYWORD));
-		WritableScope innerScope = new WritableScopeImpl(scope, functionDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
+		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, method.getModifierList(), trace), NapilePsiUtil.safeName(method.getName()), CallableMemberDescriptor.Kind.DECLARATION, method.hasModifier(NapileTokens.STATIC_KEYWORD), method.hasModifier(NapileTokens.NATIVE_KEYWORD), method.getNode().getElementType() == NapileNodes.MACRO);
+		WritableScope innerScope = new WritableScopeImpl(scope, methodDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
 
-		List<TypeParameterDescriptor> typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(functionDescriptor, innerScope, function.getTypeParameters(), trace);
+		List<TypeParameterDescriptor> typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(methodDescriptor, innerScope, method.getTypeParameters(), trace);
 		innerScope.changeLockLevel(WritableScope.LockLevel.BOTH);
-		typeParameterResolver.postResolving(function, innerScope, typeParameterDescriptors, trace);
+		typeParameterResolver.postResolving(method, innerScope, typeParameterDescriptors, trace);
 
-		List<ParameterDescriptor> parameterDescriptors = resolveValueParameters(functionDescriptor, innerScope, function.getValueParameters(), trace);
+		List<ParameterDescriptor> parameterDescriptors = resolveValueParameters(methodDescriptor, innerScope, method.getValueParameters(), trace);
 
 		innerScope.changeLockLevel(WritableScope.LockLevel.READING);
 
-		NapileTypeReference returnTypeRef = function.getReturnTypeRef();
+		final NapileExpression bodyExpression = method.getBodyExpression();
+		NapileTypeReference returnTypeRef = method.getReturnTypeRef();
 		JetType returnType;
 		if(returnTypeRef != null)
 			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, true);
-		else if(function.hasBlockBody())
+		else if(method.hasBlockBody())
 			returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
 		else
 		{
-			final NapileExpression bodyExpression = function.getBodyExpression();
 			if(bodyExpression != null)
 			{
 				returnType = DeferredType.create(trace, new LazyValueWithDefault<JetType>(ErrorUtils.createErrorType("Recursive dependency"))
@@ -185,27 +185,28 @@ public class DescriptorResolver
 					@Override
 					protected JetType compute()
 					{
-						//JetFlowInformationProvider flowInformationProvider = computeFlowData(function, bodyExpression);
-						return expressionTypingServices.inferFunctionReturnType(scope, function, functionDescriptor, trace);
+						return expressionTypingServices.inferFunctionReturnType(scope, method, methodDescriptor, trace);
 					}
 				});
 			}
 			else
-			{
 				returnType = ErrorUtils.createErrorType("No type, no body");
-			}
 		}
+
+		if(bodyExpression != null && methodDescriptor.isMacro())
+			trace.record(BindingContext.MACRO_BODY, methodDescriptor, bodyExpression);
 
 		if(referenceExpression != null)
 			expressionTypingServices.safeGetType(scope, referenceExpression, TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
 
-		Modality modality = Modality.resolve(function);
-		Visibility visibility = Visibility.resolve(function);
+		Modality modality = Modality.resolve(method);
+		Visibility visibility = Visibility.resolve(method);
 
-		functionDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, parameterDescriptors, returnType, modality, visibility);
+		methodDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, parameterDescriptors, returnType, modality, visibility);
 
-		BindingContextUtils.recordFunctionDeclarationToDescriptor(trace, function, functionDescriptor);
-		return functionDescriptor;
+		BindingContextUtils.recordMethodDeclarationToDescriptor(trace, method, methodDescriptor);
+
+		return methodDescriptor;
 	}
 
 	@NotNull

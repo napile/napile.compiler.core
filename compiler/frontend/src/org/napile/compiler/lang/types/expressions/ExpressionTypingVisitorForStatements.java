@@ -51,7 +51,7 @@ import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -126,7 +126,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitNamedFunction(NapileNamedMethod function, ExpressionTypingContext context)
+	public JetTypeInfo visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, ExpressionTypingContext context)
 	{
 		SimpleMethodDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveMethodDescriptor(scope.getContainingDeclaration(), scope, function, context.trace);
 		scope.addFunctionDescriptor(functionDescriptor);

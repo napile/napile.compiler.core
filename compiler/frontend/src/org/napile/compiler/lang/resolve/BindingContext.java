@@ -224,6 +224,8 @@ public interface BindingContext
 
 	ReadOnlySlice<PsiElement, DeclarationDescriptor> DECLARATION_TO_DESCRIPTOR = Slices.<PsiElement, DeclarationDescriptor>sliceBuilder().setFurtherLookupSlices(DECLARATIONS_TO_DESCRIPTORS).build();
 
+	WritableSlice<DeclarationDescriptor, NapileExpression> MACRO_BODY = new BasicWritableSlice<DeclarationDescriptor, NapileExpression>(RewritePolicy.DO_NOTHING, true);
+
 	WritableSlice<NapileReferenceExpression, PsiElement> LABEL_TARGET = Slices.<NapileReferenceExpression, PsiElement>sliceBuilder().build();
 
 	WritableSlice<NapileFile, NamespaceDescriptor> FILE_TO_NAMESPACE = Slices.createSimpleSlice();

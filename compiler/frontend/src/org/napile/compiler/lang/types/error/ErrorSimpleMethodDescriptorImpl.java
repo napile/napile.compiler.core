@@ -40,7 +40,7 @@ public class ErrorSimpleMethodDescriptorImpl extends SimpleMethodDescriptorImpl
 
 	public ErrorSimpleMethodDescriptorImpl(ErrorUtils.ErrorScope ownerScope)
 	{
-		super(ErrorUtils.getErrorClass(), Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR METHOD>"), Kind.DECLARATION, false, false);
+		super(ErrorUtils.getErrorClass(), Collections.<AnnotationDescriptor>emptyList(), Name.special("<ERROR METHOD>"), Kind.DECLARATION, false, false, false);
 		this.ownerScope = ownerScope;
 	}
 
@@ -55,6 +55,12 @@ public class ErrorSimpleMethodDescriptorImpl extends SimpleMethodDescriptorImpl
 	public SimpleMethodDescriptor copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
 	{
 		return this;
+	}
+
+	@Override
+	public boolean isMacro()
+	{
+		return false;
 	}
 
 	@Override

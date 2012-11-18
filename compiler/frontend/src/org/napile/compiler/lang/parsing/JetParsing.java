@@ -50,7 +50,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
-private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(NapileTokens.LT, NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE));
+	private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.create(NapileTokens.LT, NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE));
 	public static final TokenSet TYPE_PARAMETER_GT_RECOVERY_SET = TokenSet.create(NapileTokens.LPAR, NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.GT);
 	private static final TokenSet PARAMETER_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.COLON, NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.RPAR);
 	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.DOT, NapileTokens.EOL_OR_SEMICOLON);
@@ -446,7 +446,7 @@ private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.
 				{
 					break;
 				}
-				parseMemberDeclaration();
+				parseMemberDeclaration(false);
 			}
 		}
 		expect(NapileTokens.RBRACE, "Missing '}");
@@ -472,7 +472,7 @@ private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.
 		 *   : object
 		 *   ;
 		 */
-	private void parseMemberDeclaration()
+	protected boolean parseMemberDeclaration(boolean silent)
 	{
 		PsiBuilder.Marker decl = mark();
 
@@ -489,11 +489,14 @@ private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.
 
 		if(declType == null)
 		{
-			errorWithRecovery("Expecting member declaration", TokenSet.create(NapileTokens.RBRACE));
+			if(!silent)
+				errorWithRecovery("Expecting member declaration", TokenSet.create(NapileTokens.RBRACE));
 			decl.drop();
+			return false;
 		}
 		else
 			decl.done(declType);
+		return true;
 	}
 
 	private IElementType parseMemberDeclarationRest()
@@ -503,7 +506,9 @@ private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.
 		if(keywordToken == NapileTokens.CLASS_KEYWORD)
 			declType = parseClass();
 		else if(keywordToken == NapileTokens.METH_KEYWORD)
-			declType = parseMethod();
+			declType = parseMethodOrMacro(METHOD);
+		else if(keywordToken == NapileTokens.MACRO_KEYWORD)
+			declType = parseMethodOrMacro(MACRO);
 		else if(keywordToken == NapileTokens.THIS_KEYWORD)
 			declType = parseConstructor();
 		else if(keywordToken == NapileTokens.VAR_KEYWORD)
@@ -543,12 +548,7 @@ private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.
 		 *       (getter? setter? | setter? getter?) SEMI?
 		 *   ;
 		 */
-	private IElementType parseProperty()
-	{
-		return parseProperty(false);
-	}
-
-	IElementType parseProperty(boolean local)
+	IElementType parseProperty()
 	{
 		if(at(NapileTokens.VAR_KEYWORD))
 			advance(); // VAR_KEYWORD
@@ -594,9 +594,9 @@ private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.
 		 *       functionBody?
 		 *   ;
 		 */
-	IElementType parseMethod()
+	IElementType parseMethodOrMacro(@NotNull IElementType doneElement)
 	{
-		assert _at(NapileTokens.METH_KEYWORD);
+		//assert _at(NapileTokens.METH_KEYWORD);
 
 		advance(); // METH_KEYWORD
 
@@ -604,7 +604,7 @@ private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.
 		if(at(NapileTokens.RBRACE))
 		{
 			error("Method body expected");
-			return METHOD;
+			return doneElement;
 		}
 
 		if(!parseIdeTemplate())
@@ -651,7 +651,7 @@ private static final TokenSet CLASS_NAME_RECOVERY_SET = TokenSet.orSet(TokenSet.
 			parseFunctionBody();
 		}
 
-		return METHOD;
+		return doneElement;
 	}
 
 	private NapileNode parseStaticConstructor()

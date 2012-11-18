@@ -151,7 +151,7 @@ public class NapilePsiFactory
 		return (NapileSimpleNameExpression) createProperty(project, name, null, false, name).getInitializer();
 	}
 
-	public static NapileNamedMethod createFunction(Project project, String funDecl)
+	public static NapileNamedMethodOrMacro createFunction(Project project, String funDecl)
 	{
 		return createClassDeclaration(project, funDecl);
 	}
@@ -165,13 +165,13 @@ public class NapilePsiFactory
 
 	public static NapileExpression createEmptyBody(Project project)
 	{
-		NapileNamedMethod function = createFunction(project, "meth foo() {}");
+		NapileNamedMethodOrMacro function = createFunction(project, "meth foo() {}");
 		return function.getBodyExpression();
 	}
 
 	public static NapilePropertyParameter createParameter(Project project, String name, String type)
 	{
-		NapileNamedMethod function = createFunction(project, "meth foo(" + name + " : " + type + ") {}");
+		NapileNamedMethodOrMacro function = createFunction(project, "meth foo(" + name + " : " + type + ") {}");
 		return (NapilePropertyParameter)function.getValueParameters()[0];
 	}
 

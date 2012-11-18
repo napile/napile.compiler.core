@@ -44,7 +44,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
@@ -97,9 +97,9 @@ public class ModifiersChecker
 			checkModalityModifiers(clazz);
 		}
 
-		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
+		for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
 		{
-			NapileNamedMethod function = entry.getKey();
+			NapileNamedMethodOrMacro function = entry.getKey();
 			SimpleMethodDescriptor functionDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
@@ -136,7 +136,7 @@ public class ModifiersChecker
 		}
 	}
 
-	protected void checkMethod(NapileNamedMethod method, SimpleMethodDescriptor methodDescriptor)
+	protected void checkMethod(NapileNamedMethodOrMacro method, SimpleMethodDescriptor methodDescriptor)
 	{
 		DeclarationDescriptor containingDescriptor = methodDescriptor.getContainingDeclaration();
 		ASTNode abstractModifier = method.getModifierNode(NapileTokens.ABSTRACT_KEYWORD);

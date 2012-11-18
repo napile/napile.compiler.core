@@ -56,7 +56,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
@@ -257,9 +257,9 @@ public class ExpressionTypingServices
 				}
 
 				@Override
-				public Void visitNamedFunction(NapileNamedMethod function, NapileDeclarationWithBody outerFunction)
+				public Void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, NapileDeclarationWithBody outerFunction)
 				{
-					return super.visitNamedFunction(function, function);
+					return super.visitNamedMethodOrMacro(function, function);
 				}
 			}, function);
 		}

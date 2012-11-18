@@ -36,7 +36,7 @@ import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -76,9 +76,9 @@ public class DeclarationsChecker
 				checkSuperListForDuplicates(Arrays.asList(typeParameter.getExtendsBound()));
 		}
 
-		for(Map.Entry<NapileNamedMethod, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
+		for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
 		{
-			NapileNamedMethod method = entry.getKey();
+			NapileNamedMethodOrMacro method = entry.getKey();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(method))
 				continue;

@@ -33,4 +33,6 @@ public interface SimpleMethodDescriptor extends MethodDescriptor
 	@NotNull
 	@Override
 	SimpleMethodDescriptor getOriginal();
+
+	boolean isMacro();
 }

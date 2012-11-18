@@ -46,7 +46,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 
 	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
-	private final Map<NapileNamedMethod, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
+	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
 	private final Map<NapileVariable, PropertyDescriptor> properties = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
 
@@ -152,7 +152,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods()
+	public Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods()
 	{
 		return methods;
 	}

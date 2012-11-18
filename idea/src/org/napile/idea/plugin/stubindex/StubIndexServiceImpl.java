@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.stubindex;
 
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodOrMacroStub;
 import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
 import org.napile.compiler.lang.psi.stubs.elements.StubIndexService;
 import com.intellij.psi.stubs.IndexSink;
@@ -40,11 +40,19 @@ public class StubIndexServiceImpl implements StubIndexService
 	}
 
 	@Override
-	public void indexMethod(NapilePsiMethodStub stub, IndexSink sink)
+	public void indexMethod(NapilePsiMethodOrMacroStub stub, IndexSink sink)
 	{
 		String name = stub.getName();
 		if(name != null)
 			sink.occurrence(JetIndexKeys.METHODS_SHORT_NAME_KEY, name);
+	}
+
+	@Override
+	public void indexMacro(NapilePsiMethodOrMacroStub stub, IndexSink sink)
+	{
+		String name = stub.getName();
+		if(name != null)
+			sink.occurrence(JetIndexKeys.MACROS_SHORT_NAME_KEY, name);
 	}
 
 	@Override

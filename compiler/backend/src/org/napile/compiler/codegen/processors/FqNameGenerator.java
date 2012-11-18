@@ -78,10 +78,10 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	}
 
 	@Override
-	public Void visitNamedFunction(NapileNamedMethod function, FqName data)
+	public Void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, FqName data)
 	{
 		record(function, data.child(NapilePsiUtil.safeName(function.getName())));
-		return super.visitNamedFunction(function, data);
+		return super.visitNamedMethodOrMacro(function, data);
 	}
 
 	@Override

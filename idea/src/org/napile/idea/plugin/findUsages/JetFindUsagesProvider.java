@@ -18,10 +18,10 @@ package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
@@ -56,7 +56,7 @@ public class JetFindUsagesProvider implements FindUsagesProvider
 	@Override
 	public String getType(@NotNull PsiElement psiElement)
 	{
-		if(psiElement instanceof NapileNamedMethod)
+		if(psiElement instanceof NapileNamedMethodOrMacro)
 			return "method";
 		if(psiElement instanceof NapileConstructor)
 			return "constructor";

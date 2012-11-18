@@ -59,7 +59,7 @@ public interface BodiesResolveContext
 		}
 
 		@Override
-		public Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods()
+		public Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods()
 		{
 			return Collections.emptyMap();
 		}
@@ -90,7 +90,7 @@ public interface BodiesResolveContext
 
 	Map<NapileVariable, PropertyDescriptor> getProperties();
 
-	Map<NapileNamedMethod, SimpleMethodDescriptor> getMethods();
+	Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods();
 
 	Map<NapileDeclaration, JetScope> getDeclaringScopes();
 
