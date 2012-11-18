@@ -50,6 +50,10 @@ public class CodeInjectionManager
 
 				codeInjections.put(injection.getName(), injection);
 			}
+			catch(ClassNotFoundException e)
+			{
+				//
+			}
 			catch(Exception e)
 			{
 				e.printStackTrace();

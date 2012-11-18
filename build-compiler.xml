@@ -4,6 +4,8 @@
 	<property name="build.classes.dir" value="${build.dir}/classes" />
 	<property name="build.dist.dir" value="${build.dir}/dist" />
 
+	<property name="version" value="0.1" />
+
 	<path id="classpath">
 		<fileset dir="lib">
 			<include name="*.jar"/>
@@ -21,7 +23,8 @@
 	</target>
 
 	<target name="compile" description="Compile the source.">
-		<javac destdir="${build.classes.dir}" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
+		<mkdir dir="${build.classes.dir}/compiler" />
+		<javac destdir="${build.classes.dir}/compiler" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
 			<classpath refid="classpath"/>
 			<src>
 				<dirset dir="compiler/backend/src" />
@@ -38,8 +41,9 @@
 		<tstamp>
 			<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>
 		</tstamp>
+
 		<jar destfile="${build.dist.dir}/napile.compiler-0.1.jar">
-			<fileset dir="${build.classes.dir}"/>
+			<fileset dir="${build.classes.dir}/compiler"/>
 			<manifest>
 				<attribute name="Build-By" value="${user.name}"/>
 				<attribute name="Build-Date" value="${build.tstamp}"/>

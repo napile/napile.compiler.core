@@ -902,16 +902,7 @@ public class JetControlFlowProcessor
 
 				Label bodyLabel = builder.createUnboundLabel();
 
-				NapileWhenCondition[] conditions = whenEntry.getConditions();
-				for(int i = 0; i < conditions.length; i++)
-				{
-					NapileWhenCondition condition = conditions[i];
-					condition.accept(conditionVisitor);
-					if(i + 1 < conditions.length)
-					{
-						builder.nondeterministicJump(bodyLabel);
-					}
-				}
+				builder.nondeterministicJump(bodyLabel);
 
 				if(!isIrrefutable)
 				{

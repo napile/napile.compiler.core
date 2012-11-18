@@ -95,7 +95,7 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 		DataFlowInfo elseDataFlowInfo = context.dataFlowInfo;
 		for(NapileWhenEntry whenEntry : expression.getEntries())
 		{
-			NapileWhenCondition[] conditions = whenEntry.getConditions();
+
 			DataFlowInfo newDataFlowInfo;
 			WritableScope scopeToExtend;
 			if(whenEntry.isElse())
@@ -103,40 +103,18 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 				scopeToExtend = newWritableScopeImpl(context, "Scope extended in when-else entry");
 				newDataFlowInfo = elseDataFlowInfo;
 			}
-			else if(conditions.length == 1)
+			else
 			{
 				scopeToExtend = newWritableScopeImpl(context, "Scope extended in when entry");
 				newDataFlowInfo = context.dataFlowInfo;
-				NapileWhenCondition condition = conditions[0];
-				if(condition != null)
-				{
-					DataFlowInfos infos = checkWhenCondition(subjectExpression, subjectExpression == null, subjectType, condition, scopeToExtend, context, variableDescriptor);
-					newDataFlowInfo = infos.thenInfo;
-					elseDataFlowInfo = elseDataFlowInfo.and(infos.elseInfo);
-				}
+
+				NapileWhenCondition condition = whenEntry.getCondition();
+
+				DataFlowInfos infos = checkWhenCondition(subjectExpression, subjectExpression == null, subjectType, condition, scopeToExtend, context, variableDescriptor);
+				newDataFlowInfo = infos.thenInfo;
+				elseDataFlowInfo = elseDataFlowInfo.and(infos.elseInfo);
 			}
-			else
-			{
-				scopeToExtend = newWritableScopeImpl(context, "pattern matching"); // We don't write to this scope
-				newDataFlowInfo = null;
-				for(NapileWhenCondition condition : conditions)
-				{
-					DataFlowInfos infos = checkWhenCondition(subjectExpression, subjectExpression == null, subjectType, condition, newWritableScopeImpl(context, ""), context, variableDescriptor);
-					if(newDataFlowInfo == null)
-					{
-						newDataFlowInfo = infos.thenInfo;
-					}
-					else
-					{
-						newDataFlowInfo = newDataFlowInfo.or(infos.thenInfo);
-					}
-					elseDataFlowInfo = elseDataFlowInfo.and(infos.elseInfo);
-				}
-				if(newDataFlowInfo == null)
-				{
-					newDataFlowInfo = context.dataFlowInfo;
-				}
-			}
+
 			NapileExpression bodyExpression = whenEntry.getExpression();
 			if(bodyExpression != null)
 			{

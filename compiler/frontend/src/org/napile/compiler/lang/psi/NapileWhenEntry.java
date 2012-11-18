@@ -61,9 +61,9 @@ public class NapileWhenEntry extends NapileElementImpl
 		return visitor.visitWhenEntry(this, data);
 	}
 
-	@NotNull
-	public NapileWhenCondition[] getConditions()
+	@Nullable
+	public NapileWhenCondition getCondition()
 	{
-		return findChildrenByClass(NapileWhenCondition.class);
+		return findChildByClass(NapileWhenCondition.class);
 	}
 }

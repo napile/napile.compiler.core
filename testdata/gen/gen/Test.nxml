@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <class version="0" name="gen.Test">
+	<modifiers>
+		<static/>
+	</modifiers>
 	<extends>
 		<type nullable="false">
 			<class_type name="napile.lang.Any"/>
@@ -12,13 +15,7 @@
 				<class_type name="napile.lang.Null"/>
 			</type>
 		</return_type>
-		<code max_locals="2">
-			<new_object>
-				<type nullable="false">
-					<class_type name="gen.B"/>
-				</type>
-			</new_object>
-			<store val="1"/>
+		<code max_locals="1">
 			<invoke_static>
 				<method name="napile.lang.Null.INSTANCE$get">
 					<return_type>

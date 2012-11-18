@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <class version="0" name="napile.lang.Null">
+	<modifiers>
+		<static/>
+	</modifiers>
 	<extends>
 		<type nullable="false">
 			<class_type name="napile.lang.Any"/>
@@ -107,21 +110,13 @@
 					<class_type name="napile.lang.Null"/>
 				</type>
 			</new_object>
-			<invoke_static>
-				<method name="napile.lang.Null.INSTANCE$set">
-					<return_type>
-						<type nullable="false">
-							<class_type name="napile.lang.Null"/>
-						</type>
-					</return_type>
-					<parameters>
-						<type nullable="false">
-							<class_type name="napile.lang.Null"/>
-						</type>
-					</parameters>
-				</method>
-			</invoke_static>
-			<pop/>
+			<put_to_static_variable>
+				<variable name="napile.lang.Null.INSTANCE">
+					<type nullable="false">
+						<class_type name="napile.lang.Null"/>
+					</type>
+				</variable>
+			</put_to_static_variable>
 		</code>
 	</static_constructor>
 </class>

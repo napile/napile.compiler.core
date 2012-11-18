@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <class version="0" name="napile.lang.Any">
+	<modifiers>
+		<static/>
+	</modifiers>
 	<constructor>
 		<modifiers>
 			<final/>

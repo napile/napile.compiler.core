@@ -4,6 +4,6 @@ class Test
 {
 	meth a()
 	{
-		var b = B()
+		//var b = B()
 	}
 }
