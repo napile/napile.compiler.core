@@ -132,6 +132,7 @@ public class DefaultErrorMessages
 		MAP.put(ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS, "Abstract function ''{0}'' in non-abstract class ''{1}''", NAME, NAME);
 		MAP.put(NATIVE_OR_ABSTRACT_METHOD_WITH_BODY, "A method ''{0}'' with body cannot be ''abstract'' or ''native''", NAME);
 		MAP.put(NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY, "Method ''{0}'' without a body must be ''abstract'' or ''native''", NAME);
+		MAP.put(MACRO_MUST_BE_DECLARATED_AS_LOCAL, "Macro ''{0}'' must be declarated as ''local''", NAME);
 		MAP.put(NON_MEMBER_ABSTRACT_FUNCTION, "Function ''{0}'' is not a class or trait member and cannot be abstract", NAME);
 
 		MAP.put(NON_MEMBER_FUNCTION_NO_BODY, "Function ''{0}'' must have a body", NAME);

@@ -30,6 +30,7 @@ import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.editor.markup.TextAttributes;
+import com.intellij.ui.Gray;
 
 public class JetHighlightingColors
 {
@@ -115,9 +116,11 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey BAD_CHARACTER = TextAttributesKey.createTextAttributesKey("NAPILE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER.getDefaultAttributes());
 
+	public static final TextAttributesKey MACRO_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_AUTO_CASTED_VALUE", new TextAttributes(null, new Color(-4930817), null, null, Font.PLAIN));
+
 	public static final TextAttributesKey AUTO_CASTED_VALUE = TextAttributesKey.createTextAttributesKey("NAPILE_AUTO_CASTED_VALUE", new TextAttributes(null, new Color(0xdbffdb), null, null, Font.PLAIN));
 
-	public static final TextAttributesKey INJECTION_BLOCK = TextAttributesKey.createTextAttributesKey("NAPILE_INJECTION_BLOCK", new TextAttributes(null, new Color(238, 238, 238), null, null, Font.PLAIN));
+	public static final TextAttributesKey INJECTION_BLOCK = TextAttributesKey.createTextAttributesKey("NAPILE_INJECTION_BLOCK", new TextAttributes(null, Gray._238, null, null, Font.PLAIN));
 
 	public static final TextAttributesKey LABEL = TextAttributesKey.createTextAttributesKey("NAPILE_LABEL", new TextAttributes(new Color(0x4a86e8), null, null, null, Font.PLAIN));
 

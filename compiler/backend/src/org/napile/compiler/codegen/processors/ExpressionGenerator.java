@@ -1198,9 +1198,12 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		}
 	}
 
-	public void returnExpression(@NotNull NapileExpression expr)
+	public void returnExpression(@NotNull NapileExpression expr, boolean macro)
 	{
 		StackValue lastValue = gen(expr);
+
+		if(macro)
+			return;
 
 		if(!lastValue.getType().equals(AsmConstants.NULL_TYPE))
 		{

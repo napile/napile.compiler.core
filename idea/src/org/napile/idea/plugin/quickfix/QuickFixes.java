@@ -18,12 +18,14 @@ package org.napile.idea.plugin.quickfix;
 
 import static org.napile.compiler.lang.diagnostics.Errors.*;
 import static org.napile.compiler.lang.lexer.NapileTokens.ABSTRACT_KEYWORD;
+import static org.napile.compiler.lang.lexer.NapileTokens.LOCAL_KEYWORD;
 import static org.napile.compiler.lang.lexer.NapileTokens.OVERRIDE_KEYWORD;
 
 import java.util.Collection;
 
 import org.napile.compiler.lang.diagnostics.AbstractDiagnosticFactory;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.idea.plugin.codeInsight.ImplementMethodsHandler;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -78,6 +80,7 @@ public class QuickFixes
 		factories.put(NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY, addAbstractModifierFactory);
 		factories.put(NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY, addFunctionBodyFactory);
 
+		factories.put(MACRO_MUST_BE_DECLARATED_AS_LOCAL, AddModifierFix.createFactory(LOCAL_KEYWORD, NapileNamedMethodOrMacro.class));
 		factories.put(NON_MEMBER_ABSTRACT_FUNCTION, removeAbstractModifierFactory);
 		factories.put(NON_MEMBER_FUNCTION_NO_BODY, addFunctionBodyFactory);
 

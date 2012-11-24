@@ -31,8 +31,10 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -40,13 +42,6 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.util.RunUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -148,7 +143,6 @@ public class JetFlowInformationProvider
 	{
 		assert subroutine instanceof NapileDeclarationWithBody;
 		NapileDeclarationWithBody function = (NapileDeclarationWithBody) subroutine;
-
 		NapileExpression bodyExpression = function.getBodyExpression();
 		if(bodyExpression == null)
 			return;
@@ -164,16 +158,16 @@ public class JetFlowInformationProvider
 				!TypeUtils.isEqualFqName(expectedReturnType, NapileLangPackage.NULL) &&
 				returnedExpressions.isEmpty() &&
 				!nothingReturned)
-		{
 			trace.report(Errors.RETURN_TYPE_MISMATCH.on(bodyExpression, expectedReturnType));
-		}
 		final boolean blockBody = function.hasBlockBody();
 
 		final Set<NapileElement> rootUnreachableElements = collectUnreachableCode();
 		for(NapileElement element : rootUnreachableElements)
-		{
 			trace.report(Errors.UNREACHABLE_CODE.on(element));
-		}
+
+		DeclarationDescriptor descriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, function);
+		if(descriptor instanceof SimpleMethodDescriptor && ((SimpleMethodDescriptor) descriptor).isMacro())
+			return;
 
 		final boolean[] noReturnError = new boolean[]{false};
 		for(NapileElement returnedExpression : returnedExpressions)

@@ -33,20 +33,22 @@ public class CallableMethod
 	{
 		SPECIAL,
 		STATIC,
-		VIRTUAL
+		VIRTUAL,
 	}
 
 	private final MethodRef methodRef;
 	private final CallType callType;
 	private final TypeNode returnType;
 	private final List<TypeNode> parameters;
+	private final boolean macro;
 
-	public CallableMethod(@NotNull MethodRef methodRef, @NotNull CallType callType, TypeNode returnType, List<TypeNode> parameters)
+	public CallableMethod(@NotNull MethodRef methodRef, @NotNull CallType callType, TypeNode returnType, List<TypeNode> parameters, boolean macro)
 	{
 		this.methodRef = methodRef;
 		this.callType = callType;
 		this.returnType = returnType;
 		this.parameters = parameters;
+		this.macro = macro;
 	}
 
 	public void invoke(InstructionAdapter instructionAdapter)
@@ -54,11 +56,16 @@ public class CallableMethod
 		switch(callType)
 		{
 			case SPECIAL:
-				//throw new IllegalArgumentException("InvokeSpecial call of constructor - replaced by NewObject");
-				instructionAdapter.invokeSpecial(methodRef);
+				if(macro)
+					instructionAdapter.macroJump(methodRef);
+				else
+					instructionAdapter.invokeSpecial(methodRef);
 				break;
 			case STATIC:
-				instructionAdapter.invokeStatic(methodRef);
+				if(macro)
+					instructionAdapter.macroStaticJump(methodRef);
+				else
+					instructionAdapter.invokeStatic(methodRef);
 				break;
 			case VIRTUAL:
 				instructionAdapter.invokeVirtual(methodRef);

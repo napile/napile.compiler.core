@@ -159,6 +159,12 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 	}
 
 	@Override
+	public boolean isMacro()
+	{
+		return false;
+	}
+
+	@Override
 	public void addOverriddenDescriptor(@NotNull CallableMemberDescriptor overriddenFunction)
 	{
 		overriddenMethods.add((MethodDescriptor) overriddenFunction);

@@ -23,10 +23,8 @@ import java.util.Map;
 
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
-import org.napile.asm.tree.members.ConstructorNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.Node;
-import org.napile.asm.tree.members.StaticConstructorNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
@@ -64,7 +62,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	private final Map<FqName, ClassNode> classNodes;
 	private final BindingTrace bindingTrace;
 
-	private final MultiMap<ClassNode, Triple<NapileConstructor, ConstructorNode, ConstructorDescriptor>> constructors = new MultiMap<ClassNode, Triple<NapileConstructor, ConstructorNode, ConstructorDescriptor>>();
+	private final MultiMap<ClassNode, Triple<NapileConstructor, MethodNode, ConstructorDescriptor>> constructors = new MultiMap<ClassNode, Triple<NapileConstructor, MethodNode, ConstructorDescriptor>>();
 	private final MultiMap<ClassNode, InstructionAdapter> propertiesStaticInit = new MultiMap<ClassNode, InstructionAdapter>();
 	private final MultiMap<ClassNode, InstructionAdapter> propertiesInit = new MultiMap<ClassNode, InstructionAdapter>();
 
@@ -144,11 +142,11 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		ConstructorNode constructorNode = MethodGenerator.gen(constructor, methodDescriptor, bindingTrace);
+		MethodNode constructorNode = MethodGenerator.gen(constructor, methodDescriptor, bindingTrace);
 
 		classNode.members.add(constructorNode);
 
-		constructors.putValue(classNode, new Triple<NapileConstructor, ConstructorNode, ConstructorDescriptor>(constructor, constructorNode, methodDescriptor));
+		constructors.putValue(classNode, new Triple<NapileConstructor, MethodNode, ConstructorDescriptor>(constructor, constructorNode, methodDescriptor));
 
 		return null;
 	}
@@ -239,12 +237,12 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 				size += inst.getMaxLocals();
 			}
 
-			Collection<Triple<NapileConstructor, ConstructorNode, ConstructorDescriptor>> constrs = constructors.get(classNode);
+			Collection<Triple<NapileConstructor, MethodNode, ConstructorDescriptor>> constrs = constructors.get(classNode);
 
-			for(Triple<NapileConstructor, ConstructorNode, ConstructorDescriptor> triple : constrs)
+			for(Triple<NapileConstructor, MethodNode, ConstructorDescriptor> triple : constrs)
 			{
 				NapileConstructor constructor = triple.a;
-				ConstructorNode constructorNode = triple.b;
+				MethodNode constructorNode = triple.b;
 				ConstructorDescriptor constructorDescriptor = triple.c;
 
 				constructorNode.instructions.addAll(instructions);
@@ -254,7 +252,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 				ExpressionGenerator gen = new ExpressionGenerator(bindingTrace, constructorDescriptor);
 				NapileExpression expression = constructor.getBodyExpression();
 				if(expression != null)
-					gen.returnExpression(expression);
+					gen.returnExpression(expression, false);
 				else
 				{
 					constructorNode.instructions.add(new LoadInstruction(0));
@@ -280,7 +278,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 			if(!instructions.isEmpty())
 			{
-				StaticConstructorNode staticConstructorNode = new StaticConstructorNode();
+				MethodNode staticConstructorNode = MethodNode.staticConstructor();
 				staticConstructorNode.instructions.addAll(instructions);
 				staticConstructorNode.maxLocals = size;
 

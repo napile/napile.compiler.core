@@ -81,14 +81,16 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 			{
 				if(calleeDescriptor instanceof ConstructorDescriptor)
 				{
-					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.CONSTRUCTOR_CALL, null);
+					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.CONSTRUCTOR_CALL, calleeDescriptor);
 				}
 				else if(calleeDescriptor instanceof MethodDescriptor)
 				{
 					MethodDescriptor fun = (MethodDescriptor) calleeDescriptor;
-					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.METHOD_CALL, null);
+					JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.METHOD_CALL, fun);
 					if(fun.isStatic())
-						JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.STATIC_METHOD_CALL, null);
+						JetPsiChecker.highlightName(holder, callee, JetHighlightingColors.STATIC_METHOD_CALL, fun);
+					if(fun.isMacro())
+						JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.MACRO_CALL, fun);
 				}
 			}
 		}

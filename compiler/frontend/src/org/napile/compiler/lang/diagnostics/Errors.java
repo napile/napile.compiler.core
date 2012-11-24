@@ -114,6 +114,7 @@ public interface Errors
 	DiagnosticFactory2<NapileMethod, String, ClassDescriptor> ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	DiagnosticFactory1<PsiElement, SimpleMethodDescriptor> NATIVE_OR_ABSTRACT_METHOD_WITH_BODY = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> MACRO_MUST_BE_DECLARATED_AS_LOCAL = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 	DiagnosticFactory1<NapileModifierListOwner, SimpleMethodDescriptor> NON_MEMBER_ABSTRACT_FUNCTION = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 
 	DiagnosticFactory1<NapileMethod, SimpleMethodDescriptor> NON_MEMBER_FUNCTION_NO_BODY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);

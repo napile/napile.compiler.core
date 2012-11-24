@@ -33,6 +33,7 @@ import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileToken;
@@ -154,6 +155,10 @@ public class ModifiersChecker
 
 		if(method.getBodyExpression() == null && abstractModifier == null && nativeModifier == null)
 			trace.report(Errors.NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY.on(method, methodDescriptor));
+
+		if(methodDescriptor.isMacro() && methodDescriptor.getVisibility() != Visibility.LOCAL)
+			trace.report(Errors.MACRO_MUST_BE_DECLARATED_AS_LOCAL.on(method, methodDescriptor));
+
 	}
 
 	private void checkDeclaredTypeInPublicMember(NapileNamedDeclaration member, CallableMemberDescriptor memberDescriptor)

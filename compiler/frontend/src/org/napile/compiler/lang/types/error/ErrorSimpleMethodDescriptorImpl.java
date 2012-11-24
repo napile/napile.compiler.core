@@ -58,12 +58,6 @@ public class ErrorSimpleMethodDescriptorImpl extends SimpleMethodDescriptorImpl
 	}
 
 	@Override
-	public boolean isMacro()
-	{
-		return false;
-	}
-
-	@Override
 	public void addOverriddenDescriptor(@NotNull CallableMemberDescriptor overriddenFunction)
 	{
 		// nop

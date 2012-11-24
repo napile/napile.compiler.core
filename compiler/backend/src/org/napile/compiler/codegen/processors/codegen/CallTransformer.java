@@ -83,10 +83,13 @@ public class CallTransformer
 	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments)
 	{
 		CallableMethod.CallType type = CallableMethod.CallType.VIRTUAL;
-		if(methodDescriptor instanceof ConstructorDescriptor || methodDescriptor.getVisibility() == Visibility.LOCAL)
+		if(methodDescriptor instanceof ConstructorDescriptor)
 			type = CallableMethod.CallType.SPECIAL;
 		else if(methodDescriptor.isStatic())
 			type = CallableMethod.CallType.STATIC;
+
+		if(!methodDescriptor.isStatic() && methodDescriptor.getVisibility() == Visibility.LOCAL)
+			type = CallableMethod.CallType.SPECIAL;
 
 		FqName fqName = DescriptorUtils.getFQName(methodDescriptor).toSafe();
 
@@ -102,6 +105,6 @@ public class CallTransformer
 		for(ParameterDescriptor p : originalMethodDescriptor.getValueParameters())
 			parametersToByteCode.add(TypeTransformer.toAsmType(p.getType()));
 
-		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks);
+		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks, methodDescriptor.isMacro());
 	}
 }

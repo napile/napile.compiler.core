@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
-import org.napile.asm.tree.members.ConstructorNode;
+import org.napile.asm.tree.members.MacroNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
@@ -33,6 +33,7 @@ import org.napile.asm.tree.members.bytecode.impl.InvokeSpecialInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PopInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
@@ -58,9 +59,10 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
  */
 public class MethodGenerator
 {
-	public static ConstructorNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace bindingTrace)
+	public static MethodNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace bindingTrace)
 	{
-		ConstructorNode constructorNode = new ConstructorNode(ModifierGenerator.gen(constructorDescriptor));
+		MethodNode constructorNode = MethodNode.constructor(ModifierGenerator.gen(constructorDescriptor));
+		constructorNode.returnType = new TypeNode(false, new ThisTypeNode());
 		for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 		{
 			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
@@ -112,7 +114,7 @@ public class MethodGenerator
 	@NotNull
 	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name realName)
 	{
-		MethodNode methodNode = new MethodNode(ModifierGenerator.gen(methodDescriptor), realName);
+		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierGenerator.gen(methodDescriptor), realName) : new MethodNode(ModifierGenerator.gen(methodDescriptor), realName);
 		methodNode.returnType = TypeTransformer.toAsmType(methodDescriptor.getReturnType());
 
 		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode);
@@ -138,7 +140,7 @@ public class MethodGenerator
 		if(expression != null)
 		{
 			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, methodDescriptor);
-			expressionGenerator.returnExpression(expression);
+			expressionGenerator.returnExpression(expression, methodDescriptor.isMacro());
 
 			InstructionAdapter adapter = expressionGenerator.getInstructs();
 
