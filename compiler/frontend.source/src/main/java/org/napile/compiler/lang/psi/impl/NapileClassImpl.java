@@ -178,59 +178,6 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 		return StringUtil.join(parts, ".");
 	}
 
-	/**
-	 * Returns the list of unqualified names that are indexed as the superclass names of this class. For the names that might be imported
-	 * via an aliased import, includes both the original and the aliased name (reference resolution during inheritor search will sort this out).
-	 *
-	 * @return the list of possible superclass names
-	 */
-	@Override
-	@NotNull
-	public List<String> getSuperNames()
-	{
-		NapilePsiClassStub stub = getStub();
-		if(stub != null)
-		{
-			return stub.getSuperNames();
-		}
-
-		final List<NapileTypeReference> types = getExtendTypeList();
-		if(types.size() == 0)
-			return Collections.emptyList();
-		List<String> result = new ArrayList<String>();
-		for(NapileTypeReference specifier : types)
-		{
-			final NapileTypeElement superType = specifier.getTypeElement();
-			if(superType instanceof NapileUserType)
-			{
-				final String referencedName = ((NapileUserType)superType).getReferencedName();
-				if(referencedName != null)
-				{
-					addSuperName(result, referencedName);
-				}
-			}
-		}
-		return result;
-	}
-
-	private void addSuperName(List<String> result, String referencedName)
-	{
-		result.add(referencedName);
-		final NapileImportDirective directive = getContainingFile().findImportByAlias(referencedName);
-		if(directive != null)
-		{
-			NapileExpression reference = directive.getImportedReference();
-			while(reference instanceof NapileDotQualifiedExpression)
-			{
-				reference = ((NapileDotQualifiedExpression) reference).getSelectorExpression();
-			}
-			if(reference instanceof NapileSimpleNameExpression)
-			{
-				result.add(((NapileSimpleNameExpression) reference).getReferencedName());
-			}
-		}
-	}
-
 	@Override
 	public ItemPresentation getPresentation()
 	{

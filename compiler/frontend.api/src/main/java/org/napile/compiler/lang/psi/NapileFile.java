@@ -30,7 +30,7 @@ import com.intellij.psi.impl.source.PsiFileWithStubSupport;
 public interface NapileFile extends NapileDeclarationContainer<NapileClass>, PsiFileWithStubSupport, PsiFileEx
 {
 	@NotNull
-	NapilePackageImplImpl getNamespaceHeader();
+	NapilePackageImpl getNamespaceHeader();
 
 	@Nullable
 	String getPackageName();

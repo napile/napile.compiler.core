@@ -17,15 +17,14 @@
 package org.napile.compiler.lang.psi.stubs.elements;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.impl.NapileClassImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -61,7 +60,7 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 	{
 		FqName fqName = NapilePsiUtil.getFQName(psi);
 
-		return new NapilePsiClassStub(parentStub, fqName != null ? fqName.getFqName() : null, psi.getName(), psi.getSuperNames());
+		return new NapilePsiClassStub(parentStub, fqName != null ? fqName.getFqName() : null, psi.getName());
 	}
 
 	@Override
@@ -69,13 +68,6 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 	{
 		dataStream.writeName(stub.getName());
 		dataStream.writeName(stub.getQualifiedName());
-
-		List<String> superNames = stub.getSuperNames();
-		dataStream.writeVarInt(superNames.size());
-		for(String name : superNames)
-		{
-			dataStream.writeName(name);
-		}
 	}
 
 	@Override
@@ -83,13 +75,7 @@ public class NapileClassElementType extends NapileStubElementType<NapilePsiClass
 	{
 		StringRef name = dataStream.readName();
 		StringRef qualifiedName = dataStream.readName();
-
-		int superCount = dataStream.readVarInt();
-		StringRef[] superNames = StringRef.createArray(superCount);
-		for(int i = 0; i < superCount; i++)
-			superNames[i] = dataStream.readName();
-
-		return new NapilePsiClassStub(parentStub, qualifiedName, name, superNames);
+		return new NapilePsiClassStub(parentStub, qualifiedName, name);
 	}
 
 	@Override

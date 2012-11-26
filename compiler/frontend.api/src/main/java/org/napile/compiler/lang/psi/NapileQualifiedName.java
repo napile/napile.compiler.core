@@ -16,31 +16,10 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.NotNull;
-import com.intellij.util.ArrayFactory;
-
 /**
  * @author VISTALL
- * @date 21:23/09.10.12
+ * @date 19:52/25.11.12
  */
-public interface NapileClass extends NapileNamedDeclaration, NapileTypeParameterListOwner, NapileClassLike
+public interface NapileQualifiedName
 {
-	NapileClass[] EMPTY_ARRAY = new NapileClass[0];
-
-	ArrayFactory<NapileClass> ARRAY_FACTORY = new ArrayFactory<NapileClass>()
-	{
-		@Override
-		public NapileClass[] create(int count)
-		{
-			return count == 0 ? EMPTY_ARRAY : new NapileClass[count];
-		}
-	};
-
-	String getQualifiedName();
-
-	@NotNull
-	NapileConstructor[] getConstructors();
-
-	@NotNull
-	NapileStaticConstructor[] getStaticConstructors();
 }

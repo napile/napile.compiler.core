@@ -16,18 +16,12 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.util.ArrayUtil;
 import com.intellij.util.io.StringRef;
 
 /**
@@ -37,29 +31,17 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 {
 	private final StringRef qualifiedName;
 	private final StringRef name;
-	private final StringRef[] superNames;
 
-	public NapilePsiClassStub(StubElement parent, @Nullable final String qualifiedName, String name, List<String> superNames)
+	public NapilePsiClassStub(StubElement parent, @Nullable final String qualifiedName, String name)
 	{
-		this(parent, StringRef.fromString(qualifiedName), StringRef.fromString(name), wrapStrings(superNames));
+		this(parent, StringRef.fromString(qualifiedName), StringRef.fromString(name));
 	}
 
-	public NapilePsiClassStub(StubElement parent, StringRef qualifiedName, StringRef name, StringRef[] superNames)
+	public NapilePsiClassStub(StubElement parent, StringRef qualifiedName, StringRef name)
 	{
 		super(parent, NapileStubElementTypes.CLASS);
 		this.qualifiedName = qualifiedName;
 		this.name = name;
-		this.superNames = superNames;
-	}
-
-	private static StringRef[] wrapStrings(List<String> names)
-	{
-		StringRef[] refs = new StringRef[names.size()];
-		for(int i = 0; i < names.size(); i++)
-		{
-			refs[i] = StringRef.fromString(names.get(i));
-		}
-		return refs;
 	}
 
 	public String getQualifiedName()
@@ -73,17 +55,6 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 		return StringRef.toString(name);
 	}
 
-	@NotNull
-	public List<String> getSuperNames()
-	{
-		List<String> result = new ArrayList<String>();
-		for(StringRef ref : superNames)
-		{
-			result.add(ref.toString());
-		}
-		return result;
-	}
-
 	@Override
 	public String toString()
 	{
@@ -92,8 +63,6 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 
 		builder.append("name=").append(getName());
 		builder.append(" fqn=").append(getQualifiedName());
-		builder.append(" superNames=").append("[").append(StringUtil.join(ArrayUtil.toStringArray(getSuperNames()))).append("]");
-
 		builder.append("]");
 
 		return builder.toString();

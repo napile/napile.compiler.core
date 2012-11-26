@@ -132,7 +132,7 @@ public interface NapileNodes
 	NapileNode WHEN_CONDITION_IS_PATTERN = new NapileNode("WHEN_CONDITION_IS_PATTERN", NapileWhenConditionIsPattern.class);
 	NapileNode WHEN_CONDITION_EXPRESSION = new NapileNode("WHEN_CONDITION_WITH_EXPRESSION", NapileWhenConditionWithExpression.class);
 
-	NapileNode PACKAGE = new NapileNode("PACKAGE", NapilePackageImplImpl.class);
+	NapileNode PACKAGE = new NapileNode("PACKAGE", NapilePackageImpl.class);
 
 	NapileNode IDE_TEMPLATE_EXPRESSION = new NapileNode("IDE_TEMPLATE_EXPRESSION", NapileIdeTemplate.class);
 }
