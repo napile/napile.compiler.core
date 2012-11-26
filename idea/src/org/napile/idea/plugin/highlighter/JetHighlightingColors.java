@@ -116,7 +116,7 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey BAD_CHARACTER = TextAttributesKey.createTextAttributesKey("NAPILE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER.getDefaultAttributes());
 
-	public static final TextAttributesKey MACRO_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_AUTO_CASTED_VALUE", new TextAttributes(null, new Color(-4930817), null, null, Font.PLAIN));
+	public static final TextAttributesKey MACRO_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_MACRO_CALL", new TextAttributes(null, new Color(-4930817), null, null, Font.PLAIN));
 
 	public static final TextAttributesKey AUTO_CASTED_VALUE = TextAttributesKey.createTextAttributesKey("NAPILE_AUTO_CASTED_VALUE", new TextAttributes(null, new Color(0xdbffdb), null, null, Font.PLAIN));
 
