@@ -57,6 +57,7 @@ public class NapilePsiVariableStub extends StubBase<NapileVariable> implements N
 		return StringRef.toString(inferenceBodyText);
 	}
 
+	@Override
 	public String getName()
 	{
 		return StringRef.toString(name);

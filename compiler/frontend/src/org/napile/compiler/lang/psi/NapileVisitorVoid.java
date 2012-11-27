@@ -48,14 +48,14 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitNamedDeclaration(constructor);
 	}
 
-	public void visitNamedMethod(NapileNamedMethodOrMacro methodOrMacro)
+	public void visitNamedMethod(NapileNamedMethod method)
 	{
-		visitNamedMethodOrMacro(methodOrMacro);
+		visitNamedMethodOrMacro(method);
 	}
 
-	public void visitNamedMacro(NapileNamedMethodOrMacro methodOrMacro)
+	public void visitNamedMacro(NapileNamedMacro macro)
 	{
-		visitNamedMethodOrMacro(methodOrMacro);
+		visitNamedMethodOrMacro(macro);
 	}
 
 	public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro method)

@@ -17,7 +17,8 @@
 package org.napile.compiler.lang.psi.stubs.elements;
 
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodOrMacroStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMacroStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
 import com.intellij.psi.stubs.IndexSink;
 
@@ -38,12 +39,12 @@ public interface StubIndexService
 		}
 
 		@Override
-		public void indexMethod(NapilePsiMethodOrMacroStub stub, IndexSink sink)
+		public void indexMethod(NapilePsiMethodStub stub, IndexSink sink)
 		{
 		}
 
 		@Override
-		public void indexMacro(NapilePsiMethodOrMacroStub stub, IndexSink sink)
+		public void indexMacro(NapilePsiMacroStub stub, IndexSink sink)
 		{
 		}
 
@@ -55,9 +56,9 @@ public interface StubIndexService
 
 	void indexClass(NapilePsiClassStub stub, IndexSink sink);
 
-	void indexMethod(NapilePsiMethodOrMacroStub stub, IndexSink sink);
+	void indexMethod(NapilePsiMethodStub stub, IndexSink sink);
 
-	void indexMacro(NapilePsiMethodOrMacroStub stub, IndexSink sink);
+	void indexMacro(NapilePsiMacroStub stub, IndexSink sink);
 
 	void indexVariable(NapilePsiVariableStub stub, IndexSink sink);
 }

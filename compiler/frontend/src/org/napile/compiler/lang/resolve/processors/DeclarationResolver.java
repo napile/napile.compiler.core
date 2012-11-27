@@ -163,13 +163,23 @@ public class DeclarationResolver
 			declaration.accept(new NapileVisitorVoid()
 			{
 				@Override
-				public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function)
+				public void visitNamedMethod(NapileNamedMethod method)
 				{
-					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveMethodDescriptor(ownerDescription, scope, function, trace);
+					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveMethodDescriptor(ownerDescription, scope, method, trace);
 					ownerDescription.getBuilder().addMethodDescriptor(functionDescriptor);
 
-					context.getMethods().put(function, functionDescriptor);
-					context.getDeclaringScopes().put(function, scope);
+					context.getMethods().put(method, functionDescriptor);
+					context.getDeclaringScopes().put(method, scope);
+				}
+
+				@Override
+				public void visitNamedMacro(NapileNamedMacro macro)
+				{
+					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveMacroDescriptor(ownerDescription, scope, macro, trace);
+					ownerDescription.getBuilder().addMethodDescriptor(functionDescriptor);
+
+					context.getMethods().put(macro, functionDescriptor);
+					context.getDeclaringScopes().put(macro, scope);
 				}
 
 				@Override

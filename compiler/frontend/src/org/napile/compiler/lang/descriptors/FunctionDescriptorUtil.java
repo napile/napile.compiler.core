@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
@@ -128,9 +128,9 @@ public class FunctionDescriptorUtil
 		for(ParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
 			parameterScope.addVariableDescriptor(parameterDescriptor);
 
-		if(declarationWithBody instanceof NapileNamedMethodOrMacro)
+		if(declarationWithBody instanceof NapileNamedMethod)
 		{
-			DeclarationDescriptor varRef = trace.get(BindingContext.REFERENCE_TARGET, ((NapileNamedMethodOrMacro) declarationWithBody).getVariableRef());
+			DeclarationDescriptor varRef = trace.get(BindingContext.REFERENCE_TARGET, ((NapileNamedMethod) declarationWithBody).getVariableRef());
 			if(varRef instanceof VariableDescriptor)
 			{
 				LocalVariableDescriptor variableDescriptor = new LocalVariableDescriptor(varRef.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), ((VariableDescriptor) varRef).getType(), Modality.OPEN);

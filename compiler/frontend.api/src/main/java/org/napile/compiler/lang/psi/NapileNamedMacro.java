@@ -16,15 +16,10 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.Nullable;
-import com.intellij.psi.PsiElement;
-
 /**
  * @author VISTALL
- * @date 15:20/19.10.12
+ * @date 15:54/27.11.12
  */
-public interface NapileNamedMethodOrMacro extends NapileMethod, NapileWithExpressionInitializer
+public interface NapileNamedMacro extends NapileNamedMethodOrMacro
 {
-	@Nullable
-	PsiElement getEqualsToken();
 }

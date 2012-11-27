@@ -17,26 +17,75 @@
 package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodOrMacroStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
  * @date 12:09/18.11.12
  */
-public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl
+public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl<NapilePsiMethodStub> implements NapileNamedMethod
 {
 	public NapileNamedMethodImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileNamedMethodImpl(@NotNull NapilePsiMethodOrMacroStub stub)
+	public NapileNamedMethodImpl(@NotNull NapilePsiMethodStub stub)
 	{
 		super(stub, NapileStubElementTypes.METHOD);
+	}
+
+	@Override
+	public String getName()
+	{
+		NapilePsiMethodStub stub = getStub();
+		if(stub != null)
+			return stub.getName();
+
+		PsiElement psiElement = findChildByType(NapileTokens.PROPERTY_KEYWORDS);
+		if(psiElement != null)
+		{
+			NapileSimpleNameExpression ref = getVariableRef();
+			assert ref != null;
+			return ref.getReferencedName() + "$" + psiElement.getText();
+		}
+		else
+		{
+			PsiElement identifier = getNameIdentifier();
+			if(identifier != null)
+			{
+				String text = identifier.getText();
+				return text != null ? NapilePsiUtil.unquoteIdentifier(text) : null;
+			}
+			else
+				return null;
+		}
+	}
+
+	@Nullable
+	@Override
+	public NapileSimpleNameExpression getVariableRef()
+	{
+		return (NapileSimpleNameExpression) findChildByType(NapileNodes.VARIABLE_REFERENCE);
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getPropertyDescriptor()
+	{
+		return findChildByType(NapileTokens.PROPERTY_KEYWORDS);
 	}
 
 	@Override
@@ -49,5 +98,12 @@ public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitNamedMethod(this, data);
+	}
+
+	@NotNull
+	@Override
+	public IStubElementType getElementType()
+	{
+		return NapileStubElementTypes.METHOD;
 	}
 }

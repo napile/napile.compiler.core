@@ -17,26 +17,47 @@
 package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileNamedMacro;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodOrMacroStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMacroStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
  * @date 12:14/18.11.12
  */
-public class NapileNamedMacroImpl extends NapileNamedMethodOrMacroImpl
+public class NapileNamedMacroImpl extends NapileNamedMethodOrMacroImpl<NapilePsiMacroStub> implements NapileNamedMacro
 {
 	public NapileNamedMacroImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileNamedMacroImpl(@NotNull NapilePsiMethodOrMacroStub stub)
+	public NapileNamedMacroImpl(@NotNull NapilePsiMacroStub stub)
 	{
-		super(stub, NapileStubElementTypes.METHOD);
+		super(stub, NapileStubElementTypes.MACRO);
+	}
+
+	@Override
+	public String getName()
+	{
+		NapilePsiMacroStub stub = getStub();
+		if(stub != null)
+			return stub.getName();
+
+		PsiElement identifier = getNameIdentifier();
+		if(identifier != null)
+		{
+			String text = identifier.getText();
+			return text != null ? NapilePsiUtil.unquoteIdentifier(text) : null;
+		}
+		else
+			return null;
 	}
 
 	@Override
@@ -49,5 +70,12 @@ public class NapileNamedMacroImpl extends NapileNamedMethodOrMacroImpl
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitNamedMacro(this, data);
+	}
+
+	@NotNull
+	@Override
+	public IStubElementType getElementType()
+	{
+		return NapileStubElementTypes.MACRO;
 	}
 }

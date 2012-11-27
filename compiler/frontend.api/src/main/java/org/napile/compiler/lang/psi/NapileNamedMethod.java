@@ -21,10 +21,13 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 15:20/19.10.12
+ * @date 15:54/27.11.12
  */
-public interface NapileNamedMethodOrMacro extends NapileMethod, NapileWithExpressionInitializer
+public interface NapileNamedMethod extends NapileNamedMethodOrMacro
 {
 	@Nullable
-	PsiElement getEqualsToken();
+	NapileSimpleNameExpression getVariableRef();
+
+	@Nullable
+	PsiElement getPropertyDescriptor();
 }

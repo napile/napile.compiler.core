@@ -20,9 +20,9 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.impl.NapileNamedMethodImpl;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodOrMacroStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -33,7 +33,7 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class NapileMethodElementType extends NapileStubElementType<NapilePsiMethodOrMacroStub, NapileNamedMethodOrMacro>
+public class NapileMethodElementType extends NapileStubElementType<NapilePsiMethodStub, NapileNamedMethod>
 {
 
 	public NapileMethodElementType(@NotNull @NonNls String debugName)
@@ -42,38 +42,38 @@ public class NapileMethodElementType extends NapileStubElementType<NapilePsiMeth
 	}
 
 	@Override
-	public NapileNamedMethodOrMacro createPsiFromAst(@NotNull ASTNode node)
+	public NapileNamedMethod createPsiFromAst(@NotNull ASTNode node)
 	{
 		return new NapileNamedMethodImpl(node);
 	}
 
 	@Override
-	public NapileNamedMethodOrMacro createPsi(@NotNull NapilePsiMethodOrMacroStub stub)
+	public NapileNamedMethod createPsi(@NotNull NapilePsiMethodStub stub)
 	{
 		return getPsiFactory(stub).createNamedMethod(stub);
 	}
 
 	@Override
-	public NapilePsiMethodOrMacroStub createStub(@NotNull NapileNamedMethodOrMacro psi, @NotNull StubElement parentStub)
+	public NapilePsiMethodStub createStub(@NotNull NapileNamedMethod psi, @NotNull StubElement parentStub)
 	{
-		return new NapilePsiMethodOrMacroStub(parentStub, psi.getName(), NapileStubElementTypes.METHOD);
+		return new NapilePsiMethodStub(parentStub, psi.getName());
 	}
 
 	@Override
-	public void serialize(NapilePsiMethodOrMacroStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiMethodStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
 	}
 
 	@Override
-	public NapilePsiMethodOrMacroStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiMethodStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		return new NapilePsiMethodOrMacroStub(parentStub, name, NapileStubElementTypes.METHOD);
+		return new NapilePsiMethodStub(parentStub, name);
 	}
 
 	@Override
-	public void indexStub(NapilePsiMethodOrMacroStub stub, IndexSink sink)
+	public void indexStub(NapilePsiMethodStub stub, IndexSink sink)
 	{
 		StubIndexServiceFactory.getInstance().indexMethod(stub, sink);
 	}

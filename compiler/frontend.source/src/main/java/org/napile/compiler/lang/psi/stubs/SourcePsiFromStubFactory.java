@@ -17,14 +17,7 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.NapileTypeParameterImpl;
-import org.napile.compiler.lang.psi.NapileTypeParameterList;
-import org.napile.compiler.lang.psi.NapileTypeParameterListImpl;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.impl.NapileClassImpl;
 import org.napile.compiler.lang.psi.impl.NapileNamedMacroImpl;
 import org.napile.compiler.lang.psi.impl.NapileNamedMethodImpl;
@@ -45,13 +38,14 @@ public class SourcePsiFromStubFactory implements NapilePsiFromStubFactory
 
 	@NotNull
 	@Override
-	public NapileNamedMethodOrMacro createNamedMethod(NapilePsiMethodOrMacroStub stub)
+	public NapileNamedMethod createNamedMethod(NapilePsiMethodStub stub)
 	{
 		return new NapileNamedMethodImpl(stub);
 	}
 
+	@NotNull
 	@Override
-	public NapileNamedMethodOrMacro createNamedMacro(NapilePsiMethodOrMacroStub stub)
+	public NapileNamedMacro createNamedMacro(NapilePsiMacroStub stub)
 	{
 		return new NapileNamedMacroImpl(stub);
 	}

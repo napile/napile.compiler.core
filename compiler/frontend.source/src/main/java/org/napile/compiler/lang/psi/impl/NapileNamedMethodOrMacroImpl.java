@@ -22,57 +22,32 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodOrMacroStub;
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author max
  */
-public abstract class NapileNamedMethodOrMacroImpl extends NapileTypeParameterListOwnerStub<NapilePsiMethodOrMacroStub> implements NapileNamedMethodOrMacro
+public abstract class NapileNamedMethodOrMacroImpl<S extends NamedStub> extends NapileTypeParameterListOwnerStub<S> implements NapileNamedMethodOrMacro
 {
 	public NapileNamedMethodOrMacroImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileNamedMethodOrMacroImpl(@NotNull NapilePsiMethodOrMacroStub stub, @NotNull IStubElementType<NapilePsiMethodOrMacroStub, NapileNamedMethodOrMacro> elementType)
+	public NapileNamedMethodOrMacroImpl(@NotNull S stub, @NotNull IStubElementType elementType)
 	{
 		super(stub, elementType);
 	}
 
 	@Override
-	public String getName()
-	{
-		NapilePsiMethodOrMacroStub stub = getStub();
-		if(stub != null)
-			return stub.getName();
-
-		PsiElement psiElement = findChildByType(NapileTokens.PROPERTY_KEYWORDS);
-		if(psiElement != null)
-		{
-			NapileSimpleNameExpression ref = getVariableRef();
-			assert ref != null;
-			return ref.getReferencedName() + "$" + psiElement.getText();
-		}
-		else
-		{
-			PsiElement identifier = getNameIdentifier();
-			if(identifier != null)
-			{
-				String text = identifier.getText();
-				return text != null ? NapilePsiUtil.unquoteIdentifier(text) : null;
-			}
-			else
-				return null;
-		}
-	}
+	public abstract String getName();
 
 	@Override
 	public abstract void accept(@NotNull NapileVisitorVoid visitor);
@@ -94,12 +69,6 @@ public abstract class NapileNamedMethodOrMacroImpl extends NapileTypeParameterLi
 		return findChildByType(NapileTokens.EQ);
 	}
 
-	@Nullable
-	@Override
-	public PsiElement getPropertyDescriptor()
-	{
-		return findChildByType(NapileTokens.PROPERTY_KEYWORDS);
-	}
 
 	@Override
 	@Nullable
@@ -135,22 +104,12 @@ public abstract class NapileNamedMethodOrMacroImpl extends NapileTypeParameterLi
 
 	@NotNull
 	@Override
-	public IStubElementType getElementType()
-	{
-		return NapileStubElementTypes.METHOD;
-	}
+	public abstract IStubElementType getElementType();
 
 	@Override
 	public ItemPresentation getPresentation()
 	{
 		return ItemPresentationProviders.getItemPresentation(this);
-	}
-
-	@Nullable
-	@Override
-	public NapileSimpleNameExpression getVariableRef()
-	{
-		return (NapileSimpleNameExpression) findChildByType(NapileNodes.VARIABLE_REFERENCE);
 	}
 
 	@Override

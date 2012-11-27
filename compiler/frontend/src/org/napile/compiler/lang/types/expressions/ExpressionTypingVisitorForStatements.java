@@ -25,12 +25,10 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -39,20 +37,11 @@ import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalyzer;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResultsUtil;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 
@@ -123,26 +112,6 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 
 		scope.addVariableDescriptor(propertyDescriptor);
 		return DataFlowUtils.checkStatementType(property, context, context.dataFlowInfo);
-	}
-
-	@Override
-	public JetTypeInfo visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, ExpressionTypingContext context)
-	{
-		SimpleMethodDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveMethodDescriptor(scope.getContainingDeclaration(), scope, function, context.trace);
-		scope.addFunctionDescriptor(functionDescriptor);
-		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, function, context.trace);
-		context.expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, functionDescriptor, context.dataFlowInfo, null, context.trace);
-		return DataFlowUtils.checkStatementType(function, context, context.dataFlowInfo);
-	}
-
-	@Override
-	public JetTypeInfo visitConstructor(NapileConstructor constructor, ExpressionTypingContext context)
-	{
-		ConstructorDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveConstructorDescriptor(scope, (ClassDescriptor) scope.getContainingDeclaration(), constructor, context.trace);
-		scope.addConstructorDescriptor(functionDescriptor);
-		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, constructor, context.trace);
-		context.expressionTypingServices.checkFunctionReturnType(functionInnerScope, constructor, functionDescriptor, context.dataFlowInfo, null, context.trace);
-		return DataFlowUtils.checkStatementType(constructor, context, context.dataFlowInfo);
 	}
 
 	@Override

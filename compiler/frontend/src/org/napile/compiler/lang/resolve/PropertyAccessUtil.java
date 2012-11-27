@@ -25,7 +25,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyAccessInfo;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import com.intellij.psi.tree.IElementType;
 
 /**
@@ -34,7 +34,7 @@ import com.intellij.psi.tree.IElementType;
  */
 public class PropertyAccessUtil
 {
-	public static void record(@NotNull BindingTrace trace, @NotNull VariableDescriptor variableDescriptor, @NotNull ClassDescriptor classDescriptor, @NotNull NapileNamedMethodOrMacro namedMethod)
+	public static void record(@NotNull BindingTrace trace, @NotNull VariableDescriptor variableDescriptor, @NotNull ClassDescriptor classDescriptor, @NotNull NapileNamedMethod namedMethod)
 	{
 		Map<ClassDescriptor, PropertyAccessInfo> map = trace.get(BindingContext.PROPERTY_ACCESS_INFO, variableDescriptor);
 		if(map == null)

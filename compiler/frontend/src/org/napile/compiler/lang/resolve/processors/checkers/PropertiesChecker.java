@@ -10,7 +10,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
@@ -42,9 +42,9 @@ public class PropertiesChecker
 	{
 		for(NapileDeclaration declaration : classLike.getDeclarations())
 		{
-			if(!(declaration instanceof NapileNamedMethodOrMacro))
+			if(!(declaration instanceof NapileNamedMethod))
 				continue;
-			NapileNamedMethodOrMacro method = (NapileNamedMethodOrMacro) declaration;
+			NapileNamedMethod method = (NapileNamedMethod) declaration;
 			PsiElement element = method.getPropertyDescriptor();
 			if(element == null)
 				return;

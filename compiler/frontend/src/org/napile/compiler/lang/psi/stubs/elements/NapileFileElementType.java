@@ -33,7 +33,7 @@ import com.intellij.util.io.StringRef;
  */
 public class NapileFileElementType extends IStubFileElementType<NapilePsiFileStub>
 {
-	public static final int STUB_VERSION = 23;
+	public static final int STUB_VERSION = 25;
 
 	public NapileFileElementType()
 	{

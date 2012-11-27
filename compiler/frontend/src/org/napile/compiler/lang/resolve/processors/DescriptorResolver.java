@@ -33,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -154,11 +153,11 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethodOrMacro method, final BindingTrace trace)
+	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethod method, final BindingTrace trace)
 	{
 		NapileSimpleNameExpression referenceExpression = method.getVariableRef();
 
-		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, method.getModifierList(), trace), NapilePsiUtil.safeName(method.getName()), CallableMemberDescriptor.Kind.DECLARATION, method.hasModifier(NapileTokens.STATIC_KEYWORD), method.hasModifier(NapileTokens.NATIVE_KEYWORD), method.getNode().getElementType() == NapileNodes.MACRO);
+		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, method.getModifierList(), trace), NapilePsiUtil.safeName(method.getName()), CallableMemberDescriptor.Kind.DECLARATION, method.hasModifier(NapileTokens.STATIC_KEYWORD), method.hasModifier(NapileTokens.NATIVE_KEYWORD), false);
 		WritableScope innerScope = new WritableScopeImpl(scope, methodDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
 
 		List<TypeParameterDescriptor> typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(methodDescriptor, innerScope, method.getTypeParameters(), trace);
@@ -196,15 +195,63 @@ public class DescriptorResolver
 				returnType = ErrorUtils.createErrorType("No type, no body");
 		}
 
-		if(bodyExpression != null && methodDescriptor.isMacro())
-			trace.record(BindingContext.MACRO_BODY, methodDescriptor, bodyExpression);
-
 		Modality modality = Modality.resolve(method);
 		Visibility visibility = Visibility.resolve(method);
 
 		methodDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, parameterDescriptors, returnType, modality, visibility);
 
 		BindingContextUtils.recordMethodDeclarationToDescriptor(trace, method, methodDescriptor);
+
+		return methodDescriptor;
+	}
+
+	@NotNull
+	public SimpleMethodDescriptor resolveMacroDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMacro macro, final BindingTrace trace)
+	{
+		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, macro.getModifierList(), trace), NapilePsiUtil.safeName(macro.getName()), CallableMemberDescriptor.Kind.DECLARATION, macro.hasModifier(NapileTokens.STATIC_KEYWORD), macro.hasModifier(NapileTokens.NATIVE_KEYWORD), true);
+		WritableScope innerScope = new WritableScopeImpl(scope, methodDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
+
+		List<TypeParameterDescriptor> typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(methodDescriptor, innerScope, macro.getTypeParameters(), trace);
+		innerScope.changeLockLevel(WritableScope.LockLevel.BOTH);
+		typeParameterResolver.postResolving(macro, innerScope, typeParameterDescriptors, trace);
+
+		List<ParameterDescriptor> parameterDescriptors = resolveValueParameters(methodDescriptor, innerScope, macro.getValueParameters(), trace);
+
+		innerScope.changeLockLevel(WritableScope.LockLevel.READING);
+
+		final NapileExpression bodyExpression = macro.getBodyExpression();
+		NapileTypeReference returnTypeRef = macro.getReturnTypeRef();
+		JetType returnType;
+		if(returnTypeRef != null)
+			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, true);
+		else if(macro.hasBlockBody())
+			returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
+		else
+		{
+			if(bodyExpression != null)
+			{
+				returnType = DeferredType.create(trace, new LazyValueWithDefault<JetType>(ErrorUtils.createErrorType("Recursive dependency"))
+				{
+					@Override
+					protected JetType compute()
+					{
+						return expressionTypingServices.inferFunctionReturnType(scope, macro, methodDescriptor, trace);
+					}
+				});
+			}
+			else
+				returnType = ErrorUtils.createErrorType("No type, no body");
+		}
+
+		if(bodyExpression != null)
+			trace.record(BindingContext.MACRO_BODY, methodDescriptor, bodyExpression);
+
+		Modality modality = Modality.resolve(macro);
+		Visibility visibility = Visibility.resolve(macro);
+
+		methodDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, parameterDescriptors, returnType, modality, visibility);
+
+		BindingContextUtils.recordMethodDeclarationToDescriptor(trace, macro, methodDescriptor);
 
 		return methodDescriptor;
 	}
