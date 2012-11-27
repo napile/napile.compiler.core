@@ -37,7 +37,6 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -90,14 +89,6 @@ public class VariableCodegen
 			setterMethodNode.maxLocals = propertyDescriptor.isStatic() ? 1 : 2;
 
 			classNode.members.add(setterMethodNode);
-		}
-		else
-		{
-			assert setter instanceof MethodDescriptor;
-
-			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext.FQNAME_TO_DESCRIPTOR, setterFq);
-
-			classNode.members.add(MethodGenerator.gen((MethodDescriptor) setter, setter.getName(), method, bindingTrace));
 		}
 	}
 
@@ -180,13 +171,5 @@ public class VariableCodegen
 				classNode.members.add(getterMethodNode);
 			}
 		}
-		/*else
-		/*{
-			assert getter instanceof MethodDescriptor;
-
-			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext.FQNAME_TO_DESCRIPTOR, getterFq);
-
-			classNode.members.add(MethodGenerator.gen((MethodDescriptor) getter, getter.getName(), method, bindingTrace));
-		}    */
 	}
 }
