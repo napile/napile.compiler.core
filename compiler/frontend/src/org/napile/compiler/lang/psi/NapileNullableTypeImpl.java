@@ -25,7 +25,7 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileNullableTypeImpl extends NapileElementImpl implements NapileTypeElement, NapileNullableType
+public class NapileNullableTypeImpl extends NapileElementImpl implements NapileNullableType
 {
 	public NapileNullableTypeImpl(@NotNull ASTNode node)
 	{

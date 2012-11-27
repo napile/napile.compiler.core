@@ -18,6 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
@@ -33,4 +34,14 @@ public interface NapileMethodType extends NapileTypeElement
 
 	@Nullable
 	NapileTypeReference getReturnTypeRef();
+
+	@NotNull
+	ASTNode getOpenBraceNode();
+
+	@Nullable
+	@IfNotParsed
+	ASTNode getClosingBraceNode();
+
+	@Nullable
+	ASTNode getArrowNode();
 }

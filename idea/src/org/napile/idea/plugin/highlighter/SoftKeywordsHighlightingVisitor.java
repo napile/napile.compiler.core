@@ -22,6 +22,7 @@ package org.napile.idea.plugin.highlighter;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
+import org.napile.compiler.lang.psi.NapileMethodType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.application.ApplicationManager;
@@ -47,6 +48,24 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 
 			if(NapileTokens.SAFE_ACCESS.equals(elementType))
 				holder.createInfoAnnotation(element, null).setTextAttributes(JetHighlightingColors.SAFE_ACCESS);
+		}
+	}
+
+	@Override
+	public void visitFunctionType(NapileMethodType functionLiteral)
+	{
+		if(ApplicationManager.getApplication().isUnitTestMode())
+			return;
+		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
+		if(closingBraceNode != null)
+		{
+			holder.createInfoAnnotation(closingBraceNode, null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+		}
+		ASTNode arrowNode = functionLiteral.getArrowNode();
+		if(arrowNode != null)
+		{
+			holder.createInfoAnnotation(arrowNode, null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 	}
 

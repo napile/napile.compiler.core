@@ -22,19 +22,14 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * @author max
  */
 public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMethodType
 {
-	public static final NapileToken RETURN_TYPE_SEPARATOR = NapileTokens.ARROW;
-
 	public NapileMethodTypeImpl(@NotNull ASTNode node)
 	{
 		super(node);
@@ -78,22 +73,28 @@ public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMet
 	@Nullable
 	public NapileTypeReference getReturnTypeRef()
 	{
-		boolean colonPassed = false;
-		PsiElement child = getFirstChild();
-		while(child != null)
-		{
-			IElementType tt = child.getNode().getElementType();
-			if(tt == RETURN_TYPE_SEPARATOR)
-			{
-				colonPassed = true;
-			}
-			if(colonPassed && child instanceof NapileTypeReference)
-			{
-				return (NapileTypeReference) child;
-			}
-			child = child.getNextSibling();
-		}
+		return findChildByClass(NapileTypeReference.class);
+	}
 
-		return null;
+	@Override
+	@NotNull
+	public ASTNode getOpenBraceNode()
+	{
+		return getNode().findChildByType(NapileTokens.LBRACE);
+	}
+
+	@Override
+	@Nullable
+	@IfNotParsed
+	public ASTNode getClosingBraceNode()
+	{
+		return getNode().findChildByType(NapileTokens.RBRACE);
+	}
+
+	@Override
+	@Nullable
+	public ASTNode getArrowNode()
+	{
+		return getNode().findChildByType(NapileTokens.ARROW);
 	}
 }

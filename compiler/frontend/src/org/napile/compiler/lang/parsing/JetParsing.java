@@ -63,31 +63,6 @@ public class JetParsing extends AbstractJetParsing
 		return jetParsing;
 	}
 
-	private static JetParsing createForByClause(final SemanticWhitespaceAwarePsiBuilder builder)
-	{
-		final SemanticWhitespaceAwarePsiBuilderForByClause builderForByClause = new SemanticWhitespaceAwarePsiBuilderForByClause(builder);
-		JetParsing jetParsing = new JetParsing(builderForByClause);
-		jetParsing.myExpressionParsing = new JetExpressionParsing(builderForByClause, jetParsing)
-		{
-			@Override
-			protected boolean parseCallWithClosure()
-			{
-				if(builderForByClause.getStackSize() > 0)
-				{
-					return super.parseCallWithClosure();
-				}
-				return false;
-			}
-
-			@Override
-			protected JetParsing create(SemanticWhitespaceAwarePsiBuilder builder)
-			{
-				return createForByClause(builder);
-			}
-		};
-		return jetParsing;
-	}
-
 	private JetExpressionParsing myExpressionParsing;
 
 	private JetParsing(SemanticWhitespaceAwarePsiBuilder builder)
@@ -918,62 +893,23 @@ public class JetParsing extends AbstractJetParsing
 	// on expression-indicating symbols or not
 	private PsiBuilder.Marker parseTypeRefContents(TokenSet extraRecoverySet)
 	{
-		// Disabling token merge is required for cases like
-		//    Int?.(Foo) -> Bar
-		// we don't support this case now
-		//        myBuilder.disableJoiningComplexTokens();
 		PsiBuilder.Marker typeRefMarker = mark();
+
 		parseAnnotations();
 
-		if(at(NapileTokens.IDENTIFIER) || at(NapileTokens.PACKAGE_KEYWORD))
-		{
+		// identifier
+		if(at(NapileTokens.IDENTIFIER))
 			parseUserType();
-		}
-		else if(at(NapileTokens.LPAR))
-		{
-			PsiBuilder.Marker functionOrParenthesizedType = mark();
-
-			// This may be a function parameter list or just a prenthesized type
-			advance(); // LPAR
-			parseTypeRefContents(TokenSet.EMPTY).drop(); // parenthesized types, no reference element around it is needed
-
-			if(at(NapileTokens.RPAR))
-			{
-				advance(); // RPAR
-				if(at(NapileTokens.ARROW))
-				{
-					// It's a function type with one parameter specified
-					//    (A) -> B
-					functionOrParenthesizedType.rollbackTo();
-					parseFunctionType();
-				}
-				else
-				{
-					// It's a parenthesized type
-					//    (A)
-					functionOrParenthesizedType.drop();
-				}
-			}
-			else
-			{
-				// This must be a function type
-				//   (A, B) -> C
-				// or
-				//   (a : A) -> C
-				functionOrParenthesizedType.rollbackTo();
-				parseFunctionType();
-			}
-		}
+		// {() : String}
+		else if(at(NapileTokens.LBRACE))
+			parseAnonymMethodType();
+		// this
 		else if(at(NapileTokens.THIS_KEYWORD))
-		{
 			parseSelfType();
-		}
 		else
-		{
 			errorWithRecovery("Type expected", TokenSet.orSet(TokenSet.create(NapileTokens.EQ, NapileTokens.COMMA, NapileTokens.GT, NapileTokens.RBRACKET, NapileTokens.DOT, NapileTokens.RPAR, NapileTokens.RBRACE, NapileTokens.LBRACE, NapileTokens.SEMICOLON), extraRecoverySet));
-		}
 
-		while(at(NapileTokens.QUEST))
+		if(at(NapileTokens.QUEST))
 		{
 			PsiBuilder.Marker precede = typeRefMarker.precede();
 
@@ -983,47 +919,17 @@ public class JetParsing extends AbstractJetParsing
 			typeRefMarker = precede;
 		}
 
-		if(at(NapileTokens.DOT))
-		{
-			// This is a receiver for a function type
-			//  A.(B) -> C
-			//   ^
-
-			PsiBuilder.Marker precede = typeRefMarker.precede();
-			typeRefMarker.done(TYPE_REFERENCE);
-
-			advance(); // DOT
-
-			if(at(NapileTokens.LPAR))
-			{
-				parseFunctionTypeContents().drop();
-			}
-			else
-			{
-				error("Expecting function type");
-			}
-			typeRefMarker = precede.precede();
-
-			precede.done(FUNCTION_TYPE);
-		}
-		//        myBuilder.restoreJoiningComplexTokensState();
 		return typeRefMarker;
 	}
 
 	/*
 		 * userType
-		 *   : ("namespace" ".")? simpleUserType{"."}
+		 *   : simpleUserType{"."}
 		 *   ;
 		 */
 	private void parseUserType()
 	{
 		PsiBuilder.Marker userType = mark();
-
-		if(at(NapileTokens.PACKAGE_KEYWORD))
-		{
-			advance(); // PACKAGE_KEYWORD
-			expect(NapileTokens.DOT, "Expecting '.'", TokenSet.create(NapileTokens.IDENTIFIER));
-		}
 
 		PsiBuilder.Marker reference = mark();
 		while(true)
@@ -1043,12 +949,6 @@ public class JetParsing extends AbstractJetParsing
 			{
 				break;
 			}
-			if(lookahead(1) == NapileTokens.LPAR)
-			{
-				// This may be a receiver for a function type
-				//   Int.(Int) -> Int
-				break;
-			}
 
 			PsiBuilder.Marker precede = userType.precede();
 			userType.done(USER_TYPE);
@@ -1063,7 +963,7 @@ public class JetParsing extends AbstractJetParsing
 
 	/*
 		 * selfType
-		 *   : "This"
+		 *   : "this"
 		 *   ;
 		 */
 	private void parseSelfType()
@@ -1075,6 +975,27 @@ public class JetParsing extends AbstractJetParsing
 		type.done(SELF_TYPE);
 	}
 
+	private void parseAnonymMethodType()
+	{
+		PsiBuilder.Marker anonymMethodType = mark();
+
+		advance(); // LBRACE
+
+		if(at(NapileTokens.LPAR))
+		{
+			parseValueParameterList(true, TokenSet.EMPTY);
+
+			expect(NapileTokens.ARROW, "'->' expecting", TYPE_REF_FIRST);
+
+			parseTypeRef();
+		}
+		else
+			parseTypeRef();
+
+		expect(NapileTokens.RBRACE, "'}' expecting");
+
+		anonymMethodType.done(ANONYM_METHOD_TYPE);
+	}
 	/*
 		 *  (optionalProjection type){","}
 		 */
@@ -1116,42 +1037,6 @@ public class JetParsing extends AbstractJetParsing
 		}
 		getBuilder().restoreNewlinesState();
 		return atGT;
-	}
-
-	/*
-		 * functionType
-		 *   : (type ".")? "(" (parameter | modifiers type){","}? ")" "->" type?
-		 *   ;
-		 */
-	private void parseFunctionType()
-	{
-		parseFunctionTypeContents().done(FUNCTION_TYPE);
-	}
-
-	private PsiBuilder.Marker parseFunctionTypeContents()
-	{
-		assert _at(NapileTokens.LPAR) : tt();
-		PsiBuilder.Marker functionType = mark();
-
-		//        advance(); // LPAR
-		//
-		//        int lastLPar = findLastBefore(TokenSet.create(LPAR), TokenSet.create(COLON), false);
-		//        if (lastLPar >= 0 && lastLPar > myBuilder.getCurrentOffset()) {
-		//            TODO : -1 is a hack?
-		//            createTruncatedBuilder(lastLPar - 1).parseTypeRef();
-		//            advance(); // DOT
-		//        }
-
-		parseValueParameterList(true, TokenSet.EMPTY);
-
-		//        if (at(COLON)) {
-		//            advance(); // COLON // expect(COLON, "Expecting ':' followed by a return type", TYPE_REF_FIRST);
-
-		expect(NapileTokens.ARROW, "Expecting '->' to specify return type of a function type", TYPE_REF_FIRST);
-		parseTypeRef();
-		//        }
-
-		return functionType;//.done(FUNCTION_TYPE);
 	}
 
 	/*
@@ -1218,7 +1103,7 @@ public class JetParsing extends AbstractJetParsing
 
 	/*
 		 * functionParameter
-		 *   : modifiers ("val" | "var")? parameter ("=" element)?
+		 *   : modifiers "var"? parameter ("=" element)?
 		 *   ;
 		 */
 	private boolean tryParseValueParameter()

@@ -74,11 +74,7 @@ WHITE_SPACE_CHAR=[\ \n\t\f]
 // TODO: prohibit '$' in identifiers?
 LETTER = [:letter:]|_
 IDENTIFIER_PART=[:digit:]|{LETTER}
-PLAIN_IDENTIFIER={LETTER} {IDENTIFIER_PART}*
-// TODO: this one MUST allow everything accepted by the runtime
-// TODO: Replace backticks by one backslash in the begining
-ESCAPED_IDENTIFIER = `[^`\n]+`
-IDENTIFIER = {PLAIN_IDENTIFIER}|{ESCAPED_IDENTIFIER}
+IDENTIFIER={LETTER} {IDENTIFIER_PART}*
 FIELD_IDENTIFIER = \${IDENTIFIER}
 
 EOL_COMMENT="/""/"[^\n]*
@@ -247,7 +243,7 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
 "class"      { return NapileTokens.CLASS_KEYWORD ;}
 "var"        { return NapileTokens.VAR_KEYWORD ;}
 "meth"       { return NapileTokens.METH_KEYWORD ;}
-"macro"       { return NapileTokens.MACRO_KEYWORD ;}
+"macro"      { return NapileTokens.MACRO_KEYWORD ;}
 "this"       { return NapileTokens.THIS_KEYWORD ;}
 
 "throw"      { return NapileTokens.THROW_KEYWORD ;}

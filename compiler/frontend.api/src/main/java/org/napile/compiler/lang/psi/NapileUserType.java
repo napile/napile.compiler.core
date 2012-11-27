@@ -24,8 +24,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface NapileUserType extends NapileTypeElement
 {
-	boolean isAbsoluteInRootNamespace();
-
 	@Nullable
 	NapileTypeArgumentList getTypeArgumentList();
 

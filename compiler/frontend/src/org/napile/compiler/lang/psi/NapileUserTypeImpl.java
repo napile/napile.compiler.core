@@ -22,7 +22,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -33,12 +32,6 @@ public class NapileUserTypeImpl extends NapileElementImpl implements NapileUserT
 	public NapileUserTypeImpl(@NotNull ASTNode node)
 	{
 		super(node);
-	}
-
-	@Override
-	public boolean isAbsoluteInRootNamespace()
-	{
-		return findChildByType(NapileTokens.PACKAGE_KEYWORD) != null;
 	}
 
 	@Override

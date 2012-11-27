@@ -67,7 +67,7 @@ public interface NapileNodes
 	NapileNode TYPE_REFERENCE = new NapileNode("TYPE_REFERENCE", NapileTypeReferenceImpl.class);
 
 	NapileNode USER_TYPE = new NapileNode("USER_TYPE", NapileUserTypeImpl.class);
-	NapileNode FUNCTION_TYPE = new NapileNode("METHOD_TYPE", NapileMethodTypeImpl.class);
+	NapileNode ANONYM_METHOD_TYPE = new NapileNode("ANONYM_METHOD_TYPE", NapileMethodTypeImpl.class);
 	NapileNode SELF_TYPE = new NapileNode("SELF_TYPE", NapileSelfTypeImpl.class);
 	NapileNode NULLABLE_TYPE = new NapileNode("NULLABLE_TYPE", NapileNullableTypeImpl.class);
 

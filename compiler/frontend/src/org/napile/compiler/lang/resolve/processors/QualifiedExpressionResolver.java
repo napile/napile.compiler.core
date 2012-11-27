@@ -37,7 +37,6 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.Visibilities;
-import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
@@ -166,12 +165,6 @@ public class QualifiedExpressionResolver
 	@NotNull
 	public Collection<? extends DeclarationDescriptor> lookupDescriptorsForUserType(@NotNull NapileUserType userType, @NotNull JetScope outerScope, @NotNull BindingTrace trace)
 	{
-
-		if(userType.isAbsoluteInRootNamespace())
-		{
-			trace.report(Errors.UNSUPPORTED.on(userType, "package"));
-			return Collections.emptyList();
-		}
 		NapileSimpleNameExpression referenceExpression = userType.getReferenceExpression();
 		if(referenceExpression == null)
 		{

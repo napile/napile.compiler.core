@@ -174,7 +174,7 @@ public class TypeSubstitutor
 		assertRecursionDepth(recursionDepth, type, substitution);
 		// The type is within the substitution range, i.e. T or T?
 
-		if(false || ErrorUtils.isErrorType(type))
+		if(ErrorUtils.isErrorType(type))
 			return type;
 
 		JetType replacement = substitution.get(type.getConstructor());
@@ -203,7 +203,6 @@ public class TypeSubstitutor
 		List<JetType> substitutedArguments = Lists.newArrayList();
 		for(int i = 0; i < typeParameters.size(); i++)
 		{
-			TypeParameterDescriptor typeParameter = typeParameters.get(i);
 			JetType typeArgument = typeArguments.get(i);
 
 			JetType substitutedTypeArgument = unsafeSubstitute(typeArgument, recursionDepth + 1);
