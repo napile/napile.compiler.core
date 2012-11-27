@@ -45,7 +45,7 @@ public class PropertyAccessUtil
 			map.put(classDescriptor, propertyAccessInfo = new PropertyAccessInfo());
 
 		MethodDescriptor methodDescriptor = trace.safeGet(BindingContext.METHOD, namedMethod);
-		IElementType elementType = namedMethod.getPropertyDescriptor().getNode().getElementType();
+		IElementType elementType = namedMethod.getPropertyAccessType();
 		if(elementType == NapileTokens.LAZY_KEYWORD)
 			propertyAccessInfo.setLazy(methodDescriptor);
 		else if(elementType == NapileTokens.SET_KEYWORD)

@@ -29,7 +29,9 @@ import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.TokenType;
 import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
@@ -83,9 +85,10 @@ public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl<NapilePs
 
 	@Nullable
 	@Override
-	public PsiElement getPropertyDescriptor()
+	public IElementType getPropertyAccessType()
 	{
-		return findChildByType(NapileTokens.PROPERTY_KEYWORDS);
+		PsiElement element = findChildByType(NapileTokens.PROPERTY_KEYWORDS);
+		return element == null ? TokenType.ERROR_ELEMENT : element.getNode().getElementType();
 	}
 
 	@Override

@@ -15,7 +15,6 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.PropertyAccessUtil;
-import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
@@ -45,13 +44,12 @@ public class PropertiesChecker
 			if(!(declaration instanceof NapileNamedMethod))
 				continue;
 			NapileNamedMethod method = (NapileNamedMethod) declaration;
-			PsiElement element = method.getPropertyDescriptor();
-			if(element == null)
-				return;
+			if(method.getPropertyAccessType() == null)
+				continue;
 
 			VariableDescriptor variableDescriptor = (VariableDescriptor) trace.get(BindingContext.REFERENCE_TARGET, method.getVariableRef());
 			if(variableDescriptor == null)
-				return;
+				continue;
 
 			PropertyAccessUtil.record(trace, variableDescriptor, mutableClassDescriptor, method);
 		}
