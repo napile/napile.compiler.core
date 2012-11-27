@@ -26,6 +26,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -117,13 +120,27 @@ public class FunctionDescriptorUtil
 	}
 
 	@NotNull
-	public static JetScope getFunctionInnerScope(@NotNull JetScope outerScope, @NotNull MethodDescriptor descriptor, @NotNull BindingTrace trace)
+	public static JetScope getMethodInnerScope(@NotNull JetScope outerScope, @NotNull MethodDescriptor descriptor, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace trace)
 	{
 		WritableScope parameterScope = new WritableScopeImpl(outerScope, descriptor, new TraceBasedRedeclarationHandler(trace), "Function inner scope");
 		for(TypeParameterDescriptor typeParameter : descriptor.getTypeParameters())
 			parameterScope.addTypeParameterDescriptor(typeParameter);
 		for(ParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
 			parameterScope.addVariableDescriptor(parameterDescriptor);
+
+		if(declarationWithBody instanceof NapileNamedMethodOrMacro)
+		{
+			DeclarationDescriptor varRef = trace.get(BindingContext.REFERENCE_TARGET, ((NapileNamedMethodOrMacro) declarationWithBody).getVariableRef());
+			if(varRef instanceof VariableDescriptor)
+			{
+				LocalVariableDescriptor variableDescriptor = new LocalVariableDescriptor(varRef.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), ((VariableDescriptor) varRef).getType(), Modality.OPEN);
+				parameterScope.addVariableDescriptor(variableDescriptor);
+
+				trace.record(BindingContext.AUTO_CREATED_IT, variableDescriptor, true);
+				trace.record(BindingContext.AUTO_CREATED_TO, variableDescriptor, (VariableDescriptor) varRef);
+			}
+		}
+
 		parameterScope.changeLockLevel(WritableScope.LockLevel.READING);
 		return parameterScope;
 	}

@@ -287,7 +287,7 @@ public class BodyResolver
 			return;
 
 		NapileExpression bodyExpression = function.getBodyExpression();
-		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(declaringScope, methodDescriptor, trace);
+		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(declaringScope, methodDescriptor, function, trace);
 		if(bodyExpression != null)
 		{
 			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, methodDescriptor, DataFlowInfo.EMPTY, null, trace);

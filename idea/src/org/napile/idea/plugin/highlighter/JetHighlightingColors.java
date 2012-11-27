@@ -102,7 +102,7 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey EXTENSION_PROPERTY = TextAttributesKey.createTextAttributesKey("NAPILE_EXTENSION_PROPERTY", new TextAttributes());
 
-	public static final TextAttributesKey FUNCTION_LITERAL_DEFAULT_PARAMETER = TextAttributesKey.createTextAttributesKey("NAPILE_CLOSURE_DEFAULT_PARAMETER", new TextAttributes(null, null, null, null, Font.BOLD));
+	public static final TextAttributesKey AUTO_GENERATED_VAR = TextAttributesKey.createTextAttributesKey("NAPILE_CLOSURE_DEFAULT_PARAMETER", new TextAttributes(null, new Color(0xdbffdb), null, null, Font.PLAIN));
 
 	public static final TextAttributesKey FUNCTION_DECLARATION = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_DECLARATION", CodeInsightColors.METHOD_DECLARATION_ATTRIBUTES.getDefaultAttributes());
 

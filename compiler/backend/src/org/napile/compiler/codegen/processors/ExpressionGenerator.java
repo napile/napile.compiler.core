@@ -57,15 +57,7 @@ import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.injection.InjectionCodegen;
 import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -736,17 +728,18 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		if(index >= 0)
 			return stackValueForLocal(descriptor, index);
 
-		if(descriptor instanceof PropertyDescriptor)
+		if(descriptor instanceof VariableDescriptor)
 		{
-			PropertyDescriptor propertyDescriptor = (PropertyDescriptor) descriptor;
+			VariableDescriptor variableDescriptor = (VariableDescriptor) descriptor;
+			boolean directToVar = variableDescriptor instanceof LocalVariableDescriptor && bindingTrace.safeGet(BindingContext.AUTO_CREATED_IT, variableDescriptor);
+			VariableDescriptor targetVar = directToVar ? bindingTrace.safeGet(BindingContext.AUTO_CREATED_TO, variableDescriptor) : variableDescriptor;
 
-			boolean isStatic = propertyDescriptor.isStatic();
-			final boolean directToField = expression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER;
+			boolean isStatic = targetVar.isStatic();
 			NapileExpression r = getReceiverForSelector(expression);
 			final boolean isSuper = r instanceof NapileSuperExpression;
 
-			final StackValue iValue = intermediateValueForProperty(propertyDescriptor, directToField, isSuper ? (NapileSuperExpression) r : null);
-			if(!directToField && resolvedCall != null && !isSuper)
+			final StackValue iValue = intermediateValueForProperty(targetVar, directToVar, isSuper ? (NapileSuperExpression) r : null);
+			if(!directToVar && resolvedCall != null && !isSuper)
 				receiver.put(isStatic ? receiver.getType() : TypeTransformer.toAsmType(((ClassDescriptor) container).getDefaultType()), instructs);
 			else
 			{
@@ -755,9 +748,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 					if(receiver == StackValue.none())
 					{
 						if(resolvedCall == null)
-							receiver = generateThisOrOuter((ClassDescriptor) propertyDescriptor.getContainingDeclaration(), false);
+							receiver = generateThisOrOuter((ClassDescriptor) targetVar.getContainingDeclaration(), false);
 						else
-							receiver = generateThisOrOuter((ClassDescriptor) propertyDescriptor.getContainingDeclaration(), false);
+							receiver = generateThisOrOuter((ClassDescriptor) targetVar.getContainingDeclaration(), false);
 					}
 					JetType receiverType = bindingTrace.get(BindingContext.EXPRESSION_TYPE, r);
 					receiver.put(receiverType != null && !isSuper ? TypeTransformer.toAsmType(receiverType) : AsmConstants.ANY_TYPE, instructs);
@@ -819,16 +812,16 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(typeNode);
 	}
 
-	public StackValue intermediateValueForProperty(PropertyDescriptor propertyDescriptor, final boolean forceField, @Nullable NapileSuperExpression superExpression)
+	public StackValue intermediateValueForProperty(VariableDescriptor variableDescriptor, final boolean forceField, @Nullable NapileSuperExpression superExpression)
 	{
 		boolean isSuper = superExpression != null;
 
 		//TODO [VISTALL] super?
 
 		if(!forceField)
-			return StackValue.property(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()), propertyDescriptor.isStatic());
+			return StackValue.property(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic());
 		else
-			return StackValue.variable(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()), propertyDescriptor.isStatic());
+			return StackValue.variable(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic());
 	}
 
 	private StackValue generateConstructorCall(NapileCallExpression expression, NapileSimpleNameExpression constructorReference, StackValue receiver)

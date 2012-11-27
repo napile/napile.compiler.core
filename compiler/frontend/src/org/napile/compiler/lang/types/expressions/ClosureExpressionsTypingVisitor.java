@@ -142,7 +142,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 			parameterTypes.put(valueParameter.getName(), valueParameter.getType());
 
 		JetType returnType = TypeUtils.NO_EXPECTED_TYPE;
-		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(context.scope, functionDescriptor, context.trace);
+		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, functionLiteral, context.trace);
 		NapileTypeReference returnTypeRef = functionLiteral.getReturnTypeRef();
 		TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(context.trace);
 		if(returnTypeRef != null)
@@ -212,7 +212,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		if(functionTypeExpected && !hasDeclaredValueParameters && expectedValueParameters.size() == 1)
 		{
 			ParameterDescriptor parameterDescriptor = expectedValueParameters.get(0);
-			ParameterDescriptor it = new PropertyParameterDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("it"), parameterDescriptor.getType(), parameterDescriptor.hasDefaultValue(), parameterDescriptor.getVarargElementType(), Modality.FINAL);
+			ParameterDescriptor it = new PropertyParameterDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), parameterDescriptor.getType(), parameterDescriptor.hasDefaultValue(), parameterDescriptor.getVarargElementType(), Modality.FINAL);
 			parameterDescriptors.add(it);
 			context.trace.record(AUTO_CREATED_IT, it);
 		}

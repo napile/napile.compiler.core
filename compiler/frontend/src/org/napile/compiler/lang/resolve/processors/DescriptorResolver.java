@@ -169,6 +169,9 @@ public class DescriptorResolver
 
 		innerScope.changeLockLevel(WritableScope.LockLevel.READING);
 
+		if(referenceExpression != null)
+			expressionTypingServices.safeGetType(scope, referenceExpression, TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
+
 		final NapileExpression bodyExpression = method.getBodyExpression();
 		NapileTypeReference returnTypeRef = method.getReturnTypeRef();
 		JetType returnType;
@@ -195,9 +198,6 @@ public class DescriptorResolver
 
 		if(bodyExpression != null && methodDescriptor.isMacro())
 			trace.record(BindingContext.MACRO_BODY, methodDescriptor, bodyExpression);
-
-		if(referenceExpression != null)
-			expressionTypingServices.safeGetType(scope, referenceExpression, TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
 
 		Modality modality = Modality.resolve(method);
 		Visibility visibility = Visibility.resolve(method);

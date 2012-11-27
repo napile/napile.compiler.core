@@ -25,7 +25,6 @@ import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
@@ -50,16 +49,13 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 	{
 		DeclarationDescriptor target = bindingContext.get(REFERENCE_TARGET, expression);
 		if(target == null)
-		{
+
 			return;
-		}
-		if(target instanceof ParameterDescriptor)
+
+		if(target instanceof VariableDescriptor)
 		{
-			ParameterDescriptor parameterDescriptor = (ParameterDescriptor) target;
-			if(Boolean.TRUE.equals(bindingContext.get(AUTO_CREATED_IT, parameterDescriptor)))
-			{
-				holder.createInfoAnnotation(expression, "Automatically declared based on the expected type").setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_DEFAULT_PARAMETER);
-			}
+			if(Boolean.TRUE.equals(bindingContext.get(AUTO_CREATED_IT, (VariableDescriptor) target)))
+				holder.createInfoAnnotation(expression, "Auto-generated variable").setTextAttributes(JetHighlightingColors.AUTO_GENERATED_VAR);
 		}
 
 		highlightVariable(expression, target);

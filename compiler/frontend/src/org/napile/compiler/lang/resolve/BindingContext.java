@@ -113,8 +113,8 @@ public interface BindingContext
 	WritableSlice<NapileExpression, DataFlowInfo> NON_DEFAULT_EXPRESSION_DATA_FLOW = Slices.createSimpleSlice();
 
 	WritableSlice<NapileExpression, Boolean> VARIABLE_REASSIGNMENT = Slices.createSimpleSetSlice();
-	WritableSlice<ParameterDescriptor, Boolean> AUTO_CREATED_IT = Slices.createSimpleSetSlice();
-	//WritableSlice<NapileExpression, DeclarationDescriptor> VARIABLE_ASSIGNMENT = Slices.createSimpleSlice();
+	WritableSlice<VariableDescriptor, Boolean> AUTO_CREATED_IT = Slices.createSimpleSetSlice();
+	WritableSlice<VariableDescriptor, VariableDescriptor> AUTO_CREATED_TO = Slices.createSimpleSlice();
 	WritableSlice<NapileExpression, DataFlowInfo> DATAFLOW_INFO_AFTER_CONDITION = Slices.createSimpleSlice();
 	WritableSlice<VariableDescriptor, Map<ClassDescriptor, PropertyAccessInfo>> PROPERTY_ACCESS_INFO = Slices.createSimpleSlice();
 

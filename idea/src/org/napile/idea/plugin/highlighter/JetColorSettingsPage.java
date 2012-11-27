@@ -150,10 +150,9 @@ public class JetColorSettingsPage implements ColorSettingsPage
 
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.instance.property"), JetHighlightingColors.INSTANCE_PROPERTY),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.namespace.property"), JetHighlightingColors.STATIC_PROPERTY),
-				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.backing.field.access"), JetHighlightingColors.BACKING_FIELD_ACCESS),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.extension.property"), JetHighlightingColors.EXTENSION_PROPERTY),
 
-				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.it"), JetHighlightingColors.FUNCTION_LITERAL_DEFAULT_PARAMETER),
+				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.it"), JetHighlightingColors.AUTO_GENERATED_VAR),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.fun"), JetHighlightingColors.FUNCTION_DECLARATION),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.fun.call"), JetHighlightingColors.METHOD_CALL),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.namespace.fun.call"), JetHighlightingColors.STATIC_METHOD_CALL),

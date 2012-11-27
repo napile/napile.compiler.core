@@ -130,7 +130,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	{
 		SimpleMethodDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveMethodDescriptor(scope.getContainingDeclaration(), scope, function, context.trace);
 		scope.addFunctionDescriptor(functionDescriptor);
-		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(context.scope, functionDescriptor, context.trace);
+		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, function, context.trace);
 		context.expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, functionDescriptor, context.dataFlowInfo, null, context.trace);
 		return DataFlowUtils.checkStatementType(function, context, context.dataFlowInfo);
 	}
@@ -140,7 +140,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	{
 		ConstructorDescriptor functionDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveConstructorDescriptor(scope, (ClassDescriptor) scope.getContainingDeclaration(), constructor, context.trace);
 		scope.addConstructorDescriptor(functionDescriptor);
-		JetScope functionInnerScope = FunctionDescriptorUtil.getFunctionInnerScope(context.scope, functionDescriptor, context.trace);
+		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, constructor, context.trace);
 		context.expressionTypingServices.checkFunctionReturnType(functionInnerScope, constructor, functionDescriptor, context.dataFlowInfo, null, context.trace);
 		return DataFlowUtils.checkStatementType(constructor, context, context.dataFlowInfo);
 	}

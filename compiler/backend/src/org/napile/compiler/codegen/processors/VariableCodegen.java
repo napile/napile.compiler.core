@@ -180,13 +180,13 @@ public class VariableCodegen
 				classNode.members.add(getterMethodNode);
 			}
 		}
-		else
-		{
+		/*else
+		/*{
 			assert getter instanceof MethodDescriptor;
 
 			NapileMethod method = (NapileMethod) bindingTrace.safeGet(BindingContext.FQNAME_TO_DESCRIPTOR, getterFq);
 
 			classNode.members.add(MethodGenerator.gen((MethodDescriptor) getter, getter.getName(), method, bindingTrace));
-		}
+		}    */
 	}
 }

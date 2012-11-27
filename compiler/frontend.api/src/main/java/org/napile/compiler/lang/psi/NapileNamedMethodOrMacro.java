@@ -22,6 +22,8 @@ import com.intellij.psi.PsiElement;
 /**
  * @author VISTALL
  * @date 15:20/19.10.12
+ *
+ * TODO [VISTALL] split because macro cant have varRef
  */
 public interface NapileNamedMethodOrMacro extends NapileMethod, NapileWithExpressionInitializer
 {

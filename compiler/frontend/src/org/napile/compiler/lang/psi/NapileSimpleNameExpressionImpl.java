@@ -34,7 +34,7 @@ import com.intellij.psi.tree.TokenSet;
  */
 public class NapileSimpleNameExpressionImpl extends NapileReferenceExpressionImpl implements NapileSimpleNameExpression
 {
-	public static final TokenSet REFERENCE_TOKENS = TokenSet.create(NapileTokens.IDENTIFIER, NapileTokens.FIELD_IDENTIFIER, NapileTokens.THIS_KEYWORD, NapileTokens.SUPER_KEYWORD);
+	public static final TokenSet REFERENCE_TOKENS = TokenSet.create(NapileTokens.IDENTIFIER, NapileTokens.THIS_KEYWORD, NapileTokens.SUPER_KEYWORD);
 
 	public NapileSimpleNameExpressionImpl(@NotNull ASTNode node)
 	{

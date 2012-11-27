@@ -99,13 +99,6 @@ public class DescriptorUtils
 		});
 	}
 
-	public static Modality convertModality(Modality modality, boolean makeNonAbstract)
-	{
-		if(makeNonAbstract && modality == Modality.ABSTRACT)
-			return Modality.OPEN;
-		return modality;
-	}
-
 	@NotNull
 	public static ReceiverDescriptor getExpectedThisObjectIfNeeded(@NotNull DeclarationDescriptor containingDeclaration)
 	{

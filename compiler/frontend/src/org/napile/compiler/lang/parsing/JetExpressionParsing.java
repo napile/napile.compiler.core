@@ -75,7 +75,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 			NapileTokens.FOR_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD,
 
 			NapileTokens.IDENTIFIER, // SimpleName
-			NapileTokens.FIELD_IDENTIFIER, // Field reference
 
 			NapileTokens.PACKAGE_KEYWORD, // for absolute qualified names
 			NapileTokens.IDE_TEMPLATE_START);
@@ -571,10 +570,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 			parseArrayExpression();
 		else if(at(NapileTokens.HASH))
 			parseLinkMethodExpression();
-		else if(at(NapileTokens.FIELD_IDENTIFIER) || at(NapileTokens.IDENTIFIER))
-		{
-			parseSimpleNameExpression();
-		}
+		else if(at(NapileTokens.IDENTIFIER))
+			parseOneTokenExpression(REFERENCE_EXPRESSION);
 		else if(at(NapileTokens.LBRACE))
 		{
 			parseFunctionLiteral();
@@ -860,7 +857,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		advance();
 
-		parseSimpleNameExpression();
+		parseOneTokenExpression(REFERENCE_EXPRESSION);
 
 		if(at(NapileTokens.LPAR))
 		{
@@ -892,24 +889,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	}
 
 	/*
-		 * SimpleName
-		 */
-	public void parseSimpleNameExpression()
-	{
-		PsiBuilder.Marker simpleName = mark();
-		if(at(NapileTokens.FIELD_IDENTIFIER))
-		{
-			advance(); //
-		}
-		else
-		{
-			expect(NapileTokens.IDENTIFIER, "Expecting an identifier");
-		}
-		simpleName.done(REFERENCE_EXPRESSION);
-	}
-
-	/*
-		 * functionLiteral  // one can use "it" as a parameter name
+		 * functionLiteral
 		 *   : "{" expressions "}"
 		 *   : "{" (modifiers SimpleName){","} "->" statements "}"
 		 *   : "{" (type ".")? "(" (modifiers SimpleName (":" type)?){","} ")" (":" type)? "->" expressions "}"

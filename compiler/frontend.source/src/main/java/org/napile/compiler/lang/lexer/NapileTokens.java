@@ -76,6 +76,7 @@ public interface NapileTokens
 
 	NapileToken IDENTIFIER = new NapileToken("IDENTIFIER");
 
+	@Deprecated
 	NapileToken FIELD_IDENTIFIER = new NapileToken("FIELD_IDENTIFIER");
 	NapileToken LBRACKET = new NapileToken("LBRACKET");
 	NapileToken RBRACKET = new NapileToken("RBRACKET");

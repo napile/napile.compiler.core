@@ -75,9 +75,6 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -140,16 +137,8 @@ public class CallResolver
 		{
 			return OverloadResolutionResultsImpl.nameNotFound();
 		}
-		List<CallableDescriptorCollector<? extends VariableDescriptor>> callableDescriptorCollectors = Lists.newArrayList();
-		if(nameExpression.getReferencedNameElementType() == NapileTokens.FIELD_IDENTIFIER)
-		{
-			referencedName = Name.identifier(referencedName.getName().substring(1));
-			callableDescriptorCollectors.add(CallableDescriptorCollectors.PROPERTIES);
-		}
-		else
-		{
-			callableDescriptorCollectors.add(CallableDescriptorCollectors.VARIABLES);
-		}
+		List<CallableDescriptorCollector<? extends VariableDescriptor>> callableDescriptorCollectors = Collections.<CallableDescriptorCollector<? extends VariableDescriptor>>singletonList(CallableDescriptorCollectors.VARIABLES);
+
 		List<ResolutionTask<VariableDescriptor, VariableDescriptor>> prioritizedTasks = TaskPrioritizer.<VariableDescriptor, VariableDescriptor>computePrioritizedTasks(context, referencedName, nameExpression, callableDescriptorCollectors);
 		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_PROPERTY, context, prioritizedTasks, CallTransformer.PROPERTY_CALL_TRANSFORMER, nameExpression);
 	}

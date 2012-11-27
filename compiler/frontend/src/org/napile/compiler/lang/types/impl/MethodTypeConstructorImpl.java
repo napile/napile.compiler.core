@@ -93,6 +93,7 @@ public class MethodTypeConstructorImpl implements MethodTypeConstructor
 		return parameterTypes;
 	}
 
+	@Override
 	public boolean equals(Object o)
 	{
 		if(o == null || o.getClass() != MethodTypeConstructorImpl.class)
@@ -111,7 +112,7 @@ public class MethodTypeConstructorImpl implements MethodTypeConstructor
 			Map.Entry<Name, JetType> entry1 = it1.next();
 			Map.Entry<Name, JetType> entry2 = it2.next();
 
-			if(!entry1.equals(entry2))
+			if(!entry1.getValue().equals(entry2.getValue()))
 				return false;
 		}
 		return true;
