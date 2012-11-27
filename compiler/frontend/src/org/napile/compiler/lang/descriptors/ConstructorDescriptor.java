@@ -98,7 +98,7 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 		{
 			throw new IllegalStateException();
 		}
-		return new ConstructorDescriptor((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList(), false);//TODO annotation list
+		return new ConstructorDescriptor((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList(), isStatic());//TODO annotation list
 	}
 
 	@NotNull

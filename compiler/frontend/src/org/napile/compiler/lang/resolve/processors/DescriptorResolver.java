@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
-import static org.napile.compiler.lang.diagnostics.Errors.CONSTRUCTOR_CONFLICT;
+import static org.napile.compiler.lang.diagnostics.Errors.CONSTRUCTORS_EXPECTED;
 import static org.napile.compiler.lang.diagnostics.Errors.NULLABLE_SUPERTYPE;
 import static org.napile.compiler.lang.diagnostics.Errors.UPPER_BOUND_VIOLATED;
 import static org.napile.compiler.lang.diagnostics.Errors.VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION;
@@ -486,6 +486,8 @@ public class DescriptorResolver
 
 						for(ConstructorDescriptor temp : targetTypeConstructors)
 						{
+							if(temp.getVisibility() != Visibility.PUBLIC)
+								continue;
 							loop:
 							{
 								List<ParameterDescriptor> l1 = targetToSearch.getValueParameters();
@@ -508,7 +510,7 @@ public class DescriptorResolver
 
 						if(!find)
 						{
-							trace.report(CONSTRUCTOR_CONFLICT.on(jetTypeArgument));
+							trace.report(CONSTRUCTORS_EXPECTED.on(jetTypeArgument));
 							break;
 						}
 					}

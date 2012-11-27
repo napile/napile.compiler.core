@@ -256,7 +256,7 @@ public class DefaultErrorMessages
 		MAP.put(UNNECESSARY_SAFE_CALL, "Unnecessary safe call on a non-null receiver of type {0}", RENDER_TYPE);
 		MAP.put(UNNECESSARY_NOT_NULL_ASSERTION, "Unnecessary non-null assertion (!!) on a non-null receiver of type {0}", RENDER_TYPE);
 		MAP.put(AUTOCAST_IMPOSSIBLE, "Automatic cast to ''{0}'' is impossible, because ''{1}'' could have changed since the is-check", RENDER_TYPE, NAME);
-		MAP.put(CONSTRUCTOR_CONFLICT, "Constructor conflict");
+		MAP.put(CONSTRUCTORS_EXPECTED, "Constructors expected");
 
 		MAP.put(TYPE_MISMATCH_IN_FOR_LOOP, "The loop iterates over values of type {0} but the parameter is declared to be {1}", RENDER_TYPE, RENDER_TYPE);
 		MAP.put(TYPE_MISMATCH_IN_CONDITION, "Condition must be of type idea.Boolean, but is of type {0}", RENDER_TYPE);
