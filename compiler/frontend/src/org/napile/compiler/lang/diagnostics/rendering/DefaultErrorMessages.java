@@ -120,9 +120,6 @@ public class DefaultErrorMessages
 		MAP.put(MANY_FUNCTION_LITERAL_ARGUMENTS, "Only one function literal is allowed outside a parenthesized argument list");
 		MAP.put(PROPERTY_WITH_NO_TYPE_NO_INITIALIZER, "This property must either have a type annotation or be initialized");
 
-		MAP.put(ABSTRACT_PROPERTY_NOT_IN_CLASS, "A property may be abstract only when defined in a class or trait");
-		MAP.put(ABSTRACT_PROPERTY_WITH_INITIALIZER, "Property with initializer cannot be abstract");
-
 		MAP.put(INSTANCE_CALL_FROM_STATIC_CONTEXT, "Instance call from static context");
 
 		MAP.put(MUST_BE_INITIALIZED, "Property must be initialized");
@@ -136,6 +133,10 @@ public class DefaultErrorMessages
 		MAP.put(NON_MEMBER_ABSTRACT_FUNCTION, "Function ''{0}'' is not a class or trait member and cannot be abstract", NAME);
 
 		MAP.put(NON_MEMBER_FUNCTION_NO_BODY, "Function ''{0}'' must have a body", NAME);
+
+		MAP.put(VARIABLE_WITH_INITIALIZER_AND_LAZY_PROPERTY, "Variable with initializer and ''lazy'' property", NAME);
+		MAP.put(SET_PROPERTY_WITH_FINAL_VARIABLE, "''set'' property with final variable", NAME);
+		MAP.put(GET_PROPERTY_WITH_LAZY_PROPERTY, "''get'' property ''lazy'' property", NAME);
 
 		MAP.put(PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE, "Public or protected member should have specified type");
 

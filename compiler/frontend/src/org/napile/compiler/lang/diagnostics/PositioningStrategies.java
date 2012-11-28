@@ -117,9 +117,9 @@ public class PositioningStrategies
 		@Override
 		public List<TextRange> mark(@NotNull PsiNameIdentifierOwner element)
 		{
-			if(element instanceof NapileNamedMethodOrMacro)
+			if(element instanceof NapileNamedMacro)
 			{
-				NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) element;
+				NapileNamedMacro function = (NapileNamedMacro) element;
 				PsiElement endOfSignatureElement;
 				NapileParameterList valueParameterList = function.getValueParameterList();
 				NapileElement returnTypeRef = function.getReturnTypeRef();
@@ -140,6 +140,26 @@ public class PositioningStrategies
 				{
 					endOfSignatureElement = function;
 				}
+				return markRange(new TextRange(function.getTextRange().getStartOffset(), endOfSignatureElement.getTextRange().getEndOffset()));
+			}
+			else if(element instanceof NapileNamedMethod)
+			{
+				NapileNamedMethod function = (NapileNamedMethod) element;
+				PsiElement endOfSignatureElement;
+				NapileParameterList valueParameterList = function.getValueParameterList();
+				NapileElement returnTypeRef = function.getReturnTypeRef();
+				PsiElement nameIdentifier = function.getNameIdentifier();
+				PsiElement propertyAccessElement = function.getPropertyAccessElement();
+				if(returnTypeRef != null)
+					endOfSignatureElement = returnTypeRef;
+				else if(valueParameterList != null)
+					endOfSignatureElement = valueParameterList;
+				else if(nameIdentifier != null)
+					endOfSignatureElement = nameIdentifier;
+				else if(propertyAccessElement != null)
+					endOfSignatureElement = propertyAccessElement;
+				else
+					endOfSignatureElement = function;
 				return markRange(new TextRange(function.getTextRange().getStartOffset(), endOfSignatureElement.getTextRange().getEndOffset()));
 			}
 			else if(element instanceof NapileVariable)
@@ -179,7 +199,7 @@ public class PositioningStrategies
 		@Override
 		public boolean isValid(@NotNull PsiNameIdentifierOwner element)
 		{
-			return element.getNameIdentifier() != null;
+			return true;
 		}
 	};
 

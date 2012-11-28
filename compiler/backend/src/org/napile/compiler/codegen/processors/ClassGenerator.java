@@ -203,7 +203,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		else
 		{
 			// if variable has lazy initiator, put null to var
-			if(PropertyAccessUtil.get(bindingTrace, variableDescriptor, NapileTokens.LAZY_KEYWORD) != null)
+			if(PropertyAccessUtil.getPropertyDescriptor(bindingTrace, variableDescriptor, NapileTokens.LAZY_KEYWORD) != null)
 			{
 				InstructionAdapter adapter = new InstructionAdapter();
 

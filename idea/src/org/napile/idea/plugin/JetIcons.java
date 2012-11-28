@@ -18,6 +18,7 @@ package org.napile.idea.plugin;
 
 import javax.swing.Icon;
 
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.util.PlatformIcons;
 
@@ -40,8 +41,9 @@ public interface JetIcons
 	Icon CONSTRUCTOR = PlatformIcons.METHOD_ICON; //TODO [VISTALL] new icon
 
 	Icon C_HERITABLE = IconLoader.getIcon("/org/napile/icons/gutter/c_heritable.png");
+	Icon PROPERTY_ACCESS_MARKER = IconLoader.getIcon("/org/napile/icons/gutter/property.png");
 
 	Icon FILE = IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
 
-	Icon VARIABLE = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/variable.png");
+	Icon VARIABLE = AllIcons.Nodes.Variable;
 }

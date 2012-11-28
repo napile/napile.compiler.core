@@ -87,8 +87,15 @@ public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl<NapilePs
 	@Override
 	public IElementType getPropertyAccessType()
 	{
-		PsiElement element = findChildByType(NapileTokens.PROPERTY_KEYWORDS);
+		PsiElement element = getPropertyAccessElement();
 		return element == null ? TokenType.ERROR_ELEMENT : element.getNode().getElementType();
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getPropertyAccessElement()
+	{
+		return findChildByType(NapileTokens.PROPERTY_KEYWORDS);
 	}
 
 	@Override

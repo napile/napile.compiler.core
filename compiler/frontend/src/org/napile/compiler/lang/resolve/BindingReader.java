@@ -14,24 +14,28 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.resolve;
 
+import java.util.Collection;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.tree.IElementType;
+import org.napile.compiler.util.slicedmap.ReadOnlySlice;
+import org.napile.compiler.util.slicedmap.WritableSlice;
 
 /**
  * @author VISTALL
- * @date 15:54/27.11.12
+ * @date 8:04/28.11.12
  */
-public interface NapileNamedMethod extends NapileNamedMethodOrMacro
+public interface BindingReader
 {
 	@Nullable
-	NapileSimpleNameExpression getVariableRef();
+	<K, V> V get(ReadOnlySlice<K, V> slice, K key);
 
-	@Nullable
-	IElementType getPropertyAccessType();
+	@NotNull
+	<K, V> V safeGet(ReadOnlySlice<K, V> slice, K key);
 
-	@Nullable
-	PsiElement getPropertyAccessElement();
+	// slice.isCollective() must be true
+	@NotNull
+	<K, V> Collection<K> getKeys(WritableSlice<K, V> slice);
 }

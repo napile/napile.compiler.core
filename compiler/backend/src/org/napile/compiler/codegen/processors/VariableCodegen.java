@@ -99,7 +99,7 @@ public class VariableCodegen
 		if(getter == null)
 		{
 			//TODO [VISTALL] make LazyType, current version is not thread safe
-			MethodDescriptor lazyMethodDescriptor = PropertyAccessUtil.get(bindingTrace, propertyDescriptor, NapileTokens.LAZY_KEYWORD);
+			MethodDescriptor lazyMethodDescriptor = PropertyAccessUtil.getPropertyDescriptor(bindingTrace, propertyDescriptor, NapileTokens.LAZY_KEYWORD);
 			if(lazyMethodDescriptor == null)
 			{
 				MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName());

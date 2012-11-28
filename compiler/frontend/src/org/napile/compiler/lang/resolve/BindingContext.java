@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
@@ -46,7 +45,7 @@ import com.intellij.psi.PsiElement;
 /**
  * @author abreslav
  */
-public interface BindingContext
+public interface BindingContext extends BindingReader
 {
 	BindingContext EMPTY = new BindingContext()
 	{
@@ -137,40 +136,7 @@ public interface BindingContext
 		@Override
 		public Boolean computeValue(SlicedMap map, PropertyDescriptor propertyDescriptor, Boolean backingFieldRequired, boolean valueNotFound)
 		{
-			if(propertyDescriptor.getKind() != CallableMemberDescriptor.Kind.DECLARATION)
-			{
-				return false;
-			}
-			backingFieldRequired = valueNotFound ? false : backingFieldRequired;
-
-			// TODO: user BindingContextAccessors
-			PsiElement declarationPsiElement = map.get(BindingContextUtils.DESCRIPTOR_TO_DECLARATION, propertyDescriptor);
-			if(declarationPsiElement instanceof NapilePropertyParameter)
-			{
-				NapilePropertyParameter jetParameter = (NapilePropertyParameter) declarationPsiElement;
-				return jetParameter.getVarNode() != null || backingFieldRequired; // this part is unused because we do not allow access to constructor parameters in member bodies
-			}
-			if(propertyDescriptor.getModality() == Modality.ABSTRACT)
-				return false;
-			/*PropertyGetterDescriptor getter = propertyDescriptor.getGetter();
-			PropertySetterDescriptor setter = propertyDescriptor.getSetter();
-			if(getter == null)
-			{
-				return true;
-			}
-			else if(propertyDescriptor.getModality() != Modality.FINAL && setter == null)
-			{
-				return true;
-			}
-			else if(setter != null && !setter.hasBody() && setter.getModality() != Modality.ABSTRACT)
-			{
-				return true;
-			}
-			else if(!getter.hasBody() && getter.getModality() != Modality.ABSTRACT)
-			{
-				return true;
-			}      */
-			return backingFieldRequired;
+			return false;
 		}
 	};
 	WritableSlice<PropertyDescriptor, Boolean> IS_INITIALIZED = Slices.createSimpleSetSlice();
@@ -245,14 +211,4 @@ public interface BindingContext
 			Void _static_initializer = BasicWritableSlice.initSliceDebugNames(BindingContext.class);
 
 	Collection<Diagnostic> getDiagnostics();
-
-	@Nullable
-	<K, V> V get(ReadOnlySlice<K, V> slice, K key);
-
-	@NotNull
-	<K, V> V safeGet(ReadOnlySlice<K, V> slice, K key);
-
-	// slice.isCollective() must be true
-	@NotNull
-	<K, V> Collection<K> getKeys(WritableSlice<K, V> slice);
 }

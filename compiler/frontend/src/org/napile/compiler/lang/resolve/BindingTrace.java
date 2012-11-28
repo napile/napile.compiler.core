@@ -16,18 +16,14 @@
 
 package org.napile.compiler.lang.resolve;
 
-import java.util.Collection;
-
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.DiagnosticHolder;
-import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 
 /**
  * @author abreslav
  */
-public interface BindingTrace extends DiagnosticHolder
+public interface BindingTrace extends DiagnosticHolder, BindingReader
 {
 	@NotNull
 	BindingContext getBindingContext();
@@ -36,14 +32,4 @@ public interface BindingTrace extends DiagnosticHolder
 
 	// Writes TRUE for a boolean value
 	<K> void record(WritableSlice<K, Boolean> slice, K key);
-
-	@Nullable
-	<K, V> V get(ReadOnlySlice<K, V> slice, K key);
-
-	@NotNull
-	<K, V> V safeGet(ReadOnlySlice<K, V> slice, K key);
-
-	// slice.isCollective() must be true
-	@NotNull
-	<K, V> Collection<K> getKeys(WritableSlice<K, V> slice);
 }

@@ -20,12 +20,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyAccessInfo;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.tree.IElementType;
 
 /**
@@ -47,21 +49,51 @@ public class PropertyAccessUtil
 		MethodDescriptor methodDescriptor = trace.safeGet(BindingContext.METHOD, namedMethod);
 		IElementType elementType = namedMethod.getPropertyAccessType();
 		if(elementType == NapileTokens.LAZY_KEYWORD)
-			propertyAccessInfo.setLazy(methodDescriptor);
+			propertyAccessInfo.setLazy(new Pair<MethodDescriptor, NapileNamedMethod>(methodDescriptor, namedMethod));
 		else if(elementType == NapileTokens.SET_KEYWORD)
-			propertyAccessInfo.setSet(methodDescriptor);
+			propertyAccessInfo.setSet(new Pair<MethodDescriptor, NapileNamedMethod>(methodDescriptor, namedMethod));
 		else if(elementType == NapileTokens.GET_KEYWORD)
-			propertyAccessInfo.setGet(methodDescriptor);
+			propertyAccessInfo.setGet(new Pair<MethodDescriptor, NapileNamedMethod>(methodDescriptor, namedMethod));
 		else
 			throw new IllegalArgumentException();
 	}
 
-	public static MethodDescriptor get(@NotNull BindingTrace trace, @NotNull VariableDescriptor variableDescriptor, @NotNull IElementType elementType)
+	@Nullable
+	public static MethodDescriptor getPropertyDescriptor(@NotNull BindingReader trace, @NotNull VariableDescriptor variableDescriptor, @NotNull IElementType elementType)
+	{
+		return getPropertyDescriptor(trace, variableDescriptor, (ClassDescriptor) variableDescriptor.getContainingDeclaration(), elementType);
+	}
+
+	@Nullable
+	public static MethodDescriptor getPropertyDescriptor(@NotNull BindingReader trace, @NotNull VariableDescriptor variableDescriptor, @NotNull ClassDescriptor classDescriptor, @NotNull IElementType elementType)
+	{
+		Map<ClassDescriptor, PropertyAccessInfo> map = trace.get(BindingContext.PROPERTY_ACCESS_INFO, variableDescriptor);
+		if(map == null)
+			return null;
+		PropertyAccessInfo propertyAccessInfo = map.get(classDescriptor);
+		if(propertyAccessInfo == null)
+			return null;
+		Pair<MethodDescriptor, NapileNamedMethod> propertyInfo = null;
+		if(elementType == NapileTokens.LAZY_KEYWORD)
+			propertyInfo = propertyAccessInfo.getLazy();
+		else if(elementType == NapileTokens.SET_KEYWORD)
+			propertyInfo = propertyAccessInfo.getSet();
+		else if(elementType == NapileTokens.GET_KEYWORD)
+			propertyInfo = propertyAccessInfo.getGet();
+		else
+			throw new IllegalArgumentException();
+
+		return propertyInfo == null ? null : propertyInfo.getFirst();
+	}
+
+	@Nullable
+	public static Pair<MethodDescriptor, NapileNamedMethod> get(@NotNull BindingReader trace, @NotNull VariableDescriptor variableDescriptor, @NotNull IElementType elementType)
 	{
 		return get(trace, variableDescriptor, (ClassDescriptor) variableDescriptor.getContainingDeclaration(), elementType);
 	}
 
-	public static MethodDescriptor get(@NotNull BindingTrace trace, @NotNull VariableDescriptor variableDescriptor, @NotNull ClassDescriptor classDescriptor, @NotNull IElementType elementType)
+	@Nullable
+	public static Pair<MethodDescriptor, NapileNamedMethod> get(@NotNull BindingReader trace, @NotNull VariableDescriptor variableDescriptor, @NotNull ClassDescriptor classDescriptor, @NotNull IElementType elementType)
 	{
 		Map<ClassDescriptor, PropertyAccessInfo> map = trace.get(BindingContext.PROPERTY_ACCESS_INFO, variableDescriptor);
 		if(map == null)

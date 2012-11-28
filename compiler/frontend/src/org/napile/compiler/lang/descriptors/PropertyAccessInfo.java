@@ -16,42 +16,45 @@
 
 package org.napile.compiler.lang.descriptors;
 
+import org.napile.compiler.lang.psi.NapileNamedMethod;
+import com.intellij.openapi.util.Pair;
+
 /**
  * @author VISTALL
  * @date 10:08/03.11.12
  */
 public class PropertyAccessInfo
 {
-	private MethodDescriptor set;
-	private MethodDescriptor get;
-	private MethodDescriptor lazy;
+	private Pair<MethodDescriptor, NapileNamedMethod> set;
+	private Pair<MethodDescriptor, NapileNamedMethod> get;
+	private Pair<MethodDescriptor, NapileNamedMethod> lazy;
 
-	public MethodDescriptor getSet()
+	public Pair<MethodDescriptor, NapileNamedMethod> getSet()
 	{
 		return set;
 	}
 
-	public void setSet(MethodDescriptor set)
+	public void setSet(Pair<MethodDescriptor, NapileNamedMethod> set)
 	{
 		this.set = set;
 	}
 
-	public MethodDescriptor getGet()
+	public Pair<MethodDescriptor, NapileNamedMethod> getGet()
 	{
 		return get;
 	}
 
-	public void setGet(MethodDescriptor get)
+	public void setGet(Pair<MethodDescriptor, NapileNamedMethod> get)
 	{
 		this.get = get;
 	}
 
-	public MethodDescriptor getLazy()
+	public Pair<MethodDescriptor, NapileNamedMethod> getLazy()
 	{
 		return lazy;
 	}
 
-	public void setLazy(MethodDescriptor lazy)
+	public void setLazy(Pair<MethodDescriptor, NapileNamedMethod> lazy)
 	{
 		this.lazy = lazy;
 	}

@@ -51,6 +51,8 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author svtk
+ *
+ * TODO [VISTALL] rework about variables
  */
 public class JetFlowInformationProvider
 {
