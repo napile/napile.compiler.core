@@ -35,7 +35,6 @@ import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
  * context#1. calls: 'b.foo' 'invoke(1)'
  * context#2. calls: 'foo'   'b.invoke(1)'
  * <p/>
- * If success VariableAsFunctionResolvedCall is created.
  *
  * @author svtk
  */
