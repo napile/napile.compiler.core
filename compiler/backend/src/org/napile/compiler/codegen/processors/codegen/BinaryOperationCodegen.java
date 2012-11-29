@@ -41,6 +41,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapilePostfixExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.JetType;
@@ -59,6 +60,35 @@ public class BinaryOperationCodegen
 	private static final Property GREATER = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("GREATER")), TypeConstants.COMPARE_RESULT, true);
 	private static final Property EQUAL = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("EQUAL")), TypeConstants.COMPARE_RESULT, true);
 	private static final Property LOWER = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("LOWER")), TypeConstants.COMPARE_RESULT, true);
+
+	public static StackValue genSure(@NotNull NapilePostfixExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs, @NotNull StackValue receiver)
+	{
+		NapileExpression baseExpression = expression.getBaseExpression();
+		JetType type = gen.bindingTrace.get(BindingContext.EXPRESSION_TYPE, baseExpression);
+		StackValue base = gen.genQualified(receiver, baseExpression);
+		if(type != null && type.isNullable())
+		{
+			base.put(base.getType(), instructs);
+			instructs.dup();
+
+			instructs.putNull();
+
+			instructs.invokeVirtual(ANY_EQUALS, false);
+
+			instructs.putTrue();
+
+			ReservedInstruction jump = instructs.reserve();
+
+			instructs.newObject(TypeConstants.NULL_POINTER_EXCEPTION, Collections.<TypeNode>emptyList());
+			instructs.throwVal();
+
+			instructs.replace(jump, new JumpIfInstruction(instructs.size()));
+
+			return StackValue.onStack(base.getType());
+		}
+		else
+			return base;
+	}
 
 	public static StackValue genGeLe(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
 	{

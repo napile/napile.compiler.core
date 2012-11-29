@@ -585,24 +585,8 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitPostfixExpression(NapilePostfixExpression expression, StackValue receiver)
 	{
 		if(expression.getOperationReference().getReferencedNameElementType() == NapileTokens.EXCLEXCL)
-		{
-			NapileExpression baseExpression = expression.getBaseExpression();
-			JetType type = bindingTrace.get(BindingContext.EXPRESSION_TYPE, baseExpression);
-			StackValue base = genQualified(receiver, baseExpression);
-			if(type != null && type.isNullable())
-			{
-				/*base.put(base.type, v);
-				v.dup();
-				Label ok = new Label();
-				v.ifnonnull(ok);
-				v.invokestatic("jet/runtime/Intrinsics", "throwNpe", "()V");
-				v.mark(ok);
-				return StackValue.onStack(base.type);  */
-				throw new UnsupportedOperationException();
-			}
-			else
-				return base;
-		}
+			return BinaryOperationCodegen.genSure(expression, this,instructs, receiver);
+
 		DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
 		if(op instanceof MethodDescriptor)
 		{

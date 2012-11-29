@@ -36,6 +36,7 @@ import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -148,22 +149,26 @@ public class VariableCodegen
 				ReservedInstruction reservedInstruction = adapter.reserve();
 
 				if(!propertyDescriptor.isStatic())
+				{
 					adapter.load(0);
+					adapter.dup();
+				}
 
-				adapter.dup();
-
-				adapter.invokeVirtual(NodeRefUtil.ref(lazyMethodDescriptor), false);
+				if(lazyMethodDescriptor.getVisibility() == Visibility.LOCAL)
+					adapter.invokeSpecial(NodeRefUtil.ref(lazyMethodDescriptor), false);
+				else
+					adapter.invokeVirtual(NodeRefUtil.ref(lazyMethodDescriptor), false);
 
 				varStackValue.store(getterMethodNode.returnType, adapter);
-
-				adapter.returnVal();
-
-				adapter.replace(reservedInstruction, new JumpIfInstruction(adapter.size()));
 
 				if(!propertyDescriptor.isStatic())
 					adapter.load(0);
 
 				varStackValue.put(getterMethodNode.returnType, adapter);
+
+				adapter.returnVal();
+
+				adapter.replace(reservedInstruction, new JumpIfInstruction(adapter.size()));
 
 				adapter.returnVal();
 

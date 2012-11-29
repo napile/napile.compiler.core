@@ -19,6 +19,8 @@ public interface TypeConstants
 
 	TypeNode STRING_BUILDER = new TypeNode(false, new ClassTypeNode(CodeTodo.STRING_BUILDER));
 
+	TypeNode NULL_POINTER_EXCEPTION = new TypeNode(false, new ClassTypeNode(CodeTodo.NULL_POINTER_EXCEPTION));
+
 	TypeNode COMPARE_RESULT = new TypeNode(false, new ClassTypeNode(NapileConditionPackage.COMPARE_RESULT));
 
 	TypeNode ITERATOR__ANY__ = new TypeNode(false, new ClassTypeNode(CodeTodo.ITERATOR)).visitArgument(AsmConstants.ANY_TYPE);
