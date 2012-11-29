@@ -67,7 +67,6 @@ import org.napile.compiler.lang.resolve.calls.AutoCastReceiver;
 import org.napile.compiler.lang.resolve.calls.ExpressionValueArgument;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
-import org.napile.compiler.lang.resolve.calls.VariableAsMethodResolvedCall;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
@@ -650,15 +649,14 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		}
 		else
 		{
-			if(resolvedCall instanceof VariableAsMethodResolvedCall)
+			VariableDescriptor variableDescriptor = resolvedCall.getVariableDescriptor();
+			if(variableDescriptor != null)
 			{
-				VariableAsMethodResolvedCall variableAsMethodResolvedCall = (VariableAsMethodResolvedCall) resolvedCall;
-
 				StackValue stackValue = callee.accept(this, receiver);
 
-				stackValue.put(TypeTransformer.toAsmType(variableAsMethodResolvedCall.getVariableCall().getCandidateDescriptor().getType()), instructs);
+				stackValue.put(TypeTransformer.toAsmType(variableDescriptor.getType()), instructs);
 
-				return invokeMethod(receiver, variableAsMethodResolvedCall.getMethodCall(), expression.getParent() instanceof NapileSafeQualifiedExpression, true);
+				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression, true);
 			}
 			else
 				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression, false);
@@ -712,13 +710,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			descriptor = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
 		else
 		{
-			if(resolvedCall instanceof VariableAsMethodResolvedCall)
-			{
-				VariableAsMethodResolvedCall call = (VariableAsMethodResolvedCall) resolvedCall;
-				resolvedCall = call.getVariableCall();
-			}
+			descriptor = resolvedCall.getVariableDescriptor();
+			if(descriptor == null)
+				descriptor = resolvedCall.getResultingDescriptor();
 			receiver = StackValue.receiver(resolvedCall, receiver, this, null);
-			descriptor = resolvedCall.getResultingDescriptor();
 		}
 
 		final DeclarationDescriptor container = descriptor.getContainingDeclaration();
@@ -905,8 +900,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			gen(call.getCalleeExpression(), calleeType);
 		}   */
 
-		if(resolvedCall instanceof VariableAsMethodResolvedCall)
-			resolvedCall = ((VariableAsMethodResolvedCall) resolvedCall).getMethodCall();
+		//if(resolvedCall instanceof VariableAsMethodResolvedCall)
+		//	resolvedCall = ((VariableAsMethodResolvedCall) resolvedCall).getMethodCall();
 
 		if(!(resolvedCall.getResultingDescriptor() instanceof ConstructorDescriptor))  // otherwise already
 		{

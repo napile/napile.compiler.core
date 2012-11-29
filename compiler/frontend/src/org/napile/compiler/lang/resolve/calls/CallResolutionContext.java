@@ -20,16 +20,14 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 /**
  * @author svtk
  */
 public final class CallResolutionContext<D extends CallableDescriptor, F extends D> extends ResolutionContext
 {
-	/*package*/ final ResolvedCallImpl<D> candidateCall;
-	/*package*/ final TracingStrategy tracing;
-	/*package*/ ReceiverDescriptor receiverForVariableAsFunctionSecondCall = ReceiverDescriptor.NO_RECEIVER;
+	final ResolvedCallImpl<D> candidateCall;
+	final TracingStrategy tracing;
 
 	private CallResolutionContext(@NotNull ResolvedCallImpl<D> candidateCall, @NotNull ResolutionTask<D, F> task, @NotNull BindingTrace trace, @NotNull TracingStrategy tracing, @NotNull Call call)
 	{

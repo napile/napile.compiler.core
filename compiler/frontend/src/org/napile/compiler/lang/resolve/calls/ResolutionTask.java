@@ -28,6 +28,7 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -122,15 +123,14 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		public <D extends CallableDescriptor> void bindReference(@NotNull BindingTrace trace, @NotNull ResolvedCallWithTrace<D> resolvedCall)
 		{
 			CallableDescriptor descriptor = resolvedCall.getResultingDescriptor();
-			if(resolvedCall instanceof VariableAsMethodResolvedCall)
-			{
-				descriptor = ((VariableAsMethodResolvedCall) resolvedCall).getVariableCall().getResultingDescriptor();
-			}
+
+			VariableDescriptor variableDescriptor = resolvedCall.getVariableDescriptor();
+			if(variableDescriptor != null)
+				descriptor = variableDescriptor;
+
 			DeclarationDescriptor storedReference = trace.get(BindingContext.REFERENCE_TARGET, reference);
 			if(storedReference == null || !ErrorUtils.isError(descriptor))
-			{
 				trace.record(BindingContext.REFERENCE_TARGET, reference, descriptor);
-			}
 		}
 
 		@Override

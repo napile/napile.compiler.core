@@ -119,4 +119,9 @@ public class DelegatingCall implements Call
 	{
 		return delegate.getCallType();
 	}
+
+	public Call getDelegate()
+	{
+		return delegate;
+	}
 }

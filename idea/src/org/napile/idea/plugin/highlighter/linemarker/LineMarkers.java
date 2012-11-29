@@ -189,8 +189,9 @@ public enum LineMarkers
 					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileClass.getContainingFile());
 
 					BindingContext bindingContext = analyzeExhaust.getBindingContext();
-					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
-
+					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
+					if(classDeclaration == null)
+						return Collections.emptyList();
 					List<NapileElement> result = new ArrayList<NapileElement>();
 
 					Map<NapileClassLike, ClassDescriptor> res = JetShortNamesCache.getInstance(napileClass.getProject()).getAllClassesAndDescriptors(napileClass, napileClass.getResolveScope());

@@ -18,20 +18,13 @@ package org.napile.compiler.lang.resolve.calls;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.Call;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileTypeArgumentList;
-import org.napile.compiler.lang.psi.NapileValueArgumentList;
-import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 
 /**
  * CallTransformer treats specially 'variable as function' call case, other cases keeps unchanged (base realization).
@@ -70,10 +63,8 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 	@NotNull
 	public Collection<ResolvedCallWithTrace<F>> transformCall(@NotNull CallResolutionContext<D, F> callResolutionContext, @NotNull CallResolver callResolver, @NotNull ResolutionTask<D, F> task)
 	{
-
 		return Collections.singleton((ResolvedCallWithTrace<F>) callResolutionContext.candidateCall);
 	}
-
 
 	public static CallTransformer<VariableDescriptor, VariableDescriptor> PROPERTY_CALL_TRANSFORMER = new CallTransformer<VariableDescriptor, VariableDescriptor>();
 
@@ -83,94 +74,18 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 		@Override
 		public Collection<CallResolutionContext<CallableDescriptor, MethodDescriptor>> createCallContexts(@NotNull ResolutionCandidate<CallableDescriptor> candidate, @NotNull ResolutionTask<CallableDescriptor, MethodDescriptor> task, @NotNull TemporaryBindingTrace candidateTrace)
 		{
-
 			if(candidate.getDescriptor() instanceof MethodDescriptor)
-			{
 				return super.createCallContexts(candidate, task, candidateTrace);
-			}
 
 			assert candidate.getDescriptor() instanceof VariableDescriptor;
 
-			Call variableCall = stripCallArguments(task);
-			CallResolutionContext<CallableDescriptor, MethodDescriptor> context = CallResolutionContext.create(ResolvedCallImpl.create(candidate, candidateTrace), task, candidateTrace, task.tracing, variableCall);
-			return Collections.singleton(context);
-		}
-
-
-		private Call stripCallArguments(@NotNull ResolutionTask<CallableDescriptor, MethodDescriptor> task)
-		{
-			return new DelegatingCall(task.call)
-			{
-				@Override
-				public NapileValueArgumentList getValueArgumentList()
-				{
-					return null;
-				}
-
-				@NotNull
-				@Override
-				public List<? extends ValueArgument> getValueArguments()
-				{
-					return Collections.emptyList();
-				}
-
-				@NotNull
-				@Override
-				public List<NapileExpression> getFunctionLiteralArguments()
-				{
-					return Collections.emptyList();
-				}
-
-				@NotNull
-				@Override
-				public List<NapileTypeReference> getTypeArguments()
-				{
-					return Collections.emptyList();
-				}
-
-				@Override
-				public NapileTypeArgumentList getTypeArgumentList()
-				{
-					return null;
-				}
-			};
-		}
-
-		private Call stripReceiver(@NotNull Call variableCall)
-		{
-			return new DelegatingCall(variableCall)
-			{
-				@NotNull
-				@Override
-				public ReceiverDescriptor getExplicitReceiver()
-				{
-					return ReceiverDescriptor.NO_RECEIVER;
-				}
-			};
-		}
-
-		@NotNull
-		@Override
-		public Collection<ResolvedCallWithTrace<MethodDescriptor>> transformCall(@NotNull final CallResolutionContext<CallableDescriptor, MethodDescriptor> context, @NotNull CallResolver callResolver, @NotNull final ResolutionTask<CallableDescriptor, MethodDescriptor> task)
-		{
-			final CallableDescriptor descriptor = context.candidateCall.getCandidateDescriptor();
-			if(descriptor instanceof MethodDescriptor)
-			{
-				return super.transformCall(context, callResolver, task);
-			}
-
-			assert descriptor instanceof VariableDescriptor;
-			final MethodDescriptor callableDescriptor = descriptor.getCallableDescriptor();
+			CallableDescriptor callableDescriptor = candidate.getDescriptor().getCallableDescriptor();
 			if(callableDescriptor == null)
 				return Collections.emptyList();
-
-			final ResolvedCallWithTrace<VariableDescriptor> variableResolvedCall = (ResolvedCallWithTrace) context.candidateCall;
-
-			final TemporaryBindingTrace variableCallTrace = context.candidateCall.getTrace();
-
-			ResolutionCandidate<MethodDescriptor> resolutionCandidate = ResolutionCandidate.create(callableDescriptor, true);
-
-			return Collections.<ResolvedCallWithTrace<MethodDescriptor>>singletonList(new VariableAsMethodResolvedCall(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace), variableResolvedCall)) ;
+			ResolvedCallImpl<CallableDescriptor> call = ResolvedCallImpl.create(ResolutionCandidate.create(callableDescriptor, false), candidateTrace);
+			call.setVariableDescriptor((VariableDescriptor) candidate.getDescriptor());
+			CallResolutionContext<CallableDescriptor, MethodDescriptor> context = CallResolutionContext.create(call, task, candidateTrace, task.tracing, task.call);
+			return Collections.singleton(context);
 		}
 	};
 

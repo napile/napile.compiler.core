@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -65,6 +66,7 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 
 	private final D candidateDescriptor;
 	private D resultingDescriptor; // Probably substituted
+	private VariableDescriptor variableDescriptor;
 	private final ReceiverDescriptor thisObject; // receiver object of a method
 	private final ExplicitReceiverKind explicitReceiverKind;
 	private final boolean isSafeCall;
@@ -124,6 +126,13 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 		return candidateDescriptor;
 	}
 
+	@Nullable
+	@Override
+	public VariableDescriptor getVariableDescriptor()
+	{
+		return variableDescriptor;
+	}
+
 	@Override
 	@NotNull
 	public D getResultingDescriptor()
@@ -164,6 +173,7 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 	}
 
 	@Nullable
+	@Override
 	public ConstraintSystem getConstraintSystem()
 	{
 		return constraintSystem;
@@ -253,5 +263,10 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 	public boolean isSafeCall()
 	{
 		return isSafeCall;
+	}
+
+	public void setVariableDescriptor(VariableDescriptor variableDescriptor)
+	{
+		this.variableDescriptor = variableDescriptor;
 	}
 }
