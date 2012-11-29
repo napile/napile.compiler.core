@@ -89,6 +89,8 @@ public class PropertyAccessUtil
 	@Nullable
 	public static Pair<MethodDescriptor, NapileNamedMethod> get(@NotNull BindingReader trace, @NotNull VariableDescriptor variableDescriptor, @NotNull IElementType elementType)
 	{
+		if(!(variableDescriptor.getContainingDeclaration() instanceof ClassDescriptor))
+			return null;
 		return get(trace, variableDescriptor, (ClassDescriptor) variableDescriptor.getContainingDeclaration(), elementType);
 	}
 
