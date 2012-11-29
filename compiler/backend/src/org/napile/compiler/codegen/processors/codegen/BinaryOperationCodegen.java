@@ -74,7 +74,7 @@ public class BinaryOperationCodegen
 		ClassTypeNode leftClassType = (ClassTypeNode) leftType.typeConstructorNode;
 		//ClassTypeNode rightClassType = (ClassTypeNode) rightType.typeConstructorNode;
 
-		instructs.invokeVirtual(new MethodRef(leftClassType.className.child(OperatorConventions.COMPARE_TO), Collections.singletonList(rightType), Collections.<TypeNode>emptyList(), TypeConstants.COMPARE_RESULT));
+		instructs.invokeVirtual(new MethodRef(leftClassType.className.child(OperatorConventions.COMPARE_TO), Collections.singletonList(rightType), Collections.<TypeNode>emptyList(), TypeConstants.COMPARE_RESULT), false);
 
 		if(opToken == NapileTokens.GT)
 			gtOrLt(GREATER, instructs);
@@ -94,7 +94,7 @@ public class BinaryOperationCodegen
 
 		property.put(TypeConstants.COMPARE_RESULT, instructs);
 
-		instructs.invokeVirtual(ANY_EQUALS);
+		instructs.invokeVirtual(ANY_EQUALS, false);
 
 		instructs.putTrue();
 
@@ -118,7 +118,7 @@ public class BinaryOperationCodegen
 	{
 		property.put(TypeConstants.COMPARE_RESULT, instructs);
 
-		instructs.invokeVirtual(ANY_EQUALS);
+		instructs.invokeVirtual(ANY_EQUALS, false);
 
 		instructs.putTrue();
 
@@ -162,12 +162,12 @@ public class BinaryOperationCodegen
 		gen.gen(right, rightType);
 
 		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-		final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList());
+		final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false);
 		callable.invoke(instructs);
 
 		// revert bool
 		if(opToken == NapileTokens.EXCLEQ)
-			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE));
+			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
@@ -180,7 +180,7 @@ public class BinaryOperationCodegen
 
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-		final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall);
+		final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false);
 
 		StackValue value = gen.gen(expression.getLeft());
 		value.dupReceiver(instructs);
@@ -212,7 +212,7 @@ public class BinaryOperationCodegen
 
 		instructs.putNull();
 
-		instructs.invokeVirtual(ANY_EQUALS);
+		instructs.invokeVirtual(ANY_EQUALS, false);
 
 		instructs.putTrue();
 

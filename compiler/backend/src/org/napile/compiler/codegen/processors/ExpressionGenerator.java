@@ -158,6 +158,12 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitSafeQualifiedExpression(NapileSafeQualifiedExpression expression, StackValue data)
+	{
+		return genQualified(StackValue.none(), expression.getSelectorExpression());
+	}
+
+	@Override
 	public StackValue visitParenthesizedExpression(NapileParenthesizedExpression expression, StackValue receiver)
 	{
 		return genQualified(receiver, expression.getExpression());
@@ -345,7 +351,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		instructs.is(TypeTransformer.toAsmType(rightType));
 
 		if(expression.isNegated())
-			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE));
+			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
@@ -356,7 +362,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall);
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, false);
 
 		if(!(op.getName().getName().equals("inc") || op.getName().getName().equals("dec")))
 			return invokeOperation(expression, (MethodDescriptor) op, callableMethod);
@@ -569,7 +575,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		else
 		{
 			DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList());
+			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false);
 
 			return invokeOperation(expression, (MethodDescriptor) op, callable);
 		}
@@ -604,7 +610,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			{
 				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall);
+				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false);
 
 				StackValue value = gen(expression.getBaseExpression());
 				value.dupReceiver(instructs);
@@ -659,10 +665,10 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 			{
 				VariableAsFunctionResolvedCall variableAsFunctionResolvedCall = (VariableAsFunctionResolvedCall) resolvedCall;
 
-				return invokeFunction(receiver, variableAsFunctionResolvedCall.getFunctionCall());
+				return invokeMethod(receiver, variableAsFunctionResolvedCall.getFunctionCall(), expression.getParent() instanceof NapileSafeQualifiedExpression);
 			}
 			else
-				return invokeFunction(receiver, resolvedCall);
+				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression);
 		}
 	}
 
@@ -670,7 +676,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, StackValue receiver)
 	{
 		MethodDescriptor operationDescriptor = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
-		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor, Collections.<TypeNode>emptyList());
+		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor, Collections.<TypeNode>emptyList(), false);
 
 		boolean isGetter = accessor.getName().endsWith("get");
 
@@ -683,13 +689,13 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		TypeNode asmType;
 		if(isGetter)
 		{
-			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall));
+			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall, false));
 
 			asmType = accessor.getReturnType();
 		}
 		else
 		{
-			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall));
+			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall, false));
 
 			asmType = argumentTypes.get(argumentTypes.size() - 1);
 		}
@@ -806,7 +812,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 			gen(expression, expressionType(expression));
 
-			instructs.invokeVirtual(setRef); // set - put to stack this object
+			instructs.invokeVirtual(setRef, false); // set - put to stack this object
 		}
 
 		return StackValue.onStack(typeNode);
@@ -839,7 +845,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 			//final ClassDescriptor classDescriptor = ((ConstructorDescriptor) constructorDescriptor).getContainingDeclaration();
 
-			CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor, Collections.<TypeNode>emptyList());
+			CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor, Collections.<TypeNode>emptyList(), false);
 
 			receiver.put(receiver.getType(), instructs);
 
@@ -872,9 +878,9 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(callable.getReturnType());
 	}
 
-	private StackValue invokeFunction(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall)
+	private StackValue invokeMethod(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable)
 	{
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall);
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, nullable);
 
 		invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
 

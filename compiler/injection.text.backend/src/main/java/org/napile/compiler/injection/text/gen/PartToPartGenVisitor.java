@@ -83,7 +83,7 @@ public class PartToPartGenVisitor extends TextPsiVisitor
 		NapileExpression exp = e.getExpression();
 
 		generator.gen(exp, AsmConstants.ANY_TYPE);
-		adapter.invokeVirtual(PLUS_REF);
+		adapter.invokeVirtual(PLUS_REF, false);
 	}
 
 	private void appendLastString()
@@ -93,7 +93,7 @@ public class PartToPartGenVisitor extends TextPsiVisitor
 			adapter.newString(builder.toString());
 			builder = null;
 
-			adapter.invokeVirtual(PLUS_REF);
+			adapter.invokeVirtual(PLUS_REF, false);
 		}
 	}
 
@@ -101,6 +101,6 @@ public class PartToPartGenVisitor extends TextPsiVisitor
 	{
 		appendLastString();
 
-		adapter.invokeVirtual(TO_STRING_REF);
+		adapter.invokeVirtual(TO_STRING_REF, false);
 	}
 }

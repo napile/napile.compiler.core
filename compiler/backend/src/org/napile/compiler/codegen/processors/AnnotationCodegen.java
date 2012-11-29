@@ -49,7 +49,7 @@ public class AnnotationCodegen
 
 		ConstructorDescriptor constructorDescriptor = resolvedCall.getResultingDescriptor();
 
-		CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall);
+		CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, false);
 
 		TypeNode type = TypeTransformer.toAsmType(constructorDescriptor.getReturnType());
 

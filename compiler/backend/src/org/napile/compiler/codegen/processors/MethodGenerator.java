@@ -82,7 +82,7 @@ public class MethodGenerator
 				{
 					case CLASS:
 						constructorNode.instructions.add(new LoadInstruction(0));
-						constructorNode.instructions.add(new InvokeSpecialInstruction(new MethodRef(NapileLangPackage.ANY.child(ConstructorDescriptor.NAME), Collections.<TypeNode>emptyList(),Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE)));
+						constructorNode.instructions.add(new InvokeSpecialInstruction(new MethodRef(NapileLangPackage.ANY.child(ConstructorDescriptor.NAME), Collections.<TypeNode>emptyList(),Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE), false));
 						constructorNode.instructions.add(new PopInstruction());
 						break;
 					default:
@@ -98,7 +98,7 @@ public class MethodGenerator
 
 				ExpressionGenerator generator = new ExpressionGenerator(bindingTrace, constructorDescriptor);
 
-				CallableMethod method = CallTransformer.transformToCallable(call);
+				CallableMethod method = CallTransformer.transformToCallable(call, false);
 
 				generator.invokeMethodWithArguments(method, specifier, StackValue.none());
 

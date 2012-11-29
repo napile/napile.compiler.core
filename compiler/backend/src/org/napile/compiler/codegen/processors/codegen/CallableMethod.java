@@ -41,14 +41,16 @@ public class CallableMethod
 	private final TypeNode returnType;
 	private final List<TypeNode> parameters;
 	private final boolean macro;
+	private final boolean nullable;
 
-	public CallableMethod(@NotNull MethodRef methodRef, @NotNull CallType callType, TypeNode returnType, List<TypeNode> parameters, boolean macro)
+	public CallableMethod(@NotNull MethodRef methodRef, @NotNull CallType callType, TypeNode returnType, List<TypeNode> parameters, boolean macro, boolean nullable)
 	{
 		this.methodRef = methodRef;
 		this.callType = callType;
 		this.returnType = returnType;
 		this.parameters = parameters;
 		this.macro = macro;
+		this.nullable = nullable;
 	}
 
 	public void invoke(InstructionAdapter instructionAdapter)
@@ -59,16 +61,16 @@ public class CallableMethod
 				if(macro)
 					instructionAdapter.macroJump(methodRef);
 				else
-					instructionAdapter.invokeSpecial(methodRef);
+					instructionAdapter.invokeSpecial(methodRef, nullable);
 				break;
 			case STATIC:
 				if(macro)
 					instructionAdapter.macroStaticJump(methodRef);
 				else
-					instructionAdapter.invokeStatic(methodRef);
+					instructionAdapter.invokeStatic(methodRef, nullable);
 				break;
 			case VIRTUAL:
-				instructionAdapter.invokeVirtual(methodRef);
+				instructionAdapter.invokeVirtual(methodRef, nullable);
 				break;
 		}
 	}

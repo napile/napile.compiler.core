@@ -48,9 +48,9 @@ public class Property extends StackValue
 	public void put(TypeNode type, InstructionAdapter instructionAdapter)
 	{
 		if(staticVar)
-			instructionAdapter.invokeStatic(getter);
+			instructionAdapter.invokeStatic(getter, false);
 		else
-			instructionAdapter.invokeVirtual(getter);
+			instructionAdapter.invokeVirtual(getter, false);
 
 		castTo(type, instructionAdapter);
 	}
@@ -59,9 +59,9 @@ public class Property extends StackValue
 	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
 	{
 		if(staticVar)
-			instructionAdapter.invokeStatic(setter);
+			instructionAdapter.invokeStatic(setter, false);
 		else
-			instructionAdapter.invokeVirtual(setter);
+			instructionAdapter.invokeVirtual(setter, false);
 
 		instructionAdapter.pop();
 	}

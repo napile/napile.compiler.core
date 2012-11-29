@@ -43,7 +43,7 @@ import org.napile.compiler.lang.types.JetType;
  */
 public class CallTransformer
 {
-	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall)
+	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable)
 	{
 		MethodDescriptor fd = (MethodDescriptor) resolvedCall.getResultingDescriptor();
 		fd = unwrapFakeOverride(fd);
@@ -68,7 +68,7 @@ public class CallTransformer
 			}
 		}
 
-		return transformToCallable(fd, typeArguments);
+		return transformToCallable(fd, typeArguments, nullable);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,7 +80,7 @@ public class CallTransformer
 	}
 
 	@NotNull
-	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments)
+	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments, boolean nullable)
 	{
 		CallableMethod.CallType type = CallableMethod.CallType.VIRTUAL;
 		if(methodDescriptor instanceof ConstructorDescriptor)
@@ -105,6 +105,6 @@ public class CallTransformer
 		for(ParameterDescriptor p : originalMethodDescriptor.getValueParameters())
 			parametersToByteCode.add(TypeTransformer.toAsmType(p.getType()));
 
-		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks, methodDescriptor.isMacro());
+		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks, methodDescriptor.isMacro(), nullable);
 	}
 }

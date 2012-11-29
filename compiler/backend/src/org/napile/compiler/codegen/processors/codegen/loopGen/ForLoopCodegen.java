@@ -65,18 +65,18 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		// put Iterator instance to stack
 		MethodDescriptor methodDescriptor = gen.bindingTrace.safeGet(BindingContext.LOOP_RANGE_ITERATOR, expression.getLoopRange());
 		gen.gen(expression.getLoopRange(), TypeConstants.ITERATOR__ANY__);
-		instructions.invokeVirtual(NodeRefUtil.ref(methodDescriptor));
+		instructions.invokeVirtual(NodeRefUtil.ref(methodDescriptor), false);
 		instructions.store(loopIteratorIndex);
 
 		firstPos = instructions.size();
 
 		instructions.load(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE));
+		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 		instructions.putTrue();
 		jumpIfSlot = instructions.reserve();
 
 		instructions.load(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))));
+		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), false);
 		instructions.store(loopParameterIndex);
 	}
 

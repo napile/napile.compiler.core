@@ -141,7 +141,7 @@ public class VariableCodegen
 
 				adapter.putNull();
 
-				adapter.invokeVirtual(BinaryOperationCodegen.ANY_EQUALS);
+				adapter.invokeVirtual(BinaryOperationCodegen.ANY_EQUALS, false);
 
 				adapter.putTrue();
 
@@ -152,7 +152,7 @@ public class VariableCodegen
 
 				adapter.dup();
 
-				adapter.invokeVirtual(NodeRefUtil.ref(lazyMethodDescriptor));
+				adapter.invokeVirtual(NodeRefUtil.ref(lazyMethodDescriptor), false);
 
 				varStackValue.store(getterMethodNode.returnType, adapter);
 
