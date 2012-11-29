@@ -28,7 +28,7 @@ import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.NodeRefUtil;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -52,7 +52,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 	}
 
 	@Override
-	protected void beforeLoop(ExpressionGenerator gen, InstructionAdapter instructions)
+	protected void beforeLoop(ExpressionCodegen gen, InstructionAdapter instructions)
 	{
 		loopParameterDescriptor = gen.bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, expression.getLoopParameter());
 		int loopParameterIndex = gen.frameMap.enter(loopParameterDescriptor);
@@ -81,7 +81,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 	}
 
 	@Override
-	protected void afterLoop(ExpressionGenerator gen, InstructionAdapter instructions)
+	protected void afterLoop(ExpressionCodegen gen, InstructionAdapter instructions)
 	{
 		instructions.jump(firstPos);
 

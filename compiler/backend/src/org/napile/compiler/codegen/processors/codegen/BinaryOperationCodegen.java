@@ -31,7 +31,7 @@ import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Property;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
@@ -61,7 +61,7 @@ public class BinaryOperationCodegen
 	private static final Property EQUAL = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("EQUAL")), TypeConstants.COMPARE_RESULT, true);
 	private static final Property LOWER = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("LOWER")), TypeConstants.COMPARE_RESULT, true);
 
-	public static StackValue genSure(@NotNull NapilePostfixExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs, @NotNull StackValue receiver)
+	public static StackValue genSure(@NotNull NapilePostfixExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs, @NotNull StackValue receiver)
 	{
 		NapileExpression baseExpression = expression.getBaseExpression();
 		JetType type = gen.bindingTrace.get(BindingContext.EXPRESSION_TYPE, baseExpression);
@@ -90,7 +90,7 @@ public class BinaryOperationCodegen
 			return base;
 	}
 
-	public static StackValue genGeLe(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genGeLe(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
 
@@ -166,7 +166,7 @@ public class BinaryOperationCodegen
 		instructs.replace(jumpSlot, new JumpInstruction(instructs.size()));
 	}
 
-	public static StackValue genEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
 	{
 		StackValue stackValue = gen.gen(expression.getLeft());
 		gen.gen(expression.getRight(), stackValue.getType());
@@ -174,7 +174,7 @@ public class BinaryOperationCodegen
 		return StackValue.none();
 	}
 
-	public static StackValue genEqEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genEqEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
 
@@ -202,7 +202,7 @@ public class BinaryOperationCodegen
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
-	public static StackValue genAugmentedAssignment(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genAugmentedAssignment(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
 	{
 		final NapileExpression lhs = expression.getLeft();
 
@@ -230,7 +230,7 @@ public class BinaryOperationCodegen
 		return StackValue.none();
 	}
 
-	public static StackValue genElvis(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genElvis(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
 	{
 		final TypeNode exprType = gen.expressionType(expression);
 		JetType type = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeft());
@@ -255,7 +255,7 @@ public class BinaryOperationCodegen
 		return StackValue.onStack(exprType);
 	}
 
-	public static StackValue genAndAnd(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genAndAnd(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
 	{
 		gen.gen(expression.getLeft(), AsmConstants.BOOL_TYPE);
 
@@ -284,7 +284,7 @@ public class BinaryOperationCodegen
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
-	public static StackValue genOrOr(@NotNull NapileBinaryExpression expression, @NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genOrOr(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
 	{
 		gen.gen(expression.getLeft(), AsmConstants.BOOL_TYPE);
 

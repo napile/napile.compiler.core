@@ -17,7 +17,7 @@
 package org.napile.compiler.codegen.processors.injection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.injection.CodeInjection;
 import com.intellij.openapi.util.NotNullLazyKey;
@@ -34,7 +34,7 @@ public interface InjectionCodegen<T extends CodeInjection>
 	{
 		@NotNull
 		@Override
-		public StackValue gen(@NotNull PsiElement block, @NotNull StackValue data, ExpressionGenerator expressionGenerator)
+		public StackValue gen(@NotNull PsiElement block, @NotNull StackValue data, ExpressionCodegen expressionCodegen)
 		{
 			return StackValue.none();
 		}
@@ -66,7 +66,7 @@ public interface InjectionCodegen<T extends CodeInjection>
 	});
 
 	@NotNull
-	StackValue gen(@NotNull PsiElement block, @NotNull StackValue data, ExpressionGenerator expressionGenerator);
+	StackValue gen(@NotNull PsiElement block, @NotNull StackValue data, ExpressionCodegen expressionCodegen);
 
 	@NotNull
 	Class<T> getInjectionType();

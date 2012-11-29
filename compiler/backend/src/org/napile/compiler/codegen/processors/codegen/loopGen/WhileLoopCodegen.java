@@ -21,7 +21,7 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.lang.psi.NapileWhileExpression;
 
 /**
@@ -38,7 +38,7 @@ public class WhileLoopCodegen extends LoopCodegen<NapileWhileExpression>
 	}
 
 	@Override
-	protected void beforeLoop(ExpressionGenerator gen, InstructionAdapter instructions)
+	protected void beforeLoop(ExpressionCodegen gen, InstructionAdapter instructions)
 	{
 		super.beforeLoop(gen, instructions);
 
@@ -50,7 +50,7 @@ public class WhileLoopCodegen extends LoopCodegen<NapileWhileExpression>
 	}
 
 	@Override
-	protected void afterLoop(ExpressionGenerator gen, InstructionAdapter instructions)
+	protected void afterLoop(ExpressionCodegen gen, InstructionAdapter instructions)
 	{
 		int jumpOutPos = instructions.size() + 1;
 

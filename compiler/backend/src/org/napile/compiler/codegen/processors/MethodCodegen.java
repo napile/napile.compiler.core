@@ -57,15 +57,15 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
  * @author VISTALL
  * @date 18:47/07.09.12
  */
-public class MethodGenerator
+public class MethodCodegen
 {
 	public static MethodNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace bindingTrace)
 	{
-		MethodNode constructorNode = MethodNode.constructor(ModifierGenerator.gen(constructorDescriptor));
+		MethodNode constructorNode = MethodNode.constructor(ModifierCodegen.gen(constructorDescriptor));
 		constructorNode.returnType = new TypeNode(false, new ThisTypeNode());
 		for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
 
 			constructorNode.parameters.add(methodParameterNode);
 		}
@@ -96,7 +96,7 @@ public class MethodGenerator
 			{
 				ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
 
-				ExpressionGenerator generator = new ExpressionGenerator(bindingTrace, constructorDescriptor);
+				ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor);
 
 				CallableMethod method = CallTransformer.transformToCallable(call, false);
 
@@ -114,14 +114,14 @@ public class MethodGenerator
 	@NotNull
 	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name realName)
 	{
-		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierGenerator.gen(methodDescriptor), realName) : new MethodNode(ModifierGenerator.gen(methodDescriptor), realName);
+		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierCodegen.gen(methodDescriptor), realName) : new MethodNode(ModifierCodegen.gen(methodDescriptor), realName);
 		methodNode.returnType = TypeTransformer.toAsmType(methodDescriptor.getReturnType());
 
 		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode);
 
 		for(ParameterDescriptor declaration : methodDescriptor.getValueParameters())
 		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierGenerator.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
 
 			methodNode.parameters.add(methodParameterNode);
 		}
@@ -139,10 +139,10 @@ public class MethodGenerator
 		NapileExpression expression = declarationWithBody.getBodyExpression();
 		if(expression != null)
 		{
-			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, methodDescriptor);
-			expressionGenerator.returnExpression(expression, methodDescriptor.isMacro());
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, methodDescriptor);
+			expressionCodegen.returnExpression(expression, methodDescriptor.isMacro());
 
-			InstructionAdapter adapter = expressionGenerator.getInstructs();
+			InstructionAdapter adapter = expressionCodegen.getInstructs();
 
 			int val = adapter.getMaxLocals() + methodDescriptor.getValueParameters().size();
 			if(!methodDescriptor.isStatic())

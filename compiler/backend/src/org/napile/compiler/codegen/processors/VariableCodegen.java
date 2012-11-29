@@ -65,7 +65,7 @@ public class VariableCodegen
 		DeclarationDescriptor setter = bindingTrace.get(BindingContext.FQNAME_TO_DESCRIPTOR, setterFq);
 		if(setter == null)
 		{
-			MethodNode setterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), setterFq.shortName());
+			MethodNode setterMethodNode = new MethodNode(ModifierCodegen.gen(propertyDescriptor), setterFq.shortName());
 			setterMethodNode.returnType = AsmConstants.NULL_TYPE;
 			setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(propertyDescriptor.getType())));
 
@@ -103,7 +103,7 @@ public class VariableCodegen
 			MethodDescriptor lazyMethodDescriptor = PropertyAccessUtil.getPropertyDescriptor(bindingTrace, propertyDescriptor, NapileTokens.LAZY_KEYWORD);
 			if(lazyMethodDescriptor == null)
 			{
-				MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName());
+				MethodNode getterMethodNode = new MethodNode(ModifierCodegen.gen(propertyDescriptor), getterFq.shortName());
 				getterMethodNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 
 				if(propertyDescriptor.isStatic())
@@ -124,7 +124,7 @@ public class VariableCodegen
 			}
 			else
 			{
-				MethodNode getterMethodNode = new MethodNode(ModifierGenerator.gen(propertyDescriptor), getterFq.shortName());
+				MethodNode getterMethodNode = new MethodNode(ModifierCodegen.gen(propertyDescriptor), getterFq.shortName());
 				getterMethodNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
 
 				InstructionAdapter adapter = new InstructionAdapter();

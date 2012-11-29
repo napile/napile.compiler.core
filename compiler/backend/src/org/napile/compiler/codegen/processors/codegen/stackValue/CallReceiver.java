@@ -19,7 +19,7 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -31,10 +31,10 @@ public class CallReceiver extends StackValue
 {
 	private final ResolvedCall<? extends CallableDescriptor> resolvedCall;
 	final StackValue receiver;
-	private final ExpressionGenerator codegen;
+	private final ExpressionCodegen codegen;
 	//private final CallableMethod callableMethod;
 
-	public CallReceiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionGenerator codegen, CallableMethod callableMethod)
+	public CallReceiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen codegen, CallableMethod callableMethod)
 	{
 		super(calcType(resolvedCall, codegen, callableMethod));
 		this.resolvedCall = resolvedCall;
@@ -43,7 +43,7 @@ public class CallReceiver extends StackValue
 		//this.callableMethod = callableMethod;
 	}
 
-	private static TypeNode calcType(ResolvedCall<? extends CallableDescriptor> resolvedCall, ExpressionGenerator codegen, CallableMethod callableMethod)
+	private static TypeNode calcType(ResolvedCall<? extends CallableDescriptor> resolvedCall, ExpressionCodegen codegen, CallableMethod callableMethod)
 	{
 		ReceiverDescriptor thisObject = resolvedCall.getThisObject();
 

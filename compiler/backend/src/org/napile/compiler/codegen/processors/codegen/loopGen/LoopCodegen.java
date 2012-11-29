@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.lang.psi.NapileLoopExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
 
@@ -49,17 +49,17 @@ public abstract class LoopCodegen<E extends NapileLoopExpression>
 		return null;
 	}
 
-	protected void beforeLoop(ExpressionGenerator gen, InstructionAdapter instructions)
+	protected void beforeLoop(ExpressionCodegen gen, InstructionAdapter instructions)
 	{
 		firstPos = instructions.size();
 	}
 
-	protected void afterLoop(ExpressionGenerator gen, InstructionAdapter instructions)
+	protected void afterLoop(ExpressionCodegen gen, InstructionAdapter instructions)
 	{
 
 	}
 
-	public void gen(@NotNull ExpressionGenerator gen, @NotNull InstructionAdapter instructions, @NotNull BindingTrace bindingTrace)
+	public void gen(@NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructions, @NotNull BindingTrace bindingTrace)
 	{
 		beforeLoop(gen, instructions);
 

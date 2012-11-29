@@ -18,7 +18,7 @@ package org.napile.compiler.injection.text;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.injection.InjectionCodegen;
 import org.napile.compiler.injection.text.gen.OnlyStringCheckVisitor;
@@ -33,7 +33,7 @@ public class TextInjectionCodegen implements InjectionCodegen<TextCodeInjection>
 {
 	@NotNull
 	@Override
-	public StackValue gen(@NotNull PsiElement block, @NotNull StackValue data, ExpressionGenerator expressionGenerator)
+	public StackValue gen(@NotNull PsiElement block, @NotNull StackValue data, ExpressionCodegen expressionCodegen)
 	{
 		OnlyStringCheckVisitor checkVisitor = new OnlyStringCheckVisitor();
 		block.accept(checkVisitor);
@@ -43,7 +43,7 @@ public class TextInjectionCodegen implements InjectionCodegen<TextCodeInjection>
 			return StackValue.constant(str, AsmConstants.STRING_TYPE);
 		else
 		{
-			PartToPartGenVisitor genVisitor = new PartToPartGenVisitor(expressionGenerator.getInstructs(), expressionGenerator);
+			PartToPartGenVisitor genVisitor = new PartToPartGenVisitor(expressionCodegen.getInstructs(), expressionCodegen);
 			block.accept(genVisitor);
 			genVisitor.genToString();
 			return StackValue.onStack(AsmConstants.STRING_TYPE);

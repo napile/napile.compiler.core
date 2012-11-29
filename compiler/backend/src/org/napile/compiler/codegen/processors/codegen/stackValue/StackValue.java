@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -52,7 +52,7 @@ public abstract class StackValue
 		return new Constant(value, typeNode);
 	}
 
-	public static StackValue receiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionGenerator codegen, @Nullable CallableMethod callableMethod)
+	public static StackValue receiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen codegen, @Nullable CallableMethod callableMethod)
 	{
 		if(resolvedCall.getThisObject().exists())
 			return new CallReceiver(resolvedCall, receiver, codegen, callableMethod);
@@ -60,7 +60,7 @@ public abstract class StackValue
 		return receiver;
 	}
 
-	public static StackValue thisOrOuter(ExpressionGenerator codegen, ClassDescriptor descriptor, boolean isSuper)
+	public static StackValue thisOrOuter(ExpressionCodegen codegen, ClassDescriptor descriptor, boolean isSuper)
 	{
 		return new ThisOuter(codegen, descriptor, isSuper);
 	}
@@ -92,9 +92,9 @@ public abstract class StackValue
 		return new Property(fqName, type, staticVar);
 	}
 
-	public static StackValue collectionElement(@NotNull TypeNode typeNode, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionGenerator expressionGenerator)
+	public static StackValue collectionElement(@NotNull TypeNode typeNode, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionCodegen expressionCodegen)
 	{
-		return new CollectionElement(typeNode, getCall, setCall, expressionGenerator);
+		return new CollectionElement(typeNode, getCall, setCall, expressionCodegen);
 	}
 
 

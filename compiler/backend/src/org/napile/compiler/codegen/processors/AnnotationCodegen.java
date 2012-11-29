@@ -53,7 +53,7 @@ public class AnnotationCodegen
 
 		TypeNode type = TypeTransformer.toAsmType(constructorDescriptor.getReturnType());
 
-		ExpressionGenerator gen = new ExpressionGenerator(bindingTrace, type);
+		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, type);
 
 		gen.pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
 

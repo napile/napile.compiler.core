@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -34,17 +34,17 @@ public class CollectionElement extends StackValue
 {
 	private ResolvedCall<MethodDescriptor> getCall;
 	private ResolvedCall<MethodDescriptor> setCall;
-	private ExpressionGenerator expressionGenerator;
+	private ExpressionCodegen expressionCodegen;
 
 	private CallableMethod getCallableMethod;
 	private CallableMethod setCallableMethod;
 
-	public CollectionElement(TypeNode type, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionGenerator expressionGenerator)
+	public CollectionElement(TypeNode type, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionCodegen expressionCodegen)
 	{
 		super(type);
 		this.getCall = getCall;
 		this.setCall = setCall;
-		this.expressionGenerator = expressionGenerator;
+		this.expressionCodegen = expressionCodegen;
 
 		getCallableMethod = getCall == null ? null : CallTransformer.transformToCallable(getCall, false);
 		setCallableMethod = setCall == null ? null : CallTransformer.transformToCallable(setCall, false);

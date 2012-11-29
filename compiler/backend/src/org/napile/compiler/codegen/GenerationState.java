@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
-import org.napile.compiler.codegen.processors.ClassGenerator;
+import org.napile.compiler.codegen.processors.ClassCodegen;
 import org.napile.compiler.codegen.processors.FqNameGenerator;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -84,14 +84,14 @@ public class GenerationState
 		for(NapileClass napileClass : classes)
 			napileClass.accept(fqNameGenerator, null);
 
-		ClassGenerator classGenerator = new ClassGenerator(bindingTrace, classNodes);
+		ClassCodegen classCodegen = new ClassCodegen(bindingTrace, classNodes);
 
 		for(NapileClass napileClass : classes)
-			napileClass.accept(classGenerator, null);
+			napileClass.accept(classCodegen, null);
 
-		classGenerator.addPropertiesInitToConstructors();
+		classCodegen.addPropertiesInitToConstructors();
 
-		classNodes = classGenerator.getClassNodes();
+		classNodes = classCodegen.getClassNodes();
 	}
 
 	public Map<FqName, ClassNode> getClassNodes()

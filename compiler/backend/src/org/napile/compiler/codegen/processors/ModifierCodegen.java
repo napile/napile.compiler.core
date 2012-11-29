@@ -31,7 +31,7 @@ import org.napile.compiler.lang.descriptors.ParameterDescriptor;
  * @author VISTALL
  * @date 12:35/04.09.12
  */
-public class ModifierGenerator
+public class ModifierCodegen
 {
 	@NotNull
 	public static Modifier[] gen(@NotNull ParameterDescriptor parameterDescriptor)

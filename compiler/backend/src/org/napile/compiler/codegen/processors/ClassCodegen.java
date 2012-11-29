@@ -57,7 +57,7 @@ import com.intellij.util.containers.MultiMap;
  * @author VISTALL
  * @date 10:58/04.09.12
  */
-public class ClassGenerator extends NapileTreeVisitor<Node>
+public class ClassCodegen extends NapileTreeVisitor<Node>
 {
 	private final Map<FqName, ClassNode> classNodes;
 	private final BindingTrace bindingTrace;
@@ -66,7 +66,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 	private final MultiMap<ClassNode, InstructionAdapter> propertiesStaticInit = new MultiMap<ClassNode, InstructionAdapter>();
 	private final MultiMap<ClassNode, InstructionAdapter> propertiesInit = new MultiMap<ClassNode, InstructionAdapter>();
 
-	public ClassGenerator(BindingTrace bindingTrace, Map<FqName, ClassNode> classNodes)
+	public ClassCodegen(BindingTrace bindingTrace, Map<FqName, ClassNode> classNodes)
 	{
 		this.bindingTrace = bindingTrace;
 		this.classNodes = classNodes;
@@ -86,7 +86,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, klass);
 
-		ClassNode classNode = new ClassNode(ModifierGenerator.gen(classDescriptor), fqName);
+		ClassNode classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
 		AnnotationCodegen.convert(bindingTrace, classDescriptor, classNode);
 
 		for(JetType superType : classDescriptor.getSupertypes())
@@ -108,7 +108,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		assert fqName != null;
 
-		ClassNode classNode = new ClassNode(ModifierGenerator.gen(classDescriptor), fqName);
+		ClassNode classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
 
 		classNodes.put(fqName, classNode);
 
@@ -125,7 +125,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		SimpleMethodDescriptor methodDescriptor = bindingTrace.safeGet(BindingContext.METHOD, expression);
 
 		// gen method
-		MethodNode methodNode = MethodGenerator.gen(methodDescriptor, fqName.shortName(), expression.getAnonymMethod(), bindingTrace);
+		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, fqName.shortName(), expression.getAnonymMethod(), bindingTrace);
 
 		ClassNode classNode = (ClassNode) parent;
 
@@ -142,7 +142,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		MethodNode constructorNode = MethodGenerator.gen(constructor, methodDescriptor, bindingTrace);
+		MethodNode constructorNode = MethodCodegen.gen(constructor, methodDescriptor, bindingTrace);
 
 		classNode.members.add(constructorNode);
 
@@ -160,7 +160,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		MethodNode methodNode = MethodGenerator.gen(methodDescriptor, methodDescriptor.getName(), function, bindingTrace);
+		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), function, bindingTrace);
 
 		classNode.members.add(methodNode);
 
@@ -178,7 +178,7 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		VariableNode variableNode = new VariableNode(ModifierGenerator.gen(variableDescriptor), variableDescriptor.getName());
+		VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName());
 		variableNode.returnType = TypeTransformer.toAsmType(variableDescriptor.getType());
 		classNode.members.add(variableNode);
 
@@ -187,18 +187,18 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 		NapileExpression initializer = property.getInitializer();
 		if(initializer != null)
 		{
-			ExpressionGenerator expressionGenerator = new ExpressionGenerator(bindingTrace, variableDescriptor);
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor);
 			if(!variableDescriptor.isStatic())
-				expressionGenerator.getInstructs().load(0);
+				expressionCodegen.getInstructs().load(0);
 
-			expressionGenerator.gen(initializer, variableNode.returnType);
+			expressionCodegen.gen(initializer, variableNode.returnType);
 
-			StackValue.variable((PropertyDescriptor) variableDescriptor).store(variableNode.returnType, expressionGenerator.getInstructs());
+			StackValue.variable((PropertyDescriptor) variableDescriptor).store(variableNode.returnType, expressionCodegen.getInstructs());
 
 			if(variableDescriptor.isStatic())
-				propertiesStaticInit.putValue(classNode, expressionGenerator.getInstructs());
+				propertiesStaticInit.putValue(classNode, expressionCodegen.getInstructs());
 			else
-				propertiesInit.putValue(classNode, expressionGenerator.getInstructs());
+				propertiesInit.putValue(classNode, expressionCodegen.getInstructs());
 		}
 		else
 		{
@@ -247,9 +247,9 @@ public class ClassGenerator extends NapileTreeVisitor<Node>
 
 				constructorNode.instructions.addAll(instructions);
 
-				MethodGenerator.genReferenceParameters(constructorDescriptor, constructorNode.instructions);
+				MethodCodegen.genReferenceParameters(constructorDescriptor, constructorNode.instructions);
 
-				ExpressionGenerator gen = new ExpressionGenerator(bindingTrace, constructorDescriptor);
+				ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor);
 				NapileExpression expression = constructor.getBodyExpression();
 				if(expression != null)
 					gen.returnExpression(expression, false);

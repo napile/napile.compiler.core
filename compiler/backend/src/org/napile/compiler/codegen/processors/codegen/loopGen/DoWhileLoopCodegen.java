@@ -21,7 +21,7 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.lang.psi.NapileDoWhileExpression;
 
 /**
@@ -36,7 +36,7 @@ public class DoWhileLoopCodegen extends LoopCodegen<NapileDoWhileExpression>
 	}
 
 	@Override
-	protected void afterLoop(ExpressionGenerator gen, InstructionAdapter instructions)
+	protected void afterLoop(ExpressionCodegen gen, InstructionAdapter instructions)
 	{
 		gen.gen(expression.getCondition(), AsmConstants.BOOL_TYPE);
 

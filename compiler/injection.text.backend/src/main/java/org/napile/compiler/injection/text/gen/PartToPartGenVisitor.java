@@ -25,7 +25,7 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.compiler.codegen.processors.ExpressionGenerator;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.injection.text.lang.lexer.TextTokens;
 import org.napile.compiler.injection.text.lang.psi.TextExpressionInsert;
@@ -44,12 +44,12 @@ public class PartToPartGenVisitor extends TextPsiVisitor
 
 	private StringBuilder builder = null;
 
-	private final ExpressionGenerator generator;
+	private final ExpressionCodegen generator;
 	private final InstructionAdapter adapter;
 
 	//private final ReservedInstruction countInstruction;
 
-	public PartToPartGenVisitor(InstructionAdapter adapter, ExpressionGenerator generator)
+	public PartToPartGenVisitor(InstructionAdapter adapter, ExpressionCodegen generator)
 	{
 		this.adapter = adapter;
 		this.generator = generator;

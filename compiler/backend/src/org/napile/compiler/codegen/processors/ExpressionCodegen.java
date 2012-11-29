@@ -87,7 +87,7 @@ import com.intellij.util.Function;
  * <p/>
  * base code getting from Kotlin
  */
-public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
+public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 {
 	@NotNull
 	public final BindingTrace bindingTrace;
@@ -104,7 +104,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 	private final boolean isInstanceConstructor;
 
-	public ExpressionGenerator(@NotNull BindingTrace b, @NotNull TypeNode r)
+	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull TypeNode r)
 	{
 		bindingTrace = b;
 		isInstanceConstructor = false;
@@ -112,7 +112,7 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 		frameMap = new FrameMap();
 	}
 
-	public ExpressionGenerator(@NotNull BindingTrace b, @NotNull CallableDescriptor d)
+	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull CallableDescriptor d)
 	{
 		bindingTrace = b;
 		isInstanceConstructor = d instanceof ConstructorDescriptor;
