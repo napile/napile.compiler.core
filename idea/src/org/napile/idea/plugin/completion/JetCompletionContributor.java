@@ -20,11 +20,9 @@ import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.common.TipsManager;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibilities;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -156,9 +154,7 @@ public class JetCompletionContributor extends CompletionContributor
 			if(object instanceof JetLookupObject)
 			{
 				DeclarationDescriptor descriptor = ((JetLookupObject) object).getDescriptor();
-				return (descriptor instanceof ClassDescriptor) ||
-						(descriptor instanceof NamespaceDescriptor) ||
-						(descriptor instanceof TypeParameterDescriptor);
+				return (descriptor instanceof ClassDescriptor) || (descriptor instanceof TypeParameterDescriptor);
 			}
 		}
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.common;
+package org.napile.idea.plugin.completion;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -19,7 +19,7 @@ package org.napile.idea.plugin.refactoring;
 import java.util.Collection;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.common.TipsManager;
+import org.napile.idea.plugin.completion.TipsManager;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
