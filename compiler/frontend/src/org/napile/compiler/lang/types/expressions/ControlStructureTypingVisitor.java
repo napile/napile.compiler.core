@@ -433,7 +433,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			{
 				VariableDescriptor variableDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(context.scope.getContainingDeclaration(), context.scope, ((NapilePropertyParameter) catchParameter)
 						, context.trace);
-				JetType throwableType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.THROWABLE, false);
+				JetType throwableType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.EXCEPTION, false);
 				DataFlowUtils.checkType(variableDescriptor.getType(), ((NapilePropertyParameter) catchParameter), context.replaceExpectedType(throwableType));
 				if(catchBody != null)
 				{
@@ -472,7 +472,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		NapileExpression thrownExpression = expression.getThrownExpression();
 		if(thrownExpression != null)
 		{
-			JetType throwableType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.THROWABLE, false);
+			JetType throwableType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.EXCEPTION, false);
 			facade.getTypeInfo(thrownExpression, context.replaceExpectedType(throwableType).replaceScope(context.scope));
 		}
 		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, false), expression, context, context.dataFlowInfo);
