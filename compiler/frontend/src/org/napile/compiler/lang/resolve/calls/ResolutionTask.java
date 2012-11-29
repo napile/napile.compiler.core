@@ -29,6 +29,8 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -38,6 +40,7 @@ import org.napile.compiler.lang.psi.NapileTypeArgumentList;
 import org.napile.compiler.lang.psi.NapileValueArgumentList;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
@@ -47,8 +50,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.lexer.NapileToken;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -229,6 +230,9 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 			ASTNode callOperationNode = call.getCallOperationNode();
 			if(callOperationNode != null && !isCallForImplicitInvoke)
 			{
+				if(candidates.size() == 1 && DescriptorUtils.isAnyMethod(candidates.iterator().next().getDescriptor()))
+					return;
+
 				trace.report(UNSAFE_CALL.on(callOperationNode.getPsi(), type));
 			}
 			else

@@ -68,7 +68,7 @@ public class CallableDescriptorCollectors
 		@Override
 		public Collection<MethodDescriptor> getNonMembersByName(JetScope scope, Name name)
 		{
-			return scope.getFunctions(name);
+			return Collections.emptyList();
 		}
 
 		private void addConstructors(JetScope scope, Name name, Collection<MethodDescriptor> methods)
@@ -107,15 +107,7 @@ public class CallableDescriptorCollectors
 		@Override
 		public Collection<VariableDescriptor> getNonMembersByName(JetScope scope, Name name)
 		{
-			Collection<VariableDescriptor> result = Sets.newLinkedHashSet();
-
-			VariableDescriptor localVariable = scope.getLocalVariable(name);
-			if(localVariable != null)
-			{
-				result.add(localVariable);
-			}
-			result.addAll(scope.getProperties(name));
-			return result;
+			return Collections.emptyList();
 		}
 	};
 

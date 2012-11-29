@@ -51,6 +51,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.autocasts.AutoCastServiceImpl;
@@ -980,7 +981,7 @@ public class CallResolver
 					result = ResolutionStatus.OTHER_ERROR;
 				}
 			}
-			if(safeAccess && !receiverArgumentType.isNullable())
+			if(safeAccess && (!receiverArgumentType.isNullable() || DescriptorUtils.isAnyMethod(candidateCall.getCandidateDescriptor())))
 			{
 				context.tracing.unnecessarySafeCall(context.candidateCall.getTrace(), receiverArgumentType);
 			}

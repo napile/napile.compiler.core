@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.asm.resolve.name.Name;
@@ -310,4 +311,16 @@ public class DescriptorUtils
 		return false;
 	}
 
+	public static boolean isAnyMethod(CallableDescriptor callableDescriptor)
+	{
+		while(callableDescriptor != null)
+		{
+			if(getFQName(callableDescriptor.getContainingDeclaration()).equals(NapileLangPackage.ANY))
+				return true;
+
+			callableDescriptor = callableDescriptor.getOverriddenDescriptors().size() == 1 ? callableDescriptor.getOverriddenDescriptors().iterator().next() : null;
+		}
+
+		return false;
+	}
 }
