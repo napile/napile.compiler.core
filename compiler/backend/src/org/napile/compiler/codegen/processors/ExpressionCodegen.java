@@ -67,7 +67,7 @@ import org.napile.compiler.lang.resolve.calls.AutoCastReceiver;
 import org.napile.compiler.lang.resolve.calls.ExpressionValueArgument;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
-import org.napile.compiler.lang.resolve.calls.VariableAsFunctionResolvedCall;
+import org.napile.compiler.lang.resolve.calls.VariableAsMethodResolvedCall;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
@@ -278,6 +278,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
+		instructs.load(0);
 		instructs.linkMethod(NodeRefUtil.ref(methodDescriptor, fqName));
 
 		return StackValue.onStack(TypeTransformer.toAsmType(jetType));
@@ -293,7 +294,11 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		if(target.isStatic())
 			instructs.linkStaticMethod(NodeRefUtil.ref(target));
 		else
+		{
+			instructs.load(0);
+
 			instructs.linkMethod(NodeRefUtil.ref(target));
+		}
 
 		return StackValue.onStack(TypeTransformer.toAsmType(jetType));
 	}
@@ -362,7 +367,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, false);
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, false, false);
 
 		if(!(op.getName().getName().equals("inc") || op.getName().getName().equals("dec")))
 			return invokeOperation(expression, (MethodDescriptor) op, callableMethod);
@@ -575,7 +580,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		else
 		{
 			DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false);
+			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false);
 
 			return invokeOperation(expression, (MethodDescriptor) op, callable);
 		}
@@ -594,7 +599,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			{
 				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false);
+				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false, false);
 
 				StackValue value = gen(expression.getBaseExpression());
 				value.dupReceiver(instructs);
@@ -645,14 +650,18 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		}
 		else
 		{
-			if(resolvedCall instanceof VariableAsFunctionResolvedCall)
+			if(resolvedCall instanceof VariableAsMethodResolvedCall)
 			{
-				VariableAsFunctionResolvedCall variableAsFunctionResolvedCall = (VariableAsFunctionResolvedCall) resolvedCall;
+				VariableAsMethodResolvedCall variableAsMethodResolvedCall = (VariableAsMethodResolvedCall) resolvedCall;
 
-				return invokeMethod(receiver, variableAsFunctionResolvedCall.getFunctionCall(), expression.getParent() instanceof NapileSafeQualifiedExpression);
+				StackValue stackValue = callee.accept(this, receiver);
+
+				stackValue.put(TypeTransformer.toAsmType(variableAsMethodResolvedCall.getVariableCall().getCandidateDescriptor().getType()), instructs);
+
+				return invokeMethod(receiver, variableAsMethodResolvedCall.getMethodCall(), expression.getParent() instanceof NapileSafeQualifiedExpression, true);
 			}
 			else
-				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression);
+				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression, false);
 		}
 	}
 
@@ -660,7 +669,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, StackValue receiver)
 	{
 		MethodDescriptor operationDescriptor = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
-		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor, Collections.<TypeNode>emptyList(), false);
+		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor, Collections.<TypeNode>emptyList(), false, false);
 
 		boolean isGetter = accessor.getName().endsWith("get");
 
@@ -673,13 +682,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		TypeNode asmType;
 		if(isGetter)
 		{
-			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall, false));
+			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall, false, false));
 
 			asmType = accessor.getReturnType();
 		}
 		else
 		{
-			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall, false));
+			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall, false, false));
 
 			asmType = argumentTypes.get(argumentTypes.size() - 1);
 		}
@@ -703,9 +712,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			descriptor = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
 		else
 		{
-			if(resolvedCall instanceof VariableAsFunctionResolvedCall)
+			if(resolvedCall instanceof VariableAsMethodResolvedCall)
 			{
-				VariableAsFunctionResolvedCall call = (VariableAsFunctionResolvedCall) resolvedCall;
+				VariableAsMethodResolvedCall call = (VariableAsMethodResolvedCall) resolvedCall;
 				resolvedCall = call.getVariableCall();
 			}
 			receiver = StackValue.receiver(resolvedCall, receiver, this, null);
@@ -829,7 +838,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			//final ClassDescriptor classDescriptor = ((ConstructorDescriptor) constructorDescriptor).getContainingDeclaration();
 
-			CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor, Collections.<TypeNode>emptyList(), false);
+			CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor, Collections.<TypeNode>emptyList(), false, false);
 
 			receiver.put(receiver.getType(), instructs);
 
@@ -862,9 +871,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(callable.getReturnType());
 	}
 
-	private StackValue invokeMethod(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable)
+	private StackValue invokeMethod(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym)
 	{
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, nullable);
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, nullable, anonym);
 
 		invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
 
@@ -896,8 +905,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			gen(call.getCalleeExpression(), calleeType);
 		}   */
 
-		if(resolvedCall instanceof VariableAsFunctionResolvedCall)
-			resolvedCall = ((VariableAsFunctionResolvedCall) resolvedCall).getFunctionCall();
+		if(resolvedCall instanceof VariableAsMethodResolvedCall)
+			resolvedCall = ((VariableAsMethodResolvedCall) resolvedCall).getMethodCall();
 
 		if(!(resolvedCall.getResultingDescriptor() instanceof ConstructorDescriptor))  // otherwise already
 		{

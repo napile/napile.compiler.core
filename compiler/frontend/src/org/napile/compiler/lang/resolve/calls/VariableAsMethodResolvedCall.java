@@ -33,20 +33,20 @@ import org.napile.compiler.lang.types.JetType;
 /**
  * @author svtk
  */
-public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<MethodDescriptor>
+public class VariableAsMethodResolvedCall implements ResolvedCallWithTrace<MethodDescriptor>
 {
-	private final ResolvedCallWithTrace<MethodDescriptor> functionCall;
+	private final ResolvedCallWithTrace<MethodDescriptor> methodCall;
 	private final ResolvedCallWithTrace<VariableDescriptor> variableCall;
 
-	public VariableAsFunctionResolvedCall(@NotNull ResolvedCallWithTrace<MethodDescriptor> functionCall, @NotNull ResolvedCallWithTrace<VariableDescriptor> variableCall)
+	public VariableAsMethodResolvedCall(@NotNull ResolvedCallWithTrace<MethodDescriptor> methodCall, @NotNull ResolvedCallWithTrace<VariableDescriptor> variableCall)
 	{
-		this.functionCall = functionCall;
+		this.methodCall = methodCall;
 		this.variableCall = variableCall;
 	}
 
-	public ResolvedCallWithTrace<MethodDescriptor> getFunctionCall()
+	public ResolvedCallWithTrace<MethodDescriptor> getMethodCall()
 	{
-		return functionCall;
+		return methodCall;
 	}
 
 	public ResolvedCallWithTrace<VariableDescriptor> getVariableCall()
@@ -58,14 +58,14 @@ public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<Met
 	@Override
 	public MethodDescriptor getCandidateDescriptor()
 	{
-		return functionCall.getResultingDescriptor();
+		return methodCall.getResultingDescriptor();
 	}
 
 	@NotNull
 	@Override
 	public MethodDescriptor getResultingDescriptor()
 	{
-		return functionCall.getResultingDescriptor();
+		return methodCall.getResultingDescriptor();
 	}
 
 	@NotNull
@@ -86,21 +86,21 @@ public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<Met
 	@Override
 	public Map<ParameterDescriptor, ResolvedValueArgument> getValueArguments()
 	{
-		return functionCall.getValueArguments();
+		return methodCall.getValueArguments();
 	}
 
 	@NotNull
 	@Override
 	public List<ResolvedValueArgument> getValueArgumentsByIndex()
 	{
-		return functionCall.getValueArgumentsByIndex();
+		return methodCall.getValueArgumentsByIndex();
 	}
 
 	@NotNull
 	@Override
 	public Map<TypeParameterDescriptor, JetType> getTypeArguments()
 	{
-		return functionCall.getTypeArguments();
+		return methodCall.getTypeArguments();
 	}
 
 	@Nullable
@@ -116,7 +116,7 @@ public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<Met
 	{
 		if(variableCall.getStatus() == ResolutionStatus.SUCCESS)
 		{
-			return functionCall.getStatus();
+			return methodCall.getStatus();
 		}
 		return variableCall.getStatus();
 	}
@@ -124,7 +124,7 @@ public class VariableAsFunctionResolvedCall implements ResolvedCallWithTrace<Met
 	@Override
 	public boolean isDirty()
 	{
-		return functionCall.isDirty();
+		return methodCall.isDirty();
 	}
 
 	@Override

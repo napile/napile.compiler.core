@@ -170,7 +170,7 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 
 			ResolutionCandidate<MethodDescriptor> resolutionCandidate = ResolutionCandidate.create(callableDescriptor, true);
 
-			return Collections.<ResolvedCallWithTrace<MethodDescriptor>>singletonList(new VariableAsFunctionResolvedCall(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace), variableResolvedCall)) ;
+			return Collections.<ResolvedCallWithTrace<MethodDescriptor>>singletonList(new VariableAsMethodResolvedCall(ResolvedCallImpl.create(resolutionCandidate, variableCallTrace), variableResolvedCall)) ;
 		}
 	};
 

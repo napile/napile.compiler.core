@@ -43,7 +43,7 @@ import org.napile.compiler.lang.types.JetType;
  */
 public class CallTransformer
 {
-	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable)
+	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym)
 	{
 		MethodDescriptor fd = (MethodDescriptor) resolvedCall.getResultingDescriptor();
 		fd = unwrapFakeOverride(fd);
@@ -68,7 +68,7 @@ public class CallTransformer
 			}
 		}
 
-		return transformToCallable(fd, typeArguments, nullable);
+		return transformToCallable(fd, typeArguments, nullable, anonym);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,7 +80,7 @@ public class CallTransformer
 	}
 
 	@NotNull
-	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments, boolean nullable)
+	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments, boolean nullable, boolean anonym)
 	{
 		CallableMethod.CallType type = CallableMethod.CallType.VIRTUAL;
 		if(methodDescriptor instanceof ConstructorDescriptor)
@@ -90,6 +90,8 @@ public class CallTransformer
 
 		if(!methodDescriptor.isStatic() && methodDescriptor.getVisibility() == Visibility.LOCAL)
 			type = CallableMethod.CallType.SPECIAL;
+		if(anonym)
+			type = CallableMethod.CallType.ANONYM;
 
 		FqName fqName = DescriptorUtils.getFQName(methodDescriptor).toSafe();
 

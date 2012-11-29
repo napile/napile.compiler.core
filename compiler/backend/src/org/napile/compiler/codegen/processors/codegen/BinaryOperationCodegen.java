@@ -192,7 +192,7 @@ public class BinaryOperationCodegen
 		gen.gen(right, rightType);
 
 		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-		final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false);
+		final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false);
 		callable.invoke(instructs);
 
 		// revert bool
@@ -210,7 +210,7 @@ public class BinaryOperationCodegen
 
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-		final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false);
+		final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false, false);
 
 		StackValue value = gen.gen(expression.getLeft());
 		value.dupReceiver(instructs);

@@ -122,9 +122,9 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		public <D extends CallableDescriptor> void bindReference(@NotNull BindingTrace trace, @NotNull ResolvedCallWithTrace<D> resolvedCall)
 		{
 			CallableDescriptor descriptor = resolvedCall.getResultingDescriptor();
-			if(resolvedCall instanceof VariableAsFunctionResolvedCall)
+			if(resolvedCall instanceof VariableAsMethodResolvedCall)
 			{
-				descriptor = ((VariableAsFunctionResolvedCall) resolvedCall).getVariableCall().getResultingDescriptor();
+				descriptor = ((VariableAsMethodResolvedCall) resolvedCall).getVariableCall().getResultingDescriptor();
 			}
 			DeclarationDescriptor storedReference = trace.get(BindingContext.REFERENCE_TARGET, reference);
 			if(storedReference == null || !ErrorUtils.isError(descriptor))

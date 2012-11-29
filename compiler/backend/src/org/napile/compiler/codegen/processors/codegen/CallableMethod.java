@@ -34,6 +34,7 @@ public class CallableMethod
 		SPECIAL,
 		STATIC,
 		VIRTUAL,
+		ANONYM
 	}
 
 	private final MethodRef methodRef;
@@ -71,6 +72,9 @@ public class CallableMethod
 				break;
 			case VIRTUAL:
 				instructionAdapter.invokeVirtual(methodRef, nullable);
+				break;
+			case ANONYM:
+				instructionAdapter.invokeAnonym(methodRef.parameters, methodRef.typeArguments, methodRef.returnType, nullable);
 				break;
 		}
 	}

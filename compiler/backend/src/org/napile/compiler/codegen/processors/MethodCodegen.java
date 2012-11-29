@@ -98,7 +98,7 @@ public class MethodCodegen
 
 				ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor);
 
-				CallableMethod method = CallTransformer.transformToCallable(call, false);
+				CallableMethod method = CallTransformer.transformToCallable(call, false, false);
 
 				generator.invokeMethodWithArguments(method, specifier, StackValue.none());
 
