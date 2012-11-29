@@ -25,7 +25,6 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.compiler.CodeTodo;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.injection.text.lang.lexer.TextTokens;
@@ -40,7 +39,7 @@ import com.intellij.psi.PsiElement;
  */
 public class PartToPartGenVisitor extends TextPsiVisitor
 {
-	private static final MethodRef PLUS_REF = new MethodRef(CodeTodo.STRING_BUILDER.child(Name.identifier("plus")), Arrays.asList(AsmConstants.ANY_TYPE), Collections.<TypeNode>emptyList(),  TypeConstants.STRING_BUILDER);
+	private static final MethodRef PLUS_REF = new MethodRef(NapileLangPackage.STRING_BUILDER.child(Name.identifier("plus")), Arrays.asList(AsmConstants.ANY_TYPE), Collections.<TypeNode>emptyList(),  TypeConstants.STRING_BUILDER);
 	private static final MethodRef TO_STRING_REF = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("toString")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.STRING_TYPE);
 
 	private StringBuilder builder = null;

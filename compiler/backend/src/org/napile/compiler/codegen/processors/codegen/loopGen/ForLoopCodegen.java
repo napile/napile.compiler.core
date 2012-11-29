@@ -20,6 +20,7 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
+import org.napile.asm.lib.NapileCollectionPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
@@ -27,7 +28,6 @@ import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
-import org.napile.compiler.CodeTodo;
 import org.napile.compiler.codegen.processors.ExpressionGenerator;
 import org.napile.compiler.codegen.processors.NodeRefUtil;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
@@ -71,12 +71,12 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		firstPos = instructions.size();
 
 		instructions.load(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
+		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 		instructions.putTrue();
 		jumpIfSlot = instructions.reserve();
 
 		instructions.load(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(CodeTodo.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), false);
+		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), false);
 		instructions.store(loopParameterIndex);
 	}
 

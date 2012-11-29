@@ -90,7 +90,7 @@ public class JetIconProvider extends IconProvider
 					if(AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.REPEATABLE))
 						icon = JetIcons.REPEATABLE_ANNOTATION;
 				}
-				else if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.THROWABLE))
+				else if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.EXCEPTION))
 					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_THROWABLE : JetIcons.THROWABLE;
 
 				for(SimpleMethodDescriptor m : descriptor.getFunctions())

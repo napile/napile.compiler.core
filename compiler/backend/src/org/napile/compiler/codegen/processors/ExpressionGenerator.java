@@ -262,11 +262,11 @@ public class ExpressionGenerator extends NapileVisitor<StackValue, StackValue>
 
 		assert throwExp != null;
 
-		gen(throwExp, TypeConstants.THROWABLE);
+		gen(throwExp, TypeConstants.EXCEPTION);
 
 		instructs.throwVal();
 
-		return StackValue.onStack(TypeConstants.THROWABLE);
+		return StackValue.onStack(TypeConstants.EXCEPTION);
 	}
 
 	@Override
