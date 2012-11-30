@@ -262,11 +262,4 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 	{
 		return visitor.visitFunctionDescriptor(this, data);
 	}
-
-	@NotNull
-	@Override
-	public MethodDescriptor getCallableDescriptor()
-	{
-		return this;
-	}
 }

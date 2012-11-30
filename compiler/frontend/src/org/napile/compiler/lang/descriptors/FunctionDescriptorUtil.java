@@ -174,9 +174,11 @@ public class FunctionDescriptorUtil
 		return (D) candidate.substitute(MAKE_TYPE_PARAMETERS_FRESH);
 	}
 
+	@Nullable
 	public static SimpleMethodDescriptor createDescriptorFromType(@NotNull Name name, @NotNull JetType jetType, @NotNull DeclarationDescriptor owner)
 	{
-		assert jetType.getConstructor() instanceof MethodTypeConstructor;
+		if(!(jetType.getConstructor() instanceof MethodTypeConstructor))
+			return null;
 
 		SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(owner, Collections.<AnnotationDescriptor>emptyList(), name, CallableMemberDescriptor.Kind.DECLARATION, false, false, false);
 		methodDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptor>emptyList(), getValueParameters(methodDescriptor, jetType), ((MethodTypeConstructor) jetType.getConstructor()).getReturnType(), Modality.FINAL, Visibility.PUBLIC);

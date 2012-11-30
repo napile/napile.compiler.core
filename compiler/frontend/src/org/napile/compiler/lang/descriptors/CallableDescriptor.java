@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
@@ -51,7 +50,4 @@ public interface CallableDescriptor extends DeclarationDescriptorWithVisibility,
 
 	@NotNull
 	Set<? extends CallableDescriptor> getOverriddenDescriptors();
-
-	@Nullable
-	MethodDescriptor getCallableDescriptor();
 }

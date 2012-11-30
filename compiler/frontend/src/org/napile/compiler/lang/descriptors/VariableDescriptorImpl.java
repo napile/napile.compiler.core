@@ -26,17 +26,15 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.MethodTypeConstructor;
 
 /**
  * @author abreslav
  */
 public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRootImpl implements VariableDescriptor
 {
-	private MethodDescriptor methodDescriptor;
 	private JetType outType;
 	protected final boolean isStatic;
-	private Modality modality;
+	private final Modality modality;
 
 	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean isStatic)
 	{
@@ -77,7 +75,6 @@ public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRoo
 	{
 		assert this.outType == null;
 		outType = type;
-		methodDescriptor = type.getConstructor() instanceof MethodTypeConstructor ? FunctionDescriptorUtil.createDescriptorFromType(getName(), type, getContainingDeclaration()) : null;
 	}
 
 	@Override
@@ -120,12 +117,5 @@ public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRoo
 	public JetType getReturnType()
 	{
 		return getType();
-	}
-
-	@Nullable
-	@Override
-	public MethodDescriptor getCallableDescriptor()
-	{
-		return methodDescriptor;
 	}
 }
