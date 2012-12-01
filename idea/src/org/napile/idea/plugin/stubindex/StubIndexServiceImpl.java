@@ -33,11 +33,11 @@ public class StubIndexServiceImpl implements StubIndexService
 	{
 		String name = stub.getName();
 		if(name != null)
-			sink.occurrence(JetIndexKeys.CLASSES_SHORT_NAME_KEY, name);
+			sink.occurrence(NapileIndexKeys.CLASSES_SHORT_NAME_KEY, name);
 
 		String fqn = stub.getQualifiedName();
 		if(fqn != null)
-			sink.occurrence(JetIndexKeys.FQN_KEY, fqn);
+			sink.occurrence(NapileIndexKeys.FQN_KEY, fqn);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class StubIndexServiceImpl implements StubIndexService
 	{
 		String name = stub.getName();
 		if(name != null)
-			sink.occurrence(JetIndexKeys.METHODS_SHORT_NAME_KEY, name);
+			sink.occurrence(NapileIndexKeys.METHODS_SHORT_NAME_KEY, name);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class StubIndexServiceImpl implements StubIndexService
 	{
 		String name = stub.getName();
 		if(name != null)
-			sink.occurrence(JetIndexKeys.MACROS_SHORT_NAME_KEY, name);
+			sink.occurrence(NapileIndexKeys.MACROS_SHORT_NAME_KEY, name);
 	}
 
 	@Override
@@ -61,6 +61,6 @@ public class StubIndexServiceImpl implements StubIndexService
 	{
 		String name = stub.getName();
 		if(name != null)
-			sink.occurrence(JetIndexKeys.VARIABLES_SHORT_NAME_KEY, name);
+			sink.occurrence(NapileIndexKeys.VARIABLES_SHORT_NAME_KEY, name);
 	}
 }

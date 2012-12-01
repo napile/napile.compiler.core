@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2012 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,35 +19,34 @@ package org.napile.idea.plugin.stubindex;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
 
 /**
- * @author VISTALL
- * @date 14:56/11.10.12
+ * @author Nikolay Krasko
  */
-public class NapileAllShortVariableNameIndex extends StringStubIndexExtension<NapileVariable>
+public class NapileFullClassNameIndex extends StringStubIndexExtension<NapileClassLike>
 {
-	private static final JetShortClassNameIndex ourInstance = new JetShortClassNameIndex();
+	private static final NapileFullClassNameIndex ourInstance = new NapileFullClassNameIndex();
 
-	public static JetShortClassNameIndex getInstance()
+	public static NapileFullClassNameIndex getInstance()
 	{
 		return ourInstance;
 	}
 
 	@NotNull
 	@Override
-	public StubIndexKey<String, NapileVariable> getKey()
+	public StubIndexKey<String, NapileClassLike> getKey()
 	{
-		return JetIndexKeys.VARIABLES_SHORT_NAME_KEY;
+		return NapileIndexKeys.FQN_KEY;
 	}
 
 	@Override
-	public Collection<NapileVariable> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
+	public Collection<NapileClassLike> get(final String fqName, final Project project, @NotNull final GlobalSearchScope scope)
 	{
-		return super.get(s, project, new JetSourceFilterScope(scope));
+		return super.get(fqName, project, new NapileSourceFilterScope(scope));
 	}
 }

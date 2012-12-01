@@ -28,11 +28,11 @@ import com.intellij.psi.search.GlobalSearchScope;
 /**
  * @author Nikolay Krasko
  */
-public class JetSourceFilterScope extends DelegatingGlobalSearchScope
+public class NapileSourceFilterScope extends DelegatingGlobalSearchScope
 {
 	private final ProjectFileIndex myIndex;
 
-	public JetSourceFilterScope(@NotNull final GlobalSearchScope delegate)
+	public NapileSourceFilterScope(@NotNull final GlobalSearchScope delegate)
 	{
 		super(delegate);
 		myIndex = ProjectRootManager.getInstance(getProject()).getFileIndex();
@@ -42,9 +42,7 @@ public class JetSourceFilterScope extends DelegatingGlobalSearchScope
 	public boolean contains(final VirtualFile file)
 	{
 		if(!super.contains(file))
-		{
 			return false;
-		}
 
 		if(file.getFileType() == NXmlFileType.INSTANCE)
 			return myIndex.isInLibraryClasses(file);

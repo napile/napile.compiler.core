@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,34 +19,35 @@ package org.napile.idea.plugin.stubindex;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
 import com.intellij.psi.stubs.StubIndexKey;
 
 /**
- * @author Nikolay Krasko
+ * @author VISTALL
+ * @date 14:56/11.10.12
  */
-public class JetShortClassNameIndex extends StringStubIndexExtension<NapileClassLike>
+public class NapileShortVariableNameIndex extends StringStubIndexExtension<NapileVariable>
 {
-	private static final JetShortClassNameIndex ourInstance = new JetShortClassNameIndex();
+	private static final NapileShortVariableNameIndex ourInstance = new NapileShortVariableNameIndex();
 
-	public static JetShortClassNameIndex getInstance()
+	public static NapileShortVariableNameIndex getInstance()
 	{
 		return ourInstance;
 	}
 
 	@NotNull
 	@Override
-	public StubIndexKey<String, NapileClassLike> getKey()
+	public StubIndexKey<String, NapileVariable> getKey()
 	{
-		return JetIndexKeys.CLASSES_SHORT_NAME_KEY;
+		return NapileIndexKeys.VARIABLES_SHORT_NAME_KEY;
 	}
 
 	@Override
-	public Collection<NapileClassLike> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
+	public Collection<NapileVariable> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
 	{
-		return super.get(s, project, new JetSourceFilterScope(scope));
+		return super.get(s, project, new NapileSourceFilterScope(scope));
 	}
 }

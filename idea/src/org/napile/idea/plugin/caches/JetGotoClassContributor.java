@@ -27,7 +27,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.idea.plugin.stubindex.JetShortClassNameIndex;
+import org.napile.idea.plugin.stubindex.NapileShortClassNameIndex;
 import com.intellij.navigation.GotoClassContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
@@ -67,7 +67,7 @@ public class JetGotoClassContributor implements GotoClassContributor
 		final GlobalSearchScope scope = GlobalSearchScope.allScope(project);
 
 		ArrayList<NavigationItem> items = new ArrayList<NavigationItem>();
-		Collection<NapileClassLike> classesOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
+		Collection<NapileClassLike> classesOrObjects = NapileShortClassNameIndex.getInstance().get(name, project, scope);
 
 		for(NapileClassLike classOrObject : classesOrObjects)
 		{

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package org.napile.idea.plugin.stubindex;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
@@ -28,25 +28,25 @@ import com.intellij.psi.stubs.StubIndexKey;
 /**
  * @author Nikolay Krasko
  */
-public class JetFullClassNameIndex extends StringStubIndexExtension<NapileClassLike>
+public class NapileShortMacroNameIndex extends StringStubIndexExtension<NapileNamedMethodOrMacro>
 {
-	private static final JetFullClassNameIndex ourInstance = new JetFullClassNameIndex();
+	private static final NapileShortMacroNameIndex ourInstance = new NapileShortMacroNameIndex();
 
-	public static JetFullClassNameIndex getInstance()
+	public static NapileShortMacroNameIndex getInstance()
 	{
 		return ourInstance;
 	}
 
 	@NotNull
 	@Override
-	public StubIndexKey<String, NapileClassLike> getKey()
+	public StubIndexKey<String, NapileNamedMethodOrMacro> getKey()
 	{
-		return JetIndexKeys.FQN_KEY;
+		return NapileIndexKeys.MACROS_SHORT_NAME_KEY;
 	}
 
 	@Override
-	public Collection<NapileClassLike> get(final String fqName, final Project project, @NotNull final GlobalSearchScope scope)
+	public Collection<NapileNamedMethodOrMacro> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
 	{
-		return super.get(fqName, project, new JetSourceFilterScope(scope));
+		return super.get(s, project, new NapileSourceFilterScope(scope));
 	}
 }

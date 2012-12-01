@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.idea.plugin.stubindex.JetIndexKeys;
+import org.napile.idea.plugin.stubindex.NapileIndexKeys;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.intellij.navigation.ChooseByNameContributor;
@@ -40,7 +40,7 @@ public class JetGotoSymbolContributor implements ChooseByNameContributor
 	@Override
 	public String[] getNames(Project project, boolean includeNonProjectItems)
 	{
-		final Collection<String> items = StubIndex.getInstance().getAllKeys(JetIndexKeys.METHODS_SHORT_NAME_KEY, project);
+		final Collection<String> items = StubIndex.getInstance().getAllKeys(NapileIndexKeys.METHODS_SHORT_NAME_KEY, project);
 		return ArrayUtil.toStringArray(items);
 	}
 
@@ -50,7 +50,7 @@ public class JetGotoSymbolContributor implements ChooseByNameContributor
 	{
 		final GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
 
-		final Collection<? extends NavigationItem> functions = StubIndex.getInstance().get(JetIndexKeys.METHODS_SHORT_NAME_KEY, name, project, scope);
+		final Collection<? extends NavigationItem> functions = StubIndex.getInstance().get(NapileIndexKeys.METHODS_SHORT_NAME_KEY, name, project, scope);
 
 		final List<NavigationItem> items = new ArrayList<NavigationItem>(Collections2.filter(functions, Predicates.notNull()));
 		return ArrayUtil.toObjectArray(items, NavigationItem.class);

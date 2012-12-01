@@ -28,11 +28,11 @@ import com.intellij.psi.stubs.StubIndexKey;
 /**
  * @author Nikolay Krasko
  */
-public class NapileAllShortMethodNameIndex extends StringStubIndexExtension<NapileNamedMethodOrMacro>
+public class NapileShortMethodNameIndex extends StringStubIndexExtension<NapileNamedMethodOrMacro>
 {
-	private static final JetShortClassNameIndex ourInstance = new JetShortClassNameIndex();
+	private static final NapileShortMethodNameIndex ourInstance = new NapileShortMethodNameIndex();
 
-	public static JetShortClassNameIndex getInstance()
+	public static NapileShortMethodNameIndex getInstance()
 	{
 		return ourInstance;
 	}
@@ -41,12 +41,12 @@ public class NapileAllShortMethodNameIndex extends StringStubIndexExtension<Napi
 	@Override
 	public StubIndexKey<String, NapileNamedMethodOrMacro> getKey()
 	{
-		return JetIndexKeys.METHODS_SHORT_NAME_KEY;
+		return NapileIndexKeys.METHODS_SHORT_NAME_KEY;
 	}
 
 	@Override
 	public Collection<NapileNamedMethodOrMacro> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
 	{
-		return super.get(s, project, new JetSourceFilterScope(scope));
+		return super.get(s, project, new NapileSourceFilterScope(scope));
 	}
 }

@@ -33,8 +33,8 @@ import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
-import org.napile.idea.plugin.stubindex.JetFullClassNameIndex;
-import org.napile.idea.plugin.stubindex.JetShortClassNameIndex;
+import org.napile.idea.plugin.stubindex.NapileFullClassNameIndex;
+import org.napile.idea.plugin.stubindex.NapileShortClassNameIndex;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
@@ -88,7 +88,7 @@ public class JetShortNamesCache
 	@NotNull
 	public String[] getAllClassNames()
 	{
-		Collection<String> classNames = JetShortClassNameIndex.getInstance().getAllKeys(project);
+		Collection<String> classNames = NapileShortClassNameIndex.getInstance().getAllKeys(project);
 		return ArrayUtil.toStringArray(classNames);
 	}
 
@@ -99,7 +99,7 @@ public class JetShortNamesCache
 	public NapileClassLike[] getClassesByName(@NotNull @NonNls String name, @NotNull GlobalSearchScope scope)
 	{
 		// Quick check for classes from getAllClassNames()
-		Collection<NapileClassLike> classOrObjects = JetShortClassNameIndex.getInstance().get(name, project, scope);
+		Collection<NapileClassLike> classOrObjects = NapileShortClassNameIndex.getInstance().get(name, project, scope);
 		return classOrObjects.isEmpty() ? NapileClassLike.EMPTY_ARRAY : classOrObjects.toArray(NapileClassLike.EMPTY_ARRAY);
 	}
 
@@ -108,7 +108,7 @@ public class JetShortNamesCache
 		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(jetFile).getBindingContext();
 		Collection<ClassDescriptor> classDescriptors = new ArrayList<ClassDescriptor>();
 
-		for(String fqName : JetFullClassNameIndex.getInstance().getAllKeys(project))
+		for(String fqName : NapileFullClassNameIndex.getInstance().getAllKeys(project))
 		{
 			FqName classFQName = new FqName(fqName);
 			if(acceptedShortNameCondition.value(classFQName.shortName().getName()))
