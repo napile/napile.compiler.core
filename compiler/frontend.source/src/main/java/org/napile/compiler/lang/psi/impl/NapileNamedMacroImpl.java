@@ -18,7 +18,6 @@ package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileNamedMacro;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMacroStub;
@@ -51,13 +50,7 @@ public class NapileNamedMacroImpl extends NapileNamedMethodOrMacroImpl<NapilePsi
 			return stub.getName();
 
 		PsiElement identifier = getNameIdentifier();
-		if(identifier != null)
-		{
-			String text = identifier.getText();
-			return text != null ? NapilePsiUtil.unquoteIdentifier(text) : null;
-		}
-		else
-			return null;
+		return identifier != null ? identifier.getText() : null;
 	}
 
 	@Override

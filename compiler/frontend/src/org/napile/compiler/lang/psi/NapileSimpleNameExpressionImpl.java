@@ -103,8 +103,7 @@ public class NapileSimpleNameExpressionImpl extends NapileReferenceExpressionImp
 	@IfNotParsed
 	public String getReferencedName()
 	{
-		String text = getReferencedNameElement().getNode().getText();
-		return text != null ? NapilePsiUtil.unquoteIdentifierOrFieldReference(text) : null;
+		return getReferencedNameElement().getNode().getText();
 	}
 
 	@Override

@@ -51,15 +51,7 @@ abstract class NapileNamedDeclarationStub<T extends NamedStub> extends NapileDec
 		}
 
 		PsiElement identifier = getNameIdentifier();
-		if(identifier != null)
-		{
-			String text = identifier.getText();
-			return text != null ? NapilePsiUtil.unquoteIdentifier(text) : null;
-		}
-		else
-		{
-			return null;
-		}
+		return identifier != null ? identifier.getText() : null;
 	}
 
 	@Override

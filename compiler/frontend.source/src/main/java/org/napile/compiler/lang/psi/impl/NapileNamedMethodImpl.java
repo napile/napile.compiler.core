@@ -18,10 +18,10 @@ package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.AsmConstants;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
@@ -61,18 +61,12 @@ public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl<NapilePs
 		{
 			NapileSimpleNameExpression ref = getVariableRef();
 			assert ref != null;
-			return ref.getReferencedName() + "$" + psiElement.getText();
+			return ref.getReferencedName() + AsmConstants.ANONYM_SPLITTER + psiElement.getText();
 		}
 		else
 		{
 			PsiElement identifier = getNameIdentifier();
-			if(identifier != null)
-			{
-				String text = identifier.getText();
-				return text != null ? NapilePsiUtil.unquoteIdentifier(text) : null;
-			}
-			else
-				return null;
+			return identifier != null ? identifier.getText() : null;
 		}
 	}
 
