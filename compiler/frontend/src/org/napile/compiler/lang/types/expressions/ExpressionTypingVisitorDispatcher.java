@@ -108,6 +108,7 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	}
 
 	@NotNull
+	@Override
 	public final JetTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, boolean isStatement)
 	{
 		if(!isStatement)

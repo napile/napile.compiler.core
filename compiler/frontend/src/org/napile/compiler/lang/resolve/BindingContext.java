@@ -179,6 +179,8 @@ public interface BindingContext extends BindingReader
 
 	WritableSlice<FqName, NamespaceDescriptor> FQNAME_TO_NAMESPACE_DESCRIPTOR = new BasicWritableSlice<FqName, NamespaceDescriptor>(RewritePolicy.DO_NOTHING);
 
+	WritableSlice<ParameterDescriptor, NapileExpression> DEFAULT_VALUE_OF_PARAMETER = Slices.createSimpleSlice();
+
 	WritableSlice[] FQNAME_TO_DESCRIPTORS = new WritableSlice[]
 	{
 		FQNAME_TO_CLASS_DESCRIPTOR,

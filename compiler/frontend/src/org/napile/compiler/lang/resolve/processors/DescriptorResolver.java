@@ -305,12 +305,17 @@ public class DescriptorResolver
 	@NotNull
 	public MutableParameterDescriptor resolveValueParameterDescriptor(JetScope scope, DeclarationDescriptor declarationDescriptor, NapilePropertyParameter valueParameter, int index, JetType type, BindingTrace trace)
 	{
-		JetType varargElementType = null;
-		JetType variableType = type;
+		NapileExpression defaultValue = valueParameter.getDefaultValue();
 
-		MutableParameterDescriptor valueParameterDescriptor = new PropertyParameterDescriptorImpl(declarationDescriptor, index, annotationResolver.resolveAnnotations(scope, valueParameter.getModifierList(), trace), NapilePsiUtil.safeName(valueParameter.getName()), variableType, valueParameter.getDefaultValue() != null, varargElementType, Modality.resolve(valueParameter));
+		MutableParameterDescriptor valueParameterDescriptor = new PropertyParameterDescriptorImpl(declarationDescriptor, index, annotationResolver.resolveAnnotations(scope, valueParameter.getModifierList(), trace), NapilePsiUtil.safeName(valueParameter.getName()), type, defaultValue != null, null, Modality.resolve(valueParameter));
 
 		trace.record(BindingContext.VALUE_PARAMETER, valueParameter, valueParameterDescriptor);
+		if(defaultValue != null)
+		{
+			expressionTypingServices.getType(scope, defaultValue, valueParameterDescriptor.getType(), DataFlowInfo.EMPTY, trace);
+
+			trace.record(BindingContext.DEFAULT_VALUE_OF_PARAMETER, valueParameterDescriptor, defaultValue);
+		}
 		return valueParameterDescriptor;
 	}
 

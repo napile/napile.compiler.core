@@ -89,11 +89,6 @@ public class CallableMethod
 		return parameters;
 	}
 
-	public void invokeWithDefault(InstructionAdapter instructionAdapter, int mask)
-	{
-		throw new UnsupportedOperationException();
-	}
-
 	public String getName()
 	{
 		return methodRef.method.shortName().getName();

@@ -64,6 +64,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.AutoCastReceiver;
+import org.napile.compiler.lang.resolve.calls.DefaultValueArgument;
 import org.napile.compiler.lang.resolve.calls.ExpressionValueArgument;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
@@ -252,6 +253,16 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		instructs.tryCatch(new TryCatchBlockNode(tryBlock, catchBlocks));
 
 		return StackValue.onStack(expectedAsmType);
+	}
+
+	@Override
+	public StackValue visitConstantExpression(NapileConstantExpression expression, StackValue data)
+	{
+		CompileTimeConstant<?> constant = bindingTrace.get(BindingContext.COMPILE_TIME_VALUE, expression);
+		if(constant != null)
+			return StackValue.constant(constant.getValue(), expressionType(expression));
+		else
+			throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -913,11 +924,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			}    */
 		}
 
-		int mask = pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
-		if(mask == 0)
-			callableMethod.invoke(instructs);
-		else
-			callableMethod.invokeWithDefault(instructs, mask);
+		pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
+
+		callableMethod.invoke(instructs);
 	}
 
 	private void genThisAndReceiverFromResolvedCall(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, CallableMethod callableMethod)
@@ -938,7 +947,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			return StackValue.local(index, AsmConstants.ANY_TYPE);
 	}
 
-	public int pushMethodArguments(@NotNull ResolvedCall<?> resolvedCall, List<TypeNode> valueParameterTypes)
+	public void pushMethodArguments(@NotNull ResolvedCall<?> resolvedCall, List<TypeNode> valueParameterTypes)
 	{
 		List<ResolvedValueArgument> valueArguments = resolvedCall.getValueArgumentsByIndex();
 		CallableDescriptor fd = resolvedCall.getResultingDescriptor();
@@ -949,7 +958,6 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		}
 
 		int index = 0;
-		int mask = 0;
 
 		for(ParameterDescriptor valueParameterDescriptor : fd.getValueParameters())
 		{
@@ -960,44 +968,18 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				//noinspection ConstantConditions
 				gen(valueArgument.getValueArgument().getArgumentExpression(), valueParameterTypes.get(index));
 			}
-			/*else if(resolvedValueArgument instanceof DefaultValueArgument)
+			else if(resolvedValueArgument instanceof DefaultValueArgument)
 			{
-				Type type = valueParameterTypes.get(index);
-				if(type.getSort() == Type.OBJECT || type.getSort() == Type.ARRAY)
-				{
-					v.aconst(null);
-				}
-				else if(type.getSort() == Type.FLOAT)
-				{
-					v.aconst(0f);
-				}
-				else if(type.getSort() == Type.DOUBLE)
-				{
-					v.aconst(0d);
-				}
-				else if(type.getSort() == Type.LONG)
-				{
-					v.aconst(0l);
-				}
-				else
-				{
-					v.iconst(0);
-				}
-				mask |= (1 << index);
-			}    */
-			/*else if(resolvedValueArgument instanceof VarargValueArgument)
-			{
-				VarargValueArgument valueArgument = (VarargValueArgument) resolvedValueArgument;
-
-				genVarargs(valueParameterDescriptor, valueArgument);
-			}  */
+				DefaultValueArgument valueArgument = (DefaultValueArgument) resolvedValueArgument;
+				//noinspection ConstantConditions
+				gen(valueArgument.getExpression(), valueParameterTypes.get(index));
+			}
 			else
 			{
 				throw new UnsupportedOperationException();
 			}
 			index++;
 		}
-		return mask;
 	}
 
 	private StackValue generateBlock(List<NapileElement> statements)

@@ -228,13 +228,9 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 			if(!usedParameters.contains(valueParameter))
 			{
 				if(valueParameter.hasDefaultValue())
-				{
-					candidateCall.recordValueArgument(valueParameter, DefaultValueArgument.DEFAULT);
-				}
+					candidateCall.recordValueArgument(valueParameter, new DefaultValueArgument(temporaryTrace.safeGet(BindingContext.DEFAULT_VALUE_OF_PARAMETER, valueParameter)));
 				else if(valueParameter.getVarargElementType() != null)
-				{
 					candidateCall.recordValueArgument(valueParameter, new VarargValueArgument());
-				}
 				else
 				{
 					// tracing.reportWrongValueArguments(temporaryTrace, "No value passed for parameter " + valueParameter.getName());
@@ -271,8 +267,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 				candidateCall.getTrace().report(NON_VARARG_SPREAD.on(spread));
 				error = WEAK_ERROR;
 			}
-			ResolvedValueArgument argument = new ExpressionValueArgument(valueArgument);
-			candidateCall.recordValueArgument(parameterDescriptor, argument);
+			candidateCall.recordValueArgument(parameterDescriptor, new ExpressionValueArgument(valueArgument));
 		}
 		return error;
 	}

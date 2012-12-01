@@ -19,7 +19,6 @@ package org.napile.compiler.lang.resolve.processors;
 import static org.napile.compiler.lang.resolve.BindingContext.DEFERRED_TYPE;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -30,7 +29,6 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.*;
@@ -289,31 +287,7 @@ public class BodyResolver
 		NapileExpression bodyExpression = function.getBodyExpression();
 		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(declaringScope, methodDescriptor, function, trace);
 		if(bodyExpression != null)
-		{
 			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, methodDescriptor, DataFlowInfo.EMPTY, null, trace);
-		}
-
-		NapileElement[] valueParameters = function.getValueParameters();
-		List<ParameterDescriptor> parameterDescriptors = methodDescriptor.getValueParameters();
-
-		checkDefaultParameterValues(valueParameters, parameterDescriptors, functionInnerScope);
-
-		assert methodDescriptor.getReturnType() != null;
-	}
-
-	private void checkDefaultParameterValues(NapileElement[] valueParameters, List<ParameterDescriptor> parameterDescriptors, JetScope declaringScope)
-	{
-		for(int i = 0; i < valueParameters.length; i++)
-		{
-			ParameterDescriptor parameterDescriptor = parameterDescriptors.get(i);
-			if(parameterDescriptor.hasDefaultValue())
-			{
-				NapileElement jetParameter = valueParameters[i];
-				NapileExpression defaultValue = jetParameter instanceof NapilePropertyParameter ? ((NapilePropertyParameter) jetParameter).getDefaultValue() : null;
-				if(defaultValue != null)
-					expressionTypingServices.getType(declaringScope, defaultValue, parameterDescriptor.getType(), DataFlowInfo.EMPTY, trace);
-			}
-		}
 	}
 
 	private static void computeDeferredType(JetType type)

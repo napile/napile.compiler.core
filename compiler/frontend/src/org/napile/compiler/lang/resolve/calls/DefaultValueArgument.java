@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.ValueArgument;
 
 /**
@@ -27,10 +28,11 @@ import org.napile.compiler.lang.psi.ValueArgument;
  */
 public class DefaultValueArgument implements ResolvedValueArgument
 {
-	public static final DefaultValueArgument DEFAULT = new DefaultValueArgument();
+	private final NapileExpression expression;
 
-	private DefaultValueArgument()
+	public DefaultValueArgument(NapileExpression expression)
 	{
+		this.expression = expression;
 	}
 
 	@NotNull
@@ -44,5 +46,10 @@ public class DefaultValueArgument implements ResolvedValueArgument
 	public String toString()
 	{
 		return "|DEFAULT|";
+	}
+
+	public NapileExpression getExpression()
+	{
+		return expression;
 	}
 }
