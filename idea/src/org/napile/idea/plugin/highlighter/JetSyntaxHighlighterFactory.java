@@ -23,6 +23,7 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 public class JetSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory
 {
 	@NotNull
+	@Override
 	protected SyntaxHighlighter createHighlighter()
 	{
 		return new JetHighlighter();

@@ -42,6 +42,7 @@ public interface ClassDescriptor extends ClassifierDescriptor, DeclarationDescri
 	 * @return type A&lt;T&gt; for the class A&lt;T&gt;
 	 */
 	@NotNull
+	@Override
 	JetType getDefaultType();
 
 	@NotNull

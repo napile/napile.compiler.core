@@ -93,7 +93,7 @@ public class JetIconProvider extends IconProvider
 				else if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.EXCEPTION))
 					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_THROWABLE : JetIcons.THROWABLE;
 
-				for(SimpleMethodDescriptor m : descriptor.getFunctions())
+				for(SimpleMethodDescriptor m : descriptor.getMethods())
 					if(RunUtil.isRunPoint(m))
 					{
 						isRunnable = true;

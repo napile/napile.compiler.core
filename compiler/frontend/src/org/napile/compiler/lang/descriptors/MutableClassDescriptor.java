@@ -89,7 +89,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	}
 
 	@NotNull
-	public Set<SimpleMethodDescriptor> getFunctions()
+	public Set<SimpleMethodDescriptor> getMethods()
 	{
 		return functions;
 	}

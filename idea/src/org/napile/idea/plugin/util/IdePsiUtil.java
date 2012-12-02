@@ -35,7 +35,7 @@ public class IdePsiUtil extends RunUtil
 		if(descriptor == null)
 			return false;
 
-		for(SimpleMethodDescriptor methodDescriptor : descriptor.getFunctions())
+		for(SimpleMethodDescriptor methodDescriptor : descriptor.getMethods())
 			if(isRunPoint(methodDescriptor))
 				return true;
 		return false;

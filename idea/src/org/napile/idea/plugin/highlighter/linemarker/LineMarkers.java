@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -37,9 +38,9 @@ import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.PropertyAccessUtil;
@@ -77,27 +78,15 @@ public enum LineMarkers
 					NapileMethod napileMethod = (NapileMethod) element;
 					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileMethod.getContainingFile());
 
-					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
-
 					SimpleMethodDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, napileMethod);
 					if(descriptor == null)
 						return Collections.emptyList();
 
-					ClassDescriptor ownerDescriptor = (ClassDescriptor)descriptor.getContainingDeclaration();
-
-					List<NapileElement> list = new ArrayList<NapileElement>();
-					for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
+					List<NapileElement> list = new ArrayList<NapileElement>(descriptor.getOverriddenDescriptors().size());
+					for(MethodDescriptor overrideDescriptor : descriptor.getOverriddenDescriptors())
 					{
-						NapileNamedMethodOrMacro namedFunction = entry.getKey();
-						SimpleMethodDescriptor methodDescriptor = entry.getValue();
-
-						ClassDescriptor methodOwnerDescription = (ClassDescriptor) methodDescriptor.getContainingDeclaration();
-
-						if(DescriptorUtils.isSubclass(ownerDescriptor, methodOwnerDescription))
-						{
-							if(descriptor.getOverriddenDescriptors().contains(methodDescriptor))
-								list.add(namedFunction);
-						}
+						NapileElement declarationPsiElement = (NapileElement) BindingContextUtils.descriptorToDeclaration(analyzeExhaust.getBindingContext(), overrideDescriptor);
+						list.add(declarationPsiElement);
 					}
 
 					return list;
@@ -135,14 +124,21 @@ public enum LineMarkers
 					if(descriptor == null)
 						return Collections.emptyList();
 
-					List<NapileElement> list = new ArrayList<NapileElement>();
-					for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
-					{
-						NapileNamedMethodOrMacro namedFunction = entry.getKey();
-						SimpleMethodDescriptor methodDescriptor = entry.getValue();
+					ClassDescriptor ownerDescriptor = (ClassDescriptor)descriptor.getContainingDeclaration();
 
-						if(methodDescriptor.getOverriddenDescriptors().contains(descriptor))
-							list.add(namedFunction);
+					List<NapileElement> list = new ArrayList<NapileElement>();
+					for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
+					{
+						MutableClassDescriptor clazzDescriptor = entry.getValue();
+
+						if(DescriptorUtils.isSubclass(clazzDescriptor, ownerDescriptor))
+							for(MethodDescriptor clazzMethodDescriptor : clazzDescriptor.getMethods())
+								for(MethodDescriptor overrideMethodDescriptor : clazzMethodDescriptor.getOverriddenDescriptors())
+								{
+									PsiElement psiElement = BindingContextUtils.descriptorToDeclaration(analyzeExhaust.getBindingContext(), overrideMethodDescriptor);
+									if(element == psiElement)
+										list.add((NapileElement) BindingContextUtils.descriptorToDeclaration(analyzeExhaust.getBindingContext(), clazzMethodDescriptor));
+								}
 					}
 
 					return list;
