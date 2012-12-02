@@ -28,8 +28,9 @@ public interface NapileStubElementTypes
 	NapileMacroElementType MACRO = new NapileMacroElementType("MACRO");
 	NapileVariableElementType VARIABLE = new NapileVariableElementType("PROPERTY");
 
-	NapileParameterElementType VALUE_PARAMETER = new NapileParameterElementType("VALUE_PARAMETER");
-	NapileParameterListElementType VALUE_PARAMETER_LIST = new NapileParameterListElementType("VALUE_PARAMETER_LIST");
+	NapileParameterElementType CALL_PARAMETER_AS_VARIABLE = new NapileParameterElementType("CALL_PARAMETER_AS_VARIABLE");
+
+	NapileParameterListElementType CALL_PARAMETER_LIST = new NapileParameterListElementType("CALL_PARAMETER_LIST");
 
 	NapileTypeParameterElementType TYPE_PARAMETER = new NapileTypeParameterElementType("TYPE_PARAMETER");
 	NapileTypeParameterListElementType TYPE_PARAMETER_LIST = new NapileTypeParameterListElementType("TYPE_PARAMETER_LIST");

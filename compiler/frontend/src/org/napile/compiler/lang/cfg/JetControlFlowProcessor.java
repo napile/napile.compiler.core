@@ -195,7 +195,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitReferenceParameter(NapileReferenceParameter parameter)
+		public void visitCallParameterAsReference(NapileCallParameterAsReference parameter)
 		{
 			NapileSimpleNameExpression reference = parameter.getReferenceExpression();
 			if(reference == null)
@@ -475,9 +475,9 @@ public class JetControlFlowProcessor
 						isFirst = false;
 					}
 					NapileElement catchParameter = catchClause.getCatchParameter();
-					if(catchParameter instanceof NapilePropertyParameter)
+					if(catchParameter instanceof NapileCallParameterAsVariable)
 					{
-						builder.declare((NapilePropertyParameter) catchParameter);
+						builder.declare((NapileCallParameterAsVariable) catchParameter);
 						builder.write(catchParameter, catchParameter);
 					}
 					NapileExpression catchBody = catchClause.getCatchBody();
@@ -572,7 +572,7 @@ public class JetControlFlowProcessor
 			{
 				value(loopRange, false);
 			}
-			NapilePropertyParameter loopParameter = expression.getLoopParameter();
+			NapileCallParameterAsVariable loopParameter = expression.getLoopParameter();
 			if(loopParameter != null)
 			{
 				builder.declare(loopParameter);
@@ -673,7 +673,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitPropertyParameter(NapilePropertyParameter parameter)
+		public void visitCallParameterAsVariable(NapileCallParameterAsVariable parameter)
 		{
 			NapileExpression defaultValue = parameter.getDefaultValue();
 			builder.declare(parameter);

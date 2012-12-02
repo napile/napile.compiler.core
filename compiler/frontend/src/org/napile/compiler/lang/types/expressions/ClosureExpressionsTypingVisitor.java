@@ -34,12 +34,13 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileBlockExpression;
-import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
+import org.napile.compiler.lang.psi.NapileBlockExpression;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import org.napile.compiler.lang.psi.NapileObjectLiteralExpression;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
@@ -57,7 +58,6 @@ import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Predicate;
@@ -136,9 +136,9 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 
 		SimpleMethodDescriptorImpl functionDescriptor = createFunctionDescriptor(expression, context, functionTypeExpected);
 
-		List<ParameterDescriptor> valueParameters = functionDescriptor.getValueParameters();
+		List<CallParameterDescriptor> valueParameters = functionDescriptor.getValueParameters();
 		Map<Name, JetType> parameterTypes = new LinkedHashMap<Name, JetType>(valueParameters.size());
-		for(ParameterDescriptor valueParameter : valueParameters)
+		for(CallParameterDescriptor valueParameter : valueParameters)
 			parameterTypes.put(valueParameter.getName(), valueParameter.getType());
 
 		JetType returnType = TypeUtils.NO_EXPECTED_TYPE;
@@ -173,7 +173,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		JetType safeReturnType = returnType == null ? ErrorUtils.createErrorType("<return type>") : returnType;
 		functionDescriptor.setReturnType(safeReturnType);
 
-		boolean hasDeclaredValueParameters = functionLiteral.getValueParameterList() != null;
+		boolean hasDeclaredValueParameters = functionLiteral.getCallParameterList() != null;
 		if(!hasDeclaredValueParameters && functionTypeExpected)
 		{
 
@@ -193,7 +193,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 
 		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), functionLiteral.getNameAsName(), CallableMemberDescriptor.Kind.DECLARATION, false, false, false);
 
-		List<ParameterDescriptor> parameterDescriptors = createValueParameterDescriptors(context, functionLiteral, functionDescriptor, functionTypeExpected);
+		List<CallParameterDescriptor> parameterDescriptors = createValueParameterDescriptors(context, functionLiteral, functionDescriptor, functionTypeExpected);
 
 		functionDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), parameterDescriptors, null, Modality.FINAL, Visibility.LOCAL);
 		context.trace.record(BindingContext.METHOD, expression, functionDescriptor);
@@ -201,29 +201,32 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		return functionDescriptor;
 	}
 
-	private List<ParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileAnonymMethodImpl functionLiteral, MethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
+	private List<CallParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileAnonymMethodImpl functionLiteral, MethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
 	{
-		List<ParameterDescriptor> parameterDescriptors = Lists.newArrayList();
+		List<CallParameterDescriptor> parameterDescriptors = Lists.newArrayList();
 		NapileElement[] declaredValueParameters = functionLiteral.getValueParameters();
 
-		List<ParameterDescriptor> expectedValueParameters = (functionTypeExpected) ? FunctionDescriptorUtil.getValueParameters(functionDescriptor, context.expectedType) : null;
+		List<CallParameterDescriptor> expectedValueParameters = (functionTypeExpected) ? FunctionDescriptorUtil.getValueParameters(functionDescriptor, context.expectedType) : null;
 
-		boolean hasDeclaredValueParameters = functionLiteral.getValueParameterList() != null;
+		boolean hasDeclaredValueParameters = functionLiteral.getCallParameterList() != null;
 		if(functionTypeExpected && !hasDeclaredValueParameters && expectedValueParameters.size() == 1)
 		{
-			ParameterDescriptor parameterDescriptor = expectedValueParameters.get(0);
-			ParameterDescriptor it = new PropertyParameterDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), parameterDescriptor.getType(), parameterDescriptor.hasDefaultValue(), parameterDescriptor.getVarargElementType(), Modality.FINAL);
-			parameterDescriptors.add(it);
-			context.trace.record(AUTO_CREATED_IT, it);
+			CallParameterDescriptor parameterDescriptor = expectedValueParameters.get(0);
+
+			BaseCallParameterDescriptorImpl value = new CallParameterAsVariableDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), parameterDescriptor.getType(), Modality.FINAL);
+			value.setHasDefaultValue(parameterDescriptor.hasDefaultValue());
+
+			parameterDescriptors.add(value);
+			context.trace.record(AUTO_CREATED_IT, value);
 		}
 		else
 		{
 			for(int i = 0; i < declaredValueParameters.length; i++)
 			{
 				NapileElement declaredParameter = declaredValueParameters[i];
-				if(!(declaredParameter instanceof NapilePropertyParameter))
+				if(!(declaredParameter instanceof NapileCallParameterAsVariable))
 					continue;
-				NapilePropertyParameter propertyParameter = (NapilePropertyParameter) declaredParameter;
+				NapileCallParameterAsVariable propertyParameter = (NapileCallParameterAsVariable) declaredParameter;
 				NapileTypeReference typeReference = propertyParameter.getTypeReference();
 
 				JetType type;
@@ -243,7 +246,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 						type = ErrorUtils.createErrorType("Cannot be inferred");
 					}
 				}
-				ParameterDescriptor parameterDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveValueParameterDescriptor(context.scope, functionDescriptor, propertyParameter, i, type, context.trace);
+				CallParameterDescriptor parameterDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveCallParameterDescriptor(context.scope, functionDescriptor, propertyParameter, i, type, context.trace);
 				parameterDescriptors.add(parameterDescriptor);
 			}
 		}

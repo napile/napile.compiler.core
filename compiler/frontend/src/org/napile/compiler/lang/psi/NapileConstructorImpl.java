@@ -54,17 +54,17 @@ public class NapileConstructorImpl extends NapileDeclarationImpl implements Napi
 
 	@Nullable
 	@IfNotParsed
-	public NapileParameterList getParameterList()
+	public NapileCallParameterList getParameterList()
 	{
-		return (NapileParameterList) findChildByType(NapileNodes.VALUE_PARAMETER_LIST);
+		return (NapileCallParameterList) findChildByType(NapileNodes.CALL_PARAMETER_LIST);
 	}
 
 	@Override
 	@NotNull
-	public NapileElement[] getValueParameters()
+	public NapileCallParameter[] getValueParameters()
 	{
-		NapileParameterList list = getParameterList();
-		return list != null ? list.getParameters() : NapileElement.EMPTY_ARRAY;
+		NapileCallParameterList list = getParameterList();
+		return list != null ? list.getParameters() : NapileCallParameter.EMPTY_ARRAY;
 	}
 
 	@Override

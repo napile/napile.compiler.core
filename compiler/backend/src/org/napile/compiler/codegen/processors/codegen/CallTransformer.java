@@ -24,11 +24,11 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.TypeTransformer;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -101,10 +101,10 @@ public class CallTransformer
 		List<TypeNode> parametersToByteCode = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());
 		List<TypeNode> parametersToChecks = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());
 
-		for(ParameterDescriptor p : methodDescriptor.getValueParameters())
+		for(CallParameterDescriptor p : methodDescriptor.getValueParameters())
 			parametersToChecks.add(TypeTransformer.toAsmType(p.getType()));
 
-		for(ParameterDescriptor p : originalMethodDescriptor.getValueParameters())
+		for(CallParameterDescriptor p : originalMethodDescriptor.getValueParameters())
 			parametersToByteCode.add(TypeTransformer.toAsmType(p.getType()));
 
 		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks, methodDescriptor.isMacro(), nullable);

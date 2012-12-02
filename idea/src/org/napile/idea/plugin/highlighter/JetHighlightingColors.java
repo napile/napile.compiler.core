@@ -20,9 +20,9 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.CallParameterAsVariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyParameterDescriptorImpl;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.SyntaxHighlighterColors;
@@ -137,7 +137,7 @@ public class JetHighlightingColors
 	{
 		if(declarationDescriptor instanceof LocalVariableDescriptor)
 			return LOCAL_VARIABLE;
-		if(declarationDescriptor instanceof PropertyParameterDescriptorImpl)
+		if(declarationDescriptor instanceof CallParameterAsVariableDescriptorImpl)
 			return PARAMETER;
 		if(declarationDescriptor instanceof VariableDescriptor)
 			return ((VariableDescriptor) declarationDescriptor).isStatic() ? STATIC_PROPERTY : INSTANCE_PROPERTY;

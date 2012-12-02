@@ -19,14 +19,13 @@ package org.napile.compiler.lang.descriptors;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author abreslav
  */
-public interface ParameterDescriptor extends VariableDescriptor, Annotated
+public interface CallParameterDescriptor extends VariableDescriptor, Annotated
 {
 	/**
 	 * Returns the 0-based index of the value parameter in the parameter list of its containing function.
@@ -50,19 +49,16 @@ public interface ParameterDescriptor extends VariableDescriptor, Annotated
 	 */
 	boolean declaresDefaultValue();
 
-	@Nullable
-	JetType getVarargElementType();
-
 	@Override
 	@NotNull
 	JetType getType();
 
 	@NotNull
 	@Override
-	ParameterDescriptor getOriginal();
+	CallParameterDescriptor getOriginal();
 
 	@NotNull
-	ParameterDescriptor copy(DeclarationDescriptor newOwner);
+	CallParameterDescriptor copy(DeclarationDescriptor newOwner);
 
 	/**
 	 * Parameter p1 overrides p2 iff
@@ -71,7 +67,7 @@ public interface ParameterDescriptor extends VariableDescriptor, Annotated
 	 */
 	@NotNull
 	@Override
-	Set<? extends ParameterDescriptor> getOverriddenDescriptors();
+	Set<? extends CallParameterDescriptor> getOverriddenDescriptors();
 
-	void addOverriddenDescriptor(@NotNull ParameterDescriptor overridden);
+	void addOverriddenDescriptor(@NotNull CallParameterDescriptor overridden);
 }

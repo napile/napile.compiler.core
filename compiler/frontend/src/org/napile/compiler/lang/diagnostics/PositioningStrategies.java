@@ -121,7 +121,7 @@ public class PositioningStrategies
 			{
 				NapileNamedMacro function = (NapileNamedMacro) element;
 				PsiElement endOfSignatureElement;
-				NapileParameterList valueParameterList = function.getValueParameterList();
+				NapileCallParameterList valueParameterList = function.getCallParameterList();
 				NapileElement returnTypeRef = function.getReturnTypeRef();
 				PsiElement nameIdentifier = function.getNameIdentifier();
 				if(returnTypeRef != null)
@@ -146,7 +146,7 @@ public class PositioningStrategies
 			{
 				NapileNamedMethod function = (NapileNamedMethod) element;
 				PsiElement endOfSignatureElement;
-				NapileParameterList valueParameterList = function.getValueParameterList();
+				NapileCallParameterList valueParameterList = function.getCallParameterList();
 				NapileElement returnTypeRef = function.getReturnTypeRef();
 				PsiElement nameIdentifier = function.getNameIdentifier();
 				PsiElement propertyAccessElement = function.getPropertyAccessElement();
@@ -285,11 +285,11 @@ public class PositioningStrategies
 		}
 	};
 
-	public static PositioningStrategy<NapilePropertyParameter> PARAMETER_DEFAULT_VALUE = new PositioningStrategy<NapilePropertyParameter>()
+	public static PositioningStrategy<NapileCallParameterAsVariable> PARAMETER_DEFAULT_VALUE = new PositioningStrategy<NapileCallParameterAsVariable>()
 	{
 		@NotNull
 		@Override
-		public List<TextRange> mark(@NotNull NapilePropertyParameter element)
+		public List<TextRange> mark(@NotNull NapileCallParameterAsVariable element)
 		{
 			return markNode(element.getDefaultValue().getNode());
 		}

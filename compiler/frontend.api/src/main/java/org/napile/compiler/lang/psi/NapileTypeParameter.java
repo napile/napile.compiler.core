@@ -40,5 +40,5 @@ public interface NapileTypeParameter extends NapileNamedDeclaration
 	NapileTypeReference[] getExtendsBound();
 
 	@NotNull
-	NapileParameterList[] getConstructorParameterLists();
+	NapileCallParameterList[] getConstructorParameterLists();
 }

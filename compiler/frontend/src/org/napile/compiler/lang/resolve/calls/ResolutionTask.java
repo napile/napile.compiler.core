@@ -25,9 +25,9 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileToken;
@@ -157,7 +157,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		}
 
 		@Override
-		public void noValueForParameter(@NotNull BindingTrace trace, @NotNull ParameterDescriptor valueParameter)
+		public void noValueForParameter(@NotNull BindingTrace trace, @NotNull CallParameterDescriptor valueParameter)
 		{
 			PsiElement reportOn;
 			NapileValueArgumentList valueArgumentList = call.getValueArgumentList();

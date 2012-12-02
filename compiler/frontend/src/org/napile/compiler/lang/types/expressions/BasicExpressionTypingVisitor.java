@@ -745,7 +745,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			Collection<MethodDescriptor> targets = new ArrayList<MethodDescriptor>(2);
 			for(MethodDescriptor methodDescriptor : methodDescriptors)
 			{
-				List<ParameterDescriptor> parameters = methodDescriptor.getValueParameters();
+				List<CallParameterDescriptor> parameters = methodDescriptor.getValueParameters();
 				if(parameters.size() != parameterTypes.size())
 					continue;
 
@@ -771,7 +771,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		if(targetMethod != null)
 		{
 			Map<Name, JetType> valueParameters = new LinkedHashMap<Name, JetType>(targetMethod.getValueParameters().size());
-			for(ParameterDescriptor parameterDescriptor : targetMethod.getValueParameters())
+			for(CallParameterDescriptor parameterDescriptor : targetMethod.getValueParameters())
 				valueParameters.put(parameterDescriptor.getName(), parameterDescriptor.getType());
 
 			context.trace.record(BindingContext.REFERENCE_TARGET, target, targetMethod);

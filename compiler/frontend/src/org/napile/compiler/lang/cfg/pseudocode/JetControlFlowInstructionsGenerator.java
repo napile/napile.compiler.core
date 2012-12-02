@@ -30,11 +30,11 @@ import org.napile.compiler.lang.cfg.JetControlFlowBuilder;
 import org.napile.compiler.lang.cfg.JetControlFlowBuilderAdapter;
 import org.napile.compiler.lang.cfg.Label;
 import org.napile.compiler.lang.cfg.LoopInfo;
+import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileThrowExpression;
 import org.napile.compiler.lang.psi.NapileVariable;
 
@@ -268,7 +268,7 @@ public class JetControlFlowInstructionsGenerator extends JetControlFlowBuilderAd
 		}
 
 		@Override
-		public void declare(@NotNull NapilePropertyParameter parameter)
+		public void declare(@NotNull NapileCallParameterAsVariable parameter)
 		{
 			add(new VariableDeclarationInstruction(parameter));
 		}

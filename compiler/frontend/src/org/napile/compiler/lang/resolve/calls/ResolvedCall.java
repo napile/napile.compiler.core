@@ -21,8 +21,8 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
@@ -68,7 +68,7 @@ public interface ResolvedCall<D extends CallableDescriptor>
 	 * Values (arguments) for value parameters
 	 */
 	@NotNull
-	Map<ParameterDescriptor, ResolvedValueArgument> getValueArguments();
+	Map<CallParameterDescriptor, ResolvedValueArgument> getValueArguments();
 
 	/**
 	 * Values (arguments) for value parameters indexed by parameter index

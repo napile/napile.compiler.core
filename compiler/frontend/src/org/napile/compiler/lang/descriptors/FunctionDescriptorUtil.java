@@ -90,20 +90,18 @@ public class FunctionDescriptorUtil
 	}
 
 	@Nullable
-	public static List<ParameterDescriptor> getSubstitutedValueParameters(MethodDescriptor substitutedDescriptor, @NotNull MethodDescriptor methodDescriptor, @NotNull TypeSubstitutor substitutor)
+	public static List<CallParameterDescriptor> getSubstitutedValueParameters(MethodDescriptor substitutedDescriptor, @NotNull MethodDescriptor methodDescriptor, @NotNull TypeSubstitutor substitutor)
 	{
-		List<ParameterDescriptor> result = new ArrayList<ParameterDescriptor>();
-		List<ParameterDescriptor> unsubstitutedValueParameters = methodDescriptor.getValueParameters();
+		List<CallParameterDescriptor> result = new ArrayList<CallParameterDescriptor>();
+		List<CallParameterDescriptor> unsubstitutedValueParameters = methodDescriptor.getValueParameters();
 		for(int i = 0, unsubstitutedValueParametersSize = unsubstitutedValueParameters.size(); i < unsubstitutedValueParametersSize; i++)
 		{
-			ParameterDescriptor unsubstitutedValueParameter = unsubstitutedValueParameters.get(i);
+			CallParameterDescriptor unsubstitutedValueParameter = unsubstitutedValueParameters.get(i);
 			// TODO : Lazy?
 			JetType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType());
-			JetType varargElementType = unsubstitutedValueParameter.getVarargElementType();
-			JetType substituteVarargElementType = varargElementType == null ? null : substitutor.substitute(varargElementType);
 			if(substitutedType == null)
 				return null;
-			result.add(new PropertyParameterDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), substitutedType, substituteVarargElementType, unsubstitutedValueParameter.getModality()));
+			result.add(new CallParameterAsVariableDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.getName(), substitutedType, unsubstitutedValueParameter.getModality()));
 		}
 		return result;
 	}
@@ -127,7 +125,7 @@ public class FunctionDescriptorUtil
 		WritableScope parameterScope = new WritableScopeImpl(outerScope, descriptor, new TraceBasedRedeclarationHandler(trace), "Function inner scope");
 		for(TypeParameterDescriptor typeParameter : descriptor.getTypeParameters())
 			parameterScope.addTypeParameterDescriptor(typeParameter);
-		for(ParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
+		for(CallParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
 			parameterScope.addVariableDescriptor(parameterDescriptor);
 
 		if(declarationWithBody instanceof NapileNamedMethod)
@@ -186,16 +184,16 @@ public class FunctionDescriptorUtil
 	}
 
 	@NotNull
-	public static List<ParameterDescriptor> getValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull JetType type)
+	public static List<CallParameterDescriptor> getValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull JetType type)
 	{
 		assert type.getConstructor() instanceof MethodTypeConstructor;
 
 		Map<Name, JetType> parameterTypes = ((MethodTypeConstructor) type.getConstructor()).getParameterTypes();
-		List<ParameterDescriptor> valueParameters = new ArrayList<ParameterDescriptor>(parameterTypes.size());
+		List<CallParameterDescriptor> valueParameters = new ArrayList<CallParameterDescriptor>(parameterTypes.size());
 		int i = 0;
 		for(Map.Entry<Name, JetType> entry : parameterTypes.entrySet())
 		{
-			PropertyParameterDescriptorImpl valueParameterDescriptor = new PropertyParameterDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), entry.getKey(), entry.getValue(), false, null, Modality.FINAL);
+			CallParameterAsVariableDescriptorImpl valueParameterDescriptor = new CallParameterAsVariableDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), entry.getKey(), entry.getValue(), Modality.FINAL);
 			valueParameters.add(valueParameterDescriptor);
 
 			i++;

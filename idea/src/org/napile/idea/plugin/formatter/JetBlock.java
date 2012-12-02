@@ -166,7 +166,7 @@ public class JetBlock extends AbstractBlock
 		{
 			return new ChildAttributes(Indent.getContinuationWithoutFirstIndent(), null);
 		}
-		else if(type == NapileNodes.VALUE_PARAMETER_LIST || type == NapileNodes.VALUE_ARGUMENT_LIST)
+		else if(type == NapileNodes.CALL_PARAMETER_LIST || type == NapileNodes.VALUE_ARGUMENT_LIST)
 		{
 			// Child index 1 - cursor is after ( - parameter alignment should be recreated
 			// Child index 0 - before expression - know nothing about it
@@ -202,9 +202,9 @@ public class JetBlock extends AbstractBlock
 
 		// Redefine list of strategies for some special elements
 		IElementType parentType = myNode.getElementType();
-		if(parentType == NapileNodes.VALUE_PARAMETER_LIST)
+		if(parentType == NapileNodes.CALL_PARAMETER_LIST)
 		{
-			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS, NapileNodes.VALUE_PARAMETER, NapileTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, NapileTokens.LPAR, NapileTokens.RPAR);
+			strategy = getAlignmentForChildInParenthesis(jetCommonSettings.ALIGN_MULTILINE_PARAMETERS, NapileNodes.CALL_PARAMETER_AS_VARIABLE, NapileTokens.COMMA, jetCommonSettings.ALIGN_MULTILINE_METHOD_BRACKETS, NapileTokens.LPAR, NapileTokens.RPAR);
 		}
 		else if(parentType == NapileNodes.VALUE_ARGUMENT_LIST)
 		{
@@ -322,7 +322,7 @@ public class JetBlock extends AbstractBlock
 		{
 			IElementType parentType = childParent.getElementType();
 
-			if(parentType == NapileNodes.VALUE_PARAMETER_LIST || parentType == NapileNodes.VALUE_ARGUMENT_LIST)
+			if(parentType == NapileNodes.CALL_PARAMETER_LIST || parentType == NapileNodes.VALUE_ARGUMENT_LIST)
 			{
 				ASTNode prev = getPrevWithoutWhitespace(child);
 				if(childType == NapileTokens.RPAR && (prev == null || prev.getElementType() != TokenType.ERROR_ELEMENT))

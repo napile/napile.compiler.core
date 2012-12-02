@@ -16,37 +16,14 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileNodes;
-import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 13:34/06.09.12
+ * @date 20:08/01.12.12
  */
-public class NapileReferenceParameter extends NapileDeclarationImpl
+public interface NapileCallParameterAsReference extends NapileCallParameter
 {
-	public NapileReferenceParameter(@NotNull ASTNode node)
-	{
-		super(node);
-	}
-
-	@Override
-	public void accept(@NotNull NapileVisitorVoid visitor)
-	{
-		visitor.visitReferenceParameter(this);
-	}
-
-	@Override
-	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
-	{
-		return visitor.visitReferenceParameter(this, data);
-	}
-
 	@Nullable
-	public NapileSimpleNameExpression getReferenceExpression()
-	{
-		return (NapileSimpleNameExpression) findChildByType(NapileNodes.REFERENCE_EXPRESSION);
-	}
+	NapileSimpleNameExpression getReferenceExpression();
 }

@@ -18,6 +18,7 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.impl.NapileCallParameterAsVariableImpl;
 import org.napile.compiler.lang.psi.impl.NapileClassImpl;
 import org.napile.compiler.lang.psi.impl.NapileNamedMacroImpl;
 import org.napile.compiler.lang.psi.impl.NapileNamedMethodImpl;
@@ -59,9 +60,9 @@ public class SourcePsiFromStubFactory implements NapilePsiFromStubFactory
 
 	@NotNull
 	@Override
-	public NapilePropertyParameter createParameter(NapilePsiMethodParameterStub stub)
+	public NapileCallParameterAsVariable createCallParameterAsVariable(NapilePsiCallParameterAsVariableStub stub)
 	{
-		return new NapilePropertyParameter(stub);
+		return new NapileCallParameterAsVariableImpl(stub);
 	}
 
 	@NotNull

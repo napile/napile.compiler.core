@@ -16,11 +16,24 @@
 
 package org.napile.compiler.lang.psi;
 
+import com.intellij.util.ArrayFactory;
+
 /**
  * @author VISTALL
- * @date 8:08/20.10.12
+ * @date 19:51/01.12.12
  */
-public interface NapileParameterList extends NapileElement
+public interface NapileCallParameter extends NapileDeclaration
 {
-	NapileElement[] getParameters();
+	NapileCallParameter[] EMPTY_ARRAY = new NapileCallParameter[0];
+
+	ArrayFactory<NapileCallParameter> ARRAY_FACTORY = new ArrayFactory<NapileCallParameter>()
+	{
+		@Override
+		public NapileCallParameter[] create(final int count)
+		{
+			return count == 0 ? EMPTY_ARRAY : new NapileCallParameter[count];
+		}
+	};
+
+	NapileExpression getDefaultValue();
 }

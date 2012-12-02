@@ -917,7 +917,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		{
 			//   { -> ...}
 			advance(); // ARROW
-			mark().done(VALUE_PARAMETER_LIST);
+			mark().done(CALL_PARAMETER_LIST);
 			paramsFound = true;
 		}
 		else if(at(NapileTokens.LPAR))
@@ -1036,7 +1036,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			expect(NapileTokens.IDENTIFIER, "Expecting parameter name", TokenSet.create(NapileTokens.ARROW));
 
-			parameter.done(VALUE_PARAMETER);
+			parameter.done(CALL_PARAMETER_AS_VARIABLE);
 
 			if(at(NapileTokens.COLON))
 			{
@@ -1060,7 +1060,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 		}
 
-		parameterList.done(VALUE_PARAMETER_LIST);
+		parameterList.done(CALL_PARAMETER_LIST);
 	}
 
 	// Check that position is followed by top level comma. It can't be expression and we want it be
@@ -1156,7 +1156,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 					advance(); // COLON
 					myJetParsing.parseTypeRef();
 				}
-				parameter.done(VALUE_PARAMETER);
+				parameter.done(CALL_PARAMETER_AS_VARIABLE);
 				if(!at(NapileTokens.COMMA))
 					break;
 				advance(); // COMMA
@@ -1172,7 +1172,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		getBuilder().restoreNewlinesState();
 
 		expect(NapileTokens.RPAR, "Expecting ')", TokenSet.create(NapileTokens.ARROW, NapileTokens.COLON));
-		list.done(VALUE_PARAMETER_LIST);
+		list.done(CALL_PARAMETER_LIST);
 	}
 
 	/*
@@ -1327,7 +1327,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			advance(); // COLON
 			myJetParsing.parseTypeRef();
 		}
-		parameter.done(VALUE_PARAMETER);
+		parameter.done(CALL_PARAMETER_AS_VARIABLE);
 
 		expect(NapileTokens.IN_KEYWORD, "Expecting 'in'");
 
@@ -1400,7 +1400,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			PsiBuilder.Marker catchBlock = mark();
 			advance(); // CATCH_KEYWORD
 
-			myJetParsing.parseValueParameterList(false, TokenSet.create(NapileTokens.LBRACE, NapileTokens.FINALLY_KEYWORD, NapileTokens.CATCH_KEYWORD));
+			myJetParsing.parseCallParameterList(false, TokenSet.create(NapileTokens.LBRACE, NapileTokens.FINALLY_KEYWORD, NapileTokens.CATCH_KEYWORD));
 
 			myJetParsing.parseBlock();
 			catchBlock.done(CATCH);

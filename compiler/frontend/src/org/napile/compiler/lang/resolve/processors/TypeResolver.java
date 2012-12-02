@@ -209,10 +209,10 @@ public class TypeResolver
 					int i = 1;
 					for(NapileElement parameter : parameters)
 					{
-						if(parameter instanceof NapilePropertyParameter)
+						if(parameter instanceof NapileCallParameterAsVariable)
 						{
-							Name name = ((NapilePropertyParameter) parameter).getNameAsName();
-							JetType jetType = resolveType(scope, ((NapilePropertyParameter) parameter).getTypeReference(), trace, checkBounds);
+							Name name = ((NapileCallParameterAsVariable) parameter).getNameAsName();
+							JetType jetType = resolveType(scope, ((NapileCallParameterAsVariable) parameter).getTypeReference(), trace, checkBounds);
 
 							parameterTypes.put(name == null ? Name.identifier("p" + i) : name, jetType);
 						}

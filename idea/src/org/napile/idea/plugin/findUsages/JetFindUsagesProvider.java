@@ -17,9 +17,9 @@
 package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileVariable;
@@ -62,7 +62,7 @@ public class JetFindUsagesProvider implements FindUsagesProvider
 			return "constructor";
 		if(psiElement instanceof NapileClass)
 			return "class";
-		if(psiElement instanceof NapilePropertyParameter)
+		if(psiElement instanceof NapileCallParameterAsVariable)
 			return "parameter";
 		if(psiElement instanceof NapileVariable)
 			return "property";

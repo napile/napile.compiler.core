@@ -19,7 +19,7 @@ package org.napile.idea.plugin.editor.wordSelection;
 import java.util.Arrays;
 import java.util.List;
 
-import org.napile.compiler.lang.psi.NapileParameterList;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapileTypeArgumentList;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
 import org.napile.compiler.lang.psi.NapileValueArgumentList;
@@ -40,7 +40,7 @@ public class JetListSelectioner extends BasicSelectioner
 	@Override
 	public boolean canSelect(PsiElement e)
 	{
-		return e instanceof NapileParameterList || e instanceof NapileValueArgumentList ||
+		return e instanceof NapileCallParameterList || e instanceof NapileValueArgumentList ||
 				e instanceof NapileTypeParameterList || e instanceof NapileTypeArgumentList;
 	}
 

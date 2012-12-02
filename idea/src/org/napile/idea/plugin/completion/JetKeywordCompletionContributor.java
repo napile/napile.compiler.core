@@ -141,7 +141,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		public boolean isAcceptable(Object element, PsiElement context)
 		{
 			//noinspection unchecked
-			return PsiTreeUtil.getParentOfType(context, NapileFile.class, false, NapileClassBody.class, NapileBlockExpression.class, NapileMethod.class) != null && PsiTreeUtil.getParentOfType(context, NapileParameterList.class, NapileTypeParameterListImpl.class) == null;
+			return PsiTreeUtil.getParentOfType(context, NapileFile.class, false, NapileClassBody.class, NapileBlockExpression.class, NapileMethod.class) != null && PsiTreeUtil.getParentOfType(context, NapileCallParameterList.class, NapileTypeParameterListImpl.class) == null;
 		}
 
 		@Override
@@ -172,7 +172,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		@Override
 		public boolean isAcceptable(Object element, PsiElement context)
 		{
-			return PsiTreeUtil.getParentOfType(context, NapileParameterList.class, false) != null;
+			return PsiTreeUtil.getParentOfType(context, NapileCallParameterList.class, false) != null;
 		}
 
 		@Override
@@ -188,7 +188,7 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		public boolean isAcceptable(Object element, PsiElement context)
 		{
 			//noinspection unchecked
-			return PsiTreeUtil.getParentOfType(context, NapileClassBody.class, true, NapileBlockExpression.class, NapileVariable.class, NapileParameterList.class) != null;
+			return PsiTreeUtil.getParentOfType(context, NapileClassBody.class, true, NapileBlockExpression.class, NapileVariable.class, NapileCallParameterList.class) != null;
 		}
 
 		@Override

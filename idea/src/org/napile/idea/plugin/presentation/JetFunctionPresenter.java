@@ -19,11 +19,11 @@ package org.napile.idea.plugin.presentation;
 import javax.swing.Icon;
 
 import org.napile.asm.resolve.name.FqName;
+import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.psi.NapileReferenceParameter;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.QualifiedNamesUtil;
@@ -62,9 +62,9 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 					@Override
 					public String fun(NapileElement element)
 					{
-						if(element instanceof NapilePropertyParameter)
+						if(element instanceof NapileCallParameterAsVariable)
 						{
-							NapileTypeReference reference = ((NapilePropertyParameter) element).getTypeReference();
+							NapileTypeReference reference = ((NapileCallParameterAsVariable) element).getTypeReference();
 							if(reference != null)
 							{
 								String text = reference.getText();
@@ -72,9 +72,9 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 									return text;
 							}
 						}
-						else if(element instanceof NapileReferenceParameter)
+						else if(element instanceof NapileCallParameterAsReference)
 						{
-							NapileSimpleNameExpression ref = ((NapileReferenceParameter) element).getReferenceExpression();
+							NapileSimpleNameExpression ref = ((NapileCallParameterAsReference) element).getReferenceExpression();
 							if(ref != null)
 								return ref.getText();
 						}

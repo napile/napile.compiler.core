@@ -20,9 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer;
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TableRenderer.DescriptorRow;
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TableRenderer.FunctionArgumentsRow;
@@ -204,7 +204,7 @@ public class HtmlTabledDescriptorRenderer extends TabledDescriptorRenderer
 		}
 
 		@Override
-		protected void renderValueParameter(ParameterDescriptor parameterDescriptor, boolean isLast, StringBuilder builder)
+		protected void renderValueParameter(CallParameterDescriptor parameterDescriptor, boolean isLast, StringBuilder builder)
 		{
 			if(parameterDescriptor.getIndex() == 0)
 			{

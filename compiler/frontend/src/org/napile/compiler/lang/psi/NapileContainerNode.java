@@ -32,13 +32,13 @@ public class NapileContainerNode extends NapileElementImpl
 	}
 
 	@Override // for visibility
-	protected <T> T findChildByClass(Class<T> aClass)
+	public <T> T findChildByClass(Class<T> aClass)
 	{
 		return super.findChildByClass(aClass);
 	}
 
 	@Override // for visibility
-	protected PsiElement findChildByType(IElementType type)
+	public PsiElement findChildByType(IElementType type)
 	{
 		return super.findChildByType(type);
 	}

@@ -26,9 +26,9 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.Named;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
@@ -229,7 +229,7 @@ public class Renderers
 		{
 			final Collection<ConstraintPosition> errorPositions = Sets.newHashSet();
 			List<JetType> valueArgumentTypes = Lists.newArrayList();
-			for(ParameterDescriptor parameterDescriptor : substitutedDescriptor.getValueParameters())
+			for(CallParameterDescriptor parameterDescriptor : substitutedDescriptor.getValueParameters())
 			{
 				valueArgumentTypes.add(parameterDescriptor.getType());
 				JetType actualType = inferenceErrorData.valueArgumentsTypes.get(parameterDescriptor.getIndex());

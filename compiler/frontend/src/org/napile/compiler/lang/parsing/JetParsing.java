@@ -607,7 +607,7 @@ public class JetParsing extends AbstractJetParsing
 
 		parseTypeParameterList();
 
-		parseValueParameterList(false, valueParametersFollow);
+		parseCallParameterList(false, valueParametersFollow);
 
 		if(at(NapileTokens.COLON))
 		{
@@ -651,7 +651,7 @@ public class JetParsing extends AbstractJetParsing
 
 		advance(); // THIS_KEYWORD
 
-		parseValueParameterList(false, TokenSet.create(NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.SEMICOLON));
+		parseCallParameterList(false, TokenSet.create(NapileTokens.COLON, NapileTokens.LBRACE, NapileTokens.SEMICOLON));
 
 		if(at(NapileTokens.COLON))
 		{
@@ -858,7 +858,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		while(at(NapileTokens.LPAR))
-			parseValueParameterList(true, TokenSet.EMPTY);
+			parseCallParameterList(true, TokenSet.EMPTY);
 
 		mark.done(TYPE_PARAMETER);
 	}
@@ -983,7 +983,7 @@ public class JetParsing extends AbstractJetParsing
 
 		if(at(NapileTokens.LPAR))
 		{
-			parseValueParameterList(true, TokenSet.EMPTY);
+			parseCallParameterList(true, TokenSet.EMPTY);
 
 			expect(NapileTokens.ARROW, "'->' expecting", TYPE_REF_FIRST);
 
@@ -1052,7 +1052,7 @@ public class JetParsing extends AbstractJetParsing
 		 *   : parameter ("=" element)?
 		 *   ;
 		 */
-	void parseValueParameterList(boolean isFunctionTypeContents, TokenSet recoverySet)
+	void parseCallParameterList(boolean isFunctionTypeContents, TokenSet recoverySet)
 	{
 		PsiBuilder.Marker parameters = mark();
 
@@ -1082,7 +1082,7 @@ public class JetParsing extends AbstractJetParsing
 							PsiBuilder.Marker valueParameter = mark();
 							parseModifierList(); // lazy, out, ref
 							parseTypeRef();
-							valueParameter.done(VALUE_PARAMETER);
+							valueParameter.done(CALL_PARAMETER_AS_VARIABLE);
 						}
 					}
 					else
@@ -1098,7 +1098,7 @@ public class JetParsing extends AbstractJetParsing
 		expect(NapileTokens.RPAR, "Expecting ')'", recoverySet);
 		getBuilder().restoreNewlinesState();
 
-		parameters.done(VALUE_PARAMETER_LIST);
+		parameters.done(CALL_PARAMETER_LIST);
 	}
 
 	/*
@@ -1116,26 +1116,28 @@ public class JetParsing extends AbstractJetParsing
 		parseValueParameter(false);
 	}
 
+	private static final TokenSet NEXT_REF_ELEMENT = TokenSet.create(NapileTokens.COMMA, NapileTokens.RPAR, NapileTokens.EQ);
+
 	private boolean parseValueParameter(boolean rollbackOnFailure)
 	{
 		PsiBuilder.Marker parameter = mark();
 
-		if(at(NapileTokens.IDENTIFIER) && (lookahead(1) == NapileTokens.COMMA || lookahead(1) == NapileTokens.RPAR))
+		if(at(NapileTokens.IDENTIFIER) && NEXT_REF_ELEMENT.contains(lookahead(1)))
 		{
 			PsiBuilder.Marker refMark = mark();
 			advance();
 			refMark.done(REFERENCE_EXPRESSION);
 
-			parameter.done(REFERENCE_PARAMETER);
+			parseDefaultValueForCallParameter();
+
+			parameter.done(CALL_PARAMETER_AS_REFERENCE);
 		}
 		else
 		{
 			parseModifierList();
 
 			if(at(NapileTokens.VAR_KEYWORD))
-			{
-				advance(); // VAR_KEYWORD | VAL_KEYWORD
-			}
+				advance();
 
 			if(!parseFunctionParameterRest() && rollbackOnFailure)
 			{
@@ -1143,7 +1145,7 @@ public class JetParsing extends AbstractJetParsing
 				return false;
 			}
 
-			parameter.done(VALUE_PARAMETER);
+			parameter.done(CALL_PARAMETER_AS_VARIABLE);
 		}
 		return true;
 	}
@@ -1168,12 +1170,23 @@ public class JetParsing extends AbstractJetParsing
 			return false;
 		}
 
+		parseDefaultValueForCallParameter();
+
+		return true;
+	}
+
+	private void parseDefaultValueForCallParameter()
+	{
 		if(at(NapileTokens.EQ))
 		{
-			advance(); // EQ
+			PsiBuilder.Marker mark = mark();
+
+			advance();
+
 			myExpressionParsing.parseExpression();
+
+			mark.done(DEFAULT_VALUE_NODE);
 		}
-		return true;
 	}
 
 	/*

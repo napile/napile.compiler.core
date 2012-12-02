@@ -104,12 +104,12 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitNamedDeclaration(parameter, data);
 	}
 
-	public R visitParameterList(NapileParameterList list, D data)
+	public R visitCallParameterList(NapileCallParameterList list, D data)
 	{
 		return visitJetElement(list, data);
 	}
 
-	public R visitPropertyParameter(NapilePropertyParameter parameter, D data)
+	public R visitCallParameterAsVariable(NapileCallParameterAsVariable parameter, D data)
 	{
 		return visitNamedDeclaration(parameter, data);
 	}
@@ -384,7 +384,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitNamedDeclaration(element, data);
 	}
 
-	public R visitReferenceParameter(NapileReferenceParameter napileReferenceParameter, D data)
+	public R visitCallParameterAsReference(NapileCallParameterAsReference napileReferenceParameter, D data)
 	{
 		return visitJetElement(napileReferenceParameter, data);
 	}

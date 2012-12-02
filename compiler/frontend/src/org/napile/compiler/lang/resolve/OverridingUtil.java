@@ -23,11 +23,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -147,7 +147,7 @@ public class OverridingUtil
 	private static List<JetType> compiledValueParameters(CallableDescriptor callableDescriptor)
 	{
 		ArrayList<JetType> parameters = new ArrayList<JetType>(callableDescriptor.getValueParameters().size());
-		for(ParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
+		for(CallParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
 		{
 			parameters.add(parameterDescriptor.getType());
 		}
@@ -327,10 +327,10 @@ public class OverridingUtil
 	{
 		fromCurrent.addOverriddenDescriptor(fromSupertype);
 
-		for(ParameterDescriptor parameterFromCurrent : fromCurrent.getValueParameters())
+		for(CallParameterDescriptor parameterFromCurrent : fromCurrent.getValueParameters())
 		{
 			assert parameterFromCurrent.getIndex() < fromSupertype.getValueParameters().size() : "An override relation between functions implies that they have the same number of value parameters";
-			ParameterDescriptor parameterFromSupertype = fromSupertype.getValueParameters().get(parameterFromCurrent.getIndex());
+			CallParameterDescriptor parameterFromSupertype = fromSupertype.getValueParameters().get(parameterFromCurrent.getIndex());
 			parameterFromCurrent.addOverriddenDescriptor(parameterFromSupertype);
 		}
 	}

@@ -30,8 +30,8 @@ import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 
@@ -67,7 +67,7 @@ public class NodeRefUtil
 		descriptor = CallTransformer.unwrapFakeOverride(descriptor);
 
 		List<TypeNode> typeNodes = new ArrayList<TypeNode>(descriptor.getValueParameters().size());
-		for(ParameterDescriptor p : descriptor.getValueParameters())
+		for(CallParameterDescriptor p : descriptor.getValueParameters())
 			typeNodes.add(TypeTransformer.toAsmType(p.getType()));
 
 		return new MethodRef(fqName, typeNodes, Collections.<TypeNode>emptyList(), TypeTransformer.toAsmType(descriptor.getReturnType()));

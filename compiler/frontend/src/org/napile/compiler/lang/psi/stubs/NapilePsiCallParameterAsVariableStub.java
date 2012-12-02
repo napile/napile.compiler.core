@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
@@ -27,23 +27,23 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class NapilePsiMethodParameterStub extends StubBase<NapilePropertyParameter> implements NamedStub<NapilePropertyParameter>
+public class NapilePsiCallParameterAsVariableStub extends StubBase<NapileCallParameterAsVariable> implements NamedStub<NapileCallParameterAsVariable>
 {
 	private final StringRef name;
 	private final boolean isVarArg;
 	private final StringRef typeText;
 	private final StringRef defaultValueText;
 
-	public NapilePsiMethodParameterStub(StubElement parent, StringRef name, boolean isVarArg, StringRef typeText, StringRef defaultValueText)
+	public NapilePsiCallParameterAsVariableStub(StubElement parent, StringRef name, boolean isVarArg, StringRef typeText, StringRef defaultValueText)
 	{
-		super(parent, NapileStubElementTypes.VALUE_PARAMETER);
+		super(parent, NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE);
 		this.name = name;
 		this.isVarArg = isVarArg;
 		this.typeText = typeText;
 		this.defaultValueText = defaultValueText;
 	}
 
-	public NapilePsiMethodParameterStub(StubElement parent, String name, boolean isVarArg, String typeText, String defaultValueText)
+	public NapilePsiCallParameterAsVariableStub(StubElement parent, String name, boolean isVarArg, String typeText, String defaultValueText)
 	{
 		this(parent, StringRef.fromString(name), isVarArg, StringRef.fromString(typeText), StringRef.fromString(defaultValueText));
 	}

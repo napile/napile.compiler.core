@@ -189,7 +189,7 @@ public class ErrorUtils
 	{
 		ErrorSimpleMethodDescriptorImpl function = new ErrorSimpleMethodDescriptorImpl(ownerScope);
 		function.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), // TODO
-				Collections.<ParameterDescriptor>emptyList(), // TODO
+				Collections.<CallParameterDescriptor>emptyList(), // TODO
 				createErrorType("<ERROR METHOD RETURN TYPE>"), Modality.OPEN, Visibility.PUBLIC
                 /*isInline = */);
 		return function;

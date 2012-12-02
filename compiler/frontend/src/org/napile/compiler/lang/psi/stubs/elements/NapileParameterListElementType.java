@@ -20,8 +20,8 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileParameterList;
-import org.napile.compiler.lang.psi.NapileParameterListImpl;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
+import org.napile.compiler.lang.psi.NapileCallParameterListImpl;
 import org.napile.compiler.lang.psi.stubs.NapilePsiParameterListStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
@@ -32,7 +32,7 @@ import com.intellij.psi.stubs.StubOutputStream;
 /**
  * @author Nikolay Krasko
  */
-public class NapileParameterListElementType extends NapileStubElementType<NapilePsiParameterListStub, NapileParameterList>
+public class NapileParameterListElementType extends NapileStubElementType<NapilePsiParameterListStub, NapileCallParameterList>
 {
 	public NapileParameterListElementType(@NotNull @NonNls String debugName)
 	{
@@ -40,19 +40,19 @@ public class NapileParameterListElementType extends NapileStubElementType<Napile
 	}
 
 	@Override
-	public NapileParameterList createPsiFromAst(@NotNull ASTNode node)
+	public NapileCallParameterList createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapileParameterListImpl(node);
+		return new NapileCallParameterListImpl(node);
 	}
 
 	@Override
-	public NapileParameterList createPsi(@NotNull NapilePsiParameterListStub stub)
+	public NapileCallParameterList createPsi(@NotNull NapilePsiParameterListStub stub)
 	{
-		return new NapileParameterListImpl(stub);
+		return new NapileCallParameterListImpl(stub);
 	}
 
 	@Override
-	public NapilePsiParameterListStub createStub(@NotNull NapileParameterList psi, StubElement parentStub)
+	public NapilePsiParameterListStub createStub(@NotNull NapileCallParameterList psi, StubElement parentStub)
 	{
 		return new NapilePsiParameterListStub(parentStub);
 	}

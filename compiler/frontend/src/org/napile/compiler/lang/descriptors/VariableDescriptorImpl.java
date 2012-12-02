@@ -61,6 +61,10 @@ public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRoo
 	@Override
 	public JetType getType()
 	{
+		if(outType == null)
+		{
+			System.out.println(getClass().getName());
+		}
 		return outType;
 	}
 
@@ -86,7 +90,7 @@ public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRoo
 
 	@NotNull
 	@Override
-	public List<ParameterDescriptor> getValueParameters()
+	public List<CallParameterDescriptor> getValueParameters()
 	{
 		return Collections.emptyList();
 	}

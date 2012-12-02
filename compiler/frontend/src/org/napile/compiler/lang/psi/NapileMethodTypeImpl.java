@@ -56,16 +56,16 @@ public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMet
 
 	@Override
 	@Nullable
-	public NapileParameterList getParameterList()
+	public NapileCallParameterList getParameterList()
 	{
-		return (NapileParameterList) findChildByType(NapileNodes.VALUE_PARAMETER_LIST);
+		return (NapileCallParameterList) findChildByType(NapileNodes.CALL_PARAMETER_LIST);
 	}
 
 	@Override
 	@NotNull
 	public NapileElement[] getParameters()
 	{
-		NapileParameterList list = getParameterList();
+		NapileCallParameterList list = getParameterList();
 		return list != null ? list.getParameters() : NapileElement.EMPTY_ARRAY;
 	}
 

@@ -57,8 +57,8 @@ public class NapileTypeParameterImpl extends NapileNamedDeclarationStub<NapilePs
 
 	@Override
 	@NotNull
-	public NapileParameterList[] getConstructorParameterLists()
+	public NapileCallParameterList[] getConstructorParameterLists()
 	{
-		return findChildrenByClass(NapileParameterList.class);
+		return findChildrenByClass(NapileCallParameterList.class);
 	}
 }

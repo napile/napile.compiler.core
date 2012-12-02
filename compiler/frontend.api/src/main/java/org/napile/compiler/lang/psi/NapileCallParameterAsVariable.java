@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,16 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 19:56/01.12.12
  */
-public interface NapileDeclarationWithBody extends NapileDeclaration
+public interface NapileCallParameterAsVariable extends NapileCallParameter, NapileNamedDeclaration
 {
 	@Nullable
-	NapileExpression getBodyExpression();
+	NapileTypeReference getTypeReference();
 
-	boolean hasBlockBody();
-
-	boolean hasDeclaredReturnType();
-
-	@NotNull
-	NapileCallParameter[] getValueParameters();
+	boolean isVarArg();
 }
-

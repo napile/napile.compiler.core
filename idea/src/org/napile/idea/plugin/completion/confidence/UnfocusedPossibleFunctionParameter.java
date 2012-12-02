@@ -18,8 +18,8 @@ package org.napile.idea.plugin.completion.confidence;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lang.psi.NapileParameterList;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import com.intellij.codeInsight.completion.CompletionConfidence;
@@ -50,7 +50,7 @@ public class UnfocusedPossibleFunctionParameter extends CompletionConfidence
 			PsiElement expectedReference = position.getParent();
 			if(expectedReference instanceof NapileSimpleNameExpression)
 			{
-				if(PsiTreeUtil.findChildOfType(functionLiteral, NapileParameterList.class) == null)
+				if(PsiTreeUtil.findChildOfType(functionLiteral, NapileCallParameterList.class) == null)
 				{
 					{
 						// 1.

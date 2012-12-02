@@ -37,13 +37,13 @@ import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.lang.descriptors.CallParameterAsReferenceDescriptorImpl;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.ReferenceParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
@@ -63,7 +63,7 @@ public class MethodCodegen
 	{
 		MethodNode constructorNode = MethodNode.constructor(ModifierCodegen.gen(constructorDescriptor));
 		constructorNode.returnType = new TypeNode(false, new ThisTypeNode());
-		for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
+		for(CallParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 		{
 			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
 
@@ -119,7 +119,7 @@ public class MethodCodegen
 
 		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode);
 
-		for(ParameterDescriptor declaration : methodDescriptor.getValueParameters())
+		for(CallParameterDescriptor declaration : methodDescriptor.getValueParameters())
 		{
 			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
 
@@ -159,10 +159,10 @@ public class MethodCodegen
 	public static void genReferenceParameters(@NotNull CallableDescriptor callableDescriptor, List<Instruction> instructions)
 	{
 		InstructionAdapter adapter = new InstructionAdapter();
-		for(ParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
-			if(parameterDescriptor instanceof ReferenceParameterDescriptor)
+		for(CallParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
+			if(parameterDescriptor instanceof CallParameterAsReferenceDescriptorImpl)
 			{
-				PropertyDescriptor propertyDescriptor = ((ReferenceParameterDescriptor) parameterDescriptor).getReferenceProperty();
+				PropertyDescriptor propertyDescriptor = ((CallParameterAsReferenceDescriptorImpl) parameterDescriptor).getReferenceProperty();
 				if(propertyDescriptor == null)
 					continue;
 

@@ -29,7 +29,7 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author Nikolay Krasko
  */
-abstract class NapileNamedDeclarationStub<T extends NamedStub> extends NapileDeclarationStub<T> implements NapileNamedDeclaration
+public abstract class NapileNamedDeclarationStub<T extends NamedStub> extends NapileDeclarationStub<T> implements NapileNamedDeclaration
 {
 	public NapileNamedDeclarationStub(@NotNull T stub, @NotNull IStubElementType nodeType)
 	{

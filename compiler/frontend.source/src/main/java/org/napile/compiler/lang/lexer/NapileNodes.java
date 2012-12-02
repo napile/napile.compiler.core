@@ -22,6 +22,7 @@ package org.napile.compiler.lang.lexer;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.impl.NapileArrayOfExpressionImpl;
+import org.napile.compiler.lang.psi.impl.NapileCallParameterAsReferenceImpl;
 import org.napile.compiler.lang.psi.impl.NapileInjectionExpressionImpl;
 import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
@@ -49,9 +50,10 @@ public interface NapileNodes
 
 	NapileNode DELEGATOR_SUPER_CALL = new NapileNode("DELEGATOR_SUPER_CALL", NapileDelegationToSuperCall.class);
 	NapileNode CONSTRUCTOR_CALLEE = new NapileNode("CONSTRUCTOR_CALLEE", NapileConstructorCalleeExpression.class);
-	IElementType VALUE_PARAMETER_LIST = NapileStubElementTypes.VALUE_PARAMETER_LIST;
-	IElementType VALUE_PARAMETER = NapileStubElementTypes.VALUE_PARAMETER;
-	IElementType REFERENCE_PARAMETER = new NapileNode("REFERENCE_PARAMETER", NapileReferenceParameter.class);
+
+	IElementType CALL_PARAMETER_LIST = NapileStubElementTypes.CALL_PARAMETER_LIST;
+	IElementType CALL_PARAMETER_AS_VARIABLE = NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE;
+	IElementType CALL_PARAMETER_AS_REFERENCE = new NapileNode("CALL_PARAMETER_AS_REFERENCE", NapileCallParameterAsReferenceImpl.class); //FIXME [VISTALL] stub?
 
 	NapileNode CLASS_BODY = new NapileNode("CLASS_BODY", NapileClassBody.class);
 	NapileNode IMPORT_DIRECTIVE = new NapileNode("IMPORT_DIRECTIVE", NapileImportDirective.class);
@@ -97,6 +99,7 @@ public interface NapileNodes
 	NapileNode WHILE = new NapileNode("WHILE", NapileWhileExpression.class);
 	NapileNode DO_WHILE = new NapileNode("DO_WHILE", NapileDoWhileExpression.class);
 	NapileNode LOOP_RANGE = new NapileNode("LOOP_RANGE", NapileContainerNode.class);
+	NapileNode DEFAULT_VALUE_NODE = new NapileNode("DEFAULT_VALUE_NODE", NapileContainerNode.class);
 	NapileNode BODY = new NapileNode("BODY", NapileContainerNode.class);
 	NapileNode BLOCK = new NapileNode("BLOCK", NapileBlockExpression.class);
 	NapileNode FUNCTION_LITERAL_EXPRESSION = new NapileNode("ANONYM_METHOD_EXPRESSION", NapileFunctionLiteralExpression.class);

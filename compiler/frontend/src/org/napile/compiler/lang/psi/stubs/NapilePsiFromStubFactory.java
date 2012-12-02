@@ -17,10 +17,10 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileNamedMacro;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
 import org.napile.compiler.lang.psi.NapileVariable;
@@ -44,7 +44,7 @@ public interface NapilePsiFromStubFactory
 	NapileVariable createVariable(NapilePsiVariableStub stub);
 
 	@NotNull
-	NapilePropertyParameter createParameter(NapilePsiMethodParameterStub stub);
+	NapileCallParameterAsVariable createCallParameterAsVariable(NapilePsiCallParameterAsVariableStub stub);
 
 	@NotNull
 	NapileTypeParameterList createTypeParameterList(NapilePsiTypeParameterListStub stub);

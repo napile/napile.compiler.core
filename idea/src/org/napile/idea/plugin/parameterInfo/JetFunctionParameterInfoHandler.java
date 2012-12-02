@@ -26,12 +26,12 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.idea.plugin.completion.TipsManager;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -173,24 +173,21 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		return true;
 	}
 
-	private static String renderParameter(ParameterDescriptor descriptor, boolean named, BindingContext bindingContext)
+	private static String renderParameter(CallParameterDescriptor descriptor, boolean named, BindingContext bindingContext)
 	{
 		StringBuilder builder = new StringBuilder();
 		if(named)
 			builder.append("[");
-		if(descriptor.getVarargElementType() != null)
-		{
-			builder.append("vararg ");
-		}
+
 		builder.append(descriptor.getName()).append(": ").
-				append(DescriptorRenderer.TEXT.renderType(getActualParameterType(descriptor)));
+				append(DescriptorRenderer.TEXT.renderType(descriptor.getType()));
 		if(descriptor.hasDefaultValue())
 		{
 			PsiElement element = BindingContextUtils.descriptorToDeclaration(bindingContext, descriptor);
 			String defaultExpression = "?";
-			if(element instanceof NapilePropertyParameter)
+			if(element instanceof NapileCallParameterAsVariable)
 			{
-				NapilePropertyParameter parameter = (NapilePropertyParameter) element;
+				NapileCallParameterAsVariable parameter = (NapileCallParameterAsVariable) element;
 				NapileExpression defaultValue = parameter.getDefaultValue();
 				if(defaultValue != null)
 				{
@@ -223,14 +220,6 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		return builder.toString();
 	}
 
-	private static JetType getActualParameterType(ParameterDescriptor descriptor)
-	{
-		JetType paramType = descriptor.getType();
-		if(descriptor.getVarargElementType() != null)
-			paramType = descriptor.getVarargElementType();
-		return paramType;
-	}
-
 	@Override
 	public void updateUI(Object descriptor, ParameterInfoUIContext context)
 	{
@@ -249,7 +238,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 				BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(file);
 				MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 				StringBuilder builder = new StringBuilder();
-				List<ParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
+				List<CallParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
 				List<NapileValueArgument> valueArguments = argumentList.getArguments();
 				int currentParameterIndex = context.getCurrentParameterIndex();
 				int boldStartOffset = -1;
@@ -291,7 +280,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 				boolean[] usedIndexes = new boolean[valueParameters.size()];
 				boolean namedMode = false;
 				Arrays.fill(usedIndexes, false);
-				if((currentParameterIndex >= valueParameters.size() && (valueParameters.size() > 0 || currentParameterIndex > 0)) && (valueParameters.size() == 0 || valueParameters.get(valueParameters.size() - 1).getVarargElementType() == null))
+				if((currentParameterIndex >= valueParameters.size() && (valueParameters.size() > 0 || currentParameterIndex > 0)))
 				{
 					isGrey = true;
 				}
@@ -301,9 +290,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 				{
 					if(i != 0)
 						builder.append(", ");
-					boolean highlightParameter = i == currentParameterIndex || (!namedMode && i < currentParameterIndex &&
-							valueParameters.get(valueParameters.size() - 1).
-									getVarargElementType() != null);
+					boolean highlightParameter = i == currentParameterIndex;
 					if(highlightParameter)
 						boldStartOffset = builder.length();
 					if(!namedMode)
@@ -317,14 +304,15 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 							}
 							else
 							{
-								ParameterDescriptor param = valueParameters.get(i);
+								CallParameterDescriptor param = valueParameters.get(i);
 								builder.append(renderParameter(param, false, bindingContext));
 								if(i < currentParameterIndex)
 								{
 									if(argument.getArgumentExpression() != null)
 									{
 										//check type
-										JetType paramType = getActualParameterType(param);
+
+										JetType paramType = param.getType();
 										JetType exprType = bindingContext.get(BindingContext.EXPRESSION_TYPE, argument.getArgumentExpression());
 										if(exprType != null && !JetTypeChecker.INSTANCE.isSubtypeOf(exprType, paramType))
 											isGrey = true;
@@ -339,7 +327,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 						}
 						else
 						{
-							ParameterDescriptor param = valueParameters.get(i);
+							CallParameterDescriptor param = valueParameters.get(i);
 							builder.append(renderParameter(param, false, bindingContext));
 						}
 					}
@@ -354,7 +342,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 								for(int j = 0; j < valueParameters.size(); ++j)
 								{
 									NapileSimpleNameExpression referenceExpression = argument.getArgumentName().getReferenceExpression();
-									ParameterDescriptor param = valueParameters.get(j);
+									CallParameterDescriptor param = valueParameters.get(j);
 									if(referenceExpression != null && !usedIndexes[j] &&
 											param.getName().equals(referenceExpression.getReferencedNameAsName()))
 									{
@@ -366,7 +354,8 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 											if(argument.getArgumentExpression() != null)
 											{
 												//check type
-												JetType paramType = getActualParameterType(param);
+
+												JetType paramType = param.getType();
 												JetType exprType = bindingContext.get(BindingContext.EXPRESSION_TYPE, argument.getArgumentExpression());
 												if(exprType != null && !JetTypeChecker.INSTANCE.isSubtypeOf(exprType, paramType))
 												{
@@ -391,7 +380,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 
 							for(int j = 0; j < valueParameters.size(); ++j)
 							{
-								ParameterDescriptor param = valueParameters.get(j);
+								CallParameterDescriptor param = valueParameters.get(j);
 								if(!usedIndexes[j])
 								{
 									usedIndexes[j] = true;

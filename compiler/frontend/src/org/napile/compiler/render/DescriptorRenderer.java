@@ -76,7 +76,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 	public static final DescriptorRenderer DEBUG_TEXT = new DescriptorRenderer()
 	{
 		@Override
-		protected boolean hasDefaultValue(ParameterDescriptor descriptor)
+		protected boolean hasDefaultValue(CallParameterDescriptor descriptor)
 		{
 			// hasDefaultValue() has effects
 			return descriptor.declaresDefaultValue();
@@ -99,7 +99,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 
 		@Override
-		public Void visitPropertyParameterDescriptor(ParameterDescriptor descriptor, StringBuilder builder)
+		public Void visitCallParameterAsVariableDescriptor(CallParameterDescriptor descriptor, StringBuilder builder)
 		{
 			super.visitVariableDescriptor(descriptor, builder, true);
 			if(hasDefaultValue(descriptor))
@@ -110,7 +110,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 	};
 
-	protected boolean hasDefaultValue(ParameterDescriptor descriptor)
+	protected boolean hasDefaultValue(CallParameterDescriptor descriptor)
 	{
 		return descriptor.hasDefaultValue();
 	}
@@ -291,7 +291,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderEmptyValueParameters(builder);
 		}
-		for(Iterator<ParameterDescriptor> iterator = descriptor.getValueParameters().iterator(); iterator.hasNext(); )
+		for(Iterator<CallParameterDescriptor> iterator = descriptor.getValueParameters().iterator(); iterator.hasNext(); )
 		{
 			renderValueParameter(iterator.next(), !iterator.hasNext(), builder);
 		}
@@ -302,7 +302,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		builder.append("()");
 	}
 
-	protected void renderValueParameter(ParameterDescriptor parameterDescriptor, boolean isLast, StringBuilder builder)
+	protected void renderValueParameter(CallParameterDescriptor parameterDescriptor, boolean isLast, StringBuilder builder)
 	{
 		if(parameterDescriptor.getIndex() == 0)
 		{
@@ -322,13 +322,13 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 	private class RenderDeclarationDescriptorVisitor implements DeclarationDescriptorVisitor<Void, StringBuilder>
 	{
 		@Override
-		public Void visitPropertyParameterDescriptor(ParameterDescriptor descriptor, StringBuilder builder)
+		public Void visitCallParameterAsVariableDescriptor(CallParameterDescriptor descriptor, StringBuilder builder)
 		{
 			return visitVariableDescriptor(descriptor, builder);
 		}
 
 		@Override
-		public Void visitReferenceParameterDescriptor(ReferenceParameterDescriptor descriptor, StringBuilder builder)
+		public Void visitCallParameterAsReferenceDescriptor(CallParameterAsReferenceDescriptorImpl descriptor, StringBuilder builder)
 		{
 			renderName(descriptor, builder);
 			builder.append(" : ");
@@ -351,15 +351,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		protected Void visitVariableDescriptor(VariableDescriptor descriptor, StringBuilder builder, boolean skipValVar)
 		{
 			JetType type = descriptor.getType();
-			if(descriptor instanceof ParameterDescriptor)
-			{
-				JetType varargElementType = ((ParameterDescriptor) descriptor).getVarargElementType();
-				if(varargElementType != null)
-				{
-					builder.append(renderKeyword(NapileTokens.VARARG_KEYWORD)).append(" ");
-					type = varargElementType;
-				}
-			}
 
 			renderModality(descriptor.getModality(), builder);
 			String typeString = renderPropertyPrefixAndComputeTypeString(builder, skipValVar, Collections.<TypeParameterDescriptor>emptyList(), type);

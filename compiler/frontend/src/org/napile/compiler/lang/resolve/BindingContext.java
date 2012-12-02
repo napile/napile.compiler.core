@@ -161,7 +161,7 @@ public interface BindingContext extends BindingReader
 	WritableSlice<PsiElement, SimpleMethodDescriptor> METHOD = Slices.<PsiElement, SimpleMethodDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, ConstructorDescriptor> CONSTRUCTOR = Slices.<PsiElement, ConstructorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<NapilePropertyParameter, VariableDescriptor> VALUE_PARAMETER = Slices.<NapilePropertyParameter, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<NapileCallParameterAsVariable, VariableDescriptor> VALUE_PARAMETER = Slices.<NapileCallParameterAsVariable, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 
 	WritableSlice[] DECLARATIONS_TO_DESCRIPTORS = new WritableSlice[]{
 			NAMESPACE,
@@ -179,7 +179,7 @@ public interface BindingContext extends BindingReader
 
 	WritableSlice<FqName, NamespaceDescriptor> FQNAME_TO_NAMESPACE_DESCRIPTOR = new BasicWritableSlice<FqName, NamespaceDescriptor>(RewritePolicy.DO_NOTHING);
 
-	WritableSlice<ParameterDescriptor, NapileExpression> DEFAULT_VALUE_OF_PARAMETER = Slices.createSimpleSlice();
+	WritableSlice<CallParameterDescriptor, NapileExpression> DEFAULT_VALUE_OF_PARAMETER = Slices.createSimpleSlice();
 
 	WritableSlice[] FQNAME_TO_DESCRIPTORS = new WritableSlice[]
 	{

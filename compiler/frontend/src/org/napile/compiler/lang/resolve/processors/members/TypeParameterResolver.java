@@ -26,14 +26,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptorImpl;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileParameterList;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTypeParameterListOwner;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -134,13 +134,13 @@ public class TypeParameterResolver
 			NapileTypeParameter typeParameter = typeParameters[i];
 			TypeParameterDescriptor typeParameterDescriptor = parameters.get(i);
 
-			for(NapileParameterList parameterList : typeParameter.getConstructorParameterLists())
+			for(NapileCallParameterList parameterList : typeParameter.getConstructorParameterLists())
 			{
 				ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(typeParameterDescriptor, Collections.<AnnotationDescriptor>emptyList(), false);
 
 				WritableScope innerScope = new WritableScopeImpl(scope, constructorDescriptor, new TraceBasedRedeclarationHandler(trace), "TPConstructor descriptor header scope");
 				innerScope.changeLockLevel(WritableScope.LockLevel.BOTH);
-				List<ParameterDescriptor> parameterDescriptors = descriptorResolver.resolveValueParameters(constructorDescriptor, innerScope, parameterList.getParameters(), trace);
+				List<CallParameterDescriptor> parameterDescriptors = descriptorResolver.resolveCallParameters(constructorDescriptor, innerScope, parameterList.getParameters(), trace);
 
 				//constructorDescriptor.setParametersScope(innerScope);
 				constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), parameterDescriptors, Visibility.PUBLIC);

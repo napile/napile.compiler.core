@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import org.napile.compiler.lang.psi.NapileParameterList;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
@@ -24,11 +24,11 @@ import com.intellij.psi.stubs.StubElement;
 /**
  * @author Nikolay Krasko
  */
-public class NapilePsiParameterListStub extends StubBase<NapileParameterList>
+public class NapilePsiParameterListStub extends StubBase<NapileCallParameterList>
 {
 	public NapilePsiParameterListStub(StubElement parent)
 	{
-		super(parent, NapileStubElementTypes.VALUE_PARAMETER_LIST);
+		super(parent, NapileStubElementTypes.CALL_PARAMETER_LIST);
 	}
 
 	@Override

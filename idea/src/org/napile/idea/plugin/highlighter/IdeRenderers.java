@@ -30,9 +30,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.FqNameUnsafe;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.DiagnosticWithParameters1;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -103,9 +103,9 @@ public class IdeRenderers
 	public static class NoneApplicableCallsRenderer implements Renderer<Collection<? extends ResolvedCall<? extends CallableDescriptor>>>
 	{
 		@Nullable
-		private static ParameterDescriptor findParameterByArgumentExpression(ResolvedCall<? extends CallableDescriptor> call, NapileValueArgument argument)
+		private static CallParameterDescriptor findParameterByArgumentExpression(ResolvedCall<? extends CallableDescriptor> call, NapileValueArgument argument)
 		{
-			for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : call.getValueArguments().entrySet())
+			for(Map.Entry<CallParameterDescriptor, ResolvedValueArgument> entry : call.getValueArguments().entrySet())
 			{
 				for(ValueArgument va : entry.getValue().getArguments())
 				{
@@ -118,9 +118,9 @@ public class IdeRenderers
 			return null;
 		}
 
-		private static Set<ParameterDescriptor> getParametersToHighlight(ResolvedCall<? extends CallableDescriptor> call)
+		private static Set<CallParameterDescriptor> getParametersToHighlight(ResolvedCall<? extends CallableDescriptor> call)
 		{
-			Set<ParameterDescriptor> parameters = new HashSet<ParameterDescriptor>();
+			Set<CallParameterDescriptor> parameters = new HashSet<CallParameterDescriptor>();
 			if(call instanceof ResolvedCallImpl)
 			{
 				Collection<Diagnostic> diagnostics = ((ResolvedCallImpl) call).getTrace().getBindingContext().getDiagnostics();
@@ -132,7 +132,7 @@ public class IdeRenderers
 					}
 					else if(diagnostic.getFactory() == Errors.NO_VALUE_FOR_PARAMETER)
 					{
-						ParameterDescriptor parameter = ((DiagnosticWithParameters1<PsiElement, ParameterDescriptor>) diagnostic).getA();
+						CallParameterDescriptor parameter = ((DiagnosticWithParameters1<PsiElement, CallParameterDescriptor>) diagnostic).getA();
 						parameters.add(parameter);
 					}
 					else
@@ -140,7 +140,7 @@ public class IdeRenderers
 						NapileValueArgument argument = PsiTreeUtil.getParentOfType(diagnostic.getPsiElement(), NapileValueArgument.class, false);
 						if(argument != null)
 						{
-							ParameterDescriptor parameter = findParameterByArgumentExpression(call, argument);
+							CallParameterDescriptor parameter = findParameterByArgumentExpression(call, argument);
 							if(parameter != null)
 							{
 								parameters.add(parameter);
@@ -161,24 +161,20 @@ public class IdeRenderers
 			{
 				stringBuilder.append("<li>");
 				CallableDescriptor funDescriptor = call.getResultingDescriptor();
-				Set<ParameterDescriptor> parametersToHighlight = getParametersToHighlight(call);
+				Set<CallParameterDescriptor> parametersToHighlight = getParametersToHighlight(call);
 
 				DescriptorRenderer htmlRenderer = DescriptorRenderer.HTML;
 				stringBuilder.append(funDescriptor.getName()).append("(");
 				boolean first = true;
-				for(ParameterDescriptor parameter : funDescriptor.getValueParameters())
+				for(CallParameterDescriptor parameter : funDescriptor.getValueParameters())
 				{
 					if(!first)
 					{
 						stringBuilder.append(", ");
 					}
 					JetType type = parameter.getType();
-					JetType varargElementType = parameter.getVarargElementType();
-					if(varargElementType != null)
-					{
-						type = varargElementType;
-					}
-					String paramString = (varargElementType != null ? "<b>vararg</b> " : "") + htmlRenderer.renderType(type);
+
+					String paramString = htmlRenderer.renderType(type);
 					if(parameter.hasDefaultValue())
 					{
 						paramString += " = ...";

@@ -14,95 +14,75 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodParameterStub;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
+import org.napile.compiler.lang.psi.NapileContainerNode;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileNamedDeclarationStub;
+import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterAsVariableStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
-import com.intellij.util.ArrayFactory;
 
 /**
  * @author max
  */
-public class NapilePropertyParameter extends NapileNamedDeclarationStub<NapilePsiMethodParameterStub>
+public class NapileCallParameterAsVariableImpl extends NapileNamedDeclarationStub<NapilePsiCallParameterAsVariableStub> implements NapileCallParameterAsVariable
 {
-	public static final NapilePropertyParameter[] EMPTY_ARRAY = new NapilePropertyParameter[0];
-
-	public static final ArrayFactory<NapilePropertyParameter> ARRAY_FACTORY = new ArrayFactory<NapilePropertyParameter>()
-	{
-		@Override
-		public NapilePropertyParameter[] create(final int count)
-		{
-			return count == 0 ? EMPTY_ARRAY : new NapilePropertyParameter[count];
-		}
-	};
-
-	public NapilePropertyParameter(@NotNull ASTNode node)
+	public NapileCallParameterAsVariableImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapilePropertyParameter(@NotNull NapilePsiMethodParameterStub stub)
+	public NapileCallParameterAsVariableImpl(@NotNull NapilePsiCallParameterAsVariableStub stub)
 	{
-		super(stub, NapileStubElementTypes.VALUE_PARAMETER);
+		super(stub, NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE);
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitPropertyParameter(this);
+		visitor.visitCallParameterAsVariable(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitPropertyParameter(this, data);
+		return visitor.visitCallParameterAsVariable(this, data);
 	}
 
 	@Nullable
+	@Override
 	public NapileTypeReference getTypeReference()
 	{
 		return (NapileTypeReference) findChildByType(NapileNodes.TYPE_REFERENCE);
 	}
 
 	@Nullable
+	@Override
 	public NapileExpression getDefaultValue()
 	{
-		boolean passedEQ = false;
-		ASTNode child = getNode().getFirstChildNode();
-		while(child != null)
-		{
-			if(child.getElementType() == NapileTokens.EQ)
-				passedEQ = true;
-			if(passedEQ && child.getPsi() instanceof NapileExpression)
-			{
-				return (NapileExpression) child.getPsi();
-			}
-			child = child.getTreeNext();
-		}
+		NapileContainerNode containerNode = (NapileContainerNode) findChildByType(NapileNodes.DEFAULT_VALUE_NODE);
 
-		return null;
+		return containerNode == null ? null : containerNode.findChildByClass(NapileExpression.class);
 	}
 
+	@Override
 	public boolean isVarArg()
 	{
-		NapilePsiMethodParameterStub stub = getStub();
+		NapilePsiCallParameterAsVariableStub stub = getStub();
 		if(stub != null)
-		{
 			return stub.isVarArg();
-		}
 
 		NapileModifierList modifierList = getModifierList();
 		return modifierList != null && modifierList.getModifierNode(NapileTokens.VARARG_KEYWORD) != null;
-	}
-
-	@Nullable
-	public ASTNode getVarNode()
-	{
-		return getNode().findChildByType(NapileTokens.VAR_KEYWORD);
 	}
 }

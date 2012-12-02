@@ -40,10 +40,10 @@ import javax.swing.JPanel;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileFileType;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -305,7 +305,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 		CallableDescriptor resultingDescriptor = resolvedCall.getResultingDescriptor();
 		ReceiverDescriptor thisObject = resolvedCall.getThisObject();
 		Map<TypeParameterDescriptor, JetType> typeArguments = resolvedCall.getTypeArguments();
-		Map<ParameterDescriptor, ResolvedValueArgument> valueArguments = resolvedCall.getValueArguments();
+		Map<CallParameterDescriptor, ResolvedValueArgument> valueArguments = resolvedCall.getValueArguments();
 
 		builder.append(resultingDescriptor.getName());
 		renderTypeArguments(typeArguments, builder);
@@ -334,12 +334,12 @@ public class ResolveToolwindow extends JPanel implements Disposable
 		return builder.toString();
 	}
 
-	private static void renderValueArguments(Map<ParameterDescriptor, ResolvedValueArgument> valueArguments, StringBuilder builder)
+	private static void renderValueArguments(Map<CallParameterDescriptor, ResolvedValueArgument> valueArguments, StringBuilder builder)
 	{
 		ResolvedValueArgument[] args = new ResolvedValueArgument[valueArguments.size()];
-		for(Map.Entry<ParameterDescriptor, ResolvedValueArgument> entry : valueArguments.entrySet())
+		for(Map.Entry<CallParameterDescriptor, ResolvedValueArgument> entry : valueArguments.entrySet())
 		{
-			ParameterDescriptor key = entry.getKey();
+			CallParameterDescriptor key = entry.getKey();
 			ResolvedValueArgument value = entry.getValue();
 
 			args[key.getIndex()] = value;

@@ -27,7 +27,7 @@ import com.intellij.lang.ASTNode;
 public interface NapileMethodType extends NapileTypeElement
 {
 	@Nullable
-	NapileParameterList getParameterList();
+	NapileCallParameterList getParameterList();
 
 	@NotNull
 	NapileElement[] getParameters();

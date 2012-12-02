@@ -22,7 +22,6 @@ import static org.napile.compiler.lang.diagnostics.Errors.MIXING_NAMED_AND_POSIT
 import static org.napile.compiler.lang.diagnostics.Errors.NAMED_PARAMETER_NOT_FOUND;
 import static org.napile.compiler.lang.diagnostics.Errors.NON_VARARG_SPREAD;
 import static org.napile.compiler.lang.diagnostics.Errors.TOO_MANY_ARGUMENTS;
-import static org.napile.compiler.lang.diagnostics.Errors.VARARG_OUTSIDE_PARENTHESES;
 import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.ERROR;
 import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.OK;
 import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.WEAK_ERROR;
@@ -33,8 +32,8 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
@@ -86,15 +85,15 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 	public static <D extends CallableDescriptor> Status mapValueArgumentsToParameters(@NotNull Call call, @NotNull TracingStrategy tracing, @NotNull ResolvedCallImpl<D> candidateCall, @NotNull Set<ValueArgument> unmappedArguments)
 	{
 		TemporaryBindingTrace temporaryTrace = candidateCall.getTrace();
-		Map<ParameterDescriptor, VarargValueArgument> varargs = Maps.newHashMap();
-		Set<ParameterDescriptor> usedParameters = Sets.newHashSet();
+		Map<CallParameterDescriptor, VarargValueArgument> varargs = Maps.newHashMap();
+		Set<CallParameterDescriptor> usedParameters = Sets.newHashSet();
 
 		D candidate = candidateCall.getCandidateDescriptor();
 
-		List<ParameterDescriptor> valueParameters = candidate.getValueParameters();
+		List<CallParameterDescriptor> valueParameters = candidate.getValueParameters();
 
-		Map<Name, ParameterDescriptor> parameterByName = Maps.newHashMap();
-		for(ParameterDescriptor valueParameter : valueParameters)
+		Map<Name, CallParameterDescriptor> parameterByName = Maps.newHashMap();
+		for(CallParameterDescriptor valueParameter : valueParameters)
 		{
 			parameterByName.put(valueParameter.getName(), valueParameter);
 		}
@@ -111,7 +110,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 			{
 				someNamed = true;
 				NapileSimpleNameExpression nameReference = valueArgument.getArgumentName().getReferenceExpression();
-				ParameterDescriptor parameterDescriptor = parameterByName.get(nameReference.getReferencedNameAsName());
+				CallParameterDescriptor parameterDescriptor = parameterByName.get(nameReference.getReferencedNameAsName());
 				if(parameterDescriptor == null)
 				{
 					temporaryTrace.report(NAMED_PARAMETER_NOT_FOUND.on(nameReference));
@@ -151,19 +150,19 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 					int parameterCount = valueParameters.size();
 					if(i < parameterCount)
 					{
-						ParameterDescriptor parameterDescriptor = valueParameters.get(i);
+						CallParameterDescriptor parameterDescriptor = valueParameters.get(i);
 						usedParameters.add(parameterDescriptor);
 						status = status.compose(put(candidateCall, parameterDescriptor, valueArgument, varargs));
 					}
 					else if(!valueParameters.isEmpty())
 					{
-						ParameterDescriptor parameterDescriptor = valueParameters.get(valueParameters.size() - 1);
-						if(parameterDescriptor.getVarargElementType() != null)
+						CallParameterDescriptor parameterDescriptor = valueParameters.get(valueParameters.size() - 1);
+						/*if(parameterDescriptor.getVarargElementType() != null)
 						{
 							status = status.compose(put(candidateCall, parameterDescriptor, valueArgument, varargs));
 							usedParameters.add(parameterDescriptor);
 						}
-						else
+						else  */
 						{
 							temporaryTrace.report(TOO_MANY_ARGUMENTS.on(valueArgument.asElement(), candidate));
 							unmappedArguments.add(valueArgument);
@@ -194,13 +193,13 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 			{
 				NapileFunctionLiteralExpression functionLiteral = (NapileFunctionLiteralExpression) possiblyLabeledFunctionLiteral;
 
-				ParameterDescriptor parameterDescriptor = valueParameters.get(valueParameters.size() - 1);
-				if(parameterDescriptor.getVarargElementType() != null)
+				CallParameterDescriptor parameterDescriptor = valueParameters.get(valueParameters.size() - 1);
+				/*if(parameterDescriptor.getVarargElementType() != null)
 				{
 					temporaryTrace.report(VARARG_OUTSIDE_PARENTHESES.on(possiblyLabeledFunctionLiteral));
 					status = ERROR;
 				}
-				else
+				else  */
 				{
 					if(!usedParameters.add(parameterDescriptor))
 					{
@@ -223,14 +222,14 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 		}
 
 
-		for(ParameterDescriptor valueParameter : valueParameters)
+		for(CallParameterDescriptor valueParameter : valueParameters)
 		{
 			if(!usedParameters.contains(valueParameter))
 			{
 				if(valueParameter.hasDefaultValue())
 					candidateCall.recordValueArgument(valueParameter, new DefaultValueArgument(temporaryTrace.safeGet(BindingContext.DEFAULT_VALUE_OF_PARAMETER, valueParameter)));
-				else if(valueParameter.getVarargElementType() != null)
-					candidateCall.recordValueArgument(valueParameter, new VarargValueArgument());
+				//else if(valueParameter.getVarargElementType() != null)
+				//	candidateCall.recordValueArgument(valueParameter, new VarargValueArgument());
 				else
 				{
 					// tracing.reportWrongValueArguments(temporaryTrace, "No value passed for parameter " + valueParameter.getName());
@@ -245,10 +244,10 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 		return status;
 	}
 
-	private static <D extends CallableDescriptor> Status put(ResolvedCallImpl<D> candidateCall, ParameterDescriptor parameterDescriptor, ValueArgument valueArgument, Map<ParameterDescriptor, VarargValueArgument> varargs)
+	private static <D extends CallableDescriptor> Status put(ResolvedCallImpl<D> candidateCall, CallParameterDescriptor parameterDescriptor, ValueArgument valueArgument, Map<CallParameterDescriptor, VarargValueArgument> varargs)
 	{
 		Status error = OK;
-		if(parameterDescriptor.getVarargElementType() != null)
+		/*if(parameterDescriptor.getVarargElementType() != null)
 		{
 			VarargValueArgument vararg = varargs.get(parameterDescriptor);
 			if(vararg == null)
@@ -259,7 +258,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 			}
 			vararg.addArgument(valueArgument);
 		}
-		else
+		else*/
 		{
 			LeafPsiElement spread = valueArgument.getSpreadElement();
 			if(spread != null)

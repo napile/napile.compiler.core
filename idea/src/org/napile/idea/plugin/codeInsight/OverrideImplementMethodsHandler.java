@@ -233,7 +233,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 			delegationBuilder.append(">.").append(descriptor.getName()).append("(");
 		}
 		boolean first = true;
-		for(ParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
+		for(CallParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
 		{
 			if(!first)
 			{

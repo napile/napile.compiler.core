@@ -114,17 +114,17 @@ public abstract class NapileNamedMethodOrMacroImpl<S extends NamedStub> extends 
 
 	@Override
 	@Nullable
-	public NapileParameterList getValueParameterList()
+	public NapileCallParameterList getCallParameterList()
 	{
-		return (NapileParameterList) findChildByType(NapileNodes.VALUE_PARAMETER_LIST);
+		return (NapileCallParameterList) findChildByType(NapileNodes.CALL_PARAMETER_LIST);
 	}
 
 	@Override
 	@NotNull
-	public NapileElement[] getValueParameters()
+	public NapileCallParameter[] getValueParameters()
 	{
-		NapileParameterList list = getValueParameterList();
-		return list != null ? list.getParameters() :NapileElement.EMPTY_ARRAY;
+		NapileCallParameterList list = getCallParameterList();
+		return list != null ? list.getParameters() : NapileCallParameter.EMPTY_ARRAY;
 	}
 
 	@Override

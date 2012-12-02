@@ -45,9 +45,9 @@ public class NapileForExpression extends NapileLoopExpression
 
 	@Nullable
 	@IfNotParsed
-	public NapilePropertyParameter getLoopParameter()
+	public NapileCallParameterAsVariable getLoopParameter()
 	{
-		return (NapilePropertyParameter) findChildByType(NapileNodes.VALUE_PARAMETER);
+		return (NapileCallParameterAsVariable) findChildByType(NapileNodes.CALL_PARAMETER_AS_VARIABLE);
 	}
 
 	@Nullable

@@ -23,7 +23,7 @@ import static org.napile.compiler.lang.lexer.NapileNodes.IMPORT_DIRECTIVE;
 import static org.napile.compiler.lang.lexer.NapileNodes.METHOD;
 import static org.napile.compiler.lang.lexer.NapileNodes.PACKAGE;
 import static org.napile.compiler.lang.lexer.NapileNodes.VARIABLE;
-import static org.napile.compiler.lang.lexer.NapileNodes.VALUE_PARAMETER;
+import static org.napile.compiler.lang.lexer.NapileNodes.CALL_PARAMETER_AS_VARIABLE;
 import static org.napile.compiler.lang.lexer.NapileTokens.*;
 
 import org.jetbrains.annotations.NotNull;
@@ -79,7 +79,7 @@ public class JetFormattingModelBuilder implements FormattingModelBuilder
 
 						// TODO: Ask for better API
 						// Type of the declaration colon
-				.beforeInside(COLON, VARIABLE).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, VARIABLE).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, METHOD).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, METHOD).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, VALUE_PARAMETER).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON);
+				.beforeInside(COLON, VARIABLE).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, VARIABLE).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, METHOD).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, METHOD).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON).beforeInside(COLON, CALL_PARAMETER_AS_VARIABLE).spaceIf(jetSettings.SPACE_BEFORE_TYPE_COLON).afterInside(COLON, CALL_PARAMETER_AS_VARIABLE).spaceIf(jetSettings.SPACE_AFTER_TYPE_COLON);
 	}
 
 	@Override

@@ -22,10 +22,10 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.Modifier;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 
 /**
  * @author VISTALL
@@ -34,7 +34,7 @@ import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 public class ModifierCodegen
 {
 	@NotNull
-	public static Modifier[] gen(@NotNull ParameterDescriptor parameterDescriptor)
+	public static Modifier[] gen(@NotNull CallParameterDescriptor parameterDescriptor)
 	{
 		return gen((DeclarationDescriptorWithVisibility) parameterDescriptor);
 	}

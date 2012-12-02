@@ -17,8 +17,8 @@
 package org.napile.compiler.lang.cfg.pseudocode;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
 import org.napile.compiler.lang.psi.NapileVariable;
 
 /**
@@ -26,7 +26,7 @@ import org.napile.compiler.lang.psi.NapileVariable;
  */
 public class VariableDeclarationInstruction extends InstructionWithNext
 {
-	protected VariableDeclarationInstruction(@NotNull NapilePropertyParameter element)
+	protected VariableDeclarationInstruction(@NotNull NapileCallParameterAsVariable element)
 	{
 		super(element);
 	}

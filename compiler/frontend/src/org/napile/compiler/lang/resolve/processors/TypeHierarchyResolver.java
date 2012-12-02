@@ -210,7 +210,7 @@ public class TypeHierarchyResolver
 					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
 
 					ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(mutableClassDescriptor, Collections.<AnnotationDescriptor>emptyList(), false);
-					constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<ParameterDescriptor>emptyList(), Visibility.PUBLIC);
+					constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), Visibility.PUBLIC);
 					mutableClassDescriptor.addConstructor(constructorDescriptor);
 
 					trace.record(BindingContext.CONSTRUCTOR, declaration, constructorDescriptor);

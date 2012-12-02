@@ -108,12 +108,12 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitNamedDeclaration(parameter);
 	}
 
-	public void visitParameterList(NapileParameterList list)
+	public void visitCallParameterList(NapileCallParameterList list)
 	{
 		visitJetElement(list);
 	}
 
-	public void visitPropertyParameter(NapilePropertyParameter parameter)
+	public void visitCallParameterAsVariable(NapileCallParameterAsVariable parameter)
 	{
 		visitNamedDeclaration(parameter);
 	}
@@ -391,7 +391,7 @@ public void visitBlockExpression(NapileBlockExpression expression)
 		visitDeclaration(declaration);
 	}
 
-	public void visitReferenceParameter(NapileReferenceParameter napileReferenceParameter)
+	public void visitCallParameterAsReference(NapileCallParameterAsReference napileReferenceParameter)
 	{
 		visitJetElement(napileReferenceParameter);
 	}

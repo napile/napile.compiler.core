@@ -85,7 +85,7 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileExpression> USELESS_SIMPLE_IMPORT = SimpleDiagnosticFactory.create(Severity.WARNING);
 	DiagnosticFactory1<NapileReferenceExpression, String> TARGET_IS_DEPRECATED = DiagnosticFactory1.create(Severity.WARNING);
 
-	SimpleDiagnosticFactory<NapilePropertyParameter> CANNOT_INFER_PARAMETER_TYPE = SimpleDiagnosticFactory.create(Severity.ERROR);
+	SimpleDiagnosticFactory<NapileCallParameterAsVariable> CANNOT_INFER_PARAMETER_TYPE = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileElement> NO_BACKING_FIELD_ABSTRACT_PROPERTY = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileElement> NO_BACKING_FIELD_CUSTOM_ACCESSORS = SimpleDiagnosticFactory.create(Severity.ERROR);
@@ -130,9 +130,9 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileDeclaration> CANNOT_INFER_VISIBILITY = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.DECLARATION);
 
 	DiagnosticFactory1<NapileSimpleNameExpression, VariableDescriptor> UNINITIALIZED_VARIABLE = DiagnosticFactory1.create(Severity.ERROR);
-	DiagnosticFactory1<NapileSimpleNameExpression, ParameterDescriptor> UNINITIALIZED_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
+	DiagnosticFactory1<NapileSimpleNameExpression, CallParameterDescriptor> UNINITIALIZED_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
 	UnusedElementDiagnosticFactory<NapileVariable, VariableDescriptor> UNUSED_VARIABLE = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
-	UnusedElementDiagnosticFactory<NapilePropertyParameter, VariableDescriptor> UNUSED_PARAMETER = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
+	UnusedElementDiagnosticFactory<NapileCallParameterAsVariable, VariableDescriptor> UNUSED_PARAMETER = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 	UnusedElementDiagnosticFactory<NapileNamedDeclaration, DeclarationDescriptor> ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> VARIABLE_WITH_REDUNDANT_INITIALIZER = DiagnosticFactory1.create(Severity.WARNING);
 	DiagnosticFactory2<NapileElement, NapileElement, DeclarationDescriptor> UNUSED_VALUE = DiagnosticFactory2.create(Severity.WARNING);
@@ -219,7 +219,7 @@ public interface Errors
 
 	DiagnosticFactory1<NapileExpression, String> ILLEGAL_SELECTOR = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapilePropertyParameter> VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
+	SimpleDiagnosticFactory<NapileCallParameterAsVariable> VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileExpression> BREAK_OR_CONTINUE_OUTSIDE_A_LOOP = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, String> NOT_A_LOOP_LABEL = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileReturnExpression, String> NOT_A_RETURN_LABEL = DiagnosticFactory1.create(Severity.ERROR);
@@ -268,10 +268,10 @@ public interface Errors
 
 	DiagnosticFactory2<PsiElement, NapileClassLike, CallableMemberDescriptor> MANY_IMPL_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapilePropertyParameter> DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.PARAMETER_DEFAULT_VALUE);
-	DiagnosticFactory1<NapilePropertyParameter, ParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES = DiagnosticFactory1.create(Severity.ERROR);
-	DiagnosticFactory1<NapileClassLike, ParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES_WHEN_NO_EXPLICIT_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
-	DiagnosticFactory2<NapilePropertyParameter, ClassDescriptor, ParameterDescriptor> PARAMETER_NAME_CHANGED_ON_OVERRIDE = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
+	SimpleDiagnosticFactory<NapileCallParameterAsVariable> DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.PARAMETER_DEFAULT_VALUE);
+	DiagnosticFactory1<NapileCallParameterAsVariable, CallParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES = DiagnosticFactory1.create(Severity.ERROR);
+	DiagnosticFactory1<NapileClassLike, CallParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES_WHEN_NO_EXPLICIT_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
+	DiagnosticFactory2<NapileCallParameterAsVariable, ClassDescriptor, CallParameterDescriptor> PARAMETER_NAME_CHANGED_ON_OVERRIDE = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 	DiagnosticFactory2<NapileClassLike, Collection<? extends CallableMemberDescriptor>, Integer> DIFFERENT_NAMES_FOR_THE_SAME_PARAMETER_IN_SUPERTYPES = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 
 	DiagnosticFactory2<NapileDeclaration, CallableMemberDescriptor, String> CONFLICTING_OVERLOADS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.DECLARATION);
@@ -284,7 +284,7 @@ public interface Errors
 
 	AmbiguousDescriptorCallDiagnosticFactory OVERLOAD_RESOLUTION_AMBIGUITY = new AmbiguousDescriptorCallDiagnosticFactory();
 	AmbiguousDescriptorCallDiagnosticFactory NONE_APPLICABLE = new AmbiguousDescriptorCallDiagnosticFactory();
-	DiagnosticFactory1<PsiElement, ParameterDescriptor> NO_VALUE_FOR_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
+	DiagnosticFactory1<PsiElement, CallParameterDescriptor> NO_VALUE_FOR_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReferenceExpression> NO_RECEIVER_ADMITTED = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, ClassifierDescriptor> NO_CLASS_OBJECT = DiagnosticFactory1.create(Severity.ERROR);
 

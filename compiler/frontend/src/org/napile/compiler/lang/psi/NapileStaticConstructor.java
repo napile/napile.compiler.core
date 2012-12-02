@@ -70,9 +70,9 @@ public class NapileStaticConstructor extends NapileDeclarationImpl implements Na
 
 	@NotNull
 	@Override
-	public NapileElement[] getValueParameters()
+	public NapileCallParameter[] getValueParameters()
 	{
-		return NapileElement.EMPTY_ARRAY;
+		return NapileCallParameter.EMPTY_ARRAY;
 	}
 
 	@NotNull

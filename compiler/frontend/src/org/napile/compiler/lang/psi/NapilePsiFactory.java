@@ -169,10 +169,10 @@ public class NapilePsiFactory
 		return function.getBodyExpression();
 	}
 
-	public static NapilePropertyParameter createParameter(Project project, String name, String type)
+	public static NapileCallParameterAsVariable createParameter(Project project, String name, String type)
 	{
 		NapileNamedMethodOrMacro function = createFunction(project, "meth foo(" + name + " : " + type + ") {}");
-		return (NapilePropertyParameter)function.getValueParameters()[0];
+		return (NapileCallParameterAsVariable)function.getValueParameters()[0];
 	}
 
 	@NotNull

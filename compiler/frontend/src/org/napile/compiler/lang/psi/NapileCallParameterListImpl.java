@@ -26,35 +26,35 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * @author max
  */
-public class NapileParameterListImpl extends NapileElementImplStub<NapilePsiParameterListStub> implements NapileParameterList
+public class NapileCallParameterListImpl extends NapileElementImplStub<NapilePsiParameterListStub> implements NapileCallParameterList
 {
-	private static final TokenSet PARAMETER_TYPES = TokenSet.create(NapileStubElementTypes.VALUE_PARAMETER, NapileNodes.REFERENCE_PARAMETER);
+	private static final TokenSet PARAMETER_TYPES = TokenSet.create(NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE, NapileNodes.CALL_PARAMETER_AS_REFERENCE);
 
-	public NapileParameterListImpl(@NotNull ASTNode node)
+	public NapileCallParameterListImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
-	public NapileParameterListImpl(@NotNull NapilePsiParameterListStub stub)
+	public NapileCallParameterListImpl(@NotNull NapilePsiParameterListStub stub)
 	{
-		super(stub, NapileStubElementTypes.VALUE_PARAMETER_LIST);
+		super(stub, NapileStubElementTypes.CALL_PARAMETER_LIST);
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitParameterList(this);
+		visitor.visitCallParameterList(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitParameterList(this, data);
+		return visitor.visitCallParameterList(this, data);
 	}
 
 	@Override
-	public NapileElement[] getParameters()
+	public NapileCallParameter[] getParameters()
 	{
-		return getStubOrPsiChildren(PARAMETER_TYPES, NapileElement.ARRAY_FACTORY);
+		return getStubOrPsiChildren(PARAMETER_TYPES, NapileCallParameter.ARRAY_FACTORY);
 	}
 }

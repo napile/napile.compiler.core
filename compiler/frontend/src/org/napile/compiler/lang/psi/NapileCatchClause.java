@@ -45,16 +45,16 @@ public class NapileCatchClause extends NapileElementImpl
 
 	@Nullable
 	@IfNotParsed
-	public NapileParameterList getParameterList()
+	public NapileCallParameterList getParameterList()
 	{
-		return (NapileParameterList) findChildByType(NapileNodes.VALUE_PARAMETER_LIST);
+		return (NapileCallParameterList) findChildByType(NapileNodes.CALL_PARAMETER_LIST);
 	}
 
 	@Nullable
 	@IfNotParsed
 	public NapileElement getCatchParameter()
 	{
-		NapileParameterList list = getParameterList();
+		NapileCallParameterList list = getParameterList();
 		if(list == null)
 			return null;
 		NapileElement[] parameters = list.getParameters();

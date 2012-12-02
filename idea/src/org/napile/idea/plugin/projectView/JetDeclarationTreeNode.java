@@ -19,12 +19,12 @@ package org.napile.idea.plugin.projectView;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.NapileReferenceParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.formatter.JetCodeStyleSettings;
@@ -91,7 +91,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 				NapileElement[] parameters = function.getValueParameters();
 				for(NapileElement parameter : parameters)
 				{
-					if(parameter instanceof NapilePropertyParameter)
+					if(parameter instanceof NapileCallParameterAsVariable)
 					{
 						if(parameter.getName() != null)
 						{
@@ -102,13 +102,13 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 							if(settings.SPACE_AFTER_TYPE_COLON)
 								text += " ";
 						}
-						NapileTypeReference typeReference = ((NapilePropertyParameter) parameter).getTypeReference();
+						NapileTypeReference typeReference = ((NapileCallParameterAsVariable) parameter).getTypeReference();
 						if(typeReference != null)
 						{
 							text += typeReference.getText();
 						}
 					}
-					else if(parameter instanceof NapileReferenceParameter)
+					else if(parameter instanceof NapileCallParameterAsReference)
 						text += parameter.getText();
 					text += ", ";
 				}
@@ -133,7 +133,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 				NapileElement[] parameters = function.getValueParameters();
 				for(NapileElement parameter : parameters)
 				{
-					if(parameter instanceof NapilePropertyParameter)
+					if(parameter instanceof NapileCallParameterAsVariable)
 					{
 						if(parameter.getName() != null)
 						{
@@ -144,13 +144,13 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 							if(settings.SPACE_AFTER_TYPE_COLON)
 								text += " ";
 						}
-						NapileTypeReference typeReference = ((NapilePropertyParameter) parameter).getTypeReference();
+						NapileTypeReference typeReference = ((NapileCallParameterAsVariable) parameter).getTypeReference();
 						if(typeReference != null)
 						{
 							text += typeReference.getText();
 						}
 					}
-					else if(parameter instanceof NapileReferenceParameter)
+					else if(parameter instanceof NapileCallParameterAsReference)
 						text += parameter.getText();
 					text += ", ";
 				}

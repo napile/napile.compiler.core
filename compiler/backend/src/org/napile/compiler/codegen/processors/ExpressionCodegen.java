@@ -121,7 +121,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		if(!d.isStatic())
 			frameMap.enterTemp();
-		for(ParameterDescriptor p : d.getValueParameters())
+		for(CallParameterDescriptor p : d.getValueParameters())
 			frameMap.enter(p);
 	}
 
@@ -959,7 +959,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		int index = 0;
 
-		for(ParameterDescriptor valueParameterDescriptor : fd.getValueParameters())
+		for(CallParameterDescriptor valueParameterDescriptor : fd.getValueParameters())
 		{
 			ResolvedValueArgument resolvedValueArgument = valueArguments.get(valueParameterDescriptor.getIndex());
 			if(resolvedValueArgument instanceof ExpressionValueArgument)

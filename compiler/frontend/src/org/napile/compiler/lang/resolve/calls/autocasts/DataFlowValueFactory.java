@@ -18,13 +18,13 @@ package org.napile.compiler.lang.resolve.calls.autocasts;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
@@ -147,7 +147,7 @@ public class DataFlowValueFactory
 
 	public static boolean isStableVariable(@NotNull VariableDescriptor variableDescriptor)
 	{
-		if(variableDescriptor.getModality() == Modality.FINAL || variableDescriptor instanceof LocalVariableDescriptor || variableDescriptor instanceof ParameterDescriptor)
+		if(variableDescriptor.getModality() == Modality.FINAL || variableDescriptor instanceof LocalVariableDescriptor || variableDescriptor instanceof CallParameterDescriptor)
 			return true;
 
 		return false;

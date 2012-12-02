@@ -101,7 +101,7 @@ public class JetIconProvider extends IconProvider
 					}
 			}
 		}
-		else if(psiElement instanceof NapileVariable || psiElement instanceof NapilePropertyParameter)
+		else if(psiElement instanceof NapileVariable || psiElement instanceof NapileCallParameterAsVariable)
 			icon = JetIcons.VARIABLE;
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isRunnable);

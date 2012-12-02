@@ -25,11 +25,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.cfg.pseudocode.*;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -297,9 +297,9 @@ public class JetFlowInformationProvider
 		if(!isInitialized && !varWithUninitializedErrorGenerated.contains(variableDescriptor))
 		{
 			varWithUninitializedErrorGenerated.add(variableDescriptor);
-			if(variableDescriptor instanceof ParameterDescriptor)
+			if(variableDescriptor instanceof CallParameterDescriptor)
 			{
-				trace.report(Errors.UNINITIALIZED_PARAMETER.on((NapileSimpleNameExpression) element, (ParameterDescriptor) variableDescriptor));
+				trace.report(Errors.UNINITIALIZED_PARAMETER.on((NapileSimpleNameExpression) element, (CallParameterDescriptor) variableDescriptor));
 			}
 			else
 			{
@@ -569,7 +569,7 @@ public class JetFlowInformationProvider
 							{
 								trace.report(Errors.UNUSED_VARIABLE.on((NapileVariable) element, variableDescriptor));
 							}
-							else if(element instanceof NapilePropertyParameter)
+							else if(element instanceof NapileCallParameterAsVariable)
 							{
 								PsiElement psiElement = element.getParent().getParent();
 								if(psiElement instanceof NapileMethod)
@@ -583,7 +583,7 @@ public class JetFlowInformationProvider
 											!methodDescriptor.getModality().isOverridable() &&
 											methodDescriptor.getOverriddenDescriptors().isEmpty())
 									{
-										trace.report(Errors.UNUSED_PARAMETER.on((NapilePropertyParameter) element, variableDescriptor));
+										trace.report(Errors.UNUSED_PARAMETER.on((NapileCallParameterAsVariable) element, variableDescriptor));
 									}
 								}
 							}
@@ -652,9 +652,9 @@ public class JetFlowInformationProvider
 			@Override
 			public void execute(@NotNull Instruction instruction)
 			{
-				if(instruction instanceof WriteValueInstruction && ((WriteValueInstruction) instruction).getElement() instanceof NapileReferenceParameter)
+				if(instruction instanceof WriteValueInstruction && ((WriteValueInstruction) instruction).getElement() instanceof NapileCallParameterAsReference)
 				{
-					NapileSimpleNameExpression refExp = ((NapileReferenceParameter) ((WriteValueInstruction) instruction).getElement()).getReferenceExpression();
+					NapileSimpleNameExpression refExp = ((NapileCallParameterAsReference) ((WriteValueInstruction) instruction).getElement()).getReferenceExpression();
 					if(refExp == null)
 						return;
 

@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.tree.members.AbstractMemberNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.TypeParameterNode;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.JetType;
 
@@ -29,7 +29,7 @@ public class TypeParameterCodegen
 			for(ConstructorDescriptor constructorDescriptor : typeParameterDescriptor.getConstructors())
 			{
 				List<MethodParameterNode> parameterNodes = new ArrayList<MethodParameterNode>(constructorDescriptor.getValueParameters().size());
-				for(ParameterDescriptor declaration : constructorDescriptor.getValueParameters())
+				for(CallParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 				{
 					MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
 

@@ -18,8 +18,8 @@ package org.napile.compiler.util;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 
@@ -40,7 +40,7 @@ public class RunUtil
 		if(!methodDescriptor.getName().getName().equals("main"))
 			return false;
 
-		ParameterDescriptor parameterDescriptor = methodDescriptor.getValueParameters().get(0);
+		CallParameterDescriptor parameterDescriptor = methodDescriptor.getValueParameters().get(0);
 
 		JetType jetType = parameterDescriptor.getReturnType();
 

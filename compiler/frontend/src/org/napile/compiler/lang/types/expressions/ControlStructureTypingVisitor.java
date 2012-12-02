@@ -300,7 +300,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			return DataFlowUtils.illegalStatementType(expression, contextWithExpectedType, facade);
 
 		ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
-		NapilePropertyParameter loopParameter = expression.getLoopParameter();
+		NapileCallParameterAsVariable loopParameter = expression.getLoopParameter();
 		NapileExpression loopRange = expression.getLoopRange();
 		JetType expectedParameterType = null;
 		if(loopRange != null)
@@ -429,12 +429,12 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		{
 			NapileElement catchParameter = catchClause.getCatchParameter();
 			NapileExpression catchBody = catchClause.getCatchBody();
-			if(catchParameter instanceof NapilePropertyParameter)
+			if(catchParameter instanceof NapileCallParameterAsVariable)
 			{
-				VariableDescriptor variableDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(context.scope.getContainingDeclaration(), context.scope, ((NapilePropertyParameter) catchParameter)
+				VariableDescriptor variableDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(context.scope.getContainingDeclaration(), context.scope, ((NapileCallParameterAsVariable) catchParameter)
 						, context.trace);
 				JetType throwableType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.EXCEPTION, false);
-				DataFlowUtils.checkType(variableDescriptor.getType(), ((NapilePropertyParameter) catchParameter), context.replaceExpectedType(throwableType));
+				DataFlowUtils.checkType(variableDescriptor.getType(), ((NapileCallParameterAsVariable) catchParameter), context.replaceExpectedType(throwableType));
 				if(catchBody != null)
 				{
 					WritableScope catchScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Catch scope");
@@ -489,7 +489,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		{
 			parentDeclaration = (NapileFunctionLiteralExpression) parentDeclaration.getParent();
 		}
-		if(parentDeclaration instanceof NapilePropertyParameter)
+		if(parentDeclaration instanceof NapileCallParameterAsVariable)
 		{
 			context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
 		}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.descriptors;
-
-import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+package org.napile.compiler.lang.psi;
 
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 8:08/20.10.12
  */
-public interface MutableParameterDescriptor extends ParameterDescriptor
+public interface NapileCallParameterList extends NapileElement
 {
-	void setType(@NotNull JetType type);
+	NapileCallParameter[] getParameters();
 }

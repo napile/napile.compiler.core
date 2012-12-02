@@ -45,7 +45,7 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 		super(containingDeclaration, original, annotations, NAME, Kind.DECLARATION, isStatic, false);
 	}
 
-	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, Visibility visibility)
+	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<CallParameterDescriptor> unsubstitutedValueParameters, Visibility visibility)
 	{
 		super.initialize(isStatic() ? ReceiverDescriptor.NO_RECEIVER : getExpectedThisObject(getContainingDeclaration()), typeParameters, unsubstitutedValueParameters, null, Modality.FINAL, visibility);
 		return this;

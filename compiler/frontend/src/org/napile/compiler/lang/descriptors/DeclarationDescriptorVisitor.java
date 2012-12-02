@@ -39,7 +39,7 @@ public interface DeclarationDescriptorVisitor<R, D>
 
 	R visitPropertyDescriptor(PropertyDescriptor descriptor, D data);
 
-	R visitPropertyParameterDescriptor(ParameterDescriptor descriptor, D data);
+	R visitCallParameterAsVariableDescriptor(CallParameterDescriptor descriptor, D data);
 
-	R visitReferenceParameterDescriptor(ReferenceParameterDescriptor descriptor, D data);
+	R visitCallParameterAsReferenceDescriptor(CallParameterAsReferenceDescriptorImpl descriptor, D data);
 }

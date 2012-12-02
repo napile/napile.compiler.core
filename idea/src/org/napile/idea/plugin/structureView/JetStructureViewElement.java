@@ -19,10 +19,10 @@ package org.napile.idea.plugin.structureView;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.ParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
@@ -196,10 +196,10 @@ public class JetStructureViewElement implements StructureViewTreeElement
 
 			textBuilder.append(methodDescriptor.getName());
 
-			String parametersString = StringUtil.join(methodDescriptor.getValueParameters(), new Function<ParameterDescriptor, String>()
+			String parametersString = StringUtil.join(methodDescriptor.getValueParameters(), new Function<CallParameterDescriptor, String>()
 			{
 				@Override
-				public String fun(ParameterDescriptor valueParameterDescriptor)
+				public String fun(CallParameterDescriptor valueParameterDescriptor)
 				{
 					return valueParameterDescriptor.getName() + ":" +
 							DescriptorRenderer.TEXT.renderType(valueParameterDescriptor.getType());

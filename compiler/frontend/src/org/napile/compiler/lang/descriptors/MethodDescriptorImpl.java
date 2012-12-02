@@ -41,7 +41,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 {
 
 	protected List<TypeParameterDescriptor> typeParameters;
-	protected List<ParameterDescriptor> unsubstitutedValueParameters;
+	protected List<CallParameterDescriptor> unsubstitutedValueParameters;
 	protected JetType unsubstitutedReturnType;
 	protected ReceiverDescriptor expectedThisObject;
 
@@ -71,7 +71,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		this.isNative = isNative;
 	}
 
-	public MethodDescriptorImpl initialize(@NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<ParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
+	public MethodDescriptorImpl initialize(@NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<CallParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
 	{
 		this.typeParameters = Lists.newArrayList(typeParameters);
 		this.unsubstitutedValueParameters = unsubstitutedValueParameters;
@@ -93,7 +93,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		{
 			// TODO fill me
 			int firstValueParameterOffset = 0; // receiverParameter.exists() ? 1 : 0;
-			ParameterDescriptor parameterDescriptor = unsubstitutedValueParameters.get(i);
+			CallParameterDescriptor parameterDescriptor = unsubstitutedValueParameters.get(i);
 			if(parameterDescriptor.getIndex() != i + firstValueParameterOffset)
 			{
 				throw new IllegalStateException(parameterDescriptor + "index is " + parameterDescriptor.getIndex() + " but position is " + i);
@@ -179,7 +179,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 
 	@Override
 	@NotNull
-	public List<ParameterDescriptor> getValueParameters()
+	public List<CallParameterDescriptor> getValueParameters()
 	{
 		return unsubstitutedValueParameters;
 	}
@@ -232,7 +232,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 			substitutedExpectedThis = new TransientReceiver(substitutedType);
 		}
 
-		List<ParameterDescriptor> substitutedValueParameters = FunctionDescriptorUtil.getSubstitutedValueParameters(substitutedDescriptor, this, substitutor);
+		List<CallParameterDescriptor> substitutedValueParameters = FunctionDescriptorUtil.getSubstitutedValueParameters(substitutedDescriptor, this, substitutor);
 		if(substitutedValueParameters == null)
 		{
 			return null;

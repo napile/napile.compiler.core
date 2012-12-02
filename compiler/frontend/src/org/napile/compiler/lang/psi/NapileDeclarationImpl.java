@@ -25,7 +25,7 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-abstract class NapileDeclarationImpl extends NapileExpressionImpl implements NapileDeclaration
+public abstract class NapileDeclarationImpl extends NapileExpressionImpl implements NapileDeclaration
 {
 	public NapileDeclarationImpl(@NotNull ASTNode node)
 	{

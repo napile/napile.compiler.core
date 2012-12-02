@@ -21,8 +21,9 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.psi.NapilePropertyParameter;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodParameterStub;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
+import org.napile.compiler.lang.psi.impl.NapileCallParameterAsVariableImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterAsVariableStub;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
@@ -35,7 +36,7 @@ import com.intellij.util.io.StringRef;
 /**
  * @author Nikolay Krasko
  */
-public class NapileParameterElementType extends NapileStubElementType<NapilePsiMethodParameterStub, NapilePropertyParameter>
+public class NapileParameterElementType extends NapileStubElementType<NapilePsiCallParameterAsVariableStub, NapileCallParameterAsVariable>
 {
 	public NapileParameterElementType(@NotNull @NonNls String debugName)
 	{
@@ -43,24 +44,24 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiM
 	}
 
 	@Override
-	public NapilePropertyParameter createPsiFromAst(@NotNull ASTNode node)
+	public NapileCallParameterAsVariable createPsiFromAst(@NotNull ASTNode node)
 	{
-		return new NapilePropertyParameter(node);
+		return new NapileCallParameterAsVariableImpl(node);
 	}
 
 	@Override
-	public NapilePropertyParameter createPsi(@NotNull NapilePsiMethodParameterStub stub)
+	public NapileCallParameterAsVariable createPsi(@NotNull NapilePsiCallParameterAsVariableStub stub)
 	{
-		return getPsiFactory(stub).createParameter(stub);
+		return getPsiFactory(stub).createCallParameterAsVariable(stub);
 	}
 
 	@Override
-	public NapilePsiMethodParameterStub createStub(@NotNull NapilePropertyParameter psi, StubElement parentStub)
+	public NapilePsiCallParameterAsVariableStub createStub(@NotNull NapileCallParameterAsVariable psi, StubElement parentStub)
 	{
 		NapileTypeReference typeReference = psi.getTypeReference();
 		NapileExpression defaultValue = psi.getDefaultValue();
 
-		return new NapilePsiMethodParameterStub(parentStub, psi.getName(), psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
+		return new NapilePsiCallParameterAsVariableStub(parentStub, psi.getName(), psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
 	}
 
 	@Override
@@ -70,7 +71,7 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiM
 	}
 
 	@Override
-	public void serialize(NapilePsiMethodParameterStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiCallParameterAsVariableStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
 		dataStream.writeBoolean(stub.isVarArg());
@@ -79,18 +80,18 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiM
 	}
 
 	@Override
-	public NapilePsiMethodParameterStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiCallParameterAsVariableStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
 		boolean isVarArg = dataStream.readBoolean();
 		StringRef typeText = dataStream.readName();
 		StringRef defaultValueText = dataStream.readName();
 
-		return new NapilePsiMethodParameterStub(parentStub, name, isVarArg, typeText, defaultValueText);
+		return new NapilePsiCallParameterAsVariableStub(parentStub, name, isVarArg, typeText, defaultValueText);
 	}
 
 	@Override
-	public void indexStub(NapilePsiMethodParameterStub stub, IndexSink sink)
+	public void indexStub(NapilePsiCallParameterAsVariableStub stub, IndexSink sink)
 	{
 		// No index
 	}
