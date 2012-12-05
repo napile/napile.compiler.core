@@ -901,7 +901,7 @@ public class JetParsing extends AbstractJetParsing
 		// identifier
 		if(at(NapileTokens.IDENTIFIER))
 			parseUserType();
-		// {() : String}
+		// {() -> String}
 		else if(at(NapileTokens.LBRACE))
 			parseAnonymMethodType();
 		// this
@@ -991,7 +991,10 @@ public class JetParsing extends AbstractJetParsing
 			parseTypeRef();
 		}
 		else
-			parseTypeRef();
+		{
+			if(!at(NapileTokens.RBRACE))
+				parseTypeRef();
+		}
 
 		expect(NapileTokens.RBRACE, "'}' expecting");
 
