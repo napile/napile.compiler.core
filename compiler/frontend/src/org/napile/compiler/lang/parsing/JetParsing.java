@@ -878,15 +878,16 @@ public class JetParsing extends AbstractJetParsing
 		 * nullableType
 		 *   : typeDescriptor "?"
 		 */
-	void parseTypeRef()
+	PsiBuilder.Marker parseTypeRef()
 	{
-		parseTypeRef(TokenSet.EMPTY);
+		return parseTypeRef(TokenSet.EMPTY);
 	}
 
-	void parseTypeRef(TokenSet extraRecoverySet)
+	PsiBuilder.Marker parseTypeRef(TokenSet extraRecoverySet)
 	{
 		PsiBuilder.Marker typeRefMarker = parseTypeRefContents(extraRecoverySet);
 		typeRefMarker.done(TYPE_REFERENCE);
+		return typeRefMarker;
 	}
 
 	// The extraRecoverySet is needed for the foo(bar<x, 1, y>(z)) case, to tell whether we should stop
@@ -999,7 +1000,7 @@ public class JetParsing extends AbstractJetParsing
 	/*
 		 *  (optionalProjection type){","}
 		 */
-	private PsiBuilder.Marker parseTypeArgumentList()
+	protected PsiBuilder.Marker parseTypeArgumentList()
 	{
 		if(!at(NapileTokens.LT))
 			return null;

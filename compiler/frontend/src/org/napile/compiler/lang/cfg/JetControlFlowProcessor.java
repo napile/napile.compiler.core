@@ -286,7 +286,7 @@ public class JetControlFlowProcessor
 				}
 				else if(left instanceof NapileQualifiedExpression)
 				{
-					assert !(left instanceof NapileLinkMethodExpressionImpl) : left; // TODO
+					assert !(left instanceof NapileLinkMethodExpression) : left; // TODO
 					NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) left;
 					value(qualifiedExpression.getReceiverExpression(), false);
 					value(expression.getOperationReference(), false);

@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNode;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -107,7 +108,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 					@Override
 					public NapileNode parseRightHandSide(IElementType operation, JetExpressionParsing parser)
 					{
-						parser.myJetParsing.parseTypeRef();
+						parser.parsing.parseTypeRef();
 						return BINARY_WITH_TYPE;
 					}
 
@@ -130,7 +131,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 					{
 						if(operation == NapileTokens.IS_KEYWORD || operation == NapileTokens.NOT_IS)
 						{
-							parser.myJetParsing.parseTypeRef();
+							parser.parsing.parseTypeRef();
 
 							return IS_EXPRESSION;
 						}
@@ -221,13 +222,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 	}
 
 
-	private final JetParsing myJetParsing;
+	private final JetParsing parsing;
 	private final CodeInjectionParser codeInjectionParser;
 
 	public JetExpressionParsing(SemanticWhitespaceAwarePsiBuilder builder, JetParsing jetParsing)
 	{
 		super(builder);
-		myJetParsing = jetParsing;
+		parsing = jetParsing;
 		codeInjectionParser = new CodeInjectionParser(this);
 	}
 
@@ -298,7 +299,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		if(at(NapileTokens.LBRACKET))
 		{
-			if(!myJetParsing.parseMemberDeclaration(true))
+			if(!parsing.parseMemberDeclaration(true))
 			{
 				//PsiBuilder.Marker expression = mark();
 				//myJetParsing.parseAnnotations();
@@ -347,7 +348,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		//        System.out.println("post at "  + myBuilder.getTokenText());
 
-		PsiBuilder.Marker expression = mark();
+		PsiBuilder.Marker expressionMarker = mark();
 		parseAtomicExpression();
 		while(true)
 		{
@@ -358,11 +359,11 @@ public class JetExpressionParsing extends AbstractJetParsing
 			else if(at(NapileTokens.LBRACKET))
 			{
 				parseArrayAccess();
-				expression.done(ARRAY_ACCESS_EXPRESSION);
+				expressionMarker.done(ARRAY_ACCESS_EXPRESSION);
 			}
 			else if(parseCallSuffix())
 			{
-				expression.done(CALL_EXPRESSION);
+				expressionMarker.done(CALL_EXPRESSION);
 			}
 			else if(at(NapileTokens.DOT))
 			{
@@ -370,28 +371,30 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 				parseCallExpression();
 
-				expression.done(DOT_QUALIFIED_EXPRESSION);
+				expressionMarker.done(DOT_QUALIFIED_EXPRESSION);
 			}
+			else if(at(NapileTokens.HASH))
+				parseLinkMethodExpression(expressionMarker);
 			else if(at(NapileTokens.SAFE_ACCESS))
 			{
 				advance(); // SAFE_ACCESS
 
 				parseCallExpression();
 
-				expression.done(SAFE_ACCESS_EXPRESSION);
+				expressionMarker.done(SAFE_ACCESS_EXPRESSION);
 			}
 			else if(atSet(Precedence.POSTFIX.getOperations()))
 			{
 				parseOperationReference();
-				expression.done(POSTFIX_EXPRESSION);
+				expressionMarker.done(POSTFIX_EXPRESSION);
 			}
 			else
 			{
 				break;
 			}
-			expression = expression.precede();
+			expressionMarker = expressionMarker.precede();
 		}
-		expression.drop();
+		expressionMarker.drop();
 	}
 
 	/*
@@ -414,7 +417,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		else if(at(NapileTokens.LT))
 		{
 			PsiBuilder.Marker typeArgumentList = mark();
-			if(myJetParsing.tryParseTypeArgumentList(TYPE_ARGUMENT_LIST_STOPPERS))
+			if(parsing.tryParseTypeArgumentList(TYPE_ARGUMENT_LIST_STOPPERS))
 			{
 				typeArgumentList.done(TYPE_ARGUMENT_LIST);
 				if(!getBuilder().newlineBeforeCurrentToken() && at(NapileTokens.LPAR))
@@ -504,7 +507,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 		else if(at(NapileTokens.IDE_TEMPLATE_START))
 		{
-			myJetParsing.parseIdeTemplate();
+			parsing.parseIdeTemplate();
 		}
 		else if(at(NapileTokens.THIS_KEYWORD))
 		{
@@ -569,13 +572,11 @@ public class JetExpressionParsing extends AbstractJetParsing
 		else if(at(NapileTokens.ARRAY_OF_KEYWORD))
 			parseArrayExpression();
 		else if(at(NapileTokens.HASH))
-			parseLinkMethodExpression();
+			parseLinkMethodExpression(null);
 		else if(at(NapileTokens.IDENTIFIER))
 			parseOneTokenExpression(REFERENCE_EXPRESSION);
 		else if(at(NapileTokens.LBRACE))
-		{
 			parseFunctionLiteral();
-		}
 		else if(!parseLiteralConstant())
 		{
 			// TODO: better recovery if FIRST(element) did not match
@@ -591,7 +592,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		if(expect(NapileTokens.LPAR, "'(' expected"))
 		{
-			myJetParsing.parseTypeRef(JetParsing.TYPE_PARAMETER_GT_RECOVERY_SET);
+			parsing.parseTypeRef(JetParsing.TYPE_PARAMETER_GT_RECOVERY_SET);
 
 			expect(NapileTokens.RPAR, "') expected");
 		}
@@ -655,8 +656,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 			if(valPos >= 0)
 			{
 				PsiBuilder.Marker property = mark();
-				myJetParsing.parseModifierList();
-				myJetParsing.parseProperty();
+				parsing.parseModifierList();
+				parsing.parseProperty();
 				property.done(VARIABLE);
 			}
 			else
@@ -735,7 +736,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseWhenEntryNotElse()
 	{
-		if(!myJetParsing.parseIdeTemplate())
+		if(!parsing.parseIdeTemplate())
 		{
 			while(true)
 			{
@@ -797,7 +798,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 			else
 			{
-				myJetParsing.parseTypeRef();
+				parsing.parseTypeRef();
 			}
 			condition.done(WHEN_CONDITION_IS_PATTERN);
 		}
@@ -851,13 +852,18 @@ public class JetExpressionParsing extends AbstractJetParsing
 		indices.done(INDICES);
 	}
 
-	public void parseLinkMethodExpression()
+	public void parseLinkMethodExpression(@Nullable final PsiBuilder.Marker currentMarker)
 	{
-		PsiBuilder.Marker marker = mark();
+		PsiBuilder.Marker marker = currentMarker == null ? mark() : currentMarker;
 
 		advance();
 
-		parseOneTokenExpression(REFERENCE_EXPRESSION);
+		if(at(NapileTokens.IDENTIFIER))
+			parseOneTokenExpression(REFERENCE_EXPRESSION);
+		else
+			error("Identifier expected");
+
+		parsing.parseTypeArgumentList();
 
 		if(at(NapileTokens.LPAR))
 		{
@@ -873,7 +879,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 					continue;
 				}
 
-				myJetParsing.parseTypeRef();
+				parsing.parseTypeRef();
 				if(!at(NapileTokens.COMMA))
 					break;
 
@@ -1042,7 +1048,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				PsiBuilder.Marker errorMarker = mark();
 				advance(); // COLON
-				myJetParsing.parseTypeRef();
+				parsing.parseTypeRef();
 				errorMarker.error("To specify a type of a parameter or a return type, use the full notation: {(parameter : Type) : ReturnType -> ...}");
 			}
 			else if(at(NapileTokens.ARROW))
@@ -1123,7 +1129,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			}
 			else
 			{
-				myJetParsing.parseTypeRef();
+				parsing.parseTypeRef();
 			}
 		}
 	}
@@ -1154,7 +1160,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 				if(at(NapileTokens.COLON))
 				{
 					advance(); // COLON
-					myJetParsing.parseTypeRef();
+					parsing.parseTypeRef();
 				}
 				parameter.done(CALL_PARAMETER_AS_VARIABLE);
 				if(!at(NapileTokens.COMMA))
@@ -1217,7 +1223,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseStatement()
 	{
-		if(!myJetParsing.parseMemberDeclaration(true))
+		if(!parsing.parseMemberDeclaration(true))
 		{
 			if(!atSet(EXPRESSION_FIRST))
 			{
@@ -1270,7 +1276,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		else
 			advance();
 
-		myJetParsing.parseBlock();
+		parsing.parseBlock();
 
 		marker.done(LABEL_EXPRESSION);
 	}
@@ -1314,18 +1320,18 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker parameter = mark();
 
-		myJetParsing.parseModifierList();
+		parsing.parseModifierList();
 
 		if(at(NapileTokens.VAR_KEYWORD))
 			advance(); // VAR_KEYWORD
 
-		if(!myJetParsing.parseIdeTemplate())
+		if(!parsing.parseIdeTemplate())
 			expect(NapileTokens.IDENTIFIER, "Expecting a variable name", TokenSet.create(NapileTokens.COLON));
 
 		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
-			myJetParsing.parseTypeRef();
+			parsing.parseTypeRef();
 		}
 		parameter.done(CALL_PARAMETER_AS_VARIABLE);
 
@@ -1391,7 +1397,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		advance(); // TRY_KEYWORD
 
-		myJetParsing.parseBlock();
+		parsing.parseBlock();
 
 		boolean catchOrFinally = false;
 		while(at(NapileTokens.CATCH_KEYWORD))
@@ -1400,9 +1406,9 @@ public class JetExpressionParsing extends AbstractJetParsing
 			PsiBuilder.Marker catchBlock = mark();
 			advance(); // CATCH_KEYWORD
 
-			myJetParsing.parseCallParameterList(false, TokenSet.create(NapileTokens.LBRACE, NapileTokens.FINALLY_KEYWORD, NapileTokens.CATCH_KEYWORD));
+			parsing.parseCallParameterList(false, TokenSet.create(NapileTokens.LBRACE, NapileTokens.FINALLY_KEYWORD, NapileTokens.CATCH_KEYWORD));
 
-			myJetParsing.parseBlock();
+			parsing.parseBlock();
 			catchBlock.done(CATCH);
 		}
 
@@ -1413,7 +1419,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			advance(); // FINALLY_KEYWORD
 
-			myJetParsing.parseBlock();
+			parsing.parseBlock();
 
 			finallyBlock.done(FINALLY);
 		}
@@ -1625,7 +1631,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			getBuilder().disableNewlines();
 			advance(); // LT
 
-			myJetParsing.parseTypeRef();
+			parsing.parseTypeRef();
 
 			if(at(NapileTokens.GT))
 			{
@@ -1707,7 +1713,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker literal = mark();
 		PsiBuilder.Marker declaration = mark();
-		myJetParsing.parseObject(); // Body is not optional because of foo(object : A, B)
+		parsing.parseObject(); // Body is not optional because of foo(object : A, B)
 		declaration.done(ANONYM_CLASS);
 		literal.done(OBJECT_LITERAL);
 	}
@@ -1722,7 +1728,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	@Override
 	protected JetParsing create(SemanticWhitespaceAwarePsiBuilder builder)
 	{
-		return myJetParsing.create(builder);
+		return parsing.create(builder);
 	}
 
 	private boolean interruptedWithNewLine()

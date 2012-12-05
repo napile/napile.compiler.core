@@ -46,6 +46,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.lib.NapileReflectPackage;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.descriptors.*;
@@ -721,7 +722,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression, ExpressionTypingContext context)
+	public JetTypeInfo visitLinkMethodExpression(NapileLinkMethodExpression expression, ExpressionTypingContext context)
 	{
 		NapileSimpleNameExpression target = expression.getTarget();
 		if(target == null)
@@ -739,6 +740,32 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		MethodDescriptor targetMethod = null;
 		Collection<MethodDescriptor> methodDescriptors = context.scope.getFunctions(target.getReferencedNameAsName());
+
+		NapileDotQualifiedExpression classTarget = expression.getClassTarget();
+		if(classTarget != null)
+		{
+			FqName fqName = new FqName(expression.getQualifiedName());
+
+			ClassDescriptor classDescriptor = context.scope.getClass(fqName);
+			NapileSimpleNameExpression[] children = classTarget.getChildExpressions();
+
+			//TODO [VISTALL] currently we dont support linking with type parameters
+			if(classDescriptor == null || !classDescriptor.getTypeConstructor().getParameters().isEmpty())
+			{
+				for(int i = 0; i < children.length; i++)
+					context.trace.report(Errors.UNRESOLVED_REFERENCE.on(children[i]));
+				methodDescriptors = Collections.emptyList();
+			}
+			else
+			{
+				List<Name> packages = fqName.parent().pathSegments();
+				for(int i = 0; i < (children.length - 1); i++)
+					context.trace.record(BindingContext.REFERENCE_TARGET, children[i], context.scope.getNamespace(packages.get(i)));
+
+				context.trace.record(BindingContext.REFERENCE_TARGET, children[children.length - 1], classDescriptor);
+				methodDescriptors = classDescriptor.getMemberScope(Collections.<JetType>emptyList()).getFunctions(target.getReferencedNameAsName());
+			}
+		}
 
 		if(!parameterTypes.isEmpty())
 		{

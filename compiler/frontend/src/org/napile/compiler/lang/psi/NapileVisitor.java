@@ -79,11 +79,6 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitJetElement(classBody, data);
 	}
 
-	public R visitNamespaceBody(NapileNamespaceBody body, D data)
-	{
-		return visitJetElement(body, data);
-	}
-
 	public R visitModifierList(NapileModifierList list, D data)
 	{
 		return visitJetElement(list, data);
@@ -259,7 +254,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitExpression(expression, data);
 	}
 
-	public R visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression, D data)
+	public R visitLinkMethodExpression(NapileLinkMethodExpression expression, D data)
 	{
 		return visitExpression(expression, data);
 	}

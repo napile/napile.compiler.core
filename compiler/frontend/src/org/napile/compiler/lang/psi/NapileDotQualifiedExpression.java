@@ -29,6 +29,11 @@ public class NapileDotQualifiedExpression extends NapileQualifiedExpression
 		super(node);
 	}
 
+	public NapileSimpleNameExpression[] getChildExpressions()
+	{
+		return findChildrenByClass(NapileSimpleNameExpression.class);
+	}
+
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{

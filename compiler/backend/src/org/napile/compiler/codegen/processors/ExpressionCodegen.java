@@ -295,7 +295,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
-	public StackValue visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression, StackValue data)
+	public StackValue visitLinkMethodExpression(NapileLinkMethodExpression expression, StackValue data)
 	{
 		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 

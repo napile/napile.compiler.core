@@ -272,11 +272,10 @@ public class TypeResolver
 
 	public List<JetType> resolveTypes(JetScope scope, List<NapileTypeReference> argumentElements, BindingTrace trace, boolean checkBounds)
 	{
-		final List<JetType> arguments = new ArrayList<JetType>();
+		final List<JetType> arguments = new ArrayList<JetType>(argumentElements.size());
 		for(NapileTypeReference argumentElement : argumentElements)
-		{
 			arguments.add(resolveType(scope, argumentElement, trace, checkBounds));
-		}
+
 		return arguments;
 	}
 

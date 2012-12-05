@@ -21,15 +21,23 @@ import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.ASTNode;
 
 /**
- * @author max
+ * @author VISTALL
  */
-public class NapileLinkMethodExpressionImpl extends NapileExpressionImpl
+public class NapileLinkMethodExpressionImpl extends NapileExpressionImpl implements NapileLinkMethodExpression
 {
 	public NapileLinkMethodExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
+	@Override
+	@Nullable
+	public NapileDotQualifiedExpression getClassTarget()
+	{
+		return findChildByClass(NapileDotQualifiedExpression.class);
+	}
+
+	@Override
 	@Nullable
 	public NapileSimpleNameExpression getTarget()
 	{
@@ -37,9 +45,33 @@ public class NapileLinkMethodExpressionImpl extends NapileExpressionImpl
 	}
 
 	@Nullable
+	@Override
+	public NapileTypeArgumentList getTypeArgumentList()
+	{
+		return findChildByClass(NapileTypeArgumentList.class);
+	}
+
+	@Override
+	@Nullable
 	public NapileTypeList getTypeList()
 	{
 		return findChildByClass(NapileTypeList.class);
+	}
+
+	@Override
+	public String getQualifiedName()
+	{
+		NapileDotQualifiedExpression expression = getClassTarget();
+		if(expression == null)
+			return null;
+		StringBuilder builder = new StringBuilder();
+		for(NapileSimpleNameExpression e : expression.getChildExpressions())
+		{
+			if(builder.length() > 0)
+				builder.append(".");
+			builder.append(e.getReferencedName());
+		}
+		return builder.toString();
 	}
 
 	@Override

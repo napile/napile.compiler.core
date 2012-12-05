@@ -83,11 +83,6 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitJetElement(classBody);
 	}
 
-	public void visitNamespaceBody(NapileNamespaceBody body)
-	{
-		visitJetElement(body);
-	}
-
 	public void visitModifierList(NapileModifierList list)
 	{
 		visitJetElement(list);
@@ -267,7 +262,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitExpression(expression);
 	}
 
-	public void visitLinkMethodExpression(NapileLinkMethodExpressionImpl expression)
+	public void visitLinkMethodExpression(NapileLinkMethodExpression expression)
 	{
 		visitExpression(expression);
 	}

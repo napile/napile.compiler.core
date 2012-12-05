@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -127,7 +126,7 @@ public enum LineMarkers
 					ClassDescriptor ownerDescriptor = (ClassDescriptor)descriptor.getContainingDeclaration();
 
 					List<NapileElement> list = new ArrayList<NapileElement>();
-					for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
+				/*	for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
 					{
 						MutableClassDescriptor clazzDescriptor = entry.getValue();
 
@@ -137,9 +136,13 @@ public enum LineMarkers
 								{
 									PsiElement psiElement = BindingContextUtils.descriptorToDeclaration(analyzeExhaust.getBindingContext(), overrideMethodDescriptor);
 									if(element == psiElement)
-										list.add((NapileElement) BindingContextUtils.descriptorToDeclaration(analyzeExhaust.getBindingContext(), clazzMethodDescriptor));
+									{
+										List<PsiElement> elements = BindingContextUtils.descriptorToDeclarations(analyzeExhaust.getBindingContext(), clazzMethodDescriptor);
+										for(PsiElement e : elements)
+											list.add((NapileElement) e);
+									}
 								}
-					}
+					}    */
 
 					return list;
 				}
