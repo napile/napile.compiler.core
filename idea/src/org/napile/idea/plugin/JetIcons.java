@@ -41,7 +41,6 @@ public interface JetIcons
 	Icon CONSTRUCTOR = PlatformIcons.METHOD_ICON; //TODO [VISTALL] new icon
 
 	Icon C_HERITABLE = IconLoader.getIcon("/org/napile/icons/gutter/c_heritable.png");
-	Icon PROPERTY_ACCESS_MARKER = IconLoader.getIcon("/org/napile/icons/gutter/property.png");
 
 	Icon FILE = IconLoader.getIcon("/org/napile/icons/fileTypes/napile.png");
 

@@ -30,18 +30,14 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.idea.plugin.JetIcons;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeHighlighting.Pass;
@@ -200,39 +196,6 @@ public enum LineMarkers
 					}
 
 					return result;
-				}
-			},
-	PROPERTY_ACESSS
-			{
-				@NotNull
-				@Override
-				protected List<NapileElement> getTargets(PsiElement element)
-				{
-					if(!(element instanceof NapileVariable))
-						return Collections.emptyList();
-
-					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) element.getContainingFile());
-
-					VariableDescriptor variableDescriptor = analyzeExhaust.getBindingContext().safeGet(BindingContext.VARIABLE, element);
-
-					List<NapileElement> list = new ArrayList<NapileElement>(3);
-
-
-					return list;
-				}
-
-				@NotNull
-				@Override
-				protected String getTitle()
-				{
-					return "Property access methods";
-				}
-
-				@NotNull
-				@Override
-				protected Icon getIcon()
-				{
-					return JetIcons.PROPERTY_ACCESS_MARKER;
 				}
 			};
 
