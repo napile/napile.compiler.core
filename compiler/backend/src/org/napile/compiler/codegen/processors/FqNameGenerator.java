@@ -71,9 +71,8 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	public Void visitVariable(NapileVariable property, FqName data)
 	{
 		NapileMethod method = PsiTreeUtil.getParentOfType(property, NapileMethod.class);
-		if(method != null)
-			return null;
-		record(property, data.child(NapilePsiUtil.safeName(property.getName())));
+		if(method == null)
+			record(property, data.child(NapilePsiUtil.safeName(property.getName())));
 		return super.visitVariable(property, data);
 	}
 
