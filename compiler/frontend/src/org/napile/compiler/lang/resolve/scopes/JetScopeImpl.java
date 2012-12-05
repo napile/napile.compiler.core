@@ -91,7 +91,7 @@ public abstract class JetScopeImpl implements JetScope
 
 	@NotNull
 	@Override
-	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getMethods(@NotNull Name name)
 	{
 		return Collections.emptySet();
 	}

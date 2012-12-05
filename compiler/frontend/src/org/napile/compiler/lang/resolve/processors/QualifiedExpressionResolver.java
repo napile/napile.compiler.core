@@ -266,7 +266,7 @@ public class QualifiedExpressionResolver
 		if(classifierDescriptor != null)
 			descriptors.add(classifierDescriptor);
 
-		descriptors.addAll(outerScope.getFunctions(referencedName));
+		descriptors.addAll(outerScope.getMethods(referencedName));
 		descriptors.addAll(outerScope.getProperties(referencedName));
 
 		VariableDescriptor localVariable = outerScope.getLocalVariable(referencedName);

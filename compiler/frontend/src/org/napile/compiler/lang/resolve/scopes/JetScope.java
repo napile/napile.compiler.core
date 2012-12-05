@@ -76,7 +76,7 @@ public interface JetScope extends DescriptorWithParent
 	VariableDescriptor getLocalVariable(@NotNull Name name);
 
 	@NotNull
-	Collection<MethodDescriptor> getFunctions(@NotNull Name name);
+	Collection<MethodDescriptor> getMethods(@NotNull Name name);
 
 	@Override
 	@NotNull

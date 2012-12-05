@@ -206,7 +206,7 @@ public class DeclarationResolver
 				@Override
 				public void visitVariable(NapileVariable property)
 				{
-					PropertyDescriptor propertyDescriptor = descriptorResolver.resolvePropertyDescriptor(ownerDescription, scope, property, trace);
+					PropertyDescriptor propertyDescriptor = descriptorResolver.resolveVariableDescriptor(ownerDescription, scope, property, trace);
 
 					ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
 

@@ -139,7 +139,7 @@ public class ChainedScope implements JetScope
 
 	@NotNull
 	@Override
-	public Set<MethodDescriptor> getFunctions(@NotNull Name name)
+	public Set<MethodDescriptor> getMethods(@NotNull Name name)
 	{
 		if(scopeChain.length == 0)
 		{
@@ -149,7 +149,7 @@ public class ChainedScope implements JetScope
 		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
 		for(JetScope jetScope : scopeChain)
 		{
-			result.addAll(jetScope.getFunctions(name));
+			result.addAll(jetScope.getMethods(name));
 		}
 		return result;
 	}

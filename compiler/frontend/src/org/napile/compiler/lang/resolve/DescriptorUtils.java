@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.resolve;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -217,16 +216,6 @@ public class DescriptorUtils
 			descriptor = descriptor.getContainingDeclaration();
 		}
 		return false;
-	}
-
-	@Nullable
-	public static VariableDescriptor filterNonExtensionProperty(Collection<VariableDescriptor> variables)
-	{
-		for(VariableDescriptor variable : variables)
-		{
-			return variable;
-		}
-		return null;
 	}
 
 	@NotNull

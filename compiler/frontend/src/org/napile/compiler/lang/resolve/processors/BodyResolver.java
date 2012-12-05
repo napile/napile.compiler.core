@@ -43,7 +43,6 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.ModifiersChecker;
-import org.napile.compiler.lang.resolve.processors.checkers.PropertiesChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
@@ -80,8 +79,6 @@ public class BodyResolver
 	private AnnotationChecker annotationChecker;
 	@NotNull
 	private ModifiersChecker modifiersChecker;
-	@NotNull
-	private PropertiesChecker propertiesChecker;
 
 	@Inject
 	public void setTopDownAnalysisParameters(@NotNull TopDownAnalysisParameters topDownAnalysisParameters)
@@ -137,12 +134,6 @@ public class BodyResolver
 		this.modifiersChecker = modifiersChecker;
 	}
 
-	@Inject
-	public void setPropertiesChecker(@NotNull PropertiesChecker propertiesChecker)
-	{
-		this.propertiesChecker = propertiesChecker;
-	}
-
 	private void resolveBehaviorDeclarationBodies(@NotNull BodiesResolveContext bodiesResolveContext)
 	{
 		// Initialize context
@@ -168,7 +159,6 @@ public class BodyResolver
 
 		annotationChecker.processFirst(bodiesResolveContext);
 		controlFlowAnalyzer.process(bodiesResolveContext);
-		propertiesChecker.process(bodiesResolveContext);
 		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
 		annotationChecker.processLater(bodiesResolveContext);
@@ -221,7 +211,7 @@ public class BodyResolver
 	private void resolvePropertyInitializer(NapileVariable property, PropertyDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
 	{
 		//JetFlowInformationProvider flowInformationProvider = context.getDescriptorResolver().computeFlowData(property, initializer); // TODO : flow JET-15
-		JetType expectedTypeForInitializer = property.getPropertyTypeRef() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;
+		JetType expectedTypeForInitializer = property.getType() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;
 		JetScope propertyDeclarationInnerScope = descriptorResolver.getPropertyDeclarationInnerScope(scope, propertyDescriptor.getTypeParameters(), trace);
 		JetType type = expressionTypingServices.getType(propertyDeclarationInnerScope, initializer, expectedTypeForInitializer, DataFlowInfo.EMPTY, trace);
 		//

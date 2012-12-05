@@ -739,7 +739,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 
 		MethodDescriptor targetMethod = null;
-		Collection<MethodDescriptor> methodDescriptors = context.scope.getFunctions(target.getReferencedNameAsName());
+		Collection<MethodDescriptor> methodDescriptors = context.scope.getMethods(target.getReferencedNameAsName());
 
 		NapileDotQualifiedExpression classTarget = expression.getClassTarget();
 		if(classTarget != null)
@@ -763,7 +763,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					context.trace.record(BindingContext.REFERENCE_TARGET, children[i], context.scope.getNamespace(packages.get(i)));
 
 				context.trace.record(BindingContext.REFERENCE_TARGET, children[children.length - 1], classDescriptor);
-				methodDescriptors = classDescriptor.getMemberScope(Collections.<JetType>emptyList()).getFunctions(target.getReferencedNameAsName());
+				methodDescriptors = classDescriptor.getMemberScope(Collections.<JetType>emptyList()).getMethods(target.getReferencedNameAsName());
 			}
 		}
 

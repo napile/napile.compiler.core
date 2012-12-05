@@ -236,6 +236,7 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
 
 "class"      { return NapileTokens.CLASS_KEYWORD ;}
 "var"        { return NapileTokens.VAR_KEYWORD ;}
+"val"        { return NapileTokens.VAR_KEYWORD ;}
 "meth"       { return NapileTokens.METH_KEYWORD ;}
 "macro"      { return NapileTokens.MACRO_KEYWORD ;}
 "this"       { return NapileTokens.THIS_KEYWORD ;}

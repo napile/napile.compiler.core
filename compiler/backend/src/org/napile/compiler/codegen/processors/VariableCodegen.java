@@ -25,23 +25,16 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
-import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
-import org.napile.compiler.codegen.processors.codegen.BinaryOperationCodegen;
-import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.Visibility;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.PropertyAccessUtil;
 
 /**
  * @author VISTALL
@@ -100,7 +93,7 @@ public class VariableCodegen
 		if(getter == null)
 		{
 			//TODO [VISTALL] make LazyType, current version is not thread safe
-			MethodDescriptor lazyMethodDescriptor = PropertyAccessUtil.getPropertyDescriptor(bindingTrace, propertyDescriptor, NapileTokens.LAZY_KEYWORD);
+			MethodDescriptor lazyMethodDescriptor = null;//PropertyAccessUtil.getPropertyDescriptor(bindingTrace, propertyDescriptor, NapileTokens.LAZY_KEYWORD);
 			if(lazyMethodDescriptor == null)
 			{
 				MethodNode getterMethodNode = new MethodNode(ModifierCodegen.gen(propertyDescriptor), getterFq.shortName());
@@ -122,7 +115,7 @@ public class VariableCodegen
 
 				classNode.members.add(getterMethodNode);
 			}
-			else
+			/*else
 			{
 				MethodNode getterMethodNode = new MethodNode(ModifierCodegen.gen(propertyDescriptor), getterFq.shortName());
 				getterMethodNode.returnType = TypeTransformer.toAsmType(propertyDescriptor.getType());
@@ -174,7 +167,7 @@ public class VariableCodegen
 
 				getterMethodNode.putInstructions(adapter);
 				classNode.members.add(getterMethodNode);
-			}
+			} */
 		}
 	}
 }

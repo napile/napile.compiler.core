@@ -57,9 +57,9 @@ public abstract class AbstractScopeAdapter implements JetScope
 
 	@NotNull
 	@Override
-	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getMethods(@NotNull Name name)
 	{
-		return getWorkerScope().getFunctions(name);
+		return getWorkerScope().getMethods(name);
 	}
 
 	@Override

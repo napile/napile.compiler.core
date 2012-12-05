@@ -563,7 +563,7 @@ public class OverrideResolver
 		for(JetType supertype : declaringClass.getTypeConstructor().getSupertypes())
 		{
 			Set<CallableMemberDescriptor> all = Sets.newLinkedHashSet();
-			all.addAll(supertype.getMemberScope().getFunctions(declared.getName()));
+			all.addAll(supertype.getMemberScope().getMethods(declared.getName()));
 			all.addAll((Set) supertype.getMemberScope().getProperties(declared.getName()));
 			for(CallableMemberDescriptor fromSuper : all)
 			{

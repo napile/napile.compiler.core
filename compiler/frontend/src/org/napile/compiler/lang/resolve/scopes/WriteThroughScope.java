@@ -79,17 +79,17 @@ public class WriteThroughScope extends WritableScopeWithImports
 
 	@Override
 	@NotNull
-	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getMethods(@NotNull Name name)
 	{
 		checkMayRead();
 
 		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
 
-		result.addAll(writableWorker.getFunctions(name));
+		result.addAll(writableWorker.getMethods(name));
 
-		result.addAll(getWorkerScope().getFunctions(name));
+		result.addAll(getWorkerScope().getMethods(name));
 
-		result.addAll(super.getFunctions(name)); // Imports
+		result.addAll(super.getMethods(name)); // Imports
 
 		return result;
 	}

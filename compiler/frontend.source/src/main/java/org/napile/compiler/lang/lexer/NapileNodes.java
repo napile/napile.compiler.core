@@ -25,6 +25,7 @@ import org.napile.compiler.lang.psi.impl.NapileArrayOfExpressionImpl;
 import org.napile.compiler.lang.psi.impl.NapileCallParameterAsReferenceImpl;
 import org.napile.compiler.lang.psi.impl.NapileInjectionExpressionImpl;
 import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
+import org.napile.compiler.lang.psi.impl.NapileVariableAccessorImpl;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
@@ -39,6 +40,7 @@ public interface NapileNodes
 	IElementType VARIABLE = NapileStubElementTypes.VARIABLE;
 
 	NapileNode ANONYM_CLASS = new NapileNode("ANONYM_CLASS", NapileAnonymClass.class);
+	NapileNode VARIABLE_ACCESSOR = new NapileNode("VARIABLE_ACCESSOR", NapileVariableAccessorImpl.class);
 
 	NapileNode CONSTRUCTOR = new NapileNode("CONSTRUCTOR", NapileConstructorImpl.class);
 	NapileNode STATIC_CONSTRUCTOR = new NapileNode("STATIC_CONSTRUCTOR", NapileStaticConstructor.class);

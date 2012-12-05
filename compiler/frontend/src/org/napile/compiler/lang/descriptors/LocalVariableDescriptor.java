@@ -28,6 +28,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 /**
  * @author abreslav
  */
+@Deprecated
 public class LocalVariableDescriptor extends VariableDescriptorImpl
 {
 	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, Modality modality)

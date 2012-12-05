@@ -155,8 +155,6 @@ public class DescriptorResolver
 	@NotNull
 	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethod method, final BindingTrace trace)
 	{
-		NapileSimpleNameExpression referenceExpression = method.getVariableRef();
-
 		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, method.getModifierList(), trace), NapilePsiUtil.safeName(method.getName()), CallableMemberDescriptor.Kind.DECLARATION, method.hasModifier(NapileTokens.STATIC_KEYWORD), method.hasModifier(NapileTokens.NATIVE_KEYWORD), false);
 		WritableScope innerScope = new WritableScopeImpl(scope, methodDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
 
@@ -167,9 +165,6 @@ public class DescriptorResolver
 		List<CallParameterDescriptor> parameterDescriptors = resolveCallParameters(methodDescriptor, innerScope, method.getValueParameters(), trace);
 
 		innerScope.changeLockLevel(WritableScope.LockLevel.READING);
-
-		if(referenceExpression != null)
-			expressionTypingServices.safeGetType(scope, referenceExpression, TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY, trace);
 
 		final NapileExpression bodyExpression = method.getBodyExpression();
 		NapileTypeReference returnTypeRef = method.getReturnTypeRef();
@@ -402,7 +397,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public PropertyDescriptor resolvePropertyDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable property, BindingTrace trace)
+	public PropertyDescriptor resolveVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable property, BindingTrace trace)
 	{
 		NapileModifierList modifierList = property.getModifierList();
 
@@ -410,19 +405,15 @@ public class DescriptorResolver
 
 		List<TypeParameterDescriptor> typeParameterDescriptors;
 
+		NapileTypeParameter[] typeParameters = property.getTypeParameters();
+		if(typeParameters.length == 0)
+			typeParameterDescriptors = Collections.emptyList();
+		else
 		{
-			NapileTypeParameter[] typeParameters = property.getTypeParameters();
-			if(typeParameters.length == 0)
-			{
-				typeParameterDescriptors = Collections.emptyList();
-			}
-			else
-			{
-				WritableScope writableScope = new WritableScopeImpl(scope, containingDeclaration, new TraceBasedRedeclarationHandler(trace), "Scope with type parameters of a property");
-				typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(containingDeclaration, writableScope, typeParameters, trace);
-				writableScope.changeLockLevel(WritableScope.LockLevel.READING);
-				typeParameterResolver.postResolving(property, writableScope, typeParameterDescriptors, trace);
-			}
+			WritableScope writableScope = new WritableScopeImpl(scope, containingDeclaration, new TraceBasedRedeclarationHandler(trace), "Scope with type parameters of a property");
+			typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(containingDeclaration, writableScope, typeParameters, trace);
+			writableScope.changeLockLevel(WritableScope.LockLevel.READING);
+			typeParameterResolver.postResolving(property, writableScope, typeParameterDescriptors, trace);
 		}
 
 		JetScope propertyScope = getPropertyDeclarationInnerScope(scope, typeParameterDescriptors, trace);
@@ -439,8 +430,7 @@ public class DescriptorResolver
 	@NotNull
 	private JetType getVariableType(@NotNull final JetScope scope, @NotNull final NapileVariable property, @NotNull final DataFlowInfo dataFlowInfo, boolean allowDeferred, final BindingTrace trace)
 	{
-		// TODO : receiver?
-		NapileTypeReference propertyTypeRef = property.getPropertyTypeRef();
+		NapileTypeReference propertyTypeRef = property.getType();
 
 		if(propertyTypeRef == null)
 		{

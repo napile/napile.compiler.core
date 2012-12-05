@@ -49,7 +49,7 @@ public final class NapileModifiableBlockHelper
 			else if(declaration instanceof NapileVariable)
 			{
 				NapileVariable property = (NapileVariable) declaration;
-				if(property.getPropertyTypeRef() != null)
+				if(property.getType() != null)
 				{
 					return takePartInDeclarationTypeInference(property);
 				}
@@ -82,7 +82,7 @@ public final class NapileModifiableBlockHelper
 			else if(declaration instanceof NapileVariable)
 			{
 				NapileVariable property = (NapileVariable) declaration;
-				if(property.getPropertyTypeRef() == null)
+				if(property.getType() == null)
 				{
 					return true;
 				}

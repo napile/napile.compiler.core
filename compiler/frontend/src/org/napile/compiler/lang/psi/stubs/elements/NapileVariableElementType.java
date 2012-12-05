@@ -74,7 +74,7 @@ public class NapileVariableElementType extends NapileStubElementType<NapilePsiVa
 	@Override
 	public NapilePsiVariableStub createStub(@NotNull NapileVariable psi, StubElement parentStub)
 	{
-		NapileTypeReference typeRef = psi.getPropertyTypeRef();
+		NapileTypeReference typeRef = psi.getType();
 		NapileExpression expression = psi.getInitializer();
 
 

@@ -26,10 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -41,7 +38,6 @@ import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * @author abreslav
@@ -127,34 +123,6 @@ public class FunctionDescriptorUtil
 			parameterScope.addTypeParameterDescriptor(typeParameter);
 		for(CallParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
 			parameterScope.addVariableDescriptor(parameterDescriptor);
-
-		if(declarationWithBody instanceof NapileNamedMethod)
-		{
-			DeclarationDescriptor varRef = trace.get(BindingContext.REFERENCE_TARGET, ((NapileNamedMethod) declarationWithBody).getVariableRef());
-			if(varRef instanceof VariableDescriptor)
-			{
-				IElementType elementType = ((NapileNamedMethod)declarationWithBody).getPropertyAccessType();
-
-				Modality modality = null;
-				// modality option depends on property access type
-				// if 'get' var is final
-				// if 'set' var is open
-				// if 'lazy' - no variable in scope
-				if(elementType == NapileTokens.GET_KEYWORD)
-					modality = Modality.FINAL;
-				else if(elementType == NapileTokens.SET_KEYWORD)
-					modality = Modality.OPEN;
-
-				if(modality != null)
-				{
-					LocalVariableDescriptor variableDescriptor = new LocalVariableDescriptor(varRef.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), ((VariableDescriptor) varRef).getType(), modality);
-					parameterScope.addVariableDescriptor(variableDescriptor);
-
-					trace.record(BindingContext.AUTO_CREATED_IT, variableDescriptor, true);
-					trace.record(BindingContext.AUTO_CREATED_TO, variableDescriptor, (VariableDescriptor) varRef);
-				}
-			}
-		}
 
 		parameterScope.changeLockLevel(WritableScope.LockLevel.READING);
 		return parameterScope;

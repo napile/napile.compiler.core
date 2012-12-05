@@ -18,18 +18,17 @@ package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileTypeParameterListOwnerStub;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileVariableAccessor;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -61,25 +60,9 @@ public class NapileVariableImpl extends NapileTypeParameterListOwnerStub<NapileP
 
 	@Override
 	@Nullable
-	public NapileTypeReference getPropertyTypeRef()
+	public NapileTypeReference getType()
 	{
-		ASTNode node = getNode().getFirstChildNode();
-		boolean passedColon = false;
-		while(node != null)
-		{
-			IElementType tt = node.getElementType();
-			if(tt == NapileTokens.COLON)
-			{
-				passedColon = true;
-			}
-			else if(tt == NapileNodes.TYPE_REFERENCE && passedColon)
-			{
-				return (NapileTypeReference) node.getPsi();
-			}
-			node = node.getTreeNext();
-		}
-
-		return null;
+		return findChildByClass(NapileTypeReference.class);
 	}
 
 	@Override
@@ -89,12 +72,17 @@ public class NapileVariableImpl extends NapileTypeParameterListOwnerStub<NapileP
 		return PsiTreeUtil.getNextSiblingOfType(findChildByType(NapileTokens.EQ), NapileExpression.class);
 	}
 
+	@NotNull
+	@Override
+	public NapileVariableAccessor[] getAccessors()
+	{
+		return findChildrenByClass(NapileVariableAccessor.class);
+	}
+
 	@Override
 	@NotNull
 	public ASTNode getVarNode()
 	{
-		ASTNode node = getNode().findChildByType(NapileTokens.VAR_KEYWORD);
-		assert node != null : "Var should always exist for property";
-		return node;
+		return getNode().findChildByType(NapileTokens.VARIABLE_KEYWORDS);
 	}
 }

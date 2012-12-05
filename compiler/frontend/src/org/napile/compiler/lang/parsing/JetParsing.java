@@ -486,8 +486,8 @@ public class JetParsing extends AbstractJetParsing
 			declType = parseMethodOrMacro(MACRO);
 		else if(keywordToken == NapileTokens.THIS_KEYWORD)
 			declType = parseConstructor();
-		else if(keywordToken == NapileTokens.VAR_KEYWORD)
-			declType = parseProperty();
+		else if(NapileTokens.VARIABLE_KEYWORDS.contains(keywordToken))
+			declType = parseVariableOrValue();
 
 		return declType;
 	}
@@ -523,12 +523,12 @@ public class JetParsing extends AbstractJetParsing
 		 *       (getter? setter? | setter? getter?) SEMI?
 		 *   ;
 		 */
-	IElementType parseProperty()
+	IElementType parseVariableOrValue()
 	{
-		if(at(NapileTokens.VAR_KEYWORD))
-			advance(); // VAR_KEYWORD
+		if(atSet(NapileTokens.VARIABLE_KEYWORDS))
+			advance();
 		else
-			errorAndAdvance("Expecting 'var'");
+			errorAndAdvance("Expecting 'var' or 'val'");
 
 		parseTypeParameterList();
 
@@ -543,17 +543,44 @@ public class JetParsing extends AbstractJetParsing
 		{
 			advance(); // COLON
 			if(!parseIdeTemplate())
-			{
 				parseTypeRef();
+		}
+
+		if(at(NapileTokens.LBRACE))
+		{
+			advance();
+
+			while(true)
+			{
+				PsiBuilder.Marker marker = mark();
+
+				parseModifierList();
+
+				if(atSet(NapileTokens.VARIABLE_ACCESS_KEYWORDS))
+				{
+					advance();
+
+					marker.done(VARIABLE_ACCESSOR);
+
+					consumeIf(NapileTokens.SEMICOLON);
+				}
+				else
+				{
+					marker.drop();
+					break;
+				}
 			}
+
+			expect(NapileTokens.RBRACE, "'}' expected");
 		}
 
 		if(at(NapileTokens.EQ))
 		{
 			advance(); // EQ
 			myExpressionParsing.parseExpression();
-			consumeIf(NapileTokens.SEMICOLON);
 		}
+
+		consumeIf(NapileTokens.SEMICOLON);
 
 		return VARIABLE;
 	}
@@ -561,7 +588,7 @@ public class JetParsing extends AbstractJetParsing
 
 	/*
 		 * function
-		 *   : modifiers "meth" typeParameters?
+		 *   : modifiers ("meth" | "macro") typeParameters?
 		 *       (type "." | attributes)?
 		 *       SimpleName
 		 *       typeParameters? functionParameters (":" type)?
@@ -571,11 +598,8 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	IElementType parseMethodOrMacro(@NotNull IElementType doneElement)
 	{
-		//assert _at(NapileTokens.METH_KEYWORD);
+		advance();
 
-		advance(); // METH_KEYWORD
-
-		// Recovery for the case of class A { fun| }
 		if(at(NapileTokens.RBRACE))
 		{
 			error("Method body expected");
@@ -583,25 +607,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		if(!parseIdeTemplate())
-		{
-			PsiBuilder.Marker marker = mark();
-			if(at(NapileTokens.IDENTIFIER))
-				advance();
-
-			if(at(NapileTokens.DOT))
-			{
-				marker.done(VARIABLE_REFERENCE);
-
-				advance();
-
-				if(atSet(NapileTokens.PROPERTY_KEYWORDS))
-					advance();
-				else
-					error("Expected 'set', 'get' or 'lazy'");
-			}
-			else
-				marker.drop();
-		}
+			expect(NapileTokens.IDENTIFIER, "Identifier expected");
 
 		TokenSet valueParametersFollow = TokenSet.create(NapileTokens.COLON, NapileTokens.EQ, NapileTokens.LBRACE, NapileTokens.SEMICOLON, NapileTokens.RPAR);
 

@@ -108,7 +108,7 @@ public class ErrorUtils
 
 		@NotNull
 		@Override
-		public Set<MethodDescriptor> getFunctions(@NotNull Name name)
+		public Set<MethodDescriptor> getMethods(@NotNull Name name)
 		{
 			return Collections.<MethodDescriptor>singleton(createErrorFunction(this));
 		}

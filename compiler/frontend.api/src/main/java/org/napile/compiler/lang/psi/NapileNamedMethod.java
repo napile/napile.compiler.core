@@ -16,22 +16,11 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.Nullable;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.tree.IElementType;
-
 /**
  * @author VISTALL
  * @date 15:54/27.11.12
  */
 public interface NapileNamedMethod extends NapileNamedMethodOrMacro
 {
-	@Nullable
-	NapileSimpleNameExpression getVariableRef();
 
-	@Nullable
-	IElementType getPropertyAccessType();
-
-	@Nullable
-	PsiElement getPropertyAccessElement();
 }

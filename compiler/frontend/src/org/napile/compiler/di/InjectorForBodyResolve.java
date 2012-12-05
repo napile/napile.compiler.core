@@ -32,7 +32,6 @@ import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.ModifiersChecker;
-import org.napile.compiler.lang.resolve.processors.checkers.PropertiesChecker;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.processors.members.TypeParameterResolver;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
@@ -57,7 +56,6 @@ public class InjectorForBodyResolve
 	private ControlFlowAnalyzer controlFlowAnalyzer;
 	private DeclarationsChecker declarationsChecker;
 	private ModifiersChecker modifiersChecker;
-	private PropertiesChecker propertiesChecker;
 
 	public InjectorForBodyResolve(@NotNull Project project,@NotNull TopDownAnalysisParameters topDownAnalysisParameters,@NotNull BindingTrace bindingTrace)
 	{
@@ -77,7 +75,6 @@ public class InjectorForBodyResolve
 		this.controlFlowAnalyzer = new ControlFlowAnalyzer();
 		this.declarationsChecker = new DeclarationsChecker();
 		this.modifiersChecker = new ModifiersChecker();
-		this.propertiesChecker = new PropertiesChecker();
 
 		this.bodyResolver.setAnnotationChecker(annotationChecker);
 		this.bodyResolver.setCallResolver(callResolver);
@@ -86,7 +83,6 @@ public class InjectorForBodyResolve
 		this.bodyResolver.setDescriptorResolver(descriptorResolver);
 		this.bodyResolver.setExpressionTypingServices(expressionTypingServices);
 		this.bodyResolver.setModifiersChecker(modifiersChecker);
-		this.bodyResolver.setPropertiesChecker(propertiesChecker);
 		this.bodyResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
 		this.bodyResolver.setTrace(bindingTrace);
 
@@ -123,9 +119,6 @@ public class InjectorForBodyResolve
 		declarationsChecker.setTrace(bindingTrace);
 
 		modifiersChecker.setTrace(bindingTrace);
-
-		propertiesChecker.setTrace(bindingTrace);
-
 	}
 
 	@PreDestroy

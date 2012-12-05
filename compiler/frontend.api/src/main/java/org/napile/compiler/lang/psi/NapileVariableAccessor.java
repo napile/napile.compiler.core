@@ -16,22 +16,19 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 15:28/19.10.12
+ * @date 15:27/05.12.12
  */
-public interface NapileVariable extends NapileDeclaration, NapileNamedDeclaration, NapileTypeParameterListOwner, NapileWithExpressionInitializer
+public interface NapileVariableAccessor extends NapileDeclaration
 {
 	@Nullable
-	NapileTypeReference getType();
+	PsiElement getAccessorElement();
 
-	@NotNull
-	ASTNode getVarNode();
-
-	@NotNull
-	NapileVariableAccessor[] getAccessors();
+	@Nullable
+	IElementType getAccessorElementType();
 }

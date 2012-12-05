@@ -73,7 +73,7 @@ public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclarati
 			if(declaration instanceof NapileVariable)
 			{
 				NapileVariable property = (NapileVariable) declaration;
-				NapileTypeReference ref = property.getPropertyTypeRef();
+				NapileTypeReference ref = property.getType();
 				if(ref != null)
 				{
 					if(settings.SPACE_BEFORE_TYPE_COLON)

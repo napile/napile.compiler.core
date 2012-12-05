@@ -63,7 +63,7 @@ public class NapilePsiFactory
 	public static NapileTypeReference createType(Project project, String type)
 	{
 		NapileVariable property = createProperty(project, "final var x : " + type);
-		return property.getPropertyTypeRef();
+		return property.getType();
 	}
 
 	//the pair contains the first and the last elements of a range

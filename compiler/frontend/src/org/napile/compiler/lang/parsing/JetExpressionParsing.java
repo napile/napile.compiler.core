@@ -657,7 +657,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				PsiBuilder.Marker property = mark();
 				parsing.parseModifierList();
-				parsing.parseProperty();
+				parsing.parseVariableOrValue();
 				property.done(VARIABLE);
 			}
 			else

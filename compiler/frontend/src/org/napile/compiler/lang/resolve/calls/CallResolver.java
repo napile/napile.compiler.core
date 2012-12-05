@@ -1274,13 +1274,13 @@ public class CallResolver
 		List<ResolutionCandidate<MethodDescriptor>> result = Lists.newArrayList();
 		if(receiver.exists())
 		{
-			Collection<ResolutionCandidate<MethodDescriptor>> extensionFunctionDescriptors = ResolutionCandidate.convertCollection(scope.getFunctions(name), false);
+			Collection<ResolutionCandidate<MethodDescriptor>> extensionFunctionDescriptors = ResolutionCandidate.convertCollection(scope.getMethods(name), false);
 			List<ResolutionCandidate<MethodDescriptor>> nonlocal = Lists.newArrayList();
 			List<ResolutionCandidate<MethodDescriptor>> local = Lists.newArrayList();
 			TaskPrioritizer.splitLexicallyLocalDescriptors(extensionFunctionDescriptors, scope.getContainingDeclaration(), local, nonlocal);
 
 
-			Collection<ResolutionCandidate<MethodDescriptor>> functionDescriptors = ResolutionCandidate.convertCollection(receiver.getType().getMemberScope().getFunctions(name), false);
+			Collection<ResolutionCandidate<MethodDescriptor>> functionDescriptors = ResolutionCandidate.convertCollection(receiver.getType().getMemberScope().getMethods(name), false);
 			if(lookupExactSignature(functionDescriptors, parameterTypes, result))
 				return result;
 
@@ -1288,7 +1288,7 @@ public class CallResolver
 		}
 		else
 		{
-			lookupExactSignature(ResolutionCandidate.convertCollection(scope.getFunctions(name), false), parameterTypes, result);
+			lookupExactSignature(ResolutionCandidate.convertCollection(scope.getMethods(name), false), parameterTypes, result);
 			return result;
 		}
 	}

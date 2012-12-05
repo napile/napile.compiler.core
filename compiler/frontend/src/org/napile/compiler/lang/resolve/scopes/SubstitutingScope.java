@@ -139,9 +139,9 @@ public class SubstitutingScope implements JetScope
 
 	@NotNull
 	@Override
-	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getMethods(@NotNull Name name)
 	{
-		return substitute(workerScope.getFunctions(name));
+		return substitute(workerScope.getMethods(name));
 	}
 
 	@Override

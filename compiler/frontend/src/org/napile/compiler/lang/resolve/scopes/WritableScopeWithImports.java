@@ -170,7 +170,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 
 	@NotNull
 	@Override
-	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getMethods(@NotNull Name name)
 	{
 		checkMayRead();
 
@@ -181,7 +181,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
 		for(JetScope imported : getImports())
 		{
-			result.addAll(imported.getFunctions(name));
+			result.addAll(imported.getMethods(name));
 		}
 		return result;
 	}

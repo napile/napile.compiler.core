@@ -26,23 +26,21 @@ import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.resolve.PropertyAccessUtil;
 import org.napile.idea.plugin.JetIcons;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
@@ -53,10 +51,8 @@ import com.intellij.codeInsight.daemon.impl.PsiElementListNavigator;
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.util.DefaultPsiElementCellRenderer;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.util.Function;
 
 /**
@@ -71,18 +67,18 @@ public enum LineMarkers
 				@Override
 				protected List<NapileElement> getTargets(PsiElement element)
 				{
-					if(!(element instanceof NapileMethod))
+					if(!(element instanceof NapileElement))
 						return Collections.emptyList();
 
-					NapileMethod napileMethod = (NapileMethod) element;
-					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileMethod.getContainingFile());
+					NapileElement napileElement = (NapileElement) element;
+					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile());
 
-					SimpleMethodDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, napileMethod);
-					if(descriptor == null)
+					DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
+					if(!(descriptor instanceof CallableDescriptor))
 						return Collections.emptyList();
 
-					List<NapileElement> list = new ArrayList<NapileElement>(descriptor.getOverriddenDescriptors().size());
-					for(MethodDescriptor overrideDescriptor : descriptor.getOverriddenDescriptors())
+					List<NapileElement> list = new ArrayList<NapileElement>(((CallableDescriptor) descriptor).getOverriddenDescriptors().size());
+					for(CallableDescriptor overrideDescriptor : ((CallableDescriptor) descriptor).getOverriddenDescriptors())
 					{
 						NapileElement declarationPsiElement = (NapileElement) BindingContextUtils.descriptorToDeclaration(analyzeExhaust.getBindingContext(), overrideDescriptor);
 						list.add(declarationPsiElement);
@@ -221,12 +217,7 @@ public enum LineMarkers
 
 					List<NapileElement> list = new ArrayList<NapileElement>(3);
 
-					for(IElementType e : NapileTokens.PROPERTY_KEYWORDS.getTypes())
-					{
-						Pair<MethodDescriptor, NapileNamedMethod> pair = PropertyAccessUtil.get(analyzeExhaust.getBindingContext(), variableDescriptor, e);
-						if(pair != null)
-							list.add(pair.getSecond());
-					}
+
 					return list;
 				}
 

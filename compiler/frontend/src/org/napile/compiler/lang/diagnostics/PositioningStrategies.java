@@ -78,7 +78,7 @@ public class PositioningStrategies
 			else if(declaration instanceof NapileVariable)
 			{
 				NapileVariable property = (NapileVariable) declaration;
-				returnTypeRef = property.getPropertyTypeRef();
+				returnTypeRef = property.getType();
 				nameNode = getNameNode(property);
 			}
 
@@ -149,15 +149,13 @@ public class PositioningStrategies
 				NapileCallParameterList valueParameterList = function.getCallParameterList();
 				NapileElement returnTypeRef = function.getReturnTypeRef();
 				PsiElement nameIdentifier = function.getNameIdentifier();
-				PsiElement propertyAccessElement = function.getPropertyAccessElement();
+
 				if(returnTypeRef != null)
 					endOfSignatureElement = returnTypeRef;
 				else if(valueParameterList != null)
 					endOfSignatureElement = valueParameterList;
 				else if(nameIdentifier != null)
 					endOfSignatureElement = nameIdentifier;
-				else if(propertyAccessElement != null)
-					endOfSignatureElement = propertyAccessElement;
 				else
 					endOfSignatureElement = function;
 				return markRange(new TextRange(function.getTextRange().getStartOffset(), endOfSignatureElement.getTextRange().getEndOffset()));
@@ -166,7 +164,7 @@ public class PositioningStrategies
 			{
 				NapileVariable property = (NapileVariable) element;
 				PsiElement endOfSignatureElement;
-				NapileTypeReference propertyTypeRef = property.getPropertyTypeRef();
+				NapileTypeReference propertyTypeRef = property.getType();
 				PsiElement nameIdentifier = property.getNameIdentifier();
 				if(propertyTypeRef != null)
 				{

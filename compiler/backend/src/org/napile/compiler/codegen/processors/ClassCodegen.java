@@ -37,7 +37,6 @@ import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
@@ -49,7 +48,6 @@ import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.PropertyAccessUtil;
 import org.napile.compiler.lang.types.JetType;
 import com.intellij.util.containers.MultiMap;
 
@@ -203,7 +201,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 		else
 		{
 			// if variable has lazy initiator, put null to var
-			if(PropertyAccessUtil.getPropertyDescriptor(bindingTrace, variableDescriptor, NapileTokens.LAZY_KEYWORD) != null)
+			/*if(PropertyAccessUtil.getPropertyDescriptor(bindingTrace, variableDescriptor, NapileTokens.LAZY_KEYWORD) != null)
 			{
 				InstructionAdapter adapter = new InstructionAdapter();
 
@@ -218,7 +216,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 					propertiesStaticInit.putValue(classNode, adapter);
 				else
 					propertiesInit.putValue(classNode, adapter);
-			}
+			}  */
 		}
 		return super.visitVariable(property, parent);
 	}

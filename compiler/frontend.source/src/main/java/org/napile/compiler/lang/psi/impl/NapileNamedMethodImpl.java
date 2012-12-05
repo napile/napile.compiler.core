@@ -17,21 +17,14 @@
 package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.napile.asm.AsmConstants;
-import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.TokenType;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
@@ -56,40 +49,8 @@ public class NapileNamedMethodImpl extends NapileNamedMethodOrMacroImpl<NapilePs
 		if(stub != null)
 			return stub.getName();
 
-		PsiElement psiElement = findChildByType(NapileTokens.PROPERTY_KEYWORDS);
-		if(psiElement != null)
-		{
-			NapileSimpleNameExpression ref = getVariableRef();
-			assert ref != null;
-			return ref.getReferencedName() + AsmConstants.ANONYM_SPLITTER + psiElement.getText();
-		}
-		else
-		{
-			PsiElement identifier = getNameIdentifier();
-			return identifier != null ? identifier.getText() : null;
-		}
-	}
-
-	@Nullable
-	@Override
-	public NapileSimpleNameExpression getVariableRef()
-	{
-		return (NapileSimpleNameExpression) findChildByType(NapileNodes.VARIABLE_REFERENCE);
-	}
-
-	@Nullable
-	@Override
-	public IElementType getPropertyAccessType()
-	{
-		PsiElement element = getPropertyAccessElement();
-		return element == null ? TokenType.ERROR_ELEMENT : element.getNode().getElementType();
-	}
-
-	@Nullable
-	@Override
-	public PsiElement getPropertyAccessElement()
-	{
-		return findChildByType(NapileTokens.PROPERTY_KEYWORDS);
+		PsiElement identifier = getNameIdentifier();
+		return identifier != null ? identifier.getText() : null;
 	}
 
 	@Override

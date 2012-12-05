@@ -300,15 +300,15 @@ public class WritableScopeImpl extends WritableScopeWithImports
 
 	@Override
 	@NotNull
-	public Collection<MethodDescriptor> getFunctions(@NotNull Name name)
+	public Collection<MethodDescriptor> getMethods(@NotNull Name name)
 	{
 		checkMayRead();
 
 		Set<MethodDescriptor> result = Sets.newLinkedHashSet(getFunctionGroups().get(name));
 
-		result.addAll(getWorkerScope().getFunctions(name));
+		result.addAll(getWorkerScope().getMethods(name));
 
-		result.addAll(super.getFunctions(name));
+		result.addAll(super.getMethods(name));
 
 		return result;
 	}
