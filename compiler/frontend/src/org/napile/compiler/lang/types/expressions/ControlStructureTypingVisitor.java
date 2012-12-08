@@ -130,19 +130,16 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		DataFlowInfo thenDataFlowInfo = thenTypeInfo.getDataFlowInfo();
 		DataFlowInfo elseDataFlowInfo = elseTypeInfo.getDataFlowInfo();
 
-		boolean jumpInThen = thenType != null && false;
-		boolean jumpInElse = elseType != null && false;
-
 		JetTypeInfo result;
 		if(thenType == null && elseType == null)
 		{
 			result = JetTypeInfo.create(null, thenDataFlowInfo.or(elseDataFlowInfo));
 		}
-		else if(thenType == null || (jumpInThen && !jumpInElse))
+		else if(thenType == null)
 		{
 			result = elseTypeInfo;
 		}
-		else if(elseType == null || (jumpInElse && !jumpInThen))
+		else if(elseType == null)
 		{
 			result = thenTypeInfo;
 		}

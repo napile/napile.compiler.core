@@ -363,7 +363,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			String typeString = lt() + "no type>";
 			if(!skipVar)
-				builder.append(renderKeyword(descriptor.isMutable() ? NapileTokens.VAL_KEYWORD : NapileTokens.VAR_KEYWORD)).append(" ");
+				builder.append(renderKeyword(descriptor.isMutable() ? NapileTokens.VAR_KEYWORD : NapileTokens.VAL_KEYWORD)).append(" ");
 
 			if(outType != null)
 				typeString = renderType(outType);
@@ -433,7 +433,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 		private void renderWhereSuffix(@NotNull CallableMemberDescriptor callable, @NotNull StringBuilder builder)
 		{
-			boolean first = true;
 			for(TypeParameterDescriptor typeParameter : callable.getTypeParameters())
 			{
 				if(typeParameter.getUpperBounds().size() > 1)
@@ -444,7 +443,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 						builder.append(typeParameter.getName());
 						builder.append(" : ");
 						builder.append(escape(renderType(upperBound)));
-						first = false;
 					}
 				}
 			}

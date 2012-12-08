@@ -102,7 +102,6 @@ import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author abreslav
@@ -1027,7 +1026,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		MethodDescriptor methodDescriptor = null;
 		if(binaryExpression != null)
-			methodDescriptor = resolveVariableSetMethod(nameExpression, receiver, context, traceForVariable);
+			methodDescriptor = resolveVariableSetMethod(nameExpression, binaryExpression, receiver, context, traceForVariable);
 		else
 			methodDescriptor = resolveVariableGetMethod(nameExpression, receiver, context, traceForVariable);
 
@@ -1581,29 +1580,21 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableCall(receiver, null, nameExpression), nameExpression, name);
 
 		if(!results.isSuccess())
-		{
-
 			return null;
-		}
 
 		return results.getResultingDescriptor();
 	}
 
-	MethodDescriptor resolveVariableSetMethod(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @NotNull ExpressionTypingContext context, BindingTrace trace)
+	MethodDescriptor resolveVariableSetMethod(@NotNull NapileSimpleNameExpression nameExpression, @NotNull NapileBinaryExpression binaryExpression, @NotNull ReceiverDescriptor receiver, @NotNull ExpressionTypingContext context, BindingTrace trace)
 	{
-		NapileBinaryExpression binaryExpression = PsiTreeUtil.getParentOfType(nameExpression, NapileBinaryExpression.class);
-		if(binaryExpression == null)
-			throw new IllegalArgumentException("binaryExpression cant be null");
-
-		Name name = Name.identifier(nameExpression.getReferencedName() + AsmConstants.ANONYM_SPLITTER + "set");
-		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiver, binaryExpression.getLeft(), binaryExpression.getRight()), nameExpression, name);
-		if(!results.isSingleResult())
-		{
-			//trace.report(Errors.UNRESOLVED_REFERENCE.on(binaryExpression.getOperationReference()));
+		NapileExpression rightExpression = binaryExpression.getRight();
+		if(rightExpression == null)
 			return null;
-		}
+		Name name = Name.identifier(nameExpression.getReferencedName() + AsmConstants.ANONYM_SPLITTER + "set");
+		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiver, binaryExpression.getLeft(), rightExpression), nameExpression, name);
+		if(!results.isSingleResult())
+			return null;
 
-		//trace.record(BindingContext.REFERENCE_TARGET, binaryExpression.getOperationReference(), results.getResultingDescriptor());
 		return results.getResultingDescriptor();
 	}
 
