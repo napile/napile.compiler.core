@@ -18,7 +18,7 @@ package org.napile.compiler.lang.resolve;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
+import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
 
 /**
  * @author Stepan Koltsov
@@ -26,5 +26,5 @@ import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
 public interface NamespaceFactory
 {
 	@NotNull
-	NamespaceDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull FqName fqName);
+	PackageDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull FqName fqName);
 }

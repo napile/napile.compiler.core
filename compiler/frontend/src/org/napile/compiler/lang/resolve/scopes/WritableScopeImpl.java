@@ -28,11 +28,9 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -58,12 +56,10 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	@NotNull
 	private final DeclarationDescriptor ownerDeclarationDescriptor;
 
-	// FieldNames include "$"
 	@Nullable
-	private Map<Name, PropertyDescriptor> propertyDescriptorsByFieldNames;
-
+	private SetMultimap<Name, MethodDescriptor> methodGroups;
 	@Nullable
-	private SetMultimap<Name, MethodDescriptor> functionGroups;
+	private SetMultimap<Name, VariableDescriptor> variableGroups;
 
 	@Nullable
 	private Map<Name, DeclarationDescriptor> variableClassOrNamespaceDescriptors;
@@ -72,10 +68,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	private final Map<FqName, ClassDescriptor> classDescriptors = new HashMap<FqName, ClassDescriptor>();
 
 	@Nullable
-	private SetMultimap<Name, VariableDescriptor> propertyGroups;
-
-	@Nullable
-	private Map<Name, NamespaceDescriptor> namespaceAliases;
+	private Map<Name, PackageDescriptor> namespaceAliases;
 
 	@Nullable
 	private Map<Name, ClassDescriptor> objectDescriptors;
@@ -113,12 +106,12 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
-	public void importNamespaceAlias(@NotNull Name aliasName, @NotNull NamespaceDescriptor namespaceDescriptor)
+	public void importNamespaceAlias(@NotNull Name aliasName, @NotNull PackageDescriptor packageDescriptor)
 	{
 		checkMayWrite();
 
-		allDescriptors.add(namespaceDescriptor);
-		super.importNamespaceAlias(aliasName, namespaceDescriptor);
+		allDescriptors.add(packageDescriptor);
+		super.importNamespaceAlias(aliasName, packageDescriptor);
 	}
 
 	@Override
@@ -126,7 +119,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	{
 		checkMayWrite();
 
-		addFunctionDescriptor(methodDescriptor);
+		addMethodDescriptor(methodDescriptor);
 		super.importFunctionAlias(aliasName, methodDescriptor);
 	}
 
@@ -190,7 +183,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@NotNull
-	private Map<Name, NamespaceDescriptor> getNamespaceAliases()
+	private Map<Name, PackageDescriptor> getNamespaceAliases()
 	{
 		if(namespaceAliases == null)
 		{
@@ -202,49 +195,38 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	@Override
 	public void addVariableDescriptor(@NotNull VariableDescriptor variableDescriptor)
 	{
-		addVariableDescriptor(variableDescriptor, false);
-	}
-
-	@Override
-	public void addPropertyDescriptor(@NotNull VariableDescriptor propertyDescriptor)
-	{
-		addVariableDescriptor(propertyDescriptor, true);
-	}
-
-	@Override
-	public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
-	{
-		//allDescriptors.add(constructorDescriptor);
-		//addToDeclared(constructorDescriptor);
-	}
-
-	private void addVariableDescriptor(@NotNull VariableDescriptor variableDescriptor, boolean isProperty)
-	{
 		checkMayWrite();
 
 		Name name = variableDescriptor.getName();
-		if(isProperty)
-			getPropertyGroups().put(name, variableDescriptor);
 
 		checkForRedeclaration(name, variableDescriptor);
 
 		getVariableClassOrNamespaceDescriptors().put(name, variableDescriptor);
 
+		getVariableGroups().put(name, variableDescriptor);
+
 		allDescriptors.add(variableDescriptor);
+
 		addToDeclared(variableDescriptor);
+	}
+
+	@Override
+	public void addPropertyDescriptor(@NotNull VariableDescriptor propertyDescriptor)
+	{
+		addVariableDescriptor(propertyDescriptor);
 	}
 
 	@NotNull
 	@Override
-	public Set<VariableDescriptor> getProperties(@NotNull Name name)
+	public Set<VariableDescriptor> getVariables(@NotNull Name name)
 	{
 		checkMayRead();
 
-		Set<VariableDescriptor> result = Sets.newLinkedHashSet(getPropertyGroups().get(name));
+		Set<VariableDescriptor> result = Sets.newLinkedHashSet(getVariableGroups().get(name));
 
-		result.addAll(getWorkerScope().getProperties(name));
+		result.addAll(getWorkerScope().getVariables(name));
 
-		result.addAll(super.getProperties(name));
+		result.addAll(super.getVariables(name));
 
 		return result;
 	}
@@ -256,7 +238,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 
 		Map<Name, DeclarationDescriptor> variableClassOrNamespaceDescriptors = getVariableClassOrNamespaceDescriptors();
 		DeclarationDescriptor descriptor = variableClassOrNamespaceDescriptors.get(name);
-		if(descriptor instanceof VariableDescriptor && !getPropertyGroups().get(name).contains(descriptor))
+		if(descriptor instanceof VariableDescriptor)
 		{
 			return (VariableDescriptor) descriptor;
 		}
@@ -269,32 +251,29 @@ public class WritableScopeImpl extends WritableScopeWithImports
 		return super.getLocalVariable(name);
 	}
 
+
 	@NotNull
-	private SetMultimap<Name, VariableDescriptor> getPropertyGroups()
+	private SetMultimap<Name, MethodDescriptor> getMethodGroups()
 	{
-		if(propertyGroups == null)
-		{
-			propertyGroups = CommonSuppliers.newLinkedHashSetHashSetMultimap();
-		}
-		return propertyGroups;
+		if(methodGroups == null)
+			methodGroups = CommonSuppliers.newLinkedHashSetHashSetMultimap();
+		return methodGroups;
 	}
 
 	@NotNull
-	private SetMultimap<Name, MethodDescriptor> getFunctionGroups()
+	private SetMultimap<Name, VariableDescriptor> getVariableGroups()
 	{
-		if(functionGroups == null)
-		{
-			functionGroups = CommonSuppliers.newLinkedHashSetHashSetMultimap();
-		}
-		return functionGroups;
+		if(variableGroups == null)
+			variableGroups = CommonSuppliers.newLinkedHashSetHashSetMultimap();
+		return variableGroups;
 	}
 
 	@Override
-	public void addFunctionDescriptor(@NotNull MethodDescriptor methodDescriptor)
+	public void addMethodDescriptor(@NotNull MethodDescriptor methodDescriptor)
 	{
 		checkMayWrite();
 
-		getFunctionGroups().put(methodDescriptor.getName(), methodDescriptor);
+		getMethodGroups().put(methodDescriptor.getName(), methodDescriptor);
 		allDescriptors.add(methodDescriptor);
 	}
 
@@ -304,7 +283,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	{
 		checkMayRead();
 
-		Set<MethodDescriptor> result = Sets.newLinkedHashSet(getFunctionGroups().get(name));
+		Set<MethodDescriptor> result = Sets.newLinkedHashSet(getMethodGroups().get(name));
 
 		result.addAll(getWorkerScope().getMethods(name));
 
@@ -363,14 +342,14 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addNamespaceAlias(@NotNull Name name, @NotNull NamespaceDescriptor namespaceDescriptor)
+	public void addNamespaceAlias(@NotNull Name name, @NotNull PackageDescriptor packageDescriptor)
 	{
 		checkMayWrite();
 
-		checkForRedeclaration(name, namespaceDescriptor);
-		getNamespaceAliases().put(name, namespaceDescriptor);
-		allDescriptors.add(namespaceDescriptor);
-		addToDeclared(namespaceDescriptor);
+		checkForRedeclaration(name, packageDescriptor);
+		getNamespaceAliases().put(name, packageDescriptor);
+		allDescriptors.add(packageDescriptor);
+		addToDeclared(packageDescriptor);
 	}
 
 	@Override
@@ -379,7 +358,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 		checkMayWrite();
 
 		checkForRedeclaration(name, methodDescriptor);
-		getFunctionGroups().put(name, methodDescriptor);
+		getMethodGroups().put(name, methodDescriptor);
 		allDescriptors.add(methodDescriptor);
 	}
 
@@ -451,49 +430,49 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addNamespace(@NotNull NamespaceDescriptor namespaceDescriptor)
+	public void addNamespace(@NotNull PackageDescriptor packageDescriptor)
 	{
 		checkMayWrite();
 
 		Map<Name, DeclarationDescriptor> variableClassOrNamespaceDescriptors = getVariableClassOrNamespaceDescriptors();
-		DeclarationDescriptor oldValue = variableClassOrNamespaceDescriptors.put(namespaceDescriptor.getName(), namespaceDescriptor);
+		DeclarationDescriptor oldValue = variableClassOrNamespaceDescriptors.put(packageDescriptor.getName(), packageDescriptor);
 		if(oldValue != null)
 		{
-			redeclarationHandler.handleRedeclaration(oldValue, namespaceDescriptor);
+			redeclarationHandler.handleRedeclaration(oldValue, packageDescriptor);
 		}
-		allDescriptors.add(namespaceDescriptor);
-		addToDeclared(namespaceDescriptor);
+		allDescriptors.add(packageDescriptor);
+		addToDeclared(packageDescriptor);
 	}
 
 	@Override
-	public NamespaceDescriptor getDeclaredNamespace(@NotNull Name name)
+	public PackageDescriptor getDeclaredNamespace(@NotNull Name name)
 	{
 		checkMayRead();
 
 		Map<Name, DeclarationDescriptor> variableClassOrNamespaceDescriptors = getVariableClassOrNamespaceDescriptors();
 		DeclarationDescriptor namespaceDescriptor = variableClassOrNamespaceDescriptors.get(name);
-		if(namespaceDescriptor instanceof NamespaceDescriptor)
-			return (NamespaceDescriptor) namespaceDescriptor;
+		if(namespaceDescriptor instanceof PackageDescriptor)
+			return (PackageDescriptor) namespaceDescriptor;
 		return null;
 	}
 
 	@Override
-	public NamespaceDescriptor getNamespace(@NotNull Name name)
+	public PackageDescriptor getPackage(@NotNull Name name)
 	{
 		checkMayRead();
 
-		NamespaceDescriptor declaredNamespace = getDeclaredNamespace(name);
+		PackageDescriptor declaredNamespace = getDeclaredNamespace(name);
 		if(declaredNamespace != null)
 			return declaredNamespace;
 
-		NamespaceDescriptor aliased = getNamespaceAliases().get(name);
+		PackageDescriptor aliased = getNamespaceAliases().get(name);
 		if(aliased != null)
 			return aliased;
 
-		NamespaceDescriptor namespace = getWorkerScope().getNamespace(name);
+		PackageDescriptor namespace = getWorkerScope().getPackage(name);
 		if(namespace != null)
 			return namespace;
-		return super.getNamespace(name);
+		return super.getPackage(name);
 	}
 
 	@NotNull
@@ -533,33 +512,6 @@ public class WritableScopeImpl extends WritableScopeWithImports
 		{
 			result.add(0, implicitReceiver);
 		}
-	}
-
-	//    @SuppressWarnings({"NullableProblems"})
-	@NotNull
-	private Map<Name, PropertyDescriptor> getPropertyDescriptorsByFieldNames()
-	{
-		if(propertyDescriptorsByFieldNames == null)
-		{
-			propertyDescriptorsByFieldNames = new HashMap<Name, PropertyDescriptor>();
-		}
-		return propertyDescriptorsByFieldNames;
-	}
-
-	@Override
-	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
-	{
-		checkMayRead();
-
-		if(!fieldName.getName().startsWith("$"))
-		{
-			throw new IllegalStateException();
-		}
-
-		PropertyDescriptor descriptor = getPropertyDescriptorsByFieldNames().get(fieldName);
-		if(descriptor != null)
-			return descriptor;
-		return super.getPropertyByFieldReference(fieldName);
 	}
 
 	public List<VariableDescriptor> getDeclaredVariables()

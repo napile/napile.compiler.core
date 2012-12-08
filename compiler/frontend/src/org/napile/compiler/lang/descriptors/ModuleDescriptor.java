@@ -29,7 +29,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  */
 public class ModuleDescriptor extends DeclarationDescriptorImpl implements NamespaceDescriptorParent
 {
-	private NamespaceDescriptor rootNamepsace;
+	private PackageDescriptor rootNamepsace;
 
 	public ModuleDescriptor(@NotNull Name name)
 	{
@@ -40,7 +40,7 @@ public class ModuleDescriptor extends DeclarationDescriptorImpl implements Names
 		}
 	}
 
-	public void setRootNamespace(@NotNull NamespaceDescriptor rootNs)
+	public void setRootNamespace(@NotNull PackageDescriptor rootNs)
 	{
 		if(this.rootNamepsace != null)
 		{
@@ -56,14 +56,14 @@ public class ModuleDescriptor extends DeclarationDescriptorImpl implements Names
 		return null;
 	}
 
-	public NamespaceDescriptor getRootNamespace()
+	public PackageDescriptor getRootNamespace()
 	{
 		return rootNamepsace;
 	}
 
-	public NamespaceDescriptorImpl getRootNamespaceDescriptorImpl()
+	public PackageDescriptorImpl getRootNamespaceDescriptorImpl()
 	{
-		return (NamespaceDescriptorImpl) rootNamepsace;
+		return (PackageDescriptorImpl) rootNamepsace;
 	}
 
 	@NotNull
@@ -81,12 +81,12 @@ public class ModuleDescriptor extends DeclarationDescriptorImpl implements Names
 
 
 	@Override
-	public void addNamespace(@NotNull NamespaceDescriptor namespaceDescriptor)
+	public void addNamespace(@NotNull PackageDescriptor packageDescriptor)
 	{
-		if(namespaceDescriptor.getContainingDeclaration() != this)
+		if(packageDescriptor.getContainingDeclaration() != this)
 		{
 			throw new IllegalStateException();
 		}
-		setRootNamespace(namespaceDescriptor);
+		setRootNamespace(packageDescriptor);
 	}
 }

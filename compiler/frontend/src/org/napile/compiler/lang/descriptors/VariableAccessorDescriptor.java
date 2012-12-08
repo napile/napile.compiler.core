@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,14 @@ package org.napile.compiler.lang.descriptors;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 19:02/05.12.12
  */
-public interface NamespaceLikeBuilder
+
+public interface VariableAccessorDescriptor extends MethodDescriptor
 {
+	boolean isDefault();
 
 	@NotNull
-	DeclarationDescriptor getOwnerForChildren();
-
-	void addClassifierDescriptor(@NotNull MutableClassDescriptorLite classDescriptor);
-
-	void addObjectDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor);
-
-	void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor);
-
-	void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor);
-
-	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
-
-	void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
+	VariableDescriptor getVariable();
 }

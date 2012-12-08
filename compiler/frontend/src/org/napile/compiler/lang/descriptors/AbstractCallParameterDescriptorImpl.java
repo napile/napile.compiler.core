@@ -32,7 +32,7 @@ import com.google.common.collect.Sets;
  * @author VISTALL
  * @date 20:34/01.12.12
  */
-public abstract class BaseCallParameterDescriptorImpl extends VariableDescriptorImpl implements CallParameterDescriptor
+public abstract class AbstractCallParameterDescriptorImpl extends AbstractVariableDescriptorImpl implements CallParameterDescriptor
 {
 	protected final int index;
 
@@ -45,16 +45,16 @@ public abstract class BaseCallParameterDescriptorImpl extends VariableDescriptor
 
 	protected final CallParameterDescriptor original;
 
-	public BaseCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality)
+	public AbstractCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality)
 	{
-		super(containingDeclaration, annotations, name, outType, modality, false);
+		super(containingDeclaration, annotations, name, outType, modality, false, false);
 		this.original = this;
 		this.index = index;
 	}
 
-	protected BaseCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull Modality modality)
+	protected AbstractCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull Modality modality)
 	{
-		super(containingDeclaration, annotations, name, modality, false);
+		super(containingDeclaration, annotations, name, modality, false, false);
 		this.original = original;
 		this.index = original.getIndex();
 	}

@@ -77,7 +77,7 @@ public class ErrorUtils
 
 		@NotNull
 		@Override
-		public Set<VariableDescriptor> getProperties(@NotNull Name name)
+		public Set<VariableDescriptor> getVariables(@NotNull Name name)
 		{
 			return ERROR_PROPERTY_GROUP;
 		}
@@ -89,7 +89,7 @@ public class ErrorUtils
 		}
 
 		@Override
-		public NamespaceDescriptor getNamespace(@NotNull Name name)
+		public PackageDescriptor getPackage(@NotNull Name name)
 		{
 			return null; // TODO : review
 		}
@@ -118,12 +118,6 @@ public class ErrorUtils
 		public DeclarationDescriptor getContainingDeclaration()
 		{
 			return ERROR_MODULE;
-		}
-
-		@Override
-		public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
-		{
-			return null; // TODO : review
 		}
 
 		@NotNull
@@ -182,7 +176,7 @@ public class ErrorUtils
 	}
 
 	private static final JetType ERROR_PROPERTY_TYPE = createErrorType("<ERROR PROPERTY TYPE>");
-	private static final VariableDescriptor ERROR_PROPERTY = new PropertyDescriptor(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false);
+	private static final VariableDescriptor ERROR_PROPERTY = new VariableDescriptorImpl(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false, false);
 	private static final Set<VariableDescriptor> ERROR_PROPERTY_GROUP = Collections.singleton(ERROR_PROPERTY);
 
 	private static SimpleMethodDescriptor createErrorFunction(ErrorScope ownerScope)

@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.psi.NapilePackageImpl;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileImportDirective;
@@ -186,7 +186,7 @@ public final class TipsManager
 			@Override
 			public boolean apply(DeclarationDescriptor declarationDescriptor)
 			{
-				return declarationDescriptor instanceof NamespaceDescriptor;
+				return declarationDescriptor instanceof PackageDescriptor;
 			}
 		});
 	}

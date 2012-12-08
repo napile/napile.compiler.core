@@ -28,8 +28,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
@@ -67,27 +66,21 @@ public interface JetScope extends DescriptorWithParent
 	Collection<ClassDescriptor> getObjectDescriptors();
 
 	@Nullable
-	NamespaceDescriptor getNamespace(@NotNull Name name);
+	PackageDescriptor getPackage(@NotNull Name name);
 
 	@NotNull
-	Collection<VariableDescriptor> getProperties(@NotNull Name name);
-
-	@Nullable
-	VariableDescriptor getLocalVariable(@NotNull Name name);
+	Collection<VariableDescriptor> getVariables(@NotNull Name name);
 
 	@NotNull
 	Collection<MethodDescriptor> getMethods(@NotNull Name name);
+
+	@Nullable
+	VariableDescriptor getLocalVariable(@NotNull Name name);
 
 	@Override
 	@NotNull
 	DeclarationDescriptor getContainingDeclaration();
 
-	/**
-	 * @param fieldName includes the "$"
-	 * @return the property declaring this field, if any
-	 */
-	@Nullable
-	PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName);
 
 	/**
 	 * All visible descriptors from current scope.

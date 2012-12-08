@@ -34,12 +34,12 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.psi.NapileAnonymClassExpression;
+import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
-import org.napile.compiler.lang.psi.NapileObjectLiteralExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -76,7 +76,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitObjectLiteralExpression(final NapileObjectLiteralExpression expression, final ExpressionTypingContext context)
+	public JetTypeInfo visitAnonymClassExpression(final NapileAnonymClassExpression expression, final ExpressionTypingContext context)
 	{
 		DelegatingBindingTrace delegatingBindingTrace = context.trace.get(TRACE_DELTAS_CACHE, expression.getObjectDeclaration());
 		if(delegatingBindingTrace != null)
@@ -124,7 +124,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, ExpressionTypingContext context)
+	public JetTypeInfo visitAnonymMethodExpression(NapileAnonymMethodExpression expression, ExpressionTypingContext context)
 	{
 		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 		NapileBlockExpression bodyExpression = functionLiteral.getBodyExpression();
@@ -187,7 +187,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(safeReturnType, parameterTypes), context.scope), expression, context, context.dataFlowInfo);
 	}
 
-	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileFunctionLiteralExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)
+	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileAnonymMethodExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)
 	{
 		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 
@@ -201,7 +201,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		return functionDescriptor;
 	}
 
-	private List<CallParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileAnonymMethodImpl functionLiteral, MethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
+	private List<CallParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileAnonymMethodImpl functionLiteral, AbstractMethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
 	{
 		List<CallParameterDescriptor> parameterDescriptors = Lists.newArrayList();
 		NapileElement[] declaredValueParameters = functionLiteral.getValueParameters();
@@ -213,7 +213,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		{
 			CallParameterDescriptor parameterDescriptor = expectedValueParameters.get(0);
 
-			BaseCallParameterDescriptorImpl value = new CallParameterAsVariableDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), parameterDescriptor.getType(), Modality.FINAL);
+			AbstractCallParameterDescriptorImpl value = new CallParameterAsVariableDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), parameterDescriptor.getType(), Modality.FINAL);
 			value.setHasDefaultValue(parameterDescriptor.hasDefaultValue());
 
 			parameterDescriptors.add(value);

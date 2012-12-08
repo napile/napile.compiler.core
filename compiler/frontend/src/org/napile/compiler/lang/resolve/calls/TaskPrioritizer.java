@@ -132,7 +132,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 		{
 			List<ReceiverDescriptor> variantsForExplicitReceiver = autoCastService.getVariantsForReceiver(receiver);
 
-			Collection<ResolutionCandidate<D>> extensionFunctions = convertWithImpliedThis(scope, variantsForExplicitReceiver, callableDescriptorCollector.getNonMembersByName(scope, name, false));
+			Collection<ResolutionCandidate<D>> extensionFunctions = convertWithImpliedThis(scope, variantsForExplicitReceiver, callableDescriptorCollector.getNonMembersByName(scope, name));
 			List<ResolutionCandidate<D>> nonlocals = Lists.newArrayList();
 			List<ResolutionCandidate<D>> locals = Lists.newArrayList();
 			//noinspection unchecked,RedundantTypeArguments
@@ -141,7 +141,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 			Collection<ResolutionCandidate<D>> members = Lists.newArrayList();
 			for(ReceiverDescriptor variant : variantsForExplicitReceiver)
 			{
-				Collection<? extends D> membersForThisVariant = callableDescriptorCollector.getMembersByName(variant.getType(), name, false);
+				Collection<? extends D> membersForThisVariant = callableDescriptorCollector.getMembersByName(variant.getType(), name);
 				convertWithReceivers(membersForThisVariant, Collections.singletonList(variant), Collections.singletonList(NO_RECEIVER), members, hasExplicitThisObject);
 			}
 
@@ -150,7 +150,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 
 			for(ReceiverDescriptor implicitReceiver : implicitReceivers)
 			{
-				Collection<? extends D> memberExtensions = callableDescriptorCollector.getNonMembersByName(implicitReceiver.getType().getMemberScope(), name, false);
+				Collection<? extends D> memberExtensions = callableDescriptorCollector.getNonMembersByName(implicitReceiver.getType().getMemberScope(), name);
 				List<ReceiverDescriptor> variantsForImplicitReceiver = autoCastService.getVariantsForReceiver(implicitReceiver);
 				result.addNonLocalExtensions(convertWithReceivers(memberExtensions, variantsForImplicitReceiver, variantsForExplicitReceiver, hasExplicitThisObject));
 			}
@@ -159,7 +159,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 		}
 		else
 		{
-			Collection<ResolutionCandidate<D>> functions = convertWithImpliedThis(scope, Collections.singletonList(receiver), callableDescriptorCollector.getNonExtensionsByName(scope, name, false));
+			Collection<ResolutionCandidate<D>> functions = convertWithImpliedThis(scope, Collections.singletonList(receiver), callableDescriptorCollector.getNonExtensionsByName(scope, name));
 
 			List<ResolutionCandidate<D>> nonlocals = Lists.newArrayList();
 			List<ResolutionCandidate<D>> locals = Lists.newArrayList();

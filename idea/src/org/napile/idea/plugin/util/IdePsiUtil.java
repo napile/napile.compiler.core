@@ -4,8 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
@@ -35,7 +35,7 @@ public class IdePsiUtil extends RunUtil
 		if(descriptor == null)
 			return false;
 
-		for(SimpleMethodDescriptor methodDescriptor : descriptor.getMethods())
+		for(MethodDescriptor methodDescriptor : descriptor.getMethods())
 			if(isRunPoint(methodDescriptor))
 				return true;
 		return false;

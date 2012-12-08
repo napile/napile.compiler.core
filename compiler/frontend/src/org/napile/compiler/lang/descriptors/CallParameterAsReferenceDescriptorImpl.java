@@ -29,17 +29,17 @@ import com.google.common.collect.Lists;
  * @author VISTALL
  * @date 13:56/06.09.12
  */
-public class CallParameterAsReferenceDescriptorImpl extends BaseCallParameterDescriptorImpl implements CallParameterAsReferenceDescriptor
+public class CallParameterAsReferenceDescriptorImpl extends AbstractCallParameterDescriptorImpl implements CallParameterAsReferenceDescriptor
 {
-	private final PropertyDescriptor referenceProperty;
+	private final VariableDescriptor referenceProperty;
 
-	public CallParameterAsReferenceDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull PropertyDescriptor referenceProperty)
+	public CallParameterAsReferenceDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull VariableDescriptor referenceProperty)
 	{
 		super(containingDeclaration, index, annotations, name, outType, Modality.FINAL);
 		this.referenceProperty = referenceProperty;
 	}
 
-	protected CallParameterAsReferenceDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull PropertyDescriptor referenceProperty)
+	protected CallParameterAsReferenceDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull VariableDescriptor referenceProperty)
 	{
 		super(containingDeclaration, original, annotations, name, Modality.FINAL);
 		this.referenceProperty = referenceProperty;
@@ -52,7 +52,7 @@ public class CallParameterAsReferenceDescriptorImpl extends BaseCallParameterDes
 	}
 
 	@Override
-	public PropertyDescriptor getReferenceProperty()
+	public VariableDescriptor getReferenceVariableDescriptor()
 	{
 		return referenceProperty;
 	}

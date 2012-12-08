@@ -138,7 +138,7 @@ public interface Errors
 	DiagnosticFactory2<NapileElement, NapileElement, DeclarationDescriptor> UNUSED_VALUE = DiagnosticFactory2.create(Severity.WARNING);
 	DiagnosticFactory1<NapileElement, NapileElement> UNUSED_CHANGED_VALUE = DiagnosticFactory1.create(Severity.WARNING);
 	SimpleDiagnosticFactory<NapileElement> UNUSED_EXPRESSION = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileFunctionLiteralExpression> UNUSED_FUNCTION_LITERAL = SimpleDiagnosticFactory.create(Severity.WARNING);
+	SimpleDiagnosticFactory<NapileAnonymMethodExpression> UNUSED_FUNCTION_LITERAL = SimpleDiagnosticFactory.create(Severity.WARNING);
 
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> FINAL_VAR_REASSIGNMENT = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> INITIALIZATION_BEFORE_DECLARATION = DiagnosticFactory1.create(Severity.ERROR);
@@ -254,13 +254,13 @@ public interface Errors
 
 	DiagnosticFactory2<NapileNamedDeclaration, CallableMemberDescriptor, CallableMemberDescriptor> RETURN_TYPE_MISMATCH_ON_OVERRIDE = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.DECLARATION_RETURN_TYPE);
 
-	DiagnosticFactory2<NapileVariable, PropertyDescriptor, PropertyDescriptor> VAR_OVERRIDDEN_BY_VAL = DiagnosticFactory2.create(Severity.ERROR, new PositioningStrategy<NapileVariable>()
+	DiagnosticFactory2<NapileVariable, VariableDescriptorImpl, VariableDescriptorImpl> VAR_OVERRIDDEN_BY_VAL = DiagnosticFactory2.create(Severity.ERROR, new PositioningStrategy<NapileVariable>()
 	{
 		@NotNull
 		@Override
 		public List<TextRange> mark(@NotNull NapileVariable property)
 		{
-			return markNode(property.getVarNode());
+			return markNode(property.getVarOrValNode());
 		}
 	});
 

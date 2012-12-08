@@ -234,7 +234,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitLoopExpression(expression, data);
 	}
 
-	public R visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, D data)
+	public R visitAnonymMethodExpression(NapileAnonymMethodExpression expression, D data)
 	{
 		return visitExpression(expression, data);
 	}
@@ -269,7 +269,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitQualifiedExpression(expression, data);
 	}
 
-	public R visitObjectLiteralExpression(NapileObjectLiteralExpression expression, D data)
+	public R visitAnonymClassExpression(NapileAnonymClassExpression expression, D data)
 	{
 		return visitExpression(expression, data);
 	}

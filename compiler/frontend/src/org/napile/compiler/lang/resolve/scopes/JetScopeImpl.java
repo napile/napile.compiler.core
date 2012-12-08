@@ -28,8 +28,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
@@ -65,7 +64,7 @@ public abstract class JetScopeImpl implements JetScope
 
 	@NotNull
 	@Override
-	public Collection<VariableDescriptor> getProperties(@NotNull Name name)
+	public Collection<VariableDescriptor> getVariables(@NotNull Name name)
 	{
 		return Collections.emptySet();
 	}
@@ -77,7 +76,7 @@ public abstract class JetScopeImpl implements JetScope
 	}
 
 	@Override
-	public NamespaceDescriptor getNamespace(@NotNull Name name)
+	public PackageDescriptor getPackage(@NotNull Name name)
 	{
 		return null;
 	}
@@ -94,12 +93,6 @@ public abstract class JetScopeImpl implements JetScope
 	public Collection<MethodDescriptor> getMethods(@NotNull Name name)
 	{
 		return Collections.emptySet();
-	}
-
-	@Override
-	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
-	{
-		return null;
 	}
 
 	@NotNull

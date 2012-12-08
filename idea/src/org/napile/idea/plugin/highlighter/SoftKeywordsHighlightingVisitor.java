@@ -20,8 +20,8 @@
 package org.napile.idea.plugin.highlighter;
 
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
-import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import org.napile.compiler.lang.psi.NapileMethodType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -70,7 +70,7 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 	}
 
 	@Override
-	public void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression)
+	public void visitAnonymMethodExpression(NapileAnonymMethodExpression expression)
 	{
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;

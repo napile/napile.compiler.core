@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Stepan Koltsov
  */
-public class NamespaceLikeBuilderDummy implements NamespaceLikeBuilder
+public class DescriptorBuilderDummy implements DescriptorBuilder
 {
 	@NotNull
 	@Override
@@ -37,19 +37,19 @@ public class NamespaceLikeBuilderDummy implements NamespaceLikeBuilder
 	}
 
 	@Override
-	public void addObjectDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
+	public void addAnonymClassDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
 	{
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
+	public void addMethodDescriptor(@NotNull MethodDescriptor functionDescriptor)
 	{
 		throw new IllegalStateException();
 	}
 
 	@Override
-	public void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor)
+	public void addVariableDescriptor(@NotNull VariableDescriptor propertyDescriptor)
 	{
 		throw new IllegalStateException();
 	}

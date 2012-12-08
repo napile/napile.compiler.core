@@ -21,10 +21,9 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -46,11 +45,10 @@ public interface WritableScope extends JetScope
 
 	void addVariableDescriptor(@NotNull VariableDescriptor variableDescriptor);
 
+	@Deprecated
 	void addPropertyDescriptor(@NotNull VariableDescriptor propertyDescriptor);
 
-	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
-
-	void addFunctionDescriptor(@NotNull MethodDescriptor methodDescriptor);
+	void addMethodDescriptor(@NotNull MethodDescriptor methodDescriptor);
 
 	void addTypeParameterDescriptor(@NotNull TypeParameterDescriptor typeParameterDescriptor);
 
@@ -60,16 +58,16 @@ public interface WritableScope extends JetScope
 
 	void addClassifierAlias(@NotNull Name name, @NotNull ClassifierDescriptor classifierDescriptor);
 
-	void addNamespaceAlias(@NotNull Name name, @NotNull NamespaceDescriptor namespaceDescriptor);
+	void addNamespaceAlias(@NotNull Name name, @NotNull PackageDescriptor packageDescriptor);
 
 	void addFunctionAlias(@NotNull Name name, @NotNull MethodDescriptor methodDescriptor);
 
 	void addVariableAlias(@NotNull Name name, @NotNull VariableDescriptor variableDescriptor);
 
-	void addNamespace(@NotNull NamespaceDescriptor namespaceDescriptor);
+	void addNamespace(@NotNull PackageDescriptor packageDescriptor);
 
 	@Nullable
-	NamespaceDescriptor getDeclaredNamespace(@NotNull Name name);
+	PackageDescriptor getDeclaredNamespace(@NotNull Name name);
 
 	@NotNull
 	Multimap<Name, DeclarationDescriptor> getDeclaredDescriptorsAccessibleBySimpleName();
@@ -80,7 +78,7 @@ public interface WritableScope extends JetScope
 
 	void importClassifierAlias(@NotNull Name importedClassifierName, @NotNull ClassifierDescriptor classifierDescriptor);
 
-	void importNamespaceAlias(@NotNull Name aliasName, @NotNull NamespaceDescriptor namespaceDescriptor);
+	void importNamespaceAlias(@NotNull Name aliasName, @NotNull PackageDescriptor packageDescriptor);
 
 	void importFunctionAlias(@NotNull Name aliasName, @NotNull MethodDescriptor methodDescriptor);
 

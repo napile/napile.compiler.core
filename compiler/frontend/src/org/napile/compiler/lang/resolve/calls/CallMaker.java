@@ -223,6 +223,11 @@ public class CallMaker
 		return makeCall(expression, baseAsReceiver, null, expression.getOperationReference(), Collections.<ValueArgument>emptyList());
 	}
 
+	public static Call makeVariableSetCall(@NotNull ReceiverDescriptor receiverDescriptor, @NotNull NapileExpression leftExpression, @NotNull NapileExpression rightExpression)
+	{
+		return makeCallWithExpressions(leftExpression, receiverDescriptor, null, leftExpression, Collections.singletonList(rightExpression), CallType.DEFAULT);
+	}
+
 	public static Call makeArraySetCall(@NotNull ReceiverDescriptor arrayAsReceiver, @NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull CallType callType)
 	{
 		List<NapileExpression> arguments = Lists.newArrayList(arrayAccessExpression.getIndexExpressions());
@@ -245,7 +250,7 @@ public class CallMaker
 		return new ExpressionValueArgument(expression, reportErrorsOn);
 	}
 
-	public static Call makePropertyCall(@NotNull ReceiverDescriptor explicitReceiver, @Nullable ASTNode callOperationNode, @NotNull NapileSimpleNameExpression nameExpression)
+	public static Call makeVariableCall(@NotNull ReceiverDescriptor explicitReceiver, @Nullable ASTNode callOperationNode, @NotNull NapileSimpleNameExpression nameExpression)
 	{
 		return makeCallWithExpressions(nameExpression, explicitReceiver, callOperationNode, nameExpression, Collections.<NapileExpression>emptyList());
 	}

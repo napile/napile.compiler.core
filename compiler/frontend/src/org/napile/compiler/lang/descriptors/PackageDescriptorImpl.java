@@ -28,12 +28,12 @@ import org.napile.compiler.lang.resolve.scopes.WritableScope;
 /**
  * @author abreslav
  */
-public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl implements WithDeferredResolve
+public class PackageDescriptorImpl extends AbstractPackageDescriptorImpl implements WithDeferredResolve
 {
 
 	private WritableScope memberScope;
 
-	public NamespaceDescriptorImpl(@NotNull NamespaceDescriptorParent containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name)
+	public PackageDescriptorImpl(@NotNull NamespaceDescriptorParent containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name)
 	{
 		super(containingDeclaration, annotations, name);
 	}
@@ -56,9 +56,9 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 	}
 
 	@Override
-	public void addNamespace(@NotNull NamespaceDescriptor namespaceDescriptor)
+	public void addNamespace(@NotNull PackageDescriptor packageDescriptor)
 	{
-		getMemberScope().addNamespace(namespaceDescriptor);
+		getMemberScope().addNamespace(packageDescriptor);
 	}
 
 	@NotNull
@@ -68,13 +68,13 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 		return DescriptorUtils.getFQName(this).toSafe();
 	}
 
-	private NamespaceLikeBuilder builder = null;
+	private DescriptorBuilder builder = null;
 
-	public NamespaceLikeBuilder getBuilder()
+	public DescriptorBuilder getBuilder()
 	{
 		if(builder == null)
 		{
-			builder = new NamespaceLikeBuilder()
+			builder = new DescriptorBuilderDummy()
 			{
 				@Override
 				public void addClassifierDescriptor(@NotNull MutableClassDescriptorLite classDescriptor)
@@ -82,41 +82,11 @@ public class NamespaceDescriptorImpl extends AbstractNamespaceDescriptorImpl imp
 					getMemberScope().addClassifierDescriptor(classDescriptor);
 				}
 
-				@Override
-				public void addObjectDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
-				{
-					getMemberScope().addObjectDescriptor(objectDescriptor);
-				}
-
-				@Override
-				public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
-				{
-					getMemberScope().addFunctionDescriptor(functionDescriptor);
-				}
-
-				@Override
-				public void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor)
-				{
-					getMemberScope().addPropertyDescriptor(propertyDescriptor);
-				}
-
-				@Override
-				public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
-				{
-					getMemberScope().addConstructorDescriptor(constructorDescriptor);
-				}
-
-				@Override
-				public void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
-				{
-					throw new IllegalArgumentException();
-				}
-
 				@NotNull
 				@Override
 				public DeclarationDescriptor getOwnerForChildren()
 				{
-					return NamespaceDescriptorImpl.this;
+					return PackageDescriptorImpl.this;
 				}
 			};
 		}

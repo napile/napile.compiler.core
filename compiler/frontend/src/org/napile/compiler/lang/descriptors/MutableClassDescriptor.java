@@ -38,8 +38,8 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	private final Set<ConstructorDescriptor> staticConstructors = new LinkedHashSet<ConstructorDescriptor>();
 	private final Set<CallableMemberDescriptor> declaredCallableMembers = new HashSet<CallableMemberDescriptor>();
 	private final Set<CallableMemberDescriptor> allCallableMembers = new HashSet<CallableMemberDescriptor>(); // includes fake overrides
-	private final Set<PropertyDescriptor> properties = new HashSet<PropertyDescriptor>();
-	private final Set<SimpleMethodDescriptor> functions = new HashSet<SimpleMethodDescriptor>();
+	private final Set<VariableDescriptor> variables = new HashSet<VariableDescriptor>();
+	private final Set<MethodDescriptor> methods = new HashSet<MethodDescriptor>();
 
 	private final WritableScope scopeForMemberResolution;
 	// This scope contains type parameters but does not contain inner classes
@@ -89,15 +89,15 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	}
 
 	@NotNull
-	public Set<SimpleMethodDescriptor> getMethods()
+	public Set<MethodDescriptor> getMethods()
 	{
-		return functions;
+		return methods;
 	}
 
 	@NotNull
-	public Set<PropertyDescriptor> getProperties()
+	public Set<VariableDescriptor> getVariables()
 	{
-		return properties;
+		return variables;
 	}
 
 	@NotNull
@@ -157,15 +157,15 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 		scopeForMemberResolution.changeLockLevel(WritableScope.LockLevel.READING);
 	}
 
-	private NamespaceLikeBuilder builder = null;
+	private DescriptorBuilder builder = null;
 
 	@Override
-	public NamespaceLikeBuilder getBuilder()
+	public DescriptorBuilder getBuilder()
 	{
 		if(builder == null)
 		{
-			final NamespaceLikeBuilder superBuilder = super.getBuilder();
-			builder = new NamespaceLikeBuilderDummy()
+			final DescriptorBuilder superBuilder = super.getBuilder();
+			builder = new DescriptorBuilderDummy()
 			{
 				@NotNull
 				@Override
@@ -175,9 +175,9 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 				}
 
 				@Override
-				public void addObjectDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
+				public void addAnonymClassDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
 				{
-					superBuilder.addObjectDescriptor(objectDescriptor);
+					superBuilder.addAnonymClassDescriptor(objectDescriptor);
 				}
 
 				@Override
@@ -188,25 +188,25 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 				}
 
 				@Override
-				public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
+				public void addMethodDescriptor(@NotNull MethodDescriptor functionDescriptor)
 				{
 					superBuilder.addMethodDescriptor(functionDescriptor);
-					functions.add(functionDescriptor);
+					methods.add(functionDescriptor);
 					if(functionDescriptor.getKind() != CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
 					{
 						declaredCallableMembers.add(functionDescriptor);
 					}
 					allCallableMembers.add(functionDescriptor);
-					scopeForMemberResolution.addFunctionDescriptor(functionDescriptor);
+					scopeForMemberResolution.addMethodDescriptor(functionDescriptor);
 					if(functionDescriptor.isStatic())
-						staticScope.addFunctionDescriptor(functionDescriptor);
+						staticScope.addMethodDescriptor(functionDescriptor);
 				}
 
 				@Override
-				public void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor)
+				public void addVariableDescriptor(@NotNull VariableDescriptor propertyDescriptor)
 				{
-					superBuilder.addPropertyDescriptor(propertyDescriptor);
-					properties.add(propertyDescriptor);
+					superBuilder.addVariableDescriptor(propertyDescriptor);
+					variables.add(propertyDescriptor);
 					if(propertyDescriptor.getKind() != CallableMemberDescriptor.Kind.FAKE_OVERRIDE)
 						declaredCallableMembers.add(propertyDescriptor);
 					allCallableMembers.add(propertyDescriptor);
@@ -221,11 +221,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 				{
 					addConstructor(constructorDescriptor);
 
-					superBuilder.addConstructorDescriptor(constructorDescriptor);
-
 					allCallableMembers.add(constructorDescriptor);
-
-					scopeForMemberResolution.addConstructorDescriptor(constructorDescriptor);
 				}
 
 				@Override

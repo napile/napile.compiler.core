@@ -31,7 +31,7 @@ import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -42,7 +42,7 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
  */
 public class VariableCodegen
 {
-	public static void getSetterAndGetter(@NotNull PropertyDescriptor propertyDescriptor, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace)
+	public static void getSetterAndGetter(@NotNull VariableDescriptorImpl propertyDescriptor, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace)
 	{
 		FqName fqName = DescriptorUtils.getFQName(propertyDescriptor).toSafe();
 
@@ -51,7 +51,7 @@ public class VariableCodegen
 		genGetter(propertyDescriptor, classNode, bindingTrace, fqName);
 	}
 
-	private static void getSetter(PropertyDescriptor propertyDescriptor, ClassNode classNode, BindingTrace bindingTrace, FqName fqName)
+	private static void getSetter(VariableDescriptorImpl propertyDescriptor, ClassNode classNode, BindingTrace bindingTrace, FqName fqName)
 	{
 		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + AsmConstants.ANONYM_SPLITTER + "set"));
 
@@ -86,7 +86,7 @@ public class VariableCodegen
 		}
 	}
 
-	private static void genGetter(PropertyDescriptor propertyDescriptor, ClassNode classNode, BindingTrace bindingTrace, FqName fqName)
+	private static void genGetter(VariableDescriptorImpl propertyDescriptor, ClassNode classNode, BindingTrace bindingTrace, FqName fqName)
 	{
 		FqName getterFq = fqName.parent().child(Name.identifier(fqName.shortName() + AsmConstants.ANONYM_SPLITTER + "get"));
 		DeclarationDescriptor getter = bindingTrace.get(BindingContext.FQNAME_TO_DESCRIPTOR, getterFq);

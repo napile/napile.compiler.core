@@ -24,96 +24,75 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
+import org.napile.compiler.lang.types.DescriptorSubstitutor;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.TypeSubstitutor;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * @author abreslav
  */
-public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRootImpl implements VariableDescriptor
+public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl implements CallableMemberDescriptor
 {
-	private JetType outType;
-	protected final boolean isStatic;
-	private final Modality modality;
+	private Visibility visibility;
 
-	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean isStatic)
+	private final Set<VariableDescriptorImpl> overriddenProperties = Sets.newLinkedHashSet(); // LinkedHashSet is essential here
+	private final VariableDescriptorImpl original;
+	private final Kind kind;
+
+	private ReceiverDescriptor expectedThisObject;
+	private List<TypeParameterDescriptor> typeParameters;
+
+	private VariableDescriptorImpl(@Nullable VariableDescriptorImpl original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable)
 	{
-		super(containingDeclaration, annotations, name);
+		super(containingDeclaration, annotations, name, modality, isStatic, mutable);
 
-		if(outType != null)
-			setOutType(outType);
-		this.isStatic = isStatic;
-		this.modality = modality;
+		this.visibility = visibility;
+		this.original = original == null ? this : original.getOriginal();
+		this.kind = kind;
 	}
 
-	protected VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull Modality modality, boolean isStatic)
+	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable)
 	{
-		this(containingDeclaration, annotations, name, null, modality, isStatic);
+		this(null, containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable);
 	}
 
-	@Override
-	public boolean isStatic()
+	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic, boolean mutable)
 	{
-		return isStatic;
+		this(containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable);
+		setType(outType, Collections.<TypeParameterDescriptor>emptyList(), expectedThisObject);
 	}
 
-	@NotNull
-	@Override
-	public JetType getType()
+	public void setType(@NotNull JetType outType, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor expectedThisObject)
 	{
-		if(outType == null)
-		{
-			System.out.println(getClass().getName());
-		}
-		return outType;
+		setOutType(outType);
+
+		this.typeParameters = Lists.newArrayList(typeParameters);
+
+		this.expectedThisObject = isStatic ? ReceiverDescriptor.NO_RECEIVER : expectedThisObject;
 	}
 
-	@Override
-	@NotNull
-	public Modality getModality()
+	public void setVisibility(@NotNull Visibility visibility)
 	{
-		return modality;
-	}
-
-	public void setOutType(@NotNull JetType type)
-	{
-		assert this.outType == null;
-		outType = type;
-	}
-
-	@Override
-	@NotNull
-	public VariableDescriptor getOriginal()
-	{
-		return (VariableDescriptor) super.getOriginal();
-	}
-
-	@NotNull
-	@Override
-	public List<CallParameterDescriptor> getValueParameters()
-	{
-		return Collections.emptyList();
-	}
-
-	@NotNull
-	@Override
-	public Set<? extends CallableDescriptor> getOverriddenDescriptors()
-	{
-		return Collections.emptySet();
+		this.visibility = visibility;
 	}
 
 	@NotNull
 	@Override
 	public List<TypeParameterDescriptor> getTypeParameters()
 	{
-		return Collections.emptyList();
+		return typeParameters;
 	}
 
 	@NotNull
 	@Override
 	public ReceiverDescriptor getExpectedThisObject()
 	{
-		return ReceiverDescriptor.NO_RECEIVER;
+		return expectedThisObject;
 	}
 
 	@NotNull
@@ -121,5 +100,100 @@ public abstract class VariableDescriptorImpl extends DeclarationDescriptorNonRoo
 	public JetType getReturnType()
 	{
 		return getType();
+	}
+
+	@NotNull
+	@Override
+	public Visibility getVisibility()
+	{
+		return visibility;
+	}
+
+	@Override
+	public VariableDescriptorImpl substitute(TypeSubstitutor originalSubstitutor)
+	{
+		if(originalSubstitutor.isEmpty())
+			return this;
+
+		return doSubstitute(originalSubstitutor, getContainingDeclaration(), getModality(), visibility, true, true, getKind());
+	}
+
+	private VariableDescriptorImpl doSubstitute(TypeSubstitutor originalSubstitutor, DeclarationDescriptor newOwner, Modality newModality, Visibility newVisibility, boolean preserveOriginal, boolean copyOverrides, Kind kind)
+	{
+		VariableDescriptorImpl substitutedDescriptor = new VariableDescriptorImpl(preserveOriginal ? getOriginal() : this, newOwner, getAnnotations(), newModality, newVisibility, getName(), kind, isStatic(), isMutable());
+
+		List<TypeParameterDescriptor> substitutedTypeParameters = Lists.newArrayList();
+		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);
+
+		JetType originalOutType = getType();
+		JetType outType = substitutor.substitute(originalOutType);
+		if(outType == null)
+		{
+			return null; // TODO : tell the user that the property was projected out
+		}
+
+		ReceiverDescriptor substitutedExpectedThisObject;
+		if(expectedThisObject.exists())
+		{
+			JetType substitutedExpectedThisObjectType = substitutor.substitute(getExpectedThisObject().getType());
+			substitutedExpectedThisObject = new TransientReceiver(substitutedExpectedThisObjectType);
+		}
+		else
+		{
+			substitutedExpectedThisObject = ReceiverDescriptor.NO_RECEIVER;
+		}
+
+		substitutedDescriptor.setType(outType, substitutedTypeParameters, substitutedExpectedThisObject);
+
+		//VariableAccessorDescriptor getter = new VariableAccessorDescriptorImpl()
+		if(copyOverrides)
+		{
+			for(VariableDescriptorImpl propertyDescriptor : overriddenProperties)
+			{
+				OverridingUtil.bindOverride(substitutedDescriptor, propertyDescriptor.substitute(substitutor));
+			}
+		}
+
+		return substitutedDescriptor;
+	}
+
+	@Override
+	public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)
+	{
+		return visitor.visitPropertyDescriptor(this, data);
+	}
+
+	@NotNull
+	@Override
+	public VariableDescriptorImpl getOriginal()
+	{
+		return original;
+	}
+
+	@NotNull
+	@Override
+	public Kind getKind()
+	{
+		return kind;
+	}
+
+	@Override
+	public void addOverriddenDescriptor(@NotNull CallableMemberDescriptor overridden)
+	{
+		overriddenProperties.add((VariableDescriptorImpl) overridden);
+	}
+
+	@NotNull
+	@Override
+	public Set<? extends VariableDescriptorImpl> getOverriddenDescriptors()
+	{
+		return overriddenProperties;
+	}
+
+	@NotNull
+	@Override
+	public VariableDescriptorImpl copy(DeclarationDescriptor newOwner, Modality modality, boolean makeInvisible, Kind kind, boolean copyOverrides)
+	{
+		return doSubstitute(TypeSubstitutor.EMPTY, newOwner, modality, makeInvisible ? Visibility.INVISIBLE_FAKE : visibility, false, copyOverrides, kind);
 	}
 }

@@ -127,7 +127,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 		}
 		else if(expression.getParent() instanceof NapileCallElement)
 		{
-			if(expression instanceof NapileFunctionLiteralExpression)
+			if(expression instanceof NapileAnonymMethodExpression)
 			{
 				needParentheses = true;
 			}

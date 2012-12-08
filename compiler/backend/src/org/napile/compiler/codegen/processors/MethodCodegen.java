@@ -43,7 +43,7 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
@@ -162,16 +162,16 @@ public class MethodCodegen
 		for(CallParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
 			if(parameterDescriptor instanceof CallParameterAsReferenceDescriptorImpl)
 			{
-				PropertyDescriptor propertyDescriptor = ((CallParameterAsReferenceDescriptorImpl) parameterDescriptor).getReferenceProperty();
-				if(propertyDescriptor == null)
+				VariableDescriptor variableDescriptor = ((CallParameterAsReferenceDescriptorImpl) parameterDescriptor).getReferenceVariableDescriptor();
+				if(variableDescriptor == null)
 					continue;
 
-				TypeNode typeNode = TypeTransformer.toAsmType(propertyDescriptor.getType());
+				TypeNode typeNode = TypeTransformer.toAsmType(variableDescriptor.getType());
 
-				if(!propertyDescriptor.isStatic())
+				if(!variableDescriptor.isStatic())
 					StackValue.local(0, typeNode).put(AsmConstants.ANY_TYPE, adapter);
 				StackValue.local(callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter);
-				StackValue.property(propertyDescriptor).store(typeNode, adapter);
+				StackValue.property(variableDescriptor).store(typeNode, adapter);
 			}
 
 		instructions.addAll(adapter.getInstructions());

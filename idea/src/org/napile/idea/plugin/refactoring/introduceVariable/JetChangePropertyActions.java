@@ -26,6 +26,6 @@ public class JetChangePropertyActions
 		{
 			node = NapilePsiFactory.createValNode(project);
 		}
-		property.getVarNode().getPsi().replace(node.getPsi());
+		property.getVarOrValNode().getPsi().replace(node.getPsi());
 	}
 }

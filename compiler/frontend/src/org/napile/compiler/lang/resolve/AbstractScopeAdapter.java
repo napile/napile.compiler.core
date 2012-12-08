@@ -26,8 +26,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -63,9 +62,9 @@ public abstract class AbstractScopeAdapter implements JetScope
 	}
 
 	@Override
-	public NamespaceDescriptor getNamespace(@NotNull Name name)
+	public PackageDescriptor getPackage(@NotNull Name name)
 	{
-		return getWorkerScope().getNamespace(name);
+		return getWorkerScope().getPackage(name);
 	}
 
 	@Override
@@ -95,9 +94,9 @@ public abstract class AbstractScopeAdapter implements JetScope
 
 	@NotNull
 	@Override
-	public Collection<VariableDescriptor> getProperties(@NotNull Name name)
+	public Collection<VariableDescriptor> getVariables(@NotNull Name name)
 	{
-		return getWorkerScope().getProperties(name);
+		return getWorkerScope().getVariables(name);
 	}
 
 	@Override
@@ -111,12 +110,6 @@ public abstract class AbstractScopeAdapter implements JetScope
 	public DeclarationDescriptor getContainingDeclaration()
 	{
 		return getWorkerScope().getContainingDeclaration();
-	}
-
-	@Override
-	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
-	{
-		return getWorkerScope().getPropertyByFieldReference(fieldName);
 	}
 
 	@NotNull

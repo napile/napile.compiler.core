@@ -29,8 +29,8 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -190,13 +190,13 @@ public class BodyResolver
 
 	private void resolvePropertyDeclarationBodies()
 	{
-		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : this.context.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, VariableDescriptor> entry : this.context.getVariables().entrySet())
 		{
 			NapileVariable property = entry.getKey();
 			if(!context.completeAnalysisNeeded(property))
 				continue;
 
-			final PropertyDescriptor propertyDescriptor = entry.getValue();
+			final VariableDescriptor propertyDescriptor = entry.getValue();
 
 			computeDeferredType(propertyDescriptor.getReturnType());
 
@@ -208,7 +208,7 @@ public class BodyResolver
 		}
 	}
 
-	private void resolvePropertyInitializer(NapileVariable property, PropertyDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
+	private void resolvePropertyInitializer(NapileVariable property, VariableDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
 	{
 		//JetFlowInformationProvider flowInformationProvider = context.getDescriptorResolver().computeFlowData(property, initializer); // TODO : flow JET-15
 		JetType expectedTypeForInitializer = property.getType() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;

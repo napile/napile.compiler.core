@@ -134,7 +134,7 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	@NotNull
 	private JetTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, NapileVisitor<JetTypeInfo, ExpressionTypingContext> visitor)
 	{
-		if(context.trace.get(BindingContext.PROCESSED, expression))
+		if(context.trace.safeGet(BindingContext.PROCESSED, expression))
 		{
 			DataFlowInfo dataFlowInfo = context.trace.get(BindingContext.EXPRESSION_DATA_FLOW_INFO, expression);
 			if(dataFlowInfo == null)
@@ -148,7 +148,7 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 		{
 			result = expression.accept(visitor, context);
 			// Some recursive definitions (object expressions) must put their types in the cache manually:
-			if(context.trace.get(BindingContext.PROCESSED, expression))
+			if(context.trace.safeGet(BindingContext.PROCESSED, expression))
 			{
 				return JetTypeInfo.create(context.trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression), result.getDataFlowInfo());
 			}
@@ -183,13 +183,13 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public JetTypeInfo visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, ExpressionTypingContext data)
+	public JetTypeInfo visitAnonymMethodExpression(NapileAnonymMethodExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(closures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitObjectLiteralExpression(NapileObjectLiteralExpression expression, ExpressionTypingContext data)
+	public JetTypeInfo visitAnonymClassExpression(NapileAnonymClassExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(closures, data);
 	}

@@ -28,7 +28,7 @@ import com.google.common.collect.Lists;
 /**
  * @author abreslav
  */
-public class CallParameterAsVariableDescriptorImpl extends BaseCallParameterDescriptorImpl
+public class CallParameterAsVariableDescriptorImpl extends AbstractCallParameterDescriptorImpl
 {
 	public CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality)
 	{

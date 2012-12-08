@@ -486,7 +486,7 @@ public class JetParsing extends AbstractJetParsing
 			declType = parseMethodOrMacro(MACRO);
 		else if(keywordToken == NapileTokens.THIS_KEYWORD)
 			declType = parseConstructor();
-		else if(NapileTokens.VARIABLE_KEYWORDS.contains(keywordToken))
+		else if(NapileTokens.VARIABLE_AND_VALUE_KEYWORDS.contains(keywordToken))
 			declType = parseVariableOrValue();
 
 		return declType;
@@ -525,7 +525,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	IElementType parseVariableOrValue()
 	{
-		if(atSet(NapileTokens.VARIABLE_KEYWORDS))
+		if(atSet(NapileTokens.VARIABLE_AND_VALUE_KEYWORDS))
 			advance();
 		else
 			errorAndAdvance("Expecting 'var' or 'val'");
@@ -629,7 +629,7 @@ public class JetParsing extends AbstractJetParsing
 		}
 		else if(at(NapileTokens.EQ) || at(NapileTokens.LBRACE))
 		{
-			parseFunctionBody();
+			parseMethodOrMacroBody();
 		}
 
 		return doneElement;
@@ -686,7 +686,7 @@ public class JetParsing extends AbstractJetParsing
 		 *   : "=" element
 		 *   ;
 		 */
-	private void parseFunctionBody()
+	private void parseMethodOrMacroBody()
 	{
 		if(at(NapileTokens.LBRACE))
 		{
@@ -1126,28 +1126,14 @@ public class JetParsing extends AbstractJetParsing
 		parseValueParameter(false);
 	}
 
-	private static final TokenSet NEXT_REF_ELEMENT = TokenSet.create(NapileTokens.COMMA, NapileTokens.RPAR, NapileTokens.EQ);
-
 	private boolean parseValueParameter(boolean rollbackOnFailure)
 	{
 		PsiBuilder.Marker parameter = mark();
 
-		if(at(NapileTokens.IDENTIFIER) && NEXT_REF_ELEMENT.contains(lookahead(1)))
+		boolean modifierList = parseModifierList();
+		if(atSet(NapileTokens.VARIABLE_AND_VALUE_KEYWORDS))
 		{
-			PsiBuilder.Marker refMark = mark();
 			advance();
-			refMark.done(REFERENCE_EXPRESSION);
-
-			parseDefaultValueForCallParameter();
-
-			parameter.done(CALL_PARAMETER_AS_REFERENCE);
-		}
-		else
-		{
-			parseModifierList();
-
-			if(at(NapileTokens.VAR_KEYWORD))
-				advance();
 
 			if(!parseFunctionParameterRest() && rollbackOnFailure)
 			{
@@ -1157,6 +1143,37 @@ public class JetParsing extends AbstractJetParsing
 
 			parameter.done(CALL_PARAMETER_AS_VARIABLE);
 		}
+		else
+		{
+			if(modifierList)
+			{
+				error("'var' or 'val' expected");
+				if(!parseFunctionParameterRest() && rollbackOnFailure)
+				{
+					parameter.rollbackTo();
+					return false;
+				}
+
+				parameter.done(CALL_PARAMETER_AS_VARIABLE);
+			}
+			else if(at(NapileTokens.IDENTIFIER))
+			{
+				PsiBuilder.Marker refMark = mark();
+				advance();
+				refMark.done(REFERENCE_EXPRESSION);
+
+				parseDefaultValueForCallParameter();
+
+				parameter.done(CALL_PARAMETER_AS_REFERENCE);
+			}
+			else
+			{
+				error("'var', 'val' or identifier expected");
+				parameter.rollbackTo();
+				return false;
+			}
+		}
+
 		return true;
 	}
 

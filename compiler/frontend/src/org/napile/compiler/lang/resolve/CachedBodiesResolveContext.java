@@ -22,8 +22,8 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 
@@ -38,7 +38,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileClass, MutableClassDescriptor> classes;
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
-	private final Map<NapileVariable, PropertyDescriptor> properties;
+	private final Map<NapileVariable, VariableDescriptor> properties;
 	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
@@ -51,7 +51,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 		classes = Collections.unmodifiableMap(context.getClasses());
 		objects = Collections.unmodifiableMap(context.getAnonymous());
 		constructors = Collections.unmodifiableMap(context.getConstructors());
-		properties = Collections.unmodifiableMap(context.getProperties());
+		properties = Collections.unmodifiableMap(context.getVariables());
 		functions = Collections.unmodifiableMap(context.getMethods());
 		declaringScopes = Collections.unmodifiableMap(context.getDeclaringScopes());
 
@@ -77,7 +77,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileVariable, PropertyDescriptor> getProperties()
+	public Map<NapileVariable, VariableDescriptor> getVariables()
 	{
 		return properties;
 	}

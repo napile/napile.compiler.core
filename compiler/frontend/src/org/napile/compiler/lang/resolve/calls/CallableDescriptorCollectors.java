@@ -45,21 +45,21 @@ public class CallableDescriptorCollectors
 
 		@NotNull
 		@Override
-		public Collection<MethodDescriptor> getNonExtensionsByName(JetScope scope, Name name, boolean set)
+		public Collection<MethodDescriptor> getNonExtensionsByName(JetScope scope, Name name)
 		{
 			return fromScope(scope, name);
 		}
 
 		@NotNull
 		@Override
-		public Collection<MethodDescriptor> getMembersByName(@NotNull JetType receiverType, Name name, boolean set)
+		public Collection<MethodDescriptor> getMembersByName(@NotNull JetType receiverType, Name name)
 		{
 			return fromScope(receiverType.getMemberScope(), name);
 		}
 
 		@NotNull
 		@Override
-		public Collection<MethodDescriptor> getNonMembersByName(JetScope scope, Name name, boolean set)
+		public Collection<MethodDescriptor> getNonMembersByName(JetScope scope, Name name)
 		{
 			return Collections.emptyList();
 		}
@@ -76,6 +76,7 @@ public class CallableDescriptorCollectors
 			Set<MethodDescriptor> members = new HashSet<MethodDescriptor>(methodDescriptors.size() + constructorDescriptors.size());
 			members.addAll(methodDescriptors);
 			members.addAll(constructorDescriptors);
+
 			return members;
 		}
 	};
@@ -85,27 +86,29 @@ public class CallableDescriptorCollectors
 
 		@NotNull
 		@Override
-		public Collection<VariableDescriptor> getNonExtensionsByName(JetScope scope, Name name, boolean set)
+		public Collection<VariableDescriptor> getNonExtensionsByName(JetScope scope, Name name)
 		{
-			return Collections.emptyList();
+			VariableDescriptor descriptor = scope.getLocalVariable(name);
+			if(descriptor == null)
+				return scope.getVariables(name);
+			else
+				return Collections.singleton(descriptor);
 		}
 
 		@NotNull
 		@Override
-		public Collection<VariableDescriptor> getMembersByName(@NotNull JetType receiverType, Name name, boolean set)
+		public Collection<VariableDescriptor> getMembersByName(@NotNull JetType receiverType, Name name)
 		{
-			return receiverType.getMemberScope().getProperties(name);
+			return receiverType.getMemberScope().getVariables(name);
 		}
 
 		@NotNull
 		@Override
-		public Collection<VariableDescriptor> getNonMembersByName(JetScope scope, Name name, boolean set)
+		public Collection<VariableDescriptor> getNonMembersByName(JetScope scope, Name name)
 		{
 			return Collections.emptyList();
 		}
 	};
 
-
-
-	/*package*/ static List<CallableDescriptorCollector<? extends CallableDescriptor>> FUNCTIONS_AND_VARIABLES = Lists.newArrayList(FUNCTIONS, VARIABLES);
+	static List<CallableDescriptorCollector<? extends CallableDescriptor>> FUNCTIONS_AND_VARIABLES = Lists.<CallableDescriptorCollector<? extends CallableDescriptor>> newArrayList(FUNCTIONS, VARIABLES);
 }

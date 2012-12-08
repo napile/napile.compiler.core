@@ -24,5 +24,5 @@ import org.jetbrains.annotations.NotNull;
 public interface NamespaceDescriptorParent extends DeclarationDescriptor
 {
 
-	void addNamespace(@NotNull NamespaceDescriptor namespaceDescriptor);
+	void addNamespace(@NotNull PackageDescriptor packageDescriptor);
 }

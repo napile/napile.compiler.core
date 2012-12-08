@@ -18,7 +18,6 @@ package org.napile.compiler.lang.resolve;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
@@ -115,7 +114,6 @@ public interface BindingContext extends BindingReader
 	WritableSlice<VariableDescriptor, Boolean> AUTO_CREATED_IT = Slices.createSimpleSetSlice();
 	WritableSlice<VariableDescriptor, VariableDescriptor> AUTO_CREATED_TO = Slices.createSimpleSlice();
 	WritableSlice<NapileExpression, DataFlowInfo> DATAFLOW_INFO_AFTER_CONDITION = Slices.createSimpleSlice();
-	WritableSlice<VariableDescriptor, Map<ClassDescriptor, PropertyAccessInfo>> PROPERTY_ACCESS_INFO = Slices.createSimpleSlice();
 
 	/**
 	 * Has type of current expression has been already resolved
@@ -131,20 +129,20 @@ public interface BindingContext extends BindingReader
 	WritableSlice<Box<DeferredType>, Boolean> DEFERRED_TYPE = Slices.createCollectiveSetSlice();
 
 	@Deprecated
-	WritableSlice<PropertyDescriptor, Boolean> BACKING_FIELD_REQUIRED = new Slices.SetSlice<PropertyDescriptor>(RewritePolicy.DO_NOTHING)
+	WritableSlice<VariableDescriptorImpl, Boolean> BACKING_FIELD_REQUIRED = new Slices.SetSlice<VariableDescriptorImpl>(RewritePolicy.DO_NOTHING)
 	{
 		@Override
-		public Boolean computeValue(SlicedMap map, PropertyDescriptor propertyDescriptor, Boolean backingFieldRequired, boolean valueNotFound)
+		public Boolean computeValue(SlicedMap map, VariableDescriptorImpl propertyDescriptor, Boolean backingFieldRequired, boolean valueNotFound)
 		{
 			return false;
 		}
 	};
-	WritableSlice<PropertyDescriptor, Boolean> IS_INITIALIZED = Slices.createSimpleSetSlice();
+	WritableSlice<VariableDescriptorImpl, Boolean> IS_INITIALIZED = Slices.createSimpleSetSlice();
 
-	WritableSlice<NapileFunctionLiteralExpression, Boolean> BLOCK = new Slices.SetSlice<NapileFunctionLiteralExpression>(RewritePolicy.DO_NOTHING)
+	WritableSlice<NapileAnonymMethodExpression, Boolean> BLOCK = new Slices.SetSlice<NapileAnonymMethodExpression>(RewritePolicy.DO_NOTHING)
 	{
 		@Override
-		public Boolean computeValue(SlicedMap map, NapileFunctionLiteralExpression expression, Boolean isBlock, boolean valueNotFound)
+		public Boolean computeValue(SlicedMap map, NapileAnonymMethodExpression expression, Boolean isBlock, boolean valueNotFound)
 		{
 			isBlock = valueNotFound ? false : isBlock;
 			assert isBlock != null;
@@ -152,7 +150,7 @@ public interface BindingContext extends BindingReader
 		}
 	};
 
-	WritableSlice<PsiElement, NamespaceDescriptor> NAMESPACE = Slices.<PsiElement, NamespaceDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, PackageDescriptor> PACKAGE = Slices.<PsiElement, PackageDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, ClassDescriptor> CLASS = Slices.<PsiElement, ClassDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapileTypeParameter, TypeParameterDescriptor> TYPE_PARAMETER = Slices.<NapileTypeParameter, TypeParameterDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	/**
@@ -161,11 +159,16 @@ public interface BindingContext extends BindingReader
 	WritableSlice<PsiElement, SimpleMethodDescriptor> METHOD = Slices.<PsiElement, SimpleMethodDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, ConstructorDescriptor> CONSTRUCTOR = Slices.<PsiElement, ConstructorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, VariableAccessorDescriptor> VARIABLE_GET_ACCESSOR = Slices.<PsiElement, VariableAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, VariableAccessorDescriptor> VARIABLE_SET_ACCESSOR = Slices.<PsiElement, VariableAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapileCallParameterAsVariable, VariableDescriptor> VALUE_PARAMETER = Slices.<NapileCallParameterAsVariable, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
 
-	WritableSlice[] DECLARATIONS_TO_DESCRIPTORS = new WritableSlice[]{
-			NAMESPACE,
+	WritableSlice[] DECLARATIONS_TO_DESCRIPTORS = new WritableSlice[]
+	{
+			PACKAGE,
 			CLASS,
+			VARIABLE_GET_ACCESSOR,
+			VARIABLE_SET_ACCESSOR,
 			TYPE_PARAMETER,
 			METHOD,
 			CONSTRUCTOR,
@@ -175,9 +178,9 @@ public interface BindingContext extends BindingReader
 
 	WritableSlice<FqName, ClassDescriptor> FQNAME_TO_CLASS_DESCRIPTOR = new BasicWritableSlice<FqName, ClassDescriptor>(RewritePolicy.DO_NOTHING, true);
 	WritableSlice<FqName, MethodDescriptor> FQNAME_TO_METHOD_DESCRIPTOR = new BasicWritableSlice<FqName, MethodDescriptor>(RewritePolicy.DO_NOTHING, true);
-	WritableSlice<FqName, PropertyDescriptor> FQNAME_TO_VARIABLE_DESCRIPTOR = new BasicWritableSlice<FqName, PropertyDescriptor>(RewritePolicy.DO_NOTHING, true);
+	WritableSlice<FqName, VariableDescriptorImpl> FQNAME_TO_VARIABLE_DESCRIPTOR = new BasicWritableSlice<FqName, VariableDescriptorImpl>(RewritePolicy.DO_NOTHING, true);
 
-	WritableSlice<FqName, NamespaceDescriptor> FQNAME_TO_NAMESPACE_DESCRIPTOR = new BasicWritableSlice<FqName, NamespaceDescriptor>(RewritePolicy.DO_NOTHING);
+	WritableSlice<FqName, PackageDescriptor> FQNAME_TO_NAMESPACE_DESCRIPTOR = new BasicWritableSlice<FqName, PackageDescriptor>(RewritePolicy.DO_NOTHING);
 
 	WritableSlice<CallParameterDescriptor, NapileExpression> DEFAULT_VALUE_OF_PARAMETER = Slices.createSimpleSlice();
 
@@ -196,14 +199,14 @@ public interface BindingContext extends BindingReader
 
 	WritableSlice<NapileReferenceExpression, PsiElement> LABEL_TARGET = Slices.<NapileReferenceExpression, PsiElement>sliceBuilder().build();
 
-	WritableSlice<NapileFile, NamespaceDescriptor> FILE_TO_NAMESPACE = Slices.createSimpleSlice();
+	WritableSlice<NapileFile, PackageDescriptor> FILE_TO_NAMESPACE = Slices.createSimpleSlice();
 
-	WritableSlice<NamespaceDescriptor, Collection<NapileFile>> NAMESPACE_TO_FILES = Slices.createSimpleSlice();
+	WritableSlice<PackageDescriptor, Collection<NapileFile>> NAMESPACE_TO_FILES = Slices.createSimpleSlice();
 
 	/**
 	 * Each namespace found in src must be registered here.
 	 */
-	WritableSlice<NamespaceDescriptor, Boolean> NAMESPACE_IS_SRC = Slices.createSimpleSlice();
+	WritableSlice<PackageDescriptor, Boolean> NAMESPACE_IS_SRC = Slices.createSimpleSlice();
 
 	WritableSlice<ClassDescriptor, Boolean> INCOMPLETE_HIERARCHY = Slices.createCollectiveSetSlice();
 

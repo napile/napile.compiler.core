@@ -35,8 +35,8 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.psi.Call;
+import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -191,7 +191,7 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 			}
 			else
 			{
-				NapileFunctionLiteralExpression functionLiteral = (NapileFunctionLiteralExpression) possiblyLabeledFunctionLiteral;
+				NapileAnonymMethodExpression functionLiteral = (NapileAnonymMethodExpression) possiblyLabeledFunctionLiteral;
 
 				CallParameterDescriptor parameterDescriptor = valueParameters.get(valueParameters.size() - 1);
 				/*if(parameterDescriptor.getVarargElementType() != null)

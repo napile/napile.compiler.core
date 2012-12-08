@@ -280,7 +280,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
-	public StackValue visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, StackValue data)
+	public StackValue visitAnonymMethodExpression(NapileAnonymMethodExpression expression, StackValue data)
 	{
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, expression.getAnonymMethod());
 

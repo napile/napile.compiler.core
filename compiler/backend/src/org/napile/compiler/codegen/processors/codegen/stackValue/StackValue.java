@@ -27,7 +27,8 @@ import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 
@@ -71,7 +72,7 @@ public abstract class StackValue
 	}
 
 	@NotNull
-	public static StackValue variable(@NotNull PropertyDescriptor propertyDescriptor)
+	public static StackValue variable(@NotNull VariableDescriptorImpl propertyDescriptor)
 	{
 		return new Variable(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()), propertyDescriptor.isStatic());
 	}
@@ -82,7 +83,7 @@ public abstract class StackValue
 		return new Variable(fqName, type, staticVar);
 	}
 
-	public static StackValue property(@NotNull PropertyDescriptor propertyDescriptor)
+	public static StackValue property(@NotNull VariableDescriptor propertyDescriptor)
 	{
 		return property(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()), propertyDescriptor.isStatic());
 	}

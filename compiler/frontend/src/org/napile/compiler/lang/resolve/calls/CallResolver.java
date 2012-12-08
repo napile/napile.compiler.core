@@ -256,7 +256,7 @@ public class CallResolver
 					return checkArgumentTypesAndFail(context);
 				}
 
-				MethodDescriptorImpl functionDescriptor = new ExpressionAsMethodDescriptor(context.scope.getContainingDeclaration(), Name.special("<for expression " +
+				AbstractMethodDescriptorImpl functionDescriptor = new ExpressionAsMethodDescriptor(context.scope.getContainingDeclaration(), Name.special("<for expression " +
 						calleeExpression.getText() +
 						">"));
 				FunctionDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, ReceiverDescriptor.NO_RECEIVER, Modality.FINAL, Visibility.LOCAL2);
@@ -288,8 +288,8 @@ public class CallResolver
 			OverloadResolutionResults<F> cachedResults = context.trace.get(resolutionResultsSlice, CallKey.create(context.call.getCallType(), (NapileExpression) element));
 			if(cachedResults != null)
 			{
-				DelegatingBindingTrace delegatingTrace = context.trace.get(TRACE_DELTAS_CACHE, (NapileExpression) element);
-				assert delegatingTrace != null;
+				DelegatingBindingTrace delegatingTrace = context.trace.safeGet(TRACE_DELTAS_CACHE, (NapileExpression) element);
+
 				delegatingTrace.addAllMyDataTo(context.trace);
 				return cachedResults;
 			}
@@ -593,8 +593,6 @@ public class CallResolver
 
 				performResolutionForCandidateCall(context, task);
 
-                /* important for 'variable as function case': temporary bind reference to descriptor (will be rewritten)
-                to have a binding to variable while 'invoke' call resolve */
 				task.tracing.bindReference(context.candidateCall.getTrace(), context.candidateCall);
 
 				Collection<ResolvedCallWithTrace<F>> calls = callTransformer.transformCall(context, this, task);

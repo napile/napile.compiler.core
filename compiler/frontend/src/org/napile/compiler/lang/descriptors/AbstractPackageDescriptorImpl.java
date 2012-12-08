@@ -27,11 +27,11 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 /**
  * @author abreslav
  */
-public abstract class AbstractNamespaceDescriptorImpl extends DeclarationDescriptorNonRootImpl implements NamespaceDescriptor
+public abstract class AbstractPackageDescriptorImpl extends DeclarationDescriptorNonRootImpl implements PackageDescriptor
 {
 	private NamespaceType namespaceType;
 
-	public AbstractNamespaceDescriptorImpl(@NotNull NamespaceDescriptorParent containingDeclaration, List<AnnotationDescriptor> annotations, @NotNull Name name)
+	public AbstractPackageDescriptorImpl(@NotNull NamespaceDescriptorParent containingDeclaration, List<AnnotationDescriptor> annotations, @NotNull Name name)
 	{
 
 		super(containingDeclaration, annotations, name);
@@ -51,7 +51,7 @@ public abstract class AbstractNamespaceDescriptorImpl extends DeclarationDescrip
 	}
 
 	@Override
-	public void addNamespace(@NotNull NamespaceDescriptor namespaceDescriptor)
+	public void addNamespace(@NotNull PackageDescriptor packageDescriptor)
 	{
 		throw new IllegalStateException("immutable");
 	}
@@ -69,7 +69,7 @@ public abstract class AbstractNamespaceDescriptorImpl extends DeclarationDescrip
 
 	@NotNull
 	@Override
-	public NamespaceDescriptor substitute(TypeSubstitutor substitutor)
+	public PackageDescriptor substitute(TypeSubstitutor substitutor)
 	{
 		throw new UnsupportedOperationException("This operation does not make sense for a namespace");
 	}

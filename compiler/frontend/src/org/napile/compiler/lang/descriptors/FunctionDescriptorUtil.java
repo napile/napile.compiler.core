@@ -128,7 +128,7 @@ public class FunctionDescriptorUtil
 		return parameterScope;
 	}
 
-	public static void initializeFromFunctionType(@NotNull MethodDescriptorImpl functionDescriptor, @NotNull JetType functionType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Modality modality, @NotNull Visibility visibility)
+	public static void initializeFromFunctionType(@NotNull AbstractMethodDescriptorImpl functionDescriptor, @NotNull JetType functionType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Modality modality, @NotNull Visibility visibility)
 	{
 		assert functionType.getConstructor() instanceof MethodTypeConstructor;
 

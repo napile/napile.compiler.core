@@ -63,7 +63,9 @@ public interface Call
 
 	enum CallType
 	{
-		DEFAULT, ARRAY_GET_METHOD, ARRAY_SET_METHOD
+		DEFAULT,
+		ARRAY_GET_METHOD,
+		ARRAY_SET_METHOD
 	}
 
 	@NotNull

@@ -17,21 +17,24 @@
 package org.napile.compiler.lang.descriptors;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.annotations.Annotated;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.NamespaceType;
 
 /**
  * @author abreslav
  */
-public interface NamespaceDescriptor extends Annotated, Named, FqNamed, NamespaceDescriptorParent
+public interface DescriptorBuilder
 {
 	@NotNull
-	JetScope getMemberScope();
+	DeclarationDescriptor getOwnerForChildren();
 
-	@NotNull
-	NamespaceType getNamespaceType();
+	void addClassifierDescriptor(@NotNull MutableClassDescriptorLite classDescriptor);
 
-	@Override
-	NamespaceDescriptorParent getContainingDeclaration();
+	void addAnonymClassDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor);
+
+	void addMethodDescriptor(@NotNull MethodDescriptor functionDescriptor);
+
+	void addVariableDescriptor(@NotNull VariableDescriptor propertyDescriptor);
+
+	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
+
+	void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
 }

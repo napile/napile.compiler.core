@@ -28,7 +28,7 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileImportDirective;
@@ -172,9 +172,9 @@ public class ImportsResolver
 		{
 			isResolved = namespaceScope.getLocalVariable(aliasName);
 		}
-		else if(wasResolved instanceof NamespaceDescriptor)
+		else if(wasResolved instanceof PackageDescriptor)
 		{
-			isResolved = namespaceScope.getNamespace(aliasName);
+			isResolved = namespaceScope.getPackage(aliasName);
 		}
 		if(isResolved != null && isResolved != wasResolved)
 		{

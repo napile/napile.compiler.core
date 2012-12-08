@@ -147,7 +147,6 @@ public class TypeParameterResolver
 				innerScope.changeLockLevel(WritableScope.LockLevel.READING);
 
 				((TypeParameterDescriptorImpl) typeParameterDescriptor).addConstructor(constructorDescriptor);
-				((WritableScope)scope).addConstructorDescriptor(constructorDescriptor);
 			}
 		}
 	}

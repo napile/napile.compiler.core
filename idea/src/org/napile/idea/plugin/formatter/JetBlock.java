@@ -54,7 +54,7 @@ public class JetBlock extends AbstractBlock
 
 	private List<Block> mySubBlocks;
 
-	private static final TokenSet CODE_BLOCKS = TokenSet.create(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.FUNCTION_LITERAL_EXPRESSION, NapileNodes.FUNCTION_LITERAL);
+	private static final TokenSet CODE_BLOCKS = TokenSet.create(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.ANONYM_METHOD_EXPRESSION, NapileNodes.ANONYM_METHOD);
 
 	// private static final List<IndentWhitespaceRule>
 
@@ -271,9 +271,9 @@ public class JetBlock extends AbstractBlock
 	}
 
 	static ASTIndentStrategy[] INDENT_RULES = new ASTIndentStrategy[]{
-			ASTIndentStrategy.forNode("No indent for braces in blocks").in(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.FUNCTION_LITERAL_EXPRESSION).forType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNoneIndent()),
+			ASTIndentStrategy.forNode("No indent for braces in blocks").in(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.ANONYM_METHOD_EXPRESSION).forType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNoneIndent()),
 
-			ASTIndentStrategy.forNode("Indent for block content").in(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.FUNCTION_LITERAL_EXPRESSION).notForType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNormalIndent()),
+			ASTIndentStrategy.forNode("Indent for block content").in(NapileNodes.BLOCK, NapileNodes.CLASS_BODY, NapileNodes.ANONYM_METHOD_EXPRESSION).notForType(NapileTokens.RBRACE, NapileTokens.LBRACE).set(Indent.getNormalIndent()),
 
 			ASTIndentStrategy.forNode("For a single statement if 'for'").in(NapileNodes.BODY).notForType(NapileNodes.BLOCK).set(Indent.getNormalIndent()),
 

@@ -27,7 +27,16 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileModifierListOwner;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.OverridingUtil;
@@ -36,7 +45,6 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.util.CommonSuppliers;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -44,6 +52,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.LinkedMultiMap;
 import com.intellij.util.containers.MultiMap;
@@ -53,6 +62,7 @@ import com.intellij.util.containers.MultiMap;
  */
 public class OverrideResolver
 {
+	private static final Logger LOGGER = Logger.getInstance(OverrideResolver.class);
 
 	private TopDownAnalysisContext context;
 	private TopDownAnalysisParameters topDownAnalysisParameters;
@@ -152,13 +162,13 @@ public class OverrideResolver
 				@Override
 				public void addToScope(@NotNull CallableMemberDescriptor fakeOverride)
 				{
-					if(fakeOverride instanceof PropertyDescriptor)
+					if(fakeOverride instanceof VariableDescriptorImpl)
 					{
-						classDescriptor.getBuilder().addPropertyDescriptor((PropertyDescriptor) fakeOverride);
+						classDescriptor.getBuilder().addVariableDescriptor((VariableDescriptorImpl) fakeOverride);
 					}
-					else if(fakeOverride instanceof SimpleMethodDescriptor)
+					else if(fakeOverride instanceof MethodDescriptor)
 					{
-						classDescriptor.getBuilder().addMethodDescriptor((SimpleMethodDescriptor) fakeOverride);
+						classDescriptor.getBuilder().addMethodDescriptor((MethodDescriptor) fakeOverride);
 					}
 					else
 					{
@@ -330,7 +340,7 @@ public class OverrideResolver
 		List<CallableMemberDescriptor> r = Lists.newArrayList();
 		for(DeclarationDescriptor decl : scope.getAllDescriptors())
 		{
-			if(decl instanceof PropertyDescriptor || decl instanceof SimpleMethodDescriptor)
+			if(decl instanceof VariableDescriptor || decl instanceof MethodDescriptor)
 			{
 				r.add((CallableMemberDescriptor) decl);
 			}
@@ -522,7 +532,7 @@ public class OverrideResolver
 
 					if(!haveFinalModality(overridden) && haveFinalModality(declared) && !kindMismatchError)
 					{
-						trace.report(VAR_OVERRIDDEN_BY_VAL.on((NapileVariable) member, (PropertyDescriptor) declared, (PropertyDescriptor) overridden));
+						trace.report(VAR_OVERRIDDEN_BY_VAL.on((NapileVariable) member, (VariableDescriptorImpl) declared, (VariableDescriptorImpl) overridden));
 						kindMismatchError = true;
 					}
 				}
@@ -564,7 +574,7 @@ public class OverrideResolver
 		{
 			Set<CallableMemberDescriptor> all = Sets.newLinkedHashSet();
 			all.addAll(supertype.getMemberScope().getMethods(declared.getName()));
-			all.addAll((Set) supertype.getMemberScope().getProperties(declared.getName()));
+			all.addAll((Set) supertype.getMemberScope().getVariables(declared.getName()));
 			for(CallableMemberDescriptor fromSuper : all)
 			{
 				if(OverridingUtil.isOverridableBy(fromSuper, declared).getResult() == OverridingUtil.OverrideCompatibilityInfo.Result.OVERRIDABLE)
@@ -572,7 +582,7 @@ public class OverrideResolver
 					invisibleOverride = fromSuper;
 					if(Visibilities.isVisible(fromSuper, declared))
 					{
-						throw new IllegalStateException("Descriptor " +
+						LOGGER.error("Descriptor " +
 								fromSuper +
 								"is overridable by " +
 								declared +

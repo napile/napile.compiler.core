@@ -43,6 +43,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.lib.NapileReflectPackage;
@@ -101,6 +102,7 @@ import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author abreslav
@@ -116,12 +118,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitSimpleNameExpression(NapileSimpleNameExpression expression, ExpressionTypingContext context)
 	{
-		// TODO : other members
-		// TODO : type substitutions???
 		JetTypeInfo typeInfo = getSelectorReturnTypeInfo(ReceiverDescriptor.NO_RECEIVER, null, expression, context);
 		JetType type = DataFlowUtils.checkType(typeInfo.getType(), expression, context);
 		ExpressionTypingUtils.checkWrappingInRef(expression, context);
-		return JetTypeInfo.create(type, typeInfo.getDataFlowInfo()); // TODO : Extensions to this
+		return JetTypeInfo.create(type, typeInfo.getDataFlowInfo());
 	}
 
 	@Nullable
@@ -174,7 +174,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Nullable
 	protected NamespaceType lookupNamespaceType(@NotNull NapileSimpleNameExpression expression, @NotNull Name referencedName, ExpressionTypingContext context)
 	{
-		NamespaceDescriptor namespace = context.scope.getNamespace(referencedName);
+		PackageDescriptor namespace = context.scope.getPackage(referencedName);
 		if(namespace == null)
 		{
 			return null;
@@ -760,7 +760,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			{
 				List<Name> packages = fqName.parent().pathSegments();
 				for(int i = 0; i < (children.length - 1); i++)
-					context.trace.record(BindingContext.REFERENCE_TARGET, children[i], context.scope.getNamespace(packages.get(i)));
+					context.trace.record(BindingContext.REFERENCE_TARGET, children[i], context.scope.getPackage(packages.get(i)));
 
 				context.trace.record(BindingContext.REFERENCE_TARGET, children[children.length - 1], classDescriptor);
 				methodDescriptors = classDescriptor.getMemberScope(Collections.<JetType>emptyList()).getMethods(target.getReferencedNameAsName());
@@ -936,7 +936,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Nullable
 	private JetType getVariableType(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull ExpressionTypingContext context, @NotNull boolean[] result)
 	{
-
 		TemporaryBindingTrace traceForVariable = TemporaryBindingTrace.create(context.trace);
 		OverloadResolutionResults<VariableDescriptor> resolutionResult = context.replaceBindingTrace(traceForVariable).resolveSimpleProperty(receiver, callOperationNode, nameExpression);
 		if(!resolutionResult.isNothing())
@@ -1001,10 +1000,52 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@NotNull
 	private JetTypeInfo getSimpleNameExpressionTypeInfo(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull ExpressionTypingContext context)
 	{
+		NapileBinaryExpression binaryExpression = null;
+		if(nameExpression.getParent() instanceof NapileBinaryExpression)
+		{
+			NapileBinaryExpression b = ((NapileBinaryExpression) nameExpression.getParent());
+			binaryExpression = b.getLeft() == nameExpression && b.getOperationToken() == NapileTokens.EQ ? b : null;
+		}
+		else if(nameExpression.getParent() instanceof NapileDotQualifiedExpression)
+		{
+			NapileDotQualifiedExpression d = (NapileDotQualifiedExpression) nameExpression.getParent();
+			if(d.getParent() instanceof NapileBinaryExpression)
+			{
+				NapileBinaryExpression b = ((NapileBinaryExpression) d.getParent());
+				binaryExpression = b.getLeft() == d && b.getOperationToken() == NapileTokens.EQ && d.getSelectorExpression() == nameExpression ? b : null;
+				if(binaryExpression != null)
+				{
+					NapileExpression receiverExpression = d.getReceiverExpression();
 
-		boolean[] result = new boolean[1];
+					JetType receiverType = context.expressionTypingServices.getType(context.scope, receiverExpression, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace);
+					receiver = new ExpressionReceiver(receiverExpression, receiverType);
+				}
+			}
+		}
 
 		TemporaryBindingTrace traceForVariable = TemporaryBindingTrace.create(context.trace);
+
+		MethodDescriptor methodDescriptor = null;
+		if(binaryExpression != null)
+			methodDescriptor = resolveVariableSetMethod(nameExpression, receiver, context, traceForVariable);
+		else
+			methodDescriptor = resolveVariableGetMethod(nameExpression, receiver, context, traceForVariable);
+
+		if(methodDescriptor != null)
+		{
+			traceForVariable.commit();
+
+			JetType type;
+			if(ErrorUtils.isError(methodDescriptor))
+				type = ErrorUtils.createErrorType("Variable is not resolved") ;
+			else
+				type = binaryExpression != null ? methodDescriptor.getValueParameters().get(0).getReturnType() : methodDescriptor.getReturnType();
+			return JetTypeInfo.create(type, context.dataFlowInfo);
+		}
+
+		traceForVariable.clear();
+		boolean[] result = new boolean[1];
+
 		JetType type = getVariableType(nameExpression, receiver, callOperationNode, context.replaceBindingTrace(traceForVariable), result);
 		if(result[0])
 		{
@@ -1014,7 +1055,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		Call call = CallMaker.makeCall(nameExpression, receiver, callOperationNode, nameExpression, Collections.<ValueArgument>emptyList());
 		TemporaryBindingTrace traceForFunction = TemporaryBindingTrace.create(context.trace);
-		MethodDescriptor methodDescriptor = getFunctionDescriptor(call, nameExpression, receiver, context, result);
+		methodDescriptor = getFunctionDescriptor(call, nameExpression, receiver, context, result);
 		if(result[0])
 		{
 			traceForFunction.commit();
@@ -1069,7 +1110,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			return JetTypeInfo.create(type, dataFlowInfo);
 		}
 
-		NapileExpression calleeExpression = callExpression.getCalleeExpression();
+		/*NapileExpression calleeExpression = callExpression.getCalleeExpression();
 		if(calleeExpression instanceof NapileSimpleNameExpression && callExpression.getTypeArgumentList() == null)
 		{
 			TemporaryBindingTrace traceForVariable = TemporaryBindingTrace.create(context.trace);
@@ -1080,7 +1121,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				context.trace.report(FUNCTION_EXPECTED.on((NapileReferenceExpression) calleeExpression, calleeExpression, type != null ? type : ErrorUtils.createErrorType("")));
 				return JetTypeInfo.create(null, context.dataFlowInfo);
 			}
-		}
+		}          */
 		traceForFunction.commit();
 		return JetTypeInfo.create(null, context.dataFlowInfo);
 	}
@@ -1503,9 +1544,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@NotNull
-        /*package*/ OverloadResolutionResults<MethodDescriptor> getResolutionResultsForBinaryCall(JetScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression, ExpressionReceiver receiver)
+    public OverloadResolutionResults<MethodDescriptor> getResolutionResultsForBinaryCall(JetScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression, ReceiverDescriptor receiver)
 	{
-		//        ExpressionReceiver receiver = safeGetExpressionReceiver(facade, binaryExpression.getLeft(), context.replaceScope(scope));
 		return context.replaceScope(scope).resolveCallWithGivenName(CallMaker.makeCall(receiver, binaryExpression), binaryExpression.getOperationReference(), name);
 	}
 
@@ -1524,20 +1564,51 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Nullable
-        /*package*/ JetType resolveArrayAccessSetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult)
+	JetType resolveArrayAccessSetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult)
 	{
 		return resolveArrayAccessSpecialMethod(arrayAccessExpression, rightHandSide, context, traceForResolveResult, false);
 	}
 
 	@Nullable
-        /*package*/ JetType resolveArrayAccessGetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull ExpressionTypingContext context)
+	JetType resolveArrayAccessGetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull ExpressionTypingContext context)
 	{
 		return resolveArrayAccessSpecialMethod(arrayAccessExpression, null, context, context.trace, true);
 	}
 
+	MethodDescriptor resolveVariableGetMethod(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @NotNull ExpressionTypingContext context, @NotNull BindingTrace trace)
+	{
+		Name name = Name.identifier(nameExpression.getReferencedName() + AsmConstants.ANONYM_SPLITTER + "get");
+		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableCall(receiver, null, nameExpression), nameExpression, name);
+
+		if(!results.isSuccess())
+		{
+
+			return null;
+		}
+
+		return results.getResultingDescriptor();
+	}
+
+	MethodDescriptor resolveVariableSetMethod(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @NotNull ExpressionTypingContext context, BindingTrace trace)
+	{
+		NapileBinaryExpression binaryExpression = PsiTreeUtil.getParentOfType(nameExpression, NapileBinaryExpression.class);
+		if(binaryExpression == null)
+			throw new IllegalArgumentException("binaryExpression cant be null");
+
+		Name name = Name.identifier(nameExpression.getReferencedName() + AsmConstants.ANONYM_SPLITTER + "set");
+		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiver, binaryExpression.getLeft(), binaryExpression.getRight()), nameExpression, name);
+		if(!results.isSingleResult())
+		{
+			//trace.report(Errors.UNRESOLVED_REFERENCE.on(binaryExpression.getOperationReference()));
+			return null;
+		}
+
+		//trace.record(BindingContext.REFERENCE_TARGET, binaryExpression.getOperationReference(), results.getResultingDescriptor());
+		return results.getResultingDescriptor();
+	}
+
 	@Nullable
-	private JetType resolveArrayAccessSpecialMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @Nullable NapileExpression rightHandSide, //only for 'set' method
-			@NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult, boolean isGet)
+	private JetType resolveArrayAccessSpecialMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @Nullable NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult, boolean isGet)
 	{
 		JetType arrayType = facade.getTypeInfo(arrayAccessExpression.getArrayExpression(), context).getType();
 		if(arrayType == null)
@@ -1546,13 +1617,13 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		ExpressionReceiver receiver = new ExpressionReceiver(arrayAccessExpression.getArrayExpression(), arrayType);
 		if(!isGet)
 			assert rightHandSide != null;
-		OverloadResolutionResults<MethodDescriptor> functionResults = context.resolveCallWithGivenName(isGet ? CallMaker.makeArrayGetCall(receiver, arrayAccessExpression, Call.CallType.ARRAY_GET_METHOD) : CallMaker.makeArraySetCall(receiver, arrayAccessExpression, rightHandSide, Call.CallType.ARRAY_SET_METHOD), arrayAccessExpression, Name.identifier(isGet ? "get" : "set"));
-		if(!functionResults.isSuccess())
+		OverloadResolutionResults<MethodDescriptor> results = context.resolveCallWithGivenName(isGet ? CallMaker.makeArrayGetCall(receiver, arrayAccessExpression, Call.CallType.ARRAY_GET_METHOD) : CallMaker.makeArraySetCall(receiver, arrayAccessExpression, rightHandSide, Call.CallType.ARRAY_SET_METHOD), arrayAccessExpression, Name.identifier(isGet ? "get" : "set"));
+		if(!results.isSingleResult())
 		{
 			traceForResolveResult.report(isGet ? NO_GET_METHOD.on(arrayAccessExpression) : NO_SET_METHOD.on(arrayAccessExpression));
 			return null;
 		}
-		traceForResolveResult.record(isGet ? INDEXED_LVALUE_GET : INDEXED_LVALUE_SET, arrayAccessExpression, functionResults.getResultingCall());
-		return functionResults.getResultingDescriptor().getReturnType();
+		traceForResolveResult.record(isGet ? INDEXED_LVALUE_GET : INDEXED_LVALUE_SET, arrayAccessExpression, results.getResultingCall());
+		return results.getResultingDescriptor().getReturnType();
 	}
 }

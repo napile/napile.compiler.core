@@ -51,7 +51,7 @@ public class TraceBasedRedeclarationHandler implements RedeclarationHandler
 		}
 		else
 		{
-			throw new IllegalStateException("No declaration found found for " + descriptor);
+			//throw new IllegalStateException("No declaration found found for " + descriptor);
 		}
 	}
 }

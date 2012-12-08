@@ -17,19 +17,27 @@
 package org.napile.compiler.lang.descriptors;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
  * @author abreslav
  */
-public interface VariableDescriptor extends CallableDescriptor
+public interface VariableDescriptor extends CallableMemberDescriptor
 {
+	boolean isMutable();
+
 	@NotNull
 	JetType getType();
 
+	@Nullable
+	VariableAccessorDescriptor getGetter();
+
+	@Nullable
+	VariableAccessorDescriptor getSetter();
+
 	@Override
-	@SuppressWarnings({"NullableProblems"})
 	@NotNull
 	DeclarationDescriptor getContainingDeclaration();
 

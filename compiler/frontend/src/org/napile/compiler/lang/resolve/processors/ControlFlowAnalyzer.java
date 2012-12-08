@@ -23,22 +23,22 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.cfg.JetFlowInformationProvider;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileVariable;
 
 /**
  * @author svtk
@@ -95,13 +95,13 @@ public class ControlFlowAnalyzer
 			checkFunction(constructor, TypeUtils.NO_EXPECTED_TYPE);
 		}
 
-		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, VariableDescriptor> entry : bodiesResolveContext.getVariables().entrySet())
 		{
 			NapileVariable property = entry.getKey();
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
 				continue;
-			PropertyDescriptor propertyDescriptor = entry.getValue();
-			//checkProperty(property, propertyDescriptor);
+			VariableDescriptor variableDescriptor = entry.getValue();
+			//checkProperty(property, variableDescriptor);
 		}
 	}
 

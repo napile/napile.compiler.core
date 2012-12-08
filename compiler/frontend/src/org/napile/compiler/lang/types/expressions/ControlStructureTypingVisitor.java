@@ -244,9 +244,9 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
 		NapileExpression body = expression.getBody();
 		JetScope conditionScope = context.scope;
-		if(body instanceof NapileFunctionLiteralExpression)
+		if(body instanceof NapileAnonymMethodExpression)
 		{
-			NapileFunctionLiteralExpression function = (NapileFunctionLiteralExpression) body;
+			NapileAnonymMethodExpression function = (NapileAnonymMethodExpression) body;
 			if(!function.getAnonymMethod().hasParameterSpecification())
 			{
 				WritableScope writableScope = ExpressionTypingUtils.newWritableScopeImpl(context, "do..while body scope");
@@ -487,7 +487,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		NapileExpression parentDeclaration = PsiTreeUtil.getParentOfType(expression, NapileDeclaration.class);
 		if(parentDeclaration instanceof NapileAnonymMethodImpl)
 		{
-			parentDeclaration = (NapileFunctionLiteralExpression) parentDeclaration.getParent();
+			parentDeclaration = (NapileAnonymMethodExpression) parentDeclaration.getParent();
 		}
 		if(parentDeclaration instanceof NapileCallParameterAsVariable)
 		{
@@ -501,14 +501,14 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		{
 			PsiElement containingFunction = BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor);
 			assert containingFunction != null;
-			if(containingFunction instanceof NapileFunctionLiteralExpression)
+			if(containingFunction instanceof NapileAnonymMethodExpression)
 			{
 				do
 				{
 					containingMethodDescriptor = DescriptorUtils.getParentOfType(containingMethodDescriptor, MethodDescriptor.class);
 					containingFunction = containingMethodDescriptor != null ? BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor) : null;
 				}
-				while(containingFunction instanceof NapileFunctionLiteralExpression);
+				while(containingFunction instanceof NapileAnonymMethodExpression);
 				context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
 			}
 			if(containingMethodDescriptor != null)

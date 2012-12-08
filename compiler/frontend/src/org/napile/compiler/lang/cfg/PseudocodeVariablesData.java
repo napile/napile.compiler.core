@@ -32,11 +32,10 @@ import org.napile.compiler.lang.cfg.pseudocode.PseudocodeUtil;
 import org.napile.compiler.lang.cfg.pseudocode.ReadValueInstruction;
 import org.napile.compiler.lang.cfg.pseudocode.VariableDeclarationInstruction;
 import org.napile.compiler.lang.cfg.pseudocode.WriteValueInstruction;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.resolve.BindingContext;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -103,12 +102,9 @@ public class PseudocodeVariablesData
 				if(instruction instanceof VariableDeclarationInstruction)
 				{
 					NapileDeclaration variableDeclarationElement = ((VariableDeclarationInstruction) instruction).getVariableDeclarationElement();
-					DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, variableDeclarationElement);
+					VariableDescriptor descriptor = bindingContext.get(BindingContext.VARIABLE, variableDeclarationElement);
 					if(descriptor != null)
-					{
-						assert descriptor instanceof VariableDescriptor;
-						declaredVariables.add((VariableDescriptor) descriptor);
-					}
+						declaredVariables.add(descriptor);
 				}
 			}
 			declaredVariables = Collections.unmodifiableSet(declaredVariables);

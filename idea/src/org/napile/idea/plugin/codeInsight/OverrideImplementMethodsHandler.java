@@ -141,15 +141,15 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 			{
 				overridingMembers.add(overrideFunction(file.getProject(), (SimpleMethodDescriptor) descriptor));
 			}
-			else if(descriptor instanceof PropertyDescriptor)
+			else if(descriptor instanceof VariableDescriptorImpl)
 			{
-				overridingMembers.add(overrideProperty(file.getProject(), (PropertyDescriptor) descriptor));
+				overridingMembers.add(overrideProperty(file.getProject(), (VariableDescriptorImpl) descriptor));
 			}
 		}
 		return overridingMembers;
 	}
 
-	private static NapileElement overrideProperty(Project project, PropertyDescriptor descriptor)
+	private static NapileElement overrideProperty(Project project, VariableDescriptorImpl descriptor)
 	{
 		StringBuilder bodyBuilder = new StringBuilder();
 		bodyBuilder.append(displayableVisibility(descriptor)).append("override ");

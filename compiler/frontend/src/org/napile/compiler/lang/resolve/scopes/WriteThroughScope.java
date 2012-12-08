@@ -24,11 +24,9 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -48,15 +46,6 @@ public class WriteThroughScope extends WritableScopeWithImports
 	{
 		super(outerScope, redeclarationHandler, debugName);
 		this.writableWorker = scope;
-	}
-
-	@Override
-	@Nullable
-	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
-	{
-		checkMayRead();
-
-		return writableWorker.getPropertyByFieldReference(fieldName);
 	}
 
 	@Override
@@ -96,14 +85,14 @@ public class WriteThroughScope extends WritableScopeWithImports
 
 	@Override
 	@NotNull
-	public Set<VariableDescriptor> getProperties(@NotNull Name name)
+	public Set<VariableDescriptor> getVariables(@NotNull Name name)
 	{
 		checkMayRead();
 
 		Set<VariableDescriptor> properties = Sets.newLinkedHashSet();
-		properties.addAll(writableWorker.getProperties(name));
-		properties.addAll(getWorkerScope().getProperties(name));
-		properties.addAll(super.getProperties(name)); //imports
+		properties.addAll(writableWorker.getVariables(name));
+		properties.addAll(getWorkerScope().getVariables(name));
+		properties.addAll(super.getVariables(name)); //imports
 		return properties;
 	}
 
@@ -126,19 +115,19 @@ public class WriteThroughScope extends WritableScopeWithImports
 
 	@Override
 	@Nullable
-	public NamespaceDescriptor getNamespace(@NotNull Name name)
+	public PackageDescriptor getPackage(@NotNull Name name)
 	{
 		checkMayRead();
 
-		NamespaceDescriptor namespace = writableWorker.getNamespace(name);
+		PackageDescriptor namespace = writableWorker.getPackage(name);
 		if(namespace != null)
 			return namespace;
 
-		namespace = getWorkerScope().getNamespace(name);
+		namespace = getWorkerScope().getPackage(name);
 		if(namespace != null)
 			return namespace;
 
-		return super.getNamespace(name); // Imports
+		return super.getPackage(name); // Imports
 	}
 
 	@Override
@@ -204,19 +193,11 @@ public class WriteThroughScope extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
+	public void addMethodDescriptor(@NotNull MethodDescriptor methodDescriptor)
 	{
 		checkMayWrite();
 
-		writableWorker.addConstructorDescriptor(constructorDescriptor);
-	}
-
-	@Override
-	public void addFunctionDescriptor(@NotNull MethodDescriptor methodDescriptor)
-	{
-		checkMayWrite();
-
-		writableWorker.addFunctionDescriptor(methodDescriptor);
+		writableWorker.addMethodDescriptor(methodDescriptor);
 	}
 
 	@Override
@@ -252,11 +233,11 @@ public class WriteThroughScope extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addNamespaceAlias(@NotNull Name name, @NotNull NamespaceDescriptor namespaceDescriptor)
+	public void addNamespaceAlias(@NotNull Name name, @NotNull PackageDescriptor packageDescriptor)
 	{
 		checkMayWrite();
 
-		writableWorker.addNamespaceAlias(name, namespaceDescriptor);
+		writableWorker.addNamespaceAlias(name, packageDescriptor);
 	}
 
 	@Override
@@ -276,16 +257,16 @@ public class WriteThroughScope extends WritableScopeWithImports
 	}
 
 	@Override
-	public void addNamespace(@NotNull NamespaceDescriptor namespaceDescriptor)
+	public void addNamespace(@NotNull PackageDescriptor packageDescriptor)
 	{
 		checkMayWrite();
 
-		writableWorker.addNamespace(namespaceDescriptor);
+		writableWorker.addNamespace(packageDescriptor);
 	}
 
 	@Override
 	@Nullable
-	public NamespaceDescriptor getDeclaredNamespace(@NotNull Name name)
+	public PackageDescriptor getDeclaredNamespace(@NotNull Name name)
 	{
 		checkMayRead();
 

@@ -134,6 +134,7 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 
 
 	@NotNull
+	@Override
 	public JetScope getScopeForMemberLookup()
 	{
 		return scopeForMemberLookup;
@@ -171,6 +172,7 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 	}
 
 	@NotNull
+	@Override
 	public Collection<JetType> getSupertypes()
 	{
 		return supertypes;
@@ -236,13 +238,13 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 		this.annotations = annotations;
 	}
 
-	private NamespaceLikeBuilder builder = null;
+	private DescriptorBuilder builder = null;
 
-	public NamespaceLikeBuilder getBuilder()
+	public DescriptorBuilder getBuilder()
 	{
 		if(builder == null)
 		{
-			builder = new NamespaceLikeBuilderDummy()
+			builder = new DescriptorBuilderDummy()
 			{
 				@NotNull
 				@Override
@@ -258,27 +260,21 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 				}
 
 				@Override
-				public void addObjectDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
+				public void addAnonymClassDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
 				{
 					getScopeForMemberLookupAsWritableScope().addObjectDescriptor(objectDescriptor);
 				}
 
 				@Override
-				public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
+				public void addMethodDescriptor(@NotNull MethodDescriptor functionDescriptor)
 				{
-					getScopeForMemberLookupAsWritableScope().addFunctionDescriptor(functionDescriptor);
+					getScopeForMemberLookupAsWritableScope().addMethodDescriptor(functionDescriptor);
 				}
 
 				@Override
-				public void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor)
+				public void addVariableDescriptor(@NotNull VariableDescriptor propertyDescriptor)
 				{
 					getScopeForMemberLookupAsWritableScope().addPropertyDescriptor(propertyDescriptor);
-				}
-
-				@Override
-				public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
-				{
-					getScopeForMemberLookupAsWritableScope().addConstructorDescriptor(constructorDescriptor);
 				}
 			};
 		}

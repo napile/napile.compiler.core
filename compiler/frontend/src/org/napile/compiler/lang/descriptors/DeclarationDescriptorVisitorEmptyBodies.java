@@ -45,7 +45,7 @@ public class DeclarationDescriptorVisitorEmptyBodies<R, D> implements Declaratio
 	}
 
 	@Override
-	public R visitNamespaceDescriptor(NamespaceDescriptor descriptor, D data)
+	public R visitNamespaceDescriptor(PackageDescriptor descriptor, D data)
 	{
 		return visitDeclarationDescriptor(descriptor, data);
 	}
@@ -75,7 +75,7 @@ public class DeclarationDescriptorVisitorEmptyBodies<R, D> implements Declaratio
 	}
 
 	@Override
-	public R visitPropertyDescriptor(PropertyDescriptor descriptor, D data)
+	public R visitPropertyDescriptor(VariableDescriptorImpl descriptor, D data)
 	{
 		return visitVariableDescriptor(descriptor, data);
 	}

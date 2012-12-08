@@ -29,7 +29,7 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.google.common.collect.Sets;
@@ -139,14 +139,14 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 
 	@NotNull
 	@Override
-	public Set<VariableDescriptor> getProperties(@NotNull Name name)
+	public Set<VariableDescriptor> getVariables(@NotNull Name name)
 	{
 		checkMayRead();
 
 		Set<VariableDescriptor> properties = Sets.newLinkedHashSet();
 		for(JetScope imported : getImports())
 		{
-			properties.addAll(imported.getProperties(name));
+			properties.addAll(imported.getVariables(name));
 		}
 		return properties;
 	}
@@ -234,13 +234,13 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 	}
 
 	@Override
-	public NamespaceDescriptor getNamespace(@NotNull Name name)
+	public PackageDescriptor getPackage(@NotNull Name name)
 	{
 		checkMayRead();
 
 		for(JetScope imported : getImports())
 		{
-			NamespaceDescriptor importedDescriptor = imported.getNamespace(name);
+			PackageDescriptor importedDescriptor = imported.getPackage(name);
 			if(importedDescriptor != null)
 			{
 				return importedDescriptor;
@@ -271,11 +271,11 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 
 
 	@Override
-	public void importNamespaceAlias(@NotNull Name aliasName, @NotNull NamespaceDescriptor namespaceDescriptor)
+	public void importNamespaceAlias(@NotNull Name aliasName, @NotNull PackageDescriptor packageDescriptor)
 	{
 		checkMayWrite();
 
-		getCurrentIndividualImportScope().addNamespaceAlias(aliasName, namespaceDescriptor);
+		getCurrentIndividualImportScope().addNamespaceAlias(aliasName, packageDescriptor);
 	}
 
 	@Override

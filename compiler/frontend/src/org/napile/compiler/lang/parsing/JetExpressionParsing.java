@@ -990,8 +990,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 		expect(NapileTokens.RBRACE, "Expecting '}'");
 		getBuilder().restoreNewlinesState();
 
-		literal.done(FUNCTION_LITERAL);
-		literalExpression.done(FUNCTION_LITERAL_EXPRESSION);
+		literal.done(ANONYM_METHOD);
+		literalExpression.done(ANONYM_METHOD_EXPRESSION);
 	}
 
 	private boolean rollbackOrDropAt(PsiBuilder.Marker rollbackMarker, IElementType dropAt)
@@ -1715,7 +1715,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		PsiBuilder.Marker declaration = mark();
 		parsing.parseObject(); // Body is not optional because of foo(object : A, B)
 		declaration.done(ANONYM_CLASS);
-		literal.done(OBJECT_LITERAL);
+		literal.done(ANONYM_CLASS_EXPRESSION);
 	}
 
 	private void parseOneTokenExpression(NapileNode type)

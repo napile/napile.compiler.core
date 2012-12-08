@@ -28,7 +28,7 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -125,9 +125,9 @@ public class OverridingUtil
 			if(!(subDescriptor instanceof MethodDescriptor))
 				return OverrideCompatibilityInfo.memberKindMismatch();
 		}
-		else if(superDescriptor instanceof PropertyDescriptor)
+		else if(superDescriptor instanceof VariableDescriptorImpl)
 		{
-			if(!(subDescriptor instanceof PropertyDescriptor))
+			if(!(subDescriptor instanceof VariableDescriptorImpl))
 				return OverrideCompatibilityInfo.memberKindMismatch();
 		}
 		else
@@ -246,8 +246,6 @@ public class OverridingUtil
 
 			return OverrideCompatibilityInfo.success();
 		}
-
-		// TODO : Default values, varargs etc
 
 		return OverrideCompatibilityInfo.success();
 	}

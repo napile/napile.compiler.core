@@ -16,14 +16,18 @@
 
 package org.napile.compiler.lang.psi.impl;
 
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileDeclarationImpl;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
@@ -49,5 +53,32 @@ public class NapileVariableAccessorImpl extends NapileDeclarationImpl implements
 	{
 		PsiElement accessorElement = getAccessorElement();
 		return accessorElement == null ? null : accessorElement.getNode().getElementType();
+	}
+
+	@NotNull
+	@Override
+	public Name getNameAsSafeName()
+	{
+		return NapilePsiUtil.NO_NAME_PROVIDED;
+	}
+
+	@Nullable
+	@Override
+	public Name getNameAsName()
+	{
+		return getNameAsSafeName();
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getNameIdentifier()
+	{
+		return null;
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
+		throw new IncorrectOperationException();
 	}
 }

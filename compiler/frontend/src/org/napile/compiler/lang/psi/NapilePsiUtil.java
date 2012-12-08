@@ -318,9 +318,9 @@ public class NapilePsiUtil
 
 	public static boolean isFunctionLiteralWithoutDeclaredParameterTypes(NapileExpression expression)
 	{
-		if(!(expression instanceof NapileFunctionLiteralExpression))
+		if(!(expression instanceof NapileAnonymMethodExpression))
 			return false;
-		NapileFunctionLiteralExpression functionLiteral = (NapileFunctionLiteralExpression) expression;
+		NapileAnonymMethodExpression functionLiteral = (NapileAnonymMethodExpression) expression;
 		for(NapileElement parameter : functionLiteral.getAnonymMethod().getValueParameters())
 		{
 			if(parameter instanceof NapileCallParameterAsVariable && ((NapileCallParameterAsVariable) parameter).getTypeReference() != null)

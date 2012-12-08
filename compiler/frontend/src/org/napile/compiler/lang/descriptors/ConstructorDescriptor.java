@@ -30,7 +30,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 /**
  * @author abreslav
  */
-public class ConstructorDescriptor extends MethodDescriptorImpl
+public class ConstructorDescriptor extends AbstractMethodDescriptorImpl
 {
 	public static final Name NAME = Name.identifier("this");
 	private JetScope parametersScope;
@@ -92,12 +92,11 @@ public class ConstructorDescriptor extends MethodDescriptorImpl
 	}
 
 	@Override
-	protected MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
+	protected AbstractMethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
 	{
 		if(kind != Kind.DECLARATION)
-		{
 			throw new IllegalStateException();
-		}
+
 		return new ConstructorDescriptor((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList(), isStatic());//TODO annotation list
 	}
 

@@ -75,7 +75,7 @@ public class NapileCallExpression extends NapileExpressionImpl implements Napile
 	{
 		NapileExpression calleeExpression = getCalleeExpression();
 		ASTNode node;
-		if(calleeExpression instanceof NapileFunctionLiteralExpression)
+		if(calleeExpression instanceof NapileAnonymMethodExpression)
 		{
 			node = calleeExpression.getNode().getTreeNext();
 		}
@@ -87,9 +87,9 @@ public class NapileCallExpression extends NapileExpressionImpl implements Napile
 		while(node != null)
 		{
 			PsiElement psi = node.getPsi();
-			if(psi instanceof NapileFunctionLiteralExpression)
+			if(psi instanceof NapileAnonymMethodExpression)
 			{
-				result.add((NapileFunctionLiteralExpression) psi);
+				result.add((NapileAnonymMethodExpression) psi);
 			}
 			node = node.getTreeNext();
 		}

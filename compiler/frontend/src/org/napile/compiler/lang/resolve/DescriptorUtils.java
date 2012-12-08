@@ -159,7 +159,7 @@ public class DescriptorUtils
 
 		if(containingDeclaration == null)
 		{
-			if(descriptor instanceof NamespaceDescriptor)
+			if(descriptor instanceof PackageDescriptor)
 			{
 				// TODO: namespace must always have parent
 				if(descriptor.getName().equals(Name.identifier("idea")))

@@ -34,15 +34,15 @@ import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.psi.NapileVariable;
@@ -114,7 +114,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 	}
 
 	@Override
-	public Void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, Node parent)
+	public Void visitAnonymMethodExpression(NapileAnonymMethodExpression expression, Node parent)
 	{
 		assert parent instanceof ClassNode;
 
@@ -180,7 +180,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 		variableNode.returnType = TypeTransformer.toAsmType(variableDescriptor.getType());
 		classNode.members.add(variableNode);
 
-		VariableCodegen.getSetterAndGetter((PropertyDescriptor)variableDescriptor, classNode, bindingTrace);
+		VariableCodegen.getSetterAndGetter((VariableDescriptorImpl)variableDescriptor, classNode, bindingTrace);
 
 		NapileExpression initializer = property.getInitializer();
 		if(initializer != null)
@@ -191,7 +191,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 			expressionCodegen.gen(initializer, variableNode.returnType);
 
-			StackValue.variable((PropertyDescriptor) variableDescriptor).store(variableNode.returnType, expressionCodegen.getInstructs());
+			StackValue.variable((VariableDescriptorImpl) variableDescriptor).store(variableNode.returnType, expressionCodegen.getInstructs());
 
 			if(variableDescriptor.isStatic())
 				propertiesStaticInit.putValue(classNode, expressionCodegen.getInstructs());

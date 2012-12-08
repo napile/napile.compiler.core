@@ -39,7 +39,7 @@ public interface CallableMemberDescriptor extends CallableDescriptor, Declaratio
 	{
 		DECLARATION,
 		FAKE_OVERRIDE,
-		DELEGATION,;
+		DELEGATION;
 
 		public boolean isReal()
 		{
@@ -50,6 +50,7 @@ public interface CallableMemberDescriptor extends CallableDescriptor, Declaratio
 	/**
 	 * Is this a real function or function projection.
 	 */
+	@NotNull
 	Kind getKind();
 
 	@NotNull

@@ -34,7 +34,7 @@ import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.Visibilities;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -150,7 +150,7 @@ public class QualifiedExpressionResolver
 	private boolean canImportMembersFrom(@NotNull DeclarationDescriptor descriptor, @NotNull NapileSimpleNameExpression reference, @NotNull BindingTrace trace, boolean onlyClasses)
 	{
 		assert !onlyClasses;
-		if(descriptor instanceof NamespaceDescriptor)
+		if(descriptor instanceof PackageDescriptor)
 		{
 			return true;
 		}
@@ -218,8 +218,8 @@ public class QualifiedExpressionResolver
 		Set<SuccessfulLookupResult> results = Sets.newHashSet();
 		for(DeclarationDescriptor declarationDescriptor : declarationDescriptors)
 		{
-			if(declarationDescriptor instanceof NamespaceDescriptor)
-				addResult(results, lookupSimpleNameReference(selector, ((NamespaceDescriptor) declarationDescriptor).getMemberScope(), onlyClasses, true));
+			if(declarationDescriptor instanceof PackageDescriptor)
+				addResult(results, lookupSimpleNameReference(selector, ((PackageDescriptor) declarationDescriptor).getMemberScope(), onlyClasses, true));
 			if(declarationDescriptor instanceof ClassDescriptor)
 				addResult(results, lookupSimpleNameReference(selector, ((ClassDescriptor) declarationDescriptor).getStaticOuterScope(), onlyClasses, false));
 		}
@@ -256,10 +256,10 @@ public class QualifiedExpressionResolver
 		}
 
 		Set<DeclarationDescriptor> descriptors = Sets.newHashSet();
-		NamespaceDescriptor namespaceDescriptor = outerScope.getNamespace(referencedName);
-		if(namespaceDescriptor != null)
+		PackageDescriptor packageDescriptor = outerScope.getPackage(referencedName);
+		if(packageDescriptor != null)
 		{
-			descriptors.add(namespaceDescriptor);
+			descriptors.add(packageDescriptor);
 		}
 
 		ClassifierDescriptor classifierDescriptor = outerScope.getClassifier(referencedName);
@@ -267,7 +267,7 @@ public class QualifiedExpressionResolver
 			descriptors.add(classifierDescriptor);
 
 		descriptors.addAll(outerScope.getMethods(referencedName));
-		descriptors.addAll(outerScope.getProperties(referencedName));
+		descriptors.addAll(outerScope.getVariables(referencedName));
 
 		VariableDescriptor localVariable = outerScope.getLocalVariable(referencedName);
 		if(localVariable != null)
@@ -314,7 +314,7 @@ public class QualifiedExpressionResolver
 				@Override
 				public boolean apply(@Nullable DeclarationDescriptor descriptor)
 				{
-					return descriptor instanceof ClassifierDescriptor || descriptor instanceof NamespaceDescriptor;
+					return descriptor instanceof ClassifierDescriptor || descriptor instanceof PackageDescriptor;
 				}
 			});
 		}
@@ -334,7 +334,7 @@ public class QualifiedExpressionResolver
 					@Override
 					public boolean apply(@Nullable DeclarationDescriptor descriptor)
 					{
-						return descriptor instanceof NamespaceDescriptor || descriptor instanceof DeclarationDescriptorWithVisibility;
+						return descriptor instanceof PackageDescriptor || descriptor instanceof DeclarationDescriptorWithVisibility;
 					}
 				}));
 			}
@@ -414,14 +414,14 @@ public class QualifiedExpressionResolver
 
 		if(filteredDescriptors.size() == 2)
 		{
-			NamespaceDescriptor namespaceDescriptor = null;
+			PackageDescriptor packageDescriptor = null;
 			ClassDescriptor classDescriptor = null;
 
 			for(DeclarationDescriptor filteredDescriptor : filteredDescriptors)
 			{
-				if(filteredDescriptor instanceof NamespaceDescriptor)
+				if(filteredDescriptor instanceof PackageDescriptor)
 				{
-					namespaceDescriptor = (NamespaceDescriptor) filteredDescriptor;
+					packageDescriptor = (PackageDescriptor) filteredDescriptor;
 				}
 				else if(filteredDescriptor instanceof ClassDescriptor)
 				{
@@ -429,9 +429,9 @@ public class QualifiedExpressionResolver
 				}
 			}
 
-			if(namespaceDescriptor != null && classDescriptor != null)
+			if(packageDescriptor != null && classDescriptor != null)
 			{
-				if(DescriptorUtils.getFQName(namespaceDescriptor).equalsTo(DescriptorUtils.getFQName(classDescriptor)))
+				if(DescriptorUtils.getFQName(packageDescriptor).equalsTo(DescriptorUtils.getFQName(classDescriptor)))
 				{
 					trace.record(BindingContext.REFERENCE_TARGET, referenceExpression, classDescriptor);
 					trace.record(BindingContext.RESOLUTION_SCOPE, referenceExpression, resolutionScope);

@@ -655,9 +655,9 @@ public class JetControlFlowProcessor
 			NapileElement subroutine = builder.getReturnSubroutine();
 
 			//todo cache NapileAnonymMethodImpl instead
-			if(subroutine instanceof NapileFunctionLiteralExpression)
+			if(subroutine instanceof NapileAnonymMethodExpression)
 			{
-				subroutine = ((NapileFunctionLiteralExpression) subroutine).getAnonymMethod();
+				subroutine = ((NapileAnonymMethodExpression) subroutine).getAnonymMethod();
 			}
 			if(subroutine instanceof NapileMethod)
 			{
@@ -717,7 +717,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression)
+		public void visitAnonymMethodExpression(NapileAnonymMethodExpression expression)
 		{
 			NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 			processLocalDeclaration(functionLiteral);
@@ -917,7 +917,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitObjectLiteralExpression(NapileObjectLiteralExpression expression)
+		public void visitAnonymClassExpression(NapileAnonymClassExpression expression)
 		{
 			NapileAnonymClass declaration = expression.getObjectDeclaration();
 			value(declaration, inCondition);

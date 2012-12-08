@@ -21,7 +21,7 @@ package org.napile.compiler.lang.descriptors;
  */
 public interface DeclarationDescriptorVisitor<R, D>
 {
-	R visitNamespaceDescriptor(NamespaceDescriptor descriptor, D data);
+	R visitNamespaceDescriptor(PackageDescriptor descriptor, D data);
 
 	R visitVariableDescriptor(VariableDescriptor descriptor, D data);
 
@@ -37,7 +37,7 @@ public interface DeclarationDescriptorVisitor<R, D>
 
 	R visitLocalVariableDescriptor(LocalVariableDescriptor descriptor, D data);
 
-	R visitPropertyDescriptor(PropertyDescriptor descriptor, D data);
+	R visitPropertyDescriptor(VariableDescriptorImpl descriptor, D data);
 
 	R visitCallParameterAsVariableDescriptor(CallParameterDescriptor descriptor, D data);
 

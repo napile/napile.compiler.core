@@ -32,8 +32,8 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorParent;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapilePackageImpl;
@@ -69,7 +69,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 	}
 
 	@NotNull
-	public NamespaceDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull NapileFile file, @NotNull JetScope outerScope, @NotNull RedeclarationHandler handler)
+	public PackageDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull NapileFile file, @NotNull JetScope outerScope, @NotNull RedeclarationHandler handler)
 	{
 		NapilePackageImpl namespaceHeader = file.getNamespaceHeader();
 
@@ -78,7 +78,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 			createRootNamespaceDescriptorIfNeeded(null, moduleDescriptor, null, handler);
 		}
 
-		NamespaceDescriptorImpl currentOwner = moduleDescriptor.getRootNamespaceDescriptorImpl();
+		PackageDescriptorImpl currentOwner = moduleDescriptor.getRootNamespaceDescriptorImpl();
 		if(currentOwner == null)
 		{
 			throw new IllegalStateException("must be initialized 5 lines above");
@@ -88,7 +88,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 		{
 			Name namespaceName = NapilePsiUtil.safeName(nameExpression.getReferencedName());
 
-			NamespaceDescriptorImpl namespaceDescriptor = createNamespaceDescriptorIfNeeded(null, currentOwner, namespaceName, nameExpression, handler);
+			PackageDescriptorImpl namespaceDescriptor = createNamespaceDescriptorIfNeeded(null, currentOwner, namespaceName, nameExpression, handler);
 
 			trace.record(BindingContext.NAMESPACE_IS_SRC, namespaceDescriptor, true);
 			trace.record(RESOLUTION_SCOPE, nameExpression, outerScope);
@@ -97,7 +97,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 			currentOwner = namespaceDescriptor;
 		}
 
-		NamespaceDescriptorImpl namespaceDescriptor;
+		PackageDescriptorImpl namespaceDescriptor;
 		Name name;
 		if(namespaceHeader.isRoot())
 		{
@@ -119,9 +119,9 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 
 	@Override
 	@NotNull
-	public NamespaceDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull FqName fqName)
+	public PackageDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull FqName fqName)
 	{
-		NamespaceDescriptorImpl owner = null;
+		PackageDescriptorImpl owner = null;
 		for(FqName pathElement : fqName.path())
 		{
 			if(pathElement.isRoot())
@@ -139,10 +139,10 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 		return owner;
 	}
 
-	private NamespaceDescriptorImpl createRootNamespaceDescriptorIfNeeded(@Nullable NapileFile file, @NotNull ModuleDescriptor owner, @Nullable NapileReferenceExpression expression, @NotNull RedeclarationHandler handler)
+	private PackageDescriptorImpl createRootNamespaceDescriptorIfNeeded(@Nullable NapileFile file, @NotNull ModuleDescriptor owner, @Nullable NapileReferenceExpression expression, @NotNull RedeclarationHandler handler)
 	{
 		FqName fqName = FqName.ROOT;
-		NamespaceDescriptorImpl namespaceDescriptor = owner.getRootNamespaceDescriptorImpl();
+		PackageDescriptorImpl namespaceDescriptor = owner.getRootNamespaceDescriptorImpl();
 
 		if(namespaceDescriptor == null)
 		{
@@ -155,12 +155,12 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 	}
 
 	@NotNull
-	private NamespaceDescriptorImpl createNamespaceDescriptorIfNeeded(@Nullable NapileFile file, @NotNull NamespaceDescriptorImpl owner, @NotNull Name name, @Nullable NapileReferenceExpression expression, @NotNull RedeclarationHandler handler)
+	private PackageDescriptorImpl createNamespaceDescriptorIfNeeded(@Nullable NapileFile file, @NotNull PackageDescriptorImpl owner, @NotNull Name name, @Nullable NapileReferenceExpression expression, @NotNull RedeclarationHandler handler)
 	{
 		FqName ownerFqName = DescriptorUtils.getFQName(owner).toSafe();
 		FqName fqName = ownerFqName.child(name);
 		// !!!
-		NamespaceDescriptorImpl namespaceDescriptor = (NamespaceDescriptorImpl) owner.getMemberScope().getDeclaredNamespace(name);
+		PackageDescriptorImpl namespaceDescriptor = (PackageDescriptorImpl) owner.getMemberScope().getDeclaredNamespace(name);
 
 		if(namespaceDescriptor == null)
 		{
@@ -172,10 +172,10 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 		return namespaceDescriptor;
 	}
 
-	private NamespaceDescriptorImpl createNewNamespaceDescriptor(NamespaceDescriptorParent owner, Name name, PsiElement expression, RedeclarationHandler handler, FqName fqName)
+	private PackageDescriptorImpl createNewNamespaceDescriptor(NamespaceDescriptorParent owner, Name name, PsiElement expression, RedeclarationHandler handler, FqName fqName)
 	{
-		NamespaceDescriptorImpl namespaceDescriptor;
-		namespaceDescriptor = new NamespaceDescriptorImpl(owner, Collections.<AnnotationDescriptor>emptyList(), // TODO: annotations
+		PackageDescriptorImpl namespaceDescriptor;
+		namespaceDescriptor = new PackageDescriptorImpl(owner, Collections.<AnnotationDescriptor>emptyList(), // TODO: annotations
 				name);
 		trace.record(FQNAME_TO_NAMESPACE_DESCRIPTOR, fqName, namespaceDescriptor);
 
@@ -188,31 +188,31 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 		owner.addNamespace(namespaceDescriptor);
 		if(expression != null)
 		{
-			trace.record(BindingContext.NAMESPACE, expression, namespaceDescriptor);
+			trace.record(BindingContext.PACKAGE, expression, namespaceDescriptor);
 		}
 		return namespaceDescriptor;
 	}
 
-	private void storeBindingForFileAndExpression(@Nullable NapileFile file, @Nullable NapileReferenceExpression expression, @NotNull NamespaceDescriptor namespaceDescriptor)
+	private void storeBindingForFileAndExpression(@Nullable NapileFile file, @Nullable NapileReferenceExpression expression, @NotNull PackageDescriptor packageDescriptor)
 	{
 		if(expression != null)
 		{
-			trace.record(REFERENCE_TARGET, expression, namespaceDescriptor);
+			trace.record(REFERENCE_TARGET, expression, packageDescriptor);
 		}
 
 		if(file != null)
 		{
-			trace.record(BindingContext.FILE_TO_NAMESPACE, file, namespaceDescriptor);
+			trace.record(BindingContext.FILE_TO_NAMESPACE, file, packageDescriptor);
 
 			// Register files corresponding to this namespace
 			// The trace currently does not support bi-di multimaps that would handle this task nicer
-			Collection<NapileFile> files = trace.get(NAMESPACE_TO_FILES, namespaceDescriptor);
+			Collection<NapileFile> files = trace.get(NAMESPACE_TO_FILES, packageDescriptor);
 			if(files == null)
 			{
 				files = Sets.newIdentityHashSet();
 			}
 			files.add(file);
-			trace.record(BindingContext.NAMESPACE_TO_FILES, namespaceDescriptor, files);
+			trace.record(BindingContext.NAMESPACE_TO_FILES, packageDescriptor, files);
 		}
 	}
 }

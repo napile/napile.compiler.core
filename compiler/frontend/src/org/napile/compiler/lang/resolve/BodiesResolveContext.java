@@ -22,9 +22,15 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 
 /**
@@ -53,7 +59,7 @@ public interface BodiesResolveContext
 		}
 
 		@Override
-		public Map<NapileVariable, PropertyDescriptor> getProperties()
+		public Map<NapileVariable, VariableDescriptor> getVariables()
 		{
 			return Collections.emptyMap();
 		}
@@ -88,7 +94,7 @@ public interface BodiesResolveContext
 
 	Map<NapileConstructor, ConstructorDescriptor> getConstructors();
 
-	Map<NapileVariable, PropertyDescriptor> getProperties();
+	Map<NapileVariable, VariableDescriptor> getVariables();
 
 	Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods();
 

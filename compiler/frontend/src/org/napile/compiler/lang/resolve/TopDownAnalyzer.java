@@ -129,7 +129,7 @@ public class TopDownAnalyzer
 	}
 
 
-	public void doProcess(JetScope outerScope, NamespaceLikeBuilder owner, Collection<? extends PsiElement> declarations)
+	public void doProcess(JetScope outerScope, DescriptorBuilder owner, Collection<? extends PsiElement> declarations)
 	{
 		//        context.enableDebugOutput();
 		context.debug("Enter");
@@ -174,7 +174,7 @@ public class TopDownAnalyzer
 
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), moduleDescriptor);
 
-		injector.getTopDownAnalyzer().doProcess(outerScope, new NamespaceLikeBuilder()
+		injector.getTopDownAnalyzer().doProcess(outerScope, new DescriptorBuilder()
 		{
 
 			@NotNull
@@ -191,19 +191,19 @@ public class TopDownAnalyzer
 			}
 
 			@Override
-			public void addObjectDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
+			public void addAnonymClassDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
 			{
 
 			}
 
 			@Override
-			public void addMethodDescriptor(@NotNull SimpleMethodDescriptor functionDescriptor)
+			public void addMethodDescriptor(@NotNull MethodDescriptor functionDescriptor)
 			{
 				throw new UnsupportedOperationException();
 			}
 
 			@Override
-			public void addPropertyDescriptor(@NotNull PropertyDescriptor propertyDescriptor)
+			public void addVariableDescriptor(@NotNull VariableDescriptor propertyDescriptor)
 			{
 
 			}
@@ -226,7 +226,7 @@ public class TopDownAnalyzer
 
 		scope.changeLockLevel(WritableScope.LockLevel.BOTH);
 
-		NamespaceDescriptorImpl rootNs = namespaceFactory.createNamespaceDescriptorPathIfNeeded(FqName.ROOT);
+		PackageDescriptorImpl rootNs = namespaceFactory.createNamespaceDescriptorPathIfNeeded(FqName.ROOT);
 
 		// Import a scope that contains all top-level namespaces that come from dependencies
 		// This makes the namespaces visible at all, does not import themselves
@@ -236,6 +236,6 @@ public class TopDownAnalyzer
 
 		// dummy builder is used because "root" is module descriptor,
 		// namespaces added to module explicitly in
-		doProcess(scope, new NamespaceLikeBuilderDummy(), files);
+		doProcess(scope, new DescriptorBuilderDummy(), files);
 	}
 }

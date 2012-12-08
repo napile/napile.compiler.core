@@ -25,11 +25,19 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.WithDeferredResolve;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileDeclarationContainer;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Maps;
@@ -42,12 +50,12 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 
 	private final Map<NapileClass, MutableClassDescriptor> classes = Maps.newLinkedHashMap();
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects = Maps.newLinkedHashMap();
-	protected final Map<NapileFile, NamespaceDescriptorImpl> namespaceDescriptors = Maps.newHashMap();
+	protected final Map<NapileFile, PackageDescriptorImpl> namespaceDescriptors = Maps.newHashMap();
 
 	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
 	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
-	private final Map<NapileVariable, PropertyDescriptor> properties = Maps.newLinkedHashMap();
+	private final Map<NapileVariable, VariableDescriptor> properties = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
 
 	// File scopes - package scope extended with imports
@@ -128,7 +136,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 		return namespaceScopes;
 	}
 
-	public Map<NapileFile, NamespaceDescriptorImpl> getNamespaceDescriptors()
+	public Map<NapileFile, PackageDescriptorImpl> getNamespaceDescriptors()
 	{
 		return namespaceDescriptors;
 	}
@@ -140,7 +148,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileVariable, PropertyDescriptor> getProperties()
+	public Map<NapileVariable, VariableDescriptor> getVariables()
 	{
 		return properties;
 	}

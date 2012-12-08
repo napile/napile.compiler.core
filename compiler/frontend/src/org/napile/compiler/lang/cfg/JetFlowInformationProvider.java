@@ -30,7 +30,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -287,9 +287,9 @@ public class JetFlowInformationProvider
 			return;
 
 		boolean isInitialized = variableInitState.isInitialized;
-		if(variableDescriptor instanceof PropertyDescriptor)
+		if(variableDescriptor instanceof VariableDescriptorImpl)
 		{
-			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
+			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor))
 			{
 				isInitialized = true;
 			}
@@ -316,9 +316,9 @@ public class JetFlowInformationProvider
 			isInitializedNotHere = false;
 		}
 		boolean hasBackingField = true;
-		if(variableDescriptor instanceof PropertyDescriptor)
+		if(variableDescriptor instanceof VariableDescriptorImpl)
 		{
-			hasBackingField = trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor);
+			hasBackingField = trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor);
 		}
 		if((isInitializedNotHere || !hasBackingField) &&
 				variableDescriptor.getModality() == Modality.FINAL &&
@@ -382,11 +382,11 @@ public class JetFlowInformationProvider
 
 	private boolean checkInitializationUsingBackingField(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull VariableInitState enterInitState, @NotNull VariableInitState exitInitState)
 	{
-		if(variableDescriptor instanceof PropertyDescriptor && !enterInitState.isInitialized && exitInitState.isInitialized)
+		if(variableDescriptor instanceof VariableDescriptorImpl && !enterInitState.isInitialized && exitInitState.isInitialized)
 		{
 			//if(variableDescriptor.getModality() != Modality.ABSTRACT)
 			//	return false;
-			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor))
+			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor))
 				return false;
 			PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
 			assert property instanceof NapileVariable;
@@ -407,7 +407,7 @@ public class JetFlowInformationProvider
 				NapileSimpleNameExpression simpleNameExpression = (NapileSimpleNameExpression) variable;
 				if(simpleNameExpression.getReferencedNameElementType() != NapileTokens.FIELD_IDENTIFIER)
 				{
-					if(((PropertyDescriptor) variableDescriptor).getModality() != Modality.FINAL)
+					if(((VariableDescriptorImpl) variableDescriptor).getModality() != Modality.FINAL)
 					{
 						trace.report(Errors.INITIALIZATION_USING_BACKING_FIELD_OPEN_SETTER.on(expression, variableDescriptor));
 					}
@@ -433,17 +433,17 @@ public class JetFlowInformationProvider
 			return false;
 		if(error[0])
 			return true;
-		if(!(variableDescriptor instanceof PropertyDescriptor))
+		if(!(variableDescriptor instanceof VariableDescriptorImpl))
 		{
 			trace.report(Errors.NOT_PROPERTY_BACKING_FIELD.on(element));
 			return true;
 		}
 		PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
 		boolean insideSelfAccessors = PsiTreeUtil.isAncestor(property, element, false);
-		if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (PropertyDescriptor) variableDescriptor) && !insideSelfAccessors)
+		if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor) && !insideSelfAccessors)
 		{ // not to generate error in accessors of abstract properties, there is one: declared accessor of abstract property
 
-			if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.ABSTRACT)
+			if(((VariableDescriptorImpl) variableDescriptor).getModality() == Modality.ABSTRACT)
 			{
 				trace.report(Errors.NO_BACKING_FIELD_ABSTRACT_PROPERTY.on(element));
 			}
@@ -499,12 +499,12 @@ public class JetFlowInformationProvider
 		Set<VariableDescriptor> declaredVariables = pseudocodeVariablesData.getDeclaredVariables(pseudocode);
 		for(VariableDescriptor variable : usedVariables)
 		{
-			if(variable instanceof PropertyDescriptor && declaredVariables.contains(variable))
+			if(variable instanceof VariableDescriptorImpl && declaredVariables.contains(variable))
 			{
 				VariableInitState variableInitState = initializers.in.get(variable);
 				if(variableInitState == null)
 					return;
-				trace.record(BindingContext.IS_INITIALIZED, (PropertyDescriptor) variable, variableInitState.isInitialized);
+				trace.record(BindingContext.IS_INITIALIZED, (VariableDescriptorImpl) variable, variableInitState.isInitialized);
 			}
 		}
 	}
@@ -621,7 +621,7 @@ public class JetFlowInformationProvider
 				if(!(instruction instanceof ReadValueInstruction))
 					return;
 				NapileElement element = ((ReadValueInstruction) instruction).getElement();
-				if(!(element instanceof NapileFunctionLiteralExpression || element instanceof NapileConstantExpression || element instanceof NapileClassOfExpression || element instanceof NapileSimpleNameExpression))
+				if(!(element instanceof NapileAnonymMethodExpression || element instanceof NapileConstantExpression || element instanceof NapileClassOfExpression || element instanceof NapileSimpleNameExpression))
 				{
 					return;
 				}
@@ -630,9 +630,9 @@ public class JetFlowInformationProvider
 				{
 					if(!NapilePsiUtil.isImplicitlyUsed(element))
 					{
-						if(element instanceof NapileFunctionLiteralExpression)
+						if(element instanceof NapileAnonymMethodExpression)
 						{
-							trace.report(Errors.UNUSED_FUNCTION_LITERAL.on((NapileFunctionLiteralExpression) element));
+							trace.report(Errors.UNUSED_FUNCTION_LITERAL.on((NapileAnonymMethodExpression) element));
 						}
 						else
 						{
@@ -660,10 +660,10 @@ public class JetFlowInformationProvider
 
 					DeclarationDescriptor descriptor = trace.get(BindingContext.REFERENCE_TARGET, refExp);
 					// if property is not final, or description is not found dont check
-					if(!(descriptor instanceof PropertyDescriptor) || ((PropertyDescriptor) descriptor).getModality() == Modality.OPEN)
+					if(!(descriptor instanceof VariableDescriptorImpl) || ((VariableDescriptorImpl) descriptor).getModality() == Modality.OPEN)
 						return;
 
-					boolean isInitialized = trace.safeGet(BindingContext.IS_INITIALIZED, (PropertyDescriptor) descriptor);
+					boolean isInitialized = trace.safeGet(BindingContext.IS_INITIALIZED, (VariableDescriptorImpl) descriptor);
 					if(isInitialized)
 						trace.report(Errors.FINAL_VAR_REASSIGNMENT.on(refExp, descriptor));
 				}

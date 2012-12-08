@@ -18,6 +18,7 @@ package org.napile.compiler.lang.descriptors;
 
 import static org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor.NO_RECEIVER;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -37,11 +38,11 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootImpl implements MethodDescriptor
+public abstract class AbstractMethodDescriptorImpl extends DeclarationDescriptorNonRootImpl implements MethodDescriptor
 {
 
 	protected List<TypeParameterDescriptor> typeParameters;
-	protected List<CallParameterDescriptor> unsubstitutedValueParameters;
+	protected List<CallParameterDescriptor> unsubstitutedValueParameters = Collections.emptyList();
 	protected JetType unsubstitutedReturnType;
 	protected ReceiverDescriptor expectedThisObject;
 
@@ -53,7 +54,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 	private final MethodDescriptor original;
 	private final Kind kind;
 
-	protected MethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
+	protected AbstractMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
 	{
 		super(containingDeclaration, annotations, name);
 		this.original = this;
@@ -62,7 +63,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		this.isNative = isNative;
 	}
 
-	protected MethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull MethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
+	protected AbstractMethodDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull MethodDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, Kind kind, boolean isStatic, boolean isNative)
 	{
 		super(containingDeclaration, annotations, name);
 		this.original = original;
@@ -71,7 +72,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		this.isNative = isNative;
 	}
 
-	public MethodDescriptorImpl initialize(@NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<CallParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
+	public AbstractMethodDescriptorImpl initialize(@NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<CallParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
 	{
 		this.typeParameters = Lists.newArrayList(typeParameters);
 		this.unsubstitutedValueParameters = unsubstitutedValueParameters;
@@ -89,32 +90,11 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 			}
 		}
 
-		for(int i = 0; i < unsubstitutedValueParameters.size(); ++i)
-		{
-			// TODO fill me
-			int firstValueParameterOffset = 0; // receiverParameter.exists() ? 1 : 0;
-			CallParameterDescriptor parameterDescriptor = unsubstitutedValueParameters.get(i);
-			if(parameterDescriptor.getIndex() != i + firstValueParameterOffset)
-			{
-				throw new IllegalStateException(parameterDescriptor + "index is " + parameterDescriptor.getIndex() + " but position is " + i);
-			}
-		}
-
 		return this;
-	}
-
-	public void setVisibility(@NotNull Visibility visibility)
-	{
-		this.visibility = visibility;
 	}
 
 	public void setReturnType(@NotNull JetType unsubstitutedReturnType)
 	{
-		if(this.unsubstitutedReturnType != null)
-		{
-			// TODO: uncomment and fix tests
-			//throw new IllegalStateException("returnType already set");
-		}
 		this.unsubstitutedReturnType = unsubstitutedReturnType;
 	}
 
@@ -198,6 +178,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		return original == this ? this : original.getOriginal();
 	}
 
+	@NotNull
 	@Override
 	public Kind getKind()
 	{
@@ -216,7 +197,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 
 	protected MethodDescriptor doSubstitute(TypeSubstitutor originalSubstitutor, DeclarationDescriptor newOwner, Modality newModality, Visibility newVisibility, boolean preserveOriginal, boolean copyOverrides, Kind kind)
 	{
-		MethodDescriptorImpl substitutedDescriptor = createSubstitutedCopy(newOwner, preserveOriginal, kind);
+		AbstractMethodDescriptorImpl substitutedDescriptor = createSubstitutedCopy(newOwner, preserveOriginal, kind);
 
 		List<TypeParameterDescriptor> substitutedTypeParameters = Lists.newArrayList();
 		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);
@@ -255,7 +236,7 @@ public abstract class MethodDescriptorImpl extends DeclarationDescriptorNonRootI
 		return substitutedDescriptor;
 	}
 
-	protected abstract MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind);
+	protected abstract AbstractMethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind);
 
 	@Override
 	public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)

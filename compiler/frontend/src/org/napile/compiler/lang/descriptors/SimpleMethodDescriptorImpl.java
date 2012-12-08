@@ -26,7 +26,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 /**
  * @author Stepan Koltsov
  */
-public class SimpleMethodDescriptorImpl extends MethodDescriptorImpl implements SimpleMethodDescriptor
+public class SimpleMethodDescriptorImpl extends AbstractMethodDescriptorImpl implements SimpleMethodDescriptor
 {
 	private final boolean macro;
 
@@ -56,7 +56,7 @@ public class SimpleMethodDescriptorImpl extends MethodDescriptorImpl implements 
 	}
 
 	@Override
-	protected MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
+	protected AbstractMethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
 	{
 		if(preserveOriginal)
 		{

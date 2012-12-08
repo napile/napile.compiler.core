@@ -81,12 +81,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	public JetTypeInfo visitAnonymClass(NapileAnonymClass declaration, ExpressionTypingContext context)
 	{
 		TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), declaration);
-		ClassDescriptor classDescriptor = context.trace.getBindingContext().get(BindingContext.CLASS, declaration);
-		if(classDescriptor != null)
-		{
-			VariableDescriptor variableDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveAnonymDeclaration(scope.getContainingDeclaration(), declaration, classDescriptor, context.trace, scope);
-			scope.addVariableDescriptor(variableDescriptor);
-		}
+
 		return DataFlowUtils.checkStatementType(declaration, context, context.dataFlowInfo);
 	}
 
@@ -96,18 +91,13 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		VariableDescriptor propertyDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(scope.getContainingDeclaration(), scope, property, context.dataFlowInfo, context.trace);
 		NapileExpression initializer = property.getInitializer();
 		if(property.getType() != null && initializer != null)
-		{
-			JetType outType = propertyDescriptor.getType();
-			JetType initializerType = facade.getTypeInfo(initializer, context.replaceExpectedType(outType).replaceScope(scope)).getType();
-		}
+			facade.getTypeInfo(initializer, context.replaceExpectedType(propertyDescriptor.getType()).replaceScope(scope)).getType();
 
+		VariableDescriptor olderVariable = scope.getLocalVariable(propertyDescriptor.getName());
+		if(olderVariable != null && DescriptorUtils.isLocal(propertyDescriptor.getContainingDeclaration(), olderVariable))
 		{
-			VariableDescriptor olderVariable = scope.getLocalVariable(propertyDescriptor.getName());
-			if(olderVariable != null && DescriptorUtils.isLocal(propertyDescriptor.getContainingDeclaration(), olderVariable))
-			{
-				PsiElement declaration = BindingContextUtils.descriptorToDeclaration(context.trace.getBindingContext(), propertyDescriptor);
-				context.trace.report(Errors.NAME_SHADOWING.on(declaration, propertyDescriptor.getName().getName()));
-			}
+			PsiElement declaration = BindingContextUtils.descriptorToDeclaration(context.trace.getBindingContext(), propertyDescriptor);
+			context.trace.report(Errors.NAME_SHADOWING.on(declaration, propertyDescriptor.getName().getName()));
 		}
 
 		scope.addVariableDescriptor(propertyDescriptor);
@@ -203,6 +193,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		return checkAssignmentType(binaryOperationType, expression, contextWithExpectedType);
 	}
 
+	@Nullable
 	protected JetType visitAssignment(NapileBinaryExpression expression, ExpressionTypingContext contextWithExpectedType)
 	{
 		ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
@@ -217,14 +208,12 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 			basic.checkLValue(context.trace, arrayAccessExpression);
 			return checkAssignmentType(assignmentType, expression, contextWithExpectedType);
 		}
-		JetType leftType = facade.getTypeInfo(expression.getLeft(), context.replaceScope(scope)).getType();
-		if(right != null)
+
+		JetType leftType = facade.getTypeInfo(left, context).getType();
+		if(leftType == null)
 		{
-			JetType rightType = facade.getTypeInfo(right, context.replaceExpectedType(leftType).replaceScope(scope)).getType();
-		}
-		if(leftType != null)
-		{ //if leftType == null, some another error has been generated
-			basic.checkLValue(context.trace, expression.getLeft());
+			facade.getTypeInfo(right, context);
+			return null;
 		}
 		return DataFlowUtils.checkStatementType(expression, contextWithExpectedType);
 	}

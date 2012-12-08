@@ -353,17 +353,17 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			JetType type = descriptor.getType();
 
 			renderModality(descriptor.getModality(), builder);
-			String typeString = renderPropertyPrefixAndComputeTypeString(builder, skipValVar, Collections.<TypeParameterDescriptor>emptyList(), type);
+			String typeString = renderPropertyPrefixAndComputeTypeString(descriptor, builder, skipValVar, Collections.<TypeParameterDescriptor>emptyList(), type);
 			renderName(descriptor, builder);
 			builder.append(" : ").append(escape(typeString));
 			return null;
 		}
 
-		private String renderPropertyPrefixAndComputeTypeString(@NotNull StringBuilder builder, boolean skipVar,  @NotNull List<TypeParameterDescriptor> typeParameters, @Nullable JetType outType)
+		private String renderPropertyPrefixAndComputeTypeString(@NotNull VariableDescriptor descriptor, @NotNull StringBuilder builder, boolean skipVar,  @NotNull List<TypeParameterDescriptor> typeParameters, @Nullable JetType outType)
 		{
 			String typeString = lt() + "no type>";
 			if(!skipVar)
-				builder.append(renderKeyword(NapileTokens.VAR_KEYWORD)).append(" ");
+				builder.append(renderKeyword(descriptor.isMutable() ? NapileTokens.VAL_KEYWORD : NapileTokens.VAR_KEYWORD)).append(" ");
 
 			if(outType != null)
 				typeString = renderType(outType);
@@ -374,11 +374,11 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 
 		@Override
-		public Void visitPropertyDescriptor(PropertyDescriptor descriptor, StringBuilder builder)
+		public Void visitPropertyDescriptor(VariableDescriptorImpl descriptor, StringBuilder builder)
 		{
 			renderVisibility(descriptor, builder);
 			renderModality(descriptor.getModality(), builder);
-			String typeString = renderPropertyPrefixAndComputeTypeString(builder, false, descriptor.getTypeParameters(), descriptor.getType());
+			String typeString = renderPropertyPrefixAndComputeTypeString(descriptor, builder, false, descriptor.getTypeParameters(), descriptor.getType());
 			renderName(descriptor, builder);
 			builder.append(" : ").append(escape(typeString));
 			return null;
@@ -493,10 +493,10 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 
 		@Override
-		public Void visitNamespaceDescriptor(NamespaceDescriptor namespaceDescriptor, StringBuilder builder)
+		public Void visitNamespaceDescriptor(PackageDescriptor packageDescriptor, StringBuilder builder)
 		{
 			builder.append(renderKeyword(NapileTokens.PACKAGE_KEYWORD)).append(" ");
-			renderName(namespaceDescriptor, builder);
+			renderName(packageDescriptor, builder);
 			return null;
 		}
 

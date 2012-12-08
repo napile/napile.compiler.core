@@ -192,9 +192,9 @@ public class ExpressionTypingServices
 		final boolean blockBody = function.hasBlockBody();
 		final ExpressionTypingContext newContext = blockBody ? context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE) : context;
 
-		if(function instanceof NapileFunctionLiteralExpression)
+		if(function instanceof NapileAnonymMethodExpression)
 		{
-			NapileFunctionLiteralExpression functionLiteralExpression = (NapileFunctionLiteralExpression) function;
+			NapileAnonymMethodExpression functionLiteralExpression = (NapileAnonymMethodExpression) function;
 			NapileBlockExpression blockExpression = functionLiteralExpression.getAnonymMethod().getBodyExpression();
 			assert blockExpression != null;
 			getBlockReturnedType(newContext.scope, blockExpression, CoercionStrategy.COERCION_TO_UNIT, context, trace);
@@ -251,9 +251,9 @@ public class ExpressionTypingServices
 				}
 
 				@Override
-				public Void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, NapileDeclarationWithBody outerFunction)
+				public Void visitAnonymMethodExpression(NapileAnonymMethodExpression expression, NapileDeclarationWithBody outerFunction)
 				{
-					return super.visitFunctionLiteralExpression(expression, expression.getAnonymMethod());
+					return super.visitAnonymMethodExpression(expression, expression.getAnonymMethod());
 				}
 
 				@Override

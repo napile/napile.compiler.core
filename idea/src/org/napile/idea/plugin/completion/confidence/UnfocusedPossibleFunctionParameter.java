@@ -17,9 +17,9 @@
 package org.napile.idea.plugin.completion.confidence;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
-import org.napile.compiler.lang.psi.NapileFunctionLiteralExpression;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import com.intellij.codeInsight.completion.CompletionConfidence;
@@ -43,7 +43,7 @@ public class UnfocusedPossibleFunctionParameter extends CompletionConfidence
 		// 2. The same but for the case when first expression is additionally surrounded with brackets
 
 		PsiElement position = parameters.getPosition();
-		NapileFunctionLiteralExpression functionLiteral = PsiTreeUtil.getParentOfType(position, NapileFunctionLiteralExpression.class);
+		NapileAnonymMethodExpression functionLiteral = PsiTreeUtil.getParentOfType(position, NapileAnonymMethodExpression.class);
 
 		if(functionLiteral != null)
 		{

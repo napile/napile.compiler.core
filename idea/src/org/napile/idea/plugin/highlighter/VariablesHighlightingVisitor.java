@@ -25,6 +25,7 @@ import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
+import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -49,7 +50,6 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 	{
 		DeclarationDescriptor target = bindingContext.get(REFERENCE_TARGET, expression);
 		if(target == null)
-
 			return;
 
 		if(target instanceof VariableDescriptor)
@@ -111,5 +111,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 
 			JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.getAttributes(descriptor), variableDescriptor);
 		}
+		else if(descriptor instanceof VariableAccessorDescriptor)
+			highlightVariable(elementToHighlight, ((VariableAccessorDescriptor) descriptor).getVariable());
 	}
 }

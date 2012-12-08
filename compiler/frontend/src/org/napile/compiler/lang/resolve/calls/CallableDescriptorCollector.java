@@ -30,11 +30,11 @@ import org.napile.compiler.lang.types.JetType;
 public interface CallableDescriptorCollector<D extends CallableDescriptor>
 {
 	@NotNull
-	Collection<D> getNonExtensionsByName(JetScope scope, Name name, boolean set);
+	Collection<D> getNonExtensionsByName(JetScope scope, Name name);
 
 	@NotNull
-	Collection<D> getMembersByName(@NotNull JetType receiver, Name name, boolean set);
+	Collection<D> getMembersByName(@NotNull JetType receiver, Name name);
 
 	@NotNull
-	Collection<D> getNonMembersByName(JetScope scope, Name name, boolean set);
+	Collection<D> getNonMembersByName(JetScope scope, Name name);
 }

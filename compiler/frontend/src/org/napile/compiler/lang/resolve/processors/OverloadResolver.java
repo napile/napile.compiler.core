@@ -24,15 +24,7 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -98,9 +90,9 @@ public class OverloadResolver
 			super(namespace, name);
 		}
 
-		Key(NamespaceDescriptor namespaceDescriptor, Name name)
+		Key(PackageDescriptor packageDescriptor, Name name)
 		{
-			this(DescriptorUtils.getFQName(namespaceDescriptor).getFqName(), name);
+			this(DescriptorUtils.getFQName(packageDescriptor).getFqName(), name);
 		}
 
 		public String getNamespace()
@@ -124,10 +116,10 @@ public class OverloadResolver
 		{
 			MutableClassDescriptor klass = entry.getValue();
 			DeclarationDescriptor containingDeclaration = klass.getContainingDeclaration();
-			if(containingDeclaration instanceof NamespaceDescriptor)
+			if(containingDeclaration instanceof PackageDescriptor)
 			{
-				NamespaceDescriptor namespaceDescriptor = (NamespaceDescriptor) containingDeclaration;
-				inNamespaces.put(new Key(namespaceDescriptor, klass.getName()), klass.getConstructors());
+				PackageDescriptor packageDescriptor = (PackageDescriptor) containingDeclaration;
+				inNamespaces.put(new Key(packageDescriptor, klass.getName()), klass.getConstructors());
 			}
 			else if(containingDeclaration instanceof ClassDescriptor)
 			{
@@ -151,20 +143,20 @@ public class OverloadResolver
 		for(SimpleMethodDescriptor function : context.getMethods().values())
 		{
 			DeclarationDescriptor containingDeclaration = function.getContainingDeclaration();
-			if(containingDeclaration instanceof NamespaceDescriptor)
+			if(containingDeclaration instanceof PackageDescriptor)
 			{
-				NamespaceDescriptor namespaceDescriptor = (NamespaceDescriptor) containingDeclaration;
-				functionsByName.putValue(new Key(namespaceDescriptor, function.getName()), function);
+				PackageDescriptor packageDescriptor = (PackageDescriptor) containingDeclaration;
+				functionsByName.putValue(new Key(packageDescriptor, function.getName()), function);
 			}
 		}
 
-		for(PropertyDescriptor property : context.getProperties().values())
+		for(VariableDescriptor variable : context.getVariables().values())
 		{
-			DeclarationDescriptor containingDeclaration = property.getContainingDeclaration();
-			if(containingDeclaration instanceof NamespaceDescriptor)
+			DeclarationDescriptor containingDeclaration = variable.getContainingDeclaration();
+			if(containingDeclaration instanceof PackageDescriptor)
 			{
-				NamespaceDescriptor namespaceDescriptor = (NamespaceDescriptor) containingDeclaration;
-				functionsByName.putValue(new Key(namespaceDescriptor, property.getName()), property);
+				PackageDescriptor packageDescriptor = (PackageDescriptor) containingDeclaration;
+				functionsByName.putValue(new Key(packageDescriptor, variable.getName()), variable);
 			}
 		}
 
@@ -260,7 +252,7 @@ public class OverloadResolver
 		{
 			CallableMemberDescriptor memberDescriptor = redeclaration.getSecond();
 			NapileDeclaration jetDeclaration = redeclaration.getFirst();
-			if(memberDescriptor instanceof PropertyDescriptor)
+			if(memberDescriptor instanceof VariableDescriptorImpl)
 			{
 				trace.report(Errors.REDECLARATION.on(jetDeclaration, memberDescriptor.getName().getName()));
 			}

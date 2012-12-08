@@ -84,7 +84,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	}
 
 	@Override
-	public Void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression, FqName data)
+	public Void visitAnonymMethodExpression(NapileAnonymMethodExpression expression, FqName data)
 	{
 		Integer anonymCount = anonymMethodCounts.get(data);
 		if(anonymCount == null)
@@ -94,7 +94,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 
 		data = data.child(Name.identifier("anonym" + AsmConstants.ANONYM_SPLITTER + anonymCount));
 		record(expression.getAnonymMethod(), data);
-		return super.visitFunctionLiteralExpression(expression, data);
+		return super.visitAnonymMethodExpression(expression, data);
 	}
 
 	@Override

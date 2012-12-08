@@ -25,7 +25,7 @@ import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Lists;
@@ -77,9 +77,9 @@ public interface Importer
 
 		protected void importAllUnderDeclaration(@NotNull DeclarationDescriptor descriptor)
 		{
-			if(descriptor instanceof NamespaceDescriptor)
+			if(descriptor instanceof PackageDescriptor)
 			{
-				namespaceScope.importScope(((NamespaceDescriptor) descriptor).getMemberScope());
+				namespaceScope.importScope(((PackageDescriptor) descriptor).getMemberScope());
 			}
 			if(descriptor instanceof ClassDescriptor && ((ClassDescriptor) descriptor).getKind() != ClassKind.ANONYM_CLASS)
 			{
@@ -94,9 +94,9 @@ public interface Importer
 			{
 				namespaceScope.importClassifierAlias(aliasName, (ClassifierDescriptor) descriptor);
 			}
-			else if(descriptor instanceof NamespaceDescriptor)
+			else if(descriptor instanceof PackageDescriptor)
 			{
-				namespaceScope.importNamespaceAlias(aliasName, (NamespaceDescriptor) descriptor);
+				namespaceScope.importNamespaceAlias(aliasName, (PackageDescriptor) descriptor);
 			}
 			else if(descriptor instanceof MethodDescriptor)
 			{

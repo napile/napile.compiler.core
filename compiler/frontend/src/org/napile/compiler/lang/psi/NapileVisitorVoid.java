@@ -242,7 +242,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitLoopExpression(expression);
 	}
 
-	public void visitFunctionLiteralExpression(NapileFunctionLiteralExpression expression)
+	public void visitAnonymMethodExpression(NapileAnonymMethodExpression expression)
 	{
 		visitExpression(expression);
 	}
@@ -277,7 +277,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitQualifiedExpression(expression);
 	}
 
-	public void visitObjectLiteralExpression(NapileObjectLiteralExpression expression)
+	public void visitAnonymClassExpression(NapileAnonymClassExpression expression)
 	{
 		visitExpression(expression);
 	}

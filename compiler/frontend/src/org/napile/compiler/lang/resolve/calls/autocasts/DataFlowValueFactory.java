@@ -18,14 +18,7 @@ package org.napile.compiler.lang.resolve.calls.autocasts;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -114,11 +107,11 @@ public class DataFlowValueFactory
 		{
 			NapileSimpleNameExpression simpleNameExpression = (NapileSimpleNameExpression) expression;
 			DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, simpleNameExpression);
-			if(declarationDescriptor instanceof VariableDescriptor)
+			if(declarationDescriptor instanceof VariableDescriptor || declarationDescriptor instanceof VariableAccessorDescriptor)
 			{
-				return Pair.create((Object) declarationDescriptor, isStableVariable((VariableDescriptor) declarationDescriptor));
+				return Pair.create((Object) declarationDescriptor, isStableVariable(declarationDescriptor));
 			}
-			if(declarationDescriptor instanceof NamespaceDescriptor)
+			if(declarationDescriptor instanceof PackageDescriptor)
 			{
 				return Pair.create((Object) declarationDescriptor, allowNamespaces);
 			}
@@ -145,10 +138,17 @@ public class DataFlowValueFactory
 		return Pair.create(null, false);
 	}
 
-	public static boolean isStableVariable(@NotNull VariableDescriptor variableDescriptor)
+	public static boolean isStableVariable(@NotNull DeclarationDescriptor declarationDescriptor)
 	{
-		if(variableDescriptor.getModality() == Modality.FINAL || variableDescriptor instanceof LocalVariableDescriptor || variableDescriptor instanceof CallParameterDescriptor)
+		if(declarationDescriptor instanceof LocalVariableDescriptor || declarationDescriptor instanceof CallParameterDescriptor)
 			return true;
+
+		if(declarationDescriptor instanceof VariableDescriptor && !((VariableDescriptor) declarationDescriptor).isMutable())
+			if(((VariableDescriptor) declarationDescriptor).getModality() == Modality.FINAL || ((VariableDescriptor) declarationDescriptor).getVisibility() == Visibility.LOCAL)
+				return true;
+
+		if(declarationDescriptor instanceof VariableAccessorDescriptor)
+			return ((VariableAccessorDescriptor) declarationDescriptor).isDefault() && isStableVariable(((VariableAccessorDescriptor) declarationDescriptor).getVariable());
 
 		return false;
 	}

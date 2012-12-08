@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.descriptors;
 
 import java.util.List;
-import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +26,6 @@ import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import com.google.common.collect.Sets;
 
 /**
  * @author svtk
@@ -43,7 +41,7 @@ public enum  Visibility
 			while(parent != null)
 			{
 				parent = parent.getContainingDeclaration();
-				if((parent instanceof ClassDescriptor) || parent instanceof NamespaceDescriptor)
+				if((parent instanceof ClassDescriptor) || parent instanceof PackageDescriptor)
 				{
 					break;
 				}
@@ -66,11 +64,11 @@ public enum  Visibility
 		@Override
 		protected boolean isVisible(@NotNull DeclarationDescriptorWithVisibility what, @NotNull DeclarationDescriptor from)
 		{
-			NamespaceDescriptor whatPackage = DescriptorUtils.getParentOfType(what, NamespaceDescriptor.class, false);
+			PackageDescriptor whatPackage = DescriptorUtils.getParentOfType(what, PackageDescriptor.class, false);
 			if(whatPackage == null)
 				return false;
 
-			NamespaceDescriptor fromPackage = DescriptorUtils.getParentOfType(from, NamespaceDescriptor.class, false);
+			PackageDescriptor fromPackage = DescriptorUtils.getParentOfType(from, PackageDescriptor.class, false);
 			if(fromPackage == null)
 				return false;
 
@@ -144,7 +142,6 @@ public enum  Visibility
 		}
 	};
 
-	public static final Set<Visibility> INTERNAL_VISIBILITIES = Sets.newHashSet(LOCAL, LOCAL2);
 	private final boolean isPublicAPI;
 	private final NapileKeywordToken keyword;
 

@@ -104,8 +104,8 @@ public interface NapileNodes
 	NapileNode DEFAULT_VALUE_NODE = new NapileNode("DEFAULT_VALUE_NODE", NapileContainerNode.class);
 	NapileNode BODY = new NapileNode("BODY", NapileContainerNode.class);
 	NapileNode BLOCK = new NapileNode("BLOCK", NapileBlockExpression.class);
-	NapileNode FUNCTION_LITERAL_EXPRESSION = new NapileNode("ANONYM_METHOD_EXPRESSION", NapileFunctionLiteralExpression.class);
-	NapileNode FUNCTION_LITERAL = new NapileNode("ANONYM_METHOD", NapileAnonymMethodImpl.class);
+	NapileNode ANONYM_METHOD_EXPRESSION = new NapileNode("ANONYM_METHOD_EXPRESSION", NapileAnonymMethodExpression.class);
+	NapileNode ANONYM_METHOD = new NapileNode("ANONYM_METHOD", NapileAnonymMethodImpl.class);
 	NapileNode REFERENCE_EXPRESSION = new NapileNode("REFERENCE_EXPRESSION", NapileSimpleNameExpressionImpl.class);
 
 	NapileNode OPERATION_REFERENCE = new NapileNode("OPERATION_REFERENCE", NapileSimpleNameExpressionImpl.class);
@@ -128,7 +128,7 @@ public interface NapileNodes
 	NapileNode DOT_QUALIFIED_EXPRESSION = new NapileNode("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpression.class);
 	NapileNode SAFE_ACCESS_EXPRESSION = new NapileNode("SAFE_ACCESS_EXPRESSION", NapileSafeQualifiedExpression.class);
 
-	NapileNode OBJECT_LITERAL = new NapileNode("OBJECT_LITERAL", NapileObjectLiteralExpression.class);
+	NapileNode ANONYM_CLASS_EXPRESSION = new NapileNode("OBJECT_LITERAL", NapileAnonymClassExpression.class);
 
 	NapileNode WHEN = new NapileNode("WHEN", NapileWhenExpression.class);
 	NapileNode WHEN_ENTRY = new NapileNode("WHEN_ENTRY", NapileWhenEntry.class);

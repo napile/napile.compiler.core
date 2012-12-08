@@ -29,8 +29,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
@@ -101,9 +100,9 @@ public class SubstitutingScope implements JetScope
 
 	@NotNull
 	@Override
-	public Collection<VariableDescriptor> getProperties(@NotNull Name name)
+	public Collection<VariableDescriptor> getVariables(@NotNull Name name)
 	{
-		return substitute(workerScope.getProperties(name));
+		return substitute(workerScope.getVariables(name));
 	}
 
 	@Override
@@ -145,9 +144,9 @@ public class SubstitutingScope implements JetScope
 	}
 
 	@Override
-	public NamespaceDescriptor getNamespace(@NotNull Name name)
+	public PackageDescriptor getPackage(@NotNull Name name)
 	{
-		return workerScope.getNamespace(name); // TODO
+		return workerScope.getPackage(name); // TODO
 	}
 
 	@NotNull
@@ -168,12 +167,6 @@ public class SubstitutingScope implements JetScope
 	public DeclarationDescriptor getContainingDeclaration()
 	{
 		return workerScope.getContainingDeclaration();
-	}
-
-	@Override
-	public PropertyDescriptor getPropertyByFieldReference(@NotNull Name fieldName)
-	{
-		throw new UnsupportedOperationException(); // TODO
 	}
 
 	@NotNull

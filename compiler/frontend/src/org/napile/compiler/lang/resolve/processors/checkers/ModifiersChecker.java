@@ -25,15 +25,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.Visibility;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileToken;
@@ -124,16 +116,16 @@ public class ModifiersChecker
 			checkModalityModifiers(constructor);
 		}
 
-		for(Map.Entry<NapileVariable, PropertyDescriptor> entry : bodiesResolveContext.getProperties().entrySet())
+		for(Map.Entry<NapileVariable, VariableDescriptor> entry : bodiesResolveContext.getVariables().entrySet())
 		{
 			NapileVariable property = entry.getKey();
-			PropertyDescriptor propertyDescriptor = entry.getValue();
+			VariableDescriptor variableDescriptor = entry.getValue();
 
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
 				continue;
 
 			checkModalityModifiers(property);
-			checkDeclaredTypeInPublicMember(property, propertyDescriptor);
+			checkDeclaredTypeInPublicMember(property, variableDescriptor);
 		}
 	}
 

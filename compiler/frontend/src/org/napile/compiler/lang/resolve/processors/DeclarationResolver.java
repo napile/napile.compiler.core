@@ -31,10 +31,11 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptorImpl;
-import org.napile.compiler.lang.descriptors.PropertyDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
@@ -204,14 +205,21 @@ public class DeclarationResolver
 				}
 
 				@Override
-				public void visitVariable(NapileVariable property)
+				public void visitVariable(NapileVariable variable)
 				{
-					PropertyDescriptor propertyDescriptor = descriptorResolver.resolveVariableDescriptor(ownerDescription, scope, property, trace);
+					VariableDescriptor variableDescriptor = descriptorResolver.resolveVariableDescriptor(ownerDescription, scope, variable, trace);
 
-					ownerDescription.getBuilder().addPropertyDescriptor(propertyDescriptor);
+					VariableAccessorDescriptor accessorDescriptor = variableDescriptor.getGetter();
+					if(accessorDescriptor != null)
+						ownerDescription.getBuilder().addMethodDescriptor(accessorDescriptor);
+					accessorDescriptor = variableDescriptor.getSetter();
+					if(accessorDescriptor != null)
+						ownerDescription.getBuilder().addMethodDescriptor(accessorDescriptor);
 
-					context.getProperties().put(property, propertyDescriptor);
-					context.getDeclaringScopes().put(property, scope);
+					ownerDescription.getBuilder().addVariableDescriptor(variableDescriptor);
+
+					context.getVariables().put(variable, variableDescriptor);
+					context.getDeclaringScopes().put(variable, scope);
 				}
 			});
 		}
@@ -219,7 +227,7 @@ public class DeclarationResolver
 
 	private void checkRedeclarationsInNamespaces()
 	{
-		for(NamespaceDescriptorImpl descriptor : context.getNamespaceDescriptors().values())
+		for(PackageDescriptorImpl descriptor : context.getNamespaceDescriptors().values())
 		{
 			Multimap<Name, DeclarationDescriptor> simpleNameDescriptors = descriptor.getMemberScope().getDeclaredDescriptorsAccessibleBySimpleName();
 			for(Name name : simpleNameDescriptors.keySet())
@@ -244,9 +252,9 @@ public class DeclarationResolver
 	private Collection<PsiElement> getDeclarationsByDescriptor(DeclarationDescriptor declarationDescriptor)
 	{
 		Collection<PsiElement> declarations;
-		if(declarationDescriptor instanceof NamespaceDescriptor)
+		if(declarationDescriptor instanceof PackageDescriptor)
 		{
-			final NamespaceDescriptor namespace = (NamespaceDescriptor) declarationDescriptor;
+			final PackageDescriptor namespace = (PackageDescriptor) declarationDescriptor;
 			Collection<NapileFile> files = trace.get(BindingContext.NAMESPACE_TO_FILES, namespace);
 
 			if(files == null)

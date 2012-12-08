@@ -23,9 +23,9 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileFunctionLiteralExpression extends NapileExpressionImpl
+public class NapileAnonymMethodExpression extends NapileExpressionImpl
 {
-	public NapileFunctionLiteralExpression(@NotNull ASTNode node)
+	public NapileAnonymMethodExpression(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -33,18 +33,18 @@ public class NapileFunctionLiteralExpression extends NapileExpressionImpl
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitFunctionLiteralExpression(this);
+		visitor.visitAnonymMethodExpression(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitFunctionLiteralExpression(this, data);
+		return visitor.visitAnonymMethodExpression(this, data);
 	}
 
 	@NotNull
 	public NapileAnonymMethodImpl getAnonymMethod()
 	{
-		return (NapileAnonymMethodImpl) findChildByType(NapileNodes.FUNCTION_LITERAL);
+		return (NapileAnonymMethodImpl) findNotNullChildByType(NapileNodes.ANONYM_METHOD);
 	}
 }

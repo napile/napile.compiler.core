@@ -25,8 +25,9 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
@@ -123,9 +124,9 @@ public class BindingContextUtils
 			descriptor = extractVariableDescriptorIfAny(bindingContext, ((NapileQualifiedExpression) element).getSelectorExpression(), onlyReference);
 		}
 		if(descriptor instanceof VariableDescriptor)
-		{
 			return (VariableDescriptor) descriptor;
-		}
+		else if(descriptor instanceof VariableAccessorDescriptor)
+			return ((VariableAccessorDescriptor) descriptor).getVariable();
 		return null;
 	}
 
@@ -133,7 +134,7 @@ public class BindingContextUtils
 
 	// NOTE this is used by KDoc
 	@Nullable
-	public static NamespaceDescriptor namespaceDescriptor(@NotNull BindingContext context, @NotNull NapileFile source)
+	public static PackageDescriptor namespaceDescriptor(@NotNull BindingContext context, @NotNull NapileFile source)
 	{
 		return context.get(BindingContext.FILE_TO_NAMESPACE, source);
 	}

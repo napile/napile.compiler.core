@@ -29,11 +29,11 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  * @author abreslav
  */
 @Deprecated
-public class LocalVariableDescriptor extends VariableDescriptorImpl
+public class LocalVariableDescriptor extends AbstractVariableDescriptorImpl
 {
-	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, Modality modality)
+	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, Modality modality, boolean mutable)
 	{
-		super(containingDeclaration, annotations, name, type, modality, false);
+		super(containingDeclaration, annotations, name, type, modality, false, mutable);
 	}
 
 	@NotNull

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2012 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,22 @@
 
 package org.napile.compiler.lang.descriptors;
 
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.annotations.Annotated;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.types.NamespaceType;
+
 /**
- * @author VISTALL
- * @date 20:44/01.12.12
+ * @author abreslav
  */
-public interface CallParameterAsReferenceDescriptor extends CallParameterDescriptor
+public interface PackageDescriptor extends Annotated, Named, FqNamed, NamespaceDescriptorParent
 {
-	VariableDescriptor getReferenceVariableDescriptor();
+	@NotNull
+	JetScope getMemberScope();
+
+	@NotNull
+	NamespaceType getNamespaceType();
+
+	@Override
+	NamespaceDescriptorParent getContainingDeclaration();
 }

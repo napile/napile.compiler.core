@@ -113,7 +113,7 @@ public class TypeHierarchyResolver
 		this.trace = trace;
 	}
 
-	public void process(@NotNull JetScope outerScope, @NotNull NamespaceLikeBuilder owner, @NotNull Collection<? extends PsiElement> declarations)
+	public void process(@NotNull JetScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends PsiElement> declarations)
 	{
 
 		{
@@ -134,9 +134,9 @@ public class TypeHierarchyResolver
 				{
 					forDeferredResolve.addAll(collectNamespacesAndClassifiers(scope, ((MutableClassDescriptorLite) descriptorForDeferredResolve).getBuilder(), declarationContainer.getDeclarations()));
 				}
-				else if(descriptorForDeferredResolve instanceof NamespaceDescriptorImpl)
+				else if(descriptorForDeferredResolve instanceof PackageDescriptorImpl)
 				{
-					forDeferredResolve.addAll(collectNamespacesAndClassifiers(scope, ((NamespaceDescriptorImpl) descriptorForDeferredResolve).getBuilder(), declarationContainer.getDeclarations()));
+					forDeferredResolve.addAll(collectNamespacesAndClassifiers(scope, ((PackageDescriptorImpl) descriptorForDeferredResolve).getBuilder(), declarationContainer.getDeclarations()));
 				}
 				else
 				{
@@ -164,7 +164,7 @@ public class TypeHierarchyResolver
 	}
 
 	@Nullable
-	private Collection<NapileDeclarationContainer> collectNamespacesAndClassifiers(@NotNull final JetScope outerScope, @NotNull final NamespaceLikeBuilder owner, @NotNull PsiElement[] declarations)
+	private Collection<NapileDeclarationContainer> collectNamespacesAndClassifiers(@NotNull final JetScope outerScope, @NotNull final DescriptorBuilder owner, @NotNull PsiElement[] declarations)
 	{
 		final Collection<NapileDeclarationContainer> forDeferredResolve = new ArrayList<NapileDeclarationContainer>();
 
@@ -175,7 +175,7 @@ public class TypeHierarchyResolver
 				@Override
 				public void visitNapileFile(NapileFile file)
 				{
-					NamespaceDescriptorImpl namespaceDescriptor = namespaceFactory.createNamespaceDescriptorPathIfNeeded(file, outerScope, RedeclarationHandler.DO_NOTHING);
+					PackageDescriptorImpl namespaceDescriptor = namespaceFactory.createNamespaceDescriptorPathIfNeeded(file, outerScope, RedeclarationHandler.DO_NOTHING);
 					context.getNamespaceDescriptors().put(file, namespaceDescriptor);
 
 					WriteThroughScope namespaceScope = new WriteThroughScope(outerScope, namespaceDescriptor.getMemberScope(), new TraceBasedRedeclarationHandler(trace), "namespace");
@@ -215,7 +215,7 @@ public class TypeHierarchyResolver
 
 					trace.record(BindingContext.CONSTRUCTOR, declaration, constructorDescriptor);
 
-					owner.addObjectDescriptor(mutableClassDescriptor);
+					owner.addAnonymClassDescriptor(mutableClassDescriptor);
 					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
 				}
 

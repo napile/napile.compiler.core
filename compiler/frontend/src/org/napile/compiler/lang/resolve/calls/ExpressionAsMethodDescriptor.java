@@ -20,16 +20,16 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.descriptors.AbstractMethodDescriptorImpl;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptorImpl;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 
 /**
  * @author alex.tkachman
  */
-public class ExpressionAsMethodDescriptor extends MethodDescriptorImpl
+public class ExpressionAsMethodDescriptor extends AbstractMethodDescriptorImpl
 {
 	public ExpressionAsMethodDescriptor(DeclarationDescriptor containingDeclaration, Name name)
 	{
@@ -37,7 +37,7 @@ public class ExpressionAsMethodDescriptor extends MethodDescriptorImpl
 	}
 
 	@Override
-	protected MethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
+	protected AbstractMethodDescriptorImpl createSubstitutedCopy(DeclarationDescriptor newOwner, boolean preserveOriginal, Kind kind)
 	{
 		throw new IllegalStateException();
 	}

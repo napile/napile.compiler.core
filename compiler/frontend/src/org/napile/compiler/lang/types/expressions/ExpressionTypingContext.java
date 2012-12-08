@@ -163,7 +163,7 @@ public class ExpressionTypingContext
 	@NotNull
 	public OverloadResolutionResults<VariableDescriptor> resolveSimpleProperty(@NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull NapileSimpleNameExpression nameExpression)
 	{
-		Call call = CallMaker.makePropertyCall(receiver, callOperationNode, nameExpression);
+		Call call = CallMaker.makeVariableCall(receiver, callOperationNode, nameExpression);
 		return expressionTypingServices.getCallResolver().resolveSimpleProperty(makeResolutionContext(call));
 	}
 
