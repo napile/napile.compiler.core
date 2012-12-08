@@ -1389,10 +1389,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			else if(OperatorConventions.IN_OPERATIONS.contains(operationType))
 			{
 				if(right == null)
-				{
-					result = ErrorUtils.createErrorType("No right argument"); // TODO
-					return JetTypeInfo.create(null, context.dataFlowInfo);
-				}
+					return JetTypeInfo.create(ErrorUtils.createErrorType("No right argument"), context.dataFlowInfo);
 				checkInExpression(expression, expression.getOperationReference(), expression.getLeft(), expression.getRight(), context);
 				result = booleanType;
 			}

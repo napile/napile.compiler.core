@@ -210,14 +210,12 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		}
 
 		JetType leftType = facade.getTypeInfo(left, context).getType();
-		if(leftType == null)
-		{
+		if(right != null)
 			facade.getTypeInfo(right, context);
-			return null;
-		}
+		if(leftType != null)
+			basic.checkLValue(context.trace, left);
 		return DataFlowUtils.checkStatementType(expression, contextWithExpectedType);
 	}
-
 
 	@Override
 	public JetTypeInfo visitExpression(NapileExpression expression, ExpressionTypingContext context)
