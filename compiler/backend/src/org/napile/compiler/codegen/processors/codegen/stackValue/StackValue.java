@@ -27,6 +27,7 @@ import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
@@ -83,6 +84,16 @@ public abstract class StackValue
 		return new Variable(fqName, type, staticVar);
 	}
 
+	@NotNull
+	public static StackValue variableAccessor(@NotNull ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen expressionCodegen)
+	{
+		VariableAccessorDescriptor variableAccessorDescriptor = (VariableAccessorDescriptor) resolvedCall.getResultingDescriptor();
+		VariableDescriptor variableDescriptor =variableAccessorDescriptor.getVariable();
+
+		return new VariableAccessor(TypeTransformer.toAsmType(variableDescriptor.getType()), resolvedCall, receiver, expressionCodegen);
+	}
+
+	@Deprecated
 	public static StackValue property(@NotNull VariableDescriptor propertyDescriptor)
 	{
 		return property(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()), propertyDescriptor.isStatic());

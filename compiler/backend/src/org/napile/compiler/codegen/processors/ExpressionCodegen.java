@@ -764,6 +764,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			return iValue;
 		}
 
+		if(descriptor instanceof VariableAccessorDescriptor)
+			return StackValue.variableAccessor(resolvedCall, receiver, this);
+
 		if(descriptor instanceof ClassDescriptor)
 			return StackValue.none();
 

@@ -310,7 +310,7 @@ public class JetFlowInformationProvider
 
 	private boolean checkValReassignment(@NotNull VariableDescriptor variableDescriptor, @NotNull NapileExpression expression, @NotNull VariableInitState enterInitState, @NotNull Collection<VariableDescriptor> varWithValReassignErrorGenerated)
 	{
-		boolean isInitializedNotHere = enterInitState.isInitialized;
+		/*boolean isInitializedNotHere = enterInitState.isInitialized;
 		if(expression.getParent() instanceof NapileVariable && ((NapileVariable) expression).getInitializer() != null)
 		{
 			isInitializedNotHere = false;
@@ -321,7 +321,7 @@ public class JetFlowInformationProvider
 			hasBackingField = trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor);
 		}
 		if((isInitializedNotHere || !hasBackingField) &&
-				variableDescriptor.getModality() == Modality.FINAL &&
+				!variableDescriptor.isMutable() &&
 				!varWithValReassignErrorGenerated.contains(variableDescriptor))
 		{
 			boolean hasReassignMethodReturningUnit = false;
@@ -363,10 +363,10 @@ public class JetFlowInformationProvider
 			if(!hasReassignMethodReturningUnit)
 			{
 				varWithValReassignErrorGenerated.add(variableDescriptor);
-				trace.report(Errors.FINAL_VAR_REASSIGNMENT.on(expression, variableDescriptor));
+				trace.report(Errors.VAL_REASSIGNMENT.on(expression, variableDescriptor));
 				return true;
 			}
-		}
+		}     */
 		return false;
 	}
 
@@ -665,7 +665,7 @@ public class JetFlowInformationProvider
 
 					boolean isInitialized = trace.safeGet(BindingContext.IS_INITIALIZED, (VariableDescriptorImpl) descriptor);
 					if(isInitialized)
-						trace.report(Errors.FINAL_VAR_REASSIGNMENT.on(refExp, descriptor));
+						trace.report(Errors.VAL_REASSIGNMENT.on(refExp, descriptor));
 				}
 			}
 		});

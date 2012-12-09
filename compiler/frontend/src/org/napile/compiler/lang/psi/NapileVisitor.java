@@ -403,4 +403,9 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	{
 		return visitExpression(arrayExpression, data);
 	}
+
+	public R visitVariableAccessor(NapileVariableAccessor accessor, D data)
+	{
+		return visitNamedDeclaration(accessor, data);
+	}
 }

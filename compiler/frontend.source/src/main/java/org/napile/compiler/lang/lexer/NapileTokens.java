@@ -24,6 +24,7 @@ import org.napile.compiler.lang.psi.NapileInjectionExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.impl.source.tree.LazyParseablePsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -128,6 +129,8 @@ public interface NapileTokens
 		@Override
 		protected Language getLanguageForParser(PsiElement psi)
 		{
+			if(psi instanceof PsiErrorElement)
+				return psi.getLanguage();
 			NapileInjectionExpression injectionExpression = (NapileInjectionExpression) psi;
 			CodeInjection codeInjection = injectionExpression.getCodeInjection();
 			if(codeInjection == null)

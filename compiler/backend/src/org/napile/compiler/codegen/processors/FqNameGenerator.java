@@ -77,6 +77,17 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	}
 
 	@Override
+	public Void visitVariableAccessor(NapileVariableAccessor accessor, FqName data)
+	{
+		NapileVariable variable = PsiTreeUtil.getParentOfType(accessor, NapileVariable.class);
+
+		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, variable);
+
+		record(accessor, fqName.child(Name.identifier(fqName.shortName().getName() + AsmConstants.ANONYM_SPLITTER + accessor.getAccessorElement().getText())));
+		return super.visitVariableAccessor(accessor, data);
+	}
+
+	@Override
 	public Void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, FqName data)
 	{
 		record(function, data.child(NapilePsiUtil.safeName(function.getName())));

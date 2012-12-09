@@ -24,6 +24,8 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileDeclarationImpl;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -80,5 +82,17 @@ public class NapileVariableAccessorImpl extends NapileDeclarationImpl implements
 	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
 	{
 		throw new IncorrectOperationException();
+	}
+
+	@Override
+	public void accept(@NotNull NapileVisitorVoid visitor)
+	{
+		visitor.visitVariableAccessor(this);
+	}
+
+	@Override
+	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
+	{
+		return visitor.visitVariableAccessor(this, data);
 	}
 }

@@ -26,6 +26,7 @@ import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 
+@Deprecated
 public class Property extends StackValue
 {
 	private final MethodRef setter;

@@ -410,4 +410,9 @@ public void visitBlockExpression(NapileBlockExpression expression)
 	{
 		visitExpression(arrayExpression);
 	}
+
+	public void visitVariableAccessor(NapileVariableAccessor accessor)
+	{
+		visitNamedDeclaration(accessor);
+	}
 }
