@@ -530,7 +530,7 @@ public class OverrideResolver
 						typeMismatchError = true;
 					}
 
-					if(!haveFinalModality(overridden) && haveFinalModality(declared) && !kindMismatchError)
+					if(!isVal(overridden) && isVal(declared) && !kindMismatchError)
 					{
 						trace.report(VAR_OVERRIDDEN_BY_VAL.on((NapileVariable) member, (VariableDescriptorImpl) declared, (VariableDescriptorImpl) overridden));
 						kindMismatchError = true;
@@ -676,9 +676,9 @@ public class OverrideResolver
 		}
 	}
 
-	private static boolean haveFinalModality(CallableMemberDescriptor descriptor)
+	private static boolean isVal(CallableMemberDescriptor descriptor)
 	{
-		return descriptor.getModality() == Modality.FINAL;
+		return descriptor instanceof VariableDescriptor && !((VariableDescriptor) descriptor).isMutable();
 	}
 
 	@Nullable
