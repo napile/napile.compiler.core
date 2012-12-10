@@ -46,15 +46,16 @@ public class NapilePsiFactory
 		return property.getVarOrValNode();
 	}
 
+	@NotNull
 	public static NapileExpression createExpression(Project project, String text)
 	{
-		NapileVariable property = createProperty(project, "final var x = " + text);
+		NapileVariable property = createProperty(project, "val x = " + text);
 		return property.getInitializer();
 	}
 
 	public static NapileValueArgumentList createCallArguments(Project project, String text)
 	{
-		NapileVariable property = createProperty(project, "final var x = foo" + text);
+		NapileVariable property = createProperty(project, "val x = foo" + text);
 		NapileExpression initializer = property.getInitializer();
 		NapileCallExpression callExpression = (NapileCallExpression) initializer;
 		return callExpression.getValueArgumentList();
@@ -62,20 +63,20 @@ public class NapilePsiFactory
 
 	public static NapileTypeReference createType(Project project, String type)
 	{
-		NapileVariable property = createProperty(project, "final var x : " + type);
+		NapileVariable property = createProperty(project, "val x : " + type);
 		return property.getType();
 	}
 
 	//the pair contains the first and the last elements of a range
 	public static Pair<PsiElement, PsiElement> createColon(Project project)
 	{
-		NapileVariable property = createProperty(project, "final var x : Int");
+		NapileVariable property = createProperty(project, "val x : Int");
 		return Pair.create(property.findElementAt(5), property.findElementAt(7));
 	}
 
 	public static ASTNode createColonNode(Project project)
 	{
-		NapileVariable property = createProperty(project, "final var x: Int");
+		NapileVariable property = createProperty(project, "val x: Int");
 		return property.getNode().findChildByType(NapileTokens.COLON);
 	}
 
@@ -86,7 +87,7 @@ public class NapilePsiFactory
 
 	public static PsiElement createWhiteSpace(Project project, String text)
 	{
-		NapileVariable property = createProperty(project, "final var" + text + "x");
+		NapileVariable property = createProperty(project, "val" + text + "x");
 		return property.findElementAt(3);
 	}
 
@@ -109,7 +110,7 @@ public class NapilePsiFactory
 
 	public static NapileVariable createProperty(Project project, String name, String type, boolean isVar, @Nullable String initializer)
 	{
-		String text = (isVar ? "var " : "final var ") + name + (type != null ? ":" + type : "") + (initializer == null ? "" : " = " + initializer);
+		String text = (isVar ? "var " : "val ") + name + (type != null ? ":" + type : "") + (initializer == null ? "" : " = " + initializer);
 		return createProperty(project, text);
 	}
 
@@ -118,11 +119,13 @@ public class NapilePsiFactory
 		return createProperty(project, name, type, isVar, null);
 	}
 
+	@NotNull
 	public static NapileVariable createProperty(Project project, String text)
 	{
 		return createClassDeclaration(project, text);
 	}
 
+	@NotNull
 	private static <T> T createClassDeclaration(Project project, String text)
 	{
 		NapileFile file = createFile(project, "class A {" + text + "}");
@@ -158,7 +161,7 @@ public class NapilePsiFactory
 
 	public static NapileModifierList createModifier(Project project, NapileKeywordToken modifier)
 	{
-		String text = modifier.getValue() + " final var x";
+		String text = modifier.getValue() + " val x";
 		NapileVariable property = createProperty(project, text);
 		return property.getModifierList();
 	}

@@ -174,7 +174,7 @@ public class ExpressionTypingUtils
 	@NotNull
 	public static NapileExpression createStubExpressionOfNecessaryType(@NotNull Project project, @NotNull JetType type, @NotNull BindingTrace trace)
 	{
-		NapileExpression expression = NapilePsiFactory.createExpression(project, "$e");
+		NapileExpression expression = NapilePsiFactory.createExpression(project, "e");
 		trace.record(PROCESSED, expression);
 		trace.record(EXPRESSION_TYPE, expression, type);
 		return expression;

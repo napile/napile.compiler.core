@@ -1165,17 +1165,13 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		// Special case for expr!!
 		if(operationType == NapileTokens.EXCLEXCL)
-		{
 			return visitExclExclExpression(expression, context);
-		}
 
 		// Type check the base expression
 		JetTypeInfo typeInfo = facade.getTypeInfo(baseExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
 		JetType type = typeInfo.getType();
 		if(type == null)
-		{
 			return typeInfo;
-		}
 		DataFlowInfo dataFlowInfo = typeInfo.getDataFlowInfo();
 
 		// Conventions for unary operations
@@ -1208,6 +1204,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		JetType result;
 		if(operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS)
 		{
+			resolveVariableSetMethodUnary(expression, receiver, context);
+
 			if(TypeUtils.isEqualFqName(returnType, NapileLangPackage.NULL))
 			{
 				result = returnType;
@@ -1581,6 +1579,40 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		return results.getResultingDescriptor();
 	}
+
+	void resolveVariableSetMethodUnary(@NotNull NapileUnaryExpression expression, @NotNull ReceiverDescriptor receiver, ExpressionTypingContext context)
+	{
+		NapileExpression base = expression.getBaseExpression();
+		Name name = null;
+
+		NapileSimpleNameExpression nameExpression = null;
+		if(base instanceof NapileSimpleNameExpression)
+		{
+			name = Name.identifier(((NapileSimpleNameExpression) base).getReferencedName() + AsmConstants.ANONYM_SPLITTER + "set");
+			nameExpression = (NapileSimpleNameExpression) base;
+		}
+		else if(base instanceof NapileDotQualifiedExpression)
+		{
+			NapileDotQualifiedExpression dotQualifiedExpression = ((NapileDotQualifiedExpression) base);
+
+			if(dotQualifiedExpression.getSelectorExpression() instanceof NapileSimpleNameExpression)
+			{
+				name = Name.identifier(((NapileSimpleNameExpression) dotQualifiedExpression.getSelectorExpression()).getReferencedName() + AsmConstants.ANONYM_SPLITTER + "set");
+				nameExpression = ((NapileSimpleNameExpression) dotQualifiedExpression.getSelectorExpression());
+			}
+		}
+		else if(base instanceof NapileArrayAccessExpressionImpl)
+			return;
+
+		if(name == null)
+			throw new IllegalArgumentException("Cant find nameExpression in " + expression + " base " + base);
+
+/*		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
+
+		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiver, nameExpression, expression), nameExpression, name);
+		if(results.isSingleResult())
+			context.trace.record(BindingContext.VARIABLE_UNARY_SET_CALL, expression, results.getResultingCall());
+	*/}
 
 	MethodDescriptor resolveVariableSetMethod(@NotNull NapileSimpleNameExpression nameExpression, @NotNull NapileBinaryExpression binaryExpression, @NotNull ReceiverDescriptor receiver, @NotNull ExpressionTypingContext context, BindingTrace trace)
 	{

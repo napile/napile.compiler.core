@@ -17,9 +17,8 @@
 package org.napile.compiler.lang.resolve;
 
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 
 /**
  * @author Stepan Koltsov
@@ -56,21 +55,11 @@ public class OverloadUtil
 	private static int braceCount(CallableDescriptor a)
 	{
 		if(a instanceof VariableDescriptorImpl)
-		{
 			return 0;
-		}
-		else if(a instanceof SimpleMethodDescriptor)
-		{
+		else if(a instanceof MethodDescriptor)
 			return 1;
-		}
-		else if(a instanceof ConstructorDescriptor)
-		{
-			return 1;
-		}
 		else
-		{
-			throw new IllegalStateException();
-		}
+			throw new IllegalStateException(a.toString());
 	}
 
 	public static class OverloadCompatibilityInfo
