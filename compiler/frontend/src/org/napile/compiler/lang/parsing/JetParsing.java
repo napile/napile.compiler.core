@@ -486,7 +486,7 @@ public class JetParsing extends AbstractJetParsing
 			declType = parseMethodOrMacro(MACRO);
 		else if(keywordToken == NapileTokens.THIS_KEYWORD)
 			declType = parseConstructor();
-		else if(NapileTokens.VARIABLE_AND_VALUE_KEYWORDS.contains(keywordToken))
+		else if(NapileTokens.VARIABLE_LIKE_KEYWORDS.contains(keywordToken))
 			declType = parseVariableOrValue();
 
 		return declType;
@@ -525,7 +525,7 @@ public class JetParsing extends AbstractJetParsing
 		 */
 	IElementType parseVariableOrValue()
 	{
-		if(atSet(NapileTokens.VARIABLE_AND_VALUE_KEYWORDS))
+		if(atSet(NapileTokens.VARIABLE_LIKE_KEYWORDS))
 			advance();
 		else
 			errorAndAdvance("Expecting 'var' or 'val'");
@@ -1131,7 +1131,7 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker parameter = mark();
 
 		boolean modifierList = parseModifierList();
-		if(atSet(NapileTokens.VARIABLE_AND_VALUE_KEYWORDS))
+		if(atSet(NapileTokens.VARIABLE_LIKE_KEYWORDS))
 		{
 			advance();
 

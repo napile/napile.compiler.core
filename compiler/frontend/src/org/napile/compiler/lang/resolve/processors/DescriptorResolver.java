@@ -61,6 +61,7 @@ import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author abreslav
@@ -160,7 +161,7 @@ public class DescriptorResolver
 	@NotNull
 	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethod method, final BindingTrace trace)
 	{
-		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, method.getModifierList(), trace), NapilePsiUtil.safeName(method.getName()), CallableMemberDescriptor.Kind.DECLARATION, method.hasModifier(NapileTokens.STATIC_KEYWORD), method.hasModifier(NapileTokens.NATIVE_KEYWORD), false);
+		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, method.getModifierList(), trace), NapilePsiUtil.safeName(method.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(method), method.hasModifier(NapileTokens.NATIVE_KEYWORD), false);
 		WritableScope innerScope = new WritableScopeImpl(scope, methodDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
 
 		List<TypeParameterDescriptor> typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(methodDescriptor, innerScope, method.getTypeParameters(), trace);
@@ -208,7 +209,7 @@ public class DescriptorResolver
 	@NotNull
 	public SimpleMethodDescriptor resolveMacroDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMacro macro, final BindingTrace trace)
 	{
-		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, macro.getModifierList(), trace), NapilePsiUtil.safeName(macro.getName()), CallableMemberDescriptor.Kind.DECLARATION, macro.hasModifier(NapileTokens.STATIC_KEYWORD), macro.hasModifier(NapileTokens.NATIVE_KEYWORD), true);
+		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.resolveAnnotations(scope, macro.getModifierList(), trace), NapilePsiUtil.safeName(macro.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(macro), false, true);
 		WritableScope innerScope = new WritableScopeImpl(scope, methodDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
 
 		List<TypeParameterDescriptor> typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(methodDescriptor, innerScope, macro.getTypeParameters(), trace);
@@ -422,7 +423,7 @@ public class DescriptorResolver
 	{
 		NapileModifierList modifierList = variable.getModifierList();
 
-		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), Modality.resolve(variable), Visibility.resolve(variable), NapilePsiUtil.safeName(variable.getName()), CallableMemberDescriptor.Kind.DECLARATION, variable.hasModifier(NapileTokens.STATIC_KEYWORD), variable.isMutable());
+		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), Modality.resolve(variable), Visibility.resolve(variable), NapilePsiUtil.safeName(variable.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(variable), variable.isMutable());
 
 		List<TypeParameterDescriptor> typeParameterDescriptors;
 
@@ -506,6 +507,16 @@ public class DescriptorResolver
 		}
 
 		variableDescriptor.setSetterAndGetter(set, get);
+	}
+
+	private static boolean resolveStatic(NapileModifierListOwner declaration)
+	{
+		if(declaration.hasModifier(NapileTokens.STATIC_KEYWORD))
+			return true;
+		NapileClass napileClass = PsiTreeUtil.getParentOfType(declaration, NapileClass.class);
+		if(napileClass != null)
+			return napileClass.hasModifier(NapileTokens.UTIL_KEYWORD);
+		return false;
 	}
 
 	@NotNull

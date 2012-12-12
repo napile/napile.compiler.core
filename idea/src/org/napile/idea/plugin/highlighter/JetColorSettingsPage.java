@@ -26,7 +26,7 @@ import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.idea.plugin.JetBundle;
-import org.napile.idea.plugin.JetIcons;
+import org.napile.idea.plugin.NapileIcons;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.OptionsBundle;
@@ -39,7 +39,7 @@ public class JetColorSettingsPage implements ColorSettingsPage
 	@Override
 	public Icon getIcon()
 	{
-		return JetIcons.SMALL_LOGO;
+		return NapileIcons.SMALL_LOGO;
 	}
 
 	@NotNull

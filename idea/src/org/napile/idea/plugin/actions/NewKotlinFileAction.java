@@ -17,7 +17,7 @@
 package org.napile.idea.plugin.actions;
 
 import org.napile.idea.plugin.JetBundle;
-import org.napile.idea.plugin.JetIcons;
+import org.napile.idea.plugin.NapileIcons;
 import com.intellij.ide.IdeView;
 import com.intellij.ide.actions.CreateFileFromTemplateAction;
 import com.intellij.ide.actions.CreateFileFromTemplateDialog;
@@ -36,13 +36,13 @@ public class NewKotlinFileAction extends CreateFileFromTemplateAction
 {
 	public NewKotlinFileAction()
 	{
-		super(JetBundle.message("new.napile.file.action"), "Create New Class", JetIcons.CLASS);
+		super(JetBundle.message("new.napile.file.action"), "Create New Class", NapileIcons.CLASS);
 	}
 
 	@Override
 	protected void buildDialog(Project project, PsiDirectory directory, CreateFileFromTemplateDialog.Builder builder)
 	{
-		builder.setTitle("Create New Class").addKind("Class", JetIcons.CLASS, "Napile Class");
+		builder.setTitle("Create New Class").addKind("Class", NapileIcons.CLASS, "Napile Class");
 	}
 
 	@Override

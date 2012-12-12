@@ -71,14 +71,14 @@ public class JetIconProvider extends IconProvider
 		{
 			NapileFile file = (NapileFile) psiElement;
 
-			icon = file.getDeclarations().length == 1 ? getIcon(file.getDeclarations()[0], flags) : JetIcons.FILE;
+			icon = file.getDeclarations().length == 1 ? getIcon(file.getDeclarations()[0], flags) : NapileIcons.FILE;
 		}
 		else if(psiElement instanceof NapileNamedMethodOrMacro)
-			icon = JetIcons.METHOD;
+			icon = NapileIcons.METHOD;
 		else if(psiElement instanceof NapileConstructor)
-			icon = JetIcons.CONSTRUCTOR;
+			icon = NapileIcons.CONSTRUCTOR;
 		else if(psiElement instanceof NapileTypeParameter)
-			icon = JetIcons.TYPE_PARAMETER;
+			icon = NapileIcons.TYPE_PARAMETER;
 		else if(psiElement instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) psiElement;
@@ -86,18 +86,18 @@ public class JetIconProvider extends IconProvider
 			AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileClass.getContainingFile());
 			MutableClassDescriptor descriptor = (MutableClassDescriptor) analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileClass);
 
-			icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_CLASS : JetIcons.CLASS;
+			icon = napileClass.hasModifier(NapileTokens.UTIL_KEYWORD) ? NapileIcons.UTIL : napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_CLASS : NapileIcons.CLASS;
 
 			if(descriptor != null)
 			{
 				if(AnnotationUtils.isAnnotation(descriptor))
 				{
-					icon = JetIcons.ANNOTATION;
+					icon = NapileIcons.ANNOTATION;
 					if(AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.REPEATABLE))
-						icon = JetIcons.REPEATABLE_ANNOTATION;
+						icon = NapileIcons.REPEATABLE_ANNOTATION;
 				}
 				else if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.EXCEPTION))
-					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? JetIcons.ABSTRACT_THROWABLE : JetIcons.THROWABLE;
+					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_THROWABLE : NapileIcons.THROWABLE;
 
 				for(MethodDescriptor m : descriptor.getMethods())
 					if(RunUtil.isRunPoint(m))
@@ -108,7 +108,7 @@ public class JetIconProvider extends IconProvider
 			}
 		}
 		else if(psiElement instanceof NapileVariable || psiElement instanceof NapileCallParameterAsVariable)
-			icon = JetIcons.VARIABLE;
+			icon = NapileIcons.VARIABLE;
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isRunnable);
 	}
@@ -142,7 +142,7 @@ public class JetIconProvider extends IconProvider
 			else if(modifierList.hasModifier(NapileTokens.COVERED_KEYWORD))
 				icon.setIcon(PlatformIcons.PROTECTED_ICON, 1);
 			else if(modifierList.hasModifier(NapileTokens.HERITABLE_KEYWORD))
-				icon.setIcon(JetIcons.C_HERITABLE, 1);
+				icon.setIcon(NapileIcons.C_HERITABLE, 1);
 			else
 				icon.setIcon(PlatformIcons.PUBLIC_ICON, 1);
 		}

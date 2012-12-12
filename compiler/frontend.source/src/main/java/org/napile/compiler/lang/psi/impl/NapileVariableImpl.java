@@ -83,7 +83,7 @@ public class NapileVariableImpl extends NapileTypeParameterListOwnerStub<NapileP
 	@NotNull
 	public ASTNode getVarOrValNode()
 	{
-		return getNode().findChildByType(NapileTokens.VARIABLE_AND_VALUE_KEYWORDS);
+		return getNode().findChildByType(NapileTokens.VARIABLE_LIKE_KEYWORDS);
 	}
 
 	@Override

@@ -25,11 +25,12 @@ import com.intellij.util.PlatformIcons;
 /**
  * @author Nikolay Krasko
  */
-public interface JetIcons
+public interface NapileIcons
 {
 	Icon SMALL_LOGO = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/kotlin.png");  //TODO [VISTALL] new icon
 
 	Icon CLASS = IconLoader.getIcon("/org/napile/icons/nodes/class.png");
+	Icon UTIL = IconLoader.getIcon("/org/napile/icons/nodes/util.png");
 	Icon ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotation.png");
 	Icon REPEATABLE_ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotationRepeatable.png");
 	Icon THROWABLE = IconLoader.getIcon("/org/napile/icons/nodes/throwable.png");
