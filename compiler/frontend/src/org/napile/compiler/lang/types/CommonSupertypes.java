@@ -65,6 +65,8 @@ public class CommonSupertypes
 
 		// constructor of the supertype -> all of its instantiations occurring as supertypes
 		Map<TypeConstructor, Set<JetType>> commonSupertypes = computeCommonRawSupertypes(typeSet);
+		if(commonSupertypes.isEmpty())
+			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, nullable);
 		while(commonSupertypes.size() > 1)
 		{
 			Set<JetType> merge = new HashSet<JetType>();

@@ -224,7 +224,7 @@ public enum LineMarkers
 					public void navigate(MouseEvent e, PsiElement elt)
 					{
 						List<NapileElement> objects = getTargets(elt.getParent());
-						PsiElementListNavigator.openTargets(e, objects.toArray(new NapileElement[objects.size()]), getTitle(), new DefaultPsiElementCellRenderer());
+						PsiElementListNavigator.openTargets(e, objects.toArray(new NapileElement[objects.size()]), getTitle(), getTitle(), new DefaultPsiElementCellRenderer());
 					}
 				}, GutterIconRenderer.Alignment.LEFT
 				);
