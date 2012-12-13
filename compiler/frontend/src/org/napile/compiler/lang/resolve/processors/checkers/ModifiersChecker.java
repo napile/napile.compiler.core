@@ -135,8 +135,6 @@ public class ModifiersChecker
 		ASTNode abstractModifier = method.getModifierNode(NapileTokens.ABSTRACT_KEYWORD);
 		ASTNode nativeModifier = method.getModifierNode(NapileTokens.NATIVE_KEYWORD);
 
-		checkDeclaredTypeInPublicMember(method, methodDescriptor);
-
 		ClassDescriptor classDescriptor = (ClassDescriptor) containingDescriptor;
 		boolean inAbstractClass = classDescriptor.getModality() == Modality.ABSTRACT;
 		if(abstractModifier != null && !inAbstractClass)
@@ -145,12 +143,11 @@ public class ModifiersChecker
 		if(method.getBodyExpression() != null && (abstractModifier != null || nativeModifier != null))
 			trace.report(Errors.NATIVE_OR_ABSTRACT_METHOD_WITH_BODY.on(abstractModifier == null ? nativeModifier.getPsi() : abstractModifier.getPsi(), methodDescriptor));
 
-		if(method.getBodyExpression() == null && abstractModifier == null && nativeModifier == null)
+		if(method.getBodyExpression() == null && methodDescriptor.getModality() != Modality.ABSTRACT && !methodDescriptor.isNative())
 			trace.report(Errors.NON_ABSTRACT_OR_NATIVE_METHOD_WITH_NO_BODY.on(method, methodDescriptor));
 
 		if(methodDescriptor.isMacro() && methodDescriptor.getVisibility() != Visibility.LOCAL)
 			trace.report(Errors.MACRO_MUST_BE_DECLARATED_AS_LOCAL.on(method, methodDescriptor));
-
 	}
 
 	private void checkDeclaredTypeInPublicMember(NapileNamedDeclaration member, CallableMemberDescriptor memberDescriptor)

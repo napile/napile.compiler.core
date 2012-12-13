@@ -18,7 +18,10 @@ package org.napile.compiler.lang.descriptors;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
+import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author abreslav
@@ -31,12 +34,19 @@ public enum Modality
 	ABSTRACT;
 
 	@NotNull
-	public static Modality resolve(@NotNull NapileModifierListOwner modifierList)
+	public static Modality resolve(@NotNull NapileModifierListOwner modifierListOwner)
 	{
-		if(modifierList.hasModifier(NapileTokens.ABSTRACT_KEYWORD))
+		if(modifierListOwner.hasModifier(NapileTokens.ABSTRACT_KEYWORD))
 			return ABSTRACT;
-		if(modifierList.hasModifier(NapileTokens.FINAL_KEYWORD))
+		if(modifierListOwner.hasModifier(NapileTokens.FINAL_KEYWORD))
 			return FINAL;
+
+		if(modifierListOwner instanceof NapileDeclarationWithBody)
+		{
+			NapileClass napileClass = PsiTreeUtil.getParentOfType(modifierListOwner, NapileClass.class);
+			if(napileClass != null &&  napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) && ((NapileDeclarationWithBody) modifierListOwner).getBodyExpression() == null)
+				return ABSTRACT;
+		}
 		return OPEN;
 	}
 
