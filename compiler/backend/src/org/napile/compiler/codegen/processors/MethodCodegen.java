@@ -16,20 +16,16 @@
 
 package org.napile.compiler.codegen.processors;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
-import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.MacroNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
-import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
-import org.napile.asm.tree.members.bytecode.impl.InvokeSpecialInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PopInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
@@ -40,7 +36,6 @@ import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.CallParameterAsReferenceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
@@ -50,7 +45,6 @@ import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 
 /**
@@ -72,40 +66,19 @@ public class MethodCodegen
 
 		List<NapileDelegationToSuperCall> delegationSpecifiers = napileConstructor.getDelegationSpecifiers();
 		// delegation list is empty - if no extends
-		if(delegationSpecifiers.isEmpty())
+		for(NapileDelegationToSuperCall specifier : delegationSpecifiers)
 		{
-			ClassDescriptor classDescriptor = (ClassDescriptor) constructorDescriptor.getContainingDeclaration();
-			// napile.lang.Any cant call self constructor
-			if(!DescriptorUtils.getFQName(classDescriptor).equals(NapileLangPackage.ANY))
-			{
-				switch(classDescriptor.getKind())
-				{
-					case CLASS:
-						constructorNode.instructions.add(new LoadInstruction(0));
-						constructorNode.instructions.add(new InvokeSpecialInstruction(new MethodRef(NapileLangPackage.ANY.child(ConstructorDescriptor.NAME), Collections.<TypeNode>emptyList(),Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE), false));
-						constructorNode.instructions.add(new PopInstruction());
-						break;
-					default:
-						throw new UnsupportedOperationException();
-				}
-			}
-		}
-		else
-		{
-			for(NapileDelegationToSuperCall specifier : delegationSpecifiers)
-			{
-				ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
+			ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
 
-				ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor);
+			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor);
 
-				CallableMethod method = CallTransformer.transformToCallable(call, false, false);
+			CallableMethod method = CallTransformer.transformToCallable(call, false, false);
 
-				generator.invokeMethodWithArguments(method, specifier, StackValue.none());
+			generator.invokeMethodWithArguments(method, specifier, StackValue.none());
 
-				constructorNode.instructions.add(new LoadInstruction(0));
-				constructorNode.instructions.addAll(generator.getInstructs().getInstructions());
-				constructorNode.instructions.add(new PopInstruction());
-			}
+			constructorNode.instructions.add(new LoadInstruction(0));
+			constructorNode.instructions.addAll(generator.getInstructs().getInstructions());
+			constructorNode.instructions.add(new PopInstruction());
 		}
 
 		return constructorNode;
