@@ -50,8 +50,6 @@ public interface NapileTokens
 	NapileKeywordToken AS_KEYWORD = NapileKeywordToken.keyword("as");
 
 	NapileKeywordToken CLASS_KEYWORD = NapileKeywordToken.keyword("class");
-	NapileKeywordToken UTIL_KEYWORD = NapileKeywordToken.keyword("util");
-
 	NapileKeywordToken THIS_KEYWORD = NapileKeywordToken.keyword("this");
 	NapileKeywordToken SUPER_KEYWORD = NapileKeywordToken.keyword("super");
 	NapileKeywordToken VAR_KEYWORD = NapileKeywordToken.keyword("var");
@@ -156,30 +154,27 @@ public interface NapileTokens
 	NapileToken EOL_OR_SEMICOLON = new NapileToken("EOL_OR_SEMICOLON");
 	NapileKeywordToken IMPORT_KEYWORD = NapileKeywordToken.softKeyword("import");
 
+	NapileKeywordToken LABEL_KEYWORD = NapileKeywordToken.softKeyword("label");
+
 	NapileKeywordToken GET_KEYWORD = NapileKeywordToken.softKeyword("get");
 	NapileKeywordToken SET_KEYWORD = NapileKeywordToken.softKeyword("set");
 
+	// modifiers
 	NapileKeywordToken LAZY_KEYWORD = NapileKeywordToken.softKeyword("lazy");
 	NapileKeywordToken ABSTRACT_KEYWORD = NapileKeywordToken.softKeyword("abstract");
-
+	NapileKeywordToken UTIL_KEYWORD = NapileKeywordToken.softKeyword("util");
 	NapileKeywordToken OVERRIDE_KEYWORD = NapileKeywordToken.softKeyword("override");
-
 	NapileKeywordToken STATIC_KEYWORD = NapileKeywordToken.softKeyword("static");
-
 	NapileKeywordToken LOCAL_KEYWORD = NapileKeywordToken.softKeyword("local");
 	NapileKeywordToken COVERED_KEYWORD = NapileKeywordToken.softKeyword("covered");
 	NapileKeywordToken HERITABLE_KEYWORD = NapileKeywordToken.softKeyword("heritable");
-
 	NapileKeywordToken CATCH_KEYWORD = NapileKeywordToken.softKeyword("catch");
 	NapileKeywordToken VARARG_KEYWORD = NapileKeywordToken.softKeyword("vararg");
 	NapileKeywordToken REIFIED_KEYWORD = NapileKeywordToken.softKeyword("reified");
-
+	NapileKeywordToken FINAL_KEYWORD = NapileKeywordToken.softKeyword("final");
 	NapileKeywordToken NATIVE_KEYWORD = NapileKeywordToken.softKeyword("native");
-	NapileKeywordToken LABEL_KEYWORD = NapileKeywordToken.softKeyword("label");
 
 	NapileKeywordToken FINALLY_KEYWORD = NapileKeywordToken.softKeyword("finally");
-	NapileKeywordToken FINAL_KEYWORD = NapileKeywordToken.softKeyword("final");
-
 	NapileKeywordToken CLASS_OF_KEYWORD = NapileKeywordToken.softKeyword("classOf");
 	NapileKeywordToken TYPE_OF_KEYWORD = NapileKeywordToken.softKeyword("typeOf");
 	NapileKeywordToken ARRAY_OF_KEYWORD = NapileKeywordToken.softKeyword("arrayOf");
