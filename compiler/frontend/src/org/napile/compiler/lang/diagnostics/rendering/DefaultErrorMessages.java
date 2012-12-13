@@ -239,6 +239,7 @@ public class DefaultErrorMessages
 
 		MAP.put(SUPERTYPE_APPEARS_TWICE, "A supertype appears twice");
 		MAP.put(FINAL_SUPERTYPE, "This type is final, so it cannot be inherited from");
+		MAP.put(TRAITED_CLASS_CANT_EXTEND_CLASS_WITH_CONSTRUCTORS, "Traited class cant extend class with constructors");
 
 		MAP.put(MISSED_SUPER_CALL, "Missed super call for ''{0}''", RENDER_TYPE);
 		MAP.put(INVALID_SUPER_CALL, "Invalid super call");

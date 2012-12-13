@@ -30,12 +30,19 @@ public interface NapileIcons
 	Icon SMALL_LOGO = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/kotlin.png");  //TODO [VISTALL] new icon
 
 	Icon CLASS = IconLoader.getIcon("/org/napile/icons/nodes/class.png");
+	Icon ABSTRACT_CLASS = IconLoader.getIcon("/org/napile/icons/nodes/abstractClass.png");
+
+	Icon CLASS_TRAITED = IconLoader.getIcon("/org/napile/icons/nodes/classTraited.png");
+	Icon ABSTRACT_CLASS_TRAITED = IconLoader.getIcon("/org/napile/icons/nodes/abstractClassTraited.png");
+
 	Icon UTIL = IconLoader.getIcon("/org/napile/icons/nodes/util.png");
+
 	Icon ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotation.png");
 	Icon REPEATABLE_ANNOTATION = IconLoader.getIcon("/org/napile/icons/nodes/annotationRepeatable.png");
+
 	Icon THROWABLE = IconLoader.getIcon("/org/napile/icons/nodes/throwable.png");
 	Icon ABSTRACT_THROWABLE = IconLoader.getIcon("/org/napile/icons/nodes/abstractThrowable.png");
-	Icon ABSTRACT_CLASS = IconLoader.getIcon("/org/napile/icons/nodes/abstractClass.png");
+
 	Icon TYPE_PARAMETER = IconLoader.getIcon("/org/napile/icons/nodes/typeparameter.png");
 
 	Icon METHOD = PlatformIcons.METHOD_ICON;

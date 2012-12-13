@@ -46,6 +46,12 @@ public abstract class ClassDescriptorBase implements ClassDescriptor
 	}
 
 	@Override
+	public boolean isTraited()
+	{
+		return false;
+	}
+
+	@Override
 	public boolean isStatic()
 	{
 		return isStatic;

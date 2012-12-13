@@ -119,6 +119,12 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	}
 
 	@Override
+	public boolean isTraited()
+	{
+		return constructors.isEmpty();
+	}
+
+	@Override
 	public void setTypeParameterDescriptors(List<TypeParameterDescriptor> typeParameters)
 	{
 		super.setTypeParameterDescriptors(typeParameters);

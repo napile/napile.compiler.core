@@ -123,6 +123,12 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 		throw new UnsupportedOperationException(); // TODO
 	}
 
+	@Override
+	public boolean isTraited()
+	{
+		return original.isTraited();
+	}
+
 	@NotNull
 	@Override
 	public Set<ConstructorDescriptor> getConstructors()

@@ -158,6 +158,12 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 		return implicitReceiver;
 	}
 
+	@Override
+	public boolean isTraited()
+	{
+		return constructors.isEmpty();
+	}
+
 	@NotNull
 	@Override
 	public JetScope getStaticOuterScope()

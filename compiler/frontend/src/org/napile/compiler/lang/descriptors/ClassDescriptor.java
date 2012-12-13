@@ -62,4 +62,6 @@ public interface ClassDescriptor extends ClassifierDescriptor, DeclarationDescri
 
 	@NotNull
 	ReceiverDescriptor getImplicitReceiver();
+
+	boolean isTraited();
 }

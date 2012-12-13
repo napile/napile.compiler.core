@@ -86,17 +86,24 @@ public class JetIconProvider extends IconProvider
 			AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileClass.getContainingFile());
 			MutableClassDescriptor descriptor = (MutableClassDescriptor) analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileClass);
 
-			icon = napileClass.hasModifier(NapileTokens.UTIL_KEYWORD) ? NapileIcons.UTIL : napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_CLASS : NapileIcons.CLASS;
+			icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_CLASS : NapileIcons.CLASS;
 
 			if(descriptor != null)
 			{
+				if(descriptor.isTraited())
+					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_CLASS_TRAITED : NapileIcons.CLASS_TRAITED;
+
+				if(napileClass.hasModifier(NapileTokens.UTIL_KEYWORD))
+					icon = NapileIcons.UTIL;
+
 				if(AnnotationUtils.isAnnotation(descriptor))
 				{
 					icon = NapileIcons.ANNOTATION;
 					if(AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.REPEATABLE))
 						icon = NapileIcons.REPEATABLE_ANNOTATION;
 				}
-				else if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.EXCEPTION))
+
+				if(DescriptorUtils.isSubclassOf(descriptor, NapileLangPackage.EXCEPTION))
 					icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_THROWABLE : NapileIcons.THROWABLE;
 
 				for(MethodDescriptor m : descriptor.getMethods())
