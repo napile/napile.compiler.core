@@ -100,6 +100,7 @@ import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 
@@ -1204,7 +1205,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		JetType result;
 		if(operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS)
 		{
-			resolveVariableSetMethodUnary(expression, receiver, context);
+			resolveVariableSetMethod(expression.getProject(), expression, expression.getBaseExpression(), receiver, context);
 
 			if(TypeUtils.isEqualFqName(returnType, NapileLangPackage.NULL))
 			{
@@ -1580,9 +1581,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		return results.getResultingDescriptor();
 	}
 
-	void resolveVariableSetMethodUnary(@NotNull NapileUnaryExpression expression, @NotNull ReceiverDescriptor receiver, ExpressionTypingContext context)
+	void resolveVariableSetMethod(@NotNull Project project, @NotNull NapileExpression target, @NotNull NapileExpression base, @NotNull ReceiverDescriptor receiver, ExpressionTypingContext context)
 	{
-		NapileExpression base = expression.getBaseExpression();
 		Name name = null;
 
 		NapileSimpleNameExpression nameExpression = null;
@@ -1605,14 +1605,17 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			return;
 
 		if(name == null)
-			throw new IllegalArgumentException("Cant find nameExpression in " + expression + " base " + base);
+			throw new IllegalArgumentException("Cant find nameExpression in " + base + " base " + base);
 
-/*		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
+		NapileBinaryExpression binaryExpression = (NapileBinaryExpression) NapilePsiFactory.createExpression(project, base.getText() + " = null");
 
-		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiver, nameExpression, expression), nameExpression, name);
+		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
+
+		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(ReceiverDescriptor.NO_RECEIVER, binaryExpression.getLeft(), binaryExpression.getRight()), nameExpression, name);
+
 		if(results.isSingleResult())
-			context.trace.record(BindingContext.VARIABLE_UNARY_SET_CALL, expression, results.getResultingCall());
-	*/}
+			context.trace.record(BindingContext.VARIABLE_SET_CALL, target, results.getResultingCall());
+	}
 
 	MethodDescriptor resolveVariableSetMethod(@NotNull NapileSimpleNameExpression nameExpression, @NotNull NapileBinaryExpression binaryExpression, @NotNull ReceiverDescriptor receiver, @NotNull ExpressionTypingContext context, BindingTrace trace)
 	{

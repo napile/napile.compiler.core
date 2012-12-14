@@ -36,7 +36,7 @@ public class NapilePsiFactory
 {
 	public static ASTNode createValNode(Project project)
 	{
-		NapileVariable property = createProperty(project, "final var x = 1");
+		NapileVariable property = createProperty(project, "val x = 1");
 		return property.getVarOrValNode();
 	}
 

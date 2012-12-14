@@ -629,11 +629,18 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 						throw new UnsupportedOperationException("Unknown receiver size " + value.receiverSize());
 				}
 
-				ResolvedCall<? extends CallableDescriptor> unaryCall = bindingTrace.get(BindingContext.VARIABLE_UNARY_SET_CALL, expression);
-				if(unaryCall != null)
-					System.out.println(unaryCall.getResultingDescriptor());
+				ResolvedCall<? extends CallableDescriptor> unaryCall = bindingTrace.get(BindingContext.VARIABLE_SET_CALL, expression);
+
 				callable.invoke(instructs);
-				value.store(callable.getReturnType(), instructs);
+
+				if(unaryCall != null)
+				{
+					CallableMethod set = CallTransformer.transformToCallable(unaryCall, false, false);
+
+					set.invoke(instructs);
+				}
+				else
+					value.store(callable.getReturnType(), instructs);
 
 				return StackValue.onStack(type);
 			}

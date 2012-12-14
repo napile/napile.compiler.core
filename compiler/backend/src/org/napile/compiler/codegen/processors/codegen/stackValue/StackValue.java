@@ -88,7 +88,7 @@ public abstract class StackValue
 	public static StackValue variableAccessor(@NotNull ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen expressionCodegen)
 	{
 		VariableAccessorDescriptor variableAccessorDescriptor = (VariableAccessorDescriptor) resolvedCall.getResultingDescriptor();
-		VariableDescriptor variableDescriptor =variableAccessorDescriptor.getVariable();
+		VariableDescriptor variableDescriptor = variableAccessorDescriptor.getVariable();
 
 		return new VariableAccessor(TypeTransformer.toAsmType(variableDescriptor.getType()), resolvedCall, receiver, expressionCodegen);
 	}

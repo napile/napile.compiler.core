@@ -177,7 +177,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), variable.isMutable());
+		VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), variableDescriptor.isMutable());
 		variableNode.returnType = TypeTransformer.toAsmType(variableDescriptor.getType());
 		classNode.members.add(variableNode);
 
