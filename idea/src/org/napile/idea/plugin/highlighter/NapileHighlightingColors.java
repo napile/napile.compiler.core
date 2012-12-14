@@ -32,11 +32,9 @@ import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.ui.Gray;
 
-public class JetHighlightingColors
+public class NapileHighlightingColors
 {
 	public final static TextAttributesKey KEYWORD = TextAttributesKey.createTextAttributesKey("NAPILE_KEYWORD", SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
-
-	public static final TextAttributesKey BUILTIN_ANNOTATION = TextAttributesKey.createTextAttributesKey("NAPILE_BUILTIN_ANNOTATION", SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
 
 	public static final TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey("NAPILE_NUMBER", SyntaxHighlighterColors.NUMBER.getDefaultAttributes());
 
@@ -98,8 +96,6 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey STATIC_PROPERTY = TextAttributesKey.createTextAttributesKey("NAPILE_NAMESPACE_PROPERTY", CodeInsightColors.STATIC_FIELD_ATTRIBUTES.getDefaultAttributes());
 
-	public static final TextAttributesKey BACKING_FIELD_ACCESS = TextAttributesKey.createTextAttributesKey("NAPILE_BACKING_FIELD_ACCESS", new TextAttributes());
-
 	public static final TextAttributesKey EXTENSION_PROPERTY = TextAttributesKey.createTextAttributesKey("NAPILE_EXTENSION_PROPERTY", new TextAttributes());
 
 	public static final TextAttributesKey AUTO_GENERATED_VAR = TextAttributesKey.createTextAttributesKey("NAPILE_CLOSURE_DEFAULT_PARAMETER", new TextAttributes(null, new Color(0xdbffdb), null, null, Font.PLAIN));
@@ -128,7 +124,7 @@ public class JetHighlightingColors
 
 	public static final TextAttributesKey RESOLVED_TO_ERROR = TextAttributesKey.createTextAttributesKey("NAPILE_RESOLVED_TO_ERROR", new TextAttributes(null, null, Color.RED, EffectType.ROUNDED_BOX, Font.PLAIN));
 
-	private JetHighlightingColors()
+	private NapileHighlightingColors()
 	{
 	}
 

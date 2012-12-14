@@ -38,7 +38,7 @@ class LabelsHighlightingVisitor extends HighlightingVisitor
 		PsiElement targetLabel = expression.getLabelNameElement();
 		if(targetLabel != null)
 		{
-			JetPsiChecker.highlightName(holder, targetLabel, JetHighlightingColors.LABEL, null);
+			JetPsiChecker.highlightName(holder, targetLabel, NapileHighlightingColors.LABEL, null);
 		}
 	}
 
@@ -48,7 +48,7 @@ class LabelsHighlightingVisitor extends HighlightingVisitor
 		NapileSimpleNameExpression targetLabel = expression.getTargetLabel();
 		if(targetLabel != null)
 		{
-			JetPsiChecker.highlightName(holder, targetLabel, JetHighlightingColors.LABEL, null);
+			JetPsiChecker.highlightName(holder, targetLabel, NapileHighlightingColors.LABEL, null);
 		}
 	}
 }

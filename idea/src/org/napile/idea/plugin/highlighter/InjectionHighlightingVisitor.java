@@ -67,7 +67,7 @@ public class InjectionHighlightingVisitor extends AfterAnalysisHighlightingVisit
 
 		if(codeInjection != null)
 		{
-			holder.createInfoAnnotation(PositioningStrategies.INJECTION_NAME.mark(injectionExpression).get(0), null).setTextAttributes(JetHighlightingColors.KEYWORD);
+			holder.createInfoAnnotation(PositioningStrategies.INJECTION_NAME.mark(injectionExpression).get(0), null).setTextAttributes(NapileHighlightingColors.KEYWORD);
 
 			IdeaInjectionSupport<?> ideaInjectionSupport = IdeaInjectionSupport.IDEA_SUPPORT.getValue(codeInjection);
 			PsiElementVisitor elementVisitor = ideaInjectionSupport.createVisitorForAnnotator(holder);
@@ -77,6 +77,6 @@ public class InjectionHighlightingVisitor extends AfterAnalysisHighlightingVisit
 
 		PsiElement blockElement = injectionExpression.getBlock();
 		if(blockElement != null)
-			holder.createInfoAnnotation(blockElement, null).setTextAttributes(JetHighlightingColors.INJECTION_BLOCK);
+			holder.createInfoAnnotation(blockElement, null).setTextAttributes(NapileHighlightingColors.INJECTION_BLOCK);
 	}
 }

@@ -44,10 +44,10 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 		{
 			IElementType elementType = ((LeafPsiElement) element).getElementType();
 			if(NapileTokens.SOFT_KEYWORDS.contains(elementType))
-				holder.createInfoAnnotation(element, null).setTextAttributes(JetHighlightingColors.KEYWORD);
+				holder.createInfoAnnotation(element, null).setTextAttributes(NapileHighlightingColors.KEYWORD);
 
 			if(NapileTokens.SAFE_ACCESS.equals(elementType))
-				holder.createInfoAnnotation(element, null).setTextAttributes(JetHighlightingColors.SAFE_ACCESS);
+				holder.createInfoAnnotation(element, null).setTextAttributes(NapileHighlightingColors.SAFE_ACCESS);
 		}
 	}
 
@@ -56,16 +56,16 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 	{
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;
-		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
 		if(closingBraceNode != null)
 		{
-			holder.createInfoAnnotation(closingBraceNode, null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			holder.createInfoAnnotation(closingBraceNode, null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 		ASTNode arrowNode = functionLiteral.getArrowNode();
 		if(arrowNode != null)
 		{
-			holder.createInfoAnnotation(arrowNode, null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			holder.createInfoAnnotation(arrowNode, null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 	}
 
@@ -75,16 +75,16 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;
 		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
-		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
 		if(closingBraceNode != null)
 		{
-			holder.createInfoAnnotation(closingBraceNode, null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			holder.createInfoAnnotation(closingBraceNode, null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 		ASTNode arrowNode = functionLiteral.getArrowNode();
 		if(arrowNode != null)
 		{
-			holder.createInfoAnnotation(arrowNode, null).setTextAttributes(JetHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			holder.createInfoAnnotation(arrowNode, null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 	}
 }

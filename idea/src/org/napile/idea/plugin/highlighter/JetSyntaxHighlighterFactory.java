@@ -26,6 +26,6 @@ public class JetSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlig
 	@Override
 	protected SyntaxHighlighter createHighlighter()
 	{
-		return new JetHighlighter();
+		return new NapileHighlighter();
 	}
 }

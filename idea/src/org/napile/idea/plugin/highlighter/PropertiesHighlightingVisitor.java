@@ -46,7 +46,7 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			return;
 		}
 
-		JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.getAttributes(target), target);
+		JetPsiChecker.highlightName(holder, expression, NapileHighlightingColors.getAttributes(target), target);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ class PropertiesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			return;
 		VariableDescriptor propertyDescriptor = bindingContext.get(BindingContext.VARIABLE, property);
 		if(propertyDescriptor != null)
-			JetPsiChecker.highlightName(holder, nameIdentifier, JetHighlightingColors.getAttributes(propertyDescriptor), propertyDescriptor);
+			JetPsiChecker.highlightName(holder, nameIdentifier, NapileHighlightingColors.getAttributes(propertyDescriptor), propertyDescriptor);
 
 		super.visitVariable(property);
 	}

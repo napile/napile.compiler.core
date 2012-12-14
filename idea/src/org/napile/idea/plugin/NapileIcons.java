@@ -27,8 +27,6 @@ import com.intellij.util.PlatformIcons;
  */
 public interface NapileIcons
 {
-	Icon SMALL_LOGO = IconLoader.getIcon("/org/jetbrains/jet/plugin/icons/kotlin.png");  //TODO [VISTALL] new icon
-
 	Icon CLASS = IconLoader.getIcon("/org/napile/icons/nodes/class.png");
 	Icon ABSTRACT_CLASS = IconLoader.getIcon("/org/napile/icons/nodes/abstractClass.png");
 

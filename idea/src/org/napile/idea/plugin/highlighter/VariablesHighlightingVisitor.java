@@ -55,7 +55,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		if(target instanceof VariableDescriptor)
 		{
 			if(Boolean.TRUE.equals(bindingContext.get(AUTO_CREATED_IT, (VariableDescriptor) target)))
-				holder.createInfoAnnotation(expression, "Auto-generated variable").setTextAttributes(JetHighlightingColors.AUTO_GENERATED_VAR);
+				holder.createInfoAnnotation(expression, "Auto-generated variable").setTextAttributes(NapileHighlightingColors.AUTO_GENERATED_VAR);
 		}
 
 		highlightVariable(expression, target);
@@ -82,7 +82,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		JetType autoCast = bindingContext.get(AUTOCAST, expression);
 		if(autoCast != null)
 		{
-			holder.createInfoAnnotation(expression, "Automatically cast to " + DescriptorRenderer.TEXT.renderType(autoCast)).setTextAttributes(JetHighlightingColors.AUTO_CASTED_VALUE);
+			holder.createInfoAnnotation(expression, "Automatically cast to " + DescriptorRenderer.TEXT.renderType(autoCast)).setTextAttributes(NapileHighlightingColors.AUTO_CASTED_VALUE);
 		}
 		super.visitExpression(expression);
 	}
@@ -106,10 +106,10 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			if(Boolean.TRUE.equals(bindingContext.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
 			{
 				String msg = ((VariableDescriptor) descriptor).getModality() != Modality.FINAL ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
-				holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(JetHighlightingColors.WRAPPED_INTO_REF);
+				holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(NapileHighlightingColors.WRAPPED_INTO_REF);
 			}
 
-			JetPsiChecker.highlightName(holder, elementToHighlight, JetHighlightingColors.getAttributes(descriptor), variableDescriptor);
+			JetPsiChecker.highlightName(holder, elementToHighlight, NapileHighlightingColors.getAttributes(descriptor), variableDescriptor);
 		}
 		else if(descriptor instanceof VariableAccessorDescriptor)
 			highlightVariable(elementToHighlight, ((VariableAccessorDescriptor) descriptor).getVariable());

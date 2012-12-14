@@ -67,7 +67,7 @@ class TypeKindHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 			}
 			else if(referenceTarget instanceof TypeParameterDescriptor)
 			{
-				JetPsiChecker.highlightName(holder, expression, JetHighlightingColors.TYPE_PARAMETER, referenceTarget);
+				JetPsiChecker.highlightName(holder, expression, NapileHighlightingColors.TYPE_PARAMETER, referenceTarget);
 			}
 		}
 	}
@@ -78,7 +78,7 @@ class TypeKindHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		PsiElement identifier = parameter.getNameIdentifier();
 		if(identifier != null)
 		{
-			JetPsiChecker.highlightName(holder, identifier, JetHighlightingColors.TYPE_PARAMETER, null);
+			JetPsiChecker.highlightName(holder, identifier, NapileHighlightingColors.TYPE_PARAMETER, null);
 		}
 		super.visitTypeParameter(parameter);
 	}
@@ -99,9 +99,9 @@ class TypeKindHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 	{
 		TextAttributesKey textAttributes;
 		if(AnnotationUtils.hasAnnotation(classDescriptor, NapileAnnotationPackage.ANNOTATION))
-			textAttributes = JetHighlightingColors.ANNOTATION;
+			textAttributes = NapileHighlightingColors.ANNOTATION;
 		else
-			textAttributes = classDescriptor.getModality() == Modality.ABSTRACT ? JetHighlightingColors.ABSTRACT_CLASS : JetHighlightingColors.CLASS;
+			textAttributes = classDescriptor.getModality() == Modality.ABSTRACT ? NapileHighlightingColors.ABSTRACT_CLASS : NapileHighlightingColors.CLASS;
 
 		JetPsiChecker.highlightName(holder, whatToHighlight, textAttributes, classDescriptor);
 	}

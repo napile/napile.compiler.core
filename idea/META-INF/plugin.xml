@@ -69,7 +69,7 @@
 		<refactoring.copyHandler implementation="org.napile.idea.plugin.refactoring.copy.JetCopyClassHandler"/>
 		<treeStructureProvider implementation="org.napile.idea.plugin.projectView.JetProjectViewProvider"/>
 
-		<colorSettingsPage implementation="org.napile.idea.plugin.highlighter.JetColorSettingsPage"/>
+		<colorSettingsPage implementation="org.napile.idea.plugin.highlighter.NapileColorSettingsPage"/>
 
 		<codeStyleSettingsProvider implementation="org.napile.idea.plugin.formatter.JetCodeStyleSettingsProvider"/>
 		<langCodeStyleSettingsProvider implementation="org.napile.idea.plugin.formatter.JetLanguageCodeStyleSettingsProvider"/>
@@ -154,7 +154,7 @@
 		<filetype.decompiler filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileDecompiler" />
 		<fileType.fileViewProviderFactory filetype="NXML" implementationClass="org.napile.compiler.lang.psi.impl.file.NXmlFileViewProviderFactory"/>
 		<filetype.stubBuilder filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileStubBuilder"/>
-		<syntaxHighlighter key="NXML" implementationClass="org.napile.idea.plugin.highlighter.JetHighlighter"/>
+		<syntaxHighlighter key="NXML" implementationClass="org.napile.idea.plugin.highlighter.NapileHighlighter"/>
 
 		<intentionAction>
 			<className>org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction</className>
