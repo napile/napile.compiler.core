@@ -129,17 +129,14 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		IElementType operationType = operationSign.getReferencedNameElementType();
 		JetType result;
 		if(operationType == NapileTokens.EQ)
-		{
 			result = visitAssignment(expression, context);
-		}
 		else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(operationType))
-		{
 			result = visitAssignmentOperation(expression, context);
-		}
 		else
-		{
 			return facade.getTypeInfo(expression, context);
-		}
+
+		VariableAccessorResolver.resolveForBinaryCall(expression, context);
+
 		return DataFlowUtils.checkType(result, expression, context, context.dataFlowInfo);
 	}
 

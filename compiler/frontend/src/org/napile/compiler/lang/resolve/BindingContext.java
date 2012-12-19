@@ -85,7 +85,8 @@ public interface BindingContext extends BindingReader
 	WritableSlice<NapileReferenceExpression, DeclarationDescriptor> REFERENCE_TARGET = new BasicWritableSlice<NapileReferenceExpression, DeclarationDescriptor>(RewritePolicy.DO_NOTHING);
 	WritableSlice<NapileElement, ResolvedCall<? extends CallableDescriptor>> RESOLVED_CALL = new BasicWritableSlice<NapileElement, ResolvedCall<? extends CallableDescriptor>>(RewritePolicy.DO_NOTHING);
 	WritableSlice<NapileElement, Call> CALL = new BasicWritableSlice<NapileElement, Call>(RewritePolicy.DO_NOTHING);
-	WritableSlice<NapileExpression, ResolvedCall<? extends CallableDescriptor>> VARIABLE_SET_CALL = new BasicWritableSlice<NapileExpression, ResolvedCall<? extends CallableDescriptor>>(RewritePolicy.DO_NOTHING);
+
+	WritableSlice<NapileExpression, MethodDescriptor> VARIABLE_CALL = new BasicWritableSlice<NapileExpression, MethodDescriptor>(RewritePolicy.DO_NOTHING);
 
 	WritableSlice<NapileReferenceExpression, Collection<? extends DeclarationDescriptor>> AMBIGUOUS_REFERENCE_TARGET = new BasicWritableSlice<NapileReferenceExpression, Collection<? extends DeclarationDescriptor>>(RewritePolicy.DO_NOTHING);
 

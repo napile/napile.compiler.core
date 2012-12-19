@@ -177,8 +177,6 @@ public class DefaultErrorMessages
 		MAP.put(NO_GET_METHOD, "No get method providing array access");
 		MAP.put(NO_SET_METHOD, "No set method providing array access");
 
-		MAP.put(INC_DEC_SHOULD_NOT_RETURN_UNIT, "Functions inc(), dec() shouldn't return Unit to be used by operators ++, --");
-
 		MAP.put(EQUALS_MISSING, "No method 'equals(idea.Any?) : idea.Boolean' available");
 		MAP.put(ASSIGNMENT_IN_EXPRESSION_CONTEXT, "Assignments are not expressions, and only expressions are allowed in this context");
 		MAP.put(SUPER_IS_NOT_AN_EXPRESSION, "''{0}'' is not an expression, it can only be used on the left-hand side of a dot ('.')", TO_STRING);

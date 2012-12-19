@@ -223,9 +223,9 @@ public class CallMaker
 		return makeCall(expression, baseAsReceiver, null, expression.getOperationReference(), Collections.<ValueArgument>emptyList());
 	}
 
-	public static Call makeVariableSetCall(@NotNull ReceiverDescriptor receiverDescriptor, @NotNull NapileExpression leftExpression, @NotNull NapileExpression rightExpression)
+	public static Call makeVariableSetCall(@NotNull ReceiverDescriptor receiverDescriptor, @NotNull NapileExpression callExp, @NotNull NapileExpression leftExpression, @NotNull NapileExpression rightExpression)
 	{
-		return makeCallWithExpressions(leftExpression, receiverDescriptor, null, leftExpression, Collections.singletonList(rightExpression), CallType.DEFAULT);
+		return makeCallWithExpressions(callExp, receiverDescriptor, null, leftExpression, Collections.singletonList(rightExpression), CallType.DEFAULT);
 	}
 
 	public static Call makeArraySetCall(@NotNull ReceiverDescriptor arrayAsReceiver, @NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull CallType callType)

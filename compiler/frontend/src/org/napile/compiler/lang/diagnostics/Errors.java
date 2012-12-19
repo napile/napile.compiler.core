@@ -162,8 +162,6 @@ public interface Errors
 	SimpleDiagnosticFactory<NapileArrayAccessExpressionImpl> NO_GET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
 	SimpleDiagnosticFactory<NapileArrayAccessExpressionImpl> NO_SET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
 
-	SimpleDiagnosticFactory<NapileSimpleNameExpression> INC_DEC_SHOULD_NOT_RETURN_UNIT = SimpleDiagnosticFactory.create(Severity.ERROR);
-
 	SimpleDiagnosticFactory<NapileSimpleNameExpression> EQUALS_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileBinaryExpression> ASSIGNMENT_IN_EXPRESSION_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSuperExpression, String> SUPER_IS_NOT_AN_EXPRESSION = DiagnosticFactory1.create(Severity.ERROR);

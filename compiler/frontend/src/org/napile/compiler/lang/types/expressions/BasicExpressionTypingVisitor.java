@@ -1161,22 +1161,14 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		JetType result;
 		if(operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS)
 		{
-			if(TypeUtils.isEqualFqName(returnType, NapileLangPackage.NULL))
-			{
-				result = returnType;
-				context.trace.report(INC_DEC_SHOULD_NOT_RETURN_UNIT.on(operationSign));
-			}
+			JetType receiverType = receiver.getType();
+			if(!JetTypeChecker.INSTANCE.isSubtypeOf(returnType, receiverType))
+				context.trace.report(RESULT_TYPE_MISMATCH.on(operationSign, name.getName(), receiverType, returnType));
 			else
 			{
-				JetType receiverType = receiver.getType();
-				if(!JetTypeChecker.INSTANCE.isSubtypeOf(returnType, receiverType))
-					context.trace.report(RESULT_TYPE_MISMATCH.on(operationSign, name.getName(), receiverType, returnType));
-				else
-				{
-					context.trace.record(BindingContext.VARIABLE_REASSIGNMENT, expression);
+				context.trace.record(BindingContext.VARIABLE_REASSIGNMENT, expression);
 
-					checkLValue(context.trace, baseExpression);
-				}
+				checkLValue(context.trace, baseExpression);
 			}
 		}
 
