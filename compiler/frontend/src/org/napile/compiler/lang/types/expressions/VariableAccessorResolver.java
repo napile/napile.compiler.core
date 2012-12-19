@@ -68,12 +68,8 @@ public class VariableAccessorResolver
 		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
 
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiverDescriptor, expression.getOperationReference(), left, argument), expression.getOperationReference(), name);
-		if(!results.isSuccess())
-		{
-			trace.commit();
-			return;
-		}
-
-		context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
+		if(results.isSuccess())
+			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
+		trace.commit();
 	}
 }
