@@ -423,7 +423,7 @@ public class DescriptorResolver
 	{
 		NapileModifierList modifierList = variable.getModifierList();
 
-		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), Modality.resolve(variable), Visibility.resolve(variable), NapilePsiUtil.safeName(variable.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(variable), variable.isMutable());
+		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.resolveAnnotations(scope, modifierList, trace), Modality.resolve(variable), Visibility.PUBLIC, NapilePsiUtil.safeName(variable.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(variable), variable.isMutable());
 
 		List<TypeParameterDescriptor> typeParameterDescriptors;
 
