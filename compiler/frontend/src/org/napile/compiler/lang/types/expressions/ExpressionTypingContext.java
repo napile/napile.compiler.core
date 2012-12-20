@@ -149,9 +149,15 @@ public class ExpressionTypingContext
 	}
 
 	@NotNull
+	public OverloadResolutionResults<MethodDescriptor> resolveCallWithGivenName(@NotNull Call call, @NotNull NapileReferenceExpression functionReference, @NotNull Name name, boolean bindReference)
+	{
+		return expressionTypingServices.getCallResolver().resolveCallWithGivenName(makeResolutionContext(call), functionReference, name, bindReference);
+	}
+
+	@NotNull
 	public OverloadResolutionResults<MethodDescriptor> resolveCallWithGivenName(@NotNull Call call, @NotNull NapileReferenceExpression functionReference, @NotNull Name name)
 	{
-		return expressionTypingServices.getCallResolver().resolveCallWithGivenName(makeResolutionContext(call), functionReference, name);
+		return resolveCallWithGivenName(call, functionReference, name, true);
 	}
 
 	@NotNull

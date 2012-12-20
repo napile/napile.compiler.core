@@ -42,7 +42,7 @@
 			<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>
 		</tstamp>
 
-		<jar destfile="${build.dist.dir}/napile.compiler-0.1.jar">
+		<jar destfile="${build.dist.dir}/napile.compiler-${version}.jar">
 			<fileset dir="${build.classes.dir}/compiler"/>
 			<manifest>
 				<attribute name="Build-By" value="${user.name}"/>

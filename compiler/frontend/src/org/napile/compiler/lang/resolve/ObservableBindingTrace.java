@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.resolve;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +50,13 @@ public class ObservableBindingTrace implements BindingTrace
 	public void report(@NotNull Diagnostic diagnostic)
 	{
 		originalTrace.report(diagnostic);
+	}
+
+	@NotNull
+	@Override
+	public List<Diagnostic> getDiagnostics()
+	{
+		return originalTrace.getDiagnostics();
 	}
 
 	@NotNull

@@ -941,6 +941,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			traceForVariable.commit();
 			checkSuper(receiver, resolutionResult, context.trace, nameExpression);
 			result[0] = true;
+			VariableAccessorResolver.resolveGetter(nameExpression, receiver, context);
 			return resolutionResult.isSingleResult() ? resolutionResult.getResultingDescriptor().getReturnType() : null;
 		}
 
@@ -1161,6 +1162,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		JetType result;
 		if(operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS)
 		{
+			VariableAccessorResolver.resolveForUnaryCalL(expression, context);
+
 			JetType receiverType = receiver.getType();
 			if(!JetTypeChecker.INSTANCE.isSubtypeOf(returnType, receiverType))
 				context.trace.report(RESULT_TYPE_MISMATCH.on(operationSign, name.getName(), receiverType, returnType));

@@ -141,14 +141,14 @@ public class CallResolver
 		List<CallableDescriptorCollector<? extends VariableDescriptor>> callableDescriptorCollectors = Collections.<CallableDescriptorCollector<? extends VariableDescriptor>>singletonList(CallableDescriptorCollectors.VARIABLES);
 
 		List<ResolutionTask<VariableDescriptor, VariableDescriptor>> prioritizedTasks = TaskPrioritizer.<VariableDescriptor, VariableDescriptor>computePrioritizedTasks(context, referencedName, nameExpression, callableDescriptorCollectors);
-		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_PROPERTY, context, prioritizedTasks, CallTransformer.PROPERTY_CALL_TRANSFORMER, nameExpression);
+		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_PROPERTY, context, prioritizedTasks, CallTransformer.PROPERTY_CALL_TRANSFORMER, nameExpression, true);
 	}
 
 	@NotNull
-	public OverloadResolutionResults<MethodDescriptor> resolveCallWithGivenName(@NotNull BasicResolutionContext context, @NotNull final NapileReferenceExpression functionReference, @NotNull Name name)
+	public OverloadResolutionResults<MethodDescriptor> resolveCallWithGivenName(@NotNull BasicResolutionContext context, @NotNull final NapileReferenceExpression functionReference, @NotNull Name name, boolean bindReference)
 	{
 		List<ResolutionTask<CallableDescriptor, MethodDescriptor>> tasks = TaskPrioritizer.<CallableDescriptor, MethodDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.FUNCTIONS_AND_VARIABLES);
-		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, tasks, CallTransformer.FUNCTION_CALL_TRANSFORMER, functionReference);
+		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, tasks, CallTransformer.FUNCTION_CALL_TRANSFORMER, functionReference, bindReference);
 	}
 
 	@NotNull
@@ -277,10 +277,10 @@ public class CallResolver
 			}
 		}
 
-		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, prioritizedTasks, CallTransformer.FUNCTION_CALL_TRANSFORMER, functionReference);
+		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, prioritizedTasks, CallTransformer.FUNCTION_CALL_TRANSFORMER, functionReference, true);
 	}
 
-	private <D extends CallableDescriptor, F extends D> OverloadResolutionResults<F> doResolveCallOrGetCachedResults(@NotNull WritableSlice<CallKey, OverloadResolutionResults<F>> resolutionResultsSlice, @NotNull final BasicResolutionContext context, @NotNull final List<ResolutionTask<D, F>> prioritizedTasks, @NotNull CallTransformer<D, F> callTransformer, @NotNull final NapileReferenceExpression reference)
+	private <D extends CallableDescriptor, F extends D> OverloadResolutionResults<F> doResolveCallOrGetCachedResults(@NotNull WritableSlice<CallKey, OverloadResolutionResults<F>> resolutionResultsSlice, @NotNull final BasicResolutionContext context, @NotNull final List<ResolutionTask<D, F>> prioritizedTasks, @NotNull CallTransformer<D, F> callTransformer, @NotNull final NapileReferenceExpression reference, boolean bindReference)
 	{
 		PsiElement element = context.call.getCallElement();
 		if(element instanceof NapileExpression)
@@ -296,7 +296,7 @@ public class CallResolver
 		}
 		TemporaryBindingTrace delegatingBindingTrace = TemporaryBindingTrace.create(context.trace);
 		BasicResolutionContext newContext = context.replaceTrace(delegatingBindingTrace);
-		OverloadResolutionResults<F> results = doResolveCall(newContext, prioritizedTasks, callTransformer, reference);
+		OverloadResolutionResults<F> results = doResolveCall(newContext, prioritizedTasks, callTransformer, reference, bindReference);
 		DelegatingBindingTrace cloneDelta = new DelegatingBindingTrace(new BindingTraceContext().getBindingContext());
 		delegatingBindingTrace.addAllMyDataTo(cloneDelta);
 		cacheResults(resolutionResultsSlice, context, results, cloneDelta);
@@ -474,7 +474,7 @@ public class CallResolver
 
 	@NotNull
 	private <D extends CallableDescriptor, F extends D> OverloadResolutionResults<F> doResolveCall(@NotNull final BasicResolutionContext context, @NotNull final List<ResolutionTask<D, F>> prioritizedTasks, // high to low priority
-			@NotNull CallTransformer<D, F> callTransformer, @NotNull final NapileReferenceExpression reference)
+			@NotNull CallTransformer<D, F> callTransformer, @NotNull final NapileReferenceExpression reference, boolean bindReference)
 	{
 
 		ResolutionDebugInfo.Data debugInfo = ResolutionDebugInfo.create();
@@ -493,7 +493,7 @@ public class CallResolver
 		for(ResolutionTask<D, F> task : prioritizedTasks)
 		{
 			TemporaryBindingTrace taskTrace = TemporaryBindingTrace.create(context.trace);
-			OverloadResolutionResultsImpl<F> results = performResolutionGuardedForExtraFunctionLiteralArguments(task.withTrace(taskTrace), callTransformer, context.trace);
+			OverloadResolutionResultsImpl<F> results = performResolutionGuardedForExtraFunctionLiteralArguments(task.withTrace(taskTrace), callTransformer, context.trace, bindReference);
 			if(results.isSuccess() || results.isAmbiguity())
 			{
 				taskTrace.commit();
@@ -536,9 +536,9 @@ public class CallResolver
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@NotNull
-	private <D extends CallableDescriptor, F extends D> OverloadResolutionResultsImpl<F> performResolutionGuardedForExtraFunctionLiteralArguments(@NotNull ResolutionTask<D, F> task, @NotNull CallTransformer<D, F> callTransformer, @NotNull BindingTrace traceForResolutionCache)
+	private <D extends CallableDescriptor, F extends D> OverloadResolutionResultsImpl<F> performResolutionGuardedForExtraFunctionLiteralArguments(@NotNull ResolutionTask<D, F> task, @NotNull CallTransformer<D, F> callTransformer, @NotNull BindingTrace traceForResolutionCache, boolean bindReference)
 	{
-		OverloadResolutionResultsImpl<F> results = performResolution(task, callTransformer, traceForResolutionCache);
+		OverloadResolutionResultsImpl<F> results = performResolution(task, callTransformer, traceForResolutionCache, bindReference);
 
 		// If resolution fails, we should check for some of the following situations:
 		//   class A {
@@ -570,7 +570,7 @@ public class CallResolver
 					return Collections.emptyList();
 				}
 			}, task.expectedType, task.dataFlowInfo);
-			OverloadResolutionResultsImpl<F> resultsWithFunctionLiteralsStripped = performResolution(newTask, callTransformer, traceForResolutionCache);
+			OverloadResolutionResultsImpl<F> resultsWithFunctionLiteralsStripped = performResolution(newTask, callTransformer, traceForResolutionCache, bindReference);
 			if(resultsWithFunctionLiteralsStripped.isSuccess() || resultsWithFunctionLiteralsStripped.isAmbiguity())
 			{
 				task.tracing.danglingFunctionLiteralArgumentSuspected(task.trace, task.call.getFunctionLiteralArguments());
@@ -581,7 +581,7 @@ public class CallResolver
 	}
 
 	@NotNull
-	private <D extends CallableDescriptor, F extends D> OverloadResolutionResultsImpl<F> performResolution(@NotNull ResolutionTask<D, F> task, @NotNull CallTransformer<D, F> callTransformer, @NotNull BindingTrace traceForResolutionCache)
+	private <D extends CallableDescriptor, F extends D> OverloadResolutionResultsImpl<F> performResolution(@NotNull ResolutionTask<D, F> task, @NotNull CallTransformer<D, F> callTransformer, @NotNull BindingTrace traceForResolutionCache, boolean bindReference)
 	{
 
 		for(ResolutionCandidate<D> resolutionCandidate : task.getCandidates())
@@ -590,17 +590,20 @@ public class CallResolver
 			Collection<CallResolutionContext<D, F>> contexts = callTransformer.createCallContexts(resolutionCandidate, task, candidateTrace);
 			for(CallResolutionContext<D, F> context : contexts)
 			{
-
 				performResolutionForCandidateCall(context, task);
 
-				task.tracing.bindReference(context.candidateCall.getTrace(), context.candidateCall);
+				if(bindReference)
+					task.tracing.bindReference(context.candidateCall.getTrace(), context.candidateCall);
 
 				Collection<ResolvedCallWithTrace<F>> calls = callTransformer.transformCall(context, this, task);
 
 				for(ResolvedCallWithTrace<F> call : calls)
 				{
-					task.tracing.bindReference(call.getTrace(), call);
-					task.tracing.bindResolvedCall(call.getTrace(), call);
+					if(bindReference)
+					{
+						task.tracing.bindReference(call.getTrace(), call);
+						task.tracing.bindResolvedCall(call.getTrace(), call);
+					}
 					task.getResolvedCalls().add(call);
 				}
 

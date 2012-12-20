@@ -390,7 +390,12 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			TypeNode type = expressionType(expression.getBaseExpression());
 			value.put(type, instructs);
 			callableMethod.invoke(instructs);
-			value.store(callableMethod.getReturnType(), instructs);
+
+			MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+			if(methodDescriptor != null)
+				StackValue.variableAccessor(methodDescriptor, value.getType()).store(callableMethod.getReturnType(), instructs);
+			else
+				value.store(callableMethod.getReturnType(), instructs);
 			value.put(type, instructs);
 			return StackValue.onStack(type);
 		}
@@ -629,6 +634,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 						throw new UnsupportedOperationException("Unknown receiver size " + value.receiverSize());
 				}
 
+				MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+				if(methodDescriptor != null)
+					value = StackValue.variableAccessor(methodDescriptor, value.getType());
 				value.store(callable.getReturnType(), instructs);
 
 				return StackValue.onStack(type);
@@ -742,7 +750,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			NapileExpression r = getReceiverForSelector(expression);
 			final boolean isSuper = r instanceof NapileSuperExpression;
 
-			final StackValue iValue = intermediateValueForProperty(targetVar, directToVar, isSuper ? (NapileSuperExpression) r : null);
+			final StackValue iValue = intermediateValueForProperty(targetVar, bindingTrace.get(BindingContext.VARIABLE_CALL, expression), directToVar, isSuper ? (NapileSuperExpression) r : null);
 			if(!directToVar && resolvedCall != null && !isSuper)
 				receiver.put(isStatic ? receiver.getType() : TypeTransformer.toAsmType(((ClassDescriptor) container).getDefaultType()), instructs);
 			else
@@ -763,13 +771,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			return iValue;
 		}
 
-		if(descriptor instanceof VariableAccessorDescriptor)
-			return StackValue.variableAccessor(resolvedCall, receiver, this);
-
 		if(descriptor instanceof ClassDescriptor)
 			return StackValue.none();
 
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException(descriptor.getClass().getName());
 	}
 
 	@Override
@@ -819,8 +824,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(typeNode);
 	}
 
-	public StackValue intermediateValueForProperty(VariableDescriptor variableDescriptor, final boolean forceField, @Nullable NapileSuperExpression superExpression)
+	public StackValue intermediateValueForProperty(VariableDescriptor variableDescriptor, @Nullable MethodDescriptor methodDescriptor, final boolean forceField, @Nullable NapileSuperExpression superExpression)
 	{
+		if(methodDescriptor != null)
+			return StackValue.variableAccessor(methodDescriptor, TypeTransformer.toAsmType(variableDescriptor.getType()));
 		boolean isSuper = superExpression != null;
 
 		//TODO [VISTALL] super?

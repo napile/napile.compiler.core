@@ -178,4 +178,11 @@ public class DelegatingBindingTrace implements BindingTrace
 	{
 		diagnostics.add(diagnostic);
 	}
+
+	@NotNull
+	@Override
+	public List<Diagnostic> getDiagnostics()
+	{
+		return diagnostics;
+	}
 }

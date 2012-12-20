@@ -72,6 +72,13 @@ public class BindingTraceContext implements BindingTrace
 		diagnostics.add(diagnostic);
 	}
 
+	@NotNull
+	@Override
+	public List<Diagnostic> getDiagnostics()
+	{
+		return diagnostics;
+	}
+
 	public void clearDiagnostics()
 	{
 		diagnostics.clear();

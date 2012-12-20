@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.diagnostics;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +34,13 @@ public interface DiagnosticHolder
 		@Override
 		public void report(@NotNull Diagnostic diagnostic)
 		{
+		}
+
+		@NotNull
+		@Override
+		public List<Diagnostic> getDiagnostics()
+		{
+			return Collections.emptyList();
 		}
 	};
 	DiagnosticHolder THROW_EXCEPTION = new DiagnosticHolder()
@@ -54,7 +62,17 @@ public interface DiagnosticHolder
 						DiagnosticUtils.atLocation(psiFile, textRanges.get(0)));
 			}
 		}
+
+		@NotNull
+		@Override
+		public List<Diagnostic> getDiagnostics()
+		{
+			return Collections.emptyList();
+		}
 	};
 
 	void report(@NotNull Diagnostic diagnostic);
+
+	@NotNull
+	List<Diagnostic> getDiagnostics();
 }

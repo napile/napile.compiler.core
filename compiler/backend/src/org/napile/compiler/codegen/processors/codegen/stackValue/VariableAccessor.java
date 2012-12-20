@@ -16,13 +16,13 @@
 
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
+import java.util.Collections;
+
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.resolve.calls.ResolvedCall;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 
 /**
  * @author VISTALL
@@ -30,49 +30,36 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
  */
 public class VariableAccessor extends StackValue
 {
-	private final ResolvedCall<? extends CallableDescriptor> resolvedCall;
-	private final StackValue receiver;
 	private final CallableMethod callableMethod;
-	private final ExpressionCodegen expressionCodegen;
 
-	public VariableAccessor(TypeNode type, ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen expressionCodegen)
+	public VariableAccessor(TypeNode type, MethodDescriptor methodDescriptor)
 	{
 		super(type);
-		this.resolvedCall = resolvedCall;
-		this.receiver = receiver;
-		this.expressionCodegen = expressionCodegen;
-		callableMethod = CallTransformer.transformToCallable(resolvedCall, false, false);
+
+		callableMethod = CallTransformer.transformToCallable(methodDescriptor, Collections.<TypeNode>emptyList(), false, false);
 	}
 
 	@Override
 	public void put(TypeNode type, InstructionAdapter instructs)
 	{
 		if(!callableMethod.getName().endsWith("get"))
-			throw new IllegalArgumentException("cant get to variable with incorrect getter");
+			throw new IllegalArgumentException("cant get to variable with incorrect getter : " + callableMethod.getName());
 
-		StackValue r = StackValue.receiver(resolvedCall, receiver, expressionCodegen, callableMethod);
-
-		r.put(receiver.getType(), instructs);
-
-		expressionCodegen.invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
+		callableMethod.invoke(instructs);
 	}
 
 	@Override
 	public void store(TypeNode topOfStackType, InstructionAdapter instructs)
 	{
 		if(!callableMethod.getName().endsWith("set"))
-			throw new IllegalArgumentException("cant set to variable with incorrect setter");
+			throw new IllegalArgumentException("cant set to variable with incorrect setter : " + callableMethod.getName());
 
-		StackValue r = StackValue.receiver(resolvedCall, receiver, expressionCodegen, callableMethod);
-
-		r.put(receiver.getType(), instructs);
-
-		expressionCodegen.invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
+		callableMethod.invoke(instructs);
 	}
 
 	@Override
 	public int receiverSize()
 	{
-		return resolvedCall.getResultingDescriptor().isStatic() ? 0 : 1;
+		return callableMethod.getCallType() != CallableMethod.CallType.STATIC ? 0 : 1;
 	}
 }

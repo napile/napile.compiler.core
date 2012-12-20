@@ -228,6 +228,11 @@ public class CallMaker
 		return makeCallWithExpressions(callExp, receiverDescriptor, null, leftExpression, Collections.singletonList(rightExpression), CallType.DEFAULT);
 	}
 
+	public static Call makeVariableGetCall(@NotNull ReceiverDescriptor receiverDescriptor, @NotNull NapileExpression callExp, @NotNull NapileExpression leftExpression)
+	{
+		return makeCallWithExpressions(callExp, receiverDescriptor, null, leftExpression, Collections.<NapileExpression>emptyList(), CallType.DEFAULT);
+	}
+
 	public static Call makeArraySetCall(@NotNull ReceiverDescriptor arrayAsReceiver, @NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull CallType callType)
 	{
 		List<NapileExpression> arguments = Lists.newArrayList(arrayAccessExpression.getIndexExpressions());

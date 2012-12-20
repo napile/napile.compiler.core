@@ -168,12 +168,15 @@ public class BinaryOperationCodegen
 
 	public static StackValue genEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
 	{
-		//ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getLeft());
+		StackValue leftStackValue = gen.gen(expression.getLeft());
 
-		//StackValue.variableAccessor(resolvedCall, StackValue.none(), gen).store(gen.expressionType(expression.getLeft()), instructs);
-		StackValue stackValue = gen.gen(expression.getLeft());
-		gen.gen(expression.getRight(), stackValue.getType());
-		stackValue.store(stackValue.getType(), instructs);
+		gen.gen(expression.getRight(), leftStackValue.getType());
+
+		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+		if(methodDescriptor != null)
+			leftStackValue = StackValue.variableAccessor(methodDescriptor, leftStackValue.getType());
+
+		leftStackValue.store(leftStackValue.getType(), instructs);
 		return StackValue.none();
 	}
 

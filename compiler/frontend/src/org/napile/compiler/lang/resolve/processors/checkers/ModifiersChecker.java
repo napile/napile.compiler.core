@@ -152,17 +152,23 @@ public class ModifiersChecker
 
 	private void checkDeclaredTypeInPublicMember(NapileNamedDeclaration member, CallableMemberDescriptor memberDescriptor)
 	{
+		Visibility visibility = null;
+
 		boolean hasDeferredType;
 		if(member instanceof NapileVariable)
+		{
 			hasDeferredType = ((NapileVariable) member).getType() == null && ((NapileVariable) member).getInitializer() != null;
+			visibility = Visibility.resolve(member);
+		}
 		else
 		{
 			assert member instanceof NapileMethod;
 			NapileMethod function = (NapileMethod) member;
 			hasDeferredType = function.getReturnTypeRef() == null && function.getBodyExpression() != null && !function.hasBlockBody();
+			visibility = memberDescriptor.getVisibility();
 		}
 
-		if(memberDescriptor.getVisibility().isPublicAPI() && memberDescriptor.getOverriddenDescriptors().size() == 0 && hasDeferredType)
+		if(visibility.isPublicAPI() && memberDescriptor.getOverriddenDescriptors().size() == 0 && hasDeferredType)
 			trace.report(Errors.PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE.on(member));
 	}
 

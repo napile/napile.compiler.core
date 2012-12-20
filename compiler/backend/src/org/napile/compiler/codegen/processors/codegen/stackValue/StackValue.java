@@ -27,9 +27,8 @@ import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 
@@ -85,12 +84,9 @@ public abstract class StackValue
 	}
 
 	@NotNull
-	public static StackValue variableAccessor(@NotNull ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen expressionCodegen)
+	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode)
 	{
-		VariableAccessorDescriptor variableAccessorDescriptor = (VariableAccessorDescriptor) resolvedCall.getResultingDescriptor();
-		VariableDescriptor variableDescriptor = variableAccessorDescriptor.getVariable();
-
-		return new VariableAccessor(TypeTransformer.toAsmType(variableDescriptor.getType()), resolvedCall, receiver, expressionCodegen);
+		return new VariableAccessor(typeNode, methodDescriptor);
 	}
 
 	@Deprecated
