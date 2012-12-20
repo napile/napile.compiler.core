@@ -31,4 +31,7 @@ public interface NapileVariableAccessor extends NapileNamedDeclaration
 
 	@Nullable
 	IElementType getAccessorElementType();
+
+	@Nullable
+	NapileExpression getBodyExpression();
 }

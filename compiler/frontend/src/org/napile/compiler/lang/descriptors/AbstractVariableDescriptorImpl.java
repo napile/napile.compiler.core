@@ -37,9 +37,6 @@ public abstract class AbstractVariableDescriptorImpl extends DeclarationDescript
 	private final boolean mutable;
 	private final Modality modality;
 
-	private VariableAccessorDescriptor setter;
-	private VariableAccessorDescriptor getter;
-
 	public AbstractVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean isStatic, boolean mutable)
 	{
 		super(containingDeclaration, annotations, name);
@@ -56,12 +53,6 @@ public abstract class AbstractVariableDescriptorImpl extends DeclarationDescript
 		this(containingDeclaration, annotations, name, null, modality, isStatic, false);
 	}
 
-	public void setSetterAndGetter(@NotNull VariableAccessorDescriptor get, @NotNull VariableAccessorDescriptor set)
-	{
-		setter = set;
-		getter = get;
-	}
-
 	@Override
 	public boolean isStatic()
 	{
@@ -73,20 +64,6 @@ public abstract class AbstractVariableDescriptorImpl extends DeclarationDescript
 	public JetType getType()
 	{
 		return outType;
-	}
-
-	@Nullable
-	@Override
-	public VariableAccessorDescriptor getGetter()
-	{
-		return getter;
-	}
-
-	@Nullable
-	@Override
-	public VariableAccessorDescriptor getSetter()
-	{
-		return setter;
 	}
 
 	@Override

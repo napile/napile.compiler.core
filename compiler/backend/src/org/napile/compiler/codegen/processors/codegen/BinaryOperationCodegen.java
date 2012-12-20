@@ -231,6 +231,11 @@ public class BinaryOperationCodegen
 
 		gen.pushMethodArguments(resolvedCall, callable.getValueParameterTypes());
 		callable.invoke(instructs);
+
+		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+		if(methodDescriptor != null)
+			value = StackValue.variableAccessor(methodDescriptor, value.getType());
+
 		value.store(callable.getReturnType(), instructs);
 
 		return StackValue.none();

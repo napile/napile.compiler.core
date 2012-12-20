@@ -34,7 +34,6 @@ import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -208,13 +207,6 @@ public class DeclarationResolver
 				public void visitVariable(NapileVariable variable)
 				{
 					VariableDescriptor variableDescriptor = descriptorResolver.resolveVariableDescriptor(ownerDescription, scope, variable, trace);
-
-					VariableAccessorDescriptor accessorDescriptor = variableDescriptor.getGetter();
-					if(accessorDescriptor != null)
-						ownerDescription.getBuilder().addMethodDescriptor(accessorDescriptor);
-					accessorDescriptor = variableDescriptor.getSetter();
-					if(accessorDescriptor != null)
-						ownerDescription.getBuilder().addMethodDescriptor(accessorDescriptor);
 
 					ownerDescription.getBuilder().addVariableDescriptor(variableDescriptor);
 

@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.descriptors;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
@@ -30,12 +29,6 @@ public interface VariableDescriptor extends CallableMemberDescriptor
 
 	@NotNull
 	JetType getType();
-
-	@Nullable
-	VariableAccessorDescriptor getGetter();
-
-	@Nullable
-	VariableAccessorDescriptor getSetter();
 
 	@Override
 	@NotNull

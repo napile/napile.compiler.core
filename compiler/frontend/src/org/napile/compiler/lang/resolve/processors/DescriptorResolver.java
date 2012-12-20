@@ -419,7 +419,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptor resolveVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable variable, BindingTrace trace)
+	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable variable, BindingTrace trace)
 	{
 		NapileModifierList modifierList = variable.getModifierList();
 
@@ -452,7 +452,7 @@ public class DescriptorResolver
 		return variableDescriptor;
 	}
 
-	public void resolveVariableAccessors(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable variable, BindingTrace trace, VariableDescriptorImpl variableDescriptor)
+	public void resolveVariableAccessors(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable variable, BindingTrace trace, VariableDescriptorImpl variableDescriptor)
 	{
 		VariableAccessorDescriptor set = null;
 		VariableAccessorDescriptor get = null;
@@ -506,7 +506,8 @@ public class DescriptorResolver
 			get = variableAccessorDescriptor;
 		}
 
-		variableDescriptor.setSetterAndGetter(set, get);
+		containingDeclaration.getBuilder().addMethodDescriptor(set);
+		containingDeclaration.getBuilder().addMethodDescriptor(get);
 	}
 
 	private static boolean resolveStatic(NapileModifierListOwner declaration)

@@ -22,10 +22,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.descriptors.AbstractCallParameterDescriptorImpl;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
+import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileArrayAccessExpressionImpl;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
 import org.napile.compiler.lang.psi.NapileDotQualifiedExpression;
@@ -34,6 +36,7 @@ import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileUnaryExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -73,7 +76,8 @@ public class VariableAccessorResolver
 			return null;
 
 		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.REFERENCE_TARGET, nameExpression);
-		if(declarationDescriptor instanceof LocalVariableDescriptor)
+		// local variable and call parameter cant have setter and getter
+		if(declarationDescriptor instanceof LocalVariableDescriptor || declarationDescriptor instanceof AbstractCallParameterDescriptorImpl)
 			return null;
 		return new Object[] {name, receiverDescriptor, nameExpression};
 	}
@@ -97,8 +101,7 @@ public class VariableAccessorResolver
 		if(results.isSuccess())
 			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
 
-		for(Diagnostic d : trace.getDiagnostics())
-			context.trace.report(d);
+		copyResolvingErrors(context, trace);
 	}
 
 	public static void resolveForUnaryCalL(@NotNull NapileUnaryExpression expression, @NotNull ExpressionTypingContext context)
@@ -119,12 +122,16 @@ public class VariableAccessorResolver
 		if(results.isSuccess())
 			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
 		else
-			for(Diagnostic d : trace.getDiagnostics())
-				context.trace.report(d);
+			copyResolvingErrors(context, trace);
 	}
 
 	public static void resolveGetter(@NotNull NapileSimpleNameExpression expression, @NotNull ReceiverDescriptor receiverDescriptor, @NotNull ExpressionTypingContext context)
 	{
+		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.REFERENCE_TARGET, expression);
+		// local variable and call parameter cant have setter and getter
+		if(declarationDescriptor instanceof LocalVariableDescriptor || declarationDescriptor instanceof AbstractCallParameterDescriptorImpl)
+			return;
+
 		Name name = Name.identifier(expression.getReferencedName() + AsmConstants.ANONYM_SPLITTER + "get");
 
 		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
@@ -136,7 +143,15 @@ public class VariableAccessorResolver
 		if(results.isSuccess())
 			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
 		else
-			for(Diagnostic d : trace.getDiagnostics())
+			copyResolvingErrors(context, trace);
+	}
+
+	private static void copyResolvingErrors(@NotNull ExpressionTypingContext context, @NotNull BindingTrace trace)
+	{
+		for(Diagnostic d : trace.getDiagnostics())
+		{
+			if(d.getFactory() == Errors.INVISIBLE_MEMBER)
 				context.trace.report(d);
+		}
 	}
 }

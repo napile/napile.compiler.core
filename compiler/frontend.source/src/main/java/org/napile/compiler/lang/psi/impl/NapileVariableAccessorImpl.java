@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileDeclarationImpl;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
 import org.napile.compiler.lang.psi.NapileVisitor;
@@ -55,6 +56,13 @@ public class NapileVariableAccessorImpl extends NapileDeclarationImpl implements
 	{
 		PsiElement accessorElement = getAccessorElement();
 		return accessorElement == null ? null : accessorElement.getNode().getElementType();
+	}
+
+	@Nullable
+	@Override
+	public NapileExpression getBodyExpression()
+	{
+		return null; //TODO [VISTALL] body exp
 	}
 
 	@NotNull
