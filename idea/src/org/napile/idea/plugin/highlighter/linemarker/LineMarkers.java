@@ -25,6 +25,7 @@ import java.util.Map;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
@@ -70,7 +71,7 @@ public enum LineMarkers
 					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile());
 
 					DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
-					if(!(descriptor instanceof CallableDescriptor))
+					if(!isValidCallable(descriptor))
 						return Collections.emptyList();
 
 					List<NapileElement> list = new ArrayList<NapileElement>(((CallableDescriptor) descriptor).getOverriddenDescriptors().size());
@@ -198,6 +199,11 @@ public enum LineMarkers
 					return result;
 				}
 			};
+
+	protected boolean isValidCallable(@Nullable DeclarationDescriptor declarationDescriptor)
+	{
+		return declarationDescriptor instanceof CallableDescriptor/* && !(declarationDescriptor instanceof VariableAccessorDescriptor && ((VariableAccessorDescriptor) declarationDescriptor).isDefault())*/;
+	}
 
 	public final LineMarkerInfo getLineMarkers(@NotNull PsiElement element)
 	{
