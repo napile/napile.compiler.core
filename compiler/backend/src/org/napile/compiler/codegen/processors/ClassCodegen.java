@@ -143,8 +143,6 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		MethodNode constructorNode = MethodCodegen.gen(constructor, methodDescriptor, bindingTrace);
 
-		classNode.addMember(constructorNode);
-
 		constructors.putValue(classNode, new Triple<NapileConstructor, MethodNode, ConstructorDescriptor>(constructor, constructorNode, methodDescriptor));
 
 		return null;
@@ -263,6 +261,8 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 				constructorNode.tryCatchBlockNodes.addAll(gen.getInstructs().getTryCatchBlockNodes());
 
 				constructorNode.maxLocals = size + gen.getInstructs().getMaxLocals() + constructorDescriptor.getValueParameters().size();
+
+				classNode.addMember(constructorNode);
 			}
 
 			// next static properties

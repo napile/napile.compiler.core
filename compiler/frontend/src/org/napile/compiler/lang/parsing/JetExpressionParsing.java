@@ -38,7 +38,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private static final TokenSet WHEN_CONDITION_RECOVERY_SET = TokenSet.create(NapileTokens.RBRACE, NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS, NapileTokens.ELSE_KEYWORD);
 	private static final TokenSet WHEN_CONDITION_RECOVERY_SET_WITH_ARROW = TokenSet.create(NapileTokens.RBRACE, NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS, NapileTokens.ELSE_KEYWORD, NapileTokens.ARROW, NapileTokens.DOT);
 
-	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.FOR_KEYWORD, NapileTokens.NULL_KEYWORD, NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.IS_KEYWORD, NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.BREAK_KEYWORD, NapileTokens.CONTINUE_KEYWORD, NapileTokens.ANONYM_KEYWORD, NapileTokens.IF_KEYWORD, NapileTokens.TRY_KEYWORD, NapileTokens.ELSE_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD, NapileTokens.WHEN_KEYWORD, NapileTokens.RBRACKET, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
+	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.FOR_KEYWORD, NapileTokens.NULL_KEYWORD, NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.IS_KEYWORD, NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.BREAK_KEYWORD, NapileTokens.CONTINUE_KEYWORD, NapileTokens.ANONYM_KEYWORD, NapileTokens.IF_KEYWORD, NapileTokens.TRY_KEYWORD, NapileTokens.ELSE_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD, NapileTokens.WHEN_KEYWORD, NapileTokens.RBRACKET, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
 			//            MUL,
 			NapileTokens.PLUS, NapileTokens.MINUS, NapileTokens.EXCL, NapileTokens.DIV, NapileTokens.PERC, NapileTokens.LTEQ,
 			// TODO GTEQ,   foo<bar, baz>=x
@@ -83,7 +83,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private static final TokenSet STATEMENT_FIRST = TokenSet.orSet(EXPRESSION_FIRST, TokenSet.create(
 			// declaration
 			NapileTokens.LBRACKET, // attribute
-			NapileTokens.METH_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.CLASS_KEYWORD), NapileTokens.MODIFIER_KEYWORDS);
+			NapileTokens.METH_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.VAR_KEYWORD,  NapileTokens.CLASS_KEYWORD), NapileTokens.MODIFIER_KEYWORDS);
 
 	/*package*/ static final TokenSet EXPRESSION_FOLLOW = TokenSet.create(NapileTokens.SEMICOLON, NapileTokens.ARROW, NapileTokens.COMMA, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.RBRACKET, NapileTokens.IDE_TEMPLATE_END);
 
@@ -1322,8 +1322,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		parsing.parseModifierList();
 
-		if(at(NapileTokens.VAR_KEYWORD))
-			advance(); // VAR_KEYWORD
+		if(atSet(NapileTokens.VARIABLE_LIKE_KEYWORDS))
+			advance();
 
 		if(!parsing.parseIdeTemplate())
 			expect(NapileTokens.IDENTIFIER, "Expecting a variable name", TokenSet.create(NapileTokens.COLON));

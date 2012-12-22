@@ -643,6 +643,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 						throw new UnsupportedOperationException("Unknown receiver size " + value.receiverSize());
 				}
 
+				callable.invoke(instructs);
+
 				MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 				if(methodDescriptor != null)
 					value = StackValue.variableAccessor(methodDescriptor, value.getType());
@@ -1199,12 +1201,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		if(macro)
 			return;
 
-		if(!lastValue.getType().equals(AsmConstants.NULL_TYPE))
-		{
-			lastValue.put(returnType, instructs);
-			instructs.returnVal();
-		}
-		else if(!endsWithReturn(expr))
+		NapileExpression lastExp = lastExpressionOfBody(expr);
+		if(lastExp instanceof NapileThrowExpression || lastExp instanceof NapileReturnExpression)
+		{}
+		else if(expr instanceof NapileBlockExpression)
 		{
 			if(isInstanceConstructor)
 				instructs.load(0);
@@ -1212,17 +1212,24 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				instructs.putNull();
 			instructs.returnVal();
 		}
+		else
+		{
+			lastValue.put(returnType, instructs);
+			instructs.returnVal();
+		}
 	}
 
-	private static boolean endsWithReturn(NapileElement bodyExpression)
+	@NotNull
+	private static NapileExpression lastExpressionOfBody(NapileExpression exp)
 	{
-		if(bodyExpression instanceof NapileBlockExpression)
+		if(exp instanceof NapileBlockExpression)
 		{
-			final List<NapileElement> statements = ((NapileBlockExpression) bodyExpression).getStatements();
-			return statements.size() > 0 && statements.get(statements.size() - 1) instanceof NapileReturnExpression;
+			final List<NapileElement> statements = ((NapileBlockExpression) exp).getStatements();
+			NapileElement last = statements.size() > 0 ? statements.get(statements.size() - 1) : null;
+			return last instanceof NapileExpression ? (NapileExpression) last : exp;
 		}
-
-		return bodyExpression instanceof NapileReturnExpression;
+		else
+			return exp;
 	}
 
 	private static boolean isEmptyExpression(NapileElement expr)

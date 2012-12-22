@@ -55,11 +55,20 @@ public class VariableAccessor extends StackValue
 			throw new IllegalArgumentException("cant set to variable with incorrect setter : " + callableMethod.getName());
 
 		callableMethod.invoke(instructs);
+		instructs.pop();
 	}
 
 	@Override
 	public int receiverSize()
 	{
-		return callableMethod.getCallType() != CallableMethod.CallType.STATIC ? 0 : 1;
+		return callableMethod.getCallType() == CallableMethod.CallType.STATIC ? 0 : 1;
 	}
+
+	@Override
+	public void dupReceiver(InstructionAdapter v)
+	{
+		if(callableMethod.getCallType() != CallableMethod.CallType.STATIC)
+			v.dup();
+	}
+
 }

@@ -57,8 +57,7 @@ public class VariableCodegen
 			map.put(variableAccessor.getAccessorElementType(), variableAccessor);
 
 		getGetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.GET_KEYWORD), variable);
-		if(variableDescriptor.isMutable())
-			getSetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.SET_KEYWORD), variable);
+		getSetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.SET_KEYWORD), variable);
 	}
 
 	private static void getSetter(@NotNull VariableDescriptorImpl variableDescriptor, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace, @Nullable NapileVariableAccessor variableAccessor, NapileVariable variable)
