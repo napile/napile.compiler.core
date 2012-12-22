@@ -76,6 +76,20 @@ public class NapileCallParameterAsVariableImpl extends NapileNamedDeclarationStu
 	}
 
 	@Override
+	@Nullable
+	public ASTNode getVarOrValNode()
+	{
+		return getNode().findChildByType(NapileTokens.VARIABLE_LIKE_KEYWORDS);
+	}
+
+	@Override
+	public boolean isMutable()
+	{
+		ASTNode ast = getVarOrValNode();
+		return ast == null || ast.getElementType() == NapileTokens.VAR_KEYWORD;
+	}
+
+	@Override
 	public boolean isVarArg()
 	{
 		NapilePsiCallParameterAsVariableStub stub = getStub();

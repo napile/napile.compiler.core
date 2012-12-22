@@ -35,13 +35,13 @@ public class CallParameterAsReferenceDescriptorImpl extends AbstractCallParamete
 
 	public CallParameterAsReferenceDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull VariableDescriptor referenceProperty)
 	{
-		super(containingDeclaration, index, annotations, name, outType, Modality.FINAL);
+		super(containingDeclaration, index, annotations, name, outType, Modality.FINAL, false);
 		this.referenceProperty = referenceProperty;
 	}
 
 	protected CallParameterAsReferenceDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull VariableDescriptor referenceProperty)
 	{
-		super(containingDeclaration, original, annotations, name, Modality.FINAL);
+		super(containingDeclaration, original, annotations, name, Modality.FINAL, false);
 		this.referenceProperty = referenceProperty;
 	}
 

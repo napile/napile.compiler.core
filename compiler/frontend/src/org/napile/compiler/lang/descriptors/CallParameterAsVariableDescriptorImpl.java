@@ -30,14 +30,14 @@ import com.google.common.collect.Lists;
  */
 public class CallParameterAsVariableDescriptorImpl extends AbstractCallParameterDescriptorImpl
 {
-	public CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality)
+	public CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable)
 	{
-		super(containingDeclaration, index, annotations, name, outType, modality);
+		super(containingDeclaration, index, annotations, name, outType, modality, mutable);
 	}
 
-	protected CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality)
+	protected CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable)
 	{
-		super(containingDeclaration, original, annotations, name, modality);
+		super(containingDeclaration, original, annotations, name, modality, mutable);
 		if(outType != null)
 			setOutType(outType);
 	}
@@ -52,7 +52,7 @@ public class CallParameterAsVariableDescriptorImpl extends AbstractCallParameter
 	@Override
 	public CallParameterDescriptor copy(@NotNull DeclarationDescriptor newOwner)
 	{
-		CallParameterAsVariableDescriptorImpl c =  new CallParameterAsVariableDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), getType(), getModality());
+		CallParameterAsVariableDescriptorImpl c =  new CallParameterAsVariableDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), getType(), getModality(), isMutable());
 		c.hasDefaultValue = hasDefaultValue;
 		return c;
 	}

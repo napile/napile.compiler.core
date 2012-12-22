@@ -33,7 +33,7 @@ import org.napile.compiler.lang.types.JetType;
 public abstract class AbstractVariableDescriptorImpl extends DeclarationDescriptorNonRootImpl implements VariableDescriptor
 {
 	private JetType outType;
-	protected final boolean isStatic;
+	private final boolean isStatic;
 	private final boolean mutable;
 	private final Modality modality;
 
@@ -50,7 +50,7 @@ public abstract class AbstractVariableDescriptorImpl extends DeclarationDescript
 
 	protected AbstractVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull Modality modality, boolean isStatic, boolean mutable)
 	{
-		this(containingDeclaration, annotations, name, null, modality, isStatic, false);
+		this(containingDeclaration, annotations, name, null, modality, isStatic, mutable);
 	}
 
 	@Override

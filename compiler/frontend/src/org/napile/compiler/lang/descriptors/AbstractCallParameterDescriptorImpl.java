@@ -45,16 +45,16 @@ public abstract class AbstractCallParameterDescriptorImpl extends AbstractVariab
 
 	protected final CallParameterDescriptor original;
 
-	public AbstractCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality)
+	public AbstractCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable)
 	{
-		super(containingDeclaration, annotations, name, outType, modality, false, false);
+		super(containingDeclaration, annotations, name, outType, modality, false, mutable);
 		this.original = this;
 		this.index = index;
 	}
 
-	protected AbstractCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull Modality modality)
+	protected AbstractCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @NotNull Modality modality, boolean mutable)
 	{
-		super(containingDeclaration, annotations, name, modality, false, false);
+		super(containingDeclaration, annotations, name, modality, false, mutable);
 		this.original = original;
 		this.index = original.getIndex();
 	}

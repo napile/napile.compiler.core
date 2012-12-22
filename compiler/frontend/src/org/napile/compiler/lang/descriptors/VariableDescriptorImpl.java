@@ -73,7 +73,7 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 
 		this.typeParameters = Lists.newArrayList(typeParameters);
 
-		this.expectedThisObject = isStatic ? ReceiverDescriptor.NO_RECEIVER : expectedThisObject;
+		this.expectedThisObject = isStatic() ? ReceiverDescriptor.NO_RECEIVER : expectedThisObject;
 	}
 
 	public void setVisibility(@NotNull Visibility visibility)

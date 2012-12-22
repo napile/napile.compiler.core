@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.Nullable;
+import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
@@ -26,6 +27,11 @@ public interface NapileCallParameterAsVariable extends NapileCallParameter, Napi
 {
 	@Nullable
 	NapileTypeReference getTypeReference();
+
+	@Nullable
+	ASTNode getVarOrValNode();
+
+	boolean isMutable();
 
 	boolean isVarArg();
 }

@@ -57,7 +57,8 @@ public class VariableCodegen
 			map.put(variableAccessor.getAccessorElementType(), variableAccessor);
 
 		getGetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.GET_KEYWORD), variable);
-		getSetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.SET_KEYWORD), variable);
+		if(variableDescriptor.isMutable())
+			getSetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.SET_KEYWORD), variable);
 	}
 
 	private static void getSetter(@NotNull VariableDescriptorImpl variableDescriptor, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace, @Nullable NapileVariableAccessor variableAccessor, NapileVariable variable)
@@ -97,7 +98,7 @@ public class VariableCodegen
 		setterMethodNode.instructions.addAll(instructions.getInstructions());
 		setterMethodNode.maxLocals = variableDescriptor.isStatic() ? 1 : 2;
 
-		classNode.members.add(setterMethodNode);
+		classNode.addMember(setterMethodNode);
 	}
 
 	private static void getGetter(VariableDescriptorImpl variableDescriptor, ClassNode classNode, BindingTrace bindingTrace, NapileVariableAccessor variableAccessor, NapileVariable variable)
@@ -162,7 +163,7 @@ public class VariableCodegen
 			adapter.returnVal();
 
 			getterMethodNode.putInstructions(adapter);
-			classNode.members.add(getterMethodNode);
+			classNode.addMember(getterMethodNode);
 		}
 		else
 		{
@@ -180,7 +181,7 @@ public class VariableCodegen
 
 			getterMethodNode.maxLocals = variableDescriptor.isStatic() ? 0 : 1;
 
-			classNode.members.add(getterMethodNode);
+			classNode.addMember(getterMethodNode);
 		}
 	}
 }

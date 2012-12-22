@@ -128,7 +128,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		classNode.members.add(methodNode);
+		classNode.addMember(methodNode);
 		return null;
 	}
 
@@ -143,7 +143,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		MethodNode constructorNode = MethodCodegen.gen(constructor, methodDescriptor, bindingTrace);
 
-		classNode.members.add(constructorNode);
+		classNode.addMember(constructorNode);
 
 		constructors.putValue(classNode, new Triple<NapileConstructor, MethodNode, ConstructorDescriptor>(constructor, constructorNode, methodDescriptor));
 
@@ -161,7 +161,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), function, bindingTrace);
 
-		classNode.members.add(methodNode);
+		classNode.addMember(methodNode);
 
 		return super.visitNamedMethodOrMacro(function, parent);
 	}
@@ -179,7 +179,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), variableDescriptor.isMutable());
 		variableNode.returnType = TypeTransformer.toAsmType(variableDescriptor.getType());
-		classNode.members.add(variableNode);
+		classNode.addMember(variableNode);
 
 		VariableCodegen.getSetterAndGetter((VariableDescriptorImpl)variableDescriptor, variable, classNode, bindingTrace);
 
@@ -284,7 +284,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 				//TODO [VISTALL] add codegen from bodies
 
-				classNode.members.add(staticConstructorNode);
+				classNode.addMember(staticConstructorNode);
 			}
 		}
 	}

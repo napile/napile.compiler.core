@@ -29,7 +29,7 @@ public interface NapileVariable extends NapileDeclaration, NapileNamedDeclaratio
 	@Nullable
 	NapileTypeReference getType();
 
-	@NotNull
+	@Nullable
 	ASTNode getVarOrValNode();
 
 	boolean isMutable();
