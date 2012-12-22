@@ -53,6 +53,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -124,9 +125,9 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		{
 			CallableDescriptor descriptor = resolvedCall.getResultingDescriptor();
 
-			VariableDescriptor variableDescriptor = resolvedCall.getVariableDescriptor();
-			if(variableDescriptor != null)
-				descriptor = variableDescriptor;
+			Pair<VariableDescriptor, ReceiverDescriptor> variableCallInfo = resolvedCall.getVariableCallInfo();
+			if(variableCallInfo != null)
+				descriptor = variableCallInfo.getFirst();
 
 			DeclarationDescriptor storedReference = trace.get(BindingContext.REFERENCE_TARGET, reference);
 			if(storedReference == null || !ErrorUtils.isError(descriptor))

@@ -24,31 +24,26 @@ import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 public class CallReceiver extends StackValue
 {
-	private final ResolvedCall<? extends CallableDescriptor> resolvedCall;
-	final StackValue receiver;
+	private final CallableDescriptor callableDescriptor;
+	private final ReceiverDescriptor receiverDescriptor;
+	private final StackValue receiver;
 	private final ExpressionCodegen codegen;
-	//private final CallableMethod callableMethod;
 
-	public CallReceiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen codegen, CallableMethod callableMethod)
+	public CallReceiver(CallableDescriptor callableDescriptor, ReceiverDescriptor receiverDescriptor, StackValue receiver, ExpressionCodegen codegen, CallableMethod callableMethod)
 	{
-		super(calcType(resolvedCall, codegen, callableMethod));
-		this.resolvedCall = resolvedCall;
+		super(calcType(callableDescriptor, receiverDescriptor, codegen, callableMethod));
+		this.callableDescriptor = callableDescriptor;
+		this.receiverDescriptor = receiverDescriptor;
 		this.receiver = receiver;
 		this.codegen = codegen;
-		//this.callableMethod = callableMethod;
 	}
 
-	private static TypeNode calcType(ResolvedCall<? extends CallableDescriptor> resolvedCall, ExpressionCodegen codegen, CallableMethod callableMethod)
+	private static TypeNode calcType(CallableDescriptor descriptor, ReceiverDescriptor thisObject, ExpressionCodegen codegen, CallableMethod callableMethod)
 	{
-		ReceiverDescriptor thisObject = resolvedCall.getThisObject();
-
-		CallableDescriptor descriptor = resolvedCall.getResultingDescriptor();
-
 		if(thisObject.exists())
 		{
 			if(callableMethod != null)
@@ -63,11 +58,8 @@ public class CallReceiver extends StackValue
 	@Override
 	public void put(TypeNode type, InstructionAdapter v)
 	{
-		CallableDescriptor descriptor = resolvedCall.getResultingDescriptor();
-
-		ReceiverDescriptor thisObject = resolvedCall.getThisObject();
-		if(thisObject.exists())
-			genReceiver(v, thisObject, type, 0);
+		if(receiverDescriptor.exists())
+			genReceiver(v, receiverDescriptor, type, 0);
 	}
 
 	private void genReceiver(InstructionAdapter v, ReceiverDescriptor receiverArgument, TypeNode type, int depth)

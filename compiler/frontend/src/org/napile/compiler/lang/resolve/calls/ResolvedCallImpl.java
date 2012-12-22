@@ -32,6 +32,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import com.google.common.collect.Maps;
+import com.intellij.openapi.util.Pair;
 import com.intellij.util.Function;
 
 /**
@@ -66,7 +67,7 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 
 	private final D candidateDescriptor;
 	private D resultingDescriptor; // Probably substituted
-	private VariableDescriptor variableDescriptor;
+	private Pair<VariableDescriptor, ReceiverDescriptor> variableCallInfo;
 	private final ReceiverDescriptor thisObject; // receiver object of a method
 	private final ExplicitReceiverKind explicitReceiverKind;
 	private final boolean isSafeCall;
@@ -128,9 +129,9 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 
 	@Nullable
 	@Override
-	public VariableDescriptor getVariableDescriptor()
+	public Pair<VariableDescriptor, ReceiverDescriptor> getVariableCallInfo()
 	{
-		return variableDescriptor;
+		return variableCallInfo;
 	}
 
 	@Override
@@ -265,8 +266,8 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 		return isSafeCall;
 	}
 
-	public void setVariableDescriptor(VariableDescriptor variableDescriptor)
+	public void setVariableCallInfo(Pair<VariableDescriptor, ReceiverDescriptor> variableCallInfo)
 	{
-		this.variableDescriptor = variableDescriptor;
+		this.variableCallInfo = variableCallInfo;
 	}
 }

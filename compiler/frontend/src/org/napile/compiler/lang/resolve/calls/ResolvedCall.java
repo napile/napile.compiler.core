@@ -28,6 +28,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
+import com.intellij.openapi.util.Pair;
 
 /**
  * @author abreslav
@@ -44,7 +45,7 @@ public interface ResolvedCall<D extends CallableDescriptor>
 	 * Return a variable if this is anonym method call
 	 */
 	@Nullable
-	VariableDescriptor getVariableDescriptor();
+	Pair<VariableDescriptor, ReceiverDescriptor> getVariableCallInfo();
 
 	/**
 	 * Type arguments are substituted. This descriptor is guaranteed to have NO declared type parameters

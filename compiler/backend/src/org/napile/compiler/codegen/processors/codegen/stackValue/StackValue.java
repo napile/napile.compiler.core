@@ -17,7 +17,6 @@
 package org.napile.compiler.codegen.processors.codegen.stackValue;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
@@ -31,6 +30,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
+import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 /**
  * @author yole
@@ -53,10 +53,15 @@ public abstract class StackValue
 		return new Constant(value, typeNode);
 	}
 
-	public static StackValue receiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen codegen, @Nullable CallableMethod callableMethod)
+	public static StackValue receiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen codegen, CallableMethod callableMethod)
 	{
-		if(resolvedCall.getThisObject().exists())
-			return new CallReceiver(resolvedCall, receiver, codegen, callableMethod);
+		return receiver(resolvedCall.getResultingDescriptor(), resolvedCall.getThisObject(), receiver, codegen, callableMethod);
+	}
+
+	public static StackValue receiver(CallableDescriptor callableDescriptor, ReceiverDescriptor receiverDescriptor, StackValue receiver, ExpressionCodegen codegen, CallableMethod callableMethod)
+	{
+		if(receiverDescriptor.exists())
+			return new CallReceiver(callableDescriptor, receiverDescriptor, receiver, codegen, callableMethod);
 
 		return receiver;
 	}

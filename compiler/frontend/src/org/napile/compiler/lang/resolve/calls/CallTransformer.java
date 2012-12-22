@@ -26,6 +26,8 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
+import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import com.intellij.openapi.util.Pair;
 
 /**
  * CallTransformer treats specially 'variable as function' call case, other cases keeps unchanged (base realization).
@@ -86,7 +88,7 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 				return Collections.emptyList();
 
 			ResolvedCallImpl<CallableDescriptor> call = ResolvedCallImpl.create(ResolutionCandidate.create(callableDescriptor, false), candidateTrace);
-			call.setVariableDescriptor(variableDescriptor);
+			call.setVariableCallInfo(new Pair<VariableDescriptor, ReceiverDescriptor>(variableDescriptor, candidate.getThisObject()));
 
 			CallResolutionContext<CallableDescriptor, MethodDescriptor> context = CallResolutionContext.create(call, task, candidateTrace, task.tracing, task.call);
 			return Collections.singleton(context);

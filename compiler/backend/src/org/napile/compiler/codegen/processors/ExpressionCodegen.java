@@ -57,7 +57,15 @@ import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.injection.InjectionCodegen;
 import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -77,6 +85,7 @@ import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.util.Comparing;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.util.Function;
@@ -667,12 +676,12 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		}
 		else
 		{
-			VariableDescriptor variableDescriptor = resolvedCall.getVariableDescriptor();
+			Pair<VariableDescriptor, ReceiverDescriptor> variableDescriptor = resolvedCall.getVariableCallInfo();
 			if(variableDescriptor != null)
 			{
-				StackValue stackValue = callee.accept(this, receiver);
+				StackValue stackValue = gen(callee);
 
-				stackValue.put(TypeTransformer.toAsmType(variableDescriptor.getType()), instructs);
+				stackValue.put(TypeTransformer.toAsmType(variableDescriptor.getFirst().getType()), instructs);
 
 				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression, true);
 			}
@@ -728,10 +737,17 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			descriptor = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
 		else
 		{
-			descriptor = resolvedCall.getVariableDescriptor();
-			if(descriptor == null)
+			Pair<VariableDescriptor, ReceiverDescriptor> variableCallInfo = resolvedCall.getVariableCallInfo();
+			if(variableCallInfo != null)
+			{
+				descriptor = variableCallInfo.getFirst();
+				receiver = StackValue.receiver(variableCallInfo.getFirst(), variableCallInfo.getSecond(), receiver, this, null);
+			}
+			else
+			{
 				descriptor = resolvedCall.getResultingDescriptor();
-			receiver = StackValue.receiver(resolvedCall, receiver, this, null);
+				receiver = StackValue.receiver(resolvedCall, receiver, this, null);
+			}
 		}
 
 		final DeclarationDescriptor container = descriptor.getContainingDeclaration();
