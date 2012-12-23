@@ -79,7 +79,8 @@ public class BinaryOperationCodegen
 
 			ReservedInstruction jump = instructs.reserve();
 
-			instructs.newObject(TypeConstants.NULL_POINTER_EXCEPTION, Collections.<TypeNode>emptyList());
+			instructs.newString("'" + baseExpression.getText() + "' cant be null");
+			instructs.newObject(TypeConstants.NULL_POINTER_EXCEPTION, Collections.<TypeNode>singletonList(TypeConstants.NULLABLE_STRING));
 			instructs.throwVal();
 
 			instructs.replace(jump, new JumpIfInstruction(instructs.size()));
