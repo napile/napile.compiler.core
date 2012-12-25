@@ -165,6 +165,7 @@ public class InjectorForTopDownAnalyzerBasic
 		overrideResolver.setTopDownAnalysisParameters(topDownAnalysisParameters);
 		overrideResolver.setTrace(bindingTrace);
 
+		typeHierarchyResolver.setAnnotationResolver(annotationResolver);
 		typeHierarchyResolver.setContext(topDownAnalysisContext);
 		typeHierarchyResolver.setDescriptorResolver(descriptorResolver);
 		typeHierarchyResolver.setImportsResolver(importsResolver);
@@ -179,6 +180,7 @@ public class InjectorForTopDownAnalyzerBasic
 		annotationChecker.setTrace(bindingTrace);
 
 		modifiersChecker.setTrace(bindingTrace);
+
 	}
 
 	@PreDestroy

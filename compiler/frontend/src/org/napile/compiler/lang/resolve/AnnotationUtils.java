@@ -32,13 +32,13 @@ public class AnnotationUtils
 {
 	public static boolean isAnnotation(@NotNull ClassifierDescriptor annotated)
 	{
-		return NapileAnnotationPackage.ANNOTATION.equals(DescriptorUtils.getFQName(annotated)) || hasAnnotation(annotated, NapileAnnotationPackage.ANNOTATION);
+		return hasAnnotation(annotated, NapileAnnotationPackage.ANNOTATION);
 	}
 
 	public static boolean hasAnnotation(@NotNull Annotated annotated, @NotNull FqName fqName)
 	{
 		for(AnnotationDescriptor annotationDescriptor : annotated.getAnnotations())
-			if(TypeUtils.isEqualFqName(annotationDescriptor.getType(), fqName))
+			if(annotationDescriptor.getType() != null && TypeUtils.isEqualFqName(annotationDescriptor.getType(), fqName))
 				return true;
 		return false;
 	}

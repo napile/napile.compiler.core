@@ -9,10 +9,10 @@
 			<class_type name="napile.lang.Any"/>
 		</type>
 	</extends>
-	<variable name="INSTANCE">
+	<variable name="INSTANCE" mutable="true">
 		<modifiers>
-			<final/>
 			<static/>
+			<final/>
 		</modifiers>
 		<return_type>
 			<type nullable="false">
@@ -20,10 +20,31 @@
 			</type>
 		</return_type>
 	</variable>
+	<method name="INSTANCE$get">
+		<modifiers>
+			<static/>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max_locals="0">
+			<get_static_variable>
+				<variable name="napile.lang.Null.INSTANCE">
+					<type nullable="false">
+						<class_type name="napile.lang.Null"/>
+					</type>
+				</variable>
+			</get_static_variable>
+			<return/>
+		</code>
+	</method>
 	<method name="INSTANCE$set">
 		<modifiers>
-			<final/>
 			<static/>
+			<final/>
 		</modifiers>
 		<return_type>
 			<type nullable="false">
@@ -61,9 +82,23 @@
 			<return/>
 		</code>
 	</method>
-	<method name="INSTANCE$get">
+	<method name="this">
 		<modifiers>
 			<final/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max_locals="1">
+			<load val="0"/>
+			<return/>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -71,39 +106,6 @@
 				<class_type name="napile.lang.Null"/>
 			</type>
 		</return_type>
-		<code max_locals="0">
-			<get_static_variable>
-				<variable name="napile.lang.Null.INSTANCE">
-					<type nullable="false">
-						<class_type name="napile.lang.Null"/>
-					</type>
-				</variable>
-			</get_static_variable>
-			<return/>
-		</code>
-	</method>
-	<constructor>
-		<modifiers>
-			<local/>
-			<final/>
-		</modifiers>
-		<code max_locals="1">
-			<load val="0"/>
-			<invoke_special>
-				<method name="napile.lang.Any.this">
-					<return_type>
-						<type nullable="false">
-							<class_type name="napile.lang.Null"/>
-						</type>
-					</return_type>
-				</method>
-			</invoke_special>
-			<pop/>
-			<load val="0"/>
-			<return/>
-		</code>
-	</constructor>
-	<static_constructor>
 		<code max_locals="0">
 			<new_object>
 				<type nullable="false">
@@ -118,5 +120,5 @@
 				</variable>
 			</put_to_static_variable>
 		</code>
-	</static_constructor>
+	</method>
 </class>

@@ -17,19 +17,21 @@
 package org.napile.compiler.lang.resolve.processors.members;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnnotation;
+import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -43,7 +45,6 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.psi.NapileModifierList;
 
 /**
  * @author abreslav
@@ -59,36 +60,68 @@ public class AnnotationResolver
 	}
 
 	@NotNull
-	public List<AnnotationDescriptor> resolveAnnotations(@NotNull JetScope scope, @Nullable NapileModifierList modifierList, BindingTrace trace)
+	public List<AnnotationDescriptor> bindAnnotations(@NotNull JetScope scope, @NotNull NapileModifierListOwner modifierListOwner, BindingTrace trace)
 	{
+		NapileModifierList modifierList = modifierListOwner.getModifierList();
 		if(modifierList == null)
 			return Collections.emptyList();
 
-		return resolveAnnotations(scope, modifierList.getAnnotations(), trace);
+		List<NapileAnnotation> annotations = modifierList.getAnnotations();
+		if(annotations.isEmpty())
+			return Collections.emptyList();
+
+		List<AnnotationDescriptor> result = new ArrayList<AnnotationDescriptor>(annotations.size());
+		for(NapileAnnotation annotation : annotations)
+		{
+			AnnotationDescriptor descriptor = new AnnotationDescriptor();
+
+			trace.record(BindingContext.ANNOTATION, annotation, descriptor);
+			trace.record(BindingContext.ANNOTATION_SCOPE, annotation, scope);
+
+			result.add(descriptor);
+		}
+		return result;
+	}
+
+	public void resolveBindAnnotations(@NotNull BindingTrace trace)
+	{
+		Collection<NapileAnnotation> annotations = trace.getKeys(BindingContext.ANNOTATION_SCOPE);
+		for(NapileAnnotation annotation : annotations)
+		{
+			JetScope scope = trace.safeGet(BindingContext.ANNOTATION_SCOPE, annotation);
+			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingContext.ANNOTATION, annotation);
+
+			resolveAnnotation(scope, annotation, annotationDescriptor, trace);
+		}
 	}
 
 	@NotNull
-	public List<AnnotationDescriptor> resolveAnnotations(@NotNull JetScope scope, @NotNull List<NapileAnnotation> annotationEntryElements, BindingTrace trace)
+	public List<AnnotationDescriptor> resolveAnnotations(@NotNull JetScope scope, @NotNull List<NapileAnnotation> annotations, BindingTrace trace)
 	{
-		if(annotationEntryElements.isEmpty())
+		if(annotations.isEmpty())
 			return Collections.emptyList();
-		List<AnnotationDescriptor> result = new ArrayList<AnnotationDescriptor>(annotationEntryElements.size());
-		for(NapileAnnotation entryElement : annotationEntryElements)
+
+		List<AnnotationDescriptor> result = new ArrayList<AnnotationDescriptor>(annotations.size());
+		for(NapileAnnotation annotation : annotations)
 		{
 			AnnotationDescriptor descriptor = new AnnotationDescriptor();
-			resolveAnnotation(scope, entryElement, descriptor, trace);
-			trace.record(BindingContext.ANNOTATION, entryElement, descriptor);
+			resolveAnnotation(scope, annotation, descriptor, trace);
+			trace.record(BindingContext.ANNOTATION, annotation, descriptor);
 			result.add(descriptor);
 		}
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
-	public void resolveAnnotation(@NotNull JetScope scope, @NotNull NapileAnnotation entryElement, @NotNull AnnotationDescriptor annotationDescriptor, BindingTrace trace)
+	public void resolveAnnotation(@NotNull JetScope scope, @NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor, BindingTrace trace)
 	{
-		OverloadResolutionResults<? extends MethodDescriptor> results = callResolver.resolveFunctionCall(trace, scope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, entryElement), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+		OverloadResolutionResults<? extends MethodDescriptor> results = callResolver.resolveFunctionCall(trace, scope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, annotation), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 		if(results.isSuccess())
 		{
+			JetType annotationType = results.getResultingDescriptor().getReturnType();
+			annotationDescriptor.setAnnotationType(annotationType);
+			annotationDescriptor.setResolvedCall((ResolvedCall<ConstructorDescriptor>) results.getResultingCall());
+
 			MethodDescriptor descriptor = results.getResultingDescriptor();
 			if(!ErrorUtils.isError(descriptor))
 			{
@@ -97,18 +130,11 @@ public class AnnotationResolver
 					ConstructorDescriptor constructor = (ConstructorDescriptor) descriptor;
 					ClassifierDescriptor classDescriptor = constructor.getContainingDeclaration();
 					if(!AnnotationUtils.isAnnotation(classDescriptor))
-						trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(entryElement, classDescriptor.getName().getName()));
+						trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(annotation, classDescriptor.getName().getName()));
 				}
 				else
-					trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(entryElement, descriptor.getName().getName()));
+					trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(annotation, descriptor.getName().getName()));
 			}
-		}
-
-		if(results.isSuccess())
-		{
-			JetType annotationType = results.getResultingDescriptor().getReturnType();
-			annotationDescriptor.setAnnotationType(annotationType);
-			annotationDescriptor.setResolvedCall((ResolvedCall<ConstructorDescriptor>) results.getResultingCall());
 		}
 		else
 			annotationDescriptor.setAnnotationType(ErrorUtils.createErrorType("Unresolved annotation type"));

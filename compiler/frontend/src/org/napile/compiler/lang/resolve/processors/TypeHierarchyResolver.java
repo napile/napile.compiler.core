@@ -42,6 +42,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
+import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.processors.members.TypeParameterResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
@@ -69,6 +70,8 @@ public class TypeHierarchyResolver
 	private DescriptorResolver descriptorResolver;
 	@NotNull
 	private TypeParameterResolver typeParameterResolver;
+	@NotNull
+	private AnnotationResolver annotationResolver;
 	@NotNull
 	private NamespaceFactoryImpl namespaceFactory;
 	@NotNull
@@ -111,6 +114,12 @@ public class TypeHierarchyResolver
 	public void setTrace(@NotNull BindingTrace trace)
 	{
 		this.trace = trace;
+	}
+
+	@Inject
+	public void setAnnotationResolver(@NotNull AnnotationResolver annotationResolver)
+	{
+		this.annotationResolver = annotationResolver;
 	}
 
 	public void process(@NotNull JetScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends PsiElement> declarations)
@@ -186,15 +195,15 @@ public class TypeHierarchyResolver
 				}
 
 				@Override
-				public void visitClass(NapileClass klass)
+				public void visitClass(NapileClass declaration)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.CLASS, NapilePsiUtil.safeName(klass.getName()), NapilePsiUtil.isStatic(klass));
-					context.getClasses().put(klass, mutableClassDescriptor);
-					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(klass), mutableClassDescriptor);
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), NapilePsiUtil.isStatic(declaration));
+					context.getClasses().put(declaration, mutableClassDescriptor);
+					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(declaration), mutableClassDescriptor);
 
 					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
 
-					prepareForDeferredCall(classScope, mutableClassDescriptor, klass);
+					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
 
 					owner.addClassifierDescriptor(mutableClassDescriptor);
 				}
@@ -202,7 +211,7 @@ public class TypeHierarchyResolver
 				@Override
 				public void visitAnonymClass(NapileAnonymClass declaration)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), NapilePsiUtil.isStatic(declaration));
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), NapilePsiUtil.isStatic(declaration));
 					context.getAnonymous().put(declaration, mutableClassDescriptor);
 
 					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();

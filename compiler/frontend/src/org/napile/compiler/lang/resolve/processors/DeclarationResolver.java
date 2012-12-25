@@ -106,35 +106,10 @@ public class DeclarationResolver
 	public void process(@NotNull JetScope rootScope)
 	{
 		resolveDeclarations();
-		resolveAnnotations();
+		annotationResolver.resolveBindAnnotations(trace);
 		importsResolver.processMembersImports(rootScope);
 		checkRedeclarationsInNamespaces();
 		checkRedeclarationsInInnerClassNames();
-	}
-
-	private void resolveAnnotations()
-	{
-		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
-		{
-			NapileClass napileClass = entry.getKey();
-			MutableClassDescriptor descriptor = entry.getValue();
-			resolveAnnotationsForClassOrObject(annotationResolver, napileClass, descriptor);
-		}
-		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-		{
-			NapileAnonymClass objectDeclaration = entry.getKey();
-			MutableClassDescriptor descriptor = entry.getValue();
-			resolveAnnotationsForClassOrObject(annotationResolver, objectDeclaration, descriptor);
-		}
-	}
-
-	private void resolveAnnotationsForClassOrObject(AnnotationResolver annotationResolver, NapileClassLike jetClass, MutableClassDescriptor descriptor)
-	{
-		NapileModifierList modifierList = jetClass.getModifierList();
-		if(modifierList != null)
-		{
-			descriptor.getAnnotations().addAll(annotationResolver.resolveAnnotations(descriptor.getScopeForSupertypeResolution(), modifierList.getAnnotations(), trace));
-		}
 	}
 
 	private void resolveDeclarations()

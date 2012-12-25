@@ -4,13 +4,18 @@
 	<modifiers>
 		<static/>
 	</modifiers>
-	<constructor>
+	<method name="this">
 		<modifiers>
 			<final/>
 		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
 		<code max_locals="1">
 			<load val="0"/>
 			<return/>
 		</code>
-	</constructor>
+	</method>
 </class>

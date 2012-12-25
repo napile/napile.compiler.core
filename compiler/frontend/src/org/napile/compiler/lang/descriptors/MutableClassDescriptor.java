@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -47,9 +48,9 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 
 	private final WritableScope staticScope;
 
-	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope outerScope, ClassKind kind, Name name, boolean isStatic)
+	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope outerScope, ClassKind kind, Name name, @NotNull List<AnnotationDescriptor> annotationDescriptors, boolean isStatic)
 	{
-		super(containingDeclaration, kind, isStatic);
+		super(containingDeclaration, kind, annotationDescriptors, isStatic);
 
 		RedeclarationHandler redeclarationHandler = RedeclarationHandler.DO_NOTHING;
 

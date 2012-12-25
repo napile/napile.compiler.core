@@ -27,9 +27,9 @@ import org.napile.compiler.lang.types.JetType;
 public class AnnotationDescriptor
 {
 	private JetType annotationType;
+
 	private ResolvedCall<ConstructorDescriptor> resolvedCall;
 
-	@NotNull
 	public JetType getType()
 	{
 		return annotationType;

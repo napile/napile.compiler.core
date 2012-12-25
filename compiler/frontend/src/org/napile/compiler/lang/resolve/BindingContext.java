@@ -76,6 +76,7 @@ public interface BindingContext extends BindingReader
 	};
 
 	WritableSlice<NapileAnnotation, AnnotationDescriptor> ANNOTATION = Slices.createSimpleSlice();
+	WritableSlice<NapileAnnotation, JetScope> ANNOTATION_SCOPE = new BasicWritableSlice<NapileAnnotation, JetScope>(RewritePolicy.DO_NOTHING, true);
 
 	WritableSlice<NapileExpression, CompileTimeConstant<?>> COMPILE_TIME_VALUE = Slices.createSimpleSlice();
 	WritableSlice<NapileTypeReference, JetType> TYPE = Slices.createSimpleSlice();
