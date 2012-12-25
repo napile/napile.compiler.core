@@ -128,7 +128,7 @@ public interface NapileNodes
 	NapileNode DOT_QUALIFIED_EXPRESSION = new NapileNode("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpression.class);
 	NapileNode SAFE_ACCESS_EXPRESSION = new NapileNode("SAFE_ACCESS_EXPRESSION", NapileSafeQualifiedExpression.class);
 
-	NapileNode ANONYM_CLASS_EXPRESSION = new NapileNode("OBJECT_LITERAL", NapileAnonymClassExpression.class);
+	NapileNode ANONYM_CLASS_EXPRESSION = new NapileNode("ANONYM_CLASS_EXPRESSION", NapileAnonymClassExpression.class);
 
 	NapileNode WHEN = new NapileNode("WHEN", NapileWhenExpression.class);
 	NapileNode WHEN_ENTRY = new NapileNode("WHEN_ENTRY", NapileWhenEntry.class);

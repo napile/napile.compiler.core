@@ -78,7 +78,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitAnonymClassExpression(final NapileAnonymClassExpression expression, final ExpressionTypingContext context)
 	{
-		DelegatingBindingTrace delegatingBindingTrace = context.trace.get(TRACE_DELTAS_CACHE, expression.getObjectDeclaration());
+		DelegatingBindingTrace delegatingBindingTrace = context.trace.get(TRACE_DELTAS_CACHE, expression.getAnonymClass());
 		if(delegatingBindingTrace != null)
 		{
 			delegatingBindingTrace.addAllMyDataTo(context.trace);
@@ -93,7 +93,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 			@Override
 			public void handleRecord(WritableSlice<PsiElement, ClassDescriptor> slice, PsiElement declaration, final ClassDescriptor descriptor)
 			{
-				if(slice == CLASS && declaration == expression.getObjectDeclaration())
+				if(slice == CLASS && declaration == expression.getAnonymClass())
 				{
 					JetType defaultType = DeferredType.create(context.trace, new LazyValueWithDefault<JetType>(ErrorUtils.createErrorType("Recursive dependency"))
 					{
@@ -114,11 +114,11 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		};
 		ObservableBindingTrace traceAdapter = new ObservableBindingTrace(temporaryTrace);
 		traceAdapter.addHandler(CLASS, handler);
-		TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), traceAdapter, context.scope, context.scope.getContainingDeclaration(), expression.getObjectDeclaration());
+		TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), traceAdapter, context.scope, context.scope.getContainingDeclaration(), expression.getAnonymClass());
 
 		DelegatingBindingTrace cloneDelta = new DelegatingBindingTrace(new BindingTraceContext().getBindingContext());
 		temporaryTrace.addAllMyDataTo(cloneDelta);
-		context.trace.record(TRACE_DELTAS_CACHE, expression.getObjectDeclaration(), cloneDelta);
+		context.trace.record(TRACE_DELTAS_CACHE, expression.getAnonymClass(), cloneDelta);
 		temporaryTrace.commit();
 		return DataFlowUtils.checkType(result[0], expression, context, context.dataFlowInfo);
 	}

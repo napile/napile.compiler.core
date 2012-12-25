@@ -919,7 +919,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitAnonymClassExpression(NapileAnonymClassExpression expression)
 		{
-			NapileAnonymClass declaration = expression.getObjectDeclaration();
+			NapileAnonymClass declaration = expression.getAnonymClass();
 			value(declaration, inCondition);
 
 			NapileDeclaration[] declarations = declaration.getDeclarations();

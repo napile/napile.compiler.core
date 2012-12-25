@@ -19,6 +19,7 @@ package org.napile.compiler.codegen.processors;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.tree.members.AnnotableNode;
 import org.napile.asm.tree.members.AnnotationNode;
+import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
@@ -34,14 +35,14 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
  */
 public class AnnotationCodegen
 {
-	public static void convert(@NotNull BindingTrace bindingTrace, @NotNull Annotated annotated, @NotNull AnnotableNode<?> annotableNode)
+	public static void convert(@NotNull BindingTrace bindingTrace, @NotNull Annotated annotated, @NotNull AnnotableNode<?> annotableNode, @NotNull ClassNode classNode)
 	{
 		for(AnnotationDescriptor a : annotated.getAnnotations())
-			annotableNode.annotations.add(convert(bindingTrace, a));
+			annotableNode.annotations.add(convert(bindingTrace, a, classNode));
 	}
 
 	@NotNull
-	public static AnnotationNode convert(@NotNull BindingTrace bindingTrace, @NotNull AnnotationDescriptor annotationDescriptor)
+	public static AnnotationNode convert(@NotNull BindingTrace bindingTrace, @NotNull AnnotationDescriptor annotationDescriptor, @NotNull ClassNode classNode)
 	{
 		assert annotationDescriptor.getResolvedCall() == null;
 
@@ -53,7 +54,7 @@ public class AnnotationCodegen
 
 		TypeNode type = TypeTransformer.toAsmType(constructorDescriptor.getReturnType());
 
-		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, type);
+		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, type, classNode);
 
 		gen.pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
 

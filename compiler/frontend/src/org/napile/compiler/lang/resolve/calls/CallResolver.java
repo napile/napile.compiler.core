@@ -214,9 +214,23 @@ public class CallResolver
 				NapileTypeReference typeReference = expression.getTypeReference();
 				if(typeReference == null)
 					return checkArgumentTypesAndFail(context); // No type there
-				functionReference = new NapileFakeReferenceImpl(typeReference);
+				NapileTypeElement typeElement = typeReference.getTypeElement();
 
-				JetType constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
+				JetType constructedType = null;
+				if(typeElement instanceof NapileUserType)
+				{
+					functionReference = ((NapileUserType) typeElement).getReferenceExpression();
+					constructedType = typeResolver.resolveType(context.scope, typeReference, TemporaryBindingTrace.create(context.trace), true);
+				}
+				else
+				{
+					functionReference = new NapileFakeReferenceImpl(typeReference);
+					constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
+				}
+
+				if(functionReference == null)
+					return checkArgumentTypesAndFail(context); // No type there
+
 				DeclarationDescriptor declarationDescriptor = constructedType.getConstructor().getDeclarationDescriptor();
 
 				if(declarationDescriptor instanceof ClassifierDescriptor)

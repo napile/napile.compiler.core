@@ -24,7 +24,6 @@ import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
@@ -105,7 +104,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 
 			if(Boolean.TRUE.equals(bindingContext.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
 			{
-				String msg = ((VariableDescriptor) descriptor).getModality() != Modality.FINAL ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
+				String msg = ((VariableDescriptor) descriptor).isMutable() ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
 				holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(NapileHighlightingColors.WRAPPED_INTO_REF);
 			}
 

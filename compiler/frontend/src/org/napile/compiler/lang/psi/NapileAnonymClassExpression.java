@@ -43,7 +43,7 @@ public class NapileAnonymClassExpression extends NapileExpressionImpl
 	}
 
 	@NotNull
-	public NapileAnonymClass getObjectDeclaration()
+	public NapileAnonymClass getAnonymClass()
 	{
 		return (NapileAnonymClass) findNotNullChildByType(NapileNodes.ANONYM_CLASS);
 	}

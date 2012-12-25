@@ -49,8 +49,8 @@ public final class AnalyzerFacadeWithCache
 
 	private static final Logger LOG = Logger.getInstance("AnalyzerFacadeWithCache");
 
-	private final static Key<CachedValue<AnalyzeExhaust>> ANALYZE_EXHAUST_HEADERS = Key.create("ANALYZE_EXHAUST_HEADERS");
-	private final static Key<CachedValue<AnalyzeExhaust>> ANALYZE_EXHAUST_FULL = Key.create("ANALYZE_EXHAUST_FULL");
+	public final static Key<CachedValue<AnalyzeExhaust>> ANALYZE_EXHAUST_HEADERS = Key.create("ANALYZE_EXHAUST_HEADERS");
+	public final static Key<CachedValue<AnalyzeExhaust>> ANALYZE_EXHAUST_FULL = Key.create("ANALYZE_EXHAUST_FULL");
 
 	private static final Object lock = new Object();
 	public static final Function<NapileFile, Collection<NapileFile>> SINGLE_DECLARATION_PROVIDER = new Function<NapileFile, Collection<NapileFile>>()

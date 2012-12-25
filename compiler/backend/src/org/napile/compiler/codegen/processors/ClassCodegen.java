@@ -38,7 +38,6 @@ import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
@@ -86,7 +85,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, klass);
 
 		ClassNode classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
-		AnnotationCodegen.convert(bindingTrace, classDescriptor, classNode);
+		AnnotationCodegen.convert(bindingTrace, classDescriptor, classNode, classNode);
 
 		for(JetType superType : classDescriptor.getSupertypes())
 			classNode.supers.add(TypeTransformer.toAsmType(superType));
@@ -99,22 +98,6 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 	}
 
 	@Override
-	public Void visitAnonymClass(NapileAnonymClass element, Node data)
-	{
-		ClassDescriptor classDescriptor = (ClassDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
-
-		FqName fqName = bindingTrace.get(BindingContext2.DECLARATION_TO_FQ_NAME, element);
-
-		assert fqName != null;
-
-		ClassNode classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
-
-		classNodes.put(fqName, classNode);
-
-		return null; //return super.visitAnonymClass(element, classNode);
-	}
-
-	@Override
 	public Void visitAnonymMethodExpression(NapileAnonymMethodExpression expression, Node parent)
 	{
 		assert parent instanceof ClassNode;
@@ -123,10 +106,10 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		SimpleMethodDescriptor methodDescriptor = bindingTrace.safeGet(BindingContext.METHOD, expression);
 
-		// gen method
-		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, fqName.shortName(), expression.getAnonymMethod(), bindingTrace);
-
 		ClassNode classNode = (ClassNode) parent;
+
+		// gen method
+		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, fqName.shortName(), expression.getAnonymMethod(), bindingTrace, classNode);
 
 		classNode.addMember(methodNode);
 		return null;
@@ -141,7 +124,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		MethodNode constructorNode = MethodCodegen.gen(constructor, methodDescriptor, bindingTrace);
+		MethodNode constructorNode = MethodCodegen.gen(constructor, methodDescriptor, bindingTrace, classNode);
 
 		constructors.putValue(classNode, new Triple<NapileConstructor, MethodNode, ConstructorDescriptor>(constructor, constructorNode, methodDescriptor));
 
@@ -157,7 +140,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), function, bindingTrace);
+		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), function, bindingTrace, classNode);
 
 		classNode.addMember(methodNode);
 
@@ -203,7 +186,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 			}
 			else
 			{
-				ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor);
+				ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode);
 				if(!variableDescriptor.isStatic())
 					expressionCodegen.getInstructs().load(0);
 
@@ -247,7 +230,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 				MethodCodegen.genReferenceParameters(constructorDescriptor, constructorNode.instructions);
 
-				ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor);
+				ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode);
 				NapileExpression expression = constructor.getBodyExpression();
 				if(expression != null)
 					gen.returnExpression(expression, false);

@@ -24,6 +24,7 @@ import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileLoopExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
 
@@ -63,7 +64,9 @@ public abstract class LoopCodegen<E extends NapileLoopExpression>
 	{
 		beforeLoop(gen, instructions);
 
-		gen.gen(expression.getBody());
+		NapileExpression bodyExpression = expression.getBody();
+		if(bodyExpression != null)
+			gen.gen(bodyExpression);
 
 		afterLoop(gen, instructions);
 

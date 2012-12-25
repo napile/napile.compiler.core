@@ -21,6 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.MacroNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
@@ -53,7 +54,7 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
  */
 public class MethodCodegen
 {
-	public static MethodNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace bindingTrace)
+	public static MethodNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
 		MethodNode constructorNode = MethodNode.constructor(ModifierCodegen.gen(constructorDescriptor));
 		constructorNode.returnType = new TypeNode(false, new ThisTypeNode());
@@ -70,7 +71,7 @@ public class MethodCodegen
 		{
 			ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
 
-			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor);
+			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode);
 
 			CallableMethod method = CallTransformer.transformToCallable(call, false, false);
 
@@ -103,7 +104,7 @@ public class MethodCodegen
 	}
 
 	@NotNull
-	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name name, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace bindingTrace)
+	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name name, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
 		MethodNode methodNode = gen(methodDescriptor, name);
 
@@ -112,7 +113,7 @@ public class MethodCodegen
 		NapileExpression expression = declarationWithBody.getBodyExpression();
 		if(expression != null)
 		{
-			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, methodDescriptor);
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, methodDescriptor, classNode);
 			expressionCodegen.returnExpression(expression, methodDescriptor.isMacro());
 
 			InstructionAdapter adapter = expressionCodegen.getInstructs();

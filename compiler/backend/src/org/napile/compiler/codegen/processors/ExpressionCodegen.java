@@ -32,6 +32,7 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
@@ -103,27 +104,31 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@NotNull
 	private final Map<NapileElement, Local> tempVariables = new HashMap<NapileElement, Local>();
 	@NotNull
-	private final InstructionAdapter instructs = new InstructionAdapter();
+	public final InstructionAdapter instructs = new InstructionAdapter();
 	@NotNull
 	public final FrameMap frameMap;
 	@NotNull
 	private final TypeNode returnType;
 	@NotNull
 	private final Deque<LoopCodegen<?>> loops = new ArrayDeque<LoopCodegen<?>>();
+	@NotNull
+	public final ClassNode classNode;
 
 	private final boolean isInstanceConstructor;
 
-	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull TypeNode r)
+	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull TypeNode r, @NotNull ClassNode c)
 	{
 		bindingTrace = b;
 		isInstanceConstructor = false;
 		returnType = r;
+		classNode = c;
 		frameMap = new FrameMap();
 	}
 
-	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull CallableDescriptor d)
+	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull CallableDescriptor d, @NotNull ClassNode c)
 	{
 		bindingTrace = b;
+		classNode = c;
 		isInstanceConstructor = d instanceof ConstructorDescriptor;
 		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(((ClassDescriptor) d.getContainingDeclaration()).getDefaultType()) : TypeTransformer.toAsmType(d.getReturnType());
 		frameMap = new FrameMap();
@@ -286,6 +291,12 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		instructs.throwVal();
 
 		return StackValue.onStack(TypeConstants.EXCEPTION);
+	}
+
+	@Override
+	public StackValue visitAnonymClassExpression(NapileAnonymClassExpression expression, StackValue data)
+	{
+		return InnerClassCodegen.genAnonym(expression, this);
 	}
 
 	@Override

@@ -33,6 +33,8 @@
 				<dirset dir="compiler/frontend.bytecode/src/main/java" />
 				<dirset dir="compiler/frontend.source/src/main/java" />
 				<dirset dir="compiler/injection.api/src/main/java" />
+				<dirset dir="compiler/injection.text/src/main/java" />
+				<dirset dir="compiler/injection.text.backend/src/main/java" />
 			</src>
 		</javac>
 	</target>

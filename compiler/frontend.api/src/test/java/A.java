@@ -20,13 +20,18 @@
  */
 public class A
 {
+	private int val;
+
 	public void main()
 	{
-		a();
-	}
+		final int v = "1234".length();
 
-	private void a()
-	{
-
+		Object a = new Object()
+		{
+			void test()
+			{
+				val = v;
+			}
+		};
 	}
 }

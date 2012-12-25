@@ -21,7 +21,7 @@ public class IdePsiUtil extends RunUtil
 {
 	public static boolean isDeprecated(@NotNull NapileDeclaration declaration)
 	{
-		AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(declaration.getContainingFile());
+		AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.getAnalyzedWithoutCache(declaration.getContainingFile());
 		DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
 		if(descriptor == null)
 			return false;
@@ -30,7 +30,7 @@ public class IdePsiUtil extends RunUtil
 
 	public static boolean hasClassPoint(@NotNull NapileClassLike classLike)
 	{
-		AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(classLike.getContainingFile());
+		AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.getAnalyzedWithoutCache(classLike.getContainingFile());
 		MutableClassDescriptor descriptor = (MutableClassDescriptor) analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, classLike);
 		if(descriptor == null)
 			return false;
