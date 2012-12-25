@@ -22,16 +22,12 @@ public class A
 {
 	private int val;
 
-	public void main()
+	public static void main(String... arg)
 	{
-		final int v = "1234".length();
+		Integer min = Integer.MIN_VALUE;
+		String minHex = Integer.toHexString(Integer.MIN_VALUE);
 
-		Object a = new Object()
-		{
-			void test()
-			{
-				val = v;
-			}
-		};
+		System.out.println(min + " " + minHex);
+		System.out.println(Integer.parseInt( "-" + minHex, 16));
 	}
 }

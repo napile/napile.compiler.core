@@ -24,7 +24,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import com.google.common.base.Function;
 
 /**
  * @author abreslav
@@ -43,92 +42,56 @@ public class CompileTimeConstantResolver
 	{
 		if(noExpectedType(expectedType))
 		{
-			Long value = parseLongValue(text);
+			Number value = parseLongValue(text, IntConstantFactory.LONG);
 			if(value == null)
-			{
 				return OUT_OF_RANGE;
-			}
 
-			if(Integer.MIN_VALUE <= value && value <= Integer.MAX_VALUE)
-			{
+			long longValue = value.longValue();
+			if(Integer.MIN_VALUE <= longValue && longValue <= Integer.MAX_VALUE)
 				return new IntValue(value.intValue());
-			}
-			return new LongValue(value);
+			return new LongValue(longValue);
 		}
-		Function<Long, ? extends CompileTimeConstant<?>> create;
-		long lowerBound;
-		long upperBound;
+		IntConstantFactory factory;
+
 		TypeConstructor constructor = expectedType.getConstructor();
 		if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.INT))
-		{
-			create = IntValue.CREATE;
-			lowerBound = Integer.MIN_VALUE;
-			upperBound = Integer.MAX_VALUE;
-		}
+			factory = IntConstantFactory.INT;
 		else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.LONG))
-		{
-			create = LongValue.CREATE;
-			lowerBound = Long.MIN_VALUE;
-			upperBound = Long.MAX_VALUE;
-		}
+			factory = IntConstantFactory.LONG;
 		else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.SHORT))
-		{
-			create = ShortValue.CREATE;
-			lowerBound = Short.MIN_VALUE;
-			upperBound = Short.MAX_VALUE;
-		}
+			factory = IntConstantFactory.SHORT;
 		else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.BYTE))
-		{
-			create = ByteValue.CREATE;
-			lowerBound = Byte.MIN_VALUE;
-			upperBound = Byte.MAX_VALUE;
-		}
+			factory = IntConstantFactory.BYTE;
 		else
-		{
-			JetTypeChecker typeChecker = JetTypeChecker.INSTANCE;
-			JetType intType = TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.INT, false);
-			JetType longType = TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.LONG, false);
-			if(typeChecker.isSubtypeOf(intType, expectedType))
-			{
-				return getIntegerValue(text, intType);
-			}
-			else if(typeChecker.isSubtypeOf(longType, expectedType))
-			{
-				return getIntegerValue(text, longType);
-			}
-			else
-			{
-				return new ErrorValue("An integer literal does not conform to the expected type " + expectedType);
-			}
-		}
-		Long value = parseLongValue(text);
+			factory =  IntConstantFactory.LONG;
 
-		if(value != null && lowerBound <= value && value <= upperBound)
-		{
-			return create.apply(value);
-		}
+		Number value = parseLongValue(text, factory);
+
+		if(value != null)
+			return factory.createValue(value);
+
 		return new ErrorValue("An integer literal does not conform to the expected type " + expectedType);
 	}
 
 	@Nullable
-	private static Long parseLongValue(String text)
+	private static Number parseLongValue(String text, IntConstantFactory factory)
 	{
 		try
 		{
-			long value;
+			Number value;
 			if(text.startsWith("0x") || text.startsWith("0X"))
 			{
 				String hexString = text.substring(2);
-				value = Long.parseLong(hexString, 16);
+				value = factory.parse(hexString, 16);
 			}
 			else if(text.startsWith("0b") || text.startsWith("0B"))
 			{
 				String binString = text.substring(2);
-				value = Long.parseLong(binString, 2);
+				value = factory.parse(binString, 2);
 			}
 			else
 			{
-				value = Long.parseLong(text);
+				value = factory.parse(text, 10);
 			}
 			return value;
 		}
