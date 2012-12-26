@@ -150,6 +150,9 @@ public class DescriptorUtils
 	@NotNull
 	public static FqNameUnsafe getFQName(@NotNull DeclarationDescriptor descriptor)
 	{
+		if(descriptor == DeclarationDescriptor.EMPTY)
+			return FqName.ROOT.toUnsafe();
+
 		DeclarationDescriptor containingDeclaration = descriptor.getContainingDeclaration();
 
 		if(descriptor instanceof ModuleDescriptor || containingDeclaration instanceof ModuleDescriptor)

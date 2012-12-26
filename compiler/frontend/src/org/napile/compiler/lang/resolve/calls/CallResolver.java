@@ -147,7 +147,7 @@ public class CallResolver
 	@NotNull
 	public OverloadResolutionResults<MethodDescriptor> resolveCallWithGivenName(@NotNull BasicResolutionContext context, @NotNull final NapileReferenceExpression functionReference, @NotNull Name name, boolean bindReference)
 	{
-		List<ResolutionTask<CallableDescriptor, MethodDescriptor>> tasks = TaskPrioritizer.<CallableDescriptor, MethodDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.FUNCTIONS_AND_VARIABLES);
+		List<ResolutionTask<CallableDescriptor, MethodDescriptor>> tasks = TaskPrioritizer.<CallableDescriptor, MethodDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.ALL);
 		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, tasks, CallTransformer.FUNCTION_CALL_TRANSFORMER, functionReference, bindReference);
 	}
 
@@ -176,7 +176,7 @@ public class CallResolver
 			if(name == null)
 				return checkArgumentTypesAndFail(context);
 
-			prioritizedTasks = TaskPrioritizer.<CallableDescriptor, MethodDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.FUNCTIONS_AND_VARIABLES);
+			prioritizedTasks = TaskPrioritizer.<CallableDescriptor, MethodDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.ALL);
 			ResolutionTask.DescriptorCheckStrategy abstractConstructorCheck = new ResolutionTask.DescriptorCheckStrategy()
 			{
 				@Override

@@ -65,7 +65,7 @@ public class TypeTransformer
 		else if(owner instanceof TypeParameterDescriptor)
 			typeConstructorNode = new TypeParameterValueTypeNode(owner.getName());
 		else
-			throw new RuntimeException("invalid " + owner);
+			throw new RuntimeException("invalid " + jetType.getConstructor());
 
 		TypeNode typeNode = new TypeNode(jetType.isNullable(), typeConstructorNode);
 		for(JetType argument : jetType.getArguments())

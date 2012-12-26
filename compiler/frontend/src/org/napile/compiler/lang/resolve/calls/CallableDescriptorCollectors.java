@@ -32,6 +32,9 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.MultiTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeEntry;
+import org.napile.compiler.lang.types.TypeConstructor;
 import com.google.common.collect.Lists;
 
 /**
@@ -40,7 +43,7 @@ import com.google.common.collect.Lists;
 public class CallableDescriptorCollectors
 {
 
-	/*package*/ static CallableDescriptorCollector<MethodDescriptor> FUNCTIONS = new CallableDescriptorCollector<MethodDescriptor>()
+	static CallableDescriptorCollector<MethodDescriptor> METHODS = new CallableDescriptorCollector<MethodDescriptor>()
 	{
 
 		@NotNull
@@ -81,7 +84,7 @@ public class CallableDescriptorCollectors
 		}
 	};
 
-	/*package*/ static CallableDescriptorCollector<VariableDescriptor> VARIABLES = new CallableDescriptorCollector<VariableDescriptor>()
+	static CallableDescriptorCollector<VariableDescriptor> VARIABLES = new CallableDescriptorCollector<VariableDescriptor>()
 	{
 
 		@NotNull
@@ -99,6 +102,14 @@ public class CallableDescriptorCollectors
 		@Override
 		public Collection<VariableDescriptor> getMembersByName(@NotNull JetType receiverType, Name name)
 		{
+			TypeConstructor typeConstructor = receiverType.getConstructor();
+			if(typeConstructor instanceof MultiTypeConstructor)
+			{
+				List<MultiTypeEntry> variableDescriptors = ((MultiTypeConstructor) typeConstructor).getEntries();
+				for(MultiTypeEntry entry : variableDescriptors)
+					if(entry.name != null && entry.name.equals(name))
+						return Collections.singletonList(entry.descriptor);
+			}
 			return receiverType.getMemberScope().getVariables(name);
 		}
 
@@ -110,5 +121,5 @@ public class CallableDescriptorCollectors
 		}
 	};
 
-	static List<CallableDescriptorCollector<? extends CallableDescriptor>> FUNCTIONS_AND_VARIABLES = Lists.<CallableDescriptorCollector<? extends CallableDescriptor>> newArrayList(FUNCTIONS, VARIABLES);
+	static List<CallableDescriptorCollector<? extends CallableDescriptor>> ALL = Lists.<CallableDescriptorCollector<? extends CallableDescriptor>> newArrayList(METHODS, VARIABLES);
 }

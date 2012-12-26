@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,18 @@
 
 package org.napile.compiler.lang.types;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.ReadOnly;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.annotations.Annotated;
 
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 18:11/26.12.12
  */
-public interface TypeConstructor extends Annotated
+public interface MultiTypeConstructor extends TypeConstructor
 {
-	@NotNull
 	@ReadOnly
-	List<TypeParameterDescriptor> getParameters();
-
 	@NotNull
-	@ReadOnly
-	Collection<? extends JetType> getSupertypes();
-
-	boolean isSealed();
-
-	@Nullable
-	ClassifierDescriptor getDeclarationDescriptor();
+	List<MultiTypeEntry> getEntries();
 }

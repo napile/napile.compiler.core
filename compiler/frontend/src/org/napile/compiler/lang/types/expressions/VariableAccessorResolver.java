@@ -42,6 +42,8 @@ import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.MultiTypeConstructor;
 
 /**
  * @author VISTALL
@@ -65,11 +67,15 @@ public class VariableAccessorResolver
 		{
 			NapileDotQualifiedExpression dotQualifiedExpression = ((NapileDotQualifiedExpression) exp);
 
+			JetType receiverType = context.trace.get(BindingContext.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
+			if(receiverType != null && receiverType.getConstructor() instanceof MultiTypeConstructor)
+				return null;
+
 			if(dotQualifiedExpression.getSelectorExpression() instanceof NapileSimpleNameExpression)
 			{
 				nameExpression = (NapileSimpleNameExpression) dotQualifiedExpression.getSelectorExpression();
 				name = Name.identifier(nameExpression.getReferencedName() + AsmConstants.ANONYM_SPLITTER + "set");
-				receiverDescriptor = new ExpressionReceiver(dotQualifiedExpression.getReceiverExpression(), context.trace.get(EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression()));
+				receiverDescriptor = new ExpressionReceiver(dotQualifiedExpression.getReceiverExpression(), context.trace.safeGet(EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression()));
 			}
 		}
 		else if(exp instanceof NapileArrayAccessExpressionImpl)

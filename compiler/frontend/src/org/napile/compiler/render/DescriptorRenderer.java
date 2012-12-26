@@ -30,14 +30,16 @@ import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.rendering.Renderer;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeEntry;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Function;
 
@@ -139,7 +141,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		else if(type.getConstructor() instanceof SelfTypeConstructor)
 			return escape(renderKeyword(NapileTokens.THIS_KEYWORD));
 		else if(type.getConstructor() instanceof MethodTypeConstructor)
-			return escape(renderFunctionType(type, shortNamesOnly));
+			return escape(renderMethodType(type, shortNamesOnly));
+		else if(type.getConstructor() instanceof MultiTypeConstructor)
+			return renderMultiType(type, shortNamesOnly);
 		else
 			return escape(renderDefaultType(type, shortNamesOnly));
 	}
@@ -200,7 +204,29 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 	}
 
-	private String renderFunctionType(JetType type, final boolean shortNamesOnly)
+	private String renderMultiType(JetType type, final boolean shortNamesOnly)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		sb.append(StringUtil.join(((MultiTypeConstructor)type.getConstructor()).getEntries(), new Function<MultiTypeEntry, String>()
+		{
+			@Override
+			public String fun(MultiTypeEntry multiTypeEntry)
+			{
+				StringBuilder b = new StringBuilder();
+				if(multiTypeEntry.mutable != null)
+					b.append(renderKeyword(multiTypeEntry.mutable ? NapileTokens.VAR_KEYWORD : NapileTokens.VAL_KEYWORD)).append(" ");
+				if(multiTypeEntry.name != null)
+					b.append(multiTypeEntry.name).append(" : ");
+				b.append(renderType(multiTypeEntry.type, shortNamesOnly));
+				return b.toString();
+			}
+		}, ", "));
+		sb.append("]");
+		return sb.toString();
+	}
+
+	private String renderMethodType(JetType type, final boolean shortNamesOnly)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");

@@ -16,10 +16,14 @@
 
 package org.napile.compiler.lang.descriptors;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.DescriptorWithParent;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -27,6 +31,55 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  */
 public interface DeclarationDescriptor extends Annotated, Named, DescriptorWithParent
 {
+	DeclarationDescriptor EMPTY = new DeclarationDescriptor()
+	{
+		@NotNull
+		@Override
+		public DeclarationDescriptor getOriginal()
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@Nullable
+		@Override
+		public DeclarationDescriptor getContainingDeclaration()
+		{
+			return null;
+		}
+
+		@Nullable
+		@Override
+		public DeclarationDescriptor substitute(TypeSubstitutor substitutor)
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public <R, D> R accept(DeclarationDescriptorVisitor<R, D> visitor, D data)
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void acceptVoid(DeclarationDescriptorVisitor<Void, Void> visitor)
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public List<AnnotationDescriptor> getAnnotations()
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@NotNull
+		@Override
+		public Name getName()
+		{
+			throw new UnsupportedOperationException();
+		}
+	};
+
 	/**
 	 * @return The descriptor that corresponds to the original declaration of this element.
 	 *         A descriptor can be obtained from its original by substituting type arguments (of the declaring class

@@ -24,7 +24,10 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.impl.NapileArrayOfExpressionImpl;
 import org.napile.compiler.lang.psi.impl.NapileCallParameterAsReferenceImpl;
 import org.napile.compiler.lang.psi.impl.NapileInjectionExpressionImpl;
+import org.napile.compiler.lang.psi.impl.NapileMethodTypeImpl;
 import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
+import org.napile.compiler.lang.psi.impl.NapileMultiTypeExpressionImpl;
+import org.napile.compiler.lang.psi.impl.NapileMultiTypeImpl;
 import org.napile.compiler.lang.psi.impl.NapileVariableAccessorImpl;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.tree.IElementType;
@@ -71,7 +74,8 @@ public interface NapileNodes
 	NapileNode TYPE_REFERENCE = new NapileNode("TYPE_REFERENCE", NapileTypeReferenceImpl.class);
 
 	NapileNode USER_TYPE = new NapileNode("USER_TYPE", NapileUserTypeImpl.class);
-	NapileNode ANONYM_METHOD_TYPE = new NapileNode("ANONYM_METHOD_TYPE", NapileMethodTypeImpl.class);
+	NapileNode METHOD_TYPE = new NapileNode("METHOD_TYPE", NapileMethodTypeImpl.class);
+	NapileNode MULTI_TYPE = new NapileNode("MULTI_TYPE", NapileMultiTypeImpl.class);
 	NapileNode SELF_TYPE = new NapileNode("SELF_TYPE", NapileSelfTypeImpl.class);
 	NapileNode NULLABLE_TYPE = new NapileNode("NULLABLE_TYPE", NapileNullableTypeImpl.class);
 
@@ -127,6 +131,7 @@ public interface NapileNodes
 	NapileNode INDICES = new NapileNode("INDICES", NapileContainerNode.class);
 	NapileNode DOT_QUALIFIED_EXPRESSION = new NapileNode("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpression.class);
 	NapileNode SAFE_ACCESS_EXPRESSION = new NapileNode("SAFE_ACCESS_EXPRESSION", NapileSafeQualifiedExpression.class);
+	NapileNode MULTI_TYPE_EXPRESSION = new NapileNode("MULTI_TYPE_EXPRESSION", NapileMultiTypeExpressionImpl.class);
 
 	NapileNode ANONYM_CLASS_EXPRESSION = new NapileNode("ANONYM_CLASS_EXPRESSION", NapileAnonymClassExpression.class);
 

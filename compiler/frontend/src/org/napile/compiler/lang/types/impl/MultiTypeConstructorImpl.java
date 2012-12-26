@@ -19,33 +19,28 @@ package org.napile.compiler.lang.types.impl;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.MethodTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeEntry;
 
 /**
  * @author VISTALL
- * @date 12:17/15.09.12
+ * @date 18:12/26.12.12
  */
-public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl implements MethodTypeConstructor
+public class MultiTypeConstructorImpl extends AbstractTypeConstructorImpl implements MultiTypeConstructor
 {
-	private final JetType returnType;
-	private final Map<Name, JetType> parameterTypes;
+	private final List<MultiTypeEntry> entries;
 
-	public MethodTypeConstructorImpl(@NotNull JetType returnType, Map<Name, JetType> parameterTypes, @NotNull JetScope scope)
+	public MultiTypeConstructorImpl(@NotNull List<MultiTypeEntry> entries, @NotNull JetScope scope)
 	{
 		super(scope);
-
-		this.returnType = returnType;
-		this.parameterTypes = parameterTypes;
+		this.entries = entries;
 	}
 
 	@NotNull
@@ -76,38 +71,29 @@ public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl imple
 
 	@NotNull
 	@Override
-	public JetType getReturnType()
+	public List<MultiTypeEntry> getEntries()
 	{
-		return returnType;
-	}
-
-	@NotNull
-	@Override
-	public Map<Name, JetType> getParameterTypes()
-	{
-		return parameterTypes;
+		return entries;
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		if(o == null || o.getClass() != MethodTypeConstructorImpl.class)
+		if(o == null || o.getClass() != MultiTypeConstructorImpl.class)
 			return false;
-		MethodTypeConstructor oConstructor = (MethodTypeConstructor) o;
-		if(!returnType.equals(oConstructor.getReturnType()))
+		MultiTypeConstructor oConstructor = (MultiTypeConstructor) o;
+
+		if(entries.size() != oConstructor.getEntries().size())
 			return false;
 
-		if(parameterTypes.size() != oConstructor.getParameterTypes().size())
-			return false;
-
-		Iterator<Map.Entry<Name, JetType>> it1 = parameterTypes.entrySet().iterator();
-		Iterator<Map.Entry<Name, JetType>> it2 = oConstructor.getParameterTypes().entrySet().iterator();
+		Iterator<MultiTypeEntry> it1 = entries.iterator();
+		Iterator<MultiTypeEntry> it2 = oConstructor.getEntries().iterator();
 		while(it1.hasNext() && it2.hasNext())
 		{
-			Map.Entry<Name, JetType> entry1 = it1.next();
-			Map.Entry<Name, JetType> entry2 = it2.next();
+			MultiTypeEntry entry1 = it1.next();
+			MultiTypeEntry entry2 = it2.next();
 
-			if(!entry1.getValue().equals(entry2.getValue()))
+			if(!entry1.type.equals(entry2.type))
 				return false;
 		}
 		return true;

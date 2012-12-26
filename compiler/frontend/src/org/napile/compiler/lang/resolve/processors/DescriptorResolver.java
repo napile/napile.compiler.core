@@ -421,8 +421,6 @@ public class DescriptorResolver
 	@NotNull
 	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable variable, BindingTrace trace)
 	{
-		NapileModifierList modifierList = variable.getModifierList();
-
 		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, variable, trace), Modality.resolve(variable), Visibility.PUBLIC, NapilePsiUtil.safeName(variable.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(variable), variable.isMutable());
 
 		List<TypeParameterDescriptor> typeParameterDescriptors;
@@ -626,7 +624,15 @@ public class DescriptorResolver
 			else
 			{
 				Set<ConstructorDescriptor> constructorDescriptors = typeParameterDescriptor.getConstructors();
-				Set<ConstructorDescriptor> targetTypeConstructors = typeArgument.getConstructor().getDeclarationDescriptor().getConstructors();
+				ClassifierDescriptor classifierDescriptor = typeArgument.getConstructor().getDeclarationDescriptor();
+				if(classifierDescriptor == null)
+				{
+					if(!constructorDescriptors.isEmpty())
+						trace.report(CONSTRUCTORS_EXPECTED.on(jetTypeArgument));
+					return;
+				}
+
+				Set<ConstructorDescriptor> targetTypeConstructors = classifierDescriptor.getConstructors();
 
 				if(!constructorDescriptors.isEmpty())
 				{

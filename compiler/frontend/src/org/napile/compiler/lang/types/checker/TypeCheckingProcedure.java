@@ -107,22 +107,19 @@ public class TypeCheckingProcedure
 	public boolean isSubtypeOf(@NotNull JetType subtype, @NotNull JetType supertype)
 	{
 		if(ErrorUtils.isErrorType(subtype) || ErrorUtils.isErrorType(supertype))
-		{
 			return true;
-		}
+
 		if(!supertype.isNullable() && subtype.isNullable())
-		{
 			return false;
-		}
+
 		subtype = TypeUtils.makeNotNullable(subtype);
 		supertype = TypeUtils.makeNotNullable(supertype);
 		if(TypeUtils.isEqualFqName(subtype, NapileLangPackage.NULL))
 			return true;
+
 		@Nullable JetType closestSupertype = findCorrespondingSupertype(subtype, supertype);
 		if(closestSupertype == null)
-		{
 			return constraints.noCorrespondingSupertype(subtype, supertype); // if this returns true, there still isn't any supertype to continue with
-		}
 
 		return checkSubtypeForTheSameConstructor(closestSupertype, supertype);
 	}

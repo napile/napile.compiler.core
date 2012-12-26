@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNode;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
@@ -49,6 +50,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			// Prefix
 			NapileTokens.MINUS, NapileTokens.PLUS, NapileTokens.MINUSMINUS, NapileTokens.PLUSPLUS, NapileTokens.EXCL, NapileTokens.EXCLEXCL, // Joining complex tokens makes it necessary to put EXCLEXCL here
 			NapileTokens.LBRACE,
+			NapileTokens.LBRACKET,
 
 			NapileTokens.LPAR, // parenthesized
 			NapileTokens.HASH, // method targeting
@@ -82,7 +84,6 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 	private static final TokenSet STATEMENT_FIRST = TokenSet.orSet(EXPRESSION_FIRST, TokenSet.create(
 			// declaration
-			NapileTokens.LBRACKET, // attribute
 			NapileTokens.METH_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.VAR_KEYWORD,  NapileTokens.CLASS_KEYWORD), NapileTokens.MODIFIER_KEYWORDS);
 
 	/*package*/ static final TokenSet EXPRESSION_FOLLOW = TokenSet.create(NapileTokens.SEMICOLON, NapileTokens.ARROW, NapileTokens.COMMA, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.RBRACKET, NapileTokens.IDE_TEMPLATE_END);
@@ -297,39 +298,22 @@ public class JetExpressionParsing extends AbstractJetParsing
 	{
 		//        System.out.println("pre at "  + myBuilder.getTokenText());
 
-		if(at(NapileTokens.LBRACKET))
+		getBuilder().disableJoiningComplexTokens();
+		if(atSet(Precedence.PREFIX.getOperations()))
 		{
-			if(!parsing.parseMemberDeclaration(true))
-			{
-				//PsiBuilder.Marker expression = mark();
-				//myJetParsing.parseAnnotations();
-				//parsePrefixExpression();
-				//expression.done(ANNOTATED_EXPRESSION);
-			}
-			else
-			{
-				return;
-			}
+			PsiBuilder.Marker expression = mark();
+
+			parseOperationReference();
+
+			getBuilder().restoreJoiningComplexTokensState();
+
+			parsePrefixExpression();
+			expression.done(PREFIX_EXPRESSION);
 		}
 		else
 		{
-			getBuilder().disableJoiningComplexTokens();
-			if(atSet(Precedence.PREFIX.getOperations()))
-			{
-				PsiBuilder.Marker expression = mark();
-
-				parseOperationReference();
-
-				getBuilder().restoreJoiningComplexTokensState();
-
-				parsePrefixExpression();
-				expression.done(PREFIX_EXPRESSION);
-			}
-			else
-			{
-				getBuilder().restoreJoiningComplexTokensState();
-				parsePostfixExpression();
-			}
+			getBuilder().restoreJoiningComplexTokensState();
+			parsePostfixExpression();
 		}
 	}
 
@@ -497,7 +481,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 */
 	private void parseAtomicExpression()
 	{
-		//        System.out.println("atom at "  + myBuilder.getTokenText());
+		//System.out.println("atom at "  + tt());
 
 		if(at(NapileTokens.INJECTION_START))
 			codeInjectionParser.parse();
@@ -577,6 +561,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 			parseOneTokenExpression(REFERENCE_EXPRESSION);
 		else if(at(NapileTokens.LBRACE))
 			parseFunctionLiteral();
+		else if(at(NapileTokens.LBRACKET))
+			parseMultiTypeExpression();
 		else if(!parseLiteralConstant())
 		{
 			// TODO: better recovery if FIRST(element) did not match
@@ -657,7 +643,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			{
 				PsiBuilder.Marker property = mark();
 				parsing.parseModifierList();
-				parsing.parseVariableOrValue();
+				parsing.parseVariableOrValue(false);
 				property.done(VARIABLE);
 			}
 			else
@@ -892,6 +878,27 @@ public class JetExpressionParsing extends AbstractJetParsing
 		}
 
 		marker.done(LINK_METHOD_EXPRESSION);
+	}
+
+	private void parseMultiTypeExpression()
+	{
+		PsiBuilder.Marker marker = mark();
+
+		advance();
+
+		while(true)
+		{
+			parseExpression();
+
+			if(at(NapileTokens.COMMA))
+				advance();
+			else
+				break;
+		}
+
+		expect(NapileTokens.RBRACKET, "']' expected");
+
+		marker.done(NapileNodes.MULTI_TYPE_EXPRESSION);
 	}
 
 	/*

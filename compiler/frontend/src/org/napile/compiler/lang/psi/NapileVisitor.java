@@ -324,7 +324,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitTypeElement(type, data);
 	}
 
-	public R visitFunctionType(NapileMethodType type, D data)
+	public R visitMethodType(NapileMethodType type, D data)
 	{
 		return visitTypeElement(type, data);
 	}
@@ -407,5 +407,15 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	public R visitVariableAccessor(NapileVariableAccessor accessor, D data)
 	{
 		return visitNamedDeclaration(accessor, data);
+	}
+
+	public R visitMultiType(NapileMultiType multiType, D data)
+	{
+		return visitTypeElement(multiType, data);
+	}
+
+	public R visitMultiTypeExpression(NapileMultiTypeExpression expression, D data)
+	{
+		return visitExpression(expression, data);
 	}
 }

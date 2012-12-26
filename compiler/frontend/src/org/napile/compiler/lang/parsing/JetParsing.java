@@ -487,7 +487,7 @@ public class JetParsing extends AbstractJetParsing
 		else if(keywordToken == NapileTokens.THIS_KEYWORD)
 			declType = parseConstructor();
 		else if(NapileTokens.VARIABLE_LIKE_KEYWORDS.contains(keywordToken))
-			declType = parseVariableOrValue();
+			declType = parseVariableOrValue(false);
 
 		return declType;
 	}
@@ -523,7 +523,7 @@ public class JetParsing extends AbstractJetParsing
 		 *       (getter? setter? | setter? getter?) SEMI?
 		 *   ;
 		 */
-	IElementType parseVariableOrValue()
+	IElementType parseVariableOrValue(boolean typeReference)
 	{
 		if(atSet(NapileTokens.VARIABLE_LIKE_KEYWORDS))
 			advance();
@@ -546,41 +546,44 @@ public class JetParsing extends AbstractJetParsing
 				parseTypeRef();
 		}
 
-		if(at(NapileTokens.LBRACE))
+		if(!typeReference)
 		{
-			advance();
-
-			while(true)
+			if(at(NapileTokens.LBRACE))
 			{
-				PsiBuilder.Marker marker = mark();
+				advance();
 
-				parseModifierList();
-
-				if(atSet(NapileTokens.VARIABLE_ACCESS_KEYWORDS))
+				while(true)
 				{
-					advance();
+					PsiBuilder.Marker marker = mark();
 
-					marker.done(VARIABLE_ACCESSOR);
+					parseModifierList();
 
-					consumeIf(NapileTokens.SEMICOLON);
+					if(atSet(NapileTokens.VARIABLE_ACCESS_KEYWORDS))
+					{
+						advance();
+
+						marker.done(VARIABLE_ACCESSOR);
+
+						consumeIf(NapileTokens.SEMICOLON);
+					}
+					else
+					{
+						marker.drop();
+						break;
+					}
 				}
-				else
-				{
-					marker.drop();
-					break;
-				}
+
+				expect(NapileTokens.RBRACE, "'}' expected");
 			}
 
-			expect(NapileTokens.RBRACE, "'}' expected");
-		}
+			if(at(NapileTokens.EQ))
+			{
+				advance(); // EQ
+				myExpressionParsing.parseExpression();
+			}
 
-		if(at(NapileTokens.EQ))
-		{
-			advance(); // EQ
-			myExpressionParsing.parseExpression();
+			consumeIf(NapileTokens.SEMICOLON);
 		}
-
-		consumeIf(NapileTokens.SEMICOLON);
 
 		return VARIABLE;
 	}
@@ -910,6 +913,8 @@ public class JetParsing extends AbstractJetParsing
 		// {() -> String}
 		else if(at(NapileTokens.LBRACE))
 			parseAnonymMethodType();
+		else if(at(NapileTokens.LBRACKET))
+			parseMultiType();
 		// this
 		else if(at(NapileTokens.THIS_KEYWORD))
 			parseSelfType();
@@ -1004,7 +1009,33 @@ public class JetParsing extends AbstractJetParsing
 
 		expect(NapileTokens.RBRACE, "'}' expecting");
 
-		anonymMethodType.done(ANONYM_METHOD_TYPE);
+		anonymMethodType.done(METHOD_TYPE);
+	}
+
+	private void parseMultiType()
+	{
+		PsiBuilder.Marker mark = mark();
+
+		advance();
+
+		if(!at(NapileTokens.RBRACKET))
+		{
+			while(true)
+			{
+				PsiBuilder.Marker varMark = mark();
+
+				varMark.done(parseVariableOrValue(true));
+
+				if(at(NapileTokens.COMMA))
+					advance();
+				else
+					break;
+			}
+		}
+
+		expect(NapileTokens.RBRACKET, "']' expected");
+
+		mark.done(MULTI_TYPE);
 	}
 	/*
 		 *  (optionalProjection type){","}

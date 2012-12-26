@@ -181,10 +181,10 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 			if(TypeUtils.isEqualFqName(expectedReturnType, NapileLangPackage.NULL))
 			{
 				functionDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL));
-				return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(functionDescriptor.getReturnType(), parameterTypes), context.scope), expression, context, context.dataFlowInfo);
+				return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(functionDescriptor.getReturnType(), parameterTypes, context.scope), context.scope), expression, context, context.dataFlowInfo);
 			}
 		}
-		return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(safeReturnType, parameterTypes), context.scope), expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(safeReturnType, parameterTypes, context.scope), context.scope), expression, context, context.dataFlowInfo);
 	}
 
 	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileAnonymMethodExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)

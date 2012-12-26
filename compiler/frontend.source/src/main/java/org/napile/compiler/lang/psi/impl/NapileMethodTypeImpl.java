@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +23,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.IfNotParsed;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileElementImpl;
+import org.napile.compiler.lang.psi.NapileMethodType;
+import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -45,13 +53,13 @@ public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMet
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitFunctionType(this);
+		visitor.visitMethodType(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitFunctionType(this, data);
+		return visitor.visitMethodType(this, data);
 	}
 
 	@Override

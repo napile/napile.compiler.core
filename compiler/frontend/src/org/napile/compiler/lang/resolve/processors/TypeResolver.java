@@ -45,15 +45,14 @@ import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeEntry;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
+import org.napile.compiler.lang.types.impl.MultiTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.SelfTypeConstructorImpl;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.lazy.LazyValue;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -196,13 +195,7 @@ public class TypeResolver
 				}
 
 				@Override
-				public void visitNullableType(NapileNullableType nullableType)
-				{
-					result[0] = resolveTypeElement(scope, annotations, nullableType.getInnerType(), true, trace, checkBounds);
-				}
-
-				@Override
-				public void visitFunctionType(NapileMethodType type)
+				public void visitMethodType(NapileMethodType type)
 				{
 					NapileElement[] parameters = type.getParameters();
 					Map<Name, JetType> parameterTypes = new LinkedHashMap<Name, JetType>(parameters.length);
@@ -226,8 +219,39 @@ public class TypeResolver
 					else
 						returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
 
-					MethodTypeConstructor methodTypeConstructor = new MethodTypeConstructorImpl(returnType, parameterTypes);
+					MethodTypeConstructor methodTypeConstructor = new MethodTypeConstructorImpl(returnType, parameterTypes, scope);
 					result[0] = new JetTypeImpl(annotations, methodTypeConstructor, false, Collections.<JetType>emptyList(), scope);
+				}
+
+				@Override
+				public void visitMultiType(NapileMultiType multiType)
+				{
+					NapileVariable[] variables = multiType.getVariables();
+					List<MultiTypeEntry> variableDescriptors = new ArrayList<MultiTypeEntry>(variables.length);
+
+					for(NapileVariable variable : variables)
+					{
+						JetType type = null;
+						NapileTypeReference typeReference = variable.getType();
+						if(typeReference != null)
+							type = resolveType(scope, typeReference, trace, true);
+						else
+							type = ErrorUtils.createErrorType("Type expected");
+
+						MultiTypeEntry entry = new MultiTypeEntry(variable.isMutable(), variable.getNameAsSafeName(), type);
+
+						trace.record(BindingContext.VARIABLE, variable, entry.descriptor);
+
+						variableDescriptors.add(entry);
+					}
+
+					result[0] = new JetTypeImpl(annotations, new MultiTypeConstructorImpl(variableDescriptors, scope), nullable, Collections.<JetType>emptyList(), scope);
+				}
+
+				@Override
+				public void visitNullableType(NapileNullableType nullableType)
+				{
+					result[0] = resolveTypeElement(scope, annotations, nullableType.getInnerType(), true, trace, checkBounds);
 				}
 
 				@Override

@@ -52,7 +52,7 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 	}
 
 	@Override
-	public void visitFunctionType(NapileMethodType functionLiteral)
+	public void visitMethodType(NapileMethodType functionLiteral)
 	{
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;

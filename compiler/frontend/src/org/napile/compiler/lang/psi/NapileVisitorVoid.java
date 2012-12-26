@@ -331,7 +331,7 @@ public void visitBlockExpression(NapileBlockExpression expression)
 		visitTypeElement(type);
 	}
 
-	public void visitFunctionType(NapileMethodType type)
+	public void visitMethodType(NapileMethodType type)
 	{
 		visitTypeElement(type);
 	}
@@ -414,5 +414,15 @@ public void visitBlockExpression(NapileBlockExpression expression)
 	public void visitVariableAccessor(NapileVariableAccessor accessor)
 	{
 		visitNamedDeclaration(accessor);
+	}
+
+	public void visitMultiType(NapileMultiType multiType)
+	{
+		visitTypeElement(multiType);
+	}
+
+	public void visitMultiTypeExpression(NapileMultiTypeExpression expression)
+	{
+		visitExpression(expression);
 	}
 }

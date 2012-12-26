@@ -84,18 +84,11 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
-import org.napile.compiler.lang.types.CommonSupertypes;
-import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeInfo;
-import org.napile.compiler.lang.types.NamespaceType;
-import org.napile.compiler.lang.types.SubstitutionUtils;
-import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.lang.types.*;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
+import org.napile.compiler.lang.types.impl.MultiTypeConstructorImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
@@ -304,6 +297,24 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			});
 
 		return DataFlowUtils.checkType(codeInjection.getReturnType(context.expectedType, context.trace, context.scope), expression, context, context.dataFlowInfo);
+	}
+
+	@Override
+	public JetTypeInfo visitMultiTypeExpression(NapileMultiTypeExpression expression, final ExpressionTypingContext context)
+	{
+		NapileExpression[] expressions = expression.getExpressions();
+		if(expressions.length == 0)
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+
+		List<MultiTypeEntry> list = new ArrayList<MultiTypeEntry>(expressions.length);
+		for(NapileExpression exp : expressions)
+		{
+			JetType type = context.expressionTypingServices.safeGetType(context.scope, exp, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace);
+
+			list.add(new MultiTypeEntry(null, null, type));
+		}
+
+		return JetTypeInfo.create(new JetTypeImpl(new MultiTypeConstructorImpl(list, context.scope), context.scope), context.dataFlowInfo);
 	}
 
 	@Override
@@ -801,7 +812,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 			context.trace.record(BindingContext.REFERENCE_TARGET, target, targetMethod);
 
-			return JetTypeInfo.create(new JetTypeImpl(new MethodTypeConstructorImpl(targetMethod.getReturnType(), valueParameters), context.scope), context.dataFlowInfo);
+			return JetTypeInfo.create(new JetTypeImpl(new MethodTypeConstructorImpl(targetMethod.getReturnType(), valueParameters, context.scope), context.scope), context.dataFlowInfo);
 
 		}
 		else
