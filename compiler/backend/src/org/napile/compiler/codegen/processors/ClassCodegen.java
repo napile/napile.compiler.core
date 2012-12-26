@@ -30,6 +30,7 @@ import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
+import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
@@ -158,49 +159,53 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		ClassNode classNode = (ClassNode) parent;
 
-		VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), variableDescriptor.isMutable());
-		variableNode.returnType = TypeTransformer.toAsmType(variableDescriptor.getType());
-		classNode.addMember(variableNode);
+		TypeNode type = TypeTransformer.toAsmType(variableDescriptor.getType());
 
 		VariableCodegen.getSetterAndGetter((VariableDescriptorImpl)variableDescriptor, variable, classNode, bindingTrace);
 
-		NapileExpression initializer = variable.getInitializer();
-		if(initializer != null)
+		if(!variable.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
 		{
-			// if variable is lazy, need put NULL
-			if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
+			VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), variableDescriptor.isMutable());
+			variableNode.returnType = TypeTransformer.toAsmType(variableDescriptor.getType());
+			classNode.addMember(variableNode);
+
+			NapileExpression initializer = variable.getInitializer();
+			if(initializer != null)
 			{
-				InstructionAdapter adapter = new InstructionAdapter();
+				// if variable is lazy, need put NULL
+				if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
+				{
+					InstructionAdapter adapter = new InstructionAdapter();
 
-				if(!variableDescriptor.isStatic())
-					adapter.load(0);
+					if(!variableDescriptor.isStatic())
+						adapter.load(0);
 
-				adapter.putNull();
+					adapter.putNull();
 
-				StackValue.variable((VariableDescriptorImpl) variableDescriptor).store(variableNode.returnType, adapter);
+					StackValue.variable((VariableDescriptorImpl) variableDescriptor).store(type, adapter);
 
-				if(variableDescriptor.isStatic())
-					propertiesStaticInit.putValue(classNode, adapter);
+					if(variableDescriptor.isStatic())
+						propertiesStaticInit.putValue(classNode, adapter);
+					else
+						propertiesInit.putValue(classNode, adapter);
+				}
 				else
-					propertiesInit.putValue(classNode, adapter);
-			}
-			else
-			{
-				ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode);
-				if(!variableDescriptor.isStatic())
-					expressionCodegen.getInstructs().load(0);
+				{
+					ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode);
+					if(!variableDescriptor.isStatic())
+						expressionCodegen.getInstructs().load(0);
 
-				expressionCodegen.gen(initializer, variableNode.returnType);
+					expressionCodegen.gen(initializer, type);
 
-				StackValue.variable((VariableDescriptorImpl) variableDescriptor).store(variableNode.returnType, expressionCodegen.getInstructs());
+					StackValue.variable((VariableDescriptorImpl) variableDescriptor).store(type, expressionCodegen.getInstructs());
 
-				if(variableDescriptor.isStatic())
-					propertiesStaticInit.putValue(classNode, expressionCodegen.getInstructs());
-				else
-					propertiesInit.putValue(classNode, expressionCodegen.getInstructs());
+					if(variableDescriptor.isStatic())
+						propertiesStaticInit.putValue(classNode, expressionCodegen.getInstructs());
+					else
+						propertiesInit.putValue(classNode, expressionCodegen.getInstructs());
+				}
 			}
 		}
-
 		return super.visitVariable(variable, parent);
 	}
 
