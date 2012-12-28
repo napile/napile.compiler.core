@@ -16,10 +16,13 @@
 
 package org.napile.compiler.lang.types.checker;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
@@ -27,6 +30,7 @@ import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeEntry;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructorVisitor;
@@ -77,49 +81,135 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 	@Override
 	public Boolean visitSelfType(JetType subType, SelfTypeConstructor subConstructor, JetType superType)
 	{
-		return superType.accept(new TypeConstructorVisitor<SelfTypeConstructor, Boolean>()
+		return superType.accept(new TypeConstructorVisitor<JetType, Boolean>()
 		{
 			@Override
-			public Boolean visitMethodType(JetType type, MethodTypeConstructor t, SelfTypeConstructor arg)
+			public Boolean visitMethodType(JetType type, MethodTypeConstructor t, JetType arg)
 			{
 				return false; // this cant be cast to method type
 			}
 
 			@Override
-			public Boolean visitMultiType(JetType type, MultiTypeConstructor t, SelfTypeConstructor arg)
+			public Boolean visitMultiType(JetType type, MultiTypeConstructor t, JetType arg)
 			{
 				return false; // this cant be cast to multi type
 			}
 
 			@Override
-			public Boolean visitType(JetType superType, TypeConstructor superTypeConstructor, SelfTypeConstructor subConstructor)
+			public Boolean visitType(JetType superType, TypeConstructor superTypeConstructor, JetType subConstructor)
 			{
-				JetType subUnwrapType = subConstructor.getDeclarationDescriptor().getDefaultType();
+				JetType subUnwrapType = subConstructor.getConstructor().getDeclarationDescriptor().getDefaultType();
 
 				return typeCheckingProcedure.isSubtypeOf(subUnwrapType, superType);
 			}
 
 			@Override
-			public Boolean visitSelfType(JetType superType, SelfTypeConstructor superTypeConstructor, SelfTypeConstructor subConstructor)
+			public Boolean visitSelfType(JetType superType, SelfTypeConstructor superTypeConstructor, JetType subConstructor)
 			{
-				JetType subUnwrapType = subConstructor.getDeclarationDescriptor().getDefaultType();
+				JetType subUnwrapType = subConstructor.getConstructor().getDeclarationDescriptor().getDefaultType();
 				JetType superUnwrapType = superTypeConstructor.getDeclarationDescriptor().getDefaultType();
 
 				return typeCheckingProcedure.isSubtypeOf(subUnwrapType, superUnwrapType);
 			}
-		}, subConstructor);
+		}, subType);
 	}
 
 	@Override
 	public Boolean visitMethodType(JetType subType, MethodTypeConstructor subConstructor, JetType superType)
 	{
-		return false;
+		return superType.accept(new TypeConstructorVisitor<JetType, Boolean>()
+		{
+			@Override
+			public Boolean visitSelfType(JetType type, SelfTypeConstructor t, JetType arg)
+			{
+				return false;
+			}
+
+			@Override
+			public Boolean visitMultiType(JetType type, MultiTypeConstructor t, JetType arg)
+			{
+				return false;
+			}
+
+			@Override
+			public Boolean visitMethodType(JetType superType, MethodTypeConstructor superTypeConstructor, JetType subType)
+			{
+				MethodTypeConstructor multiTypeConstructor = (MethodTypeConstructor) subType.getConstructor();
+				if(multiTypeConstructor.getParameterTypes().size() != superTypeConstructor.getParameterTypes().size())
+					return false;
+
+				Iterator<Map.Entry<Name, JetType>> subIterator = multiTypeConstructor.getParameterTypes().entrySet().iterator();
+				Iterator<Map.Entry<Name, JetType>> superIterator = superTypeConstructor.getParameterTypes().entrySet().iterator();
+				while(subIterator.hasNext())
+				{
+					Map.Entry<Name, JetType> subEntry = subIterator.next();
+					Map.Entry<Name, JetType> superEntry = superIterator.next();
+					if(!typeCheckingProcedure.isSubtypeOf(subEntry.getValue(), superEntry.getValue()))
+						return false;
+				}
+				return typeCheckingProcedure.isSubtypeOf(multiTypeConstructor.getReturnType(), superTypeConstructor.getReturnType());
+			}
+
+			@Override
+			public Boolean visitType(JetType superType, TypeConstructor superTypeConstructor, JetType subType)
+			{
+				MethodTypeConstructor multiTypeConstructor = (MethodTypeConstructor) subType.getConstructor();
+				JetType multiType = multiTypeConstructor.getSupertypes().isEmpty() ? null : multiTypeConstructor.getSupertypes().iterator().next();
+
+				return multiType != null && typeCheckingProcedure.isSubtypeOf(multiType, superType);
+			}
+		}, subType);
 	}
 
 	@Override
 	public Boolean visitMultiType(JetType subType, MultiTypeConstructor subConstructor, JetType superType)
 	{
-		return false;
+		return superType.accept(new TypeConstructorVisitor<JetType, Boolean>()
+		{
+			@Override
+			public Boolean visitSelfType(JetType type, SelfTypeConstructor t, JetType arg)
+			{
+				return false;
+			}
+
+			@Override
+			public Boolean visitMethodType(JetType type, MethodTypeConstructor t, JetType arg)
+			{
+				return false;
+			}
+
+			@Override
+			public Boolean visitMultiType(JetType superType, MultiTypeConstructor superTypeConstructor, JetType subType)
+			{
+				MultiTypeConstructor multiTypeConstructor = (MultiTypeConstructor) subType.getConstructor();
+				if(superTypeConstructor.getEntries().size() != multiTypeConstructor.getEntries().size())
+					return false;
+
+				Iterator<MultiTypeEntry> subEntryIterator = multiTypeConstructor.getEntries().iterator();
+				Iterator<MultiTypeEntry> superEntryIterator = superTypeConstructor.getEntries().iterator();
+				while(subEntryIterator.hasNext())
+				{
+					MultiTypeEntry subEntry = subEntryIterator.next();
+					MultiTypeEntry superEntry = superEntryIterator.next();
+
+					if(subEntry.mutable != null && subEntry.mutable != superEntry.mutable)
+						return false;
+
+					if(!typeCheckingProcedure.isSubtypeOf(subEntry.type, superEntry.type))
+						return false;
+				}
+				return true;
+			}
+
+			@Override
+			public Boolean visitType(JetType superType, TypeConstructor superTypeConstructor, JetType subType)
+			{
+				MultiTypeConstructor multiTypeConstructor = (MultiTypeConstructor) subType.getConstructor();
+				JetType multiType = multiTypeConstructor.getSupertypes().isEmpty() ? null : multiTypeConstructor.getSupertypes().iterator().next();
+
+				return multiType != null && typeCheckingProcedure.isSubtypeOf(multiType, superType);
+			}
+		}, subType);
 	}
 
 	private boolean checkSubtypeForTheSameConstructor(@NotNull JetType subtype, @NotNull JetType supertype)

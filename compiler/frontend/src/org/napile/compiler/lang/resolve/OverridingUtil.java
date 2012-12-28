@@ -262,7 +262,8 @@ public class OverridingUtil
 		}
 		else
 		{
-			throw new IllegalStateException("unknown type constructor: " + type.getConstructor().getClass().getName());
+			System.out.println("unknown type constructor: " + type.getConstructor().getClass().getName());
+			return type;
 		}
 	}
 

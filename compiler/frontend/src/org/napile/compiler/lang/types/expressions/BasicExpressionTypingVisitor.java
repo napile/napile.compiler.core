@@ -314,7 +314,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			list.add(new MultiTypeEntry(null, null, type));
 		}
 
-		return JetTypeInfo.create(new JetTypeImpl(new MultiTypeConstructorImpl(list, context.scope), context.scope), context.dataFlowInfo);
+		return DataFlowUtils.checkType(new JetTypeImpl(new MultiTypeConstructorImpl(list, context.scope), context.scope), expression, context, context.dataFlowInfo);
 	}
 
 	@Override
@@ -812,7 +812,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 			context.trace.record(BindingContext.REFERENCE_TARGET, target, targetMethod);
 
-			return JetTypeInfo.create(new JetTypeImpl(new MethodTypeConstructorImpl(targetMethod.getReturnType(), valueParameters, context.scope), context.scope), context.dataFlowInfo);
+			return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(targetMethod.getReturnType(), valueParameters, context.scope), context.scope), expression, context, context.dataFlowInfo);
 
 		}
 		else
