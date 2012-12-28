@@ -42,9 +42,7 @@ public class CompileTimeConstantResolver
 	{
 		IntConstantFactory factory = null;
 
-		if(noExpectedType(expectedType))
-			factory = null;
-		else
+		if(!noExpectedType(expectedType))
 		{
 			TypeConstructor constructor = expectedType.getConstructor();
 
