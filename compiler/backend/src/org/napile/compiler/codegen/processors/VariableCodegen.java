@@ -65,16 +65,15 @@ public class VariableCodegen
 		Name accessorFq = Name.identifier(variableDescriptor.getName() + AsmConstants.ANONYM_SPLITTER + "set");
 
 		if(variableAccessor == null)
-			getSetterCode(classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq), variableDescriptor);
+			getSetterCode(classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
 		else if(variableAccessor.getBodyExpression() == null)
-			getSetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq), variableDescriptor);
+			getSetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
 		else
 			throw new UnsupportedOperationException("Variable accessors with body is not supported");
 	}
 
 	private static void getSetterCode(@NotNull ClassNode classNode, @NotNull MethodNode setterMethodNode, @NotNull VariableDescriptorImpl variableDescriptor)
 	{
-		setterMethodNode.returnType = AsmConstants.NULL_TYPE;
 		setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(variableDescriptor.getType())));
 
 		InstructionAdapter instructions = new InstructionAdapter();
@@ -105,17 +104,15 @@ public class VariableCodegen
 		Name accessorFq = Name.identifier(variableDescriptor.getName() + AsmConstants.ANONYM_SPLITTER + "get");
 
 		if(variableAccessor == null)
-			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq), variableDescriptor, bindingTrace, variable);
+			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq, TypeTransformer.toAsmType(variableDescriptor.getType())), variableDescriptor, bindingTrace, variable);
 		else if(variableAccessor.getBodyExpression() == null)
-			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq), variableDescriptor, bindingTrace, variable);
+			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, TypeTransformer.toAsmType(variableDescriptor.getType())), variableDescriptor, bindingTrace, variable);
 		else
 			throw new UnsupportedOperationException("Variable accessors with body is not supported");
 	}
 
 	private static void getGetterCode(@NotNull ClassNode classNode, @NotNull MethodNode getterMethodNode, @NotNull VariableDescriptorImpl variableDescriptor, @NotNull BindingTrace bindingTrace, @NotNull NapileVariable variable)
 	{
-		getterMethodNode.returnType = TypeTransformer.toAsmType(variableDescriptor.getType());
-
 		//TODO [VISTALL] make LazyType, current version is not thread safe
 		if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
 		{

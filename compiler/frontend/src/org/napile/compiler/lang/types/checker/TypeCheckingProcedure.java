@@ -21,7 +21,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
@@ -55,11 +54,13 @@ public class TypeCheckingProcedure
 		return null;
 	}
 
+	private final SuperCheckTypeConstructorVisitor superCheckTypeConstructorVisitor;
 	private final TypingConstraints constraints;
 
 	public TypeCheckingProcedure(TypingConstraints constraints)
 	{
 		this.constraints = constraints;
+		superCheckTypeConstructorVisitor = new SuperCheckTypeConstructorVisitor(this, constraints);
 	}
 
 	public boolean equalTypes(@NotNull JetType type1, @NotNull JetType type2)
@@ -104,45 +105,18 @@ public class TypeCheckingProcedure
 	}
 
 
-	public boolean isSubtypeOf(@NotNull JetType subtype, @NotNull JetType supertype)
+	public boolean isSubtypeOf(@NotNull JetType subTypeOriginal, @NotNull JetType superTypeOriginal)
 	{
-		if(ErrorUtils.isErrorType(subtype) || ErrorUtils.isErrorType(supertype))
+		if(ErrorUtils.isErrorType(subTypeOriginal) || ErrorUtils.isErrorType(superTypeOriginal))
 			return true;
 
-		if(!supertype.isNullable() && subtype.isNullable())
+		if(!superTypeOriginal.isNullable() && subTypeOriginal.isNullable())
 			return false;
 
-		subtype = TypeUtils.makeNotNullable(subtype);
-		supertype = TypeUtils.makeNotNullable(supertype);
-		if(TypeUtils.isEqualFqName(subtype, NapileLangPackage.NULL))
+		if(TypeUtils.isEqualFqName(subTypeOriginal, NapileLangPackage.NULL))
 			return true;
 
-		@Nullable JetType closestSupertype = findCorrespondingSupertype(subtype, supertype);
-		if(closestSupertype == null)
-			return constraints.noCorrespondingSupertype(subtype, supertype); // if this returns true, there still isn't any supertype to continue with
-
-		return checkSubtypeForTheSameConstructor(closestSupertype, supertype);
-	}
-
-	private boolean checkSubtypeForTheSameConstructor(@NotNull JetType subtype, @NotNull JetType supertype)
-	{
-		TypeConstructor constructor = subtype.getConstructor();
-		assert constructor.equals(supertype.getConstructor()) : constructor + " is not " + supertype.getConstructor();
-
-		List<JetType> subArguments = subtype.getArguments();
-		List<JetType> superArguments = supertype.getArguments();
-		List<TypeParameterDescriptor> parameters = constructor.getParameters();
-		for(int i = 0; i < parameters.size(); i++)
-		{
-			JetType subArgument = subArguments.get(i);
-
-			JetType superArgument = superArguments.get(i);
-
-			if(superArgument.isNullable() && !subArgument.isNullable())
-				return false;
-			if(!isSubtypeOf(subArgument, superArgument))
-				return false;
-		}
-		return true;
+		//System.out.println(subTypeOriginal + " " + superTypeOriginal);
+		return TypeUtils.makeNotNullable(subTypeOriginal).accept(superCheckTypeConstructorVisitor, TypeUtils.makeNotNullable(superTypeOriginal));
 	}
 }

@@ -27,6 +27,7 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
+import org.napile.compiler.lang.types.TypeConstructorVisitor;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.render.DescriptorRenderer;
 
@@ -35,11 +36,10 @@ import org.napile.compiler.render.DescriptorRenderer;
  */
 public final class JetTypeImpl extends AnnotatedImpl implements JetType
 {
-
 	private final TypeConstructor constructor;
 	private final List<JetType> arguments;
 	private final boolean nullable;
-	private JetScope memberScope;
+	private final JetScope memberScope;
 
 	public JetTypeImpl(List<AnnotationDescriptor> annotations, TypeConstructor constructor, boolean nullable, @NotNull List<JetType> arguments, JetScope memberScope)
 	{
@@ -115,6 +115,12 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 		JetTypeImpl type = (JetTypeImpl) o;
 
 		return JetTypeChecker.INSTANCE.equalTypes(this, type);
+	}
+
+	@Override
+	public <A, R> R accept(@NotNull TypeConstructorVisitor<A, R> visitor, A arg)
+	{
+		return getConstructor().accept(this, visitor, arg);
 	}
 
 	@Override

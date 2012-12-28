@@ -22,9 +22,11 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.MethodParameterNode;
+import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.asm.tree.members.types.constructors.MethodTypeNode;
+import org.napile.asm.tree.members.types.constructors.MultiTypeNode;
 import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeConstructorNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
@@ -34,6 +36,8 @@ import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeConstructor;
+import org.napile.compiler.lang.types.MultiTypeEntry;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
 
 /**
@@ -59,6 +63,17 @@ public class TypeTransformer
 			methodTypeNode.returnType = toAsmType(methodTypeConstructor.getReturnType());
 			for(Map.Entry<Name, JetType> entry : methodTypeConstructor.getParameterTypes().entrySet())
 				methodTypeNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, entry.getKey(), toAsmType(entry.getValue())));
+		}
+		else if(jetType.getConstructor() instanceof MultiTypeConstructor)
+		{
+			MultiTypeConstructor multiTypeConstructor = (MultiTypeConstructor) jetType.getConstructor();
+
+			typeConstructorNode = new MultiTypeNode();
+
+			MultiTypeNode multiTypeNode = (MultiTypeNode) typeConstructorNode;
+
+			for(MultiTypeEntry entry : multiTypeConstructor.getEntries())
+				multiTypeNode.variables.add(new VariableNode(entry.mutable ? Modifier.list(Modifier.MUTABLE) : Modifier.EMPTY, entry.name, toAsmType(entry.type)));
 		}
 		else if(owner instanceof ClassDescriptor)
 			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());

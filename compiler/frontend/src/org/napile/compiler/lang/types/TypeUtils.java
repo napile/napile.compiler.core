@@ -84,6 +84,12 @@ public class TypeUtils
 		}
 
 		@Override
+		public <A, R> R accept(@NotNull TypeConstructorVisitor<A, R> visitor, A arg)
+		{
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
 		public List<AnnotationDescriptor> getAnnotations()
 		{
 			throw new UnsupportedOperationException(); // TODO

@@ -30,7 +30,6 @@ import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PopInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
@@ -57,7 +56,6 @@ public class MethodCodegen
 	public static MethodNode gen(@NotNull NapileConstructor napileConstructor, @NotNull ConstructorDescriptor constructorDescriptor, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
 		MethodNode constructorNode = MethodNode.constructor(ModifierCodegen.gen(constructorDescriptor));
-		constructorNode.returnType = new TypeNode(false, new ThisTypeNode());
 		for(CallParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 		{
 			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
@@ -88,8 +86,7 @@ public class MethodCodegen
 	@NotNull
 	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name realName)
 	{
-		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierCodegen.gen(methodDescriptor), realName) : new MethodNode(ModifierCodegen.gen(methodDescriptor), realName);
-		methodNode.returnType = TypeTransformer.toAsmType(methodDescriptor.getReturnType());
+		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierCodegen.gen(methodDescriptor), realName, TypeTransformer.toAsmType(methodDescriptor.getReturnType())) : new MethodNode(ModifierCodegen.gen(methodDescriptor), realName, TypeTransformer.toAsmType(methodDescriptor.getReturnType()));
 
 		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode);
 

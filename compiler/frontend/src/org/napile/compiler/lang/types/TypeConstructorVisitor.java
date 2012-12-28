@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2012 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,29 @@
 
 package org.napile.compiler.lang.types;
 
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.annotations.Annotated;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-
 /**
- * @author abreslav
- * @see JetTypeChecker#isSubtypeOf(JetType, JetType)
+ * @author VISTALL
+ * @date 10:56/28.12.12
  */
-public interface JetType extends Annotated
+public abstract class TypeConstructorVisitor<A, R>
 {
-	@NotNull
-	TypeConstructor getConstructor();
+	public R visitType(JetType type, TypeConstructor t, A arg)
+	{
+		throw new UnsupportedOperationException(t + " " + arg);
+	}
 
-	@NotNull
-	List<JetType> getArguments();
+	public R visitSelfType(JetType type, SelfTypeConstructor t, A arg)
+	{
+		return visitType(type, t, arg);
+	}
 
-	boolean isNullable();
+	public R visitMethodType(JetType type, MethodTypeConstructor t, A arg)
+	{
+		return visitType(type, t, arg);
+	}
 
-	@NotNull
-	JetScope getMemberScope();
-
-	@Override
-	boolean equals(Object other);
-
-	<A, R> R accept(@NotNull TypeConstructorVisitor<A, R> visitor, A arg);
+	public R visitMultiType(JetType type, MultiTypeConstructor t, A arg)
+	{
+		return visitType(type, t, arg);
+	}
 }

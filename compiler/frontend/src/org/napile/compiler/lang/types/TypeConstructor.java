@@ -43,4 +43,6 @@ public interface TypeConstructor extends Annotated
 
 	@Nullable
 	ClassifierDescriptor getDeclarationDescriptor();
+
+	<A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg);
 }

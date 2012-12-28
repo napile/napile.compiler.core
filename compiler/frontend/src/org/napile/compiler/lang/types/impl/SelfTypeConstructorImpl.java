@@ -20,25 +20,34 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
+import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
 /**
  * @author VISTALL
  * @date 19:02/12.09.12
  */
-public class SelfTypeConstructorImpl extends TypeConstructorImpl implements SelfTypeConstructor
+public class SelfTypeConstructorImpl extends AbstractTypeConstructorImpl implements SelfTypeConstructor
 {
+	private final ClassDescriptor descriptor;
+
 	public SelfTypeConstructorImpl(@NotNull ClassDescriptor classDescriptor)
 	{
-		super(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), false, classDescriptor.getTypeConstructor().toString(), Collections.<TypeParameterDescriptor>emptyList(), classDescriptor.getSupertypes());
+		super(Collections.singletonList(classDescriptor.getDefaultType()));
+		descriptor = classDescriptor;
 	}
 
 	@NotNull
 	@Override
 	public ClassDescriptor getDeclarationDescriptor()
 	{
-		return (ClassDescriptor) super.getDeclarationDescriptor();
+		return descriptor;
+	}
+
+	@Override
+	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
+	{
+		return visitor.visitSelfType(type, this, arg);
 	}
 }

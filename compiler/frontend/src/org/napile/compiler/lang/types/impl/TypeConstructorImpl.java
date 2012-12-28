@@ -29,6 +29,7 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
+import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
 /**
  * @author abreslav
@@ -84,5 +85,11 @@ public class TypeConstructorImpl extends AnnotatedImpl implements TypeConstructo
 	public ClassifierDescriptor getDeclarationDescriptor()
 	{
 		return classifierDescriptor;
+	}
+
+	@Override
+	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
+	{
+		return visitor.visitType(type, this, arg);
 	}
 }

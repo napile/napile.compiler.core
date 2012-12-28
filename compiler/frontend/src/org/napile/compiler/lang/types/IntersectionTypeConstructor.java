@@ -18,78 +18,50 @@ package org.napile.compiler.lang.types;
 
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import com.google.common.collect.Sets;
+import org.napile.compiler.lang.types.impl.AbstractTypeConstructorImpl;
+import com.intellij.openapi.util.text.StringUtil;
 
 /**
  * @author abreslav
  */
-public class IntersectionTypeConstructor extends AnnotatedImpl implements TypeConstructor
+public class IntersectionTypeConstructor extends AbstractTypeConstructorImpl implements TypeConstructor
 {
-	private final Set<JetType> intersectedTypes;
+	private final List<AnnotationDescriptor> annotations;
 	private final int hashCode;
 
-	public IntersectionTypeConstructor(List<AnnotationDescriptor> annotations, Collection<JetType> typesToIntersect)
+	public IntersectionTypeConstructor(@NotNull List<AnnotationDescriptor> annotations, @NotNull Collection<JetType> typesToIntersect)
 	{
-		super(annotations);
-		this.intersectedTypes = Sets.newLinkedHashSet(typesToIntersect);
-		this.hashCode = intersectedTypes.hashCode();
-	}
-
-	@NotNull
-	@Override
-	public List<TypeParameterDescriptor> getParameters()
-	{
-		return Collections.emptyList();
-	}
-
-	@NotNull
-	@Override
-	public Collection<? extends JetType> getSupertypes()
-	{
-		return intersectedTypes;
+		super(typesToIntersect);
+		this.annotations = annotations;
+		this.hashCode = typesToIntersect.hashCode();
 	}
 
 	@Override
-	public boolean isSealed()
+	public List<AnnotationDescriptor> getAnnotations()
 	{
-		return false;
+		return annotations;
 	}
 
 	@Override
-	public ClassifierDescriptor getDeclarationDescriptor()
+	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
 	{
-		return null;
+		return visitor.visitType(type, this, arg);
 	}
 
 	@Override
 	public String toString()
 	{
-		return makeDebugNameForIntersectionType(intersectedTypes);
+		return makeDebugNameForIntersectionType(getSupertypes());
 	}
 
-	private static String makeDebugNameForIntersectionType(Iterable<JetType> resultingTypes)
+	private static String makeDebugNameForIntersectionType(Collection<? extends JetType> resultingTypes)
 	{
 		StringBuilder debugName = new StringBuilder("{");
-		for(Iterator<JetType> iterator = resultingTypes.iterator(); iterator.hasNext(); )
-		{
-			JetType type = iterator.next();
-
-			debugName.append(type.toString());
-			if(iterator.hasNext())
-			{
-				debugName.append(" & ");
-			}
-		}
+		debugName.append(StringUtil.join(resultingTypes, " & "));
 		debugName.append("}");
 		return debugName.toString();
 	}
@@ -104,7 +76,7 @@ public class IntersectionTypeConstructor extends AnnotatedImpl implements TypeCo
 
 		IntersectionTypeConstructor that = (IntersectionTypeConstructor) o;
 
-		if(intersectedTypes != null ? !intersectedTypes.equals(that.intersectedTypes) : that.intersectedTypes != null)
+		if(!getSupertypes().equals(that.getSupertypes()))
 			return false;
 
 		return true;

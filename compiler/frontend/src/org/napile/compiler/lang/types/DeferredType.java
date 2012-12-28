@@ -117,6 +117,12 @@ public class DeferredType implements JetType
 	}
 
 	@Override
+	public <A, R> R accept(@NotNull TypeConstructorVisitor<A, R> visitor, A arg)
+	{
+		return getActualType().accept(visitor, arg);
+	}
+
+	@Override
 	public int hashCode()
 	{
 		return getActualType().hashCode();

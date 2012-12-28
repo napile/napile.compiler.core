@@ -48,6 +48,12 @@ public class NamespaceType implements JetType
 		return memberScope;
 	}
 
+	@Override
+	public <A, R> R accept(@NotNull TypeConstructorVisitor<A, R> visitor, A arg)
+	{
+		throw new UnsupportedOperationException();
+	}
+
 	@NotNull
 	@Override
 	public TypeConstructor getConstructor()

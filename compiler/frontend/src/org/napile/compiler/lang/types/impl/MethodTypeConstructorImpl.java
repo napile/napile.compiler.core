@@ -16,20 +16,16 @@
 
 package org.napile.compiler.lang.types.impl;
 
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
+import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
 /**
  * @author VISTALL
@@ -42,36 +38,16 @@ public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl imple
 
 	public MethodTypeConstructorImpl(@NotNull JetType returnType, Map<Name, JetType> parameterTypes, @NotNull JetScope scope)
 	{
-		super(scope);
+		super(scope, NapileLangPackage.METHOD_LINK);
 
 		this.returnType = returnType;
 		this.parameterTypes = parameterTypes;
 	}
 
-	@NotNull
 	@Override
-	public List<TypeParameterDescriptor> getParameters()
+	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
 	{
-		return Collections.emptyList();
-	}
-
-	@Override
-	public boolean isSealed()
-	{
-		return false;
-	}
-
-	@Nullable
-	@Override
-	public ClassifierDescriptor getDeclarationDescriptor()
-	{
-		return null;
-	}
-
-	@Override
-	public List<AnnotationDescriptor> getAnnotations()
-	{
-		return Collections.emptyList();
+		return visitor.visitMethodType(type, this, arg);
 	}
 
 	@NotNull

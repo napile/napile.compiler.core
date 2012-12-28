@@ -40,9 +40,7 @@ public final class WholeProjectAnalyzerFacade
 	@NotNull
 	public static AnalyzeExhaust getAnalyzedWithoutCache(@NotNull NapileFile file)
 	{
-		/*CachedValue<AnalyzeExhaust> bindingContextCachedValue = file.getUserData(AnalyzerFacadeWithCache.ANALYZE_EXHAUST_FULL);
-		AnalyzeExhaust analyzeExhaust = bindingContextCachedValue == null ? null : bindingContextCachedValue.getValue();  */
-		return /*analyzeExhaust == null ? */EMPTY /*: analyzeExhaust*/;
+		return analyzeProjectWithCacheOnAFile(file);
 	}
 
 	@NotNull

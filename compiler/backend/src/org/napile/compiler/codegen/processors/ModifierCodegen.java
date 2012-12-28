@@ -26,6 +26,7 @@ import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 
 /**
  * @author VISTALL
@@ -36,7 +37,7 @@ public class ModifierCodegen
 	@NotNull
 	public static Modifier[] gen(@NotNull CallParameterDescriptor parameterDescriptor)
 	{
-		return gen((DeclarationDescriptorWithVisibility) parameterDescriptor);
+		return gen((VariableDescriptor) parameterDescriptor);
 	}
 
 	@NotNull
@@ -50,6 +51,15 @@ public class ModifierCodegen
 		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((DeclarationDescriptorWithVisibility) methodDescriptor)));
 		if(methodDescriptor.isNative())
 			list.add(Modifier.NATIVE);
+
+		return list.isEmpty() ? Modifier.EMPTY : list.toArray(new Modifier[list.size()]);
+	}
+
+	public static Modifier[] gen(@NotNull VariableDescriptor variableDescriptor)
+	{
+		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((DeclarationDescriptorWithVisibility) variableDescriptor)));
+		if(variableDescriptor.isMutable())
+			list.add(Modifier.MUTABLE);
 
 		return list.isEmpty() ? Modifier.EMPTY : list.toArray(new Modifier[list.size()]);
 	}

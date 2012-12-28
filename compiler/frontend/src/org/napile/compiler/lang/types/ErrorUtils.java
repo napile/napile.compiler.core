@@ -298,6 +298,12 @@ public class ErrorUtils
 		}
 
 		@Override
+		public <A, R> R accept(@NotNull TypeConstructorVisitor<A, R> visitor, A arg)
+		{
+			return constructor.accept(this, visitor, arg);
+		}
+
+		@Override
 		public List<AnnotationDescriptor> getAnnotations()
 		{
 			return Collections.emptyList();

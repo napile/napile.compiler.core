@@ -165,8 +165,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		if(!variable.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
 		{
-			VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), variableDescriptor.isMutable());
-			variableNode.returnType = TypeTransformer.toAsmType(variableDescriptor.getType());
+			VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), TypeTransformer.toAsmType(variableDescriptor.getType()));
 			classNode.addMember(variableNode);
 
 			NapileExpression initializer = variable.getInitializer();
