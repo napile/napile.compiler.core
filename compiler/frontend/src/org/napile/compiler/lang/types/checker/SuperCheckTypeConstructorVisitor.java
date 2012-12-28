@@ -226,8 +226,8 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 
 			JetType superArgument = superArguments.get(i);
 
-			if(superArgument.isNullable() && !subArgument.isNullable())
-				return false;
+			//if(superArgument.isNullable() && !subArgument.isNullable())
+			//	return false;
 			if(!typeCheckingProcedure.isSubtypeOf(subArgument, superArgument))
 				return false;
 		}

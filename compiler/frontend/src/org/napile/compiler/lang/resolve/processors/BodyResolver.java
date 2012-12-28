@@ -182,7 +182,7 @@ public class BodyResolver
 		{
 			NapileTypeReference typeReference = call.getTypeReference();
 			if(typeReference == null)
-				return;
+				continue;
 
 			callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 		}

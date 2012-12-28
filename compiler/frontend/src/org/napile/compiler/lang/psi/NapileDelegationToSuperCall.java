@@ -54,12 +54,14 @@ public class NapileDelegationToSuperCall extends NapileElementImpl implements Na
 	}
 
 	@Nullable
+	@Override
 	public NapileValueArgumentList getValueArgumentList()
 	{
 		return (NapileValueArgumentList) findChildByType(NapileNodes.VALUE_ARGUMENT_LIST);
 	}
 
 	@NotNull
+	@Override
 	public List<? extends ValueArgument> getValueArguments()
 	{
 		NapileValueArgumentList list = getValueArgumentList();
