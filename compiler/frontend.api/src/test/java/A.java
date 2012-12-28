@@ -24,10 +24,7 @@ public class A
 
 	public static void main(String... arg)
 	{
-		Integer min = Integer.MIN_VALUE;
-		String minHex = Integer.toHexString(Integer.MIN_VALUE);
 
-		System.out.println(min + " " + minHex);
-		System.out.println(Integer.parseInt( "-" + minHex, 16));
+		System.out.println(Integer.MIN_VALUE);
 	}
 }

@@ -40,30 +40,36 @@ public class CompileTimeConstantResolver
 	@NotNull
 	public CompileTimeConstant<?> getIntegerValue(@NotNull String text, @NotNull JetType expectedType)
 	{
+		IntConstantFactory factory = null;
+
 		if(noExpectedType(expectedType))
+			factory = null;
+		else
 		{
-			Number value = parseLongValue(text, IntConstantFactory.LONG);
+			TypeConstructor constructor = expectedType.getConstructor();
+
+			if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.INT))
+				factory = IntConstantFactory.INT;
+			else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.LONG))
+				factory = IntConstantFactory.LONG;
+			else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.SHORT))
+				factory = IntConstantFactory.SHORT;
+			else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.BYTE))
+				factory = IntConstantFactory.BYTE;
+		}
+
+		if(factory == null)
+		{
+			Number value = parseLongValue(text, IntConstantFactory.INT);
+			if(value != null)
+				return IntConstantFactory.INT.createValue(value);
+
+			value = parseLongValue(text, IntConstantFactory.LONG);
 			if(value == null)
 				return OUT_OF_RANGE;
-
-			long longValue = value.longValue();
-			if(Integer.MIN_VALUE <= longValue && longValue <= Integer.MAX_VALUE)
-				return new IntValue(value.intValue());
-			return new LongValue(longValue);
+			else
+				return IntConstantFactory.LONG.createValue(value);
 		}
-		IntConstantFactory factory;
-
-		TypeConstructor constructor = expectedType.getConstructor();
-		if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.INT))
-			factory = IntConstantFactory.INT;
-		else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.LONG))
-			factory = IntConstantFactory.LONG;
-		else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.SHORT))
-			factory = IntConstantFactory.SHORT;
-		else if(TypeUtils.isEqualFqName(constructor, NapileLangPackage.BYTE))
-			factory = IntConstantFactory.BYTE;
-		else
-			factory =  IntConstantFactory.LONG;
 
 		Number value = parseLongValue(text, factory);
 
