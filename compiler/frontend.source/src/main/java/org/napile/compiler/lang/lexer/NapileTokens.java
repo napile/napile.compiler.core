@@ -109,6 +109,7 @@ public interface NapileTokens
 	NapileToken ELVIS = new NapileToken("ELVIS");
 	NapileToken QUEST = new NapileToken("QUEST");
 	NapileToken COLON = new NapileToken("COLON");
+	NapileToken AND = new NapileToken("AND");
 	NapileToken SEMICOLON = new NapileToken("SEMICOLON");
 	NapileToken RANGE = new NapileToken("RANGE");
 	NapileToken EQ = new NapileToken("EQ");

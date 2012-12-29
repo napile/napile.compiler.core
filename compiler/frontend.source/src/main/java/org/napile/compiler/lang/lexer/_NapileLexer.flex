@@ -272,6 +272,7 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
 "=="         { return NapileTokens.EQEQ      ; }
 "!="         { return NapileTokens.EXCLEQ    ; }
 "&&"         { return NapileTokens.ANDAND    ; }
+"&"          { return NapileTokens.AND    ; }
 "||"         { return NapileTokens.OROR      ; }
 "*="         { return NapileTokens.MULTEQ    ; }
 "/="         { return NapileTokens.DIVEQ     ; }

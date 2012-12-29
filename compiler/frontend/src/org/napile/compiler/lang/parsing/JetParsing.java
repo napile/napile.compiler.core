@@ -393,7 +393,7 @@ public class JetParsing extends AbstractJetParsing
 		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
-			parseTypeList(EXTEND_TYPE_LIST);
+			parseTypeList(EXTEND_TYPE_LIST, NapileTokens.AND);
 		}
 
 		if(at(NapileTokens.LBRACE))
@@ -750,21 +750,18 @@ public class JetParsing extends AbstractJetParsing
 		list.done(DELEGATION_SPECIFIER_LIST);
 	}
 
-	void parseTypeList(@NotNull IElementType doneElement)
+	void parseTypeList(@NotNull IElementType doneElement, @NotNull IElementType split)
 	{
 		PsiBuilder.Marker list = mark();
 
 		while(true)
 		{
-			if(at(NapileTokens.COMMA))
-			{
-				errorAndAdvance("Expecting a type");
-				continue;
-			}
 			parseTypeRef();
-			if(!at(NapileTokens.COMMA))
+
+			if(at(split))
+				advance();
+			else
 				break;
-			advance(); // COMMA
 		}
 
 		list.done(doneElement);
@@ -844,26 +841,15 @@ public class JetParsing extends AbstractJetParsing
 		{
 			advance(); // COLON
 
-			parseTypeRef();
-		}
-		else if(at(NapileTokens.LBRACKET))
-		{
-			advance(); // LBRACKET
-
 			while(true)
 			{
-				if(at(NapileTokens.COMMA))
-					errorAndAdvance("Expecting type declaration");
-
 				parseTypeRef();
 
-				if(!at(NapileTokens.COMMA))
+				if(at(NapileTokens.AND))
+					advance();
+				else
 					break;
-
-				advance(); // COMMA
 			}
-
-			expect(NapileTokens.RBRACKET, "Missing ']'");
 		}
 
 		while(at(NapileTokens.LPAR))

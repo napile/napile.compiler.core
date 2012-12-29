@@ -587,15 +587,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 			renderName(descriptor, builder);
 
-			if(descriptor.getUpperBounds().size() == 1)
+			if(!descriptor.getUpperBounds().isEmpty())
 			{
-				JetType upperBound = descriptor.getUpperBounds().iterator().next();
-				if(!TypeUtils.isEqualFqName(upperBound, NapileLangPackage.ANY))
-					builder.append(" : ").append(renderType(upperBound));
-			}
-			else
-			{
-				builder.append(" [");
+				builder.append(" : ");
 				builder.append(StringUtil.join(descriptor.getUpperBounds(), new Function<JetType, String>()
 				{
 					@Override
@@ -603,8 +597,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 					{
 						return renderType(jetType);
 					}
-				}, ", "));
-				builder.append("]");
+				}, " & "));
 			}
 		}
 	}
