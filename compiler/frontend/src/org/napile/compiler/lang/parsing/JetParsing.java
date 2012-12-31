@@ -667,7 +667,6 @@ public class JetParsing extends AbstractJetParsing
 			advance(); // COLON
 
 			parseDelegationSpecifierList();
-			//parseInitializerList();
 		}
 
 		if(at(NapileTokens.LBRACE))
@@ -728,7 +727,7 @@ public class JetParsing extends AbstractJetParsing
 	}
 
 	/*
-		 * delegationSpecifier{","}
+		 * delegationSpecifier{"&"}
 		 */
 	void parseDelegationSpecifierList()
 	{
@@ -736,13 +735,13 @@ public class JetParsing extends AbstractJetParsing
 
 		while(true)
 		{
-			if(at(NapileTokens.COMMA))
+			if(at(NapileTokens.AND))
 			{
 				errorAndAdvance("Expecting a delegation specifier");
 				continue;
 			}
 			parseDelegationSpecifier();
-			if(!at(NapileTokens.COMMA))
+			if(!at(NapileTokens.AND))
 				break;
 			advance(); // COMMA
 		}

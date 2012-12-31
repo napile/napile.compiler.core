@@ -36,7 +36,7 @@ public class VariableAccessor extends StackValue
 	{
 		super(type);
 
-		callableMethod = CallTransformer.transformToCallable(methodDescriptor, Collections.<TypeNode>emptyList(), false, false);
+		callableMethod = CallTransformer.transformToCallable(methodDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
 	}
 
 	@Override

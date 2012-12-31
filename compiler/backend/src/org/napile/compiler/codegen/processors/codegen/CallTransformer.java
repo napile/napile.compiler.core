@@ -43,7 +43,7 @@ import org.napile.compiler.lang.types.JetType;
  */
 public class CallTransformer
 {
-	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym)
+	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym, boolean requireSpecialCall)
 	{
 		MethodDescriptor fd = (MethodDescriptor) resolvedCall.getResultingDescriptor();
 		fd = unwrapFakeOverride(fd);
@@ -68,7 +68,7 @@ public class CallTransformer
 			}
 		}
 
-		return transformToCallable(fd, typeArguments, nullable, anonym);
+		return transformToCallable(fd, typeArguments, nullable, anonym, requireSpecialCall);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,10 +80,10 @@ public class CallTransformer
 	}
 
 	@NotNull
-	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments, boolean nullable, boolean anonym)
+	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments, boolean nullable, boolean anonym, boolean requireSpecialCall)
 	{
 		CallableMethod.CallType type = CallableMethod.CallType.VIRTUAL;
-		if(methodDescriptor instanceof ConstructorDescriptor)
+		if(methodDescriptor instanceof ConstructorDescriptor || requireSpecialCall)
 			type = CallableMethod.CallType.SPECIAL;
 		else if(methodDescriptor.isStatic())
 			type = CallableMethod.CallType.STATIC;

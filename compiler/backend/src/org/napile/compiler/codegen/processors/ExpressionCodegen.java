@@ -397,7 +397,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, false, false);
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, false, false, false);
 
 		if(!(op.getName().getName().equals("inc") || op.getName().getName().equals("dec")))
 			return invokeOperation(expression, (MethodDescriptor) op, callableMethod);
@@ -434,6 +434,20 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				return generateReceiver(descriptor);
 			}  */
 			throw new UnsupportedOperationException("neither this nor receiver");
+		}
+	}
+
+	@Override
+	public StackValue visitSuperExpression(NapileSuperExpression expression, StackValue receiver)
+	{
+		final DeclarationDescriptor descriptor = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getInstanceReference());
+		if(descriptor instanceof ClassDescriptor)
+			return StackValue.thisOrOuter(this, (ClassDescriptor) descriptor, false);
+		else
+		{
+
+			throw new UnsupportedOperationException("neither this nor receiver");
+			//return StackValue.local(0, asmType(type));
 		}
 	}
 
@@ -615,7 +629,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		else
 		{
 			DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false);
+			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
 
 			return invokeOperation(expression, (MethodDescriptor) op, callable);
 		}
@@ -634,7 +648,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			{
 				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false, false);
+				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false, false, false);
 
 				StackValue value = gen(expression.getBaseExpression());
 				value.dupReceiver(instructs);
@@ -707,7 +721,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, StackValue receiver)
 	{
 		MethodDescriptor operationDescriptor = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
-		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor, Collections.<TypeNode>emptyList(), false, false);
+		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
 
 		boolean isGetter = accessor.getName().endsWith("get");
 
@@ -720,13 +734,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		TypeNode asmType;
 		if(isGetter)
 		{
-			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall, false, false));
+			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall, false, false, false));
 
 			asmType = accessor.getReturnType();
 		}
 		else
 		{
-			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall, false, false));
+			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall, false, false, false));
 
 			asmType = argumentTypes.get(argumentTypes.size() - 1);
 		}
@@ -882,7 +896,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			//final ClassDescriptor classDescriptor = ((ConstructorDescriptor) constructorDescriptor).getContainingDeclaration();
 
-			CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor, Collections.<TypeNode>emptyList(), false, false);
+			CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
 
 			receiver.put(receiver.getType(), instructs);
 
@@ -917,7 +931,16 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 	private StackValue invokeMethod(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym)
 	{
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, nullable, anonym);
+		boolean requireSpecialCall = false;
+		ReceiverDescriptor receiverDescriptor = resolvedCall.getThisObject();
+		if(receiverDescriptor instanceof ExpressionReceiver)
+		{
+			NapileExpression expressionOfReceiver = ((ExpressionReceiver) receiverDescriptor).getExpression();
+			if(expressionOfReceiver instanceof NapileSuperExpression)
+				requireSpecialCall = true;
+		}
+
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, nullable, anonym, requireSpecialCall);
 
 		invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
 

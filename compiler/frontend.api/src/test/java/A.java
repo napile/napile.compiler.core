@@ -20,11 +20,9 @@
  */
 public class A
 {
-	private int val;
 
 	public static void main(String... arg)
 	{
 
-		System.out.println(Integer.MIN_VALUE);
 	}
 }
