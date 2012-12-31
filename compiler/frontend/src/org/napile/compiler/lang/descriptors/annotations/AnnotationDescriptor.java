@@ -30,6 +30,8 @@ public class AnnotationDescriptor
 
 	private ResolvedCall<ConstructorDescriptor> resolvedCall;
 
+	private Annotated owner;
+
 	public JetType getType()
 	{
 		return annotationType;
@@ -48,5 +50,16 @@ public class AnnotationDescriptor
 	public void setResolvedCall(ResolvedCall<ConstructorDescriptor> resolvedCall)
 	{
 		this.resolvedCall = resolvedCall;
+	}
+
+	@NotNull
+	public Annotated getOwner()
+	{
+		return owner;
+	}
+
+	public void setOwner(@NotNull Annotated owner)
+	{
+		this.owner = owner;
 	}
 }

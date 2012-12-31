@@ -28,6 +28,9 @@ public abstract class AnnotatedImpl implements Annotated
 	public AnnotatedImpl(List<AnnotationDescriptor> annotations)
 	{
 		this.annotations = annotations;
+
+		for(AnnotationDescriptor a : annotations)
+			a.setOwner(this);
 	}
 
 	@Override

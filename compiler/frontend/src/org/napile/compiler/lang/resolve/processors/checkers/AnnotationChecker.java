@@ -16,11 +16,19 @@
 
 package org.napile.compiler.lang.resolve.processors.checkers;
 
-import javax.inject.Inject;
+import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileAnnotationPackage;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.annotations.Annotated;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.psi.NapileAnnotation;
+import org.napile.compiler.lang.resolve.AnnotationUtils;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.BodiesResolveContext;
+import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
@@ -28,22 +36,36 @@ import org.napile.compiler.lang.resolve.BodiesResolveContext;
  */
 public class AnnotationChecker
 {
-	@NotNull
-	private BindingTrace trace;
-
-	@Inject
-	public void setTrace(@NotNull BindingTrace trace)
+	public void process(@NotNull Collection<NapileAnnotation> annotations, @NotNull BindingTrace trace)
 	{
-		this.trace = trace;
+		for(NapileAnnotation annotation : annotations)
+		{
+			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingContext.ANNOTATION, annotation);
+
+			checkRepeatable(annotation, annotationDescriptor, trace);
+		}
 	}
 
-	public void processFirst(@NotNull BodiesResolveContext bodiesResolveContext)
+	private void checkRepeatable(@NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor, @NotNull BindingTrace trace)
 	{
+		JetType type = annotationDescriptor.getType();
 
-	}
+		ClassDescriptor classDescriptor = (ClassDescriptor) type.getConstructor().getDeclarationDescriptor();
 
-	public void processLater(@NotNull BodiesResolveContext bodiesResolveContext)
-	{
+		if(AnnotationUtils.hasAnnotation(classDescriptor, NapileAnnotationPackage.REPEATABLE))
+			return;
 
+		Annotated owner = annotationDescriptor.getOwner();
+		for(AnnotationDescriptor otherAnnotation : owner.getAnnotations())
+		{
+			if(otherAnnotation == annotationDescriptor)
+				continue;
+
+			if(otherAnnotation.getType().equals(annotationDescriptor.getType()))
+			{
+				trace.report(Errors.DUPLICATE_ANNOTATION.on(annotation));
+				break;
+			}
+		}
 	}
 }

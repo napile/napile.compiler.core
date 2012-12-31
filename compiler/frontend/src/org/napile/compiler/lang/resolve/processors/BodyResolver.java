@@ -40,7 +40,6 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.ModifiersChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -75,8 +74,6 @@ public class BodyResolver
 	private ControlFlowAnalyzer controlFlowAnalyzer;
 	@NotNull
 	private DeclarationsChecker declarationsChecker;
-	@NotNull
-	private AnnotationChecker annotationChecker;
 	@NotNull
 	private ModifiersChecker modifiersChecker;
 
@@ -123,12 +120,6 @@ public class BodyResolver
 	}
 
 	@Inject
-	public void setAnnotationChecker(@NotNull AnnotationChecker annotationChecker)
-	{
-		this.annotationChecker = annotationChecker;
-	}
-
-	@Inject
 	public void setModifiersChecker(@NotNull ModifiersChecker modifiersChecker)
 	{
 		this.modifiersChecker = modifiersChecker;
@@ -157,11 +148,9 @@ public class BodyResolver
 	{
 		resolveBehaviorDeclarationBodies(bodiesResolveContext);
 
-		annotationChecker.processFirst(bodiesResolveContext);
 		controlFlowAnalyzer.process(bodiesResolveContext);
 		modifiersChecker.process(bodiesResolveContext);
 		declarationsChecker.process(bodiesResolveContext);
-		annotationChecker.processLater(bodiesResolveContext);
 	}
 
 	private void resolveDelegationSpecifierLists()

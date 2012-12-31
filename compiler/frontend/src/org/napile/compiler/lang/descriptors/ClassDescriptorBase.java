@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.types.JetType;
@@ -31,7 +33,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 /**
  * @author abreslav
  */
-public abstract class ClassDescriptorBase implements ClassDescriptor
+public abstract class ClassDescriptorBase extends AnnotatedImpl implements ClassDescriptor
 {
 
 	protected JetType defaultType;
@@ -40,8 +42,10 @@ public abstract class ClassDescriptorBase implements ClassDescriptor
 
 	private final boolean isStatic;
 
-	protected ClassDescriptorBase(boolean isStatic)
+	protected ClassDescriptorBase(@NotNull List<AnnotationDescriptor> annotations, boolean isStatic)
 	{
+		super(annotations);
+
 		this.isStatic = isStatic;
 	}
 

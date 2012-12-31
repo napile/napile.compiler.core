@@ -300,7 +300,10 @@ public interface Errors
 
 	SimpleDiagnosticFactory<NapileExpression> DANGLING_FUNCTION_LITERAL_ARGUMENT_SUSPECTED = SimpleDiagnosticFactory.create(Severity.WARNING);
 
+	// annotations
 	DiagnosticFactory1<NapileAnnotation, String> NOT_AN_ANNOTATION_CLASS = DiagnosticFactory1.create(Severity.ERROR);
+
+	SimpleDiagnosticFactory<NapileAnnotation> DUPLICATE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 
 	// This field is needed to make the Initializer class load (interfaces cannot have static initializers)

@@ -22,6 +22,7 @@ import com.intellij.openapi.project.Project;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
+import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.members.TypeParameterResolver;
 import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.resolve.processors.QualifiedExpressionResolver;
@@ -37,6 +38,7 @@ public class InjectorForMacros
 	private CallResolver callResolver;
 	private DescriptorResolver descriptorResolver;
 	private AnnotationResolver annotationResolver;
+	private AnnotationChecker annotationChecker;
 	private TypeParameterResolver typeParameterResolver;
 	private TypeResolver typeResolver;
 	private QualifiedExpressionResolver qualifiedExpressionResolver;
@@ -49,6 +51,7 @@ public class InjectorForMacros
 		this.callResolver = new CallResolver();
 		this.descriptorResolver = new DescriptorResolver();
 		this.annotationResolver = new AnnotationResolver();
+		this.annotationChecker = new AnnotationChecker();
 		this.typeParameterResolver = new TypeParameterResolver();
 		this.typeResolver = new TypeResolver();
 		this.qualifiedExpressionResolver = new QualifiedExpressionResolver();
@@ -69,6 +72,7 @@ public class InjectorForMacros
 		descriptorResolver.setTypeParameterResolver(typeParameterResolver);
 		descriptorResolver.setTypeResolver(typeResolver);
 
+		annotationResolver.setAnnotationChecker(annotationChecker);
 		annotationResolver.setCallResolver(callResolver);
 
 		typeParameterResolver.setAnnotationResolver(annotationResolver);

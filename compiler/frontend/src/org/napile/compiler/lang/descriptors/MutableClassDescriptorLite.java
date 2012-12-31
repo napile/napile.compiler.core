@@ -41,9 +41,6 @@ import com.google.common.collect.Lists;
  */
 public abstract class MutableClassDescriptorLite extends ClassDescriptorBase implements WithDeferredResolve
 {
-
-	private final List<AnnotationDescriptor> annotations;
-
 	private List<TypeParameterDescriptor> typeParameters;
 	private Collection<JetType> supertypes = Lists.newArrayList();
 
@@ -63,8 +60,7 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 
 	public MutableClassDescriptorLite(@NotNull DeclarationDescriptor containingDeclaration, @NotNull ClassKind kind, @NotNull List<AnnotationDescriptor> annotationDescriptors, boolean isStatic)
 	{
-		super(isStatic);
-		this.annotations = annotationDescriptors;
+		super(annotationDescriptors, isStatic);
 		this.containingDeclaration = containingDeclaration;
 		this.kind = kind;
 	}
@@ -226,12 +222,6 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 		{
 			return super.toString();
 		}
-	}
-
-	@Override
-	public List<AnnotationDescriptor> getAnnotations()
-	{
-		return annotations;
 	}
 
 	private DescriptorBuilder builder = null;

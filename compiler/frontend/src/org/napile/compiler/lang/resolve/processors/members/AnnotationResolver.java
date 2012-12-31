@@ -41,6 +41,7 @@ import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
+import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -52,10 +53,19 @@ import org.napile.compiler.lang.types.TypeUtils;
  */
 public class AnnotationResolver
 {
+	@NotNull
 	private CallResolver callResolver;
+	@NotNull
+	private AnnotationChecker annotationChecker;
 
 	@Inject
-	public void setCallResolver(CallResolver callResolver)
+	public void setAnnotationChecker(@NotNull AnnotationChecker annotationChecker)
+	{
+		this.annotationChecker = annotationChecker;
+	}
+
+	@Inject
+	public void setCallResolver(@NotNull CallResolver callResolver)
 	{
 		this.callResolver = callResolver;
 	}
@@ -99,6 +109,8 @@ public class AnnotationResolver
 
 			resolveAnnotation(scope, annotation, annotationDescriptor, trace);
 		}
+
+		annotationChecker.process(annotations, trace);
 	}
 
 	@SuppressWarnings("unchecked")
