@@ -16,9 +16,6 @@
 
 package org.napile.compiler.lang.psi;
 
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
@@ -27,11 +24,8 @@ import com.intellij.lang.ASTNode;
  * @author VISTALL
  * @date 21:52/10.10.12
  */
-public interface NapileModifierList extends NapileElement
+public interface NapileModifierList extends NapileElement, NapileAnnotationOwner
 {
-	@NotNull
-	List<NapileAnnotation> getAnnotations();
-
 	boolean hasModifier(NapileToken token);
 
 	@Nullable

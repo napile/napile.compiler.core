@@ -30,6 +30,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnnotation;
+import org.napile.compiler.lang.psi.NapileAnnotationOwner;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
@@ -65,8 +66,13 @@ public class AnnotationResolver
 		NapileModifierList modifierList = modifierListOwner.getModifierList();
 		if(modifierList == null)
 			return Collections.emptyList();
+		return bindAnnotations(scope, modifierList, trace);
+	}
 
-		List<NapileAnnotation> annotations = modifierList.getAnnotations();
+	@NotNull
+	public List<AnnotationDescriptor> bindAnnotations(@NotNull JetScope scope, @NotNull NapileAnnotationOwner annotationOwner, BindingTrace trace)
+	{
+		List<NapileAnnotation> annotations = annotationOwner.getAnnotations();
 		if(annotations.isEmpty())
 			return Collections.emptyList();
 
@@ -93,23 +99,6 @@ public class AnnotationResolver
 
 			resolveAnnotation(scope, annotation, annotationDescriptor, trace);
 		}
-	}
-
-	@NotNull
-	public List<AnnotationDescriptor> resolveAnnotations(@NotNull JetScope scope, @NotNull List<NapileAnnotation> annotations, BindingTrace trace)
-	{
-		if(annotations.isEmpty())
-			return Collections.emptyList();
-
-		List<AnnotationDescriptor> result = new ArrayList<AnnotationDescriptor>(annotations.size());
-		for(NapileAnnotation annotation : annotations)
-		{
-			AnnotationDescriptor descriptor = new AnnotationDescriptor();
-			resolveAnnotation(scope, annotation, descriptor, trace);
-			trace.record(BindingContext.ANNOTATION, annotation, descriptor);
-			result.add(descriptor);
-		}
-		return result;
 	}
 
 	@SuppressWarnings("unchecked")

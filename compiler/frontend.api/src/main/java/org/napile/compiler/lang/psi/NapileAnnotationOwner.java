@@ -16,16 +16,13 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.Nullable;
+import java.util.List;
 
 /**
  * @author VISTALL
- * @date 19:58/19.10.12
+ * @date 16:19/31.12.12
  */
-public interface NapileTypeReference extends NapileElement, NapileAnnotationOwner
+public interface NapileAnnotationOwner
 {
-	NapileTypeReference[] EMPTY_ARRAY = new NapileTypeReference[0];
-
-	@Nullable
-	NapileTypeElement getTypeElement();
+	List<NapileAnnotation> getAnnotations();
 }
