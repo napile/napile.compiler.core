@@ -1614,7 +1614,27 @@ public class JetExpressionParsing extends AbstractJetParsing
 		PsiBuilder.Marker thisReference = mark();
 		advance(); // THIS_KEYWORD
 		thisReference.done(REFERENCE_EXPRESSION);
+		if(at(NapileTokens.LT))
+		{
+			// This may be "this < foo" or "this<foo>", thus the backtracking
+			PsiBuilder.Marker supertype = mark();
 
+			getBuilder().disableNewlines();
+			advance(); // LT
+
+			parsing.parseTypeRef();
+
+			if(at(NapileTokens.GT))
+			{
+				advance(); // GT
+				supertype.drop();
+			}
+			else
+			{
+				supertype.rollbackTo();
+			}
+			getBuilder().restoreNewlinesState();
+		}
 		mark.done(THIS_EXPRESSION);
 	}
 
