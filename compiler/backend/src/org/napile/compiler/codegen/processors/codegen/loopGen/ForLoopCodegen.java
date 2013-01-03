@@ -25,7 +25,6 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
@@ -85,7 +84,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 	{
 		instructions.jump(firstPos);
 
-		instructions.replace(jumpIfSlot, new JumpIfInstruction(instructions.size()));
+		instructions.replace(jumpIfSlot).jumpIf(instructions.size());
 
 		gen.frameMap.leaveTemp();
 		gen.frameMap.leave(loopParameterDescriptor);

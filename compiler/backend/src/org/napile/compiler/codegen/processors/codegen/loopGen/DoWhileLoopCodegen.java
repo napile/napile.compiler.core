@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.lang.psi.NapileDoWhileExpression;
 
@@ -48,6 +47,6 @@ public class DoWhileLoopCodegen extends LoopCodegen<NapileDoWhileExpression>
 
 		int nextPos = instructions.size();
 
-		instructions.replace(reserve, new JumpIfInstruction(nextPos));
+		instructions.replace(reserve).jumpIf(nextPos);
 	}
 }

@@ -22,7 +22,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileLoopExpression;
@@ -72,10 +71,10 @@ public abstract class LoopCodegen<E extends NapileLoopExpression>
 
 		final int nextPosAfterLoop = instructions.size();
 		for(ReservedInstruction i : breakInstructions)
-			instructions.replace(i, new JumpInstruction(nextPosAfterLoop));
+			instructions.replace(i).jump(nextPosAfterLoop);
 
 		for(ReservedInstruction i : continueInstructions)
-			instructions.replace(i, new JumpInstruction(firstPos));
+			instructions.replace(i).jump(firstPos);
 	}
 
 	public void addContinue(@NotNull InstructionAdapter instructions)

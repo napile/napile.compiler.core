@@ -27,8 +27,6 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
@@ -84,7 +82,7 @@ public class BinaryOperationCodegen
 			instructs.newObject(TypeConstants.NULL_POINTER_EXCEPTION, Collections.<TypeNode>singletonList(TypeConstants.NULLABLE_STRING));
 			instructs.throwVal();
 
-			instructs.replace(jump, new JumpIfInstruction(instructs.size()));
+			instructs.replace(jump).jumpIf(instructs.size());
 
 			return StackValue.onStack(base.getType());
 		}
@@ -137,13 +135,13 @@ public class BinaryOperationCodegen
 
 		ReservedInstruction jumpSlot = instructs.reserve();
 
-		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
+		instructs.replace(ifSlot).jumpIf(instructs.size());
 
 		// else check is is equal
 
 		gtOrLt(EQUAL, instructs);
 
-		instructs.replace(jumpSlot, new JumpInstruction(instructs.size()));
+		instructs.replace(jumpSlot).jump(instructs.size());
 	}
 
 	private static void gtOrLt(@NotNull Property property, @NotNull InstructionAdapter instructs)
@@ -160,12 +158,12 @@ public class BinaryOperationCodegen
 
 		ReservedInstruction jumpSlot = instructs.reserve();
 
-		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
+		instructs.replace(ifSlot).jumpIf(instructs.size());
 
 		instructs.putFalse();
 
 		// jump - ignored else
-		instructs.replace(jumpSlot, new JumpInstruction(instructs.size()));
+		instructs.replace(jumpSlot).jump(instructs.size());
 	}
 
 	public static StackValue genEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
@@ -263,7 +261,7 @@ public class BinaryOperationCodegen
 
 		gen.gen(expression.getRight(), exprType);
 
-		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
+		instructs.replace(ifSlot).jumpIf(instructs.size());
 
 		return StackValue.onStack(exprType);
 	}
@@ -287,12 +285,12 @@ public class BinaryOperationCodegen
 		ReservedInstruction ignoreFalseSlot = instructs.reserve();
 
 		// if left of right exp failed jump to false
-		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
-		instructs.replace(ifSlot2, new JumpIfInstruction(instructs.size()));
+		instructs.replace(ifSlot).jumpIf(instructs.size());
+		instructs.replace(ifSlot2).jumpIf(instructs.size());
 
 		instructs.putFalse();
 
-		instructs.replace(ignoreFalseSlot, new JumpInstruction(instructs.size()));
+		instructs.replace(ignoreFalseSlot).jump(instructs.size());
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
@@ -311,7 +309,7 @@ public class BinaryOperationCodegen
 		ReservedInstruction skipNextSlot = instructs.reserve();
 
 		// is first is failed - jump to right part
-		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
+		instructs.replace(ifSlot).jumpIf(instructs.size());
 
 		gen.gen(expression.getRight(), AsmConstants.BOOL_TYPE);
 
@@ -324,14 +322,14 @@ public class BinaryOperationCodegen
 		ReservedInstruction skipNextSlot2 = instructs.reserve();
 
 		// jump to false
-		instructs.replace(ifSlot2, new JumpIfInstruction(instructs.size()));
+		instructs.replace(ifSlot2).jumpIf(instructs.size());
 
 		// result
 		instructs.putFalse();
 
 		// skips instructions - jump over expression
-		instructs.replace(skipNextSlot, new JumpInstruction(instructs.size()));
-		instructs.replace(skipNextSlot2, new JumpInstruction(instructs.size()));
+		instructs.replace(skipNextSlot).jump(instructs.size());
+		instructs.replace(skipNextSlot2).jump(instructs.size());
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}

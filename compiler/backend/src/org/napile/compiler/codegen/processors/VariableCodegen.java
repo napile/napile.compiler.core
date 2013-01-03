@@ -31,7 +31,6 @@ import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
@@ -153,7 +152,7 @@ public class VariableCodegen
 
 			adapter.returnVal();
 
-			adapter.replace(reservedInstruction, new JumpIfInstruction(adapter.size()));
+			adapter.replace(reservedInstruction).jumpIf(adapter.size());
 
 			adapter.returnVal();
 

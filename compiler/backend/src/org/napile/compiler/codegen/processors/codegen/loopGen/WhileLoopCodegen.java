@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.lang.psi.NapileWhileExpression;
 
@@ -54,7 +53,7 @@ public class WhileLoopCodegen extends LoopCodegen<NapileWhileExpression>
 	{
 		int jumpOutPos = instructions.size() + 1;
 
-		instructions.replace(ifSlot, new JumpIfInstruction(jumpOutPos));
+		instructions.replace(ifSlot).jumpIf(jumpOutPos);
 
 		instructions.jump(firstPos);
 	}

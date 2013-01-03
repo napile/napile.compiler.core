@@ -36,8 +36,6 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
-import org.napile.asm.tree.members.bytecode.impl.JumpInstruction;
 import org.napile.asm.tree.members.bytecode.tryCatch.CatchBlock;
 import org.napile.asm.tree.members.bytecode.tryCatch.TryBlock;
 import org.napile.asm.tree.members.bytecode.tryCatch.TryCatchBlockNode;
@@ -261,7 +259,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		final int nextIndex = instructs.size();
 		for(ReservedInstruction r : jumpOutInstructions)
-			instructs.replace(r, new JumpInstruction(nextIndex));
+			instructs.replace(r).jump(nextIndex);
 
 		instructs.tryCatch(new TryCatchBlockNode(tryBlock, catchBlocks));
 
@@ -503,9 +501,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		int afterIfStartIndex = instructs.size();
 
 		// replace ifSlot - by jump_if - index is start 'else' block
-		instructs.replace(ifSlot, new JumpIfInstruction(elseStartIndex));
+		instructs.replace(ifSlot).jumpIf(elseStartIndex);
 		// at end of 'then' block ignore 'else' block
-		instructs.replace(afterIfSlot, new JumpInstruction(afterIfStartIndex));
+		instructs.replace(afterIfSlot).jump(afterIfStartIndex);
 
 		return StackValue.onStack(asmType);
 	}
@@ -584,7 +582,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			NapileExpression whenExp = whenEntry.getExpression();
 
-			instructs.replace(reservedInstruction, new JumpInstruction(instructs.size()));
+			instructs.replace(reservedInstruction).jump(instructs.size());
 
 			gen(whenExp, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, whenExp)));
 
@@ -592,7 +590,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		}
 
 		for(ReservedInstruction instruction : jumpOut)
-			instructs.replace(instruction, new JumpInstruction(instructs.size()));
+			instructs.replace(instruction).jump(instructs.size());
 
 		return StackValue.onStack(TypeTransformer.toAsmType(expType));
 	}
@@ -617,7 +615,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		StackValue.castTo(expressionType, targetType, instructs);
 
-		instructs.replace(ifSlot, new JumpIfInstruction(instructs.size()));
+		instructs.replace(ifSlot).jumpIf(instructs.size());
 
 		return StackValue.onStack(targetType);
 	}
