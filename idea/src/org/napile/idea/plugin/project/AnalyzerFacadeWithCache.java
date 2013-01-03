@@ -24,11 +24,10 @@ import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.analyzer.AnalyzerFacade;
 import org.napile.compiler.lang.diagnostics.DiagnosticUtils;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
-import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
 import org.napile.compiler.lang.resolve.NapileFilesProvider;
-import org.napile.compiler.lang.psi.NapileFile;
 import com.google.common.base.Predicates;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.progress.ProcessCanceledException;
@@ -94,13 +93,13 @@ public final class AnalyzerFacadeWithCache
 							// System.out.println("===============ReCache - In-Block==============");
 
 							// Collect context for headers first
-							AnalyzeExhaust analyzeExhaustHeaders = analyzeHeadersWithCacheOnFile(file, declarationProvider);
+							//AnalyzeExhaust analyzeExhaustHeaders = analyzeHeadersWithCacheOnFile(file, declarationProvider);
 
-							BodiesResolveContext context = analyzeExhaustHeaders.getBodiesResolveContext();
-							assert context != null : "Headers resolver should prepare and stored information for bodies resolve";
+							//BodiesResolveContext context = analyzeExhaustHeaders.getBodiesResolveContext();
+						//assert context != null : "Headers resolver should prepare and stored information for bodies resolve";
 
 							// Need to resolve bodies in given file and all in the same package
-							AnalyzeExhaust exhaust = AnalyzerFacade.analyzeBodiesInFiles(file.getProject(), new NapileFilesProvider.SameJetFilePredicate(file), new DelegatingBindingTrace(analyzeExhaustHeaders.getBindingContext()), context);
+							AnalyzeExhaust exhaust = AnalyzerFacade.analyzeFiles(file.getProject(), declarationProvider.fun(file), new NapileFilesProvider.SameJetFilePredicate(file));
 
 							return new Result<AnalyzeExhaust>(exhaust, PsiModificationTracker.MODIFICATION_COUNT);
 						}

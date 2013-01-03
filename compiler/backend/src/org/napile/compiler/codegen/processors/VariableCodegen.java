@@ -34,7 +34,6 @@ import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.JumpIfInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
-import org.napile.compiler.codegen.processors.codegen.BinaryOperationCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.lexer.NapileTokens;

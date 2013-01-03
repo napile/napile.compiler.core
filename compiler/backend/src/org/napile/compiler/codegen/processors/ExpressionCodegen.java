@@ -44,7 +44,6 @@ import org.napile.asm.tree.members.bytecode.tryCatch.TryCatchBlockNode;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
 import org.napile.compiler.codegen.CompilationException;
-import org.napile.compiler.codegen.processors.codegen.BinaryOperationCodegen;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.FrameMap;
@@ -515,32 +514,58 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitWhenExpression(NapileWhenExpression expression, StackValue data)
 	{
 		JetType expType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+
 		NapileExpression subjectExpression = expression.getSubjectExpression();
 		if(subjectExpression != null)
 			gen(subjectExpression, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, subjectExpression)));
 
-		List<ReservedInstruction> jumpOut = new ArrayList<ReservedInstruction>(5);
-		List<NapileWhenEntry> entries = expression.getEntries();
-		for(NapileWhenEntry whenEntry : entries)
+		List<NapileWhenEntry> whenEntries = expression.getEntries();
+		List<ReservedInstruction> jumpToBlocks = new ArrayList<ReservedInstruction>(whenEntries.size());
+		List<ReservedInstruction> jumpOut = new ArrayList<ReservedInstruction>(whenEntries.size());
+
+		for(NapileWhenEntry whenEntry : expression.getEntries())
 		{
 			if(whenEntry.isElse())
 			{
-
+				jumpToBlocks.add(instructs.reserve());
 			}
 			else
 			{
 				NapileWhenCondition condition = whenEntry.getCondition();
 				if(condition instanceof NapileWhenConditionIsPattern)
 				{
-					throw new UnsupportedOperationException("'is' is not supported for now");
+					instructs.dup();
+
+					TypeNode typeNode = TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.TYPE, ((NapileWhenConditionIsPattern) condition).getTypeRef()));
+
+					instructs.is(typeNode);
+
+					if(((NapileWhenConditionIsPattern) condition).isNegated())
+						instructs.putFalse();
+					else
+						instructs.putTrue();
+
+					instructs.jumpIf(instructs.size() + 2);
+
+					jumpToBlocks.add(instructs.reserve());
 				}
 				else if(condition instanceof NapileWhenConditionWithExpression)
 				{
-					NapileExpression exp = ((NapileWhenConditionWithExpression) condition).getExpression();
-					if(exp instanceof NapileConstantExpression)
-					{
+					NapileExpression condExp = ((NapileWhenConditionWithExpression) condition).getExpression();
 
-					}
+					if(subjectExpression != null)
+						instructs.dup();
+
+					gen(condExp, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, condExp)));
+
+					if(subjectExpression != null)
+						instructs.invokeVirtual(BinaryOperationCodegen.ANY_EQUALS, false);
+
+					instructs.putTrue();
+
+					instructs.jumpIf(instructs.size() + 2);
+
+					jumpToBlocks.add(instructs.reserve());
 				}
 				else if(condition instanceof NapileWhenConditionInRange)
 				{
@@ -549,6 +574,25 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			}
 		}
 
+		if(whenEntries.size() != jumpToBlocks.size())
+			throw new IllegalArgumentException();
+
+		for(int i = 0; i < jumpToBlocks.size(); i++)
+		{
+			ReservedInstruction reservedInstruction = jumpToBlocks.get(i);
+			NapileWhenEntry whenEntry = whenEntries.get(i);
+
+			NapileExpression whenExp = whenEntry.getExpression();
+
+			instructs.replace(reservedInstruction, new JumpInstruction(instructs.size()));
+
+			gen(whenExp, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, whenExp)));
+
+			jumpOut.add(instructs.reserve());
+		}
+
+		for(ReservedInstruction instruction : jumpOut)
+			instructs.replace(instruction, new JumpInstruction(instructs.size()));
 
 		return StackValue.onStack(TypeTransformer.toAsmType(expType));
 	}
