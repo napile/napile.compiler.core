@@ -135,7 +135,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		else
 			return facade.getTypeInfo(expression, context);
 
-		VariableAccessorResolver.resolveForBinaryCall(expression, context);
+		VariableAccessorResolver.resolveSetterForBinaryCall(expression, context);
 
 		return DataFlowUtils.checkType(result, expression, context, context.dataFlowInfo);
 	}

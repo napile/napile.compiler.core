@@ -25,18 +25,18 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 
-@Deprecated
-public class Property extends StackValue
+public class SimpleVariableAccessor extends StackValue
 {
 	private final MethodRef setter;
 	private final MethodRef getter;
-	private final boolean staticVar;
+	private final CallableMethod.CallType callType;
 
-	public Property(@NotNull FqName fqName, @NotNull TypeNode type, boolean s)
+	public SimpleVariableAccessor(@NotNull FqName fqName, @NotNull TypeNode type, CallableMethod.CallType s)
 	{
 		super(type);
-		staticVar = s;
+		callType = s;
 		// convert 'A.var' -> A + var$set -> A.var$set
 		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + "$set"));
 		setter = new MethodRef(setterFq, Collections.singletonList(getType()), Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE);
@@ -48,10 +48,18 @@ public class Property extends StackValue
 	@Override
 	public void put(TypeNode type, InstructionAdapter instructionAdapter)
 	{
-		if(staticVar)
-			instructionAdapter.invokeStatic(getter, false);
-		else
-			instructionAdapter.invokeVirtual(getter, false);
+		switch(callType)
+		{
+			case SPECIAL:
+				instructionAdapter.invokeSpecial(getter, false);
+				break;
+			case STATIC:
+				instructionAdapter.invokeStatic(getter, false);
+				break;
+			case VIRTUAL:
+				instructionAdapter.invokeVirtual(getter, false);
+				break;
+		}
 
 		castTo(type, instructionAdapter);
 	}
@@ -59,24 +67,31 @@ public class Property extends StackValue
 	@Override
 	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
 	{
-		if(staticVar)
-			instructionAdapter.invokeStatic(setter, false);
-		else
-			instructionAdapter.invokeVirtual(setter, false);
-
+		switch(callType)
+		{
+			case SPECIAL:
+				instructionAdapter.invokeSpecial(setter, false);
+				break;
+			case STATIC:
+				instructionAdapter.invokeStatic(setter, false);
+				break;
+			case VIRTUAL:
+				instructionAdapter.invokeVirtual(setter, false);
+				break;
+		}
 		instructionAdapter.pop();
 	}
 
 	@Override
 	public int receiverSize()
 	{
-		return staticVar ? 0 : 1;
+		return callType == CallableMethod.CallType.VIRTUAL ? 1 : 0;
 	}
 
 	@Override
 	public void dupReceiver(InstructionAdapter v)
 	{
-		if(!staticVar)
+		if(callType == CallableMethod.CallType.VIRTUAL)
 			v.dup();
 	}
 }

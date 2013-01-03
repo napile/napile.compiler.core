@@ -918,7 +918,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		//TODO [VISTALL] super?
 
 		if(!forceField)
-			return StackValue.property(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic());
+		{
+			throw new UnsupportedOperationException("property");
+			//return StackValue.property(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic());
+		}
 		else
 			return StackValue.variable(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic());
 	}

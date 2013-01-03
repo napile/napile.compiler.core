@@ -1173,7 +1173,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		JetType result;
 		if(operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS)
 		{
-			VariableAccessorResolver.resolveForUnaryCalL(expression, context);
+			VariableAccessorResolver.resolveSetterForUnaryCalL(expression, context);
 
 			JetType receiverType = receiver.getType();
 			if(!JetTypeChecker.INSTANCE.isSubtypeOf(returnType, receiverType))

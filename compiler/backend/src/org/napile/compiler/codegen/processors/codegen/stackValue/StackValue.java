@@ -26,7 +26,6 @@ import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
@@ -94,15 +93,10 @@ public abstract class StackValue
 		return new VariableAccessor(typeNode, methodDescriptor);
 	}
 
-	@Deprecated
-	public static StackValue property(@NotNull VariableDescriptor propertyDescriptor)
+	@NotNull
+	public static StackValue simpleVariableAccessor(@NotNull FqName fqName, @NotNull TypeNode type, CallableMethod.CallType callType)
 	{
-		return property(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()), propertyDescriptor.isStatic());
-	}
-
-	public static StackValue property(@NotNull FqName fqName, @NotNull TypeNode type, boolean staticVar)
-	{
-		return new Property(fqName, type, staticVar);
+		return new SimpleVariableAccessor(fqName, type, callType);
 	}
 
 	public static StackValue collectionElement(@NotNull TypeNode typeNode, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionCodegen expressionCodegen)

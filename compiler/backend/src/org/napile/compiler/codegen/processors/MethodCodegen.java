@@ -39,6 +39,7 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
@@ -105,7 +106,7 @@ public class MethodCodegen
 	{
 		MethodNode methodNode = gen(methodDescriptor, name);
 
-		genReferenceParameters(methodDescriptor, methodNode.instructions);
+		genReferenceParameters(declarationWithBody, bindingTrace, methodDescriptor, methodNode.instructions);
 
 		NapileExpression expression = declarationWithBody.getBodyExpression();
 		if(expression != null)
@@ -127,22 +128,24 @@ public class MethodCodegen
 		return methodNode;
 	}
 
-	public static void genReferenceParameters(@NotNull CallableDescriptor callableDescriptor, List<Instruction> instructions)
+	public static void genReferenceParameters(@NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace trace, @NotNull CallableDescriptor callableDescriptor, List<Instruction> instructions)
 	{
 		InstructionAdapter adapter = new InstructionAdapter();
 		for(CallParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
 			if(parameterDescriptor instanceof CallParameterAsReferenceDescriptorImpl)
 			{
-				VariableDescriptor variableDescriptor = ((CallParameterAsReferenceDescriptorImpl) parameterDescriptor).getReferenceVariableDescriptor();
-				if(variableDescriptor == null)
-					continue;
+				NapileCallParameterAsReference refParameter = (NapileCallParameterAsReference) declarationWithBody.getValueParameters()[parameterDescriptor.getIndex()];
+				MethodDescriptor resolvedSetter = trace.safeGet(BindingContext.VARIABLE_CALL, refParameter.getReferenceExpression());
+				VariableDescriptor variableDescriptor = (VariableDescriptor) trace.safeGet(BindingContext.REFERENCE_TARGET, refParameter.getReferenceExpression());
 
 				TypeNode typeNode = TypeTransformer.toAsmType(variableDescriptor.getType());
 
 				if(!variableDescriptor.isStatic())
 					StackValue.local(0, typeNode).put(AsmConstants.ANY_TYPE, adapter);
+
 				StackValue.local(callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter);
-				StackValue.property(variableDescriptor).store(typeNode, adapter);
+
+				StackValue.variableAccessor(resolvedSetter, typeNode).store(typeNode, adapter);
 			}
 
 		instructions.addAll(adapter.getInstructions());

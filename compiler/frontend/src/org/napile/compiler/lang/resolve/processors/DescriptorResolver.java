@@ -56,6 +56,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
+import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import com.google.common.collect.Lists;
@@ -313,22 +314,16 @@ public class DescriptorResolver
 			type = ErrorUtils.createErrorType("Reference expected");
 		else
 		{
-			Collection<VariableDescriptor> variableDescriptors = scope.getVariables(ref.getReferencedNameAsName());
-			if(variableDescriptors.size() == 0)
+			variableDescriptor = VariableAccessorResolver.resolveSetterForReferenceParameter(ref, expressionTypingServices, trace, scope);
+
+			if(variableDescriptor == null)
 			{
 				trace.report(Errors.UNRESOLVED_REFERENCE.on(ref));
 				type = ErrorUtils.createErrorType("Reference expected");
 			}
-			else if(variableDescriptors.size() != 1)
-			{
-				type = ErrorUtils.createErrorType("Reference duplicate");
-				trace.report(Errors.UNRESOLVED_REFERENCE.on(ref));
-			}
 			else
 			{
-				variableDescriptor = variableDescriptors.iterator().next();
 				type = variableDescriptor.getType();
-
 				trace.record(BindingContext.REFERENCE_TARGET, ref, variableDescriptor);
 			}
 		}

@@ -34,22 +34,17 @@ import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileTreeVisitor;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.containers.MultiMap;
 
 /**
@@ -105,9 +100,39 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, expression.getAnonymMethod());
 
-		SimpleMethodDescriptor methodDescriptor = bindingTrace.safeGet(BindingContext.METHOD, expression);
+		final SimpleMethodDescriptor methodDescriptor = bindingTrace.safeGet(BindingContext.METHOD, expression);
+
+		boolean isStatic = false;
+		if(methodDescriptor.getContainingDeclaration() instanceof SimpleMethodDescriptor)
+			isStatic = ((SimpleMethodDescriptor) methodDescriptor.getContainingDeclaration()).isStatic();
+		else if(methodDescriptor.getContainingDeclaration() instanceof VariableDescriptor)
+			isStatic = ((VariableDescriptor) methodDescriptor.getContainingDeclaration()).isStatic();
+		else
+			throw new IllegalArgumentException("Unknown owner " + methodDescriptor.getContainingDeclaration());
 
 		ClassNode classNode = (ClassNode) parent;
+
+		final List<VariableDescriptor> capturedInClosure = new ArrayList<VariableDescriptor>(0);
+		NapileExpression bodyExpression = expression.getAnonymMethod().getBodyExpression();
+		if(bodyExpression != null)
+		{
+			bodyExpression.accept(new NapileVisitorVoid()
+			{
+				@Override
+				public void visitElement(PsiElement element)
+				{
+					element.acceptChildren(this);
+				}
+
+				@Override
+				public void visitSimpleNameExpression(NapileSimpleNameExpression expression)
+				{
+					DeclarationDescriptor declarationDescriptor = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression);
+					if(declarationDescriptor instanceof LocalVariableDescriptor && declarationDescriptor.getContainingDeclaration() != methodDescriptor)
+						capturedInClosure.add((VariableDescriptor) declarationDescriptor);
+				}
+			});
+		}
 
 		// gen method
 		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, fqName.shortName(), expression.getAnonymMethod(), bindingTrace, classNode);
@@ -232,7 +257,7 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 				constructorNode.instructions.addAll(instructions);
 
-				MethodCodegen.genReferenceParameters(constructorDescriptor, constructorNode.instructions);
+				MethodCodegen.genReferenceParameters(constructor, bindingTrace, constructorDescriptor, constructorNode.instructions);
 
 				ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode);
 				NapileExpression expression = constructor.getBodyExpression();

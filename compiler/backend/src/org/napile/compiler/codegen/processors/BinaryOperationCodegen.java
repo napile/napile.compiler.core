@@ -32,7 +32,7 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
-import org.napile.compiler.codegen.processors.codegen.stackValue.Property;
+import org.napile.compiler.codegen.processors.codegen.stackValue.SimpleVariableAccessor;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
@@ -56,9 +56,9 @@ public class BinaryOperationCodegen
 {
 	public static final MethodRef ANY_EQUALS = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("equals")), Arrays.asList(new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY))), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE);
 
-	private static final Property GREATER = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("GREATER")), TypeConstants.COMPARE_RESULT, true);
-	private static final Property EQUAL = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("EQUAL")), TypeConstants.COMPARE_RESULT, true);
-	private static final Property LOWER = new Property(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("LOWER")), TypeConstants.COMPARE_RESULT, true);
+	private static final SimpleVariableAccessor GREATER = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("GREATER")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
+	private static final SimpleVariableAccessor EQUAL = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("EQUAL")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
+	private static final SimpleVariableAccessor LOWER = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("LOWER")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
 
 	public static StackValue genSure(@NotNull NapilePostfixExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs, @NotNull StackValue receiver)
 	{
@@ -118,11 +118,11 @@ public class BinaryOperationCodegen
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
-	private static void gtOrLtEq(@NotNull Property property, @NotNull InstructionAdapter instructs)
+	private static void gtOrLtEq(@NotNull SimpleVariableAccessor simpleVariableAccessor, @NotNull InstructionAdapter instructs)
 	{
 		instructs.dup();
 
-		property.put(TypeConstants.COMPARE_RESULT, instructs);
+		simpleVariableAccessor.put(TypeConstants.COMPARE_RESULT, instructs);
 
 		instructs.invokeVirtual(ANY_EQUALS, false);
 
@@ -144,9 +144,9 @@ public class BinaryOperationCodegen
 		instructs.replace(jumpSlot).jump(instructs.size());
 	}
 
-	private static void gtOrLt(@NotNull Property property, @NotNull InstructionAdapter instructs)
+	private static void gtOrLt(@NotNull SimpleVariableAccessor simpleVariableAccessor, @NotNull InstructionAdapter instructs)
 	{
-		property.put(TypeConstants.COMPARE_RESULT, instructs);
+		simpleVariableAccessor.put(TypeConstants.COMPARE_RESULT, instructs);
 
 		instructs.invokeVirtual(ANY_EQUALS, false);
 

@@ -26,6 +26,7 @@ import org.napile.compiler.lang.descriptors.AbstractCallParameterDescriptorImpl;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileArrayAccessExpressionImpl;
@@ -40,10 +41,13 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
+import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
+import org.napile.compiler.lang.types.TypeUtils;
 
 /**
  * @author VISTALL
@@ -88,7 +92,32 @@ public class VariableAccessorResolver
 		return new Object[] {name, receiverDescriptor, nameExpression};
 	}
 
-	public static void resolveForBinaryCall(@NotNull NapileBinaryExpression expression, @NotNull ExpressionTypingContext context)
+	public static VariableDescriptor resolveSetterForReferenceParameter(@NotNull NapileSimpleNameExpression expression, @NotNull ExpressionTypingServices expressionTypingServices, BindingTrace originTrace, JetScope scope)
+	{
+		ExpressionTypingContext context = ExpressionTypingContext.newContext(expressionTypingServices, originTrace, scope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false);
+
+		Object[] pair = getReceiverAndName(expression, context);
+		if(pair == null)
+			return null;
+
+		Name name = (Name) pair[0];
+		ReceiverDescriptor receiverDescriptor = (ReceiverDescriptor) pair[1];
+		//NapileSimpleNameExpression nameExpression = (NapileSimpleNameExpression) pair[2];
+
+		NapileExpression argument = NapilePsiFactory.createExpression(expression.getProject(), "null");
+		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
+
+		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiverDescriptor, expression, expression, argument), expression, name, false);
+		if(results.isSuccess())
+			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
+
+		copyResolvingErrors(context, trace);
+
+		OverloadResolutionResults<VariableDescriptor> varResolve = context.resolveSimpleProperty(receiverDescriptor, null, expression);
+		return varResolve.isSuccess() ? varResolve.getResultingDescriptor() : null;
+	}
+
+	public static void resolveSetterForBinaryCall(@NotNull NapileBinaryExpression expression, @NotNull ExpressionTypingContext context)
 	{
 		NapileExpression left = expression.getLeft();
 
@@ -110,7 +139,7 @@ public class VariableAccessorResolver
 		copyResolvingErrors(context, trace);
 	}
 
-	public static void resolveForUnaryCalL(@NotNull NapileUnaryExpression expression, @NotNull ExpressionTypingContext context)
+	public static void resolveSetterForUnaryCalL(@NotNull NapileUnaryExpression expression, @NotNull ExpressionTypingContext context)
 	{
 		NapileExpression left = expression.getBaseExpression();
 		Object[] pair = getReceiverAndName(left, context);
