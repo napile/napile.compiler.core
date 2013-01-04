@@ -947,14 +947,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	{
 		if(methodDescriptor != null)
 			return StackValue.variableAccessor(methodDescriptor, TypeTransformer.toAsmType(variableDescriptor.getType()));
-		boolean isSuper = superExpression != null;
-
-		//TODO [VISTALL] super?
 
 		if(!forceField)
 		{
-			throw new UnsupportedOperationException("property");
-			//return StackValue.property(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic());
+			//TODO [VISTALL]
+			System.out.println("Using old method to invoking variable accessors");
+			//throw new UnsupportedOperationException("property");
+			return StackValue.simpleVariableAccessor(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.VIRTUAL);
 		}
 		else
 			return StackValue.variable(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic());
@@ -1383,7 +1382,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			VariableDescriptorImpl newVariableDescriptor = new VariableDescriptorImpl(ownerMethod.getContainingDeclaration(), variableDescriptor.getAnnotations(), variableDescriptor.getModality(), Visibility.LOCAL, name, CallableMemberDescriptor.Kind.DECLARATION, ownerMethod.isStatic(), true);
 			newVariableDescriptor.setType(variableDescriptor.getType(), variableDescriptor.getTypeParameters(), variableDescriptor.getExpectedThisObject());
 
-			wrappedVariables.put(variableDescriptor, StackValue.simpleVariableAccessor(newVariableDescriptor, variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.SPECIAL));
+			wrappedVariables.put(variableDescriptor, StackValue.simpleVariableAccessor(newVariableDescriptor, newVariableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.SPECIAL));
 
 			VariableCodegen.getSetterAndGetter(newVariableDescriptor, null, classNode, bindingTrace);
 			VariableNode variableNode = new VariableNode(newVariableDescriptor.isStatic() ? Modifier.list(Modifier.STATIC, Modifier.MUTABLE) : Modifier.list(Modifier.MUTABLE), newVariableDescriptor.getName(), TypeTransformer.toAsmType(newVariableDescriptor.getType()));
