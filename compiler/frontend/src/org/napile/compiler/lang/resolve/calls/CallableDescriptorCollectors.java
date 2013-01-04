@@ -64,6 +64,12 @@ public class CallableDescriptorCollectors
 		@Override
 		public Collection<MethodDescriptor> getNonMembersByName(JetScope scope, Name name)
 		{
+			/*Collection<MethodDescriptor> methodsByName = scope.getMethods(name);
+			List<MethodDescriptor> extensionList = new ArrayList<MethodDescriptor>(methodsByName.size());
+			for(MethodDescriptor methodDescriptor : methodsByName)
+				if(AnnotationUtils.hasAnnotation(methodDescriptor, NapileAnnotationPackage.EXTENSION))
+					extensionList.add(methodDescriptor);
+			return extensionList;  */
 			return Collections.emptyList();
 		}
 

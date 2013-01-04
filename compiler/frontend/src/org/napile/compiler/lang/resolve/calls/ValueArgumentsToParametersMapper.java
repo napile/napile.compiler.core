@@ -91,6 +91,12 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 		D candidate = candidateCall.getCandidateDescriptor();
 
 		List<CallParameterDescriptor> valueParameters = candidate.getValueParameters();
+		/*if(AnnotationUtils.hasAnnotation(candidate, NapileAnnotationPackage.EXTENSION))
+		{
+			valueParameters = new ArrayList<CallParameterDescriptor>(valueParameters);
+			if(!valueParameters.isEmpty())
+				valueParameters.remove(0);
+		}  */
 
 		Map<Name, CallParameterDescriptor> parameterByName = Maps.newHashMap();
 		for(CallParameterDescriptor valueParameter : valueParameters)
