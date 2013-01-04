@@ -32,7 +32,7 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 
 /**
@@ -51,9 +51,9 @@ public class NodeRefUtil
 		return new VariableRef(classNode.name.child(variableNode.name), variableNode.returnType);
 	}
 
-	public static VariableRef ref(@NotNull VariableDescriptorImpl propertyDescriptor)
+	public static VariableRef ref(@NotNull VariableDescriptor propertyDescriptor)
 	{
-		propertyDescriptor = propertyDescriptor.getOriginal();
+		propertyDescriptor = (VariableDescriptor) propertyDescriptor.getOriginal();
 		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()));
 	}
 

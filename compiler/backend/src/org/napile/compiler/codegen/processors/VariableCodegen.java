@@ -16,6 +16,7 @@
 
 package org.napile.compiler.codegen.processors;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
-import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
@@ -48,17 +49,18 @@ import com.intellij.psi.tree.IElementType;
  */
 public class VariableCodegen
 {
-	public static void getSetterAndGetter(@NotNull VariableDescriptorImpl variableDescriptor, @NotNull NapileVariable variable, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace)
+	public static void getSetterAndGetter(@NotNull VariableDescriptor variableDescriptor, @Nullable NapileVariable variable, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace)
 	{
 		Map<IElementType, NapileVariableAccessor> map = new HashMap<IElementType, NapileVariableAccessor>(2);
-		for(NapileVariableAccessor variableAccessor : variable.getAccessors())
-			map.put(variableAccessor.getAccessorElementType(), variableAccessor);
+		if(variable != null)
+			for(NapileVariableAccessor variableAccessor : variable.getAccessors())
+				map.put(variableAccessor.getAccessorElementType(), variableAccessor);
 
 		getGetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.GET_KEYWORD), variable);
 		getSetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.SET_KEYWORD), variable);
 	}
 
-	private static void getSetter(@NotNull VariableDescriptorImpl variableDescriptor, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace, @Nullable NapileVariableAccessor variableAccessor, NapileVariable variable)
+	private static void getSetter(@NotNull VariableDescriptor variableDescriptor, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace, @Nullable NapileVariableAccessor variableAccessor, @Nullable NapileVariable variable)
 	{
 		Name accessorFq = Name.identifier(variableDescriptor.getName() + AsmConstants.ANONYM_SPLITTER + "set");
 
@@ -70,7 +72,7 @@ public class VariableCodegen
 			throw new UnsupportedOperationException("Variable accessors with body is not supported");
 	}
 
-	private static void getSetterCode(@NotNull ClassNode classNode, @NotNull MethodNode setterMethodNode, @NotNull VariableDescriptorImpl variableDescriptor)
+	private static void getSetterCode(@NotNull ClassNode classNode, @NotNull MethodNode setterMethodNode, @NotNull VariableDescriptor variableDescriptor)
 	{
 		setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(variableDescriptor.getType())));
 
@@ -97,7 +99,7 @@ public class VariableCodegen
 		classNode.addMember(setterMethodNode);
 	}
 
-	private static void getGetter(VariableDescriptorImpl variableDescriptor, ClassNode classNode, BindingTrace bindingTrace, NapileVariableAccessor variableAccessor, NapileVariable variable)
+	private static void getGetter(VariableDescriptor variableDescriptor, ClassNode classNode, BindingTrace bindingTrace, NapileVariableAccessor variableAccessor, @Nullable NapileVariable variable)
 	{
 		Name accessorFq = Name.identifier(variableDescriptor.getName() + AsmConstants.ANONYM_SPLITTER + "get");
 
@@ -109,10 +111,10 @@ public class VariableCodegen
 			throw new UnsupportedOperationException("Variable accessors with body is not supported");
 	}
 
-	private static void getGetterCode(@NotNull ClassNode classNode, @NotNull MethodNode getterMethodNode, @NotNull VariableDescriptorImpl variableDescriptor, @NotNull BindingTrace bindingTrace, @NotNull NapileVariable variable)
+	private static void getGetterCode(@NotNull ClassNode classNode, @NotNull MethodNode getterMethodNode, @NotNull VariableDescriptor variableDescriptor, @NotNull BindingTrace bindingTrace, @Nullable NapileVariable variable)
 	{
 		//TODO [VISTALL] make LazyType, current version is not thread safe
-		if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
+		if(variable != null && variable.hasModifier(NapileTokens.LAZY_KEYWORD))
 		{
 			InstructionAdapter adapter = new InstructionAdapter();
 			if(!variableDescriptor.isStatic())
@@ -135,7 +137,7 @@ public class VariableCodegen
 
 			ReservedInstruction reservedInstruction = adapter.reserve();
 
-			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode);
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
 			if(!variableDescriptor.isStatic())
 				expressionCodegen.getInstructs().load(0);
 

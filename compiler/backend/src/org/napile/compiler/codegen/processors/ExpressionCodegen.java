@@ -29,10 +29,13 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.AsmConstants;
+import org.napile.asm.Modifier;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.MethodNode;
+import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
@@ -55,15 +58,7 @@ import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.injection.InjectionCodegen;
 import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
-import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -109,6 +104,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@NotNull
 	private final Deque<LoopCodegen<?>> loops = new ArrayDeque<LoopCodegen<?>>();
 	@NotNull
+	private final Map<VariableDescriptor, StackValue> wrappedVariables = new HashMap<VariableDescriptor, StackValue>();
+	@NotNull
 	public final ClassNode classNode;
 
 	private final boolean isInstanceConstructor;
@@ -122,18 +119,33 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		frameMap = new FrameMap();
 	}
 
-	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull CallableDescriptor d, @NotNull ClassNode c)
+	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull CallableDescriptor d, @NotNull ClassNode c, @NotNull Map<VariableDescriptor, StackValue> w)
 	{
 		bindingTrace = b;
 		classNode = c;
+		wrappedVariables.putAll(w);
 		isInstanceConstructor = d instanceof ConstructorDescriptor;
 		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(((ClassDescriptor) d.getContainingDeclaration()).getDefaultType()) : TypeTransformer.toAsmType(d.getReturnType());
 		frameMap = new FrameMap();
 
 		if(!d.isStatic())
 			frameMap.enterTemp();
+
 		for(CallParameterDescriptor p : d.getValueParameters())
-			frameMap.enter(p);
+		{
+			int index = frameMap.enter(p);
+			if(wrapVariableIfNeed(p))
+			{
+				StackValue wrapped = wrappedVariables.get(p);
+
+				if(wrapped.receiverSize() == 1)
+					instructs.load(0);
+
+				instructs.load(index);
+
+				wrapped.store(wrapped.getType(), instructs);
+			}
+		}
 	}
 
 	@Override
@@ -302,6 +314,19 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, expression.getAnonymMethod());
 
 		SimpleMethodDescriptor methodDescriptor = bindingTrace.safeGet(BindingContext.METHOD, expression);
+
+		boolean isStatic = false;
+		if(methodDescriptor.getContainingDeclaration() instanceof SimpleMethodDescriptor)
+			isStatic = ((SimpleMethodDescriptor) methodDescriptor.getContainingDeclaration()).isStatic();
+		else if(methodDescriptor.getContainingDeclaration() instanceof VariableDescriptor)
+			isStatic = ((VariableDescriptor) methodDescriptor.getContainingDeclaration()).isStatic();
+		else
+			throw new IllegalArgumentException("Unknown owner " + methodDescriptor.getContainingDeclaration());
+
+		// gen method
+		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, fqName.shortName(), expression.getAnonymMethod(), bindingTrace, classNode, wrappedVariables);
+
+		classNode.addMember(methodNode);
 
 		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
@@ -827,6 +852,15 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		if(descriptor instanceof VariableDescriptor)
 		{
+			StackValue wrappedValue = wrappedVariables.get(descriptor);
+			if(wrappedValue != null)
+			{
+				if(wrappedValue.receiverSize() == 1)
+					getInstructs().load(0);
+
+				return wrappedValue;
+			}
+
 			VariableDescriptor variableDescriptor = (VariableDescriptor) descriptor;
 			boolean directToVar = variableDescriptor instanceof LocalVariableDescriptor && bindingTrace.safeGet(BindingContext.AUTO_CREATED_IT, variableDescriptor);
 			VariableDescriptor targetVar = directToVar ? bindingTrace.safeGet(BindingContext.AUTO_CREATED_TO, variableDescriptor) : variableDescriptor;
@@ -1183,37 +1217,51 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 	private void generateLocalVariableDeclaration(@NotNull final NapileVariable variableDeclaration, @NotNull List<Function<StackValue, Void>> leaveTasks)
 	{
-		final VariableDescriptor variableDescriptor = bindingTrace.get(BindingContext.VARIABLE, variableDeclaration);
-		assert variableDescriptor != null;
-
-		final TypeNode type = TypeTransformer.toAsmType(variableDescriptor.getType());
-		int index = frameMap.enter(variableDescriptor);
-
-		leaveTasks.add(new Function<StackValue, Void>()
+		final VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variableDeclaration);
+		if(!wrapVariableIfNeed(variableDescriptor))
 		{
-			@Override
-			public Void fun(StackValue answer)
-			{
-				int index = frameMap.leave(variableDescriptor);
+			final TypeNode type = TypeTransformer.toAsmType(variableDescriptor.getType());
+			int index = frameMap.enter(variableDescriptor);
 
-				getInstructs().visitLocalVariable(variableDescriptor.getName().getName());
-				return null;
-			}
-		});
+			leaveTasks.add(new Function<StackValue, Void>()
+			{
+				@Override
+				public Void fun(StackValue answer)
+				{
+					int index = frameMap.leave(variableDescriptor);
+
+					getInstructs().visitLocalVariable(variableDescriptor.getName().getName());
+					return null;
+				}
+			});
+		}
 	}
 
 	private void initializeLocalVariable(@NotNull NapileVariable variableDeclaration, @NotNull Function<VariableDescriptor, Void> generateInitializer)
 	{
 		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variableDeclaration);
 
-		int index = lookupLocalIndex(variableDescriptor);
+		StackValue wrappedVariable = wrappedVariables.get(variableDescriptor);
+		if(wrappedVariable != null)
+		{
+			if(wrappedVariable.receiverSize() == 1)
+				getInstructs().load(0);
 
-		if(index < 0)
-			throw new IllegalStateException("Local variable not found for " + variableDescriptor);
+			generateInitializer.fun(variableDescriptor);
 
-		generateInitializer.fun(variableDescriptor);
+			wrappedVariable.store(TypeTransformer.toAsmType(variableDescriptor.getType()), getInstructs());
+		}
+		else
+		{
+			int index = lookupLocalIndex(variableDescriptor);
 
-		getInstructs().store(index);
+			if(index < 0)
+				throw new IllegalStateException("Local variable not found for " + variableDescriptor);
+
+			generateInitializer.fun(variableDescriptor);
+
+			getInstructs().store(index);
+		}
 	}
 
 	public int lookupLocalIndex(DeclarationDescriptor descriptor)
@@ -1323,6 +1371,27 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				return true;
 		}
 		return false;
+	}
+
+	private boolean wrapVariableIfNeed(VariableDescriptor variableDescriptor)
+	{
+		boolean wrappedInClosure = bindingTrace.safeGet(BindingContext.CAPTURED_IN_CLOSURE, variableDescriptor);
+		if(wrappedInClosure)
+		{
+			MethodDescriptor ownerMethod = (MethodDescriptor) variableDescriptor.getContainingDeclaration();
+			Name name = Name.identifier(ownerMethod.getName() + AsmConstants.ANONYM_SPLITTER + variableDescriptor.getName());
+			VariableDescriptorImpl newVariableDescriptor = new VariableDescriptorImpl(ownerMethod.getContainingDeclaration(), variableDescriptor.getAnnotations(), variableDescriptor.getModality(), Visibility.LOCAL, name, CallableMemberDescriptor.Kind.DECLARATION, ownerMethod.isStatic(), true);
+			newVariableDescriptor.setType(variableDescriptor.getType(), variableDescriptor.getTypeParameters(), variableDescriptor.getExpectedThisObject());
+
+			wrappedVariables.put(variableDescriptor, StackValue.simpleVariableAccessor(newVariableDescriptor, variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.SPECIAL));
+
+			VariableCodegen.getSetterAndGetter(newVariableDescriptor, null, classNode, bindingTrace);
+			VariableNode variableNode = new VariableNode(newVariableDescriptor.isStatic() ? Modifier.list(Modifier.STATIC, Modifier.MUTABLE) : Modifier.list(Modifier.MUTABLE), newVariableDescriptor.getName(), TypeTransformer.toAsmType(newVariableDescriptor.getType()));
+			classNode.addMember(variableNode);
+			return true;
+		}
+		else
+			return false;
 	}
 
 	@NotNull

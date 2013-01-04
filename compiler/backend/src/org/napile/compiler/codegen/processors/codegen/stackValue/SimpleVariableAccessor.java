@@ -85,7 +85,7 @@ public class SimpleVariableAccessor extends StackValue
 	@Override
 	public int receiverSize()
 	{
-		return callType == CallableMethod.CallType.VIRTUAL ? 1 : 0;
+		return callType == CallableMethod.CallType.VIRTUAL || callType == CallableMethod.CallType.SPECIAL ? 1 : 0;
 	}
 
 	@Override

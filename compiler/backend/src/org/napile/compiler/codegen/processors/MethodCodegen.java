@@ -16,7 +16,9 @@
 
 package org.napile.compiler.codegen.processors;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
@@ -70,7 +72,7 @@ public class MethodCodegen
 		{
 			ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
 
-			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode);
+			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
 
 			CallableMethod method = CallTransformer.transformToCallable(call, false, false, false);
 
@@ -102,7 +104,7 @@ public class MethodCodegen
 	}
 
 	@NotNull
-	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name name, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
+	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name name, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull Map<VariableDescriptor, StackValue> wrappedVariables)
 	{
 		MethodNode methodNode = gen(methodDescriptor, name);
 
@@ -111,7 +113,7 @@ public class MethodCodegen
 		NapileExpression expression = declarationWithBody.getBodyExpression();
 		if(expression != null)
 		{
-			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, methodDescriptor, classNode);
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, methodDescriptor, classNode, wrappedVariables);
 			expressionCodegen.returnExpression(expression, methodDescriptor.isMacro());
 
 			InstructionAdapter adapter = expressionCodegen.getInstructs();
