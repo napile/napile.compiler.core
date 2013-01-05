@@ -332,7 +332,7 @@ public class DescriptorResolver
 		if(variableDescriptor == null)
 			descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), false);
 		else
-			descriptor = new CallParameterAsReferenceDescriptorImpl(declarationDescriptor, index, Collections.<AnnotationDescriptor>emptyList(), ref.getReferencedNameAsName(), type, (VariableDescriptorImpl)variableDescriptor);
+			descriptor = new CallParameterAsReferenceDescriptorImpl(declarationDescriptor, index, Collections.<AnnotationDescriptor>emptyList(), ref.getReferencedNameAsName(), type, variableDescriptor);
 
 		descriptor.setOutType(type);
 
