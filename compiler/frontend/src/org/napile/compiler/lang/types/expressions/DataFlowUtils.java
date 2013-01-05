@@ -75,7 +75,7 @@ public class DataFlowUtils
 			public void visitBinaryExpression(NapileBinaryExpression expression)
 			{
 				IElementType operationToken = expression.getOperationToken();
-				if(OperatorConventions.BOOLEAN_OPERATIONS.containsKey(operationToken))
+				if(OperatorConventions.BOOLEAN_OPERATIONS.contains(operationToken))
 				{
 					DataFlowInfo dataFlowInfo = extractDataFlowInfoFromCondition(expression.getLeft(), conditionValue, context);
 					NapileExpression expressionRight = expression.getRight();

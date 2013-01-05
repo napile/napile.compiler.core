@@ -110,6 +110,9 @@ public interface NapileTokens
 	NapileToken QUEST = new NapileToken("QUEST");
 	NapileToken COLON = new NapileToken("COLON");
 	NapileToken AND = new NapileToken("AND");
+	NapileToken OR = new NapileToken("OR");
+	NapileToken TILDE = new NapileToken("OR");
+	NapileToken XOR = new NapileToken("XOR");
 	NapileToken SEMICOLON = new NapileToken("SEMICOLON");
 	NapileToken RANGE = new NapileToken("RANGE");
 	NapileToken EQ = new NapileToken("EQ");
@@ -118,6 +121,9 @@ public interface NapileTokens
 	NapileToken PERCEQ = new NapileToken("PERCEQ");
 	NapileToken PLUSEQ = new NapileToken("PLUSEQ");
 	NapileToken MINUSEQ = new NapileToken("MINUSEQ");
+	NapileToken XOREQ = new NapileToken("XOREQ");
+	NapileToken OREQ = new NapileToken("OREQ");
+	NapileToken ANDEQ = new NapileToken("ANDEQ");
 	NapileToken NOT_IN = NapileKeywordToken.keyword("NOT_IN");
 	NapileToken NOT_IS = NapileKeywordToken.keyword("NOT_IS");
 	NapileToken HASH = new NapileToken("HASH");

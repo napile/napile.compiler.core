@@ -1347,7 +1347,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				checkInExpression(expression, expression.getOperationReference(), expression.getLeft(), expression.getRight(), context);
 				result = booleanType;
 			}
-			else if(OperatorConventions.BOOLEAN_OPERATIONS.containsKey(operationType))
+			else if(OperatorConventions.BOOLEAN_OPERATIONS.contains(operationType))
 			{
 				JetType leftType = facade.getTypeInfo(left, context.replaceScope(context.scope)).getType();
 				WritableScopeImpl leftScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Left scope of && or ||");
