@@ -31,6 +31,7 @@
     <orderEntry type="module" module-name="injection.text" />
     <orderEntry type="module" module-name="injection.text.idea" />
     <orderEntry type="module" module-name="injection.text.backend" />
+    <orderEntry type="module" module-name="java2napile" />
   </component>
 </module>
 

@@ -35,6 +35,9 @@
 			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift E"/>
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
+		<action id="ConvertJavaToNapile" class="org.napile.idea.plugin.actions.ConvertJavaToNapileAction" text="Convert Java2Napile">
+			<add-to-group group-id="RefactoringMenu" anchor="last"/>
+		</action>
 
 
 	</actions>
