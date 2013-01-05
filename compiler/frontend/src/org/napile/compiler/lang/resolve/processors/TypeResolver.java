@@ -229,8 +229,9 @@ public class TypeResolver
 					NapileVariable[] variables = multiType.getVariables();
 					List<MultiTypeEntry> variableDescriptors = new ArrayList<MultiTypeEntry>(variables.length);
 
-					for(NapileVariable variable : variables)
+					for(int i = 0; i < variables.length; i++)
 					{
+						NapileVariable variable = variables[i];
 						JetType type = null;
 						NapileTypeReference typeReference = variable.getType();
 						if(typeReference != null)
@@ -238,7 +239,7 @@ public class TypeResolver
 						else
 							type = ErrorUtils.createErrorType("Type expected");
 
-						MultiTypeEntry entry = new MultiTypeEntry(variable.isMutable(), variable.getNameAsSafeName(), type);
+						MultiTypeEntry entry = new MultiTypeEntry(i, variable.isMutable(), variable.getNameAsSafeName(), type);
 
 						trace.record(BindingContext.VARIABLE, variable, entry.descriptor);
 

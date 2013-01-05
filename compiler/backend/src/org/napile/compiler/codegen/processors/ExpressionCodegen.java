@@ -43,6 +43,7 @@ import org.napile.asm.tree.members.bytecode.tryCatch.CatchBlock;
 import org.napile.asm.tree.members.bytecode.tryCatch.TryBlock;
 import org.napile.asm.tree.members.bytecode.tryCatch.TryCatchBlockNode;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
 import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
@@ -55,6 +56,7 @@ import org.napile.compiler.codegen.processors.codegen.loopGen.LabelLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.LoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.loopGen.WhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
+import org.napile.compiler.codegen.processors.codegen.stackValue.MultiVariable;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.injection.InjectionCodegen;
 import org.napile.compiler.injection.CodeInjection;
@@ -822,6 +824,30 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitMultiTypeExpression(NapileMultiTypeExpression expression, StackValue data)
+	{
+		NapileExpression[] exps = expression.getExpressions();
+
+		instructs.newInt(exps.length);
+		instructs.newObject(new TypeNode(false, new ClassTypeNode(NapileLangPackage.MULTI)), Arrays.asList(AsmConstants.INT_TYPE));
+
+		int i = 0;
+		for(NapileExpression exp : exps)
+		{
+			instructs.dup();
+
+			instructs.newInt(i ++);
+
+			gen(exp, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, exp)));
+
+			instructs.invokeVirtual(MultiVariable.SET_VALUE, false);
+			instructs.pop();
+		}
+
+		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression)));
+	}
+
+	@Override
 	public StackValue visitSimpleNameExpression(NapileSimpleNameExpression expression, StackValue receiver)
 	{
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.get(BindingContext.RESOLVED_CALL, expression);
@@ -836,6 +862,22 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			{
 				descriptor = variableCallInfo.getFirst();
 				receiver = StackValue.receiver(variableCallInfo.getFirst(), variableCallInfo.getSecond(), receiver, this, null);
+			}
+			else if(resolvedCall.getResultingDescriptor() instanceof MultiTypeEntryVariableDescriptor)
+			{
+				descriptor = resolvedCall.getResultingDescriptor();
+
+				if(expression.getParent() instanceof NapileDotQualifiedExpression)
+				{
+					NapileExpression receiverExp = ((NapileDotQualifiedExpression) expression.getParent()).getReceiverExpression();
+
+					StackValue newReceiver = receiverExp.accept(this, StackValue.none());
+					newReceiver.put(newReceiver.getType(), instructs);
+
+					return StackValue.multiVariable(((MultiTypeEntryVariableDescriptor) descriptor));
+				}
+				else
+					throw new UnsupportedOperationException("Parent is not NapileDotQualifiedExpression. Found: " + expression.getParent().getClass().getName());
 			}
 			else
 			{

@@ -73,7 +73,11 @@ public class TypeTransformer
 			MultiTypeNode multiTypeNode = (MultiTypeNode) typeConstructorNode;
 
 			for(MultiTypeEntry entry : multiTypeConstructor.getEntries())
-				multiTypeNode.variables.add(new VariableNode(entry.mutable ? Modifier.list(Modifier.MUTABLE) : Modifier.EMPTY, entry.name, toAsmType(entry.type)));
+			{
+				boolean mutable = entry.mutable != null && entry.mutable;
+				Name name = entry.name == null ? Name.identifier("p" + entry.index) : entry.name;
+				multiTypeNode.variables.add(new VariableNode(mutable ? Modifier.list(Modifier.MUTABLE) : Modifier.EMPTY, name, toAsmType(entry.type)));
+			}
 		}
 		else if(owner instanceof ClassDescriptor)
 			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());

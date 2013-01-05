@@ -47,7 +47,7 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 	private ReceiverDescriptor expectedThisObject;
 	private List<TypeParameterDescriptor> typeParameters;
 
-	private VariableDescriptorImpl(@Nullable VariableDescriptorImpl original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable)
+	protected VariableDescriptorImpl(@Nullable VariableDescriptorImpl original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable)
 	{
 		super(containingDeclaration, annotations, name, modality, isStatic, mutable);
 
@@ -120,7 +120,7 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 
 	private VariableDescriptorImpl doSubstitute(TypeSubstitutor originalSubstitutor, DeclarationDescriptor newOwner, Modality newModality, Visibility newVisibility, boolean preserveOriginal, boolean copyOverrides, Kind kind)
 	{
-		VariableDescriptorImpl substitutedDescriptor = new VariableDescriptorImpl(preserveOriginal ? getOriginal() : this, newOwner, getAnnotations(), newModality, newVisibility, getName(), kind, isStatic(), isMutable());
+		VariableDescriptorImpl substitutedDescriptor = createInstance(newOwner, newModality, newVisibility, preserveOriginal, kind);
 
 		List<TypeParameterDescriptor> substitutedTypeParameters = Lists.newArrayList();
 		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);
@@ -155,6 +155,11 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 		}
 
 		return substitutedDescriptor;
+	}
+
+	protected VariableDescriptorImpl createInstance(DeclarationDescriptor newOwner, Modality newModality, Visibility newVisibility, boolean preserveOriginal, Kind kind)
+	{
+		return new VariableDescriptorImpl(preserveOriginal ? getOriginal() : this, newOwner, getAnnotations(), newModality, newVisibility, getName(), kind, isStatic(), isMutable());
 	}
 
 	@Override

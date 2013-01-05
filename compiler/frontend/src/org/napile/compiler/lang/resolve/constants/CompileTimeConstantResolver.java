@@ -270,6 +270,8 @@ public class CompileTimeConstantResolver
 		{
 			return error;
 		}   */
+		if(unescapedText.length() <= 1)
+			return new ErrorValue("Invalid string");
 
 		return new StringValue(unescapedText.substring(1, unescapedText.length() - 1));
 	}

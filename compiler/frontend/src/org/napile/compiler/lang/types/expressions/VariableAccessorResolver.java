@@ -79,7 +79,10 @@ public class VariableAccessorResolver
 			{
 				nameExpression = (NapileSimpleNameExpression) dotQualifiedExpression.getSelectorExpression();
 				name = Name.identifier(nameExpression.getReferencedName() + AsmConstants.ANONYM_SPLITTER + "set");
-				receiverDescriptor = new ExpressionReceiver(dotQualifiedExpression.getReceiverExpression(), context.trace.safeGet(EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression()));
+				JetType type = context.trace.get(EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
+				if(type == null)
+					return null;
+				receiverDescriptor = new ExpressionReceiver(dotQualifiedExpression.getReceiverExpression(), type);
 			}
 		}
 		else if(exp instanceof NapileArrayAccessExpressionImpl)

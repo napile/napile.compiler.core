@@ -24,9 +24,9 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
+import org.napile.compiler.lang.descriptors.MultiTypeEntryVariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -37,6 +37,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
  */
 public class MultiTypeEntry
 {
+	public final int index;
 	@Nullable
 	public final Boolean mutable;
 	@Nullable
@@ -46,15 +47,16 @@ public class MultiTypeEntry
 
 	public final VariableDescriptor descriptor;
 
-	public MultiTypeEntry(@Nullable Boolean mutable, @Nullable Name name, @NotNull JetType type)
+	public MultiTypeEntry(int index, @Nullable Boolean mutable, @Nullable Name name, @NotNull JetType type)
 	{
+		this.index = index;
 		this.mutable = mutable;
 		this.name = name;
 		this.type = type;
 
 		if(name != null)
 		{
-			VariableDescriptorImpl d = new VariableDescriptorImpl(DeclarationDescriptor.EMPTY, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, name, CallableMemberDescriptor.Kind.DECLARATION, false, mutable);
+			MultiTypeEntryVariableDescriptorImpl d = new MultiTypeEntryVariableDescriptorImpl(DeclarationDescriptor.EMPTY, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, name, CallableMemberDescriptor.Kind.DECLARATION, false, mutable, index);
 			d.setType(type, Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
 			descriptor = d;
 		}

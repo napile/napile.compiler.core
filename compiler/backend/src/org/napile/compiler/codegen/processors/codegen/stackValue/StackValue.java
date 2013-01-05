@@ -26,6 +26,7 @@ import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.MultiTypeEntryVariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
@@ -97,6 +98,12 @@ public abstract class StackValue
 	public static StackValue simpleVariableAccessor(@NotNull VariableDescriptor variableDescriptor, CallableMethod.CallType callType)
 	{
 		return simpleVariableAccessor(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), callType);
+	}
+
+	@NotNull
+	public static StackValue multiVariable(@NotNull MultiTypeEntryVariableDescriptor variable)
+	{
+		return new MultiVariable(TypeTransformer.toAsmType(variable.getType()), variable.getIndex());
 	}
 
 	@NotNull

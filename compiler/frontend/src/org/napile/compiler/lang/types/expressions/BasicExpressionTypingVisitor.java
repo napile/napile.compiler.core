@@ -307,11 +307,13 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			return JetTypeInfo.create(null, context.dataFlowInfo);
 
 		List<MultiTypeEntry> list = new ArrayList<MultiTypeEntry>(expressions.length);
-		for(NapileExpression exp : expressions)
+		for(int i = 0; i < expressions.length; i++)
 		{
+			NapileExpression exp = expressions[i];
+
 			JetType type = context.expressionTypingServices.safeGetType(context.scope, exp, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace);
 
-			list.add(new MultiTypeEntry(null, null, type));
+			list.add(new MultiTypeEntry(i, null, null, type));
 		}
 
 		return DataFlowUtils.checkType(new JetTypeImpl(new MultiTypeConstructorImpl(list, context.scope), context.scope), expression, context, context.dataFlowInfo);
