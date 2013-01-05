@@ -51,6 +51,7 @@ import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
+import org.napile.compiler.util.PluginKeys;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -198,6 +199,8 @@ public class TypeHierarchyResolver
 				public void visitClass(NapileClass declaration)
 				{
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), NapilePsiUtil.isStatic(declaration));
+					declaration.putUserData(PluginKeys.DESCRIPTOR_KEY, mutableClassDescriptor);
+
 					context.getClasses().put(declaration, mutableClassDescriptor);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(declaration), mutableClassDescriptor);
 

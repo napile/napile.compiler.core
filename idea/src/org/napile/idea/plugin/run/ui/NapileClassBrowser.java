@@ -111,7 +111,7 @@ public abstract class NapileClassBrowser extends BrowseModuleValueActionListener
 					@Override
 					public Boolean compute()
 					{
-						return IdePsiUtil.hasClassPoint(aClass);
+						return IdePsiUtil.hasRunMethod(aClass);
 					}
 				});
 			}

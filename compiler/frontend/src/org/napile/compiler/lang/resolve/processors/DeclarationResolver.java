@@ -42,6 +42,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.util.PluginKeys;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -140,20 +141,22 @@ public class DeclarationResolver
 				@Override
 				public void visitNamedMethod(NapileNamedMethod method)
 				{
-					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveMethodDescriptor(ownerDescription, scope, method, trace);
-					ownerDescription.getBuilder().addMethodDescriptor(functionDescriptor);
+					SimpleMethodDescriptor methodDescriptor = descriptorResolver.resolveMethodDescriptor(ownerDescription, scope, method, trace);
+					method.putUserData(PluginKeys.DESCRIPTOR_KEY, methodDescriptor);
+					ownerDescription.getBuilder().addMethodDescriptor(methodDescriptor);
 
-					context.getMethods().put(method, functionDescriptor);
+					context.getMethods().put(method, methodDescriptor);
 					context.getDeclaringScopes().put(method, scope);
 				}
 
 				@Override
 				public void visitNamedMacro(NapileNamedMacro macro)
 				{
-					SimpleMethodDescriptor functionDescriptor = descriptorResolver.resolveMacroDescriptor(ownerDescription, scope, macro, trace);
-					ownerDescription.getBuilder().addMethodDescriptor(functionDescriptor);
+					SimpleMethodDescriptor methodDescriptor = descriptorResolver.resolveMacroDescriptor(ownerDescription, scope, macro, trace);
+					macro.putUserData(PluginKeys.DESCRIPTOR_KEY, methodDescriptor);
+					ownerDescription.getBuilder().addMethodDescriptor(methodDescriptor);
 
-					context.getMethods().put(macro, functionDescriptor);
+					context.getMethods().put(macro, methodDescriptor);
 					context.getDeclaringScopes().put(macro, scope);
 				}
 
@@ -161,7 +164,7 @@ public class DeclarationResolver
 				public void visitConstructor(NapileConstructor constructor)
 				{
 					ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveConstructorDescriptor(scope, ownerDescription, constructor, trace);
-
+					constructor.putUserData(PluginKeys.DESCRIPTOR_KEY, constructorDescriptor);
 					ownerDescription.getBuilder().addConstructorDescriptor(constructorDescriptor);
 
 					context.getConstructors().put(constructor, constructorDescriptor);
@@ -172,7 +175,7 @@ public class DeclarationResolver
 				public void visitStaticConstructor(NapileStaticConstructor staticConstructor)
 				{
 					ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveStaticConstructorDescriptor(scope, ownerDescription, staticConstructor, trace);
-
+					staticConstructor.putUserData(PluginKeys.DESCRIPTOR_KEY, constructorDescriptor);
 					ownerDescription.getBuilder().addStaticConstructorDescriptor(constructorDescriptor);
 
 					context.getDeclaringScopes().put(staticConstructor, scope);
@@ -182,7 +185,7 @@ public class DeclarationResolver
 				public void visitVariable(NapileVariable variable)
 				{
 					VariableDescriptor variableDescriptor = descriptorResolver.resolveVariableDescriptor(ownerDescription, scope, variable, trace);
-
+					variable.putUserData(PluginKeys.DESCRIPTOR_KEY, variableDescriptor);
 					ownerDescription.getBuilder().addVariableDescriptor(variableDescriptor);
 
 					context.getVariables().put(variable, variableDescriptor);
