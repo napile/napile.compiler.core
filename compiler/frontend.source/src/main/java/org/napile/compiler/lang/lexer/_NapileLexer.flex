@@ -301,6 +301,8 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
 "/"          { return NapileTokens.DIV       ; }
 "%"          { return NapileTokens.PERC      ; }
 "<"          { return NapileTokens.LT        ; }
+"<<"         { return NapileTokens.LTLT      ; }
+"<<="        { return NapileTokens.LTLTEQ    ; }
 ">"          { return NapileTokens.GT        ; }
 "?"          { return NapileTokens.QUEST     ; }
 ":"          { return NapileTokens.COLON     ; }

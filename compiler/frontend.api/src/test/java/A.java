@@ -27,5 +27,8 @@ public class A
 		System.out.println(10 ^ 2);
 		System.out.println(10 | 1);
 		System.out.println(10 & 2);
+		System.out.println(1 << 10);
+		System.out.println(1024 >> 2);
+		System.out.println(1024 >>> 2);
 	}
 }

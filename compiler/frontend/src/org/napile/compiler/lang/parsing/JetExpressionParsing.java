@@ -39,14 +39,22 @@ public class JetExpressionParsing extends AbstractJetParsing
 	private static final TokenSet WHEN_CONDITION_RECOVERY_SET = TokenSet.create(NapileTokens.RBRACE, NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS, NapileTokens.ELSE_KEYWORD);
 	private static final TokenSet WHEN_CONDITION_RECOVERY_SET_WITH_ARROW = TokenSet.create(NapileTokens.RBRACE, NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS, NapileTokens.ELSE_KEYWORD, NapileTokens.ARROW, NapileTokens.DOT);
 
-	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create(NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.FOR_KEYWORD, NapileTokens.NULL_KEYWORD, NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.IS_KEYWORD, NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.BREAK_KEYWORD, NapileTokens.CONTINUE_KEYWORD, NapileTokens.ANONYM_KEYWORD, NapileTokens.IF_KEYWORD, NapileTokens.TRY_KEYWORD, NapileTokens.ELSE_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD, NapileTokens.WHEN_KEYWORD, NapileTokens.RBRACKET, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
-			//            MUL,
+	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create
+	(
+			NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.METH_KEYWORD,
+			NapileTokens.FOR_KEYWORD, NapileTokens.NULL_KEYWORD, NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.IS_KEYWORD, NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.BREAK_KEYWORD, NapileTokens.CONTINUE_KEYWORD,
+			NapileTokens.ANONYM_KEYWORD, NapileTokens.IF_KEYWORD, NapileTokens.TRY_KEYWORD, NapileTokens.ELSE_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD, NapileTokens.WHEN_KEYWORD, NapileTokens.RBRACKET, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
+
 			NapileTokens.PLUS, NapileTokens.MINUS, NapileTokens.EXCL, NapileTokens.DIV, NapileTokens.PERC, NapileTokens.LTEQ, NapileTokens.TILDE, NapileTokens.XOR, NapileTokens.OR, NapileTokens.AND,
 			// TODO GTEQ,   foo<bar, baz>=x
-			NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.ANDAND, NapileTokens.OROR, NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.SEMICOLON, NapileTokens.RANGE, NapileTokens.EQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.ANDEQ, NapileTokens.OREQ, NapileTokens.XOREQ, NapileTokens.NOT_IN, NapileTokens.NOT_IS,
-			NapileTokens.COLON);
+			NapileTokens.LTLT, NapileTokens.GTGT, NapileTokens.GTGTGT, NapileTokens.LTLTEQ, NapileTokens.GTGTEQ, NapileTokens.GTGTGTEQ,
+			NapileTokens.EQEQ, NapileTokens.EXCLEQ, NapileTokens.ANDAND, NapileTokens.OROR, NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.SEMICOLON, NapileTokens.RANGE, NapileTokens.EQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ,
+			NapileTokens.ANDEQ, NapileTokens.OREQ, NapileTokens.XOREQ, NapileTokens.NOT_IN, NapileTokens.NOT_IS,
+			NapileTokens.COLON
+	);
 
-	static final TokenSet EXPRESSION_FIRST = TokenSet.create(
+	static final TokenSet EXPRESSION_FIRST = TokenSet.create
+	(
 			// Prefix
 			NapileTokens.MINUS, NapileTokens.PLUS, NapileTokens.MINUSMINUS, NapileTokens.PLUSPLUS, NapileTokens.EXCL, NapileTokens.TILDE, NapileTokens.EXCLEXCL, // Joining complex tokens makes it necessary to put EXCLEXCL here
 			NapileTokens.LBRACE,
@@ -79,7 +87,8 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			NapileTokens.IDENTIFIER, // SimpleName
 
-			NapileTokens.IDE_TEMPLATE_START);
+			NapileTokens.IDE_TEMPLATE_START
+	);
 
 	private static final TokenSet STATEMENT_FIRST = TokenSet.orSet(EXPRESSION_FIRST, TokenSet.create(
 			// declaration
@@ -119,7 +128,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 					}
 				},
 
-		MULTIPLICATIVE(NapileTokens.MUL, NapileTokens.DIV, NapileTokens.PERC, NapileTokens.XOR, NapileTokens.OR, NapileTokens.AND),
+		MULTIPLICATIVE(NapileTokens.MUL, NapileTokens.DIV, NapileTokens.PERC, NapileTokens.XOR, NapileTokens.OR, NapileTokens.AND, NapileTokens.LTLT, NapileTokens.GTGT, NapileTokens.GTGTGT),
 		ADDITIVE(NapileTokens.PLUS, NapileTokens.MINUS),
 		RANGE(NapileTokens.RANGE),
 		SIMPLE_NAME(NapileTokens.IDENTIFIER),
@@ -144,7 +153,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		CONJUNCTION(NapileTokens.ANDAND),
 		DISJUNCTION(NapileTokens.OROR),
 		//        ARROW(NapileTokens.ARROW),
-		ASSIGNMENT(NapileTokens.EQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.ANDEQ, NapileTokens.OREQ, NapileTokens.XOREQ);
+		ASSIGNMENT(NapileTokens.EQ, NapileTokens.PLUSEQ, NapileTokens.MINUSEQ, NapileTokens.MULTEQ, NapileTokens.DIVEQ, NapileTokens.PERCEQ, NapileTokens.ANDEQ, NapileTokens.OREQ, NapileTokens.XOREQ, NapileTokens.LTLTEQ, NapileTokens.GTGTEQ, NapileTokens.GTGTGTEQ);
 
 		static
 		{

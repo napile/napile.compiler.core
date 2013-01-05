@@ -888,6 +888,8 @@ public class JetParsing extends AbstractJetParsing
 	// on expression-indicating symbols or not
 	private PsiBuilder.Marker parseTypeRefContents(TokenSet extraRecoverySet)
 	{
+		getBuilder().disableJoiningComplexTokens();
+
 		PsiBuilder.Marker typeRefMarker = mark();
 
 		parseAnnotations();
@@ -915,6 +917,8 @@ public class JetParsing extends AbstractJetParsing
 
 			typeRefMarker = precede;
 		}
+
+		getBuilder().restoreJoiningComplexTokensState();
 
 		return typeRefMarker;
 	}

@@ -96,7 +96,13 @@ public interface NapileTokens
 	NapileToken DIV = new NapileToken("DIV");
 	NapileToken PERC = new NapileToken("PERC");
 	NapileToken LT = new NapileToken("LT");
+	NapileToken LTLT = new NapileToken("LTLT");  //<<
+	NapileToken LTLTEQ = new NapileToken("LTLTEQ"); // <<=
 	NapileToken GT = new NapileToken("GT");
+	NapileToken GTGT = new NapileToken("GTGT");  // >>
+	NapileToken GTGTEQ = new NapileToken("GTGTEQ"); // >>=
+	NapileToken GTGTGT = new NapileToken("GTGTGT");  // >>>
+	NapileToken GTGTGTEQ = new NapileToken("GTGTGTEQ"); // >>>=
 	NapileToken LTEQ = new NapileToken("LTEQ");
 	NapileToken GTEQ = new NapileToken("GTEQ");
 	NapileToken ARROW = new NapileToken("ARROW");

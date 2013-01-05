@@ -17,6 +17,8 @@
 package org.napile.compiler.lang.parsing;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -24,14 +26,25 @@ import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.impl.PsiBuilderAdapter;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author abreslav
  */
 public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter implements SemanticWhitespaceAwarePsiBuilder
 {
-	private final TokenSet complexTokens = TokenSet.create(NapileTokens.SAFE_ACCESS, NapileTokens.ELVIS, NapileTokens.EXCLEXCL);
+	private static final Map<IElementType, Integer> ADDITIONAL_SIZE = new HashMap<IElementType, Integer>()
+	{
+		{
+			put(NapileTokens.SAFE_ACCESS, 1);
+			put(NapileTokens.ELVIS, 1);
+			put(NapileTokens.EXCLEXCL, 1);
+			put(NapileTokens.GTGT, 1);
+			put(NapileTokens.GTGTEQ, 1);
+			put(NapileTokens.GTGTGT, 2);
+			put(NapileTokens.GTGTGTEQ, 2);
+		}
+	};
+
 	private final Stack<Boolean> joinComplexTokens = new Stack<Boolean>();
 
 	private final Stack<Boolean> newlinesEnabled = new Stack<Boolean>();
@@ -151,6 +164,22 @@ public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter imp
 			if(nextRawToken == NapileTokens.EXCL)
 				return NapileTokens.EXCLEXCL;
 		}
+		else if(rawTokenType == NapileTokens.GT)
+		{
+			IElementType nextRawToken = rawLookup(rawLookupSteps);
+			if(nextRawToken == NapileTokens.GT)
+			{
+				nextRawToken = rawLookup(1 + rawLookupSteps);
+				if(nextRawToken == NapileTokens.GT)
+					return NapileTokens.GTGTGT;
+				else if(nextRawToken == NapileTokens.GTEQ)
+					return NapileTokens.GTGTGTEQ;
+				else
+					return NapileTokens.GTGT;
+			}
+			else if(nextRawToken == NapileTokens.GTEQ)
+				return NapileTokens.GTGTEQ;
+		}
 		return rawTokenType;
 	}
 
@@ -162,18 +191,20 @@ public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter imp
 			super.advanceLexer();
 			return;
 		}
+
 		IElementType tokenType = getTokenType();
-		if(complexTokens.contains(tokenType))
+		Integer size = ADDITIONAL_SIZE.get(tokenType);
+		if(size != null)
 		{
 			Marker mark = mark();
 			super.advanceLexer();
-			super.advanceLexer();
+
+			for(int i = 0; i < size; i++)
+				super.advanceLexer();
 			mark.collapse(tokenType);
 		}
 		else
-		{
 			super.advanceLexer();
-		}
 	}
 
 	@Override
@@ -182,12 +213,20 @@ public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter imp
 		if(!joinComplexTokens())
 			return super.getTokenText();
 		IElementType tokenType = getTokenType();
-		if(complexTokens.contains(tokenType))
+		if(ADDITIONAL_SIZE.containsKey(tokenType))
 		{
 			if(tokenType == NapileTokens.ELVIS)
 				return "?:";
 			if(tokenType == NapileTokens.SAFE_ACCESS)
 				return "?.";
+			if(tokenType == NapileTokens.GTGT)
+				return ">>";
+			if(tokenType == NapileTokens.GTGTGT)
+				return ">>>";
+			if(tokenType == NapileTokens.GTGTEQ)
+				return ">>=";
+			if(tokenType == NapileTokens.GTGTGTEQ)
+				return ">>>=";
 		}
 		return super.getTokenText();
 	}
@@ -198,10 +237,9 @@ public class SemanticWhitespaceAwarePsiBuilderImpl extends PsiBuilderAdapter imp
 		if(!joinComplexTokens())
 			return super.lookAhead(steps);
 
-		if(complexTokens.contains(getTokenType()))
-		{
-			return super.lookAhead(steps + 1);
-		}
+		Integer size = ADDITIONAL_SIZE.get(getTokenType());
+		if(size != null)
+			return super.lookAhead(steps + size);
 		return getJoinedTokenType(super.lookAhead(steps), 2);
 	}
 }

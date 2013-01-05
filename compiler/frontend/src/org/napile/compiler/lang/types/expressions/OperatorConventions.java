@@ -72,6 +72,9 @@ public class OperatorConventions
 			.put(NapileTokens.XOR, Name.identifier("bitXor"))
 			.put(NapileTokens.OR, Name.identifier("bitOr"))
 			.put(NapileTokens.AND, Name.identifier("bitAnd"))
+			.put(NapileTokens.LTLT, Name.identifier("bitShiftLeft"))
+			.put(NapileTokens.GTGT, Name.identifier("bitShiftRight"))
+			.put(NapileTokens.GTGTGT, Name.identifier("bitShiftRightZ"))
 
 			.put(NapileTokens.RANGE, Name.identifier("rangeTo")).build();
 
@@ -89,6 +92,9 @@ public class OperatorConventions
 			.put(NapileTokens.MINUSEQ, NapileTokens.MINUS)
 			.put(NapileTokens.ANDEQ, NapileTokens.AND)
 			.put(NapileTokens.OREQ, NapileTokens.OR)
+			.put(NapileTokens.LTLTEQ, NapileTokens.LTLT)
+			.put(NapileTokens.GTGTEQ, NapileTokens.GTGT)
+			.put(NapileTokens.GTGTGTEQ, NapileTokens.GTGTGT)
 			.put(NapileTokens.XOREQ, NapileTokens.XOR).build();
 
 	public static final ImmutableSet<NapileToken> BOOLEAN_OPERATIONS = ImmutableSet.of(NapileTokens.ANDAND, NapileTokens.OROR);
