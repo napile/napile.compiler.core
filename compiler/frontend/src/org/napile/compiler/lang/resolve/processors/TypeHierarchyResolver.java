@@ -199,7 +199,6 @@ public class TypeHierarchyResolver
 				public void visitClass(NapileClass declaration)
 				{
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), NapilePsiUtil.isStatic(declaration));
-					declaration.putUserData(PluginKeys.DESCRIPTOR_KEY, mutableClassDescriptor);
 
 					context.getClasses().put(declaration, mutableClassDescriptor);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(declaration), mutableClassDescriptor);
@@ -252,15 +251,18 @@ public class TypeHierarchyResolver
 			MutableClassDescriptor descriptor = entry.getValue();
 			descriptorResolver.resolveMutableClassDescriptor(napileClass, descriptor, trace);
 			descriptor.createTypeConstructor();
+			napileClass.putUserData(PluginKeys.DESCRIPTOR_KEY, descriptor);
 		}
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
+			NapileAnonymClass napileClass = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
 			descriptor.setModality(Modality.FINAL);
 			descriptor.setVisibility(Visibility.PUBLIC);
 			descriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
 			descriptor.createTypeConstructor();
+			napileClass.putUserData(PluginKeys.DESCRIPTOR_KEY, descriptor);
 		}
 	}
 
