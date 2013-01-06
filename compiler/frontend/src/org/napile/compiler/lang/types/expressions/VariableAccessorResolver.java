@@ -92,6 +92,8 @@ public class VariableAccessorResolver
 		// local variable and call parameter cant have setter and getter
 		if(declarationDescriptor instanceof LocalVariableDescriptor || declarationDescriptor instanceof AbstractCallParameterDescriptorImpl)
 			return null;
+		if(receiverDescriptor == null)
+			return null;
 		return new Object[] {name, receiverDescriptor, nameExpression};
 	}
 

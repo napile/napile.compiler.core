@@ -331,7 +331,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		CompileTimeConstant<?> value;
 		if(elementType == NapileNodes.INTEGER_CONSTANT)
 		{
-			value = compileTimeConstantResolver.getIntegerValue(text, context.expectedType);
+			value = compileTimeConstantResolver.getIntegerValue(text, TypeUtils.NO_EXPECTED_TYPE);
 		}
 		else if(elementType == NapileNodes.FLOAT_CONSTANT)
 		{
