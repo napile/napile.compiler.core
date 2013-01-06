@@ -884,7 +884,7 @@ public class CallResolver
 	private boolean addConstraintForValueArgument(ValueArgument valueArgument, @NotNull CallParameterDescriptor parameterDescriptor, @NotNull TypeSubstitutor substitutor, @NotNull ConstraintSystem constraintSystem, @NotNull ResolutionContext context)
 	{
 
-		JetType effectiveExpectedType = getEffectiveExpectedType(parameterDescriptor, valueArgument);
+		JetType effectiveExpectedType = parameterDescriptor.getType();
 		TemporaryBindingTrace traceForUnknown = TemporaryBindingTrace.create(context.trace);
 		NapileExpression argumentExpression = valueArgument.getArgumentExpression();
 		JetType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(parameterDescriptor.getType()), context.dataFlowInfo, traceForUnknown) : null;
@@ -1038,7 +1038,7 @@ public class CallResolver
 				if(expression == null)
 					continue;
 
-				JetType expectedType = getEffectiveExpectedType(parameterDescriptor, argument);
+				JetType expectedType = parameterDescriptor.getType();
 				if(TypeUtils.dependsOnTypeParameters(expectedType, candidateCall.getCandidateDescriptor().getTypeParameters()))
 				{
 					expectedType = TypeUtils.NO_EXPECTED_TYPE;
@@ -1078,18 +1078,6 @@ public class CallResolver
 			}
 		}
 		return new ValueArgumentsCheckingResult(resultStatus, argumentTypes);
-	}
-
-	@NotNull
-	private JetType getEffectiveExpectedType(CallParameterDescriptor parameterDescriptor, ValueArgument argument)
-	{
-		if(argument.getSpreadElement() != null)
-		{
-			// Spread argument passed to a non-vararg parameter, an error is already reported by ValueArgumentsToParametersMapper
-			return ConstraintSystemImpl.DONT_CARE;
-		}
-		else
-			return parameterDescriptor.getType();
 	}
 
 	@NotNull

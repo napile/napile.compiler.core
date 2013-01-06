@@ -20,7 +20,6 @@ import static org.napile.compiler.lang.diagnostics.Errors.ARGUMENT_PASSED_TWICE;
 import static org.napile.compiler.lang.diagnostics.Errors.MANY_FUNCTION_LITERAL_ARGUMENTS;
 import static org.napile.compiler.lang.diagnostics.Errors.MIXING_NAMED_AND_POSITIONED_ARGUMENTS;
 import static org.napile.compiler.lang.diagnostics.Errors.NAMED_PARAMETER_NOT_FOUND;
-import static org.napile.compiler.lang.diagnostics.Errors.NON_VARARG_SPREAD;
 import static org.napile.compiler.lang.diagnostics.Errors.TOO_MANY_ARGUMENTS;
 import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.ERROR;
 import static org.napile.compiler.lang.resolve.calls.ValueArgumentsToParametersMapper.Status.OK;
@@ -43,7 +42,6 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 
 /**
  * @author abreslav
@@ -266,12 +264,6 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
 		}
 		else*/
 		{
-			LeafPsiElement spread = valueArgument.getSpreadElement();
-			if(spread != null)
-			{
-				candidateCall.getTrace().report(NON_VARARG_SPREAD.on(spread));
-				error = WEAK_ERROR;
-			}
 			candidateCall.recordValueArgument(parameterDescriptor, new ExpressionValueArgument(valueArgument));
 		}
 		return error;

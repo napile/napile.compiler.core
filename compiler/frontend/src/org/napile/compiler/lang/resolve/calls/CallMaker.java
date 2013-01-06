@@ -75,12 +75,6 @@ public class CallMaker
 		{
 			return reportErrorsOn;
 		}
-
-		@Override
-		public LeafPsiElement getSpreadElement()
-		{
-			return null;
-		}
 	}
 
 	private static class CallImpl implements Call

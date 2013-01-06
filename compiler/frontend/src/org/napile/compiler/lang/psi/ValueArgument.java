@@ -19,7 +19,6 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 
 /**
  * @author abreslav
@@ -37,8 +36,4 @@ public interface ValueArgument
 
 	@NotNull
 	PsiElement asElement();
-
-	/* The '*' in something like foo(*arr) i.e. pass an array as a number of vararg arguments */
-	@Nullable
-	LeafPsiElement getSpreadElement();
 }

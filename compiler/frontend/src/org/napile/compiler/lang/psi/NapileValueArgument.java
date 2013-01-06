@@ -73,11 +73,4 @@ public class NapileValueArgument extends NapileElementImpl implements ValueArgum
 	{
 		return this;
 	}
-
-	@Override
-	public LeafPsiElement getSpreadElement()
-	{
-		ASTNode node = getNode().findChildByType(NapileTokens.MUL);
-		return node == null ? null : (LeafPsiElement) node.getPsi();
-	}
 }
