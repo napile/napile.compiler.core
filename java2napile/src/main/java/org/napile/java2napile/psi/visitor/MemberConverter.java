@@ -26,7 +26,7 @@ import com.intellij.util.Function;
  */
 public class MemberConverter
 {
-	public static String convertVariableDecl(PsiVariable variable)
+	public static String convertVariableDecl(PsiVariable variable, ConverterVisitor visitor)
 	{
 		StringBuilder b = new StringBuilder();
 
@@ -51,7 +51,7 @@ public class MemberConverter
 		PsiExpression expression = variable.getInitializer();
 		if(expression != null)
 		{
-			ExpressionConverter e = new ExpressionConverter(b);
+			ExpressionConverter e = new ExpressionConverter(b, visitor);
 
 			b.append(ConverterVisitor.SPACE);
 			b.append("=");
@@ -63,7 +63,7 @@ public class MemberConverter
 		return b.toString();
 	}
 
-	public static String convertConstructorDecl(PsiMethod method)
+	public static String convertConstructorDecl(PsiMethod method, final ConverterVisitor visitor)
 	{
 		StringBuilder b = new StringBuilder();
 
@@ -71,7 +71,7 @@ public class MemberConverter
 
 		b.append("this");
 
-		renderParameters(b, method);
+		renderParameters(b, method, visitor);
 
 		PsiCodeBlock codeBlock = method.getBody();
 		PsiStatement[] statements = codeBlock == null ? null : codeBlock.getStatements();
@@ -98,7 +98,7 @@ public class MemberConverter
 						public String fun(PsiExpression psiExpression)
 						{
 							StringBuilder b = new StringBuilder();
-							ExpressionConverter converter = new ExpressionConverter(b);
+							ExpressionConverter converter = new ExpressionConverter(b, visitor);
 							psiExpression.accept(converter);
 							return b.toString();
 						}
@@ -111,7 +111,7 @@ public class MemberConverter
 		return b.toString();
 	}
 
-	public static String convertMethodDecl(PsiMethod method, ConverterVisitor converterVisitor)
+	public static String convertMethodDecl(PsiMethod method, ConverterVisitor visitor)
 	{
 		StringBuilder b = new StringBuilder();
 
@@ -119,7 +119,7 @@ public class MemberConverter
 
 		b.append("meth").append(ConverterVisitor.SPACE).append(method.getName());
 
-		renderParameters(b, method);
+		renderParameters(b, method, visitor);
 
 		String renderType = TypeConverter.convertType(method.getReturnType(), true);
 		if(renderType != null)
@@ -129,27 +129,27 @@ public class MemberConverter
 		if(codeBlock != null)
 		{
 			b.append(ConverterVisitor.LINE);
-			converterVisitor.tabs(b, 0);
+			visitor.tabs(b, 0);
 			b.append("{").append(ConverterVisitor.LINE);
 
-			ExpressionConverter converter = new ExpressionConverter(b);
+			ExpressionConverter converter = new ExpressionConverter(b, visitor);
 			for(PsiStatement statement : codeBlock.getStatements())
 			{
-				converterVisitor.tabs(b, 1);
+				visitor.tabs(b, 1);
 
 				statement.accept(converter);
 
 				b.append(ConverterVisitor.LINE);
 			}
 
-			converterVisitor.tabs(b, 0);
+			visitor.tabs(b, 0);
 			b.append("}");
 		}
 
 		return b.toString();
 	}
 
-	private static void renderParameters(StringBuilder builder, PsiMethod method)
+	private static void renderParameters(StringBuilder builder, PsiMethod method, final ConverterVisitor visitor)
 	{
 		builder.append("(");
 		builder.append(StringUtil.join(method.getParameterList().getParameters(), new Function<PsiParameter, String>()
@@ -157,7 +157,7 @@ public class MemberConverter
 			@Override
 			public String fun(PsiParameter psiParameter)
 			{
-				return convertVariableDecl(psiParameter);
+				return convertVariableDecl(psiParameter, visitor);
 			}
 		}, ", "));
 		builder.append(")");

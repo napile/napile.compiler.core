@@ -114,7 +114,7 @@ public class ConverterVisitor extends JavaElementVisitor
 
 
 		if(method.isConstructor())
-			builder.append(MemberConverter.convertConstructorDecl(method));
+			builder.append(MemberConverter.convertConstructorDecl(method, this));
 		else
 			builder.append(MemberConverter.convertMethodDecl(method, this));
 
@@ -141,7 +141,7 @@ public class ConverterVisitor extends JavaElementVisitor
 			StringUtil.repeatSymbol(builder, TAB, indent);
 		}
 
-		builder.append(MemberConverter.convertVariableDecl(field));
+		builder.append(MemberConverter.convertVariableDecl(field, this));
 		builder.append(LINE);
 	}
 
@@ -159,6 +159,12 @@ public class ConverterVisitor extends JavaElementVisitor
 
 	@Override
 	public void visitDocComment(PsiDocComment comment)
+	{
+		builder.append(comment.getText());
+	}
+
+	@Override
+	public void visitComment(PsiComment comment)
 	{
 		builder.append(comment.getText());
 	}
