@@ -21,6 +21,9 @@ import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -28,6 +31,8 @@ import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
+import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 
 /**
@@ -42,7 +47,25 @@ public class AnnotationChecker
 		{
 			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingContext.ANNOTATION, annotation);
 
+			checkIsAnnotationClass(annotation, annotationDescriptor, trace);
+
 			checkRepeatable(annotation, annotationDescriptor, trace);
+		}
+	}
+
+	private void checkIsAnnotationClass(@NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor, @NotNull BindingTrace trace)
+	{
+		ResolvedCall<ConstructorDescriptor> resolvedCall = annotationDescriptor.getResolvedCall();
+		if(resolvedCall == null)
+			return;
+
+		MethodDescriptor descriptor = resolvedCall.getResultingDescriptor();
+		if(!ErrorUtils.isError(descriptor))
+		{
+			ConstructorDescriptor constructor = (ConstructorDescriptor) descriptor;
+			ClassifierDescriptor classDescriptor = constructor.getContainingDeclaration();
+			if(!AnnotationUtils.isAnnotation(classDescriptor))
+				trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(annotation, classDescriptor.getName().getName()));
 		}
 	}
 

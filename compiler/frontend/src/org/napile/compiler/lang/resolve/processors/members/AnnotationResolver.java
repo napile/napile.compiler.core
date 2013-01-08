@@ -24,16 +24,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.psi.NapileAnnotationOwner;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
@@ -99,7 +96,7 @@ public class AnnotationResolver
 		return result;
 	}
 
-	public void resolveBindAnnotations(@NotNull BindingTrace trace)
+	public void resolveBindAnnotations(@NotNull final BindingTrace trace)
 	{
 		Collection<NapileAnnotation> annotations = trace.getKeys(BindingContext.ANNOTATION_SCOPE);
 		for(NapileAnnotation annotation : annotations)
@@ -122,20 +119,6 @@ public class AnnotationResolver
 			JetType annotationType = results.getResultingDescriptor().getReturnType();
 			annotationDescriptor.setAnnotationType(annotationType);
 			annotationDescriptor.setResolvedCall((ResolvedCall<ConstructorDescriptor>) results.getResultingCall());
-
-			MethodDescriptor descriptor = results.getResultingDescriptor();
-			if(!ErrorUtils.isError(descriptor))
-			{
-				if(descriptor instanceof ConstructorDescriptor)
-				{
-					ConstructorDescriptor constructor = (ConstructorDescriptor) descriptor;
-					ClassifierDescriptor classDescriptor = constructor.getContainingDeclaration();
-					if(!AnnotationUtils.isAnnotation(classDescriptor))
-						trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(annotation, classDescriptor.getName().getName()));
-				}
-				else
-					trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(annotation, descriptor.getName().getName()));
-			}
 		}
 		else
 			annotationDescriptor.setAnnotationType(ErrorUtils.createErrorType("Unresolved annotation type"));
