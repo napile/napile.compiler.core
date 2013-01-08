@@ -174,7 +174,7 @@ public class BinaryOperationCodegen
 
 		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
-			leftStackValue = StackValue.variableAccessor(methodDescriptor, leftStackValue.getType(), gen);
+			leftStackValue = StackValue.variableAccessor(methodDescriptor, leftStackValue.getType(), gen, false);
 
 		leftStackValue.store(leftStackValue.getType(), gen.instructs);
 		return StackValue.none();
@@ -234,7 +234,7 @@ public class BinaryOperationCodegen
 
 		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
-			value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen);
+			value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false);
 
 		value.store(callable.getReturnType(), instructs);
 

@@ -91,15 +91,15 @@ public abstract class StackValue
 	}
 
 	@NotNull
-	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull ExpressionCodegen gen)
+	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull ExpressionCodegen gen, boolean nullable)
 	{
-		return variableAccessor(methodDescriptor, typeNode, gen.bindingTrace, gen.classNode);
+		return variableAccessor(methodDescriptor, typeNode, gen.bindingTrace, gen.classNode, nullable);
 	}
 
 	@NotNull
-	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
+	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, boolean nullable)
 	{
-		return new VariableAccessor(typeNode, methodDescriptor, bindingTrace, classNode);
+		return new VariableAccessor(typeNode, methodDescriptor, bindingTrace, classNode, nullable);
 	}
 
 	@NotNull

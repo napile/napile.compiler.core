@@ -437,7 +437,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 			if(methodDescriptor != null)
-				StackValue.variableAccessor(methodDescriptor, value.getType(), this).store(callableMethod.getReturnType(), instructs);
+				StackValue.variableAccessor(methodDescriptor, value.getType(), this, false).store(callableMethod.getReturnType(), instructs);
 			else
 				value.store(callableMethod.getReturnType(), instructs);
 			value.put(type, instructs);
@@ -741,7 +741,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 				MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 				if(methodDescriptor != null)
-					value = StackValue.variableAccessor(methodDescriptor, value.getType(), this);
+					value = StackValue.variableAccessor(methodDescriptor, value.getType(), this, false);
 				value.store(callable.getReturnType(), instructs);
 
 				return StackValue.onStack(type);
@@ -911,7 +911,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			NapileExpression r = getReceiverForSelector(expression);
 			final boolean isSuper = r instanceof NapileSuperExpression;
 
-			final StackValue iValue = intermediateValueForProperty(targetVar, bindingTrace.get(BindingContext.VARIABLE_CALL, expression), directToVar, isSuper ? (NapileSuperExpression) r : null);
+			final StackValue iValue = intermediateValueForProperty(expression, targetVar, bindingTrace.get(BindingContext.VARIABLE_CALL, expression), directToVar, isSuper ? (NapileSuperExpression) r : null);
 			if(!directToVar && resolvedCall != null && !isSuper)
 				receiver.put(isStatic ? receiver.getType() : TypeTransformer.toAsmType(bindingTrace, ((ClassDescriptor) container).getDefaultType(), classNode), instructs);
 			else
@@ -985,10 +985,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(typeNode);
 	}
 
-	public StackValue intermediateValueForProperty(VariableDescriptor variableDescriptor, @Nullable MethodDescriptor methodDescriptor, final boolean forceField, @Nullable NapileSuperExpression superExpression)
+	public StackValue intermediateValueForProperty(NapileExpression expression, VariableDescriptor variableDescriptor, @Nullable MethodDescriptor methodDescriptor, final boolean forceField, @Nullable NapileSuperExpression superExpression)
 	{
 		if(methodDescriptor != null)
-			return StackValue.variableAccessor(methodDescriptor, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), this);
+			return StackValue.variableAccessor(methodDescriptor, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), this, CallTransformer.isNullable(expression));
 
 		if(!forceField)
 		{

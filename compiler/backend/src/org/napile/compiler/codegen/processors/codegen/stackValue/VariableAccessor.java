@@ -34,11 +34,11 @@ public class VariableAccessor extends StackValue
 {
 	private final CallableMethod callableMethod;
 
-	public VariableAccessor(TypeNode type, MethodDescriptor methodDescriptor, BindingTrace bindingTrace, ClassNode classNode)
+	public VariableAccessor(TypeNode type, MethodDescriptor methodDescriptor, BindingTrace bindingTrace, ClassNode classNode, boolean nullable)
 	{
 		super(type);
 
-		callableMethod = CallTransformer.transformToCallable(bindingTrace, classNode, methodDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
+		callableMethod = CallTransformer.transformToCallable(bindingTrace, classNode, methodDescriptor, Collections.<TypeNode>emptyList(), nullable, false, false);
 	}
 
 	@Override

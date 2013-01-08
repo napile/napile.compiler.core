@@ -24,13 +24,9 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.Call.CallType;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 
 /**
  * @author abreslav
@@ -189,11 +185,10 @@ public class CallMaker
 
 	public static Call makeCallWithExpressions(@NotNull NapileElement callElement, @NotNull ReceiverDescriptor explicitReceiver, @Nullable ASTNode callOperationNode, @NotNull NapileExpression calleeExpression, @NotNull List<NapileExpression> argumentExpressions, @NotNull CallType callType)
 	{
-		List<ValueArgument> arguments = Lists.newArrayList();
+		List<ValueArgument> arguments = Lists.newArrayListWithCapacity(argumentExpressions.size());
 		for(NapileExpression argumentExpression : argumentExpressions)
-		{
 			arguments.add(makeValueArgument(argumentExpression, calleeExpression));
-		}
+
 		return makeCall(callElement, explicitReceiver, callOperationNode, calleeExpression, arguments, callType);
 	}
 

@@ -147,7 +147,7 @@ public class MethodCodegen
 
 				StackValue.local(callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter);
 
-				StackValue.variableAccessor(resolvedSetter, typeNode, bindingTrace, classNode).store(typeNode, adapter);
+				StackValue.variableAccessor(resolvedSetter, typeNode, bindingTrace, classNode, false).store(typeNode, adapter);
 			}
 
 		instructions.addAll(adapter.getInstructions());

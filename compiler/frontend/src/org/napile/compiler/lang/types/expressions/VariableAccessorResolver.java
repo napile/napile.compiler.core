@@ -119,7 +119,7 @@ public class VariableAccessorResolver
 		copyResolvingErrors(context, trace);
 
 		OverloadResolutionResults<VariableDescriptor> varResolve = context.resolveSimpleProperty(receiverDescriptor, null, expression);
-		return varResolve.isSuccess() ? varResolve.getResultingDescriptor() : null;
+		return varResolve.isSingleResult() ? varResolve.getResultingDescriptor() : null;
 	}
 
 	public static void resolveSetterForBinaryCall(@NotNull NapileBinaryExpression expression, @NotNull ExpressionTypingContext context)
@@ -138,7 +138,7 @@ public class VariableAccessorResolver
 		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
 
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiverDescriptor, expression.getOperationReference(), left, argument), expression.getOperationReference(), name, false);
-		if(results.isSuccess())
+		if(results.isSingleResult())
 			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
 
 		copyResolvingErrors(context, trace);
@@ -159,7 +159,7 @@ public class VariableAccessorResolver
 		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
 
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiverDescriptor, expression.getBaseExpression(), left, argument), nameExpression, name, false);
-		if(results.isSuccess())
+		if(results.isSingleResult())
 			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
 		else
 			copyResolvingErrors(context, trace);
@@ -176,11 +176,11 @@ public class VariableAccessorResolver
 
 		TemporaryBindingTrace trace = TemporaryBindingTrace.create(context.trace);
 
-		NapileSimpleNameExpression argument = (NapileSimpleNameExpression) NapilePsiFactory.createExpression(expression.getProject(), expression.getText());
+		NapileSimpleNameExpression argument = expression;//(NapileSimpleNameExpression) NapilePsiFactory.createExpression(expression.getProject(), expression.getText());
 
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableGetCall(receiverDescriptor, expression, argument), argument, name, false);
 
-		if(results.isSuccess())
+		if(results.isSingleResult())
 			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
 		else
 			copyResolvingErrors(context, trace);
@@ -189,9 +189,7 @@ public class VariableAccessorResolver
 	private static void copyResolvingErrors(@NotNull ExpressionTypingContext context, @NotNull BindingTrace trace)
 	{
 		for(Diagnostic d : trace.getDiagnostics())
-		{
 			if(d.getFactory() == Errors.INVISIBLE_MEMBER)
 				context.trace.report(d);
-		}
 	}
 }

@@ -33,12 +33,15 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileSafeQualifiedExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.TypeConstraints;
 import org.napile.compiler.lang.types.JetType;
+import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
@@ -122,5 +125,11 @@ public class CallTransformer
 			parametersToByteCode.add(TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode));
 
 		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(bindingTrace, originalMethodDescriptor.getReturnType(), classNode)), type, TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode), parametersToChecks, methodDescriptor.isMacro(), nullable);
+	}
+
+	public static boolean isNullable(NapileExpression expression)
+	{
+		PsiElement parent = expression.getParent();
+		return parent instanceof NapileSafeQualifiedExpression && ((NapileSafeQualifiedExpression) parent).getSelectorExpression() == expression;
 	}
 }
