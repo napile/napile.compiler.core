@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
@@ -167,12 +168,14 @@ public class NapilePsiUtil
 	{
 		final NapileExpression importedReference = importDirective.getImportedReference();
 		if(importedReference == null)
-		{
 			return null;
-		}
 
 		final String text = importedReference.getText();
-		return new ImportPath(text.replaceAll(" ", "") + (importDirective.isAllUnder() ? ".*" : ""));
+		final String importPath = text.replaceAll(" ", "") + (importDirective.isAllUnder() ? ".*" : "");
+		if(!FqNameUnsafe.isValid(importPath))
+			return null;
+
+		return new ImportPath(importPath);
 	}
 
 	@NotNull
