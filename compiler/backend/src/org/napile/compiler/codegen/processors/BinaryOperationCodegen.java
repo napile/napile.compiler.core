@@ -90,7 +90,7 @@ public class BinaryOperationCodegen
 			return base;
 	}
 
-	public static StackValue genGeLe(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genGeLe(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen)
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
 
@@ -104,16 +104,16 @@ public class BinaryOperationCodegen
 		ClassTypeNode leftClassType = (ClassTypeNode) leftType.typeConstructorNode;
 		//ClassTypeNode rightClassType = (ClassTypeNode) rightType.typeConstructorNode;
 
-		instructs.invokeVirtual(new MethodRef(leftClassType.className.child(OperatorConventions.COMPARE_TO), Collections.singletonList(rightType), Collections.<TypeNode>emptyList(), TypeConstants.COMPARE_RESULT), false);
+		gen.instructs.invokeVirtual(new MethodRef(leftClassType.className.child(OperatorConventions.COMPARE_TO), Collections.singletonList(rightType), Collections.<TypeNode>emptyList(), TypeConstants.COMPARE_RESULT), false);
 
 		if(opToken == NapileTokens.GT)
-			gtOrLt(GREATER, instructs);
+			gtOrLt(GREATER, gen.instructs);
 		else if(opToken == NapileTokens.LT)
-			gtOrLt(LOWER, instructs);
+			gtOrLt(LOWER, gen.instructs);
 		else if(opToken == NapileTokens.GTEQ)
-			gtOrLtEq(GREATER, instructs);
+			gtOrLtEq(GREATER, gen.instructs);
 		else if(opToken == NapileTokens.LTEQ)
-			gtOrLtEq(LOWER, instructs);
+			gtOrLtEq(LOWER, gen.instructs);
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
@@ -166,7 +166,7 @@ public class BinaryOperationCodegen
 		instructs.replace(jumpSlot).jump(instructs.size());
 	}
 
-	public static StackValue genEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen)
 	{
 		StackValue leftStackValue = gen.gen(expression.getLeft());
 
@@ -174,13 +174,13 @@ public class BinaryOperationCodegen
 
 		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
-			leftStackValue = StackValue.variableAccessor(methodDescriptor, leftStackValue.getType());
+			leftStackValue = StackValue.variableAccessor(methodDescriptor, leftStackValue.getType(), gen);
 
-		leftStackValue.store(leftStackValue.getType(), instructs);
+		leftStackValue.store(leftStackValue.getType(), gen.instructs);
 		return StackValue.none();
 	}
 
-	public static StackValue genEqEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genEqEq(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen)
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
 
@@ -188,22 +188,22 @@ public class BinaryOperationCodegen
 		NapileExpression right = expression.getRight();
 
 		JetType leftJetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, left);
-		TypeNode leftType = TypeTransformer.toAsmType(leftJetType);
+		TypeNode leftType = TypeTransformer.toAsmType(gen.bindingTrace, leftJetType, gen.classNode);
 
 		JetType rightJetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, right);
-		TypeNode rightType = TypeTransformer.toAsmType(rightJetType);
+		TypeNode rightType = TypeTransformer.toAsmType(gen.bindingTrace, rightJetType, gen.classNode);
 
 		gen.gen(left, leftType);
 
 		gen.gen(right, rightType);
 
 		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-		final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
-		callable.invoke(instructs);
+		final CallableMethod callable = CallTransformer.transformToCallable(gen, (MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
+		callable.invoke(gen.instructs);
 
 		// revert bool
 		if(opToken == NapileTokens.EXCLEQ)
-			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
+			gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
@@ -216,7 +216,7 @@ public class BinaryOperationCodegen
 
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-		final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false, false, false);
+		final CallableMethod callable = CallTransformer.transformToCallable(gen, resolvedCall, false, false, false);
 
 		StackValue value = gen.gen(expression.getLeft());
 		value.dupReceiver(instructs);
@@ -234,34 +234,34 @@ public class BinaryOperationCodegen
 
 		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
-			value = StackValue.variableAccessor(methodDescriptor, value.getType());
+			value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen);
 
 		value.store(callable.getReturnType(), instructs);
 
 		return StackValue.none();
 	}
 
-	public static StackValue genElvis(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genElvis(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen)
 	{
 		final TypeNode exprType = gen.expressionType(expression);
 		JetType type = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeft());
-		final TypeNode leftType = TypeTransformer.toAsmType(type);
+		final TypeNode leftType = TypeTransformer.toAsmType(gen.bindingTrace, type, gen.classNode);
 
 		gen.gen(expression.getLeft(), leftType);
 
-		instructs.dup();
+		gen.instructs.dup();
 
-		instructs.putNull();
+		gen.instructs.putNull();
 
-		instructs.invokeVirtual(ANY_EQUALS, false);
+		gen.instructs.invokeVirtual(ANY_EQUALS, false);
 
-		instructs.putTrue();
+		gen.instructs.putTrue();
 
-		ReservedInstruction ifSlot = instructs.reserve();
+		ReservedInstruction ifSlot = gen.instructs.reserve();
 
 		gen.gen(expression.getRight(), exprType);
 
-		instructs.replace(ifSlot).jumpIf(instructs.size());
+		gen.instructs.replace(ifSlot).jumpIf(gen.instructs.size());
 
 		return StackValue.onStack(exprType);
 	}

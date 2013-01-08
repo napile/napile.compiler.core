@@ -21,6 +21,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.types.TypeNode;
@@ -33,6 +34,7 @@ import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
@@ -47,7 +49,7 @@ import org.napile.compiler.lang.types.SelfTypeConstructor;
 public class TypeTransformer
 {
 	@NotNull
-	public static TypeNode toAsmType(@NotNull JetType jetType)
+	public static TypeNode toAsmType(BindingTrace bindingTrace, @NotNull JetType jetType, ClassNode classNode)
 	{
 		TypeConstructorNode typeConstructorNode = null;
 		ClassifierDescriptor owner = jetType.getConstructor().getDeclarationDescriptor();
@@ -60,9 +62,9 @@ public class TypeTransformer
 
 			MethodTypeNode methodTypeNode = (MethodTypeNode) typeConstructorNode;
 
-			methodTypeNode.returnType = toAsmType(methodTypeConstructor.getReturnType());
+			methodTypeNode.returnType = toAsmType(bindingTrace, methodTypeConstructor.getReturnType(), classNode);
 			for(Map.Entry<Name, JetType> entry : methodTypeConstructor.getParameterTypes().entrySet())
-				methodTypeNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, entry.getKey(), toAsmType(entry.getValue())));
+				methodTypeNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, entry.getKey(), toAsmType(bindingTrace, entry.getValue(), classNode)));
 		}
 		else if(jetType.getConstructor() instanceof MultiTypeConstructor)
 		{
@@ -76,7 +78,7 @@ public class TypeTransformer
 			{
 				boolean mutable = entry.mutable != null && entry.mutable;
 				Name name = entry.name == null ? Name.identifier("p" + entry.index) : entry.name;
-				multiTypeNode.variables.add(new VariableNode(mutable ? Modifier.list(Modifier.MUTABLE) : Modifier.EMPTY, name, toAsmType(entry.type)));
+				multiTypeNode.variables.add(new VariableNode(mutable ? Modifier.list(Modifier.MUTABLE) : Modifier.EMPTY, name, toAsmType(bindingTrace, entry.type, classNode)));
 			}
 		}
 		else if(owner instanceof ClassDescriptor)
@@ -88,9 +90,10 @@ public class TypeTransformer
 
 		TypeNode typeNode = new TypeNode(jetType.isNullable(), typeConstructorNode);
 		for(JetType argument : jetType.getArguments())
-			typeNode.arguments.add(toAsmType(argument));
+			typeNode.arguments.add(toAsmType(bindingTrace, argument, classNode));
 
-		//TODO [VISTALL] annotations
+		AnnotationCodegen.convert(bindingTrace, jetType, typeNode, classNode);
+
 		return typeNode;
 	}
 }

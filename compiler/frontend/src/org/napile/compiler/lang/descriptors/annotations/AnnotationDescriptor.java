@@ -52,7 +52,6 @@ public class AnnotationDescriptor
 		this.resolvedCall = resolvedCall;
 	}
 
-	@NotNull
 	public Annotated getOwner()
 	{
 		return owner;

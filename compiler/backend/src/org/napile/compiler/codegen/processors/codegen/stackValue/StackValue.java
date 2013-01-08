@@ -18,6 +18,7 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
@@ -28,6 +29,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MultiTypeEntryVariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -77,9 +79,9 @@ public abstract class StackValue
 	}
 
 	@NotNull
-	public static StackValue variable(@NotNull VariableDescriptor propertyDescriptor)
+	public static StackValue variable(@NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull VariableDescriptor propertyDescriptor)
 	{
-		return new Variable(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()), propertyDescriptor.isStatic());
+		return new Variable(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(bindingTrace, propertyDescriptor.getType(), classNode), propertyDescriptor.isStatic());
 	}
 
 	@NotNull
@@ -89,21 +91,27 @@ public abstract class StackValue
 	}
 
 	@NotNull
-	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode)
+	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull ExpressionCodegen gen)
 	{
-		return new VariableAccessor(typeNode, methodDescriptor);
+		return variableAccessor(methodDescriptor, typeNode, gen.bindingTrace, gen.classNode);
 	}
 
 	@NotNull
-	public static StackValue simpleVariableAccessor(@NotNull VariableDescriptor variableDescriptor, CallableMethod.CallType callType)
+	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
-		return simpleVariableAccessor(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), callType);
+		return new VariableAccessor(typeNode, methodDescriptor, bindingTrace, classNode);
 	}
 
 	@NotNull
-	public static StackValue multiVariable(@NotNull MultiTypeEntryVariableDescriptor variable)
+	public static StackValue simpleVariableAccessor(@NotNull ExpressionCodegen gen, @NotNull VariableDescriptor variableDescriptor, CallableMethod.CallType callType)
 	{
-		return new MultiVariable(TypeTransformer.toAsmType(variable.getType()), variable.getIndex());
+		return simpleVariableAccessor(DescriptorUtils.getFQName(variableDescriptor).toSafe(), gen.toAsmType(variableDescriptor.getType()), callType);
+	}
+
+	@NotNull
+	public static StackValue multiVariable(@NotNull ExpressionCodegen gen, @NotNull MultiTypeEntryVariableDescriptor variable)
+	{
+		return new MultiVariable(gen.toAsmType(variable.getType()), variable.getIndex());
 	}
 
 	@NotNull

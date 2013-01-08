@@ -18,11 +18,13 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 
 import java.util.Collections;
 
+import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.resolve.BindingTrace;
 
 /**
  * @author VISTALL
@@ -32,11 +34,11 @@ public class VariableAccessor extends StackValue
 {
 	private final CallableMethod callableMethod;
 
-	public VariableAccessor(TypeNode type, MethodDescriptor methodDescriptor)
+	public VariableAccessor(TypeNode type, MethodDescriptor methodDescriptor, BindingTrace bindingTrace, ClassNode classNode)
 	{
 		super(type);
 
-		callableMethod = CallTransformer.transformToCallable(methodDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
+		callableMethod = CallTransformer.transformToCallable(bindingTrace, classNode, methodDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
 	}
 
 	@Override

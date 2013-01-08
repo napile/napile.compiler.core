@@ -39,15 +39,15 @@ public class CollectionElement extends StackValue
 	private CallableMethod getCallableMethod;
 	private CallableMethod setCallableMethod;
 
-	public CollectionElement(TypeNode type, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionCodegen expressionCodegen)
+	public CollectionElement(TypeNode type, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionCodegen gen)
 	{
 		super(type);
 		this.getCall = getCall;
 		this.setCall = setCall;
-		this.expressionCodegen = expressionCodegen;
+		this.expressionCodegen = gen;
 
-		getCallableMethod = getCall == null ? null : CallTransformer.transformToCallable(getCall, false, false, false);
-		setCallableMethod = setCall == null ? null : CallTransformer.transformToCallable(setCall, false, false, false);
+		getCallableMethod = getCall == null ? null : CallTransformer.transformToCallable(gen, getCall, false, false, false);
+		setCallableMethod = setCall == null ? null : CallTransformer.transformToCallable(gen, setCall, false, false, false);
 	}
 
 	@Override

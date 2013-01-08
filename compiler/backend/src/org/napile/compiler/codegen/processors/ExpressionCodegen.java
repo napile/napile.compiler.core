@@ -127,7 +127,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		classNode = c;
 		wrappedVariables.putAll(w);
 		isInstanceConstructor = d instanceof ConstructorDescriptor;
-		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(((ClassDescriptor) d.getContainingDeclaration()).getDefaultType()) : TypeTransformer.toAsmType(d.getReturnType());
+		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(bindingTrace, ((ClassDescriptor) d.getContainingDeclaration()).getDefaultType(), classNode) : TypeTransformer.toAsmType(bindingTrace, d.getReturnType(), classNode);
 		frameMap = new FrameMap();
 
 		if(!d.isStatic())
@@ -162,7 +162,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			@Override
 			public Void fun(VariableDescriptor descriptor)
 			{
-				TypeNode varType = TypeTransformer.toAsmType(descriptor.getType());
+				TypeNode varType = TypeTransformer.toAsmType(bindingTrace, descriptor.getType(), classNode);
 				gen(initializer, varType);
 				return null;
 			}
@@ -240,7 +240,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	{
 		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
-		TypeNode expectedAsmType = TypeTransformer.toAsmType(jetType);
+		TypeNode expectedAsmType = TypeTransformer.toAsmType(bindingTrace, jetType, classNode);
 
 		final int tryStartIndex = instructs.size();
 
@@ -266,7 +266,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			jumpOutInstructions.add(instructs.reserve());
 
-			catchBlocks.add(new CatchBlock(startCatchIndex, instructs.size(), index, TypeTransformer.toAsmType(catchParameter.getType())));
+			catchBlocks.add(new CatchBlock(startCatchIndex, instructs.size(), index, TypeTransformer.toAsmType(bindingTrace, catchParameter.getType(), classNode)));
 
 			frameMap.leave(catchParameter);
 		}
@@ -333,9 +333,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
 		instructs.load(0);
-		instructs.linkMethod(NodeRefUtil.ref(methodDescriptor, fqName));
+		instructs.linkMethod(NodeRefUtil.ref(methodDescriptor, fqName, bindingTrace, classNode));
 
-		return StackValue.onStack(TypeTransformer.toAsmType(jetType));
+		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace, jetType, classNode));
 	}
 
 	@Override
@@ -346,15 +346,15 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		MethodDescriptor target = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getTarget());
 
 		if(target.isStatic())
-			instructs.linkStaticMethod(NodeRefUtil.ref(target));
+			instructs.linkStaticMethod(NodeRefUtil.ref(target, bindingTrace, classNode));
 		else
 		{
 			instructs.load(0);
 
-			instructs.linkMethod(NodeRefUtil.ref(target));
+			instructs.linkMethod(NodeRefUtil.ref(target, bindingTrace, classNode));
 		}
 
-		return StackValue.onStack(TypeTransformer.toAsmType(jetType));
+		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace, jetType, classNode));
 	}
 
 	@Override
@@ -403,11 +403,11 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitIsExpression(NapileIsExpression expression, StackValue data)
 	{
-		gen(expression.getLeftHandSide(), TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeftHandSide())));
+		gen(expression.getLeftHandSide(), TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeftHandSide()), classNode));
 
 		JetType rightType = bindingTrace.safeGet(BindingContext.TYPE, expression.getTypeRef());
 
-		instructs.is(TypeTransformer.toAsmType(rightType));
+		instructs.is(TypeTransformer.toAsmType(bindingTrace, rightType, classNode));
 
 		if(expression.isNegated())
 			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
@@ -421,7 +421,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, false, false, false);
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(this, resolvedCall, false, false, false);
 
 		if(!(op.getName().getName().equals("inc") || op.getName().getName().equals("dec")))
 			return invokeOperation(expression, (MethodDescriptor) op, callableMethod);
@@ -437,7 +437,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 			if(methodDescriptor != null)
-				StackValue.variableAccessor(methodDescriptor, value.getType()).store(callableMethod.getReturnType(), instructs);
+				StackValue.variableAccessor(methodDescriptor, value.getType(), this).store(callableMethod.getReturnType(), instructs);
 			else
 				value.store(callableMethod.getReturnType(), instructs);
 			value.put(type, instructs);
@@ -542,7 +542,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		NapileExpression subjectExpression = expression.getSubjectExpression();
 		if(subjectExpression != null)
-			gen(subjectExpression, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, subjectExpression)));
+			gen(subjectExpression, TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, subjectExpression), classNode));
 
 		List<NapileWhenEntry> whenEntries = expression.getEntries();
 		List<ReservedInstruction> jumpToBlocks = new ArrayList<ReservedInstruction>(whenEntries.size());
@@ -561,7 +561,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				{
 					instructs.dup();
 
-					TypeNode typeNode = TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.TYPE, ((NapileWhenConditionIsPattern) condition).getTypeRef()));
+					TypeNode typeNode = TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.TYPE, ((NapileWhenConditionIsPattern) condition).getTypeRef()), classNode);
 
 					instructs.is(typeNode);
 
@@ -581,7 +581,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 					if(subjectExpression != null)
 						instructs.dup();
 
-					gen(condExp, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, condExp)));
+					gen(condExp, TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, condExp), classNode));
 
 					if(subjectExpression != null)
 						instructs.invokeVirtual(BinaryOperationCodegen.ANY_EQUALS, false);
@@ -611,7 +611,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			instructs.replace(reservedInstruction).jump(instructs.size());
 
-			gen(whenExp, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, whenExp)));
+			gen(whenExp, TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, whenExp), classNode));
 
 			jumpOut.add(instructs.reserve());
 		}
@@ -619,7 +619,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		for(ReservedInstruction instruction : jumpOut)
 			instructs.replace(instruction).jump(instructs.size());
 
-		return StackValue.onStack(TypeTransformer.toAsmType(expType));
+		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace, expType, classNode));
 	}
 
 	private StackValue generateSingleBranchIf(StackValue condition, NapileExpression expression, boolean inverse)
@@ -676,7 +676,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	{
 		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
 		if(opToken == NapileTokens.EQ)
-			return BinaryOperationCodegen.genEq(expression, this, instructs);
+			return BinaryOperationCodegen.genEq(expression, this);
 		else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(opToken))
 			return BinaryOperationCodegen.genAugmentedAssignment(expression, this, instructs);
 		else if(opToken == NapileTokens.ANDAND)
@@ -684,11 +684,11 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		else if(opToken == NapileTokens.OROR)
 			return BinaryOperationCodegen.genOrOr(expression, this, instructs);
 		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ)
-			return BinaryOperationCodegen.genEqEq(expression, this, instructs);
+			return BinaryOperationCodegen.genEqEq(expression, this);
 		else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ || opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
-			return BinaryOperationCodegen.genGeLe(expression, this, instructs);
+			return BinaryOperationCodegen.genGeLe(expression, this);
 		else if(opToken == NapileTokens.ELVIS)
-			return BinaryOperationCodegen.genElvis(expression, this, instructs);
+			return BinaryOperationCodegen.genElvis(expression, this);
 		/*else if(opToken == NapileTokens.IN_KEYWORD || opToken == NapileTokens.NOT_IN)
 		{
 				return final Type exprType = expressionType(expression);
@@ -698,7 +698,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		else
 		{
 			DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-			final CallableMethod callable = CallTransformer.transformToCallable((MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
+			final CallableMethod callable = CallTransformer.transformToCallable(this, (MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
 
 			return invokeOperation(expression, (MethodDescriptor) op, callable);
 		}
@@ -717,7 +717,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			{
 				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
 
-				final CallableMethod callable = CallTransformer.transformToCallable(resolvedCall, false, false, false);
+				final CallableMethod callable = CallTransformer.transformToCallable(this, resolvedCall, false, false, false);
 
 				StackValue value = gen(expression.getBaseExpression());
 				value.dupReceiver(instructs);
@@ -741,7 +741,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 				MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 				if(methodDescriptor != null)
-					value = StackValue.variableAccessor(methodDescriptor, value.getType());
+					value = StackValue.variableAccessor(methodDescriptor, value.getType(), this);
 				value.store(callable.getReturnType(), instructs);
 
 				return StackValue.onStack(type);
@@ -777,7 +777,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			{
 				StackValue stackValue = gen(callee);
 
-				stackValue.put(TypeTransformer.toAsmType(variableDescriptor.getFirst().getType()), instructs);
+				stackValue.put(TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getFirst().getType(), classNode), instructs);
 
 				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression, true);
 			}
@@ -790,7 +790,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, StackValue receiver)
 	{
 		MethodDescriptor operationDescriptor = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression);
-		CallableMethod accessor = CallTransformer.transformToCallable(operationDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
+		CallableMethod accessor = CallTransformer.transformToCallable(this, operationDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
 
 		boolean isGetter = accessor.getName().endsWith("get");
 
@@ -803,13 +803,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		TypeNode asmType;
 		if(isGetter)
 		{
-			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(resolvedGetCall, false, false, false));
+			genThisAndReceiverFromResolvedCall(receiver, resolvedGetCall, CallTransformer.transformToCallable(this, resolvedGetCall, false, false, false));
 
 			asmType = accessor.getReturnType();
 		}
 		else
 		{
-			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(resolvedSetCall, false, false, false));
+			genThisAndReceiverFromResolvedCall(receiver, resolvedSetCall, CallTransformer.transformToCallable(this, resolvedSetCall, false, false, false));
 
 			asmType = argumentTypes.get(argumentTypes.size() - 1);
 		}
@@ -838,13 +838,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			instructs.newInt(i ++);
 
-			gen(exp, TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, exp)));
+			gen(exp, TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, exp), classNode));
 
 			instructs.invokeVirtual(MultiVariable.SET_VALUE, false);
 			instructs.pop();
 		}
 
-		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression)));
+		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression), classNode));
 	}
 
 	@Override
@@ -874,7 +874,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 					StackValue newReceiver = receiverExp.accept(this, StackValue.none());
 					newReceiver.put(newReceiver.getType(), instructs);
 
-					return StackValue.multiVariable(((MultiTypeEntryVariableDescriptor) descriptor));
+					return StackValue.multiVariable(this, ((MultiTypeEntryVariableDescriptor) descriptor));
 				}
 				else
 					throw new UnsupportedOperationException("Parent is not NapileDotQualifiedExpression. Found: " + expression.getParent().getClass().getName());
@@ -913,7 +913,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			final StackValue iValue = intermediateValueForProperty(targetVar, bindingTrace.get(BindingContext.VARIABLE_CALL, expression), directToVar, isSuper ? (NapileSuperExpression) r : null);
 			if(!directToVar && resolvedCall != null && !isSuper)
-				receiver.put(isStatic ? receiver.getType() : TypeTransformer.toAsmType(((ClassDescriptor) container).getDefaultType()), instructs);
+				receiver.put(isStatic ? receiver.getType() : TypeTransformer.toAsmType(bindingTrace, ((ClassDescriptor) container).getDefaultType(), classNode), instructs);
 			else
 			{
 				if(!isStatic)
@@ -926,7 +926,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 							receiver = generateThisOrOuter((ClassDescriptor) targetVar.getContainingDeclaration(), false);
 					}
 					JetType receiverType = bindingTrace.get(BindingContext.EXPRESSION_TYPE, r);
-					receiver.put(receiverType != null && !isSuper ? TypeTransformer.toAsmType(receiverType) : AsmConstants.ANY_TYPE, instructs);
+					receiver.put(receiverType != null && !isSuper ? TypeTransformer.toAsmType(bindingTrace, receiverType, classNode) : AsmConstants.ANY_TYPE, instructs);
 				}
 			}
 			return iValue;
@@ -943,7 +943,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	{
 		TypeNode typeNode = expressionType(classOfExpression);
 
-		instructs.classOf(TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.TYPE, classOfExpression.getTypeReference())));
+		instructs.classOf(TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.TYPE, classOfExpression.getTypeReference()), classNode));
 
 		return StackValue.onStack(typeNode);
 	}
@@ -953,7 +953,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	{
 		TypeNode typeNode = expressionType(typeOfExpression);
 
-		instructs.typeOf(TypeTransformer.toAsmType(bindingTrace.safeGet(BindingContext.TYPE, typeOfExpression.getTypeReference())));
+		instructs.typeOf(TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.TYPE, typeOfExpression.getTypeReference()), classNode));
 
 		return StackValue.onStack(typeNode);
 	}
@@ -988,17 +988,17 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public StackValue intermediateValueForProperty(VariableDescriptor variableDescriptor, @Nullable MethodDescriptor methodDescriptor, final boolean forceField, @Nullable NapileSuperExpression superExpression)
 	{
 		if(methodDescriptor != null)
-			return StackValue.variableAccessor(methodDescriptor, TypeTransformer.toAsmType(variableDescriptor.getType()));
+			return StackValue.variableAccessor(methodDescriptor, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), this);
 
 		if(!forceField)
 		{
 			//TODO [VISTALL]
 			System.out.println("Using old method to invoking variable accessors");
 			//throw new UnsupportedOperationException("property");
-			return StackValue.simpleVariableAccessor(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.VIRTUAL);
+			return StackValue.simpleVariableAccessor(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.VIRTUAL);
 		}
 		else
-			return StackValue.variable(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(variableDescriptor.getType()), variableDescriptor.isStatic());
+			return StackValue.variable(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic());
 	}
 
 	private StackValue generateConstructorCall(NapileCallExpression expression, NapileSimpleNameExpression constructorReference, StackValue receiver)
@@ -1012,11 +1012,11 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			//noinspection ConstantConditions
 			JetType expressionType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
-			type = TypeTransformer.toAsmType(expressionType);
+			type = TypeTransformer.toAsmType(bindingTrace, expressionType, classNode);
 
 			//final ClassDescriptor classDescriptor = ((ConstructorDescriptor) constructorDescriptor).getContainingDeclaration();
 
-			CallableMethod method = CallTransformer.transformToCallable((ConstructorDescriptor) constructorDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
+			CallableMethod method = CallTransformer.transformToCallable(this, (ConstructorDescriptor) constructorDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
 
 			receiver.put(receiver.getType(), instructs);
 
@@ -1060,7 +1060,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				requireSpecialCall = true;
 		}
 
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, nullable, anonym, requireSpecialCall);
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(this, resolvedCall, nullable, anonym, requireSpecialCall);
 
 		invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
 
@@ -1122,7 +1122,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		{
 			final JetType outType = ((VariableDescriptor) descriptor).getType();
 
-			return StackValue.local(index, TypeTransformer.toAsmType(outType));
+			return StackValue.local(index, TypeTransformer.toAsmType(bindingTrace, outType, classNode));
 		}
 		else
 			return StackValue.local(index, AsmConstants.ANY_TYPE);
@@ -1225,7 +1225,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	{
 		if(descriptor instanceof ClassReceiver)
 		{
-			TypeNode exprType = TypeTransformer.toAsmType(descriptor.getType());
+			TypeNode exprType = TypeTransformer.toAsmType(bindingTrace, descriptor.getType(), classNode);
 			ClassReceiver classReceiver = (ClassReceiver) descriptor;
 			ClassDescriptor classReceiverDeclarationDescriptor = classReceiver.getDeclarationDescriptor();
 
@@ -1240,7 +1240,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		else if(descriptor instanceof AutoCastReceiver)
 		{
 			AutoCastReceiver autoCastReceiver = (AutoCastReceiver) descriptor;
-			TypeNode intermediateType = TypeTransformer.toAsmType(autoCastReceiver.getType());
+			TypeNode intermediateType = TypeTransformer.toAsmType(bindingTrace, autoCastReceiver.getType(), classNode);
 			generateFromResolvedCall(autoCastReceiver.getOriginal(), intermediateType);
 			StackValue.onStack(intermediateType).put(type, instructs);
 		}
@@ -1253,7 +1253,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public StackValue generateThisOrOuter(@NotNull final ClassDescriptor calleeContainingClass, boolean isSuper)
 	{
 		//TODO [VISTALL]
-		return StackValue.local(0, TypeTransformer.toAsmType(calleeContainingClass.getDefaultType()));
+		return StackValue.local(0, TypeTransformer.toAsmType(bindingTrace, calleeContainingClass.getDefaultType(), classNode));
 	}
 
 	private void generateLocalVariableDeclaration(@NotNull final NapileVariable variableDeclaration, @NotNull List<Function<StackValue, Void>> leaveTasks)
@@ -1261,7 +1261,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		final VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variableDeclaration);
 		if(!wrapVariableIfNeed(variableDescriptor))
 		{
-			final TypeNode type = TypeTransformer.toAsmType(variableDescriptor.getType());
+			final TypeNode type = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
 			int index = frameMap.enter(variableDescriptor);
 
 			leaveTasks.add(new Function<StackValue, Void>()
@@ -1290,7 +1290,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			generateInitializer.fun(variableDescriptor);
 
-			wrappedVariable.store(TypeTransformer.toAsmType(variableDescriptor.getType()), getInstructs());
+			wrappedVariable.store(TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), getInstructs());
 		}
 		else
 		{
@@ -1424,10 +1424,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			VariableDescriptorImpl newVariableDescriptor = new VariableDescriptorImpl(ownerMethod.getContainingDeclaration(), variableDescriptor.getAnnotations(), variableDescriptor.getModality(), Visibility.LOCAL, name, CallableMemberDescriptor.Kind.DECLARATION, ownerMethod.isStatic(), true);
 			newVariableDescriptor.setType(variableDescriptor.getType(), variableDescriptor.getTypeParameters(), variableDescriptor.getExpectedThisObject());
 
-			wrappedVariables.put(variableDescriptor, StackValue.simpleVariableAccessor(newVariableDescriptor, newVariableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.SPECIAL));
+			wrappedVariables.put(variableDescriptor, StackValue.simpleVariableAccessor(this, newVariableDescriptor, newVariableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.SPECIAL));
 
 			VariableCodegen.getSetterAndGetter(newVariableDescriptor, null, classNode, bindingTrace);
-			VariableNode variableNode = new VariableNode(newVariableDescriptor.isStatic() ? Modifier.list(Modifier.STATIC, Modifier.MUTABLE) : Modifier.list(Modifier.MUTABLE), newVariableDescriptor.getName(), TypeTransformer.toAsmType(newVariableDescriptor.getType()));
+			VariableNode variableNode = new VariableNode(newVariableDescriptor.isStatic() ? Modifier.list(Modifier.STATIC, Modifier.MUTABLE) : Modifier.list(Modifier.MUTABLE), newVariableDescriptor.getName(), TypeTransformer.toAsmType(bindingTrace, newVariableDescriptor.getType(), classNode));
 			classNode.addMember(variableNode);
 			return true;
 		}
@@ -1439,7 +1439,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public TypeNode expressionType(NapileExpression expr)
 	{
 		JetType type = bindingTrace.get(BindingContext.EXPRESSION_TYPE, expr);
-		return type == null ? StackValue.none().getType() : TypeTransformer.toAsmType(type);
+		return type == null ? StackValue.none().getType() : TypeTransformer.toAsmType(bindingTrace, type, classNode);
+	}
+
+	@NotNull
+	public TypeNode toAsmType(@NotNull JetType type)
+	{
+		return TypeTransformer.toAsmType(bindingTrace, type, classNode);
 	}
 
 	@NotNull

@@ -21,8 +21,10 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -31,6 +33,7 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
@@ -43,7 +46,12 @@ import org.napile.compiler.lang.types.JetType;
  */
 public class CallTransformer
 {
-	public static CallableMethod transformToCallable(ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym, boolean requireSpecialCall)
+	public static CallableMethod transformToCallable(ExpressionCodegen gen, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym, boolean requireSpecialCall)
+	{
+		return transformToCallable(gen.bindingTrace, gen.classNode, resolvedCall, nullable, anonym, requireSpecialCall);
+	}
+
+	public static CallableMethod transformToCallable(BindingTrace bindingTrace, ClassNode classNode, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym, boolean requireSpecialCall)
 	{
 		MethodDescriptor fd = (MethodDescriptor) resolvedCall.getResultingDescriptor();
 		fd = unwrapFakeOverride(fd);
@@ -51,7 +59,7 @@ public class CallTransformer
 		List<TypeNode> typeArguments = new ArrayList<TypeNode>(fd.getTypeParameters().size());
 
 		for(JetType type : resolvedCall.getTypeArguments().values())
-			typeArguments.add(TypeTransformer.toAsmType(type));
+			typeArguments.add(TypeTransformer.toAsmType(bindingTrace, type, classNode));
 
 		ConstraintSystem constraintSystem = resolvedCall.getConstraintSystem();
 		if(constraintSystem != null && constraintSystem.isSuccessful())
@@ -64,11 +72,11 @@ public class CallTransformer
 
 				assert typeConstants != null && typeConstants.getUpperBounds().size() == 1;
 
-				typeArguments.add(TypeTransformer.toAsmType(typeConstants.getUpperBounds().iterator().next()));
+				typeArguments.add(TypeTransformer.toAsmType(bindingTrace, typeConstants.getUpperBounds().iterator().next(), classNode));
 			}
 		}
 
-		return transformToCallable(fd, typeArguments, nullable, anonym, requireSpecialCall);
+		return transformToCallable(bindingTrace, classNode, fd, typeArguments, nullable, anonym, requireSpecialCall);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,7 +88,13 @@ public class CallTransformer
 	}
 
 	@NotNull
-	public static CallableMethod transformToCallable(MethodDescriptor methodDescriptor, List<TypeNode> typeArguments, boolean nullable, boolean anonym, boolean requireSpecialCall)
+	public static CallableMethod transformToCallable(ExpressionCodegen gen, MethodDescriptor methodDescriptor, List<TypeNode> typeArguments, boolean nullable, boolean anonym, boolean requireSpecialCall)
+	{
+		return transformToCallable(gen.bindingTrace, gen.classNode, methodDescriptor, typeArguments, nullable, anonym, requireSpecialCall);
+	}
+
+	@NotNull
+	public static CallableMethod transformToCallable(BindingTrace bindingTrace, ClassNode classNode, MethodDescriptor methodDescriptor, List<TypeNode> typeArguments, boolean nullable, boolean anonym, boolean requireSpecialCall)
 	{
 		CallableMethod.CallType type = CallableMethod.CallType.VIRTUAL;
 		if(methodDescriptor instanceof ConstructorDescriptor || requireSpecialCall)
@@ -102,11 +116,11 @@ public class CallTransformer
 		List<TypeNode> parametersToChecks = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());
 
 		for(CallParameterDescriptor p : methodDescriptor.getValueParameters())
-			parametersToChecks.add(TypeTransformer.toAsmType(p.getType()));
+			parametersToChecks.add(TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode));
 
 		for(CallParameterDescriptor p : originalMethodDescriptor.getValueParameters())
-			parametersToByteCode.add(TypeTransformer.toAsmType(p.getType()));
+			parametersToByteCode.add(TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode));
 
-		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(originalMethodDescriptor.getReturnType())), type, TypeTransformer.toAsmType(methodDescriptor.getReturnType()), parametersToChecks, methodDescriptor.isMacro(), nullable);
+		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(bindingTrace, originalMethodDescriptor.getReturnType(), classNode)), type, TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode), parametersToChecks, methodDescriptor.isMacro(), nullable);
 	}
 }

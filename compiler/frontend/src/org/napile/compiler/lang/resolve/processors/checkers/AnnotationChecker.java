@@ -56,6 +56,8 @@ public class AnnotationChecker
 			return;
 
 		Annotated owner = annotationDescriptor.getOwner();
+		if(owner == null)
+			return;
 		for(AnnotationDescriptor otherAnnotation : owner.getAnnotations())
 		{
 			if(otherAnnotation == annotationDescriptor)

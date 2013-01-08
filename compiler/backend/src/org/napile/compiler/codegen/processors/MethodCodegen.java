@@ -61,7 +61,7 @@ public class MethodCodegen
 		MethodNode constructorNode = MethodNode.constructor(ModifierCodegen.gen(constructorDescriptor));
 		for(CallParameterDescriptor declaration : constructorDescriptor.getValueParameters())
 		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(bindingTrace, declaration.getType(), classNode));
 
 			constructorNode.parameters.add(methodParameterNode);
 		}
@@ -74,7 +74,7 @@ public class MethodCodegen
 
 			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
 
-			CallableMethod method = CallTransformer.transformToCallable(call, false, false, false);
+			CallableMethod method = CallTransformer.transformToCallable(bindingTrace, classNode, call, false, false, false);
 
 			generator.invokeMethodWithArguments(method, specifier, StackValue.none());
 
@@ -87,15 +87,15 @@ public class MethodCodegen
 	}
 
 	@NotNull
-	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name realName)
+	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name realName, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
-		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierCodegen.gen(methodDescriptor), realName, TypeTransformer.toAsmType(methodDescriptor.getReturnType())) : new MethodNode(ModifierCodegen.gen(methodDescriptor), realName, TypeTransformer.toAsmType(methodDescriptor.getReturnType()));
+		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierCodegen.gen(methodDescriptor), realName, TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode)) : new MethodNode(ModifierCodegen.gen(methodDescriptor), realName, TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode));
 
-		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode);
+		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode, bindingTrace, classNode);
 
 		for(CallParameterDescriptor declaration : methodDescriptor.getValueParameters())
 		{
-			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(declaration.getType()));
+			MethodParameterNode methodParameterNode = new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(bindingTrace, declaration.getType(), classNode));
 
 			methodNode.parameters.add(methodParameterNode);
 		}
@@ -106,9 +106,9 @@ public class MethodCodegen
 	@NotNull
 	public static MethodNode gen(@NotNull MethodDescriptor methodDescriptor, @NotNull Name name, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull Map<VariableDescriptor, StackValue> wrappedVariables)
 	{
-		MethodNode methodNode = gen(methodDescriptor, name);
+		MethodNode methodNode = gen(methodDescriptor, name, bindingTrace, classNode);
 
-		genReferenceParameters(declarationWithBody, bindingTrace, methodDescriptor, methodNode.instructions);
+		genReferenceParameters(declarationWithBody, methodDescriptor, methodNode.instructions, bindingTrace, classNode);
 
 		NapileExpression expression = declarationWithBody.getBodyExpression();
 		if(expression != null)
@@ -130,24 +130,24 @@ public class MethodCodegen
 		return methodNode;
 	}
 
-	public static void genReferenceParameters(@NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace trace, @NotNull CallableDescriptor callableDescriptor, List<Instruction> instructions)
+	public static void genReferenceParameters(@NotNull NapileDeclarationWithBody declarationWithBody, @NotNull CallableDescriptor callableDescriptor, List<Instruction> instructions, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
 		InstructionAdapter adapter = new InstructionAdapter();
 		for(CallParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
 			if(parameterDescriptor instanceof CallParameterAsReferenceDescriptorImpl)
 			{
 				NapileCallParameterAsReference refParameter = (NapileCallParameterAsReference) declarationWithBody.getValueParameters()[parameterDescriptor.getIndex()];
-				MethodDescriptor resolvedSetter = trace.safeGet(BindingContext.VARIABLE_CALL, refParameter.getReferenceExpression());
-				VariableDescriptor variableDescriptor = (VariableDescriptor) trace.safeGet(BindingContext.REFERENCE_TARGET, refParameter.getReferenceExpression());
+				MethodDescriptor resolvedSetter = bindingTrace.safeGet(BindingContext.VARIABLE_CALL, refParameter.getReferenceExpression());
+				VariableDescriptor variableDescriptor = (VariableDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, refParameter.getReferenceExpression());
 
-				TypeNode typeNode = TypeTransformer.toAsmType(variableDescriptor.getType());
+				TypeNode typeNode = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
 
 				if(!variableDescriptor.isStatic())
 					StackValue.local(0, typeNode).put(AsmConstants.ANY_TYPE, adapter);
 
 				StackValue.local(callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter);
 
-				StackValue.variableAccessor(resolvedSetter, typeNode).store(typeNode, adapter);
+				StackValue.variableAccessor(resolvedSetter, typeNode, bindingTrace, classNode).store(typeNode, adapter);
 			}
 
 		instructions.addAll(adapter.getInstructions());

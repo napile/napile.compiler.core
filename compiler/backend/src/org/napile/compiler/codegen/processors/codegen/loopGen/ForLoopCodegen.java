@@ -64,7 +64,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		// put Iterator instance to stack
 		MethodDescriptor methodDescriptor = gen.bindingTrace.safeGet(BindingContext.LOOP_RANGE_ITERATOR, expression.getLoopRange());
 		gen.gen(expression.getLoopRange(), TypeConstants.ITERATOR__ANY__);
-		instructions.invokeVirtual(NodeRefUtil.ref(methodDescriptor), false);
+		instructions.invokeVirtual(NodeRefUtil.ref(methodDescriptor, gen.bindingTrace, gen.classNode), false);
 		instructions.store(loopIteratorIndex);
 
 		firstPos = instructions.size();

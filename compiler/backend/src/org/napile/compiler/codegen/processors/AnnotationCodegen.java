@@ -50,9 +50,9 @@ public class AnnotationCodegen
 
 		ConstructorDescriptor constructorDescriptor = resolvedCall.getResultingDescriptor();
 
-		CallableMethod callableMethod = CallTransformer.transformToCallable(resolvedCall, false, false, false);
+		CallableMethod callableMethod = CallTransformer.transformToCallable(bindingTrace, classNode, resolvedCall, false, false, false);
 
-		TypeNode type = TypeTransformer.toAsmType(constructorDescriptor.getReturnType());
+		TypeNode type = TypeTransformer.toAsmType(bindingTrace, constructorDescriptor.getReturnType(), classNode);
 
 		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, type, classNode);
 

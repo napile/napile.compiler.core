@@ -25,6 +25,8 @@ public class Constant extends StackValue
 			instructionAdapter.putNull();
 		else if(classTypeNode.className.equals(NapileLangPackage.INT))
 			instructionAdapter.newInt((Integer) value);
+		else if(classTypeNode.className.equals(NapileLangPackage.LONG))
+			instructionAdapter.newLong((Long) value);
 		else if(classTypeNode.className.equals(NapileLangPackage.STRING))
 			instructionAdapter.newString((String) value);
 		else if(classTypeNode.className.equals(NapileLangPackage.BOOL))

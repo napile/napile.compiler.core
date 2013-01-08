@@ -33,6 +33,7 @@ import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 
 /**
@@ -51,25 +52,25 @@ public class NodeRefUtil
 		return new VariableRef(classNode.name.child(variableNode.name), variableNode.returnType);
 	}
 
-	public static VariableRef ref(@NotNull VariableDescriptor propertyDescriptor)
+	public static VariableRef ref(@NotNull VariableDescriptor propertyDescriptor, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
 		propertyDescriptor = (VariableDescriptor) propertyDescriptor.getOriginal();
-		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(propertyDescriptor.getType()));
+		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(bindingTrace, propertyDescriptor.getType(), classNode));
 	}
 
-	public static MethodRef ref(@NotNull MethodDescriptor descriptor)
+	public static MethodRef ref(@NotNull MethodDescriptor descriptor, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
-		return ref(descriptor, DescriptorUtils.getFQName(descriptor).toSafe());
+		return ref(descriptor, DescriptorUtils.getFQName(descriptor).toSafe(), bindingTrace, classNode);
 	}
 
-	public static MethodRef ref(@NotNull MethodDescriptor descriptor, @NotNull FqName fqName)
+	public static MethodRef ref(@NotNull MethodDescriptor descriptor, @NotNull FqName fqName, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
 		descriptor = CallTransformer.unwrapFakeOverride(descriptor);
 
 		List<TypeNode> typeNodes = new ArrayList<TypeNode>(descriptor.getValueParameters().size());
 		for(CallParameterDescriptor p : descriptor.getValueParameters())
-			typeNodes.add(TypeTransformer.toAsmType(p.getType()));
+			typeNodes.add(TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode));
 
-		return new MethodRef(fqName, typeNodes, Collections.<TypeNode>emptyList(), TypeTransformer.toAsmType(descriptor.getReturnType()));
+		return new MethodRef(fqName, typeNodes, Collections.<TypeNode>emptyList(), TypeTransformer.toAsmType(bindingTrace, descriptor.getReturnType(), classNode));
 	}
 }

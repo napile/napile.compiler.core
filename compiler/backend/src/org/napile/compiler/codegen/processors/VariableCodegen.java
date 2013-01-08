@@ -65,22 +65,22 @@ public class VariableCodegen
 		Name accessorFq = Name.identifier(variableDescriptor.getName() + AsmConstants.ANONYM_SPLITTER + "set");
 
 		if(variableAccessor == null)
-			getSetterCode(classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
+			getSetterCode(bindingTrace, classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
 		else if(variableAccessor.getBodyExpression() == null)
-			getSetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
+			getSetterCode(bindingTrace, classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
 		else
 			throw new UnsupportedOperationException("Variable accessors with body is not supported");
 	}
 
-	private static void getSetterCode(@NotNull ClassNode classNode, @NotNull MethodNode setterMethodNode, @NotNull VariableDescriptor variableDescriptor)
+	private static void getSetterCode(@NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull MethodNode setterMethodNode, @NotNull VariableDescriptor variableDescriptor)
 	{
-		setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(variableDescriptor.getType())));
+		setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)));
 
 		InstructionAdapter instructions = new InstructionAdapter();
 		if(variableDescriptor.isStatic())
 		{
 			instructions.load(0);
-			instructions.putToStaticVar(NodeRefUtil.ref(variableDescriptor));
+			instructions.putToStaticVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
 			instructions.putNull();
 			instructions.returnVal();
 		}
@@ -88,7 +88,7 @@ public class VariableCodegen
 		{
 			instructions.load(0);
 			instructions.load(1);
-			instructions.putToVar(NodeRefUtil.ref(variableDescriptor));
+			instructions.putToVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
 			instructions.putNull();
 			instructions.returnVal();
 		}
@@ -104,9 +104,9 @@ public class VariableCodegen
 		Name accessorFq = Name.identifier(variableDescriptor.getName() + AsmConstants.ANONYM_SPLITTER + "get");
 
 		if(variableAccessor == null)
-			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq, TypeTransformer.toAsmType(variableDescriptor.getType())), variableDescriptor, bindingTrace, variable);
+			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)), variableDescriptor, bindingTrace, variable);
 		else if(variableAccessor.getBodyExpression() == null)
-			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, TypeTransformer.toAsmType(variableDescriptor.getType())), variableDescriptor, bindingTrace, variable);
+			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)), variableDescriptor, bindingTrace, variable);
 		else
 			throw new UnsupportedOperationException("Variable accessors with body is not supported");
 	}
@@ -120,7 +120,7 @@ public class VariableCodegen
 			if(!variableDescriptor.isStatic())
 				adapter.visitLocalVariable("this");
 
-			final StackValue varStackValue = StackValue.variable(variableDescriptor);
+			final StackValue varStackValue = StackValue.variable(bindingTrace, classNode, variableDescriptor);
 
 			if(!variableDescriptor.isStatic())
 				adapter.load(0);
@@ -165,13 +165,13 @@ public class VariableCodegen
 		{
 			if(variableDescriptor.isStatic())
 			{
-				getterMethodNode.instructions.add(new GetStaticVariableInstruction(NodeRefUtil.ref(variableDescriptor)));
+				getterMethodNode.instructions.add(new GetStaticVariableInstruction(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode)));
 				getterMethodNode.instructions.add(new ReturnInstruction());
 			}
 			else
 			{
 				getterMethodNode.instructions.add(new LoadInstruction(0));
-				getterMethodNode.instructions.add(new GetVariableInstruction(NodeRefUtil.ref(variableDescriptor)));
+				getterMethodNode.instructions.add(new GetVariableInstruction(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode)));
 				getterMethodNode.instructions.add(new ReturnInstruction());
 			}
 

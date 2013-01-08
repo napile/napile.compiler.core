@@ -47,9 +47,9 @@ public class CallReceiver extends StackValue
 		if(thisObject.exists())
 		{
 			if(callableMethod != null)
-				return TypeTransformer.toAsmType(((ClassDescriptor) descriptor.getContainingDeclaration()).getDefaultType());
+				return TypeTransformer.toAsmType(codegen.bindingTrace, ((ClassDescriptor) descriptor.getContainingDeclaration()).getDefaultType(), codegen.classNode);
 			else
-				return TypeTransformer.toAsmType(descriptor.getExpectedThisObject().getType());
+				return TypeTransformer.toAsmType(codegen.bindingTrace, descriptor.getExpectedThisObject().getType(), codegen.classNode);
 		}
 		else
 			return AsmConstants.NULL_TYPE;
