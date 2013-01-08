@@ -144,14 +144,16 @@
 
 		<referencesSearch implementation="org.napile.idea.plugin.search.KotlinReferencesSearcher"/>
 
-		<compiler implementation="org.napile.idea.plugin.compiler.JetCompiler" />
+		<compiler implementation="org.napile.idea.plugin.compiler.NapileCompiler" />
 		<toolWindow id="Napile" factoryClass="org.napile.idea.plugin.internal.KotlinInternalToolWindowFactory" anchor="right" icon="/org/napile/icons/napile-logo13.png"/>
 
 		<applicationService serviceInterface="org.napile.idea.plugin.editor.JetEditorOptions" serviceImplementation="org.napile.idea.plugin.editor.JetEditorOptions"/>
 		<exportable serviceInterface="org.napile.idea.plugin.editor.JetEditorOptions"/>
 		<editorAppearanceConfigurable instance="org.napile.idea.plugin.editor.JetSettingEditorConfigurable"/>
 
+		<programRunner implementation="org.napile.idea.plugin.run.NapileProgramRunner" />
 		<configurationType implementation="org.napile.idea.plugin.run.NapileConfigurationType"/>
+		<configurationProducer implementation="org.napile.idea.plugin.run.NapileConfigurationProducer" />
 
 		<!--NXML support-->
 		<filetype.decompiler filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileDecompiler" />

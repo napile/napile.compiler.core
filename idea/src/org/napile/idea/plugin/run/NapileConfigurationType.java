@@ -19,11 +19,14 @@ package org.napile.idea.plugin.run;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.project.Project;
+import com.intellij.util.containers.ContainerUtil;
 
 /**
  * @author VISTALL
@@ -31,7 +34,13 @@ import com.intellij.openapi.project.Project;
  */
 public class NapileConfigurationType implements ConfigurationType
 {
-	private ConfigurationFactory configurationFactory;
+	@Nullable
+	public static NapileConfigurationType getInstance()
+	{
+		return ContainerUtil.findInstance(Extensions.getExtensions(CONFIGURATION_TYPE_EP), NapileConfigurationType.class);
+	}
+
+	private final ConfigurationFactory configurationFactory;
 
 	public NapileConfigurationType()
 	{
@@ -40,7 +49,7 @@ public class NapileConfigurationType implements ConfigurationType
 			@Override
 			public RunConfiguration createTemplateConfiguration(Project project)
 			{
-				return new NapileRunConfiguration(project, this);
+				return new NapileRunConfiguration(project, getName(), this);
 			}
 		};
 	}
@@ -73,6 +82,6 @@ public class NapileConfigurationType implements ConfigurationType
 	@Override
 	public ConfigurationFactory[] getConfigurationFactories()
 	{
-		return new ConfigurationFactory[] {configurationFactory};
+		return new ConfigurationFactory[]{configurationFactory};
 	}
 }

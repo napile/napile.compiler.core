@@ -16,31 +16,45 @@
 
 package org.napile.idea.plugin.run;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.ConfigurationFactory;
-import com.intellij.execution.configurations.ConfigurationInfoProvider;
+import com.intellij.execution.configurations.ModuleBasedConfiguration;
 import com.intellij.execution.configurations.RunConfiguration;
-import com.intellij.execution.configurations.RunConfigurationBase;
 import com.intellij.execution.configurations.RunProfileState;
-import com.intellij.execution.configurations.RuntimeConfigurationException;
+import com.intellij.execution.filters.TextConsoleBuilder;
+import com.intellij.execution.filters.TextConsoleBuilderFactory;
 import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.runners.ProgramRunner;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.JDOMExternalizable;
+import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.roots.ui.configuration.ProjectStructureConfigurable;
+import com.intellij.openapi.roots.ui.configuration.projectRoot.ProjectSdksModel;
+import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.openapi.util.WriteExternalException;
+import com.intellij.util.xmlb.XmlSerializer;
 
 /**
  * @author VISTALL
  * @date 20:30/22.09.12
  */
-public class NapileRunConfiguration extends RunConfigurationBase
+public class NapileRunConfiguration extends ModuleBasedConfiguration<NapileRunConfigurationModule>
 {
-	public NapileRunConfiguration(Project project, ConfigurationFactory factory)
+	public String mainClass;
+	public String jdkName;
+	public String napileJvm = "C:/napile.jvm/*;";
+
+	public NapileRunConfiguration(Project project, String name, ConfigurationFactory f)
 	{
-		super(project, factory, "Local");
+		super(name, new NapileRunConfigurationModule(project), f);
 	}
 
 	@Override
@@ -49,29 +63,57 @@ public class NapileRunConfiguration extends RunConfigurationBase
 		return new NapileRunSettingsEditor(getProject());
 	}
 
-	@Nullable
 	@Override
-	public JDOMExternalizable createRunnerSettings(ConfigurationInfoProvider configurationInfoProvider)
+	public Collection<Module> getValidModules()
 	{
-		return null;
+		Module[] modules = ModuleManager.getInstance(getProject()).getModules();
+		return Arrays.asList(modules);
+	}
+
+	@Override
+	protected ModuleBasedConfiguration createInstance()
+	{
+		return new NapileRunConfiguration(getProject(), getName(), getFactory());
 	}
 
 	@Nullable
 	@Override
-	public SettingsEditor<JDOMExternalizable> getRunnerSettingsEditor(ProgramRunner programRunner)
+	public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException
 	{
-		return null;
+		NapileRunningState state = new NapileRunningState(env);
+
+		final TextConsoleBuilder builder = TextConsoleBuilderFactory.getInstance().createBuilder(getProject());
+
+		state.setConsoleBuilder(builder);
+		return state;
+	}
+
+	@Override
+	public void readExternal(final Element element) throws InvalidDataException
+	{
+		super.readExternal(element);
+
+		readModule(element);
+
+		XmlSerializer.serializeInto(this, element);
+	}
+
+	@Override
+	public void writeExternal(final Element element) throws WriteExternalException
+	{
+		super.writeExternal(element);
+
+		writeModule(element);
+
+		XmlSerializer.deserializeInto(this, element);
 	}
 
 	@Nullable
-	@Override
-	public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment executionEnvironment) throws ExecutionException
+	public Sdk findSdk()
 	{
-		return null;
-	}
-
-	@Override
-	public void checkConfiguration() throws RuntimeConfigurationException
-	{
+		final ProjectSdksModel projectJdksModel = ProjectStructureConfigurable.getInstance(getProject()).getProjectJdksModel();
+		if(!projectJdksModel.isInitialized())
+			projectJdksModel.reset(getProject());
+		return projectJdksModel.findSdk(jdkName);
 	}
 }

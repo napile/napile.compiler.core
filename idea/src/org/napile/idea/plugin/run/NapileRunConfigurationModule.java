@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-/*
- * @author alex.tkachman
+package org.napile.idea.plugin.run;
+
+import com.intellij.execution.configurations.RunConfigurationModule;
+import com.intellij.openapi.project.Project;
+
+/**
+ * @author VISTALL
+ * @date 11:45/08.01.13
  */
-package org.napile.idea.plugin.compiler;
-
-public abstract class Function1<D1, R>
+public class NapileRunConfigurationModule extends RunConfigurationModule
 {
-	public abstract R invoke(D1 d1);
-
-	@Override
-	public String toString()
+	public NapileRunConfigurationModule(Project project)
 	{
-		return "{(d1: D1) : R)}";
+		super(project);
 	}
 }
-
