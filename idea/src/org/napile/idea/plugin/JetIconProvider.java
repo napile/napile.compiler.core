@@ -31,6 +31,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
@@ -110,7 +111,7 @@ public class JetIconProvider extends IconProvider
 					}
 			}
 		}
-		else if(psiElement instanceof NapileVariable || psiElement instanceof NapileCallParameterAsVariable)
+		else if(psiElement instanceof NapileVariable || psiElement instanceof NapileCallParameterAsVariable || psiElement instanceof NapileEnumValue)
 			icon = NapileIcons.VARIABLE;
 
 		return icon == null ? null : modifyIcon(psiElement instanceof NapileModifierListOwner ? ((NapileModifierListOwner) psiElement) : null, icon, flags, isRunnable);

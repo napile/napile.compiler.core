@@ -106,6 +106,7 @@ public class OverrideResolver
 		Set<MutableClassDescriptor> ourClasses = new HashSet<MutableClassDescriptor>();
 		ourClasses.addAll(context.getClasses().values());
 		ourClasses.addAll(context.getAnonymous().values());
+		ourClasses.addAll(context.getEnumValues().values());
 
 		Set<ClassifierDescriptor> processed = new HashSet<ClassifierDescriptor>();
 

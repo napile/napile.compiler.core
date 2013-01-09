@@ -22,16 +22,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.napile.asm.AsmConstants;
+import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.Node;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.Instruction;
+import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
@@ -42,12 +47,14 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import com.intellij.util.containers.MultiMap;
 
@@ -130,6 +137,49 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 	}
 
 	@Override
+	public Void visitEnumValue(NapileEnumValue value, Node parent)
+	{
+		assert value instanceof ClassNode;
+
+		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, value);
+
+		ClassNode classNode = (ClassNode) parent;
+
+		FqName classFqName = classNode.name.parent().child(Name.identifier(classNode.name.shortName() + AsmConstants.ANONYM_SPLITTER + variableDescriptor.getName()));
+
+		TypeNode type = new TypeNode(false, new ClassTypeNode(classFqName));
+
+		VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), type);
+		classNode.addMember(variableNode);
+
+		VariableCodegen.getSetterAndGetter(variableDescriptor, value, classNode, bindingTrace, true);
+
+		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, value);
+		ClassNode innerClassNode = new ClassNode(Modifier.list(Modifier.STATIC, Modifier.FINAL), classFqName);
+		for(JetType superType : classDescriptor.getSupertypes())
+			innerClassNode.supers.add(TypeTransformer.toAsmType(bindingTrace, superType, classNode));
+
+		MethodNode methodNode = MethodNode.constructor(Modifier.list(Modifier.LOCAL));
+		methodNode.maxLocals = 1;
+
+		MethodCodegen.genSuperCalls(methodNode, value, bindingTrace, classNode);
+
+		methodNode.instructions.add(new LoadInstruction(0));
+		methodNode.instructions.add(new ReturnInstruction());
+
+		innerClassNode.addMember(methodNode);
+
+		classNode.addMember(innerClassNode);
+
+		InstructionAdapter adapter = new InstructionAdapter();
+		adapter.newObject(type, Collections.<TypeNode>emptyList());
+		adapter.putToStaticVar(new VariableRef(DescriptorUtils.getFQName(variableDescriptor).toSafe(), type));
+
+		propertiesStaticInit.putValue(classNode, adapter);
+		return null;
+	}
+
+	@Override
 	public Void visitVariable(NapileVariable variable, Node parent)
 	{
 		assert parent instanceof ClassNode;
@@ -142,11 +192,11 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		TypeNode type = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
 
-		VariableCodegen.getSetterAndGetter(variableDescriptor, variable, classNode, bindingTrace);
+		VariableCodegen.getSetterAndGetter(variableDescriptor, variable, classNode, bindingTrace, false);
 
 		if(!variable.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
 		{
-			VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode));
+			VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), type);
 			classNode.addMember(variableNode);
 
 			NapileExpression initializer = variable.getInitializer();

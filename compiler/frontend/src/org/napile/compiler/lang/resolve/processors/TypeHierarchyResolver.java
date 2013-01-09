@@ -32,6 +32,7 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -211,6 +212,22 @@ public class TypeHierarchyResolver
 				}
 
 				@Override
+				public void visitEnumValue(NapileEnumValue value)
+				{
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.CLASS, Name.identifier(value.getName()), annotationResolver.bindAnnotations(outerScope, value, trace), true);
+
+					ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(mutableClassDescriptor, Collections.<AnnotationDescriptor>emptyList(), false);
+					constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), Visibility.PUBLIC);
+					mutableClassDescriptor.addConstructor(constructorDescriptor);
+
+					trace.record(BindingContext.CONSTRUCTOR, value, constructorDescriptor);
+
+					context.getEnumValues().put(value, mutableClassDescriptor);
+
+					trace.record(BindingContext.CLASS, value, mutableClassDescriptor);
+				}
+
+				@Override
 				public void visitAnonymClass(NapileAnonymClass declaration)
 				{
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), NapilePsiUtil.isStatic(declaration));
@@ -264,6 +281,15 @@ public class TypeHierarchyResolver
 			descriptor.createTypeConstructor();
 			napileClass.putUserData(PluginKeys.DESCRIPTOR_KEY, descriptor);
 		}
+
+		for(Map.Entry<NapileEnumValue, MutableClassDescriptor> entry : context.getEnumValues().entrySet())
+		{
+			MutableClassDescriptor descriptor = entry.getValue();
+			descriptor.setModality(Modality.FINAL);
+			descriptor.setVisibility(Visibility.PUBLIC);
+			descriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
+			descriptor.createTypeConstructor();
+		}
 	}
 
 	private void resolveTypesInClassHeaders()
@@ -279,9 +305,16 @@ public class TypeHierarchyResolver
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
 		{
-			NapileClassLike jetClass = entry.getKey();
+			NapileClassLike anonymClass = entry.getKey();
 			MutableClassDescriptor descriptor = entry.getValue();
-			descriptorResolver.resolveSupertypesForMutableClassDescriptor(jetClass, descriptor, trace);
+			descriptorResolver.resolveSupertypesForMutableClassDescriptor(anonymClass, descriptor, trace);
+		}
+
+		for(Map.Entry<NapileEnumValue, MutableClassDescriptor> entry : context.getEnumValues().entrySet())
+		{
+			NapileEnumValue enumValue = entry.getKey();
+			MutableClassDescriptor descriptor = entry.getValue();
+			descriptorResolver.resolveSupertypesForMutableClassDescriptor(enumValue, descriptor, trace);
 		}
 	}
 
@@ -385,7 +418,7 @@ public class TypeHierarchyResolver
 			if(psiElement instanceof NapileClass)
 			{
 				NapileClass napileClass = (NapileClass) psiElement;
-				for(NapileTypeReference typeReference : napileClass.getExtendTypeList())
+				for(NapileTypeReference typeReference : napileClass.getSuperTypes())
 				{
 					JetType supertype = trace.get(BindingContext.TYPE, typeReference);
 					if(supertype != null && supertype.getConstructor() == superclass.getTypeConstructor())
@@ -455,7 +488,7 @@ public class TypeHierarchyResolver
 						DeclarationDescriptor containingDeclaration = typeParameterDescriptor.getContainingDeclaration();
 						assert containingDeclaration instanceof ClassDescriptor : containingDeclaration;
 						NapileClassLike psiElement = (NapileClassLike) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), mutableClassDescriptor);
-						NapileElement extendTypeListElement = psiElement.getExtendTypeListElement();
+						NapileElement extendTypeListElement = psiElement.getSuperTypesElement();
 						assert extendTypeListElement != null;
 						trace.report(Errors.INCONSISTENT_TYPE_PARAMETER_VALUES.on(extendTypeListElement, typeParameterDescriptor, (ClassDescriptor) containingDeclaration, conflictingTypes));
 					}
@@ -470,7 +503,7 @@ public class TypeHierarchyResolver
 		{
 			NapileClass napileClass = entry.getKey();
 
-			for(NapileTypeReference typeReference : napileClass.getExtendTypeList())
+			for(NapileTypeReference typeReference : napileClass.getSuperTypes())
 			{
 				JetType type = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
 				if(type != null)

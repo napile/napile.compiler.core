@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.psi.stubs.elements;
 
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiEnumValueStub;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMacroStub;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
@@ -52,6 +53,11 @@ public interface StubIndexService
 		public void indexVariable(NapilePsiVariableStub stub, IndexSink sink)
 		{
 		}
+
+		@Override
+		public void indexEnumValue(NapilePsiEnumValueStub stub, IndexSink sink)
+		{
+		}
 	};
 
 	void indexClass(NapilePsiClassStub stub, IndexSink sink);
@@ -61,4 +67,6 @@ public interface StubIndexService
 	void indexMacro(NapilePsiMacroStub stub, IndexSink sink);
 
 	void indexVariable(NapilePsiVariableStub stub, IndexSink sink);
+
+	void indexEnumValue(NapilePsiEnumValueStub stub, IndexSink sink);
 }

@@ -191,6 +191,18 @@ public class DeclarationResolver
 					context.getVariables().put(variable, variableDescriptor);
 					context.getDeclaringScopes().put(variable, scope);
 				}
+
+				@Override
+				public void visitEnumValue(NapileEnumValue value)
+				{
+					MutableClassDescriptor mutableClassDescriptor = context.getEnumValues().get(value);
+					VariableDescriptor variableDescriptor = descriptorResolver.resolveVariableDescriptor(ownerDescription, scope, value, mutableClassDescriptor, trace);
+					value.putUserData(PluginKeys.DESCRIPTOR_KEY, variableDescriptor);
+					ownerDescription.getBuilder().addVariableDescriptor(variableDescriptor);
+
+					context.getVariables().put(value, variableDescriptor);
+					context.getDeclaringScopes().put(value, scope);
+				}
 			});
 		}
 	}

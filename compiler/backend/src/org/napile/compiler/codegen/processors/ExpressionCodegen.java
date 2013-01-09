@@ -1426,7 +1426,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			wrappedVariables.put(variableDescriptor, StackValue.simpleVariableAccessor(this, newVariableDescriptor, newVariableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.SPECIAL));
 
-			VariableCodegen.getSetterAndGetter(newVariableDescriptor, null, classNode, bindingTrace);
+			VariableCodegen.getSetterAndGetter(newVariableDescriptor, null, classNode, bindingTrace, false);
 			VariableNode variableNode = new VariableNode(newVariableDescriptor.isStatic() ? Modifier.list(Modifier.STATIC, Modifier.MUTABLE) : Modifier.list(Modifier.MUTABLE), newVariableDescriptor.getName(), TypeTransformer.toAsmType(bindingTrace, newVariableDescriptor.getType(), classNode));
 			classNode.addMember(variableNode);
 			return true;

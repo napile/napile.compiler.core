@@ -77,6 +77,15 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	}
 
 	@Override
+	public Void visitEnumValue(NapileEnumValue enumValue, FqName data)
+	{
+		NapileMethod method = PsiTreeUtil.getParentOfType(enumValue, NapileMethod.class);
+		if(method == null)
+			record(enumValue, data.child(NapilePsiUtil.safeName(enumValue.getName())));
+		return super.visitVariable(enumValue, data);
+	}
+
+	@Override
 	public Void visitVariableAccessor(NapileVariableAccessor accessor, FqName data)
 	{
 		NapileVariable variable = PsiTreeUtil.getParentOfType(accessor, NapileVariable.class);

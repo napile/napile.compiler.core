@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi.stubs;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileNamedMacro;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
@@ -42,6 +43,9 @@ public interface NapilePsiFromStubFactory
 
 	@NotNull
 	NapileVariable createVariable(NapilePsiVariableStub stub);
+
+	@NotNull
+	NapileEnumValue createEnumValue(NapilePsiEnumValueStub stub);
 
 	@NotNull
 	NapileCallParameterAsVariable createCallParameterAsVariable(NapilePsiCallParameterAsVariableStub stub);

@@ -70,14 +70,14 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 	}
 
 	@Override
-	public NapileElement getExtendTypeListElement()
+	public NapileElement getSuperTypesElement()
 	{
 		return getDelegationSpecifierList();
 	}
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getExtendTypeList()
+	public List<NapileTypeReference> getSuperTypes()
 	{
 		List<NapileDelegationToSuperCall> specifiers = getDelegationSpecifiers();
 		List<NapileTypeReference> list = new ArrayList<NapileTypeReference>(specifiers.size());

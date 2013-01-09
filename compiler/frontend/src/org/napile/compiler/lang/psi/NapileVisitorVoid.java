@@ -68,6 +68,11 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitNamedDeclaration(property);
 	}
 
+	public void visitEnumValue(NapileEnumValue value)
+	{
+		visitNamedDeclaration(value);
+	}
+
 	public void visitNapileFile(NapileFile file)
 	{
 		visitFile(file);

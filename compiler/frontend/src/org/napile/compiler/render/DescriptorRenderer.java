@@ -139,7 +139,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		else if(ErrorUtils.isErrorType(type))
 			return escape(type.toString());
 		else if(type.getConstructor() instanceof SelfTypeConstructor)
-			return escape(renderKeyword(NapileTokens.THIS_KEYWORD));
+			return renderKeyword(NapileTokens.THIS_KEYWORD);
 		else if(type.getConstructor() instanceof MethodTypeConstructor)
 			return escape(renderMethodType(type, shortNamesOnly));
 		else if(type.getConstructor() instanceof MultiTypeConstructor)
@@ -358,7 +358,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		{
 			renderName(descriptor, builder);
 			builder.append(" : ");
-			builder.append(escape(renderType(descriptor.getType())));
+			builder.append(renderType(descriptor.getType()));
 			return null;
 		}
 
@@ -452,7 +452,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 			renderName(descriptor, builder);
 			renderValueParameters(descriptor, builder);
-			builder.append(" : ").append(escape(renderType(descriptor.getReturnType())));
+			builder.append(" : ").append(renderType(descriptor.getReturnType()));
 			renderWhereSuffix(descriptor, builder);
 			return null;
 		}
@@ -468,7 +468,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 						builder.append(", ");
 						builder.append(typeParameter.getName());
 						builder.append(" : ");
-						builder.append(escape(renderType(upperBound)));
+						builder.append(renderType(upperBound));
 					}
 				}
 			}

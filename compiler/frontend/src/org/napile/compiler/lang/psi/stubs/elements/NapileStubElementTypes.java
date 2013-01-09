@@ -26,7 +26,8 @@ public interface NapileStubElementTypes
 	NapileClassElementType CLASS = new NapileClassElementType("CLASS");
 	NapileMethodElementType METHOD = new NapileMethodElementType("METHOD");
 	NapileMacroElementType MACRO = new NapileMacroElementType("MACRO");
-	NapileVariableElementType VARIABLE = new NapileVariableElementType("PROPERTY");
+	NapileVariableElementType VARIABLE = new NapileVariableElementType("VARIABLE");
+	NapileEnumValueElementType ENUM_VALUE = new NapileEnumValueElementType("ENUM_VALUE");
 
 	NapileParameterElementType CALL_PARAMETER_AS_VARIABLE = new NapileParameterElementType("CALL_PARAMETER_AS_VARIABLE");
 

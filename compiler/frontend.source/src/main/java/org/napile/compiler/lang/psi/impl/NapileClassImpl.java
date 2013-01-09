@@ -98,7 +98,7 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getExtendTypeList()
+	public List<NapileTypeReference> getSuperTypes()
 	{
 		NapileTypeListImpl ex = (NapileTypeListImpl)findChildByType(NapileNodes.EXTEND_TYPE_LIST);
 		return ex == null ? Collections.<NapileTypeReference>emptyList() : ex.getTypeList();
@@ -111,7 +111,7 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 	}
 
 	@Override
-	public NapileElement getExtendTypeListElement()
+	public NapileElement getSuperTypesElement()
 	{
 		return (NapileElement)findChildByType(NapileNodes.EXTEND_TYPE_LIST);
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,11 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import com.intellij.lang.ASTNode;
-
 /**
  * @author VISTALL
- * @date 15:28/19.10.12
+ * @date 21:02/08.01.13
  */
-public interface NapileVariable extends NapileTypeParameterListOwner, NapileWithExpressionInitializer
+public interface NapileEnumValue extends NapileDelegationSpecifierListOwner, NapileSuperListOwner, NapileVariable
 {
-	@Nullable
-	NapileTypeReference getType();
 
-	@Nullable
-	ASTNode getVarOrValNode();
-
-	boolean isMutable();
-
-	@NotNull
-	NapileVariableAccessor[] getAccessors();
 }

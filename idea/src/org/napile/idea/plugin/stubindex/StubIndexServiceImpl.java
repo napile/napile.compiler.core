@@ -17,6 +17,7 @@
 package org.napile.idea.plugin.stubindex;
 
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
+import org.napile.compiler.lang.psi.stubs.NapilePsiEnumValueStub;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMacroStub;
 import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
 import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
@@ -58,6 +59,14 @@ public class StubIndexServiceImpl implements StubIndexService
 
 	@Override
 	public void indexVariable(NapilePsiVariableStub stub, IndexSink sink)
+	{
+		String name = stub.getName();
+		if(name != null)
+			sink.occurrence(NapileIndexKeys.VARIABLES_SHORT_NAME_KEY, name);
+	}
+
+	@Override
+	public void indexEnumValue(NapilePsiEnumValueStub stub, IndexSink sink)
 	{
 		String name = stub.getName();
 		if(name != null)

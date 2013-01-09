@@ -19,14 +19,14 @@ package org.napile.idea.plugin.highlighter;
 import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
 import static org.napile.compiler.lang.resolve.BindingContext.AUTO_CREATED_IT;
 import static org.napile.compiler.lang.resolve.BindingContext.CAPTURED_IN_CLOSURE;
-import static org.napile.compiler.lang.resolve.BindingContext.DECLARATION_TO_DESCRIPTOR;
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
+import static org.napile.compiler.lang.resolve.BindingContext.VARIABLE;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
+import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -55,9 +55,10 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		{
 			if(Boolean.TRUE.equals(bindingContext.get(AUTO_CREATED_IT, (VariableDescriptor) target)))
 				holder.createInfoAnnotation(expression, "Auto-generated variable").setTextAttributes(NapileHighlightingColors.AUTO_GENERATED_VAR);
+
+			highlightVariable(expression, (VariableDescriptor) target);
 		}
 
-		highlightVariable(expression, target);
 		super.visitSimpleNameExpression(expression);
 	}
 
@@ -66,6 +67,13 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 	{
 		visitVariableDeclaration(property);
 		super.visitVariable(property);
+	}
+
+	@Override
+	public void visitEnumValue(@NotNull NapileEnumValue enumValue)
+	{
+		visitVariableDeclaration(enumValue);
+		super.visitEnumValue(enumValue);
 	}
 
 	@Override
@@ -88,29 +96,20 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 
 	private void visitVariableDeclaration(NapileNamedDeclaration declaration)
 	{
-		DeclarationDescriptor declarationDescriptor = bindingContext.get(DECLARATION_TO_DESCRIPTOR, declaration);
+		VariableDescriptor declarationDescriptor = bindingContext.get(VARIABLE, declaration);
 		PsiElement nameIdentifier = declaration.getNameIdentifier();
 		if(nameIdentifier != null && declarationDescriptor != null)
-		{
 			highlightVariable(nameIdentifier, declarationDescriptor);
-		}
 	}
 
-	private void highlightVariable(@NotNull PsiElement elementToHighlight, @NotNull DeclarationDescriptor descriptor)
+	private void highlightVariable(@NotNull PsiElement elementToHighlight, @NotNull VariableDescriptor variableDescriptor)
 	{
-		if(descriptor instanceof VariableDescriptor)
+		if(Boolean.TRUE.equals(bindingContext.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
 		{
-			VariableDescriptor variableDescriptor = (VariableDescriptor) descriptor;
-
-			if(Boolean.TRUE.equals(bindingContext.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
-			{
-				String msg = ((VariableDescriptor) descriptor).isMutable() ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
-				holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(NapileHighlightingColors.WRAPPED_INTO_REF);
-			}
-
-			JetPsiChecker.highlightName(holder, elementToHighlight, NapileHighlightingColors.getAttributes(descriptor), variableDescriptor);
+			String msg = variableDescriptor.isMutable() ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
+			holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(NapileHighlightingColors.WRAPPED_INTO_REF);
 		}
-		else if(descriptor instanceof VariableAccessorDescriptor)
-			highlightVariable(elementToHighlight, ((VariableAccessorDescriptor) descriptor).getVariable());
+
+		JetPsiChecker.highlightName(holder, elementToHighlight, NapileHighlightingColors.getAttributes(variableDescriptor), variableDescriptor);
 	}
 }

@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi.stubs;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileNamedMacro;
 import org.napile.compiler.lang.psi.NapileNamedMethod;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
@@ -55,6 +56,13 @@ public class NXmlPsiFromStubFactory implements NapilePsiFromStubFactory
 	@NotNull
 	@Override
 	public NapileVariable createVariable(NapilePsiVariableStub stub)
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public NapileEnumValue createEnumValue(NapilePsiEnumValueStub stub)
 	{
 		return null;
 	}

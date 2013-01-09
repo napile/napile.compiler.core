@@ -49,7 +49,7 @@ import com.intellij.psi.tree.IElementType;
  */
 public class VariableCodegen
 {
-	public static void getSetterAndGetter(@NotNull VariableDescriptor variableDescriptor, @Nullable NapileVariable variable, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace)
+	public static void getSetterAndGetter(@NotNull VariableDescriptor variableDescriptor, @Nullable NapileVariable variable, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace, boolean noSetter)
 	{
 		Map<IElementType, NapileVariableAccessor> map = new HashMap<IElementType, NapileVariableAccessor>(2);
 		if(variable != null)
@@ -57,7 +57,8 @@ public class VariableCodegen
 				map.put(variableAccessor.getAccessorElementType(), variableAccessor);
 
 		getGetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.GET_KEYWORD), variable);
-		getSetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.SET_KEYWORD), variable);
+		if(!noSetter)
+			getSetter(variableDescriptor, classNode, bindingTrace, map.get(NapileTokens.SET_KEYWORD), variable);
 	}
 
 	private static void getSetter(@NotNull VariableDescriptor variableDescriptor, @NotNull ClassNode classNode, @NotNull BindingTrace bindingTrace, @Nullable NapileVariableAccessor variableAccessor, @Nullable NapileVariable variable)

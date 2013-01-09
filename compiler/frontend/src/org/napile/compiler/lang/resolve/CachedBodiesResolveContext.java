@@ -38,7 +38,8 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileClass, MutableClassDescriptor> classes;
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects;
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
-	private final Map<NapileVariable, VariableDescriptor> properties;
+	private final Map<NapileVariable, VariableDescriptor> variables;
+	private final Map<NapileEnumValue, MutableClassDescriptor> enumValues;
 	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> functions;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
@@ -51,7 +52,8 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 		classes = Collections.unmodifiableMap(context.getClasses());
 		objects = Collections.unmodifiableMap(context.getAnonymous());
 		constructors = Collections.unmodifiableMap(context.getConstructors());
-		properties = Collections.unmodifiableMap(context.getVariables());
+		variables = Collections.unmodifiableMap(context.getVariables());
+		enumValues = Collections.unmodifiableMap(context.getEnumValues());
 		functions = Collections.unmodifiableMap(context.getMethods());
 		declaringScopes = Collections.unmodifiableMap(context.getDeclaringScopes());
 
@@ -79,7 +81,13 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	@Override
 	public Map<NapileVariable, VariableDescriptor> getVariables()
 	{
-		return properties;
+		return variables;
+	}
+
+	@Override
+	public Map<NapileEnumValue, MutableClassDescriptor> getEnumValues()
+	{
+		return enumValues;
 	}
 
 	@Override

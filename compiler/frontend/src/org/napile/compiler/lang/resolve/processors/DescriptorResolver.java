@@ -113,21 +113,19 @@ public class DescriptorResolver
 		trace.record(BindingContext.CLASS, classElement, descriptor);
 	}
 
-	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileClassLike jetClass, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
+	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileSuperListOwner superListOwner, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
 	{
-		for(JetType supertype : resolveSupertypes(descriptor.getScopeForSupertypeResolution(), jetClass, trace))
-		{
+		for(JetType supertype : resolveSupertypes(descriptor.getScopeForSupertypeResolution(), superListOwner, trace))
 			descriptor.addSupertype(supertype);
-		}
 	}
 
-	public List<JetType> resolveSupertypes(@NotNull JetScope scope, @NotNull NapileClassLike jetClass, BindingTrace trace)
+	public List<JetType> resolveSupertypes(@NotNull JetScope scope, @NotNull NapileSuperListOwner superListOwner, BindingTrace trace)
 	{
-		if(NapileLangPackage.ANY.equals(jetClass.getFqName()))  // master object dont have super classes
+		if(NapileLangPackage.ANY.equals(NapilePsiUtil.getFQName(superListOwner)))  // master object dont have super classes
 			return Collections.emptyList();
 
 		List<JetType> result = Lists.newArrayList();
-		List<NapileTypeReference> delegationSpecifiers = jetClass.getExtendTypeList();
+		List<NapileTypeReference> delegationSpecifiers = superListOwner.getSuperTypes();
 		if(delegationSpecifiers.isEmpty())
 			result.add(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.ANY, false));
 		else
@@ -141,10 +139,9 @@ public class DescriptorResolver
 	public Collection<JetType> resolveDelegationSpecifiers(JetScope extensibleScope, List<NapileTypeReference> delegationSpecifiers, @NotNull TypeResolver resolver, BindingTrace trace, boolean checkBounds)
 	{
 		if(delegationSpecifiers.isEmpty())
-		{
 			return Collections.emptyList();
-		}
-		Collection<JetType> result = Lists.newArrayList();
+
+		Collection<JetType> result = new ArrayList<JetType>(delegationSpecifiers.size());
 		for(NapileTypeReference typeReference : delegationSpecifiers)
 		{
 			result.add(resolver.resolveType(extensibleScope, typeReference, trace, checkBounds));
@@ -441,6 +438,33 @@ public class DescriptorResolver
 		trace.record(BindingContext.VARIABLE, variable, variableDescriptor);
 
 		resolveVariableAccessors(containingDeclaration, scope, variable, trace, variableDescriptor);
+
+		return variableDescriptor;
+	}
+
+	@NotNull
+	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, @NotNull NapileEnumValue enumValue, @NotNull MutableClassDescriptor m, BindingTrace trace)
+	{
+		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, enumValue, trace), Modality.resolve(enumValue), Visibility.resolve(enumValue), NapilePsiUtil.safeName(enumValue.getName()), CallableMemberDescriptor.Kind.DECLARATION, true, false);
+
+		List<TypeParameterDescriptor> typeParameterDescriptors;
+
+		NapileTypeParameter[] typeParameters = enumValue.getTypeParameters();
+		if(typeParameters.length == 0)
+			typeParameterDescriptors = Collections.emptyList();
+		else
+		{
+			WritableScope writableScope = new WritableScopeImpl(scope, containingDeclaration, new TraceBasedRedeclarationHandler(trace), "Scope with type parameters of a enumValue");
+			typeParameterDescriptors = typeParameterResolver.resolveTypeParameters(containingDeclaration, writableScope, typeParameters, trace);
+			writableScope.changeLockLevel(WritableScope.LockLevel.READING);
+			typeParameterResolver.postResolving(enumValue, writableScope, typeParameterDescriptors, trace);
+		}
+
+		variableDescriptor.setType(m.getDefaultType(), typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
+
+		resolveVariableAccessors(containingDeclaration, scope, enumValue, trace, variableDescriptor);
+		trace.record(BindingContext.FQNAME_TO_VARIABLE_DESCRIPTOR, DescriptorUtils.getFQName(variableDescriptor).toSafe(), variableDescriptor);
+		trace.record(BindingContext.VARIABLE, enumValue, variableDescriptor);
 
 		return variableDescriptor;
 	}

@@ -26,6 +26,8 @@ import com.intellij.psi.tree.IElementType;
  */
 public interface NapileVariableAccessor extends NapileNamedDeclaration
 {
+	NapileVariableAccessor[] EMPTY_ARRAY = new NapileVariableAccessor[0];
+
 	@Nullable
 	PsiElement getAccessorElement();
 

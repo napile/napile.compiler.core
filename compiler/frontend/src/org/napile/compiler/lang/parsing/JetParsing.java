@@ -26,12 +26,14 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileNode;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
+import org.napile.compiler.lang.lexer.NapileNode;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.util.Consumer;
 
 /**
  * @author max
@@ -47,6 +49,24 @@ public class JetParsing extends AbstractJetParsing
 		for(IElementType softKeyword : NapileTokens.MODIFIER_KEYWORDS.getTypes())
 		{
 			MODIFIER_KEYWORD_MAP.put(((NapileKeywordToken) softKeyword).getValue(), softKeyword);
+		}
+	}
+
+	static class TokenDetector implements Consumer<IElementType>
+	{
+		boolean detected;
+		final IElementType elementType;
+
+		TokenDetector(IElementType elementType)
+		{
+			this.elementType = elementType;
+		}
+
+		@Override
+		public void consume(IElementType elementType)
+		{
+			if(this.elementType == elementType)
+				detected = true;
 		}
 	}
 
@@ -291,13 +311,17 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
+	boolean parseModifierList()
+	{
+		return parseModifierList(Consumer.EMPTY_CONSUMER);
+	}
 
 	/**
 	 * (modifier | attribute)*
 	 * <p/>
 	 * Feeds modifiers (not attributes) into the passed consumer, if it is not null
 	 */
-	boolean parseModifierList()
+	boolean parseModifierList(Consumer<IElementType> detector)
 	{
 		PsiBuilder.Marker list = mark();
 		boolean empty = true;
@@ -305,7 +329,9 @@ public class JetParsing extends AbstractJetParsing
 		{
 			if(atSet(NapileTokens.MODIFIER_KEYWORDS))
 			{
-				advance(); // MODIFIER
+				detector.consume(tt());
+
+				advance();
 			}
 			else if(at(NapileTokens.AT))
 			{
@@ -406,7 +432,8 @@ public class JetParsing extends AbstractJetParsing
 		 * classBody
 		 *   : ("{" memberDeclaration "}")?
 		 *   ;
-		 */	/*package*/ void parseClassBody()
+		 */
+	void parseClassBody()
 	{
 		PsiBuilder.Marker body = mark();
 
@@ -457,9 +484,11 @@ public class JetParsing extends AbstractJetParsing
 			declType = parseStaticConstructor();
 		else
 		{
-			parseModifierList();
+			TokenDetector tokenDetector = new TokenDetector(NapileTokens.ENUM_KEYWORD);
 
-			declType = parseMemberDeclarationRest();
+			parseModifierList(tokenDetector);
+
+			declType = parseMemberDeclarationRest(tokenDetector.detected);
 		}
 
 		if(declType == null)
@@ -474,7 +503,7 @@ public class JetParsing extends AbstractJetParsing
 		return true;
 	}
 
-	private IElementType parseMemberDeclarationRest()
+	private IElementType parseMemberDeclarationRest(boolean enumModifier)
 	{
 		IElementType keywordToken = tt();
 		IElementType declType = null;
@@ -486,6 +515,8 @@ public class JetParsing extends AbstractJetParsing
 			declType = parseMethodOrMacro(MACRO);
 		else if(keywordToken == NapileTokens.THIS_KEYWORD)
 			declType = parseConstructor();
+		else if(keywordToken == NapileTokens.VAL_KEYWORD && enumModifier)
+			declType = parseEnumVal();
 		else if(NapileTokens.VARIABLE_LIKE_KEYWORDS.contains(keywordToken))
 			declType = parseVariableOrValue(false);
 
@@ -511,6 +542,22 @@ public class JetParsing extends AbstractJetParsing
 
 		if(at(NapileTokens.LBRACE))
 			parseClassBody();
+	}
+
+	IElementType parseEnumVal()
+	{
+		if(at(NapileTokens.VAL_KEYWORD))
+			advance();
+		else
+			errorAndAdvance("Expecting 'val'");
+
+		if(!parseIdeTemplate())
+			expect(NapileTokens.IDENTIFIER, "Expecting identifier");
+
+		if(expect(NapileTokens.COLON, "':' expected"))
+			parseDelegationSpecifierList();
+
+		return NapileNodes.ENUM_VALUE;
 	}
 
 	/*

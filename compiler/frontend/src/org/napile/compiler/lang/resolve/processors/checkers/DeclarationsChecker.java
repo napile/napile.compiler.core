@@ -70,11 +70,11 @@ public class DeclarationsChecker
 			if(!bodiesResolveContext.completeAnalysisNeeded(aClass))
 				continue;
 
-			checkSuperListForFinalClasses(aClass.getExtendTypeList());
-			checkSuperListForDuplicates(aClass.getExtendTypeList());
+			checkSuperListForFinalClasses(aClass.getSuperTypes());
+			checkSuperListForDuplicates(aClass.getSuperTypes());
 
 			if(classDescriptor.isTraited())
-				checkSuperListForClassesWithConstructors(aClass.getExtendTypeList());
+				checkSuperListForClassesWithConstructors(aClass.getSuperTypes());
 
 			for(NapileTypeParameter typeParameter : aClass.getTypeParameters())
 				checkSuperListForDuplicates(Arrays.asList(typeParameter.getExtendsBound()));
@@ -98,8 +98,8 @@ public class DeclarationsChecker
 			if(!bodiesResolveContext.completeAnalysisNeeded(anonymClass))
 				continue;
 
-			checkSuperListForFinalClasses(anonymClass.getExtendTypeList());
-			checkSuperListForDuplicates(anonymClass.getExtendTypeList());
+			checkSuperListForFinalClasses(anonymClass.getSuperTypes());
+			checkSuperListForDuplicates(anonymClass.getSuperTypes());
 		}
 
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
@@ -161,7 +161,7 @@ public class DeclarationsChecker
 
 		assert parent != null;
 
-		Map<NapileTypeReference, JetType> classSpecifiers = makeTypeListBySuperList(parent.getExtendTypeList());
+		Map<NapileTypeReference, JetType> classSpecifiers = makeTypeListBySuperList(parent.getSuperTypes());
 		Map<NapileTypeReference, JetType> constructorSpecifiers = makeTypeList(constructor.getDelegationSpecifiers());
 
 		boolean thisCall = false;

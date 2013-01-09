@@ -30,7 +30,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * @author abreslav
  */
-/*package*/ abstract class AbstractJetParsing
+abstract class AbstractJetParsing
 {
 	private static final Map<String, NapileKeywordToken> SOFT_KEYWORD_TEXTS = new HashMap<String, NapileKeywordToken>();
 

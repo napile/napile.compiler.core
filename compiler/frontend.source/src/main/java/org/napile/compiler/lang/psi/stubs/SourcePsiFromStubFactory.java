@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.impl.NapileCallParameterAsVariableImpl;
 import org.napile.compiler.lang.psi.impl.NapileClassImpl;
+import org.napile.compiler.lang.psi.impl.NapileEnumValueImpl;
 import org.napile.compiler.lang.psi.impl.NapileNamedMacroImpl;
 import org.napile.compiler.lang.psi.impl.NapileNamedMethodImpl;
 import org.napile.compiler.lang.psi.impl.NapileVariableImpl;
@@ -56,6 +57,13 @@ public class SourcePsiFromStubFactory implements NapilePsiFromStubFactory
 	public NapileVariable createVariable(NapilePsiVariableStub stub)
 	{
 		return new NapileVariableImpl(stub);
+	}
+
+	@NotNull
+	@Override
+	public NapileEnumValue createEnumValue(NapilePsiEnumValueStub stub)
+	{
+		return new NapileEnumValueImpl(stub);
 	}
 
 	@NotNull

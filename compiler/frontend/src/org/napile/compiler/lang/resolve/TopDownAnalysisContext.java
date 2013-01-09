@@ -29,15 +29,7 @@ import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.WithDeferredResolve;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileDeclarationContainer;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Maps;
@@ -55,7 +47,8 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
 	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
-	private final Map<NapileVariable, VariableDescriptor> properties = Maps.newLinkedHashMap();
+	private final Map<NapileVariable, VariableDescriptor> variables = Maps.newLinkedHashMap();
+	private final Map<NapileEnumValue, MutableClassDescriptor> enumValues = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
 
 	// File scopes - package scope extended with imports
@@ -150,7 +143,13 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	@Override
 	public Map<NapileVariable, VariableDescriptor> getVariables()
 	{
-		return properties;
+		return variables;
+	}
+
+	@Override
+	public Map<NapileEnumValue, MutableClassDescriptor> getEnumValues()
+	{
+		return enumValues;
 	}
 
 	@Override
@@ -171,7 +170,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 		{
 			members = Maps.newHashMap();
 			members.putAll(methods);
-			members.putAll(properties);
+			members.putAll(variables);
 		}
 		return members;
 	}

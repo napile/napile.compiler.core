@@ -69,6 +69,11 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitNamedDeclaration(property, data);
 	}
 
+	public R visitEnumValue(NapileEnumValue value, D data)
+	{
+		return visitNamedDeclaration(value, data);
+	}
+
 	public R visitImportDirective(NapileImportDirective importDirective, D data)
 	{
 		return visitJetElement(importDirective, data);

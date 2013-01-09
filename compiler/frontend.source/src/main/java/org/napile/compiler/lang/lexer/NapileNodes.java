@@ -41,6 +41,7 @@ public interface NapileNodes
 	IElementType METHOD = NapileStubElementTypes.METHOD;
 	IElementType MACRO = NapileStubElementTypes.MACRO;
 	IElementType VARIABLE = NapileStubElementTypes.VARIABLE;
+	IElementType ENUM_VALUE = NapileStubElementTypes.ENUM_VALUE;
 
 	NapileNode ANONYM_CLASS = new NapileNode("ANONYM_CLASS", NapileAnonymClass.class);
 	NapileNode VARIABLE_ACCESSOR = new NapileNode("VARIABLE_ACCESSOR", NapileVariableAccessorImpl.class);

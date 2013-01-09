@@ -44,6 +44,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
+import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -66,7 +67,15 @@ public class MethodCodegen
 			constructorNode.parameters.add(methodParameterNode);
 		}
 
-		List<NapileDelegationToSuperCall> delegationSpecifiers = napileConstructor.getDelegationSpecifiers();
+		genSuperCalls(constructorNode, napileConstructor, bindingTrace, classNode);
+
+		return constructorNode;
+	}
+
+	public static void genSuperCalls(@NotNull MethodNode methodNode, @NotNull NapileDelegationSpecifierListOwner owner, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
+	{
+		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingContext.CONSTRUCTOR, owner);
+		List<NapileDelegationToSuperCall> delegationSpecifiers = owner.getDelegationSpecifiers();
 		// delegation list is empty - if no extends
 		for(NapileDelegationToSuperCall specifier : delegationSpecifiers)
 		{
@@ -78,12 +87,10 @@ public class MethodCodegen
 
 			generator.invokeMethodWithArguments(method, specifier, StackValue.none());
 
-			constructorNode.instructions.add(new LoadInstruction(0));
-			constructorNode.instructions.addAll(generator.getInstructs().getInstructions());
-			constructorNode.instructions.add(new PopInstruction());
+			methodNode.instructions.add(new LoadInstruction(0));
+			methodNode.instructions.addAll(generator.getInstructs().getInstructions());
+			methodNode.instructions.add(new PopInstruction());
 		}
-
-		return constructorNode;
 	}
 
 	@NotNull

@@ -29,6 +29,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -65,6 +66,12 @@ public interface BodiesResolveContext
 		}
 
 		@Override
+		public Map<NapileEnumValue, MutableClassDescriptor> getEnumValues()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
 		public Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods()
 		{
 			return Collections.emptyMap();
@@ -95,6 +102,8 @@ public interface BodiesResolveContext
 	Map<NapileConstructor, ConstructorDescriptor> getConstructors();
 
 	Map<NapileVariable, VariableDescriptor> getVariables();
+
+	Map<NapileEnumValue, MutableClassDescriptor> getEnumValues();
 
 	Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods();
 

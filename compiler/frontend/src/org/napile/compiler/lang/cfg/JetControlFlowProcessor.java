@@ -963,7 +963,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitClass(NapileClass klass)
 		{
-			for(NapileTypeReference typeReference : klass.getExtendTypeList())
+			for(NapileTypeReference typeReference : klass.getSuperTypes())
 				value(typeReference, inCondition);
 
 			visitClassOrObject(klass);
