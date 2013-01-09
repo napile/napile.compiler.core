@@ -281,7 +281,7 @@ public class OverridingUtil
 
 		// This code compares return types, but they are not a part of the signature, so this code does not belong here
 		TypeSubstitutor typeSubstitutor = TypeSubstitutor.create(substitutionContext);
-		JetType substitutedSuperReturnType = typeSubstitutor.substitute(superDescriptor.getReturnType());
+		JetType substitutedSuperReturnType = typeSubstitutor.substitute(superDescriptor.getReturnType(), null);
 		assert substitutedSuperReturnType != null;
 		if(!typeChecker.isSubtypeOf(subDescriptor.getReturnType(), substitutedSuperReturnType))
 		{

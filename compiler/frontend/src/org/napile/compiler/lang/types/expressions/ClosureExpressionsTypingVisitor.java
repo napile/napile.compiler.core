@@ -142,7 +142,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 			parameterTypes.put(valueParameter.getName(), valueParameter.getType());
 
 		JetType returnType = TypeUtils.NO_EXPECTED_TYPE;
-		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, functionLiteral, context.trace);
+		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, functionLiteral, context.trace);
 		NapileTypeReference returnTypeRef = functionLiteral.getReturnTypeRef();
 		TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(context.trace);
 		if(returnTypeRef != null)
@@ -206,7 +206,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		List<CallParameterDescriptor> parameterDescriptors = Lists.newArrayList();
 		NapileElement[] declaredValueParameters = functionLiteral.getValueParameters();
 
-		List<CallParameterDescriptor> expectedValueParameters = (functionTypeExpected) ? FunctionDescriptorUtil.getValueParameters(functionDescriptor, context.expectedType) : null;
+		List<CallParameterDescriptor> expectedValueParameters = (functionTypeExpected) ? MethodDescriptorUtil.getValueParameters(functionDescriptor, context.expectedType) : null;
 
 		boolean hasDeclaredValueParameters = functionLiteral.getCallParameterList() != null;
 		if(functionTypeExpected && !hasDeclaredValueParameters && expectedValueParameters.size() == 1)

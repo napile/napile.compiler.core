@@ -126,7 +126,7 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);
 
 		JetType originalOutType = getType();
-		JetType outType = substitutor.substitute(originalOutType);
+		JetType outType = substitutor.substitute(originalOutType, newOwner);
 		if(outType == null)
 		{
 			return null; // TODO : tell the user that the property was projected out
@@ -135,7 +135,7 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 		ReceiverDescriptor substitutedExpectedThisObject;
 		if(expectedThisObject.exists())
 		{
-			JetType substitutedExpectedThisObjectType = substitutor.substitute(getExpectedThisObject().getType());
+			JetType substitutedExpectedThisObjectType = substitutor.substitute(getExpectedThisObject().getType(), newOwner);
 			substitutedExpectedThisObject = new TransientReceiver(substitutedExpectedThisObjectType);
 		}
 		else

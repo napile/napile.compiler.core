@@ -304,7 +304,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 				assert returnType != null;
 				if(successfulWithoutExpectedTypeConstraint)
 				{
-					returnType = systemWithoutExpectedTypeConstraint.getResultingSubstitutor().substitute(returnType);
+					returnType = systemWithoutExpectedTypeConstraint.getResultingSubstitutor().substitute(returnType, null);
 					assert returnType != null;
 				}
 				trace.report(TYPE_INFERENCE_EXPECTED_TYPE_MISMATCH.on(reference, returnType, data.expectedType));

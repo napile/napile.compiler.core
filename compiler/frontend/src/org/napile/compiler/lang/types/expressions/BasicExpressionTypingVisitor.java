@@ -675,7 +675,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				{
 					// supertypes may be empty when all the supertypes are error types (are not resolved, for example)
 					JetType type = supertypes.isEmpty() ? TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, false) : supertypes.iterator().next();
-					result = substitutor.substitute(type);
+					result = substitutor.substitute(type, null);
 				}
 			}
 			if(result != null)

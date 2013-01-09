@@ -154,7 +154,7 @@ public class ConstraintsUtil
 		assert typeConstraints != null;
 		JetType type = getValue(typeConstraints);
 		JetType upperBound = typeParameter.getUpperBoundsAsType();
-		JetType substitute = constraintSystem.getResultingSubstitutor().substitute(upperBound);
+		JetType substitute = constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
 
 		if(type != null)
 		{
@@ -172,7 +172,7 @@ public class ConstraintsUtil
 		{
 			JetType type = getValue(constraintSystem.getTypeConstraints(typeVariable));
 			JetType upperBound = typeVariable.getUpperBoundsAsType();
-			JetType substitutedType = constraintSystem.getResultingSubstitutor().substitute(upperBound);
+			JetType substitutedType = constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
 
 			if(type != null)
 			{

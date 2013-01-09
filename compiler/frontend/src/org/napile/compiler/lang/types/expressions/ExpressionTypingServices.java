@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
+import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.*;
@@ -233,7 +233,7 @@ public class ExpressionTypingServices
 	{
 		NapileExpression bodyExpression = function.getBodyExpression();
 		assert bodyExpression != null;
-		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(outerScope, methodDescriptor, function, trace);
+		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(outerScope, methodDescriptor, function, trace);
 		expressionTypingFacade.getTypeInfo(bodyExpression, ExpressionTypingContext.newContext(this, trace, functionInnerScope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false), !function.hasBlockBody());
 		//todo function literals
 		final Collection<NapileExpression> returnedExpressions = Lists.newArrayList();

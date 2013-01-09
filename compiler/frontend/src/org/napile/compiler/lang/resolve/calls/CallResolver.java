@@ -273,7 +273,7 @@ public class CallResolver
 				AbstractMethodDescriptorImpl functionDescriptor = new ExpressionAsMethodDescriptor(context.scope.getContainingDeclaration(), Name.special("<for expression " +
 						calleeExpression.getText() +
 						">"));
-				FunctionDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, ReceiverDescriptor.NO_RECEIVER, Modality.FINAL, Visibility.LOCAL2);
+				MethodDescriptorUtil.initializeFromFunctionType(functionDescriptor, calleeType, ReceiverDescriptor.NO_RECEIVER, Modality.FINAL, Visibility.LOCAL2);
 				ResolutionCandidate<CallableDescriptor> resolutionCandidate = ResolutionCandidate.<CallableDescriptor>create(functionDescriptor, NapilePsiUtil.isSafeCall(context.call));
 				resolutionCandidate.setExplicitReceiverKind(ExplicitReceiverKind.RECEIVER_ARGUMENT);
 
@@ -772,7 +772,7 @@ public class CallResolver
 
 				checkGenericBoundsInAFunctionCall(jetTypeArguments, typeArguments, candidate, context.trace);
 
-				Map<TypeConstructor, JetType> substitutionContext = FunctionDescriptorUtil.createSubstitutionContext((MethodDescriptor) candidate, typeArguments);
+				Map<TypeConstructor, JetType> substitutionContext = MethodDescriptorUtil.createSubstitutionContext((MethodDescriptor) candidate, typeArguments);
 				candidateCall.setResultingSubstitutor(TypeSubstitutor.create(substitutionContext));
 
 				List<TypeParameterDescriptor> typeParameters = candidateCall.getCandidateDescriptor().getTypeParameters();
@@ -816,7 +816,7 @@ public class CallResolver
 		// because constraints become trivial (T :< T), and inference fails
 		//
 		// Thus, we replace the parameters of our descriptor with fresh objects (perform alpha-conversion)
-		CallableDescriptor candidateWithFreshVariables = FunctionDescriptorUtil.alphaConvertTypeParameters(candidate);
+		CallableDescriptor candidateWithFreshVariables = MethodDescriptorUtil.alphaConvertTypeParameters(candidate);
 
 
 		for(TypeParameterDescriptor typeParameterDescriptor : candidateWithFreshVariables.getTypeParameters())
@@ -887,7 +887,7 @@ public class CallResolver
 		JetType effectiveExpectedType = parameterDescriptor.getType();
 		TemporaryBindingTrace traceForUnknown = TemporaryBindingTrace.create(context.trace);
 		NapileExpression argumentExpression = valueArgument.getArgumentExpression();
-		JetType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(parameterDescriptor.getType()), context.dataFlowInfo, traceForUnknown) : null;
+		JetType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(parameterDescriptor.getType(), null), context.dataFlowInfo, traceForUnknown) : null;
 		constraintSystem.addSupertypeConstraint(effectiveExpectedType, type, ConstraintPosition.getValueParameterPosition(parameterDescriptor.getIndex()));
 		//todo no return
 		if(type == null || ErrorUtils.isErrorType(type))

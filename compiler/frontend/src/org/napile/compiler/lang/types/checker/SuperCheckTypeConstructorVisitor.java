@@ -27,6 +27,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
@@ -106,10 +107,10 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 			@Override
 			public Boolean visitSelfType(JetType superType, SelfTypeConstructor superTypeConstructor, JetType subConstructor)
 			{
-				JetType subUnwrapType = subConstructor.getConstructor().getDeclarationDescriptor().getDefaultType();
-				JetType superUnwrapType = superTypeConstructor.getDeclarationDescriptor().getDefaultType();
+				ClassDescriptor subDesc = (ClassDescriptor) subConstructor.getConstructor().getDeclarationDescriptor();
+				ClassDescriptor supeDesc = superTypeConstructor.getDeclarationDescriptor();
 
-				return typeCheckingProcedure.isSubtypeOf(subUnwrapType, superUnwrapType);
+				return DescriptorUtils.isSubclass(subDesc, supeDesc);
 			}
 		}, subType);
 	}
@@ -215,10 +216,15 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 	private boolean checkSubtypeForTheSameConstructor(@NotNull JetType subtype, @NotNull JetType supertype)
 	{
 		TypeConstructor constructor = subtype.getConstructor();
-		assert constructor.equals(supertype.getConstructor()) : constructor + " is not " + supertype.getConstructor();
 
 		List<JetType> subArguments = subtype.getArguments();
 		List<JetType> superArguments = supertype.getArguments();
+		if(subArguments.size() != superArguments.size())
+			return false;
+
+		if(subArguments.isEmpty())
+			return true;
+
 		List<TypeParameterDescriptor> parameters = constructor.getParameters();
 		for(int i = 0; i < parameters.size(); i++)
 		{

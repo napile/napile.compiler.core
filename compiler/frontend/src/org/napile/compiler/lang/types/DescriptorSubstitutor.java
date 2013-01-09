@@ -74,7 +74,7 @@ public class DescriptorSubstitutor
 
 			for(JetType upperBound : descriptor.getUpperBounds())
 			{
-				substituted.getUpperBounds().add(substitutor.substitute(upperBound));
+				substituted.getUpperBounds().add(substitutor.substitute(upperBound, null));
 			}
 
 			result.add(substituted);

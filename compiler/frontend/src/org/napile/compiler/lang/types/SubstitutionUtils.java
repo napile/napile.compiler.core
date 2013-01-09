@@ -79,7 +79,7 @@ public class SubstitutionUtils
 			JetType argument = arguments.get(i);
 			TypeParameterDescriptor typeParameterDescriptor = parameters.get(i);
 
-			JetType substitute = substitutor.substitute(argument);
+			JetType substitute = substitutor.substitute(argument, null);
 			assert substitute != null;
 
 			substitution.put(typeParameterDescriptor.getTypeConstructor(), substitute);

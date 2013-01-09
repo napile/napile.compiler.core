@@ -16,15 +16,19 @@
 
 package org.napile.compiler.lang.types;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
-import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;
 
 /**
@@ -135,41 +139,17 @@ public class TypeSubstitutor
 	@NotNull
 	public JetType safeSubstitute(@NotNull JetType type)
 	{
-		if(isEmpty())
-		{
-			return type;
-		}
-
-		try
-		{
-			return unsafeSubstitute(type, 0);
-		}
-		catch(SubstitutionException e)
-		{
-			return ErrorUtils.createErrorType(e.getMessage());
-		}
+		return unsafeSubstitute(type, null, 0);
 	}
 
 	@Nullable
-	public JetType substitute(@NotNull JetType type)
+	public JetType substitute(@NotNull JetType type, @Nullable DeclarationDescriptor ownerDescriptor)
 	{
-		if(isEmpty())
-		{
-			return type;
-		}
-
-		try
-		{
-			return unsafeSubstitute(type, 0);
-		}
-		catch(SubstitutionException e)
-		{
-			return null;
-		}
+		return unsafeSubstitute(type, ownerDescriptor, 0);
 	}
 
 	@NotNull
-	private JetType unsafeSubstitute(@NotNull JetType type, int recursionDepth) throws SubstitutionException
+	private JetType unsafeSubstitute(@NotNull JetType type, @Nullable final DeclarationDescriptor ownerDescriptor, final int recursionDepth)// throws SubstitutionException
 	{
 		assertRecursionDepth(recursionDepth, type, substitution);
 		// The type is within the substitution range, i.e. T or T?
@@ -177,35 +157,69 @@ public class TypeSubstitutor
 		if(ErrorUtils.isErrorType(type))
 			return type;
 
-		JetType replacement = substitution.get(type.getConstructor());
-
-		if(replacement != null)
+		return type.accept(new TypeConstructorVisitor<Object, JetType>()
 		{
-			boolean resultingIsNullable = type.isNullable() || replacement.isNullable();
+			@Override
+			public JetType visitType(JetType type, TypeConstructor t, Object arg)
+			{
+				JetType replacement = substitution.get(t);
 
-			return TypeUtils.makeNullableAsSpecified(replacement, resultingIsNullable);
-		}
-		else
-		{
-			// The type is not within the substitution range, i.e. Foo, Bar<T> etc.
-			List<JetType> substitutedArguments = substituteTypeArguments(type.getConstructor().getParameters(), type.getArguments(), recursionDepth);
+				if(replacement != null)
+				{
+					boolean resultingIsNullable = type.isNullable() || replacement.isNullable();
 
-			JetType substitutedType = new JetTypeImpl(type.getAnnotations(),   // Old annotations. This is questionable
-					type.getConstructor(),   // The same constructor
-					type.isNullable(),       // Same nullability
-					substitutedArguments, new SubstitutingScope(type.getMemberScope(), this));
-			return substitutedType;
-		}
+					return TypeUtils.makeNullableAsSpecified(replacement, resultingIsNullable);
+				}
+				else
+				{
+					// The type is not within the substitution range, i.e. Foo, Bar<T> etc.
+					List<JetType> substitutedArguments = substituteTypeArguments(type.getConstructor().getParameters(), ownerDescriptor, type.getArguments(), recursionDepth);
+
+					return new JetTypeImpl(type.getAnnotations(), t, type.isNullable(), substitutedArguments, new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this));
+				}
+			}
+
+			@Override
+			public JetType visitSelfType(JetType type, SelfTypeConstructor t, Object arg)
+			{
+				ClassDescriptor classDescriptor = null;
+				if(ownerDescriptor != null)
+					classDescriptor = DescriptorUtils.getParentOfType(ownerDescriptor, ClassDescriptor.class, false);
+				else
+					classDescriptor = t.getDeclarationDescriptor();
+
+				if(classDescriptor == null)
+					throw new IllegalArgumentException("Cant find class owner");
+
+				JetType defaultType = classDescriptor.getDefaultType();
+
+				return new JetTypeImpl(type.getAnnotations(), classDescriptor.getTypeConstructor(), false, defaultType.getArguments(), new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this));
+			}
+
+			@Override
+			public JetType visitMethodType(JetType type, MethodTypeConstructor t, Object arg)
+			{
+				return type;
+			}
+
+			@Override
+			public JetType visitMultiType(JetType type, MultiTypeConstructor t, Object arg)
+			{
+				return type;
+			}
+		}, TypeUtils.NO_EXPECTED_TYPE);
 	}
 
-	private List<JetType> substituteTypeArguments(List<TypeParameterDescriptor> typeParameters, List<JetType> typeArguments, int recursionDepth) throws SubstitutionException
+	private List<JetType> substituteTypeArguments(List<TypeParameterDescriptor> typeParameters, DeclarationDescriptor ownerDescriptor, List<JetType> typeArguments, int recursionDepth)
 	{
-		List<JetType> substitutedArguments = Lists.newArrayList();
+		if(typeArguments.isEmpty())
+			return Collections.emptyList();
+		List<JetType> substitutedArguments = new ArrayList<JetType>(typeArguments.size());
 		for(int i = 0; i < typeParameters.size(); i++)
 		{
 			JetType typeArgument = typeArguments.get(i);
 
-			JetType substitutedTypeArgument = unsafeSubstitute(typeArgument, recursionDepth + 1);
+			JetType substitutedTypeArgument = unsafeSubstitute(typeArgument, ownerDescriptor, recursionDepth + 1);
 
 			substitutedArguments.add(substitutedTypeArgument);
 		}

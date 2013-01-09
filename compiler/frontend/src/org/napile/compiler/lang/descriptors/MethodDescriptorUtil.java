@@ -42,7 +42,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 /**
  * @author abreslav
  */
-public class FunctionDescriptorUtil
+public class MethodDescriptorUtil
 {
 	private static final TypeSubstitutor MAKE_TYPE_PARAMETERS_FRESH = TypeSubstitutor.create(new TypeSubstitution()
 	{
@@ -86,7 +86,7 @@ public class FunctionDescriptorUtil
 	}
 
 	@Nullable
-	public static List<CallParameterDescriptor> getSubstitutedValueParameters(MethodDescriptor substitutedDescriptor, @NotNull MethodDescriptor methodDescriptor, @NotNull TypeSubstitutor substitutor)
+	public static List<CallParameterDescriptor> getSubstitutedValueParameters(DeclarationDescriptor newOwner, MethodDescriptor substitutedDescriptor, @NotNull MethodDescriptor methodDescriptor, @NotNull TypeSubstitutor substitutor)
 	{
 		List<CallParameterDescriptor> result = new ArrayList<CallParameterDescriptor>();
 		List<CallParameterDescriptor> unsubstitutedValueParameters = methodDescriptor.getValueParameters();
@@ -94,7 +94,7 @@ public class FunctionDescriptorUtil
 		{
 			CallParameterDescriptor unsubstitutedValueParameter = unsubstitutedValueParameters.get(i);
 			// TODO : Lazy?
-			JetType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType());
+			JetType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType(), newOwner);
 			if(substitutedType == null)
 				return null;
 			result.add(new CallParameterAsVariableDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.getName(), substitutedType, unsubstitutedValueParameter.getModality(), false));
@@ -103,16 +103,9 @@ public class FunctionDescriptorUtil
 	}
 
 	@Nullable
-	public static JetType getSubstitutedReturnType(@NotNull MethodDescriptor methodDescriptor, TypeSubstitutor substitutor)
+	public static JetType getSubstitutedReturnType(@NotNull MethodDescriptor methodDescriptor, @NotNull DeclarationDescriptor ownerDescriptor, TypeSubstitutor substitutor)
 	{
-		return substitutor.substitute(methodDescriptor.getReturnType());
-	}
-
-	@Nullable
-	public static MethodDescriptor substituteFunctionDescriptor(@NotNull List<JetType> typeArguments, @NotNull MethodDescriptor methodDescriptor)
-	{
-		Map<TypeConstructor, JetType> substitutionContext = createSubstitutionContext(methodDescriptor, typeArguments);
-		return methodDescriptor.substitute(TypeSubstitutor.create(substitutionContext));
+		return substitutor.substitute(methodDescriptor.getReturnType(), ownerDescriptor);
 	}
 
 	@NotNull

@@ -205,34 +205,26 @@ public abstract class AbstractMethodDescriptorImpl extends DeclarationDescriptor
 		ReceiverDescriptor substitutedExpectedThis = NO_RECEIVER;
 		if(expectedThisObject.exists())
 		{
-			JetType substitutedType = substitutor.substitute(expectedThisObject.getType());
+			JetType substitutedType = substitutor.substitute(expectedThisObject.getType(), newOwner);
 			if(substitutedType == null)
-			{
 				return null;
-			}
+
 			substitutedExpectedThis = new TransientReceiver(substitutedType);
 		}
 
-		List<CallParameterDescriptor> substitutedValueParameters = FunctionDescriptorUtil.getSubstitutedValueParameters(substitutedDescriptor, this, substitutor);
+		List<CallParameterDescriptor> substitutedValueParameters = MethodDescriptorUtil.getSubstitutedValueParameters(newOwner, substitutedDescriptor, this, substitutor);
 		if(substitutedValueParameters == null)
-		{
 			return null;
-		}
 
-		JetType substitutedReturnType = FunctionDescriptorUtil.getSubstitutedReturnType(this, substitutor);
+		JetType substitutedReturnType = MethodDescriptorUtil.getSubstitutedReturnType(this, newOwner, substitutor);
 		if(substitutedReturnType == null)
-		{
 			return null;
-		}
 
 		substitutedDescriptor.initialize(substitutedExpectedThis, substitutedTypeParameters, substitutedValueParameters, substitutedReturnType, newModality, newVisibility);
 		if(copyOverrides)
-		{
 			for(MethodDescriptor overriddenMethod : overriddenMethods)
-			{
 				OverridingUtil.bindOverride(substitutedDescriptor, overriddenMethod.substitute(substitutor));
-			}
-		}
+
 		return substitutedDescriptor;
 	}
 

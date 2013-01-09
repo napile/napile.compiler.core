@@ -21,7 +21,7 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
+import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.Call;
@@ -83,7 +83,7 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 
 			VariableDescriptor variableDescriptor = (VariableDescriptor) candidate.getDescriptor();
 
-			CallableDescriptor callableDescriptor = FunctionDescriptorUtil.createDescriptorFromType(variableDescriptor.getName(), variableDescriptor.getType(), variableDescriptor.getContainingDeclaration());
+			CallableDescriptor callableDescriptor = MethodDescriptorUtil.createDescriptorFromType(variableDescriptor.getName(), variableDescriptor.getType(), variableDescriptor.getContainingDeclaration());
 			if(callableDescriptor == null)
 				return Collections.emptyList();
 

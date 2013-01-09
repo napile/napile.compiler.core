@@ -82,7 +82,7 @@ public class DescriptorUtils
 			@Override
 			public JetType safeSubstitute(@NotNull JetType type)
 			{
-				JetType substituted = substitute(type);
+				JetType substituted = substitute(type, null);
 				if(substituted == null)
 				{
 					return ErrorUtils.createErrorType("Substitution failed");
@@ -92,9 +92,9 @@ public class DescriptorUtils
 
 			@Nullable
 			@Override
-			public JetType substitute(@NotNull JetType type)
+			public JetType substitute(@NotNull JetType type, DeclarationDescriptor ownerDescriptor)
 			{
-				return super.substitute(type);
+				return super.substitute(type, ownerDescriptor);
 			}
 		});
 	}

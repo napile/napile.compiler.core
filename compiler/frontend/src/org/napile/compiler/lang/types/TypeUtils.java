@@ -418,7 +418,7 @@ public class TypeUtils
 		TypeSubstitutor substitutor = TypeSubstitutor.create(type);
 		for(JetType supertype : type.getConstructor().getSupertypes())
 		{
-			result.add(substitutor.substitute(supertype));
+			result.add(substitutor.substitute(supertype, null));
 		}
 	}
 
@@ -489,7 +489,7 @@ public class TypeUtils
 			substitutions.put(typeConstructor, actualTypeParameters.get(i));
 		}
 
-		return TypeSubstitutor.create(substitutions).substitute(clazz.getDefaultType());
+		return TypeSubstitutor.create(substitutions).substitute(clazz.getDefaultType(), null);
 	}
 
 	private static void addAllClassDescriptors(@NotNull JetType type, @NotNull Set<ClassDescriptor> set)

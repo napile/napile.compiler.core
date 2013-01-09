@@ -88,7 +88,7 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 			Collection<JetType> supertypes = Lists.newArrayList();
 			for(JetType supertype : originalTypeConstructor.getSupertypes())
 			{
-				supertypes.add(substitutor.substitute(supertype));
+				supertypes.add(substitutor.substitute(supertype, null));
 			}
 
 			typeConstructor = new TypeConstructorImpl(this, originalTypeConstructor.getAnnotations(), originalTypeConstructor.isSealed(), originalTypeConstructor.toString(), typeParameters, supertypes);

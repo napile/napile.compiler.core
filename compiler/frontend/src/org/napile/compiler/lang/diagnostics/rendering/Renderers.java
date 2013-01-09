@@ -303,7 +303,7 @@ public class Renderers
 
 		JetType type = ConstraintsUtil.getValue(inferenceErrorData.constraintSystem.getTypeConstraints(typeParameterDescriptor));
 		JetType upperBound = typeParameterDescriptor.getUpperBoundsAsType();
-		JetType substitute = inferenceErrorData.constraintSystem.getResultingSubstitutor().substitute(upperBound);
+		JetType substitute = inferenceErrorData.constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
 
 		result.text(newText().normal(" is not satisfied: inferred type ").error(type).normal(" is not a subtype of ").strong(substitute));
 		return result;

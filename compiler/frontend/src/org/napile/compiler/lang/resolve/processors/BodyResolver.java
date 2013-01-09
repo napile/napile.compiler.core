@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.FunctionDescriptorUtil;
+import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
@@ -267,7 +267,7 @@ public class BodyResolver
 			return;
 
 		NapileExpression bodyExpression = function.getBodyExpression();
-		JetScope functionInnerScope = FunctionDescriptorUtil.getMethodInnerScope(declaringScope, methodDescriptor, function, trace);
+		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(declaringScope, methodDescriptor, function, trace);
 		if(bodyExpression != null)
 			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, methodDescriptor, DataFlowInfo.EMPTY, null, trace);
 	}

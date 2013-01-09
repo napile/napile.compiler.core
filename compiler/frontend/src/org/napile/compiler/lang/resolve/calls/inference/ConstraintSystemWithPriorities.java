@@ -395,10 +395,10 @@ public class ConstraintSystemWithPriorities
 
 		for(SubtypingConstraint constraint : constraintsToEnsureAfterInference)
 		{
-			JetType substitutedSubtype = solution.getSubstitutor().substitute(constraint.getSubtype()); // TODO
+			JetType substitutedSubtype = solution.getSubstitutor().substitute(constraint.getSubtype(), null); // TODO
 			if(substitutedSubtype == null)
 				continue;
-			JetType substitutedSupertype = solution.getSubstitutor().substitute(constraint.getSupertype()); // TODO
+			JetType substitutedSupertype = solution.getSubstitutor().substitute(constraint.getSupertype(), null); // TODO
 			if(substitutedSupertype == null)
 				continue;
 
@@ -518,10 +518,10 @@ public class ConstraintSystemWithPriorities
 		try
 		{
 			JetType resultingType = typeValue.getType();
-			JetType type = solution.getSubstitutor().substitute(resultingType); // TODO
+			JetType type = solution.getSubstitutor().substitute(resultingType, null); // TODO
 			for(TypeValue upperBound : typeValue.getUpperBounds())
 			{
-				JetType boundingType = solution.getSubstitutor().substitute(upperBound.getType());
+				JetType boundingType = solution.getSubstitutor().substitute(upperBound.getType(), null);
 				if(!typeChecker.isSubtypeOf(type, boundingType))
 				{ // TODO
 					solution.registerError("Constraint violation: " + type + " is not a subtype of " + boundingType);
@@ -530,7 +530,7 @@ public class ConstraintSystemWithPriorities
 			}
 			for(TypeValue lowerBound : typeValue.getLowerBounds())
 			{
-				JetType boundingType = solution.getSubstitutor().substitute(lowerBound.getType());
+				JetType boundingType = solution.getSubstitutor().substitute(lowerBound.getType(), null);
 				if(!typeChecker.isSubtypeOf(boundingType, type))
 				{
 					solution.registerError("Constraint violation: " + boundingType + " is not a subtype of " + type);
