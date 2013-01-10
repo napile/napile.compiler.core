@@ -24,15 +24,23 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
+import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptorWithVisibility;
+import org.napile.compiler.lang.descriptors.Modality;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
+import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.psi.NapileClassBody;
+import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
 import com.intellij.codeInsight.hint.HintManager;
@@ -47,6 +55,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.intellij.util.Function;
 
 /**
  * @author yole
@@ -139,7 +148,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 			final DeclarationDescriptor descriptor = selectedElement.getDescriptor();
 			if(descriptor instanceof SimpleMethodDescriptor)
 			{
-				overridingMembers.add(overrideFunction(file.getProject(), (SimpleMethodDescriptor) descriptor));
+				overridingMembers.add(overrideMethod(file.getProject(), (SimpleMethodDescriptor) descriptor));
 			}
 			else if(descriptor instanceof VariableDescriptorImpl)
 			{
@@ -174,104 +183,34 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 		return DescriptorRenderer.TEXT.renderType(type);
 	}
 
-	private static NapileElement overrideFunction(Project project, SimpleMethodDescriptor descriptor)
+	private static NapileElement overrideMethod(Project project, SimpleMethodDescriptor descriptor)
 	{
 		StringBuilder bodyBuilder = new StringBuilder();
 		bodyBuilder.append(displayableVisibility(descriptor));
-		bodyBuilder.append("override meth ");
+		bodyBuilder.append("override ");
+		bodyBuilder.append(DescriptorRenderer.COMPACT.render(descriptor));
 
-		List<String> whereRestrictions = new ArrayList<String>();
-		if(!descriptor.getTypeParameters().isEmpty())
+		if(descriptor.getModality() == Modality.ABSTRACT)
 		{
-			bodyBuilder.append("<");
-			boolean first = true;
-			for(TypeParameterDescriptor param : descriptor.getTypeParameters())
-			{
-				if(!first)
-				{
-					bodyBuilder.append(", ");
-				}
-
-				bodyBuilder.append(param.getName());
-				Set<JetType> upperBounds = param.getUpperBounds();
-				if(!upperBounds.isEmpty())
-				{
-					boolean firstUpperBound = true;
-					for(JetType upperBound : upperBounds)
-					{
-						String upperBoundText = " : " + renderType(upperBound);
-						if(!TypeUtils.isEqualFqName(upperBound, NapileLangPackage.ANY))
-						{
-							if(firstUpperBound)
-							{
-								bodyBuilder.append(upperBoundText);
-							}
-							else
-							{
-								whereRestrictions.add(param.getName() + upperBoundText);
-							}
-						}
-						firstUpperBound = false;
-					}
-				}
-
-				first = false;
-			}
-			bodyBuilder.append("> ");
-		}
-
-		bodyBuilder.append(descriptor.getName()).append("(");
-		boolean isAbstractFun = descriptor.getModality() == Modality.ABSTRACT;
-		StringBuilder delegationBuilder = new StringBuilder();
-		if(isAbstractFun)
-		{
-			delegationBuilder.append("throw UnsupportedOperationException()");
+			bodyBuilder.append("{").append("throw UnsupportedOperationException()").append("}");
 		}
 		else
 		{
-			delegationBuilder.append("super<").append(descriptor.getContainingDeclaration().getName());
-			delegationBuilder.append(">.").append(descriptor.getName()).append("(");
-		}
-		boolean first = true;
-		for(CallParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
-		{
-			if(!first)
+			bodyBuilder.append("{");
+			bodyBuilder.append("super<").append(descriptor.getContainingDeclaration().getName());
+			bodyBuilder.append(">.").append(descriptor.getName()).append("(");
+			bodyBuilder.append(StringUtil.join(descriptor.getValueParameters(), new Function<CallParameterDescriptor, String>()
 			{
-				bodyBuilder.append(",");
-				if(!isAbstractFun)
+				@Override
+				public String fun(CallParameterDescriptor callParameterDescriptor)
 				{
-					delegationBuilder.append(",");
+					return callParameterDescriptor.getName().getName();
 				}
-			}
-			first = false;
-			bodyBuilder.append(parameterDescriptor.getName());
-			bodyBuilder.append(" : ");
-			bodyBuilder.append(renderType(parameterDescriptor.getType()));
+			}, ", "));
+			bodyBuilder.append(")").append("}");
+		}
 
-			if(!isAbstractFun)
-			{
-				delegationBuilder.append(parameterDescriptor.getName());
-			}
-		}
-		bodyBuilder.append(")");
-		if(!isAbstractFun)
-		{
-			delegationBuilder.append(")");
-		}
-		final JetType returnType = descriptor.getReturnType();
-
-		boolean returnsNotUnit = returnType != null;
-		if(returnsNotUnit)
-		{
-			bodyBuilder.append(" : ").append(renderType(returnType));
-		}
-		if(!whereRestrictions.isEmpty())
-		{
-			bodyBuilder.append("\n").append("where ").append(StringUtil.join(whereRestrictions, ", "));
-		}
-		bodyBuilder.append("{").append(returnsNotUnit && !isAbstractFun ? "return " : "").append(delegationBuilder.toString()).append("}");
-
-		return NapilePsiFactory.createFunction(project, bodyBuilder.toString());
+		return NapilePsiFactory.createMethod(project, bodyBuilder.toString());
 	}
 
 	//TODO [VISTALL] get from @DefaultValue =

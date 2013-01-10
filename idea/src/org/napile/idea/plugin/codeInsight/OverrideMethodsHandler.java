@@ -33,17 +33,13 @@ public class OverrideMethodsHandler extends OverrideImplementMethodsHandler
 	{
 		final Set<CallableMemberDescriptor> superMethods = OverrideResolver.collectSuperMethods(descriptor).keySet();
 		for(CallableMemberDescriptor member : descriptor.getDeclaredCallableMembers())
-		{
 			superMethods.removeAll(member.getOverriddenDescriptors());
-		}
+
 		Set<CallableMemberDescriptor> result = new HashSet<CallableMemberDescriptor>();
 		for(CallableMemberDescriptor superMethod : superMethods)
-		{
-			if(superMethod.getModality().isOverridable())
-			{
+			if(superMethod.getModality().isOverridable() && !superMethod.isStatic())
 				result.add(superMethod);
-			}
-		}
+
 		return result;
 	}
 
