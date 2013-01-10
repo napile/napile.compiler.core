@@ -27,6 +27,7 @@ import javax.swing.Icon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -202,7 +203,7 @@ public enum LineMarkers
 
 	protected boolean isValidCallable(@Nullable DeclarationDescriptor declarationDescriptor)
 	{
-		return declarationDescriptor instanceof CallableDescriptor/* && !(declarationDescriptor instanceof VariableAccessorDescriptor && ((VariableAccessorDescriptor) declarationDescriptor).isDefault())*/;
+		return declarationDescriptor instanceof CallableDescriptor && !(declarationDescriptor instanceof CallParameterDescriptor);
 	}
 
 	public final LineMarkerInfo getLineMarkers(@NotNull PsiElement element)
