@@ -5,6 +5,7 @@
 	<description>Napile language support</description>
 	<version>@snapshot@</version>
 	<vendor url="http://napile.org">napile.org</vendor>
+	<depends>com.intellij.copyright</depends>
 
 	<project-components>
 		<!--<component>
@@ -41,6 +42,10 @@
 
 
 	</actions>
+
+	<extensions defaultExtensionNs="com.intellij.copyright">
+		<updater filetype="Napile" implementationClass="org.napile.idea.plugin.editor.copyright.UpdateNapileCopyrightsProvider"/>
+	</extensions>
 
 	<extensions defaultExtensionNs="com.intellij">
 		<applicationService serviceInterface="org.napile.compiler.lang.psi.stubs.elements.StubIndexService" serviceImplementation="org.napile.idea.plugin.stubindex.StubIndexServiceImpl"/>
