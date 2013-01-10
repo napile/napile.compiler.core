@@ -44,8 +44,6 @@ public class AnnotationCodegen
 	@NotNull
 	public static AnnotationNode convert(@NotNull BindingTrace bindingTrace, @NotNull AnnotationDescriptor annotationDescriptor, @NotNull ClassNode classNode)
 	{
-		assert annotationDescriptor.getResolvedCall() == null;
-
 		ResolvedCall<ConstructorDescriptor> resolvedCall = annotationDescriptor.getResolvedCall();
 
 		ConstructorDescriptor constructorDescriptor = resolvedCall.getResultingDescriptor();

@@ -18,17 +18,21 @@ package org.napile.compiler.lang.types;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
+import org.napile.compiler.lang.types.impl.MultiTypeConstructorImpl;
 import com.intellij.openapi.progress.ProcessCanceledException;
 
 /**
@@ -69,14 +73,6 @@ public class TypeSubstitutor
 	}
 
 	public static final TypeSubstitutor EMPTY = create(TypeSubstitution.EMPTY);
-
-	private static final class SubstitutionException extends Exception
-	{
-		public SubstitutionException(String message)
-		{
-			super(message);
-		}
-	}
 
 	public static TypeSubstitutor create(@NotNull TypeSubstitution substitution)
 	{
@@ -182,14 +178,7 @@ public class TypeSubstitutor
 			@Override
 			public JetType visitSelfType(JetType type, SelfTypeConstructor t, Object arg)
 			{
-				ClassDescriptor classDescriptor = null;
-				if(ownerDescriptor != null)
-					classDescriptor = DescriptorUtils.getParentOfType(ownerDescriptor, ClassDescriptor.class, false);
-				else
-					classDescriptor = t.getDeclarationDescriptor();
-
-				if(classDescriptor == null)
-					throw new IllegalArgumentException("Cant find class owner");
+				ClassDescriptor classDescriptor = t.getDeclarationDescriptor();
 
 				JetType defaultType = classDescriptor.getDefaultType();
 
@@ -199,13 +188,23 @@ public class TypeSubstitutor
 			@Override
 			public JetType visitMethodType(JetType type, MethodTypeConstructor t, Object arg)
 			{
-				return type;
+				JetType subReturnType = unsafeSubstitute(t.getReturnType(), ownerDescriptor, recursionDepth);
+				Map<Name, JetType> parameters = new LinkedHashMap<Name, JetType>(t.getParameterTypes().size());
+				for(Map.Entry<Name, JetType> entry : t.getParameterTypes().entrySet())
+					parameters.put(entry.getKey(), unsafeSubstitute(entry.getValue(), ownerDescriptor, recursionDepth));
+				JetScope scope = new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this);
+				return new JetTypeImpl(type.getAnnotations(), new MethodTypeConstructorImpl(subReturnType, parameters, scope), type.isNullable(), type.getArguments(), scope);
 			}
 
 			@Override
 			public JetType visitMultiType(JetType type, MultiTypeConstructor t, Object arg)
 			{
-				return type;
+				List<MultiTypeEntry> list = new ArrayList<MultiTypeEntry>(t.getEntries().size());
+				for(MultiTypeEntry entry : t.getEntries())
+					list.add(new MultiTypeEntry(entry.index, entry.mutable,entry.name, unsafeSubstitute(entry.type, ownerDescriptor, recursionDepth)));
+
+				JetScope scope = new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this);
+				return new JetTypeImpl(type.getAnnotations(), new MultiTypeConstructorImpl(list, scope), type.isNullable(), type.getArguments(), scope);
 			}
 		}, TypeUtils.NO_EXPECTED_TYPE);
 	}

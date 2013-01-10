@@ -31,6 +31,7 @@ import org.napile.compiler.lang.types.DescriptorSubstitutor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
+import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 import com.google.common.collect.Lists;
 
@@ -45,6 +46,7 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 	private TypeSubstitutor newSubstitutor;
 	private List<TypeParameterDescriptor> typeParameters;
 	private TypeConstructor typeConstructor;
+	private JetType defaultType;
 	private final boolean isStatic;
 
 	public LazySubstitutingClassDescriptor(ClassDescriptor descriptor, TypeSubstitutor substitutor, boolean isStatic)
@@ -113,7 +115,10 @@ public class LazySubstitutingClassDescriptor implements ClassDescriptor
 	@Override
 	public JetType getDefaultType()
 	{
-		throw new UnsupportedOperationException(); // TODO
+		if(defaultType == null)
+			defaultType = new JetTypeImpl(this);
+
+		return defaultType;
 	}
 
 	@NotNull

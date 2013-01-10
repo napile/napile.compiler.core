@@ -27,8 +27,6 @@ public class Local extends StackValue
 	{
 		super(typeNode);
 		this.index = index;
-
-		assert index < 0;
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -174,23 +173,17 @@ public class ConstraintSystemImpl implements ConstraintSystem
 
 	private void addConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition)
 	{
-
 		if(constrainingType == null || (ErrorUtils.isErrorType(constrainingType) && constrainingType != DONT_CARE))
 		{
 			hasErrorInConstrainingTypes = true;
 			return;
 		}
 
-		assert subjectType != TypeUtils.NO_EXPECTED_TYPE : "Subject type shouldn't be NO_EXPECTED_TYPE (in position " +
-				constraintPosition +
-				" )";
+		assert subjectType != TypeUtils.NO_EXPECTED_TYPE : "Subject type shouldn't be NO_EXPECTED_TYPE (in position " + constraintPosition + " )";
 
 		if(constrainingType == DONT_CARE || ErrorUtils.isErrorType(subjectType) || constrainingType == TypeUtils.NO_EXPECTED_TYPE)
-		{
 			return;
-		}
 
-		DeclarationDescriptor constrainingTypeDescriptor = constrainingType.getConstructor().getDeclarationDescriptor();
 		DeclarationDescriptor subjectTypeDescriptor = subjectType.getConstructor().getDeclarationDescriptor();
 
 		if(subjectTypeDescriptor instanceof TypeParameterDescriptor)
@@ -200,39 +193,23 @@ public class ConstraintSystemImpl implements ConstraintSystem
 			if(typeConstraints != null)
 			{
 				if(TypeUtils.dependsOnTypeParameterConstructors(constrainingType, Collections.singleton(DONT_CARE.getConstructor())))
-				{
 					return;
-				}
+
 				if(subjectType.isNullable() && constrainingType.isNullable())
-				{
 					constrainingType = TypeUtils.makeNotNullable(constrainingType);
-				}
 				typeConstraints.addBound(constrainingType);
 				return;
 			}
-		}
-		if(constrainingTypeDescriptor instanceof TypeParameterDescriptor)
-		{
-			assert typeParameterConstraints.get(constrainingTypeDescriptor) == null : "Constraining type contains type variable " + constrainingTypeDescriptor.getName();
-		}
-		if(!(constrainingTypeDescriptor instanceof ClassDescriptor) || !(subjectTypeDescriptor instanceof ClassDescriptor))
-		{
-			errorConstraintPositions.add(constraintPosition);
-			return;
 		}
 
 		JetType correspondingSupertype = TypeCheckingProcedure.findCorrespondingSupertype(subjectType, constrainingType);
 		if(correspondingSupertype != null)
 			subjectType = correspondingSupertype;
 
-		if(constrainingType.getConstructor() != subjectType.getConstructor())
-		{
-			errorConstraintPositions.add(constraintPosition);
-			return;
-		}
-		TypeConstructor typeConstructor = subjectType.getConstructor();
 		List<JetType> subjectArguments = subjectType.getArguments();
 		List<JetType> constrainingArguments = constrainingType.getArguments();
+		if(subjectArguments.size() != constrainingArguments.size())
+			return;
 
 		for(int i = 0; i < subjectArguments.size(); i++)
 			addConstraint(subjectArguments.get(i), constrainingArguments.get(i), constraintPosition);

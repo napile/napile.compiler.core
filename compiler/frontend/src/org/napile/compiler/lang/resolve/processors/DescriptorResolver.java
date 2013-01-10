@@ -292,7 +292,6 @@ public class DescriptorResolver
 	public CallParameterDescriptor resolveCallParameterDescriptor(JetScope scope, DeclarationDescriptor declarationDescriptor, NapileCallParameterAsVariable parameter, int index, JetType type, BindingTrace trace)
 	{
 		AbstractCallParameterDescriptorImpl descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), parameter.isMutable());
-		descriptor.setOutType(type);
 
 		trace.record(BindingContext.VALUE_PARAMETER, parameter, descriptor);
 
@@ -330,8 +329,6 @@ public class DescriptorResolver
 			descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), false);
 		else
 			descriptor = new CallParameterAsReferenceDescriptorImpl(declarationDescriptor, index, Collections.<AnnotationDescriptor>emptyList(), ref.getReferencedNameAsName(), type, variableDescriptor);
-
-		descriptor.setOutType(type);
 
 		resolveCallParameterDefaultValue(scope, parameter, trace, descriptor);
 

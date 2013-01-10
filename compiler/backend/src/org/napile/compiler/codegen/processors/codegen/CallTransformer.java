@@ -73,7 +73,7 @@ public class CallTransformer
 			{
 				TypeConstraints typeConstants = constraintSystem.getTypeConstraints(typeParameterDescriptor);
 
-				assert typeConstants != null && typeConstants.getUpperBounds().size() == 1;
+				assert typeConstants != null;
 
 				typeArguments.add(TypeTransformer.toAsmType(bindingTrace, typeConstants.getUpperBounds().iterator().next(), classNode));
 			}

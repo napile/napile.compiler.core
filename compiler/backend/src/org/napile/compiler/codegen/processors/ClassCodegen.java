@@ -139,8 +139,6 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 	@Override
 	public Void visitEnumValue(NapileEnumValue value, Node parent)
 	{
-		assert value instanceof ClassNode;
-
 		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, value);
 
 		ClassNode classNode = (ClassNode) parent;
