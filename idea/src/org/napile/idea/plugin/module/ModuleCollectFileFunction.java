@@ -70,6 +70,8 @@ public class ModuleCollectFileFunction implements Function<NapileFile, Collectio
 				@Override
 				public Object visitLibraryOrderEntry(LibraryOrderEntry libraryOrderEntry, Object value)
 				{
+					//if(!libraryOrderEntry.isExported())
+					//	return null;
 					return null;
 				}
 
@@ -84,7 +86,7 @@ public class ModuleCollectFileFunction implements Function<NapileFile, Collectio
 				public Object visitModuleOrderEntry(ModuleOrderEntry moduleOrderEntry, Object value)
 				{
 					Module module = moduleOrderEntry.getModule();
-					if(module == null)
+					if(module == null || !moduleOrderEntry.isExported())
 						return null;
 					collectSourcesInModule(module, files, rootFile);
 					return null;
