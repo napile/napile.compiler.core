@@ -178,11 +178,6 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 		return NapilePsiFactory.createProperty(project, bodyBuilder.toString());
 	}
 
-	private static String renderType(JetType type)
-	{
-		return DescriptorRenderer.TEXT.renderType(type);
-	}
-
 	private static NapileElement overrideMethod(Project project, SimpleMethodDescriptor descriptor)
 	{
 		StringBuilder bodyBuilder = new StringBuilder();
@@ -197,6 +192,8 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 		else
 		{
 			bodyBuilder.append("{");
+			if(!TypeUtils.isEqualFqName(descriptor.getReturnType(), NapileLangPackage.NULL))
+				bodyBuilder.append("return ");
 			bodyBuilder.append("super<").append(descriptor.getContainingDeclaration().getName());
 			bodyBuilder.append(">.").append(descriptor.getName()).append("(");
 			bodyBuilder.append(StringUtil.join(descriptor.getValueParameters(), new Function<CallParameterDescriptor, String>()

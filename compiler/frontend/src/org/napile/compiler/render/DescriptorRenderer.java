@@ -103,7 +103,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitCallParameterAsVariableDescriptor(CallParameterDescriptor descriptor, StringBuilder builder)
 		{
-			super.visitVariableDescriptor(descriptor, builder, true);
+			super.visitVariableDescriptor(descriptor, builder, false);
 			if(hasDefaultValue(descriptor))
 			{
 				builder.append(" = ...");
@@ -356,10 +356,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		@Override
 		public Void visitCallParameterAsReferenceDescriptor(CallParameterAsReferenceDescriptorImpl descriptor, StringBuilder builder)
 		{
-			renderName(descriptor, builder);
-			builder.append(" : ");
-			builder.append(renderType(descriptor.getType()));
-			return null;
+			return visitVariableDescriptor(descriptor, builder);
 		}
 
 		@Override
