@@ -24,7 +24,7 @@ import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.navigation.actions.TypeDeclarationProvider;
 import com.intellij.psi.PsiElement;
 
@@ -39,7 +39,7 @@ public class JetTypeDeclarationProvider implements TypeDeclarationProvider
 	{
 		if(symbol instanceof NapileElement && symbol.getContainingFile() instanceof NapileFile)
 		{
-			BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) symbol.getContainingFile()).getBindingContext();
+			BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) symbol.getContainingFile()).getBindingContext();
 			DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, symbol);
 			if(descriptor instanceof CallableDescriptor)
 			{

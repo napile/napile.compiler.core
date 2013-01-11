@@ -36,7 +36,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.util.QualifiedNamesUtil;
-import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
+import org.napile.idea.plugin.module.Analyzer;
 import org.napile.idea.plugin.references.JetPsiReference;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.util.TextRange;
@@ -66,7 +66,7 @@ public class ImportInsertHelper
 		{
 			return;
 		}
-		BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(file);
+		BindingContext bindingContext = Analyzer.analyze(file).getBindingContext();
 		PsiElement element = BindingContextUtils.descriptorToDeclaration(bindingContext, type.getMemberScope().getContainingDeclaration());
 		if(element != null && element.getContainingFile() == file)
 		{ //declaration is in the same file, so no import is needed

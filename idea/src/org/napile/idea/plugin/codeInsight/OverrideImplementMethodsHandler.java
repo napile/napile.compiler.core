@@ -42,7 +42,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.render.DescriptorRenderer;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.ide.util.MemberChooser;
 import com.intellij.lang.LanguageCodeInsightActionHandler;
@@ -75,7 +75,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	@NotNull
 	public Set<CallableMemberDescriptor> collectMethodsToGenerate(@NotNull NapileClassLike classOrObject)
 	{
-		BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) classOrObject.getContainingFile()).getBindingContext();
+		BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) classOrObject.getContainingFile()).getBindingContext();
 		final DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, classOrObject);
 		if(descriptor instanceof MutableClassDescriptor)
 		{

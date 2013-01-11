@@ -33,7 +33,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.unwrap.ScopeHighlighter;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.ui.popup.JBPopupAdapter;
@@ -125,7 +125,7 @@ public class JetRefactoringUtil
 				if(addExpression)
 				{
 					NapileExpression expression = (NapileExpression) element;
-					BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(expression.getContainingFile());
+					BindingContext bindingContext = Analyzer.analyze(expression.getContainingFile()).getBindingContext();
 					JetType expressionType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression);
 					if(expressionType == null || !(expressionType instanceof NamespaceType))
 					{

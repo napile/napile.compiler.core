@@ -26,13 +26,12 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.idea.plugin.module.Analyzer;
 import org.napile.idea.plugin.stubindex.NapileFullClassNameIndex;
 import org.napile.idea.plugin.stubindex.NapileShortClassNameIndex;
 import com.intellij.openapi.components.ServiceManager;
@@ -64,13 +63,11 @@ public class JetShortNamesCache
 	@NotNull
 	public Map<NapileClassLike, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
 	{
-		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile()).getBindingContext();
-
-		NapileFilesProvider jetFilesProvider = NapileFilesProvider.getInstance(project);
+		BindingContext context = Analyzer.analyzeAll(napileElement.getContainingFile()).getBindingContext();
 
 		Map<NapileClassLike, ClassDescriptor> result = new HashMap<NapileClassLike, ClassDescriptor>();
 
-		for(NapileFile temp : jetFilesProvider.allInScope(globalSearchScope))
+		for(NapileFile temp : Analyzer.getFilesInScope(napileElement, globalSearchScope))
 		{
 			for(NapileClass napileClass : temp.getDeclarations())
 			{
@@ -105,7 +102,7 @@ public class JetShortNamesCache
 
 	public Collection<ClassDescriptor> getJetClassesDescriptors(@NotNull Condition<String> acceptedShortNameCondition, @NotNull NapileFile jetFile)
 	{
-		BindingContext context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(jetFile).getBindingContext();
+		BindingContext context = Analyzer.analyzeAll(jetFile).getBindingContext();
 		Collection<ClassDescriptor> classDescriptors = new ArrayList<ClassDescriptor>();
 
 		for(String fqName : NapileFullClassNameIndex.getInstance().getAllKeys(project))

@@ -35,7 +35,7 @@ import org.napile.compiler.codegen.CompilationErrorHandler;
 import org.napile.compiler.codegen.GenerationState;
 import org.napile.compiler.codegen.Progress;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Result;
@@ -139,7 +139,7 @@ public class TextBytecodeToolwindow extends JPanel implements Disposable
 		GenerationState state;
 		try
 		{
-			AnalyzeExhaust binding = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(file);
+			AnalyzeExhaust binding = Analyzer.analyzeAll(file);
 			//            AnalyzingUtils.throwExceptionOnErrors(binding);
 			if(binding.isError())
 			{

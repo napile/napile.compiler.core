@@ -23,7 +23,7 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.completion.DescriptorLookupConverter;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
@@ -67,7 +67,7 @@ public class JetSimpleNameReference extends JetPsiReference
 	@Override
 	public Object[] getVariants()
 	{
-		BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) myExpression.getContainingFile()).getBindingContext();
+		BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) myExpression.getContainingFile()).getBindingContext();
 
 		return DescriptorLookupConverter.collectLookupElements(bindingContext, TipsManager.getReferenceVariants(myExpression, bindingContext));
 	}

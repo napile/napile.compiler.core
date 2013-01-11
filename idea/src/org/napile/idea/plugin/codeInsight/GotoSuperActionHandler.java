@@ -37,7 +37,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.JetBundle;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.CodeInsightActionHandler;
 import com.intellij.codeInsight.navigation.NavigationUtil;
 import com.intellij.codeInsight.navigation.actions.GotoSuperAction;
@@ -72,7 +72,7 @@ public class GotoSuperActionHandler implements CodeInsightActionHandler
 		if(funOrClass == null)
 			return;
 
-		final BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) file).getBindingContext();
+		final BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) file).getBindingContext();
 
 		final DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, funOrClass);
 

@@ -32,7 +32,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.render.DescriptorRenderer;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.ide.structureView.StructureViewTreeElement;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
@@ -132,7 +132,7 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		{
 			final NapileFile jetFile = (NapileFile) myElement;
 
-			context = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(jetFile).getBindingContext();
+			context = Analyzer.analyzeAll(jetFile).getBindingContext();
 
 			return wrapDeclarations(jetFile.getDeclarations());
 		}

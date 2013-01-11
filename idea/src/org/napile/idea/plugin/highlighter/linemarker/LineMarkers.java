@@ -41,7 +41,7 @@ import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
@@ -69,7 +69,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					NapileElement napileElement = (NapileElement) element;
-					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileElement.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(napileElement.getContainingFile());
 
 					DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
 					if(!isValidCallable(descriptor))
@@ -109,7 +109,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					NapileMethod napileMethod = (NapileMethod) element;
-					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileMethod.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(napileMethod.getContainingFile());
 
 					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
 
@@ -179,7 +179,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					final NapileClass napileClass = (NapileClass) element;
-					AnalyzeExhaust analyzeExhaust = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(napileClass.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(napileClass.getContainingFile());
 
 					BindingContext bindingContext = analyzeExhaust.getBindingContext();
 					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);

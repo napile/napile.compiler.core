@@ -34,7 +34,7 @@ import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.idea.plugin.completion.weigher.JetCompletionSorting;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import org.napile.idea.plugin.references.JetSimpleNameReference;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -88,7 +88,7 @@ public class JetCompletionContributor extends CompletionContributor
 				if(jetReference != null)
 				{
 
-					BindingContext jetContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) position.getContainingFile()).getBindingContext();
+					BindingContext jetContext = Analyzer.analyzeAll((NapileFile) position.getContainingFile()).getBindingContext();
 
 					JetScope scope = jetContext.get(BindingContext.RESOLUTION_SCOPE, jetReference.getExpression());
 					session.inDescriptor = scope != null ? scope.getContainingDeclaration() : null;
@@ -284,7 +284,7 @@ public class JetCompletionContributor extends CompletionContributor
 	@NotNull
 	private static LookupElement[] getReferenceVariants(@NotNull JetSimpleNameReference reference, @NotNull final CompletionResultSet result, @NotNull final CompletionSession session)
 	{
-		BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) reference.getExpression().getContainingFile()).getBindingContext();
+		BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) reference.getExpression().getContainingFile()).getBindingContext();
 
 		Collection<DeclarationDescriptor> descriptors = TipsManager.getReferenceVariants(reference.getExpression(), bindingContext);
 

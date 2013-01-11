@@ -36,7 +36,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import org.napile.idea.plugin.quickfix.JetIntentionActionFactory;
 import org.napile.idea.plugin.quickfix.QuickFixes;
 import com.google.common.collect.Sets;
@@ -129,7 +129,7 @@ public class JetPsiChecker implements Annotator
 
 			try
 			{
-				BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(file).getBindingContext();
+				BindingContext bindingContext = Analyzer.analyzeAll(file).getBindingContext();
 
 				boolean isInContent = ProjectFileIndex.SERVICE.getInstance(element.getProject()).isInContent(file.getVirtualFile());
 				if(errorReportingEnabled && isInContent)

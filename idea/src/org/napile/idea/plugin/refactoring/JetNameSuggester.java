@@ -35,7 +35,7 @@ import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ArrayUtil;
@@ -79,7 +79,7 @@ public class JetNameSuggester
 	{
 		ArrayList<String> result = new ArrayList<String>();
 
-		BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile((NapileFile) expression.getContainingFile());
+		BindingContext bindingContext = Analyzer.analyze((NapileFile) expression.getContainingFile()).getBindingContext();
 		JetType jetType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression);
 		if(jetType != null)
 		{

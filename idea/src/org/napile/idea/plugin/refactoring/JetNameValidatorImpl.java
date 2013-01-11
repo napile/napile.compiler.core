@@ -26,7 +26,7 @@ import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.PsiElement;
@@ -109,7 +109,7 @@ public class JetNameValidatorImpl implements JetNameValidator
 	{
 		if(myBindingContext == null)
 		{
-			myBindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) myContainer.getContainingFile()).getBindingContext();
+			myBindingContext = Analyzer.analyzeAll((NapileFile) myContainer.getContainingFile()).getBindingContext();
 		}
 		final Ref<Boolean> result = new Ref<Boolean>(true);
 		NapileVisitorVoid visitor = new NapileVisitorVoid()

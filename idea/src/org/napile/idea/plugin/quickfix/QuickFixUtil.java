@@ -25,7 +25,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.extapi.psi.ASTDelegatePsiElement;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -63,7 +63,7 @@ public class QuickFixUtil
 		PsiFile file = declaration.getContainingFile();
 		if(!(file instanceof NapileFile))
 			return null;
-		BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile((NapileFile) file);
+		BindingContext bindingContext = Analyzer.analyze((NapileFile) file).getBindingContext();
 		DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
 		if(!(descriptor instanceof CallableDescriptor))
 			return null;

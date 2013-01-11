@@ -26,7 +26,7 @@ import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.render.DescriptorRenderer;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.lang.java.JavaDocumentationProvider;
 import com.intellij.psi.PsiElement;
@@ -52,7 +52,7 @@ public class JetQuickDocumentationProvider extends AbstractDocumentationProvider
 		PsiElement declarationPsiElement = PsiTreeUtil.getParentOfType(originalElement, NapileDeclaration.class);
 		if(ref != null || declarationPsiElement != null)
 		{
-			BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) originalElement.getContainingFile()).getBindingContext();
+			BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) originalElement.getContainingFile()).getBindingContext();
 
 			if(ref != null)
 			{

@@ -44,7 +44,7 @@ import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
-import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
+import org.napile.idea.plugin.module.Analyzer;
 import org.napile.idea.plugin.refactoring.JetIntroduceHandlerBase;
 import org.napile.idea.plugin.refactoring.JetNameSuggester;
 import org.napile.idea.plugin.refactoring.JetNameValidatorImpl;
@@ -146,7 +146,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				return;
 			}
 		}
-		BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile((NapileFile) expression.getContainingFile());
+		BindingContext bindingContext = Analyzer.analyze((NapileFile) expression.getContainingFile()).getBindingContext();
 		final JetType expressionType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression); //can be null or error type
 		JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, expression);
 		if(scope != null)
@@ -504,7 +504,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 
 		final ArrayList<NapileExpression> result = new ArrayList<NapileExpression>();
 
-		final BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile((NapileFile) expression.getContainingFile());
+		final BindingContext bindingContext = Analyzer.analyze((NapileFile) expression.getContainingFile()).getBindingContext();
 
 		NapileVisitorVoid visitor = new NapileVisitorVoid()
 		{

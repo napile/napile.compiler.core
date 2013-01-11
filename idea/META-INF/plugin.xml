@@ -49,7 +49,6 @@
 
 	<extensions defaultExtensionNs="com.intellij">
 		<applicationService serviceInterface="org.napile.compiler.lang.psi.stubs.elements.StubIndexService" serviceImplementation="org.napile.idea.plugin.stubindex.StubIndexServiceImpl"/>
-		<projectService serviceInterface="org.napile.compiler.lang.resolve.NapileFilesProvider" serviceImplementation="org.napile.idea.plugin.project.PluginJetFilesProvider"/>
 
 		<projectService serviceInterface="org.napile.idea.plugin.caches.JetShortNamesCache" serviceImplementation="org.napile.idea.plugin.caches.JetShortNamesCache" />
 
@@ -120,6 +119,9 @@
 
 		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>
 		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.DebugInfoAnnotator"/>
+
+		<moduleType id="NAPILE_MODULE" implementationClass="org.napile.idea.plugin.module.type.NapileModuleType" />
+		<moduleConfigurationEditorProvider implementation="org.napile.idea.plugin.module.type.DefaultModuleEditorsProvider" />
 
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetStatementGroupSelectioner"/>
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetCodeBlockSelectioner"/>

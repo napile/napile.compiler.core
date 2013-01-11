@@ -27,7 +27,7 @@ import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.render.DescriptorRenderer;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.hint.HintManagerImpl;
 import com.intellij.codeInsight.hint.HintUtil;
@@ -89,7 +89,7 @@ public class DeclarationHintSupport extends AbstractProjectComponent
 			NapileNamedDeclaration declaration = PsiTreeUtil.getParentOfType(elementAtCursor, NapileNamedDeclaration.class);
 			if(declaration != null && declaration.getNameIdentifier() == elementAtCursor)
 			{
-				BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile(jetFile).getBindingContext();
+				BindingContext bindingContext = Analyzer.analyzeAll(jetFile).getBindingContext();
 
 				DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
 

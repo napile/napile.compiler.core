@@ -36,7 +36,7 @@ import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.template.Expression;
@@ -72,7 +72,7 @@ public abstract class BaseJetVariableMacro extends Macro
 		if(contextExpression == null)
 			return null;
 
-		BindingContext bc = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) psiFile).getBindingContext();
+		BindingContext bc = Analyzer.analyzeAll((NapileFile) psiFile).getBindingContext();
 		JetScope scope = bc.get(BindingContext.RESOLUTION_SCOPE, contextExpression);
 		if(scope == null)
 		{

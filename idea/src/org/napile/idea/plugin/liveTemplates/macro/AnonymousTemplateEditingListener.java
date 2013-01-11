@@ -27,7 +27,7 @@ import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.codeInsight.ImplementMethodsHandler;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.template.Template;
 import com.intellij.codeInsight.template.TemplateEditingAdapter;
 import com.intellij.codeInsight.template.impl.TemplateManagerImpl;
@@ -70,7 +70,7 @@ class AnonymousTemplateEditingListener extends TemplateEditingAdapter
 		{
 			NapileReferenceExpression ref = (NapileReferenceExpression) name.getParent();
 
-			BindingContext bc = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) psiFile).getBindingContext();
+			BindingContext bc = Analyzer.analyzeAll((NapileFile) psiFile).getBindingContext();
 			DeclarationDescriptor descriptor = bc.get(BindingContext.REFERENCE_TARGET, ref);
 			if(descriptor instanceof ClassDescriptor)
 			{

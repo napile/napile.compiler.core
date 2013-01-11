@@ -32,7 +32,7 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.JetBundle;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.template.Expression;
@@ -102,7 +102,7 @@ public class JetAnonymousSuperMacro extends Macro
 		if(!(psiFile instanceof NapileFile))
 			return null;
 
-		BindingContext bc = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) psiFile).getBindingContext();
+		BindingContext bc = Analyzer.analyzeAll((NapileFile) psiFile).getBindingContext();
 		NapileExpression expression = PsiTreeUtil.getParentOfType(psiFile.findElementAt(context.getStartOffset()), NapileExpression.class);
 		JetScope scope = bc.get(BindingContext.RESOLUTION_SCOPE, expression);
 		if(scope == null)

@@ -29,7 +29,6 @@ import org.napile.compiler.lang.parsing.NapileParserDefinition;
 import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.impl.file.NXmlFileViewProviderFactory;
-import org.napile.compiler.lang.resolve.NapileFilesProvider;
 import com.intellij.core.CoreApplicationEnvironment;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.mock.MockApplication;
@@ -79,7 +78,6 @@ public class JetCoreEnvironment
 
 
 		final MockProject project = projectEnvironment.getProject();
-		project.registerService(NapileFilesProvider.class, new CompilerFilesProvider(this));
 
 		for(File path : configuration.getList(CompilerConfigurationKeys.CLASSPATH_KEY))
 			addToClasspath(path);
@@ -174,7 +172,7 @@ public class JetCoreEnvironment
 			throw new CompileEnvironmentException("File/directory not found: " + path);
 
 		if(!vFile.isDirectory() && vFile.getFileType() != NapileFileType.INSTANCE)
-			throw new CompileEnvironmentException("Not a Kotlin file: " + path);
+			throw new CompileEnvironmentException("Not a Napile file: " + path);
 
 		addSources(new File(path));
 	}

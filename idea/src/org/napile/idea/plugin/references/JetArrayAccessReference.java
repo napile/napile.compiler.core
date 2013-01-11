@@ -31,7 +31,7 @@ import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.project.WholeProjectAnalyzerFacade;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.MultiRangeReference;
@@ -68,7 +68,7 @@ class JetArrayAccessReference extends JetPsiReference implements MultiRangeRefer
 	@Override
 	protected PsiElement doResolve()
 	{
-		BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) getElement().getContainingFile()).getBindingContext();
+		BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) getElement().getContainingFile()).getBindingContext();
 		ResolvedCall<MethodDescriptor> getFunction = bindingContext.get(INDEXED_LVALUE_GET, expression);
 		ResolvedCall<MethodDescriptor> setFunction = bindingContext.get(INDEXED_LVALUE_SET, expression);
 		if(getFunction != null && setFunction != null)
@@ -81,7 +81,7 @@ class JetArrayAccessReference extends JetPsiReference implements MultiRangeRefer
 	@Override
 	protected ResolveResult[] doMultiResolve()
 	{
-		BindingContext bindingContext = WholeProjectAnalyzerFacade.analyzeProjectWithCacheOnAFile((NapileFile) getElement().getContainingFile()).getBindingContext();
+		BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) getElement().getContainingFile()).getBindingContext();
 		ResolvedCall<MethodDescriptor> getFunction = bindingContext.get(INDEXED_LVALUE_GET, expression);
 		ResolvedCall<MethodDescriptor> setFunction = bindingContext.get(INDEXED_LVALUE_SET, expression);
 		if(getFunction == null || setFunction == null)

@@ -33,7 +33,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
-import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.Editor;
@@ -163,7 +163,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 
 	private static boolean hasPublicMemberDiagnostic(@NotNull NapileNamedDeclaration declaration)
 	{
-		BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile((NapileFile) declaration.getContainingFile());
+		BindingContext bindingContext = Analyzer.analyze((NapileFile) declaration.getContainingFile()).getBindingContext();
 		for(Diagnostic diagnostic : bindingContext.getDiagnostics())
 		{
 			//noinspection ConstantConditions
@@ -178,7 +178,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 	@NotNull
 	private static JetType getTypeForDeclaration(@NotNull NapileNamedDeclaration declaration)
 	{
-		BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile((NapileFile) declaration.getContainingFile());
+		BindingContext bindingContext = Analyzer.analyze((NapileFile) declaration.getContainingFile()).getBindingContext();
 		DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
 
 		JetType type;

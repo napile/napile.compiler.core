@@ -29,7 +29,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.idea.plugin.JetBundle;
-import org.napile.idea.plugin.project.AnalyzeSingleFileUtil;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
@@ -83,7 +83,7 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<NapileModifi
 
 	private NapileKeywordToken findVisibilityChangeTo(NapileFile file)
 	{
-		BindingContext bindingContext = AnalyzeSingleFileUtil.getContextForSingleFile(file);
+		BindingContext bindingContext = Analyzer.analyze(file).getBindingContext();
 		DeclarationDescriptor descriptor;
 		descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
 
