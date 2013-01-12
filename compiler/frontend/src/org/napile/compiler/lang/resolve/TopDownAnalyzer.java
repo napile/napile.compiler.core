@@ -166,6 +166,7 @@ public class TopDownAnalyzer
 
 
 
+	@Deprecated
 	public static void processClassOrObject(@NotNull Project project, @NotNull final BindingTrace trace, @NotNull JetScope outerScope, @NotNull final DeclarationDescriptor containingDeclaration, @NotNull NapileClassLike object)
 	{
 		ModuleDescriptor moduleDescriptor = new ModuleDescriptor(Name.special("<dummy for object>"));

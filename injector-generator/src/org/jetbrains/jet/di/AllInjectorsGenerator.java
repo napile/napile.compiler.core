@@ -34,31 +34,17 @@ import com.intellij.openapi.project.Project;
 /**
  * @author abreslav
  */
-// NOTE: After making changes, you need to re-generate the injectors.
-//       To do that, you can run either this class, or /build.xml/generateInjectors task
 public class AllInjectorsGenerator
 {
 
 	public static void main(String[] args) throws IOException
 	{
 		generateInjectorForTopDownAnalyzerBasic();
-
-		generateMacroInjector();
-
-		generateInjectorForBodyResolve();
 	}
 
 	private static void generateInjectorForTopDownAnalyzerBasic() throws IOException
 	{
 		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
-		generateInjectorForTopDownAnalyzerCommon(generator);
-
-		generator.addField(NamespaceFactoryImpl.class);
-		generator.generate("compiler/frontend/src", "org.napile.compiler.di", "InjectorForTopDownAnalyzerBasic");
-	}
-
-	private static void generateInjectorForTopDownAnalyzerCommon(DependencyInjectorGenerator generator)
-	{
 		// Fields
 		generator.addPublicField(TopDownAnalyzer.class);
 		generator.addPublicField(TopDownAnalysisContext.class);
@@ -66,37 +52,15 @@ public class AllInjectorsGenerator
 		generator.addPublicField(ControlFlowAnalyzer.class);
 		generator.addPublicField(DeclarationsChecker.class);
 		generator.addPublicField(DescriptorResolver.class);
+		generator.addPublicField(ExpressionTypingServices.class);
 
 		// Parameters
 		generator.addPublicParameter(Project.class);
 		generator.addPublicParameter(TopDownAnalysisParameters.class);
 		generator.addPublicParameter(BindingTrace.class);
 		generator.addParameter(ModuleDescriptor.class);
-	}
 
-	private static void generateMacroInjector() throws IOException
-	{
-		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
-
-		// Fields
-		generator.addPublicField(ExpressionTypingServices.class);
-
-		// Parameters
-		generator.addPublicParameter(Project.class);
-
-		generator.generate("compiler/frontend/src", "org.napile.compiler.di", "InjectorForMacros");
-	}
-
-	private static void generateInjectorForBodyResolve() throws IOException
-	{
-		DependencyInjectorGenerator generator = new DependencyInjectorGenerator(false);
-		// Fields
-		generator.addPublicField(BodyResolver.class);
-
-		// Parameters
-		generator.addPublicParameter(Project.class);
-		generator.addPublicParameter(TopDownAnalysisParameters.class);
-		generator.addPublicParameter(BindingTrace.class);
-		generator.generate("compiler/frontend/src", "org.napile.compiler.di", "InjectorForBodyResolve");
+		generator.addField(NamespaceFactoryImpl.class);
+		generator.generate("compiler/frontend/src", "org.napile.compiler.di", "InjectorForTopDownAnalyzerBasic");
 	}
 }

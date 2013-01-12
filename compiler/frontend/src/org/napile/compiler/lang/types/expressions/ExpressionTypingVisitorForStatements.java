@@ -34,7 +34,6 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
-import org.napile.compiler.lang.resolve.TopDownAnalyzer;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResultsUtil;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -80,7 +79,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	@Override
 	public JetTypeInfo visitAnonymClass(NapileAnonymClass declaration, ExpressionTypingContext context)
 	{
-		TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), declaration);
+		//TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), declaration);
 
 		return DataFlowUtils.checkStatementType(declaration, context, context.dataFlowInfo);
 	}
@@ -107,12 +106,12 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	@Override
 	public JetTypeInfo visitClass(NapileClass klass, ExpressionTypingContext context)
 	{
-		TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), klass);
+		//TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), klass);
 		ClassDescriptor classDescriptor = context.trace.getBindingContext().get(BindingContext.CLASS, klass);
-		if(classDescriptor != null)
+		/*if(classDescriptor != null)
 		{
 			scope.addClassifierDescriptor(classDescriptor);
-		}
+		} */
 		return DataFlowUtils.checkStatementType(klass, context, context.dataFlowInfo);
 	}
 

@@ -24,24 +24,18 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.di.InjectorForMacros;
+import org.napile.compiler.analyzer.AnalyzeExhaust;
+import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingTraceContext;
-import org.napile.compiler.lang.resolve.ObservableBindingTrace;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
 import org.napile.idea.plugin.module.Analyzer;
@@ -157,9 +151,12 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				dataFlowInfo = DataFlowInfo.EMPTY;
 			}
 
-			ObservableBindingTrace bindingTrace = new ObservableBindingTrace(new BindingTraceContext());
-			InjectorForMacros injector = new InjectorForMacros(project);
-			JetType typeNoExpectedType = injector.getExpressionTypingServices().getType(scope, expression, TypeUtils.NO_EXPECTED_TYPE, dataFlowInfo, bindingTrace);
+			AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(expression.getContainingFile());
+			InjectorForTopDownAnalyzerBasic injector = analyzeExhaust.getInjector();
+			if(injector == null)
+				return;
+
+			JetType typeNoExpectedType = injector.getExpressionTypingServices().getType(scope, expression, TypeUtils.NO_EXPECTED_TYPE, dataFlowInfo, injector.getBindingTrace());
 			if(expressionType != null && typeNoExpectedType != null && !JetTypeChecker.INSTANCE.equalTypes(expressionType, typeNoExpectedType))
 			{
 				noTypeInference = true;

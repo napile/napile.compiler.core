@@ -18,6 +18,7 @@ package org.napile.compiler.analyzer;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 
@@ -32,22 +33,25 @@ public class AnalyzeExhaust
 
 	@NotNull
 	private final BodiesResolveContext bodiesResolveContext;
+	@Nullable
+	private final InjectorForTopDownAnalyzerBasic injector;
 
-	private AnalyzeExhaust(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, @Nullable Throwable error)
+	private AnalyzeExhaust(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, @Nullable Throwable error, InjectorForTopDownAnalyzerBasic analyzerBasic)
 	{
 		this.bindingContext = bindingContext;
 		this.error = error;
 		this.bodiesResolveContext = bodiesResolveContext;
+		this.injector = analyzerBasic;
 	}
 
-	public static AnalyzeExhaust success(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext)
+	public static AnalyzeExhaust success(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, InjectorForTopDownAnalyzerBasic analyzerBasic)
 	{
-		return new AnalyzeExhaust(bindingContext, bodiesResolveContext, null);
+		return new AnalyzeExhaust(bindingContext, bodiesResolveContext, null, analyzerBasic);
 	}
 
 	public static AnalyzeExhaust error(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, @NotNull Throwable error)
 	{
-		return new AnalyzeExhaust(bindingContext, bodiesResolveContext, error);
+		return new AnalyzeExhaust(bindingContext, bodiesResolveContext, error, null);
 	}
 
 	@NotNull
@@ -79,5 +83,11 @@ public class AnalyzeExhaust
 		{
 			throw new IllegalStateException("failed to analyze: " + error, error);
 		}
+	}
+
+	@Nullable
+	public InjectorForTopDownAnalyzerBasic getInjector()
+	{
+		return injector;
 	}
 }

@@ -18,10 +18,6 @@ package org.napile.compiler.lang.types.expressions;
 
 import static org.napile.compiler.lang.diagnostics.Errors.CANNOT_INFER_PARAMETER_TYPE;
 import static org.napile.compiler.lang.resolve.BindingContext.AUTO_CREATED_IT;
-import static org.napile.compiler.lang.resolve.BindingContext.CLASS;
-import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
-import static org.napile.compiler.lang.resolve.BindingContext.PROCESSED;
-import static org.napile.compiler.lang.resolve.BindingContext.TRACE_DELTAS_CACHE;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -43,14 +39,10 @@ import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
-import org.napile.compiler.lang.resolve.BindingTraceContext;
-import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
-import org.napile.compiler.lang.resolve.ObservableBindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
-import org.napile.compiler.lang.resolve.TopDownAnalyzer;
+import org.napile.compiler.lang.resolve.processors.AnonymClassResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
@@ -58,11 +50,9 @@ import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.JetTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
-import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import com.intellij.psi.PsiElement;
 
 /**
  * @author abreslav
@@ -70,57 +60,23 @@ import com.intellij.psi.PsiElement;
  */
 public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 {
-	protected ClosureExpressionsTypingVisitor(@NotNull ExpressionTypingInternals facade)
+	@NotNull
+	private final AnonymClassResolver anonymClassResolver;
+
+	protected ClosureExpressionsTypingVisitor(@NotNull ExpressionTypingInternals facade, @NotNull ExpressionTypingServices services)
 	{
 		super(facade);
+		anonymClassResolver = services.getAnonymClassResolver();
 	}
 
 	@Override
 	public JetTypeInfo visitAnonymClassExpression(final NapileAnonymClassExpression expression, final ExpressionTypingContext context)
 	{
-		DelegatingBindingTrace delegatingBindingTrace = context.trace.get(TRACE_DELTAS_CACHE, expression.getAnonymClass());
-		if(delegatingBindingTrace != null)
-		{
-			delegatingBindingTrace.addAllMyDataTo(context.trace);
-			JetType type = context.trace.get(EXPRESSION_TYPE, expression);
-			return DataFlowUtils.checkType(type, expression, context, context.dataFlowInfo);
-		}
-		final JetType[] result = new JetType[1];
-		final TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(context.trace);
-		ObservableBindingTrace.RecordHandler<PsiElement, ClassDescriptor> handler = new ObservableBindingTrace.RecordHandler<PsiElement, ClassDescriptor>()
-		{
+		ClassDescriptor classDescriptor = context.trace.get(BindingContext.CLASS, expression.getAnonymClass());
+		if(classDescriptor == null)
+			classDescriptor = anonymClassResolver.resolveAnonymClass(context.scope.getContainingDeclaration(), context.scope, context.trace, expression.getAnonymClass());
 
-			@Override
-			public void handleRecord(WritableSlice<PsiElement, ClassDescriptor> slice, PsiElement declaration, final ClassDescriptor descriptor)
-			{
-				if(slice == CLASS && declaration == expression.getAnonymClass())
-				{
-					JetType defaultType = DeferredType.create(context.trace, new LazyValueWithDefault<JetType>(ErrorUtils.createErrorType("Recursive dependency"))
-					{
-						@Override
-						protected JetType compute()
-						{
-							return descriptor.getDefaultType();
-						}
-					});
-					result[0] = defaultType;
-					if(!context.trace.get(PROCESSED, expression))
-					{
-						temporaryTrace.record(EXPRESSION_TYPE, expression, defaultType);
-						temporaryTrace.record(PROCESSED, expression);
-					}
-				}
-			}
-		};
-		ObservableBindingTrace traceAdapter = new ObservableBindingTrace(temporaryTrace);
-		traceAdapter.addHandler(CLASS, handler);
-		TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), traceAdapter, context.scope, context.scope.getContainingDeclaration(), expression.getAnonymClass());
-
-		DelegatingBindingTrace cloneDelta = new DelegatingBindingTrace(new BindingTraceContext().getBindingContext());
-		temporaryTrace.addAllMyDataTo(cloneDelta);
-		context.trace.record(TRACE_DELTAS_CACHE, expression.getAnonymClass(), cloneDelta);
-		temporaryTrace.commit();
-		return DataFlowUtils.checkType(result[0], expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(classDescriptor.getDefaultType(), expression, context, context.dataFlowInfo);
 	}
 
 	@Override

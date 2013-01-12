@@ -66,7 +66,7 @@ public class Analyzer
 	private static final Key<CachedValue<AnalyzeExhaust>> ANALYZE_EXHAUST_FULL = Key.create("ANALYZE_EXHAUST_FULL");
 	private static final Key<ModuleCollectFileFunction> TEST_PROVIDER_KEY = Key.create("napile-provider-test-key");
 
-	private static final AnalyzeExhaust EMPTY = AnalyzeExhaust.success(BindingContext.EMPTY, BodiesResolveContext.EMPTY);
+	private static final AnalyzeExhaust EMPTY = AnalyzeExhaust.success(BindingContext.EMPTY, BodiesResolveContext.EMPTY, null);
 	private static final Object lock = new Object();
 
 	private static final Function<NapileFile, Collection<NapileFile>> EMPTY_PROVIDER = new Function<NapileFile, Collection<NapileFile>>()

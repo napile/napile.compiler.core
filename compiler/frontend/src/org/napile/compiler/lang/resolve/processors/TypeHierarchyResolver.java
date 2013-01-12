@@ -230,7 +230,7 @@ public class TypeHierarchyResolver
 				@Override
 				public void visitAnonymClass(NapileAnonymClass declaration)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), NapilePsiUtil.isStatic(declaration));
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), false);
 					context.getAnonymous().put(declaration, mutableClassDescriptor);
 
 					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
@@ -303,12 +303,12 @@ public class TypeHierarchyResolver
 			descriptorResolver.resolveSupertypesForMutableClassDescriptor(napileClass, descriptor, trace);
 		}
 
-		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-		{
-			NapileClassLike anonymClass = entry.getKey();
-			MutableClassDescriptor descriptor = entry.getValue();
-			descriptorResolver.resolveSupertypesForMutableClassDescriptor(anonymClass, descriptor, trace);
-		}
+		//for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
+		//{
+		//	NapileClassLike anonymClass = entry.getKey();
+		//	MutableClassDescriptor descriptor = entry.getValue();
+		//	descriptorResolver.resolveSupertypesForMutableClassDescriptor(anonymClass, descriptor, trace);
+		//}
 
 		for(Map.Entry<NapileEnumValue, MutableClassDescriptor> entry : context.getEnumValues().entrySet())
 		{

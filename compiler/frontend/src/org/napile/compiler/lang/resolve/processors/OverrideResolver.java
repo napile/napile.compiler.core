@@ -105,7 +105,7 @@ public class OverrideResolver
 	{
 		Set<MutableClassDescriptor> ourClasses = new HashSet<MutableClassDescriptor>();
 		ourClasses.addAll(context.getClasses().values());
-		ourClasses.addAll(context.getAnonymous().values());
+		//ourClasses.addAll(context.getAnonymous().values());
 		ourClasses.addAll(context.getEnumValues().values());
 
 		Set<ClassifierDescriptor> processed = new HashSet<ClassifierDescriptor>();
@@ -141,7 +141,7 @@ public class OverrideResolver
 		doGenerateOverridesInAClass(classDescriptor);
 	}
 
-	private void doGenerateOverridesInAClass(final MutableClassDescriptor classDescriptor)
+	public void doGenerateOverridesInAClass(final MutableClassDescriptor classDescriptor)
 	{
 		List<CallableMemberDescriptor> membersFromSupertypes = getCallableMembersFromSupertypes(classDescriptor);
 
@@ -353,8 +353,8 @@ public class OverrideResolver
 	{
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
 			checkOverridesInAClass(entry.getValue(), entry.getKey());
-		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-			checkOverridesInAClass(entry.getValue(), entry.getKey());
+		//for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
+		//	checkOverridesInAClass(entry.getValue(), entry.getKey());
 	}
 
 	protected void checkOverridesInAClass(@NotNull MutableClassDescriptor classDescriptor, @NotNull NapileClassLike klass)
@@ -599,7 +599,7 @@ public class OverrideResolver
 	private void checkParameterOverridesForAllClasses()
 	{
 		List<MutableClassDescriptor> allClasses = Lists.newArrayList(context.getClasses().values());
-		allClasses.addAll(context.getAnonymous().values());
+		//allClasses.addAll(context.getAnonymous().values());
 		for(MutableClassDescriptor classDescriptor : allClasses)
 		{
 			Collection<CallableMemberDescriptor> members = classDescriptor.getAllCallableMembers();
@@ -610,7 +610,7 @@ public class OverrideResolver
 		}
 	}
 
-	private void checkOverridesForParameters(CallableMemberDescriptor declared)
+	public void checkOverridesForParameters(CallableMemberDescriptor declared)
 	{
 		boolean fakeOverride = declared.getKind() == CallableMemberDescriptor.Kind.FAKE_OVERRIDE;
 		if(!fakeOverride)

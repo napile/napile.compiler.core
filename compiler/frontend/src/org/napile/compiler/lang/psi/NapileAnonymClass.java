@@ -120,11 +120,11 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 		return list != null ? list.getDelegationSpecifiers() : Collections.<NapileDelegationToSuperCall>emptyList();
 	}
 
-	@Nullable
+	@NotNull
 	@Override
 	public Name getNameAsName()
 	{
-		return null;
+		return FQ_NAME.shortName();
 	}
 
 	@Override
@@ -172,6 +172,6 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 	@Override
 	public Name getNameAsSafeName()
 	{
-		throw new IllegalArgumentException();
+		return getNameAsName();
 	}
 }

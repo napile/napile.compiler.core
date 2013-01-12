@@ -31,16 +31,16 @@ import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.idea.plugin.caches.JetShortNamesCache;
 import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler;
@@ -187,8 +187,16 @@ public enum LineMarkers
 						return Collections.emptyList();
 					List<NapileElement> result = new ArrayList<NapileElement>();
 
-					Map<NapileClassLike, ClassDescriptor> res = JetShortNamesCache.getInstance(napileClass.getProject()).getAllClassesAndDescriptors(napileClass, napileClass.getResolveScope());
-					for(Map.Entry<NapileClassLike, ClassDescriptor> entry : res.entrySet())
+					for(Map.Entry<NapileClass, MutableClassDescriptor> entry : analyzeExhaust.getBodiesResolveContext().getClasses().entrySet())
+					{
+						if(entry.getValue() == classDeclaration)
+							continue;
+
+						if(DescriptorUtils.isSubclass(entry.getValue(), classDeclaration))
+							result.add(entry.getKey());
+					}
+
+					for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : analyzeExhaust.getBodiesResolveContext().getAnonymous().entrySet())
 					{
 						if(entry.getValue() == classDeclaration)
 							continue;

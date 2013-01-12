@@ -35,7 +35,6 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
-import org.napile.compiler.lang.resolve.JetVisibilityChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
@@ -471,7 +470,8 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 					if(methodDescriptor.getName().equals(refName))
 					{
 						//todo: renamed functions?
-						if(placeDescriptor != null && !JetVisibilityChecker.isVisible(placeDescriptor, methodDescriptor))
+						// TODO : stub implementation
+						if(placeDescriptor != null && !true)
 							continue;
 						itemsToShow.add(methodDescriptor);
 					}
@@ -484,7 +484,8 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 						//todo: renamed classes?
 						for(ConstructorDescriptor constructorDescriptor : classDescriptor.getConstructors())
 						{
-							if(placeDescriptor != null && !JetVisibilityChecker.isVisible(placeDescriptor, constructorDescriptor))
+							// TODO : stub implementation
+							if(placeDescriptor != null && !true)
 							{
 								continue;
 							}

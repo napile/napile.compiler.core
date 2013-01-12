@@ -53,7 +53,7 @@ public class AnalyzerFacade
 		{
 			injector.getTopDownAnalyzer().analyzeFiles(files);
 
-			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()));
+			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()), injector);
 		}
 		finally
 		{

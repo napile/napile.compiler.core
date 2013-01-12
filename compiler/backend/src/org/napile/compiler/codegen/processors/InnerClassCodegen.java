@@ -20,9 +20,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.AsmConstants;
 import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.MethodNode;
+import org.napile.asm.tree.members.MethodParameterNode;
+import org.napile.asm.tree.members.VariableNode;
+import org.napile.asm.tree.members.bytecode.VariableRef;
+import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
+import org.napile.asm.tree.members.bytecode.impl.PutToVariableInstruction;
+import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -44,12 +53,54 @@ public class InnerClassCodegen
 
 		FqName fqName = gen.bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, anonymClass);
 
-		ClassNode anonymClassNode = new ClassNode(Modifier.EMPTY, fqName);
+		ClassNode anonymClassNode = new ClassNode(Modifier.list(Modifier.FINAL, Modifier.STATIC), fqName);
 		gen.classNode.addMember(anonymClassNode);
 
-		List<ClassDescriptor> classLikes = new ArrayList<ClassDescriptor>(1);
+		List<ClassDescriptor> classLikes = findOuterClasses(anonymClass, gen);
+		List<VariableNode> thisVariableNodes = new ArrayList<VariableNode>(classLikes.size());
 
-		PsiElement p = expression.getParent();
+		MethodNode constructorNode = MethodNode.constructor();
+		constructorNode.maxLocals = 1;
+
+		for(ClassDescriptor classDescriptor : classLikes)
+		{
+			TypeNode typeNode = gen.toAsmType(classDescriptor.getDefaultType());
+			Name name = Name.identifier(classDescriptor.getName() + AsmConstants.ANONYM_SPLITTER + "this");
+
+			constructorNode.maxLocals ++;
+			// add parameters to constructor
+			constructorNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, name, typeNode));
+
+			VariableNode variableNode = new VariableNode(Modifier.EMPTY, name, typeNode);
+			anonymClassNode.addMember(variableNode);
+
+			thisVariableNodes.add(variableNode);
+		}
+
+		MethodCodegen.genSuperCalls(constructorNode, anonymClass, gen.bindingTrace, anonymClassNode);
+
+		for(ClassDescriptor classDescriptor : classLikes)
+		{
+			int i = classLikes.indexOf(classDescriptor);
+
+			VariableNode variableNode = thisVariableNodes.get(i);
+
+			constructorNode.instructions.add(new LoadInstruction(0));
+			constructorNode.instructions.add(new LoadInstruction(i + 1));
+			constructorNode.instructions.add(new PutToVariableInstruction(new VariableRef(fqName.child(variableNode.name), variableNode.returnType)));
+		}
+
+		anonymClassNode.addMember(constructorNode);
+
+		gen.instructs.putNull();
+
+		return StackValue.none();
+	}
+
+	private static List<ClassDescriptor> findOuterClasses(PsiElement element, ExpressionCodegen gen)
+	{
+		List<ClassDescriptor> classLikes = new ArrayList<ClassDescriptor>(1);
+		PsiElement p = element.getParent();
 		while(p != null)
 		{
 			DeclarationDescriptor descriptor = gen.bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, p);
@@ -66,12 +117,6 @@ public class InnerClassCodegen
 
 			p = p.getParent();
 		}
-
-		gen.instructs.putNull();
-
-		for(ClassDescriptor n : classLikes)
-			System.out.println(n.getName());
-
-		return StackValue.none();
+		return classLikes;
 	}
 }

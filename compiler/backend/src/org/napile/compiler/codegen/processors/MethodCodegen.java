@@ -79,7 +79,9 @@ public class MethodCodegen
 		// delegation list is empty - if no extends
 		for(NapileDelegationToSuperCall specifier : delegationSpecifiers)
 		{
-			ResolvedCall<? extends CallableDescriptor> call = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
+			ResolvedCall<? extends CallableDescriptor> call = bindingTrace.get(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
+			if(call == null)
+				continue;
 
 			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
 

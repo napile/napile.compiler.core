@@ -111,7 +111,7 @@
 		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Class"/>
 		<liveTemplateContext implementation="org.napile.idea.plugin.liveTemplates.JetTemplateContextType$Expression"/>
 		<defaultLiveTemplatesProvider implementation="org.napile.idea.plugin.liveTemplates.JetLiveTemplatesProvider"/>
-		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetAnyVariableMacro"/>
+
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetFunctionParametersMacro"/>
 		<liveTemplateMacro implementation="org.napile.idea.plugin.liveTemplates.macro.JetAnonymousSuperMacro"/>
 

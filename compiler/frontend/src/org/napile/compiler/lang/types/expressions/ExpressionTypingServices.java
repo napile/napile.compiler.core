@@ -31,9 +31,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -43,6 +44,7 @@ import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
+import org.napile.compiler.lang.resolve.processors.AnonymClassResolver;
 import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -52,11 +54,6 @@ import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.tree.IElementType;
@@ -67,8 +64,7 @@ import com.intellij.psi.util.PsiTreeUtil;
  */
 public class ExpressionTypingServices
 {
-
-	private final ExpressionTypingFacade expressionTypingFacade = ExpressionTypingVisitorDispatcher.create();
+	private ExpressionTypingFacade expressionTypingFacade;
 
 	@NotNull
 	private Project project;
@@ -78,7 +74,8 @@ public class ExpressionTypingServices
 	private DescriptorResolver descriptorResolver;
 	@NotNull
 	private TypeResolver typeResolver;
-
+	@NotNull
+	private AnonymClassResolver anonymClassResolver;
 
 	@NotNull
 	public Project getProject()
@@ -90,6 +87,18 @@ public class ExpressionTypingServices
 	public void setProject(@NotNull Project project)
 	{
 		this.project = project;
+	}
+
+	@Inject
+	public void setAnonymClassResolver(@NotNull AnonymClassResolver anonymClassResolver)
+	{
+		this.anonymClassResolver = anonymClassResolver;
+	}
+
+	@NotNull
+	public AnonymClassResolver getAnonymClassResolver()
+	{
+		return anonymClassResolver;
 	}
 
 	@NotNull
@@ -129,6 +138,14 @@ public class ExpressionTypingServices
 	}
 
 	@NotNull
+	public ExpressionTypingFacade getExpressionTypingFacade()
+	{
+		if(expressionTypingFacade == null)
+			expressionTypingFacade = ExpressionTypingVisitorDispatcher.create(this);
+		return expressionTypingFacade;
+	}
+
+	@NotNull
 	public JetType safeGetType(@NotNull JetScope scope, @NotNull NapileExpression expression, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo, @NotNull BindingTrace trace)
 	{
 		JetType type = getType(scope, expression, expectedType, dataFlowInfo, trace);
@@ -143,7 +160,7 @@ public class ExpressionTypingServices
 	public JetTypeInfo getTypeInfo(@NotNull final JetScope scope, @NotNull NapileExpression expression, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo, @NotNull BindingTrace trace)
 	{
 		ExpressionTypingContext context = ExpressionTypingContext.newContext(this, trace, scope, dataFlowInfo, expectedType, false);
-		return expressionTypingFacade.getTypeInfo(expression, context);
+		return getExpressionTypingFacade().getTypeInfo(expression, context);
 	}
 
 	@Nullable
@@ -155,7 +172,7 @@ public class ExpressionTypingServices
 	public JetType getTypeWithNamespaces(@NotNull final JetScope scope, @NotNull NapileExpression expression, @NotNull BindingTrace trace)
 	{
 		ExpressionTypingContext context = ExpressionTypingContext.newContext(this, trace, scope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, true);
-		return expressionTypingFacade.getTypeInfo(expression, context).getType();
+		return getExpressionTypingFacade().getTypeInfo(expression, context).getType();
 		//        return ((ExpressionTypingContext) ExpressionTyperVisitorWithNamespaces).INSTANCE.getType(expression, ExpressionTypingContext.newRootContext(semanticServices, trace, scope, DataFlowInfo.getEmpty(), TypeUtils.NO_EXPECTED_TYPE, TypeUtils.NO_EXPECTED_TYPE));
 	}
 
@@ -201,7 +218,7 @@ public class ExpressionTypingServices
 		}
 		else
 		{
-			expressionTypingFacade.getTypeInfo(bodyExpression, newContext, !blockBody);
+			getExpressionTypingFacade().getTypeInfo(bodyExpression, newContext, !blockBody);
 		}
 	}
 
@@ -234,7 +251,7 @@ public class ExpressionTypingServices
 		NapileExpression bodyExpression = function.getBodyExpression();
 		assert bodyExpression != null;
 		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(outerScope, methodDescriptor, function, trace);
-		expressionTypingFacade.getTypeInfo(bodyExpression, ExpressionTypingContext.newContext(this, trace, functionInnerScope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false), !function.hasBlockBody());
+		getExpressionTypingFacade().getTypeInfo(bodyExpression, ExpressionTypingContext.newContext(this, trace, functionInnerScope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false), !function.hasBlockBody());
 		//todo function literals
 		final Collection<NapileExpression> returnedExpressions = Lists.newArrayList();
 		if(function.hasBlockBody())
@@ -293,7 +310,7 @@ public class ExpressionTypingServices
 			return JetTypeInfo.create(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), context.dataFlowInfo);
 		}
 
-		ExpressionTypingInternals blockLevelVisitor = ExpressionTypingVisitorDispatcher.createForBlock(scope);
+		ExpressionTypingInternals blockLevelVisitor = ExpressionTypingVisitorDispatcher.createForBlock(scope, this);
 		ExpressionTypingContext newContext = createContext(context, trace, scope, context.dataFlowInfo, TypeUtils.NO_EXPECTED_TYPE);
 
 		JetTypeInfo result = JetTypeInfo.create(null, context.dataFlowInfo);
@@ -384,7 +401,7 @@ public class ExpressionTypingServices
 			{
 				newContext = createContext(newContext, trace, scope, newDataFlowInfo, TypeUtils.NO_EXPECTED_TYPE);
 			}
-			blockLevelVisitor = ExpressionTypingVisitorDispatcher.createForBlock(scope);
+			blockLevelVisitor = ExpressionTypingVisitorDispatcher.createForBlock(scope, this);
 		}
 		return result;
 	}

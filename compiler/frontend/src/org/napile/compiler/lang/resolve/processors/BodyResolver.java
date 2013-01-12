@@ -156,27 +156,34 @@ public class BodyResolver
 	private void resolveDelegationSpecifierLists()
 	{
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : context.getConstructors().entrySet())
-			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getParametersScope());
+			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getParametersScope(), false);
 
-		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
+		// anonym resolved later
+		//for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
+		//	resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
 
 		for(Map.Entry<NapileEnumValue, MutableClassDescriptor> entry : context.getEnumValues().entrySet())
-			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution());
+			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution(), true);
 	}
 
-	private void resolveDelegationSpecifierList(final NapileDelegationSpecifierListOwner jetElement, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull JetScope jetScope)
+	public void resolveDelegationSpecifierList(final NapileDelegationSpecifierListOwner owner, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull JetScope jetScope, boolean canSuperTraitedClass)
 	{
-		if(!context.completeAnalysisNeeded(jetElement))
+		if(!context.completeAnalysisNeeded(owner))
 			return;
 
-		for(NapileDelegationToSuperCall call : jetElement.getDelegationSpecifiers())
+		for(NapileDelegationToSuperCall call : owner.getDelegationSpecifiers())
 		{
 			NapileTypeReference typeReference = call.getTypeReference();
 			if(typeReference == null)
 				continue;
 
-			callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+			if(!canSuperTraitedClass)
+				callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+			else
+			{
+				NapileValueArgumentList valueArgumentList = call.getValueArgumentList();
+				//TODO [VISTALL]
+			}
 		}
 	}
 
@@ -200,7 +207,7 @@ public class BodyResolver
 		}
 	}
 
-	private void resolvePropertyInitializer(NapileVariable property, VariableDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
+	public void resolvePropertyInitializer(NapileVariable property, VariableDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
 	{
 		//JetFlowInformationProvider flowInformationProvider = context.getDescriptorResolver().computeFlowData(property, initializer); // TODO : flow JET-15
 		JetType expectedTypeForInitializer = property.getType() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;
@@ -261,7 +268,7 @@ public class BodyResolver
 	}
 
 
-	private void resolveFunctionBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull JetScope declaringScope)
+	public void resolveFunctionBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull JetScope declaringScope)
 	{
 		if(!context.completeAnalysisNeeded(function))
 			return;
@@ -323,5 +330,11 @@ public class BodyResolver
 				}
 			}
 		}
+	}
+
+	@NotNull
+	public BodiesResolveContext getContext()
+	{
+		return context;
 	}
 }

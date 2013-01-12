@@ -823,8 +823,6 @@ public class JetParsing extends AbstractJetParsing
 
 		if(at(NapileTokens.LPAR))
 			myExpressionParsing.parseValueArgumentList();
-		else
-			error("'(' expected");
 
 		marker.done(DELEGATOR_SUPER_CALL);
 	}

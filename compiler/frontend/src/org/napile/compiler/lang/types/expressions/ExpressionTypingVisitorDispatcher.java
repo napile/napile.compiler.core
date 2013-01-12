@@ -46,26 +46,28 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	}
 
 	@NotNull
-	public static ExpressionTypingFacade create()
+	public static ExpressionTypingFacade create(ExpressionTypingServices services)
 	{
-		return new ExpressionTypingVisitorDispatcher(null);
+		return new ExpressionTypingVisitorDispatcher(null, services);
 	}
 
 	@NotNull
-	public static ExpressionTypingInternals createForBlock(final WritableScope writableScope)
+	public static ExpressionTypingInternals createForBlock(final WritableScope writableScope, final ExpressionTypingServices services)
 	{
-		return new ExpressionTypingVisitorDispatcher(writableScope);
+		return new ExpressionTypingVisitorDispatcher(writableScope, services);
 	}
 
 	private final BasicExpressionTypingVisitor basic;
 	private final ExpressionTypingVisitorForStatements statements;
-	private final ClosureExpressionsTypingVisitor closures = new ClosureExpressionsTypingVisitor(this);
+	private final ClosureExpressionsTypingVisitor closures;
 	private final ControlStructureTypingVisitor controlStructures = new ControlStructureTypingVisitor(this);
 	private final PatternMatchingTypingVisitor patterns = new PatternMatchingTypingVisitor(this);
 
-	private ExpressionTypingVisitorDispatcher(WritableScope writableScope)
+	private ExpressionTypingVisitorDispatcher(WritableScope writableScope, @NotNull ExpressionTypingServices services)
 	{
 		this.basic = new BasicExpressionTypingVisitor(this);
+		this.closures = new ClosureExpressionsTypingVisitor(this, services);
+
 		if(writableScope != null)
 		{
 			this.statements = new ExpressionTypingVisitorForStatements(this, writableScope, basic, controlStructures, patterns);

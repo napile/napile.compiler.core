@@ -123,16 +123,16 @@ public class DeclarationResolver
 			resolveInsideDeclarations(napileClass, classDescriptor.getScopeForMemberResolution(), classDescriptor);
 		}
 
-		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-		{
-			NapileAnonymClass object = entry.getKey();
-			MutableClassDescriptor classDescriptor = entry.getValue();
+		//for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
+		//{
+		//	NapileAnonymClass object = entry.getKey();
+		//	MutableClassDescriptor classDescriptor = entry.getValue();
 
-			resolveInsideDeclarations(object, classDescriptor.getScopeForMemberResolution(), classDescriptor);
-		}
+		//	resolveInsideDeclarations(object, classDescriptor.getScopeForMemberResolution(), classDescriptor);
+		//}
 	}
 
-	private void resolveInsideDeclarations(@NotNull NapileDeclarationContainer<NapileDeclaration> declarationOwner, final @NotNull JetScope scope, final @NotNull MutableClassDescriptor ownerDescription)
+	public void resolveInsideDeclarations(@NotNull NapileDeclarationContainer<NapileDeclaration> declarationOwner, final @NotNull JetScope scope, final @NotNull MutableClassDescriptor ownerDescription)
 	{
 		for(NapileDeclaration declaration : declarationOwner.getDeclarations())
 		{
