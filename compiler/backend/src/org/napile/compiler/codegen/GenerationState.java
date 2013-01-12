@@ -73,25 +73,32 @@ public class GenerationState
 
 	public void compileAndGenerate(@NotNull CompilationErrorHandler errorHandler)
 	{
-		markUsed();
+		try
+		{
+			markUsed();
 
-		FqNameGenerator fqNameGenerator = new FqNameGenerator(bindingTrace);
+			FqNameGenerator fqNameGenerator = new FqNameGenerator(bindingTrace);
 
-		List<NapileClass> classes = new ArrayList<NapileClass>();
-		for(NapileFile napileFile : files)
-			classes.addAll(Arrays.asList(napileFile.getDeclarations()));
+			List<NapileClass> classes = new ArrayList<NapileClass>();
+			for(NapileFile napileFile : files)
+				classes.addAll(Arrays.asList(napileFile.getDeclarations()));
 
-		for(NapileClass napileClass : classes)
-			napileClass.accept(fqNameGenerator, null);
+			for(NapileClass napileClass : classes)
+				napileClass.accept(fqNameGenerator, null);
 
-		ClassCodegen classCodegen = new ClassCodegen(bindingTrace, classNodes);
+			classNodes = new LinkedHashMap<FqName, ClassNode>(classes.size());
 
-		for(NapileClass napileClass : classes)
-			napileClass.accept(classCodegen, null);
-
-		classCodegen.addPropertiesInitToConstructors();
-
-		classNodes = classCodegen.getClassNodes();
+			ClassCodegen classCodegen = new ClassCodegen(bindingTrace);
+			for(NapileClass napileClass : classes)
+			{
+				ClassNode classNode = classCodegen.gen(napileClass);
+				classNodes.put(classNode.name, classNode);
+			}
+		}
+		catch(Exception e)
+		{
+			errorHandler.reportException(e, null);
+		}
 	}
 
 	public Map<FqName, ClassNode> getClassNodes()

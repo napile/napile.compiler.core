@@ -92,7 +92,7 @@ public class TypeTransformer
 		for(JetType argument : jetType.getArguments())
 			typeNode.arguments.add(toAsmType(bindingTrace, argument, classNode));
 
-		AnnotationCodegen.convert(bindingTrace, jetType, typeNode, classNode);
+		AnnotationCodegen.gen(bindingTrace, jetType, typeNode, classNode);
 
 		return typeNode;
 	}

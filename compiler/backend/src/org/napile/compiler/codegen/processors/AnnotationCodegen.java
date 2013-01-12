@@ -35,14 +35,14 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
  */
 public class AnnotationCodegen
 {
-	public static void convert(@NotNull BindingTrace bindingTrace, @NotNull Annotated annotated, @NotNull AnnotableNode<?> annotableNode, @NotNull ClassNode classNode)
+	public static void gen(@NotNull BindingTrace bindingTrace, @NotNull Annotated annotated, @NotNull AnnotableNode<?> annotableNode, @NotNull ClassNode classNode)
 	{
 		for(AnnotationDescriptor a : annotated.getAnnotations())
-			annotableNode.annotations.add(convert(bindingTrace, a, classNode));
+			annotableNode.annotations.add(gen(bindingTrace, a, classNode));
 	}
 
 	@NotNull
-	public static AnnotationNode convert(@NotNull BindingTrace bindingTrace, @NotNull AnnotationDescriptor annotationDescriptor, @NotNull ClassNode classNode)
+	public static AnnotationNode gen(@NotNull BindingTrace bindingTrace, @NotNull AnnotationDescriptor annotationDescriptor, @NotNull ClassNode classNode)
 	{
 		ResolvedCall<ConstructorDescriptor> resolvedCall = annotationDescriptor.getResolvedCall();
 

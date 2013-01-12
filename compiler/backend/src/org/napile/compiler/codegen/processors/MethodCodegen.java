@@ -83,7 +83,7 @@ public class MethodCodegen
 			if(call == null)
 				continue;
 
-			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
+			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), null);
 
 			CallableMethod method = CallTransformer.transformToCallable(bindingTrace, classNode, call, false, false, false);
 
@@ -122,7 +122,7 @@ public class MethodCodegen
 		NapileExpression expression = declarationWithBody.getBodyExpression();
 		if(expression != null)
 		{
-			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, methodDescriptor, classNode, wrappedVariables);
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, methodDescriptor, classNode, wrappedVariables, null);
 			expressionCodegen.returnExpression(expression, methodDescriptor.isMacro());
 
 			InstructionAdapter adapter = expressionCodegen.getInstructs();

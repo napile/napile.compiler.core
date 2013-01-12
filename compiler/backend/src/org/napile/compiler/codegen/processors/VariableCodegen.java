@@ -138,7 +138,7 @@ public class VariableCodegen
 
 			ReservedInstruction reservedInstruction = adapter.reserve();
 
-			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), null);
 			if(!variableDescriptor.isStatic())
 				expressionCodegen.getInstructs().load(0);
 

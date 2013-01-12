@@ -32,6 +32,7 @@ import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PutToVariableInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -92,7 +93,20 @@ public class InnerClassCodegen
 
 		anonymClassNode.addMember(constructorNode);
 
-		gen.instructs.putNull();
+		assert classLikes.size() == 1;
+
+		for(ClassDescriptor classDescriptor : classLikes)
+		{
+			//if()
+			{
+				gen.instructs.load(0);
+			}
+		}
+
+		List<TypeNode> parameters = new ArrayList<TypeNode>(constructorNode.parameters.size());
+		for(MethodParameterNode p : constructorNode.parameters)
+			parameters.add(p.returnType);
+		gen.instructs.newObject(new TypeNode(false, new ClassTypeNode(anonymClassNode.name)), parameters);
 
 		return StackValue.none();
 	}

@@ -18,6 +18,7 @@ package org.napile.compiler.lang.resolve;
 
 import java.io.PrintStream;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
 
@@ -46,7 +47,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 
 	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
-	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> methods = Maps.newLinkedHashMap();
+	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> methods = new ConcurrentHashMap<NapileNamedMethodOrMacro, SimpleMethodDescriptor>();
 	private final Map<NapileVariable, VariableDescriptor> variables = Maps.newLinkedHashMap();
 	private final Map<NapileEnumValue, MutableClassDescriptor> enumValues = Maps.newLinkedHashMap();
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;

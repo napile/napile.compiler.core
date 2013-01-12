@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package org.napile.compiler.codegen.processors;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,9 +28,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.MethodNode;
-import org.napile.asm.tree.members.Node;
 import org.napile.asm.tree.members.VariableNode;
-import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
@@ -40,108 +38,161 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileTreeVisitor;
+import org.napile.compiler.lang.psi.NapileStaticConstructor;
 import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
-import com.intellij.util.containers.MultiMap;
 
 /**
  * @author VISTALL
- * @date 10:58/04.09.12
+ * @date 19:51/12.01.13
  */
-public class ClassCodegen extends NapileTreeVisitor<Node>
+public class ClassCodegen extends NapileVisitorVoid
 {
-	private final Map<FqName, ClassNode> classNodes;
+	private final Map<Boolean, InstructionAdapter> constructorsAdapters = new HashMap<Boolean, InstructionAdapter>(2);
 	private final BindingTrace bindingTrace;
 
-	private final MultiMap<ClassNode, Triple<NapileConstructor, MethodNode, ConstructorDescriptor>> constructors = new MultiMap<ClassNode, Triple<NapileConstructor, MethodNode, ConstructorDescriptor>>();
-	private final MultiMap<ClassNode, InstructionAdapter> propertiesStaticInit = new MultiMap<ClassNode, InstructionAdapter>();
-	private final MultiMap<ClassNode, InstructionAdapter> propertiesInit = new MultiMap<ClassNode, InstructionAdapter>();
+	private ClassNode classNode;
 
-	public ClassCodegen(BindingTrace bindingTrace, Map<FqName, ClassNode> classNodes)
+	public ClassCodegen(BindingTrace bindingTrace)
 	{
 		this.bindingTrace = bindingTrace;
-		this.classNodes = classNodes;
 	}
 
-	@Override
-	public Void visitJetElement(NapileElement element, Node data)
+	public ClassNode gen(NapileClassLike classLike)
 	{
-		element.acceptChildren(this, data);
-		return null;
-	}
+		constructorsAdapters.put(Boolean.FALSE, new InstructionAdapter()); //instance
+		constructorsAdapters.put(Boolean.TRUE, new InstructionAdapter()); //static
 
-	@Override
-	public Void visitClass(NapileClass klass, Node parent)
-	{
-		ClassDescriptor classDescriptor = (ClassDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, klass);
+		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, classLike);
+		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, classLike);
 
-		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, klass);
-
-		ClassNode classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
-		AnnotationCodegen.convert(bindingTrace, classDescriptor, classNode, classNode);
+		classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
+		AnnotationCodegen.gen(bindingTrace, classDescriptor, classNode, classNode);
+		TypeParameterCodegen.gen(classDescriptor.getTypeConstructor().getParameters(), classNode, bindingTrace, classNode);
 
 		for(JetType superType : classDescriptor.getSupertypes())
 			classNode.supers.add(TypeTransformer.toAsmType(bindingTrace, superType, classNode));
 
-		TypeParameterCodegen.gen(classDescriptor.getTypeConstructor().getParameters(), classNode, bindingTrace, classNode);
+		NapileDeclaration[] declarations = classLike.getDeclarations();
+		List<NapileDeclaration> list = new ArrayList<NapileDeclaration>(declarations.length);
 
-		classNodes.put(fqName, classNode);
+		// FIXME [VISTALL] use comparator>
+		// variable or enum value
+		// method or macros
+		// constructors
 
-		return super.visitClass(klass, classNode);
+		for(NapileDeclaration declaration : declarations)
+			if(declaration instanceof NapileVariable)
+				list.add(declaration);
+
+		for(NapileDeclaration declaration : declarations)
+			if(declaration instanceof NapileNamedMethodOrMacro)
+				list.add(declaration);
+
+		for(NapileDeclaration declaration : declarations)
+			if(declaration instanceof NapileConstructor || declaration instanceof NapileStaticConstructor)
+				list.add(declaration);
+
+		for(NapileDeclaration declaration : list)
+			declaration.accept(this);
+
+		InstructionAdapter adapter = constructorsAdapters.get(Boolean.TRUE);
+		if(!adapter.getInstructions().isEmpty())
+		{
+			MethodNode methodNode = MethodNode.staticConstructor();
+			methodNode.putInstructions(adapter);
+
+			classNode.addMember(methodNode);
+		}
+		return classNode;
 	}
 
 	@Override
-	public Void visitConstructor(NapileConstructor constructor, Node parent)
+	public void visitConstructor(NapileConstructor constructor)
 	{
-		assert parent instanceof ClassNode;
+		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingContext.CONSTRUCTOR, constructor);
 
-		ConstructorDescriptor methodDescriptor = (ConstructorDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, constructor);
+		InstructionAdapter adapter = new InstructionAdapter();
+		adapter.getInstructions().addAll(constructorsAdapters.get(Boolean.FALSE).getInstructions()); // clone
 
-		ClassNode classNode = (ClassNode) parent;
+		MethodNode constructorNode = MethodCodegen.gen(constructor, constructorDescriptor, bindingTrace, classNode);
+		MethodCodegen.genReferenceParameters(constructor, constructorDescriptor, constructorNode.instructions, bindingTrace, classNode);
 
-		MethodNode constructorNode = MethodCodegen.gen(constructor, methodDescriptor, bindingTrace, classNode);
+		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), adapter);
+		NapileExpression expression = constructor.getBodyExpression();
+		if(expression != null)
+			gen.returnExpression(expression, false);
+		else
+		{
+			adapter.load(0);
+			adapter.returnVal();
+		}
+		constructorNode.putInstructions(adapter);
+		constructorNode.maxLocals += 1 + constructorDescriptor.getValueParameters().size() + adapter.getMaxLocals();
 
-		constructors.putValue(classNode, new Triple<NapileConstructor, MethodNode, ConstructorDescriptor>(constructor, constructorNode, methodDescriptor));
-
-		return null;
+		classNode.addMember(constructorNode);
 	}
 
 	@Override
-	public Void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, Node parent)
+	public void visitStaticConstructor(NapileStaticConstructor constructor)
 	{
-		assert parent instanceof ClassNode;
+		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingContext.CONSTRUCTOR, constructor);
 
-		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, function);
-
-		ClassNode classNode = (ClassNode) parent;
-
-		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), function, bindingTrace, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
-
-		classNode.addMember(methodNode);
-
-		return null;
+		NapileExpression expression = constructor.getBodyExpression();
+		if(expression != null)
+			new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), constructorsAdapters.get(Boolean.TRUE)).returnExpression(expression, false);
 	}
 
 	@Override
-	public Void visitEnumValue(NapileEnumValue value, Node parent)
+	public void visitVariable(NapileVariable variable)
+	{
+		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variable);
+
+		TypeNode type = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
+
+		VariableCodegen.getSetterAndGetter(variableDescriptor, variable, classNode, bindingTrace, false);
+
+		if(!variable.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
+		{
+			VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), type);
+			classNode.addMember(variableNode);
+
+			NapileExpression initializer = variable.getInitializer();
+			if(initializer != null)
+			{
+				InstructionAdapter adapter = constructorsAdapters.get(variableDescriptor.isStatic());
+
+				if(!variableDescriptor.isStatic())
+					adapter.load(0);
+
+				// if var has lazy modifier - need put null
+				if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
+					adapter.putNull();
+				else
+					new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), adapter).gen(initializer, type);
+
+				StackValue.variable(bindingTrace, classNode, variableDescriptor).store(type, adapter);
+			}
+		}
+	}
+
+	@Override
+	public void visitEnumValue(NapileEnumValue value)
 	{
 		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, value);
-
-		ClassNode classNode = (ClassNode) parent;
 
 		FqName classFqName = classNode.name.parent().child(Name.identifier(classNode.name.shortName() + AsmConstants.ANONYM_SPLITTER + variableDescriptor.getName()));
 
@@ -169,144 +220,19 @@ public class ClassCodegen extends NapileTreeVisitor<Node>
 
 		classNode.addMember(innerClassNode);
 
-		InstructionAdapter adapter = new InstructionAdapter();
+		InstructionAdapter adapter = constructorsAdapters.get(Boolean.TRUE);
+
 		adapter.newObject(type, Collections.<TypeNode>emptyList());
 		adapter.putToStaticVar(new VariableRef(DescriptorUtils.getFQName(variableDescriptor).toSafe(), type));
-
-		propertiesStaticInit.putValue(classNode, adapter);
-		return null;
 	}
 
 	@Override
-	public Void visitVariable(NapileVariable variable, Node parent)
+	public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro method)
 	{
-		assert parent instanceof ClassNode;
+		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, method);
 
-		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variable);
-		if(variableDescriptor instanceof LocalVariableDescriptor)
-			return super.visitVariable(variable, parent);
+		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), method, bindingTrace, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
 
-		ClassNode classNode = (ClassNode) parent;
-
-		TypeNode type = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
-
-		VariableCodegen.getSetterAndGetter(variableDescriptor, variable, classNode, bindingTrace, false);
-
-		if(!variable.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
-		{
-			VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), type);
-			classNode.addMember(variableNode);
-
-			NapileExpression initializer = variable.getInitializer();
-			if(initializer != null)
-			{
-				// if variable is lazy, need put NULL
-				if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
-				{
-					InstructionAdapter adapter = new InstructionAdapter();
-
-					if(!variableDescriptor.isStatic())
-						adapter.load(0);
-
-					adapter.putNull();
-
-					StackValue.variable(bindingTrace, classNode, variableDescriptor).store(type, adapter);
-
-					if(variableDescriptor.isStatic())
-						propertiesStaticInit.putValue(classNode, adapter);
-					else
-						propertiesInit.putValue(classNode, adapter);
-				}
-				else
-				{
-					ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
-					if(!variableDescriptor.isStatic())
-						expressionCodegen.getInstructs().load(0);
-
-					expressionCodegen.gen(initializer, type);
-
-					StackValue.variable(bindingTrace, classNode, variableDescriptor).store(type, expressionCodegen.getInstructs());
-
-					if(variableDescriptor.isStatic())
-						propertiesStaticInit.putValue(classNode, expressionCodegen.getInstructs());
-					else
-						propertiesInit.putValue(classNode, expressionCodegen.getInstructs());
-				}
-			}
-		}
-		return null;
-	}
-
-	public void addPropertiesInitToConstructors()
-	{
-		for(ClassNode classNode : classNodes.values())
-		{
-			// first instance properties
-			int size = 1;
-			List<Instruction> instructions = new ArrayList<Instruction>();
-			Collection<InstructionAdapter> instructionAdapters = propertiesInit.get(classNode);
-			for(InstructionAdapter inst : instructionAdapters)
-			{
-				instructions.addAll(inst.getInstructions());
-				size += inst.getMaxLocals();
-			}
-
-			Collection<Triple<NapileConstructor, MethodNode, ConstructorDescriptor>> constrs = constructors.get(classNode);
-
-			for(Triple<NapileConstructor, MethodNode, ConstructorDescriptor> triple : constrs)
-			{
-				NapileConstructor constructor = triple.a;
-				MethodNode constructorNode = triple.b;
-				ConstructorDescriptor constructorDescriptor = triple.c;
-
-				constructorNode.instructions.addAll(instructions);
-
-				MethodCodegen.genReferenceParameters(constructor, constructorDescriptor, constructorNode.instructions, bindingTrace, classNode);
-
-				ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
-				NapileExpression expression = constructor.getBodyExpression();
-				if(expression != null)
-					gen.returnExpression(expression, false);
-				else
-				{
-					constructorNode.instructions.add(new LoadInstruction(0));
-					constructorNode.instructions.add(new ReturnInstruction());
-				}
-
-				constructorNode.instructions.addAll(gen.getInstructs().getInstructions());
-				constructorNode.tryCatchBlockNodes.addAll(gen.getInstructs().getTryCatchBlockNodes());
-
-				constructorNode.maxLocals = size + gen.getInstructs().getMaxLocals() + constructorDescriptor.getValueParameters().size();
-
-				classNode.addMember(constructorNode);
-			}
-
-			// next static properties
-			size = 0;
-			instructions.clear();
-
-			instructionAdapters = propertiesStaticInit.get(classNode);
-			for(InstructionAdapter inst : instructionAdapters)
-			{
-				instructions.addAll(inst.getInstructions());
-				size += inst.getMaxLocals();
-			}
-
-			if(!instructions.isEmpty())
-			{
-				MethodNode staticConstructorNode = MethodNode.staticConstructor();
-				staticConstructorNode.instructions.addAll(instructions);
-				staticConstructorNode.maxLocals = size;
-
-				//TODO [VISTALL] add codegen from bodies
-
-				classNode.addMember(staticConstructorNode);
-			}
-		}
-	}
-
-	public Map<FqName, ClassNode> getClassNodes()
-	{
-		return classNodes;
+		classNode.addMember(methodNode);
 	}
 }

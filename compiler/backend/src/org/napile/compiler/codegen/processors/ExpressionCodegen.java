@@ -98,7 +98,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@NotNull
 	private final Map<NapileElement, Local> tempVariables = new HashMap<NapileElement, Local>();
 	@NotNull
-	public final InstructionAdapter instructs = new InstructionAdapter();
+	public final InstructionAdapter instructs;
 	@NotNull
 	public final FrameMap frameMap;
 	@NotNull
@@ -118,13 +118,15 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		isInstanceConstructor = false;
 		returnType = r;
 		classNode = c;
+		instructs = new InstructionAdapter();
 		frameMap = new FrameMap();
 	}
 
-	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull CallableDescriptor d, @NotNull ClassNode c, @NotNull Map<VariableDescriptor, StackValue> w)
+	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull CallableDescriptor d, @NotNull ClassNode c, @NotNull Map<VariableDescriptor, StackValue> w, @Nullable InstructionAdapter adapter)
 	{
 		bindingTrace = b;
 		classNode = c;
+		instructs = adapter == null ? new InstructionAdapter() : adapter;
 		wrappedVariables.putAll(w);
 		isInstanceConstructor = d instanceof ConstructorDescriptor;
 		returnType = isInstanceConstructor ? TypeTransformer.toAsmType(bindingTrace, ((ClassDescriptor) d.getContainingDeclaration()).getDefaultType(), classNode) : TypeTransformer.toAsmType(bindingTrace, d.getReturnType(), classNode);
