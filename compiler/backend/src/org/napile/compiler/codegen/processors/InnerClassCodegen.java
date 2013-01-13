@@ -76,7 +76,9 @@ public class InnerClassCodegen
 		for(ClassDescriptor outer : outerClasses)
 		{
 			TypeNode typeNode = gen.toAsmType(outer.getDefaultType());
-			Name name = Name.identifier(outer.getName() + AsmConstants.ANONYM_SPLITTER + "this");
+			FqName outerFq = FqNameGenerator.getFqName(outer, gen.bindingTrace);
+
+			Name name = Name.identifier(outerFq.shortName() + AsmConstants.ANONYM_SPLITTER + "this");
 
 			VariableNode variableNode = new VariableNode(Modifier.EMPTY, name, typeNode);
 			thisVariableNodes.add(variableNode);
@@ -127,7 +129,7 @@ public class InnerClassCodegen
 			if(stackValue == null)
 				gen.instructs.load(0);
 			else
-				throw new UnsupportedOperationException();
+				stackValue.put(AsmConstants.ANY_TYPE, gen.instructs);
 		}
 
 		List<TypeNode> parameters = new ArrayList<TypeNode>(constructorNode.parameters.size());
