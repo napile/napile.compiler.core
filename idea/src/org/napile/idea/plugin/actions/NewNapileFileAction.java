@@ -32,9 +32,9 @@ import com.intellij.psi.PsiDirectory;
 /**
  * @author Nikolay Krasko
  */
-public class NewKotlinFileAction extends CreateFileFromTemplateAction
+public class NewNapileFileAction extends CreateFileFromTemplateAction
 {
-	public NewKotlinFileAction()
+	public NewNapileFileAction()
 	{
 		super(JetBundle.message("new.napile.file.action"), "Create New Class", NapileIcons.CLASS);
 	}
@@ -80,6 +80,6 @@ public class NewKotlinFileAction extends CreateFileFromTemplateAction
 	@Override
 	public boolean equals(Object obj)
 	{
-		return obj instanceof NewKotlinFileAction;
+		return obj instanceof NewNapileFileAction;
 	}
 }
