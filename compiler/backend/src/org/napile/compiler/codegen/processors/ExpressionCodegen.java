@@ -56,6 +56,7 @@ import org.napile.compiler.codegen.processors.codegen.loopGen.WhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.MultiVariable;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.codegen.processors.codegen.stackValue.WrappedVar;
 import org.napile.compiler.codegen.processors.injection.InjectionCodegen;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.descriptors.*;
@@ -140,10 +141,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			int index = frameMap.enter(p);
 			if(context.wrapVariableIfNeed(p))
 			{
-				StackValue wrapped = context.wrappedVariables.get(p);
+				WrappedVar wrapped = context.wrappedVariables.get(p);
 
-				if(wrapped.receiverSize() == 1)
-					instructs.load(0);
+				wrapped.putReceiver(this);
 
 				instructs.load(index);
 
@@ -896,11 +896,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		if(descriptor instanceof VariableDescriptor)
 		{
-			StackValue wrappedValue = context.wrappedVariables.get(descriptor);
+			WrappedVar wrappedValue = context.wrappedVariables.get(descriptor);
 			if(wrappedValue != null)
 			{
-				if(wrappedValue.receiverSize() == 1)
-					getInstructs().load(0);
+				wrappedValue.putReceiver(this);
 
 				return wrappedValue;
 			}
@@ -1231,7 +1230,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			ClassReceiver classReceiver = (ClassReceiver) descriptor;
 			ClassDescriptor classReceiverDeclarationDescriptor = classReceiver.getDeclarationDescriptor();
 
-			StackValue.thisOrOuter(this, classReceiverDeclarationDescriptor, false).put(type, instructs);
+			generateThisOrOuter(classReceiverDeclarationDescriptor, false).put(type, instructs);
 		}
 		else if(descriptor instanceof ExpressionReceiver)
 		{
@@ -1287,11 +1286,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	{
 		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variableDeclaration);
 
-		StackValue wrappedVariable = context.wrappedVariables.get(variableDescriptor);
+		WrappedVar wrappedVariable = context.wrappedVariables.get(variableDescriptor);
 		if(wrappedVariable != null)
 		{
-			if(wrappedVariable.receiverSize() == 1)
-				getInstructs().load(0);
+			wrappedVariable.putReceiver(this);
 
 			generateInitializer.fun(variableDescriptor);
 

@@ -24,8 +24,8 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.VariableNode;
-import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.codegen.processors.codegen.stackValue.WrappedVar;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -33,6 +33,8 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
+import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 /**
  * @author VISTALL
@@ -41,7 +43,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 public class ExpressionCodegenContext
 {
 	@NotNull
-	public final Map<VariableDescriptor, StackValue> wrappedVariables = new HashMap<VariableDescriptor, StackValue>();
+	public final Map<VariableDescriptor, WrappedVar> wrappedVariables = new HashMap<VariableDescriptor, WrappedVar>();
 
 	@NotNull
 	public final Map<ClassDescriptor, StackValue> wrappedOuterClasses = new HashMap<ClassDescriptor, StackValue>();
@@ -65,11 +67,13 @@ public class ExpressionCodegenContext
 		if(wrappedInClosure)
 		{
 			MethodDescriptor ownerMethod = (MethodDescriptor) variableDescriptor.getContainingDeclaration();
-			Name name = Name.identifier(ownerMethod.getName() + AsmConstants.ANONYM_SPLITTER + variableDescriptor.getName());
-			VariableDescriptorImpl newVariableDescriptor = new VariableDescriptorImpl(ownerMethod.getContainingDeclaration(), variableDescriptor.getAnnotations(), variableDescriptor.getModality(), Visibility.LOCAL, name, CallableMemberDescriptor.Kind.DECLARATION, ownerMethod.isStatic(), true);
-			newVariableDescriptor.setType(variableDescriptor.getType(), variableDescriptor.getTypeParameters(), variableDescriptor.getExpectedThisObject());
+			ClassDescriptor ownerClass = (ClassDescriptor) ownerMethod.getContainingDeclaration();
 
-			wrappedVariables.put(variableDescriptor, StackValue.simpleVariableAccessor(gen, newVariableDescriptor, newVariableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.SPECIAL));
+			Name name = Name.identifier(ownerMethod.getName() + AsmConstants.ANONYM_SPLITTER + variableDescriptor.getName());
+			VariableDescriptorImpl newVariableDescriptor = new VariableDescriptorImpl(ownerClass, variableDescriptor.getAnnotations(), variableDescriptor.getModality(), Visibility.LOCAL, name, CallableMemberDescriptor.Kind.DECLARATION, ownerMethod.isStatic(), true);
+			newVariableDescriptor.setType(variableDescriptor.getType(), variableDescriptor.getTypeParameters(), ownerMethod.isStatic() ? ReceiverDescriptor.NO_RECEIVER : new ClassReceiver(ownerClass));
+
+			wrappedVariables.put(variableDescriptor, new WrappedVar(gen, newVariableDescriptor));
 
 			VariableCodegen.getSetterAndGetter(newVariableDescriptor, null, gen.classNode, gen.bindingTrace, false);
 			VariableNode variableNode = new VariableNode(newVariableDescriptor.isStatic() ? Modifier.list(Modifier.STATIC, Modifier.MUTABLE) : Modifier.list(Modifier.MUTABLE), newVariableDescriptor.getName(), gen.toAsmType(newVariableDescriptor.getType()));
@@ -78,6 +82,16 @@ public class ExpressionCodegenContext
 		}
 		else
 			return false;
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuilder sb = new StringBuilder();
+		sb.append("{wrappedVariables=").append(wrappedVariables.size());
+		sb.append(", wrappedOuterClasses=").append(wrappedOuterClasses.size());
+		sb.append('}');
+		return sb.toString();
 	}
 
 	@Override
