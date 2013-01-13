@@ -56,34 +56,37 @@ public class ClassCodegen extends NapileVisitorVoid
 	private final BindingTrace bindingTrace;
 
 	private ClassNode classNode;
+	private ExpressionCodegenContext context;
 
 	public ClassCodegen(BindingTrace bindingTrace)
 	{
 		this.bindingTrace = bindingTrace;
 	}
 
-	public ClassNode gen(NapileClass napileClass)
+	public ClassNode gen(NapileClass napileClass, ExpressionCodegenContext context)
 	{
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, napileClass);
 		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, napileClass);
 
 		classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
 
-		return gen(napileClass, classDescriptor);
+		return gen(napileClass, classDescriptor, context);
 	}
 
-	public ClassNode gen(NapileAnonymClass anonymClass)
+	public ClassNode gen(NapileAnonymClass anonymClass, ExpressionCodegenContext context)
 	{
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, anonymClass);
 		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, anonymClass);
 
 		classNode = new ClassNode(Modifier.list(Modifier.FINAL, Modifier.STATIC), fqName);
 
-		return gen(anonymClass, classDescriptor);
+		return gen(anonymClass, classDescriptor, context);
 	}
 
-	public ClassNode gen(NapileClassLike classLike, ClassDescriptor classDescriptor)
+	public ClassNode gen(NapileClassLike classLike, ClassDescriptor classDescriptor, ExpressionCodegenContext context)
 	{
+		this.context = context;
+
 		AnnotationCodegen.gen(bindingTrace, classDescriptor, classNode, classNode);
 
 		TypeParameterCodegen.gen(classDescriptor.getTypeConstructor().getParameters(), classNode, bindingTrace, classNode);
@@ -139,7 +142,7 @@ public class ClassCodegen extends NapileVisitorVoid
 		MethodNode constructorNode = MethodCodegen.gen(constructor, constructorDescriptor, bindingTrace, classNode);
 		MethodCodegen.genReferenceParameters(constructor, constructorDescriptor, constructorNode.instructions, bindingTrace, classNode);
 
-		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), adapter);
+		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, context.clone(), adapter);
 		NapileExpression expression = constructor.getBodyExpression();
 		if(expression != null)
 			gen.returnExpression(expression, false);
@@ -161,7 +164,7 @@ public class ClassCodegen extends NapileVisitorVoid
 
 		NapileExpression expression = constructor.getBodyExpression();
 		if(expression != null)
-			new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), constructorsAdapters.get(Boolean.TRUE)).returnExpression(expression, false);
+			new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, context.clone(), constructorsAdapters.get(Boolean.TRUE)).returnExpression(expression, false);
 	}
 
 	@Override
@@ -190,7 +193,7 @@ public class ClassCodegen extends NapileVisitorVoid
 				if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
 					adapter.putNull();
 				else
-					new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), adapter).gen(initializer, type);
+					new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, context.clone(), adapter).gen(initializer, type);
 
 				StackValue.variable(bindingTrace, classNode, variableDescriptor).store(type, adapter);
 			}
@@ -239,7 +242,7 @@ public class ClassCodegen extends NapileVisitorVoid
 	{
 		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, method);
 
-		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), method, bindingTrace, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
+		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), method, bindingTrace, classNode, context.clone());
 
 		classNode.addMember(methodNode);
 	}

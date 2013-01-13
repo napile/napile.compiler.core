@@ -16,7 +16,6 @@
 
 package org.napile.compiler.codegen.processors;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -138,7 +137,7 @@ public class VariableCodegen
 
 			ReservedInstruction reservedInstruction = adapter.reserve();
 
-			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, Collections.<VariableDescriptor, StackValue>emptyMap(), null);
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, ExpressionCodegenContext.empty(), null);
 			if(!variableDescriptor.isStatic())
 				expressionCodegen.getInstructs().load(0);
 

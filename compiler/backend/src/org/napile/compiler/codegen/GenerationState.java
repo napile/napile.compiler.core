@@ -30,6 +30,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.codegen.processors.ClassCodegen;
+import org.napile.compiler.codegen.processors.ExpressionCodegenContext;
 import org.napile.compiler.codegen.processors.FqNameGenerator;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -91,7 +92,7 @@ public class GenerationState
 			ClassCodegen classCodegen = new ClassCodegen(bindingTrace);
 			for(NapileClass napileClass : classes)
 			{
-				ClassNode classNode = classCodegen.gen(napileClass);
+				ClassNode classNode = classCodegen.gen(napileClass, ExpressionCodegenContext.empty());
 				classNodes.put(classNode.name, classNode);
 			}
 		}
