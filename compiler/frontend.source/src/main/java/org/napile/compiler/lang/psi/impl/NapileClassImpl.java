@@ -85,17 +85,6 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 		return body.getConstructors();
 	}
 
-	@Override
-	@NotNull
-	public NapileStaticConstructor[] getStaticConstructors()
-	{
-		NapileClassBody body = (NapileClassBody) findChildByType(NapileNodes.CLASS_BODY);
-		if(body == null)
-			return NapileStaticConstructor.EMPTY_ARRAY;
-
-		return body.getStaticConstructors();
-	}
-
 	@NotNull
 	@Override
 	public List<NapileTypeReference> getSuperTypes()

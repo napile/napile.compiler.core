@@ -35,6 +35,4 @@ public interface DescriptorBuilder
 	void addVariableDescriptor(@NotNull VariableDescriptor propertyDescriptor);
 
 	void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
-
-	void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor);
 }

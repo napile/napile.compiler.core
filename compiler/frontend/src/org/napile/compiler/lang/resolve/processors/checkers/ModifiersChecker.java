@@ -57,7 +57,7 @@ public class ModifiersChecker
 	@NotNull
 	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CLASS = Arrays.asList(NapileTokens.OVERRIDE_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.LAZY_KEYWORD);
 	@NotNull
-	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.STATIC_KEYWORD, NapileTokens.OVERRIDE_KEYWORD, NapileTokens.FINAL_KEYWORD, NapileTokens.LAZY_KEYWORD);
+	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_CONSTRUCTOR = Arrays.asList(NapileTokens.ABSTRACT_KEYWORD, NapileTokens.NATIVE_KEYWORD, NapileTokens.OVERRIDE_KEYWORD, NapileTokens.FINAL_KEYWORD, NapileTokens.LAZY_KEYWORD);
 	@NotNull
 	private static final List<NapileKeywordToken> INVALID_MODIFIERS_FOR_METHOD = Arrays.asList(NapileTokens.LAZY_KEYWORD);
 

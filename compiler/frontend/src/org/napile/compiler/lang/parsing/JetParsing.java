@@ -479,17 +479,11 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker decl = mark();
 
 		IElementType declType = null;
-		// ugly
-		if(at(NapileTokens.STATIC_KEYWORD) && lookahead(1) == NapileTokens.LBRACE)
-			declType = parseStaticConstructor();
-		else
-		{
-			TokenDetector tokenDetector = new TokenDetector(NapileTokens.ENUM_KEYWORD);
+		TokenDetector tokenDetector = new TokenDetector(NapileTokens.ENUM_KEYWORD);
 
-			parseModifierList(tokenDetector);
+		parseModifierList(tokenDetector);
 
-			declType = parseMemberDeclarationRest(tokenDetector.detected);
-		}
+		declType = parseMemberDeclarationRest(tokenDetector.detected);
 
 		if(declType == null)
 		{
@@ -683,17 +677,6 @@ public class JetParsing extends AbstractJetParsing
 		}
 
 		return doneElement;
-	}
-
-	private NapileNode parseStaticConstructor()
-	{
-		assert _at(NapileTokens.STATIC_KEYWORD);
-
-		advance(); // STATIC_KEYWORD
-
-		parseBlock();
-
-		return STATIC_CONSTRUCTOR;
 	}
 
 	/*

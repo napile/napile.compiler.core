@@ -24,7 +24,10 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -32,7 +35,6 @@ import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverloadUtil;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import com.google.common.collect.Sets;
@@ -68,107 +70,11 @@ public class OverloadResolver
 
 	private void checkOverloads()
 	{
-		Pair<MultiMap<ClassDescriptor, ConstructorDescriptor>, MultiMap<Key, ConstructorDescriptor>> pair = constructorsGrouped();
-		MultiMap<ClassDescriptor, ConstructorDescriptor> inClasses = pair.first;
-		MultiMap<Key, ConstructorDescriptor> inNamespaces = pair.second;
-
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
-		{
-			checkOverloadsInAClass(entry.getValue(), entry.getKey(), inClasses.get(entry.getValue()));
-		}
+			checkOverloadsInAClass(entry.getValue(), entry.getKey());
+
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
-		{
-			checkOverloadsInAClass(entry.getValue(), entry.getKey(), inClasses.get(entry.getValue()));
-		}
-		checkOverloadsInANamespace(inNamespaces);
-	}
-
-	private static class Key extends Pair<String, Name>
-	{
-		Key(String namespace, Name name)
-		{
-			super(namespace, name);
-		}
-
-		Key(PackageDescriptor packageDescriptor, Name name)
-		{
-			this(DescriptorUtils.getFQName(packageDescriptor).getFqName(), name);
-		}
-
-		public String getNamespace()
-		{
-			return first;
-		}
-
-		public Name getFunctionName()
-		{
-			return second;
-		}
-	}
-
-
-	private Pair<MultiMap<ClassDescriptor, ConstructorDescriptor>, MultiMap<Key, ConstructorDescriptor>> constructorsGrouped()
-	{
-		MultiMap<ClassDescriptor, ConstructorDescriptor> inClasses = MultiMap.create();
-		MultiMap<Key, ConstructorDescriptor> inNamespaces = MultiMap.create();
-
-		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
-		{
-			MutableClassDescriptor klass = entry.getValue();
-			DeclarationDescriptor containingDeclaration = klass.getContainingDeclaration();
-			if(containingDeclaration instanceof PackageDescriptor)
-			{
-				PackageDescriptor packageDescriptor = (PackageDescriptor) containingDeclaration;
-				inNamespaces.put(new Key(packageDescriptor, klass.getName()), klass.getConstructors());
-			}
-			else if(containingDeclaration instanceof ClassDescriptor)
-			{
-				ClassDescriptor classDescriptor = (ClassDescriptor) containingDeclaration;
-				inClasses.put(classDescriptor, klass.getConstructors());
-			}
-			else if(!(containingDeclaration instanceof MethodDescriptor))
-			{
-				throw new IllegalStateException();
-			}
-		}
-
-		return Pair.create(inClasses, inNamespaces);
-	}
-
-	private void checkOverloadsInANamespace(MultiMap<Key, ConstructorDescriptor> inNamespaces)
-	{
-
-		MultiMap<Key, CallableMemberDescriptor> functionsByName = MultiMap.create();
-
-		for(SimpleMethodDescriptor function : context.getMethods().values())
-		{
-			DeclarationDescriptor containingDeclaration = function.getContainingDeclaration();
-			if(containingDeclaration instanceof PackageDescriptor)
-			{
-				PackageDescriptor packageDescriptor = (PackageDescriptor) containingDeclaration;
-				functionsByName.putValue(new Key(packageDescriptor, function.getName()), function);
-			}
-		}
-
-		for(VariableDescriptor variable : context.getVariables().values())
-		{
-			DeclarationDescriptor containingDeclaration = variable.getContainingDeclaration();
-			if(containingDeclaration instanceof PackageDescriptor)
-			{
-				PackageDescriptor packageDescriptor = (PackageDescriptor) containingDeclaration;
-				functionsByName.putValue(new Key(packageDescriptor, variable.getName()), variable);
-			}
-		}
-
-		for(Map.Entry<Key, Collection<ConstructorDescriptor>> entry : inNamespaces.entrySet())
-		{
-			functionsByName.putValues(entry.getKey(), entry.getValue());
-		}
-
-		for(Map.Entry<Key, Collection<CallableMemberDescriptor>> e : functionsByName.entrySet())
-		{
-			checkOverloadsWithSameName(e.getKey().getFunctionName(), e.getValue(), e.getKey().getNamespace());
-		}
+			checkOverloadsInAClass(entry.getValue(), entry.getKey());
 	}
 
 	private String nameForErrorMessage(ClassDescriptor classDescriptor, NapileClassLike jetClass)
@@ -188,7 +94,7 @@ public class OverloadResolver
 		return "<unknown>";
 	}
 
-	private void checkOverloadsInAClass(MutableClassDescriptor classDescriptor, NapileClassLike klass, Collection<ConstructorDescriptor> nestedClassConstructors)
+	private void checkOverloadsInAClass(MutableClassDescriptor classDescriptor, NapileClassLike klass)
 	{
 		MultiMap<Name, CallableMemberDescriptor> functionsByName = MultiMap.create();
 
@@ -197,18 +103,10 @@ public class OverloadResolver
 			functionsByName.putValue(function.getName(), function);
 		}
 
-		for(ConstructorDescriptor nestedClassConstructor : nestedClassConstructors)
-		{
-			functionsByName.putValue(nestedClassConstructor.getContainingDeclaration().getName(), nestedClassConstructor);
-		}
-
 		for(Map.Entry<Name, Collection<CallableMemberDescriptor>> e : functionsByName.entrySet())
 		{
 			checkOverloadsWithSameName(e.getKey(), e.getValue(), nameForErrorMessage(classDescriptor, klass));
 		}
-
-		// Kotlin has no secondary constructors at this time
-
 	}
 
 	private void checkOverloadsWithSameName(@NotNull Name name, Collection<CallableMemberDescriptor> functions, @NotNull String functionContainer)

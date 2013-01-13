@@ -40,7 +40,4 @@ public interface NapileClass extends NapileNamedDeclaration, NapileTypeParameter
 
 	@NotNull
 	NapileConstructor[] getConstructors();
-
-	@NotNull
-	NapileStaticConstructor[] getStaticConstructors();
 }

@@ -705,12 +705,6 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitStaticConstructor(NapileStaticConstructor staticConstructor)
-		{
-			processLocalDeclaration(staticConstructor);
-		}
-
-		@Override
 		public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function)
 		{
 			processLocalDeclaration(function);

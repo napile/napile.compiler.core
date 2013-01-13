@@ -59,10 +59,4 @@ public class DescriptorBuilderDummy implements DescriptorBuilder
 	{
 		throw new IllegalStateException();
 	}
-
-	@Override
-	public void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
-	{
-		throw new IllegalStateException();
-	}
 }

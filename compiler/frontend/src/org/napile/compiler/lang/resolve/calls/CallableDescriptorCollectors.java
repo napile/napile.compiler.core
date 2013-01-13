@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.resolve.calls;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -80,7 +81,13 @@ public class CallableDescriptorCollectors
 
 			ClassifierDescriptor classifier = scope.getClassifier(name);
 			if(classifier != null && !ErrorUtils.isError(classifier.getTypeConstructor()))
-				constructorDescriptors = classifier.getConstructors();
+			{
+				Collection<ConstructorDescriptor> d = classifier.getConstructors();
+				constructorDescriptors = new ArrayList<ConstructorDescriptor>(d.size());
+				for(ConstructorDescriptor descriptor : d)
+					if(!descriptor.isStatic())
+						constructorDescriptors.add(descriptor);
+			}
 
 			Set<MethodDescriptor> members = new HashSet<MethodDescriptor>(methodDescriptors.size() + constructorDescriptors.size());
 			members.addAll(methodDescriptors);

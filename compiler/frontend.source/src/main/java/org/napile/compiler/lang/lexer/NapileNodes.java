@@ -47,7 +47,6 @@ public interface NapileNodes
 	NapileNode VARIABLE_ACCESSOR = new NapileNode("VARIABLE_ACCESSOR", NapileVariableAccessorImpl.class);
 
 	NapileNode CONSTRUCTOR = new NapileNode("CONSTRUCTOR", NapileConstructorImpl.class);
-	NapileNode STATIC_CONSTRUCTOR = new NapileNode("STATIC_CONSTRUCTOR", NapileStaticConstructor.class);
 
 	IElementType TYPE_PARAMETER_LIST = NapileStubElementTypes.TYPE_PARAMETER_LIST;
 	IElementType TYPE_PARAMETER = NapileStubElementTypes.TYPE_PARAMETER;

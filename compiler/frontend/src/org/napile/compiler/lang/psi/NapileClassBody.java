@@ -58,12 +58,6 @@ public class NapileClassBody extends NapileElementImpl implements NapileDeclarat
 		return findChildrenByClass(NapileConstructor.class);
 	}
 
-	@NotNull
-	public NapileStaticConstructor[] getStaticConstructors()
-	{
-		return findChildrenByClass(NapileStaticConstructor.class);
-	}
-
 	@Nullable
 	public PsiElement getRBrace()
 	{

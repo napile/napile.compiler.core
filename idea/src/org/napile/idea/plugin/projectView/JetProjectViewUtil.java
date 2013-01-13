@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileStaticConstructor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -54,7 +53,7 @@ public final class JetProjectViewUtil
 			{
 				if(declaration instanceof NapileClass)
 					result.add(new NapileClassTreeNode(project, (NapileClass) declaration, settings));
-				else if(!(declaration instanceof NapileStaticConstructor))
+				else
 					result.add(new JetDeclarationTreeNode(project, declaration, settings));
 			}
 

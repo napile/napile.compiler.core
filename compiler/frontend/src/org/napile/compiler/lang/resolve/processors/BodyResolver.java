@@ -26,13 +26,12 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
@@ -244,17 +243,6 @@ public class BodyResolver
 
 	private void resolveConstructorBodies()
 	{
-		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
-			for(NapileStaticConstructor constructor : entry.getKey().getStaticConstructors())
-			{
-				JetScope declaringScope = context.getDeclaringScopes().get(constructor);
-				assert declaringScope != null;
-
-				ConstructorDescriptor constructorDescriptor = trace.safeGet(BindingContext.CONSTRUCTOR, constructor);
-
-				resolveFunctionBody(trace, constructor, constructorDescriptor, declaringScope);
-			}
-
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : context.getConstructors().entrySet())
 		{
 			NapileConstructor declaration = entry.getKey();

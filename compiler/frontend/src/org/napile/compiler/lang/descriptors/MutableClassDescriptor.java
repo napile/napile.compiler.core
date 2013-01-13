@@ -229,12 +229,8 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 					addConstructor(constructorDescriptor);
 
 					allCallableMembers.add(constructorDescriptor);
-				}
-
-				@Override
-				public void addStaticConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
-				{
-					getStaticConstructors().add(constructorDescriptor);
+					if(!constructorDescriptor.isStatic())
+						declaredCallableMembers.add(constructorDescriptor);
 				}
 			};
 		}

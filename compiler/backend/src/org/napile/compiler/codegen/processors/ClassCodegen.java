@@ -114,7 +114,7 @@ public class ClassCodegen extends NapileVisitorVoid
 				list.add(declaration);
 
 		for(NapileDeclaration declaration : declarations)
-			if(declaration instanceof NapileConstructor || declaration instanceof NapileStaticConstructor)
+			if(declaration instanceof NapileConstructor)
 				list.add(declaration);
 
 		for(NapileDeclaration declaration : list)
@@ -135,36 +135,37 @@ public class ClassCodegen extends NapileVisitorVoid
 	public void visitConstructor(NapileConstructor constructor)
 	{
 		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingContext.CONSTRUCTOR, constructor);
-
-		InstructionAdapter adapter = new InstructionAdapter();
-		adapter.getInstructions().addAll(constructorsAdapters.get(Boolean.FALSE).getInstructions()); // clone
-
-		MethodNode constructorNode = MethodCodegen.gen(constructor, constructorDescriptor, bindingTrace, classNode);
-		MethodCodegen.genReferenceParameters(constructor, constructorDescriptor, constructorNode.instructions, bindingTrace, classNode);
-
-		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, context.clone(), adapter);
-		NapileExpression expression = constructor.getBodyExpression();
-		if(expression != null)
-			gen.returnExpression(expression, false);
+		if(constructorDescriptor.isStatic())
+		{
+			NapileExpression expression = constructor.getBodyExpression();
+			if(expression != null)
+			{
+				ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, context.clone(), constructorsAdapters.get(Boolean.TRUE));
+				gen.gen(expression).put(AsmConstants.NULL_TYPE, gen.instructs);
+			}
+		}
 		else
 		{
-			adapter.load(0);
-			adapter.returnVal();
+			InstructionAdapter adapter = new InstructionAdapter();
+			adapter.getInstructions().addAll(constructorsAdapters.get(Boolean.FALSE).getInstructions()); // clone
+
+			MethodNode constructorNode = MethodCodegen.gen(constructor, constructorDescriptor, bindingTrace, classNode);
+			MethodCodegen.genReferenceParameters(constructor, constructorDescriptor, constructorNode.instructions, bindingTrace, classNode);
+
+			ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, context.clone(), adapter);
+			NapileExpression expression = constructor.getBodyExpression();
+			if(expression != null)
+				gen.returnExpression(expression, false);
+			else
+			{
+				adapter.load(0);
+				adapter.returnVal();
+			}
+			constructorNode.putInstructions(adapter);
+			constructorNode.maxLocals += 1 + constructorDescriptor.getValueParameters().size() + adapter.getMaxLocals();
+
+			classNode.addMember(constructorNode);
 		}
-		constructorNode.putInstructions(adapter);
-		constructorNode.maxLocals += 1 + constructorDescriptor.getValueParameters().size() + adapter.getMaxLocals();
-
-		classNode.addMember(constructorNode);
-	}
-
-	@Override
-	public void visitStaticConstructor(NapileStaticConstructor constructor)
-	{
-		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingContext.CONSTRUCTOR, constructor);
-
-		NapileExpression expression = constructor.getBodyExpression();
-		if(expression != null)
-			new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, context.clone(), constructorsAdapters.get(Boolean.TRUE)).returnExpression(expression, false);
 	}
 
 	@Override
