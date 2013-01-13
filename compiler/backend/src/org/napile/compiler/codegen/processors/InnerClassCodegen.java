@@ -121,14 +121,13 @@ public class InnerClassCodegen
 
 		anonymClassNode.addMember(constructorNode);
 
-		assert outerClasses.size() == 1;
-
 		for(ClassDescriptor owner : outerClasses)
 		{
-			//if()
-			{
+			StackValue stackValue = gen.context.wrappedOuterClasses.get(owner);
+			if(stackValue == null)
 				gen.instructs.load(0);
-			}
+			else
+				throw new UnsupportedOperationException();
 		}
 
 		List<TypeNode> parameters = new ArrayList<TypeNode>(constructorNode.parameters.size());
