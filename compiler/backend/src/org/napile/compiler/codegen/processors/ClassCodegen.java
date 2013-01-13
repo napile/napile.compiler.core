@@ -41,18 +41,9 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileEnumValue;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileStaticConstructor;
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 
 /**
@@ -71,17 +62,34 @@ public class ClassCodegen extends NapileVisitorVoid
 		this.bindingTrace = bindingTrace;
 	}
 
-	public ClassNode gen(NapileClassLike classLike)
+	public ClassNode gen(NapileClass napileClass)
 	{
-		constructorsAdapters.put(Boolean.FALSE, new InstructionAdapter()); //instance
-		constructorsAdapters.put(Boolean.TRUE, new InstructionAdapter()); //static
-
-		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, classLike);
-		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, classLike);
+		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, napileClass);
+		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, napileClass);
 
 		classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
+
+		return gen(napileClass, classDescriptor);
+	}
+
+	public ClassNode gen(NapileAnonymClass anonymClass)
+	{
+		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, anonymClass);
+		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, anonymClass);
+
+		classNode = new ClassNode(Modifier.list(Modifier.FINAL, Modifier.STATIC), fqName);
+
+		return gen(anonymClass, classDescriptor);
+	}
+
+	public ClassNode gen(NapileClassLike classLike, ClassDescriptor classDescriptor)
+	{
 		AnnotationCodegen.gen(bindingTrace, classDescriptor, classNode, classNode);
+
 		TypeParameterCodegen.gen(classDescriptor.getTypeConstructor().getParameters(), classNode, bindingTrace, classNode);
+
+		constructorsAdapters.put(Boolean.FALSE, new InstructionAdapter()); //instance
+		constructorsAdapters.put(Boolean.TRUE, new InstructionAdapter()); //static
 
 		for(JetType superType : classDescriptor.getSupertypes())
 			classNode.supers.add(TypeTransformer.toAsmType(bindingTrace, superType, classNode));
@@ -223,7 +231,7 @@ public class ClassCodegen extends NapileVisitorVoid
 		InstructionAdapter adapter = constructorsAdapters.get(Boolean.TRUE);
 
 		adapter.newObject(type, Collections.<TypeNode>emptyList());
-		adapter.putToStaticVar(new VariableRef(DescriptorUtils.getFQName(variableDescriptor).toSafe(), type));
+		adapter.putToStaticVar(new VariableRef(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), type));
 	}
 
 	@Override
@@ -234,5 +242,10 @@ public class ClassCodegen extends NapileVisitorVoid
 		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), method, bindingTrace, classNode, Collections.<VariableDescriptor, StackValue>emptyMap());
 
 		classNode.addMember(methodNode);
+	}
+
+	public Map<Boolean, InstructionAdapter> getConstructorsAdapters()
+	{
+		return constructorsAdapters;
 	}
 }

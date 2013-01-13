@@ -22,19 +22,16 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 
 /**
  * @author VISTALL
@@ -42,10 +39,10 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
  */
 public class NodeRefUtil
 {
-	public static MethodRef constructorRef(@NotNull FqName fqName)
-	{
-		return new MethodRef(fqName.child(Name.identifier("this")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new ClassTypeNode(fqName)));
-	}
+	//public static MethodRef constructorRef(@NotNull FqName fqName)
+	//{
+	//	return new MethodRef(fqName.child(Name.identifier("this")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new ClassTypeNode(fqName)));
+	//}
 
 	public static VariableRef ref(@NotNull ClassNode classNode, @NotNull VariableNode variableNode)
 	{
@@ -55,12 +52,12 @@ public class NodeRefUtil
 	public static VariableRef ref(@NotNull VariableDescriptor propertyDescriptor, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
 		propertyDescriptor = (VariableDescriptor) propertyDescriptor.getOriginal();
-		return new VariableRef(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(bindingTrace, propertyDescriptor.getType(), classNode));
+		return new VariableRef(FqNameGenerator.getFqName(propertyDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, propertyDescriptor.getType(), classNode));
 	}
 
 	public static MethodRef ref(@NotNull MethodDescriptor descriptor, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
-		return ref(descriptor, DescriptorUtils.getFQName(descriptor).toSafe(), bindingTrace, classNode);
+		return ref(descriptor, FqNameGenerator.getFqName(descriptor, bindingTrace), bindingTrace, classNode);
 	}
 
 	public static MethodRef ref(@NotNull MethodDescriptor descriptor, @NotNull FqName fqName, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)

@@ -25,6 +25,7 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.FqNameGenerator;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -36,7 +37,6 @@ import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileSafeQualifiedExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.TypeConstraints;
@@ -110,7 +110,7 @@ public class CallTransformer
 		if(anonym)
 			type = CallableMethod.CallType.ANONYM;
 
-		FqName fqName = DescriptorUtils.getFQName(methodDescriptor).toSafe();
+		FqName fqName = FqNameGenerator.getFqName(methodDescriptor, bindingTrace);
 
 		MethodDescriptor originalMethodDescriptor = unwrapFakeOverride(methodDescriptor).getOriginal();
 

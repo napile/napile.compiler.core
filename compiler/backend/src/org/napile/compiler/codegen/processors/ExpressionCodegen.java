@@ -65,7 +65,6 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.AutoCastReceiver;
 import org.napile.compiler.lang.resolve.calls.DefaultValueArgument;
 import org.napile.compiler.lang.resolve.calls.ExpressionValueArgument;
@@ -997,10 +996,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			//TODO [VISTALL]
 			System.out.println("Using old method to invoking variable accessors: " + expression.getParent().getText());
 			//throw new UnsupportedOperationException("property");
-			return StackValue.simpleVariableAccessor(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.VIRTUAL);
+			return StackValue.simpleVariableAccessor(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.VIRTUAL);
 		}
 		else
-			return StackValue.variable(DescriptorUtils.getFQName(variableDescriptor).toSafe(), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic());
+			return StackValue.variable(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic());
 	}
 
 	private StackValue generateConstructorCall(NapileCallExpression expression, NapileSimpleNameExpression constructorReference, StackValue receiver)

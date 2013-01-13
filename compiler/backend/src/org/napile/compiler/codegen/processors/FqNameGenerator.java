@@ -23,8 +23,13 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ClassKind;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -63,7 +68,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 			fqName = fqName.parent().child(Name.identifier(shortName.getName() + AsmConstants.ANONYM_SPLITTER + klass.getName()));
 		}
 
-		record(klass, fqName);
+		record(bindingTrace.safeGet(BindingContext.CLASS, klass), klass, fqName);
 		return super.visitClass(klass, fqName);
 	}
 
@@ -72,7 +77,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	{
 		NapileMethod method = PsiTreeUtil.getParentOfType(property, NapileMethod.class);
 		if(method == null)
-			record(property, data.child(NapilePsiUtil.safeName(property.getName())));
+			record(bindingTrace.safeGet(BindingContext.VARIABLE, property), property, data.child(NapilePsiUtil.safeName(property.getName())));
 		return super.visitVariable(property, data);
 	}
 
@@ -81,7 +86,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	{
 		NapileMethod method = PsiTreeUtil.getParentOfType(enumValue, NapileMethod.class);
 		if(method == null)
-			record(enumValue, data.child(NapilePsiUtil.safeName(enumValue.getName())));
+			record(bindingTrace.safeGet(BindingContext.VARIABLE, enumValue), enumValue, data.child(NapilePsiUtil.safeName(enumValue.getName())));
 		return super.visitVariable(enumValue, data);
 	}
 
@@ -92,14 +97,14 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 
 		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, variable);
 
-		record(accessor, fqName.child(Name.identifier(fqName.shortName().getName() + AsmConstants.ANONYM_SPLITTER + accessor.getAccessorElement().getText())));
+		record(bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, accessor), accessor, fqName.child(Name.identifier(fqName.shortName().getName() + AsmConstants.ANONYM_SPLITTER + accessor.getAccessorElement().getText())));
 		return super.visitVariableAccessor(accessor, data);
 	}
 
 	@Override
 	public Void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, FqName data)
 	{
-		record(function, data.child(NapilePsiUtil.safeName(function.getName())));
+		record(bindingTrace.safeGet(BindingContext.METHOD, function), function, data.child(NapilePsiUtil.safeName(function.getName())));
 		return super.visitNamedMethodOrMacro(function, data);
 	}
 
@@ -113,7 +118,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 			anonymMethodCounts.put(data, ++ anonymCount);
 
 		data = data.child(Name.identifier("anonym" + AsmConstants.ANONYM_SPLITTER + anonymCount));
-		record(expression.getAnonymMethod(), data);
+		record(bindingTrace.safeGet(BindingContext.METHOD, expression), expression.getAnonymMethod(), data);
 		return super.visitAnonymMethodExpression(expression, data);
 	}
 
@@ -127,12 +132,34 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 			anonymClassCounts.put(data, ++ anonymCount);
 
 		data = data.parent().child(Name.identifier(data.shortName() + AsmConstants.ANONYM_SPLITTER + anonymCount));
-		record(element, data);
+		record(bindingTrace.safeGet(BindingContext.CLASS, element), element, data);
 		return super.visitAnonymClass(element, data);
 	}
 
-	private void record(NapileDeclaration declaration, FqName fqName)
+	private void record(DeclarationDescriptor descriptor, NapileDeclaration declaration, FqName fqName)
 	{
 		bindingTrace.record(BindingContext2.DECLARATION_TO_FQ_NAME, declaration, fqName);
+		bindingTrace.record(BindingContext2.DESCRIPTOR_TO_FQ_NAME, descriptor, fqName);
+	}
+
+	public static FqName getFqName(DeclarationDescriptor declarationDescriptor, BindingTrace bindingTrace)
+	{
+		if(declarationDescriptor instanceof ClassDescriptor)
+		{
+			if(((ClassDescriptor)declarationDescriptor).getKind() == ClassKind.ANONYM_CLASS)
+				return bindingTrace.safeGet(BindingContext2.DESCRIPTOR_TO_FQ_NAME, declarationDescriptor);
+			else
+				return DescriptorUtils.getFQName(declarationDescriptor).toSafe();
+		}
+		else
+		{
+			ClassDescriptor ownerClass = DescriptorUtils.getParentOfType(declarationDescriptor, ClassDescriptor.class);
+			assert ownerClass != null;
+
+			FqName classFqName = getFqName(ownerClass, bindingTrace);
+
+			return classFqName.child(declarationDescriptor.getName());
+		}
+
 	}
 }

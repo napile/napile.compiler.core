@@ -35,7 +35,6 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
@@ -82,7 +81,7 @@ public class TypeTransformer
 			}
 		}
 		else if(owner instanceof ClassDescriptor)
-			typeConstructorNode = new ClassTypeNode(DescriptorUtils.getFQName(owner).toSafe());
+			typeConstructorNode = new ClassTypeNode(FqNameGenerator.getFqName(owner, bindingTrace));
 		else if(owner instanceof TypeParameterDescriptor)
 			typeConstructorNode = new TypeParameterValueTypeNode(owner.getName());
 		else

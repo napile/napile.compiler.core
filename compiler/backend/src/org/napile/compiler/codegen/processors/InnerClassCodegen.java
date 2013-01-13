@@ -17,6 +17,7 @@
 package org.napile.compiler.codegen.processors;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,17 +30,25 @@ import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.VariableRef;
+import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
 import org.napile.asm.tree.members.bytecode.impl.PutToVariableInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.Modality;
+import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
+import org.napile.compiler.lang.descriptors.Visibility;
+import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileAnonymClassExpression;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -52,21 +61,25 @@ public class InnerClassCodegen
 	{
 		NapileAnonymClass anonymClass = expression.getAnonymClass();
 
-		FqName fqName = gen.bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, anonymClass);
+		ClassCodegen classCodegen = new ClassCodegen(gen.bindingTrace);
 
-		ClassNode anonymClassNode = new ClassNode(Modifier.list(Modifier.FINAL, Modifier.STATIC), fqName);
-		gen.classNode.addMember(anonymClassNode);
+		FqName fqName = gen.bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, anonymClass);
+		ClassDescriptor classDescriptor = gen.bindingTrace.safeGet(BindingContext.CLASS, anonymClass);
 
 		List<ClassDescriptor> classLikes = findOuterClasses(anonymClass, gen);
 		List<VariableNode> thisVariableNodes = new ArrayList<VariableNode>(classLikes.size());
 
-		MethodNode constructorNode = MethodNode.constructor();
-		constructorNode.maxLocals = 1;
+		ClassNode anonymClassNode = classCodegen.gen(expression.getAnonymClass());
 
-		for(ClassDescriptor classDescriptor : classLikes)
+		InstructionAdapter adapter = classCodegen.getConstructorsAdapters().get(Boolean.FALSE);
+
+		MethodNode constructorNode = MethodNode.constructor(Modifier.EMPTY);
+		constructorNode.maxLocals = 1 + adapter.getMaxLocals();
+
+		for(ClassDescriptor owner : classLikes)
 		{
-			TypeNode typeNode = gen.toAsmType(classDescriptor.getDefaultType());
-			Name name = Name.identifier(classDescriptor.getName() + AsmConstants.ANONYM_SPLITTER + "this");
+			TypeNode typeNode = gen.toAsmType(owner.getDefaultType());
+			Name name = Name.identifier(owner.getName() + AsmConstants.ANONYM_SPLITTER + "this");
 
 			constructorNode.maxLocals ++;
 			// add parameters to constructor
@@ -79,10 +92,11 @@ public class InnerClassCodegen
 		}
 
 		MethodCodegen.genSuperCalls(constructorNode, anonymClass, gen.bindingTrace, anonymClassNode);
+		constructorNode.instructions.addAll(adapter.getInstructions());
 
-		for(ClassDescriptor classDescriptor : classLikes)
+		for(ClassDescriptor owner : classLikes)
 		{
-			int i = classLikes.indexOf(classDescriptor);
+			int i = classLikes.indexOf(owner);
 
 			VariableNode variableNode = thisVariableNodes.get(i);
 
@@ -95,7 +109,7 @@ public class InnerClassCodegen
 
 		assert classLikes.size() == 1;
 
-		for(ClassDescriptor classDescriptor : classLikes)
+		for(ClassDescriptor owner : classLikes)
 		{
 			//if()
 			{
@@ -107,6 +121,17 @@ public class InnerClassCodegen
 		for(MethodParameterNode p : constructorNode.parameters)
 			parameters.add(p.returnType);
 		gen.instructs.newObject(new TypeNode(false, new ClassTypeNode(anonymClassNode.name)), parameters);
+
+		for(VariableNode variableNode : thisVariableNodes)
+		{
+			anonymClassNode.addMember(constructorNode);
+
+			VariableDescriptorImpl varDesc = new VariableDescriptorImpl(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibility.PUBLIC, variableNode.name, CallableMemberDescriptor.Kind.DECLARATION, false, false);
+			varDesc.setType(classDescriptor.getDefaultType(), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
+
+			VariableCodegen.getSetterAndGetter(varDesc, null, anonymClassNode, gen.bindingTrace, false);
+		}
+		gen.classNode.addMember(anonymClassNode);
 
 		return StackValue.none();
 	}

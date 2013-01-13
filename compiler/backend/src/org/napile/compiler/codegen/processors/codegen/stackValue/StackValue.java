@@ -22,6 +22,7 @@ import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.FqNameGenerator;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -30,7 +31,6 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MultiTypeEntryVariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
@@ -81,7 +81,7 @@ public abstract class StackValue
 	@NotNull
 	public static StackValue variable(@NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull VariableDescriptor propertyDescriptor)
 	{
-		return new Variable(DescriptorUtils.getFQName(propertyDescriptor).toSafe(), TypeTransformer.toAsmType(bindingTrace, propertyDescriptor.getType(), classNode), propertyDescriptor.isStatic());
+		return new Variable(FqNameGenerator.getFqName(propertyDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, propertyDescriptor.getType(), classNode), propertyDescriptor.isStatic());
 	}
 
 	@NotNull
@@ -105,7 +105,7 @@ public abstract class StackValue
 	@NotNull
 	public static StackValue simpleVariableAccessor(@NotNull ExpressionCodegen gen, @NotNull VariableDescriptor variableDescriptor, CallableMethod.CallType callType)
 	{
-		return simpleVariableAccessor(DescriptorUtils.getFQName(variableDescriptor).toSafe(), gen.toAsmType(variableDescriptor.getType()), callType);
+		return simpleVariableAccessor(FqNameGenerator.getFqName(variableDescriptor, gen.bindingTrace), gen.toAsmType(variableDescriptor.getType()), callType);
 	}
 
 	@NotNull
