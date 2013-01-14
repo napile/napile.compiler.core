@@ -81,21 +81,6 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 
 	private final static ElementFilter NOT_IDENTIFIER_FILTER = new NotFilter(new AndFilter(new LeafElementFilter(NapileTokens.IDENTIFIER), new NotFilter(new ParentFilter(new ClassFilter(NapileReferenceExpression.class)))));
 
-	private static final String IF_TEMPLATE = "if (<#<condition>#>) {\n<#<block>#>\n}";
-	private static final String IF_ELSE_TEMPLATE = "if (<#<condition>#>) {\n<#<block>#>\n} else {\n<#<block>#>\n}";
-	private static final String IF_ELSE_ONELINE_TEMPLATE = "if (<#<condition>#>) <#<value>#> else <#<value>#>";
-	private static final String METH_TEMPLATE = "meth <#<name>#>(<#<params>#>) : <#<returnType>#>\n{\n<#<body>#>\n}";
-	private static final String MACRO_TEMPLATE = "macro <#<name>#>(<#<params>#>) : <#<returnType>#>\n{\n<#<body>#>\n}";
-	private static final String METH_NO_RETURN_TEMPLATE = "meth <#<name>#>(<#<params>#>)\n{\n<#<body>#>\n}";
-	private static final String VAR_SIMPLE_TEMPLATE = "var <#<name>#> = <#<value>#>";
-	private static final String VAR_WITH_TYPE_TEMPLATE = "var <#<name>#> : <#<varType>#> = <#<initial>#>";
-	private static final String CLASS_TEMPLATE = "class <#<name>#> {\n<#<body>#>\n}";
-	private static final String FOR_TEMPLATE = "for (<#<i>#> in <#<elements>#>) {\n<#<body>#>\n}";
-	private static final String WHEN_TEMPLATE = "when (<#<expression>#>) {\n<#<condition>#> -> <#<value>#>\n" + "else -> <#<elseValue>#>\n}";
-	private static final String WHEN_ENTRY_TEMPLATE = "<#<condition>#> -> <#<value>#>";
-	private static final String WHILE_TEMPLATE = "while (<#<condition>#>) {\n<#<body>#>\n}";
-	private static final String DO_WHILE_TEMPLATE = "do {\n<#<body>#>\n} while (<#<condition>#>)";
-
 	private static class CommentFilter implements ElementFilter
 	{
 		@Override
@@ -332,13 +317,6 @@ public class JetKeywordCompletionContributor extends CompletionContributor
 		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), AS_KEYWORD, BREAK_KEYWORD, CATCH_KEYWORD, CONTINUE_KEYWORD, ELSE_KEYWORD, FALSE_KEYWORD, FINALLY_KEYWORD, GET_KEYWORD, IN_KEYWORD, IS_KEYWORD, NULL_KEYWORD, ANONYM_KEYWORD, LOCAL_KEYWORD, COVERED_KEYWORD, HERITABLE_KEYWORD, RETURN_KEYWORD, SET_KEYWORD, SUPER_KEYWORD, THIS_KEYWORD, THROW_KEYWORD, TRUE_KEYWORD, TRY_KEYWORD, VARARG_KEYWORD);
 
 		registerScopeKeywordsCompletion(new InPropertyBodyFilter(), ELSE_KEYWORD, FALSE_KEYWORD, NULL_KEYWORD, THIS_KEYWORD, TRUE_KEYWORD);
-
-		// templates
-		registerScopeKeywordsCompletion(new InWhenFilter(), WHEN_ENTRY_TEMPLATE);
-		registerScopeKeywordsCompletion(new InTopFilter(), CLASS_TEMPLATE);
-		registerScopeKeywordsCompletion(new InClassBodyFilter(), METH_TEMPLATE, METH_NO_RETURN_TEMPLATE, MACRO_TEMPLATE, VAR_WITH_TYPE_TEMPLATE, CLASS_TEMPLATE);
-		registerScopeKeywordsCompletion(new InNonClassBlockFilter(), IF_TEMPLATE, IF_ELSE_TEMPLATE, IF_ELSE_ONELINE_TEMPLATE, METH_TEMPLATE, VAR_SIMPLE_TEMPLATE, CLASS_TEMPLATE, FOR_TEMPLATE, WHEN_TEMPLATE, WHILE_TEMPLATE, DO_WHILE_TEMPLATE);
-		registerScopeKeywordsCompletion(new InPropertyBodyFilter(), IF_ELSE_ONELINE_TEMPLATE, WHEN_TEMPLATE);
 	}
 
 	private void registerScopeKeywordsCompletion(final ElementFilter placeFilter, boolean notIdentifier, String... keywords)

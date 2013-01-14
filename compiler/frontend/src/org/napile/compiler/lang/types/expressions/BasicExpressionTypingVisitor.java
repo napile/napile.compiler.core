@@ -1077,6 +1077,14 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					}
 				}
 			}
+
+			NapileExpression calleeExpression = callExpression.getCalleeExpression();
+			if(calleeExpression instanceof NapileSimpleNameExpression)
+			{
+				DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileSimpleNameExpression) calleeExpression);
+				if(declarationDescriptor instanceof VariableDescriptor)
+					VariableAccessorResolver.resolveGetter((NapileSimpleNameExpression) calleeExpression, ReceiverDescriptor.NO_RECEIVER, context);
+			}
 			return JetTypeInfo.create(type, dataFlowInfo);
 		}
 

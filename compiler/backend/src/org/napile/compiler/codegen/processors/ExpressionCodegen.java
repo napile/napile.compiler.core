@@ -993,10 +993,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		if(!forceField)
 		{
-			//TODO [VISTALL]
-			System.out.println("Using old method to invoking variable accessors: " + expression.getParent().getText());
-			//throw new UnsupportedOperationException("property");
-			return StackValue.simpleVariableAccessor(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.VIRTUAL);
+			throw new IllegalArgumentException("Using old method to invoking variable accessors: " + expression.getParent().getText());
+			//return StackValue.simpleVariableAccessor(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.VIRTUAL);
 		}
 		else
 			return StackValue.variable(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic());
