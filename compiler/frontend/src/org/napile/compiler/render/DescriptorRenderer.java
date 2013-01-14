@@ -449,7 +449,8 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 			renderName(descriptor, builder);
 			renderValueParameters(descriptor, builder);
-			builder.append(" : ").append(renderType(descriptor.getReturnType()));
+			if(!TypeUtils.isEqualFqName(descriptor.getReturnType(), NapileLangPackage.NULL))
+				builder.append(" : ").append(renderType(descriptor.getReturnType()));
 			renderWhereSuffix(descriptor, builder);
 			return null;
 		}
