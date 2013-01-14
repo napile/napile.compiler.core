@@ -197,6 +197,50 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	}
 
 	@Override
+	public StackValue visitBinaryWithTypeRHSExpression(NapileBinaryExpressionWithTypeRHS expression, StackValue data)
+	{
+		PsiElement refElement = expression.getOperationSign().getReferencedNameElement();
+		IElementType elementType = refElement.getNode().getElementType();
+		TypeNode expType = expressionType(expression);
+
+		NapileExpression leftExp = expression.getLeft();
+
+		//FIXME [VISTALL] currently VM prototype not supported CASTs
+		TypeNode leftType = expressionType(expression.getLeft());
+		TypeNode rightType = toAsmType(bindingTrace.safeGet(BindingContext.TYPE, expression.getRight()));
+		if(elementType == NapileTokens.AS_KEYWORD)
+		{
+			gen(leftExp, leftType);
+			instructs.dup();
+
+			instructs.is(rightType);
+			instructs.putFalse();
+			ReservedInstruction ifReserve = instructs.reserve();
+			instructs.putNull();
+			instructs.newObject(new TypeNode(false, new ClassTypeNode(new FqName("napile.lang.ClassCastException"))), Collections.singletonList(TypeConstants.NULLABLE_STRING));
+			instructs.throwVal();
+			instructs.replace(ifReserve).jumpIf(instructs.size());
+		}
+		else if(elementType == NapileTokens.AS_SAFE)
+		{
+			gen(leftExp, leftType);
+			instructs.dup();
+
+			instructs.is(rightType);
+			instructs.putFalse();
+			ReservedInstruction ifReserve = instructs.reserve();
+			instructs.putNull();
+			instructs.replace(ifReserve).jumpIf(instructs.size());
+		}
+		else if(elementType == NapileTokens.COLON)
+		{
+			gen(leftExp, leftType);
+			//FIXME [VISTALL] this cast VM ill be check
+		}
+		return StackValue.onStack(expType);
+	}
+
+	@Override
 	public StackValue visitBlockExpression(NapileBlockExpression expression, StackValue receiver)
 	{
 		List<NapileElement> statements = expression.getStatements();
