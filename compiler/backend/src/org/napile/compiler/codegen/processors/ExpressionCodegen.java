@@ -363,14 +363,6 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		SimpleMethodDescriptor methodDescriptor = bindingTrace.safeGet(BindingContext.METHOD, expression);
 
-		boolean isStatic = false;
-		if(methodDescriptor.getContainingDeclaration() instanceof SimpleMethodDescriptor)
-			isStatic = ((SimpleMethodDescriptor) methodDescriptor.getContainingDeclaration()).isStatic();
-		else if(methodDescriptor.getContainingDeclaration() instanceof VariableDescriptor)
-			isStatic = ((VariableDescriptor) methodDescriptor.getContainingDeclaration()).isStatic();
-		else
-			throw new IllegalArgumentException("Unknown owner " + methodDescriptor.getContainingDeclaration());
-
 		// gen method
 		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, fqName.shortName(), expression.getAnonymMethod(), bindingTrace, classNode, context.clone());
 
@@ -378,8 +370,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
-		instructs.load(0);
-		instructs.linkMethod(NodeRefUtil.ref(methodDescriptor, fqName, bindingTrace, classNode));
+		if(methodDescriptor.isStatic())
+			instructs.linkStaticMethod(NodeRefUtil.ref(methodDescriptor, fqName, bindingTrace, classNode));
+		else
+		{
+			instructs.load(0);
+			instructs.linkMethod(NodeRefUtil.ref(methodDescriptor, fqName, bindingTrace, classNode));
+		}
 
 		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace, jetType, classNode));
 	}
