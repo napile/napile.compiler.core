@@ -259,6 +259,8 @@ public class BinaryOperationCodegen
 
 		ReservedInstruction ifSlot = gen.instructs.reserve();
 
+		gen.instructs.pop(); // remove null from stack(value of left exp)
+
 		gen.gen(expression.getRight(), exprType);
 
 		gen.instructs.replace(ifSlot).jumpIf(gen.instructs.size());
