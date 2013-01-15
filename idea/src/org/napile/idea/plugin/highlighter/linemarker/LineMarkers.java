@@ -18,6 +18,7 @@ package org.napile.idea.plugin.highlighter.linemarker;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +32,11 @@ import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -101,44 +103,79 @@ public enum LineMarkers
 			},
 	METHOD_OVERRIDEN
 			{
+				@Override
+				public void collectLineMarkers(@NotNull PsiElement element, Collection<LineMarkerInfo> infos)
+				{
+					if(!(element instanceof NapileClass))
+						return;
+
+					NapileClass napileClass = (NapileClass) element;
+					AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(napileClass.getContainingFile());
+
+					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
+
+					ClassDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.CLASS, napileClass);
+					if(descriptor == null)
+						return;
+
+					for(NapileDeclaration declaration : napileClass.getDeclarations())
+					{
+						if(declaration instanceof NapileMethod)
+						{
+							MethodDescriptor methodDescriptor = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, declaration);
+							if(methodDescriptor == null)
+								continue;
+
+							final List<NapileElement> elements = new ArrayList<NapileElement>();
+							for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
+							{
+								NapileClass class2 = entry.getKey();
+								MutableClassDescriptor descriptor2 = entry.getValue();
+								if(DescriptorUtils.isSubclass(descriptor2, descriptor))
+								{
+									for(NapileDeclaration declaration2 : class2.getDeclarations())
+									{
+										if(declaration2 instanceof NapileMethod)
+										{
+											MethodDescriptor methodDescriptor2 = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, declaration2);
+											if(methodDescriptor2 != null && methodDescriptor2.getOverriddenDescriptors().contains(methodDescriptor))
+												elements.add(declaration2);
+										}
+									}
+								}
+							}
+
+							PsiElement name = ((PsiNameIdentifierOwner)declaration).getNameIdentifier();
+							if(name == null)
+								continue;
+							if(elements.isEmpty())
+								continue;
+
+							infos.add(new LineMarkerInfo<PsiElement>(name, name.getTextRange(), getIcon(), Pass.UPDATE_OVERRIDEN_MARKERS, new Function<PsiElement, String>()
+							{
+								@Override
+								public String fun(PsiElement element)
+								{
+									return getTitle();
+								}
+							}, new GutterIconNavigationHandler<PsiElement>()
+							{
+								@Override
+								public void navigate(MouseEvent e, PsiElement elt)
+								{
+									PsiElementListNavigator.openTargets(e, elements.toArray(new NapileElement[elements.size()]), getTitle(), getTitle(), new DefaultPsiElementCellRenderer());
+								}
+							}, GutterIconRenderer.Alignment.LEFT
+							));
+						}
+					}
+				}
+
 				@NotNull
 				@Override
 				protected List<NapileElement> getTargets(PsiElement element)
 				{
-					if(!(element instanceof NapileMethod))
-						return Collections.emptyList();
-
-					NapileMethod napileMethod = (NapileMethod) element;
-					AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(napileMethod.getContainingFile());
-
-					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
-
-					SimpleMethodDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, napileMethod);
-					if(descriptor == null)
-						return Collections.emptyList();
-
-					ClassDescriptor ownerDescriptor = (ClassDescriptor)descriptor.getContainingDeclaration();
-
-					List<NapileElement> list = new ArrayList<NapileElement>();
-				/*	for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
-					{
-						MutableClassDescriptor clazzDescriptor = entry.getValue();
-
-						if(DescriptorUtils.isSubclass(clazzDescriptor, ownerDescriptor))
-							for(MethodDescriptor clazzMethodDescriptor : clazzDescriptor.getMethods())
-								for(MethodDescriptor overrideMethodDescriptor : clazzMethodDescriptor.getOverriddenDescriptors())
-								{
-									PsiElement psiElement = BindingContextUtils.descriptorToDeclaration(analyzeExhaust.getBindingContext(), overrideMethodDescriptor);
-									if(element == psiElement)
-									{
-										List<PsiElement> elements = BindingContextUtils.descriptorToDeclarations(analyzeExhaust.getBindingContext(), clazzMethodDescriptor);
-										for(PsiElement e : elements)
-											list.add((NapileElement) e);
-									}
-								}
-					}    */
-
-					return list;
+					return Collections.emptyList();
 				}
 
 				@NotNull
@@ -214,7 +251,15 @@ public enum LineMarkers
 		return declarationDescriptor instanceof CallableDescriptor && !(declarationDescriptor instanceof CallParameterDescriptor);
 	}
 
-	public final LineMarkerInfo getLineMarkers(@NotNull PsiElement element)
+	public void collectLineMarkers(@NotNull PsiElement element, Collection<LineMarkerInfo> infos)
+	{
+		LineMarkerInfo lineMarkerInfo = getLineMarkers(element);
+		if(lineMarkerInfo != null)
+			infos.add(lineMarkerInfo);
+	}
+
+	@Nullable
+	protected LineMarkerInfo getLineMarkers(@NotNull PsiElement element)
 	{
 		if(element instanceof PsiNameIdentifierOwner)
 		{

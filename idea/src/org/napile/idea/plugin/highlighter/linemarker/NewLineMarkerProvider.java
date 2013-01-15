@@ -43,10 +43,6 @@ public class NewLineMarkerProvider implements LineMarkerProvider
 	{
 		for(LineMarkers sub : LineMarkers.values())
 			for(PsiElement element : elements)
-			{
-				LineMarkerInfo lineMarkerInfo = sub.getLineMarkers(element);
-				if(lineMarkerInfo != null)
-					result.add(lineMarkerInfo);
-			}
+				sub.collectLineMarkers(element, result);
 	}
 }
