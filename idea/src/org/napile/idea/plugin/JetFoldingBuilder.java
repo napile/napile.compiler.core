@@ -23,6 +23,10 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileImportDirective;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
 import com.intellij.lang.folding.FoldingDescriptor;
@@ -53,6 +57,21 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 		if((type == NapileNodes.BLOCK || type == NapileNodes.CLASS_BODY) && !isOneLine(textRange, document))
 		{
 			descriptors.add(new FoldingDescriptor(node, textRange));
+		}
+		else if(node.getElementType() == NapileStubElementTypes.FILE)
+		{
+			List<NapileImportDirective> imports = ((NapileFile) node.getPsi()).getImportDirectives();
+			if(!imports.isEmpty())
+			{
+				NapileImportDirective first = imports.get(0);
+				NapileImportDirective last = imports.get(imports.size() - 1);
+				NapileExpression importExp = first.getImportedReference();
+				// if import exp is null - get last end offset of directive
+				int startOffset = importExp == null ? first.getNode().getStartOffset() + first.getNode().getTextLength() : importExp.getNode().getStartOffset();
+
+				TextRange range = new TextRange(startOffset, last.getNode().getStartOffset() + last.getNode().getTextLength());
+				descriptors.add(new FoldingDescriptor(last, range));
+			}
 		}
 		else if(node.getElementType() == NapileTokens.IDE_TEMPLATE_START)
 		{
@@ -89,6 +108,9 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 		{
 			return astNode.getText();
 		}
+
+		if(astNode.getElementType() == NapileNodes.IMPORT_DIRECTIVE)
+			return "...";
 		return "{...}";
 	}
 
@@ -101,6 +123,8 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 	@Override
 	public boolean isCollapsedByDefault(@NotNull ASTNode astNode)
 	{
+		if(astNode.getElementType() == NapileNodes.IMPORT_DIRECTIVE)
+			return true;
 		return false;
 	}
 }
