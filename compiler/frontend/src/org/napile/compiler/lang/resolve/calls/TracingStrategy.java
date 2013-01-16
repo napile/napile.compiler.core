@@ -109,6 +109,11 @@ import org.napile.compiler.lang.types.JetType;
 		}
 
 		@Override
+		public void immutableInvisibleMember(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
+		{
+		}
+
+		@Override
 		public void invisibleMember(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
 		{
 		}
@@ -156,6 +161,8 @@ import org.napile.compiler.lang.types.JetType;
 	void unnecessarySafeCall(@NotNull BindingTrace trace, @NotNull JetType type);
 
 	void danglingFunctionLiteralArgumentSuspected(@NotNull BindingTrace trace, @NotNull List<NapileExpression> functionLiteralArguments);
+
+	void immutableInvisibleMember(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor);
 
 	void invisibleMember(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor);
 

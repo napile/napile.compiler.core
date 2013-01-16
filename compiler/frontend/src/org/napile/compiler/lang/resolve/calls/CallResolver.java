@@ -43,10 +43,13 @@ import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.lib.NapileAnnotationPackage;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.DescriptorWithParent;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceContext;
@@ -647,6 +650,43 @@ public class CallResolver
 		return results;
 	}
 
+	private <D extends CallableDescriptor, F extends D> boolean isImmutableInvisible(@NotNull CallResolutionContext<D, F> context)
+	{
+		ResolvedCallImpl<D> candidateCall = context.candidateCall;
+		D candidate = candidateCall.getCandidateDescriptor();
+		if(candidateCall.getThisObject().exists())
+		{
+			if(AnnotationUtils.hasAnnotation(candidate, NapileAnnotationPackage.IMMUTABLE_TARGET))
+			{
+				JetType type = candidateCall.getThisObject().getType();
+				if(AnnotationUtils.hasAnnotation(type, NapileAnnotationPackage.IMMUTABLE))
+					return true;
+
+				if(candidateCall.getThisObject() instanceof ExpressionReceiver)
+				{
+					ExpressionReceiver expressionReceiver = (ExpressionReceiver) candidateCall.getThisObject();
+					NapileExpression expression = expressionReceiver.getExpression();
+
+					if(expression instanceof NapileDotQualifiedExpression)
+					{
+						NapileDotQualifiedExpression dotQualifiedExpression = (NapileDotQualifiedExpression) expression;
+						if(hasAnnotationOnType(dotQualifiedExpression.getSelectorExpression(), context, NapileAnnotationPackage.INHERIT_IMMUTABLE) && hasAnnotationOnType(dotQualifiedExpression.getReceiverExpression(), context, NapileAnnotationPackage.IMMUTABLE))
+							return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private static boolean hasAnnotationOnType(@Nullable NapileExpression expression, CallResolutionContext<?, ?> context, FqName fqName)
+	{
+		if(expression == null)
+			return false;
+		JetType type = context.trace.get(BindingContext.EXPRESSION_TYPE, expression);
+		return type != null && AnnotationUtils.hasAnnotation(type, fqName);
+	}
+
 	private <D extends CallableDescriptor, F extends D> void performResolutionForCandidateCall(@NotNull CallResolutionContext<D, F> context, @NotNull ResolutionTask<D, F> task)
 	{
 
@@ -703,6 +743,13 @@ public class CallResolver
 				return;
 			}
 		}   */
+
+		if(isImmutableInvisible(context))
+		{
+			candidateCall.addStatus(ResolutionStatus.OTHER_ERROR);
+			context.tracing.immutableInvisibleMember(context.trace, candidate);
+			return;
+		}
 
 		if(!Visibilities.isVisible(candidate, context.scope.getContainingDeclaration()))
 		{

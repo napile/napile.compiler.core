@@ -277,6 +277,12 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		}
 
 		@Override
+		public void immutableInvisibleMember(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
+		{
+			trace.report(IMMUTABLE_INVISIBLE_MEMBER.on(call.getCallElement(), descriptor, descriptor.getContainingDeclaration()));
+		}
+
+		@Override
 		public void invisibleMember(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
 		{
 			trace.report(INVISIBLE_MEMBER.on(call.getCallElement(), descriptor, descriptor.getContainingDeclaration()));

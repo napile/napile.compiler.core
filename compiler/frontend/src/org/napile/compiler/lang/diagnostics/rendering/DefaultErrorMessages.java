@@ -60,6 +60,7 @@ public class DefaultErrorMessages
 
 		MAP.put(INVISIBLE_REFERENCE, "Cannot access ''{0}'' in ''{1}''", NAME, NAME);
 		MAP.put(INVISIBLE_MEMBER, "Cannot access ''{0}'' in ''{1}''", NAME, NAME);
+		MAP.put(IMMUTABLE_INVISIBLE_MEMBER, "Cannot access ''{0}'' in ''{1}''", NAME, NAME);
 
 		MAP.put(REDECLARATION, "Redeclaration: {0}", NAME);
 		MAP.put(NAME_SHADOWING, "Name shadowed: {0}", NAME);

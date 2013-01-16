@@ -57,6 +57,7 @@ public interface Errors
 	//Elements with "INVISIBLE_REFERENCE" error are marked as unresolved, unlike elements with "INVISIBLE_MEMBER" error
 	DiagnosticFactory2<NapileSimpleNameExpression, DeclarationDescriptor, DeclarationDescriptor> INVISIBLE_REFERENCE = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory2<PsiElement, DeclarationDescriptor, DeclarationDescriptor> INVISIBLE_MEMBER = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.CALL_ELEMENT);
+	DiagnosticFactory2<PsiElement, DeclarationDescriptor, DeclarationDescriptor> IMMUTABLE_INVISIBLE_MEMBER = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.CALL_ELEMENT);
 
 	RedeclarationDiagnosticFactory REDECLARATION = new RedeclarationDiagnosticFactory(Severity.ERROR);
 	RedeclarationDiagnosticFactory NAME_SHADOWING = new RedeclarationDiagnosticFactory(Severity.WARNING);
