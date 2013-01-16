@@ -710,7 +710,7 @@ public class CallResolver
 			return;
 		}
 
-		if(!candidate.isStatic())
+		/*if(!candidate.isStatic())
 		{
 			if(candidateCall.getThisObject() instanceof ExpressionReceiver)
 			{
@@ -725,7 +725,7 @@ public class CallResolver
 					return;
 				}
 			}
-		}
+		}  */
 
 		if(isImmutableInvisible(context))
 		{
