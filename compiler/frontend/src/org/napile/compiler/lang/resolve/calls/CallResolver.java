@@ -46,7 +46,6 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.DescriptorWithParent;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
@@ -687,6 +686,17 @@ public class CallResolver
 		return type != null && AnnotationUtils.hasAnnotation(type, fqName);
 	}
 
+	private static boolean isNotExpression(@Nullable NapileExpression expression, CallResolutionContext<?, ?> context)
+	{
+		return expression instanceof NapileSimpleNameExpression && context.trace.get(BindingContext.REFERENCE_TARGET, (NapileSimpleNameExpression) expression) instanceof MutableClassDescriptor;
+	}
+
+	@Nullable
+	private static NapileSimpleNameExpression getSimpleOrReceiverOfDotExpression(@Nullable NapileElement element)
+	{
+		return element instanceof NapileSimpleNameExpression ? (NapileSimpleNameExpression) element : element instanceof NapileDotQualifiedExpression ? getSimpleOrReceiverOfDotExpression(((NapileDotQualifiedExpression) element).getReceiverExpression()) : null;
+	}
+
 	private <D extends CallableDescriptor, F extends D> void performResolutionForCandidateCall(@NotNull CallResolutionContext<D, F> context, @NotNull ResolutionTask<D, F> task)
 	{
 
@@ -700,49 +710,22 @@ public class CallResolver
 			return;
 		}
 
-		boolean isStatic = isParentStatic(context.scope);
-		// static body
-	/*	if(isStatic)
+		if(!candidate.isStatic())
 		{
-			boolean isValid = false;
-			if(candidateCall.getThisObject() != ReceiverDescriptor.NO_RECEIVER)
+			if(candidateCall.getThisObject() instanceof ExpressionReceiver)
 			{
-				isValid = true;
-
-				if(candidateCall.getThisObject() instanceof ExpressionReceiver)
+				// Calls like
+				// Array.length = 1
+				// napile.lang.Array.length = 1
+				NapileExpression exp = getSimpleOrReceiverOfDotExpression(((ExpressionReceiver) candidateCall.getThisObject()).getExpression());
+				if(isNotExpression(exp, context))
 				{
-					NapileExpression expression = ((ExpressionReceiver) candidateCall.getThisObject()).getExpression();
-
-					if(expression instanceof NapileReferenceExpressionImpl)
-					{
-						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpressionImpl)expression);
-
-						isValid = !isParentStatic(ref);
-					}
-					else if(expression instanceof NapilePostfixExpression && ((NapilePostfixExpression) expression).getBaseExpression() instanceof NapileReferenceExpressionImpl)
-					{
-						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpressionImpl)((NapilePostfixExpression) expression).getBaseExpression());
-
-						isValid = !isParentStatic(ref);
-					}
-					else if(expression instanceof NapileDotQualifiedExpression && ((NapileDotQualifiedExpression) expression).getReceiverExpression() instanceof NapileReferenceExpressionImpl)
-					{
-						DeclarationDescriptor ref = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpressionImpl)((NapileDotQualifiedExpression) expression).getReceiverExpression());
-
-						isValid = !isParentStatic(ref);
-					}
-					else if(expression instanceof NapileConstantExpression)
-						isValid = false;
+					candidateCall.addStatus(ResolutionStatus.OTHER_ERROR);
+					context.tracing.staticCallExpectInstanceCall(context.trace, candidate);
+					return;
 				}
 			}
-
-			if(isValid)
-			{
-				candidateCall.addStatus(ResolutionStatus.OTHER_ERROR);
-				context.tracing.instanceCallFromStatic(context.trace, candidate);
-				return;
-			}
-		}   */
+		}
 
 		if(isImmutableInvisible(context))
 		{
@@ -826,12 +809,6 @@ public class CallResolver
 		task.performAdvancedChecks(candidate, context.trace, context.tracing);
 
 		recordAutoCastIfNecessary(candidateCall.getThisObject(), candidateCall.getTrace());
-	}
-
-	private static boolean isParentStatic(@Nullable DescriptorWithParent me)
-	{
-		DeclarationDescriptor parent = me == null ? null : me.getContainingDeclaration();
-		return parent instanceof DeclarationDescriptorWithVisibility && ((DeclarationDescriptorWithVisibility) parent).isStatic();
 	}
 
 	private <D extends CallableDescriptor, F extends D> ResolutionStatus inferTypeArguments(CallResolutionContext<D, F> context)

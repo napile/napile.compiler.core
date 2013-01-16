@@ -289,6 +289,12 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		}
 
 		@Override
+		public void staticCallExpectInstanceCall(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
+		{
+			trace.report(STATIC_CALL_EXPECT_INSTANCE_CALL.on(call.getCallElement()));
+		}
+
+		@Override
 		public void instanceCallFromStatic(@NotNull BindingTrace trace, @NotNull DeclarationDescriptor descriptor)
 		{
 			trace.report(INSTANCE_CALL_FROM_STATIC_CONTEXT.on(call.getCallElement()));

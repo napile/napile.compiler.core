@@ -122,6 +122,7 @@ public class DefaultErrorMessages
 		MAP.put(PROPERTY_WITH_NO_TYPE_NO_INITIALIZER, "This property must either have a type annotation or be initialized");
 
 		MAP.put(INSTANCE_CALL_FROM_STATIC_CONTEXT, "Instance call from static context");
+		MAP.put(STATIC_CALL_EXPECT_INSTANCE_CALL, "Static call expected instance call");
 
 		MAP.put(MUST_BE_INITIALIZED, "Property must be initialized");
 		MAP.put(MUST_BE_INITIALIZED_OR_BE_ABSTRACT, "Property must be initialized or be abstract");
