@@ -1414,7 +1414,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		NapileExpression lastExp = lastExpressionOfBody(expr);
 		if(lastExp instanceof NapileThrowExpression || lastExp instanceof NapileReturnExpression)
 		{}
-		else if(expr instanceof NapileBlockExpression)
+		else if(expr instanceof NapileBlockExpression && (expr.getParent() instanceof NapileNamedMethodOrMacro || expr.getParent() instanceof NapileConstructor))
 		{
 			if(isInstanceConstructor)
 				instructs.load(0);
