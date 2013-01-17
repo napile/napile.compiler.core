@@ -27,6 +27,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import com.intellij.codeInsight.folding.CodeFoldingSettings;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.folding.FoldingBuilderEx;
 import com.intellij.lang.folding.FoldingDescriptor;
@@ -60,7 +61,12 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 		}
 		else if(node.getElementType() == NapileStubElementTypes.FILE)
 		{
-			List<NapileImportDirective> imports = ((NapileFile) node.getPsi()).getImportDirectives();
+			NapileFile napileFile = ((NapileFile) node.getPsi());
+			PsiElement firstChild = napileFile.getFirstChild();
+			if(firstChild.getNode().getElementType() == NapileTokens.BLOCK_COMMENT)
+				descriptors.add(new FoldingDescriptor(firstChild, firstChild.getTextRange()));
+
+			List<NapileImportDirective> imports = napileFile.getImportDirectives();
 			if(!imports.isEmpty())
 			{
 				NapileImportDirective first = imports.get(0);
@@ -111,7 +117,9 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 
 		if(astNode.getElementType() == NapileNodes.IMPORT_DIRECTIVE)
 			return "...";
-		return "{...}";
+		else if(astNode.getElementType() == NapileTokens.BLOCK_COMMENT && astNode.getTreeParent().getElementType() == NapileStubElementTypes.FILE)
+			return "/.../";
+		return super.getPlaceholderText(astNode, range);
 	}
 
 	@Override
@@ -124,7 +132,9 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 	public boolean isCollapsedByDefault(@NotNull ASTNode astNode)
 	{
 		if(astNode.getElementType() == NapileNodes.IMPORT_DIRECTIVE)
-			return true;
+			return CodeFoldingSettings.getInstance().COLLAPSE_IMPORTS;
+		else if(astNode.getElementType() == NapileTokens.BLOCK_COMMENT && astNode.getTreeParent().getElementType() == NapileStubElementTypes.FILE)
+			return CodeFoldingSettings.getInstance().COLLAPSE_FILE_HEADER;
 		return false;
 	}
 }
