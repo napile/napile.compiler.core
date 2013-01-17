@@ -36,6 +36,8 @@ public class NapileProgramRunner extends DefaultProgramRunner
 	@Override
 	public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile)
 	{
+		if(!(profile instanceof NapileRunConfiguration))
+			return false;
 		NapileRunConfiguration runConfiguration = (NapileRunConfiguration) profile;
 
 		return runConfiguration.getConfigurationModule().getModule() != null && runConfiguration.findSdk() != null;
