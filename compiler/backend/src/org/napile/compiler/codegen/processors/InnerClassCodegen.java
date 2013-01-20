@@ -26,13 +26,12 @@ import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
-import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
-import org.napile.asm.tree.members.bytecode.impl.PutToVariableInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Outer;
@@ -92,11 +91,12 @@ public class InnerClassCodegen
 
 		// make constructor
 		MethodNode constructorNode = MethodNode.constructor(Modifier.EMPTY);
-		constructorNode.maxLocals = 1 + adapter.getMaxLocals();
+
+		InstructionAdapter constructorAdapter = new InstructionAdapter();
+		constructorAdapter.visitLocalVariable("this");
 
 		// gen super calls
-		MethodCodegen.genSuperCalls(constructorNode, anonymClass, gen.bindingTrace, anonymClassNode);
-		constructorNode.instructions.addAll(adapter.getInstructions());
+		MethodCodegen.genSuperCalls(constructorAdapter, anonymClass, gen.bindingTrace, anonymClassNode);
 
 		for(ClassDescriptor owner : outerClasses)
 		{
@@ -106,7 +106,7 @@ public class InnerClassCodegen
 			anonymClassNode.addMember(variableNode);
 
 			// add parameter to constructor
-			constructorNode.maxLocals ++;
+			constructorAdapter.visitLocalVariable("p" + owner.getName());
 			constructorNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, variableNode.name, variableNode.returnType));
 
 			// create getter & setter
@@ -116,18 +116,22 @@ public class InnerClassCodegen
 			VariableCodegen.getSetterAndGetter(varDesc, null, anonymClassNode, gen.bindingTrace, false);
 
 			// put data from parameters to variables
-			constructorNode.instructions.add(new LoadInstruction(0));
-			constructorNode.instructions.add(new LoadInstruction(i + 1));
-			constructorNode.instructions.add(new PutToVariableInstruction(new VariableRef(fqName.child(variableNode.name), variableNode.returnType)));
+			constructorAdapter.localGet(0);
+			constructorAdapter.localGet(i + 1);
+			constructorAdapter.putToVar(new VariableRef(fqName.child(variableNode.name), variableNode.returnType));
 		}
 
+		constructorAdapter.getInstructions().addAll(adapter.getInstructions());
+		constructorAdapter.getTryCatchBlockNodes().addAll(adapter.getTryCatchBlockNodes());
+
+		constructorNode.code = new CodeInfo(constructorAdapter);
 		anonymClassNode.addMember(constructorNode);
 
 		for(ClassDescriptor owner : outerClasses)
 		{
 			StackValue stackValue = gen.context.wrappedOuterClasses.get(owner);
 			if(stackValue == null)
-				gen.instructs.load(0);
+				gen.instructs.localGet(0);
 			else
 				stackValue.put(AsmConstants.ANY_TYPE, gen.instructs);
 		}

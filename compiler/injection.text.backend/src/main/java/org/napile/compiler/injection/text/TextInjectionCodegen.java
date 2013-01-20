@@ -43,7 +43,7 @@ public class TextInjectionCodegen implements InjectionCodegen<TextCodeInjection>
 			return StackValue.constant(str, AsmConstants.STRING_TYPE);
 		else
 		{
-			PartToPartGenVisitor genVisitor = new PartToPartGenVisitor(expressionCodegen.getInstructs(), expressionCodegen);
+			PartToPartGenVisitor genVisitor = new PartToPartGenVisitor(expressionCodegen.getAdapter(), expressionCodegen);
 			block.accept(genVisitor);
 			genVisitor.genToString();
 			return StackValue.onStack(AsmConstants.STRING_TYPE);

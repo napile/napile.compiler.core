@@ -65,18 +65,18 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		MethodDescriptor methodDescriptor = gen.bindingTrace.safeGet(BindingContext.LOOP_RANGE_ITERATOR, expression.getLoopRange());
 		gen.gen(expression.getLoopRange(), TypeConstants.ITERATOR__ANY__);
 		instructions.invokeVirtual(NodeRefUtil.ref(methodDescriptor, gen.bindingTrace, gen.classNode), false);
-		instructions.store(loopIteratorIndex);
+		instructions.localPut(loopIteratorIndex);
 
 		firstPos = instructions.size();
 
-		instructions.load(loopIteratorIndex);
+		instructions.localPut(loopIteratorIndex);
 		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 		instructions.putTrue();
 		jumpIfSlot = instructions.reserve();
 
-		instructions.load(loopIteratorIndex);
+		instructions.localPut(loopIteratorIndex);
 		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), false);
-		instructions.store(loopParameterIndex);
+		instructions.localGet(loopParameterIndex);
 	}
 
 	@Override

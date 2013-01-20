@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.tree.members.AnnotableNode;
 import org.napile.asm.tree.members.AnnotationNode;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
@@ -56,11 +57,8 @@ public class AnnotationCodegen
 
 		gen.pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
 
-		gen.getInstructs().newObject(type, callableMethod.getValueParameterTypes());
-		//gen.getInstructs().returnVal();
+		gen.getAdapter().newObject(type, callableMethod.getValueParameterTypes());
 
-		AnnotationNode node = new AnnotationNode();
-		node.putInstructions(gen.getInstructs());
-		return node;
+		return new AnnotationNode(new CodeInfo(gen.getAdapter()));
 	}
 }

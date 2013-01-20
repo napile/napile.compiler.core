@@ -42,7 +42,7 @@ public class Outer extends StackValue
 	@Override
 	public void put(TypeNode type, InstructionAdapter instructionAdapter)
 	{
-		instructionAdapter.load(0);
+		instructionAdapter.localGet(0);
 		caller.put(type, instructionAdapter);
 	}
 }

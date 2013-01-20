@@ -74,6 +74,7 @@ public class GenerationState
 
 	public void compileAndGenerate(@NotNull CompilationErrorHandler errorHandler)
 	{
+		NapileFile file = null;
 		try
 		{
 			markUsed();
@@ -82,23 +83,33 @@ public class GenerationState
 
 			List<NapileClass> classes = new ArrayList<NapileClass>();
 			for(NapileFile napileFile : files)
+			{
+				file = napileFile;
+
 				classes.addAll(Arrays.asList(napileFile.getDeclarations()));
+			}
 
 			for(NapileClass napileClass : classes)
+			{
+				file = napileClass.getContainingFile();
+
 				napileClass.accept(fqNameGenerator, null);
+			}
 
 			classNodes = new LinkedHashMap<FqName, ClassNode>(classes.size());
 
 			ClassCodegen classCodegen = new ClassCodegen(bindingTrace);
 			for(NapileClass napileClass : classes)
 			{
+				file = napileClass.getContainingFile();
+
 				ClassNode classNode = classCodegen.gen(napileClass, ExpressionCodegenContext.empty());
 				classNodes.put(classNode.name, classNode);
 			}
 		}
 		catch(Exception e)
 		{
-			errorHandler.reportException(e, null);
+			errorHandler.reportException(e, file == null ? null : file.getVirtualFile().getUrl());
 		}
 	}
 

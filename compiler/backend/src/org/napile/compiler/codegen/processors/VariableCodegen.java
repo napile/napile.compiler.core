@@ -25,14 +25,11 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
-import org.napile.asm.tree.members.bytecode.impl.GetStaticVariableInstruction;
-import org.napile.asm.tree.members.bytecode.impl.GetVariableInstruction;
-import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
-import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -76,26 +73,29 @@ public class VariableCodegen
 	{
 		setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)));
 
-		InstructionAdapter instructions = new InstructionAdapter();
+		InstructionAdapter adapter = new InstructionAdapter();
+
+		if(!variableDescriptor.isStatic())
+			adapter.visitLocalVariable("this");
+		adapter.visitLocalVariable("p");
+
 		if(variableDescriptor.isStatic())
 		{
-			instructions.load(0);
-			instructions.putToStaticVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
-			instructions.putNull();
-			instructions.returnVal();
+			adapter.localGet(0);
+			adapter.putToStaticVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
+			adapter.putNull();
+			adapter.returnVal();
 		}
 		else
 		{
-			instructions.load(0);
-			instructions.load(1);
-			instructions.putToVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
-			instructions.putNull();
-			instructions.returnVal();
+			adapter.localGet(0);
+			adapter.localGet(1);
+			adapter.putToVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
+			adapter.putNull();
+			adapter.returnVal();
 		}
 
-		setterMethodNode.instructions.addAll(instructions.getInstructions());
-		setterMethodNode.maxLocals = variableDescriptor.isStatic() ? 1 : 2;
-
+		setterMethodNode.code = new CodeInfo(adapter);
 		classNode.addMember(setterMethodNode);
 	}
 
@@ -123,7 +123,7 @@ public class VariableCodegen
 			final StackValue varStackValue = StackValue.variable(bindingTrace, classNode, variableDescriptor);
 
 			if(!variableDescriptor.isStatic())
-				adapter.load(0);
+				adapter.localGet(0);
 
 			varStackValue.put(getterMethodNode.returnType, adapter);
 
@@ -137,18 +137,16 @@ public class VariableCodegen
 
 			ReservedInstruction reservedInstruction = adapter.reserve();
 
-			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, ExpressionCodegenContext.empty(), null);
+			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, null, classNode, ExpressionCodegenContext.empty(), adapter);
 			if(!variableDescriptor.isStatic())
-				expressionCodegen.getInstructs().load(0);
+				expressionCodegen.getAdapter().localGet(0);
 
 			expressionCodegen.gen(variable.getInitializer(), getterMethodNode.returnType);
-
-			adapter.getInstructions().addAll(expressionCodegen.getInstructs().getInstructions());
 
 			varStackValue.store(getterMethodNode.returnType, adapter);
 
 			if(!variableDescriptor.isStatic())
-				adapter.load(0);
+				adapter.localGet(0);
 
 			varStackValue.put(getterMethodNode.returnType, adapter);
 
@@ -158,24 +156,28 @@ public class VariableCodegen
 
 			adapter.returnVal();
 
-			getterMethodNode.putInstructions(adapter);
+			getterMethodNode.code = new CodeInfo(adapter);
 			classNode.addMember(getterMethodNode);
 		}
 		else
 		{
+			InstructionAdapter adapter = new InstructionAdapter();
+			if(!variableDescriptor.isStatic())
+				adapter.visitLocalVariable("this");
+
 			if(variableDescriptor.isStatic())
 			{
-				getterMethodNode.instructions.add(new GetStaticVariableInstruction(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode)));
-				getterMethodNode.instructions.add(new ReturnInstruction());
+				adapter.getStaticVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
+				adapter.returnVal();
 			}
 			else
 			{
-				getterMethodNode.instructions.add(new LoadInstruction(0));
-				getterMethodNode.instructions.add(new GetVariableInstruction(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode)));
-				getterMethodNode.instructions.add(new ReturnInstruction());
+				adapter.localGet(0);
+				adapter.getVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
+				adapter.returnVal();
 			}
 
-			getterMethodNode.maxLocals = variableDescriptor.isStatic() ? 0 : 1;
+			getterMethodNode.code = new CodeInfo(adapter);
 
 			classNode.addMember(getterMethodNode);
 		}

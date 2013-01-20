@@ -32,7 +32,7 @@ public class Local extends StackValue
 	@Override
 	public void put(TypeNode type, InstructionAdapter instructionAdapter)
 	{
-		instructionAdapter.load(index);
+		instructionAdapter.localGet(index);
 		castTo(type, instructionAdapter);
 	}
 
@@ -40,6 +40,6 @@ public class Local extends StackValue
 	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
 	{
 		castTo(topOfStackType, getType(), instructionAdapter);
-		instructionAdapter.store(index);
+		instructionAdapter.localPut(index);
 	}
 }

@@ -27,12 +27,11 @@ import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
-import org.napile.asm.tree.members.bytecode.impl.LoadInstruction;
-import org.napile.asm.tree.members.bytecode.impl.ReturnInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
@@ -45,6 +44,7 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
+import com.intellij.openapi.util.Pair;
 
 /**
  * @author VISTALL
@@ -124,7 +124,7 @@ public class ClassCodegen extends NapileVisitorVoid
 		if(!adapter.getInstructions().isEmpty())
 		{
 			MethodNode methodNode = MethodNode.staticConstructor();
-			methodNode.putInstructions(adapter);
+			methodNode.code = new CodeInfo(adapter);
 
 			classNode.addMember(methodNode);
 		}
@@ -146,11 +146,15 @@ public class ClassCodegen extends NapileVisitorVoid
 		}
 		else
 		{
-			InstructionAdapter adapter = new InstructionAdapter();
-			adapter.getInstructions().addAll(constructorsAdapters.get(Boolean.FALSE).getInstructions()); // clone
+			Pair<MethodNode, InstructionAdapter> pair = MethodCodegen.genConstructor(constructor, constructorDescriptor, bindingTrace, classNode);
 
-			MethodNode constructorNode = MethodCodegen.gen(constructor, constructorDescriptor, bindingTrace, classNode);
-			MethodCodegen.genReferenceParameters(constructor, constructorDescriptor, constructorNode.instructions, bindingTrace, classNode);
+			MethodNode constructorNode = pair.getFirst();
+			InstructionAdapter adapter = pair.getSecond();
+
+			InstructionAdapter variableInitCode = constructorsAdapters.get(Boolean.FALSE);
+
+			adapter.getInstructions().addAll(variableInitCode.getInstructions());
+			adapter.getTryCatchBlockNodes().addAll(variableInitCode.getTryCatchBlockNodes());
 
 			ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, context.clone(), adapter);
 			NapileExpression expression = constructor.getBodyExpression();
@@ -158,12 +162,11 @@ public class ClassCodegen extends NapileVisitorVoid
 				gen.returnExpression(expression, false);
 			else
 			{
-				adapter.load(0);
+				adapter.localGet(0);
 				adapter.returnVal();
 			}
-			constructorNode.putInstructions(adapter);
-			constructorNode.maxLocals += 1 + constructorDescriptor.getValueParameters().size() + adapter.getMaxLocals();
 
+			constructorNode.code = new CodeInfo(adapter);
 			classNode.addMember(constructorNode);
 		}
 	}
@@ -188,13 +191,13 @@ public class ClassCodegen extends NapileVisitorVoid
 				InstructionAdapter adapter = constructorsAdapters.get(variableDescriptor.isStatic());
 
 				if(!variableDescriptor.isStatic())
-					adapter.load(0);
+					adapter.localGet(0);
 
 				// if var has lazy modifier - need put null
 				if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
 					adapter.putNull();
 				else
-					new ExpressionCodegen(bindingTrace, variableDescriptor, classNode, context.clone(), adapter).gen(initializer, type);
+					new ExpressionCodegen(bindingTrace, null, classNode, context.clone(), adapter).gen(initializer, type);
 
 				StackValue.variable(bindingTrace, classNode, variableDescriptor).store(type, adapter);
 			}
@@ -220,15 +223,19 @@ public class ClassCodegen extends NapileVisitorVoid
 		for(JetType superType : classDescriptor.getSupertypes())
 			innerClassNode.supers.add(TypeTransformer.toAsmType(bindingTrace, superType, classNode));
 
-		MethodNode methodNode = MethodNode.constructor(Modifier.list(Modifier.LOCAL));
-		methodNode.maxLocals = 1;
+		MethodNode enumClassConstructorNode = MethodNode.constructor(Modifier.list(Modifier.LOCAL));
 
-		MethodCodegen.genSuperCalls(methodNode, value, bindingTrace, classNode);
+		InstructionAdapter constructorAdapter = new InstructionAdapter();
+		constructorAdapter.visitLocalVariable("this");
 
-		methodNode.instructions.add(new LoadInstruction(0));
-		methodNode.instructions.add(new ReturnInstruction());
+		MethodCodegen.genSuperCalls(constructorAdapter, value, bindingTrace, classNode);
 
-		innerClassNode.addMember(methodNode);
+		constructorAdapter.localGet(0);
+		constructorAdapter.returnVal();
+
+		enumClassConstructorNode.code = new CodeInfo(constructorAdapter);
+
+		innerClassNode.addMember(enumClassConstructorNode);
 
 		classNode.addMember(innerClassNode);
 
@@ -243,7 +250,7 @@ public class ClassCodegen extends NapileVisitorVoid
 	{
 		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, method);
 
-		MethodNode methodNode = MethodCodegen.gen(methodDescriptor, methodDescriptor.getName(), method, bindingTrace, classNode, context.clone());
+		MethodNode methodNode = MethodCodegen.genMethodOrMacro(method, methodDescriptor, bindingTrace, classNode, context.clone());
 
 		classNode.addMember(methodNode);
 	}

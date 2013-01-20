@@ -27,11 +27,7 @@ public interface CompilationErrorHandler
 		@Override
 		public void reportException(Throwable exception, String fileUrl)
 		{
-			if(exception instanceof RuntimeException)
-			{
-				throw (RuntimeException) exception;
-			}
-			throw new IllegalStateException(exception);
+			throw new IllegalStateException(fileUrl, exception);
 		}
 	};
 
