@@ -5,7 +5,7 @@ Napile - programming language what based on Java/Kotlin logics, that running on 
 It have some special futures:
 
  * multiple inheritance
- * runtime generics (type parameters constructors, see [it](https://github.com/napile-lang/napile.classpath.draft/blob/master/src/testgen/napile/codegenTest/typeParameterTest/TWithConstructorTest.ns)
+ * runtime generics (type parameters constructors, see [it](https://github.com/napile-lang/napile.classpath.draft/blob/master/src/testgen/napile/codegenTest/typeParameterTest/TWithConstructorTest.ns))
  * runtime type info
  * mutable & immutable types
  * and many others
