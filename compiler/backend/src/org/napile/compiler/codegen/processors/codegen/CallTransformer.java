@@ -110,7 +110,10 @@ public class CallTransformer
 		if(anonym)
 			type = CallableMethod.CallType.ANONYM;
 
-		FqName fqName = FqNameGenerator.getFqName(methodDescriptor, bindingTrace);
+		FqName fqName = FqName.ROOT;
+
+		if(type != CallableMethod.CallType.ANONYM)
+			fqName = FqNameGenerator.getFqName(methodDescriptor, bindingTrace);
 
 		MethodDescriptor originalMethodDescriptor = unwrapFakeOverride(methodDescriptor).getOriginal();
 

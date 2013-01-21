@@ -145,20 +145,9 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 
 	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileAnonymMethodExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)
 	{
-		DeclarationDescriptor owner = context.scope.getContainingDeclaration();
-		boolean isStatic = false;
-		if(owner instanceof SimpleMethodDescriptor)
-			isStatic = ((SimpleMethodDescriptor) owner).isStatic();
-		else if(owner instanceof VariableDescriptor)
-			isStatic = ((VariableDescriptor) owner).isStatic();
-		else if(owner instanceof ConstructorDescriptor)
-			isStatic = ((ConstructorDescriptor) owner).isStatic();
-		else
-			throw new UnsupportedOperationException("Unknown owner " + owner);
-
 		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
 
-		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), functionLiteral.getNameAsName(), CallableMemberDescriptor.Kind.DECLARATION, isStatic, false, false);
+		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), functionLiteral.getNameAsName(), CallableMemberDescriptor.Kind.DECLARATION, true, false, false);
 
 		List<CallParameterDescriptor> parameterDescriptors = createValueParameterDescriptors(context, functionLiteral, functionDescriptor, functionTypeExpected);
 

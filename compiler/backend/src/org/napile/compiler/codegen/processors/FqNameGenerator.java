@@ -42,7 +42,6 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	private final BindingTrace bindingTrace;
 
 	private final Map<FqName, Integer> anonymClassCounts = new HashMap<FqName, Integer>();
-	private final Map<FqName, Integer> anonymMethodCounts = new HashMap<FqName, Integer>();
 
 	public FqNameGenerator(@NotNull BindingTrace bindingTrace)
 	{
@@ -106,20 +105,6 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	{
 		record(bindingTrace.safeGet(BindingContext.METHOD, function), function, data.child(NapilePsiUtil.safeName(function.getName())));
 		return super.visitNamedMethodOrMacro(function, data);
-	}
-
-	@Override
-	public Void visitAnonymMethodExpression(NapileAnonymMethodExpression expression, FqName data)
-	{
-		Integer anonymCount = anonymMethodCounts.get(data);
-		if(anonymCount == null)
-			anonymMethodCounts.put(data, anonymCount = 0);
-		else
-			anonymMethodCounts.put(data, ++ anonymCount);
-
-		data = data.child(Name.identifier("anonym" + AsmConstants.ANONYM_SPLITTER + anonymCount));
-		record(bindingTrace.safeGet(BindingContext.METHOD, expression), expression.getAnonymMethod(), data);
-		return super.visitAnonymMethodExpression(expression, data);
 	}
 
 	@Override

@@ -69,14 +69,14 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 
 		firstPos = instructions.size();
 
-		instructions.localPut(loopIteratorIndex);
+		instructions.localGet(loopIteratorIndex);
 		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 		instructions.putTrue();
 		jumpIfSlot = instructions.reserve();
 
-		instructions.localPut(loopIteratorIndex);
+		instructions.localGet(loopIteratorIndex);
 		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), false);
-		instructions.localGet(loopParameterIndex);
+		instructions.localPut(loopParameterIndex);
 	}
 
 	@Override

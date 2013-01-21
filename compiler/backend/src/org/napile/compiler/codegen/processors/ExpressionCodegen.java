@@ -372,10 +372,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		InstructionAdapter adapter = new InstructionAdapter();
 
 		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, methodDescriptor, classNode, context.clone(), adapter);
-		gen.returnExpression(expression, methodDescriptor.isMacro());
+		gen.returnExpression(expression.getAnonymMethod().getBodyExpression(), methodDescriptor.isMacro());
 
 		// TODO [VISTALL] correct require
-		adapter.putAnonym(0, new CodeInfo(adapter));
+		instructs.putAnonym(0, new CodeInfo(adapter));
 
 		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
@@ -393,10 +393,18 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		int index = 0;
 		if(!target.isStatic())
-			adapter.localGet(index ++);
+		{
+			adapter.localGet(index);
+			adapter.visitLocalVariable("l" + index);
+			index ++;
+		}
 
 		for(CallParameterDescriptor descriptor : target.getValueParameters())
-			adapter.localGet(index ++);
+		{
+			adapter.localGet(index);
+			adapter.visitLocalVariable("l" + index);
+			index ++;
+		}
 
 		if(target.isStatic())
 			adapter.invokeStatic(NodeRefUtil.ref(target, bindingTrace, classNode), false);
@@ -405,7 +413,6 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 		adapter.returnVal();
 
-		// TODO [VISTALL] correct require
 		instructs.putAnonym(0, new CodeInfo(adapter));
 		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace, jetType, classNode));
 	}
@@ -826,11 +833,11 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		else
 		{
 			Pair<VariableDescriptor, ReceiverDescriptor> variableDescriptor = resolvedCall.getVariableCallInfo();
-			if(variableDescriptor != null)
+			if(variableDescriptor != null || callee instanceof NapileAnonymMethodExpression)
 			{
 				StackValue stackValue = gen(callee);
 
-				stackValue.put(TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getFirst().getType(), classNode), instructs);
+				stackValue.put(expressionType(callee), instructs);
 
 				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression, true);
 			}

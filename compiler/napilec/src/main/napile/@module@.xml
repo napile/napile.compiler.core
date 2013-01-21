@@ -4,5 +4,5 @@
 	<id>org.napile.compiler</id>
 	<name>Napile Compiler</name>
 	<build-by>@build-by@</build-by>
-	<version>0.2</version>
+	<version>@version@</version>
 </module>

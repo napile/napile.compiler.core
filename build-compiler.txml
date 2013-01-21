@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="Napile Compiler" default="dist" basedir=".">
 	<property name="build.dir" value="build" />
+	<property name="version" value="0.3" />
 	<property name="build.classes.dir" value="${build.dir}/classes" />
 	<property name="build.dist.dir" value="${build.dir}/dist" />
 
@@ -37,13 +38,14 @@
 		</javac>
 	</target>
 
-	<target name="jar" description="Create the jar file">
+	<target name="jar" description="Create the nzip file">
 		<tstamp>
 			<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>
 		</tstamp>
 
-		<nzip destfile="${build.dist.dir}/napile.compiler.nzip" moduledir="compiler/napilec/src/main/napile">
+		<nzip destfile="${build.dist.dir}/napile.compiler-${version}.nzip" moduledir="compiler/napilec/src/main/napile">
 			<fileset dir="${build.classes.dir}/compiler"/>
+			<varvalue name="version" value="${version}" />
 		</nzip>
 	</target>
 
@@ -54,6 +56,7 @@
 				<exclude name="**-src.jar" />
 				<exclude name="**-sources.jar" />
 			</fileset>
+			<mapper type="glob" from="*.jar" to="*.nzip"/>
 		</copy>
 	</target>
 
