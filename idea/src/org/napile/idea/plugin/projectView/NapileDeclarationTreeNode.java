@@ -41,11 +41,22 @@ import com.intellij.psi.codeStyle.CodeStyleSettingsManager;
  * User: Alefas
  * Date: 15.02.12
  */
-public class JetDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclaration>
+public class NapileDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclaration>
 {
-	protected JetDeclarationTreeNode(Project project, NapileDeclaration jetDeclaration, ViewSettings viewSettings)
+	protected NapileDeclarationTreeNode(Project project, NapileDeclaration jetDeclaration, ViewSettings viewSettings)
 	{
 		super(project, jetDeclaration, viewSettings);
+	}
+
+	@Override
+	public int getWeight()
+	{
+		PsiElement element = getValue();
+		if(element instanceof NapileVariable)
+			return 30;
+		if(element instanceof NapileConstructor)
+			return 40;
+		return 50;
 	}
 
 	@Override

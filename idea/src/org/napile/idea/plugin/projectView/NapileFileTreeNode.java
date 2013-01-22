@@ -32,9 +32,9 @@ import com.intellij.openapi.project.Project;
  * User: Alefas
  * Date: 15.02.12
  */
-public class JetFileTreeNode extends PsiFileNode
+public class NapileFileTreeNode extends PsiFileNode
 {
-	public JetFileTreeNode(Project project, NapileFile value, ViewSettings viewSettings)
+	public NapileFileTreeNode(Project project, NapileFile value, ViewSettings viewSettings)
 	{
 		super(project, value, viewSettings);
 	}

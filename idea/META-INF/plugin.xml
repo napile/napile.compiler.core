@@ -74,7 +74,7 @@
 
 		<refactoring.moveHandler implementation="org.napile.idea.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler"/>
 		<refactoring.copyHandler implementation="org.napile.idea.plugin.refactoring.copy.JetCopyClassHandler"/>
-		<treeStructureProvider implementation="org.napile.idea.plugin.projectView.JetProjectViewProvider"/>
+		<treeStructureProvider implementation="org.napile.idea.plugin.projectView.NapileProjectViewProvider"/>
 
 		<colorSettingsPage implementation="org.napile.idea.plugin.highlighter.NapileColorSettingsPage"/>
 

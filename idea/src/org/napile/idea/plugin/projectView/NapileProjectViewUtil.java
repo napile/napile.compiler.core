@@ -35,10 +35,10 @@ import com.intellij.psi.PsiFile;
 /**
  * @author slukjanov aka Frostman
  */
-public final class JetProjectViewUtil
+public final class NapileProjectViewUtil
 {
 
-	private JetProjectViewUtil()
+	private NapileProjectViewUtil()
 	{
 	}
 
@@ -54,7 +54,7 @@ public final class JetProjectViewUtil
 				if(declaration instanceof NapileClass)
 					result.add(new NapileClassTreeNode(project, (NapileClass) declaration, settings));
 				else
-					result.add(new JetDeclarationTreeNode(project, declaration, settings));
+					result.add(new NapileDeclarationTreeNode(project, declaration, settings));
 			}
 
 			return result;

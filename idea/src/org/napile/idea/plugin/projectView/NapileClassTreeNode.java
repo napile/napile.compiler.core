@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.projectView;
 
-import static org.napile.idea.plugin.projectView.JetProjectViewUtil.canRepresentPsiElement;
+import static org.napile.idea.plugin.projectView.NapileProjectViewUtil.canRepresentPsiElement;
 
 import java.util.Collection;
 
@@ -51,7 +51,7 @@ public class NapileClassTreeNode extends AbstractPsiBasedNode<NapileClass>
 	@Override
 	protected Collection<AbstractTreeNode> getChildrenImpl()
 	{
-		return JetProjectViewUtil.getChildren(getValue(), getProject(), getSettings());
+		return NapileProjectViewUtil.getChildren(getValue(), getProject(), getSettings());
 	}
 
 	@Override

@@ -39,11 +39,11 @@ import com.intellij.psi.PsiFile;
  * User: Alefas
  * Date: 15.02.12
  */
-public class JetProjectViewProvider implements SelectableTreeStructureProvider, DumbAware
+public class NapileProjectViewProvider implements SelectableTreeStructureProvider, DumbAware
 {
 	private final Project myProject;
 
-	public JetProjectViewProvider(Project project)
+	public NapileProjectViewProvider(Project project)
 	{
 		myProject = project;
 	}
@@ -61,11 +61,11 @@ public class JetProjectViewProvider implements SelectableTreeStructureProvider, 
 			{
 				NapileFile file = (NapileFile) childValue;
 
-				NapileClass mainClass = JetProjectViewUtil.getClassIfHeSingle(file);
+				NapileClass mainClass = NapileProjectViewUtil.getClassIfHeSingle(file);
 				if(mainClass != null)
 					result.add(new NapileClassTreeNode(file.getProject(), mainClass, settings));
 				else
-					result.add(new JetFileTreeNode(file.getProject(), file, settings));
+					result.add(new NapileFileTreeNode(file.getProject(), file, settings));
 			}
 			else
 			{
