@@ -53,8 +53,6 @@
 		<projectService serviceInterface="org.napile.idea.plugin.caches.JetShortNamesCache" serviceImplementation="org.napile.idea.plugin.caches.JetShortNamesCache" />
 
 		<internalFileTemplate name="Napile Class"/>
-		<internalFileTemplate name="Napile Enum"/>
-		<internalFileTemplate name="Napile Retell"/>
 
 		<gotoSymbolContributor implementation="org.napile.idea.plugin.caches.JetGotoSymbolContributor"/>
 		<gotoClassContributor implementation="org.napile.idea.plugin.caches.JetGotoClassContributor"/>
@@ -71,6 +69,7 @@
 		<lang.formatter language="NAPILE" implementationClass="org.napile.idea.plugin.formatter.JetFormattingModelBuilder"/>
 		<lang.findUsagesProvider language="NAPILE" implementationClass="org.napile.idea.plugin.findUsages.JetFindUsagesProvider"/>
 		<lang.refactoringSupport language="NAPILE" implementationClass="org.napile.idea.plugin.refactoring.JetRefactoringSupportProvider"/>
+		<qualifiedNameProvider implementation="org.napile.idea.plugin.actions.NapileQualifiedNameProvider" />
 
 		<refactoring.moveHandler implementation="org.napile.idea.plugin.refactoring.move.JetMoveFilesOrDirectoriesHandler"/>
 		<refactoring.copyHandler implementation="org.napile.idea.plugin.refactoring.copy.JetCopyClassHandler"/>
