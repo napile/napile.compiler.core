@@ -20,6 +20,7 @@ import javax.swing.JTree;
 
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.render.DescriptorRenderer;
+import org.napile.idea.plugin.NapileIconProvider2;
 import com.intellij.codeInsight.generation.ClassMember;
 import com.intellij.codeInsight.generation.MemberChooserObject;
 import com.intellij.ui.SimpleColoredComponent;
@@ -47,6 +48,8 @@ public class DescriptorClassMember implements ClassMember
 	public void renderTreeNode(SimpleColoredComponent component, JTree tree)
 	{
 		component.append(getText());
+
+		component.setIcon(NapileIconProvider2.getIcon(myDescriptor));
 	}
 
 	@Override

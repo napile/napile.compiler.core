@@ -21,7 +21,7 @@ import javax.swing.Icon;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.idea.plugin.JetIconProvider;
+import org.napile.idea.plugin.NapileIconProvider;
 import com.intellij.navigation.ColoredItemPresentation;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProvider;
@@ -64,7 +64,7 @@ public class JetClassPresenter implements ItemPresentationProvider<NapileClass>
 			@Override
 			public Icon getIcon(boolean open)
 			{
-				return JetIconProvider.INSTANCE.getIcon(item, Iconable.ICON_FLAG_VISIBILITY);
+				return NapileIconProvider.INSTANCE.getIcon(item, Iconable.ICON_FLAG_VISIBILITY);
 			}
 		};
 	}

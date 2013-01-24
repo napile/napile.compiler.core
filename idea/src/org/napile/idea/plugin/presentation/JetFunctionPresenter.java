@@ -27,7 +27,7 @@ import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.QualifiedNamesUtil;
-import org.napile.idea.plugin.JetIconProvider;
+import org.napile.idea.plugin.NapileIconProvider;
 import com.intellij.navigation.ColoredItemPresentation;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProvider;
@@ -102,7 +102,7 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 			@Override
 			public Icon getIcon(boolean open)
 			{
-				return JetIconProvider.INSTANCE.getIcon(function, Iconable.ICON_FLAG_VISIBILITY);
+				return NapileIconProvider.INSTANCE.getIcon(function, Iconable.ICON_FLAG_VISIBILITY);
 			}
 		};
 	}

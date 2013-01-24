@@ -21,11 +21,13 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.resolve.name.FqName;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
+import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.idea.plugin.JetBundle;
+import org.napile.idea.plugin.NapileIconProvider;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
-import com.google.common.collect.Lists;
 import com.intellij.codeInsight.daemon.QuickFixBundle;
 import com.intellij.codeInsight.daemon.impl.actions.AddImportAction;
 import com.intellij.codeInsight.hint.QuestionAction;
@@ -36,10 +38,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.PopupStep;
 import com.intellij.openapi.ui.popup.util.BaseListPopupStep;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.util.PlatformIcons;
 
 /**
  * Automatically adds import directive to the file for resolving reference.
@@ -47,13 +49,12 @@ import com.intellij.util.PlatformIcons;
  *
  * @author Nikolay Krasko
  */
-public class JetAddImportAction implements QuestionAction
+public class NapileAddImportAction implements QuestionAction
 {
-
 	private final Project myProject;
 	private final Editor myEditor;
 	private final PsiElement myElement;
-	private final List<FqName> possibleImports;
+	private final List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> possibleImports;
 
 	/**
 	 * @param project Project where action takes place.
@@ -61,12 +62,12 @@ public class JetAddImportAction implements QuestionAction
 	 * @param element Element with unresolved reference.
 	 * @param imports Variants for resolution.
 	 */
-	public JetAddImportAction(@NotNull Project project, @NotNull Editor editor, @NotNull PsiElement element, @NotNull Iterable<FqName> imports)
+	public NapileAddImportAction(@NotNull Project project, @NotNull Editor editor, @NotNull PsiElement element, @NotNull List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> imports)
 	{
 		myProject = project;
 		myEditor = editor;
 		myElement = element;
-		possibleImports = Lists.newArrayList(imports);
+		possibleImports = imports;
 	}
 
 	@Override
@@ -79,11 +80,9 @@ public class JetAddImportAction implements QuestionAction
 			return false;
 		}
 
-		// TODO: Validate resolution variants. See AddImportAction.execute()
-
 		if(possibleImports.size() == 1)
 		{
-			addImport(myElement, myProject, possibleImports.get(0));
+			addImport(myElement, myProject, possibleImports.iterator().next());
 		}
 		else
 		{
@@ -95,7 +94,7 @@ public class JetAddImportAction implements QuestionAction
 
 	protected BaseListPopupStep getImportSelectionPopup()
 	{
-		return new BaseListPopupStep<FqName>(JetBundle.message("imports.chooser.title"), possibleImports)
+		return new BaseListPopupStep<Pair<DeclarationDescriptor, NapileNamedDeclaration>>(JetBundle.message("imports.chooser.title"), possibleImports)
 		{
 			@Override
 			public boolean isAutoSelectionEnabled()
@@ -104,7 +103,7 @@ public class JetAddImportAction implements QuestionAction
 			}
 
 			@Override
-			public PopupStep onChosen(FqName selectedValue, boolean finalChoice)
+			public PopupStep onChosen(Pair<DeclarationDescriptor, NapileNamedDeclaration> selectedValue, boolean finalChoice)
 			{
 				if(selectedValue == null)
 				{
@@ -117,7 +116,7 @@ public class JetAddImportAction implements QuestionAction
 					return FINAL_CHOICE;
 				}
 
-				List<String> toExclude = AddImportAction.getAllExcludableStrings(selectedValue.getFqName());
+				List<String> toExclude = AddImportAction.getAllExcludableStrings(DescriptorUtils.getFQName(selectedValue.getFirst()).getFqName());
 
 				return new BaseListPopupStep<String>(null, toExclude)
 				{
@@ -142,28 +141,27 @@ public class JetAddImportAction implements QuestionAction
 			}
 
 			@Override
-			public boolean hasSubstep(FqName selectedValue)
+			public boolean hasSubstep(Pair<DeclarationDescriptor, NapileNamedDeclaration> selectedValue)
 			{
 				return true;
 			}
 
 			@NotNull
 			@Override
-			public String getTextFor(FqName value)
+			public String getTextFor(Pair<DeclarationDescriptor, NapileNamedDeclaration> value)
 			{
-				return value.getFqName();
+				return DescriptorUtils.getFQName(value.getFirst()).getFqName();
 			}
 
 			@Override
-			public Icon getIconFor(FqName aValue)
+			public Icon getIconFor(Pair<DeclarationDescriptor, NapileNamedDeclaration> value)
 			{
-				// TODO: change icon
-				return PlatformIcons.CLASS_ICON;
+				return NapileIconProvider.INSTANCE.getIcon(value.getSecond(), 0);
 			}
 		};
 	}
 
-	protected static void addImport(final PsiElement element, final Project project, final FqName selectedImport)
+	protected static void addImport(final PsiElement element, final Project project, final Pair<DeclarationDescriptor, NapileNamedDeclaration> selectedImport)
 	{
 		PsiDocumentManager.getInstance(project).commitAllDocuments();
 

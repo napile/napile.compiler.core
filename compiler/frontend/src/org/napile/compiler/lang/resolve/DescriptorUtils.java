@@ -75,7 +75,7 @@ public class DescriptorUtils
 			@Override
 			public TypeSubstitution getSubstitution()
 			{
-				throw new UnsupportedOperationException();
+				return TypeSubstitution.EMPTY;
 			}
 
 			@NotNull

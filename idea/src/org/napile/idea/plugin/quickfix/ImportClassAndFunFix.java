@@ -1,5 +1,6 @@
 /*
  * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +17,20 @@
 
 package org.napile.idea.plugin.quickfix;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.ImportPath;
-import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.JetBundle;
-import org.napile.idea.plugin.actions.JetAddImportAction;
+import org.napile.idea.plugin.actions.NapileAddImportAction;
 import org.napile.idea.plugin.caches.JetShortNamesCache;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.intellij.codeInsight.daemon.impl.ShowAutoImportPass;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.HighPriorityAction;
@@ -46,6 +39,7 @@ import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.IncorrectOperationException;
@@ -54,12 +48,12 @@ import com.intellij.util.IncorrectOperationException;
  * Check possibility and perform fix for unresolved references.
  *
  * @author Nikolay Krasko
+ * @author VISTALL
  */
 public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpression> implements HighPriorityAction
 {
-
 	@NotNull
-	private final Collection<FqName> suggestions;
+	private final List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> suggestions;
 
 	public ImportClassAndFunFix(@NotNull NapileSimpleNameExpression element)
 	{
@@ -67,7 +61,7 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 		suggestions = computeSuggestions(element);
 	}
 
-	private static Collection<FqName> computeSuggestions(@NotNull NapileSimpleNameExpression element)
+	private static List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> computeSuggestions(@NotNull NapileSimpleNameExpression element)
 	{
 		final PsiFile file = element.getContainingFile();
 		if(!(file instanceof NapileFile))
@@ -75,46 +69,21 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 			return Collections.emptyList();
 		}
 
-		final String referenceName = element.getReferencedName();
+		String referenceName = element.getReferencedName();
 
 		if(!StringUtil.isNotEmpty(referenceName))
 		{
 			return Collections.emptyList();
 		}
 
-		assert referenceName != null;
-
-		List<FqName> result = Lists.newArrayList();
-		result.addAll(getClassNames(referenceName, (NapileFile) file));
-
-		return Collections2.filter(result, new Predicate<FqName>()
-		{
-			@Override
-			public boolean apply(@Nullable FqName fqName)
-			{
-				assert fqName != null;
-				return ImportInsertHelper.doNeedImport(new ImportPath(fqName, false), null, (NapileFile) file);
-			}
-		});
+		return getDescriptorsForImport(referenceName, (NapileFile) file);
 	}
 
-	/*
-		 * Searches for possible class names in kotlin context and java facade.
-		 */
-	public static Collection<FqName> getClassNames(@NotNull String referenceName, @NotNull NapileFile file)
-	{
-		Set<FqName> possibleResolveNames = Sets.newHashSet();
-
-		possibleResolveNames.addAll(getJetClasses(referenceName, file));
-
-		// TODO: Do appropriate sorting
-		return Lists.newArrayList(possibleResolveNames);
-	}
-
-	private static Collection<FqName> getJetClasses(@NotNull final String typeName, @NotNull NapileFile file)
+	private static List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> getDescriptorsForImport(@NotNull final String typeName, @NotNull NapileFile file)
 	{
 		JetShortNamesCache cache = JetShortNamesCache.getInstance(file.getProject());
-		Collection<ClassDescriptor> descriptors = cache.getJetClassesDescriptors(new Condition<String>()
+
+		return cache.getDescriptorsForImport(new Condition<String>()
 		{
 			@Override
 			public boolean value(String s)
@@ -122,15 +91,6 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 				return typeName.equals(s);
 			}
 		}, file);
-
-		return Collections2.transform(descriptors, new Function<ClassDescriptor, FqName>()
-		{
-			@Override
-			public FqName apply(ClassDescriptor descriptor)
-			{
-				return DescriptorUtils.getFQName(descriptor).toSafe();
-			}
-		});
 	}
 
 	@Override
@@ -154,7 +114,7 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 
 		if(!ApplicationManager.getApplication().isUnitTestMode())
 		{
-			String hintText = ShowAutoImportPass.getMessage(suggestions.size() > 1, suggestions.iterator().next().getFqName());
+			String hintText = ShowAutoImportPass.getMessage(suggestions.size() > 1, DescriptorUtils.getFQName(suggestions.get(0).getFirst()).getFqName());
 
 			HintManager.getInstance().showQuestionHint(editor, hintText, element.getTextOffset(), element.getTextRange().getEndOffset(), createAction(project, editor));
 		}
@@ -202,9 +162,9 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 	}
 
 	@NotNull
-	private JetAddImportAction createAction(@NotNull Project project, @NotNull Editor editor)
+	private NapileAddImportAction createAction(@NotNull Project project, @NotNull Editor editor)
 	{
-		return new JetAddImportAction(project, editor, element, suggestions);
+		return new NapileAddImportAction(project, editor, element, suggestions);
 	}
 
 	@Nullable

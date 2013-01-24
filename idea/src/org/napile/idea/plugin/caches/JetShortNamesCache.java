@@ -19,6 +19,7 @@ package org.napile.idea.plugin.caches;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NonNls;
@@ -26,17 +27,23 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.module.Analyzer;
 import org.napile.idea.plugin.stubindex.NapileFullClassNameIndex;
 import org.napile.idea.plugin.stubindex.NapileShortClassNameIndex;
+import org.napile.idea.plugin.stubindex.NapileShortMethodNameIndex;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Condition;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.ArrayUtil;
 
@@ -100,24 +107,41 @@ public class JetShortNamesCache
 		return classOrObjects.isEmpty() ? NapileClassLike.EMPTY_ARRAY : classOrObjects.toArray(NapileClassLike.EMPTY_ARRAY);
 	}
 
-	public Collection<ClassDescriptor> getJetClassesDescriptors(@NotNull Condition<String> acceptedShortNameCondition, @NotNull NapileFile jetFile)
+	public List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> getDescriptorsForImport(@NotNull Condition<String> acceptedShortNameCondition, @NotNull NapileFile napileFile)
 	{
-		BindingContext context = Analyzer.analyzeAll(jetFile).getBindingContext();
-		Collection<ClassDescriptor> classDescriptors = new ArrayList<ClassDescriptor>();
+		BindingContext context = Analyzer.analyzeAll(napileFile).getBindingContext();
+		List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> map = new ArrayList<Pair<DeclarationDescriptor, NapileNamedDeclaration>>();
+		GlobalSearchScope scope = GlobalSearchScope.moduleWithLibrariesScope(ModuleUtil.findModuleForPsiElement(napileFile));
 
 		for(String fqName : NapileFullClassNameIndex.getInstance().getAllKeys(project))
 		{
 			FqName classFQName = new FqName(fqName);
 			if(acceptedShortNameCondition.value(classFQName.shortName().getName()))
 			{
-				ClassDescriptor descriptor = context.get(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, classFQName);
-				if(descriptor != null)
+				Collection<NapileClassLike> list = NapileFullClassNameIndex.getInstance().get(fqName, project, scope);
+				for(NapileClassLike classLike : list)
 				{
-					classDescriptors.add(descriptor);
+					ClassDescriptor classDescriptor = context.get(BindingContext.CLASS, classLike);
+					if(classDescriptor != null && classDescriptor.isStatic())
+						map.add(new Pair<DeclarationDescriptor, NapileNamedDeclaration>(classDescriptor, classLike));
 				}
 			}
 		}
 
-		return classDescriptors;
+		for(String name : NapileShortMethodNameIndex.getInstance().getAllKeys(project))
+		{
+			if(acceptedShortNameCondition.value(name))
+			{
+				Collection<NapileNamedMethodOrMacro> list = NapileShortMethodNameIndex.getInstance().get(name, project, scope);
+				for(NapileNamedMethodOrMacro method : list)
+				{
+					SimpleMethodDescriptor methodDescriptor = context.get(BindingContext.METHOD, method);
+					if(methodDescriptor != null && methodDescriptor.isStatic())
+						map.add(new Pair<DeclarationDescriptor, NapileNamedDeclaration>(methodDescriptor, method));
+				}
+			}
+		}
+
+		return map;
 	}
 }

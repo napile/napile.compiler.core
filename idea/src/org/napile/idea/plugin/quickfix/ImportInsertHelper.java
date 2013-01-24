@@ -25,7 +25,9 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -34,11 +36,11 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.util.QualifiedNamesUtil;
 import org.napile.idea.plugin.module.Analyzer;
 import org.napile.idea.plugin.references.JetPsiReference;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDocumentManager;
@@ -76,6 +78,11 @@ public class ImportInsertHelper
 		{
 			addImportDirective(DescriptorUtils.getFQName(getTopLevelClass(clazz)).toSafe(), file);
 		}
+	}
+
+	public static void addImportDirective(Pair<DeclarationDescriptor, NapileNamedDeclaration> selectedImport, NapileFile file)
+	{
+		addImportDirective(new ImportPath(DescriptorUtils.getFQName(selectedImport.getFirst()).toSafe(), false), null, file);
 	}
 
 	/**
