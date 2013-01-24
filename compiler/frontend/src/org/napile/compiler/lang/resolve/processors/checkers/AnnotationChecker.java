@@ -50,6 +50,8 @@ public class AnnotationChecker
 			checkIsAnnotationClass(annotation, annotationDescriptor, trace);
 
 			checkRepeatable(annotation, annotationDescriptor, trace);
+
+			checkExtension(annotation, annotationDescriptor, trace);
 		}
 	}
 
@@ -92,5 +94,17 @@ public class AnnotationChecker
 				break;
 			}
 		}
+	}
+
+	private void checkExtension(NapileAnnotation annotation, AnnotationDescriptor annotationDescriptor, BindingTrace trace)
+	{
+		Annotated owner = annotationDescriptor.getOwner();
+		if(owner == null)
+			return;
+
+		if(owner instanceof MethodDescriptor && ((MethodDescriptor) owner).isStatic() && !((MethodDescriptor) owner).getValueParameters().isEmpty())
+			return;
+
+		trace.report(Errors.NONE_APPLICABLE_ANNOTATION.on(annotation));
 	}
 }

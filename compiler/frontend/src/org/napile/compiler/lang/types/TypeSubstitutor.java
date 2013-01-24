@@ -73,6 +73,7 @@ public class TypeSubstitutor
 	}
 
 	public static final TypeSubstitutor EMPTY = create(TypeSubstitution.EMPTY);
+	public static final TypeSubstitutor DEFAULT_TYPE_FOR_TYPE_PARAMETERS = create(TypeSubstitution.DEFAULT_TYPE_FOR_TYPE_PARAMETERS);
 
 	public static TypeSubstitutor create(@NotNull TypeSubstitution substitution)
 	{

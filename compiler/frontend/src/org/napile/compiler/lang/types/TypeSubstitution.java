@@ -17,6 +17,8 @@
 package org.napile.compiler.lang.types;
 
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 
 /**
  * @author abreslav
@@ -41,6 +43,30 @@ public interface TypeSubstitution
 		public String toString()
 		{
 			return "Empty TypeSubstitution";
+		}
+	};
+
+	TypeSubstitution DEFAULT_TYPE_FOR_TYPE_PARAMETERS = new TypeSubstitution()
+	{
+		@Override
+		public JetType get(TypeConstructor key)
+		{
+			DeclarationDescriptor declarationDescriptor = key.getDeclarationDescriptor();
+			if(declarationDescriptor instanceof TypeParameterDescriptor)
+				return ((TypeParameterDescriptor) declarationDescriptor).getUpperBoundsAsType();
+			return null;
+		}
+
+		@Override
+		public boolean isEmpty()
+		{
+			return false;
+		}
+
+		@Override
+		public String toString()
+		{
+			return "Default Type For Type Parameter";
 		}
 	};
 

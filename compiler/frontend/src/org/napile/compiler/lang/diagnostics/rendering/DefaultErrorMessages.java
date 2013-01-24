@@ -361,6 +361,7 @@ public class DefaultErrorMessages
 
 		MAP.put(NOT_AN_ANNOTATION_CLASS, "''{0}'' is not an annotation class", TO_STRING);
 		MAP.put(DUPLICATE_ANNOTATION, "Duplicate annotation");
+		MAP.put(NONE_APPLICABLE_ANNOTATION, "None applicable annotation");
 
 		MAP.put(DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE, "An overriding function is not allowed to specify default values for its parameters");
 

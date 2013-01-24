@@ -306,6 +306,7 @@ public interface Errors
 	DiagnosticFactory1<NapileAnnotation, String> NOT_AN_ANNOTATION_CLASS = DiagnosticFactory1.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileAnnotation> DUPLICATE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
+	SimpleDiagnosticFactory<NapileAnnotation> NONE_APPLICABLE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 
 	// This field is needed to make the Initializer class load (interfaces cannot have static initializers)

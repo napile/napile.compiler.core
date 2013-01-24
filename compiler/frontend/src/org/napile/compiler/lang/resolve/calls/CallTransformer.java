@@ -17,16 +17,28 @@
 
 package org.napile.compiler.lang.resolve.calls;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileAnnotationPackage;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.psi.Call;
+import org.napile.compiler.lang.psi.ValueArgument;
+import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
+import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.SubstitutionUtils;
+import org.napile.compiler.lang.types.TypeSubstitutor;
+import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import com.intellij.openapi.util.Pair;
 
 /**
@@ -75,6 +87,47 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 	public Collection<CallResolutionContext<D, F>> createCallContexts(@NotNull ResolutionCandidate<D> candidate, @NotNull ResolutionTask<D, F> task, @NotNull TemporaryBindingTrace candidateTrace)
 	{
 		ResolvedCallImpl<D> candidateCall = ResolvedCallImpl.create(candidate, candidateTrace);
+		CallableDescriptor callableDescriptor = candidate.getDescriptor();
+
+		extensionLabel:
+		{
+			if(AnnotationUtils.hasAnnotation(candidate.getDescriptor(), NapileAnnotationPackage.EXTENSION))
+			{
+				final ReceiverDescriptor receiverDescriptor = task.call.getExplicitReceiver();
+				if(receiverDescriptor instanceof ExpressionReceiver)
+				{
+					CallParameterDescriptor parameterDescriptor = callableDescriptor.getValueParameters().isEmpty() ? null : callableDescriptor.getValueParameters().get(0);
+					if(parameterDescriptor == null)
+					{
+						break extensionLabel;
+					}
+
+					JetType parameterType = parameterDescriptor.getType();
+					if(SubstitutionUtils.hasUnsubstitutedTypeParameters(parameterType))
+					{
+						parameterType = TypeSubstitutor.DEFAULT_TYPE_FOR_TYPE_PARAMETERS.substitute(parameterType, null);
+					}
+
+					if(JetTypeChecker.INSTANCE.isSubtypeOf(receiverDescriptor.getType(), parameterType))
+					{
+						Call call = new DelegatingCall(task.call)
+						{
+							@Override
+							@NotNull
+							public List<? extends ValueArgument> getValueArguments()
+							{
+								List<? extends ValueArgument> list = super.getValueArguments();
+								List<ValueArgument> arguments = new ArrayList<ValueArgument>(list.size() + 1);
+								arguments.add(CallMaker.makeValueArgument(((ExpressionReceiver) receiverDescriptor).getExpression()));
+								arguments.addAll(list);
+								return arguments;
+							}
+						};
+						return Collections.singleton(CallResolutionContext.create(candidateCall, task, candidateTrace, task.tracing, call));
+					}
+				}
+			}
+		}
 		return Collections.singleton(CallResolutionContext.create(candidateCall, task, candidateTrace, task.tracing));
 	}
 }

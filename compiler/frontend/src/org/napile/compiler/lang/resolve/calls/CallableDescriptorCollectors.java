@@ -24,12 +24,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -65,13 +67,12 @@ public class CallableDescriptorCollectors
 		@Override
 		public Collection<MethodDescriptor> getNonMembersByName(JetScope scope, Name name)
 		{
-			/*Collection<MethodDescriptor> methodsByName = scope.getMethods(name);
+			Collection<MethodDescriptor> methodsByName = scope.getMethods(name);
 			List<MethodDescriptor> extensionList = new ArrayList<MethodDescriptor>(methodsByName.size());
 			for(MethodDescriptor methodDescriptor : methodsByName)
 				if(AnnotationUtils.hasAnnotation(methodDescriptor, NapileAnnotationPackage.EXTENSION))
 					extensionList.add(methodDescriptor);
-			return extensionList;  */
-			return Collections.emptyList();
+			return extensionList;
 		}
 
 		private Collection<MethodDescriptor> fromScope(JetScope scope, Name name)
