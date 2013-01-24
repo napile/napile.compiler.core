@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapilePackageImpl;
@@ -36,17 +36,13 @@ import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.util.QualifiedNamesUtil;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 import com.intellij.lang.ImportOptimizer;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.ProgressIndicatorProvider;
-import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiPackage;
 import com.intellij.psi.PsiPolyVariantReference;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveResult;
@@ -238,43 +234,6 @@ public class JetImportOptimizer implements ImportOptimizer
 		if(element instanceof NapileNamedDeclaration)
 		{
 			return NapilePsiUtil.getFQName((NapileNamedDeclaration) element);
-		}
-
-		if(element instanceof PsiClass)
-		{
-			String qualifiedName = ((PsiClass) element).getQualifiedName();
-			if(qualifiedName != null)
-			{
-				return new FqName(qualifiedName);
-			}
-		}
-
-		// TODO: Still problem with kotlin global properties imported from class files
-		if(element instanceof PsiMethod)
-		{
-			PsiMethod method = (PsiMethod) element;
-
-			PsiClass containingClass = method.getContainingClass();
-
-			if(containingClass != null)
-			{
-				String classFQNStr = containingClass.getQualifiedName();
-				if(classFQNStr != null)
-				{
-					if(method.isConstructor())
-					{
-						return new FqName(classFQNStr);
-					}
-
-					FqName classFQN = new FqName(classFQNStr);
-					return QualifiedNamesUtil.combine(classFQN, Name.identifier(method.getName()));
-				}
-			}
-		}
-
-		if(element instanceof PsiPackage)
-		{
-			return new FqName(((PsiPackage) element).getQualifiedName());
 		}
 
 		return null;
