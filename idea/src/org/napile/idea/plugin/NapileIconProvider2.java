@@ -27,6 +27,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 /**
  * @author VISTALL
  * @date 20:35/24.01.13
+ * FIXME [VISTALL] rework
  */
 public class NapileIconProvider2
 {

@@ -38,8 +38,8 @@ import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.util.PluginKeys;
 import org.napile.compiler.util.RunUtil;
+import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.ide.IconProvider;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Iconable;
@@ -80,7 +80,7 @@ public class NapileIconProvider extends IconProvider
 		else if(psiElement instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) psiElement;
-			MutableClassDescriptor descriptor = (MutableClassDescriptor) napileClass.getUserData(PluginKeys.DESCRIPTOR_KEY);
+			MutableClassDescriptor descriptor = (MutableClassDescriptor) Analyzer.getDescriptorOrAnalyze(napileClass);
 
 			icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_CLASS : NapileIcons.CLASS;
 

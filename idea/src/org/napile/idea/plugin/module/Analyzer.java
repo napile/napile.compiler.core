@@ -27,9 +27,12 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.analyzer.AnalyzerFacade;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
+import org.napile.compiler.util.PluginKeys;
 import org.napile.idea.plugin.module.type.NapileModuleType;
 import com.google.common.base.Predicates;
 import com.intellij.openapi.compiler.ex.CompilerPathsEx;
@@ -97,6 +100,15 @@ public class Analyzer
 	public static AnalyzeExhaust analyzeAll(@NotNull final NapileFile file)
 	{
 		return analyzeFileWithCache(file, getProvider(file));
+	}
+
+	public static <T extends DeclarationDescriptor> T getDescriptorOrAnalyze(@NotNull NapileElement napileElement)
+	{
+		DeclarationDescriptor declarationDescriptor = napileElement.getUserData(PluginKeys.DESCRIPTOR_KEY);
+		if(declarationDescriptor == null)
+			analyzeAll(napileElement.getContainingFile());
+		declarationDescriptor = napileElement.getUserData(PluginKeys.DESCRIPTOR_KEY);
+		return ((T) declarationDescriptor);
 	}
 
 	@NotNull
