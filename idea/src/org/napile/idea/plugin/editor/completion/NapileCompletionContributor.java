@@ -21,6 +21,7 @@ import static org.napile.idea.plugin.editor.completion.patterns.NapilePsiElement
 
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapileClassBody;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionType;
@@ -34,7 +35,7 @@ import com.intellij.psi.PsiElement;
 public class NapileCompletionContributor extends CompletionContributor
 {
 	private static final ElementPattern<? extends PsiElement> MEMBERS_IN_CLASS_BODY = element().withSuperParent(2, NapileClassBody.class);
-	private static final ElementPattern<? extends PsiElement> MEMBERS_IN_BODY_EXPRESSION = element().withSuperParent(2, NapileBlockExpression.class);
+	private static final ElementPattern<? extends PsiElement> MEMBERS_IN_BODY_EXPRESSION = or(element().withSuperParent(2, NapileBlockExpression.class), element().withSuperParent(3, NapileCallParameterList.class));
 
 	private static final ElementPattern<? extends PsiElement> MODIFIER_LIST = or(MEMBERS_IN_CLASS_BODY);
 

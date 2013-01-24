@@ -59,7 +59,7 @@ public class NapileKeywordCompletionProvider extends CompletionProvider<Completi
 				public void handleInsert(InsertionContext context, LookupElement item)
 				{
 					context.getDocument().insertString(context.getEditor().getCaretModel().getOffset(), " ");
-					//context.getEditor().getCaretModel().moveToOffset(context.getEditor().getCaretModel().getOffset());
+					context.getEditor().getCaretModel().moveToOffset(context.getEditor().getCaretModel().getOffset() + 1);
 				}
 			});
 			result.addElement(builder);
