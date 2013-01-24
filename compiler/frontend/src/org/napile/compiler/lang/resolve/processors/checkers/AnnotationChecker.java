@@ -102,6 +102,9 @@ public class AnnotationChecker
 		if(owner == null)
 			return;
 
+		if(!AnnotationUtils.hasAnnotation(owner, NapileAnnotationPackage.EXTENSION))
+			return;
+
 		if(owner instanceof MethodDescriptor && ((MethodDescriptor) owner).isStatic() && !((MethodDescriptor) owner).getValueParameters().isEmpty())
 			return;
 
