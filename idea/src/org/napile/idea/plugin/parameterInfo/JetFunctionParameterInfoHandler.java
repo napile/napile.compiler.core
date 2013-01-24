@@ -27,7 +27,6 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
-import org.napile.idea.plugin.completion.TipsManager;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -456,7 +455,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 			{
 				placeDescriptor = scope.getContainingDeclaration();
 			}
-			Collection<DeclarationDescriptor> variants = TipsManager.getReferenceVariants(refExpression, bindingContext);
+			Collection<DeclarationDescriptor> variants = Collections.emptyList();
 			Name refName = refExpression.getReferencedNameAsName();
 			PsiReference[] references = refExpression.getReferences();
 			if(references.length == 0)

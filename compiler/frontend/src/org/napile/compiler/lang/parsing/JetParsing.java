@@ -343,14 +343,14 @@ public class JetParsing extends AbstractJetParsing
 			}
 			empty = false;
 		}
-		if(empty)
+		/*if(empty)
 		{
 			list.drop();
 		}
 		else
-		{
+		{  */
 			list.done(MODIFIER_LIST);
-		}
+		//}
 		return !empty;
 	}
 

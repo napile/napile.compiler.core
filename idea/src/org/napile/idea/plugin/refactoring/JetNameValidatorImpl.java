@@ -17,15 +17,15 @@
 package org.napile.idea.plugin.refactoring;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.idea.plugin.completion.TipsManager;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
@@ -66,6 +66,7 @@ public class JetNameValidatorImpl implements JetNameValidator
 	}
 
 	@Nullable
+	@Override
 	public String validateName(String name)
 	{
 		if(validateInner(name))
@@ -126,7 +127,7 @@ public class JetNameValidatorImpl implements JetNameValidator
 			@Override
 			public void visitExpression(NapileExpression expression)
 			{
-				Collection<DeclarationDescriptor> variants = TipsManager.getVariantsNoReceiver(expression, myBindingContext);
+				Collection<DeclarationDescriptor> variants = Collections.emptyList();
 				for(DeclarationDescriptor variant : variants)
 				{
 					if(variant.getName().getName().equals(name) && variant instanceof VariableDescriptor)
@@ -142,6 +143,7 @@ public class JetNameValidatorImpl implements JetNameValidator
 		return result.get();
 	}
 
+	@Override
 	public Project getProject()
 	{
 		return myContainer.getProject();

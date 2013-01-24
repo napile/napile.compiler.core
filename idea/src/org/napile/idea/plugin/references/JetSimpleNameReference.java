@@ -17,15 +17,11 @@
 package org.napile.idea.plugin.references;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.idea.plugin.completion.TipsManager;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.completion.DescriptorLookupConverter;
-import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
 
 /**
@@ -67,9 +63,7 @@ public class JetSimpleNameReference extends JetPsiReference
 	@Override
 	public Object[] getVariants()
 	{
-		BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) myExpression.getContainingFile()).getBindingContext();
-
-		return DescriptorLookupConverter.collectLookupElements(bindingContext, TipsManager.getReferenceVariants(myExpression, bindingContext));
+		return ArrayUtil.EMPTY_OBJECT_ARRAY;
 	}
 
 	@Override
