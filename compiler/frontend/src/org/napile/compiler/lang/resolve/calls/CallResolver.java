@@ -143,14 +143,14 @@ public class CallResolver
 		List<CallableDescriptorCollector<? extends VariableDescriptor>> callableDescriptorCollectors = Collections.<CallableDescriptorCollector<? extends VariableDescriptor>>singletonList(CallableDescriptorCollectors.VARIABLES);
 
 		List<ResolutionTask<VariableDescriptor, VariableDescriptor>> prioritizedTasks = TaskPrioritizer.<VariableDescriptor, VariableDescriptor>computePrioritizedTasks(context, referencedName, nameExpression, callableDescriptorCollectors);
-		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_PROPERTY, context, prioritizedTasks, CallTransformer.PROPERTY_CALL_TRANSFORMER, nameExpression, true);
+		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_PROPERTY, context, prioritizedTasks, CallTransformer.VARIABLE_CALL_TRANSFORMER, nameExpression, true);
 	}
 
 	@NotNull
 	public OverloadResolutionResults<MethodDescriptor> resolveCallWithGivenName(@NotNull BasicResolutionContext context, @NotNull final NapileReferenceExpression functionReference, @NotNull Name name, boolean bindReference)
 	{
 		List<ResolutionTask<CallableDescriptor, MethodDescriptor>> tasks = TaskPrioritizer.<CallableDescriptor, MethodDescriptor>computePrioritizedTasks(context, name, functionReference, CallableDescriptorCollectors.ALL);
-		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, tasks, CallTransformer.FUNCTION_CALL_TRANSFORMER, functionReference, bindReference);
+		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, tasks, CallTransformer.ANONYM_METHOD_CALL_TRANSFORMER, functionReference, bindReference);
 	}
 
 	@NotNull
@@ -279,7 +279,7 @@ public class CallResolver
 			}
 		}
 
-		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, prioritizedTasks, CallTransformer.FUNCTION_CALL_TRANSFORMER, functionReference, true);
+		return doResolveCallOrGetCachedResults(RESOLUTION_RESULTS_FOR_FUNCTION, context, prioritizedTasks, CallTransformer.ANONYM_METHOD_CALL_TRANSFORMER, functionReference, true);
 	}
 
 	private <D extends CallableDescriptor, F extends D> OverloadResolutionResults<F> doResolveCallOrGetCachedResults(@NotNull WritableSlice<CallKey, OverloadResolutionResults<F>> resolutionResultsSlice, @NotNull final BasicResolutionContext context, @NotNull final List<ResolutionTask<D, F>> prioritizedTasks, @NotNull CallTransformer<D, F> callTransformer, @NotNull final NapileReferenceExpression reference, boolean bindReference)
@@ -597,7 +597,7 @@ public class CallResolver
 				if(bindReference)
 					task.tracing.bindReference(context.candidateCall.getTrace(), context.candidateCall);
 
-				Collection<ResolvedCallWithTrace<F>> calls = callTransformer.transformCall(context, this, task);
+				Collection<ResolvedCallWithTrace<F>> calls = Collections.singleton((ResolvedCallWithTrace<F>) context.candidateCall);
 
 				for(ResolvedCallWithTrace<F> call : calls)
 				{
@@ -976,9 +976,7 @@ public class CallResolver
 
 		//resultStatus = resultStatus.combine(checkReceiver(context, candidateCall, candidateCall.getResultingDescriptor().getReceiverParameter(), candidateCall.getReceiverArgument(), candidateCall.getExplicitReceiverKind().isReceiver(), false));
 
-		resultStatus = resultStatus.combine(checkReceiver(context, candidateCall, candidateCall.getResultingDescriptor().getExpectedThisObject(), candidateCall.getThisObject(), candidateCall.getExplicitReceiverKind().isThisObject(),
-				// for the invocation 'foo(1)' where foo is a variable of function type we should mark 'foo' if there is unsafe call error
-				context.call instanceof CallTransformer.CallForImplicitInvoke));
+		resultStatus = resultStatus.combine(checkReceiver(context, candidateCall, candidateCall.getResultingDescriptor().getExpectedThisObject(), candidateCall.getThisObject(), candidateCall.getExplicitReceiverKind().isThisObject(), false));
 		return new ValueArgumentsCheckingResult(resultStatus, checkingResult.argumentTypes);
 	}
 
