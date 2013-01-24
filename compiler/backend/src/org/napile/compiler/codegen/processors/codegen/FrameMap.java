@@ -17,142 +17,58 @@
 package org.napile.compiler.codegen.processors.codegen;
 
 import gnu.trove.TObjectIntHashMap;
-import gnu.trove.TObjectIntIterator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.napile.compiler.codegen.processors.Triple;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import com.google.common.collect.Lists;
 
 /**
  * @author max
  */
 public class FrameMap
 {
-	private final TObjectIntHashMap<DeclarationDescriptor> myVarIndex = new TObjectIntHashMap<DeclarationDescriptor>();
-	private final TObjectIntHashMap<DeclarationDescriptor> myVarSizes = new TObjectIntHashMap<DeclarationDescriptor>();
-	private int myMaxIndex = 0;
+	private final TObjectIntHashMap<DeclarationDescriptor> varIndexes = new TObjectIntHashMap<DeclarationDescriptor>();
+	private int maxIndex = 0;
 
 	public int enter(DeclarationDescriptor descriptor)
 	{
-		int index = myMaxIndex;
-		myVarIndex.put(descriptor, index);
-		myMaxIndex += 1;
-		myVarSizes.put(descriptor, 1);
+		int index = maxIndex++;
+		varIndexes.put(descriptor, index);
 		return index;
 	}
 
 	public int leave(DeclarationDescriptor descriptor)
 	{
-		int size = myVarSizes.get(descriptor);
-		myMaxIndex -= size;
-		myVarSizes.remove(descriptor);
-		int oldIndex = myVarIndex.remove(descriptor);
-		if(oldIndex != myMaxIndex)
-		{
+		maxIndex--;
+
+		int oldIndex = varIndexes.remove(descriptor);
+		if(oldIndex != maxIndex)
 			throw new IllegalStateException("descriptor can be left only if it is last: " + descriptor);
-		}
+
 		return oldIndex;
 	}
 
 	public int enterTemp()
 	{
-		int result = myMaxIndex;
-		myMaxIndex += 1;
-		return result;
+		return maxIndex++;
 	}
 
 	public void leaveTemp()
 	{
-		myMaxIndex -= 1;
+		maxIndex--;
 	}
 
 	public int getIndex(DeclarationDescriptor descriptor)
 	{
-		return myVarIndex.contains(descriptor) ? myVarIndex.get(descriptor) : -1;
-	}
-
-	public Mark mark()
-	{
-		return new Mark(myMaxIndex);
-	}
-
-	public class Mark
-	{
-		private final int myIndex;
-
-		public Mark(int index)
-		{
-			myIndex = index;
-		}
-
-		public void dropTo()
-		{
-			List<DeclarationDescriptor> descriptorsToDrop = new ArrayList<DeclarationDescriptor>();
-			TObjectIntIterator<DeclarationDescriptor> iterator = myVarIndex.iterator();
-			while(iterator.hasNext())
-			{
-				iterator.advance();
-				if(iterator.value() >= myIndex)
-				{
-					descriptorsToDrop.add(iterator.key());
-				}
-			}
-			for(DeclarationDescriptor declarationDescriptor : descriptorsToDrop)
-			{
-				myVarIndex.remove(declarationDescriptor);
-				myVarSizes.remove(declarationDescriptor);
-			}
-			myMaxIndex = myIndex;
-		}
+		return varIndexes.contains(descriptor) ? varIndexes.get(descriptor) : -1;
 	}
 
 	@Override
 	public String toString()
 	{
-		StringBuilder sb = new StringBuilder();
-
-		if(myVarIndex.size() != myVarSizes.size())
-		{
-			return "inconsistent";
-		}
-
-		List<Triple<DeclarationDescriptor, Integer, Integer>> descriptors = Lists.newArrayList();
-
-		for(Object descriptor0 : myVarIndex.keys())
-		{
-			DeclarationDescriptor descriptor = (DeclarationDescriptor) descriptor0;
-			int varIndex = myVarIndex.get(descriptor);
-			int varSize = myVarSizes.get(descriptor);
-			descriptors.add(new Triple<DeclarationDescriptor, Integer, Integer>(descriptor, varIndex, varSize));
-		}
-
-		Collections.sort(descriptors, new Comparator<Triple<DeclarationDescriptor, Integer, Integer>>()
-		{
-			@Override
-			public int compare(Triple<DeclarationDescriptor, Integer, Integer> left, Triple<DeclarationDescriptor, Integer, Integer> right)
-			{
-				return left.b - right.b;
-			}
-		});
-
-		sb.append("size=").append(myMaxIndex);
-
-		boolean first = true;
-		for(Triple<DeclarationDescriptor, Integer, Integer> t : descriptors)
-		{
-			if(!first)
-			{
-				sb.append(", ");
-			}
-			first = false;
-			sb.append(t.a).append(",i=").append(t.b).append(",s=").append(t.c);
-		}
-
+		final StringBuilder sb = new StringBuilder();
+		sb.append("FrameMap");
+		sb.append("{myVarIndex=").append(varIndexes);
+		sb.append(", myMaxIndex=").append(maxIndex);
+		sb.append('}');
 		return sb.toString();
 	}
 }

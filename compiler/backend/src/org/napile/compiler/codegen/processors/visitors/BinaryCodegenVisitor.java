@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.codegen.processors;
+package org.napile.compiler.codegen.processors.visitors;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,12 +23,15 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
@@ -40,25 +43,185 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
+import org.napile.compiler.lang.psi.NapileBinaryExpressionWithTypeRHS;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapilePostfixExpression;
+import org.napile.compiler.lang.psi.NapilePrefixExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 10:50/05.10.12
+ * @date 10:26/24.01.13
  */
-public class BinaryOperationCodegen
+public class BinaryCodegenVisitor extends CodegenVisitor
 {
 	public static final MethodRef ANY_EQUALS = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("equals")), Arrays.asList(new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY))), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE);
-
 	private static final SimpleVariableAccessor GREATER = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("GREATER")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
 	private static final SimpleVariableAccessor EQUAL = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("EQUAL")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
 	private static final SimpleVariableAccessor LOWER = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("LOWER")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
+
+	public BinaryCodegenVisitor(ExpressionCodegen gen)
+	{
+		super(gen);
+	}
+
+	@Override
+	public StackValue visitBinaryWithTypeRHSExpression(NapileBinaryExpressionWithTypeRHS expression, StackValue data)
+	{
+		PsiElement refElement = expression.getOperationSign().getReferencedNameElement();
+		IElementType elementType = refElement.getNode().getElementType();
+		TypeNode expType = gen.expressionType(expression);
+
+		NapileExpression leftExp = expression.getLeft();
+
+		//FIXME [VISTALL] currently VM prototype not supported CASTs
+		TypeNode leftType = gen.expressionType(expression.getLeft());
+		TypeNode rightType = gen.toAsmType(gen.bindingTrace.safeGet(BindingContext.TYPE, expression.getRight()));
+		if(elementType == NapileTokens.AS_KEYWORD)
+		{
+			gen.gen(leftExp, leftType);
+			gen.instructs.dup();
+
+			gen.instructs.is(rightType);
+			gen.instructs.putFalse();
+			ReservedInstruction ifReserve = gen.instructs.reserve();
+			gen.instructs.putNull();
+			gen.instructs.newObject(new TypeNode(false, new ClassTypeNode(new FqName("napile.lang.ClassCastException"))), Collections.singletonList(TypeConstants.NULLABLE_STRING));
+			gen.instructs.throwVal();
+			gen.instructs.replace(ifReserve).jumpIf(gen.instructs.size());
+		}
+		else if(elementType == NapileTokens.AS_SAFE)
+		{
+			gen.gen(leftExp, leftType);
+			gen.instructs.dup();
+
+			gen.instructs.is(rightType);
+			gen.instructs.putFalse();
+			ReservedInstruction ifReserve = gen.instructs.reserve();
+			gen.instructs.putNull();
+			gen.instructs.replace(ifReserve).jumpIf(gen.instructs.size());
+		}
+		else if(elementType == NapileTokens.COLON)
+		{
+			gen.gen(leftExp, leftType);
+			//FIXME [VISTALL] this cast VM ill be check
+		}
+		return StackValue.onStack(expType);
+	}
+
+	@Override
+	public StackValue visitPrefixExpression(NapilePrefixExpression expression, StackValue receiver)
+	{
+		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
+
+		final CallableMethod callableMethod = CallTransformer.transformToCallable(gen, resolvedCall, false, false, false);
+
+		if(!(op.getName().getName().equals("inc") || op.getName().getName().equals("dec")))
+			return gen.invokeOperation(expression, (MethodDescriptor) op, callableMethod);
+		else
+		{
+			StackValue value = gen.gen(expression.getBaseExpression());
+			value.dupReceiver(gen.instructs);
+			value.dupReceiver(gen.instructs);
+
+			TypeNode type = gen.expressionType(expression.getBaseExpression());
+			value.put(type, gen.instructs);
+			callableMethod.invoke(gen.instructs);
+
+			MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+			if(methodDescriptor != null)
+				StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false).store(callableMethod.getReturnType(), gen.instructs);
+			else
+				value.store(callableMethod.getReturnType(), gen.instructs);
+			value.put(type, gen.instructs);
+			return StackValue.onStack(type);
+		}
+	}
+
+	@Override
+	public StackValue visitPostfixExpression(NapilePostfixExpression expression, StackValue receiver)
+	{
+		if(expression.getOperationReference().getReferencedNameElementType() == NapileTokens.EXCLEXCL)
+			return genSure(expression, gen, gen.instructs, receiver);
+
+		DeclarationDescriptor op = gen.bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+		if(op instanceof MethodDescriptor)
+		{
+			if(op.getName().getName().equals("inc") || op.getName().getName().equals("dec"))
+			{
+				ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
+
+				final CallableMethod callable = CallTransformer.transformToCallable(gen, resolvedCall, false, false, false);
+
+				StackValue value = gen.gen(expression.getBaseExpression());
+				value.dupReceiver(gen.instructs);
+
+				TypeNode type = gen.expressionType(expression.getBaseExpression());
+				value.put(type, gen.instructs);
+
+				switch(value.receiverSize())
+				{
+					case 0:
+						gen.instructs.dup();
+						break;
+					case 1:
+						gen.instructs.dup1x1();
+						break;
+					default:
+						throw new UnsupportedOperationException("Unknown receiver size " + value.receiverSize());
+				}
+
+				callable.invoke(gen.instructs);
+
+				MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+				if(methodDescriptor != null)
+					value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false);
+				value.store(callable.getReturnType(), gen.instructs);
+
+				return StackValue.onStack(type);
+			}
+		}
+		throw new UnsupportedOperationException("Don't know how to generate this postfix expression");
+	}
+
+	@Override
+	public StackValue visitBinaryExpression(NapileBinaryExpression expression, StackValue receiver)
+	{
+		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
+		if(opToken == NapileTokens.EQ)
+			return genEq(expression, gen);
+		else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(opToken))
+			return genAugmentedAssignment(expression, gen);
+		else if(opToken == NapileTokens.ANDAND)
+			return genAndAnd(expression, gen);
+		else if(opToken == NapileTokens.OROR)
+			return genOrOr(expression, gen);
+		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ)
+			return genEqEq(expression, gen);
+		else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ || opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
+			return genGeLe(expression, gen);
+		else if(opToken == NapileTokens.ELVIS)
+			return genElvis(expression, gen);
+		/*else if(opToken == NapileTokens.IN_KEYWORD || opToken == NapileTokens.NOT_IN)
+		{
+				return final Type exprType = expressionType(expression);
+        JetType type = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression.getLeft());(expression);
+		}
+		else */
+		else
+		{
+			DeclarationDescriptor op = gen.bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+			final CallableMethod callable = CallTransformer.transformToCallable(gen, (MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
+
+			return gen.invokeOperation(expression, (MethodDescriptor) op, callable);
+		}
+	}
 
 	public static StackValue genSure(@NotNull NapilePostfixExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs, @NotNull StackValue receiver)
 	{
@@ -208,8 +371,10 @@ public class BinaryOperationCodegen
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
-	public static StackValue genAugmentedAssignment(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genAugmentedAssignment(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen)
 	{
+		InstructionAdapter instructs = gen.instructs;
+
 		final NapileExpression lhs = expression.getLeft();
 
 		TypeNode lhsType = gen.expressionType(lhs);
@@ -268,8 +433,10 @@ public class BinaryOperationCodegen
 		return StackValue.onStack(exprType);
 	}
 
-	public static StackValue genAndAnd(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genAndAnd(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen)
 	{
+		InstructionAdapter instructs = gen.instructs;
+
 		gen.gen(expression.getLeft(), AsmConstants.BOOL_TYPE);
 
 		instructs.putTrue();
@@ -297,8 +464,10 @@ public class BinaryOperationCodegen
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
 
-	public static StackValue genOrOr(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructs)
+	public static StackValue genOrOr(@NotNull NapileBinaryExpression expression, @NotNull ExpressionCodegen gen)
 	{
+		InstructionAdapter instructs = gen.instructs;
+
 		gen.gen(expression.getLeft(), AsmConstants.BOOL_TYPE);
 
 		instructs.putTrue();

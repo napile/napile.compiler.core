@@ -16,11 +16,8 @@
 
 package org.napile.compiler.codegen.processors;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,16 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
-import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
-import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
-import org.napile.asm.tree.members.bytecode.tryCatch.CatchBlock;
-import org.napile.asm.tree.members.bytecode.tryCatch.TryBlock;
-import org.napile.asm.tree.members.bytecode.tryCatch.TryCatchBlockNode;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
@@ -48,20 +39,26 @@ import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.FrameMap;
-import org.napile.compiler.codegen.processors.codegen.TypeConstants;
-import org.napile.compiler.codegen.processors.codegen.loopGen.DoWhileLoopCodegen;
-import org.napile.compiler.codegen.processors.codegen.loopGen.ForLoopCodegen;
-import org.napile.compiler.codegen.processors.codegen.loopGen.LabelLoopCodegen;
-import org.napile.compiler.codegen.processors.codegen.loopGen.LoopCodegen;
-import org.napile.compiler.codegen.processors.codegen.loopGen.WhileLoopCodegen;
 import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.MultiVariable;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.codegen.stackValue.WrappedVar;
 import org.napile.compiler.codegen.processors.injection.InjectionCodegen;
+import org.napile.compiler.codegen.processors.visitors.BinaryCodegenVisitor;
+import org.napile.compiler.codegen.processors.visitors.ClosureCodegenVisitor;
+import org.napile.compiler.codegen.processors.visitors.ConditionCodegenVisitor;
+import org.napile.compiler.codegen.processors.visitors.LoopCodegenVisitor;
+import org.napile.compiler.codegen.processors.visitors.TryThrowCodegenVisitor;
 import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
+import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.MultiTypeEntryVariableDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -75,13 +72,10 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.util.Comparing;
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.util.Function;
 
 /**
@@ -102,12 +96,17 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public final FrameMap frameMap;
 	@NotNull
 	private final TypeNode returnType;
-	@NotNull
-	private final Deque<LoopCodegen<?>> loops = new ArrayDeque<LoopCodegen<?>>();
+
 	@NotNull
 	public final ClassNode classNode;
 	@NotNull
 	public final ExpressionCodegenContext context;
+
+	private final ClosureCodegenVisitor closureCodegenVisitor = new ClosureCodegenVisitor(this);
+	private final BinaryCodegenVisitor binaryCodegenVisitor = new BinaryCodegenVisitor(this);
+	private final ConditionCodegenVisitor conditionCodegenVisitor = new ConditionCodegenVisitor(this);
+	private final LoopCodegenVisitor loopCodegenVisitor = new LoopCodegenVisitor(this);
+	private final TryThrowCodegenVisitor tryThrowCodegenVisitor = new TryThrowCodegenVisitor(this);
 
 	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull TypeNode r, @NotNull ClassNode c)
 	{
@@ -207,45 +206,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitBinaryWithTypeRHSExpression(NapileBinaryExpressionWithTypeRHS expression, StackValue data)
 	{
-		PsiElement refElement = expression.getOperationSign().getReferencedNameElement();
-		IElementType elementType = refElement.getNode().getElementType();
-		TypeNode expType = expressionType(expression);
-
-		NapileExpression leftExp = expression.getLeft();
-
-		//FIXME [VISTALL] currently VM prototype not supported CASTs
-		TypeNode leftType = expressionType(expression.getLeft());
-		TypeNode rightType = toAsmType(bindingTrace.safeGet(BindingContext.TYPE, expression.getRight()));
-		if(elementType == NapileTokens.AS_KEYWORD)
-		{
-			gen(leftExp, leftType);
-			instructs.dup();
-
-			instructs.is(rightType);
-			instructs.putFalse();
-			ReservedInstruction ifReserve = instructs.reserve();
-			instructs.putNull();
-			instructs.newObject(new TypeNode(false, new ClassTypeNode(new FqName("napile.lang.ClassCastException"))), Collections.singletonList(TypeConstants.NULLABLE_STRING));
-			instructs.throwVal();
-			instructs.replace(ifReserve).jumpIf(instructs.size());
-		}
-		else if(elementType == NapileTokens.AS_SAFE)
-		{
-			gen(leftExp, leftType);
-			instructs.dup();
-
-			instructs.is(rightType);
-			instructs.putFalse();
-			ReservedInstruction ifReserve = instructs.reserve();
-			instructs.putNull();
-			instructs.replace(ifReserve).jumpIf(instructs.size());
-		}
-		else if(elementType == NapileTokens.COLON)
-		{
-			gen(leftExp, leftType);
-			//FIXME [VISTALL] this cast VM ill be check
-		}
-		return StackValue.onStack(expType);
+		return expression.accept(binaryCodegenVisitor, data);
 	}
 
 	@Override
@@ -258,80 +219,37 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitForExpression(NapileForExpression expression, StackValue data)
 	{
-		return loopGen(new ForLoopCodegen(expression));
+		return expression.accept(loopCodegenVisitor, data);
 	}
 
 	@Override
 	public StackValue visitWhileExpression(NapileWhileExpression expression, StackValue data)
 	{
-		return loopGen(new WhileLoopCodegen(expression));
+		return expression.accept(loopCodegenVisitor, data);
 	}
 
 	@Override
 	public StackValue visitDoWhileExpression(NapileDoWhileExpression expression, StackValue data)
 	{
-		return loopGen(new DoWhileLoopCodegen(expression));
+		return expression.accept(loopCodegenVisitor, data);
 	}
 
 	@Override
 	public StackValue visitLabelExpression(NapileLabelExpression expression, StackValue data)
 	{
-		return loopGen(new LabelLoopCodegen(expression));
+		return expression.accept(loopCodegenVisitor, data);
 	}
 
 	@Override
 	public StackValue visitContinueExpression(NapileContinueExpression expression, StackValue data)
 	{
-		LoopCodegen<?> last = loops.getLast();
-
-		last.addContinue(instructs);
-
-		return StackValue.none();
+		return expression.accept(loopCodegenVisitor, data);
 	}
 
 	@Override
 	public StackValue visitTryExpression(NapileTryExpression expression, StackValue data)
 	{
-		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
-
-		TypeNode expectedAsmType = TypeTransformer.toAsmType(bindingTrace, jetType, classNode);
-
-		final int tryStartIndex = instructs.size();
-
-		gen(expression.getTryBlock());
-
-		List<ReservedInstruction> jumpOutInstructions = new ArrayList<ReservedInstruction>(2);
-		jumpOutInstructions.add(instructs.reserve());
-
-		TryBlock tryBlock = new TryBlock(tryStartIndex, instructs.size());
-		List<CatchBlock> catchBlocks = new ArrayList<CatchBlock>(2);
-
-		for(NapileCatchClause catchClause : expression.getCatchClauses())
-		{
-			VariableDescriptor catchParameter = (VariableDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, catchClause.getCatchParameter());
-
-			int index = frameMap.enter(catchParameter);
-
-			instructs.visitLocalVariable(catchClause.getName());
-
-			int startCatchIndex = instructs.size();
-
-			gen(catchClause.getCatchBody());
-
-			jumpOutInstructions.add(instructs.reserve());
-
-			catchBlocks.add(new CatchBlock(startCatchIndex, instructs.size(), index, TypeTransformer.toAsmType(bindingTrace, catchParameter.getType(), classNode)));
-
-			frameMap.leave(catchParameter);
-		}
-
-		final int nextIndex = instructs.size();
-		for(ReservedInstruction r : jumpOutInstructions)
-			instructs.replace(r).jump(nextIndex);
-
-		instructs.tryCatch(new TryCatchBlockNode(tryBlock, catchBlocks));
-
-		return StackValue.onStack(expectedAsmType);
+		return expression.accept(tryThrowCodegenVisitor, data);
 	}
 
 	@Override
@@ -347,15 +265,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitThrowExpression(NapileThrowExpression expression, StackValue data)
 	{
-		NapileExpression throwExp = expression.getThrownExpression();
-
-		assert throwExp != null;
-
-		gen(throwExp, TypeConstants.EXCEPTION);
-
-		instructs.throwVal();
-
-		return StackValue.onStack(TypeConstants.EXCEPTION);
+		return expression.accept(tryThrowCodegenVisitor, data);
 	}
 
 	@Override
@@ -367,82 +277,19 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitAnonymMethodExpression(NapileAnonymMethodExpression expression, StackValue data)
 	{
-		SimpleMethodDescriptor methodDescriptor = bindingTrace.safeGet(BindingContext.METHOD, expression);
-
-		InstructionAdapter adapter = new InstructionAdapter();
-
-		ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, methodDescriptor, classNode, context.clone(), adapter);
-		gen.returnExpression(expression.getAnonymMethod().getBodyExpression(), methodDescriptor.isMacro());
-
-		// TODO [VISTALL] correct require
-		instructs.putAnonym(0, new CodeInfo(adapter));
-
-		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
-
-		return StackValue.onStack(toAsmType(jetType));
+		return expression.accept(closureCodegenVisitor, data);
 	}
 
 	@Override
 	public StackValue visitLinkMethodExpression(NapileLinkMethodExpression expression, StackValue data)
 	{
-		JetType jetType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
-
-		MethodDescriptor target = (MethodDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getTarget());
-
-		InstructionAdapter adapter = new InstructionAdapter();
-
-		int index = 0;
-		if(!target.isStatic())
-		{
-			adapter.localGet(index);
-			adapter.visitLocalVariable("l" + index);
-			index ++;
-		}
-
-		for(CallParameterDescriptor descriptor : target.getValueParameters())
-		{
-			adapter.localGet(index);
-			adapter.visitLocalVariable("l" + index);
-			index ++;
-		}
-
-		if(target.isStatic())
-			adapter.invokeStatic(NodeRefUtil.ref(target, bindingTrace, classNode), false);
-		else
-			adapter.invokeVirtual(NodeRefUtil.ref(target, bindingTrace, classNode), false);
-
-		adapter.returnVal();
-
-		instructs.putAnonym(0, new CodeInfo(adapter));
-		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace, jetType, classNode));
+		return expression.accept(closureCodegenVisitor, data);
 	}
 
 	@Override
 	public StackValue visitBreakExpression(NapileBreakExpression expression, StackValue data)
 	{
-		LoopCodegen<?> targetLoop = null;
-		NapileSimpleNameExpression labelRef = expression.getTargetLabel();
-		if(labelRef != null)
-		{
-			Iterator<LoopCodegen<?>> it = loops.descendingIterator();
-			while(it.hasNext())
-			{
-				LoopCodegen<?> e = it.next();
-				if(Comparing.equal(e.getName(), expression.getLabelName()))
-				{
-					targetLoop = e;
-					break;
-				}
-			}
-		}
-		else
-			targetLoop = loops.getLast();
-
-		assert targetLoop != null;
-
-		targetLoop.addBreak(instructs);
-
-		return StackValue.none();
+		return expression.accept(loopCodegenVisitor, data);
 	}
 
 	@Override
@@ -463,46 +310,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitIsExpression(NapileIsExpression expression, StackValue data)
 	{
-		gen(expression.getLeftHandSide(), TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeftHandSide()), classNode));
-
-		JetType rightType = bindingTrace.safeGet(BindingContext.TYPE, expression.getTypeRef());
-
-		instructs.is(TypeTransformer.toAsmType(bindingTrace, rightType, classNode));
-
-		if(expression.isNegated())
-			instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
-
-		return StackValue.onStack(AsmConstants.BOOL_TYPE);
+		return expression.accept(conditionCodegenVisitor, data);
 	}
 
 	@Override
 	public StackValue visitPrefixExpression(NapilePrefixExpression expression, StackValue receiver)
 	{
-		DeclarationDescriptor op = bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
-
-		final CallableMethod callableMethod = CallTransformer.transformToCallable(this, resolvedCall, false, false, false);
-
-		if(!(op.getName().getName().equals("inc") || op.getName().getName().equals("dec")))
-			return invokeOperation(expression, (MethodDescriptor) op, callableMethod);
-		else
-		{
-			StackValue value = gen(expression.getBaseExpression());
-			value.dupReceiver(instructs);
-			value.dupReceiver(instructs);
-
-			TypeNode type = expressionType(expression.getBaseExpression());
-			value.put(type, instructs);
-			callableMethod.invoke(instructs);
-
-			MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
-			if(methodDescriptor != null)
-				StackValue.variableAccessor(methodDescriptor, value.getType(), this, false).store(callableMethod.getReturnType(), instructs);
-			else
-				value.store(callableMethod.getReturnType(), instructs);
-			value.put(type, instructs);
-			return StackValue.onStack(type);
-		}
+		return expression.accept(binaryCodegenVisitor, receiver);
 	}
 
 	@Override
@@ -538,173 +352,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitIfExpression(NapileIfExpression expression, StackValue receiver)
 	{
-		TypeNode asmType = expressionType(expression);
-
-		NapileExpression thenExpression = expression.getThen();
-		NapileExpression elseExpression = expression.getElse();
-
-		if(thenExpression == null && elseExpression == null)
-			throw new CompilationException("Both brunches of if/else are null", null, expression);
-
-		if(isEmptyExpression(thenExpression))
-		{
-			if(isEmptyExpression(elseExpression))
-			{
-				if(!asmType.equals(AsmConstants.NULL_TYPE))
-					throw new CompilationException("Completely empty 'if' is expected to have Null type", null, expression);
-
-				instructs.putNull();
-				return StackValue.onStack(asmType);
-			}
-			StackValue condition = gen(expression.getCondition());
-			return generateSingleBranchIf(condition, elseExpression, false);
-		}
-		else
-		{
-			if(isEmptyExpression(elseExpression))
-			{
-				StackValue condition = gen(expression.getCondition());
-				return generateSingleBranchIf(condition, thenExpression, true);
-			}
-		}
-
-
-		StackValue condition = gen(expression.getCondition());
-
-		condition.put(AsmConstants.BOOL_TYPE, instructs);
-
-		instructs.putTrue();
-
-		ReservedInstruction ifSlot = instructs.reserve();
-
-		gen(thenExpression, asmType);
-
-		ReservedInstruction afterIfSlot = instructs.reserve();
-
-		int elseStartIndex = instructs.size();
-
-		gen(elseExpression, asmType);
-
-		int afterIfStartIndex = instructs.size();
-
-		// replace ifSlot - by jump_if - index is start 'else' block
-		instructs.replace(ifSlot).jumpIf(elseStartIndex);
-		// at end of 'then' block ignore 'else' block
-		instructs.replace(afterIfSlot).jump(afterIfStartIndex);
-
-		return StackValue.onStack(asmType);
+		return expression.accept(conditionCodegenVisitor, receiver);
 	}
 
 	@Override
 	public StackValue visitWhenExpression(NapileWhenExpression expression, StackValue data)
 	{
-		JetType expType = bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
-
-		NapileExpression subjectExpression = expression.getSubjectExpression();
-		if(subjectExpression != null)
-			gen(subjectExpression, TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, subjectExpression), classNode));
-
-		List<NapileWhenEntry> whenEntries = expression.getEntries();
-		List<ReservedInstruction> jumpToBlocks = new ArrayList<ReservedInstruction>(whenEntries.size());
-		List<ReservedInstruction> jumpOut = new ArrayList<ReservedInstruction>(whenEntries.size());
-
-		for(NapileWhenEntry whenEntry : expression.getEntries())
-		{
-			if(whenEntry.isElse())
-			{
-				jumpToBlocks.add(instructs.reserve());
-			}
-			else
-			{
-				NapileWhenCondition condition = whenEntry.getCondition();
-				if(condition instanceof NapileWhenConditionIsPattern)
-				{
-					instructs.dup();
-
-					TypeNode typeNode = TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.TYPE, ((NapileWhenConditionIsPattern) condition).getTypeRef()), classNode);
-
-					instructs.is(typeNode);
-
-					if(((NapileWhenConditionIsPattern) condition).isNegated())
-						instructs.putFalse();
-					else
-						instructs.putTrue();
-
-					instructs.jumpIf(instructs.size() + 2);
-
-					jumpToBlocks.add(instructs.reserve());
-				}
-				else if(condition instanceof NapileWhenConditionWithExpression)
-				{
-					NapileExpression condExp = ((NapileWhenConditionWithExpression) condition).getExpression();
-
-					if(subjectExpression != null)
-						instructs.dup();
-
-					gen(condExp, TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, condExp), classNode));
-
-					if(subjectExpression != null)
-						instructs.invokeVirtual(BinaryOperationCodegen.ANY_EQUALS, false);
-
-					instructs.putTrue();
-
-					instructs.jumpIf(instructs.size() + 2);
-
-					jumpToBlocks.add(instructs.reserve());
-				}
-				else if(condition instanceof NapileWhenConditionInRange)
-				{
-					throw new UnsupportedOperationException("'in' is not supported for now");
-				}
-			}
-		}
-
-		if(whenEntries.size() != jumpToBlocks.size())
-			throw new IllegalArgumentException();
-
-		for(int i = 0; i < jumpToBlocks.size(); i++)
-		{
-			ReservedInstruction reservedInstruction = jumpToBlocks.get(i);
-			NapileWhenEntry whenEntry = whenEntries.get(i);
-
-			NapileExpression whenExp = whenEntry.getExpression();
-
-			instructs.replace(reservedInstruction).jump(instructs.size());
-
-			gen(whenExp, TypeTransformer.toAsmType(bindingTrace, bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, whenExp), classNode));
-
-			jumpOut.add(instructs.reserve());
-		}
-
-		for(ReservedInstruction instruction : jumpOut)
-			instructs.replace(instruction).jump(instructs.size());
-
-		return StackValue.onStack(TypeTransformer.toAsmType(bindingTrace, expType, classNode));
-	}
-
-	private StackValue generateSingleBranchIf(StackValue condition, NapileExpression expression, boolean inverse)
-	{
-		TypeNode expressionType = expressionType(expression);
-		TypeNode targetType = expressionType;
-		if(!expressionType.equals(AsmConstants.NULL_TYPE))
-			targetType = AsmConstants.ANY_TYPE;
-
-		condition.put(AsmConstants.BOOL_TYPE, instructs);
-
-		if(inverse)
-			instructs.putTrue();
-		else
-			instructs.putFalse();
-
-		ReservedInstruction ifSlot = instructs.reserve();
-
-		gen(expression, expressionType);
-
-		StackValue.castTo(expressionType, targetType, instructs);
-
-		instructs.replace(ifSlot).jumpIf(instructs.size());
-
-		return StackValue.onStack(targetType);
+		return expression.accept(conditionCodegenVisitor, data);
 	}
 
 	@Override
@@ -734,80 +388,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	@Override
 	public StackValue visitBinaryExpression(NapileBinaryExpression expression, StackValue receiver)
 	{
-		final IElementType opToken = expression.getOperationReference().getReferencedNameElementType();
-		if(opToken == NapileTokens.EQ)
-			return BinaryOperationCodegen.genEq(expression, this);
-		else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(opToken))
-			return BinaryOperationCodegen.genAugmentedAssignment(expression, this, instructs);
-		else if(opToken == NapileTokens.ANDAND)
-			return BinaryOperationCodegen.genAndAnd(expression, this, instructs);
-		else if(opToken == NapileTokens.OROR)
-			return BinaryOperationCodegen.genOrOr(expression, this, instructs);
-		else if(opToken == NapileTokens.EQEQ || opToken == NapileTokens.EXCLEQ)
-			return BinaryOperationCodegen.genEqEq(expression, this);
-		else if(opToken == NapileTokens.LT || opToken == NapileTokens.LTEQ || opToken == NapileTokens.GT || opToken == NapileTokens.GTEQ)
-			return BinaryOperationCodegen.genGeLe(expression, this);
-		else if(opToken == NapileTokens.ELVIS)
-			return BinaryOperationCodegen.genElvis(expression, this);
-		/*else if(opToken == NapileTokens.IN_KEYWORD || opToken == NapileTokens.NOT_IN)
-		{
-				return final Type exprType = expressionType(expression);
-        JetType type = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression.getLeft());(expression);
-		}
-		else */
-		else
-		{
-			DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-			final CallableMethod callable = CallTransformer.transformToCallable(this, (MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
-
-			return invokeOperation(expression, (MethodDescriptor) op, callable);
-		}
+		return expression.accept(binaryCodegenVisitor, receiver);
 	}
 
 	@Override
 	public StackValue visitPostfixExpression(NapilePostfixExpression expression, StackValue receiver)
 	{
-		if(expression.getOperationReference().getReferencedNameElementType() == NapileTokens.EXCLEXCL)
-			return BinaryOperationCodegen.genSure(expression, this,instructs, receiver);
-
-		DeclarationDescriptor op = bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-		if(op instanceof MethodDescriptor)
-		{
-			if(op.getName().getName().equals("inc") || op.getName().getName().equals("dec"))
-			{
-				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
-
-				final CallableMethod callable = CallTransformer.transformToCallable(this, resolvedCall, false, false, false);
-
-				StackValue value = gen(expression.getBaseExpression());
-				value.dupReceiver(instructs);
-
-				TypeNode type = expressionType(expression.getBaseExpression());
-				value.put(type, instructs);
-
-				switch(value.receiverSize())
-				{
-					case 0:
-						instructs.dup();
-						break;
-					case 1:
-						instructs.dup1x1();
-						break;
-					default:
-						throw new UnsupportedOperationException("Unknown receiver size " + value.receiverSize());
-				}
-
-				callable.invoke(instructs);
-
-				MethodDescriptor methodDescriptor = bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
-				if(methodDescriptor != null)
-					value = StackValue.variableAccessor(methodDescriptor, value.getType(), this, false);
-				value.store(callable.getReturnType(), instructs);
-
-				return StackValue.onStack(type);
-			}
-		}
-		throw new UnsupportedOperationException("Don't know how to generate this postfix expression");
+		return expression.accept(binaryCodegenVisitor, receiver);
 	}
 
 	@Override
@@ -1090,7 +677,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(type);
 	}
 
-	private StackValue invokeOperation(NapileOperationExpression expression, MethodDescriptor op, CallableMethod callable)
+	public StackValue invokeOperation(NapileOperationExpression expression, MethodDescriptor op, CallableMethod callable)
 	{
 		int functionLocalIndex = lookupLocalIndex(op);
 		if(functionLocalIndex >= 0)
@@ -1245,17 +832,6 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		return answer;
 	}
 
-	private <E extends NapileLoopExpression> StackValue loopGen(LoopCodegen<E> l)
-	{
-		loops.add(l);
-
-		l.gen(this, instructs, bindingTrace);
-
-		loops.getLast();
-
-		return StackValue.none();
-	}
-
 	@Nullable
 	private static NapileExpression getReceiverForSelector(PsiElement expression)
 	{
@@ -1331,7 +907,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				{
 					int index = frameMap.leave(variableDescriptor);
 
-					getAdapter().visitLocalVariable(variableDescriptor.getName().getName());
+					instructs.visitLocalVariable(variableDescriptor.getName().getName());
 					return null;
 				}
 			});
@@ -1349,7 +925,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			generateInitializer.fun(variableDescriptor);
 
-			wrappedVariable.store(TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), getAdapter());
+			wrappedVariable.store(TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), instructs);
 		}
 		else
 		{
@@ -1360,7 +936,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			generateInitializer.fun(variableDescriptor);
 
-			getAdapter().localPut(index);
+			instructs.localPut(index);
 		}
 	}
 
@@ -1372,7 +948,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public void gen(NapileElement expr, TypeNode type)
 	{
 		StackValue value = gen(expr);
-		value.put(type, getAdapter());
+		value.put(type, instructs);
 	}
 
 	public StackValue gen(NapileElement element)
@@ -1459,7 +1035,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			return exp;
 	}
 
-	private static boolean isEmptyExpression(NapileElement expr)
+	public static boolean isEmptyExpression(NapileElement expr)
 	{
 		if(expr == null)
 			return true;
@@ -1473,7 +1049,6 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		return false;
 	}
 
-
 	@NotNull
 	public TypeNode expressionType(NapileExpression expr)
 	{
@@ -1485,11 +1060,5 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public TypeNode toAsmType(@NotNull JetType type)
 	{
 		return TypeTransformer.toAsmType(bindingTrace, type, classNode);
-	}
-
-	@NotNull
-	public InstructionAdapter getAdapter()
-	{
-		return instructs;
 	}
 }

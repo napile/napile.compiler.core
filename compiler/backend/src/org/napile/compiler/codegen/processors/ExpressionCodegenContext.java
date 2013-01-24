@@ -20,21 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.AsmConstants;
-import org.napile.asm.Modifier;
-import org.napile.asm.resolve.name.Name;
-import org.napile.asm.tree.members.VariableNode;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.codegen.stackValue.WrappedVar;
-import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
-import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
-import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 /**
  * @author VISTALL
@@ -64,7 +54,7 @@ public class ExpressionCodegenContext
 	public boolean wrapVariableIfNeed(VariableDescriptor variableDescriptor)
 	{
 		boolean wrappedInClosure = gen.bindingTrace.safeGet(BindingContext.CAPTURED_IN_CLOSURE, variableDescriptor);
-		if(wrappedInClosure)
+		/*if(wrappedInClosure)
 		{
 			MethodDescriptor ownerMethod = (MethodDescriptor) variableDescriptor.getContainingDeclaration();
 			ClassDescriptor ownerClass = (ClassDescriptor) ownerMethod.getContainingDeclaration();
@@ -80,7 +70,7 @@ public class ExpressionCodegenContext
 			gen.classNode.addMember(variableNode);
 			return true;
 		}
-		else
+		else */
 			return false;
 	}
 

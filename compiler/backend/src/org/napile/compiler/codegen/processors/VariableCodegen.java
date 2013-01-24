@@ -31,6 +31,7 @@ import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.codegen.processors.visitors.BinaryCodegenVisitor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileVariable;
@@ -131,7 +132,7 @@ public class VariableCodegen
 
 			adapter.putNull();
 
-			adapter.invokeVirtual(BinaryOperationCodegen.ANY_EQUALS, false);
+			adapter.invokeVirtual(BinaryCodegenVisitor.ANY_EQUALS, false);
 
 			adapter.putTrue();
 
@@ -139,7 +140,7 @@ public class VariableCodegen
 
 			ExpressionCodegen expressionCodegen = new ExpressionCodegen(bindingTrace, null, classNode, ExpressionCodegenContext.empty(), adapter);
 			if(!variableDescriptor.isStatic())
-				expressionCodegen.getAdapter().localGet(0);
+				expressionCodegen.instructs.localGet(0);
 
 			expressionCodegen.gen(variable.getInitializer(), getterMethodNode.returnType);
 

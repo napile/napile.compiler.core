@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.codegen.processors.codegen.loopGen;
+package org.napile.compiler.codegen.processors.visitors.loopCodegen;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;

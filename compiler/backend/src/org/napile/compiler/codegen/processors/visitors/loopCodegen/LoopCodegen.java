@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.codegen.processors.codegen.loopGen;
+package org.napile.compiler.codegen.processors.visitors.loopCodegen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,6 @@ import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileLoopExpression;
-import org.napile.compiler.lang.resolve.BindingTrace;
 
 /**
  * @author VISTALL
@@ -59,22 +58,22 @@ public abstract class LoopCodegen<E extends NapileLoopExpression>
 
 	}
 
-	public void gen(@NotNull ExpressionCodegen gen, @NotNull InstructionAdapter instructions, @NotNull BindingTrace bindingTrace)
+	public void gen(@NotNull ExpressionCodegen gen)
 	{
-		beforeLoop(gen, instructions);
+		beforeLoop(gen, gen.instructs);
 
 		NapileExpression bodyExpression = expression.getBody();
 		if(bodyExpression != null)
 			gen.gen(bodyExpression);
 
-		afterLoop(gen, instructions);
+		afterLoop(gen, gen.instructs);
 
-		final int nextPosAfterLoop = instructions.size();
+		final int nextPosAfterLoop = gen.instructs.size();
 		for(ReservedInstruction i : breakInstructions)
-			instructions.replace(i).jump(nextPosAfterLoop);
+			gen.instructs.replace(i).jump(nextPosAfterLoop);
 
 		for(ReservedInstruction i : continueInstructions)
-			instructions.replace(i).jump(firstPos);
+			gen.instructs.replace(i).jump(firstPos);
 	}
 
 	public void addContinue(@NotNull InstructionAdapter instructions)

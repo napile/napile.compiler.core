@@ -57,8 +57,8 @@ public class AnnotationCodegen
 
 		gen.pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
 
-		gen.getAdapter().newObject(type, callableMethod.getValueParameterTypes());
+		gen.instructs.newObject(type, callableMethod.getValueParameterTypes());
 
-		return new AnnotationNode(new CodeInfo(gen.getAdapter()));
+		return new AnnotationNode(new CodeInfo(gen.instructs));
 	}
 }

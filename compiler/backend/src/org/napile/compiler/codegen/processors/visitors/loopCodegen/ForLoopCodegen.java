@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.codegen.processors.codegen.loopGen;
+package org.napile.compiler.codegen.processors.visitors.loopCodegen;
 
 import java.util.Collections;
 
