@@ -24,51 +24,51 @@ import org.napile.compiler.lang.descriptors.CallParameterAsVariableDescriptorImp
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.SyntaxHighlighterColors;
 import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.EffectType;
 import com.intellij.openapi.editor.markup.TextAttributes;
-import com.intellij.ui.Gray;
 
 public class NapileHighlightingColors
 {
-	public final static TextAttributesKey KEYWORD = TextAttributesKey.createTextAttributesKey("NAPILE_KEYWORD", SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
+	public final static TextAttributesKey KEYWORD = DefaultLanguageHighlighterColors.KEYWORD;
 
-	public static final TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey("NAPILE_NUMBER", SyntaxHighlighterColors.NUMBER.getDefaultAttributes());
+	public static final TextAttributesKey NUMBER = DefaultLanguageHighlighterColors.NUMBER;
 
-	public static final TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey("NAPILE_STRING", SyntaxHighlighterColors.STRING.getDefaultAttributes());
+	public static final TextAttributesKey STRING = DefaultLanguageHighlighterColors.STRING;
 
-	public static final TextAttributesKey STRING_ESCAPE = TextAttributesKey.createTextAttributesKey("NAPILE_STRING_ESCAPE", SyntaxHighlighterColors.VALID_STRING_ESCAPE.getDefaultAttributes());
+	public static final TextAttributesKey STRING_ESCAPE = DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE;
 
-	public static final TextAttributesKey INVALID_STRING_ESCAPE = TextAttributesKey.createTextAttributesKey("NAPILE_INVALID_STRING_ESCAPE", new TextAttributes(null, HighlighterColors.BAD_CHARACTER.getDefaultAttributes().getBackgroundColor(), Color.RED, EffectType.WAVE_UNDERSCORE, 0));
+	public static final TextAttributesKey INVALID_STRING_ESCAPE = DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE;
 
-	public static final TextAttributesKey OPERATOR_SIGN = TextAttributesKey.createTextAttributesKey("NAPILE_OPERATION_SIGN", SyntaxHighlighterColors.OPERATION_SIGN.getDefaultAttributes());
+	public static final TextAttributesKey OPERATOR_SIGN = DefaultLanguageHighlighterColors.OPERATION_SIGN;
 
-	public static final TextAttributesKey PARENTHESIS = TextAttributesKey.createTextAttributesKey("NAPILE_PARENTHESIS", SyntaxHighlighterColors.PARENTHS.getDefaultAttributes());
+	public static final TextAttributesKey PARENTHESIS = DefaultLanguageHighlighterColors.PARENTHESES;
 
-	public static final TextAttributesKey BRACES = TextAttributesKey.createTextAttributesKey("NAPILE_BRACES", SyntaxHighlighterColors.BRACES.getDefaultAttributes());
+	public static final TextAttributesKey BRACES = DefaultLanguageHighlighterColors.BRACES;
 
-	public static final TextAttributesKey BRACKETS = TextAttributesKey.createTextAttributesKey("NAPILE_BRACKETS", SyntaxHighlighterColors.BRACKETS.getDefaultAttributes());
+	public static final TextAttributesKey BRACKETS = DefaultLanguageHighlighterColors.BRACKETS;
 
 	public static final TextAttributesKey FUNCTION_LITERAL_BRACES_AND_ARROW = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_LITERAL_BRACES_AND_ARROW", new TextAttributes(null, null, null, null, Font.BOLD));
 
-	public static final TextAttributesKey COMMA = TextAttributesKey.createTextAttributesKey("NAPILE_COMMA", SyntaxHighlighterColors.COMMA.getDefaultAttributes());
+	public static final TextAttributesKey COMMA = DefaultLanguageHighlighterColors.COMMA;
 
-	public static final TextAttributesKey SEMICOLON = TextAttributesKey.createTextAttributesKey("NAPILE_SEMICOLON", SyntaxHighlighterColors.JAVA_SEMICOLON.getDefaultAttributes());
+	public static final TextAttributesKey SEMICOLON = DefaultLanguageHighlighterColors.SEMICOLON;
 
-	public static final TextAttributesKey DOT = TextAttributesKey.createTextAttributesKey("NAPILE_DOT", SyntaxHighlighterColors.DOT.getDefaultAttributes());
+	public static final TextAttributesKey DOT = DefaultLanguageHighlighterColors.DOT;
 
 	public static final TextAttributesKey SAFE_ACCESS = TextAttributesKey.createTextAttributesKey("NAPILE_SAFE_ACCESS", SyntaxHighlighterColors.DOT.getDefaultAttributes());
 
 	public static final TextAttributesKey ARROW = TextAttributesKey.createTextAttributesKey("NAPILE_ARROW", SyntaxHighlighterColors.PARENTHS.getDefaultAttributes());
 
-	public static final TextAttributesKey LINE_COMMENT = TextAttributesKey.createTextAttributesKey("NAPILE_LINE_COMMENT", SyntaxHighlighterColors.LINE_COMMENT.getDefaultAttributes());
+	public static final TextAttributesKey LINE_COMMENT = DefaultLanguageHighlighterColors.LINE_COMMENT;
 
-	public static final TextAttributesKey BLOCK_COMMENT = TextAttributesKey.createTextAttributesKey("NAPILE_BLOCK_COMMENT", SyntaxHighlighterColors.JAVA_BLOCK_COMMENT.getDefaultAttributes());
+	public static final TextAttributesKey BLOCK_COMMENT = DefaultLanguageHighlighterColors.BLOCk_COMMENT;
 
-	public static final TextAttributesKey DOC_COMMENT = TextAttributesKey.createTextAttributesKey("NAPILE_DOC_COMMENT", SyntaxHighlighterColors.DOC_COMMENT.getDefaultAttributes());
+	public static final TextAttributesKey DOC_COMMENT = DefaultLanguageHighlighterColors.DOC_COMMENT;
 
 	public static final TextAttributesKey DOC_COMMENT_TAG = TextAttributesKey.createTextAttributesKey("NAPILE_DOC_COMMENT_TAG", SyntaxHighlighterColors.DOC_COMMENT_TAG.getDefaultAttributes());
 
@@ -82,7 +82,7 @@ public class NapileHighlightingColors
 
 	public static final TextAttributesKey ABSTRACT_CLASS = TextAttributesKey.createTextAttributesKey("NAPILE_ABSTRACT_CLASS", CodeInsightColors.ABSTRACT_CLASS_NAME_ATTRIBUTES.getDefaultAttributes());
 
-	public static final TextAttributesKey ANNOTATION = TextAttributesKey.createTextAttributesKey("NAPILE_ANNOTATION", CodeInsightColors.ANNOTATION_NAME_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey ANNOTATION = DefaultLanguageHighlighterColors.METADATA;
 
 	public static final TextAttributesKey MUTABLE_VARIABLE = TextAttributesKey.createTextAttributesKey("NAPILE_MUTABLE_VARIABLE", new TextAttributes(null, null, Color.BLACK, EffectType.LINE_UNDERSCORE, 0));
 
@@ -116,7 +116,7 @@ public class NapileHighlightingColors
 
 	public static final TextAttributesKey AUTO_CASTED_VALUE = TextAttributesKey.createTextAttributesKey("NAPILE_AUTO_CASTED_VALUE", new TextAttributes(null, new Color(0xdbffdb), null, null, Font.PLAIN));
 
-	public static final TextAttributesKey INJECTION_BLOCK = TextAttributesKey.createTextAttributesKey("NAPILE_INJECTION_BLOCK", new TextAttributes(null, Gray._238, null, null, Font.PLAIN));
+	public static final TextAttributesKey INJECTION_BLOCK = DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR;
 
 	public static final TextAttributesKey LABEL = TextAttributesKey.createTextAttributesKey("NAPILE_LABEL", new TextAttributes(new Color(0x4a86e8), null, null, null, Font.PLAIN));
 
