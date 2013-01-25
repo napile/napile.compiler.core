@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="IDEA 12" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+  <configuration default="false" name="IDEA 12" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin" singleton="true">
     <module name="idea.napile-lang" />
     <option name="VM_PARAMETERS" value="-Xmx3022m -Xms1000m -XX:MaxPermSize=250m -Didea.is.internal=true -ea" />
     <option name="PROGRAM_PARAMETERS" value="" />

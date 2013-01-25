@@ -948,6 +948,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public void gen(NapileElement expr, TypeNode type)
 	{
 		StackValue value = gen(expr);
+		if(value == null)
+			return;
 		value.put(type, instructs);
 	}
 
