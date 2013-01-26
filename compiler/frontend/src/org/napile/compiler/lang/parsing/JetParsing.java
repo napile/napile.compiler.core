@@ -864,6 +864,9 @@ public class JetParsing extends AbstractJetParsing
 
 		expect(NapileTokens.IDENTIFIER, "Type parameter name expected", TokenSet.EMPTY);
 
+		while(at(NapileTokens.LPAR))
+			parseCallParameterList(true, TokenSet.EMPTY);
+
 		if(at(NapileTokens.COLON))
 		{
 			advance(); // COLON
@@ -878,9 +881,6 @@ public class JetParsing extends AbstractJetParsing
 					break;
 			}
 		}
-
-		while(at(NapileTokens.LPAR))
-			parseCallParameterList(true, TokenSet.EMPTY);
 
 		mark.done(TYPE_PARAMETER);
 	}
