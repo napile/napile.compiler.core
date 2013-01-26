@@ -92,7 +92,7 @@ public class JetParsing extends AbstractJetParsing
 
 	/*
 		 * [start] jetlFile
-		 *   : preamble toplevelObject[| import]* [eof]
+		 *   : preamble class* [eof]
 		 *   ;
 		 */
 	void parseFile()
@@ -101,29 +101,12 @@ public class JetParsing extends AbstractJetParsing
 
 		parsePreamble();
 
-		parseToplevelDeclarations(false);
+		while(!eof())
+			parseClass0();
 
 		fileMarker.done(NAPILE_FILE);
 	}
 
-
-	/*
-		 * toplevelObject[| import]*
-		 */
-	private void parseToplevelDeclarations(boolean insideBlock)
-	{
-		while(!eof() && (!insideBlock || !at(NapileTokens.RBRACE)))
-		{
-			if(at(NapileTokens.IMPORT_KEYWORD))
-			{
-				parseImportDirective();
-			}
-			else
-			{
-				parseClassLike();
-			}
-		}
-	}
 
 	/*
 		 *preamble
@@ -212,11 +195,6 @@ public class JetParsing extends AbstractJetParsing
 		advance(); // IMPORT_KEYWORD
 
 		PsiBuilder.Marker qualifiedName = mark();
-		if(at(NapileTokens.PACKAGE_KEYWORD))
-		{
-			advance(); // PACKAGE_KEYWORD
-			expect(NapileTokens.DOT, "Expecting '.'", TokenSet.create(NapileTokens.IDENTIFIER, NapileTokens.MUL, NapileTokens.SEMICOLON));
-		}
 
 		PsiBuilder.Marker reference = mark();
 		expect(NapileTokens.IDENTIFIER, "Expecting qualified name");
@@ -259,7 +237,6 @@ public class JetParsing extends AbstractJetParsing
 
 	private void parseImportDirectives()
 	{
-		// TODO: Duplicate with parsing imports in parseToplevelDeclarations
 		while(at(NapileTokens.IMPORT_KEYWORD))
 		{
 			parseImportDirective();
@@ -278,17 +255,11 @@ public class JetParsing extends AbstractJetParsing
 	}
 
 	/*
-		 * toplevelObject
-		 *   : namespace
+		 * parseClass0
 		 *   : class
-		 *   : extension
-		 *   : function
-		 *   : property
-		 *   : typedef
-		 *   : object
 		 *   ;
 		 */
-	private void parseClassLike()
+	private void parseClass0()
 	{
 		PsiBuilder.Marker decl = mark();
 
