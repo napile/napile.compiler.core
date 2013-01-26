@@ -311,7 +311,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return s;
 	}
 
-	protected void renderValueParameters(MethodDescriptor descriptor, StringBuilder builder)
+	protected void renderValueParameters(CallableMemberDescriptor descriptor, StringBuilder builder)
 	{
 		if(descriptor.getValueParameters().isEmpty())
 		{
@@ -584,6 +584,14 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				builder.append(renderKeyword(NapileTokens.REIFIED_KEYWORD)).append(" ");
 
 			renderName(descriptor, builder);
+
+			if(!descriptor.getConstructors().isEmpty())
+			{
+				for(ConstructorDescriptor constructorDescriptor : descriptor.getConstructors())
+				{
+					renderValueParameters(constructorDescriptor, builder);
+				}
+			}
 
 			if(!descriptor.getUpperBounds().isEmpty())
 			{

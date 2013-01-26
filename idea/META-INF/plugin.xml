@@ -20,7 +20,7 @@
 
 	<actions>
 		<action id="Napile.NewClass" class="org.napile.idea.plugin.actions.NewNapileFileAction">
-			<add-to-group group-id="NewGroup1" anchor="after" relative-to-action="NewClass"/>
+			<add-to-group group-id="NewGroup1" anchor="before" relative-to-action="NewClass"/>
 		</action>
 
 		<action id="ShowJetExpressionType" class="org.napile.idea.plugin.actions.ShowExpressionTypeAction" text="Show Expression Type">
