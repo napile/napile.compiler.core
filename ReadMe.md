@@ -1,4 +1,4 @@
-# Napile Programming Language
+# Overview
 
 Napile - programming language what based on Java/Kotlin logics, that running on VM prototype.
 
@@ -13,7 +13,7 @@ It have some special futures:
 
 # Developing
 
- * U need installed IntelliJ IDEA 12
+ * U need last build IntelliJ IDEA 12
  * Downloaded sources of
     * [napile.compiler](https://github.com/napile-lang/napile.compiler) - base source, compiler + IDEA plugin
     * [napile.classpath.draft](https://github.com/napile-lang/napile.classpath.draft) - draft classlib in napile
