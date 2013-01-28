@@ -18,10 +18,8 @@ package org.napile.compiler.codegen.processors;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +38,6 @@ import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.FrameMap;
-import org.napile.compiler.codegen.processors.codegen.stackValue.Local;
 import org.napile.compiler.codegen.processors.codegen.stackValue.MultiVariable;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.codegen.stackValue.WrappedVar;
@@ -89,8 +86,6 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 {
 	@NotNull
 	public final BindingTrace bindingTrace;
-	@NotNull
-	private final Map<NapileElement, Local> tempVariables = new HashMap<NapileElement, Local>();
 	@NotNull
 	public final InstructionAdapter instructs;
 	@NotNull
@@ -956,10 +951,6 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 	public StackValue gen(NapileElement element)
 	{
-		StackValue tempVar = tempVariables.get(element);
-		if(tempVar != null)
-			return tempVar;
-
 		if(element instanceof NapileExpression)
 		{
 			NapileExpression expression = (NapileExpression) element;
@@ -973,11 +964,6 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 	public StackValue genQualified(StackValue receiver, NapileElement selector)
 	{
-		if(tempVariables.containsKey(selector))
-		{
-			throw new IllegalStateException("Inconsistent state: expression saved to a temporary variable is a selector");
-		}
-
 		//if(!(selector instanceof NapileBlockExpression))
 		//	markLineNumber(selector);
 
