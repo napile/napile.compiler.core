@@ -23,7 +23,6 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileContainerNode;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileNamedDeclarationStub;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileVisitor;
@@ -87,16 +86,5 @@ public class NapileCallParameterAsVariableImpl extends NapileNamedDeclarationStu
 	{
 		ASTNode ast = getVarOrValNode();
 		return ast == null || ast.getElementType() == NapileTokens.VAR_KEYWORD;
-	}
-
-	@Override
-	public boolean isVarArg()
-	{
-		NapilePsiCallParameterAsVariableStub stub = getStub();
-		if(stub != null)
-			return stub.isVarArg();
-
-		NapileModifierList modifierList = getModifierList();
-		return modifierList != null && modifierList.getModifierNode(NapileTokens.VARARG_KEYWORD) != null;
 	}
 }

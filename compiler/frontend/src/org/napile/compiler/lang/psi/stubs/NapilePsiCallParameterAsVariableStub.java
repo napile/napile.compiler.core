@@ -30,33 +30,27 @@ import com.intellij.util.io.StringRef;
 public class NapilePsiCallParameterAsVariableStub extends StubBase<NapileCallParameterAsVariable> implements NamedStub<NapileCallParameterAsVariable>
 {
 	private final StringRef name;
-	private final boolean isVarArg;
+
 	private final StringRef typeText;
 	private final StringRef defaultValueText;
 
-	public NapilePsiCallParameterAsVariableStub(StubElement parent, StringRef name, boolean isVarArg, StringRef typeText, StringRef defaultValueText)
+	public NapilePsiCallParameterAsVariableStub(StubElement parent, StringRef name, StringRef typeText, StringRef defaultValueText)
 	{
 		super(parent, NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE);
 		this.name = name;
-		this.isVarArg = isVarArg;
 		this.typeText = typeText;
 		this.defaultValueText = defaultValueText;
 	}
 
-	public NapilePsiCallParameterAsVariableStub(StubElement parent, String name, boolean isVarArg, String typeText, String defaultValueText)
+	public NapilePsiCallParameterAsVariableStub(StubElement parent, String name, String typeText, String defaultValueText)
 	{
-		this(parent, StringRef.fromString(name), isVarArg, StringRef.fromString(typeText), StringRef.fromString(defaultValueText));
+		this(parent, StringRef.fromString(name), StringRef.fromString(typeText), StringRef.fromString(defaultValueText));
 	}
 
 	@Override
 	public String getName()
 	{
 		return StringRef.toString(name);
-	}
-
-	public boolean isVarArg()
-	{
-		return isVarArg;
 	}
 
 	@Nullable
@@ -77,11 +71,6 @@ public class NapilePsiCallParameterAsVariableStub extends StubBase<NapileCallPar
 		builder.append("NapilePsiMethodParameterStub[");
 
 		builder.append("var ");
-
-		if(isVarArg())
-		{
-			builder.append("vararg ");
-		}
 
 		builder.append("name=").append(getName());
 		builder.append(" typeText=").append(getTypeText());

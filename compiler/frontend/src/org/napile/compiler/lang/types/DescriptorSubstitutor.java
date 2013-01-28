@@ -67,7 +67,7 @@ public class DescriptorSubstitutor
 
 		for(TypeParameterDescriptor descriptor : typeParameters)
 		{
-			TypeParameterDescriptorImpl substituted = new TypeParameterDescriptorImpl(newContainingDeclaration, descriptor.getAnnotations(), descriptor.isReified(), descriptor.getName(), descriptor.getIndex());
+			TypeParameterDescriptorImpl substituted = new TypeParameterDescriptorImpl(newContainingDeclaration, descriptor.getAnnotations(), descriptor.getName(), descriptor.getIndex());
 			substituted.setInitialized();
 
 			mutableSubstitution.put(descriptor.getTypeConstructor(), substituted.getDefaultType());

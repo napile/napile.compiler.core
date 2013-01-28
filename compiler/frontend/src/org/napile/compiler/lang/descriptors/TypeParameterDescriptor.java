@@ -28,8 +28,6 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
  */
 public interface TypeParameterDescriptor extends ClassifierDescriptor
 {
-	boolean isReified();
-
 	//TODO [VISTALL] move it to getSupertypes()
 	@NotNull
 	@Deprecated

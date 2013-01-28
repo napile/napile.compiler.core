@@ -61,7 +61,7 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiC
 		NapileTypeReference typeReference = psi.getTypeReference();
 		NapileExpression defaultValue = psi.getDefaultValue();
 
-		return new NapilePsiCallParameterAsVariableStub(parentStub, psi.getName(), psi.isVarArg(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
+		return new NapilePsiCallParameterAsVariableStub(parentStub, psi.getName(), typeReference != null ? typeReference.getText() : null, defaultValue != null ? defaultValue.getText() : null);
 	}
 
 	@Override
@@ -74,7 +74,6 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiC
 	public void serialize(NapilePsiCallParameterAsVariableStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
-		dataStream.writeBoolean(stub.isVarArg());
 		dataStream.writeName(stub.getTypeText());
 		dataStream.writeName(stub.getDefaultValueText());
 	}
@@ -83,11 +82,10 @@ public class NapileParameterElementType extends NapileStubElementType<NapilePsiC
 	public NapilePsiCallParameterAsVariableStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		boolean isVarArg = dataStream.readBoolean();
 		StringRef typeText = dataStream.readName();
 		StringRef defaultValueText = dataStream.readName();
 
-		return new NapilePsiCallParameterAsVariableStub(parentStub, name, isVarArg, typeText, defaultValueText);
+		return new NapilePsiCallParameterAsVariableStub(parentStub, name, typeText, defaultValueText);
 	}
 
 	@Override

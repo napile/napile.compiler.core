@@ -506,11 +506,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				JetType actualTypeParameter = actualType.getArguments().get(i);
 				TypeParameterDescriptor subjectTypeParameterDescriptor = actualType.getConstructor().getParameters().get(i);
 
-				if(subjectTypeParameterDescriptor.isReified())
-				{
-					continue;
-				}
-
 				Collection<JetType> subst = typeSubstitutionMap.get(subjectTypeParameterDescriptor.getTypeConstructor());
 				for(JetType proj : subst)
 				{
@@ -545,11 +540,6 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			{
 				TypeParameterDescriptor typeParameter = targetType.getConstructor().getParameters().get(i);
 				JetType typeProjection = targetType.getArguments().get(i);
-
-				if(typeParameter.isReified())
-				{
-					continue;
-				}
 
 				// if parameter is mapped to nothing then it is erased
 				if(!clearSubstituted.contains(typeParameter.getDefaultType()))

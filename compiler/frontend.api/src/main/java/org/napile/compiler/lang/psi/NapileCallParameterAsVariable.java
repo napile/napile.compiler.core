@@ -32,6 +32,4 @@ public interface NapileCallParameterAsVariable extends NapileCallParameter, Napi
 	ASTNode getVarOrValNode();
 
 	boolean isMutable();
-
-	boolean isVarArg();
 }

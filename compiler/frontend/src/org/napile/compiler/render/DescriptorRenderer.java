@@ -580,9 +580,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 		protected void renderTypeParameter(TypeParameterDescriptor descriptor, StringBuilder builder)
 		{
-			if(descriptor.isReified())
-				builder.append(renderKeyword(NapileTokens.REIFIED_KEYWORD)).append(" ");
-
 			renderName(descriptor, builder);
 
 			if(!descriptor.getConstructors().isEmpty())

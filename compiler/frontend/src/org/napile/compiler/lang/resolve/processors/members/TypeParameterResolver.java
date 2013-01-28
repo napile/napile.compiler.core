@@ -47,7 +47,6 @@ import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
@@ -112,7 +111,7 @@ public class TypeParameterResolver
 
 	private TypeParameterDescriptorImpl resolveTypeParameter(DeclarationDescriptor containingDescriptor, WritableScope extensibleScope, NapileTypeParameter typeParameter, int index, BindingTrace trace)
 	{
-		TypeParameterDescriptorImpl typeParameterDescriptor = new TypeParameterDescriptorImpl(containingDescriptor, annotationResolver.bindAnnotations(extensibleScope, typeParameter, trace), typeParameter.hasModifier(NapileTokens.REIFIED_KEYWORD), NapilePsiUtil.safeName(typeParameter.getName()), index);
+		TypeParameterDescriptorImpl typeParameterDescriptor = new TypeParameterDescriptorImpl(containingDescriptor, annotationResolver.bindAnnotations(extensibleScope, typeParameter, trace), NapilePsiUtil.safeName(typeParameter.getName()), index);
 
 		extensibleScope.addTypeParameterDescriptor(typeParameterDescriptor);
 		trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);

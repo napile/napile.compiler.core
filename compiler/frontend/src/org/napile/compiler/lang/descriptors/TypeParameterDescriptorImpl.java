@@ -54,16 +54,14 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 	private final TypeConstructor typeConstructor;
 	private JetType defaultType;
 
-	private final boolean reified;
-
 	private boolean initialized = false;
 
-	public TypeParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, boolean reified, @NotNull Name name, int index)
+	public TypeParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, int index)
 	{
 		super(containingDeclaration, annotations, name);
 		this.index = index;
 		this.upperBounds = Sets.newLinkedHashSet();
-		this.reified = reified;
+
 		// TODO: Should we actually pass the annotations on to the type constructor?
 		this.typeConstructor = new TypeConstructorImpl(this, annotations, false, name.getName(), Collections.<TypeParameterDescriptor>emptyList(), upperBounds);
 	}
@@ -103,30 +101,19 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 		constructorDescriptor.setReturnType(getDefaultType());
 	}
 
-	@Override
-	public boolean isReified()
-	{
-		checkInitialized();
-		return reified;
-	}
-
 	public void addUpperBound(@NotNull JetType bound)
 	{
 		checkUninitialized();
-		doAddUpperBound(bound);
+		upperBounds.add(bound);
 	}
 
-	private void doAddUpperBound(JetType bound)
-	{
-		upperBounds.add(bound); // TODO : Duplicates?
-	}
-
+	@Deprecated
 	public void addDefaultUpperBound(JetScope jetScope)
 	{
 		checkUninitialized();
 
 		if(upperBounds.isEmpty())
-			doAddUpperBound(TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY, true));
+			upperBounds.add(TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY, true));
 	}
 
 	@Override
