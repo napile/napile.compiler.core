@@ -49,6 +49,8 @@ public interface CallParameterDescriptor extends VariableDescriptor, Annotated
 	 */
 	boolean declaresDefaultValue();
 
+	boolean isRef();
+
 	@Override
 	@NotNull
 	JetType getType();

@@ -30,14 +30,18 @@ import com.google.common.collect.Lists;
  */
 public class CallParameterAsVariableDescriptorImpl extends AbstractCallParameterDescriptorImpl
 {
-	public CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable)
+	private final boolean ref;
+
+	public CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable, boolean ref)
 	{
 		super(containingDeclaration, index, annotations, name, outType, modality, mutable);
+		this.ref = ref;
 	}
 
-	protected CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable)
+	protected CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable, boolean ref)
 	{
 		super(containingDeclaration, original, annotations, name, modality, mutable);
+		this.ref = ref;
 		if(outType != null)
 			setOutType(outType);
 	}
@@ -48,11 +52,17 @@ public class CallParameterAsVariableDescriptorImpl extends AbstractCallParameter
 		return visitor.visitCallParameterAsVariableDescriptor(this, data);
 	}
 
+	@Override
+	public boolean isRef()
+	{
+		return ref;
+	}
+
 	@NotNull
 	@Override
 	public CallParameterDescriptor copy(@NotNull DeclarationDescriptor newOwner)
 	{
-		CallParameterAsVariableDescriptorImpl c =  new CallParameterAsVariableDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), getType(), getModality(), isMutable());
+		CallParameterAsVariableDescriptorImpl c =  new CallParameterAsVariableDescriptorImpl(newOwner, index, Lists.newArrayList(getAnnotations()), getName(), getType(), getModality(), isMutable(), ref);
 		c.hasDefaultValue = hasDefaultValue;
 		return c;
 	}

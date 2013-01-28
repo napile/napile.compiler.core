@@ -169,7 +169,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		{
 			CallParameterDescriptor parameterDescriptor = expectedValueParameters.get(0);
 
-			AbstractCallParameterDescriptorImpl value = new CallParameterAsVariableDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), parameterDescriptor.getType(), Modality.FINAL, false);
+			AbstractCallParameterDescriptorImpl value = new CallParameterAsVariableDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), parameterDescriptor.getType(), Modality.FINAL, false, false);
 			value.setHasDefaultValue(parameterDescriptor.hasDefaultValue());
 
 			parameterDescriptors.add(value);

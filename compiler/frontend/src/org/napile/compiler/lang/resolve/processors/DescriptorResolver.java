@@ -291,7 +291,7 @@ public class DescriptorResolver
 	@NotNull
 	public CallParameterDescriptor resolveCallParameterDescriptor(JetScope scope, DeclarationDescriptor declarationDescriptor, NapileCallParameterAsVariable parameter, int index, JetType type, BindingTrace trace)
 	{
-		AbstractCallParameterDescriptorImpl descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), parameter.isMutable());
+		AbstractCallParameterDescriptorImpl descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), parameter.isMutable(), parameter.hasModifier(NapileTokens.REF_KEYWORD));
 
 		trace.record(BindingContext.VALUE_PARAMETER, parameter, descriptor);
 
@@ -326,7 +326,7 @@ public class DescriptorResolver
 
 		AbstractCallParameterDescriptorImpl descriptor = null;
 		if(variableDescriptor == null)
-			descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), false);
+			descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), false, false);
 		else
 			descriptor = new CallParameterAsReferenceDescriptorImpl(declarationDescriptor, index, Collections.<AnnotationDescriptor>emptyList(), ref.getReferencedNameAsName(), type, variableDescriptor);
 

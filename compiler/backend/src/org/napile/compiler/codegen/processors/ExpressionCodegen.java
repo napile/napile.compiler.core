@@ -16,6 +16,8 @@
 
 package org.napile.compiler.codegen.processors;
 
+import gnu.trove.TIntArrayList;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -104,6 +106,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	private final LoopCodegenVisitor loopCodegenVisitor = new LoopCodegenVisitor(this);
 	private final TryThrowCodegenVisitor tryThrowCodegenVisitor = new TryThrowCodegenVisitor(this);
 
+	private TIntArrayList refParameters = null;
+
 	public ExpressionCodegen(@NotNull BindingTrace b, @NotNull TypeNode r, @NotNull ClassNode c)
 	{
 		bindingTrace = b;
@@ -134,10 +138,14 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				instructs.visitLocalVariable("this");
 			}
 
+			refParameters = new TIntArrayList();
 			for(CallParameterDescriptor p : d.getValueParameters())
 			{
 				int index = frameMap.enter(p);
 				instructs.visitLocalVariable(p.getName().getName());
+
+				if(p.isRef())
+					refParameters.add(index);
 
 				if(context.wrapVariableIfNeed(p))
 				{
@@ -361,23 +369,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 	public StackValue visitReturnExpression(NapileReturnExpression expression, StackValue receiver)
 	{
 		final NapileExpression returnedExpression = expression.getReturnedExpression();
-		if(returnedExpression != null)
-		{
-			gen(returnedExpression, returnType);
 
-			doFinallyOnReturn();
+		visitReturn(returnedExpression);
 
-			instructs.returnValues(1);
-		}
-		else
-		{
-			if(returnType.typeConstructorNode instanceof ThisTypeNode)
-				instructs.localGet(0);
-			else
-				instructs.putNull();
-
-			instructs.returnValues(1);
-		}
 		return StackValue.none();
 	}
 
@@ -709,7 +703,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		return StackValue.onStack(callReturnType);
 	}
 
-	private void doFinallyOnReturn()
+	private void putFinallyBlocks()
 	{
 		//TODO [VISTALL] make it
 	}
@@ -748,6 +742,41 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
 
 		callableMethod.invoke(instructs);
+
+		setRefs(resolvedCall);
+	}
+
+	private void setRefs(@NotNull ResolvedCall<? extends CallableDescriptor> resolvedCall)
+	{
+		CallableDescriptor fd = resolvedCall.getResultingDescriptor();
+		List<ResolvedValueArgument> valueArguments = resolvedCall.getValueArgumentsByIndex();
+
+		for(CallParameterDescriptor valueParameterDescriptor : fd.getValueParameters())
+		{
+			if(!valueParameterDescriptor.isRef())
+				continue;
+
+			ResolvedValueArgument resolvedValueArgument = valueArguments.get(valueParameterDescriptor.getIndex());
+			if(resolvedValueArgument instanceof ExpressionValueArgument)
+			{
+				ExpressionValueArgument valueArgument = (ExpressionValueArgument) resolvedValueArgument;
+
+				NapileExpression expression = valueArgument.getValueArgument().getArgumentExpression();
+
+				if(expression instanceof NapileSimpleNameExpression)
+				{
+					DeclarationDescriptor referenceDescriptor = bindingTrace.get(BindingContext.REFERENCE_TARGET, (NapileSimpleNameExpression) expression);
+					if(referenceDescriptor instanceof LocalVariableDescriptor)
+					{
+						instructs.localPut(frameMap.getIndex(referenceDescriptor));
+						continue;
+					}
+				}
+
+			}
+
+			instructs.pop();
+		}
 	}
 
 	private void genThisAndReceiverFromResolvedCall(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, CallableMethod callableMethod)
@@ -998,17 +1027,45 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		{}
 		else if(expr instanceof NapileBlockExpression && (expr.getParent() instanceof NapileNamedMethodOrMacro || expr.getParent() instanceof NapileConstructor))
 		{
-			if(returnType.typeConstructorNode instanceof ThisTypeNode)
-				instructs.localGet(0);
-			else
-				instructs.putNull();
-			instructs.returnValues(1);
+			visitReturn(null);
 		}
 		else
 		{
 			lastValue.put(returnType, instructs);
 			instructs.returnValues(1);
 		}
+	}
+
+	public void visitReturn(@Nullable NapileExpression exp)
+	{
+		putFinallyBlocks();
+
+		int size = putRefVariables();
+
+		if(exp != null)
+		{
+			gen(exp, returnType);
+		}
+		else
+		{
+			if(returnType.typeConstructorNode instanceof ThisTypeNode)
+				instructs.localGet(0);
+			else
+				instructs.putNull();
+		}
+
+		instructs.returnValues(size);
+	}
+
+	public int putRefVariables()
+	{
+		if(refParameters == null)
+			throw new IllegalArgumentException("Ref parameters is null but is require return");
+		if(refParameters.isEmpty())
+			return 1;
+		for(int i : refParameters.toNativeArray())
+			instructs.localGet(i);
+		return refParameters.size() + 1;
 	}
 
 	@NotNull

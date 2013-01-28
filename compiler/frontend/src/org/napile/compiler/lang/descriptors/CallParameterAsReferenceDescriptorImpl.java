@@ -57,6 +57,12 @@ public class CallParameterAsReferenceDescriptorImpl extends AbstractCallParamete
 		return referenceProperty;
 	}
 
+	@Override
+	public boolean isRef()
+	{
+		return false;
+	}
+
 	@NotNull
 	@Override
 	public CallParameterDescriptor copy(DeclarationDescriptor newOwner)

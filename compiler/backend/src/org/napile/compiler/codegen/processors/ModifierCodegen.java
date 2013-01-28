@@ -37,7 +37,11 @@ public class ModifierCodegen
 	@NotNull
 	public static Modifier[] gen(@NotNull CallParameterDescriptor parameterDescriptor)
 	{
-		return gen((VariableDescriptor) parameterDescriptor);
+		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((VariableDescriptor) parameterDescriptor)));
+		if(parameterDescriptor.isRef())
+			list.add(Modifier.REF);
+
+		return list.isEmpty() ? Modifier.EMPTY : list.toArray(new Modifier[list.size()]);
 	}
 
 	@NotNull

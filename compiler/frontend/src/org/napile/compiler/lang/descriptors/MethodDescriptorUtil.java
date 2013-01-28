@@ -97,7 +97,7 @@ public class MethodDescriptorUtil
 			JetType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType(), newOwner);
 			if(substitutedType == null)
 				return null;
-			result.add(new CallParameterAsVariableDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.getName(), substitutedType, unsubstitutedValueParameter.getModality(), false));
+			result.add(new CallParameterAsVariableDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.getName(), substitutedType, unsubstitutedValueParameter.getModality(), false, false));
 		}
 		return result;
 	}
@@ -154,7 +154,7 @@ public class MethodDescriptorUtil
 		int i = 0;
 		for(Map.Entry<Name, JetType> entry : parameterTypes.entrySet())
 		{
-			CallParameterAsVariableDescriptorImpl valueParameterDescriptor = new CallParameterAsVariableDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), entry.getKey(), entry.getValue(), Modality.FINAL, false);
+			CallParameterAsVariableDescriptorImpl valueParameterDescriptor = new CallParameterAsVariableDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), entry.getKey(), entry.getValue(), Modality.FINAL, false, false);
 			valueParameters.add(valueParameterDescriptor);
 
 			i++;
