@@ -16,11 +16,15 @@
 
 package org.napile.compiler.codegen.processors.visitors;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
+import org.napile.asm.util.IntIntPair;
 import org.napile.compiler.codegen.processors.AsmNodeUtil;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.TypeTransformer;
@@ -82,7 +86,7 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 
 		adapter.returnValues(1);
 
-		gen.instructs.putAnonym(0, new CodeInfo(adapter));
+		gen.instructs.putAnonym(Collections.<IntIntPair>emptyList(), new CodeInfo(adapter));
 
 		return StackValue.onStack(TypeTransformer.toAsmType(gen.bindingTrace, jetType, gen.classNode));
 	}
@@ -127,16 +131,19 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 		for(VariableDescriptor v : vars)
 		{
 			expCodegen.frameMap.enter(v);
+			adapter.visitLocalVariable(v.getName().getName());
 		}
 
 		expCodegen.returnExpression(bodyExpression, methodDescriptor.isMacro());
 
+		List<IntIntPair> pairs = new ArrayList<IntIntPair>(vars.size());
+
 		for(VariableDescriptor v : vars)
 		{
-			gen.instructs.localGet(gen.frameMap.getIndex(v));
+			pairs.add(new IntIntPair(gen.frameMap.getIndex(v), expCodegen.frameMap.getIndex(v)));
 		}
 
-		gen.instructs.putAnonym(vars.size(), new CodeInfo(adapter));
+		gen.instructs.putAnonym(pairs, new CodeInfo(adapter));
 
 		JetType jetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 
