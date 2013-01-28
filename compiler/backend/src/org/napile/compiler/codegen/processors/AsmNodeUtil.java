@@ -21,8 +21,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.VariableRef;
@@ -37,12 +40,22 @@ import org.napile.compiler.lang.resolve.BindingTrace;
  * @author VISTALL
  * @date 22:10/07.09.12
  */
-public class NodeRefUtil
+public class AsmNodeUtil
 {
 	//public static MethodRef constructorRef(@NotNull FqName fqName)
 	//{
 	//	return new MethodRef(fqName.child(Name.identifier("this")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new ClassTypeNode(fqName)));
 	//}
+
+	public static MethodParameterNode parameterNode(String name, TypeNode typeNode)
+	{
+		return parameterNode(Modifier.EMPTY, name, typeNode);
+	}
+
+	public static MethodParameterNode parameterNode(Modifier[] modifiers, String name, TypeNode typeNode)
+	{
+		return new MethodParameterNode(modifiers, Name.identifier(name), typeNode);
+	}
 
 	public static VariableRef ref(@NotNull ClassNode classNode, @NotNull VariableNode variableNode)
 	{
@@ -64,9 +77,9 @@ public class NodeRefUtil
 	{
 		descriptor = CallTransformer.unwrapFakeOverride(descriptor);
 
-		List<TypeNode> typeNodes = new ArrayList<TypeNode>(descriptor.getValueParameters().size());
+		List<MethodParameterNode> typeNodes = new ArrayList<MethodParameterNode>(descriptor.getValueParameters().size());
 		for(CallParameterDescriptor p : descriptor.getValueParameters())
-			typeNodes.add(TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode));
+			typeNodes.add(new MethodParameterNode(ModifierCodegen.gen(p), p.getName(), TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode)));
 
 		return new MethodRef(fqName, typeNodes, Collections.<TypeNode>emptyList(), TypeTransformer.toAsmType(bindingTrace, descriptor.getReturnType(), classNode));
 	}

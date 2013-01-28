@@ -13,6 +13,8 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
  */
 public interface TypeConstants
 {
+	TypeNode ANY_NULLABLE = new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY));
+
 	TypeNode EXCEPTION = new TypeNode(false, new ClassTypeNode(NapileLangPackage.EXCEPTION));
 
 	TypeNode STRING_BUILDER = new TypeNode(false, new ClassTypeNode(NapileLangPackage.STRING_BUILDER));
@@ -21,7 +23,7 @@ public interface TypeConstants
 
 	TypeNode COMPARE_RESULT = new TypeNode(false, new ClassTypeNode(NapileConditionPackage.COMPARE_RESULT));
 
-	TypeNode NULLABLE_STRING = new TypeNode(true, new ClassTypeNode(NapileLangPackage.STRING));
+	TypeNode STRING_NULLABLE = new TypeNode(true, new ClassTypeNode(NapileLangPackage.STRING));
 
 	TypeNode ITERATOR__ANY__ = new TypeNode(false, new ClassTypeNode(NapileCollectionPackage.ITERATOR)).visitArgument(AsmConstants.ANY_TYPE);
 }

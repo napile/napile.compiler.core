@@ -22,13 +22,14 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileCollectionPackage;
 import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
+import org.napile.compiler.codegen.processors.AsmNodeUtil;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
-import org.napile.compiler.codegen.processors.NodeRefUtil;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -64,18 +65,18 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		// put Iterator instance to stack
 		MethodDescriptor methodDescriptor = gen.bindingTrace.safeGet(BindingContext.LOOP_RANGE_ITERATOR, expression.getLoopRange());
 		gen.gen(expression.getLoopRange(), TypeConstants.ITERATOR__ANY__);
-		instructions.invokeVirtual(NodeRefUtil.ref(methodDescriptor, gen.bindingTrace, gen.classNode), false);
+		instructions.invokeVirtual(AsmNodeUtil.ref(methodDescriptor, gen.bindingTrace, gen.classNode), false);
 		instructions.localPut(loopIteratorIndex);
 
 		firstPos = instructions.size();
 
 		instructions.localGet(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("hasNext")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
+		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("hasNext")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 		instructions.putTrue();
 		jumpIfSlot = instructions.reserve();
 
 		instructions.localGet(loopIteratorIndex);
-		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("next")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), false);
+		instructions.invokeVirtual(new MethodRef(NapileCollectionPackage.ITERATOR.child(Name.identifier("next")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), false);
 		instructions.localPut(loopParameterIndex);
 	}
 

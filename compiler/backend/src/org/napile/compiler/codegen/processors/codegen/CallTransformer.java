@@ -22,10 +22,12 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.FqNameGenerator;
+import org.napile.compiler.codegen.processors.ModifierCodegen;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -118,14 +120,14 @@ public class CallTransformer
 		MethodDescriptor originalMethodDescriptor = unwrapFakeOverride(methodDescriptor).getOriginal();
 
 		// it used for save in bytecode/checks - for example, original 'E'(type parameter) and caller is 'napile.lang.Int'
-		List<TypeNode> parametersToByteCode = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());
+		List<MethodParameterNode> parametersToByteCode = new ArrayList<MethodParameterNode>(originalMethodDescriptor.getValueParameters().size());
 		List<TypeNode> parametersToChecks = new ArrayList<TypeNode>(originalMethodDescriptor.getValueParameters().size());
 
 		for(CallParameterDescriptor p : methodDescriptor.getValueParameters())
 			parametersToChecks.add(TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode));
 
 		for(CallParameterDescriptor p : originalMethodDescriptor.getValueParameters())
-			parametersToByteCode.add(TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode));
+			parametersToByteCode.add(new MethodParameterNode(ModifierCodegen.gen(p), p.getName(), TypeTransformer.toAsmType(bindingTrace, p.getType(), classNode)));
 
 		return new CallableMethod(new MethodRef(fqName, parametersToByteCode, typeArguments, TypeTransformer.toAsmType(bindingTrace, originalMethodDescriptor.getReturnType(), classNode)), type, TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode), parametersToChecks, methodDescriptor.isMacro(), nullable);
 	}

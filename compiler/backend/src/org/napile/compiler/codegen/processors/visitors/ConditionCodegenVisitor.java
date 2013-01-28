@@ -23,6 +23,7 @@ import java.util.List;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
@@ -64,7 +65,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 		gen.instructs.is(TypeTransformer.toAsmType(gen.bindingTrace, rightType, gen.classNode));
 
 		if(expression.isNegated())
-			gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
+			gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}

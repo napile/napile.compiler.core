@@ -22,10 +22,12 @@ import java.util.Collections;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
-import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
+import org.napile.compiler.codegen.processors.AsmNodeUtil;
+import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 
 /**
  * @author VISTALL
@@ -33,10 +35,8 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
  */
 public class MultiVariable extends StackValue
 {
-	private static final TypeNode ANY_NULLABLE = new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY));
-
-	public static final MethodRef SET_VALUE = new MethodRef(NapileLangPackage.MULTI.child(Name.identifier("set")), Arrays.asList(AsmConstants.INT_TYPE, ANY_NULLABLE), Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE);
-	public static final MethodRef GET_VALUE = new MethodRef(NapileLangPackage.MULTI.child(Name.identifier("get")), Collections.<TypeNode>singletonList(AsmConstants.INT_TYPE), Collections.<TypeNode>emptyList(), ANY_NULLABLE);
+	public static final MethodRef SET_VALUE = new MethodRef(NapileLangPackage.MULTI.child(Name.identifier("set")), Arrays.asList(AsmNodeUtil.parameterNode("index", AsmConstants.INT_TYPE), AsmNodeUtil.parameterNode("object", TypeConstants.ANY_NULLABLE)), Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE);
+	public static final MethodRef GET_VALUE = new MethodRef(NapileLangPackage.MULTI.child(Name.identifier("get")), Collections.<MethodParameterNode>singletonList(AsmNodeUtil.parameterNode("index", AsmConstants.INT_TYPE)), Collections.<TypeNode>emptyList(), TypeConstants.ANY_NULLABLE);
 
 	private final int index;
 

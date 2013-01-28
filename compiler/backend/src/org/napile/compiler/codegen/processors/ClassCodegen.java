@@ -163,7 +163,7 @@ public class ClassCodegen extends NapileVisitorVoid
 			else
 			{
 				adapter.localGet(0);
-				adapter.returnVal();
+				adapter.returnValues(1);
 			}
 
 			constructorNode.code = new CodeInfo(adapter);
@@ -231,7 +231,7 @@ public class ClassCodegen extends NapileVisitorVoid
 		MethodCodegen.genSuperCalls(constructorAdapter, value, bindingTrace, classNode);
 
 		constructorAdapter.localGet(0);
-		constructorAdapter.returnVal();
+		constructorAdapter.returnValues(1);
 
 		enumClassConstructorNode.code = new CodeInfo(constructorAdapter);
 

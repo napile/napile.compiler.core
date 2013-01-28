@@ -83,17 +83,17 @@ public class VariableCodegen
 		if(variableDescriptor.isStatic())
 		{
 			adapter.localGet(0);
-			adapter.putToStaticVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
+			adapter.putToStaticVar(AsmNodeUtil.ref(variableDescriptor, bindingTrace, classNode));
 			adapter.putNull();
-			adapter.returnVal();
+			adapter.returnValues(1);
 		}
 		else
 		{
 			adapter.localGet(0);
 			adapter.localGet(1);
-			adapter.putToVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
+			adapter.putToVar(AsmNodeUtil.ref(variableDescriptor, bindingTrace, classNode));
 			adapter.putNull();
-			adapter.returnVal();
+			adapter.returnValues(1);
 		}
 
 		setterMethodNode.code = new CodeInfo(adapter);
@@ -151,11 +151,11 @@ public class VariableCodegen
 
 			varStackValue.put(getterMethodNode.returnType, adapter);
 
-			adapter.returnVal();
+			adapter.returnValues(1);
 
 			adapter.replace(reservedInstruction).jumpIf(adapter.size());
 
-			adapter.returnVal();
+			adapter.returnValues(1);
 
 			getterMethodNode.code = new CodeInfo(adapter);
 			classNode.addMember(getterMethodNode);
@@ -168,14 +168,14 @@ public class VariableCodegen
 
 			if(variableDescriptor.isStatic())
 			{
-				adapter.getStaticVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
-				adapter.returnVal();
+				adapter.getStaticVar(AsmNodeUtil.ref(variableDescriptor, bindingTrace, classNode));
+				adapter.returnValues(1);
 			}
 			else
 			{
 				adapter.localGet(0);
-				adapter.getVar(NodeRefUtil.ref(variableDescriptor, bindingTrace, classNode));
-				adapter.returnVal();
+				adapter.getVar(AsmNodeUtil.ref(variableDescriptor, bindingTrace, classNode));
+				adapter.returnValues(1);
 			}
 
 			getterMethodNode.code = new CodeInfo(adapter);

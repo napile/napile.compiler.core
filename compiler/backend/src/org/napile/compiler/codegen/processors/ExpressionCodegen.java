@@ -29,6 +29,7 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
@@ -371,7 +372,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 
 			doFinallyOnReturn();
 
-			instructs.returnVal();
+			instructs.returnValues(1);
 		}
 		else
 		{
@@ -380,7 +381,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 			else
 				instructs.putNull();
 
-			instructs.returnVal();
+			instructs.returnValues(1);
 		}
 		return StackValue.none();
 	}
@@ -616,7 +617,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 		instructs.newObject(typeNode, Collections.singletonList(AsmConstants.INT_TYPE));
 
 		// set ref need return 'this' not real type
-		MethodRef setRef = new MethodRef(NapileLangPackage.ARRAY.child(Name.identifier("set")), Arrays.<TypeNode>asList(AsmConstants.INT_TYPE, new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E")))), Collections.<TypeNode>emptyList(), typeNode);
+		MethodRef setRef = new MethodRef(NapileLangPackage.ARRAY.child(Name.identifier("set")), Arrays.<MethodParameterNode>asList(AsmNodeUtil.parameterNode("index", AsmConstants.INT_TYPE), AsmNodeUtil.parameterNode("element", new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E"))))), Collections.<TypeNode>emptyList(), typeNode);
 		for(int i = 0; i < expressions.length; i++)
 		{
 			NapileExpression expression = expressions[i];
@@ -1015,12 +1016,12 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue>
 				instructs.localGet(0);
 			else
 				instructs.putNull();
-			instructs.returnVal();
+			instructs.returnValues(1);
 		}
 		else
 		{
 			lastValue.put(returnType, instructs);
-			instructs.returnVal();
+			instructs.returnValues(1);
 		}
 	}
 

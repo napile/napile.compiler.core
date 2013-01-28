@@ -21,8 +21,8 @@ import java.util.Set;
 
 import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
+import org.napile.compiler.codegen.processors.AsmNodeUtil;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
-import org.napile.compiler.codegen.processors.NodeRefUtil;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
@@ -76,11 +76,11 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 		}
 
 		if(target.isStatic())
-			adapter.invokeStatic(NodeRefUtil.ref(target, gen.bindingTrace, gen.classNode), false);
+			adapter.invokeStatic(AsmNodeUtil.ref(target, gen.bindingTrace, gen.classNode), false);
 		else
-			adapter.invokeVirtual(NodeRefUtil.ref(target, gen.bindingTrace, gen.classNode), false);
+			adapter.invokeVirtual(AsmNodeUtil.ref(target, gen.bindingTrace, gen.classNode), false);
 
-		adapter.returnVal();
+		adapter.returnValues(1);
 
 		gen.instructs.putAnonym(0, new CodeInfo(adapter));
 

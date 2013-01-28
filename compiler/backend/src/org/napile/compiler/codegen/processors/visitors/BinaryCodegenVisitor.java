@@ -16,7 +16,6 @@
 
 package org.napile.compiler.codegen.processors.visitors;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,11 +24,13 @@ import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
+import org.napile.compiler.codegen.processors.AsmNodeUtil;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
@@ -60,7 +61,7 @@ import com.intellij.psi.tree.IElementType;
  */
 public class BinaryCodegenVisitor extends CodegenVisitor
 {
-	public static final MethodRef ANY_EQUALS = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("equals")), Arrays.asList(new TypeNode(true, new ClassTypeNode(NapileLangPackage.ANY))), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE);
+	public static final MethodRef ANY_EQUALS = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("equals")), Collections.<MethodParameterNode>singletonList(AsmNodeUtil.parameterNode("object", TypeConstants.ANY_NULLABLE)), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE);
 	private static final SimpleVariableAccessor GREATER = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("GREATER")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
 	private static final SimpleVariableAccessor EQUAL = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("EQUAL")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
 	private static final SimpleVariableAccessor LOWER = new SimpleVariableAccessor(NapileConditionPackage.COMPARE_RESULT.child(Name.identifier("LOWER")), TypeConstants.COMPARE_RESULT, CallableMethod.CallType.STATIC);
@@ -91,7 +92,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 			gen.instructs.putFalse();
 			ReservedInstruction ifReserve = gen.instructs.reserve();
 			gen.instructs.putNull();
-			gen.instructs.newObject(new TypeNode(false, new ClassTypeNode(new FqName("napile.lang.ClassCastException"))), Collections.singletonList(TypeConstants.NULLABLE_STRING));
+			gen.instructs.newObject(new TypeNode(false, new ClassTypeNode(new FqName("napile.lang.ClassCastException"))), Collections.singletonList(TypeConstants.STRING_NULLABLE));
 			gen.instructs.throwVal();
 			gen.instructs.replace(ifReserve).jumpIf(gen.instructs.size());
 		}
@@ -242,7 +243,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 			ReservedInstruction jump = instructs.reserve();
 
 			instructs.newString("'" + baseExpression.getText() + "' cant be null");
-			instructs.newObject(TypeConstants.NULL_POINTER_EXCEPTION, Collections.<TypeNode>singletonList(TypeConstants.NULLABLE_STRING));
+			instructs.newObject(TypeConstants.NULL_POINTER_EXCEPTION, Collections.<TypeNode>singletonList(TypeConstants.STRING_NULLABLE));
 			instructs.throwVal();
 
 			instructs.replace(jump).jumpIf(instructs.size());
@@ -267,7 +268,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 		ClassTypeNode leftClassType = (ClassTypeNode) leftType.typeConstructorNode;
 		//ClassTypeNode rightClassType = (ClassTypeNode) rightType.typeConstructorNode;
 
-		gen.instructs.invokeVirtual(new MethodRef(leftClassType.className.child(OperatorConventions.COMPARE_TO), Collections.singletonList(rightType), Collections.<TypeNode>emptyList(), TypeConstants.COMPARE_RESULT), false);
+		gen.instructs.invokeVirtual(new MethodRef(leftClassType.className.child(OperatorConventions.COMPARE_TO), Collections.singletonList(AsmNodeUtil.parameterNode("object", rightType)), Collections.<TypeNode>emptyList(), TypeConstants.COMPARE_RESULT), false);
 
 		if(opToken == NapileTokens.GT)
 			gtOrLt(GREATER, gen.instructs);
@@ -366,7 +367,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 		// revert bool
 		if(opToken == NapileTokens.EXCLEQ)
-			gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
+			gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
