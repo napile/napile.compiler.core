@@ -41,20 +41,10 @@ import com.intellij.psi.tree.IElementType;
         yybegin(state);
     }
 
-    private void popState() {
+    private void popState()
+    {
         State state = states.pop();
         yybegin(state.state);
-    }
-
-    private IElementType commentStateToTokenType(int state) {
-        switch (state) {
-            case BLOCK_COMMENT:
-                return NapileTokens.BLOCK_COMMENT;
-            case DOC_COMMENT:
-                return NapileTokens.DOC_COMMENT;
-            default:
-                throw new IllegalArgumentException("Unexpected state: " + state);
-        }
     }
 %}
 
@@ -65,7 +55,6 @@ import com.intellij.psi.tree.IElementType;
 %eof}
 
 %xstate STRING BLOCK_COMMENT DOC_COMMENT INJECTION INJECTION_BLOCK
-%state LONG_TEMPLATE_ENTRY
 
 DIGIT=[0-9]
 HEX_DIGIT=[0-9A-Fa-f]
@@ -88,7 +77,6 @@ FLOATING_POINT_LITERAL2="."({DIGIT})+({EXPONENT_PART})?
 FLOATING_POINT_LITERAL3=({DIGIT})+({EXPONENT_PART})
 FLOATING_POINT_LITERAL4=({DIGIT})+
 EXPONENT_PART=[Ee]["+""-"]?({DIGIT})*
-HEX_FLOAT_LITERAL={HEX_SIGNIFICAND}{BINARY_EXPONENT}[Ff]
 HEX_DOUBLE_LITERAL={HEX_SIGNIFICAND}{BINARY_EXPONENT}?
 BINARY_EXPONENT=[Pp][+-]?{DIGIT}+
 HEX_SIGNIFICAND={HEX_INTEGER_LITERAL}|0[Xx]{HEX_DIGIT}*\.{HEX_DIGIT}+
@@ -105,7 +93,8 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
     return NapileTokens.BLOCK_COMMENT;
 }
 
-"/**" {
+"/~"
+{
     pushState(DOC_COMMENT);
     commentDepth = 0;
     commentStart = getTokenStart();
@@ -117,7 +106,27 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
     commentStart = getTokenStart();
 }
 
-<BLOCK_COMMENT, DOC_COMMENT> {
+<DOC_COMMENT>
+{
+    <<EOF>>
+    {
+        popState();
+        zzStartRead = commentStart;
+        return NapileTokens.DOC_COMMENT;
+    }
+
+    "~/"
+    {
+		popState();
+		zzStartRead = commentStart;
+		return NapileTokens.DOC_COMMENT;
+    }
+
+    .|{WHITE_SPACE_CHAR} {}
+}
+
+<BLOCK_COMMENT>
+{
     "/*" {
          commentDepth++;
     }
@@ -126,7 +135,7 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
         int state = yystate();
         popState();
         zzStartRead = commentStart;
-        return commentStateToTokenType(state);
+        return NapileTokens.BLOCK_COMMENT;
     }
 
     "*/" {
@@ -137,7 +146,7 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
              int state = yystate();
              popState();
              zzStartRead = commentStart;
-             return commentStateToTokenType(state);
+             return NapileTokens.BLOCK_COMMENT;
         }
     }
 

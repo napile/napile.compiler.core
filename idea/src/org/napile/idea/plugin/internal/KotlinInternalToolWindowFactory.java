@@ -17,6 +17,7 @@
 package org.napile.idea.plugin.internal;
 
 import org.napile.idea.plugin.internal.codewindow.BytecodeToolwindow;
+import org.napile.idea.plugin.internal.codewindow.DocPreviewToolwindow;
 import org.napile.idea.plugin.internal.codewindow.TextBytecodeToolwindow;
 import org.napile.idea.plugin.internal.resolvewindow.ResolveToolwindow;
 import com.intellij.openapi.project.Project;
@@ -39,5 +40,6 @@ public class KotlinInternalToolWindowFactory implements ToolWindowFactory
 		contentManager.addContent(contentFactory.createContent(new TextBytecodeToolwindow(project), "Text", false));
 		contentManager.addContent(contentFactory.createContent(new BytecodeToolwindow(project), "Bytecode", false));
 		contentManager.addContent(contentFactory.createContent(new ResolveToolwindow(project), "Resolve", false));
+		contentManager.addContent(contentFactory.createContent(new DocPreviewToolwindow(project), "Doc preview", false));
 	}
 }

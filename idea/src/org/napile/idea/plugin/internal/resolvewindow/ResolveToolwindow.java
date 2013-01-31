@@ -45,6 +45,9 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo;
@@ -55,12 +58,9 @@ import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
 import org.napile.compiler.lang.resolve.calls.inference.BoundsOwner;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.WritableSlice;
-import org.napile.idea.plugin.internal.codewindow.BytecodeToolwindow;
+import org.napile.idea.plugin.internal.EditorLocation;
 import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Result;
@@ -94,7 +94,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 			"*/";
 	private final Editor myEditor;
 	private final Alarm myUpdateAlarm;
-	private BytecodeToolwindow.Location myCurrentLocation;
+	private EditorLocation myCurrentLocation;
 	private final Project myProject;
 
 
@@ -111,7 +111,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 			public void run()
 			{
 				myUpdateAlarm.addRequest(this, UPDATE_DELAY);
-				BytecodeToolwindow.Location location = BytecodeToolwindow.Location.fromEditor(FileEditorManager.getInstance(myProject).getSelectedTextEditor());
+				EditorLocation location = EditorLocation.fromEditor(FileEditorManager.getInstance(myProject).getSelectedTextEditor());
 				if(!Comparing.equal(location, myCurrentLocation))
 				{
 					render(location, myCurrentLocation);
@@ -121,7 +121,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 		}, UPDATE_DELAY);
 	}
 
-	private void render(BytecodeToolwindow.Location location, BytecodeToolwindow.Location oldLocation)
+	private void render(EditorLocation location, EditorLocation oldLocation)
 	{
 		Editor editor = location.getEditor();
 		if(editor == null)

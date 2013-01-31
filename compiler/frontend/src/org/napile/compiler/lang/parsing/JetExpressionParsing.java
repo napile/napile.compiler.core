@@ -650,7 +650,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			if(valPos >= 0)
 			{
 				PsiBuilder.Marker property = mark();
-				parsing.parseModifierList();
+				parsing.parseModifierList(false);
 				parsing.parseVariableOrValue(false);
 				property.done(VARIABLE);
 			}
@@ -1168,7 +1168,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 				PsiBuilder.Marker parameter = mark();
 				int parameterNamePos = matchTokenStreamPredicate(new LastBefore(new At(NapileTokens.IDENTIFIER), new AtSet(NapileTokens.COMMA, NapileTokens.RPAR, NapileTokens.COLON, NapileTokens.ARROW)));
-				createTruncatedBuilder(parameterNamePos).parseModifierList();
+				createTruncatedBuilder(parameterNamePos).parseModifierList(false);
 
 				expect(NapileTokens.IDENTIFIER, "Expecting parameter declaration");
 
@@ -1335,7 +1335,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker parameter = mark();
 
-		parsing.parseModifierList();
+		parsing.parseModifierList(false);
 
 		if(atSet(NapileTokens.VARIABLE_LIKE_KEYWORDS))
 			advance();

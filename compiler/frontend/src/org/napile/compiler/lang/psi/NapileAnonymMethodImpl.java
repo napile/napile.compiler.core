@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -152,6 +153,12 @@ public class NapileAnonymMethodImpl extends NapileDeclarationImpl implements Nap
 	public Name getNameAsSafeName()
 	{
 		return NapilePsiUtil.NO_NAME_PROVIDED;
+	}
+
+	@Override
+	public NapileDoc getDocComment()
+	{
+		return null;
 	}
 
 	@NotNull

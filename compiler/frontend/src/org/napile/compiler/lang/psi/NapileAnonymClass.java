@@ -29,6 +29,7 @@ import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
+import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
@@ -173,5 +174,11 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 	public Name getNameAsSafeName()
 	{
 		return getNameAsName();
+	}
+
+	@Override
+	public NapileDoc getDocComment()
+	{
+		return null;
 	}
 }

@@ -62,7 +62,10 @@
 
 		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetSyntaxHighlighterFactory"/>
 		<lang.braceMatcher language="NAPILE" implementationClass="org.napile.idea.plugin.JetPairMatcher"/>
+
 		<lang.parserDefinition language="NAPILE" implementationClass="org.napile.compiler.lang.parsing.NapileParserDefinition"/>
+		<lang.parserDefinition language="NAPILE-DOC" implementationClass="org.napile.doc.lang.parsing.NapileDocParserDefinition"/>
+
 		<lang.commenter language="NAPILE" implementationClass="org.napile.idea.plugin.JetCommenter"/>
 		<lang.psiStructureViewFactory language="NAPILE" implementationClass="org.napile.idea.plugin.structureView.JetStructureViewFactory"/>
 		<lang.foldingBuilder language="NAPILE" implementationClass="org.napile.idea.plugin.JetFoldingBuilder"/>

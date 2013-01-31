@@ -21,6 +21,8 @@ package org.napile.compiler.lang.lexer;
 
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.psi.NapileInjectionExpression;
+import org.napile.doc.lang.NapileDocLanguage;
+import org.napile.doc.lang.psi.impl.NapileDocImpl;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
@@ -34,7 +36,20 @@ import com.intellij.psi.tree.TokenSet;
 public interface NapileTokens
 {
 	NapileToken BLOCK_COMMENT = new NapileToken("BLOCK_COMMENT");
-	NapileToken DOC_COMMENT = new NapileToken("DOC_COMMENT");
+	IElementType DOC_COMMENT = new ILazyParseableElementType("DOC_COMMENT")
+	{
+		@Override
+		protected Language getLanguageForParser(PsiElement psi)
+		{
+			return NapileDocLanguage.INSTANCE;
+		}
+
+		@Override
+		public ASTNode createNode(final CharSequence text)
+		{
+			return new NapileDocImpl(this, text);
+		}
+	};
 	NapileToken EOL_COMMENT = new NapileToken("EOL_COMMENT");
 
 	IElementType WHITE_SPACE = TokenType.WHITE_SPACE;
@@ -199,10 +214,8 @@ public interface NapileTokens
 	TokenSet VARIABLE_ACCESS_KEYWORDS = TokenSet.create(SET_KEYWORD, GET_KEYWORD);
 	TokenSet WHITE_SPACE_OR_COMMENT_BIT_SET = TokenSet.create(WHITE_SPACE, BLOCK_COMMENT, EOL_COMMENT, DOC_COMMENT);
 	TokenSet WHITESPACES = TokenSet.create(TokenType.WHITE_SPACE);
-	TokenSet COMMENTS = TokenSet.create(EOL_COMMENT, BLOCK_COMMENT, DOC_COMMENT);
+	TokenSet COMMENTS = TokenSet.create(EOL_COMMENT, BLOCK_COMMENT);
 
 	TokenSet STRINGS = TokenSet.create(CHARACTER_LITERAL, STRING_LITERAL);
-	TokenSet OPERATIONS = TokenSet.create(AS_KEYWORD, AS_SAFE, IS_KEYWORD, IN_KEYWORD, DOT, PLUSPLUS, MINUSMINUS, EXCLEXCL, MUL, PLUS, MINUS, EXCL, DIV, PERC, LT, GT, LTEQ, GTEQ, EQEQ, EXCLEQ, ANDAND, OROR, SAFE_ACCESS, ELVIS,
-			COLON, RANGE, EQ, MULTEQ, DIVEQ, PERCEQ, PLUSEQ, MINUSEQ, NOT_IN, NOT_IS,
-			IDENTIFIER, XOR, XOREQ, AND, ANDEQ, TILDE, GTGT, GTGTEQ, GTGTGT, GTGTGTEQ, LTLT, LTLTEQ, OR, OREQ);
+	TokenSet OPERATIONS = TokenSet.create(AS_KEYWORD, AS_SAFE, IS_KEYWORD, IN_KEYWORD, DOT, PLUSPLUS, MINUSMINUS, EXCLEXCL, MUL, PLUS, MINUS, EXCL, DIV, PERC, LT, GT, LTEQ, GTEQ, EQEQ, EXCLEQ, ANDAND, OROR, SAFE_ACCESS, ELVIS, COLON, RANGE, EQ, MULTEQ, DIVEQ, PERCEQ, PLUSEQ, MINUSEQ, NOT_IN, NOT_IS, IDENTIFIER, XOR, XOREQ, AND, ANDEQ, TILDE, GTGT, GTGTEQ, GTGTGT, GTGTGTEQ, LTLT, LTLTEQ, OR, OREQ);
 }

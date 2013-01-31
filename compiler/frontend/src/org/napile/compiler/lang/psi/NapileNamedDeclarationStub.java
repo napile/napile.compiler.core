@@ -18,8 +18,10 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
@@ -72,6 +74,13 @@ public abstract class NapileNamedDeclarationStub<T extends NamedStub> extends Na
 	public PsiElement getNameIdentifier()
 	{
 		return findChildByType(NapileTokens.IDENTIFIER);
+	}
+
+	@Nullable
+	@Override
+	public NapileDoc getDocComment()
+	{
+		return findChildByClass(NapileDoc.class);
 	}
 
 	@Override

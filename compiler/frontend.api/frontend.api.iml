@@ -12,6 +12,7 @@
     <orderEntry type="library" exported="" name="napile.asm" level="project" />
     <orderEntry type="library" name="javax.inject" level="project" />
     <orderEntry type="module" module-name="frontend" />
+    <orderEntry type="module" module-name="frontend.doc" exported="" />
   </component>
 </module>
 

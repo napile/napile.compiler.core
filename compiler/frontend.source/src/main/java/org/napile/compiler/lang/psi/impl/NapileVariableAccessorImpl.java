@@ -27,6 +27,7 @@ import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -63,6 +64,13 @@ public class NapileVariableAccessorImpl extends NapileDeclarationImpl implements
 	public NapileExpression getBodyExpression()
 	{
 		return null; //TODO [VISTALL] body exp
+	}
+
+	@Override
+	@Nullable
+	public NapileDoc getDocComment()
+	{
+		return findChildByClass(NapileDoc.class);
 	}
 
 	@NotNull

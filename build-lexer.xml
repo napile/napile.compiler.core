@@ -43,6 +43,9 @@
 	<target name="napile-lexer">
 		<flex flexfile="${home}/compiler/frontend.source/src/main/java/org/napile/compiler/lang/lexer/_NapileLexer.flex" destdir="${home}/compiler/frontend.source/src/main/java/org/napile/compiler/lang/lexer/"/>
 	</target>
+	<target name="napile-doc-lexer">
+		<flex flexfile="${home}/compiler/frontend.doc/src/main/java/org/napile/doc/lang/lexer/_NapileDocLexer.flex" destdir="${home}/compiler/frontend.doc/src/main/java/org/napile/doc/lang/lexer/"/>
+	</target>
 	<target name="protobuf-lexer">
 		<flex flexfile="${home}/compiler/injection.protobuff/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/_ProtobufLexer.flex" destdir="${home}/compiler/injection.protobuf/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/"/>
 	</target>

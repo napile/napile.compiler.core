@@ -121,7 +121,6 @@ public class JetParsing extends AbstractJetParsing
          */
 		PsiBuilder.Marker namespaceHeader = mark();
 		PsiBuilder.Marker firstEntry = mark();
-		parseModifierList();
 
 		if(at(NapileTokens.PACKAGE_KEYWORD))
 		{
@@ -263,7 +262,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker decl = mark();
 
-		parseModifierList();
+		parseModifierList(true);
 
 		IElementType keywordToken = tt();
 		IElementType declType = null;
@@ -282,9 +281,9 @@ public class JetParsing extends AbstractJetParsing
 		}
 	}
 
-	boolean parseModifierList()
+	boolean parseModifierList(boolean napileDoc)
 	{
-		return parseModifierList(Consumer.EMPTY_CONSUMER);
+		return parseModifierList(Consumer.EMPTY_CONSUMER, napileDoc);
 	}
 
 	/**
@@ -292,8 +291,15 @@ public class JetParsing extends AbstractJetParsing
 	 * <p/>
 	 * Feeds modifiers (not attributes) into the passed consumer, if it is not null
 	 */
-	boolean parseModifierList(Consumer<IElementType> detector)
+	boolean parseModifierList(Consumer<IElementType> detector, boolean napileDoc)
 	{
+		if(tt() == NapileTokens.DOC_COMMENT)
+		{
+			if(!napileDoc)
+				error("Wrong doc position");
+			advance();
+		}
+
 		PsiBuilder.Marker list = mark();
 		boolean empty = true;
 		while(!eof())
@@ -452,7 +458,7 @@ public class JetParsing extends AbstractJetParsing
 		IElementType declType = null;
 		TokenDetector tokenDetector = new TokenDetector(NapileTokens.ENUM_KEYWORD);
 
-		parseModifierList(tokenDetector);
+		parseModifierList(tokenDetector, !silent);
 
 		declType = parseMemberDeclarationRest(tokenDetector.detected);
 
@@ -568,7 +574,7 @@ public class JetParsing extends AbstractJetParsing
 				{
 					PsiBuilder.Marker marker = mark();
 
-					parseModifierList();
+					parseModifierList(false);
 
 					if(atSet(NapileTokens.VARIABLE_ACCESS_KEYWORDS))
 					{
@@ -831,7 +837,7 @@ public class JetParsing extends AbstractJetParsing
 
 		PsiBuilder.Marker mark = mark();
 
-		parseModifierList();
+		parseModifierList(false);
 
 		expect(NapileTokens.IDENTIFIER, "Type parameter name expected", TokenSet.EMPTY);
 
@@ -1109,7 +1115,7 @@ public class JetParsing extends AbstractJetParsing
 						if(!tryParseValueParameter())
 						{
 							PsiBuilder.Marker valueParameter = mark();
-							parseModifierList(); // lazy, out, ref
+							parseModifierList(false); // lazy, out, ref
 							parseTypeRef();
 							valueParameter.done(CALL_PARAMETER_AS_VARIABLE);
 						}
@@ -1149,7 +1155,7 @@ public class JetParsing extends AbstractJetParsing
 	{
 		PsiBuilder.Marker parameter = mark();
 
-		boolean modifierList = parseModifierList();
+		boolean modifierList = parseModifierList(false);
 		if(atSet(NapileTokens.VARIABLE_LIKE_KEYWORDS))
 		{
 			advance();
