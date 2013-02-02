@@ -87,4 +87,11 @@ public class NapileCallParameterAsVariableImpl extends NapileNamedDeclarationStu
 		ASTNode ast = getVarOrValNode();
 		return ast == null || ast.getElementType() == NapileTokens.VAR_KEYWORD;
 	}
+
+	@Override
+	public boolean isRef()
+	{
+		ASTNode astNode = getVarOrValNode();
+		return astNode != null && astNode.getElementType() == NapileTokens.REF_KEYWORD;
+	}
 }
