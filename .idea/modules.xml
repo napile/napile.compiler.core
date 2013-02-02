@@ -20,8 +20,9 @@
       <module fileurl="file://$PROJECT_DIR$/compiler/injection.text.idea/injection.text.idea.iml" filepath="$PROJECT_DIR$/compiler/injection.text.idea/injection.text.idea.iml" group="idea/injection" />
       <module fileurl="file://$PROJECT_DIR$/injector-generator/injector-generator.iml" filepath="$PROJECT_DIR$/injector-generator/injector-generator.iml" group="compiler" />
       <module fileurl="file://$PROJECT_DIR$/java2napile/java2napile.iml" filepath="$PROJECT_DIR$/java2napile/java2napile.iml" />
-      <module fileurl="file://$PROJECT_DIR$/napile.compiler.iml" filepath="$PROJECT_DIR$/napile.compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/napile.iml" filepath="$PROJECT_DIR$/napile.iml" />
       <module fileurl="file://$PROJECT_DIR$/compiler/napilec/napilec.iml" filepath="$PROJECT_DIR$/compiler/napilec/napilec.iml" group="compiler" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/napiledoc/napiledoc.iml" filepath="$PROJECT_DIR$/compiler/napiledoc/napiledoc.iml" />
     </modules>
   </component>
 </project>

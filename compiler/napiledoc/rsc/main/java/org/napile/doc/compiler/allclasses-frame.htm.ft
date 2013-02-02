@@ -1,0 +1,20 @@
+#* @vtlvariable name="URL" type="java.lang.String" *#
+#* @vtlvariable name="list" type="java.util.List<org.napile.doc.compiler.info.ClassInfo>" *#
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="${URL}/stylesheet.css">
+	</head>
+	<body>
+		<h1 class="bar">All Classes</h1>
+		<div class="indexContainer">
+			<ul>
+				#foreach($classInfo in $list)
+					<li>
+						<a href="${URL}/api/${classInfo.packageName.replace(".", "/")}/${classInfo.name}.htm" title="class in ${classInfo.packageName}" target="classFrame">${classInfo.name}</a>
+					</li>
+				#end
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,23 @@
+#* @vtlvariable name="packages" type="java.util.Collection<org.napile.doc.compiler.info.PackageInfo>" *#
+#* @vtlvariable name="URL" type="java.lang.String" *#
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="${URL}/stylesheet.css">
+	</head>
+	<body>
+		<div class="indexHeader">
+			<a href="allclasses-frame.htm" target="packageFrame">All Classes</a>
+		</div>
+		<div class="indexContainer">
+			<h2 title="Packages">Packages</h2>
+			<ul title="Packages">
+				#foreach($package in $packages)
+					<li>
+						<a href="${URL}/api/${package.name.replace(".", "/")}/package-frame.htm" target="packageFrame">${package.name}</a>
+					</li>
+				#end
+			</ul>
+		</div>
+	</body>
+</html>

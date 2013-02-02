@@ -82,7 +82,7 @@ public class AnalyzeProcessor
 	}
 
 	@Nullable
-	private static AnalyzeExhaust analyze(final JetCoreEnvironment environment)
+	public static AnalyzeExhaust analyze(final JetCoreEnvironment environment)
 	{
 		AnalyzerWithCompilerReport analyzerWithCompilerReport = new AnalyzerWithCompilerReport(environment.getConfiguration().get(CompilerConfigurationKeys.MESSAGE_COLLECTOR_KEY));
 		final Predicate<NapileFile> filesToAnalyzeCompletely = Predicates.<NapileFile>alwaysTrue();

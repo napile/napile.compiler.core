@@ -29,6 +29,8 @@ import org.napile.compiler.lang.parsing.NapileParserDefinition;
 import org.napile.compiler.lang.parsing.injection.CodeInjectionManager;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.impl.file.NXmlFileViewProviderFactory;
+import org.napile.doc.lang.NapileDocLanguage;
+import org.napile.doc.lang.parsing.NapileDocParserDefinition;
 import com.intellij.core.CoreApplicationEnvironment;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.mock.MockApplication;
@@ -68,7 +70,10 @@ public class JetCoreEnvironment
 		this.applicationEnvironment = new CoreApplicationEnvironment(parentDisposable);
 		applicationEnvironment.registerFileType(NapileFileType.INSTANCE, NapileFileType.INSTANCE.getDefaultExtension());
 		applicationEnvironment.registerFileType(NXmlFileType.INSTANCE, NXmlFileType.INSTANCE.getDefaultExtension());
+
 		applicationEnvironment.registerParserDefinition(new NapileParserDefinition());
+		applicationEnvironment.addExplicitExtension(LanguageParserDefinitions.INSTANCE, NapileDocLanguage.INSTANCE, new NapileDocParserDefinition());
+
 		for(CodeInjection injection : CodeInjectionManager.INSTANCE.getCodeInjections())
 			applicationEnvironment.addExplicitExtension(LanguageParserDefinitions.INSTANCE, injection.getLanguage(), injection);
 
@@ -139,7 +144,7 @@ public class JetCoreEnvironment
 		return projectEnvironment.getProject();
 	}
 
-	private void addSources(File file)
+	public void addSources(File file)
 	{
 		if(file.isDirectory())
 		{

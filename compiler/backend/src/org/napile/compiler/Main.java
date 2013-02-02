@@ -30,6 +30,7 @@ import org.napile.compiler.common.ExitCode;
  * @author VISTALL
  * @date 19:22/11.10.12
  */
+//TODO [VISTALL] move to napilec module
 public class Main
 {
 	public static final String VERSION = "0.1";

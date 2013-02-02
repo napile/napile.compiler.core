@@ -1,0 +1,26 @@
+#* @vtlvariable name="URL" type="java.lang.String" *#
+#* @vtlvariable name="version" type="java.lang.String" *#
+#* @vtlvariable name="name" type="java.lang.String" *#
+#* @vtlvariable name="package" type="org.napile.doc.compiler.info.PackageInfo" *#
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>${package} (${name} ${version})</title>
+		<link rel="stylesheet" type="text/css" href="${URL}/stylesheet.css">
+	</head>
+	<body>
+		<h1 class="bar">
+			<a href="../../${package.name.replace(".", "/")}/package-summary.htm" target="classFrame">${package.name}</a>
+		</h1>
+		<div class="indexContainer">
+			<h2 title="Classes">Classes</h2>
+			<ul title="Classes">
+				#foreach($class in $package.classes)
+					<li>
+						<a href="${class.name}.htm" title="class in ${package.name}" target="classFrame">${class.name}</a>
+					</li>
+				#end
+			</ul>
+		</div>
+	</body>
+</html>

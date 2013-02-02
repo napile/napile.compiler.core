@@ -1,0 +1,395 @@
+#* @vtlvariable name="copyright" type="java.lang.String" *#
+#* @vtlvariable name="parameter" type="org.napile.doc.compiler.info.CallParameter" *#
+#* @vtlvariable name="methods" type="java.util.Collection<org.napile.doc.compiler.info.MethodInfo>" *#
+#* @vtlvariable name="constructors" type="java.util.Collection<org.napile.doc.compiler.info.ConstructorInfo>" *#
+#* @vtlvariable name="variables" type="java.util.Collection<org.napile.doc.compiler.info.VariableInfo>" *#
+#* @vtlvariable name="class" type="org.napile.doc.compiler.info.ClassInfo" *#
+#* @vtlvariable name="prev" type="org.napile.doc.compiler.info.ClassInfo" *#
+#* @vtlvariable name="next" type="org.napile.doc.compiler.info.ClassInfo" *#
+#* @vtlvariable name="version" type="java.lang.String" *#
+#* @vtlvariable name="name" type="java.lang.String" *#
+#* @vtlvariable name="URL" type="java.lang.String" *#
+
+#macro(renderParameters $parameters $name)(#set ($i = 0)#foreach($parameter in $parameters)#if($i != 0), #end#set ($i = $i + 1)#if($name)
+<span class="strong">$parameter.keyword</span> $parameter.name : $parameter.returnType#else$parameter.returnType#end#end)#end
+#macro(renderParametersNoSpan $parameters $name)(#set ($i = 0)#foreach($parameter in $parameters)#if($i != 0), #end#set ($i = $i + 1)#if($name)$parameter.keyword $parameter.name : $parameter.returnTypeNoHtml#else$parameter.returnTypeNoHtml#end#end)#end
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>${class.name} (${name} ${version})</title>
+
+	<link rel="stylesheet" type="text/css" href="${URL}/stylesheet.css">
+</head>
+<body>
+<script type="text/javascript"><!--
+if(location.href.indexOf('is-external=true') == -1)
+{
+	parent.document.title = "${class.name} (${name} ${version})";
+}
+//-->
+</script>
+<noscript>
+	&lt;div&gt;JavaScript is disabled on your browser.&lt;/div&gt;
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav">
+	<a name="navbar_top">
+		<!--   -->
+	</a>
+	<a href="${URL}/api/${class.packageName.replace(".", "/")}/${class.name}.htm#skip-navbar_top" title="Skip navigation links"></a>
+	<a name="navbar_top_firstrow">
+		<!--   -->
+	</a>
+	<ul class="navList" title="Navigation">
+		<li>
+			<a href="${URL}/overview-summary.htm">Overview</a>
+		</li>
+		<li>
+			<a href="${URL}/api/${class.packageName.replace(".", "/")}/package-summary.htm">Package</a>
+		</li>
+		<li class="navBarCell1Rev">Class</li>
+		<li>
+			<a href="${URL}/api/${class.packageName.replace(".", "/")}/package-tree.htm">Tree</a>
+		</li>
+		<li>
+			<a href="${URL}/deprecated-list.htm">Deprecated</a>
+		</li>
+		<li>
+			<a href="${URL}/index-all.htm">Index</a>
+		</li>
+		<li>
+			<a href="${URL}/help-doc.htm">Help</a>
+		</li>
+	</ul>
+</div>
+<div class="subNav">
+	<ul class="navList">
+		<li>
+			#if($prev)
+				<a href="${URL}/api/${prev.packageName.replace(".", "/")}/${prev.name}.htm" title="class in ${prev.packageName}">
+					<span class="strong">Prev Class</span>
+				</a>
+			#else Prev Class #end
+		</li>
+		<li>
+			#if($next)
+				<a href="${URL}/api/${next.packageName.replace(".", "/")}/${next.name}.htm" title="class in ${next.packageName}">
+					<span class="strong">Next Class</span>
+				</a>
+			#else Next Class #end
+		</li>
+	</ul>
+	<ul class="navList">
+		<li>
+			<a href="${URL}/index.htm?api/${class.packageName.replace(".", "/")}/${class.name}.htm" target="_top">Frames</a>
+		</li>
+		<li>
+			<a href="${class.name}.htm" target="_top">No Frames</a>
+		</li>
+	</ul>
+	<ul class="navList" id="allclasses_navbar_top" style="display: none;">
+		<li>
+			<a href="${URL}/allclasses-noframe.htm">All Classes</a>
+		</li>
+	</ul>
+	<div>
+		<script type="text/javascript"><!--
+		allClassesLink = document.getElementById("allclasses_navbar_top");
+		if(window == top)
+		{
+			allClassesLink.style.display = "block";
+		}
+		else
+		{
+			allClassesLink.style.display = "none";
+		}
+		//-->
+		</script>
+	</div>
+	<div>
+		<ul class="subNavList">
+			<li>#if($variables.size() > 0)
+			<a href="#variable_summary">#end Variable#if($variables.size() > 0) </a> #end &nbsp;|&nbsp;</li>
+			<li>#if($constructors.size() > 0)
+			<a href="#constructor_summary">#end Constructor#if($constructors.size() > 0) </a> #end &nbsp;|&nbsp;</li>
+			<li>#if($methods.size() > 0)
+			<a href="#method_summary">#end Method#if($methods.size() > 0) </a> #end</li>
+		</ul>
+		<ul class="subNavList">
+			<li>#if($variables.size() > 0)
+			<a href="#variable_detail">#end Variable#if($variables.size() > 0) </a> #end &nbsp;|&nbsp;</li>
+			<li>#if($constructors.size() > 0)
+			<a href="#constructor_detail">#end Constructor#if($constructors.size() > 0) </a> #end &nbsp;|&nbsp;</li>
+			<li>#if($methods.size() > 0)
+			<a href="#method_detail">#end Method#if($methods.size() > 0) </a> #end</li>
+
+		</ul>
+	</div>
+	<a name="skip-navbar_top">
+		<!--   -->
+	</a>
+</div>
+<!-- ========= END OF TOP NAVBAR ========= --><!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+	<div class="subTitle">${class.packageName}</div>
+	<h2 title="Class ${class.name}" class="title">Class ${class.name}</h2>
+</div>
+<div class="contentContainer">
+<div class="description">
+	<ul class="blockList">
+		<li class="blockList">
+			<dl>
+				<dt>All supers:</dt>
+				<dd>
+					${class.supers}
+				</dd>
+			</dl>
+			<hr>
+			<br>
+			${class.declaration}
+		</li>
+	</ul>
+</div>
+
+	#if($variables.size() > 0)
+	<div class="summary">
+		<ul class="blockList">
+			<li class="blockList">
+				<ul class="blockList">
+					<li class="blockList">
+						<a name="variable_summary">
+							<!--   -->
+						</a>
+						<h3>Variable Summary</h3>
+						#foreach($variable in $variables)
+							<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Variable Summary table, listing methods, and an explanation">
+								<tbody>
+									<tr>
+										<th class="colFirst" scope="col">Modifier and Type</th>
+										<th class="colLast" scope="col">Name</th>
+									</tr>
+									<tr class="altColor">
+										<td class="colFirst">
+											<code>${variable.returnType}</code>
+										</td>
+										<td class="colLast">
+											<code>
+												<strong>
+													<a href="${URL}/api/${class.packageName.replace(".", "/")}/${class.name}.htm#${variable.name}">${variable.name}</a>
+												</strong>
+											</code>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						#end
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="details">
+		<ul class="blockList">
+			<li class="blockList">
+				<ul class="blockList">
+					<li class="blockList">
+						<a name="variable_detail">
+							<!--   -->
+						</a>
+						<h3>Variable Detail</h3>
+						#foreach($variable in $variables)
+							<a name="${variable.name}">
+								<!--   -->
+							</a>
+							<a name="${variable.name}">
+								<!--   -->
+							</a>
+							<ul class="blockListLast">
+								<li class="blockList">
+									<h4>${variable.name}</h4>
+									<pre><span class="strong">${variable.keyword}</span> ${variable.name} : ${variable.returnType}</pre>
+									<div class="block">${variable.doc}</div>
+								</li>
+							</ul>
+						#end
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	#end
+
+	#if($constructors.size() > 0)
+	<div class="summary">
+		<ul class="blockList">
+			<li class="blockList">
+				<ul class="blockList">
+					<li class="blockList">
+						<a name="constructor_summary">
+							<!--   -->
+						</a>
+						<h3>Constructor Summary</h3>
+						#foreach($constructor in $constructors)
+							<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing methods, and an explanation">
+								<tbody>
+									<tr>
+										<th class="colFirst" scope="col">Constructor and Description</th>
+									</tr>
+									<tr class="altColor">
+										<td class="colFirst">
+											<code>
+												<strong>
+													<a href="${URL}/api/${class.packageName.replace(".", "/")}/${class.name}.htm#${constructor.name}#renderParametersNoSpan($constructor, false)">${constructor.name}</a>
+												</strong>
+												#renderParameters($constructor.parameters, false)
+											</code>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						#end
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="details">
+		<ul class="blockList">
+			<li class="blockList">
+				<ul class="blockList">
+					<li class="blockList">
+						<a name="constructor_detail">
+							<!--   -->
+						</a>
+						<h3>Constructor Detail</h3>
+						#foreach($constructor in $constructors)
+							<a name="${constructor.name}#renderParametersNoSpan($constructor.parameters, true)">
+								<!--   -->
+							</a>
+							<a name="${constructor.name}#renderParametersNoSpan($constructor.parameters, false)">
+								<!--   -->
+							</a>
+							<ul class="blockListLast">
+								<li class="blockList">
+									<h4>${constructor.name}</h4>
+									<pre><span class="strong">this</span>#renderParameters($constructor.parameters, true)</pre>
+									<div class="block">${constructor.doc}</div>
+								</li>
+							</ul>
+						#end
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	#end
+
+	#if($methods.size() > 0)
+	<div class="summary">
+		<ul class="blockList">
+			<li class="blockList">
+				<ul class="blockList">
+					<li class="blockList">
+						<a name="method_summary">
+							<!--   -->
+						</a>
+						<h3>Method Summary</h3>
+						#foreach($method in $methods)
+							<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+								<tbody>
+									<tr>
+										<th class="colFirst" scope="col">Modifier and Type</th>
+										<th class="colLast" scope="col">Method and Description</th>
+									</tr>
+									<tr class="altColor">
+										<td class="colFirst">
+											<code>${method.returnType}</code>
+										</td>
+										<td class="colLast">
+											<code>
+												<strong>
+													<a href="${URL}/api/${class.packageName.replace(".", "/")}/${class.name}.htm#${method.name}#renderParametersNoSpan($method, false)">${method.name}</a>
+												</strong>
+												#renderParameters($method.parameters, false)
+											</code>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						#end
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="details">
+		<ul class="blockList">
+			<li class="blockList">
+				<!-- ============ METHOD DETAIL ========== -->
+				<ul class="blockList">
+					<li class="blockList">
+						<a name="method_detail">
+							<!--   -->
+						</a>
+						<h3>Method Detail</h3>
+						#foreach($method in $methods)
+							<a name="${method.name}#renderParametersNoSpan($method.parameters, true)">
+								<!--   -->
+							</a>
+							<a name="${method.name}#renderParametersNoSpan($method.parameters, false)">
+								<!--   -->
+							</a>
+							<ul class="blockListLast">
+								<li class="blockList">
+									<h4>${method.name}</h4>
+									<pre><span class="strong">meth</span> ${method.name}#renderParameters($method.parameters, true) : ${method.returnType}</pre>
+									<div class="block">${method.doc}</div>
+								</li>
+							</ul>
+						#end
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	#end
+
+<!-- ========= END OF CLASS DATA ========= --><!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav">
+	<a name="navbar_bottom">
+		<!--   -->
+	</a>
+	<a href="${URL}/api/${class.packageName.replace(".", "/")}/${class.name}.htm#skip-navbar_bottom" title="Skip navigation links"></a>
+	<a name="navbar_bottom_firstrow">
+		<!--   -->
+	</a>
+	<ul class="navList" title="Navigation">
+		<li>
+			<a href="${URL}/overview-summary.htm">Overview</a>
+		</li>
+		<li>
+			<a href="${URL}/api/${class.packageName.replace(".", "/")}/package-summary.htm">Package</a>
+		</li>
+		<li class="navBarCell1Rev">Class</li>
+		<li>
+			<a href="${URL}/api/${class.packageName.replace(".", "/")}/package-tree.htm">Tree</a>
+		</li>
+		<li>
+			<a href="${URL}/deprecated-list.htm">Deprecated</a>
+		</li>
+		<li>
+			<a href="${URL}/index-all.htm">Index</a>
+		</li>
+		<li>
+			<a href="${URL}/help-doc.htm">Help</a>
+		</li>
+	</ul>
+	<div class="copyright">
+		<em>${copyright}</em>
+	</div>
+</div>
+
+</body>
+</html>

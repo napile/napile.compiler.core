@@ -132,7 +132,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return renderType(type, true);
 	}
 
-	private String renderType(JetType type, boolean shortNamesOnly)
+	protected String renderType(JetType type, boolean shortNamesOnly)
 	{
 		if(type == null)
 			return escape("[NULL]");
@@ -141,14 +141,14 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		else if(type.getConstructor() instanceof SelfTypeConstructor)
 			return renderKeyword(NapileTokens.THIS_KEYWORD);
 		else if(type.getConstructor() instanceof MethodTypeConstructor)
-			return escape(renderMethodType(type, shortNamesOnly));
+			return renderMethodType(type, shortNamesOnly);
 		else if(type.getConstructor() instanceof MultiTypeConstructor)
 			return renderMultiType(type, shortNamesOnly);
 		else
-			return escape(renderDefaultType(type, shortNamesOnly));
+			return renderDefaultType(type, shortNamesOnly);
 	}
 
-	private String renderDefaultType(JetType type, boolean shortNamesOnly)
+	protected String renderDefaultType(JetType type, boolean shortNamesOnly)
 	{
 		StringBuilder sb = new StringBuilder();
 		ClassifierDescriptor cd = type.getConstructor().getDeclarationDescriptor();
@@ -181,9 +181,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		sb.append(typeNameObject);
 		if(!type.getArguments().isEmpty())
 		{
-			sb.append("<");
+			sb.append(escape("<"));
 			appendTypes(sb, type.getArguments(), shortNamesOnly);
-			sb.append(">");
+			sb.append(escape(">"));
 		}
 		if(type.isNullable())
 		{
@@ -192,7 +192,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return sb.toString();
 	}
 
-	private void appendTypes(StringBuilder result, List<JetType> types, boolean shortNamesOnly)
+	protected void appendTypes(StringBuilder result, List<JetType> types, boolean shortNamesOnly)
 	{
 		for(Iterator<JetType> iterator = types.iterator(); iterator.hasNext(); )
 		{
@@ -226,7 +226,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return sb.toString();
 	}
 
-	private String renderMethodType(JetType type, final boolean shortNamesOnly)
+	protected String renderMethodType(JetType type, final boolean shortNamesOnly)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
