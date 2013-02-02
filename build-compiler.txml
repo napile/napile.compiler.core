@@ -29,6 +29,7 @@
 				<dirset dir="compiler/backend/src" />
 				<dirset dir="compiler/frontend/src" />
 				<dirset dir="compiler/frontend.api/src/main/java" />
+				<dirset dir="compiler/frontend.doc/src/main/java" />
 				<dirset dir="compiler/frontend.bytecode/src/main/java" />
 				<dirset dir="compiler/frontend.source/src/main/java" />
 				<dirset dir="compiler/injection.api/src/main/java" />
