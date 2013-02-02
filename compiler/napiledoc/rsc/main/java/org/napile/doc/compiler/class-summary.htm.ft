@@ -44,24 +44,24 @@ if(location.href.indexOf('is-external=true') == -1)
 	</a>
 	<ul class="navList" title="Navigation">
 		<li>
-			<a href="${URL}/overview-summary.htm">Overview</a>
+			<a href="${URL}/summary/overview-summary.htm">Overview</a>
 		</li>
 		<li>
 			<a href="${URL}/api/${class.packageName.replace(".", "/")}/package-summary.htm">Package</a>
 		</li>
 		<li class="navBarCell1Rev">Class</li>
-		<li>
+		<!---<li>
 			<a href="${URL}/api/${class.packageName.replace(".", "/")}/package-tree.htm">Tree</a>
 		</li>
 		<li>
-			<a href="${URL}/deprecated-list.htm">Deprecated</a>
+			<a href="${URL}/summary/deprecated-list.htm">Deprecated</a>
 		</li>
 		<li>
-			<a href="${URL}/index-all.htm">Index</a>
+			<a href="${URL}/summary/index-all.htm">Index</a>
 		</li>
 		<li>
-			<a href="${URL}/help-doc.htm">Help</a>
-		</li>
+			<a href="${URL}/summary/help-doc.htm">Help</a>
+		</li>  -->
 	</ul>
 </div>
 <div class="subNav">
@@ -373,18 +373,18 @@ if(location.href.indexOf('is-external=true') == -1)
 			<a href="${URL}/api/${class.packageName.replace(".", "/")}/package-summary.htm">Package</a>
 		</li>
 		<li class="navBarCell1Rev">Class</li>
-		<li>
+		<!---<li>
 			<a href="${URL}/api/${class.packageName.replace(".", "/")}/package-tree.htm">Tree</a>
 		</li>
 		<li>
-			<a href="${URL}/deprecated-list.htm">Deprecated</a>
+			<a href="${URL}/summary/deprecated-list.htm">Deprecated</a>
 		</li>
 		<li>
-			<a href="${URL}/index-all.htm">Index</a>
+			<a href="${URL}/summary/index-all.htm">Index</a>
 		</li>
 		<li>
-			<a href="${URL}/help-doc.htm">Help</a>
-		</li>
+			<a href="${URL}/summary/help-doc.htm">Help</a>
+		</li>  -->
 	</ul>
 	<div class="copyright">
 		<em>${copyright}</em>

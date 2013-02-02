@@ -30,5 +30,6 @@ public interface CallParameter
 
 	String getDoc();
 
+	@Deprecated
 	String getKeyword();
 }
