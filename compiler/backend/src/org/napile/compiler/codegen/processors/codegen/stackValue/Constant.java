@@ -23,10 +23,20 @@ public class Constant extends StackValue
 
 		if(value == null)
 			instructionAdapter.putNull();
+		else if(classTypeNode.className.equals(NapileLangPackage.BYTE))
+			instructionAdapter.newByte((Byte) value);
+		else if(classTypeNode.className.equals(NapileLangPackage.SHORT))
+			instructionAdapter.newShort((Short) value);
 		else if(classTypeNode.className.equals(NapileLangPackage.INT))
 			instructionAdapter.newInt((Integer) value);
 		else if(classTypeNode.className.equals(NapileLangPackage.LONG))
 			instructionAdapter.newLong((Long) value);
+		else if(classTypeNode.className.equals(NapileLangPackage.FLOAT))
+			instructionAdapter.newFloat((Float) value);
+		else if(classTypeNode.className.equals(NapileLangPackage.DOUBLE))
+			instructionAdapter.newDouble((Double) value);
+		else if(classTypeNode.className.equals(NapileLangPackage.CHAR))
+			instructionAdapter.newChar((Character) value);
 		else if(classTypeNode.className.equals(NapileLangPackage.STRING))
 			instructionAdapter.newString((String) value);
 		else if(classTypeNode.className.equals(NapileLangPackage.BOOL))
