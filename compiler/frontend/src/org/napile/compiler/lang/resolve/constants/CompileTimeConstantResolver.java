@@ -24,6 +24,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import com.intellij.openapi.util.text.StringUtil;
 
 /**
  * @author abreslav
@@ -273,7 +274,7 @@ public class CompileTimeConstantResolver
 		if(unescapedText.length() <= 1)
 			return new ErrorValue("Invalid string");
 
-		return new StringValue(unescapedText.substring(1, unescapedText.length() - 1));
+		return new StringValue(StringUtil.unquoteString(unescapedText));
 	}
 
 	@NotNull
