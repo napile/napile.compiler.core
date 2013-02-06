@@ -1110,7 +1110,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 		return TypeTransformer.toAsmType(bindingTrace, type, classNode);
 	}
 
-	protected InstructionAdapter marker(final PsiElement element)
+	public InstructionAdapter marker(final PsiElement element)
 	{
 		if(element == null)
 			return instructs;

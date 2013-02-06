@@ -368,7 +368,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 		// revert bool
 		if(opToken == NapileTokens.EXCLEQ)
-			gen.mark(gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false), expression.getOperationReference());
+			gen.marker(expression.getOperationReference()).invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
@@ -397,11 +397,11 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 		}
 
 		gen.pushMethodArguments(resolvedCall, callable.getValueParameterTypes());
-		callable.invoke(instructs, PositionMarker.EMPTY, null);
+		callable.invoke(instructs, PositionMarker.EMPTY, expression.getOperationReference());
 
 		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
-			value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false, null);
+			value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false, expression.getOperationReference());
 
 		value.store(callable.getReturnType(), instructs, PositionMarker.EMPTY);
 
