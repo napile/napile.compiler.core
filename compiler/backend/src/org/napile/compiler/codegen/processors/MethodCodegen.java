@@ -144,11 +144,11 @@ public class MethodCodegen
 				TypeNode typeNode = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
 
 				if(!variableDescriptor.isStatic())
-					StackValue.local(0, typeNode).put(AsmConstants.ANY_TYPE, adapter);
+					StackValue.local(null, 0, typeNode).put(AsmConstants.ANY_TYPE, adapter, PositionMarker.EMPTY);
 
-				StackValue.local(callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter);
+				StackValue.local(null, callableDescriptor.isStatic() ? 0 : 1 + parameterDescriptor.getIndex(), typeNode).put(typeNode, adapter, PositionMarker.EMPTY);
 
-				StackValue.variableAccessor(resolvedSetter, typeNode, bindingTrace, classNode, false).store(typeNode, adapter);
+				StackValue.variableAccessor(null, resolvedSetter, typeNode, bindingTrace, classNode, false).store(typeNode, adapter, PositionMarker.EMPTY);
 			}
 	}
 }

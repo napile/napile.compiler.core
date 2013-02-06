@@ -19,6 +19,7 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.PositionMarker;
 
 /**
  * @author VISTALL
@@ -30,11 +31,11 @@ public class None extends StackValue
 
 	public None()
 	{
-		super(AsmConstants.NULL_TYPE);
+		super(null, AsmConstants.NULL_TYPE);
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructionAdapter)
+	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		castTo(type, instructionAdapter);
 	}

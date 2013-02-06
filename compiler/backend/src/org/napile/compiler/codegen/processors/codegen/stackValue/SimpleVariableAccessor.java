@@ -27,6 +27,7 @@ import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.AsmNodeUtil;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 
 public class SimpleVariableAccessor extends StackValue
@@ -37,7 +38,7 @@ public class SimpleVariableAccessor extends StackValue
 
 	public SimpleVariableAccessor(@NotNull FqName fqName, @NotNull TypeNode type, CallableMethod.CallType s)
 	{
-		super(type);
+		super(null, type);
 		callType = s;
 		// convert 'A.var' -> A + var$set -> A.var$set
 		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + "$set"));
@@ -48,7 +49,7 @@ public class SimpleVariableAccessor extends StackValue
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructionAdapter)
+	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		switch(callType)
 		{
@@ -67,7 +68,7 @@ public class SimpleVariableAccessor extends StackValue
 	}
 
 	@Override
-	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
+	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		switch(callType)
 		{

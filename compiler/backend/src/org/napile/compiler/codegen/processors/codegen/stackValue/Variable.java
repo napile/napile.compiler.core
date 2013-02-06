@@ -21,6 +21,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.PositionMarker;
 
 /**
  * @author VISTALL
@@ -33,14 +34,14 @@ public class Variable extends StackValue
 
 	public Variable(@NotNull FqName fqName, @NotNull TypeNode type, boolean s)
 	{
-		super(type);
+		super(null, type);
 
 		variableRef = new VariableRef(fqName, type);
 		staticVar = s;
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructionAdapter)
+	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		if(staticVar)
 			instructionAdapter.getStaticVar(variableRef);
@@ -51,7 +52,7 @@ public class Variable extends StackValue
 	}
 
 	@Override
-	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
+	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		if(staticVar)
 			instructionAdapter.putToStaticVar(variableRef);

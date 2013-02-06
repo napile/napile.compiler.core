@@ -126,7 +126,7 @@ public class VariableCodegen
 			if(!variableDescriptor.isStatic())
 				adapter.localGet(0);
 
-			varStackValue.put(getterMethodNode.returnType, adapter);
+			varStackValue.put(getterMethodNode.returnType, adapter, PositionMarker.EMPTY);
 
 			adapter.dup();
 
@@ -144,12 +144,12 @@ public class VariableCodegen
 
 			expressionCodegen.gen(variable.getInitializer(), getterMethodNode.returnType);
 
-			varStackValue.store(getterMethodNode.returnType, adapter);
+			varStackValue.store(getterMethodNode.returnType, adapter, PositionMarker.EMPTY);
 
 			if(!variableDescriptor.isStatic())
 				adapter.localGet(0);
 
-			varStackValue.put(getterMethodNode.returnType, adapter);
+			varStackValue.put(getterMethodNode.returnType, adapter, PositionMarker.EMPTY);
 
 			adapter.returnValues(1);
 

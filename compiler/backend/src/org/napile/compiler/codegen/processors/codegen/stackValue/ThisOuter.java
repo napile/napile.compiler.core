@@ -20,6 +20,7 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 
 public class ThisOuter extends StackValue
@@ -30,16 +31,16 @@ public class ThisOuter extends StackValue
 
 	public ThisOuter(ExpressionCodegen codegen, ClassDescriptor descriptor, boolean isSuper)
 	{
-		super(AsmConstants.ANY_TYPE);
+		super(null, AsmConstants.ANY_TYPE);
 		this.codegen = codegen;
 		this.descriptor = descriptor;
 		this.isSuper = isSuper;
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter v)
+	public void put(TypeNode type, InstructionAdapter v, PositionMarker positionMarker)
 	{
 		final StackValue stackValue = codegen.generateThisOrOuter(descriptor, isSuper);
-		stackValue.put(stackValue.getType(), v);  // no coercion here
+		stackValue.put(stackValue.getType(), v, PositionMarker.EMPTY);  // no coercion here
 	}
 }

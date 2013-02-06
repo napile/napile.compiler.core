@@ -133,7 +133,7 @@ public class InnerClassCodegen
 			if(stackValue == null)
 				gen.instructs.localGet(0);
 			else
-				stackValue.put(AsmConstants.ANY_TYPE, gen.instructs);
+				stackValue.put(AsmConstants.ANY_TYPE, gen.instructs, PositionMarker.EMPTY);
 		}
 
 		List<TypeNode> parameters = new ArrayList<TypeNode>(constructorNode.parameters.size());

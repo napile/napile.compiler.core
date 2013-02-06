@@ -141,7 +141,7 @@ public class ClassCodegen extends NapileVisitorVoid
 			if(expression != null)
 			{
 				ExpressionCodegen gen = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, context.clone(), constructorsAdapters.get(Boolean.TRUE));
-				gen.gen(expression).put(AsmConstants.NULL_TYPE, gen.instructs);
+				gen.gen(expression).put(AsmConstants.NULL_TYPE, gen.instructs, PositionMarker.EMPTY);
 			}
 		}
 		else
@@ -199,7 +199,7 @@ public class ClassCodegen extends NapileVisitorVoid
 				else
 					new ExpressionCodegen(bindingTrace, null, classNode, context.clone(), adapter).gen(initializer, type);
 
-				StackValue.variable(bindingTrace, classNode, variableDescriptor).store(type, adapter);
+				StackValue.variable(bindingTrace, classNode, variableDescriptor).store(type, adapter, PositionMarker.EMPTY);
 			}
 		}
 	}

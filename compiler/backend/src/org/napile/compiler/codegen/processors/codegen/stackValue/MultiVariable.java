@@ -27,6 +27,7 @@ import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.AsmNodeUtil;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 
 /**
@@ -42,12 +43,12 @@ public class MultiVariable extends StackValue
 
 	public MultiVariable(TypeNode type, int index)
 	{
-		super(type);
+		super(null, type);
 		this.index = index;
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructionAdapter)
+	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		instructionAdapter.newInt(index);
 
@@ -55,7 +56,7 @@ public class MultiVariable extends StackValue
 	}
 
 	@Override
-	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
+	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		instructionAdapter.newInt(index);
 

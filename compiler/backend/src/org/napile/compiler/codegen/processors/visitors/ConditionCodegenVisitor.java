@@ -30,6 +30,7 @@ import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -106,7 +107,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 
 		StackValue condition = gen.gen(expression.getCondition());
 
-		condition.put(AsmConstants.BOOL_TYPE, gen.instructs);
+		condition.put(AsmConstants.BOOL_TYPE, gen.instructs, PositionMarker.EMPTY);
 
 		gen.instructs.putTrue();
 
@@ -226,7 +227,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 		if(!expressionType.equals(AsmConstants.NULL_TYPE))
 			targetType = AsmConstants.ANY_TYPE;
 
-		condition.put(AsmConstants.BOOL_TYPE, gen.instructs);
+		condition.put(AsmConstants.BOOL_TYPE, gen.instructs, PositionMarker.EMPTY);
 
 		if(inverse)
 			gen.instructs.putTrue();

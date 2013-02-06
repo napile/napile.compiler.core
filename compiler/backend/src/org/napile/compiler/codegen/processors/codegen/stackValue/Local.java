@@ -18,28 +18,32 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.PositionMarker;
+import com.intellij.psi.PsiElement;
 
 public class Local extends StackValue
 {
 	private final int index;
 
-	public Local(int index, TypeNode typeNode)
+	public Local(PsiElement target, int index, TypeNode typeNode)
 	{
-		super(typeNode);
+		super(target, typeNode);
 		this.index = index;
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructionAdapter)
+	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
-		instructionAdapter.localGet(index);
+		join(instructionAdapter, positionMarker).localGet(index);
+
 		castTo(type, instructionAdapter);
 	}
 
 	@Override
-	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
+	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		castTo(topOfStackType, getType(), instructionAdapter);
-		instructionAdapter.localPut(index);
+
+		join(instructionAdapter, positionMarker).localPut(index);
 	}
 }

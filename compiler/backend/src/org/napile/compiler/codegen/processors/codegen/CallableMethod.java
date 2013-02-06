@@ -19,9 +19,12 @@ package org.napile.compiler.codegen.processors.codegen;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.PositionMarker;
+import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
@@ -54,29 +57,32 @@ public class CallableMethod
 		this.nullable = nullable;
 	}
 
-	public void invoke(InstructionAdapter instructionAdapter)
+	public void invoke(InstructionAdapter instructionAdapter, PositionMarker marker, PsiElement target)
 	{
+		Instruction instruction = null;
 		switch(callType)
 		{
 			case SPECIAL:
 				if(macro)
-					instructionAdapter.macroJump(methodRef);
+					instruction = instructionAdapter.macroJump(methodRef);
 				else
-					instructionAdapter.invokeSpecial(methodRef, nullable);
+					instruction = instructionAdapter.invokeSpecial(methodRef, nullable);
 				break;
 			case STATIC:
 				if(macro)
-					instructionAdapter.macroStaticJump(methodRef);
+					instruction = instructionAdapter.macroStaticJump(methodRef);
 				else
-					instructionAdapter.invokeStatic(methodRef, nullable);
+					instruction = instructionAdapter.invokeStatic(methodRef, nullable);
 				break;
 			case VIRTUAL:
-				instructionAdapter.invokeVirtual(methodRef, nullable);
+				instruction = instructionAdapter.invokeVirtual(methodRef, nullable);
 				break;
 			case ANONYM:
-				instructionAdapter.invokeAnonym(methodRef.parameters, methodRef.typeArguments, methodRef.returnType, nullable);
+				instruction = instructionAdapter.invokeAnonym(methodRef.parameters, methodRef.typeArguments, methodRef.returnType, nullable);
 				break;
 		}
+
+		marker.mark(instruction, target);
 	}
 
 	public TypeNode getReturnType()

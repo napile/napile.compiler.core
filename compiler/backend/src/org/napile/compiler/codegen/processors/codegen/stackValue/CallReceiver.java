@@ -20,6 +20,7 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -35,7 +36,7 @@ public class CallReceiver extends StackValue
 
 	public CallReceiver(CallableDescriptor callableDescriptor, ReceiverDescriptor receiverDescriptor, StackValue receiver, ExpressionCodegen codegen, CallableMethod callableMethod)
 	{
-		super(calcType(callableDescriptor, receiverDescriptor, codegen, callableMethod));
+		super(null, calcType(callableDescriptor, receiverDescriptor, codegen, callableMethod));
 		this.callableDescriptor = callableDescriptor;
 		this.receiverDescriptor = receiverDescriptor;
 		this.receiver = receiver;
@@ -56,7 +57,7 @@ public class CallReceiver extends StackValue
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter v)
+	public void put(TypeNode type, InstructionAdapter v, PositionMarker positionMarker)
 	{
 		if(receiverDescriptor.exists())
 			genReceiver(v, receiverDescriptor, type, 0);

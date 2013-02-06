@@ -19,10 +19,12 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.FqNameGenerator;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
@@ -33,6 +35,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
+import com.intellij.psi.PsiElement;
 
 /**
  * @author yole
@@ -45,14 +48,14 @@ public abstract class StackValue
 		return None.INSTANCE;
 	}
 
-	public static Local local(int index, TypeNode type)
+	public static Local local(PsiElement target, int index, TypeNode type)
 	{
-		return new Local(index, type);
+		return new Local(target, index, type);
 	}
 
-	public static Constant constant(Object value, TypeNode typeNode)
+	public static Constant constant(PsiElement target, Object value, TypeNode typeNode)
 	{
-		return new Constant(value, typeNode);
+		return new Constant(target, value, typeNode);
 	}
 
 	public static StackValue receiver(ResolvedCall<? extends CallableDescriptor> resolvedCall, StackValue receiver, ExpressionCodegen codegen, CallableMethod callableMethod)
@@ -91,15 +94,15 @@ public abstract class StackValue
 	}
 
 	@NotNull
-	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull ExpressionCodegen gen, boolean nullable)
+	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull ExpressionCodegen gen, boolean nullable, PsiElement target)
 	{
-		return variableAccessor(methodDescriptor, typeNode, gen.bindingTrace, gen.classNode, nullable);
+		return variableAccessor(target, methodDescriptor, typeNode, gen.bindingTrace, gen.classNode, nullable);
 	}
 
 	@NotNull
-	public static StackValue variableAccessor(@NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, boolean nullable)
+	public static StackValue variableAccessor(PsiElement target, @NotNull MethodDescriptor methodDescriptor, @NotNull TypeNode typeNode, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, boolean nullable)
 	{
-		return new VariableAccessor(typeNode, methodDescriptor, bindingTrace, classNode, nullable);
+		return new VariableAccessor(typeNode, target, methodDescriptor, bindingTrace, classNode, nullable);
 	}
 
 	@NotNull
@@ -127,13 +130,15 @@ public abstract class StackValue
 
 
 	private final TypeNode type;
+	protected final PsiElement target;
 
-	protected StackValue(TypeNode type)
+	protected StackValue(PsiElement target, TypeNode type)
 	{
+		this.target = target;
 		this.type = type;
 	}
 
-	public abstract void put(TypeNode type, InstructionAdapter instructionAdapter);
+	public abstract void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker);
 
 	/**
 	 * This method is called to put the value on the top of the JVM stack if <code>depth</code> other values have been put on the
@@ -145,10 +150,10 @@ public abstract class StackValue
 	 */
 	protected void moveToTopOfStack(TypeNode type, InstructionAdapter v, int depth)
 	{
-		put(type, v);
+		put(type, v, PositionMarker.EMPTY);
 	}
 
-	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
+	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		throw new UnsupportedOperationException("cannot store to value " + this);
 	}
@@ -160,6 +165,23 @@ public abstract class StackValue
 
 	public void dupReceiver(InstructionAdapter v)
 	{
+	}
+
+	protected InstructionAdapter join(final InstructionAdapter adapter, final PositionMarker marker)
+	{
+		if(target == null || marker == PositionMarker.EMPTY)
+			return adapter;
+
+		return new InstructionAdapter()
+		{
+			@Override
+			protected <T extends Instruction> T add(T t)
+			{
+				adapter.getInstructions().add(t);
+				marker.mark(t, target);
+				return t;
+			}
+		};
 	}
 
 	protected void castTo(TypeNode toType, InstructionAdapter v)

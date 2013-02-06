@@ -20,6 +20,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 
 /**
@@ -33,16 +34,16 @@ public class Outer extends StackValue
 
 	public Outer(TypeNode ownType, FqName ownerFq, VariableNode variableNode)
 	{
-		super(variableNode.returnType);
+		super(null, variableNode.returnType);
 
 		this.ownType = ownType;
 		caller = StackValue.simpleVariableAccessor(ownerFq.child(variableNode.name), variableNode.returnType, CallableMethod.CallType.SPECIAL);
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructionAdapter)
+	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		instructionAdapter.localGet(0);
-		caller.put(type, instructionAdapter);
+		caller.put(type, instructionAdapter, PositionMarker.EMPTY);
 	}
 }

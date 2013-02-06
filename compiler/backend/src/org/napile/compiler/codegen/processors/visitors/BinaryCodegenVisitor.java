@@ -32,6 +32,7 @@ import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.codegen.processors.AsmNodeUtil;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
@@ -132,15 +133,15 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 			value.dupReceiver(gen.instructs);
 
 			TypeNode type = gen.expressionType(expression.getBaseExpression());
-			value.put(type, gen.instructs);
-			callableMethod.invoke(gen.instructs);
+			value.put(type, gen.instructs, PositionMarker.EMPTY);
+			callableMethod.invoke(gen.instructs, gen, expression.getOperationReference());
 
 			MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 			if(methodDescriptor != null)
-				StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false).store(callableMethod.getReturnType(), gen.instructs);
+				StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false, null).store(callableMethod.getReturnType(), gen.instructs, PositionMarker.EMPTY);
 			else
-				value.store(callableMethod.getReturnType(), gen.instructs);
-			value.put(type, gen.instructs);
+				value.store(callableMethod.getReturnType(), gen.instructs, PositionMarker.EMPTY);
+			value.put(type, gen.instructs, PositionMarker.EMPTY);
 			return StackValue.onStack(type);
 		}
 	}
@@ -164,7 +165,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 				value.dupReceiver(gen.instructs);
 
 				TypeNode type = gen.expressionType(expression.getBaseExpression());
-				value.put(type, gen.instructs);
+				value.put(type, gen.instructs, PositionMarker.EMPTY);
 
 				switch(value.receiverSize())
 				{
@@ -178,12 +179,12 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 						throw new UnsupportedOperationException("Unknown receiver size " + value.receiverSize());
 				}
 
-				callable.invoke(gen.instructs);
+				callable.invoke(gen.instructs, gen, expression.getOperationReference());
 
 				MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 				if(methodDescriptor != null)
-					value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false);
-				value.store(callable.getReturnType(), gen.instructs);
+					value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false, null);
+				value.store(callable.getReturnType(), gen.instructs, PositionMarker.EMPTY);
 
 				return StackValue.onStack(type);
 			}
@@ -231,7 +232,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 		StackValue base = gen.genQualified(receiver, baseExpression);
 		if(type != null && type.isNullable())
 		{
-			base.put(base.getType(), instructs);
+			base.put(base.getType(), instructs, PositionMarker.EMPTY);
 			instructs.dup();
 
 			instructs.putNull();
@@ -286,7 +287,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 	{
 		instructs.dup();
 
-		simpleVariableAccessor.put(TypeConstants.COMPARE_RESULT, instructs);
+		simpleVariableAccessor.put(TypeConstants.COMPARE_RESULT, instructs, PositionMarker.EMPTY);
 
 		instructs.invokeVirtual(ANY_EQUALS, false);
 
@@ -310,7 +311,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 	private static void gtOrLt(@NotNull SimpleVariableAccessor simpleVariableAccessor, @NotNull InstructionAdapter instructs)
 	{
-		simpleVariableAccessor.put(TypeConstants.COMPARE_RESULT, instructs);
+		simpleVariableAccessor.put(TypeConstants.COMPARE_RESULT, instructs, PositionMarker.EMPTY);
 
 		instructs.invokeVirtual(ANY_EQUALS, false);
 
@@ -338,9 +339,9 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
-			leftStackValue = StackValue.variableAccessor(methodDescriptor, leftStackValue.getType(), gen, false);
+			leftStackValue = StackValue.variableAccessor(methodDescriptor, leftStackValue.getType(), gen, false, expression.getOperationReference());
 
-		leftStackValue.store(leftStackValue.getType(), gen.instructs);
+		leftStackValue.store(leftStackValue.getType(), gen.instructs, gen);
 		return StackValue.none();
 	}
 
@@ -363,11 +364,11 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
 		final CallableMethod callable = CallTransformer.transformToCallable(gen, (MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
-		callable.invoke(gen.instructs);
+		callable.invoke(gen.instructs, gen, expression.getOperationReference());
 
 		// revert bool
 		if(opToken == NapileTokens.EXCLEQ)
-			gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
+			gen.mark(gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false), expression.getOperationReference());
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
@@ -386,23 +387,23 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 		StackValue value = gen.gen(expression.getLeft());
 		value.dupReceiver(instructs);
-		value.put(lhsType, instructs);
+		value.put(lhsType, instructs, PositionMarker.EMPTY);
 		StackValue receiver = StackValue.onStack(lhsType);
 
 		if(!(resolvedCall.getResultingDescriptor() instanceof ConstructorDescriptor))
 		{ // otherwise already
 			receiver = StackValue.receiver(resolvedCall, receiver, gen, callable);
-			receiver.put(receiver.getType(), instructs);
+			receiver.put(receiver.getType(), instructs, PositionMarker.EMPTY);
 		}
 
 		gen.pushMethodArguments(resolvedCall, callable.getValueParameterTypes());
-		callable.invoke(instructs);
+		callable.invoke(instructs, PositionMarker.EMPTY, null);
 
 		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
-			value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false);
+			value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false, null);
 
-		value.store(callable.getReturnType(), instructs);
+		value.store(callable.getReturnType(), instructs, PositionMarker.EMPTY);
 
 		return StackValue.none();
 	}

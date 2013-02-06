@@ -40,7 +40,7 @@ public class TextInjectionCodegen implements InjectionCodegen<TextCodeInjection>
 
 		String str = checkVisitor.getText();
 		if(str != null)
-			return StackValue.constant(str, AsmConstants.STRING_TYPE);
+			return StackValue.constant(block, str, AsmConstants.STRING_TYPE);
 		else
 		{
 			PartToPartGenVisitor genVisitor = new PartToPartGenVisitor(expressionCodegen.instructs, expressionCodegen);

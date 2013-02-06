@@ -20,6 +20,7 @@ import org.napile.asm.AsmConstants;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 
@@ -34,7 +35,7 @@ public class WrappedVar extends StackValue
 
 	public WrappedVar(ExpressionCodegen gen, VariableDescriptor variableDescriptor)
 	{
-		super(gen.toAsmType(variableDescriptor.getType()));
+		super(null, gen.toAsmType(variableDescriptor.getType()));
 
 		this.variableDescriptor = variableDescriptor;
 
@@ -42,15 +43,15 @@ public class WrappedVar extends StackValue
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructionAdapter)
+	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
-		stackValue.put(type, instructionAdapter);
+		stackValue.put(type, instructionAdapter, PositionMarker.EMPTY);
 	}
 
 	@Override
-	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter)
+	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
-		stackValue.store(stackValue.getType(), instructionAdapter);
+		stackValue.store(stackValue.getType(), instructionAdapter, PositionMarker.EMPTY);
 	}
 
 	public void putReceiver(ExpressionCodegen gen)

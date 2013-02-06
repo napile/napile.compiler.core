@@ -21,6 +21,7 @@ import java.util.List;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -41,7 +42,7 @@ public class CollectionElement extends StackValue
 
 	public CollectionElement(TypeNode type, ResolvedCall<MethodDescriptor> getCall, ResolvedCall<MethodDescriptor> setCall, ExpressionCodegen gen)
 	{
-		super(type);
+		super(null, type);
 		this.getCall = getCall;
 		this.setCall = setCall;
 		this.expressionCodegen = gen;
@@ -51,24 +52,24 @@ public class CollectionElement extends StackValue
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructionAdapter)
+	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		assert getCallableMethod != null;
 
-		getCallableMethod.invoke(instructionAdapter);
+		getCallableMethod.invoke(instructionAdapter, PositionMarker.EMPTY, null);
 
 		castTo(type, instructionAdapter);
 	}
 
 	@Override
-	public void store(TypeNode topOfStackType, InstructionAdapter v) {
+	public void store(TypeNode topOfStackType, InstructionAdapter v, PositionMarker positionMarker) {
 
 		assert setCallableMethod != null;
 
 		List<TypeNode> argumentTypes = setCallableMethod.getValueParameterTypes();
 		castTo(topOfStackType, argumentTypes.get(argumentTypes.size() - 1), v);
 
-		setCallableMethod.invoke(v);
+		setCallableMethod.invoke(v, PositionMarker.EMPTY, null);
 
 		//Type returnType = asmMethod.getReturnType();
 		//if (returnType != Type.VOID_TYPE)

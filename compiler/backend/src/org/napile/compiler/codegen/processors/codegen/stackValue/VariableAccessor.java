@@ -21,10 +21,12 @@ import java.util.Collections;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
@@ -34,30 +36,31 @@ public class VariableAccessor extends StackValue
 {
 	private final CallableMethod callableMethod;
 
-	public VariableAccessor(TypeNode type, MethodDescriptor methodDescriptor, BindingTrace bindingTrace, ClassNode classNode, boolean nullable)
+	public VariableAccessor(TypeNode type, PsiElement target, MethodDescriptor methodDescriptor, BindingTrace bindingTrace, ClassNode classNode, boolean nullable)
 	{
-		super(type);
+		super(target, type);
 
 		callableMethod = CallTransformer.transformToCallable(bindingTrace, classNode, methodDescriptor, Collections.<TypeNode>emptyList(), nullable, false, false);
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter instructs)
+	public void put(TypeNode type, InstructionAdapter instructs, PositionMarker positionMarker)
 	{
 		if(!callableMethod.getName().endsWith("get"))
 			throw new IllegalArgumentException("cant get to variable with incorrect getter : " + callableMethod.getName());
 
-		callableMethod.invoke(instructs);
+		callableMethod.invoke(instructs, positionMarker, target);
 	}
 
 	@Override
-	public void store(TypeNode topOfStackType, InstructionAdapter instructs)
+	public void store(TypeNode topOfStackType, InstructionAdapter instructs, PositionMarker positionMarker)
 	{
 		if(!callableMethod.getName().endsWith("set"))
 			throw new IllegalArgumentException("cant set to variable with incorrect setter : " + callableMethod.getName());
 
-		callableMethod.invoke(instructs);
-		instructs.pop();
+		callableMethod.invoke(instructs, positionMarker, target);
+
+		join(instructs, positionMarker).pop();
 	}
 
 	@Override

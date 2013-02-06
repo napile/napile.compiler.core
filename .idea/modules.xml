@@ -6,7 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend/frontend.iml" filepath="$PROJECT_DIR$/compiler/frontend/frontend.iml" group="compiler/frontend" />
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend.api/frontend.api.iml" filepath="$PROJECT_DIR$/compiler/frontend.api/frontend.api.iml" group="compiler/frontend" />
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend.bytecode/frontend.bytecode.iml" filepath="$PROJECT_DIR$/compiler/frontend.bytecode/frontend.bytecode.iml" group="compiler/frontend" />
-      <module fileurl="file://$PROJECT_DIR$/compiler/frontend.doc/frontend.doc.iml" filepath="$PROJECT_DIR$/compiler/frontend.doc/frontend.doc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/compiler/frontend.doc/frontend.doc.iml" filepath="$PROJECT_DIR$/compiler/frontend.doc/frontend.doc.iml" group="compiler/frontend" />
       <module fileurl="file://$PROJECT_DIR$/compiler/frontend.source/frontend.source.iml" filepath="$PROJECT_DIR$/compiler/frontend.source/frontend.source.iml" group="compiler/frontend" />
       <module fileurl="file://$PROJECT_DIR$/idea/idea.napile-lang.iml" filepath="$PROJECT_DIR$/idea/idea.napile-lang.iml" />
       <module fileurl="file://$PROJECT_DIR$/compiler/injection.api/injection.api.iml" filepath="$PROJECT_DIR$/compiler/injection.api/injection.api.iml" group="compiler/injection" />

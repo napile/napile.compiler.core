@@ -18,16 +18,17 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.compiler.codegen.processors.PositionMarker;
 
 public class OnStack extends StackValue
 {
 	public OnStack(TypeNode type)
 	{
-		super(type);
+		super(null, type);
 	}
 
 	@Override
-	public void put(TypeNode type, InstructionAdapter v)
+	public void put(TypeNode type, InstructionAdapter v, PositionMarker positionMarker)
 	{
 		castTo(type, v);
 	}
@@ -36,7 +37,7 @@ public class OnStack extends StackValue
 	public void moveToTopOfStack(TypeNode type, InstructionAdapter v, int depth)
 	{
 		if(depth == 0)
-			put(type, v);
+			put(type, v, PositionMarker.EMPTY);
 		else if(depth == 1)
 			v.swap();
 		else
