@@ -21,6 +21,7 @@ import org.napile.asm.AsmConstants;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.idea.plugin.NapileIconProvider2;
+import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 
 /**
@@ -29,6 +30,20 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
  */
 public class DescriptionLookupBuilder
 {
+	public static void addElement(MethodDescriptor methodDescriptor, CompletionResultSet resultSet)
+	{
+		LookupElementBuilder b = buildMethodLookup(methodDescriptor);
+		if(b != null)
+			resultSet.addElement(b);
+	}
+
+	public static void addElement(VariableDescriptor variableDescriptor, CompletionResultSet resultSet)
+	{
+		LookupElementBuilder b = buildVariableLookup(variableDescriptor);
+		if(b != null)
+			resultSet.addElement(b);
+	}
+
 	@Nullable
 	public static LookupElementBuilder buildMethodLookup(MethodDescriptor methodDescriptor)
 	{

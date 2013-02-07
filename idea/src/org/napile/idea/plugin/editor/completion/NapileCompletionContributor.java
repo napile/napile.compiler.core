@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -30,11 +31,14 @@ import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapileClassBody;
 import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileDotQualifiedExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.idea.plugin.editor.completion.lookup.DescriptionLookupBuilder;
 import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.completion.CompletionContributor;
@@ -66,6 +70,51 @@ public class NapileCompletionContributor extends CompletionContributor
 		extend(CompletionType.BASIC, MEMBERS_IN_BODY_EXPRESSION_AND_CALL_PARAMETER_LIST, new NapileKeywordCompletionProvider(NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD));
 
 		extend(CompletionType.BASIC, MODIFIER_LIST, new NapileKeywordCompletionProvider(NapileTokens.MODIFIER_KEYWORDS));
+
+		extend(CompletionType.BASIC, element().withSuperParent(2, NapileDotQualifiedExpression.class), new CompletionProvider<CompletionParameters>()
+		{
+			@Override
+			protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result)
+			{
+				PsiElement position = parameters.getOriginalPosition();
+				PsiFile containingFile = parameters.getOriginalFile();
+				if(!(containingFile instanceof NapileFile))
+					return;
+
+				PsiElement prevElement = position.getPrevSibling();
+				if(!(prevElement instanceof NapileDotQualifiedExpression))
+					return;
+
+				NapileDotQualifiedExpression dotQualifiedExpression = (NapileDotQualifiedExpression) prevElement;
+
+				AnalyzeExhaust analyze = Analyzer.analyzeAll((NapileFile) containingFile);
+
+				//BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
+
+				BindingContext bindingContext = analyze.getBindingContext();
+
+				JetType type = bindingContext.get(BindingContext.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
+				if(type == null)
+					return;
+
+				if(type instanceof NamespaceType)
+				{
+
+				}
+				else
+				{
+					DeclarationDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
+					if(declarationDescriptor instanceof MutableClassDescriptor)
+					{
+						MutableClassDescriptor methodDescriptor = (MutableClassDescriptor) declarationDescriptor;
+						for(MethodDescriptor m : methodDescriptor.getMethods())
+							DescriptionLookupBuilder.addElement(m, result);
+						for(VariableDescriptor v : methodDescriptor.getVariables())
+							DescriptionLookupBuilder.addElement(v, result);
+					}
+				}
+			}
+		});
 
 		extend(CompletionType.BASIC, IN_EXPRESSION, new CompletionProvider<CompletionParameters>()
 		{
