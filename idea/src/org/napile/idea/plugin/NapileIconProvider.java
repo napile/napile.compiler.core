@@ -54,8 +54,8 @@ import com.intellij.util.PlatformIcons;
  */
 public class NapileIconProvider extends IconProvider
 {
-	private static final Icon FINAL_MARK_ICON = IconLoader.getIcon("/nodes/finalMark.png");
-	private static final Icon RUNNABLE_MARK = IconLoader.getIcon("/nodes/runnableMark.png");
+	public static final Icon FINAL_MARK_ICON = IconLoader.getIcon("/nodes/finalMark.png");
+	public static final Icon RUNNABLE_MARK = IconLoader.getIcon("/nodes/runnableMark.png");
 
 	public static NapileIconProvider INSTANCE = new NapileIconProvider();
 

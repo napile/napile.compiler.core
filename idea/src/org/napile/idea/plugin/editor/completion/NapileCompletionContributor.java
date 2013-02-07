@@ -21,10 +21,13 @@ import static org.napile.idea.plugin.editor.completion.patterns.NapilePsiElement
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
+import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptor;
+import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
@@ -46,7 +49,6 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.completion.CompletionType;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.ElementPattern;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -63,6 +65,13 @@ public class NapileCompletionContributor extends CompletionContributor
 	private static final ElementPattern<? extends PsiElement> MEMBERS_IN_BODY_EXPRESSION_AND_CALL_PARAMETER_LIST = or(element().withSuperParent(2, NapileBlockExpression.class), element().withSuperParent(3, NapileCallParameterList.class));
 	private static final ElementPattern<? extends PsiElement> IN_EXPRESSION = or(element().withSuperParent(2, NapileBlockExpression.class));
 	private static final ElementPattern<? extends PsiElement> MODIFIER_LIST = or(MEMBERS_IN_CLASS_BODY);
+	private static final ElementPattern<? extends PsiElement> EXPECT_TYPE = or(
+																				element().afterLeaf(element().withElementType(NapileTokens.COLON)),
+																				element().afterLeaf(element().withElementType(NapileTokens.IS_KEYWORD)),
+																				element().afterLeaf(element().withElementType(NapileTokens.NOT_IS)),
+																				element().afterLeaf(element().withElementType(NapileTokens.AS_KEYWORD)),
+																				element().afterLeaf(element().withElementType(NapileTokens.AS_SAFE))
+																				);
 
 	public NapileCompletionContributor()
 	{
@@ -70,6 +79,38 @@ public class NapileCompletionContributor extends CompletionContributor
 		extend(CompletionType.BASIC, MEMBERS_IN_BODY_EXPRESSION_AND_CALL_PARAMETER_LIST, new NapileKeywordCompletionProvider(NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD));
 
 		extend(CompletionType.BASIC, MODIFIER_LIST, new NapileKeywordCompletionProvider(NapileTokens.MODIFIER_KEYWORDS));
+
+		extend(CompletionType.BASIC, EXPECT_TYPE, new CompletionProvider<CompletionParameters>()
+		{
+			@Override
+			protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result)
+			{
+				PsiElement position = parameters.getOriginalPosition();
+				PsiFile containingFile = parameters.getOriginalFile();
+				if(!(containingFile instanceof NapileFile))
+					return;
+
+				AnalyzeExhaust analyze = Analyzer.analyzeAll((NapileFile) containingFile);
+
+				NapileDeclaration declaration = PsiTreeUtil.getParentOfType(position, NapileDeclaration.class);
+				if(declaration == null)
+					return;
+
+				BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
+
+				JetScope scope = analyze.getBindingContext().get(BindingContext.RESOLUTION_SCOPE, declaration);
+				if(scope == null)
+				{
+					return;
+				}
+
+				for(DeclarationDescriptor declarationDescriptor : scope.getAllDescriptors())
+				{
+					if(declarationDescriptor instanceof ClassDescriptor || declarationDescriptor instanceof TypeParameterDescriptor)
+						DescriptionLookupBuilder.addElement(declarationDescriptor, result);
+				}
+			}
+		});
 
 		extend(CompletionType.BASIC, element().withSuperParent(2, NapileDotQualifiedExpression.class), new CompletionProvider<CompletionParameters>()
 		{
@@ -106,11 +147,9 @@ public class NapileCompletionContributor extends CompletionContributor
 					DeclarationDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
 					if(declarationDescriptor instanceof MutableClassDescriptor)
 					{
-						MutableClassDescriptor methodDescriptor = (MutableClassDescriptor) declarationDescriptor;
-						for(MethodDescriptor m : methodDescriptor.getMethods())
-							DescriptionLookupBuilder.addElement(m, result);
-						for(VariableDescriptor v : methodDescriptor.getVariables())
-							DescriptionLookupBuilder.addElement(v, result);
+						MutableClassDescriptor classDescriptor = (MutableClassDescriptor) declarationDescriptor;
+						for(CallableMemberDescriptor descriptor : classDescriptor.getAllCallableMembers())
+							DescriptionLookupBuilder.addElement(descriptor, result);
 					}
 				}
 			}
@@ -154,20 +193,8 @@ public class NapileCompletionContributor extends CompletionContributor
 					if(declarationDescriptor instanceof PackageDescriptor)
 						continue;
 
-					if(declarationDescriptor instanceof MethodDescriptor)
-					{
-						LookupElementBuilder item = DescriptionLookupBuilder.buildMethodLookup((MethodDescriptor) declarationDescriptor);
-						if(item == null)
-							continue;
-						result.addElement(item);
-					}
-					else if(declarationDescriptor instanceof VariableDescriptor)
-					{
-						LookupElementBuilder item = DescriptionLookupBuilder.buildVariableLookup((VariableDescriptor) declarationDescriptor);
-						if(item == null)
-							continue;
-						result.addElement(item);
-					}
+					if(declarationDescriptor instanceof MethodDescriptor || declarationDescriptor instanceof VariableDescriptor)
+						DescriptionLookupBuilder.addElement(declarationDescriptor, result);
 				}
 			}
 		});
