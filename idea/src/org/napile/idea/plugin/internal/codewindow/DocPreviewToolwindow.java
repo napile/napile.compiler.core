@@ -24,9 +24,8 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.doc.lang.psi.NapileDoc;
-import org.napile.doc.lang.psi.NapileDocLine;
 import org.napile.idea.plugin.internal.EditorLocation;
-import org.pegdown.PegDownProcessor;
+import org.napile.idea.plugin.util.NapileDocUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -55,8 +54,6 @@ public class DocPreviewToolwindow extends JPanel implements Disposable
 	private final Alarm myUpdateAlarm;
 	private EditorLocation myCurrentLocation;
 	private final Project myProject;
-
-	private final PegDownProcessor pegDownProcessor = new PegDownProcessor();
 
 	public DocPreviewToolwindow(Project project)
 	{
@@ -120,15 +117,7 @@ public class DocPreviewToolwindow extends JPanel implements Disposable
 				{
 					NapileDoc element = PsiTreeUtil.getParentOfType(start, NapileDoc.class);
 					if(element  != null)
-					{
-						StringBuilder builder = new StringBuilder();
-						for(NapileDocLine line : element.getLines())
-						{
-							builder.append(line.getText()).append("\n\r");
-						}
-
-						setText(pegDownProcessor.markdownToHtml(builder.toString()));
-					}
+						setText(NapileDocUtil.render(element));
 				}
 			}
 		}

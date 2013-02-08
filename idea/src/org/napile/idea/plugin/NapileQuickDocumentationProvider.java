@@ -16,19 +16,18 @@
 
 package org.napile.idea.plugin;
 
-import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileLabelExpression;
+import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.util.NapileDocUtil;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
-import com.intellij.lang.java.JavaDocumentationProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -36,9 +35,9 @@ import com.intellij.psi.util.PsiTreeUtil;
  * @author abreslav
  * @author Evgeny Gerashchenko
  */
-public class JetQuickDocumentationProvider extends AbstractDocumentationProvider
+public class NapileQuickDocumentationProvider extends AbstractDocumentationProvider
 {
-	private static String getText(PsiElement element, PsiElement originalElement, boolean mergeKotlinAndJava)
+	private static String getText(PsiElement element, PsiElement originalElement, boolean doc)
 	{
 		NapileReferenceExpression ref;
 		if(originalElement instanceof NapileReferenceExpression)
@@ -56,11 +55,6 @@ public class JetQuickDocumentationProvider extends AbstractDocumentationProvider
 
 			if(ref != null)
 			{
-				DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, ref);
-				if(declarationDescriptor != null)
-				{
-					return render(declarationDescriptor, bindingContext, element, originalElement, mergeKotlinAndJava);
-				}
 				if(declarationPsiElement != null)
 				{
 					declarationPsiElement = BindingContextUtils.resolveToDeclarationPsiElement(bindingContext, ref);
@@ -72,57 +66,43 @@ public class JetQuickDocumentationProvider extends AbstractDocumentationProvider
 				DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declarationPsiElement);
 				if(declarationDescriptor != null)
 				{
-					return render(declarationDescriptor, bindingContext, element, originalElement, mergeKotlinAndJava);
+					return renderDoc(declarationDescriptor, declarationPsiElement, doc);
 				}
 			}
 
 			if(element instanceof NapileLabelExpression)
 				return "<b>label</b> "+ ((NapileLabelExpression) element).getLabelName();
 
-			return JetQuickDocumentationProvider.class.getName();
+			return null;
 		}
 		return null;
+	}
+
+	private static String renderDoc(DeclarationDescriptor declarationDescriptor, PsiElement element, boolean doc)
+	{
+		if(doc && element instanceof NapileNamedDeclaration)
+		{
+			StringBuilder builder = new StringBuilder();
+			builder.append(DescriptorRenderer.HTML.render(declarationDescriptor));
+
+			builder.append("<br><br>").append(NapileDocUtil.render((NapileNamedDeclaration) element));
+			return builder.toString();
+		}
+		else
+		{
+			return DescriptorRenderer.HTML.render(declarationDescriptor);
+		}
 	}
 
 	@Override
 	public String getQuickNavigateInfo(PsiElement element, PsiElement originalElement)
 	{
-		return getText(element, originalElement, true);
+		return getText(element, originalElement, false);
 	}
 
 	@Override
 	public String generateDoc(PsiElement element, PsiElement originalElement)
 	{
-		return getText(element, originalElement, false);
-	}
-
-	private static String render(@NotNull DeclarationDescriptor declarationDescriptor, @NotNull BindingContext bindingContext, PsiElement element, PsiElement originalElement, boolean mergeKotlinAndJava)
-	{
-		String renderedDecl = DescriptorRenderer.HTML.render(declarationDescriptor);
-		if(isKotlinDeclaration(declarationDescriptor, bindingContext))
-		{
-			return renderedDecl;
-		}
-		else
-		{
-			if(mergeKotlinAndJava)
-			{
-				return renderedDecl + "\nOriginal: " + new JavaDocumentationProvider().getQuickNavigateInfo(element, originalElement);
-			}
-			else
-			{
-				return null;
-			}
-		}
-	}
-
-	private static boolean isKotlinDeclaration(DeclarationDescriptor descriptor, BindingContext bindingContext)
-	{
-		PsiElement declaration = BindingContextUtils.descriptorToDeclaration(bindingContext, descriptor);
-		if(declaration == null)
-			return false;
-		if(NapileLanguage.INSTANCE == declaration.getLanguage())
-			return true;
-		return false;
+		return getText(element, originalElement, true);
 	}
 }
