@@ -62,7 +62,10 @@ import com.intellij.util.ProcessingContext;
 public class NapileCompletionContributor extends CompletionContributor
 {
 	private static final ElementPattern<? extends PsiElement> MEMBERS_IN_CLASS_BODY = element().withSuperParent(2, NapileClassBody.class);
-	private static final ElementPattern<? extends PsiElement> MEMBERS_IN_BODY_EXPRESSION_AND_CALL_PARAMETER_LIST = or(element().withSuperParent(2, NapileBlockExpression.class), element().withSuperParent(3, NapileCallParameterList.class));
+
+	private static final ElementPattern<? extends PsiElement> MEMBERS_IN_BODY_EXPRESSION_ = element().withSuperParent(2, NapileBlockExpression.class);
+	private static final ElementPattern<? extends PsiElement> MEMBERS_IN_CALL_PARAMETER_LIST = element().withSuperParent(3, NapileCallParameterList.class);
+
 	private static final ElementPattern<? extends PsiElement> IN_EXPRESSION = or(element().withSuperParent(2, NapileBlockExpression.class));
 	private static final ElementPattern<? extends PsiElement> MODIFIER_LIST = or(MEMBERS_IN_CLASS_BODY);
 	private static final ElementPattern<? extends PsiElement> EXPECT_TYPE = or(
@@ -76,7 +79,8 @@ public class NapileCompletionContributor extends CompletionContributor
 	public NapileCompletionContributor()
 	{
 		extend(CompletionType.BASIC, MEMBERS_IN_CLASS_BODY, new NapileKeywordCompletionProvider(NapileTokens.CLASS_KEYWORD, NapileTokens.MACRO_KEYWORD, NapileTokens.METH_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.THIS_KEYWORD));
-		extend(CompletionType.BASIC, MEMBERS_IN_BODY_EXPRESSION_AND_CALL_PARAMETER_LIST, new NapileKeywordCompletionProvider(NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD));
+		extend(CompletionType.BASIC, MEMBERS_IN_BODY_EXPRESSION_, new NapileKeywordCompletionProvider(NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD));
+		extend(CompletionType.BASIC, MEMBERS_IN_CALL_PARAMETER_LIST, new NapileKeywordCompletionProvider(NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.REF_KEYWORD));
 
 		extend(CompletionType.BASIC, MODIFIER_LIST, new NapileKeywordCompletionProvider(NapileTokens.MODIFIER_KEYWORDS));
 
