@@ -18,6 +18,7 @@
       <entry name="?*.ft" />
       <entry name="?*.kt" />
       <entry name="?*.template" />
+      <entry name="?*.zip" />
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="false">

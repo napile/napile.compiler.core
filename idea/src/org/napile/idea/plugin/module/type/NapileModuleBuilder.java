@@ -33,6 +33,12 @@ public class NapileModuleBuilder extends ModuleBuilder
 	}
 
 	@Override
+	public String getGroupName()
+	{
+		return "Napile";
+	}
+
+	@Override
 	public ModuleType getModuleType()
 	{
 		return NapileModuleType.getInstance();
