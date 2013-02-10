@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -38,7 +38,7 @@ public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl imple
 
 	public MethodTypeConstructorImpl(@NotNull JetType returnType, Map<Name, JetType> parameterTypes, @NotNull JetScope scope)
 	{
-		super(scope, NapileLangPackage.METHOD_LINK);
+		super(scope, new FqName("napile.lang.AnonymContext"));
 
 		this.returnType = returnType;
 		this.parameterTypes = parameterTypes;
