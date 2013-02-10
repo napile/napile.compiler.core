@@ -35,6 +35,7 @@ import com.intellij.openapi.roots.ModuleOrderEntry;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ModuleSourceOrderEntry;
 import com.intellij.openapi.roots.OrderEntry;
+import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.RootPolicy;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
@@ -70,6 +71,11 @@ public class ModuleCollectFileFunction implements Function<NapileFile, Collectio
 				@Override
 				public Object visitLibraryOrderEntry(LibraryOrderEntry libraryOrderEntry, Object value)
 				{
+					PsiManager manager = PsiManager.getInstance(rootFile.getProject());
+					for(VirtualFile v : libraryOrderEntry.getFiles(OrderRootType.CLASSES))
+					{
+						System.out.println(manager.findFile(v));
+					}
 					//if(!libraryOrderEntry.isExported())
 					//	return null;
 					return null;

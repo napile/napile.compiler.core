@@ -112,6 +112,7 @@
 		<documentationProvider implementation="org.napile.idea.plugin.NapileQuickDocumentationProvider"/>
 
 		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.linemarker.NewLineMarkerProvider"/>
+		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.linemarker.RecursiveLineMarkerProvider"/>
 		<iconProvider implementation="org.napile.idea.plugin.NapileIconProvider"/>
 		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetFunctionPresenter" forClass="org.napile.compiler.lang.psi.impl.NapileNamedMethodOrMacroImpl"/>
 		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetClassPresenter" forClass="org.napile.compiler.lang.psi.impl.NapileClassImpl"/>
