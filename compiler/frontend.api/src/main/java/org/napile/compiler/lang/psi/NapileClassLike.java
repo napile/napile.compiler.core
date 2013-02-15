@@ -29,6 +29,7 @@ public interface NapileClassLike extends PsiNameIdentifierOwner, NapileDeclarati
 	NapileClassLike[] EMPTY_ARRAY = new NapileClassLike[0];
 
 	@Nullable
+	@Override
 	Name getNameAsName();
 
 	FqName getFqName();
