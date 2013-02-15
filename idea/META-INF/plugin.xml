@@ -117,7 +117,7 @@
 		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetFunctionPresenter" forClass="org.napile.compiler.lang.psi.impl.NapileNamedMethodOrMacroImpl"/>
 		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetClassPresenter" forClass="org.napile.compiler.lang.psi.impl.NapileClassImpl"/>
 		<elementDescriptionProvider implementation="org.napile.idea.plugin.findUsages.JetElementDescriptionProvider"/>
-		<findUsagesHandlerFactory implementation="org.napile.idea.plugin.findUsages.KotlinFindUsagesHandlerFactory"/>
+		<findUsagesHandlerFactory implementation="org.napile.idea.plugin.findUsages.NapileFindUsagesHandlerFactory"/>
 
 		<codeInsight.implementMethod language="NAPILE" implementationClass="org.napile.idea.plugin.codeInsight.ImplementMethodsHandler"/>
 		<codeInsight.overrideMethod language="NAPILE" implementationClass="org.napile.idea.plugin.codeInsight.OverrideMethodsHandler"/>
