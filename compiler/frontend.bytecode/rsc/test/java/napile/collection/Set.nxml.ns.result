@@ -1,0 +1,5 @@
+package napile.collection
+
+abstract static class Set<E : napile.lang.Any?> : napile.collection.Collection<E>
+{
+}

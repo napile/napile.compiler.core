@@ -1,0 +1,28 @@
+package napile.logging
+
+static class LoggingHandlerDescriptor<T : napile.logging.LoggingHandler> : napile.lang.Any
+{
+	static val EP : napile.module.extension.ExtensionPointName<napile.logging.LoggingHandlerDescriptor<napile.logging.LoggingHandler>>
+	{
+		static get
+		static set
+	}
+
+	val id : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val impl : T
+	{
+		get
+		set
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

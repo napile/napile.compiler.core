@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.io.NativeConsole">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<annotations>
+		<annotation>
+			<code max-locals="0">
+				<instructions>
+					<new-string val="Need rework">
+						<position line="24" column="13" file="napile/io/NativeConsole.ns"/>
+					</new-string>
+					<new-object>
+						<type nullable="false">
+							<class_type name="napile.annotation.Deprecated"/>
+						</type>
+						<parameters>
+							<type nullable="true">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameters>
+					</new-object>
+				</instructions>
+			</code>
+		</annotation>
+	</annotations>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="write">
+		<modifiers>
+			<native/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="writeLine">
+		<modifiers>
+			<native/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+</class>

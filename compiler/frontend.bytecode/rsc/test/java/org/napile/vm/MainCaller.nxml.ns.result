@@ -1,0 +1,10 @@
+package org.napile.vm
+
+static class MainCaller : napile.lang.Any
+{
+	static meth main(val arg : napile.lang.Array<napile.lang.String>) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+}

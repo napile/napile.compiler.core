@@ -1,0 +1,17 @@
+package napile.annotation
+
+@napile.annotation.Annotation
+final static class Lazy : napile.lang.Any
+{
+	val value : napile.annotation.LazyType
+	{
+		get
+		set
+	}
+
+	final this(val value : napile.annotation.LazyType)
+	{
+		// compiled code
+	}
+
+}

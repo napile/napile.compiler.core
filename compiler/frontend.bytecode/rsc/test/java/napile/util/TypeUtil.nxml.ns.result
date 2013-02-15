@@ -1,0 +1,20 @@
+package napile.util
+
+static class TypeUtil : napile.lang.Any
+{
+	static meth getDefaultValue<E : napile.lang.Any?>(val throwIfNotFound : napile.lang.Bool) : E
+	{
+		// compiled code
+	}
+
+	local static native meth getNullAsNotNull<E : napile.lang.Any?>() : E
+	{
+		// compiled code
+	}
+
+	local static native meth getInvalidNotNull<E : napile.lang.Any?>() : E
+	{
+		// compiled code
+	}
+
+}

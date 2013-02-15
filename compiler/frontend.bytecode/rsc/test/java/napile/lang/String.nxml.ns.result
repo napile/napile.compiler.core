@@ -1,0 +1,104 @@
+package napile.lang
+
+@napile.annotation.DefaultValue
+final static class String : napile.collection.Sizeable
+{
+	val array : @napile.annotation.Immutable napile.lang.Array<napile.lang.Char>
+	{
+		get
+		set
+	}
+
+	val count : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	val offset : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	meth getChars(val srcOffset : napile.lang.Int, val srcEnd : napile.lang.Int, val desc : napile.lang.Array<napile.lang.Char>, val descOffset : napile.lang.Int) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth toArray() : napile.lang.Array<napile.lang.Char>
+	{
+		// compiled code
+	}
+
+	meth getBytes() : napile.lang.Array<napile.lang.Byte>
+	{
+		// compiled code
+	}
+
+	meth startsWith(val prefix : napile.lang.String) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth endsWith(val suffix : napile.lang.String) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth indexOf(val str : napile.lang.String) : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	meth indexOf(val str : napile.lang.String, val fromIndex : napile.lang.Int) : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	meth contains(val s : napile.lang.String) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth plus(val a : napile.lang.Any?) : napile.lang.String
+	{
+		// compiled code
+	}
+
+	meth size() : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	meth equals(val o : napile.lang.Any?) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	static meth indexOf(val source : napile.lang.Array<napile.lang.Char>, val sourceOffset : napile.lang.Int, val sourceCount : napile.lang.Int, val target : napile.lang.Array<napile.lang.Char>, val targetOffset : napile.lang.Int, val targetCount : napile.lang.Int, val fromIndex : napile.lang.Int) : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	local meth startsWith(val prefix : napile.lang.String, val toffset : napile.lang.Int) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	final this(val oldArray : @napile.annotation.Immutable napile.lang.Array<napile.lang.Char>)
+	{
+		// compiled code
+	}
+
+	final this(val array : @napile.annotation.Immutable napile.lang.Array<napile.lang.Char>, val offset : napile.lang.Int, val count : napile.lang.Int)
+	{
+		// compiled code
+	}
+
+}

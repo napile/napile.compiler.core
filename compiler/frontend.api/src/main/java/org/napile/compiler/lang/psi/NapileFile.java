@@ -40,4 +40,6 @@ public interface NapileFile extends NapileDeclarationContainer<NapileClass>, Psi
 
 	@NotNull
 	List<NapileImportDirective> getImportDirectives();
+
+	boolean isCompiled();
 }

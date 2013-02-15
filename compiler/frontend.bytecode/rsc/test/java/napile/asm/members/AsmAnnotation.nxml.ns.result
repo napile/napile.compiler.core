@@ -1,0 +1,5 @@
+package napile.asm.members
+
+static class AsmAnnotation : napile.lang.Any
+{
+}

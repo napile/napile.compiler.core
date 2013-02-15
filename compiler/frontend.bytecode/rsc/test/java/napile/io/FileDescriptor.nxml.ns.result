@@ -1,0 +1,55 @@
+package napile.io
+
+static class FileDescriptor : napile.lang.Any
+{
+	static val systemIn : napile.io.FileDescriptor
+	{
+		static get
+		static set
+	}
+
+	static val systemOut : napile.io.FileDescriptor
+	{
+		static get
+		static set
+	}
+
+	static val systemErr : napile.io.FileDescriptor
+	{
+		static get
+		static set
+	}
+
+	var readOnly : napile.lang.Bool
+	{
+		get
+		set
+	}
+
+	var descriptor : napile.lang.Long
+	{
+		get
+		set
+	}
+
+	local static native meth getStdInDescriptor() : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	local static native meth getStdOutDescriptor() : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	local static native meth getStdErrDescriptor() : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

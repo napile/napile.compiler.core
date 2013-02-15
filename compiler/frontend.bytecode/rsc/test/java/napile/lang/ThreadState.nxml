@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.ThreadState">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="NEW$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadState"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.ThreadState.NEW">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="NEW$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.ThreadState"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.ThreadState.NEW">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="NEW">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadState"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="STARTED$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadState"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.ThreadState.STARTED">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="STARTED$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.ThreadState"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.ThreadState.STARTED">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="STARTED">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadState"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="FINISHED$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadState"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.ThreadState.FINISHED">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="FINISHED$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.ThreadState"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.ThreadState.FINISHED">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="FINISHED">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadState"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="8" column="33" file="napile/lang/ThreadState.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.ThreadState"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.ThreadState.NEW">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-object>
+					<position line="10" column="37" file="napile/lang/ThreadState.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.ThreadState"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.ThreadState.STARTED">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-object>
+					<position line="12" column="38" file="napile/lang/ThreadState.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.ThreadState"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.ThreadState.FINISHED">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
+	</method>
+</class>

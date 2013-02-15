@@ -1,0 +1,25 @@
+package napile.logging
+
+static class LoggingLevel : napile.lang.Any
+{
+	static val INFO : napile.logging.LoggingLevel$INFO
+	{
+		static get
+	}
+
+	static val WARN : napile.logging.LoggingLevel$WARN
+	{
+		static get
+	}
+
+	static val ERROR : napile.logging.LoggingLevel$ERROR
+	{
+		static get
+	}
+
+	local final this()
+	{
+		// compiled code
+	}
+
+}

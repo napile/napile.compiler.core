@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.logging.impl.LoggerImpl">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.logging.Logger"/>
+		</type>
+	</extends>
+	<method name="handlers$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.logging.LoggingHandler"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.logging.impl.LoggerImpl.handlers">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.logging.LoggingHandler"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="handlers$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.collection.List"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.logging.LoggingHandler"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.logging.impl.LoggerImpl.handlers">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.logging.LoggingHandler"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="handlers">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.logging.LoggingHandler"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="log">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="level">
+				<type nullable="false">
+					<class_type name="napile.logging.LoggingLevel"/>
+				</type>
+			</parameter>
+			<parameter name="message">
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</parameter>
+			<parameter name="exception">
+				<type nullable="true">
+					<class_type name="napile.lang.Exception"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="8">
+			<instructions>
+				<local-get val="1">
+					<position line="41" column="39" file="napile/logging/impl/LoggerImpl.ns"/>
+				</local-get>
+				<local-get val="2">
+					<position line="41" column="49" file="napile/logging/impl/LoggerImpl.ns"/>
+				</local-get>
+				<is>
+					<position line="41" column="57" file="napile/logging/impl/LoggerImpl.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.String"/>
+					</type>
+				</is>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="7"/>
+				<local-get val="2">
+					<position line="41" column="68" file="napile/logging/impl/LoggerImpl.ns"/>
+				</local-get>
+				<jump val="9"/>
+				<local-get val="2">
+					<position line="41" column="81" file="napile/logging/impl/LoggerImpl.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="41" column="89" file="napile/logging/impl/LoggerImpl.ns"/>
+					<method name="napile.lang.Any.toString">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="3">
+					<position line="41" column="101" file="napile/logging/impl/LoggerImpl.ns"/>
+				</local-get>
+				<new-object>
+					<position line="41" column="24" file="napile/logging/impl/LoggerImpl.ns"/>
+					<type nullable="false">
+						<class_type name="napile.logging.LoggingMessage"/>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.logging.LoggingLevel"/>
+						</type>
+						<type nullable="true">
+							<class_type name="napile.lang.String"/>
+						</type>
+						<type nullable="true">
+							<class_type name="napile.lang.Exception"/>
+						</type>
+					</parameters>
+				</new-object>
+				<local-put val="4"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="43" column="12" file="napile/logging/impl/LoggerImpl.ns"/>
+					<method name="napile.logging.impl.LoggerImpl.handlers$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.logging.LoggingHandler"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-virtual>
+					<method name="napile.collection.List.iterator">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.InheritImmutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.collection.Iterator"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.logging.LoggingHandler"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="6"/>
+				<local-get val="6"/>
+				<invoke-virtual>
+					<method name="napile.collection.Iterator.hasNext">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="27"/>
+				<local-get val="6"/>
+				<invoke-virtual>
+					<method name="napile.collection.Iterator.next">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="5"/>
+				<local-get val="5">
+					<position line="44" column="4" file="napile/logging/impl/LoggerImpl.ns"/>
+				</local-get>
+				<local-get val="4">
+					<position line="44" column="10" file="napile/logging/impl/LoggerImpl.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="44" column="6" file="napile/logging/impl/LoggerImpl.ns"/>
+					<method name="napile.logging.LoggingHandler.log">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="message">
+								<type nullable="false">
+									<class_type name="napile.logging.LoggingMessage"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<jump val="16"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="name">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="32" column="46" file="napile/logging/impl/LoggerImpl.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.logging.LoggingHandler"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.logging.impl.LoggerImpl.handlers">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.logging.LoggingHandler"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="36" column="3" file="napile/logging/impl/LoggerImpl.ns"/>
+					<method name="napile.logging.impl.LoggerImpl.handlers$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.logging.LoggingHandler"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<new-object>
+					<position line="36" column="16" file="napile/logging/impl/LoggerImpl.ns"/>
+					<type nullable="false">
+						<class_type name="napile.logging.impl.handlers.ConsoleLoggingHandler"/>
+					</type>
+				</new-object>
+				<invoke-virtual>
+					<position line="36" column="12" file="napile/logging/impl/LoggerImpl.ns"/>
+					<method name="napile.collection.List.add">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="e">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

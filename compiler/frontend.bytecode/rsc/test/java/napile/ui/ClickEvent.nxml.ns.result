@@ -1,0 +1,10 @@
+package napile.ui
+
+static class ClickEvent : napile.lang.Any
+{
+	final this()
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.Float">
+	<modifiers>
+		<static/>
+		<final/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="this">
+		<modifiers>
+			<final/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

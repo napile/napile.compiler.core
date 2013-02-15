@@ -1,0 +1,2447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.io.FileOutputStream">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.io.OutputStream"/>
+		</type>
+	</extends>
+	<method name="fileSystem$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.io.FileOutputStream.fileSystem">
+						<type nullable="false">
+							<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="fileSystem$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.io.FileOutputStream.fileSystem">
+						<type nullable="false">
+							<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="fileSystem">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="channel$get">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.nio.channels.FileChannel"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.io.FileOutputStream.channel">
+						<type nullable="false">
+							<class_type name="napile.nio.channels.FileChannel"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="channel$set">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.nio.channels.FileChannel"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.io.FileOutputStream.channel">
+						<type nullable="false">
+							<class_type name="napile.nio.channels.FileChannel"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="channel">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.nio.channels.FileChannel"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="fd$get">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileDescriptor"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.io.FileOutputStream.fd">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="fd$set">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.io.FileDescriptor"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.io.FileOutputStream.fd">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="fd">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileDescriptor"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="write">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="buffer">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Byte"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="offset">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="count">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="5">
+			<instructions>
+				<local-get val="2">
+					<position line="112" column="7" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="112" column="16" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="112" column="23" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.lang.Array.length$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.GREATER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="10"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="11"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="15"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="30"/>
+				<local-get val="2">
+					<position line="112" column="33" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="112" column="42" file="napile/io/FileOutputStream.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.LOWER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="24"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="25"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="29"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="30"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="34"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="49"/>
+				<local-get val="3">
+					<position line="112" column="47" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="112" column="55" file="napile/io/FileOutputStream.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.LOWER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="43"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="44"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="48"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="49"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="53"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="71"/>
+				<local-get val="3">
+					<position line="112" column="60" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="112" column="68" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="112" column="75" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.lang.Array.length$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="2">
+					<position line="112" column="84" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="112" column="82" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.lang.Int.minus">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.GREATER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="65"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="66"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="70"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="71"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="79"/>
+				<invoke-static>
+					<position line="113" column="43" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.module.Module.getBundle">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.resource.ResourceBundle"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-string val="luni.13">
+					<position line="113" column="65" file="napile/io/FileOutputStream.ns"/>
+				</new-string>
+				<invoke-static>
+					<position line="9" column="72" file="napile/resource/ResourceBundle.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="113" column="55" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.resource.ResourceBundle.getString">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="key">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+							<parameter name="arg">
+								<type nullable="true">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<new-object>
+					<position line="113" column="10" file="napile/io/FileOutputStream.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.IndexOutOfBoundsException"/>
+					</type>
+					<parameters>
+						<type nullable="true">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</parameters>
+				</new-object>
+				<throw/>
+				<local-get val="3">
+					<position line="115" column="7" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="115" column="16" file="napile/io/FileOutputStream.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<position line="115" column="13" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.lang.Int.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="86"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="118" column="3" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.openCheck">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-static>
+					<position line="119" column="3" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fileSystem$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="119" column="20" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fd$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="119" column="23" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="1">
+					<position line="119" column="35" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<local-get val="2">
+					<position line="119" column="43" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<local-get val="3">
+					<position line="119" column="51" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="119" column="14" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.IFileSystem.write">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="fileDescriptor">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+							<parameter name="bytes">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Byte"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="offset">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="length">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="write">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="oneByte">
+				<type nullable="false">
+					<class_type name="napile.lang.Byte"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="4">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="134" column="3" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.openCheck">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<new-int val="0">
+					<position line="135" column="27" file="napile/io/FileOutputStream.ns"/>
+				</new-int>
+				<new-object>
+					<position line="135" column="15" file="napile/io/FileOutputStream.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Array"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.lang.Byte"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</parameters>
+				</new-object>
+				<local-put val="2"/>
+				<local-get val="2">
+					<position line="136" column="3" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="136" column="9" file="napile/io/FileOutputStream.ns"/>
+				</new-int>
+				<local-get val="1">
+					<position line="136" column="14" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.lang.Array.set">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="value">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="137" column="3" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fileSystem$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="137" column="20" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fd$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="137" column="23" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="2">
+					<position line="137" column="35" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="137" column="42" file="napile/io/FileOutputStream.ns"/>
+				</new-int>
+				<new-int val="1">
+					<position line="137" column="45" file="napile/io/FileOutputStream.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<position line="137" column="14" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.IFileSystem.write">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="fileDescriptor">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+							<parameter name="bytes">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Byte"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="offset">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="length">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="close">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="149" column="16" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.channel$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.nio.channels.FileChannel"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<put-anonym>
+					<position line="150" column="3" file="napile/io/FileOutputStream.ns"/>
+					<require/>
+					<code max-locals="0">
+						<instructions>
+							<local-get val="0"/>
+							<invoke-virtual>
+								<position line="151" column="7" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileOutputStream.channel$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.nio.channels.FileChannel"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-virtual>
+								<position line="151" column="15" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.nio.channels.FileChannel.isOpened">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="28"/>
+							<local-get val="0"/>
+							<invoke-virtual>
+								<position line="151" column="29" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileOutputStream.fd$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.io.FileDescriptor"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-virtual>
+								<position line="151" column="32" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileDescriptor.descriptor$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Long"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<new-int val="0">
+								<position line="151" column="46" file="napile/io/FileOutputStream.ns"/>
+							</new-int>
+							<invoke-virtual>
+								<method name="napile.lang.Long.compareTo">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.condition.CompareResult"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="object">
+											<type nullable="false">
+												<class_type name="napile.lang.Int"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<dup/>
+							<invoke-static>
+								<method name="napile.condition.CompareResult.GREATER$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.condition.CompareResult"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<invoke-virtual>
+								<method name="napile.lang.Any.equals">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="object">
+											<type nullable="true">
+												<class_type name="napile.lang.Any"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="17"/>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump val="24"/>
+							<invoke-static>
+								<method name="napile.condition.CompareResult.EQUAL$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.condition.CompareResult"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<invoke-virtual>
+								<method name="napile.lang.Any.equals">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="object">
+											<type nullable="true">
+												<class_type name="napile.lang.Any"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="23"/>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump val="24"/>
+							<invoke-static>
+								<method name="napile.lang.Bool.FALSE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="28"/>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump val="29"/>
+							<invoke-static>
+								<method name="napile.lang.Bool.FALSE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="34"/>
+							<local-get val="0"/>
+							<invoke-virtual>
+								<position line="152" column="5" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileOutputStream.channel$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.nio.channels.FileChannel"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-virtual>
+								<position line="152" column="13" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.nio.channels.FileChannel.close">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Null"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<return val="1"/>
+						</instructions>
+					</code>
+				</put-anonym>
+				<invoke-static>
+					<position line="149" column="3" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.lang.Any.synchronized">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="obj">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+							<parameter name="fun">
+								<type nullable="false">
+									<method_type>
+										<return_type>
+											<type nullable="false">
+												<class_type name="napile.lang.Null"/>
+											</type>
+										</return_type>
+									</method_type>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<local-get val="0"/>
+				<put-anonym>
+					<position line="156" column="3" file="napile/io/FileOutputStream.ns"/>
+					<require/>
+					<code max-locals="0">
+						<instructions>
+							<local-get val="0"/>
+							<invoke-virtual>
+								<position line="157" column="7" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileOutputStream.fd$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.io.FileDescriptor"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-virtual>
+								<position line="157" column="10" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileDescriptor.descriptor$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Long"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<new-int val="0">
+								<position line="157" column="24" file="napile/io/FileOutputStream.ns"/>
+							</new-int>
+							<invoke-virtual>
+								<method name="napile.lang.Long.compareTo">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.condition.CompareResult"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="object">
+											<type nullable="false">
+												<class_type name="napile.lang.Int"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<dup/>
+							<invoke-static>
+								<method name="napile.condition.CompareResult.GREATER$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.condition.CompareResult"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<invoke-virtual>
+								<method name="napile.lang.Any.equals">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="object">
+											<type nullable="true">
+												<class_type name="napile.lang.Any"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="12"/>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump val="19"/>
+							<invoke-static>
+								<method name="napile.condition.CompareResult.EQUAL$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.condition.CompareResult"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<invoke-virtual>
+								<method name="napile.lang.Any.equals">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="object">
+											<type nullable="true">
+												<class_type name="napile.lang.Any"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="18"/>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump val="19"/>
+							<invoke-static>
+								<method name="napile.lang.Bool.FALSE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<invoke-static>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="32"/>
+							<invoke-static>
+								<position line="159" column="5" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileOutputStream.fileSystem$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<local-get val="0"/>
+							<invoke-virtual>
+								<position line="159" column="22" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileOutputStream.fd$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.io.FileDescriptor"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-virtual>
+								<position line="159" column="25" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileDescriptor.descriptor$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Long"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-virtual>
+								<position line="159" column="16" file="napile/io/FileOutputStream.ns"/>
+								<method name="org.apache.harmony.luni.platform.IFileSystem.close">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Null"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="fileDescriptor">
+											<modifiers>
+												<mutable/>
+											</modifiers>
+											<type nullable="false">
+												<class_type name="napile.lang.Long"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<local-get val="0"/>
+							<invoke-virtual>
+								<position line="160" column="5" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileOutputStream.fd$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.io.FileDescriptor"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<new-int val="1">
+								<position line="160" column="22" file="napile/io/FileOutputStream.ns"/>
+							</new-int>
+							<invoke-virtual>
+								<position line="160" column="21" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.lang.Int.minus">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Int"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-virtual>
+								<position line="160" column="19" file="napile/io/FileOutputStream.ns"/>
+								<method name="napile.io.FileDescriptor.descriptor$set">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Long"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="value">
+											<modifiers>
+												<final/>
+											</modifiers>
+											<type nullable="false">
+												<class_type name="napile.lang.Long"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<pop>
+								<position line="160" column="19" file="napile/io/FileOutputStream.ns"/>
+							</pop>
+							<return val="1"/>
+						</instructions>
+					</code>
+				</put-anonym>
+				<invoke-static>
+					<position line="155" column="3" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.lang.Any.synchronized">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="obj">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+							<parameter name="fun">
+								<type nullable="false">
+									<method_type>
+										<return_type>
+											<type nullable="false">
+												<class_type name="napile.lang.Null"/>
+											</type>
+										</return_type>
+									</method_type>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="openCheck">
+		<modifiers>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="167" column="7" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fd$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="167" column="10" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<new-int val="0">
+					<position line="167" column="23" file="napile/io/FileOutputStream.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<method name="napile.lang.Long.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.LOWER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="11"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="12"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="17"/>
+				<invoke-static>
+					<position line="8" column="31" file="napile/io/IOException.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="168" column="10" file="napile/io/FileOutputStream.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.IOException"/>
+					</type>
+					<parameters>
+						<type nullable="true">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</parameters>
+				</new-object>
+				<throw/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="file">
+				<type nullable="false">
+					<class_type name="napile.io.File"/>
+				</type>
+			</parameter>
+			<parameter name="append">
+				<type nullable="false">
+					<class_type name="napile.lang.Bool"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="4">
+			<instructions>
+				<invoke-static>
+					<position line="64" column="19" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.SecurityManager.INSTANCE$get">
+						<return_type>
+							<type nullable="true">
+								<class_type name="napile.io.SecurityManager"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<local-get val="1">
+					<position line="64" column="40" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="64" column="45" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.File.path$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="64" column="29" file="napile/io/FileOutputStream.ns"/>
+					<nullable/>
+					<method name="napile.io.SecurityManager.checkWrite">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="path">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="0"/>
+				<new-object>
+					<position line="66" column="8" file="napile/io/FileOutputStream.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.FileDescriptor"/>
+					</type>
+				</new-object>
+				<invoke-virtual>
+					<position line="66" column="6" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fd$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.io.FileDescriptor"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="66" column="6" file="napile/io/FileOutputStream.ns"/>
+				</pop>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="67" column="3" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fd$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="67" column="19" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fileSystem$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<local-get val="1">
+					<position line="67" column="35" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-static>
+					<position line="67" column="51" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="67" column="40" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.File.properPath">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.Byte"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="internal">
+								<type nullable="false">
+									<class_type name="napile.lang.Bool"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="2">
+					<position line="67" column="61" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="19"/>
+				<invoke-static>
+					<position line="67" column="81" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="20"/>
+				<invoke-static>
+					<position line="67" column="107" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="67" column="30" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.IFileSystem.open">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="fileName">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Byte"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="mode">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="67" column="17" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="67" column="17" file="napile/io/FileOutputStream.ns"/>
+				</pop>
+				<local-get val="0"/>
+				<local-get val="0"/>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="68" column="53" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.fd$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="68" column="56" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="2">
+					<position line="68" column="71" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="33"/>
+				<invoke-static>
+					<position line="68" column="91" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="34"/>
+				<invoke-static>
+					<position line="68" column="117" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<position line="68" column="32" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.nio.FileChannelFactory.getFileChannel">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.nio.channels.FileChannel"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="stream">
+								<type nullable="false">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+							<parameter name="fd">
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+							<parameter name="mode">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="68" column="11" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.channel$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.nio.channels.FileChannel"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.nio.channels.FileChannel"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="68" column="11" file="napile/io/FileOutputStream.ns"/>
+				</pop>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fd">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.io.FileDescriptor"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<invoke-virtual>
+					<method name="napile.io.FileOutputStream.fd$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.io.FileDescriptor"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<invoke-static>
+					<position line="87" column="19" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.SecurityManager.INSTANCE$get">
+						<return_type>
+							<type nullable="true">
+								<class_type name="napile.io.SecurityManager"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<local-get val="1">
+					<position line="87" column="40" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="87" column="29" file="napile/io/FileOutputStream.ns"/>
+					<nullable/>
+					<method name="napile.io.SecurityManager.checkWrite">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="fd">
+								<type nullable="false">
+									<class_type name="napile.io.FileDescriptor"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="0"/>
+				<local-get val="0"/>
+				<local-get val="1">
+					<position line="88" column="53" file="napile/io/FileOutputStream.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="88" column="56" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="88" column="80" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<position line="88" column="32" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.nio.FileChannelFactory.getFileChannel">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.nio.channels.FileChannel"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="stream">
+								<type nullable="false">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+							<parameter name="fd">
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+							<parameter name="mode">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="88" column="11" file="napile/io/FileOutputStream.ns"/>
+					<method name="napile.io.FileOutputStream.channel$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.nio.channels.FileChannel"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.nio.channels.FileChannel"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="88" column="11" file="napile/io/FileOutputStream.ns"/>
+				</pop>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<invoke-static>
+					<position line="39" column="41" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.Platform.getFileSystem">
+						<return_type>
+							<type nullable="false">
+								<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-static-variable>
+					<variable name="napile.io.FileOutputStream.fileSystem">
+						<type nullable="false">
+							<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
+	</method>
+</class>

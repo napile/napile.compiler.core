@@ -1,0 +1,5 @@
+package napile.ui
+
+abstract static class Component : napile.lang.Any
+{
+}

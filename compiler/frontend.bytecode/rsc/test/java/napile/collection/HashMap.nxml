@@ -1,0 +1,1184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.collection.HashMap">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<type_parameters>
+		<type_parameter name="K">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+			<type_parameter_constructors/>
+		</type_parameter>
+		<type_parameter name="V">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+			<type_parameter_constructors/>
+		</type_parameter>
+	</type_parameters>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.collection.Map"/>
+			<type_arguments>
+				<type nullable="false">
+					<type_parameter_value_type name="K"/>
+				</type>
+				<type nullable="false">
+					<type_parameter_value_type name="V"/>
+				</type>
+			</type_arguments>
+		</type>
+	</extends>
+	<method name="keys$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<type_parameter_value_type name="K"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.collection.HashMap.keys">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<type_parameter_value_type name="K"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="keys$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.collection.List"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="K"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.keys">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<type_parameter_value_type name="K"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="keys">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<type_parameter_value_type name="K"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="values$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<type_parameter_value_type name="V"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.collection.HashMap.values">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<type_parameter_value_type name="V"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="values$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.collection.List"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="V"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.values">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<type_parameter_value_type name="V"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="values">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<type_parameter_value_type name="V"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="size$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.collection.HashMap.size">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="size$set">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.size">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="size">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="entrySet">
+		<return_type>
+			<type nullable="false">
+				<annotations>
+					<annotation>
+						<code max-locals="0">
+							<instructions>
+								<new-object>
+									<type nullable="false">
+										<class_type name="napile.annotation.InheritImmutable"/>
+									</type>
+								</new-object>
+							</instructions>
+						</code>
+					</annotation>
+				</annotations>
+				<class_type name="napile.collection.Set"/>
+				<type_arguments>
+					<type nullable="false">
+						<multi_type>
+							<variable name="key">
+								<return_type>
+									<type nullable="false">
+										<type_parameter_value_type name="K"/>
+									</type>
+								</return_type>
+							</variable>
+							<variable name="value">
+								<return_type>
+									<type nullable="false">
+										<type_parameter_value_type name="V"/>
+									</type>
+								</return_type>
+							</variable>
+						</multi_type>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<invoke-static>
+					<position line="8" column="31" file="napile/lang/UnsupportedOperationException.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="38" column="9" file="napile/collection/HashMap.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.UnsupportedOperationException"/>
+					</type>
+					<parameters>
+						<type nullable="true">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</parameters>
+				</new-object>
+				<throw/>
+			</instructions>
+		</code>
+	</method>
+	<method name="put">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="key">
+				<type nullable="false">
+					<type_parameter_value_type name="K"/>
+				</type>
+			</parameter>
+			<parameter name="value">
+				<type nullable="false">
+					<type_parameter_value_type name="V"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="6">
+			<instructions>
+				<new-int val="0">
+					<position line="43" column="15" file="napile/collection/HashMap.ns"/>
+				</new-int>
+				<local-put val="3"/>
+				<local-get val="3">
+					<position line="44" column="9" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="44" column="17" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.keys$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="K"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-virtual>
+					<position line="44" column="22" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.Sizeable.size">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.LOWER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="13"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="14"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="38"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="46" column="12" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.keys$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="K"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="3">
+					<position line="46" column="17" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.collection.List.get">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="4"/>
+				<local-get val="4">
+					<position line="47" column="7" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="47" column="12" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="47" column="9" file="napile/collection/HashMap.ns"/>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="33"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="49" column="5" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.values$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="V"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="3">
+					<position line="49" column="12" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<local-get val="2">
+					<position line="49" column="21" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.collection.List.set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="e">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+				<local-get val="3">
+					<position line="53" column="4" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<dup/>
+				<invoke-virtual>
+					<position line="53" column="10" file="napile/collection/HashMap.ns"/>
+					<method name="napile.lang.Int.inc">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="3">
+					<position line="53" column="4" file="napile/collection/HashMap.ns"/>
+				</local-put>
+				<jump val="2"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="56" column="3" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.keys$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="K"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="1">
+					<position line="56" column="12" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="56" column="8" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.List.add">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="e">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="57" column="3" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.values$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="V"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="2">
+					<position line="57" column="14" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="57" column="10" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.List.add">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="e">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="0"/>
+				<dup/>
+				<invoke-special>
+					<position line="58" column="3" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.size$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<dup1x1/>
+				<invoke-virtual>
+					<position line="58" column="8" file="napile/collection/HashMap.ns"/>
+					<method name="napile.lang.Int.inc">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-special>
+					<method name="napile.collection.HashMap.size$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<pop/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="get">
+		<return_type>
+			<type nullable="false">
+				<type_parameter_value_type name="V"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="key">
+				<type nullable="false">
+					<type_parameter_value_type name="K"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="5">
+			<instructions>
+				<new-int val="0">
+					<position line="63" column="15" file="napile/collection/HashMap.ns"/>
+				</new-int>
+				<local-put val="2"/>
+				<local-get val="2">
+					<position line="64" column="9" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="64" column="17" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.keys$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="K"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-virtual>
+					<position line="64" column="22" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.Sizeable.size">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.LOWER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="13"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="14"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="36"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="66" column="12" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.keys$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="K"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="2">
+					<position line="66" column="17" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.collection.List.get">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="3"/>
+				<local-get val="3">
+					<position line="67" column="7" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="67" column="12" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="67" column="9" file="napile/collection/HashMap.ns"/>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="31"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="68" column="12" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.values$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="V"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="2">
+					<position line="68" column="19" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.collection.List.get">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<return val="1"/>
+				<local-get val="2">
+					<position line="70" column="4" file="napile/collection/HashMap.ns"/>
+				</local-get>
+				<dup/>
+				<invoke-virtual>
+					<position line="70" column="10" file="napile/collection/HashMap.ns"/>
+					<method name="napile.lang.Int.inc">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="2">
+					<position line="70" column="4" file="napile/collection/HashMap.ns"/>
+				</local-put>
+				<jump val="2"/>
+				<invoke-static>
+					<position line="73" column="35" file="napile/collection/HashMap.ns"/>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<position line="73" column="19" file="napile/collection/HashMap.ns"/>
+					<method name="napile.util.TypeUtil.getDefaultValue">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="throwIfNotFound">
+								<type nullable="false">
+									<class_type name="napile.lang.Bool"/>
+								</type>
+							</parameter>
+						</parameters>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="V"/>
+							</type>
+						</type_arguments>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="size">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="76" column="31" file="napile/collection/HashMap.ns"/>
+					<method name="napile.collection.HashMap.size$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<type_parameters>
+			<type_parameter name="K">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+				<type_parameter_constructors/>
+			</type_parameter>
+			<type_parameter name="V">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+				<type_parameter_constructors/>
+			</type_parameter>
+		</type_parameters>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="29" column="29" file="napile/collection/HashMap.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="K"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.keys">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<type_parameter_value_type name="K"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="30" column="31" file="napile/collection/HashMap.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="V"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.values">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<type_parameter_value_type name="V"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="32" column="25" file="napile/collection/HashMap.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.size">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

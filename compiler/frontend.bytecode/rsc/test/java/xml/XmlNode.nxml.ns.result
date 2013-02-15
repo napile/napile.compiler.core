@@ -1,0 +1,7 @@
+package xml
+
+abstract static class XmlNode : napile.lang.Any
+{
+	abstract meth getName() : napile.lang.String
+
+}

@@ -1,0 +1,85 @@
+package napile.reflect
+
+final static class Class<E : napile.lang.Any?> : napile.reflect.Member
+{
+	val variables : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Variable>
+	{
+		get
+		set
+	}
+
+	val constructors : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Constructor>
+	{
+		get
+		set
+	}
+
+	val methods : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Method>
+	{
+		get
+		set
+	}
+
+	val macros : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Macro>
+	{
+		get
+		set
+	}
+
+	val superClasses : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Class<napile.lang.Any>>
+	{
+		get
+		set
+	}
+
+	local native meth getVariables() : napile.lang.Array<napile.reflect.Variable>
+	{
+		// compiled code
+	}
+
+	local native meth getMacros() : napile.lang.Array<napile.reflect.Macro>
+	{
+		// compiled code
+	}
+
+	local native meth getMethods() : napile.lang.Array<napile.reflect.Method>
+	{
+		// compiled code
+	}
+
+	local native meth getConstructors() : napile.lang.Array<napile.reflect.Constructor>
+	{
+		// compiled code
+	}
+
+	local native meth getSuperClasses() : napile.lang.Array<napile.reflect.Class<napile.lang.Any>>
+	{
+		// compiled code
+	}
+
+	native meth getXmlDoc() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	meth findMethod(val name : napile.lang.String, val parameters : @napile.annotation.Immutable napile.lang.Array<napile.asm.members.AsmType>, val parent : napile.lang.Bool) : napile.reflect.Method?
+	{
+		// compiled code
+	}
+
+	meth findStaticMethod(val name : napile.lang.String, val parameters : @napile.annotation.Immutable napile.lang.Array<napile.asm.members.AsmType>) : napile.reflect.Method?
+	{
+		// compiled code
+	}
+
+	local meth isValidMethodLike(val methodLike : napile.reflect.MethodLike, val name : napile.lang.String, val parameters : @napile.annotation.Immutable napile.lang.Array<napile.asm.members.AsmType>) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	local final this(val owner : napile.reflect.Class<napile.lang.Any>?, val name : napile.lang.String, val modifiers : napile.lang.Array<napile.reflect.Modifier>, val annotations : napile.lang.Array<napile.lang.Any>)
+	{
+		// compiled code
+	}
+
+}

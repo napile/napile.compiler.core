@@ -1,0 +1,20 @@
+package napile.reflect
+
+static class Variable : napile.reflect.Member
+{
+	meth getStaticValue() : napile.lang.Any?
+	{
+		// compiled code
+	}
+
+	meth getValue(val object : napile.lang.Any) : napile.lang.Any?
+	{
+		// compiled code
+	}
+
+	covered final this(val owner : napile.reflect.Class<napile.lang.Any>?, val name : napile.lang.String, val modifiers : napile.lang.Array<napile.reflect.Modifier>, val annotations : napile.lang.Array<napile.lang.Any>)
+	{
+		// compiled code
+	}
+
+}

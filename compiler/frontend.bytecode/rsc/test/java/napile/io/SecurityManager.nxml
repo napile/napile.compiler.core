@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.io.SecurityManager">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="INSTANCE$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="true">
+				<class_type name="napile.io.SecurityManager"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.io.SecurityManager.INSTANCE">
+						<type nullable="true">
+							<class_type name="napile.io.SecurityManager"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="INSTANCE$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="true">
+					<class_type name="napile.io.SecurityManager"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.io.SecurityManager.INSTANCE">
+						<type nullable="true">
+							<class_type name="napile.io.SecurityManager"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="INSTANCE">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="true">
+				<class_type name="napile.io.SecurityManager"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="checkRead">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="path">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="checkWrite">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="path">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="checkWrite">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fd">
+				<type nullable="false">
+					<class_type name="napile.io.FileDescriptor"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<invoke-static>
+					<position line="24" column="43" file="napile/io/SecurityManager.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-static-variable>
+					<variable name="napile.io.SecurityManager.INSTANCE">
+						<type nullable="true">
+							<class_type name="napile.io.SecurityManager"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
+	</method>
+</class>

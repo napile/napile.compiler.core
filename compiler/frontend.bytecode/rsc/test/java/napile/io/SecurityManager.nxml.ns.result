@@ -1,0 +1,26 @@
+package napile.io
+
+static class SecurityManager : napile.lang.Any
+{
+	static val INSTANCE : napile.io.SecurityManager?
+	{
+		static get
+		static set
+	}
+
+	meth checkRead(val path : napile.lang.String) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth checkWrite(val path : napile.lang.String) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth checkWrite(val fd : napile.io.FileDescriptor) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+}

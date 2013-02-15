@@ -1,0 +1,45 @@
+package napile.lang
+
+static class StackTraceElement : napile.lang.Any
+{
+	val className : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val methodName : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val fileName : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val line : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	val column : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	final this(val className : napile.lang.String, val methodName : napile.lang.String, val fileName : napile.lang.String, val line : napile.lang.Int, val column : napile.lang.Int)
+	{
+		// compiled code
+	}
+
+}

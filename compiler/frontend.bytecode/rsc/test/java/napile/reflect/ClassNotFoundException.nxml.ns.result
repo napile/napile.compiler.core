@@ -1,0 +1,10 @@
+package napile.reflect
+
+static class ClassNotFoundException : napile.lang.Exception
+{
+	final this(val message : napile.lang.String?)
+	{
+		// compiled code
+	}
+
+}

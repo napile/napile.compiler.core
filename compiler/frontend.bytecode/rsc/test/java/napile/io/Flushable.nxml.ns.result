@@ -1,0 +1,7 @@
+package napile.io
+
+abstract static class Flushable : napile.lang.Any
+{
+	abstract meth flush() : napile.lang.Null
+
+}

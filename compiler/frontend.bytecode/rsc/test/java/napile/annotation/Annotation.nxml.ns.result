@@ -1,0 +1,11 @@
+package napile.annotation
+
+@napile.annotation.Annotation
+final static class Annotation : napile.lang.Any
+{
+	final this(val cond : napile.condition.Condition<napile.lang.Any>?)
+	{
+		// compiled code
+	}
+
+}

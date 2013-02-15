@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="org.napile.vm.MainCaller">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="main">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="arg">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="4">
+			<instructions>
+				<local-get val="0">
+					<position line="31" column="6" file="org/napile/vm/MainCaller.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="31" column="10" file="org/napile/vm/MainCaller.ns"/>
+					<method name="napile.lang.Array.length$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<new-int val="0">
+					<position line="31" column="20" file="org/napile/vm/MainCaller.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<position line="31" column="17" file="org/napile/vm/MainCaller.ns"/>
+					<method name="napile.lang.Int.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="9"/>
+				<new-string val="Class name - expected">
+					<position line="32" column="25" file="org/napile/vm/MainCaller.ns"/>
+				</new-string>
+				<new-object>
+					<position line="32" column="10" file="org/napile/vm/MainCaller.ns"/>
+					<type nullable="false">
+						<class_type name="org.napile.vm.VmStartupError"/>
+					</type>
+					<parameters>
+						<type nullable="true">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</parameters>
+				</new-object>
+				<throw/>
+				<local-get val="0">
+					<position line="34" column="37" file="org/napile/vm/MainCaller.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="34" column="41" file="org/napile/vm/MainCaller.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<method name="napile.lang.Array.get">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="34" column="27" file="org/napile/vm/MainCaller.ns"/>
+					<method name="napile.reflect.ReflectUtil.findClass">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.reflect.Class"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.Any"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="name">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<local-put val="1"/>
+				<local-get val="1">
+					<position line="35" column="20" file="org/napile/vm/MainCaller.ns"/>
+				</local-get>
+				<new-string val="main">
+					<position line="35" column="43" file="org/napile/vm/MainCaller.ns"/>
+				</new-string>
+				<new-int val="1"/>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.lang.Array"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.asm.members.AsmType"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</parameters>
+				</new-object>
+				<new-int val="0"/>
+				<invoke-static>
+					<position line="35" column="59" file="org/napile/vm/MainCaller.ns"/>
+					<method name="napile.asm.AsmUtil.toAsmType">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.asm.members.AsmType"/>
+							</type>
+						</return_type>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.String"/>
+									</type>
+								</type_arguments>
+							</type>
+						</type_arguments>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Array.set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.asm.members.AsmType"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="element">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="35" column="26" file="org/napile/vm/MainCaller.ns"/>
+					<method name="napile.reflect.Class.findStaticMethod">
+						<return_type>
+							<type nullable="true">
+								<class_type name="napile.reflect.Method"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="name">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+							<parameter name="parameters">
+								<type nullable="false">
+									<annotations>
+										<annotation>
+											<code max-locals="0">
+												<instructions>
+													<new-object>
+														<type nullable="false">
+															<class_type name="napile.annotation.Immutable"/>
+														</type>
+													</new-object>
+												</instructions>
+											</code>
+										</annotation>
+									</annotations>
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.asm.members.AsmType"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="2"/>
+				<local-get val="2">
+					<position line="36" column="6" file="org/napile/vm/MainCaller.ns"/>
+				</local-get>
+				<invoke-static>
+					<position line="36" column="20" file="org/napile/vm/MainCaller.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="36" column="17" file="org/napile/vm/MainCaller.ns"/>
+					<method name="napile.reflect.Method.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="31"/>
+				<new-string val="'static meth main(val arg : Array&lt;String&gt;)' method expected">
+					<position line="37" column="25" file="org/napile/vm/MainCaller.ns"/>
+				</new-string>
+				<new-object>
+					<position line="37" column="10" file="org/napile/vm/MainCaller.ns"/>
+					<type nullable="false">
+						<class_type name="org.napile.vm.VmStartupError"/>
+					</type>
+					<parameters>
+						<type nullable="true">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</parameters>
+				</new-object>
+				<throw/>
+				<invoke-static>
+					<position line="77" column="34" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<position line="77" column="73" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-anonym>
+					<position line="39" column="23" file="org/napile/vm/MainCaller.ns"/>
+					<require>
+						<local from="2" to="0"/>
+						<local from="0" to="1"/>
+					</require>
+					<code max-locals="3">
+						<instructions>
+							<local-get val="0">
+								<position line="42" column="5" file="org/napile/vm/MainCaller.ns"/>
+							</local-get>
+							<dup>
+								<position line="42" column="15" file="org/napile/vm/MainCaller.ns"/>
+							</dup>
+							<invoke-static>
+								<position line="42" column="15" file="org/napile/vm/MainCaller.ns"/>
+								<method name="napile.lang.Null.INSTANCE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Null"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<invoke-virtual>
+								<position line="42" column="15" file="org/napile/vm/MainCaller.ns"/>
+								<method name="napile.lang.Any.equals">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="object">
+											<type nullable="true">
+												<class_type name="napile.lang.Any"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<invoke-static>
+								<position line="42" column="15" file="org/napile/vm/MainCaller.ns"/>
+								<method name="napile.lang.Bool.TRUE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<jump-if val="9"/>
+							<new-string val="'mainMethod' cant be null">
+								<position line="42" column="15" file="org/napile/vm/MainCaller.ns"/>
+							</new-string>
+							<new-object>
+								<position line="42" column="15" file="org/napile/vm/MainCaller.ns"/>
+								<type nullable="false">
+									<class_type name="napile.lang.NullPointerException"/>
+								</type>
+								<parameters>
+									<type nullable="true">
+										<class_type name="napile.lang.String"/>
+									</type>
+								</parameters>
+							</new-object>
+							<throw>
+								<position line="42" column="15" file="org/napile/vm/MainCaller.ns"/>
+							</throw>
+							<local-get val="1">
+								<position line="42" column="53" file="org/napile/vm/MainCaller.ns"/>
+							</local-get>
+							<new-int val="1">
+								<position line="42" column="58" file="org/napile/vm/MainCaller.ns"/>
+							</new-int>
+							<local-get val="1">
+								<position line="42" column="61" file="org/napile/vm/MainCaller.ns"/>
+							</local-get>
+							<invoke-virtual>
+								<position line="42" column="65" file="org/napile/vm/MainCaller.ns"/>
+								<method name="napile.lang.Array.length$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Int"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<invoke-static>
+								<position line="42" column="41" file="org/napile/vm/MainCaller.ns"/>
+								<method name="napile.lang.ArrayUtil.copyOfRange">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Array"/>
+											<type_arguments>
+												<type nullable="false">
+													<type_parameter_value_type name="E"/>
+												</type>
+											</type_arguments>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="original">
+											<type nullable="false">
+												<class_type name="napile.lang.Array"/>
+												<type_arguments>
+													<type nullable="false">
+														<type_parameter_value_type name="E"/>
+													</type>
+												</type_arguments>
+											</type>
+										</parameter>
+										<parameter name="from">
+											<type nullable="false">
+												<class_type name="napile.lang.Int"/>
+											</type>
+										</parameter>
+										<parameter name="to">
+											<type nullable="false">
+												<class_type name="napile.lang.Int"/>
+											</type>
+										</parameter>
+									</parameters>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.String"/>
+										</type>
+									</type_arguments>
+								</method>
+							</invoke-static>
+							<invoke-virtual>
+								<position line="42" column="18" file="org/napile/vm/MainCaller.ns"/>
+								<method name="napile.reflect.Method.invokeStatic">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Array"/>
+											<type_arguments>
+												<type nullable="true">
+													<class_type name="napile.lang.Any"/>
+												</type>
+											</type_arguments>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="arguments">
+											<type nullable="false">
+												<class_type name="napile.lang.Array"/>
+												<type_arguments>
+													<type nullable="true">
+														<class_type name="napile.lang.Any"/>
+													</type>
+												</type_arguments>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<jump val="19"/>
+							<local-get val="2">
+								<position line="46" column="5" file="org/napile/vm/MainCaller.ns"/>
+							</local-get>
+							<invoke-virtual>
+								<position line="46" column="7" file="org/napile/vm/MainCaller.ns"/>
+								<method name="napile.lang.Exception.printStackTrace">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Null"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<jump val="19"/>
+							<invoke-static>
+								<position line="48" column="4" file="org/napile/vm/MainCaller.ns"/>
+								<method name="napile.lang.Null.INSTANCE$get">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Null"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-static>
+							<return val="1"/>
+						</instructions>
+						<try-catch-blocks>
+							<try-catch-block>
+								<try start_index="0" end_index="16"/>
+								<catch start_index="16" end_index="19" variable_index="2">
+									<type nullable="false">
+										<class_type name="napile.lang.Exception"/>
+									</type>
+								</catch>
+							</try-catch-block>
+						</try-catch-blocks>
+					</code>
+				</put-anonym>
+				<new-object>
+					<position line="39" column="16" file="org/napile/vm/MainCaller.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Thread"/>
+					</type>
+					<parameters>
+						<type nullable="true">
+							<class_type name="napile.lang.String"/>
+						</type>
+						<type nullable="true">
+							<class_type name="napile.lang.ThreadGroup"/>
+						</type>
+						<type nullable="false">
+							<method_type>
+								<return_type>
+									<type nullable="false">
+										<class_type name="napile.lang.Null"/>
+									</type>
+								</return_type>
+							</method_type>
+						</type>
+					</parameters>
+				</new-object>
+				<local-put val="3"/>
+				<local-get val="3">
+					<position line="51" column="3" file="org/napile/vm/MainCaller.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="51" column="10" file="org/napile/vm/MainCaller.ns"/>
+					<method name="napile.lang.Thread.start">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

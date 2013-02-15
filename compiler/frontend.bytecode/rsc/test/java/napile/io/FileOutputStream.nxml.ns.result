@@ -1,0 +1,53 @@
+package napile.io
+
+static class FileOutputStream : napile.io.OutputStream
+{
+	static val fileSystem : org.apache.harmony.luni.platform.IFileSystem
+	{
+		static get
+		static set
+	}
+
+	final val channel : napile.nio.channels.FileChannel
+	{
+		final get
+		final set
+	}
+
+	final val fd : napile.io.FileDescriptor
+	{
+		final get
+		final set
+	}
+
+	meth write(var buffer : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var count : napile.lang.Int) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth write(val oneByte : napile.lang.Byte) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth close() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	local meth openCheck() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this(val file : napile.io.File, val append : napile.lang.Bool)
+	{
+		// compiled code
+	}
+
+	final this(val fd : napile.io.FileDescriptor)
+	{
+		// compiled code
+	}
+
+}

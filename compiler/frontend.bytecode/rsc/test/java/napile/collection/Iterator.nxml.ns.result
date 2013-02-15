@@ -1,0 +1,11 @@
+package napile.collection
+
+abstract static class Iterator<E : napile.lang.Any?> : napile.lang.Any
+{
+	abstract meth hasNext() : napile.lang.Bool
+
+	abstract meth next() : E
+
+	abstract meth remove() : napile.lang.Null
+
+}

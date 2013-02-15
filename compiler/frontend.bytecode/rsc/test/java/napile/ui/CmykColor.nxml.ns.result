@@ -1,0 +1,15 @@
+package napile.ui
+
+static class CmykColor : napile.ui.Color
+{
+	meth toRgbColor() : napile.ui.RgbColor
+	{
+		// compiled code
+	}
+
+	meth toCmykColor() : napile.ui.CmykColor
+	{
+		// compiled code
+	}
+
+}

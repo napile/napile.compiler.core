@@ -1,0 +1,42 @@
+package napile.io
+
+static class File : napile.lang.Any
+{
+	val path : napile.lang.String
+	{
+		get
+		local set
+	}
+
+	var properPath : napile.lang.Array<napile.lang.Byte>?
+	{
+		get
+		set
+	}
+
+	meth exists() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	local native meth existsImpl(val array : napile.lang.Array<napile.lang.Byte>) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	local meth fixSlashes(val cName : napile.lang.String) : napile.lang.String
+	{
+		// compiled code
+	}
+
+	covered meth properPath(val internal : napile.lang.Bool) : napile.lang.Array<napile.lang.Byte>
+	{
+		// compiled code
+	}
+
+	final this(val cName : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.web.WebPage">
+	<modifiers>
+		<static/>
+		<abstract/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="renderPage">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.RootPanel"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="session">
+				<type nullable="false">
+					<class_type name="napile.web.WebSession"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+</class>

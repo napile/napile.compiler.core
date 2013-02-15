@@ -1,0 +1,37 @@
+package napile.lang
+
+static class Exception : napile.lang.Any
+{
+	final val message : napile.lang.String?
+	{
+		final get
+		final set
+	}
+
+	final val stack : napile.lang.Array<napile.lang.StackTraceElement>
+	{
+		final get
+		final set
+	}
+
+	local native meth generateStack() : napile.lang.Array<napile.lang.StackTraceElement>
+	{
+		// compiled code
+	}
+
+	meth printStackTrace(val b : napile.lang.StringBuilder) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth printStackTrace() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this(val message : napile.lang.String?)
+	{
+		// compiled code
+	}
+
+}

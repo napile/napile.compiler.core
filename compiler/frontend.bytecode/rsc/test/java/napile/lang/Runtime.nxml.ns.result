@@ -1,0 +1,21 @@
+package napile.lang
+
+static class Runtime : napile.lang.Any
+{
+	static val INSTANCE : napile.lang.Runtime
+	{
+		static get
+		static set
+	}
+
+	native meth exit(val code : napile.lang.Int) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	local final this()
+	{
+		// compiled code
+	}
+
+}

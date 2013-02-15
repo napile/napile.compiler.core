@@ -1,0 +1,7 @@
+package xml
+
+abstract static class XmlElementHolder : napile.lang.Any
+{
+	abstract meth get(val elementName : napile.lang.String) : xml.XmlElement?
+
+}

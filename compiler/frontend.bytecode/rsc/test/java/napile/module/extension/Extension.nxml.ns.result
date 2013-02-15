@@ -1,0 +1,16 @@
+package napile.module.extension
+
+static class Extension : napile.lang.Any
+{
+	val name : napile.lang.String
+	{
+		get
+		set
+	}
+
+	final this(val name : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

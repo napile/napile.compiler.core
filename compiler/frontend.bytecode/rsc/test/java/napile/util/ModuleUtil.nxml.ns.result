@@ -1,0 +1,20 @@
+package napile.util
+
+static class ModuleUtil : napile.lang.Any
+{
+	static meth findModuleByAny(val object : napile.lang.Any) : napile.module.Module
+	{
+		// compiled code
+	}
+
+	static native meth findModuleByClass(val clazz : napile.reflect.Class<napile.lang.Any>) : napile.module.Module
+	{
+		// compiled code
+	}
+
+	static native meth getAllCurrentlyLoadedModules() : napile.lang.Array<napile.module.Module>
+	{
+		// compiled code
+	}
+
+}

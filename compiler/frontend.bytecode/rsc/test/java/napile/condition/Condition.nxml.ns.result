@@ -1,0 +1,5 @@
+package napile.condition
+
+abstract static class Condition<E : napile.lang.Any?> : napile.lang.Any
+{
+}

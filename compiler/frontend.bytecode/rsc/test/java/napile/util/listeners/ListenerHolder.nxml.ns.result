@@ -1,0 +1,26 @@
+package napile.util.listeners
+
+static class ListenerHolder<E : napile.lang.Any?> : napile.lang.Any
+{
+	val listeners : napile.collection.List<{(val e : E) -> napile.lang.Null}>
+	{
+		get
+		set
+	}
+
+	meth plus(val impl : {(val e : E) -> napile.lang.Null}) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth fire(val event : E) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

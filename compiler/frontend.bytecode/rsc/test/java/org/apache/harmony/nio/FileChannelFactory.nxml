@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="org.apache.harmony.nio.FileChannelFactory">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="getFileChannel">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.nio.channels.FileChannel"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="stream">
+				<type nullable="false">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</parameter>
+			<parameter name="fd">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="mode">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<new-object>
+					<position line="12" column="10" file="org/apache/harmony/nio/FileChannelFactory.ns"/>
+					<type nullable="false">
+						<class_type name="napile.nio.channels.FileChannel"/>
+					</type>
+				</new-object>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

@@ -1,0 +1,17 @@
+package napile.annotation
+
+@napile.annotation.Annotation
+final static class VarArgs : napile.lang.Any
+{
+	val length : napile.lang.Int?
+	{
+		get
+		set
+	}
+
+	final this(val length : napile.lang.Int?)
+	{
+		// compiled code
+	}
+
+}

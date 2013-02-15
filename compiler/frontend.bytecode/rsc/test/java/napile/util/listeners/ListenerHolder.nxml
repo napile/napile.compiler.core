@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.util.listeners.ListenerHolder">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<type_parameters>
+		<type_parameter name="E">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+			<type_parameter_constructors/>
+		</type_parameter>
+	</type_parameters>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="listeners$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<method_type>
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.lang.Null"/>
+								</type>
+							</return_type>
+							<parameters>
+								<parameter name="e">
+									<type nullable="false">
+										<type_parameter_value_type name="E"/>
+									</type>
+								</parameter>
+							</parameters>
+						</method_type>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.util.listeners.ListenerHolder.listeners">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<method_type>
+										<return_type>
+											<type nullable="false">
+												<class_type name="napile.lang.Null"/>
+											</type>
+										</return_type>
+										<parameters>
+											<parameter name="e">
+												<type nullable="false">
+													<type_parameter_value_type name="E"/>
+												</type>
+											</parameter>
+										</parameters>
+									</method_type>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="listeners$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.collection.List"/>
+					<type_arguments>
+						<type nullable="false">
+							<method_type>
+								<return_type>
+									<type nullable="false">
+										<class_type name="napile.lang.Null"/>
+									</type>
+								</return_type>
+								<parameters>
+									<parameter name="e">
+										<type nullable="false">
+											<type_parameter_value_type name="E"/>
+										</type>
+									</parameter>
+								</parameters>
+							</method_type>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.util.listeners.ListenerHolder.listeners">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<method_type>
+										<return_type>
+											<type nullable="false">
+												<class_type name="napile.lang.Null"/>
+											</type>
+										</return_type>
+										<parameters>
+											<parameter name="e">
+												<type nullable="false">
+													<type_parameter_value_type name="E"/>
+												</type>
+											</parameter>
+										</parameters>
+									</method_type>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="listeners">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<method_type>
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.lang.Null"/>
+								</type>
+							</return_type>
+							<parameters>
+								<parameter name="e">
+									<type nullable="false">
+										<type_parameter_value_type name="E"/>
+									</type>
+								</parameter>
+							</parameters>
+						</method_type>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="plus">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="impl">
+				<type nullable="false">
+					<method_type>
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="e">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method_type>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="34" column="3" file="napile/util/listeners/ListenerHolder.ns"/>
+					<method name="napile.util.listeners.ListenerHolder.listeners$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<method_type>
+											<return_type>
+												<type nullable="false">
+													<class_type name="napile.lang.Null"/>
+												</type>
+											</return_type>
+											<parameters>
+												<parameter name="e">
+													<type nullable="false">
+														<type_parameter_value_type name="E"/>
+													</type>
+												</parameter>
+											</parameters>
+										</method_type>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="1">
+					<position line="34" column="17" file="napile/util/listeners/ListenerHolder.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="34" column="13" file="napile/util/listeners/ListenerHolder.ns"/>
+					<method name="napile.collection.List.add">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="e">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="fire">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="event">
+				<type nullable="false">
+					<type_parameter_value_type name="E"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="5">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="39" column="12" file="napile/util/listeners/ListenerHolder.ns"/>
+					<method name="napile.util.listeners.ListenerHolder.listeners$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<method_type>
+											<return_type>
+												<type nullable="false">
+													<class_type name="napile.lang.Null"/>
+												</type>
+											</return_type>
+											<parameters>
+												<parameter name="e">
+													<type nullable="false">
+														<type_parameter_value_type name="E"/>
+													</type>
+												</parameter>
+											</parameters>
+										</method_type>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-virtual>
+					<method name="napile.collection.List.iterator">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.InheritImmutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.collection.Iterator"/>
+								<type_arguments>
+									<type nullable="false">
+										<method_type>
+											<return_type>
+												<type nullable="false">
+													<class_type name="napile.lang.Null"/>
+												</type>
+											</return_type>
+											<parameters>
+												<parameter name="e">
+													<type nullable="false">
+														<type_parameter_value_type name="E"/>
+													</type>
+												</parameter>
+											</parameters>
+										</method_type>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="3"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.collection.Iterator.hasNext">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="15"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.collection.Iterator.next">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="2"/>
+				<local-get val="2">
+					<position line="41" column="4" file="napile/util/listeners/ListenerHolder.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="41" column="6" file="napile/util/listeners/ListenerHolder.ns"/>
+				</local-get>
+				<invoke-anonym>
+					<position line="41" column="4" file="napile/util/listeners/ListenerHolder.ns"/>
+					<method>
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="e">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-anonym>
+				<jump val="4"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<type_parameters>
+			<type_parameter name="E">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+				<type_parameter_constructors/>
+			</type_parameter>
+		</type_parameters>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="28" column="54" file="napile/util/listeners/ListenerHolder.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<method_type>
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Null"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="e">
+											<type nullable="false">
+												<type_parameter_value_type name="E"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method_type>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.util.listeners.ListenerHolder.listeners">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<method_type>
+										<return_type>
+											<type nullable="false">
+												<class_type name="napile.lang.Null"/>
+											</type>
+										</return_type>
+										<parameters>
+											<parameter name="e">
+												<type nullable="false">
+													<type_parameter_value_type name="E"/>
+												</type>
+											</parameter>
+										</parameters>
+									</method_type>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

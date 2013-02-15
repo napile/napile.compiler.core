@@ -1,0 +1,7 @@
+package napile.collection
+
+abstract static class Sizeable : napile.lang.Any
+{
+	abstract meth size() : napile.lang.Int
+
+}

@@ -1,0 +1,32 @@
+package napile.logging.impl.handlers
+
+static class ConsoleLoggingHandler : napile.logging.LoggingHandler
+{
+	val info : napile.io.FileOutputStream
+	{
+		get
+		set
+	}
+
+	val error : napile.io.FileOutputStream
+	{
+		get
+		set
+	}
+
+	meth log(val message : napile.logging.LoggingMessage) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	local meth writeBytes(val message : napile.logging.LoggingMessage, val s : napile.lang.String) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

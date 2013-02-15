@@ -1,0 +1,121 @@
+package org.apache.harmony.luni.platform
+
+covered static class OSFileSystem : org.apache.harmony.luni.platform.IFileSystem
+{
+	static val INSTANCE : org.apache.harmony.luni.platform.OSFileSystem
+	{
+		static get
+		static set
+	}
+
+	meth transfer(var fileHandler : napile.lang.Long, var socketDescriptor : napile.io.FileDescriptor?, var offset : napile.lang.Long, var count : napile.lang.Long) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth seek(var fileDescriptor : napile.lang.Long, var offset : napile.lang.Long, var whence : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth close(var fileDescriptor : napile.lang.Long) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth truncate(var fileDescriptor : napile.lang.Long, var size : napile.lang.Long) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth getAllocGranularity() : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	meth readDirect(var fileDescriptor : napile.lang.Long, var address : napile.lang.Long, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth lock(var fileDescriptor : napile.lang.Long, var start : napile.lang.Long, var length : napile.lang.Long, var type : napile.lang.Int, var waitFlag : napile.lang.Bool) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth unlock(var fileDescriptor : napile.lang.Long, var start : napile.lang.Long, var length : napile.lang.Long) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth ttyAvailable() : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth writev(var fileDescriptor : napile.lang.Long, var buffers : napile.lang.Array<napile.lang.Any?>?, var offsets : napile.lang.Array<napile.lang.Int>?, var lengths : napile.lang.Array<napile.lang.Int>?, var size : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth size(var fileDescriptor : napile.lang.Long) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth writeDirect(var fileDescriptor : napile.lang.Long, var address : napile.lang.Long, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth available(var fileDescriptor : napile.lang.Long) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth write(var fileDescriptor : napile.lang.Long, var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	native meth writeImpl(var fileDescriptor : napile.lang.Long, var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth ttyRead(var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth readv(var fileDescriptor : napile.lang.Long, var addresses : napile.lang.Array<napile.lang.Long>?, var offsets : napile.lang.Array<napile.lang.Int>?, var lengths : napile.lang.Array<napile.lang.Int>?, var size : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth fflush(var fileDescriptor : napile.lang.Long, var metadata : napile.lang.Bool) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth read(var fileDescriptor : napile.lang.Long, var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	meth open(var fileName : napile.lang.Array<napile.lang.Byte>, var mode : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	native meth openImpl(var fileName : napile.lang.Array<napile.lang.Byte>, var mode : napile.lang.Int) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

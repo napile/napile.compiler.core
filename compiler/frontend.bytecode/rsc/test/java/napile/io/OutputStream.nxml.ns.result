@@ -1,0 +1,32 @@
+package napile.io
+
+abstract static class OutputStream : napile.io.Closeable & napile.io.Flushable
+{
+	meth close() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth flush() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth write(var buffer : napile.lang.Array<napile.lang.Byte>) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth write(var buffer : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var count : napile.lang.Int) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	abstract meth write(var oneByte : napile.lang.Byte) : napile.lang.Null
+
+	meth checkError() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+}

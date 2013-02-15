@@ -1,0 +1,38 @@
+package napile.module
+
+static class Module : napile.lang.Any
+{
+	val id : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val name : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val extensionPoints : @napile.annotation.Immutable napile.lang.Array<napile.module.extension.ExtensionPoint>
+	{
+		get
+		set
+	}
+
+	local native meth getExtensionPoints() : napile.lang.Array<napile.module.extension.ExtensionPoint>
+	{
+		// compiled code
+	}
+
+	static meth getBundle() : napile.resource.ResourceBundle
+	{
+		// compiled code
+	}
+
+	final this(val id : napile.lang.String, val name : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,10 @@
+package napile.lang
+
+static class Math : napile.lang.Any
+{
+	static meth min(val a : napile.lang.Int, val b : napile.lang.Int) : napile.lang.Int
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.logging.impl.handlers.ConsoleLoggingHandler">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.logging.LoggingHandler"/>
+		</type>
+	</extends>
+	<method name="info$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileOutputStream"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.info">
+						<type nullable="false">
+							<class_type name="napile.io.FileOutputStream"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="info$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.io.FileOutputStream"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.info">
+						<type nullable="false">
+							<class_type name="napile.io.FileOutputStream"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="info">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileOutputStream"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="error$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileOutputStream"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.error">
+						<type nullable="false">
+							<class_type name="napile.io.FileOutputStream"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="error$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.io.FileOutputStream"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.error">
+						<type nullable="false">
+							<class_type name="napile.io.FileOutputStream"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="error">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileOutputStream"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="log">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="message">
+				<type nullable="false">
+					<class_type name="napile.logging.LoggingMessage"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="4">
+			<instructions>
+				<new-object>
+					<position line="37" column="11" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.StringBuilder"/>
+					</type>
+				</new-object>
+				<local-put val="2"/>
+				<local-get val="2">
+					<position line="39" column="3" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="39" column="8" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="39" column="16" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.LoggingMessage.message$get">
+						<return_type>
+							<type nullable="true">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="39" column="5" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="2">
+					<position line="39" column="3" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="41" column="6" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="41" column="14" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.LoggingMessage.exception$get">
+						<return_type>
+							<type nullable="true">
+								<class_type name="napile.lang.Exception"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="41" column="27" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="41" column="24" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.Exception.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="41" column="24" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.Bool.not">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="30"/>
+				<local-get val="2">
+					<position line="43" column="4" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<new-string val=" ">
+					<position line="43" column="9" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="43" column="6" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="2">
+					<position line="43" column="4" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="44" column="4" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="44" column="12" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.LoggingMessage.exception$get">
+						<return_type>
+							<type nullable="true">
+								<class_type name="napile.lang.Exception"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<dup>
+					<position line="44" column="21" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</dup>
+				<invoke-static>
+					<position line="44" column="21" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="44" column="21" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="44" column="21" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="28"/>
+				<new-string val="'message.exception' cant be null">
+					<position line="44" column="21" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</new-string>
+				<new-object>
+					<position line="44" column="21" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.NullPointerException"/>
+					</type>
+					<parameters>
+						<type nullable="true">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</parameters>
+				</new-object>
+				<throw>
+					<position line="44" column="21" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</throw>
+				<local-get val="2">
+					<position line="44" column="40" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="44" column="24" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.Exception.printStackTrace">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="b">
+								<type nullable="false">
+									<class_type name="napile.lang.StringBuilder"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="2">
+					<position line="47" column="3" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<new-string val="\n">
+					<position line="47" column="8" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="47" column="5" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="2">
+					<position line="47" column="3" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-put>
+				<local-get val="0"/>
+				<local-get val="1">
+					<position line="49" column="14" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<local-get val="2">
+					<position line="49" column="23" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="49" column="25" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.StringBuilder.toString">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-special>
+					<position line="49" column="3" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.impl.handlers.ConsoleLoggingHandler.writeBytes">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="message">
+								<type nullable="false">
+									<class_type name="napile.logging.LoggingMessage"/>
+								</type>
+							</parameter>
+							<parameter name="s">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="writeBytes">
+		<modifiers>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="message">
+				<type nullable="false">
+					<class_type name="napile.logging.LoggingMessage"/>
+				</type>
+			</parameter>
+			<parameter name="s">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="5">
+			<instructions>
+				<local-get val="2">
+					<position line="54" column="15" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="54" column="17" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.lang.String.getBytes">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.Byte"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="3"/>
+				<local-get val="1">
+					<position line="55" column="8" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="55" column="16" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.LoggingMessage.level$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.logging.LoggingLevel"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<dup/>
+				<invoke-static>
+					<position line="57" column="17" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.LoggingLevel.ERROR$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.logging.LoggingLevel.ERROR"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="11"/>
+				<jump val="12"/>
+				<jump val="17"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="57" column="26" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.impl.handlers.ConsoleLoggingHandler.error$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileOutputStream"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="3">
+					<position line="57" column="38" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="57" column="32" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.io.OutputStream.write">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="buffer">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Byte"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<jump val="22"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="58" column="12" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.impl.handlers.ConsoleLoggingHandler.info$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileOutputStream"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="3">
+					<position line="58" column="23" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="58" column="17" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.io.OutputStream.write">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="buffer">
+								<modifiers>
+									<mutable/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Byte"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<jump val="22"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="33" column="11" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.logging.LoggingHandler.this">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.logging.LoggingHandler"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<pop/>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="30" column="51" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.io.FileDescriptor.systemOut$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="30" column="19" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.FileOutputStream"/>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.info">
+						<type nullable="false">
+							<class_type name="napile.io.FileOutputStream"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="31" column="52" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.io.FileDescriptor.systemErr$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="31" column="20" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.FileOutputStream"/>
+					</type>
+					<parameters>
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.error">
+						<type nullable="false">
+							<class_type name="napile.io.FileOutputStream"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

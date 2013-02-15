@@ -1,0 +1,11 @@
+package napile.collection
+
+abstract static class Map<K : napile.lang.Any?, V : napile.lang.Any?> : napile.collection.Sizeable
+{
+	abstract meth put(val key : K, val value : V) : napile.lang.Null
+
+	abstract meth get(val key : K) : V
+
+	abstract meth entrySet() : @napile.annotation.InheritImmutable napile.collection.Set<[val key : K, val value : V]>
+
+}

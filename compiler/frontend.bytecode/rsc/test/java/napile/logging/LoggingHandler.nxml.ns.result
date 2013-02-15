@@ -1,0 +1,12 @@
+package napile.logging
+
+abstract static class LoggingHandler : napile.lang.Any
+{
+	abstract meth log(val message : napile.logging.LoggingMessage) : napile.lang.Null
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

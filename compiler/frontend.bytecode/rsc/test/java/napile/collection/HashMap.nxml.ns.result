@@ -1,0 +1,48 @@
+package napile.collection
+
+static class HashMap<K : napile.lang.Any?, V : napile.lang.Any?> : napile.collection.Map<K, V>
+{
+	val keys : napile.collection.List<K>
+	{
+		get
+		set
+	}
+
+	val values : napile.collection.List<V>
+	{
+		get
+		set
+	}
+
+	var size : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	meth entrySet() : @napile.annotation.InheritImmutable napile.collection.Set<[val key : K, val value : V]>
+	{
+		// compiled code
+	}
+
+	meth put(val key : K, val value : V) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth get(val key : K) : V
+	{
+		// compiled code
+	}
+
+	meth size() : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

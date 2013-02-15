@@ -1,0 +1,22 @@
+package napile.lang
+
+static class ThreadGroup : napile.lang.Any
+{
+	val name : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val parent : napile.lang.ThreadGroup?
+	{
+		get
+		set
+	}
+
+	final this(val name : napile.lang.String, val parent : napile.lang.ThreadGroup?)
+	{
+		// compiled code
+	}
+
+}

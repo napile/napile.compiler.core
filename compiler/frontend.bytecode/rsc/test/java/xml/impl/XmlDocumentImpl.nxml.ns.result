@@ -1,0 +1,21 @@
+package xml.impl
+
+static class XmlDocumentImpl : xml.XmlDocument
+{
+	val elements : napile.lang.Array<xml.XmlElement>
+	{
+		get
+		set
+	}
+
+	meth get(val elementName : napile.lang.String) : xml.XmlElement?
+	{
+		// compiled code
+	}
+
+	final this(val elements : napile.lang.Array<xml.XmlElement>)
+	{
+		// compiled code
+	}
+
+}

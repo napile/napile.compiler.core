@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.Application">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="exit">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="code">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<invoke-static>
+					<position line="24" column="52" file="napile/lang/Application.ns"/>
+					<method name="napile.lang.Runtime.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Runtime"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<local-get val="0">
+					<position line="24" column="66" file="napile/lang/Application.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="24" column="61" file="napile/lang/Application.ns"/>
+					<method name="napile.lang.Runtime.exit">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="code">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

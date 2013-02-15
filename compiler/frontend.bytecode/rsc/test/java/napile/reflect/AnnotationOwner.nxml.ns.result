@@ -1,0 +1,26 @@
+package napile.reflect
+
+static class AnnotationOwner : napile.lang.Any
+{
+	final val annotations : @napile.annotation.Immutable napile.lang.Array<napile.lang.Any>
+	{
+		final get
+		final set
+	}
+
+	meth findAnnotation<A : napile.lang.Any?>() : A?
+	{
+		// compiled code
+	}
+
+	meth findAnnotations<A : napile.lang.Any?>() : napile.collection.List<A>
+	{
+		// compiled code
+	}
+
+	covered final this(val annotations : @napile.annotation.Immutable napile.lang.Array<napile.lang.Any>)
+	{
+		// compiled code
+	}
+
+}

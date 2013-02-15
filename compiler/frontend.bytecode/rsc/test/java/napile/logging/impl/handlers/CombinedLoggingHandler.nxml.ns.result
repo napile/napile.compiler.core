@@ -1,0 +1,21 @@
+package napile.logging.impl.handlers
+
+static class CombinedLoggingHandler : napile.logging.LoggingHandler
+{
+	val items : napile.collection.Iterable<napile.logging.LoggingHandler>
+	{
+		get
+		set
+	}
+
+	meth log(val message : napile.logging.LoggingMessage) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this(val items : napile.collection.Iterable<napile.logging.LoggingHandler>)
+	{
+		// compiled code
+	}
+
+}

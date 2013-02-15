@@ -1,0 +1,10 @@
+package napile.lang
+
+static class UnsupportedOperationException : napile.lang.Exception
+{
+	final this(val message : napile.lang.String?)
+	{
+		// compiled code
+	}
+
+}

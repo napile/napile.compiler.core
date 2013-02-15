@@ -1,0 +1,10 @@
+package org.apache.harmony.nio
+
+static class FileChannelFactory : napile.lang.Any
+{
+	static meth getFileChannel(val stream : napile.lang.Any, val fd : napile.lang.Long, val mode : napile.lang.Int) : napile.nio.channels.FileChannel
+	{
+		// compiled code
+	}
+
+}

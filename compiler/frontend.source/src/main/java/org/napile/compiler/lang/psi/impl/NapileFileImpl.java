@@ -79,6 +79,12 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 		return PsiTreeUtil.getChildrenOfTypeAsList(this, NapileImportDirective.class);
 	}
 
+	@Override
+	public boolean isCompiled()
+	{
+		return false;
+	}
+
 	@Nullable
 	@Override
 	public NapileImportDirective findImportByAlias(@NotNull String name)

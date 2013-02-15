@@ -1,0 +1,52 @@
+package napile.collection
+
+static class ArrayList<E : napile.lang.Any?> : napile.collection.List<E>
+{
+	var data : napile.lang.Array<E>
+	{
+		get
+		set
+	}
+
+	var size : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	meth add(val e : E) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth set(val index : napile.lang.Int, val e : E) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth get(val index : napile.lang.Int) : E
+	{
+		// compiled code
+	}
+
+	local meth ensureCapacity(val minCapacity : napile.lang.Int) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth iterator() : @napile.annotation.InheritImmutable napile.collection.Iterator<E>
+	{
+		// compiled code
+	}
+
+	meth size() : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	final this(val predefinedSize : napile.lang.Int)
+	{
+		// compiled code
+	}
+
+}

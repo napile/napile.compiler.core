@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.io.FileDescriptor">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="systemIn$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileDescriptor"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.io.FileDescriptor.systemIn">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="systemIn$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.io.FileDescriptor"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.io.FileDescriptor.systemIn">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="systemIn">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileDescriptor"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="systemOut$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileDescriptor"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.io.FileDescriptor.systemOut">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="systemOut$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.io.FileDescriptor"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.io.FileDescriptor.systemOut">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="systemOut">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileDescriptor"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="systemErr$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileDescriptor"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.io.FileDescriptor.systemErr">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="systemErr$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.io.FileDescriptor"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.io.FileDescriptor.systemErr">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="systemErr">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.io.FileDescriptor"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="readOnly$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.io.FileDescriptor.readOnly">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="readOnly$set">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Bool"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.io.FileDescriptor.readOnly">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="readOnly">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="descriptor$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.io.FileDescriptor.descriptor">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="descriptor$set">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.io.FileDescriptor.descriptor">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="descriptor">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="getStdInDescriptor">
+		<modifiers>
+			<native/>
+			<static/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="getStdOutDescriptor">
+		<modifiers>
+			<native/>
+			<static/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="getStdErrDescriptor">
+		<modifiers>
+			<native/>
+			<static/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="70" column="31" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.io.FileDescriptor.readOnly">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<new-int val="1">
+					<position line="76" column="34" file="napile/io/FileDescriptor.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<position line="76" column="36" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.lang.Int.toLong">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="76" column="33" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.lang.Long.minus">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<put-to-variable>
+					<variable name="napile.io.FileDescriptor.descriptor">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="43" column="41" file="napile/io/FileDescriptor.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.FileDescriptor"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.io.FileDescriptor.systemIn">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-object>
+					<position line="48" column="42" file="napile/io/FileDescriptor.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.FileDescriptor"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.io.FileDescriptor.systemOut">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-object>
+					<position line="53" column="42" file="napile/io/FileDescriptor.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.FileDescriptor"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.io.FileDescriptor.systemErr">
+						<type nullable="false">
+							<class_type name="napile.io.FileDescriptor"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<position line="57" column="3" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.systemIn$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<position line="57" column="25" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.getStdInDescriptor">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="57" column="23" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="57" column="23" file="napile/io/FileDescriptor.ns"/>
+				</pop>
+				<invoke-static>
+					<position line="59" column="3" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.systemOut$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<position line="59" column="26" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.getStdOutDescriptor">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="59" column="24" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="59" column="24" file="napile/io/FileDescriptor.ns"/>
+				</pop>
+				<invoke-static>
+					<position line="61" column="3" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.systemErr$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<position line="61" column="26" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.getStdErrDescriptor">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="61" column="24" file="napile/io/FileDescriptor.ns"/>
+					<method name="napile.io.FileDescriptor.descriptor$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="61" column="24" file="napile/io/FileDescriptor.ns"/>
+				</pop>
+			</instructions>
+		</code>
+	</method>
+</class>

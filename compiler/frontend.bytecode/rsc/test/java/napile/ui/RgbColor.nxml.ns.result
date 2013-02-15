@@ -1,0 +1,38 @@
+package napile.ui
+
+static class RgbColor : napile.ui.Color
+{
+	val red : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	val green : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	val blue : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	meth toCmykColor() : napile.ui.CmykColor
+	{
+		// compiled code
+	}
+
+	meth toRgbColor() : napile.ui.RgbColor
+	{
+		// compiled code
+	}
+
+	final this(val red : napile.lang.Int, val green : napile.lang.Int, val blue : napile.lang.Int)
+	{
+		// compiled code
+	}
+
+}

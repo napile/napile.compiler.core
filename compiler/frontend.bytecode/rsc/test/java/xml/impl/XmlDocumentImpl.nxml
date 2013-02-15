@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="xml.impl.XmlDocumentImpl">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="xml.XmlDocument"/>
+		</type>
+	</extends>
+	<method name="elements$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="xml.XmlElement"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="xml.impl.XmlDocumentImpl.elements">
+						<type nullable="false">
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="xml.XmlElement"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="elements$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="xml.XmlElement"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="xml.impl.XmlDocumentImpl.elements">
+						<type nullable="false">
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="xml.XmlElement"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="elements">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="xml.XmlElement"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="get">
+		<return_type>
+			<type nullable="true">
+				<class_type name="xml.XmlElement"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="elementName">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="34" column="30" file="xml/impl/XmlDocumentImpl.ns"/>
+					<method name="xml.impl.XmlDocumentImpl.elements$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="xml.XmlElement"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<put-anonym>
+					<position line="34" column="40" file="xml/impl/XmlDocumentImpl.ns"/>
+					<require>
+						<local from="1" to="1"/>
+					</require>
+					<code max-locals="2">
+						<instructions>
+							<local-get val="0">
+								<position line="34" column="48" file="xml/impl/XmlDocumentImpl.ns"/>
+							</local-get>
+							<invoke-virtual>
+								<position line="34" column="50" file="xml/impl/XmlDocumentImpl.ns"/>
+								<method name="xml.XmlNode.getName">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.String"/>
+										</type>
+									</return_type>
+								</method>
+							</invoke-virtual>
+							<local-get val="1">
+								<position line="34" column="63" file="xml/impl/XmlDocumentImpl.ns"/>
+							</local-get>
+							<invoke-virtual>
+								<position line="34" column="60" file="xml/impl/XmlDocumentImpl.ns"/>
+								<method name="napile.lang.String.equals">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Bool"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="o">
+											<type nullable="true">
+												<class_type name="napile.lang.Any"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method>
+							</invoke-virtual>
+							<return val="1"/>
+						</instructions>
+					</code>
+				</put-anonym>
+				<invoke-static>
+					<position line="34" column="23" file="xml/impl/XmlDocumentImpl.ns"/>
+					<method name="napile.collection.IterableUtil.select">
+						<return_type>
+							<type nullable="true">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="iterable">
+								<type nullable="false">
+									<class_type name="napile.collection.Iterable"/>
+									<type_arguments>
+										<type nullable="false">
+											<type_parameter_value_type name="E"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="filter">
+								<type nullable="false">
+									<method_type>
+										<return_type>
+											<type nullable="false">
+												<class_type name="napile.lang.Bool"/>
+											</type>
+										</return_type>
+										<parameters>
+											<parameter name="arg">
+												<type nullable="false">
+													<type_parameter_value_type name="E"/>
+												</type>
+											</parameter>
+										</parameters>
+									</method_type>
+								</type>
+							</parameter>
+						</parameters>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="xml.XmlElement"/>
+							</type>
+						</type_arguments>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="elements">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="xml.XmlElement"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<invoke-special>
+					<method name="xml.impl.XmlDocumentImpl.elements$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="xml.XmlElement"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="xml.XmlElement"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<pop/>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

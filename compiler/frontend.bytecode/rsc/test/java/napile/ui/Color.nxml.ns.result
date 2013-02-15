@@ -1,0 +1,9 @@
+package napile.ui
+
+abstract static class Color : napile.lang.Any
+{
+	abstract meth toRgbColor() : napile.ui.RgbColor
+
+	abstract meth toCmykColor() : napile.ui.CmykColor
+
+}

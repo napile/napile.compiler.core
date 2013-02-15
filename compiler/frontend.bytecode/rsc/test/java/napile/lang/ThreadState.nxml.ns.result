@@ -1,0 +1,28 @@
+package napile.lang
+
+static class ThreadState : napile.lang.Any
+{
+	static val NEW : napile.lang.ThreadState
+	{
+		static get
+		static set
+	}
+
+	static val STARTED : napile.lang.ThreadState
+	{
+		static get
+		static set
+	}
+
+	static val FINISHED : napile.lang.ThreadState
+	{
+		static get
+		static set
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

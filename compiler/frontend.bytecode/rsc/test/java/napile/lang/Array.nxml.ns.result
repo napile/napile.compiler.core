@@ -1,0 +1,56 @@
+package napile.lang
+
+final static class Array<E : napile.lang.Any?> : napile.collection.Iterable<E> & napile.collection.Sizeable
+{
+	val length : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	meth size() : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	native meth init() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth set(val index : napile.lang.Int, val value : E) : this
+	{
+		// compiled code
+	}
+
+	local native meth set0(val index : napile.lang.Int, val value : E) : this
+	{
+		// compiled code
+	}
+
+	meth get(val index : napile.lang.Int) : E
+	{
+		// compiled code
+	}
+
+	local native meth get0(val index : napile.lang.Int) : E
+	{
+		// compiled code
+	}
+
+	meth iterator() : @napile.annotation.InheritImmutable napile.collection.Iterator<E>
+	{
+		// compiled code
+	}
+
+	meth clone() : this
+	{
+		// compiled code
+	}
+
+	final this(val length : napile.lang.Int)
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,10 @@
+package org.apache.harmony.luni.platform
+
+static class Platform : napile.lang.Any
+{
+	static meth getFileSystem() : org.apache.harmony.luni.platform.IFileSystem
+	{
+		// compiled code
+	}
+
+}

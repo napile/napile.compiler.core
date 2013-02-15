@@ -1,0 +1,21 @@
+package napile.lang
+
+final static class Null : napile.lang.Any
+{
+	static val INSTANCE : napile.lang.Null?
+	{
+		static get
+		static set
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	local final this()
+	{
+		// compiled code
+	}
+
+}

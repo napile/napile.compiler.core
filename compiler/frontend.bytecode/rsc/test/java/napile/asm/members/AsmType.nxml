@@ -1,0 +1,1575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.asm.members.AsmType">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="annotations$get">
+		<return_type>
+			<type nullable="false">
+				<annotations>
+					<annotation>
+						<code max-locals="0">
+							<instructions>
+								<new-object>
+									<type nullable="false">
+										<class_type name="napile.annotation.Immutable"/>
+									</type>
+								</new-object>
+							</instructions>
+						</code>
+					</annotation>
+				</annotations>
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.asm.members.AsmAnnotation"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.asm.members.AsmType.annotations">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.asm.members.AsmAnnotation"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="annotations$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<annotations>
+						<annotation>
+							<code max-locals="0">
+								<instructions>
+									<new-object>
+										<type nullable="false">
+											<class_type name="napile.annotation.Immutable"/>
+										</type>
+									</new-object>
+								</instructions>
+							</code>
+						</annotation>
+					</annotations>
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmAnnotation"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.asm.members.AsmType.annotations">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.asm.members.AsmAnnotation"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="annotations">
+		<return_type>
+			<type nullable="false">
+				<annotations>
+					<annotation>
+						<code max-locals="0">
+							<instructions>
+								<new-object>
+									<type nullable="false">
+										<class_type name="napile.annotation.Immutable"/>
+									</type>
+								</new-object>
+							</instructions>
+						</code>
+					</annotation>
+				</annotations>
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.asm.members.AsmAnnotation"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="constructor$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.asm.members.AsmTypeConstructor"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.asm.members.AsmType.constructor">
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmTypeConstructor"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="constructor$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.asm.members.AsmTypeConstructor"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.asm.members.AsmType.constructor">
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmTypeConstructor"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="constructor">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.asm.members.AsmTypeConstructor"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="parameters$get">
+		<return_type>
+			<type nullable="false">
+				<annotations>
+					<annotation>
+						<code max-locals="0">
+							<instructions>
+								<new-object>
+									<type nullable="false">
+										<class_type name="napile.annotation.Immutable"/>
+									</type>
+								</new-object>
+							</instructions>
+						</code>
+					</annotation>
+				</annotations>
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.asm.members.AsmType"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.asm.members.AsmType.parameters">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.asm.members.AsmType"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="parameters$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<annotations>
+						<annotation>
+							<code max-locals="0">
+								<instructions>
+									<new-object>
+										<type nullable="false">
+											<class_type name="napile.annotation.Immutable"/>
+										</type>
+									</new-object>
+								</instructions>
+							</code>
+						</annotation>
+					</annotations>
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmType"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.asm.members.AsmType.parameters">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.asm.members.AsmType"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="parameters">
+		<return_type>
+			<type nullable="false">
+				<annotations>
+					<annotation>
+						<code max-locals="0">
+							<instructions>
+								<new-object>
+									<type nullable="false">
+										<class_type name="napile.annotation.Immutable"/>
+									</type>
+								</new-object>
+							</instructions>
+						</code>
+					</annotation>
+				</annotations>
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.asm.members.AsmType"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="nullable$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.asm.members.AsmType.nullable">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="nullable$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Bool"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.asm.members.AsmType.nullable">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="nullable">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="equals">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="o">
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="1">
+					<position line="41" column="6" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<is>
+					<position line="41" column="8" file="napile/asm/members/AsmType.ns"/>
+					<type nullable="false">
+						<class_type name="napile.asm.members.AsmType"/>
+					</type>
+				</is>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="31"/>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="43" column="7" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.nullable$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="1">
+					<position line="43" column="19" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="43" column="21" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.nullable$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="43" column="16" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Bool.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="43" column="16" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Bool.not">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="14"/>
+				<invoke-static>
+					<position line="44" column="12" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="46" column="25" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.parameters$get">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.Immutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.asm.members.AsmType"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="1">
+					<position line="46" column="37" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="46" column="39" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.parameters$get">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.Immutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.asm.members.AsmType"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="46" column="18" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.util.EqualUtil.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="a0">
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<type_parameter_value_type name="E"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="a1">
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<type_parameter_value_type name="E"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.asm.members.AsmType"/>
+							</type>
+						</type_arguments>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="46" column="7" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Bool.not">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="24"/>
+				<invoke-static>
+					<position line="47" column="12" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="49" column="11" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.constructor$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.asm.members.AsmTypeConstructor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="1">
+					<position line="49" column="26" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="49" column="28" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.constructor$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.asm.members.AsmTypeConstructor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="49" column="23" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmTypeConstructor.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<return val="1"/>
+				<jump val="33"/>
+				<invoke-static>
+					<position line="52" column="11" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="toString">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+		<code max-locals="4">
+			<instructions>
+				<new-object>
+					<position line="57" column="17" file="napile/asm/members/AsmType.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.StringBuilder"/>
+					</type>
+				</new-object>
+				<local-put val="1"/>
+				<local-get val="1">
+					<position line="58" column="3" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="58" column="14" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.constructor$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.asm.members.AsmTypeConstructor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="58" column="11" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="58" column="3" file="napile/asm/members/AsmType.ns"/>
+				</local-put>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="59" column="6" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.parameters$get">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.Immutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.asm.members.AsmType"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="59" column="17" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Array.length$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<new-int val="0">
+					<position line="59" column="26" file="napile/asm/members/AsmType.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.GREATER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="18"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="19"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="66"/>
+				<local-get val="1">
+					<position line="61" column="4" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<new-string val="&lt;">
+					<position line="61" column="15" file="napile/asm/members/AsmType.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="61" column="12" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="61" column="4" file="napile/asm/members/AsmType.ns"/>
+				</local-put>
+				<new-int val="0">
+					<position line="62" column="12" file="napile/asm/members/AsmType.ns"/>
+				</new-int>
+				<local-put val="2"/>
+				<local-get val="2">
+					<position line="63" column="10" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="63" column="14" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.parameters$get">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.Immutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.asm.members.AsmType"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="63" column="25" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Array.length$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.LOWER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="38"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="39"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="62"/>
+				<local-get val="2">
+					<position line="65" column="8" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="65" column="13" file="napile/asm/members/AsmType.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<position line="65" column="10" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Int.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="65" column="10" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Bool.not">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="51"/>
+				<local-get val="1">
+					<position line="66" column="6" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<new-string val=", ">
+					<position line="66" column="17" file="napile/asm/members/AsmType.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="66" column="14" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="66" column="6" file="napile/asm/members/AsmType.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="67" column="5" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="67" column="16" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.parameters$get">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.Immutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.asm.members.AsmType"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="2">
+					<position line="67" column="27" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<dup/>
+				<invoke-virtual>
+					<position line="67" column="29" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.Int.inc">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="2">
+					<position line="67" column="27" file="napile/asm/members/AsmType.ns"/>
+				</local-put>
+				<invoke-virtual>
+					<method name="napile.lang.Array.get">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="67" column="13" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="67" column="5" file="napile/asm/members/AsmType.ns"/>
+				</local-put>
+				<jump val="27"/>
+				<local-get val="1">
+					<position line="69" column="4" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<new-string val="&gt;">
+					<position line="69" column="15" file="napile/asm/members/AsmType.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="69" column="12" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="69" column="4" file="napile/asm/members/AsmType.ns"/>
+				</local-put>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="71" column="6" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.asm.members.AsmType.nullable$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="74"/>
+				<local-get val="1">
+					<position line="72" column="4" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<new-string val="?">
+					<position line="72" column="15" file="napile/asm/members/AsmType.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="72" column="12" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="72" column="4" file="napile/asm/members/AsmType.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="73" column="10" file="napile/asm/members/AsmType.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="73" column="18" file="napile/asm/members/AsmType.ns"/>
+					<method name="napile.lang.StringBuilder.toString">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="annotations">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<annotations>
+						<annotation>
+							<code max-locals="0">
+								<instructions>
+									<new-object>
+										<type nullable="false">
+											<class_type name="napile.annotation.Immutable"/>
+										</type>
+									</new-object>
+								</instructions>
+							</code>
+						</annotation>
+					</annotations>
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmAnnotation"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="constructor">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.asm.members.AsmTypeConstructor"/>
+				</type>
+			</parameter>
+			<parameter name="parameters">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<annotations>
+						<annotation>
+							<code max-locals="0">
+								<instructions>
+									<new-object>
+										<type nullable="false">
+											<class_type name="napile.annotation.Immutable"/>
+										</type>
+									</new-object>
+								</instructions>
+							</code>
+						</annotation>
+					</annotations>
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmType"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="nullable">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Bool"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="6">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<invoke-virtual>
+					<method name="napile.asm.members.AsmType.annotations$set">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.Immutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.asm.members.AsmAnnotation"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<annotations>
+										<annotation>
+											<code max-locals="0">
+												<instructions>
+													<new-object>
+														<type nullable="false">
+															<class_type name="napile.annotation.Immutable"/>
+														</type>
+													</new-object>
+												</instructions>
+											</code>
+										</annotation>
+									</annotations>
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.asm.members.AsmAnnotation"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="2"/>
+				<invoke-virtual>
+					<method name="napile.asm.members.AsmType.constructor$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.asm.members.AsmTypeConstructor"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.asm.members.AsmTypeConstructor"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.asm.members.AsmType.parameters$set">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.Immutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.asm.members.AsmType"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<annotations>
+										<annotation>
+											<code max-locals="0">
+												<instructions>
+													<new-object>
+														<type nullable="false">
+															<class_type name="napile.annotation.Immutable"/>
+														</type>
+													</new-object>
+												</instructions>
+											</code>
+										</annotation>
+									</annotations>
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.asm.members.AsmType"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="4"/>
+				<invoke-virtual>
+					<method name="napile.asm.members.AsmType.nullable$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.Bool"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

@@ -1,0 +1,22 @@
+package napile.ui
+
+static class Button : napile.ui.Component
+{
+	var text : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val clickListener : napile.util.listeners.ListenerHolder<napile.ui.ClickEvent>
+	{
+		get
+		set
+	}
+
+	final this(val text : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

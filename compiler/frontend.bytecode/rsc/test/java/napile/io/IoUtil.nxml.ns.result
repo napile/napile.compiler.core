@@ -1,0 +1,10 @@
+package napile.io
+
+static class IoUtil : napile.lang.Any
+{
+	static meth use<T : napile.io.Closeable>(val stream : T, val block : {(val it : T) -> napile.lang.Null}) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+}

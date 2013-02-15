@@ -1,0 +1,44 @@
+package napile.reflect
+
+static class Type<E : napile.lang.Any?> : napile.reflect.AnnotationOwner
+{
+	val constructorClass : napile.reflect.Class<E>
+	{
+		get
+		set
+	}
+
+	val nullable : napile.lang.Bool
+	{
+		get
+		set
+	}
+
+	val parameters : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Type<napile.lang.Any>>
+	{
+		get
+		set
+	}
+
+	val defaultValue : E?
+	{
+		get
+		set
+	}
+
+	local meth findDefaultValue() : E?
+	{
+		// compiled code
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	local final this(val constructorClass : napile.reflect.Class<E>, val parameters : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Type<napile.lang.Any>>, val nullable : napile.lang.Bool, val annotations : napile.lang.Array<napile.lang.Any>)
+	{
+		// compiled code
+	}
+
+}

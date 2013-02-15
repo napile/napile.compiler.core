@@ -1,0 +1,64 @@
+package napile.reflect
+
+static class Modifier : napile.lang.Any
+{
+	static val LOCAL : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	static val HERITABLE : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	static val COVERED : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	static val MUTABLE : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	static val STATIC : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	static val ABSTRACT : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	static val FINAL : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	static val NATIVE : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	static val UTIL : napile.reflect.Modifier
+	{
+		static get
+		static set
+	}
+
+	local final this()
+	{
+		// compiled code
+	}
+
+}

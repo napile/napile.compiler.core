@@ -1,0 +1,16 @@
+package napile.io
+
+@napile.annotation.Deprecated
+static class NativeConsole : napile.lang.Any
+{
+	static native meth write(val value : napile.lang.String) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	static native meth writeLine(val value : napile.lang.String) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+}

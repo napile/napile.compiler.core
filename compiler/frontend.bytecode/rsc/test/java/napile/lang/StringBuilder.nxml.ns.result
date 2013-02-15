@@ -1,0 +1,37 @@
+package napile.lang
+
+final static class StringBuilder : napile.lang.Any
+{
+	var array : napile.lang.Array<napile.lang.Char>
+	{
+		get
+		set
+	}
+
+	var count : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	meth plus(val value : napile.lang.Any?) : this
+	{
+		// compiled code
+	}
+
+	meth expandCapacity(val minimumCapacity : napile.lang.Int) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

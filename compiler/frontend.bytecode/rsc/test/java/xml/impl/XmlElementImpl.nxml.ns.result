@@ -1,0 +1,15 @@
+package xml.impl
+
+static class XmlElementImpl : xml.XmlElement & xml.impl.XmlElementHolderImpl
+{
+	meth getName() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	final this(val name : napile.lang.String, val elements : napile.lang.Array<xml.XmlElement>)
+	{
+		// compiled code
+	}
+
+}

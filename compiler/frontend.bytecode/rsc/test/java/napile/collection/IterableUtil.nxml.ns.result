@@ -1,0 +1,15 @@
+package napile.collection
+
+static class IterableUtil : napile.lang.Any
+{
+	static meth select<E : napile.lang.Any?>(val iterable : napile.collection.Iterable<E>, val filter : {(val arg : E) -> napile.lang.Bool}) : E?
+	{
+		// compiled code
+	}
+
+	static meth filter<E : napile.lang.Any?>(val iterable : napile.collection.Iterable<E>, val filter : {(val arg : E) -> napile.lang.Bool}) : napile.collection.List<E>
+	{
+		// compiled code
+	}
+
+}

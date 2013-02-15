@@ -1,0 +1,37 @@
+package napile.collection
+
+static class ListIterator<E : napile.lang.Any?> : napile.collection.Iterator<E>
+{
+	val list : napile.collection.List<E>
+	{
+		get
+		set
+	}
+
+	var index : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	meth hasNext() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth next() : E
+	{
+		// compiled code
+	}
+
+	meth remove() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this(val list : napile.collection.List<E>)
+	{
+		// compiled code
+	}
+
+}

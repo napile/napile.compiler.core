@@ -1,0 +1,20 @@
+package napile.nio.channels
+
+static class FileChannel : napile.lang.Any
+{
+	meth isOpened() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth close() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

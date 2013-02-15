@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.util.ModuleUtil">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="findModuleByAny">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.module.Module"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="object">
+				<type nullable="false">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0">
+					<position line="12" column="70" file="napile/util/ModuleUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="12" column="77" file="napile/util/ModuleUtil.ns"/>
+					<method name="napile.lang.Any.getClass">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.reflect.Class"/>
+								<type_arguments>
+									<type nullable="false">
+										<this_type/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="12" column="52" file="napile/util/ModuleUtil.ns"/>
+					<method name="napile.util.ModuleUtil.findModuleByClass">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.module.Module"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="clazz">
+								<type nullable="false">
+									<class_type name="napile.reflect.Class"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="findModuleByClass">
+		<modifiers>
+			<native/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.module.Module"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="clazz">
+				<type nullable="false">
+					<class_type name="napile.reflect.Class"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Any"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="getAllCurrentlyLoadedModules">
+		<modifiers>
+			<native/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.module.Module"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</method>
+</class>

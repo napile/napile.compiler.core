@@ -1,0 +1,10 @@
+package napile.web
+
+static class WebSession : napile.lang.Any
+{
+	final this()
+	{
+		// compiled code
+	}
+
+}

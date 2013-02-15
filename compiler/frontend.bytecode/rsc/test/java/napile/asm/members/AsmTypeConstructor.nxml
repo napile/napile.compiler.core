@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.asm.members.AsmTypeConstructor">
+	<modifiers>
+		<static/>
+		<abstract/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+</class>

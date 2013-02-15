@@ -1,0 +1,17 @@
+package napile.annotation
+
+@napile.annotation.Annotation
+final static class Deprecated : napile.lang.Any
+{
+	val message : napile.lang.String?
+	{
+		get
+		set
+	}
+
+	final this(val message : napile.lang.String?)
+	{
+		// compiled code
+	}
+
+}

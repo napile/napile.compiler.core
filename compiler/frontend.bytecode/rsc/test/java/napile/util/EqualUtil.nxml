@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.util.EqualUtil">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="equals">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<type_parameters>
+			<type_parameter name="E">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+				<type_parameter_constructors/>
+			</type_parameter>
+		</type_parameters>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="a0">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="E"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="a1">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="E"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="4">
+			<instructions>
+				<local-get val="0">
+					<position line="27" column="6" file="napile/util/EqualUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="27" column="9" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Array.size">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="1">
+					<position line="27" column="19" file="napile/util/EqualUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="27" column="22" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Array.size">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="27" column="16" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Int.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="27" column="16" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Bool.not">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="10"/>
+				<invoke-static>
+					<position line="28" column="11" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+				<new-int val="0">
+					<position line="30" column="12" file="napile/util/EqualUtil.ns"/>
+				</new-int>
+				<local-get val="0">
+					<position line="30" column="15" file="napile/util/EqualUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="30" column="18" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Array.size">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="30" column="13" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Int.rangeTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<method name="napile.lang.Array.iterator">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.InheritImmutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.collection.Iterator"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="3"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.collection.Iterator.hasNext">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="36"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.collection.Iterator.next">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="2"/>
+				<local-get val="0">
+					<position line="32" column="7" file="napile/util/EqualUtil.ns"/>
+				</local-get>
+				<local-get val="2">
+					<position line="32" column="10" file="napile/util/EqualUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.lang.Array.get">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="1">
+					<position line="32" column="16" file="napile/util/EqualUtil.ns"/>
+				</local-get>
+				<local-get val="2">
+					<position line="32" column="19" file="napile/util/EqualUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.lang.Array.get">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="32" column="13" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="32" column="13" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Bool.not">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="35"/>
+				<invoke-static>
+					<position line="33" column="12" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+				<jump val="16"/>
+				<invoke-static>
+					<position line="35" column="10" file="napile/util/EqualUtil.ns"/>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

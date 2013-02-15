@@ -1,0 +1,15 @@
+package napile.asm
+
+static class AsmUtil : napile.lang.Any
+{
+	static meth toAsmType<T : napile.lang.Any?>() : napile.asm.members.AsmType
+	{
+		// compiled code
+	}
+
+	static meth toAsmType(val type : napile.reflect.Type<napile.lang.Any?>) : napile.asm.members.AsmType
+	{
+		// compiled code
+	}
+
+}

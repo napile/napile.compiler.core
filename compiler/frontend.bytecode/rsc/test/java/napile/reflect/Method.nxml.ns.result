@@ -1,0 +1,25 @@
+package napile.reflect
+
+static class Method : napile.reflect.MethodLike
+{
+	meth invoke(val object : napile.lang.Any, val arguments : napile.lang.Array<napile.lang.Any?>) : napile.lang.Any?
+	{
+		// compiled code
+	}
+
+	meth invokeStatic(val arguments : napile.lang.Array<napile.lang.Any?>) : napile.lang.Array<napile.lang.Any?>
+	{
+		// compiled code
+	}
+
+	local native meth invokeStatic0(val arguments : napile.lang.Array<napile.lang.Any?>) : napile.lang.Array<napile.lang.Any?>
+	{
+		// compiled code
+	}
+
+	local final this(val owner : napile.reflect.Class<napile.lang.Any>?, val name : napile.lang.String, val modifiers : napile.lang.Array<napile.reflect.Modifier>, val annotations : napile.lang.Array<napile.lang.Any>)
+	{
+		// compiled code
+	}
+
+}

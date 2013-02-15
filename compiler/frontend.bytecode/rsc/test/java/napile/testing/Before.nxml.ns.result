@@ -1,0 +1,11 @@
+package napile.testing
+
+@napile.annotation.Annotation
+final static class Before : napile.lang.Any
+{
+	final this()
+	{
+		// compiled code
+	}
+
+}

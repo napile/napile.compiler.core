@@ -1,0 +1,10 @@
+package napile.ui
+
+static class RootPanel : napile.ui.Component
+{
+	final this()
+	{
+		// compiled code
+	}
+
+}

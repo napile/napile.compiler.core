@@ -1,0 +1,22 @@
+package napile.module.extension
+
+static class ExtensionPointName<T : napile.lang.Any?> : napile.lang.Any
+{
+	val id : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val name : napile.lang.String
+	{
+		get
+		set
+	}
+
+	final this(val id : napile.lang.String, val name : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

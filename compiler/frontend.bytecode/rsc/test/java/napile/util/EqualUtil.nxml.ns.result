@@ -1,0 +1,10 @@
+package napile.util
+
+static class EqualUtil : napile.lang.Any
+{
+	static meth equals<E : napile.lang.Any?>(val a0 : napile.lang.Array<E>, val a1 : napile.lang.Array<E>) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,21 @@
+package napile.lang
+
+final static class Invalid : napile.lang.Any
+{
+	static val INSTANCE : napile.lang.Invalid
+	{
+		static get
+		static set
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	local final this()
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,38 @@
+package napile.logging
+
+abstract static class Logger : napile.lang.Any
+{
+	static val System : napile.logging.Logger
+	{
+		static get
+		static set
+	}
+
+	static meth getLogger(val name : napile.lang.String) : napile.logging.Logger
+	{
+		// compiled code
+	}
+
+	static meth getLogger(val clazz : napile.reflect.Class<napile.lang.Any?>) : napile.logging.Logger
+	{
+		// compiled code
+	}
+
+	meth info(val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth warn(val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth error(val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	abstract meth log(val level : napile.logging.LoggingLevel, val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+
+}

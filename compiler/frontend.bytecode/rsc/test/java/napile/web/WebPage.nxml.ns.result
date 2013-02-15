@@ -1,0 +1,7 @@
+package napile.web
+
+abstract static class WebPage : napile.lang.Any
+{
+	abstract meth renderPage(val session : napile.web.WebSession) : napile.ui.RootPanel
+
+}

@@ -1,0 +1,37 @@
+package napile.lang
+
+static class ArrayIterator<E : napile.lang.Any?> : napile.collection.Iterator<E>
+{
+	var index : napile.lang.Int
+	{
+		get
+		set
+	}
+
+	val array : napile.lang.Array<E>
+	{
+		get
+		set
+	}
+
+	meth next() : E
+	{
+		// compiled code
+	}
+
+	meth hasNext() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth remove() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this(val array : napile.lang.Array<E>)
+	{
+		// compiled code
+	}
+
+}

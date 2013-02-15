@@ -1,0 +1,31 @@
+package napile.lang
+
+static class Multi : napile.lang.Any
+{
+	val data : napile.lang.Array<napile.lang.Any?>
+	{
+		get
+		set
+	}
+
+	meth set(val index : napile.lang.Int, val value : napile.lang.Any?) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth get(val index : napile.lang.Int) : napile.lang.Any?
+	{
+		// compiled code
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	final this(val length : napile.lang.Int)
+	{
+		// compiled code
+	}
+
+}

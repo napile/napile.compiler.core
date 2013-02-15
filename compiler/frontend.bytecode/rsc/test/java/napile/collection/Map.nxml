@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.collection.Map">
+	<modifiers>
+		<static/>
+		<abstract/>
+	</modifiers>
+	<type_parameters>
+		<type_parameter name="K">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+			<type_parameter_constructors/>
+		</type_parameter>
+		<type_parameter name="V">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+			<type_parameter_constructors/>
+		</type_parameter>
+	</type_parameters>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.collection.Sizeable"/>
+		</type>
+	</extends>
+	<method name="put">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="key">
+				<type nullable="false">
+					<type_parameter_value_type name="K"/>
+				</type>
+			</parameter>
+			<parameter name="value">
+				<type nullable="false">
+					<type_parameter_value_type name="V"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="get">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<type_parameter_value_type name="V"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="key">
+				<type nullable="false">
+					<type_parameter_value_type name="K"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="entrySet">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<annotations>
+					<annotation>
+						<code max-locals="0">
+							<instructions>
+								<new-object>
+									<type nullable="false">
+										<class_type name="napile.annotation.InheritImmutable"/>
+									</type>
+								</new-object>
+							</instructions>
+						</code>
+					</annotation>
+				</annotations>
+				<class_type name="napile.collection.Set"/>
+				<type_arguments>
+					<type nullable="false">
+						<multi_type>
+							<variable name="key">
+								<return_type>
+									<type nullable="false">
+										<type_parameter_value_type name="K"/>
+									</type>
+								</return_type>
+							</variable>
+							<variable name="value">
+								<return_type>
+									<type nullable="false">
+										<type_parameter_value_type name="V"/>
+									</type>
+								</return_type>
+							</variable>
+						</multi_type>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1"/>
+	</method>
+</class>

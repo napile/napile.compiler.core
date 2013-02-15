@@ -1,0 +1,28 @@
+package napile.logging
+
+static class LoggingMessage : napile.lang.Any
+{
+	val level : napile.logging.LoggingLevel
+	{
+		get
+		set
+	}
+
+	val message : napile.lang.String?
+	{
+		get
+		set
+	}
+
+	val exception : napile.lang.Exception?
+	{
+		get
+		set
+	}
+
+	final this(val level : napile.logging.LoggingLevel, val message : napile.lang.String?, val exception : napile.lang.Exception?)
+	{
+		// compiled code
+	}
+
+}

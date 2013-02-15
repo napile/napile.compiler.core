@@ -1,0 +1,27 @@
+package napile.module.extension
+
+static class Extensions : napile.lang.Any
+{
+	val forId : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val extensions : @napile.annotation.Immutable napile.lang.Array<napile.module.extension.Extension>
+	{
+		get
+		set
+	}
+
+	local native meth getExtensions() : napile.lang.Array<napile.module.extension.Extension>
+	{
+		// compiled code
+	}
+
+	final this(val forId : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

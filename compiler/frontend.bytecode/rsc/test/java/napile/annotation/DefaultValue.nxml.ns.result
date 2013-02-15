@@ -1,0 +1,17 @@
+package napile.annotation
+
+@napile.annotation.Annotation
+final static class DefaultValue : napile.lang.Any
+{
+	val value : napile.lang.Any
+	{
+		get
+		set
+	}
+
+	final this(val value : napile.lang.Any)
+	{
+		// compiled code
+	}
+
+}

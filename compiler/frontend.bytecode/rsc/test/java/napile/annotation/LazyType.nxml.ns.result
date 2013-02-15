@@ -1,0 +1,20 @@
+package napile.annotation
+
+final static class LazyType : napile.lang.Any
+{
+	static val SIMPLE : napile.annotation.LazyType$SIMPLE
+	{
+		static get
+	}
+
+	static val INJECTION : napile.annotation.LazyType$INJECTION
+	{
+		static get
+	}
+
+	final this()
+	{
+		// compiled code
+	}
+
+}

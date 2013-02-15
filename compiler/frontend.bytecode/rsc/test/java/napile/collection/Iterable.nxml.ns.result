@@ -1,0 +1,7 @@
+package napile.collection
+
+abstract static class Iterable<E : napile.lang.Any?> : napile.lang.Any
+{
+	abstract meth iterator() : @napile.annotation.InheritImmutable napile.collection.Iterator<E>
+
+}

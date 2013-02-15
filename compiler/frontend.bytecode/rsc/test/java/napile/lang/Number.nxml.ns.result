@@ -1,0 +1,17 @@
+package napile.lang
+
+abstract static class Number : napile.lang.Any
+{
+	abstract meth toByte() : napile.lang.Byte
+
+	abstract meth toShort() : napile.lang.Short
+
+	abstract meth toInt() : napile.lang.Int
+
+	abstract meth toLong() : napile.lang.Long
+
+	abstract meth toFloat() : napile.lang.Float
+
+	abstract meth toDouble() : napile.lang.Double
+
+}

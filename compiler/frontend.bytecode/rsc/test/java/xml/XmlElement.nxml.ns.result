@@ -1,0 +1,16 @@
+package xml
+
+abstract static class XmlElement : xml.XmlNode & xml.XmlElementHolder
+{
+	val name : napile.lang.String
+	{
+		get
+		set
+	}
+
+	final this(val name : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,10 @@
+package napile.io
+
+static class FileNotFoundException : napile.lang.Exception
+{
+	final this(val message : napile.lang.String?)
+	{
+		// compiled code
+	}
+
+}

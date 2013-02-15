@@ -1,0 +1,10 @@
+package napile.lang
+
+static class AssertionError : napile.lang.Error
+{
+	final this(val message : napile.lang.String?)
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,25 @@
+package napile.lang
+
+static class ArrayUtil : napile.lang.Any
+{
+	static meth copyOf<E : napile.lang.Any?>(val oldArray : napile.lang.Array<E>, val newSize : napile.lang.Int) : napile.lang.Array<E>
+	{
+		// compiled code
+	}
+
+	static meth copyOfRange<E : napile.lang.Any?>(val original : napile.lang.Array<E>, val from : napile.lang.Int, val to : napile.lang.Int) : napile.lang.Array<E>
+	{
+		// compiled code
+	}
+
+	static meth copy<E : napile.lang.Any?>(val src : napile.lang.Array<E>, val srcOffset : napile.lang.Int, val desc : napile.lang.Array<E>, val descOffset : napile.lang.Int, val length : napile.lang.Int) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	static meth contains<E : napile.lang.Any?>(val src : napile.lang.Array<E>, val object : E) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+}

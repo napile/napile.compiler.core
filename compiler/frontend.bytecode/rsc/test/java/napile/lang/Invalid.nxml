@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.Invalid">
+	<modifiers>
+		<static/>
+		<final/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="INSTANCE$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Invalid"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.Invalid.INSTANCE">
+						<type nullable="false">
+							<class_type name="napile.lang.Invalid"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="INSTANCE$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Invalid"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.Invalid.INSTANCE">
+						<type nullable="false">
+							<class_type name="napile.lang.Invalid"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="INSTANCE">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Invalid"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="toString">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<new-string val="invalid">
+					<position line="29" column="38" file="napile/lang/Invalid.ns"/>
+				</new-string>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="25" column="40" file="napile/lang/Invalid.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Invalid"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.Invalid.INSTANCE">
+						<type nullable="false">
+							<class_type name="napile.lang.Invalid"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
+	</method>
+</class>

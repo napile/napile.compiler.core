@@ -1,0 +1,32 @@
+package napile.reflect
+
+static class MethodLike : napile.reflect.Member
+{
+	val parameters : @napile.annotation.Immutable napile.lang.Array<napile.reflect.CallParameter>
+	{
+		get
+		set
+	}
+
+	val returnType : napile.asm.members.AsmType
+	{
+		get
+		set
+	}
+
+	local native meth getCallParameters() : napile.lang.Array<napile.reflect.CallParameter>
+	{
+		// compiled code
+	}
+
+	local native meth getReturnType() : napile.asm.members.AsmType
+	{
+		// compiled code
+	}
+
+	covered final this(val owner : napile.reflect.Class<napile.lang.Any>?, val name : napile.lang.String, val modifiers : napile.lang.Array<napile.reflect.Modifier>, val annotations : napile.lang.Array<napile.lang.Any>)
+	{
+		// compiled code
+	}
+
+}

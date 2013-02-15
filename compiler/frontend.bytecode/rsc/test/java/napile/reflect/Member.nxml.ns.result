@@ -1,0 +1,33 @@
+package napile.reflect
+
+abstract static class Member : napile.reflect.AnnotationOwner
+{
+	final val ownerClass : napile.reflect.Class<napile.lang.Any>?
+	{
+		final get
+		final set
+	}
+
+	final val name : napile.lang.String
+	{
+		final get
+		final set
+	}
+
+	final val modifiers : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Modifier>
+	{
+		final get
+		final set
+	}
+
+	meth isStatic() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	covered final this(val ownerClass : napile.reflect.Class<napile.lang.Any>?, val name : napile.lang.String, val modifiers : @napile.annotation.Immutable napile.lang.Array<napile.reflect.Modifier>, val annotations : napile.lang.Array<napile.lang.Any>)
+	{
+		// compiled code
+	}
+
+}

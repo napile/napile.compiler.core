@@ -1,0 +1,44 @@
+package napile.asm.members
+
+static class AsmType : napile.lang.Any
+{
+	val annotations : @napile.annotation.Immutable napile.lang.Array<napile.asm.members.AsmAnnotation>
+	{
+		get
+		set
+	}
+
+	val constructor : napile.asm.members.AsmTypeConstructor
+	{
+		get
+		set
+	}
+
+	val parameters : @napile.annotation.Immutable napile.lang.Array<napile.asm.members.AsmType>
+	{
+		get
+		set
+	}
+
+	val nullable : napile.lang.Bool
+	{
+		get
+		set
+	}
+
+	meth equals(val o : napile.lang.Any?) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	final this(val annotations : @napile.annotation.Immutable napile.lang.Array<napile.asm.members.AsmAnnotation>, val constructor : napile.asm.members.AsmTypeConstructor, val parameters : @napile.annotation.Immutable napile.lang.Array<napile.asm.members.AsmType>, val nullable : napile.lang.Bool)
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,10 @@
+package napile.lang
+
+static class ArrayIndexOutOfBoundsException : napile.lang.Exception
+{
+	final this(val message : napile.lang.String?)
+	{
+		// compiled code
+	}
+
+}

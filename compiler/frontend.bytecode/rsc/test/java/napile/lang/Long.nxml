@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.Long">
+	<modifiers>
+		<static/>
+		<final/>
+	</modifiers>
+	<annotations>
+		<annotation>
+			<code max-locals="0">
+				<instructions>
+					<new-int val="0">
+						<position line="9" column="15" file="napile/lang/Long.ns"/>
+					</new-int>
+					<invoke-virtual>
+						<position line="9" column="17" file="napile/lang/Long.ns"/>
+						<method name="napile.lang.Int.toLong">
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</return_type>
+						</method>
+					</invoke-virtual>
+					<new-object>
+						<type nullable="false">
+							<class_type name="napile.annotation.DefaultValue"/>
+						</type>
+						<parameters>
+							<type nullable="false">
+								<class_type name="napile.lang.Any"/>
+							</type>
+						</parameters>
+					</new-object>
+				</instructions>
+			</code>
+		</annotation>
+	</annotations>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Number"/>
+		</type>
+	</extends>
+	<method name="MIN_VALUE$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.Long.MIN_VALUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="MIN_VALUE$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.Long.MIN_VALUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="MIN_VALUE">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="MAX_VALUE$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.Long.MAX_VALUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="MAX_VALUE$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.Long.MAX_VALUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="MAX_VALUE">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="toByte">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Byte"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="toShort">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Short"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="toInt">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="toLong">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="toFloat">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Float"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="toDouble">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Double"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="plus">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="minus">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="inc">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="dec">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="bitNot">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="bitXor">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="bitOr">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="bitAnd">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="bitShiftLeft">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="bitShiftRight">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="bitShiftRightZ">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="plus">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Byte"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="plus">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Short"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="plus">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="plus">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="times">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="minus">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="mod">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="div">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="compareTo">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.condition.CompareResult"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Byte"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="compareTo">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.condition.CompareResult"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Short"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="compareTo">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.condition.CompareResult"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="compareTo">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.condition.CompareResult"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="equals">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="o">
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</parameter>
+		</parameters>
+	</method>
+	<method name="toString">
+		<modifiers>
+			<native/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="this">
+		<modifiers>
+			<final/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-long val="-9223372036854775808">
+					<position line="12" column="32" file="napile/lang/Long.ns"/>
+				</new-long>
+				<put-to-static-variable>
+					<variable name="napile.lang.Long.MIN_VALUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-long val="9223372036854775807">
+					<position line="13" column="32" file="napile/lang/Long.ns"/>
+				</new-long>
+				<put-to-static-variable>
+					<variable name="napile.lang.Long.MAX_VALUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
+	</method>
+</class>

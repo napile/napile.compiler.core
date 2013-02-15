@@ -1,0 +1,43 @@
+package napile.io
+
+static class FileInputStream : napile.io.InputStream
+{
+	static val fileSystem : org.apache.harmony.luni.platform.IFileSystem
+	{
+		static get
+		static set
+	}
+
+	val fd : napile.io.FileDescriptor
+	{
+		get
+		set
+	}
+
+	val channel : napile.nio.channels.FileChannel
+	{
+		get
+		set
+	}
+
+	meth read() : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	meth read(var buffer : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var count : napile.lang.Int) : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	local meth openCheck() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this(val file : napile.io.File)
+	{
+		// compiled code
+	}
+
+}

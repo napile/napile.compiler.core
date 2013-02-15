@@ -1,0 +1,78 @@
+package napile.lang
+
+static class Thread : napile.lang.Any
+{
+	static var threadOrdinalNum : napile.lang.Long
+	{
+		static get
+		static set
+	}
+
+	static var systemThreadGroup : napile.lang.ThreadGroup
+	{
+		static get
+		static set
+	}
+
+	static var mainThreadGroup : napile.lang.ThreadGroup
+	{
+		static get
+		static set
+	}
+
+	val target : {() -> napile.lang.Null}
+	{
+		get
+		set
+	}
+
+	var state : napile.lang.ThreadState
+	{
+		get
+		local set
+	}
+
+	val threadId : napile.lang.Long
+	{
+		get
+		set
+	}
+
+	val name : napile.lang.String
+	{
+		get
+		set
+	}
+
+	val group : napile.lang.ThreadGroup
+	{
+		get
+		set
+	}
+
+	static meth getNextThreadId() : napile.lang.Long
+	{
+		// compiled code
+	}
+
+	local meth run() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth start() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	local native meth start0() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this(val threadName : napile.lang.String?, val threadGroup : napile.lang.ThreadGroup?, val target : {() -> napile.lang.Null})
+	{
+		// compiled code
+	}
+
+}

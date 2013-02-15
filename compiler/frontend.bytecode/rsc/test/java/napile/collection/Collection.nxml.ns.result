@@ -1,0 +1,21 @@
+package napile.collection
+
+abstract static class Collection<E : napile.lang.Any?> : napile.collection.Iterable<E> & napile.collection.Sizeable
+{
+	val emptyArray : napile.lang.Array<E>
+	{
+		get
+		set
+	}
+
+	meth isEmpty() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth toArray() : napile.lang.Array<E>
+	{
+		// compiled code
+	}
+
+}

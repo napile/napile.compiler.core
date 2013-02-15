@@ -1,0 +1,133 @@
+package org.apache.harmony.luni.platform
+
+abstract static class IFileSystem : napile.lang.Any
+{
+	static val SHARED_LOCK_TYPE : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val EXCLUSIVE_LOCK_TYPE : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val SEEK_SET : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val SEEK_CUR : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val SEEK_END : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_RDONLY : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_WRONLY : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_RDWR : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_RDWRSYNC : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_APPEND : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_CREAT : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_EXCL : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_NOCTTY : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_NONBLOCK : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	static val O_TRUNC : napile.lang.Int
+	{
+		static get
+		static set
+	}
+
+	abstract meth read(var fileDescriptor : napile.lang.Long, var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+
+	abstract meth write(var fileDescriptor : napile.lang.Long, var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+
+	abstract meth readv(var fileDescriptor : napile.lang.Long, var addresses : napile.lang.Array<napile.lang.Long>?, var offsets : napile.lang.Array<napile.lang.Int>?, var lengths : napile.lang.Array<napile.lang.Int>?, var size : napile.lang.Int) : napile.lang.Long
+
+	abstract meth writev(var fileDescriptor : napile.lang.Long, var buffers : napile.lang.Array<napile.lang.Any?>?, var offsets : napile.lang.Array<napile.lang.Int>?, var lengths : napile.lang.Array<napile.lang.Int>?, var size : napile.lang.Int) : napile.lang.Long
+
+	abstract meth readDirect(var fileDescriptor : napile.lang.Long, var address : napile.lang.Long, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+
+	abstract meth writeDirect(var fileDescriptor : napile.lang.Long, var address : napile.lang.Long, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+
+	abstract meth lock(var fileDescriptor : napile.lang.Long, var start : napile.lang.Long, var length : napile.lang.Long, var type : napile.lang.Int, var waitFlag : napile.lang.Bool) : napile.lang.Bool
+
+	abstract meth unlock(var fileDescriptor : napile.lang.Long, var start : napile.lang.Long, var length : napile.lang.Long) : napile.lang.Null
+
+	abstract meth seek(var fileDescriptor : napile.lang.Long, var offset : napile.lang.Long, var whence : napile.lang.Int) : napile.lang.Long
+
+	abstract meth fflush(var fileDescriptor : napile.lang.Long, var metadata : napile.lang.Bool) : napile.lang.Null
+
+	abstract meth close(var fileDescriptor : napile.lang.Long) : napile.lang.Null
+
+	abstract meth truncate(var fileDescriptor : napile.lang.Long, var size : napile.lang.Long) : napile.lang.Null
+
+	abstract meth getAllocGranularity() : napile.lang.Int
+
+	abstract meth open(var fileName : napile.lang.Array<napile.lang.Byte>, var mode : napile.lang.Int) : napile.lang.Long
+
+	abstract meth transfer(var fileHandler : napile.lang.Long, var socketDescriptor : napile.io.FileDescriptor?, var offset : napile.lang.Long, var count : napile.lang.Long) : napile.lang.Long
+
+	abstract meth ttyAvailable() : napile.lang.Long
+
+	abstract meth available(var fileDescriptor : napile.lang.Long) : napile.lang.Long
+
+	abstract meth size(var fileDescriptor : napile.lang.Long) : napile.lang.Long
+
+	abstract meth ttyRead(var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
+
+}

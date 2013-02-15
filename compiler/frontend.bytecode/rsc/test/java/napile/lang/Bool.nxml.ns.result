@@ -1,0 +1,33 @@
+package napile.lang
+
+@napile.annotation.DefaultValue
+final static class Bool : napile.lang.Any
+{
+	static val TRUE : napile.lang.Bool
+	{
+		static get
+		static set
+	}
+
+	static val FALSE : napile.lang.Bool
+	{
+		static get
+		static set
+	}
+
+	meth not() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	local final this()
+	{
+		// compiled code
+	}
+
+}

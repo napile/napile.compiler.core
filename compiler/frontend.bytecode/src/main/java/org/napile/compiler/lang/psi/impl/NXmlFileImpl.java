@@ -208,6 +208,12 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 		return Collections.emptyList();
 	}
 
+	@Override
+	public boolean isCompiled()
+	{
+		return true;
+	}
+
 	@NotNull
 	@Override
 	public NapileClass[] getDeclarations()

@@ -1,0 +1,26 @@
+package napile.asm.members.typeConstructor
+
+static class AsmClassType : napile.asm.members.AsmTypeConstructor
+{
+	val qualifiedName : napile.lang.String
+	{
+		get
+		set
+	}
+
+	meth equals(val o : napile.lang.Any?) : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	meth toString() : napile.lang.String
+	{
+		// compiled code
+	}
+
+	final this(val qualifiedName : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

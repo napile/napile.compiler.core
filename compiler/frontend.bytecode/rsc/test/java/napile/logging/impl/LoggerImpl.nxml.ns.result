@@ -1,0 +1,21 @@
+package napile.logging.impl
+
+static class LoggerImpl : napile.logging.Logger
+{
+	val handlers : napile.collection.List<napile.logging.LoggingHandler>
+	{
+		get
+		set
+	}
+
+	meth log(val level : napile.logging.LoggingLevel, val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	final this(val name : napile.lang.String)
+	{
+		// compiled code
+	}
+
+}

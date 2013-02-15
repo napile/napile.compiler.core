@@ -1,0 +1,5 @@
+package xml
+
+abstract static class XmlDocument : xml.XmlElementHolder
+{
+}

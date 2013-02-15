@@ -1,0 +1,53 @@
+package napile.io
+
+abstract static class InputStream : napile.io.Closeable
+{
+	static var skipBuf : napile.lang.Array<napile.lang.Byte>?
+	{
+		static get
+		static set
+	}
+
+	meth available() : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	meth close() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth mark(var readlimit : napile.lang.Int) : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth markSupported() : napile.lang.Bool
+	{
+		// compiled code
+	}
+
+	abstract meth read() : napile.lang.Int
+
+	meth read(var b : napile.lang.Array<napile.lang.Byte>) : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	meth read(var buffer : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var count : napile.lang.Int) : napile.lang.Int
+	{
+		// compiled code
+	}
+
+	meth reset() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+	meth skip(var n : napile.lang.Long) : napile.lang.Long
+	{
+		// compiled code
+	}
+
+}

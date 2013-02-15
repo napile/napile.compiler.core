@@ -1,0 +1,10 @@
+package napile.lang
+
+final static class Short : napile.lang.Any
+{
+	local final this()
+	{
+		// compiled code
+	}
+
+}

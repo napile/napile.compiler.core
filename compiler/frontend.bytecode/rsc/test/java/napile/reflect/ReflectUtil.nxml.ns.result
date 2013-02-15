@@ -1,0 +1,15 @@
+package napile.reflect
+
+static class ReflectUtil : napile.lang.Any
+{
+	static meth findClass(val name : napile.lang.String) : napile.reflect.Class<napile.lang.Any>
+	{
+		// compiled code
+	}
+
+	static native meth findClass0(val name : napile.lang.String) : napile.reflect.Class<napile.lang.Any>
+	{
+		// compiled code
+	}
+
+}

@@ -1,0 +1,7 @@
+package napile.io
+
+abstract static class Closeable : napile.lang.Any
+{
+	abstract meth close() : napile.lang.Null
+
+}

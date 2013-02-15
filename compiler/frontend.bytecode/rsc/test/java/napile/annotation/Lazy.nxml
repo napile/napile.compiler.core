@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.annotation.Lazy">
+	<modifiers>
+		<static/>
+		<final/>
+	</modifiers>
+	<annotations>
+		<annotation>
+			<code max-locals="0">
+				<instructions>
+					<invoke-static>
+						<position line="11" column="36" file="napile/annotation/Annotation.ns"/>
+						<method name="napile.lang.Null.INSTANCE$get">
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.lang.Null"/>
+								</type>
+							</return_type>
+						</method>
+					</invoke-static>
+					<new-object>
+						<type nullable="false">
+							<class_type name="napile.annotation.Annotation"/>
+						</type>
+						<parameters>
+							<type nullable="true">
+								<class_type name="napile.condition.Condition"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.Any"/>
+									</type>
+								</type_arguments>
+							</type>
+						</parameters>
+					</new-object>
+				</instructions>
+			</code>
+		</annotation>
+	</annotations>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="value$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.annotation.LazyType"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.annotation.Lazy.value">
+						<type nullable="false">
+							<class_type name="napile.annotation.LazyType"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="value$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.annotation.LazyType"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.annotation.Lazy.value">
+						<type nullable="false">
+							<class_type name="napile.annotation.LazyType"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="value">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.annotation.LazyType"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="this">
+		<modifiers>
+			<final/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="value">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.annotation.LazyType"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<invoke-virtual>
+					<method name="napile.annotation.Lazy.value$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.annotation.LazyType"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.annotation.LazyType"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

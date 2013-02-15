@@ -1,0 +1,11 @@
+package napile.annotation
+
+@napile.annotation.Annotation
+final static class Extension : napile.lang.Any
+{
+	final this()
+	{
+		// compiled code
+	}
+
+}

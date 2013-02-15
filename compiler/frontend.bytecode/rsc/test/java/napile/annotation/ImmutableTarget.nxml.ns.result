@@ -1,0 +1,11 @@
+package napile.annotation
+
+@napile.annotation.Annotation
+final static class ImmutableTarget : napile.lang.Any
+{
+	final this()
+	{
+		// compiled code
+	}
+
+}
