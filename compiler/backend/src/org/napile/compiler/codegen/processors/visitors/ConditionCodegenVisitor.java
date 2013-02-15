@@ -30,7 +30,6 @@ import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.CompilationException;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
-import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.TypeTransformer;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -63,10 +62,12 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 
 		JetType rightType = gen.bindingTrace.safeGet(BindingContext.TYPE, expression.getTypeRef());
 
-		gen.instructs.is(TypeTransformer.toAsmType(gen.bindingTrace, rightType, gen.classNode));
+		InstructionAdapter marker = gen.marker(expression.getOperationReference());
+
+		marker.is(TypeTransformer.toAsmType(gen.bindingTrace, rightType, gen.classNode));
 
 		if(expression.isNegated())
-			gen.instructs.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
+			marker.invokeVirtual(new MethodRef(NapileLangPackage.BOOL.child(Name.identifier("not")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.BOOL_TYPE), false);
 
 		return StackValue.onStack(AsmConstants.BOOL_TYPE);
 	}
@@ -107,7 +108,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 
 		StackValue condition = gen.gen(expression.getCondition());
 
-		condition.put(AsmConstants.BOOL_TYPE, gen.instructs, PositionMarker.EMPTY);
+		condition.put(AsmConstants.BOOL_TYPE, gen.instructs, gen);
 
 		gen.instructs.putTrue();
 
@@ -227,7 +228,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 		if(!expressionType.equals(AsmConstants.NULL_TYPE))
 			targetType = AsmConstants.ANY_TYPE;
 
-		condition.put(AsmConstants.BOOL_TYPE, gen.instructs, PositionMarker.EMPTY);
+		condition.put(AsmConstants.BOOL_TYPE, gen.instructs, gen);
 
 		if(inverse)
 			gen.instructs.putTrue();

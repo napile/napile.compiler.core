@@ -86,7 +86,7 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 
 		adapter.returnValues(1);
 
-		gen.instructs.putAnonym(Collections.<IntIntPair>emptyList(), new CodeInfo(adapter));
+		gen.marker(expression).putAnonym(Collections.<IntIntPair>emptyList(), new CodeInfo(adapter));
 
 		return StackValue.onStack(TypeTransformer.toAsmType(gen.bindingTrace, jetType, gen.classNode));
 	}
@@ -143,7 +143,7 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 			pairs.add(new IntIntPair(gen.frameMap.getIndex(v), expCodegen.frameMap.getIndex(v)));
 		}
 
-		gen.instructs.putAnonym(pairs, new CodeInfo(adapter));
+		gen.marker(expression).putAnonym(pairs, new CodeInfo(adapter));
 
 		JetType jetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
 

@@ -39,6 +39,7 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
 import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode;
 import org.napile.compiler.codegen.CompilationException;
+import org.napile.compiler.codegen.processors.adapters.MarkerInstructionAdapter;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.FrameMap;
@@ -421,10 +422,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 				stackValue.put(expressionType(callee), instructs, this);
 
-				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression, true);
+				return invokeMethod(expression, receiver, resolvedCall, true);
 			}
 			else
-				return invokeMethod(receiver, resolvedCall, expression.getParent() instanceof NapileSafeQualifiedExpression, false);
+				return invokeMethod(expression, receiver, resolvedCall, false);
 		}
 	}
 
@@ -688,8 +689,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 		return StackValue.onStack(callable.getReturnType());
 	}
 
-	private StackValue invokeMethod(StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean nullable, boolean anonym)
+	private StackValue invokeMethod(PsiElement target, StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean anonym)
 	{
+		boolean nullable = target.getParent() instanceof NapileSafeQualifiedExpression;
 		boolean requireSpecialCall = false;
 		ReceiverDescriptor receiverDescriptor = resolvedCall.getThisObject();
 		if(receiverDescriptor instanceof ExpressionReceiver)
@@ -701,7 +703,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 		final CallableMethod callableMethod = CallTransformer.transformToCallable(this, resolvedCall, nullable, anonym, requireSpecialCall);
 
-		invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
+		invokeMethodWithArguments(callableMethod, resolvedCall, receiver, target);
 
 		final TypeNode callReturnType = callableMethod.getReturnType();
 
@@ -719,10 +721,10 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingContext.RESOLVED_CALL, calleeExpression);
 
-		invokeMethodWithArguments(callableMethod, resolvedCall, receiver);
+		invokeMethodWithArguments(callableMethod, resolvedCall, receiver, expression);
 	}
 
-	public void invokeMethodWithArguments(@NotNull CallableMethod callableMethod, @NotNull ResolvedCall<? extends CallableDescriptor> resolvedCall, @NotNull StackValue receiver)
+	public void invokeMethodWithArguments(@NotNull CallableMethod callableMethod, @NotNull ResolvedCall<? extends CallableDescriptor> resolvedCall, @NotNull StackValue receiver, PsiElement target)
 	{
 		/*final Type calleeType = callableMethod.getGenerateCalleeType();
 		if(calleeType != null)
@@ -746,7 +748,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 		pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
 
-		callableMethod.invoke(instructs, PositionMarker.EMPTY, null);
+		callableMethod.invoke(instructs, this, target);
 
 		setRefs(resolvedCall);
 	}
@@ -1115,16 +1117,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 		if(element == null)
 			return instructs;
 
-		return new InstructionAdapter()
-		{
-			@Override
-			protected <T extends Instruction> T add(T t)
-			{
-				instructs.getInstructions().add(t);
-				mark(t, element);
-				return t;
-			}
-		};
+		return new MarkerInstructionAdapter(instructs, element, this);
 	}
 
 	@Override

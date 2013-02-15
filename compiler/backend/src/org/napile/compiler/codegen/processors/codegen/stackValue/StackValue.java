@@ -19,13 +19,13 @@ package org.napile.compiler.codegen.processors.codegen.stackValue;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
-import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.FqNameGenerator;
 import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.TypeTransformer;
+import org.napile.compiler.codegen.processors.adapters.MarkerInstructionAdapter;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
@@ -172,16 +172,7 @@ public abstract class StackValue
 		if(target == null || marker == PositionMarker.EMPTY)
 			return adapter;
 
-		return new InstructionAdapter()
-		{
-			@Override
-			protected <T extends Instruction> T add(T t)
-			{
-				adapter.getInstructions().add(t);
-				marker.mark(t, target);
-				return t;
-			}
-		};
+		return new MarkerInstructionAdapter(adapter, target, marker);
 	}
 
 	protected void castTo(TypeNode toType, InstructionAdapter v)
