@@ -23,9 +23,9 @@ import com.intellij.psi.PsiElement;
 /**
  * @author yole
  */
-public class KotlinFindClassUsagesHandler extends FindUsagesHandler
+public class NapileFindMethodUsagesHandler extends FindUsagesHandler
 {
-	public KotlinFindClassUsagesHandler(@NotNull PsiElement psiElement)
+	protected NapileFindMethodUsagesHandler(@NotNull PsiElement psiElement)
 	{
 		super(psiElement);
 	}

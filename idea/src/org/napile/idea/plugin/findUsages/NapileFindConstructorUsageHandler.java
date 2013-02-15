@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,12 @@ import com.intellij.find.findUsages.FindUsagesHandler;
 import com.intellij.psi.PsiElement;
 
 /**
- * @author yole
+ * @author VISTALL
+ * @date 11:40/15.02.13
  */
-public class KotlinFindFunctionUsagesHandler extends FindUsagesHandler
+public class NapileFindConstructorUsageHandler extends FindUsagesHandler
 {
-	protected KotlinFindFunctionUsagesHandler(@NotNull PsiElement psiElement)
+	public NapileFindConstructorUsageHandler(@NotNull PsiElement psiElement)
 	{
 		super(psiElement);
 	}

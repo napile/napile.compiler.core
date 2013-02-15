@@ -18,6 +18,7 @@ package org.napile.idea.plugin.findUsages;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileMethod;
 import com.intellij.find.findUsages.FindUsagesHandler;
 import com.intellij.find.findUsages.FindUsagesHandlerFactory;
@@ -26,12 +27,12 @@ import com.intellij.psi.PsiElement;
 /**
  * @author yole
  */
-public class KotlinFindUsagesHandlerFactory extends FindUsagesHandlerFactory
+public class NapileFindUsagesHandlerFactory extends FindUsagesHandlerFactory
 {
 	@Override
 	public boolean canFindUsages(@NotNull PsiElement element)
 	{
-		return element instanceof NapileClass || element instanceof NapileMethod;
+		return element instanceof NapileClass || element instanceof NapileMethod || element instanceof NapileConstructor;
 	}
 
 	@Override
@@ -39,11 +40,15 @@ public class KotlinFindUsagesHandlerFactory extends FindUsagesHandlerFactory
 	{
 		if(element instanceof NapileClass)
 		{
-			return new KotlinFindClassUsagesHandler(element);
+			return new NapileFindClassUsagesHandler(element);
 		}
 		if(element instanceof NapileMethod)
 		{
-			return new KotlinFindFunctionUsagesHandler(element);
+			return new NapileFindMethodUsagesHandler(element);
+		}
+		if(element instanceof NapileConstructor)
+		{
+			return new NapileFindConstructorUsageHandler(element);
 		}
 		throw new IllegalArgumentException("unexpected element type: " + element);
 	}
