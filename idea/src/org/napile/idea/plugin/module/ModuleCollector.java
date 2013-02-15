@@ -16,11 +16,11 @@
 
 package org.napile.idea.plugin.module;
 
-import java.util.Collection;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileFileType;
+import org.napile.compiler.analyzer.AnalyzeContext;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.module.type.NapileModuleType;
 import com.google.common.collect.Sets;
@@ -28,6 +28,7 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.roots.ContentIterator;
 import com.intellij.openapi.roots.LibraryOrderEntry;
 import com.intellij.openapi.roots.ModuleFileIndex;
@@ -40,27 +41,31 @@ import com.intellij.openapi.roots.RootPolicy;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.util.Function;
+import com.intellij.util.SmartList;
 
 /**
  * @author VISTALL
  * @date 15:31/11.01.13
  */
-public class ModuleCollectFileFunction implements Function<NapileFile, Collection<NapileFile>>
+public class ModuleCollector
 {
-	private final Module module;
-	private final boolean test;
-
-	public ModuleCollectFileFunction(Module module, boolean test)
+	public static AnalyzeContext createAnalyzeContext(final NapileFile rootFile, final boolean collect)
 	{
-		this.module = module;
-		this.test = test;
-	}
+		VirtualFile virtualFile = rootFile.getVirtualFile();
+		if(virtualFile == null)
+			return AnalyzeContext.EMPTY;
 
-	@Override
-	public Collection<NapileFile> fun(final NapileFile rootFile)
-	{
-		final Set<NapileFile> files = Sets.newLinkedHashSet();
+		Module module = ModuleUtilCore.findModuleForPsiElement(rootFile);
+		if(module == null || ModuleType.get(module) != NapileModuleType.getInstance())
+			return AnalyzeContext.EMPTY;
+
+		ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+
+		final boolean test = moduleRootManager.getFileIndex().isInTestSourceContent(virtualFile);
+
+		final Set<NapileFile> analyzeFiles = Sets.newLinkedHashSet();
+		final SmartList<VirtualFile> bootpath = new SmartList<VirtualFile>();
+		final SmartList<VirtualFile> classpath = new SmartList<VirtualFile>();
 
 		ModuleRootManager rootManager = ModuleRootManager.getInstance(module);
 
@@ -71,40 +76,47 @@ public class ModuleCollectFileFunction implements Function<NapileFile, Collectio
 				@Override
 				public Object visitLibraryOrderEntry(LibraryOrderEntry libraryOrderEntry, Object value)
 				{
-					PsiManager manager = PsiManager.getInstance(rootFile.getProject());
 					for(VirtualFile v : libraryOrderEntry.getFiles(OrderRootType.CLASSES))
 					{
-						System.out.println(manager.findFile(v));
+						String name = v.getName();
+						if(name.equals("napile.lang.nzip"))   //TODO [VISTALL] hardcode
+							bootpath.add(v);
+						else
+							classpath.add(v);
 					}
-					//if(!libraryOrderEntry.isExported())
-					//	return null;
 					return null;
 				}
 
 				@Override
 				public Object visitModuleSourceOrderEntry(ModuleSourceOrderEntry moduleSourceOrderEntry, Object value)
 				{
-					collectSourcesInModule(moduleSourceOrderEntry.getOwnerModule(), files, rootFile);
+					if(collect)
+						collectSourcesInModule(moduleSourceOrderEntry.getOwnerModule(), test, analyzeFiles, rootFile);
 					return null;
 				}
 
 				@Override
 				public Object visitModuleOrderEntry(ModuleOrderEntry moduleOrderEntry, Object value)
 				{
+					if(!collect)
+						return null;
+
 					Module module = moduleOrderEntry.getModule();
 					if(module == null || !moduleOrderEntry.isExported())
 						return null;
-					collectSourcesInModule(module, files, rootFile);
+
+					collectSourcesInModule(module, test, analyzeFiles, rootFile);
 					return null;
 				}
 			}, null);
 		}
 
-		files.add(rootFile);
-		return files;
+		analyzeFiles.add(rootFile);
+
+		return new AnalyzeContext(analyzeFiles, bootpath, classpath);
 	}
 
-	private void collectSourcesInModule(@NotNull final Module module, @NotNull final Set<NapileFile> files, @NotNull final NapileFile rootFile)
+	private static void collectSourcesInModule(@NotNull final Module module, final boolean test, @NotNull final Set<NapileFile> files, @NotNull final NapileFile rootFile)
 	{
 		if(ModuleType.get(module) != NapileModuleType.getInstance())
 			return;

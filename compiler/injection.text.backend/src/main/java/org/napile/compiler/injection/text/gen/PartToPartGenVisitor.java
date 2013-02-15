@@ -41,7 +41,7 @@ import com.intellij.psi.PsiElement;
  */
 public class PartToPartGenVisitor extends TextPsiVisitor
 {
-	private static final MethodRef PLUS_REF = new MethodRef(NapileLangPackage.STRING_BUILDER.child(Name.identifier("plus")), Arrays.asList(AsmNodeUtil.parameterNode("element", AsmConstants.ANY_TYPE)), Collections.<TypeNode>emptyList(),  TypeConstants.STRING_BUILDER);
+	private static final MethodRef PLUS_REF = new MethodRef(NapileLangPackage.STRING_BUILDER.child(Name.identifier("plus")), Arrays.asList(AsmNodeUtil.parameterNode("element", TypeConstants.ANY_NULLABLE)), Collections.<TypeNode>emptyList(),  TypeConstants.STRING_BUILDER);
 	private static final MethodRef TO_STRING_REF = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("toString")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.STRING_TYPE);
 
 	private StringBuilder builder = null;

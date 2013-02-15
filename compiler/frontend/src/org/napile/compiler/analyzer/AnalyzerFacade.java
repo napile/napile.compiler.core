@@ -16,8 +16,6 @@
 
 package org.napile.compiler.analyzer;
 
-import java.util.Collection;
-
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
@@ -40,18 +38,18 @@ public class AnalyzerFacade
 	}
 
 	@NotNull
-	public static AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull Collection<NapileFile> files, @NotNull Predicate<NapileFile> filesToAnalyzeCompletely)
+	public static AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull AnalyzeContext analyzeContext, @NotNull Predicate<NapileFile> predicate)
 	{
 		BindingTraceContext bindingTraceContext = new BindingTraceContext();
 
 		final ModuleDescriptor owner = new ModuleDescriptor(Name.special("<module>"));
 
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(filesToAnalyzeCompletely, false);
+		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(predicate, false);
 
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceContext), owner);
 		try
 		{
-			injector.getTopDownAnalyzer().analyzeFiles(files);
+			injector.getTopDownAnalyzer().analyzeFiles(analyzeContext);
 
 			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()), injector);
 		}

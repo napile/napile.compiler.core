@@ -18,11 +18,13 @@ package org.napile.compiler.common;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
+import org.napile.compiler.analyzer.AnalyzeContext;
 import org.napile.compiler.config.CompilerConfiguration;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.parsing.NapileParserDefinition;
@@ -198,6 +200,11 @@ public class JetCoreEnvironment
 			}
 			projectEnvironment.addSourcesToClasspath(root);
 		}
+	}
+
+	public AnalyzeContext makeAnalyzeContext()
+	{
+		return new AnalyzeContext(getSourceFiles(), Collections.<VirtualFile>emptyList(), Collections.<VirtualFile>emptyList());
 	}
 
 	public List<NapileFile> getSourceFiles()

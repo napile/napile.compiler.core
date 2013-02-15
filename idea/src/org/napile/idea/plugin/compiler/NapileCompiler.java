@@ -18,6 +18,7 @@ package org.napile.idea.plugin.compiler;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,7 @@ import org.napile.asm.LangVersion;
 import org.napile.asm.io.xml.out.AsmXmlFileWriter;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.NapileFileType;
+import org.napile.compiler.analyzer.AnalyzeContext;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.analyzer.AnalyzerFacade;
 import org.napile.compiler.codegen.CompilationErrorHandler;
@@ -167,7 +169,7 @@ public class NapileCompiler implements TranslatingCompiler
 			@Override
 			public AnalyzeExhaust fun(Void v)
 			{
-				return AnalyzerFacade.analyzeFiles(compileContext.getProject(), napileFiles, Predicates.<NapileFile>alwaysTrue());
+				return AnalyzerFacade.analyzeFiles(compileContext.getProject(), new AnalyzeContext(napileFiles, Collections.<VirtualFile>emptyList(), Collections.<VirtualFile>emptyList()), Predicates.<NapileFile>alwaysTrue());
 			}
 		}, napileFiles);
 

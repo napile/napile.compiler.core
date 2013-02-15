@@ -17,16 +17,19 @@
 package org.napile.compiler.lang.resolve;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
-import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.analyzer.AnalyzeContext;
+import org.napile.compiler.lang.descriptors.DescriptorBuilder;
+import org.napile.compiler.lang.descriptors.DescriptorBuilderDummy;
+import org.napile.compiler.lang.descriptors.ModuleDescriptor;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.processors.BodyResolver;
 import org.napile.compiler.lang.resolve.processors.DeclarationResolver;
 import org.napile.compiler.lang.resolve.processors.OverloadResolver;
@@ -35,10 +38,6 @@ import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileFile;
-import com.google.common.base.Predicates;
-import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -128,8 +127,7 @@ public class TopDownAnalyzer
 		this.bodyResolver = bodyResolver;
 	}
 
-
-	public void doProcess(JetScope outerScope, DescriptorBuilder owner, Collection<? extends PsiElement> declarations)
+	public void doProcessSource(JetScope outerScope, DescriptorBuilder owner, Collection<? extends PsiElement> declarations)
 	{
 		//        context.enableDebugOutput();
 		context.debug("Enter");
@@ -164,59 +162,7 @@ public class TopDownAnalyzer
 		}
 	}
 
-
-
-	@Deprecated
-	public static void processClassOrObject(@NotNull Project project, @NotNull final BindingTrace trace, @NotNull JetScope outerScope, @NotNull final DeclarationDescriptor containingDeclaration, @NotNull NapileClassLike object)
-	{
-		ModuleDescriptor moduleDescriptor = new ModuleDescriptor(Name.special("<dummy for object>"));
-
-		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(Predicates.<NapileFile>equalTo(object.getContainingFile()), true);
-
-		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(trace), moduleDescriptor);
-
-		injector.getTopDownAnalyzer().doProcess(outerScope, new DescriptorBuilder()
-		{
-
-			@NotNull
-			@Override
-			public DeclarationDescriptor getOwnerForChildren()
-			{
-				return containingDeclaration;
-			}
-
-			@Override
-			public void addClassifierDescriptor(@NotNull MutableClassDescriptorLite classDescriptor)
-			{
-
-			}
-
-			@Override
-			public void addAnonymClassDescriptor(@NotNull MutableClassDescriptorLite objectDescriptor)
-			{
-
-			}
-
-			@Override
-			public void addMethodDescriptor(@NotNull MethodDescriptor functionDescriptor)
-			{
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public void addVariableDescriptor(@NotNull VariableDescriptor propertyDescriptor)
-			{
-
-			}
-
-			@Override
-			public void addConstructorDescriptor(@NotNull ConstructorDescriptor constructorDescriptor)
-			{
-			}
-		}, Collections.<PsiElement>singletonList(object));
-	}
-
-	public void analyzeFiles(@NotNull Collection<NapileFile> files)
+	public void analyzeFiles(@NotNull AnalyzeContext analyzeContext)
 	{
 		final WritableScope scope = new WritableScopeImpl(JetScope.EMPTY, moduleDescriptor, new TraceBasedRedeclarationHandler(trace), "Root scope in analyzeNamespace");
 
@@ -230,8 +176,10 @@ public class TopDownAnalyzer
 
 		scope.changeLockLevel(WritableScope.LockLevel.READING);
 
+		DescriptorBuilderDummy owner = new DescriptorBuilderDummy();
+
 		// dummy builder is used because "root" is module descriptor,
 		// namespaces added to module explicitly in
-		doProcess(scope, new DescriptorBuilderDummy(), files);
+		doProcessSource(scope, owner, analyzeContext.getFiles());
 	}
 }

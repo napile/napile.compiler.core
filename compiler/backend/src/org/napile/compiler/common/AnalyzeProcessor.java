@@ -32,7 +32,6 @@ import org.napile.compiler.common.messages.AnalyzerWithCompilerReport;
 import org.napile.compiler.common.messages.CompilerMessageLocation;
 import org.napile.compiler.common.messages.CompilerMessageSeverity;
 import org.napile.compiler.lang.psi.NapileFile;
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.Function;
@@ -85,14 +84,14 @@ public class AnalyzeProcessor
 	public static AnalyzeExhaust analyze(final JetCoreEnvironment environment)
 	{
 		AnalyzerWithCompilerReport analyzerWithCompilerReport = new AnalyzerWithCompilerReport(environment.getConfiguration().get(CompilerConfigurationKeys.MESSAGE_COLLECTOR_KEY));
-		final Predicate<NapileFile> filesToAnalyzeCompletely = Predicates.<NapileFile>alwaysTrue();
+
 		analyzerWithCompilerReport.analyzeAndReport(new Function<Void, AnalyzeExhaust>()
 		{
 			@NotNull
 			@Override
 			public AnalyzeExhaust fun(Void v)
 			{
-				return AnalyzerFacade.analyzeFiles(environment.getProject(), environment.getSourceFiles(), filesToAnalyzeCompletely);
+				return AnalyzerFacade.analyzeFiles(environment.getProject(), environment.makeAnalyzeContext(), Predicates.<NapileFile>alwaysTrue());
 			}
 		}, environment.getSourceFiles());
 
