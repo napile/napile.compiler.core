@@ -1149,7 +1149,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 				StringBuilder builder = new StringBuilder();
 				String packageName = ((NapileFile) containingFile).getPackageName();
 				if(packageName != null)
-					builder.append(packageName.replace(".", "/")) ;
+					builder.append(packageName.replace(".", "/")).append("/");
 				builder.append(containingFile.getVirtualFile().getName());
 				path = builder.toString();
 			}
