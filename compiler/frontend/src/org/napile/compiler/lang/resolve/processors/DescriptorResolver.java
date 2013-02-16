@@ -125,7 +125,7 @@ public class DescriptorResolver
 			return Collections.emptyList();
 
 		List<JetType> result = Lists.newArrayList();
-		List<NapileTypeReference> delegationSpecifiers = superListOwner.getSuperTypes();
+		List<? extends NapileTypeReference> delegationSpecifiers = superListOwner.getSuperTypes();
 		if(delegationSpecifiers.isEmpty())
 			result.add(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.ANY, false));
 		else
@@ -136,7 +136,7 @@ public class DescriptorResolver
 		return result;
 	}
 
-	public Collection<JetType> resolveDelegationSpecifiers(JetScope extensibleScope, List<NapileTypeReference> delegationSpecifiers, @NotNull TypeResolver resolver, BindingTrace trace, boolean checkBounds)
+	public Collection<JetType> resolveDelegationSpecifiers(JetScope extensibleScope, List<? extends NapileTypeReference> delegationSpecifiers, @NotNull TypeResolver resolver, BindingTrace trace, boolean checkBounds)
 	{
 		if(delegationSpecifiers.isEmpty())
 			return Collections.emptyList();
@@ -166,7 +166,7 @@ public class DescriptorResolver
 		innerScope.changeLockLevel(WritableScope.LockLevel.BOTH);
 		typeParameterResolver.postResolving(method, innerScope, typeParameterDescriptors, trace);
 
-		List<CallParameterDescriptor> parameterDescriptors = resolveCallParameters(methodDescriptor, innerScope, method.getValueParameters(), trace);
+		List<CallParameterDescriptor> parameterDescriptors = resolveCallParameters(methodDescriptor, innerScope, method.getCallParameters(), trace);
 
 		innerScope.changeLockLevel(WritableScope.LockLevel.READING);
 
@@ -214,7 +214,7 @@ public class DescriptorResolver
 		innerScope.changeLockLevel(WritableScope.LockLevel.BOTH);
 		typeParameterResolver.postResolving(macro, innerScope, typeParameterDescriptors, trace);
 
-		List<CallParameterDescriptor> parameterDescriptors = resolveCallParameters(methodDescriptor, innerScope, macro.getValueParameters(), trace);
+		List<CallParameterDescriptor> parameterDescriptors = resolveCallParameters(methodDescriptor, innerScope, macro.getCallParameters(), trace);
 
 		innerScope.changeLockLevel(WritableScope.LockLevel.READING);
 
@@ -585,7 +585,7 @@ public class DescriptorResolver
 
 		resolveDelegationSpecifiers(scope, constructor.getSuperCallTypeList(), typeResolver, trace, true);
 
-		return constructorDescriptor.initialize(classDescriptor.getTypeConstructor().getParameters(), resolveCallParameters(constructorDescriptor, parameterScope, constructor.getValueParameters(), trace), Visibility.resolve(constructor));
+		return constructorDescriptor.initialize(classDescriptor.getTypeConstructor().getParameters(), resolveCallParameters(constructorDescriptor, parameterScope, constructor.getCallParameters(), trace), Visibility.resolve(constructor));
 	}
 
 	public void checkBounds(@NotNull NapileTypeReference typeReference, @NotNull JetType type, BindingTrace trace)
@@ -601,7 +601,7 @@ public class DescriptorResolver
 		List<JetType> arguments = type.getArguments();
 		assert parameters.size() == arguments.size();
 
-		List<NapileTypeReference> jetTypeArguments = typeElement.getTypeArguments();
+		List<? extends NapileTypeReference> jetTypeArguments = typeElement.getTypeArguments();
 		assert jetTypeArguments.size() == arguments.size() : typeElement.getText();
 
 		TypeSubstitutor substitutor = TypeSubstitutor.create(type);

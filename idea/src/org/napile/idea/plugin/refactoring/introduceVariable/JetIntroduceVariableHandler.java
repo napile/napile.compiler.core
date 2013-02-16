@@ -105,9 +105,9 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 		final NapileExpression expression = _expression;
 		boolean noTypeInference = false;
 		boolean needParentheses = false;
-		if(expression.getParent() instanceof NapileQualifiedExpression)
+		if(expression.getParent() instanceof NapileQualifiedExpressionImpl)
 		{
-			NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) expression.getParent();
+			NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) expression.getParent();
 			if(qualifiedExpression.getReceiverExpression() != expression)
 			{
 				showErrorHint(project, editor, JetRefactoringBundle.message("cannot.refactor.no.expression"));

@@ -23,7 +23,6 @@ import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.util.ArrayUtil;
 import com.intellij.util.io.StringRef;
 
 /**
@@ -49,13 +48,6 @@ public class NapilePsiMacroStub extends StubBase<NapileNamedMacro> implements Na
 	public String getName()
 	{
 		return StringRef.toString(nameRef);
-	}
-
-	@NotNull
-	public String[] getAnnotations()
-	{
-		// TODO (stubs)
-		return ArrayUtil.EMPTY_STRING_ARRAY;
 	}
 
 	@Override

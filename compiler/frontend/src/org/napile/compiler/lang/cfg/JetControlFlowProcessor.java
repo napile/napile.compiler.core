@@ -82,7 +82,7 @@ public class JetControlFlowProcessor
 		{
 			NapileDeclarationWithBody declarationWithBody = (NapileDeclarationWithBody) subroutine;
 			CFPVisitor cfpVisitor = new CFPVisitor(false);
-			NapileElement[] valueParameters = declarationWithBody.getValueParameters();
+			NapileElement[] valueParameters = declarationWithBody.getCallParameters();
 			for(NapileElement valueParameter : valueParameters)
 				valueParameter.accept(cfpVisitor);
 
@@ -284,10 +284,10 @@ public class JetControlFlowProcessor
 					NapileArrayAccessExpressionImpl arrayAccessExpression = (NapileArrayAccessExpressionImpl) left;
 					visitAssignToArrayAccess(expression, arrayAccessExpression);
 				}
-				else if(left instanceof NapileQualifiedExpression)
+				else if(left instanceof NapileQualifiedExpressionImpl)
 				{
 					assert !(left instanceof NapileLinkMethodExpression) : left; // TODO
-					NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) left;
+					NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) left;
 					value(qualifiedExpression.getReceiverExpression(), false);
 					value(expression.getOperationReference(), false);
 					builder.write(expression, left);
@@ -719,7 +719,7 @@ public class JetControlFlowProcessor
 		}
 
 		@Override
-		public void visitQualifiedExpression(NapileQualifiedExpression expression)
+		public void visitQualifiedExpression(NapileQualifiedExpressionImpl expression)
 		{
 			value(expression.getReceiverExpression(), false);
 			NapileExpression selectorExpression = expression.getSelectorExpression();

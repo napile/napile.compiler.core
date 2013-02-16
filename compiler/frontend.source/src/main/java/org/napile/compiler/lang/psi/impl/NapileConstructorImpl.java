@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +26,9 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.stubs.NapilePsiConstructorStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -34,11 +37,16 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author max
  */
-public class NapileConstructorImpl extends NapileDeclarationImpl implements NapileConstructor
+public class NapileConstructorImpl extends NapileTypeParameterListOwnerStub<NapilePsiConstructorStub> implements NapileConstructor
 {
 	public NapileConstructorImpl(@NotNull ASTNode node)
 	{
 		super(node);
+	}
+
+	public NapileConstructorImpl(@NotNull NapilePsiConstructorStub stub)
+	{
+		super(stub, NapileStubElementTypes.CONSTRUCTOR);
 	}
 
 	@Override
@@ -54,17 +62,17 @@ public class NapileConstructorImpl extends NapileDeclarationImpl implements Napi
 	}
 
 	@Nullable
-	@IfNotParsed
-	public NapileCallParameterList getParameterList()
+	@Override
+	public NapileCallParameterList getCallParameterList()
 	{
-		return (NapileCallParameterList) findChildByType(NapileNodes.CALL_PARAMETER_LIST);
+		return getStubOrPsiChild(NapileStubElementTypes.CALL_PARAMETER_LIST);
 	}
 
 	@Override
 	@NotNull
-	public NapileCallParameter[] getValueParameters()
+	public NapileCallParameter[] getCallParameters()
 	{
-		NapileCallParameterList list = getParameterList();
+		NapileCallParameterList list = getCallParameterList();
 		return list != null ? list.getParameters() : NapileCallParameter.EMPTY_ARRAY;
 	}
 

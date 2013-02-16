@@ -21,7 +21,6 @@ import static org.napile.idea.plugin.projectView.NapileProjectViewUtil.canRepres
 import java.util.Collection;
 
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileTypeParameterList;
 import org.napile.idea.plugin.util.IdePsiUtil;
 import com.intellij.ide.projectView.PresentationData;
 import com.intellij.ide.projectView.ProjectView;
@@ -60,10 +59,10 @@ public class NapileClassTreeNode extends AbstractPsiBasedNode<NapileClass>
 		NapileClass napileClass = getValue();
 		if(napileClass != null)
 		{
-			NapileTypeParameterList typeParameterList = napileClass.getTypeParameterList();
-			if(typeParameterList != null)
-				data.setPresentableText(napileClass.getName() + typeParameterList.getText());
-			else
+			//NapileTypeParameterList typeParameterList = napileClass.getTypeParameterList();
+			//if(typeParameterList != null)
+			//	data.setPresentableText(napileClass.getName() + typeParameterList.getText());
+			//else
 				data.setPresentableText(napileClass.getName());
 
 			ProjectView.getInstance(getProject()).getCurrentProjectViewPane().getTreeBuilder().addSubtreeToUpdateByElement(data);

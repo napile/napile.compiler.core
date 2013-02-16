@@ -666,9 +666,9 @@ public class CallResolver
 					ExpressionReceiver expressionReceiver = (ExpressionReceiver) candidateCall.getThisObject();
 					NapileExpression expression = expressionReceiver.getExpression();
 
-					if(expression instanceof NapileDotQualifiedExpression)
+					if(expression instanceof NapileDotQualifiedExpressionImpl)
 					{
-						NapileDotQualifiedExpression dotQualifiedExpression = (NapileDotQualifiedExpression) expression;
+						NapileDotQualifiedExpressionImpl dotQualifiedExpression = (NapileDotQualifiedExpressionImpl) expression;
 						if(hasAnnotationOnType(dotQualifiedExpression.getSelectorExpression(), context, NapileAnnotationPackage.INHERIT_IMMUTABLE) && hasAnnotationOnType(dotQualifiedExpression.getReceiverExpression(), context, NapileAnnotationPackage.IMMUTABLE))
 							return true;
 					}
@@ -694,7 +694,7 @@ public class CallResolver
 	@Nullable
 	private static NapileSimpleNameExpression getSimpleOrReceiverOfDotExpression(@Nullable NapileElement element)
 	{
-		return element instanceof NapileSimpleNameExpression ? (NapileSimpleNameExpression) element : element instanceof NapileDotQualifiedExpression ? getSimpleOrReceiverOfDotExpression(((NapileDotQualifiedExpression) element).getReceiverExpression()) : null;
+		return element instanceof NapileSimpleNameExpression ? (NapileSimpleNameExpression) element : element instanceof NapileDotQualifiedExpressionImpl ? getSimpleOrReceiverOfDotExpression(((NapileDotQualifiedExpressionImpl) element).getReceiverExpression()) : null;
 	}
 
 	private <D extends CallableDescriptor, F extends D> void performResolutionForCandidateCall(@NotNull CallResolutionContext<D, F> context, @NotNull ResolutionTask<D, F> task)

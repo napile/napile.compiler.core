@@ -23,7 +23,7 @@ import com.intellij.util.ArrayFactory;
  * @author VISTALL
  * @date 20:05/19.10.12
  */
-public interface NapileTypeParameter extends NapileNamedDeclaration
+public interface NapileTypeParameter extends NapileNamedDeclaration, NapileSuperListOwner
 {
 	NapileTypeParameter[] EMPTY_ARRAY = new NapileTypeParameter[0];
 
@@ -35,9 +35,6 @@ public interface NapileTypeParameter extends NapileNamedDeclaration
 			return count == 0 ? EMPTY_ARRAY : new NapileTypeParameter[count];
 		}
 	};
-
-	@NotNull
-	NapileTypeReference[] getExtendsBound();
 
 	@NotNull
 	NapileCallParameterList[] getConstructorParameterLists();

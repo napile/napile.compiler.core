@@ -34,7 +34,7 @@ import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapileClassBody;
 import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileDotQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileDotQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -116,7 +116,7 @@ public class NapileCompletionContributor extends CompletionContributor
 			}
 		});
 
-		extend(CompletionType.BASIC, element().withSuperParent(2, NapileDotQualifiedExpression.class), new CompletionProvider<CompletionParameters>()
+		extend(CompletionType.BASIC, element().withSuperParent(2, NapileDotQualifiedExpressionImpl.class), new CompletionProvider<CompletionParameters>()
 		{
 			@Override
 			protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result)
@@ -127,10 +127,10 @@ public class NapileCompletionContributor extends CompletionContributor
 					return;
 
 				PsiElement prevElement = position.getPrevSibling();
-				if(!(prevElement instanceof NapileDotQualifiedExpression))
+				if(!(prevElement instanceof NapileDotQualifiedExpressionImpl))
 					return;
 
-				NapileDotQualifiedExpression dotQualifiedExpression = (NapileDotQualifiedExpression) prevElement;
+				NapileDotQualifiedExpressionImpl dotQualifiedExpression = (NapileDotQualifiedExpressionImpl) prevElement;
 
 				AnalyzeExhaust analyze = Analyzer.analyzeAll((NapileFile) containingFile);
 

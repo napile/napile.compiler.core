@@ -196,13 +196,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	}
 
 	@Override
-	public StackValue visitDotQualifiedExpression(NapileDotQualifiedExpression expression, StackValue receiver)
+	public StackValue visitDotQualifiedExpression(NapileDotQualifiedExpressionImpl expression, StackValue receiver)
 	{
 		return genQualified(StackValue.none(), expression.getSelectorExpression());
 	}
 
 	@Override
-	public StackValue visitSafeQualifiedExpression(NapileSafeQualifiedExpression expression, StackValue data)
+	public StackValue visitSafeQualifiedExpression(NapileSafeQualifiedExpressionImpl expression, StackValue data)
 	{
 		return genQualified(StackValue.none(), expression.getSelectorExpression());
 	}
@@ -510,9 +510,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 			{
 				descriptor = resolvedCall.getResultingDescriptor();
 
-				if(expression.getParent() instanceof NapileDotQualifiedExpression)
+				if(expression.getParent() instanceof NapileDotQualifiedExpressionImpl)
 				{
-					NapileExpression receiverExp = ((NapileDotQualifiedExpression) expression.getParent()).getReceiverExpression();
+					NapileExpression receiverExp = ((NapileDotQualifiedExpressionImpl) expression.getParent()).getReceiverExpression();
 
 					StackValue newReceiver = receiverExp.accept(this, StackValue.none());
 					newReceiver.put(newReceiver.getType(), instructs, this);
@@ -691,7 +691,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 	private StackValue invokeMethod(PsiElement target, StackValue receiver, ResolvedCall<? extends CallableDescriptor> resolvedCall, boolean anonym)
 	{
-		boolean nullable = target.getParent() instanceof NapileSafeQualifiedExpression;
+		boolean nullable = target.getParent() instanceof NapileSafeQualifiedExpressionImpl;
 		boolean requireSpecialCall = false;
 		ReceiverDescriptor receiverDescriptor = resolvedCall.getThisObject();
 		if(receiverDescriptor instanceof ExpressionReceiver)
@@ -867,9 +867,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	@Nullable
 	private static NapileExpression getReceiverForSelector(PsiElement expression)
 	{
-		if(expression.getParent() instanceof NapileDotQualifiedExpression && !isReceiver(expression))
+		if(expression.getParent() instanceof NapileDotQualifiedExpressionImpl && !isReceiver(expression))
 		{
-			final NapileDotQualifiedExpression parent = (NapileDotQualifiedExpression) expression.getParent();
+			final NapileDotQualifiedExpressionImpl parent = (NapileDotQualifiedExpressionImpl) expression.getParent();
 			return parent.getReceiverExpression();
 		}
 		return null;
@@ -878,9 +878,9 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	private static boolean isReceiver(PsiElement expression)
 	{
 		final PsiElement parent = expression.getParent();
-		if(parent instanceof NapileQualifiedExpression)
+		if(parent instanceof NapileQualifiedExpressionImpl)
 		{
-			final NapileExpression receiverExpression = ((NapileQualifiedExpression) parent).getReceiverExpression();
+			final NapileExpression receiverExpression = ((NapileQualifiedExpressionImpl) parent).getReceiverExpression();
 			return expression == receiverExpression;
 		}
 		return false;

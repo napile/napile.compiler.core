@@ -28,7 +28,7 @@ public interface NapileLinkMethodExpression extends NapileExpression
 	String getQualifiedName();
 
 	@Nullable
-	NapileDotQualifiedExpression getClassTarget();
+	NapileDotQualifiedExpressionImpl getClassTarget();
 
 	@Nullable
 	NapileSimpleNameExpression getTarget();

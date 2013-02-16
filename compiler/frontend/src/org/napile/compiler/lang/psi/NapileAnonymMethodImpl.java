@@ -94,7 +94,7 @@ public class NapileAnonymMethodImpl extends NapileDeclarationImpl implements Nap
 
 	@Override
 	@NotNull
-	public NapileCallParameter[] getValueParameters()
+	public NapileCallParameter[] getCallParameters()
 	{
 		NapileCallParameterList list = getCallParameterList();
 		return list != null ? list.getParameters() : NapileCallParameter.EMPTY_ARRAY;
@@ -155,6 +155,7 @@ public class NapileAnonymMethodImpl extends NapileDeclarationImpl implements Nap
 		return NapilePsiUtil.NO_NAME_PROVIDED;
 	}
 
+	@Nullable
 	@Override
 	public NapileDoc getDocComment()
 	{

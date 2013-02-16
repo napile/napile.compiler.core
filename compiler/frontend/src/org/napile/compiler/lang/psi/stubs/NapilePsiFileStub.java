@@ -16,8 +16,9 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.PsiFileStubImpl;
 import com.intellij.psi.tree.IStubFileElementType;
 import com.intellij.util.io.StringRef;
@@ -63,6 +64,11 @@ public class NapilePsiFileStub extends PsiFileStubImpl<NapileFile>
 		builder.append("]");
 
 		return builder.toString();
+	}
+
+	public NapileClass[] getClasses()
+	{
+		return getChildrenByType(NapileStubElementTypes.CLASS, NapileClass.ARRAY_FACTORY);
 	}
 
 	public boolean isCompiled()

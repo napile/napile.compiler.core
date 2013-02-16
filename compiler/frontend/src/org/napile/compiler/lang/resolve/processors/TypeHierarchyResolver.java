@@ -511,7 +511,7 @@ public class TypeHierarchyResolver
 
 			for(NapileTypeParameter jetTypeParameter : napileClass.getTypeParameters())
 			{
-				for(NapileTypeReference extendsBound : jetTypeParameter.getExtendsBound())
+				for(NapileTypeReference extendsBound : jetTypeParameter.getSuperTypes())
 				{
 					JetType type = trace.getBindingContext().get(BindingContext.TYPE, extendsBound);
 					if(type != null)

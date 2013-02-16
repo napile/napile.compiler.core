@@ -27,5 +27,5 @@ import org.jetbrains.annotations.NotNull;
 public interface NapileTypeList extends NapileElement
 {
 	@NotNull
-	List<NapileTypeReference> getTypeList();
+	List<? extends NapileTypeReference> getTypeList();
 }

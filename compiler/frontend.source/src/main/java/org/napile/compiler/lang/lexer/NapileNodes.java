@@ -21,14 +21,7 @@ package org.napile.compiler.lang.lexer;
 
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.impl.NapileArrayOfExpressionImpl;
-import org.napile.compiler.lang.psi.impl.NapileCallParameterAsReferenceImpl;
-import org.napile.compiler.lang.psi.impl.NapileInjectionExpressionImpl;
-import org.napile.compiler.lang.psi.impl.NapileMethodTypeImpl;
-import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
-import org.napile.compiler.lang.psi.impl.NapileMultiTypeExpressionImpl;
-import org.napile.compiler.lang.psi.impl.NapileMultiTypeImpl;
-import org.napile.compiler.lang.psi.impl.NapileVariableAccessorImpl;
+import org.napile.compiler.lang.psi.impl.*;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
@@ -46,7 +39,7 @@ public interface NapileNodes
 	NapileNode ANONYM_CLASS = new NapileNode("ANONYM_CLASS", NapileAnonymClass.class);
 	NapileNode VARIABLE_ACCESSOR = new NapileNode("VARIABLE_ACCESSOR", NapileVariableAccessorImpl.class);
 
-	NapileNode CONSTRUCTOR = new NapileNode("CONSTRUCTOR", NapileConstructorImpl.class);
+	IElementType CONSTRUCTOR = NapileStubElementTypes.CONSTRUCTOR;
 
 	IElementType TYPE_PARAMETER_LIST = NapileStubElementTypes.TYPE_PARAMETER_LIST;
 	IElementType TYPE_PARAMETER = NapileStubElementTypes.TYPE_PARAMETER;
@@ -129,8 +122,8 @@ public interface NapileNodes
 	NapileNode LABEL_EXPRESSION = new NapileNode("LABEL_EXPRESSION", NapileLabelExpression.class);
 	NapileNode ARRAY_ACCESS_EXPRESSION = new NapileNode("ARRAY_ACCESS_EXPRESSION", NapileArrayAccessExpressionImpl.class);
 	NapileNode INDICES = new NapileNode("INDICES", NapileContainerNode.class);
-	NapileNode DOT_QUALIFIED_EXPRESSION = new NapileNode("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpression.class);
-	NapileNode SAFE_ACCESS_EXPRESSION = new NapileNode("SAFE_ACCESS_EXPRESSION", NapileSafeQualifiedExpression.class);
+	NapileNode DOT_QUALIFIED_EXPRESSION = new NapileNode("DOT_QUALIFIED_EXPRESSION", NapileDotQualifiedExpressionImpl.class);
+	NapileNode SAFE_ACCESS_EXPRESSION = new NapileNode("SAFE_ACCESS_EXPRESSION", NapileSafeQualifiedExpressionImpl.class);
 	NapileNode MULTI_TYPE_EXPRESSION = new NapileNode("MULTI_TYPE_EXPRESSION", NapileMultiTypeExpressionImpl.class);
 
 	NapileNode ANONYM_CLASS_EXPRESSION = new NapileNode("ANONYM_CLASS_EXPRESSION", NapileAnonymClassExpression.class);

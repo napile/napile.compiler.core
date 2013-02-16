@@ -16,10 +16,21 @@
 
 package org.napile.compiler.lang.psi;
 
+import com.intellij.util.ArrayFactory;
+
 /**
  * @author Nikolay Krasko
  */
 public interface NapileDeclaration extends NapileExpression, NapileModifierListOwner
 {
 	NapileDeclaration[] EMPTY_ARRAY = new NapileDeclaration[0];
+
+	ArrayFactory<NapileDeclaration> ARRAY_FACTORY = new ArrayFactory<NapileDeclaration>()
+	{
+		@Override
+		public NapileDeclaration[] create(int count)
+		{
+			return count == 0 ? EMPTY_ARRAY : new NapileDeclaration[count];
+		}
+	};
 }

@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileElementImplStub;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
+import org.napile.compiler.lang.psi.NapileTypeParameterList;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterListStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;

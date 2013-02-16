@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.psi.stubs.NapilePsiParameterListStub;
+import org.napile.compiler.lang.psi.NapileCallParameter;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
+import org.napile.compiler.lang.psi.NapileElementImplStub;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterListStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.tree.TokenSet;
@@ -26,7 +31,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * @author max
  */
-public class NapileCallParameterListImpl extends NapileElementImplStub<NapilePsiParameterListStub> implements NapileCallParameterList
+public class NapileCallParameterListImpl extends NapileElementImplStub<NapilePsiCallParameterListStub> implements NapileCallParameterList
 {
 	private static final TokenSet PARAMETER_TYPES = TokenSet.create(NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE, NapileNodes.CALL_PARAMETER_AS_REFERENCE);
 
@@ -35,7 +40,7 @@ public class NapileCallParameterListImpl extends NapileElementImplStub<NapilePsi
 		super(node);
 	}
 
-	public NapileCallParameterListImpl(@NotNull NapilePsiParameterListStub stub)
+	public NapileCallParameterListImpl(@NotNull NapilePsiCallParameterListStub stub)
 	{
 		super(stub, NapileStubElementTypes.CALL_PARAMETER_LIST);
 	}

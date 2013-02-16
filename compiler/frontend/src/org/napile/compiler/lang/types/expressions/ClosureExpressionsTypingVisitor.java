@@ -160,7 +160,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	private List<CallParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileAnonymMethodImpl functionLiteral, AbstractMethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
 	{
 		List<CallParameterDescriptor> parameterDescriptors = Lists.newArrayList();
-		NapileElement[] declaredValueParameters = functionLiteral.getValueParameters();
+		NapileElement[] declaredValueParameters = functionLiteral.getCallParameters();
 
 		List<CallParameterDescriptor> expectedValueParameters = (functionTypeExpected) ? MethodDescriptorUtil.getValueParameters(functionDescriptor, context.expectedType) : null;
 

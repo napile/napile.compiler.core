@@ -135,7 +135,7 @@ public class ImportInsertHelper
 		}
 		else
 		{
-			file.getNamespaceHeader().getParent().addAfter(newDirective, file.getNamespaceHeader());
+			file.getPackage().getParent().addAfter(newDirective, file.getPackage());
 		}
 	}
 

@@ -23,6 +23,12 @@ import com.intellij.psi.PsiElementVisitor;
  */
 public class NapileVisitor<R, D> extends PsiElementVisitor
 {
+	public R visitNapileFile(NapileFile dcl, D data)
+	{
+		visitFile(dcl);
+		return null;
+	}
+
 	public R visitJetElement(NapileElement element, D data)
 	{
 		visitElement(element);
@@ -249,7 +255,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitReferenceExpression(expression, data);
 	}
 
-	public R visitQualifiedExpression(NapileQualifiedExpression expression, D data)
+	public R visitQualifiedExpression(NapileQualifiedExpressionImpl expression, D data)
 	{
 		return visitExpression(expression, data);
 	}
@@ -259,12 +265,12 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 		return visitExpression(expression, data);
 	}
 
-	public R visitDotQualifiedExpression(NapileDotQualifiedExpression expression, D data)
+	public R visitDotQualifiedExpression(NapileDotQualifiedExpressionImpl expression, D data)
 	{
 		return visitQualifiedExpression(expression, data);
 	}
 
-	public R visitSafeQualifiedExpression(NapileSafeQualifiedExpression expression, D data)
+	public R visitSafeQualifiedExpression(NapileSafeQualifiedExpressionImpl expression, D data)
 	{
 		return visitQualifiedExpression(expression, data);
 	}

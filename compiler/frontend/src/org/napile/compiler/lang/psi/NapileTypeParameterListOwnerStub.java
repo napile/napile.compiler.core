@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.NamedStub;
@@ -42,7 +42,7 @@ public abstract class NapileTypeParameterListOwnerStub<T extends NamedStub> exte
 	@Override
 	public NapileTypeParameterList getTypeParameterList()
 	{
-		return (NapileTypeParameterList) findChildByType(NapileNodes.TYPE_PARAMETER_LIST);
+		return getStubOrPsiChild(NapileStubElementTypes.TYPE_PARAMETER_LIST);
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMet
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getTypeArguments()
+	public List<? extends NapileTypeReference> getTypeArguments()
 	{
 		return Collections.emptyList();
 	}

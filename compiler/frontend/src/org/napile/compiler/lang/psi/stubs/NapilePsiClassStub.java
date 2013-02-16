@@ -18,6 +18,7 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
@@ -66,5 +67,10 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 		builder.append("]");
 
 		return builder.toString();
+	}
+
+	public NapileDeclaration[] getDeclarations()
+	{
+		return getChildrenByType(NapileStubElementTypes.CLASS_MEMBERS, NapileDeclaration.ARRAY_FACTORY);
 	}
 }

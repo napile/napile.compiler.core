@@ -25,7 +25,7 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.lexer.NapileLexer;
 import org.napile.compiler.lang.psi.NapileCallExpression;
-import org.napile.compiler.lang.psi.NapileQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -182,9 +182,9 @@ public class JetNameSuggester
 
 	private static void addNamesForExpression(ArrayList<String> result, NapileExpression expression, JetNameValidator validator)
 	{
-		if(expression instanceof NapileQualifiedExpression)
+		if(expression instanceof NapileQualifiedExpressionImpl)
 		{
-			NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) expression;
+			NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) expression;
 			NapileExpression selectorExpression = qualifiedExpression.getSelectorExpression();
 			addNamesForExpression(result, selectorExpression, validator);
 			if(selectorExpression != null && selectorExpression instanceof NapileCallExpression)

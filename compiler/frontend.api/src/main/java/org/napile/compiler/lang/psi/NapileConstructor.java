@@ -19,8 +19,8 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.ArrayFactory;
 
 /**
  * @author VISTALL
@@ -29,6 +29,15 @@ import com.intellij.psi.PsiElement;
 public interface NapileConstructor extends NapileDeclarationWithBody, NapileStatementExpression, NapileDelegationSpecifierListOwner, NapileNamedDeclaration
 {
 	NapileConstructor[] EMPTY_ARRAY = new NapileConstructor[0];
+
+	ArrayFactory<NapileConstructor> ARRAY_FACTORY = new ArrayFactory<NapileConstructor>()
+	{
+		@Override
+		public NapileConstructor[] create(int count)
+		{
+			return count == 0 ? EMPTY_ARRAY : new NapileConstructor[count];
+		}
+	};
 
 	@Override
 	@NotNull

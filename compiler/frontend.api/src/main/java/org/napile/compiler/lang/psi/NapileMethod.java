@@ -7,8 +7,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface NapileMethod extends NapileTypeParameterListOwner, NapileDeclarationWithBody
 {
-	@Nullable
-	NapileCallParameterList getCallParameterList();
+
 
 	@Nullable
 	NapileTypeReference getReturnTypeRef();

@@ -733,7 +733,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		List<JetType> parameterTypes = Collections.emptyList();
 		if(typeList != null)
 		{
-			List<NapileTypeReference> typeReferences = typeList.getTypeList();
+			List<? extends NapileTypeReference> typeReferences = typeList.getTypeList();
 			parameterTypes = new ArrayList<JetType>(typeReferences.size());
 			for(NapileTypeReference typeReference : typeReferences)
 				parameterTypes.add(context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, false));
@@ -742,7 +742,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		MethodDescriptor targetMethod = null;
 		Collection<MethodDescriptor> methodDescriptors = context.scope.getMethods(target.getReferencedNameAsName());
 
-		NapileDotQualifiedExpression classTarget = expression.getClassTarget();
+		NapileDotQualifiedExpressionImpl classTarget = expression.getClassTarget();
 		if(classTarget != null)
 		{
 			FqName fqName = new FqName(expression.getQualifiedName());
@@ -822,7 +822,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitQualifiedExpression(NapileQualifiedExpression expression, ExpressionTypingContext context)
+	public JetTypeInfo visitQualifiedExpression(NapileQualifiedExpressionImpl expression, ExpressionTypingContext context)
 	{
 		NapileExpression selectorExpression = expression.getSelectorExpression();
 		NapileExpression receiverExpression = expression.getReceiverExpression();
@@ -864,7 +864,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		return DataFlowUtils.checkType(selectorReturnType, expression, context, selectorReturnTypeInfo.getDataFlowInfo());
 	}
 
-	private void propagateConstantValues(NapileQualifiedExpression expression, ExpressionTypingContext context, NapileSimpleNameExpression selectorExpression)
+	private void propagateConstantValues(NapileQualifiedExpressionImpl expression, ExpressionTypingContext context, NapileSimpleNameExpression selectorExpression)
 	{
 		NapileExpression receiverExpression = expression.getReceiverExpression();
 		CompileTimeConstant<?> receiverValue = context.trace.getBindingContext().get(BindingContext.COMPILE_TIME_VALUE, receiverExpression);
@@ -979,9 +979,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			return getSimpleNameExpressionTypeInfo((NapileSimpleNameExpression) selectorExpression, receiver, callOperationNode, context);
 		}
-		else if(selectorExpression instanceof NapileQualifiedExpression)
+		else if(selectorExpression instanceof NapileQualifiedExpressionImpl)
 		{
-			NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) selectorExpression;
+			NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) selectorExpression;
 			NapileExpression newReceiverExpression = qualifiedExpression.getReceiverExpression();
 			JetTypeInfo newReceiverTypeInfo = getSelectorReturnTypeInfo(receiver, callOperationNode, newReceiverExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
 			JetType newReceiverType = newReceiverTypeInfo.getType();

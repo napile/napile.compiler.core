@@ -240,7 +240,7 @@ public class DeclarationResolver
 				public PsiElement apply(@Nullable NapileFile file)
 				{
 					assert file != null : "File is null for namespace " + namespace;
-					return file.getNamespaceHeader().getNameIdentifier();
+					return file.getPackage().getLastPartExpression();
 				}
 			});
 		}

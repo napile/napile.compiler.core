@@ -38,7 +38,7 @@ public class ConstructorInfo extends NamedDocableInfo<NapileConstructor>
 	public ConstructorInfo(BindingContext bindingContext, NapileConstructor element)
 	{
 		super(bindingContext, element);
-		NapileCallParameter[] ps = element.getValueParameters();
+		NapileCallParameter[] ps = element.getCallParameters();
 		parameters = new ArrayList<CallParameter>(ps.length);
 
 		for(NapileCallParameter callParameter : ps)

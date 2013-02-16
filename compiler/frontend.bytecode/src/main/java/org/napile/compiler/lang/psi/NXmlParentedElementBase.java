@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,26 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi.impl;
+package org.napile.compiler.lang.psi;
+
+import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 15:06/19.10.12
+ * @date 16:19/16.02.13
  */
-public class NXmlMethodImpl
+public abstract class NXmlParentedElementBase extends NXmlElementBase
 {
+	private final PsiElement parent;
+
+	public NXmlParentedElementBase(PsiElement parent)
+	{
+		this.parent = parent;
+	}
+
+	@Override
+	public PsiElement getParent()
+	{
+		return parent;
+	}
 }

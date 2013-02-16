@@ -27,7 +27,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.SingleRootFileViewProvider;
-import com.intellij.psi.impl.PsiManagerImpl;
 
 /**
  * @author VISTALL
@@ -45,7 +44,7 @@ public class NXmlFileViewProvider extends SingleRootFileViewProvider
 	{
 		final FileIndexFacade fileIndex = ServiceManager.getService(project, FileIndexFacade.class);
 		if(fileIndex.isInLibraryClasses(vFile) || !fileIndex.isInSource(vFile))
-			return new NXmlFileImpl((PsiManagerImpl) PsiManager.getInstance(project), this);
+			return new NXmlFileImpl(this);
 		return null;
 	}
 }

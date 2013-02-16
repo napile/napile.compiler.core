@@ -16,23 +16,28 @@
 
 package org.napile.compiler.lang.psi.stubs.elements;
 
+import com.intellij.psi.tree.TokenSet;
+
 /**
  * @author Nikolay Krasko
  */
 public interface NapileStubElementTypes
 {
 	NapileFileElementType FILE = new NapileFileElementType();
-
 	NapileClassElementType CLASS = new NapileClassElementType("CLASS");
+
+	NapileConstructorElementType CONSTRUCTOR = new NapileConstructorElementType("CONSTRUCTOR");
 	NapileMethodElementType METHOD = new NapileMethodElementType("METHOD");
 	NapileMacroElementType MACRO = new NapileMacroElementType("MACRO");
 	NapileVariableElementType VARIABLE = new NapileVariableElementType("VARIABLE");
 	NapileEnumValueElementType ENUM_VALUE = new NapileEnumValueElementType("ENUM_VALUE");
-
 	NapileParameterElementType CALL_PARAMETER_AS_VARIABLE = new NapileParameterElementType("CALL_PARAMETER_AS_VARIABLE");
 
 	NapileParameterListElementType CALL_PARAMETER_LIST = new NapileParameterListElementType("CALL_PARAMETER_LIST");
 
 	NapileTypeParameterElementType TYPE_PARAMETER = new NapileTypeParameterElementType("TYPE_PARAMETER");
+
 	NapileTypeParameterListElementType TYPE_PARAMETER_LIST = new NapileTypeParameterListElementType("TYPE_PARAMETER_LIST");
+
+	TokenSet CLASS_MEMBERS = TokenSet.create(CLASS, CONSTRUCTOR, MACRO, METHOD, VARIABLE, ENUM_VALUE);
 }

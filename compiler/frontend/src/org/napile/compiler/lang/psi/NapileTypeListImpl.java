@@ -35,7 +35,7 @@ public class NapileTypeListImpl extends NapileElementImpl implements NapileTypeL
 
 	@Override
 	@NotNull
-	public List<NapileTypeReference> getTypeList()
+	public List<? extends NapileTypeReference> getTypeList()
 	{
 		return findChildrenByType(NapileNodes.TYPE_REFERENCE);
 	}

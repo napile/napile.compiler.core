@@ -102,9 +102,9 @@ public class JetRefactoringUtil
 			if(element instanceof NapileExpression && !(element instanceof NapileStatementExpression))
 			{
 				boolean addExpression = true;
-				if(element.getParent() instanceof NapileQualifiedExpression)
+				if(element.getParent() instanceof NapileQualifiedExpressionImpl)
 				{
-					NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) element.getParent();
+					NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) element.getParent();
 					if(qualifiedExpression.getReceiverExpression() != element)
 					{
 						addExpression = false;

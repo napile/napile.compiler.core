@@ -661,7 +661,7 @@ public class JetParsing extends AbstractJetParsing
 		 *   : modifiers "this" functionParameters (":" initializer{","}) block?
 		 *   ;
 		 */
-	private NapileNode parseConstructor()
+	private IElementType parseConstructor()
 	{
 		assert _at(NapileTokens.THIS_KEYWORD);
 

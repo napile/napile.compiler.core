@@ -23,7 +23,7 @@ import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileConstantExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
-import org.napile.compiler.lang.psi.NapileQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -91,9 +91,9 @@ public class DataFlowValueFactory
 			}
 			return getIdForStableIdentifier(innerExpression, bindingContext, allowNamespaces);
 		}
-		else if(expression instanceof NapileQualifiedExpression)
+		else if(expression instanceof NapileQualifiedExpressionImpl)
 		{
-			NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) expression;
+			NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) expression;
 			NapileExpression selectorExpression = qualifiedExpression.getSelectorExpression();
 			if(selectorExpression == null)
 			{

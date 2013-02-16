@@ -32,9 +32,9 @@ public class NapileLinkMethodExpressionImpl extends NapileExpressionImpl impleme
 
 	@Override
 	@Nullable
-	public NapileDotQualifiedExpression getClassTarget()
+	public NapileDotQualifiedExpressionImpl getClassTarget()
 	{
-		return findChildByClass(NapileDotQualifiedExpression.class);
+		return findChildByClass(NapileDotQualifiedExpressionImpl.class);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class NapileLinkMethodExpressionImpl extends NapileExpressionImpl impleme
 	@Override
 	public String getQualifiedName()
 	{
-		NapileDotQualifiedExpression expression = getClassTarget();
+		NapileDotQualifiedExpressionImpl expression = getClassTarget();
 		if(expression == null)
 			return null;
 		StringBuilder builder = new StringBuilder();

@@ -31,7 +31,7 @@ import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileArrayAccessExpressionImpl;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
-import org.napile.compiler.lang.psi.NapileDotQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileDotQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -67,9 +67,9 @@ public class VariableAccessorResolver
 			receiverDescriptor = ReceiverDescriptor.NO_RECEIVER;
 			nameExpression = (NapileSimpleNameExpression) exp;
 		}
-		else if(exp instanceof NapileDotQualifiedExpression)
+		else if(exp instanceof NapileDotQualifiedExpressionImpl)
 		{
-			NapileDotQualifiedExpression dotQualifiedExpression = ((NapileDotQualifiedExpression) exp);
+			NapileDotQualifiedExpressionImpl dotQualifiedExpression = ((NapileDotQualifiedExpressionImpl) exp);
 
 			JetType receiverType = context.trace.get(BindingContext.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
 			if(receiverType != null && receiverType.getConstructor() instanceof MultiTypeConstructor)

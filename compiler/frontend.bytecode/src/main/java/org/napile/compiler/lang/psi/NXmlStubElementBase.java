@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,33 +16,32 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.NotNull;
-import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.stubs.StubElement;
 
 /**
- * @author max
+ * @author VISTALL
+ * @date 13:57/16.02.13
  */
-public class NapileDotQualifiedExpression extends NapileQualifiedExpression
+public abstract class NXmlStubElementBase<S extends StubElement> extends NXmlElementBase implements StubBasedPsiElement<S>
 {
-	public NapileDotQualifiedExpression(@NotNull ASTNode node)
-	{
-		super(node);
-	}
+	private final S stub;
 
-	public NapileSimpleNameExpression[] getChildExpressions()
+	protected NXmlStubElementBase(S stub)
 	{
-		return findChildrenByClass(NapileSimpleNameExpression.class);
+		this.stub = stub;
 	}
 
 	@Override
-	public void accept(@NotNull NapileVisitorVoid visitor)
+	public PsiElement getParent()
 	{
-		visitor.visitDotQualifiedExpression(this);
+		return stub.getParentStub().getPsi();
 	}
 
 	@Override
-	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
+	public S getStub()
 	{
-		return visitor.visitDotQualifiedExpression(this, data);
+		return stub;
 	}
 }

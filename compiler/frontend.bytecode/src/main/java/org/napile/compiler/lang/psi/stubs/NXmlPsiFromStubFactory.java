@@ -17,14 +17,16 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileEnumValue;
-import org.napile.compiler.lang.psi.NapileNamedMacro;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.NapileTypeParameterList;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.impl.NXmlCallParameterAsVariableImpl;
+import org.napile.compiler.lang.psi.impl.NXmlCallParameterListImpl;
+import org.napile.compiler.lang.psi.impl.NXmlClassImpl;
+import org.napile.compiler.lang.psi.impl.NXmlConstructorImpl;
+import org.napile.compiler.lang.psi.impl.NXmlNamedMacroImpl;
+import org.napile.compiler.lang.psi.impl.NXmlNamedMethodImpl;
+import org.napile.compiler.lang.psi.impl.NXmlTypeParameterImpl;
+import org.napile.compiler.lang.psi.impl.NXmlTypeParameterListImpl;
+import org.napile.compiler.lang.psi.impl.NXmlVariableImpl;
 
 /**
  * @author VISTALL
@@ -36,28 +38,35 @@ public class NXmlPsiFromStubFactory implements NapilePsiFromStubFactory
 	@Override
 	public NapileClass createClass(NapilePsiClassStub stub)
 	{
-		return null;
+		return new NXmlClassImpl(stub);
 	}
 
 	@NotNull
 	@Override
 	public NapileNamedMethod createNamedMethod(NapilePsiMethodStub stub)
 	{
-		return null;
+		return new NXmlNamedMethodImpl(stub);
 	}
 
 	@NotNull
 	@Override
 	public NapileNamedMacro createNamedMacro(NapilePsiMacroStub stub)
 	{
-		return null;
+		return new NXmlNamedMacroImpl(stub);
+	}
+
+	@NotNull
+	@Override
+	public NapileConstructor createConstructor(NapilePsiConstructorStub stub)
+	{
+		return new NXmlConstructorImpl(stub);
 	}
 
 	@NotNull
 	@Override
 	public NapileVariable createVariable(NapilePsiVariableStub stub)
 	{
-		return null;
+		return new NXmlVariableImpl(stub);
 	}
 
 	@NotNull
@@ -71,20 +80,27 @@ public class NXmlPsiFromStubFactory implements NapilePsiFromStubFactory
 	@Override
 	public NapileCallParameterAsVariable createCallParameterAsVariable(NapilePsiCallParameterAsVariableStub stub)
 	{
-		return null;
+		return new NXmlCallParameterAsVariableImpl(stub);
 	}
 
 	@NotNull
 	@Override
 	public NapileTypeParameterList createTypeParameterList(NapilePsiTypeParameterListStub stub)
 	{
-		return null;
+		return new NXmlTypeParameterListImpl(stub);
 	}
 
 	@NotNull
 	@Override
 	public NapileTypeParameter createTypeParameter(NapilePsiTypeParameterStub stub)
 	{
-		return null;
+		return new NXmlTypeParameterImpl(stub);
+	}
+
+	@NotNull
+	@Override
+	public NapileCallParameterList createCallParameterList(NapilePsiCallParameterListStub stub)
+	{
+		return new NXmlCallParameterListImpl(stub);
 	}
 }

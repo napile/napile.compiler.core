@@ -113,6 +113,6 @@ public class UpdateNapileFileCopyright extends UpdatePsiFileCopyright
 	{
 		NapileFile javaFile = (NapileFile) getFile();
 		assert javaFile != null;
-		return javaFile.getNamespaceHeader();
+		return javaFile.getPackage();
 	}
 }

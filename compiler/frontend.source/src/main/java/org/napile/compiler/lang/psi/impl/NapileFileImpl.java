@@ -25,16 +25,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lang.NapileLanguage;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
-import org.napile.compiler.lang.psi.NapilePackageImpl;
+import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.extapi.psi.PsiFileBase;
-import com.intellij.lang.ASTNode;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElementVisitor;
@@ -101,10 +99,9 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 
 	@NotNull
 	@Override
-	public NapilePackageImpl getNamespaceHeader()
+	public NapilePackage getPackage()
 	{
-		ASTNode ast = getNode().findChildByType(NapileNodes.PACKAGE);
-		return ast != null ? (NapilePackageImpl) ast.getPsi() : null;
+		return findChildByClass(NapilePackage.class);
 	}
 
 	@Nullable
@@ -115,8 +112,8 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 		if(stub != null)
 			return stub.getPackageName();
 
-		NapilePackageImpl statement = getNamespaceHeader();
-		return statement != null ? statement.getQualifiedName() : null;
+		NapilePackage statement = getPackage();
+		return statement.getQualifiedName();
 	}
 
 	@Override

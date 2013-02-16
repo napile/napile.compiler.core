@@ -17,48 +17,27 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileTypeParameterImpl extends NapileNamedDeclarationStub<NapilePsiTypeParameterStub> implements NapileTypeParameter
+public class NapileSafeQualifiedExpressionImpl extends NapileQualifiedExpressionImpl
 {
-	public NapileTypeParameterImpl(@NotNull ASTNode node)
+	public NapileSafeQualifiedExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
-	}
-
-	public NapileTypeParameterImpl(@NotNull NapilePsiTypeParameterStub stub)
-	{
-		super(stub, NapileStubElementTypes.TYPE_PARAMETER);
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitTypeParameter(this);
+		visitor.visitSafeQualifiedExpression(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitTypeParameter(this, data);
-	}
-
-	@Override
-	@NotNull
-	public NapileTypeReference[] getExtendsBound()
-	{
-		return findChildrenByClass(NapileTypeReference.class);
-	}
-
-	@Override
-	@NotNull
-	public NapileCallParameterList[] getConstructorParameterLists()
-	{
-		return findChildrenByClass(NapileCallParameterList.class);
+		return visitor.visitSafeQualifiedExpression(this, data);
 	}
 }

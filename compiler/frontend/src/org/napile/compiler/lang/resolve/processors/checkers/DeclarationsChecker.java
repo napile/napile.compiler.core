@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.resolve.processors.checkers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +76,7 @@ public class DeclarationsChecker
 				checkSuperListForClassesWithConstructors(aClass.getSuperTypes());
 
 			for(NapileTypeParameter typeParameter : aClass.getTypeParameters())
-				checkSuperListForDuplicates(Arrays.asList(typeParameter.getExtendsBound()));
+				checkSuperListForDuplicates(typeParameter.getSuperTypes());
 		}
 
 		for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : bodiesResolveContext.getMethods().entrySet())
@@ -88,7 +87,7 @@ public class DeclarationsChecker
 				continue;
 
 			for(NapileTypeParameter typeParameter : method.getTypeParameters())
-				checkSuperListForDuplicates(Arrays.asList(typeParameter.getExtendsBound()));
+				checkSuperListForDuplicates(typeParameter.getSuperTypes());
 		}
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : bodiesResolveContext.getAnonymous().entrySet())
@@ -113,7 +112,7 @@ public class DeclarationsChecker
 		}
 	}
 
-	private void checkSuperListForFinalClasses(@NotNull List<NapileTypeReference> typeReferences)
+	private void checkSuperListForFinalClasses(@NotNull List<? extends NapileTypeReference> typeReferences)
 	{
 		for(NapileTypeReference typeReference : typeReferences)
 		{
@@ -130,7 +129,7 @@ public class DeclarationsChecker
 		}
 	}
 
-	private void checkSuperListForDuplicates(@NotNull List<NapileTypeReference> typeReferences)
+	private void checkSuperListForDuplicates(@NotNull List<? extends NapileTypeReference> typeReferences)
 	{
 		List<JetType> list = new ArrayList<JetType>(typeReferences.size());
 		for(NapileTypeReference typeReference : typeReferences)
@@ -143,7 +142,7 @@ public class DeclarationsChecker
 		}
 	}
 
-	private void checkSuperListForClassesWithConstructors(@NotNull List<NapileTypeReference> typeReferences)
+	private void checkSuperListForClassesWithConstructors(@NotNull List<? extends NapileTypeReference> typeReferences)
 	{
 		for(NapileTypeReference typeReference : typeReferences)
 		{
@@ -188,7 +187,7 @@ public class DeclarationsChecker
 	}
 
 	@NotNull
-	private Map<NapileTypeReference, JetType> makeTypeListBySuperList(@NotNull List<NapileTypeReference> list)
+	private Map<NapileTypeReference, JetType> makeTypeListBySuperList(@NotNull List<? extends NapileTypeReference> list)
 	{
 		Map<NapileTypeReference, JetType> types = new LinkedHashMap<NapileTypeReference, JetType>(list.size());
 		for(NapileTypeReference typeReference : list)

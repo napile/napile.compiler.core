@@ -54,7 +54,7 @@ public class NapileUserTypeImpl extends NapileElementImpl implements NapileUserT
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getTypeArguments()
+	public List<? extends NapileTypeReference> getTypeArguments()
 	{
 		NapileTypeArgumentList typeArgumentList = getTypeArgumentList();
 		return typeArgumentList == null ? Collections.<NapileTypeReference>emptyList() : typeArgumentList.getArguments();

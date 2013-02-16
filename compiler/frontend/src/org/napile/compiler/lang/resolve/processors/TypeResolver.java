@@ -295,7 +295,7 @@ public class TypeResolver
 		}
 	}
 
-	public List<JetType> resolveTypes(JetScope scope, List<NapileTypeReference> argumentElements, BindingTrace trace, boolean checkBounds)
+	public List<JetType> resolveTypes(JetScope scope, List<? extends NapileTypeReference> argumentElements, BindingTrace trace, boolean checkBounds)
 	{
 		final List<JetType> arguments = new ArrayList<JetType>(argumentElements.size());
 		for(NapileTypeReference argumentElement : argumentElements)

@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import org.napile.asm.io.xml.in.AsmXmlFileReader;
 import org.napile.asm.tree.members.ClassNode;
-import org.napile.compiler.util.NodeToStringConverter;
+import org.napile.compiler.util.NodeToStringBuilder;
 import com.intellij.openapi.util.io.FileUtil;
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -42,7 +42,7 @@ public abstract class ConvertTestCase extends TestCase
 
 		ClassNode classNode = fileReader.read(new FileReader(file));
 
-		String currentResult = NodeToStringConverter.convertClass(classNode);
+		String currentResult = NodeToStringBuilder.convertClass(classNode);
 
 		String result = "not found";
 		try

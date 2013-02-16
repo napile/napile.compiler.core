@@ -47,7 +47,7 @@ import com.intellij.util.ArrayUtil;
  * @author VISTALL
  * @date 17:52/15.02.13
  */
-public class NodeToStringConverter
+public class NodeToStringBuilder
 {
 	public static String convertClass(ClassNode classNode)
 	{
@@ -240,11 +240,11 @@ public class NodeToStringConverter
 		builder.append(">");
 	}
 
-	private static void appendType(TypeNode typeNode, StringBuilder builder)
+	public static void appendType(TypeNode typeNode, StringBuilder builder)
 	{
 		appendAnnotations(typeNode, builder, -1);
 
-		typeNode.typeConstructorNode.accept(new DefaultNodeVisitor()
+		typeNode.typeConstructorNode.accept(new DummyNodeVisitor<StringBuilder>()
 		{
 			@Override
 			public Void visitClassTypeNode(ClassTypeNode classTypeNode, StringBuilder a2)

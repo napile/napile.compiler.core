@@ -16,9 +16,11 @@
 
 package org.napile.idea.plugin.module;
 
+import java.util.Collections;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.analyzer.AnalyzeContext;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -56,8 +58,28 @@ public class ModuleCollector
 			return AnalyzeContext.EMPTY;
 
 		Module module = ModuleUtilCore.findModuleForPsiElement(rootFile);
+
+		if(module == null && virtualFile.getFileType() == NXmlFileType.INSTANCE)
+		{
+			VirtualFile lib = null;
+			VirtualFile parent = virtualFile.getParent();
+			while(parent != null)
+			{
+				if("nzip".equals(parent.getExtension()))
+				{
+					lib = parent;
+					break;
+				}
+				parent = parent.getParent();
+			}
+
+			return new AnalyzeContext(Collections.<NapileFile>emptyList(), Collections.singletonList(lib == null ? virtualFile : lib), Collections.<VirtualFile>emptyList());
+		}
+
 		if(module == null || ModuleType.get(module) != NapileModuleType.getInstance())
+		{
 			return AnalyzeContext.EMPTY;
+		}
 
 		ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
 

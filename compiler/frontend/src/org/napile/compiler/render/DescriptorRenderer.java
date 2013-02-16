@@ -345,6 +345,26 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 	}
 
+	public boolean renderTypeParameters(List<TypeParameterDescriptor> typeParameters, StringBuilder builder)
+	{
+		if(!typeParameters.isEmpty())
+		{
+			builder.append(lt());
+			for(Iterator<TypeParameterDescriptor> iterator = typeParameters.iterator(); iterator.hasNext(); )
+			{
+				TypeParameterDescriptor typeParameterDescriptor = iterator.next();
+				typeParameterDescriptor.accept(subVisitor, builder);
+				if(iterator.hasNext())
+				{
+					builder.append(", ");
+				}
+			}
+			builder.append(">");
+			return true;
+		}
+		return false;
+	}
+
 	private class RenderDeclarationDescriptorVisitor implements DeclarationDescriptorVisitor<Void, StringBuilder>
 	{
 		@Override
@@ -483,26 +503,6 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			renderTypeParameters(classDescriptor.getTypeConstructor().getParameters(), builder);
 			renderValueParameters(constructorDescriptor, builder);
 			return null;
-		}
-
-		private boolean renderTypeParameters(List<TypeParameterDescriptor> typeParameters, StringBuilder builder)
-		{
-			if(!typeParameters.isEmpty())
-			{
-				builder.append(lt());
-				for(Iterator<TypeParameterDescriptor> iterator = typeParameters.iterator(); iterator.hasNext(); )
-				{
-					TypeParameterDescriptor typeParameterDescriptor = iterator.next();
-					typeParameterDescriptor.accept(subVisitor, builder);
-					if(iterator.hasNext())
-					{
-						builder.append(", ");
-					}
-				}
-				builder.append(">");
-				return true;
-			}
-			return false;
 		}
 
 		@Override

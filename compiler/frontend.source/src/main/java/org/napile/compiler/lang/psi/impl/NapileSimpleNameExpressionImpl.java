@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.parsing.JetExpressionParsing;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.IfNotParsed;
+import org.napile.compiler.lang.psi.NapileCallExpression;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileImportDirective;
+import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
+import org.napile.compiler.lang.psi.NapileReferenceExpressionImpl;
+import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
@@ -51,9 +60,9 @@ public class NapileSimpleNameExpressionImpl extends NapileReferenceExpressionImp
 	public NapileExpression getReceiverExpression()
 	{
 		PsiElement parent = getParent();
-		if(parent instanceof NapileQualifiedExpression && !isImportDirectiveExpression())
+		if(parent instanceof NapileQualifiedExpressionImpl && !isImportDirectiveExpression())
 		{
-			NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) parent;
+			NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) parent;
 			if(!isFirstPartInQualifiedExpression(qualifiedExpression))
 			{
 				return qualifiedExpression.getReceiverExpression();
@@ -64,9 +73,9 @@ public class NapileSimpleNameExpressionImpl extends NapileReferenceExpressionImp
 			//This is in case `a().b()`
 			NapileCallExpression callExpression = (NapileCallExpression) parent;
 			parent = callExpression.getParent();
-			if(parent instanceof NapileQualifiedExpression)
+			if(parent instanceof NapileQualifiedExpressionImpl)
 			{
-				NapileQualifiedExpression qualifiedExpression = (NapileQualifiedExpression) parent;
+				NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) parent;
 				return qualifiedExpression.getReceiverExpression();
 			}
 		}
@@ -74,11 +83,11 @@ public class NapileSimpleNameExpressionImpl extends NapileReferenceExpressionImp
 	}
 
 	// Check that this is simple name expression is first part in full qualified name: firstPart.otherPart.otherPart.call()
-	private boolean isFirstPartInQualifiedExpression(NapileQualifiedExpression qualifiedExpression)
+	private boolean isFirstPartInQualifiedExpression(NapileQualifiedExpressionImpl qualifiedExpression)
 	{
-		if(qualifiedExpression.getParent() instanceof NapileQualifiedExpression)
+		if(qualifiedExpression.getParent() instanceof NapileQualifiedExpressionImpl)
 		{
-			return isFirstPartInQualifiedExpression((NapileQualifiedExpression) qualifiedExpression.getParent());
+			return isFirstPartInQualifiedExpression((NapileQualifiedExpressionImpl) qualifiedExpression.getParent());
 		}
 
 		return qualifiedExpression.getFirstChild() == this;
@@ -133,13 +142,6 @@ public class NapileSimpleNameExpressionImpl extends NapileReferenceExpressionImp
 		}
 
 		return this;
-	}
-
-	@Override
-	@Nullable
-	public PsiElement getIdentifier()
-	{
-		return findChildByType(NapileTokens.IDENTIFIER);
 	}
 
 	@Override

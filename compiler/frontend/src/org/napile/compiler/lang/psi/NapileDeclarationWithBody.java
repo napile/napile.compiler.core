@@ -31,7 +31,10 @@ public interface NapileDeclarationWithBody extends NapileDeclaration
 
 	boolean hasDeclaredReturnType();
 
+	@Nullable
+	NapileCallParameterList getCallParameterList();
+
 	@NotNull
-	NapileCallParameter[] getValueParameters();
+	NapileCallParameter[] getCallParameters();
 }
 

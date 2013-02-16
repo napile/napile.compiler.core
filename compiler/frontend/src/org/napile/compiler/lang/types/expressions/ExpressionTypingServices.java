@@ -423,7 +423,7 @@ public class ExpressionTypingServices
 				{
 					mismatchFound[0] = true;
 				}
-				if(TYPE_INFERENCE_ERRORS.contains(diagnostic.getFactory()) && PsiTreeUtil.getParentOfType(diagnostic.getPsiElement(), NapileQualifiedExpression.class, false) == expressionToWatch)
+				if(TYPE_INFERENCE_ERRORS.contains(diagnostic.getFactory()) && PsiTreeUtil.getParentOfType(diagnostic.getPsiElement(), NapileQualifiedExpressionImpl.class, false) == expressionToWatch)
 				{
 					mismatchFound[0] = true;
 				}

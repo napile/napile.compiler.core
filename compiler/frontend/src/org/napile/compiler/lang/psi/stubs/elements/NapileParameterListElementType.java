@@ -21,8 +21,8 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
-import org.napile.compiler.lang.psi.NapileCallParameterListImpl;
-import org.napile.compiler.lang.psi.stubs.NapilePsiParameterListStub;
+import org.napile.compiler.lang.psi.impl.NapileCallParameterListImpl;
+import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterListStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -32,7 +32,7 @@ import com.intellij.psi.stubs.StubOutputStream;
 /**
  * @author Nikolay Krasko
  */
-public class NapileParameterListElementType extends NapileStubElementType<NapilePsiParameterListStub, NapileCallParameterList>
+public class NapileParameterListElementType extends NapileStubElementType<NapilePsiCallParameterListStub, NapileCallParameterList>
 {
 	public NapileParameterListElementType(@NotNull @NonNls String debugName)
 	{
@@ -46,31 +46,31 @@ public class NapileParameterListElementType extends NapileStubElementType<Napile
 	}
 
 	@Override
-	public NapileCallParameterList createPsi(@NotNull NapilePsiParameterListStub stub)
+	public NapileCallParameterList createPsi(@NotNull NapilePsiCallParameterListStub stub)
 	{
-		return new NapileCallParameterListImpl(stub);
+		return getPsiFactory(stub).createCallParameterList(stub);
 	}
 
 	@Override
-	public NapilePsiParameterListStub createStub(@NotNull NapileCallParameterList psi, StubElement parentStub)
+	public NapilePsiCallParameterListStub createStub(@NotNull NapileCallParameterList psi, StubElement parentStub)
 	{
-		return new NapilePsiParameterListStub(parentStub);
+		return new NapilePsiCallParameterListStub(parentStub);
 	}
 
 	@Override
-	public void serialize(NapilePsiParameterListStub stub, StubOutputStream dataStream) throws IOException
+	public void serialize(NapilePsiCallParameterListStub stub, StubOutputStream dataStream) throws IOException
 	{
 		// Nothing to serialize
 	}
 
 	@Override
-	public NapilePsiParameterListStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
+	public NapilePsiCallParameterListStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
-		return new NapilePsiParameterListStub(parentStub);
+		return new NapilePsiCallParameterListStub(parentStub);
 	}
 
 	@Override
-	public void indexStub(NapilePsiParameterListStub stub, IndexSink sink)
+	public void indexStub(NapilePsiCallParameterListStub stub, IndexSink sink)
 	{
 		// No index
 	}

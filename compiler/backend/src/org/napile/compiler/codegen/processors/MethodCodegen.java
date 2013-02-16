@@ -137,7 +137,7 @@ public class MethodCodegen
 		for(CallParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
 			if(parameterDescriptor instanceof CallParameterAsReferenceDescriptorImpl)
 			{
-				NapileCallParameterAsReference refParameter = (NapileCallParameterAsReference) declarationWithBody.getValueParameters()[parameterDescriptor.getIndex()];
+				NapileCallParameterAsReference refParameter = (NapileCallParameterAsReference) declarationWithBody.getCallParameters()[parameterDescriptor.getIndex()];
 				MethodDescriptor resolvedSetter = bindingTrace.safeGet(BindingContext.VARIABLE_CALL, refParameter.getReferenceExpression());
 				VariableDescriptor variableDescriptor = (VariableDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, refParameter.getReferenceExpression());
 

@@ -31,7 +31,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapilePackageImpl;
+import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
@@ -183,7 +183,7 @@ public class JetImportOptimizer implements ImportOptimizer
 			@Override
 			public void visitReferenceExpression(NapileReferenceExpression expression)
 			{
-				if(PsiTreeUtil.getParentOfType(expression, NapileImportDirective.class) == null && PsiTreeUtil.getParentOfType(expression, NapilePackageImpl.class) == null)
+				if(PsiTreeUtil.getParentOfType(expression, NapileImportDirective.class) == null && PsiTreeUtil.getParentOfType(expression, NapilePackage.class) == null)
 				{
 
 					PsiReference reference = expression.getReference();

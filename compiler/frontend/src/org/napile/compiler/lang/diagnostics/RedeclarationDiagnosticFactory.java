@@ -46,7 +46,7 @@ public class RedeclarationDiagnosticFactory extends DiagnosticFactory1<PsiElemen
 			else if(element instanceof NapileFile)
 			{
 				NapileFile file = (NapileFile) element;
-				PsiElement nameIdentifier = file.getNamespaceHeader().getNameIdentifier();
+				PsiElement nameIdentifier = file.getPackage().getLastPartExpression();
 				if(nameIdentifier != null)
 				{
 					return markElement(nameIdentifier);

@@ -176,6 +176,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 		return getNameAsName();
 	}
 
+	@Nullable
 	@Override
 	public NapileDoc getDocComment()
 	{

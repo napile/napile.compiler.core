@@ -36,7 +36,7 @@ import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
 import org.napile.compiler.lang.descriptors.NamespaceDescriptorParent;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapilePackageImpl;
+import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -71,7 +71,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 	@NotNull
 	public PackageDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull NapileFile file, @NotNull JetScope outerScope, @NotNull RedeclarationHandler handler)
 	{
-		NapilePackageImpl namespaceHeader = file.getNamespaceHeader();
+		NapilePackage filePackage = file.getPackage();
 
 		if(moduleDescriptor.getRootNamespaceDescriptorImpl() == null)
 		{
@@ -84,7 +84,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 			throw new IllegalStateException("must be initialized 5 lines above");
 		}
 
-		for(NapileSimpleNameExpression nameExpression : namespaceHeader.getParentNamespaceNames())
+		for(NapileSimpleNameExpression nameExpression : filePackage.getParentNamespaceNames())
 		{
 			Name namespaceName = NapilePsiUtil.safeName(nameExpression.getReferencedName());
 
@@ -99,7 +99,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 
 		PackageDescriptorImpl namespaceDescriptor;
 		Name name;
-		if(namespaceHeader.isRoot())
+		if(filePackage.getLastPartExpression() == null)
 		{
 			// previous call to createRootNamespaceDescriptorIfNeeded couldn't store occurrence for current file.
 			namespaceDescriptor = moduleDescriptor.getRootNamespaceDescriptorImpl();
@@ -107,11 +107,11 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 		}
 		else
 		{
-			name = namespaceHeader.getNameAsName();
-			namespaceDescriptor = createNamespaceDescriptorIfNeeded(file, currentOwner, name, namespaceHeader.getLastPartExpression(), handler);
+			name = filePackage.getNameAsName();
+			namespaceDescriptor = createNamespaceDescriptorIfNeeded(file, currentOwner, name, filePackage.getLastPartExpression(), handler);
 
 			trace.record(BindingContext.NAMESPACE_IS_SRC, namespaceDescriptor, true);
-			trace.record(RESOLUTION_SCOPE, namespaceHeader, outerScope);
+			trace.record(RESOLUTION_SCOPE, filePackage, outerScope);
 		}
 
 		return namespaceDescriptor;

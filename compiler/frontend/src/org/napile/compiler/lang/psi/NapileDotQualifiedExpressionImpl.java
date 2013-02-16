@@ -22,22 +22,27 @@ import com.intellij.lang.ASTNode;
 /**
  * @author max
  */
-public class NapileSafeQualifiedExpression extends NapileQualifiedExpression
+public class NapileDotQualifiedExpressionImpl extends NapileQualifiedExpressionImpl
 {
-	public NapileSafeQualifiedExpression(@NotNull ASTNode node)
+	public NapileDotQualifiedExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
+	}
+
+	public NapileSimpleNameExpression[] getChildExpressions()
+	{
+		return findChildrenByClass(NapileSimpleNameExpression.class);
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitSafeQualifiedExpression(this);
+		visitor.visitDotQualifiedExpression(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitSafeQualifiedExpression(this, data);
+		return visitor.visitDotQualifiedExpression(this, data);
 	}
 }

@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 public interface NapileSuperListOwner extends NapileNamedDeclaration
 {
 	@NotNull
-	List<NapileTypeReference> getSuperTypes();
+	List<? extends NapileTypeReference> getSuperTypes();
 
 	@Nullable
 	NapileElement getSuperTypesElement();

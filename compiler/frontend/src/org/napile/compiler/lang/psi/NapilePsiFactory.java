@@ -175,7 +175,7 @@ public class NapilePsiFactory
 	public static NapileCallParameterAsVariable createParameter(Project project, String name, String type)
 	{
 		NapileNamedMethodOrMacro function = createMethod(project, "meth foo(" + name + " : " + type + ") {}");
-		return (NapileCallParameterAsVariable)function.getValueParameters()[0];
+		return (NapileCallParameterAsVariable)function.getCallParameters()[0];
 	}
 
 	@NotNull

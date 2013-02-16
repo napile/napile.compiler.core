@@ -98,7 +98,7 @@
 		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameJetClassProcessor"/>
 		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameKotlinFunctionProcessor"/>
 
-			<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>
+		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>
 		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.DebugInfoAnnotator"/>
 
 		<moduleType id="NAPILE_MODULE" implementationClass="org.napile.idea.plugin.module.type.NapileModuleType" />
@@ -149,7 +149,7 @@
 		<fileType.fileViewProviderFactory filetype="NXML" implementationClass="org.napile.compiler.lang.psi.impl.file.NXmlFileViewProviderFactory"/>
 		<filetype.stubBuilder filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileStubBuilder"/>
 		<syntaxHighlighter key="NXML" implementationClass="org.napile.idea.plugin.highlighter.NapileHighlighter"/>
-
+		<writingAccessProvider implementation="org.napile.idea.plugin.psi.file.NXmlWritingAccessProvider" />
 		<intentionAction>
 			<className>org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction</className>
 			<category>Napile</category>

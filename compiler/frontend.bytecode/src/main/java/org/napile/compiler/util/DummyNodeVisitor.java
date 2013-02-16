@@ -36,88 +36,88 @@ import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode
  * @author VISTALL
  * @date 18:30/15.02.13
  */
-public class DefaultNodeVisitor implements NodeVisitor<StringBuilder, Void>
+public class DummyNodeVisitor<A> implements NodeVisitor<A, Void>
 {
 	@Override
-	public Void visitAnnotationNode(AnnotationNode annotationNode, StringBuilder a2)
+	public Void visitAnnotationNode(AnnotationNode annotationNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitClassNode(ClassNode classNode, StringBuilder a2)
+	public Void visitClassNode(ClassNode classNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitMethodNode(MethodNode methodNode, StringBuilder a2)
+	public Void visitMethodNode(MethodNode methodNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitMacroNode(MacroNode methodNode, StringBuilder a2)
+	public Void visitMacroNode(MacroNode methodNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitVariableNode(VariableNode variableNode, StringBuilder a2)
+	public Void visitVariableNode(VariableNode variableNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitMethodParameterNode(MethodParameterNode methodParameterNode, StringBuilder a2)
+	public Void visitMethodParameterNode(MethodParameterNode methodParameterNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitTypeParameter(TypeParameterNode typeParameterNode, StringBuilder a2)
+	public Void visitTypeParameter(TypeParameterNode typeParameterNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitTypeNode(TypeNode typeNode, StringBuilder a2)
+	public Void visitTypeNode(TypeNode typeNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitClassTypeNode(ClassTypeNode classTypeNode, StringBuilder a2)
+	public Void visitClassTypeNode(ClassTypeNode classTypeNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitThisTypeNode(ThisTypeNode thisTypeNode, StringBuilder a2)
+	public Void visitThisTypeNode(ThisTypeNode thisTypeNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitMethodTypeNode(MethodTypeNode methodTypeNode, StringBuilder a2)
+	public Void visitMethodTypeNode(MethodTypeNode methodTypeNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitMultiTypeNode(MultiTypeNode multiTypeNode, StringBuilder a2)
+	public Void visitMultiTypeNode(MultiTypeNode multiTypeNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitTypeParameterValueTypeNode(TypeParameterValueTypeNode typeParameterValueTypeNode, StringBuilder a2)
+	public Void visitTypeParameterValueTypeNode(TypeParameterValueTypeNode typeParameterValueTypeNode, A a2)
 	{
 		return null;
 	}
 
 	@Override
-	public Void visitTryCatchBlockNode(TryCatchBlockNode tryCatchBlockNode, StringBuilder a2)
+	public Void visitTryCatchBlockNode(TryCatchBlockNode tryCatchBlockNode, A a2)
 	{
 		return null;
 	}

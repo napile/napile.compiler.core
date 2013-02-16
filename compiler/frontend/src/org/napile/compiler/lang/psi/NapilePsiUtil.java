@@ -111,7 +111,7 @@ public class NapilePsiUtil
 		return null;
 	}
 
-	private static FqName getFQName(NapilePackageImpl header)
+	private static FqName getFQName(NapilePackage header)
 	{
 		StringBuilder builder = new StringBuilder();
 		for(NapileSimpleNameExpression nameExpression : header.getParentNamespaceNames())
@@ -125,7 +125,7 @@ public class NapilePsiUtil
 
 	public static FqName getFQName(NapileFile file)
 	{
-		return getFQName(file.getNamespaceHeader());
+		return getFQName(file.getPackage());
 	}
 
 	@Nullable
@@ -301,9 +301,9 @@ public class NapilePsiUtil
 	@Nullable
 	public static NapileSimpleNameExpression getLastReference(@NotNull NapileExpression importedReference)
 	{
-		if(importedReference instanceof NapileDotQualifiedExpression)
+		if(importedReference instanceof NapileDotQualifiedExpressionImpl)
 		{
-			NapileExpression selectorExpression = ((NapileDotQualifiedExpression) importedReference).getSelectorExpression();
+			NapileExpression selectorExpression = ((NapileDotQualifiedExpressionImpl) importedReference).getSelectorExpression();
 			return (selectorExpression instanceof NapileSimpleNameExpression) ? (NapileSimpleNameExpression) selectorExpression : null;
 		}
 		if(importedReference instanceof NapileSimpleNameExpression)
@@ -324,7 +324,7 @@ public class NapilePsiUtil
 		if(!(expression instanceof NapileAnonymMethodExpression))
 			return false;
 		NapileAnonymMethodExpression functionLiteral = (NapileAnonymMethodExpression) expression;
-		for(NapileElement parameter : functionLiteral.getAnonymMethod().getValueParameters())
+		for(NapileElement parameter : functionLiteral.getAnonymMethod().getCallParameters())
 		{
 			if(parameter instanceof NapileCallParameterAsVariable && ((NapileCallParameterAsVariable) parameter).getTypeReference() != null)
 				return false;

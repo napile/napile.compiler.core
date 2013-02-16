@@ -16,8 +16,6 @@
 
 package org.napile.compiler.lang.psi.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.Collections;
@@ -26,9 +24,7 @@ import java.util.List;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.LangVersion;
 import org.napile.asm.io.xml.in.AsmXmlFileReader;
-import org.napile.asm.io.xml.out.AsmTextTextWriter;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
@@ -37,35 +33,33 @@ import org.napile.compiler.lang.psi.NXmlElementBase;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
-import org.napile.compiler.lang.psi.NapilePackageImpl;
+import org.napile.compiler.lang.psi.NapilePackage;
+import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.impl.file.NXmlFileViewProvider;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
+import org.napile.compiler.util.NodeToStringBuilder;
 import com.intellij.ide.caches.FileContent;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.FileASTNode;
-import com.intellij.lang.Language;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiFileSystemItem;
 import com.intellij.psi.PsiInvalidElementAccessException;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.impl.PsiElementBase;
+import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.impl.PsiManagerEx;
-import com.intellij.psi.impl.PsiManagerImpl;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
 import com.intellij.psi.search.PsiElementProcessor;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubTree;
@@ -79,7 +73,7 @@ import com.intellij.util.io.StringRef;
  * <p/>
  * Stub & Mirror system was 'copied' from IDEA CE
  */
-public class NXmlFileImpl extends PsiElementBase implements NapileFile
+public class NXmlFileImpl extends NXmlElementBase implements NapileFile, StubBasedPsiElement<NapilePsiFileStub>
 {
 	private static final Logger LOGGER = Logger.getInstance(NXmlElementBase.class);
 
@@ -93,35 +87,35 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 	private NapileFile mirrorElement;
 	private String text;
 
-	public NXmlFileImpl(PsiManagerImpl manager, FileViewProvider viewProvider)
-	{
-		//super(manager);
+	private NXmlPackageImpl packageImpl;
 
+	public NXmlFileImpl(FileViewProvider viewProvider)
+	{
 		fileViewProvider = viewProvider;
 	}
 
+	@Override
 	public NapileFile getMirror()
 	{
 		synchronized(MIRROR_LOCK)
 		{
 			if(mirrorElement == null)
 			{
-				File file = VfsUtilCore.virtualToIoFile(getVirtualFile());
-
 				AsmXmlFileReader reader = new AsmXmlFileReader();
 
 				try
 				{
-					ClassNode classNode = reader.read(new FileInputStream(file));
-					AsmTextTextWriter writer = new AsmTextTextWriter();
+					ClassNode classNode = reader.read(getVirtualFile().getInputStream());
 
-					text = writer.write(LangVersion.CURRENT, classNode);
+					text = NodeToStringBuilder.convertClass(classNode);
 
-					PsiFile mirror = PsiFileFactory.getInstance(getProject()).createFileFromText(file.getName().replace(NXmlFileType.INSTANCE.getDefaultExtension(), NapileFileType.INSTANCE.getDefaultExtension()), NapileLanguage.INSTANCE, text, false, false);
+					PsiFile mirror = PsiFileFactory.getInstance(getProject()).createFileFromText(getVirtualFile().getName().replace(NXmlFileType.INSTANCE.getDefaultExtension(), NapileFileType.INSTANCE.getDefaultExtension()), NapileLanguage.INSTANCE, text, false, false);
 
 					final ASTNode mirrorTreeElement = SourceTreeToPsiMap.psiElementToTree(mirror);
 
 					setMirror((TreeElement) mirrorTreeElement);
+
+					mirrorElement = (NapileFile) mirror;
 				}
 				catch(IOException e)
 				{
@@ -131,6 +125,12 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 		}
 
 		return mirrorElement;
+	}
+
+	@Override
+	public PsiManager getManager()
+	{
+		return getViewProvider().getManager();
 	}
 
 	public static String decompile(PsiManager manager, VirtualFile file)
@@ -145,53 +145,49 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 		}
 
 		if(psiFile == null)
-			psiFile = new NXmlFileImpl((PsiManagerImpl) manager, new NXmlFileViewProvider(manager, file));
+			psiFile = new NXmlFileImpl(new NXmlFileViewProvider(manager, file));
 
 		psiFile.getMirror();
 		return psiFile.text;
 	}
 
+	@Override
 	public void setMirror(@NotNull TreeElement element)
 	{
-		NapileFile mirrorFile = (NapileFile) SourceTreeToPsiMap.treeElementToPsi(element);
+		PsiElement mirrorElement = SourceTreeToPsiMap.treeToPsiNotNull(element);
+		if(!(mirrorElement instanceof NapileFile))
+		{
+			throw new InvalidMirrorException("Unexpected mirror file: " + mirrorElement);
+		}
 
-		assert mirrorFile != null;
+		final NapileFile mirrorFile = (NapileFile) mirrorElement;
 
-		mirrorElement = mirrorFile;
-	}
-
-	@NotNull
-	@Override
-	public Language getLanguage()
-	{
-		return NapileLanguage.INSTANCE;
-	}
-
-	@Override
-	public PsiManager getManager()
-	{
-		return getViewProvider().getManager();
+		packageImpl = new NXmlPackageImpl(this);
+		packageImpl.setMirror((TreeElement) SourceTreeToPsiMap.psiElementToTree(mirrorFile.getPackage()));
+		setMirrors(getDeclarations(), mirrorFile.getDeclarations());
 	}
 
 	@NotNull
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return getMirror().getChildren();
+		return getStub().getClasses();
 	}
 
 	@NotNull
 	@Override
-	public NapilePackageImpl getNamespaceHeader()
+	public NapilePackage getPackage()
 	{
-		return getMirror().getNamespaceHeader();
+		getMirror();
+
+		return packageImpl;
 	}
 
 	@Nullable
 	@Override
 	public String getPackageName()
 	{
-		return getMirror().getPackageName();
+		return getPackage().getQualifiedName();
 	}
 
 	@Nullable
@@ -218,7 +214,7 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 	@Override
 	public NapileClass[] getDeclarations()
 	{
-		return getMirror().getDeclarations();
+		return getStub().getClasses();
 	}
 
 	@NotNull
@@ -244,7 +240,7 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 	}
 
 	@Override
-	public PsiFile getContainingFile()
+	public NapileFile getContainingFile()
 	{
 		if(!isValid())
 			throw new PsiInvalidElementAccessException(this);
@@ -252,47 +248,10 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 	}
 
 	@Override
-	public TextRange getTextRange()
-	{
-		return null;
-	}
-
-	@Override
-	public int getStartOffsetInParent()
-	{
-		return 0;
-	}
-
-	@Override
-	public int getTextLength()
-	{
-		return 0;
-	}
-
-	@Nullable
-	@Override
-	public PsiElement findElementAt(int offset)
-	{
-		return null;
-	}
-
-	@Override
-	public int getTextOffset()
-	{
-		return 0;
-	}
-
-	@Override
-	public String getText()
-	{
-		return null;
-	}
-
 	@NotNull
-	@Override
-	public char[] textToCharArray()
+	public String getName()
 	{
-		return new char[0];
+		return getVirtualFile().getName();
 	}
 
 	@Override
@@ -362,6 +321,19 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 	public PsiElement setName(@NonNls @NotNull String s) throws IncorrectOperationException
 	{
 		return null;
+	}
+
+	@Override
+	public IStubElementType getElementType()
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public NapilePsiFileStub getStub()
+	{
+		return (NapilePsiFileStub) getStubTree().getRoot();
 	}
 
 	@Override
@@ -462,56 +434,14 @@ public class NXmlFileImpl extends PsiElementBase implements NapileFile
 	}
 
 	@Override
-	public void accept(@NotNull PsiElementVisitor visitor)
+	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		if(visitor instanceof NapileVisitorVoid)
-			((NapileVisitorVoid) visitor).visitNapileFile(this);
-		else
-			visitor.visitFile(this);
+		visitor.visitNapileFile(this);
 	}
 
 	@Override
-	public PsiElement copy()
+	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return this;
-	}
-
-	@Override
-	public PsiElement add(@NotNull PsiElement element) throws IncorrectOperationException
-	{
-		return null;
-	}
-
-	@Override
-	public PsiElement addBefore(@NotNull PsiElement element, @Nullable PsiElement anchor) throws IncorrectOperationException
-	{
-		return null;
-	}
-
-	@Override
-	public PsiElement addAfter(@NotNull PsiElement element, @Nullable PsiElement anchor) throws IncorrectOperationException
-	{
-		return null;
-	}
-
-	@Override
-	public void checkAdd(@NotNull PsiElement element) throws IncorrectOperationException
-	{
-	}
-
-	@Override
-	public void delete() throws IncorrectOperationException
-	{
-	}
-
-	@Override
-	public void checkDelete() throws IncorrectOperationException
-	{
-	}
-
-	@Override
-	public PsiElement replace(@NotNull PsiElement newElement) throws IncorrectOperationException
-	{
-		return null;
+		return visitor.visitNapileFile(this, data);
 	}
 }

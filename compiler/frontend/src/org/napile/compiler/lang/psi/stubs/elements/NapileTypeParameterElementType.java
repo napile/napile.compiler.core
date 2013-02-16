@@ -17,13 +17,14 @@
 package org.napile.compiler.lang.psi.stubs.elements;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileTypeParameterImpl;
-import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
+import org.napile.compiler.lang.psi.impl.NapileTypeParameterImpl;
 import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
@@ -56,10 +57,10 @@ public class NapileTypeParameterElementType extends NapileStubElementType<Napile
 	@Override
 	public NapilePsiTypeParameterStub createStub(@NotNull NapileTypeParameter psi, StubElement parentStub)
 	{
-		NapileTypeReference[] extendsBound = psi.getExtendsBound();
-		StringRef[] stringRefs = StringRef.createArray(extendsBound.length);
-		for(int i = 0; i < extendsBound.length; i++)
-			stringRefs[i] = StringRef.fromString(extendsBound[i].getText());
+		List<? extends NapileTypeReference> extendsBound = psi.getSuperTypes();
+		StringRef[] stringRefs = StringRef.createArray(extendsBound.size());
+		for(int i = 0; i < extendsBound.size(); i++)
+			stringRefs[i] = StringRef.fromString(extendsBound.get(i).getText());
 
 		return new NapilePsiTypeParameterStub(parentStub, psi.getName(), stringRefs);
 	}

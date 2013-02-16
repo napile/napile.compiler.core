@@ -17,14 +17,7 @@
 package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileEnumValue;
-import org.napile.compiler.lang.psi.NapileNamedMacro;
-import org.napile.compiler.lang.psi.NapileNamedMethod;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.NapileTypeParameterList;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.*;
 
 /**
  * @author VISTALL
@@ -42,6 +35,9 @@ public interface NapilePsiFromStubFactory
 	NapileNamedMacro createNamedMacro(NapilePsiMacroStub stub);
 
 	@NotNull
+	NapileConstructor createConstructor(NapilePsiConstructorStub stub);
+
+	@NotNull
 	NapileVariable createVariable(NapilePsiVariableStub stub);
 
 	@NotNull
@@ -55,4 +51,7 @@ public interface NapilePsiFromStubFactory
 
 	@NotNull
 	NapileTypeParameter createTypeParameter(NapilePsiTypeParameterStub stub);
+
+	@NotNull
+	NapileCallParameterList createCallParameterList(NapilePsiCallParameterListStub stub);
 }

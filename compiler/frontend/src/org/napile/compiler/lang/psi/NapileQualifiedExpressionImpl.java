@@ -26,9 +26,9 @@ import com.intellij.psi.PsiElement;
 /**
  * @author max
  */
-public abstract class NapileQualifiedExpression extends NapileExpressionImpl
+public abstract class NapileQualifiedExpressionImpl extends NapileExpressionImpl
 {
-	public NapileQualifiedExpression(@NotNull ASTNode node)
+	public NapileQualifiedExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}

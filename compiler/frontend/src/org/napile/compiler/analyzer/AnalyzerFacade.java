@@ -49,7 +49,7 @@ public class AnalyzerFacade
 		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceContext), owner);
 		try
 		{
-			injector.getTopDownAnalyzer().analyzeFiles(analyzeContext);
+			injector.getTopDownAnalyzer().analyzeFiles(project, analyzeContext);
 
 			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()), injector);
 		}

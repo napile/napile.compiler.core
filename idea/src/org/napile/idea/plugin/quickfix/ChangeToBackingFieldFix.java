@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
-import org.napile.compiler.lang.psi.NapileQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.idea.plugin.JetBundle;
@@ -72,9 +72,9 @@ public class ChangeToBackingFieldFix extends JetIntentionAction<NapileSimpleName
 				if(expression == null)
 				{
 					PsiElement element = diagnostic.getPsiElement();
-					if(element instanceof NapileQualifiedExpression && ((NapileQualifiedExpression) element).getReceiverExpression() instanceof NapileThisExpression)
+					if(element instanceof NapileQualifiedExpressionImpl && ((NapileQualifiedExpressionImpl) element).getReceiverExpression() instanceof NapileThisExpression)
 					{
-						NapileExpression selector = ((NapileQualifiedExpression) element).getSelectorExpression();
+						NapileExpression selector = ((NapileQualifiedExpressionImpl) element).getSelectorExpression();
 						if(selector instanceof NapileSimpleNameExpression)
 						{
 							expression = (NapileSimpleNameExpression) selector;

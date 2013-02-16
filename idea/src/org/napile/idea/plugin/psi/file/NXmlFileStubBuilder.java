@@ -22,8 +22,10 @@ import java.io.IOException;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.io.xml.in.AsmXmlFileReader;
 import org.napile.asm.tree.members.ClassNode;
+import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileFileElementType;
+import org.napile.compiler.util.NodeToStubBuilder;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.stubs.BinaryFileStubBuilder;
@@ -36,10 +38,12 @@ import com.intellij.util.io.StringRef;
  */
 public class NXmlFileStubBuilder implements BinaryFileStubBuilder
 {
+	private final NodeToStubBuilder builder = new NodeToStubBuilder();
+
 	@Override
 	public boolean acceptsFile(VirtualFile file)
 	{
-		return false;
+		return file.getFileType() == NXmlFileType.INSTANCE;
 	}
 
 	@Nullable
@@ -53,6 +57,8 @@ public class NXmlFileStubBuilder implements BinaryFileStubBuilder
 			ClassNode classNode = reader.read(new ByteArrayInputStream(content));
 
 			NapilePsiFileStub psiFileStub = new NapilePsiFileStub(null, StringRef.fromString(classNode.name.parent().getFqName()), true);
+
+			classNode.accept(builder, psiFileStub);
 
 			return psiFileStub;
 		}

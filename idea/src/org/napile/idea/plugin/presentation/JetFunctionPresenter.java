@@ -57,7 +57,7 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 			{
 				StringBuilder presentation = new StringBuilder(function.getName());
 				presentation.append("(");
-				presentation.append(StringUtil.join(function.getValueParameters(), new Function<NapileElement, String>()
+				presentation.append(StringUtil.join(function.getCallParameters(), new Function<NapileElement, String>()
 				{
 					@Override
 					public String fun(NapileElement element)

@@ -40,7 +40,7 @@ import org.napile.compiler.lang.descriptors.Visibilities;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.psi.NapileQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileUserType;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -83,10 +83,10 @@ public class QualifiedExpressionResolver
 		}
 
 		Collection<? extends DeclarationDescriptor> descriptors;
-		if(importedReference instanceof NapileQualifiedExpression)
+		if(importedReference instanceof NapileQualifiedExpressionImpl)
 		{
 			//store result only when we find all descriptors, not only classes on the second phase
-			descriptors = lookupDescriptorsForQualifiedExpression((NapileQualifiedExpression) importedReference, scope, scopeToCheckVisibility, trace, onlyClasses, !onlyClasses);
+			descriptors = lookupDescriptorsForQualifiedExpression((NapileQualifiedExpressionImpl) importedReference, scope, scopeToCheckVisibility, trace, onlyClasses, !onlyClasses);
 		}
 		else
 		{
@@ -180,14 +180,14 @@ public class QualifiedExpressionResolver
 	}
 
 	@NotNull
-	public Collection<? extends DeclarationDescriptor> lookupDescriptorsForQualifiedExpression(@NotNull NapileQualifiedExpression importedReference, @NotNull JetScope outerScope, @NotNull JetScope scopeToCheckVisibility, @NotNull BindingTrace trace, boolean onlyClasses, boolean storeResult)
+	public Collection<? extends DeclarationDescriptor> lookupDescriptorsForQualifiedExpression(@NotNull NapileQualifiedExpressionImpl importedReference, @NotNull JetScope outerScope, @NotNull JetScope scopeToCheckVisibility, @NotNull BindingTrace trace, boolean onlyClasses, boolean storeResult)
 	{
 
 		NapileExpression receiverExpression = importedReference.getReceiverExpression();
 		Collection<? extends DeclarationDescriptor> declarationDescriptors;
-		if(receiverExpression instanceof NapileQualifiedExpression)
+		if(receiverExpression instanceof NapileQualifiedExpressionImpl)
 		{
-			declarationDescriptors = lookupDescriptorsForQualifiedExpression((NapileQualifiedExpression) receiverExpression, outerScope, scopeToCheckVisibility, trace, onlyClasses, storeResult);
+			declarationDescriptors = lookupDescriptorsForQualifiedExpression((NapileQualifiedExpressionImpl) receiverExpression, outerScope, scopeToCheckVisibility, trace, onlyClasses, storeResult);
 		}
 		else
 		{

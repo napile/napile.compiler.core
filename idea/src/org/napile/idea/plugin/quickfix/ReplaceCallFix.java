@@ -17,10 +17,10 @@
 package org.napile.idea.plugin.quickfix;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileDotQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileDotQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
-import org.napile.compiler.lang.psi.NapileQualifiedExpression;
-import org.napile.compiler.lang.psi.NapileSafeQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
+import org.napile.compiler.lang.psi.NapileSafeQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.JetBundle;
@@ -88,13 +88,13 @@ public class ReplaceCallFix implements IntentionAction
 	@Override
 	public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException
 	{
-		NapileQualifiedExpression callExpression = getCallExpression(editor, (NapileFile) file);
+		NapileQualifiedExpressionImpl callExpression = getCallExpression(editor, (NapileFile) file);
 		assert callExpression != null;
 
 		NapileExpression selector = callExpression.getSelectorExpression();
 		if(selector != null)
 		{
-			NapileQualifiedExpression newElement = (NapileQualifiedExpression) NapilePsiFactory.createExpression(project, callExpression.getReceiverExpression().getText() + (toSafe ? "?." : ".") + selector.getText());
+			NapileQualifiedExpressionImpl newElement = (NapileQualifiedExpressionImpl) NapilePsiFactory.createExpression(project, callExpression.getReceiverExpression().getText() + (toSafe ? "?." : ".") + selector.getText());
 
 			callExpression.replace(newElement);
 		}
@@ -106,10 +106,10 @@ public class ReplaceCallFix implements IntentionAction
 		return true;
 	}
 
-	private NapileQualifiedExpression getCallExpression(@NotNull Editor editor, @NotNull NapileFile file)
+	private NapileQualifiedExpressionImpl getCallExpression(@NotNull Editor editor, @NotNull NapileFile file)
 	{
 		final PsiElement elementAtCaret = getElementAtCaret(editor, file);
-		return PsiTreeUtil.getParentOfType(elementAtCaret, toSafe ? NapileDotQualifiedExpression.class : NapileSafeQualifiedExpression.class);
+		return PsiTreeUtil.getParentOfType(elementAtCaret, toSafe ? NapileDotQualifiedExpressionImpl.class : NapileSafeQualifiedExpressionImpl.class);
 	}
 
 	private static PsiElement getElementAtCaret(Editor editor, PsiFile file)

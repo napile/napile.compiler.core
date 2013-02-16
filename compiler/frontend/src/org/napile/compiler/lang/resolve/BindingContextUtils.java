@@ -119,9 +119,9 @@ public class BindingContextUtils
 		{
 			descriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, (NapileSimpleNameExpression) element);
 		}
-		else if(element instanceof NapileQualifiedExpression)
+		else if(element instanceof NapileQualifiedExpressionImpl)
 		{
-			descriptor = extractVariableDescriptorIfAny(bindingContext, ((NapileQualifiedExpression) element).getSelectorExpression(), onlyReference);
+			descriptor = extractVariableDescriptorIfAny(bindingContext, ((NapileQualifiedExpressionImpl) element).getSelectorExpression(), onlyReference);
 		}
 		if(descriptor instanceof VariableDescriptor)
 			return (VariableDescriptor) descriptor;

@@ -87,7 +87,7 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getSuperTypes()
+	public List<? extends NapileTypeReference> getSuperTypes()
 	{
 		NapileTypeListImpl ex = (NapileTypeListImpl)findChildByType(NapileNodes.EXTEND_TYPE_LIST);
 		return ex == null ? Collections.<NapileTypeReference>emptyList() : ex.getTypeList();
@@ -158,7 +158,7 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 			current = PsiTreeUtil.getParentOfType(current, NapileClassLike.class);
 		}
 		NapileFile file = getContainingFile();
-		String fileQualifiedName = file.getNamespaceHeader().getQualifiedName();
+		String fileQualifiedName = file.getPackage().getQualifiedName();
 		if(!fileQualifiedName.isEmpty())
 		{
 			parts.add(fileQualifiedName);

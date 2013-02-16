@@ -38,7 +38,7 @@ public class MethodInfo extends NamedDocableInfo<NapileNamedMethodOrMacro>
 	public MethodInfo(BindingContext bindingContext, NapileNamedMethodOrMacro element)
 	{
 		super(bindingContext, element);
-		NapileCallParameter[] ps = element.getValueParameters();
+		NapileCallParameter[] ps = element.getCallParameters();
 		parameters = new ArrayList<CallParameter>(ps.length);
 
 		for(NapileCallParameter callParameter : ps)

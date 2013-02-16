@@ -21,7 +21,7 @@ import java.io.IOException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
-import org.napile.compiler.lang.psi.NapileTypeParameterListImpl;
+import org.napile.compiler.lang.psi.impl.NapileTypeParameterListImpl;
 import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterListStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;

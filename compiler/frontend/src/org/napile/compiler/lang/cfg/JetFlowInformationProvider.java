@@ -395,11 +395,11 @@ public class JetFlowInformationProvider
 				return false;
 			}   */
 			NapileExpression variable = expression;
-			if(expression instanceof NapileDotQualifiedExpression)
+			if(expression instanceof NapileDotQualifiedExpressionImpl)
 			{
-				if(((NapileDotQualifiedExpression) expression).getReceiverExpression() instanceof NapileThisExpression)
+				if(((NapileDotQualifiedExpressionImpl) expression).getReceiverExpression() instanceof NapileThisExpression)
 				{
-					variable = ((NapileDotQualifiedExpression) expression).getSelectorExpression();
+					variable = ((NapileDotQualifiedExpressionImpl) expression).getSelectorExpression();
 				}
 			}
 			if(variable instanceof NapileSimpleNameExpression)
@@ -477,9 +477,9 @@ public class JetFlowInformationProvider
 		{
 			return true;
 		}
-		if(element instanceof NapileDotQualifiedExpression && isBackingFieldReference(((NapileDotQualifiedExpression) element).getSelectorExpression(), error, false))
+		if(element instanceof NapileDotQualifiedExpressionImpl && isBackingFieldReference(((NapileDotQualifiedExpressionImpl) element).getSelectorExpression(), error, false))
 		{
-			if(((NapileDotQualifiedExpression) element).getReceiverExpression() instanceof NapileThisExpression)
+			if(((NapileDotQualifiedExpressionImpl) element).getReceiverExpression() instanceof NapileThisExpression)
 			{
 				return true;
 			}

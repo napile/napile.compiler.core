@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import java.util.List;
 
@@ -22,8 +22,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.NapilePackage;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.lang.psi.NapileReferenceExpressionImpl;
+import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceService;
 import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
@@ -31,13 +34,20 @@ import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 /**
  * @author abreslav
  */
-public class NapilePackageImpl extends NapileReferenceExpressionImpl
+public class NapilePackageImpl extends NapileReferenceExpressionImpl implements NapilePackage
 {
 	public NapilePackageImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
+	@Override
+	public NapileSimpleNameExpression[] getAllExpressions()
+	{
+		return findChildrenByClass(NapileSimpleNameExpression.class);
+	}
+
+	@Override
 	@NotNull
 	public List<NapileSimpleNameExpression> getParentNamespaceNames()
 	{
@@ -47,6 +57,7 @@ public class NapilePackageImpl extends NapileReferenceExpressionImpl
 		return parentParts;
 	}
 
+	@Override
 	@Nullable
 	public NapileSimpleNameExpression getLastPartExpression()
 	{
@@ -68,42 +79,33 @@ public class NapilePackageImpl extends NapileReferenceExpressionImpl
 		return references.length == 1 ? references[0] : null;
 	}
 
-	@Nullable
-	public PsiElement getNameIdentifier()
-	{
-		NapileSimpleNameExpression lastPart = (NapileSimpleNameExpression) findLastChildByType(NapileNodes.REFERENCE_EXPRESSION);
-		if(lastPart == null)
-		{
-			return null;
-		}
-
-		return lastPart.getIdentifier();
-	}
-
 	@Override
 	@NotNull
 	public String getName()
 	{
-		PsiElement nameIdentifier = getNameIdentifier();
-		return nameIdentifier == null ? "" : nameIdentifier.getText();
+		NapileSimpleNameExpression last = getLastPartExpression();
+		if(last == null)
+			return "";
+
+		return last.getText();
 	}
 
+	@Override
 	@NotNull
 	public Name getNameAsName()
 	{
-		PsiElement nameIdentifier = getNameIdentifier();
-		return nameIdentifier == null ? NapilePsiUtil.ROOT_NAMESPACE_NAME : Name.identifier(nameIdentifier.getText());
+		NapileSimpleNameExpression last = getLastPartExpression();
+		if(last == null)
+			return NapilePsiUtil.ROOT_NAMESPACE_NAME;
+
+		return Name.identifier(last.getText());
 	}
 
-	public boolean isRoot()
-	{
-		return getName().length() == 0;
-	}
-
+@Override
 	public String getQualifiedName()
 	{
 		StringBuilder builder = new StringBuilder();
-		for(NapileSimpleNameExpression e : findChildrenByClass(NapileSimpleNameExpression.class))
+		for(NapileSimpleNameExpression e : getAllExpressions())
 		{
 			if(builder.length() > 0)
 			{

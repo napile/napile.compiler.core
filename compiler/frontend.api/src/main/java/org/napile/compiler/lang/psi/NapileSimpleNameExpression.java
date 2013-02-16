@@ -43,9 +43,6 @@ public interface NapileSimpleNameExpression extends NapileReferenceExpression
 	PsiElement getReferencedNameElement();
 
 	@Nullable
-	PsiElement getIdentifier();
-
-	@Nullable
 	@IfNotParsed
 	IElementType getReferencedNameElementType();
 }

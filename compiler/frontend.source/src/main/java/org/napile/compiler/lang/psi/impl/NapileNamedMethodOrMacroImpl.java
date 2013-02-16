@@ -22,6 +22,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
@@ -90,7 +91,7 @@ public abstract class NapileNamedMethodOrMacroImpl<S extends NamedStub> extends 
 		if(parent instanceof NapileFile)
 		{
 			// fqname is different in scripts
-			if(((NapileFile) parent).getNamespaceHeader() == null)
+			if(((NapileFile) parent).getPackage() == null)
 			{
 				return null;
 			}
@@ -116,12 +117,12 @@ public abstract class NapileNamedMethodOrMacroImpl<S extends NamedStub> extends 
 	@Nullable
 	public NapileCallParameterList getCallParameterList()
 	{
-		return (NapileCallParameterList) findChildByType(NapileNodes.CALL_PARAMETER_LIST);
+		return getStubOrPsiChild(NapileStubElementTypes.CALL_PARAMETER_LIST);
 	}
 
 	@Override
 	@NotNull
-	public NapileCallParameter[] getValueParameters()
+	public NapileCallParameter[] getCallParameters()
 	{
 		NapileCallParameterList list = getCallParameterList();
 		return list != null ? list.getParameters() : NapileCallParameter.EMPTY_ARRAY;

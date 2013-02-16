@@ -16,7 +16,9 @@
 
 package org.napile.compiler.lang.resolve;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -38,7 +40,11 @@ import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 
 /**
  * @author abreslav
@@ -162,7 +168,7 @@ public class TopDownAnalyzer
 		}
 	}
 
-	public void analyzeFiles(@NotNull AnalyzeContext analyzeContext)
+	public void analyzeFiles(@NotNull Project project, @NotNull AnalyzeContext analyzeContext)
 	{
 		final WritableScope scope = new WritableScopeImpl(JetScope.EMPTY, moduleDescriptor, new TraceBasedRedeclarationHandler(trace), "Root scope in analyzeNamespace");
 
@@ -178,8 +184,37 @@ public class TopDownAnalyzer
 
 		DescriptorBuilderDummy owner = new DescriptorBuilderDummy();
 
+		PsiManager manager = PsiManager.getInstance(project);
+		List<NapileFile> files = new ArrayList<NapileFile>(analyzeContext.getFiles().size());
+
+		for(VirtualFile virtualFile : analyzeContext.getBootpath())
+		{
+			collect(files, virtualFile, manager);
+		}
+
+		files.addAll(analyzeContext.getFiles());
+
+
 		// dummy builder is used because "root" is module descriptor,
 		// namespaces added to module explicitly in
-		doProcessSource(scope, owner, analyzeContext.getFiles());
+		doProcessSource(scope, owner, files);
+	}
+
+	private void collect(@NotNull List<NapileFile> list, @NotNull VirtualFile virtualFile, @NotNull PsiManager manager)
+	{
+		PsiFile file = manager.findFile(virtualFile);
+		if(file instanceof NapileFile)
+			list.add(((NapileFile) file));
+		else
+		{
+			final VirtualFile[] children = virtualFile.getChildren();
+			if(children == null)
+				return;
+
+			for(VirtualFile child : children)
+			{
+				collect(list, child, manager);
+			}
+		}
 	}
 }

@@ -160,7 +160,7 @@ public class TypeParameterResolver
 			NapileTypeParameter jetTypeParameter = typeParameters[i];
 			TypeParameterDescriptor typeParameterDescriptor = parameters.get(i);
 
-			for(NapileTypeReference extendsBound : jetTypeParameter.getExtendsBound())
+			for(NapileTypeReference extendsBound : jetTypeParameter.getSuperTypes())
 			{
 				JetType type = typeResolver.resolveType(scope, extendsBound, trace, false);
 				((TypeParameterDescriptorImpl) typeParameterDescriptor).addUpperBound(type);

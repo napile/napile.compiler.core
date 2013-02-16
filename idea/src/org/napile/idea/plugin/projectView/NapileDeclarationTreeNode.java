@@ -99,7 +99,7 @@ public class NapileDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclar
 			{
 				NapileMethod function = (NapileMethod) declaration;
 				text += "(";
-				NapileElement[] parameters = function.getValueParameters();
+				NapileElement[] parameters = function.getCallParameters();
 				for(NapileElement parameter : parameters)
 				{
 					if(parameter instanceof NapileCallParameterAsVariable)
@@ -141,7 +141,7 @@ public class NapileDeclarationTreeNode extends AbstractPsiBasedNode<NapileDeclar
 			{
 				NapileConstructor function = (NapileConstructor) declaration;
 				text += "(";
-				NapileElement[] parameters = function.getValueParameters();
+				NapileElement[] parameters = function.getCallParameters();
 				for(NapileElement parameter : parameters)
 				{
 					if(parameter instanceof NapileCallParameterAsVariable)

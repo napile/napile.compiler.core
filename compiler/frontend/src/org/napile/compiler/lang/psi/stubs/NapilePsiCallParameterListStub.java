@@ -24,9 +24,9 @@ import com.intellij.psi.stubs.StubElement;
 /**
  * @author Nikolay Krasko
  */
-public class NapilePsiParameterListStub extends StubBase<NapileCallParameterList>
+public class NapilePsiCallParameterListStub extends StubBase<NapileCallParameterList>
 {
-	public NapilePsiParameterListStub(StubElement parent)
+	public NapilePsiCallParameterListStub(StubElement parent)
 	{
 		super(parent, NapileStubElementTypes.CALL_PARAMETER_LIST);
 	}
@@ -34,6 +34,6 @@ public class NapilePsiParameterListStub extends StubBase<NapileCallParameterList
 	@Override
 	public String toString()
 	{
-		return "NapilePsiParameterListStub";
+		return "NapilePsiCallParameterListStub";
 	}
 }

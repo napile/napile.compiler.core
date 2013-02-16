@@ -37,7 +37,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileSafeQualifiedExpression;
+import org.napile.compiler.lang.psi.NapileSafeQualifiedExpressionImpl;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
@@ -135,6 +135,6 @@ public class CallTransformer
 	public static boolean isNullable(NapileExpression expression)
 	{
 		PsiElement parent = expression.getParent();
-		return parent instanceof NapileSafeQualifiedExpression && ((NapileSafeQualifiedExpression) parent).getSelectorExpression() == expression;
+		return parent instanceof NapileSafeQualifiedExpressionImpl && ((NapileSafeQualifiedExpressionImpl) parent).getSelectorExpression() == expression;
 	}
 }
