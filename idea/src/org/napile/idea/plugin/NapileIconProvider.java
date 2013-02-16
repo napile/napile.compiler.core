@@ -125,7 +125,7 @@ public class NapileIconProvider extends IconProvider
 		if(baseIcon != null)
 		{
 			boolean isFinal = modifierList != null && modifierList.hasModifier(NapileTokens.FINAL_KEYWORD);
-			boolean isLocked = (flags & Iconable.ICON_FLAG_READ_STATUS) != 0;
+			boolean isLocked = false; //(flags & Iconable.ICON_FLAG_READ_STATUS) != 0;
 			if(isFinal || isRunnable || isLocked)
 			{
 				List<Icon> icons = new ArrayList<Icon>(2);
