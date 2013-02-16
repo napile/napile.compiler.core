@@ -53,6 +53,9 @@ public class JetFoldingBuilder extends FoldingBuilderEx implements DumbAware
 
 	private static void appendDescriptors(ASTNode node, Document document, List<FoldingDescriptor> descriptors)
 	{
+		if(node == null)
+			return;
+
 		TextRange textRange = node.getTextRange();
 		IElementType type = node.getElementType();
 		if((type == NapileNodes.BLOCK || type == NapileNodes.CLASS_BODY) && !isOneLine(textRange, document))
