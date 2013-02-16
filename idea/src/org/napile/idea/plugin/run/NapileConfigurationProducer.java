@@ -69,7 +69,7 @@ public class NapileConfigurationProducer extends RuntimeConfigurationProducer im
 		{
 			analyzeExhaust = Analyzer.analyzeAll((NapileFile) element);
 
-			if(((NapileFile) element).getDeclarations().length == 2)
+			if(((NapileFile) element).getDeclarations().length == 0)
 				return null;
 
 			napileClass = ((NapileFile) element).getDeclarations()[0];
