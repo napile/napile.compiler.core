@@ -40,7 +40,9 @@ import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.util.RunUtil;
 import org.napile.idea.plugin.module.Analyzer;
+import com.intellij.ide.IconLayerProvider;
 import com.intellij.ide.IconProvider;
+import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.psi.PsiElement;
@@ -123,7 +125,8 @@ public class NapileIconProvider extends IconProvider
 		if(baseIcon != null)
 		{
 			boolean isFinal = modifierList != null && modifierList.hasModifier(NapileTokens.FINAL_KEYWORD);
-			if(isFinal || isRunnable)
+			boolean isLocked = (flags & Iconable.ICON_FLAG_READ_STATUS) != 0;
+			if(isFinal || isRunnable || isLocked)
 			{
 				List<Icon> icons = new ArrayList<Icon>(2);
 				icons.add(baseIcon);
@@ -131,6 +134,16 @@ public class NapileIconProvider extends IconProvider
 					icons.add(FINAL_MARK_ICON);
 				if(isRunnable)
 					icons.add(RUNNABLE_MARK);
+
+				if(modifierList != null)
+					for(IconLayerProvider provider : Extensions.getExtensions(IconLayerProvider.EP_NAME))
+					{
+						final Icon layerIcon = provider.getLayerIcon(modifierList, isLocked);
+						if(layerIcon != null)
+						{
+							icons.add(layerIcon);
+						}
+					}
 
 				icon.setIcon(new LayeredIcon(icons.toArray(new Icon[icons.size()])), 0);
 			}
