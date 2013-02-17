@@ -118,6 +118,7 @@ public class NXmlVariableAccessorImpl extends NXmlParentedElementBase implements
 		return false;
 	}
 
+	@Nullable
 	@Override
 	public ASTNode getModifierNode(NapileToken token)
 	{

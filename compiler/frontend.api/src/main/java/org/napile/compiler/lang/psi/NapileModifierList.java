@@ -17,8 +17,8 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileToken;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
@@ -26,8 +26,8 @@ import com.intellij.lang.ASTNode;
  */
 public interface NapileModifierList extends NapileElement, NapileAnnotationOwner
 {
-	boolean hasModifier(NapileToken token);
+	boolean hasModifier(IElementType token);
 
 	@Nullable
-	ASTNode getModifierNode(NapileToken token);
+	ASTNode getModifierNode(IElementType token);
 }

@@ -30,7 +30,7 @@ public interface NapileMethodType extends NapileTypeElement
 	NapileCallParameterList getParameterList();
 
 	@NotNull
-	NapileElement[] getParameters();
+	NapileCallParameter[] getParameters();
 
 	@Nullable
 	NapileTypeReference getReturnTypeRef();

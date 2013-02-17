@@ -16,69 +16,82 @@
 
 package org.napile.compiler.lang.psi.impl;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NXmlParentedElementBase;
-import org.napile.compiler.lang.psi.NapileCallParameter;
-import org.napile.compiler.lang.psi.NapileCallParameterList;
+import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.psi.NXmlStubElementBase;
+import org.napile.compiler.lang.psi.NapileAnnotation;
+import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.psi.stubs.NapilePsiModifierListStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
+import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 14:50/17.02.13
+ * @date 14:03/17.02.13
  */
-public class NXmlCallParameterListImpl extends NXmlParentedElementBase implements NapileCallParameterList
+public class NXmlModifierListImpl extends NXmlStubElementBase<NapilePsiModifierListStub> implements NapileModifierList
 {
-	private NapileCallParameter[] parameters = NapileCallParameter.EMPTY_ARRAY;
-
-	public NXmlCallParameterListImpl(PsiElement parent)
+	public NXmlModifierListImpl(NapilePsiModifierListStub stub)
 	{
-		super(parent);
+		super(stub);
 	}
 
 	@Override
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
-		NapileCallParameterList mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
-
 		setMirrorCheckingType(element, null);
-
-		final NapileCallParameter[] mirrorParameters = mirror.getParameters();
-		parameters = new NapileCallParameter[mirrorParameters.length];
-		for(int i = 0; i < parameters.length; i++)
-		{
-			final NXmlCallParameterAsVariableImpl nXmlCallParameterAsVariable = new NXmlCallParameterAsVariableImpl(this);
-			nXmlCallParameterAsVariable.setMirror(mirrorParameters[i]);
-
-			parameters[i] = nXmlCallParameterAsVariable;
-		}
 	}
 
 	@Override
-	public NapileCallParameter[] getParameters()
+	public boolean hasModifier(IElementType token)
 	{
-		return parameters;
+		return getStub().hasModifier(token);
+	}
+
+	@Nullable
+	@Override
+	public ASTNode getModifierNode(IElementType token)
+	{
+		return null;
+	}
+
+	@Override
+	public List<NapileAnnotation> getAnnotations()
+	{
+		return Collections.emptyList();
 	}
 
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitCallParameterList(this);
+		visitor.visitModifierList(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitCallParameterList(this, data);
+		return visitor.visitModifierList(this, data);
+	}
+
+	@Override
+	public IStubElementType getElementType()
+	{
+		return NapileStubElementTypes.MODIFIER_LIST;
 	}
 
 	@NotNull
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return getParameters();
+		return PsiElement.EMPTY_ARRAY;
 	}
 }

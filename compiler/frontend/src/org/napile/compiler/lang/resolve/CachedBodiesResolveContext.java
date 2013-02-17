@@ -114,4 +114,5 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 		NapileFile containingFile = element.getContainingFile();
 		return containingFile != null && topDownAnalysisParameters.getAnalyzeCompletely().apply(containingFile);
 	}
+
 }

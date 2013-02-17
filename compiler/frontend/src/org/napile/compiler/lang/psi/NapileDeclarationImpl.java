@@ -46,6 +46,7 @@ public abstract class NapileDeclarationImpl extends NapileExpressionImpl impleme
 		return modifierList != null && modifierList.hasModifier(modifier);
 	}
 
+	@Nullable
 	@Override
 	public ASTNode getModifierNode(NapileToken token)
 	{

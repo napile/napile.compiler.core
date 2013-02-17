@@ -54,4 +54,7 @@ public interface NapilePsiFromStubFactory
 
 	@NotNull
 	NapileCallParameterList createCallParameterList(NapilePsiCallParameterListStub stub);
+
+	@NotNull
+	NapileModifierList createModifierList(NapilePsiModifierListStub stub);
 }

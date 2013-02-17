@@ -33,6 +33,7 @@ public interface NapileStubElementTypes
 	NapileEnumValueElementType ENUM_VALUE = new NapileEnumValueElementType("ENUM_VALUE");
 	NapileParameterElementType CALL_PARAMETER_AS_VARIABLE = new NapileParameterElementType("CALL_PARAMETER_AS_VARIABLE");
 
+	NapileModifierListElementType MODIFIER_LIST = new NapileModifierListElementType("MODIFIER_LIST");
 	NapileParameterListElementType CALL_PARAMETER_LIST = new NapileParameterListElementType("CALL_PARAMETER_LIST");
 
 	NapileTypeParameterElementType TYPE_PARAMETER = new NapileTypeParameterElementType("TYPE_PARAMETER");

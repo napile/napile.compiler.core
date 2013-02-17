@@ -18,15 +18,7 @@ package org.napile.compiler.lang.psi.stubs;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.impl.NXmlCallParameterAsVariableImpl;
-import org.napile.compiler.lang.psi.impl.NXmlCallParameterListImpl;
-import org.napile.compiler.lang.psi.impl.NXmlClassImpl;
-import org.napile.compiler.lang.psi.impl.NXmlConstructorImpl;
-import org.napile.compiler.lang.psi.impl.NXmlNamedMacroImpl;
-import org.napile.compiler.lang.psi.impl.NXmlNamedMethodImpl;
-import org.napile.compiler.lang.psi.impl.NXmlTypeParameterImpl;
-import org.napile.compiler.lang.psi.impl.NXmlTypeParameterListImpl;
-import org.napile.compiler.lang.psi.impl.NXmlVariableImpl;
+import org.napile.compiler.lang.psi.impl.*;
 
 /**
  * @author VISTALL
@@ -80,7 +72,7 @@ public class NXmlPsiFromStubFactory implements NapilePsiFromStubFactory
 	@Override
 	public NapileCallParameterAsVariable createCallParameterAsVariable(NapilePsiCallParameterAsVariableStub stub)
 	{
-		return new NXmlCallParameterAsVariableImpl(stub);
+		return new NXmlCallParameterAsVariableStubbedImpl(stub);
 	}
 
 	@NotNull
@@ -101,6 +93,13 @@ public class NXmlPsiFromStubFactory implements NapilePsiFromStubFactory
 	@Override
 	public NapileCallParameterList createCallParameterList(NapilePsiCallParameterListStub stub)
 	{
-		return new NXmlCallParameterListImpl(stub);
+		return new NXmlCallParameterListStubbedImpl(stub);
+	}
+
+	@NotNull
+	@Override
+	public NapileModifierList createModifierList(NapilePsiModifierListStub stub)
+	{
+		return new NXmlModifierListImpl(stub);
 	}
 }

@@ -17,26 +17,27 @@
 package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NXmlParentedElementBase;
+import org.napile.compiler.lang.psi.NXmlStubElementBase;
 import org.napile.compiler.lang.psi.NapileCallParameter;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterListStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
+import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
- * @date 14:50/17.02.13
+ * @date 20:25/16.02.13
  */
-public class NXmlCallParameterListImpl extends NXmlParentedElementBase implements NapileCallParameterList
+public class NXmlCallParameterListStubbedImpl extends NXmlStubElementBase<NapilePsiCallParameterListStub> implements NapileCallParameterList
 {
-	private NapileCallParameter[] parameters = NapileCallParameter.EMPTY_ARRAY;
-
-	public NXmlCallParameterListImpl(PsiElement parent)
+	public NXmlCallParameterListStubbedImpl(NapilePsiCallParameterListStub stub)
 	{
-		super(parent);
+		super(stub);
 	}
 
 	@Override
@@ -45,22 +46,13 @@ public class NXmlCallParameterListImpl extends NXmlParentedElementBase implement
 		NapileCallParameterList mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
 
 		setMirrorCheckingType(element, null);
-
-		final NapileCallParameter[] mirrorParameters = mirror.getParameters();
-		parameters = new NapileCallParameter[mirrorParameters.length];
-		for(int i = 0; i < parameters.length; i++)
-		{
-			final NXmlCallParameterAsVariableImpl nXmlCallParameterAsVariable = new NXmlCallParameterAsVariableImpl(this);
-			nXmlCallParameterAsVariable.setMirror(mirrorParameters[i]);
-
-			parameters[i] = nXmlCallParameterAsVariable;
-		}
+		setMirrors(getParameters(), mirror.getParameters());
 	}
 
 	@Override
 	public NapileCallParameter[] getParameters()
 	{
-		return parameters;
+		return getStub().getChildrenByType(NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE, NapileCallParameter.ARRAY_FACTORY);
 	}
 
 	@Override
@@ -80,5 +72,11 @@ public class NXmlCallParameterListImpl extends NXmlParentedElementBase implement
 	public PsiElement[] getChildren()
 	{
 		return getParameters();
+	}
+
+	@Override
+	public IStubElementType getElementType()
+	{
+		return NapileStubElementTypes.CALL_PARAMETER_LIST;
 	}
 }

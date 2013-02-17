@@ -31,5 +31,6 @@ public interface NapileModifierListOwner extends PsiElement
 
 	boolean hasModifier(NapileToken modifier);
 
+	@Nullable
 	ASTNode getModifierNode(NapileToken token);
 }

@@ -107,6 +107,10 @@ public abstract class NXmlElementBase extends PsiElementBase implements PsiCompi
 		}
 	}
 
+	public void setMirror(@NotNull PsiElement element) throws InvalidMirrorException
+	{
+		setMirror(SourceTreeToPsiMap.psiToTreeNotNull(element));
+	}
 
 	public abstract void setMirror(@NotNull TreeElement element) throws InvalidMirrorException;
 

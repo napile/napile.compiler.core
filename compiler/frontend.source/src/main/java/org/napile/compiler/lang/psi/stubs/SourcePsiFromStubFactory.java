@@ -95,4 +95,11 @@ public class SourcePsiFromStubFactory implements NapilePsiFromStubFactory
 	{
 		return new NapileCallParameterListImpl(stub);
 	}
+
+	@NotNull
+	@Override
+	public NapileModifierList createModifierList(NapilePsiModifierListStub stub)
+	{
+		return new NapileModifierListImpl(stub);
+	}
 }

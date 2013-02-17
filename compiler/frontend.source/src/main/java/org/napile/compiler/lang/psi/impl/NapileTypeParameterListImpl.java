@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileElementImplStub;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterList;
 import org.napile.compiler.lang.psi.NapileVisitor;

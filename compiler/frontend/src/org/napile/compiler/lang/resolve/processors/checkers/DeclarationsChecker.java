@@ -43,6 +43,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
+import com.intellij.psi.PsiCompiledElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -156,6 +157,9 @@ public class DeclarationsChecker
 
 	private void checkConstructor(NapileConstructor constructor)
 	{
+		if(constructor instanceof PsiCompiledElement)
+			return;
+
 		NapileClass parent = PsiTreeUtil.getParentOfType(constructor, NapileClass.class);
 
 		assert parent != null;

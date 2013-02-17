@@ -16,51 +16,55 @@
 
 package org.napile.compiler.lang.psi.impl;
 
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.psi.NXmlElementBase;
+import org.napile.compiler.lang.psi.NXmlParentedElementBase;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterAsVariableStub;
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.util.NXmlMirrorUtil;
+import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
-import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
- * @date 20:25/16.02.13
+ * @date 14:54/17.02.13
  */
-public class NXmlCallParameterAsVariableImpl extends NXmlNamedDeclarationImpl<NapilePsiCallParameterAsVariableStub> implements NapileCallParameterAsVariable
+public class NXmlCallParameterAsVariableImpl extends NXmlParentedElementBase implements NapileCallParameterAsVariable
 {
 	private NXmlTypeReferenceImpl returnType;
+	private boolean mutable;
+	private boolean ref;
+	private NXmlIdentifierImpl nameIdentifier;
 
-	public NXmlCallParameterAsVariableImpl(NapilePsiCallParameterAsVariableStub stub)
+	public NXmlCallParameterAsVariableImpl(PsiElement parent)
 	{
-		super(stub);
+		super(parent);
 	}
 
 	@Override
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
-		final NapileCallParameterAsVariable callParameterAsVariable = SourceTreeToPsiMap.treeToPsiNotNull(element);
+		NapileCallParameterAsVariable mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
 
 		setMirrorCheckingType(element, null);
 
-		returnType = NXmlMirrorUtil.mirrorType(this, callParameterAsVariable.getTypeReference());
-		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, callParameterAsVariable.getNameIdentifier());
-	}
-
-	@NotNull
-	@Override
-	public PsiElement[] getChildren()
-	{
-		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, returnType);
+		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getTypeReference());
+		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getNameIdentifier());
+		mutable = mirror.isMutable();
+		ref = mirror.isRef();
 	}
 
 	@Nullable
@@ -80,17 +84,31 @@ public class NXmlCallParameterAsVariableImpl extends NXmlNamedDeclarationImpl<Na
 	@Override
 	public boolean isMutable()
 	{
-		return false;
+		return mutable;
 	}
 
 	@Override
 	public boolean isRef()
 	{
-		return false;
+		return ref;
 	}
 
 	@Override
 	public NapileExpression getDefaultValue()
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public Name getNameAsSafeName()
+	{
+		return Name.identifier(getName());
+	}
+
+	@Nullable
+	@Override
+	public NapileDoc getDocComment()
 	{
 		return null;
 	}
@@ -107,9 +125,56 @@ public class NXmlCallParameterAsVariableImpl extends NXmlNamedDeclarationImpl<Na
 		return visitor.visitCallParameterAsVariable(this, data);
 	}
 
+	@Nullable
 	@Override
-	public IStubElementType getElementType()
+	public NapileModifierList getModifierList()
 	{
-		return NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE;
+		return null;
+	}
+
+	@Override
+	public boolean hasModifier(NapileToken modifier)
+	{
+		return false;
+	}
+
+	@Nullable
+	@Override
+	public ASTNode getModifierNode(NapileToken token)
+	{
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public Name getNameAsName()
+	{
+		return Name.identifier(getName());
+	}
+
+	@Override
+	public String getName()
+	{
+		return getNameIdentifier().getText();
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getNameIdentifier()
+	{
+		return nameIdentifier;
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public PsiElement[] getChildren()
+	{
+		return NXmlMirrorUtil.getAllToPsiArray(returnType);
 	}
 }

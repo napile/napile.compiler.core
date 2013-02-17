@@ -24,8 +24,8 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.IfNotParsed;
+import org.napile.compiler.lang.psi.NapileCallParameter;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
-import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileElementImpl;
 import org.napile.compiler.lang.psi.NapileMethodType;
 import org.napile.compiler.lang.psi.NapileTypeReference;
@@ -71,10 +71,10 @@ public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMet
 
 	@Override
 	@NotNull
-	public NapileElement[] getParameters()
+	public NapileCallParameter[] getParameters()
 	{
 		NapileCallParameterList list = getParameterList();
-		return list != null ? list.getParameters() : NapileElement.EMPTY_ARRAY;
+		return list != null ? list.getParameters() : NapileCallParameter.EMPTY_ARRAY;
 	}
 
 	@Override

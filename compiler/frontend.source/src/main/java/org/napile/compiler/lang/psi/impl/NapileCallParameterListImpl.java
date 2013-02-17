@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileCallParameter;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
-import org.napile.compiler.lang.psi.NapileElementImplStub;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterListStub;

@@ -55,7 +55,7 @@ public interface NapileNodes
 
 	NapileNode CLASS_BODY = new NapileNode("CLASS_BODY", NapileClassBody.class);
 	NapileNode IMPORT_DIRECTIVE = new NapileNode("IMPORT_DIRECTIVE", NapileImportDirective.class);
-	NapileNode MODIFIER_LIST = new NapileNode("MODIFIER_LIST", NapileModifierListImpl.class);
+	IElementType MODIFIER_LIST = NapileStubElementTypes.MODIFIER_LIST;
 	NapileNode ANNOTATION = new NapileNode("ANNOTATION", NapileAnnotation.class);
 
 	NapileNode EXTEND_TYPE_LIST = new NapileNode("EXTEND_TYPE_LIST", NapileTypeListImpl.class);

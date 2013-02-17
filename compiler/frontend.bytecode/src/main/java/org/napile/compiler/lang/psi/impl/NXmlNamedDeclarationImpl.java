@@ -25,11 +25,13 @@ import org.napile.compiler.lang.psi.NXmlStubElementBase;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
 import com.intellij.psi.stubs.NamedStub;
+import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.IncorrectOperationException;
 
 /**
@@ -72,15 +74,18 @@ public abstract class NXmlNamedDeclarationImpl<T extends NamedStub> extends NXml
 	@Override
 	public NapileModifierList getModifierList()
 	{
-		return null;
+		final StubElement childStubByType = getStub().findChildStubByType(NapileStubElementTypes.MODIFIER_LIST);
+		return childStubByType != null ? (NapileModifierList) childStubByType.getPsi() : null;
 	}
 
 	@Override
 	public boolean hasModifier(NapileToken modifier)
 	{
-		return false;
+		NapileModifierList modifierList = getModifierList();
+		return modifierList != null && modifierList.hasModifier(modifier);
 	}
 
+	@Nullable
 	@Override
 	public ASTNode getModifierNode(NapileToken token)
 	{

@@ -93,6 +93,7 @@ public interface BodiesResolveContext
 		{
 			return false;
 		}
+
 	};
 
 	Map<NapileClass, MutableClassDescriptor> getClasses();

@@ -18,9 +18,9 @@ package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileToken;
-import org.napile.compiler.lang.psi.impl.NapileModifierListImpl;
+import org.napile.compiler.lang.psi.impl.NapileElementImplStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
@@ -42,9 +42,9 @@ abstract class NapileDeclarationStub<T extends StubElement> extends NapileElemen
 
 	@Override
 	@Nullable
-	public NapileModifierListImpl getModifierList()
+	public NapileModifierList getModifierList()
 	{
-		return (NapileModifierListImpl) findChildByType(NapileNodes.MODIFIER_LIST);
+		return getStubOrPsiChild(NapileStubElementTypes.MODIFIER_LIST);
 	}
 
 	@Override
@@ -54,6 +54,7 @@ abstract class NapileDeclarationStub<T extends StubElement> extends NapileElemen
 		return modifierList != null && modifierList.hasModifier(modifier);
 	}
 
+	@Nullable
 	@Override
 	public ASTNode getModifierNode(NapileToken napileToken)
 	{

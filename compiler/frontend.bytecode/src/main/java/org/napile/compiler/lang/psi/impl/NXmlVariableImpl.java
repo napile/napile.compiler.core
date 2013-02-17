@@ -42,6 +42,7 @@ import com.intellij.psi.stubs.IStubElementType;
  */
 public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariableStub> implements NapileVariable
 {
+	private boolean mutable;
 	private NXmlTypeReferenceImpl returnType;
 	private List<NXmlVariableAccessorImpl> accessors = new ArrayList<NXmlVariableAccessorImpl>(2);
 
@@ -59,6 +60,7 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 
 		returnType = NXmlMirrorUtil.mirrorType(this, variable.getType());
 		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, variable.getNameIdentifier());
+		mutable = variable.isMutable();
 		accessors.clear();
 
 		for(NapileVariableAccessor accessor : variable.getAccessors())
@@ -96,7 +98,7 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 	@Override
 	public boolean isMutable()
 	{
-		return false;
+		return mutable;
 	}
 
 	@NotNull

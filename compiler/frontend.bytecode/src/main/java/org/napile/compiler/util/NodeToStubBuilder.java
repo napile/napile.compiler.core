@@ -16,7 +16,11 @@
 
 package org.napile.compiler.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.napile.asm.AsmConstants;
+import org.napile.asm.Modifier;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.AbstractMemberNode;
 import org.napile.asm.tree.members.ClassNode;
@@ -25,16 +29,11 @@ import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.TypeParameterNode;
 import org.napile.asm.tree.members.VariableNode;
-import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterAsVariableStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiCallParameterListStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiConstructorStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMacroStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiMethodStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterListStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
-import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.stubs.*;
+import org.napile.compiler.lang.psi.stubs.elements.NapileModifierListElementType;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.util.io.StringRef;
 
 /**
@@ -43,20 +42,43 @@ import com.intellij.util.io.StringRef;
  */
 public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 {
+	private static final Map<Modifier, IElementType> MODIFIER_TO_ELEMENT = new HashMap<Modifier, IElementType>();
+
+	static
+	{
+		final IElementType[] types = NapileTokens.MODIFIER_KEYWORDS.getTypes();
+
+		for(Modifier modifier : Modifier.values())
+		{
+			String modifierName = modifier.name().toLowerCase();
+
+			for(IElementType elementType : types)
+			{
+				if(elementType.toString().equals(modifierName))
+				{
+					MODIFIER_TO_ELEMENT.put(modifier, elementType);
+					break;
+				}
+			}
+		}
+	}
+
 	@Override
 	public Void visitClassNode(ClassNode classNode, StubElement a2)
 	{
 		if(classNode.name.shortName().getName().contains(AsmConstants.ANONYM_SPLITTER))
 			return null;
 
-		NapilePsiClassStub parentClass = new NapilePsiClassStub(a2, classNode.name.getFqName(), classNode.name.shortName().getName());
+		NapilePsiClassStub classStub = new NapilePsiClassStub(a2, classNode.name.getFqName(), classNode.name.shortName().getName());
 
 		for(AbstractMemberNode<?> memberNode : classNode.getMembers())
 		{
-			memberNode.accept(this, parentClass);
+			memberNode.accept(this, classStub);
 		}
 
-		acceptTypeParameterList(classNode, parentClass);
+		acceptTypeParameterList(classNode, classStub);
+
+		acceptModifierList(classNode, classStub);
 
 		return null;
 	}
@@ -84,6 +106,8 @@ public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 			new NapilePsiCallParameterAsVariableStub(list, node.name.getName(), node.returnType.toString(), null);
 		}
 
+		acceptModifierList(methodNode, methodStub);
+
 		return null;
 	}
 
@@ -100,15 +124,32 @@ public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 			new NapilePsiCallParameterAsVariableStub(list, node.name.getName(), node.returnType.toString(), null);
 		}
 
+		acceptModifierList(methodNode, macroStub);
+
 		return null;
 	}
 
 	@Override
 	public Void visitVariableNode(VariableNode variableNode, StubElement a2)
 	{
-		new NapilePsiVariableStub(a2, variableNode.name.getName(), AsmToStringUtil.typeToString(variableNode.returnType), null);
+		final NapilePsiVariableStub variableStub = new NapilePsiVariableStub(a2, variableNode.name.getName(), AsmToStringUtil.typeToString(variableNode.returnType), null);
+
+		acceptModifierList(variableNode, variableStub);
 
 		return null;
+	}
+
+	private void acceptModifierList(AbstractMemberNode<?> memberNode, StubElement parent)
+	{
+		int modifiers = 0;
+
+		for(Modifier modifier : memberNode.modifiers)
+		{
+			IElementType elementType = MODIFIER_TO_ELEMENT.get(modifier);
+			if(elementType != null)
+				modifiers |= NapileModifierListElementType.ELEMENT_TO_MASK.get(elementType);
+		}
+		new NapilePsiModifierListStub(parent, modifiers);
 	}
 
 	private void acceptTypeParameterList(AbstractMemberNode<?> memberNode, StubElement parent)

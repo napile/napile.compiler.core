@@ -17,6 +17,7 @@
 package org.napile.compiler.lang.resolve;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -169,10 +170,11 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	{
 		if(members == null)
 		{
-			members = Maps.newHashMap();
+			members = new HashMap<NapileDeclaration, CallableMemberDescriptor>(methods.size() + variables.size());
 			members.putAll(methods);
 			members.putAll(variables);
 		}
 		return members;
 	}
+
 }

@@ -21,19 +21,25 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.psi.NapileAnnotation;
-import org.napile.compiler.lang.psi.NapileElementImpl;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.psi.stubs.NapilePsiModifierListStub;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author max
  */
-public class NapileModifierListImpl extends NapileElementImpl implements NapileModifierList
+public class NapileModifierListImpl extends NapileElementImplStub<NapilePsiModifierListStub> implements NapileModifierList
 {
+	public NapileModifierListImpl(@NotNull NapilePsiModifierListStub stub)
+	{
+		super(stub, NapileStubElementTypes.MODIFIER_LIST);
+	}
+
 	public NapileModifierListImpl(@NotNull ASTNode node)
 	{
 		super(node);
@@ -59,14 +65,19 @@ public class NapileModifierListImpl extends NapileElementImpl implements NapileM
 	}
 
 	@Override
-	public boolean hasModifier(NapileToken token)
+	public boolean hasModifier(IElementType token)
 	{
+		final NapilePsiModifierListStub stub = getStub();
+		if(stub != null)
+		{
+			return stub.hasModifier(token);
+		}
 		return getModifierNode(token) != null;
 	}
 
 	@Override
 	@Nullable
-	public ASTNode getModifierNode(NapileToken token)
+	public ASTNode getModifierNode(IElementType token)
 	{
 		ASTNode node = getNode().getFirstChildNode();
 		while(node != null)

@@ -18,14 +18,21 @@ package org.napile.compiler.lang.resolve.processors.checkers;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.Modality;
+import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileToken;
@@ -35,7 +42,6 @@ import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
@@ -197,7 +203,12 @@ public class ModifiersChecker
 				return;
 
 		for(NapileKeywordToken token : presentModifiers)
-			trace.report(Errors.INCOMPATIBLE_MODIFIERS.on(declaration.getModifierNode(token).getPsi(), presentModifiers));
+		{
+			final ASTNode modifierNode = declaration.getModifierNode(token);
+			if(modifierNode == null)
+				continue;
+			trace.report(Errors.INCOMPATIBLE_MODIFIERS.on(modifierNode.getPsi(), presentModifiers));
+		}
 	}
 
 	private void checkRedundant(@NotNull NapileDeclaration declaration, Collection<NapileKeywordToken> availableModifiers)
@@ -208,23 +219,23 @@ public class ModifiersChecker
 				presentModifiers.add(modifier);
 
 		for(NapileKeywordToken token : presentModifiers)
-			trace.report(Errors.REDUNDANT_MODIFIER.on(declaration.getModifierNode(token).getPsi()));
+		{
+			final ASTNode modifierNode = declaration.getModifierNode(token);
+			if(modifierNode == null)
+				continue;
+			trace.report(Errors.REDUNDANT_MODIFIER.on(modifierNode.getPsi()));
+		}
 	}
 
 	public void checkIllegalInThisContextModifiers(@NotNull NapileDeclaration declaration, Collection<NapileKeywordToken> illegalModifiers)
 	{
 		for(NapileKeywordToken modifier : illegalModifiers)
 			if(declaration.hasModifier(modifier))
-				trace.report(Errors.ILLEGAL_MODIFIER.on(declaration.getModifierNode(modifier).getPsi(), modifier));
-	}
-
-	@NotNull
-	public static Map<NapileKeywordToken, ASTNode> getNodesCorrespondingToModifiers(@NotNull NapileModifierList modifierList, Collection<NapileKeywordToken> possibleModifiers)
-	{
-		Map<NapileKeywordToken, ASTNode> nodes = new HashMap<NapileKeywordToken, ASTNode>(possibleModifiers.size());
-		for(NapileKeywordToken modifier : possibleModifiers)
-			if(modifierList.hasModifier(modifier))
-				nodes.put(modifier, modifierList.getModifierNode(modifier));
-		return nodes;
+			{
+				final ASTNode modifierNode = declaration.getModifierNode(modifier);
+				if(modifierNode == null)
+					continue;
+				trace.report(Errors.ILLEGAL_MODIFIER.on(modifierNode.getPsi(), modifier));
+			}
 	}
 }

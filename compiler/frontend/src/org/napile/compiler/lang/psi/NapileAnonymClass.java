@@ -100,6 +100,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 		return false;
 	}
 
+	@Nullable
 	@Override
 	public ASTNode getModifierNode(NapileToken token)
 	{

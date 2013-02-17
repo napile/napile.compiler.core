@@ -197,7 +197,7 @@ public class TypeResolver
 				@Override
 				public void visitMethodType(NapileMethodType type)
 				{
-					NapileElement[] parameters = type.getParameters();
+					NapileCallParameter[] parameters = type.getParameters();
 					Map<Name, JetType> parameterTypes = new LinkedHashMap<Name, JetType>(parameters.length);
 					int i = 1;
 					for(NapileElement parameter : parameters)
