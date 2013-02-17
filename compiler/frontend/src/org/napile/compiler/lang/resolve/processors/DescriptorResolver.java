@@ -60,7 +60,6 @@ import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.LazyValueWithDefault;
 import com.google.common.collect.Lists;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -473,16 +472,15 @@ public class DescriptorResolver
 
 		for(NapileVariableAccessor variableAccessor : variable.getAccessors())
 		{
-			PsiElement accessorElement = variableAccessor.getAccessorElement();
-			if(accessorElement == null)
+			IElementType accessorElementType = variableAccessor.getAccessorElementType();
+			if(accessorElementType == null)
 				continue;
 
-			Name name = Name.identifier(variableDescriptor.getName().getName() + AsmConstants.ANONYM_SPLITTER + accessorElement.getText());
+			Name name = Name.identifier(variableDescriptor.getName().getName() + AsmConstants.ANONYM_SPLITTER + accessorElementType.toString());
 
 			VariableAccessorDescriptorImpl variableAccessorDescriptor = new VariableAccessorDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, variableAccessor, trace), name, CallableMemberDescriptor.Kind.DECLARATION, variableDescriptor.isStatic(), variableAccessor.hasModifier(NapileTokens.NATIVE_KEYWORD), false, variableDescriptor);
 
-			IElementType e = accessorElement.getNode().getElementType();
-			if(e == NapileTokens.SET_KEYWORD)
+			if(accessorElementType == NapileTokens.SET_KEYWORD)
 			{
 				List<CallParameterDescriptor> list = Collections.<CallParameterDescriptor>singletonList(new CallParameterAsReferenceDescriptorImpl(variableAccessorDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), variableDescriptor.getType(), variableDescriptor));
 

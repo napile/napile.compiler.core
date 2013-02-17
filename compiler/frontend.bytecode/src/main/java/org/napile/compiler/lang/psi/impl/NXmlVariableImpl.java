@@ -16,6 +16,9 @@
 
 package org.napile.compiler.lang.psi.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileExpression;
@@ -40,6 +43,7 @@ import com.intellij.psi.stubs.IStubElementType;
 public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariableStub> implements NapileVariable
 {
 	private NXmlTypeReferenceImpl returnType;
+	private List<NXmlVariableAccessorImpl> accessors = new ArrayList<NXmlVariableAccessorImpl>(2);
 
 	public NXmlVariableImpl(NapilePsiVariableStub stub)
 	{
@@ -55,13 +59,24 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 
 		returnType = NXmlMirrorUtil.mirrorType(this, variable.getType());
 		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, variable.getNameIdentifier());
+		accessors.clear();
+
+		for(NapileVariableAccessor accessor : variable.getAccessors())
+		{
+			final NXmlVariableAccessorImpl variableAccessor = new NXmlVariableAccessorImpl(this);
+			variableAccessor.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(accessor));
+
+			accessors.add(variableAccessor);
+		}
+
+		setMirrors(getAccessors(),  variable.getAccessors());
 	}
 
 	@NotNull
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, returnType);
+		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, returnType, accessors);
 	}
 
 	@Nullable
@@ -88,7 +103,7 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 	@Override
 	public NapileVariableAccessor[] getAccessors()
 	{
-		return new NapileVariableAccessor[0];
+		return accessors.toArray(new NapileVariableAccessor[accessors.size()]);
 	}
 
 	@Override

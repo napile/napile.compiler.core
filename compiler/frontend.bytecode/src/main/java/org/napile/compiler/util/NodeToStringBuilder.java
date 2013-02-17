@@ -152,7 +152,7 @@ public class NodeToStringBuilder
 
 	private static void appendMethod(MethodNode methodNode, StringBuilder builder, String key, int indent)
 	{
-		if(methodNode.name.equals(MethodNode.STATIC_CONSTRUCTOR_NAME) || methodNode.name.getName().contains(AsmConstants.ANONYM_SPLITTER))
+		if(methodNode.name.getName().contains(AsmConstants.ANONYM_SPLITTER))
 			return;
 
 		appendAnnotations(methodNode, builder, indent);
@@ -161,7 +161,7 @@ public class NodeToStringBuilder
 
 		appendModifiers(methodNode.modifiers, builder);
 
-		final boolean constructor = methodNode.name.equals(MethodNode.CONSTRUCTOR_NAME);
+		final boolean constructor = methodNode.name.equals(MethodNode.CONSTRUCTOR_NAME) ||methodNode.name.equals(MethodNode.STATIC_CONSTRUCTOR_NAME);
 
 		if(constructor)
 			builder.append("this");
@@ -194,7 +194,7 @@ public class NodeToStringBuilder
 
 		builder.append("\n");
 
-		if(!ArrayUtil.contains(Modifier.ABSTRACT, methodNode.modifiers))
+		if(!ArrayUtil.contains(Modifier.ABSTRACT, methodNode.modifiers) && !ArrayUtil.contains(Modifier.NATIVE, methodNode.modifiers))
 		{
 			StringUtil.repeatSymbol(builder, '\t', indent);
 			builder.append("{\n");

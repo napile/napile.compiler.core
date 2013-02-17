@@ -27,6 +27,8 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.util.NXmlMirrorUtil;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
@@ -56,7 +58,14 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 
 		setMirrorIfPresent(getTypeParameterList(), mirror.getTypeParameterList());
 
-		setMirrors(getDeclarations(), mirror.getDeclarations());
+		try
+		{
+			setMirrors(getDeclarations(), mirror.getDeclarations());
+		}
+		catch(InvalidMirrorException e)
+		{
+			System.out.println(getContainingFile().getVirtualFile());
+		}
 
 		PsiElement t = mirror.getSuperTypesElement();
 		if(t != null)
@@ -159,5 +168,11 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 	public PsiElement[] getChildren()
 	{
 		return NXmlMirrorUtil.getAllToPsiArray(superTypeList, nameIdentifier, getDeclarations());
+	}
+
+	@Override
+	public ItemPresentation getPresentation()
+	{
+		return ItemPresentationProviders.getItemPresentation(this);
 	}
 }

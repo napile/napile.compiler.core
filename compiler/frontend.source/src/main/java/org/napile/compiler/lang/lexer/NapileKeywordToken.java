@@ -61,4 +61,10 @@ public class NapileKeywordToken extends NapileToken
 	{
 		return myIsSoft;
 	}
+
+	@Override
+	public String toString()
+	{
+		return myValue;
+	}
 }

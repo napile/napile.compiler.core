@@ -27,6 +27,7 @@ import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
@@ -43,6 +44,7 @@ public class NXmlMultiTypeImpl extends NXmlParentedElementBase implements Napile
 	@Override
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
+		NapileMultiType mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
 	}
 
 	@Override

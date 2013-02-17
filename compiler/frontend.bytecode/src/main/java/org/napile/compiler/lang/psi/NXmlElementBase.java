@@ -111,7 +111,7 @@ public abstract class NXmlElementBase extends PsiElementBase implements PsiCompi
 	public abstract void setMirror(@NotNull TreeElement element) throws InvalidMirrorException;
 
 	@Override
-	@NotNull
+	@Nullable
 	public PsiElement getMirror()
 	{
 		TreeElement mirror = myMirror;
@@ -120,6 +120,7 @@ public abstract class NXmlElementBase extends PsiElementBase implements PsiCompi
 			((NXmlFileImpl) getContainingFile()).getMirror();
 			mirror = myMirror;
 		}
+		//assert mirror != null : getClass().getName();
 		return SourceTreeToPsiMap.treeElementToPsi(mirror);
 	}
 
@@ -345,9 +346,7 @@ public abstract class NXmlElementBase extends PsiElementBase implements PsiCompi
 	{
 		if(stubs.length != mirrors.length)
 		{
-			//			throw new InvalidMirrorException(stubs, mirrors);
-			LOGGER.warn("stub:" + Arrays.toString(stubs) + "; mirror:" + Arrays.toString(mirrors));
-			return;
+			throw new InvalidMirrorException(stubs, mirrors);
 		}
 		for(int i = 0; i < stubs.length; i++)
 		{
