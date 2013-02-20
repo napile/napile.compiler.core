@@ -178,12 +178,17 @@ public class ClassCodegen extends NapileVisitorVoid
 
 		TypeNode type = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
 
+
+
 		VariableCodegen.getSetterAndGetter(variableDescriptor, variable, classNode, bindingTrace, false);
 
 		if(!variable.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
 		{
 			VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), type);
+
 			classNode.addMember(variableNode);
+
+			AnnotationCodegen.gen(bindingTrace, variableDescriptor, variableNode, classNode);
 
 			NapileExpression initializer = variable.getInitializer();
 			if(initializer != null)
@@ -214,6 +219,9 @@ public class ClassCodegen extends NapileVisitorVoid
 		TypeNode type = new TypeNode(false, new ClassTypeNode(classFqName));
 
 		VariableNode variableNode = new VariableNode(ModifierCodegen.gen(variableDescriptor), variableDescriptor.getName(), type);
+
+		AnnotationCodegen.gen(bindingTrace, variableDescriptor, variableNode, classNode);
+
 		classNode.addMember(variableNode);
 
 		VariableCodegen.getSetterAndGetter(variableDescriptor, value, classNode, bindingTrace, true);

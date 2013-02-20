@@ -82,6 +82,8 @@ public class MethodCodegen
 	{
 		MethodNode methodNode = MethodNode.constructor(ModifierCodegen.gen(methodDescriptor));
 
+		AnnotationCodegen.gen(bindingTrace, methodDescriptor, methodNode, classNode);
+
 		InstructionAdapter adapter = prepareMethodToCodegen(constructor, methodDescriptor, methodNode, bindingTrace, classNode);
 
 		genSuperCalls(adapter, constructor, bindingTrace, classNode);
@@ -94,6 +96,8 @@ public class MethodCodegen
 	public static MethodNode genMethodOrMacro(@NotNull NapileNamedMethodOrMacro method, @NotNull MethodDescriptor methodDescriptor, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull ExpressionCodegenContext gen)
 	{
 		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierCodegen.gen(methodDescriptor), methodDescriptor.getName(), TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode)) : new MethodNode(ModifierCodegen.gen(methodDescriptor), methodDescriptor.getName(), TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode));
+
+		AnnotationCodegen.gen(bindingTrace, methodDescriptor, methodNode, classNode);
 
 		InstructionAdapter adapter = prepareMethodToCodegen(method, methodDescriptor, methodNode, bindingTrace, classNode);
 
