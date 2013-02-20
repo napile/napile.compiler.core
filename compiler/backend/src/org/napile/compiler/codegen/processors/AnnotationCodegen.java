@@ -29,6 +29,7 @@ import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
+import com.intellij.util.ArrayUtil;
 
 /**
  * @author VISTALL
@@ -59,6 +60,6 @@ public class AnnotationCodegen
 
 		gen.instructs.newObject(type, callableMethod.getValueParameterTypes());
 
-		return new AnnotationNode(new CodeInfo(gen.instructs));
+		return new AnnotationNode(new CodeInfo(gen.instructs), ArrayUtil.EMPTY_STRING_ARRAY); //TODO [VISTALL]
 	}
 }

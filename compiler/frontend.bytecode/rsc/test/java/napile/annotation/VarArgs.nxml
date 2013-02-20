@@ -127,6 +127,7 @@
 				<type nullable="true">
 					<class_type name="napile.lang.Int"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="3">

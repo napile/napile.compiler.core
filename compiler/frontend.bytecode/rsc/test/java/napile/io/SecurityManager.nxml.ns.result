@@ -23,4 +23,9 @@ static class SecurityManager : napile.lang.Any
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

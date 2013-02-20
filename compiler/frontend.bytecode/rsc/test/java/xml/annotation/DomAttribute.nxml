@@ -279,6 +279,7 @@
 						</parameters>
 					</method_type>
 				</type>
+				<default-value>{value}</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="4">

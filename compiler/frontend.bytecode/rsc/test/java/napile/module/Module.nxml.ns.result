@@ -21,9 +21,6 @@ static class Module : napile.lang.Any
 	}
 
 	local native meth getExtensionPoints() : napile.lang.Array<napile.module.extension.ExtensionPoint>
-	{
-		// compiled code
-	}
 
 	static meth getBundle() : napile.resource.ResourceBundle
 	{

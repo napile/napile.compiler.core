@@ -30,4 +30,9 @@ final static class Bool : napile.lang.Any
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

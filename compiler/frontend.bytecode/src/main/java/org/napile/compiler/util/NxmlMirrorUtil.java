@@ -18,19 +18,12 @@ package org.napile.compiler.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NXmlParentedElementBase;
-import org.napile.compiler.lang.psi.NapileMethodType;
-import org.napile.compiler.lang.psi.NapileMultiType;
-import org.napile.compiler.lang.psi.NapileNullableType;
-import org.napile.compiler.lang.psi.NapileSelfType;
-import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.psi.NapileTypeElement;
-import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.NapileUserType;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.impl.NXmlIdentifierImpl;
 import org.napile.compiler.lang.psi.impl.NXmlMethodTypeImpl;
 import org.napile.compiler.lang.psi.impl.NXmlMultiTypeImpl;
@@ -48,6 +41,19 @@ import com.intellij.psi.impl.source.SourceTreeToPsiMap;
  */
 public class NXmlMirrorUtil
 {
+	private static final NXmlExpressionMirrorVisitor EXPRESSION_MIRROR_VISITOR = new NXmlExpressionMirrorVisitor();
+
+	public static NapileExpression mirrorExpression(NXmlElementBase parent, NapileExpression expression)
+	{
+		NXmlElementBase mirror = expression.accept(EXPRESSION_MIRROR_VISITOR, parent);
+		if(mirror == null)
+		{
+			throw new UnsupportedOperationException("this expression is not supported for mirroring " + expression.getClass().getName());
+		}
+		mirror.setMirror(expression);
+		return (NapileExpression) mirror;
+	}
+
 	@NotNull
 	public static PsiElement[] getAllToPsiArray(Object... arg)
 	{
@@ -65,10 +71,7 @@ public class NXmlMirrorUtil
 			}
 			else if(o instanceof PsiElement[])
 			{
-				for(PsiElement element : (PsiElement[]) o)
-				{
-					list.add(element);
-				}
+				Collections.addAll(list, (PsiElement[]) o);
 			}
 		}
 

@@ -22,4 +22,9 @@ static class CompareResult : napile.lang.Any
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

@@ -2,7 +2,7 @@ package napile.resource
 
 static class ResourceBundle : napile.lang.Any
 {
-	meth getString(val key : napile.lang.String, val arg : napile.lang.Array<napile.lang.Any>?) : napile.lang.String
+	meth getString(val key : napile.lang.String, val arg : napile.lang.Array<napile.lang.Any>? = null) : napile.lang.String
 	{
 		// compiled code
 	}

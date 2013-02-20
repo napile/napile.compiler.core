@@ -20,9 +20,6 @@ static class File : napile.lang.Any
 	}
 
 	local native meth existsImpl(val array : napile.lang.Array<napile.lang.Byte>) : napile.lang.Bool
-	{
-		// compiled code
-	}
 
 	local meth fixSlashes(val cName : napile.lang.String) : napile.lang.String
 	{

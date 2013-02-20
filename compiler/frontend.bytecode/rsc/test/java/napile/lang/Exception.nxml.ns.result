@@ -15,9 +15,6 @@ static class Exception : napile.lang.Any
 	}
 
 	local native meth generateStack() : napile.lang.Array<napile.lang.StackTraceElement>
-	{
-		// compiled code
-	}
 
 	meth printStackTrace(val b : napile.lang.StringBuilder) : napile.lang.Null
 	{
@@ -29,7 +26,7 @@ static class Exception : napile.lang.Any
 		// compiled code
 	}
 
-	final this(val message : napile.lang.String?)
+	final this(val message : napile.lang.String? = null)
 	{
 		// compiled code
 	}

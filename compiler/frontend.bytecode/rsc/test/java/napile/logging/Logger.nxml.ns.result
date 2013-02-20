@@ -18,21 +18,26 @@ abstract static class Logger : napile.lang.Any
 		// compiled code
 	}
 
-	meth info(val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+	meth info(val message : napile.lang.Any? = null, val exception : napile.lang.Exception? = null) : napile.lang.Null
 	{
 		// compiled code
 	}
 
-	meth warn(val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+	meth warn(val message : napile.lang.Any? = null, val exception : napile.lang.Exception? = null) : napile.lang.Null
 	{
 		// compiled code
 	}
 
-	meth error(val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+	meth error(val message : napile.lang.Any? = null, val exception : napile.lang.Exception? = null) : napile.lang.Null
 	{
 		// compiled code
 	}
 
-	abstract meth log(val level : napile.logging.LoggingLevel, val message : napile.lang.Any?, val exception : napile.lang.Exception?) : napile.lang.Null
+	abstract meth log(val level : napile.logging.LoggingLevel, val message : napile.lang.Any? = null, val exception : napile.lang.Exception? = null) : napile.lang.Null
+
+	static this()
+	{
+		// compiled code
+	}
 
 }

@@ -40,4 +40,9 @@ static class FileInputStream : napile.io.InputStream
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

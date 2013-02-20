@@ -188,11 +188,13 @@
 				<type nullable="true">
 					<class_type name="napile.lang.Any"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 			<parameter name="exception">
 				<type nullable="true">
 					<class_type name="napile.lang.Exception"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="4">
@@ -256,11 +258,13 @@
 				<type nullable="true">
 					<class_type name="napile.lang.Any"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 			<parameter name="exception">
 				<type nullable="true">
 					<class_type name="napile.lang.Exception"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="4">
@@ -324,11 +328,13 @@
 				<type nullable="true">
 					<class_type name="napile.lang.Any"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 			<parameter name="exception">
 				<type nullable="true">
 					<class_type name="napile.lang.Exception"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="4">
@@ -400,11 +406,13 @@
 				<type nullable="true">
 					<class_type name="napile.lang.Any"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 			<parameter name="exception">
 				<type nullable="true">
 					<class_type name="napile.lang.Exception"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="1"/>

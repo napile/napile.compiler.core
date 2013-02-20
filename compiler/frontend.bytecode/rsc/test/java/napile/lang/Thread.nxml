@@ -938,11 +938,13 @@
 				<type nullable="true">
 					<class_type name="napile.lang.String"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 			<parameter name="threadGroup">
 				<type nullable="true">
 					<class_type name="napile.lang.ThreadGroup"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 			<parameter name="target">
 				<modifiers>
@@ -957,6 +959,7 @@
 						</return_type>
 					</method_type>
 				</type>
+				<default-value>{}</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="5">

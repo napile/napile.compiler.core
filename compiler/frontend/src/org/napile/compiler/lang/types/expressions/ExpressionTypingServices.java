@@ -19,6 +19,7 @@ package org.napile.compiler.lang.types.expressions;
 import static org.napile.compiler.lang.diagnostics.Errors.TYPE_INFERENCE_ERRORS;
 import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,8 +44,8 @@ import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.processors.AnonymClassResolver;
+import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.processors.TypeResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
@@ -225,7 +226,7 @@ public class ExpressionTypingServices
 	@NotNull
 	public JetTypeInfo getBlockReturnedType(@NotNull JetScope outerScope, @NotNull NapileBlockExpression expression, @NotNull CoercionStrategy coercionStrategyForLastExpression, ExpressionTypingContext context, BindingTrace trace)
 	{
-		List<NapileElement> block = expression.getStatements();
+		NapileElement[] blocks = expression.getStatements();
 
 		DeclarationDescriptor containingDescriptor = outerScope.getContainingDeclaration();
 
@@ -233,13 +234,13 @@ public class ExpressionTypingServices
 		scope.changeLockLevel(WritableScope.LockLevel.BOTH);
 
 		JetTypeInfo r;
-		if(block.isEmpty())
+		if(blocks.length == 0)
 		{
 			r = DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), expression, context, context.dataFlowInfo);
 		}
 		else
 		{
-			r = getBlockReturnedTypeWithWritableScope(scope, block, coercionStrategyForLastExpression, context, trace);
+			r = getBlockReturnedTypeWithWritableScope(scope, Arrays.asList(blocks), coercionStrategyForLastExpression, context, trace);
 		}
 		scope.changeLockLevel(WritableScope.LockLevel.READING);
 

@@ -25,4 +25,9 @@ static class LoggingHandlerDescriptor<T : napile.logging.LoggingHandler> : napil
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

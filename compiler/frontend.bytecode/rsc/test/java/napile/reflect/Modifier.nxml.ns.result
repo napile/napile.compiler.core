@@ -61,4 +61,9 @@ static class Modifier : napile.lang.Any
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

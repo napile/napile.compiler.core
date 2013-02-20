@@ -2,7 +2,7 @@ package org.napile.vm
 
 static class VmStartupError : napile.lang.Error
 {
-	final this(val message : napile.lang.String?)
+	final this(val message : napile.lang.String? = null)
 	{
 		// compiled code
 	}

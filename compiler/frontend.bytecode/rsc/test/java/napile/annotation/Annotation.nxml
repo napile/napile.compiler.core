@@ -62,6 +62,7 @@
 						</type>
 					</type_arguments>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="3">

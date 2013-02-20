@@ -40,12 +40,17 @@ static class FileOutputStream : napile.io.OutputStream
 		// compiled code
 	}
 
-	final this(val file : napile.io.File, val append : napile.lang.Bool)
+	final this(val file : napile.io.File, val append : napile.lang.Bool = false)
 	{
 		// compiled code
 	}
 
 	final this(val fd : napile.io.FileDescriptor)
+	{
+		// compiled code
+	}
+
+	static this()
 	{
 		// compiled code
 	}

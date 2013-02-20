@@ -116,7 +116,7 @@ public class NodeToStringBuilder
 
 		appendModifiers(variableNode.modifiers, builder);
 
-		appendVariableInfo(variableNode.modifiers, variableNode.name, variableNode.returnType, builder);
+		appendVariableInfo(variableNode.modifiers, variableNode.name, variableNode.returnType, null, builder);
 
 		builder.append("\n");
 		StringUtil.repeatSymbol(builder, '\t', indent);
@@ -181,7 +181,7 @@ public class NodeToStringBuilder
 
 			final MethodParameterNode parameterNode = methodNode.parameters.get(i);
 
-			appendVariableInfo(parameterNode.modifiers, parameterNode.name, parameterNode.returnType, builder);
+			appendVariableInfo(parameterNode.modifiers, parameterNode.name, parameterNode.returnType, parameterNode.defaultValue, builder);
 		}
 		builder.append(")");
 
@@ -272,7 +272,7 @@ public class NodeToStringBuilder
 					if(i != 0)
 						a2.append(", ");
 					final MethodParameterNode parameterNode = methodTypeNode.parameters.get(i);
-					appendVariableInfo(parameterNode.modifiers, parameterNode.name, parameterNode.returnType, a2);
+					appendVariableInfo(parameterNode.modifiers, parameterNode.name, parameterNode.returnType, parameterNode.defaultValue, a2);
 				}
 				a2.append(")");
 				a2.append(" -> ");
@@ -292,7 +292,7 @@ public class NodeToStringBuilder
 
 					final VariableNode variableNode = multiTypeNode.variables.get(i);
 
-					appendVariableInfo(variableNode.modifiers, variableNode.name, variableNode.returnType, a2);
+					appendVariableInfo(variableNode.modifiers, variableNode.name, variableNode.returnType, null, a2);
 				}
 				a2.append("]");
 				return super.visitMultiTypeNode(multiTypeNode, a2);
@@ -351,7 +351,7 @@ public class NodeToStringBuilder
 		}
 	}
 
-	private static void appendVariableInfo(Modifier[] modifiers, Name name, TypeNode typeNode, StringBuilder builder)
+	private static void appendVariableInfo(Modifier[] modifiers, Name name, TypeNode typeNode, String defaultValue, StringBuilder builder)
 	{
 		if(ArrayUtil.contains(Modifier.REF, modifiers))
 			builder.append("ref ");
@@ -362,6 +362,10 @@ public class NodeToStringBuilder
 		builder.append(name);
 		builder.append(" : ");
 		appendType(typeNode, builder);
+		if(defaultValue != null)
+		{
+			builder.append(" = ").append(defaultValue);
+		}
 	}
 
 	private static void appendModifiers(Modifier[] modifiers, StringBuilder builder)

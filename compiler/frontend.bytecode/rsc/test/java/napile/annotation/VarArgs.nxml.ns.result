@@ -9,7 +9,7 @@ final static class VarArgs : napile.lang.Any
 		set
 	}
 
-	final this(val length : napile.lang.Int?)
+	final this(val length : napile.lang.Int? = null)
 	{
 		// compiled code
 	}

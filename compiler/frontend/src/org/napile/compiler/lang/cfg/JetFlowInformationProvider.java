@@ -574,7 +574,7 @@ public class JetFlowInformationProvider
 								PsiElement psiElement = element.getParent().getParent();
 								if(psiElement instanceof NapileMethod)
 								{
-									if(psiElement instanceof NapileAnonymMethodImpl)
+									if(psiElement instanceof NapileAnonymMethod)
 										return;
 									DeclarationDescriptor descriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, psiElement);
 									assert descriptor instanceof MethodDescriptor : psiElement.getText();

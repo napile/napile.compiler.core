@@ -18,4 +18,9 @@ final static class Null : napile.lang.Any
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

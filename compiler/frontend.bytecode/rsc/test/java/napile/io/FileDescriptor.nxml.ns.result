@@ -33,21 +33,17 @@ static class FileDescriptor : napile.lang.Any
 	}
 
 	local static native meth getStdInDescriptor() : napile.lang.Long
-	{
-		// compiled code
-	}
 
 	local static native meth getStdOutDescriptor() : napile.lang.Long
-	{
-		// compiled code
-	}
 
 	local static native meth getStdErrDescriptor() : napile.lang.Long
+
+	final this()
 	{
 		// compiled code
 	}
 
-	final this()
+	static this()
 	{
 		// compiled code
 	}

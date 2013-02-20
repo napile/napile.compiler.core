@@ -22,4 +22,9 @@ static class LoggingLevel : napile.lang.Any
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

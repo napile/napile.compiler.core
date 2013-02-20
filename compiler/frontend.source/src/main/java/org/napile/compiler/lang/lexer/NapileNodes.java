@@ -72,12 +72,12 @@ public interface NapileNodes
 	NapileNode SELF_TYPE = new NapileNode("SELF_TYPE", NapileSelfTypeImpl.class);
 	NapileNode NULLABLE_TYPE = new NapileNode("NULLABLE_TYPE", NapileNullableTypeImpl.class);
 
-	NapileNode NULL = new NapileNode("NULL", NapileConstantExpression.class);
-	NapileNode BOOLEAN_CONSTANT = new NapileNode("BOOLEAN_CONSTANT", NapileConstantExpression.class);
-	NapileNode FLOAT_CONSTANT = new NapileNode("FLOAT_CONSTANT", NapileConstantExpression.class);
-	NapileNode CHARACTER_CONSTANT = new NapileNode("CHARACTER_CONSTANT", NapileConstantExpression.class);
-	NapileNode STRING_CONSTANT = new NapileNode("STRING_CONSTANT", NapileConstantExpression.class);
-	NapileNode INTEGER_CONSTANT = new NapileNode("INTEGER_CONSTANT", NapileConstantExpression.class);
+	NapileNode NULL = new NapileNode("NULL", NapileConstantExpressionImpl.class);
+	NapileNode BOOLEAN_CONSTANT = new NapileNode("BOOLEAN_CONSTANT", NapileConstantExpressionImpl.class);
+	NapileNode FLOAT_CONSTANT = new NapileNode("FLOAT_CONSTANT", NapileConstantExpressionImpl.class);
+	NapileNode CHARACTER_CONSTANT = new NapileNode("CHARACTER_CONSTANT", NapileConstantExpressionImpl.class);
+	NapileNode STRING_CONSTANT = new NapileNode("STRING_CONSTANT", NapileConstantExpressionImpl.class);
+	NapileNode INTEGER_CONSTANT = new NapileNode("INTEGER_CONSTANT", NapileConstantExpressionImpl.class);
 
 	NapileNode CLASS_OF = new NapileNode("CLASS_OF", NapileClassOfExpression.class);
 	NapileNode TYPE_OF = new NapileNode("TYPE_OF", NapileTypeOfExpression.class);
@@ -100,8 +100,8 @@ public interface NapileNodes
 	NapileNode LOOP_RANGE = new NapileNode("LOOP_RANGE", NapileContainerNode.class);
 	NapileNode DEFAULT_VALUE_NODE = new NapileNode("DEFAULT_VALUE_NODE", NapileContainerNode.class);
 	NapileNode BODY = new NapileNode("BODY", NapileContainerNode.class);
-	NapileNode BLOCK = new NapileNode("BLOCK", NapileBlockExpression.class);
-	NapileNode ANONYM_METHOD_EXPRESSION = new NapileNode("ANONYM_METHOD_EXPRESSION", NapileAnonymMethodExpression.class);
+	NapileNode BLOCK = new NapileNode("BLOCK", NapileBlockExpressionImpl.class);
+	NapileNode ANONYM_METHOD_EXPRESSION = new NapileNode("ANONYM_METHOD_EXPRESSION", NapileAnonymMethodExpressionImpl.class);
 	NapileNode ANONYM_METHOD = new NapileNode("ANONYM_METHOD", NapileAnonymMethodImpl.class);
 	NapileNode REFERENCE_EXPRESSION = new NapileNode("REFERENCE_EXPRESSION", NapileSimpleNameExpressionImpl.class);
 

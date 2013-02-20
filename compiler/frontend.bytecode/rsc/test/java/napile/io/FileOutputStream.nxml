@@ -1926,6 +1926,7 @@
 				<type nullable="false">
 					<class_type name="napile.lang.Bool"/>
 				</type>
+				<default-value>false</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="4">

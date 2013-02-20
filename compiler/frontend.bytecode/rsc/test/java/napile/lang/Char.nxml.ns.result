@@ -3,39 +3,18 @@ package napile.lang
 final static class Char : napile.lang.Number
 {
 	native meth toByte() : napile.lang.Byte
-	{
-		// compiled code
-	}
 
 	native meth toShort() : napile.lang.Short
-	{
-		// compiled code
-	}
 
 	native meth toInt() : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth toLong() : napile.lang.Long
-	{
-		// compiled code
-	}
 
 	native meth toFloat() : napile.lang.Float
-	{
-		// compiled code
-	}
 
 	native meth toDouble() : napile.lang.Double
-	{
-		// compiled code
-	}
 
 	native meth equals(val o : napile.lang.Any?) : napile.lang.Bool
-	{
-		// compiled code
-	}
 
 	local final this()
 	{

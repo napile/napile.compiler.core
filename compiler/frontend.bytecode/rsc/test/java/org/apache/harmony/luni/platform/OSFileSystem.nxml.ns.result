@@ -79,9 +79,6 @@ covered static class OSFileSystem : org.apache.harmony.luni.platform.IFileSystem
 	}
 
 	native meth writeImpl(var fileDescriptor : napile.lang.Long, var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
-	{
-		// compiled code
-	}
 
 	meth ttyRead(var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
 	{
@@ -109,11 +106,13 @@ covered static class OSFileSystem : org.apache.harmony.luni.platform.IFileSystem
 	}
 
 	native meth openImpl(var fileName : napile.lang.Array<napile.lang.Byte>, var mode : napile.lang.Int) : napile.lang.Long
+
+	final this()
 	{
 		// compiled code
 	}
 
-	final this()
+	static this()
 	{
 		// compiled code
 	}

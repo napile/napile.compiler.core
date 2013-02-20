@@ -14,7 +14,7 @@ static class ThreadGroup : napile.lang.Any
 		set
 	}
 
-	final this(val name : napile.lang.String, val parent : napile.lang.ThreadGroup?)
+	final this(val name : napile.lang.String, val parent : napile.lang.ThreadGroup? = null)
 	{
 		// compiled code
 	}

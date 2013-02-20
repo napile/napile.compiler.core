@@ -21,14 +21,8 @@ final static class Int : napile.lang.Number
 	}
 
 	native meth toByte() : napile.lang.Byte
-	{
-		// compiled code
-	}
 
 	native meth toShort() : napile.lang.Short
-	{
-		// compiled code
-	}
 
 	meth toInt() : napile.lang.Int
 	{
@@ -36,131 +30,61 @@ final static class Int : napile.lang.Number
 	}
 
 	native meth toLong() : napile.lang.Long
-	{
-		// compiled code
-	}
 
 	native meth toFloat() : napile.lang.Float
-	{
-		// compiled code
-	}
 
 	native meth toDouble() : napile.lang.Double
-	{
-		// compiled code
-	}
 
 	native meth plus() : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth minus() : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth inc() : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth dec() : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth bitNot() : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth bitXor(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth bitOr(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth bitAnd(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth bitShiftLeft(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth bitShiftRight(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth bitShiftRightZ(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth plus(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth times(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth minus(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth mod(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth div(val value : napile.lang.Int) : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	native meth compareTo(val value : napile.lang.Byte) : napile.condition.CompareResult
-	{
-		// compiled code
-	}
 
 	native meth compareTo(val value : napile.lang.Short) : napile.condition.CompareResult
-	{
-		// compiled code
-	}
 
 	native meth compareTo(val value : napile.lang.Int) : napile.condition.CompareResult
-	{
-		// compiled code
-	}
 
 	native meth compareTo(val value : napile.lang.Long) : napile.condition.CompareResult
-	{
-		// compiled code
-	}
 
 	native meth equals(val o : napile.lang.Any?) : napile.lang.Bool
-	{
-		// compiled code
-	}
 
 	native meth toString() : napile.lang.String
+
+	local final this()
 	{
 		// compiled code
 	}
 
-	local final this()
+	static this()
 	{
 		// compiled code
 	}

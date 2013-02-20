@@ -130,4 +130,9 @@ abstract static class IFileSystem : napile.lang.Any
 
 	abstract meth ttyRead(var bytes : napile.lang.Array<napile.lang.Byte>, var offset : napile.lang.Int, var length : napile.lang.Int) : napile.lang.Long
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

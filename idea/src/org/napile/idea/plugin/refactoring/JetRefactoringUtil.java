@@ -18,7 +18,6 @@ package org.napile.idea.plugin.refactoring;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -32,7 +31,6 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.idea.plugin.module.Analyzer;
 import com.intellij.codeInsight.unwrap.ScopeHighlighter;
 import com.intellij.openapi.editor.Editor;
@@ -96,7 +94,7 @@ public class JetRefactoringUtil
 			return;
 		}
 		ArrayList<NapileExpression> expressions = new ArrayList<NapileExpression>();
-		while(element != null && !(element instanceof NapileBlockExpression && !(element.getParent() instanceof NapileAnonymMethodImpl)) &&
+		while(element != null && !(element instanceof NapileBlockExpression && !(element.getParent() instanceof NapileAnonymMethod)) &&
 				!(element instanceof NapileNamedMethodOrMacro) && !(element instanceof NapileClassBody))
 		{
 			if(element instanceof NapileExpression && !(element instanceof NapileStatementExpression))
@@ -226,10 +224,10 @@ public class JetRefactoringUtil
 		}
 		else if(element instanceof NapileBlockExpression)
 		{
-			List<NapileElement> statements = ((NapileBlockExpression) element).getStatements();
-			if(statements.size() == 1)
+			NapileElement[] statements = ((NapileBlockExpression) element).getStatements();
+			if(statements.length == 1)
 			{
-				NapileElement elem = statements.get(0);
+				NapileElement elem = statements[0];
 				if(elem.getText().equals(element.getText()) && elem instanceof NapileExpression)
 				{
 					return (NapileExpression) elem;

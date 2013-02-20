@@ -17,4 +17,9 @@ final static class LazyType : napile.lang.Any
 		// compiled code
 	}
 
+	static this()
+	{
+		// compiled code
+	}
+
 }

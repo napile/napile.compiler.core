@@ -31,8 +31,8 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClassExpression;
+import org.napile.compiler.lang.psi.NapileAnonymMethod;
 import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
-import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileElement;
@@ -82,7 +82,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitAnonymMethodExpression(NapileAnonymMethodExpression expression, ExpressionTypingContext context)
 	{
-		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
+		NapileAnonymMethod functionLiteral = expression.getAnonymMethod();
 		NapileBlockExpression bodyExpression = functionLiteral.getBodyExpression();
 		if(bodyExpression == null)
 			return null;
@@ -145,7 +145,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 
 	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileAnonymMethodExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)
 	{
-		NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
+		NapileAnonymMethod functionLiteral = expression.getAnonymMethod();
 
 		SimpleMethodDescriptorImpl functionDescriptor = new SimpleMethodDescriptorImpl(context.scope.getContainingDeclaration(), Collections.<AnnotationDescriptor>emptyList(), functionLiteral.getNameAsName(), CallableMemberDescriptor.Kind.DECLARATION, true, false, false);
 
@@ -157,7 +157,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		return functionDescriptor;
 	}
 
-	private List<CallParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileAnonymMethodImpl functionLiteral, AbstractMethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
+	private List<CallParameterDescriptor> createValueParameterDescriptors(ExpressionTypingContext context, NapileAnonymMethod functionLiteral, AbstractMethodDescriptorImpl functionDescriptor, boolean functionTypeExpected)
 	{
 		List<CallParameterDescriptor> parameterDescriptors = Lists.newArrayList();
 		NapileElement[] declaredValueParameters = functionLiteral.getCallParameters();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,34 +17,27 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.lexer.NapileNodes;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.ASTNode;
 
 /**
- * @author max
+ * @author VISTALL
+ * @date 15:21/19.02.13
  */
-public class NapileAnonymMethodExpression extends NapileExpressionImpl
+public interface NapileAnonymMethod extends NapileMethod
 {
-	public NapileAnonymMethodExpression(@NotNull ASTNode node)
-	{
-		super(node);
-	}
-
 	@Override
-	public void accept(@NotNull NapileVisitorVoid visitor)
-	{
-		visitor.visitAnonymMethodExpression(this);
-	}
+	NapileBlockExpression getBodyExpression();
 
-	@Override
-	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
-	{
-		return visitor.visitAnonymMethodExpression(this, data);
-	}
+	boolean hasParameterSpecification();
 
 	@NotNull
-	public NapileAnonymMethodImpl getAnonymMethod()
-	{
-		return (NapileAnonymMethodImpl) findNotNullChildByType(NapileNodes.ANONYM_METHOD);
-	}
+	ASTNode getOpenBraceNode();
+
+	@Nullable
+	@IfNotParsed
+	ASTNode getClosingBraceNode();
+
+	@Nullable
+	ASTNode getArrowNode();
 }

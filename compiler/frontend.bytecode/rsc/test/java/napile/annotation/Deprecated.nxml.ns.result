@@ -9,7 +9,7 @@ final static class Deprecated : napile.lang.Any
 		set
 	}
 
-	final this(val message : napile.lang.String?)
+	final this(val message : napile.lang.String? = null)
 	{
 		// compiled code
 	}

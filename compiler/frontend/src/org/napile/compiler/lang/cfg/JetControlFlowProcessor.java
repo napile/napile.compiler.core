@@ -687,12 +687,12 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitBlockExpression(NapileBlockExpression expression)
 		{
-			List<NapileElement> statements = expression.getStatements();
+			NapileElement[] statements = expression.getStatements();
 			for(NapileElement statement : statements)
 			{
 				value(statement, false);
 			}
-			if(statements.isEmpty())
+			if(statements.length == 0)
 			{
 				builder.readUnit(expression);
 			}
@@ -713,7 +713,7 @@ public class JetControlFlowProcessor
 		@Override
 		public void visitAnonymMethodExpression(NapileAnonymMethodExpression expression)
 		{
-			NapileAnonymMethodImpl functionLiteral = expression.getAnonymMethod();
+			NapileAnonymMethod functionLiteral = expression.getAnonymMethod();
 			processLocalDeclaration(functionLiteral);
 			builder.read(expression);
 		}

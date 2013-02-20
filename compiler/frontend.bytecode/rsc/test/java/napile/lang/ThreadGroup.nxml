@@ -168,6 +168,7 @@
 				<type nullable="true">
 					<class_type name="napile.lang.ThreadGroup"/>
 				</type>
+				<default-value>null</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="4">

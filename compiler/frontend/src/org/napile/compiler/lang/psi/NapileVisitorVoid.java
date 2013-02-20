@@ -282,7 +282,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 		visitExpression(expression);
 	}
 
-public void visitBlockExpression(NapileBlockExpression expression)
+	public void visitBlockExpression(NapileBlockExpression expression)
 	{
 		visitExpression(expression);
 	}

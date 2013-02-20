@@ -248,7 +248,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			{
 				WritableScope writableScope = ExpressionTypingUtils.newWritableScopeImpl(context, "do..while body scope");
 				conditionScope = writableScope;
-				context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(writableScope, function.getAnonymMethod().getBodyExpression().getStatements(), CoercionStrategy.NO_COERCION, context, context.trace);
+				context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(writableScope, Arrays.asList(function.getAnonymMethod().getBodyExpression().getStatements()), CoercionStrategy.NO_COERCION, context, context.trace);
 				context.trace.record(BindingContext.BLOCK, function);
 			}
 			else
@@ -263,7 +263,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			List<NapileElement> block;
 			if(body instanceof NapileBlockExpression)
 			{
-				block = ((NapileBlockExpression) body).getStatements();
+				block = Arrays.asList(((NapileBlockExpression) body).getStatements());
 			}
 			else
 			{
@@ -482,7 +482,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 
 		JetType expectedType = TypeUtils.NO_EXPECTED_TYPE;
 		NapileExpression parentDeclaration = PsiTreeUtil.getParentOfType(expression, NapileDeclaration.class);
-		if(parentDeclaration instanceof NapileAnonymMethodImpl)
+		if(parentDeclaration instanceof NapileAnonymMethod)
 		{
 			parentDeclaration = (NapileAnonymMethodExpression) parentDeclaration.getParent();
 		}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.*;
 import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
@@ -31,7 +32,7 @@ import com.intellij.util.IncorrectOperationException;
 /**
  * @author abreslav
  */
-public class NapileAnonymMethodImpl extends NapileDeclarationImpl implements NapileMethod
+public class NapileAnonymMethodImpl extends NapileDeclarationImpl implements NapileAnonymMethod
 {
 	public NapileAnonymMethodImpl(@NotNull ASTNode node)
 	{
@@ -74,6 +75,7 @@ public class NapileAnonymMethodImpl extends NapileDeclarationImpl implements Nap
 		return null;
 	}
 
+	@Override
 	public boolean hasParameterSpecification()
 	{
 		return findChildByType(NapileTokens.ARROW) != null;
@@ -129,12 +131,14 @@ public class NapileAnonymMethodImpl extends NapileDeclarationImpl implements Nap
 		return null;
 	}
 
+	@Override
 	@NotNull
 	public ASTNode getOpenBraceNode()
 	{
 		return getNode().findChildByType(NapileTokens.LBRACE);
 	}
 
+	@Override
 	@Nullable
 	@IfNotParsed
 	public ASTNode getClosingBraceNode()
@@ -142,6 +146,7 @@ public class NapileAnonymMethodImpl extends NapileDeclarationImpl implements Nap
 		return getNode().findChildByType(NapileTokens.RBRACE);
 	}
 
+	@Override
 	@Nullable
 	public ASTNode getArrowNode()
 	{

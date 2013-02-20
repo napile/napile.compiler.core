@@ -15,7 +15,7 @@ static class DomAttribute : napile.lang.Any
 		set
 	}
 
-	final this(val name : napile.lang.String, val converter : {(val arg : napile.lang.String) -> napile.lang.String})
+	final this(val name : napile.lang.String, val converter : {(val arg : napile.lang.String) -> napile.lang.String} = {value})
 	{
 		// compiled code
 	}

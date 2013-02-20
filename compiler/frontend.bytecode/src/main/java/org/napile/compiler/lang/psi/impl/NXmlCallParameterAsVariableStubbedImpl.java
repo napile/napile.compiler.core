@@ -38,8 +38,11 @@ import com.intellij.psi.stubs.IStubElementType;
  */
 public class NXmlCallParameterAsVariableStubbedImpl extends NXmlNamedDeclarationImpl<NapilePsiCallParameterAsVariableStub> implements NapileCallParameterAsVariable
 {
+	private NapileExpression defaultValue;
 	private NXmlTypeReferenceImpl returnType;
 	private boolean mutable;
+	private boolean ref;
+	private NXmlIdentifierImpl nameIdentifier;
 
 	public NXmlCallParameterAsVariableStubbedImpl(NapilePsiCallParameterAsVariableStub stub)
 	{
@@ -49,13 +52,19 @@ public class NXmlCallParameterAsVariableStubbedImpl extends NXmlNamedDeclaration
 	@Override
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
-		final NapileCallParameterAsVariable callParameterAsVariable = SourceTreeToPsiMap.treeToPsiNotNull(element);
+		final NapileCallParameterAsVariable mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
 
 		setMirrorCheckingType(element, null);
 
-		returnType = NXmlMirrorUtil.mirrorType(this, callParameterAsVariable.getTypeReference());
-		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, callParameterAsVariable.getNameIdentifier());
-		mutable = callParameterAsVariable.isMutable();
+		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getTypeReference());
+		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getNameIdentifier());
+		mutable = mirror.isMutable();
+		ref = mirror.isRef();
+		final NapileExpression defaultValue = mirror.getDefaultValue();
+		if(defaultValue != null)
+		{
+			this.defaultValue = NXmlMirrorUtil.mirrorExpression(this, defaultValue);
+		}
 	}
 
 	@NotNull
@@ -94,7 +103,7 @@ public class NXmlCallParameterAsVariableStubbedImpl extends NXmlNamedDeclaration
 	@Override
 	public NapileExpression getDefaultValue()
 	{
-		return null;
+		return defaultValue;
 	}
 
 	@Override

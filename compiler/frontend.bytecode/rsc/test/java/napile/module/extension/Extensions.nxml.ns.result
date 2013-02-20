@@ -15,9 +15,6 @@ static class Extensions : napile.lang.Any
 	}
 
 	local native meth getExtensions() : napile.lang.Array<napile.module.extension.Extension>
-	{
-		// compiled code
-	}
 
 	final this(val forId : napile.lang.String)
 	{

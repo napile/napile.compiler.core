@@ -30,7 +30,7 @@ import org.napile.compiler.lang.cfg.JetControlFlowBuilder;
 import org.napile.compiler.lang.cfg.JetControlFlowBuilderAdapter;
 import org.napile.compiler.lang.cfg.Label;
 import org.napile.compiler.lang.cfg.LoopInfo;
-import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
+import org.napile.compiler.lang.psi.NapileAnonymMethod;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
@@ -76,7 +76,7 @@ public class JetControlFlowInstructionsGenerator extends JetControlFlowBuilderAd
 	@Override
 	public void enterSubroutine(@NotNull NapileDeclaration subroutine)
 	{
-		if(builder != null && subroutine instanceof NapileAnonymMethodImpl)
+		if(builder != null && subroutine instanceof NapileAnonymMethod)
 		{
 			pushBuilder(subroutine, builder.getReturnSubroutine());
 		}

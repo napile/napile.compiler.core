@@ -2,7 +2,7 @@ package napile.lang
 
 static class NullPointerException : napile.lang.Exception
 {
-	final this(val value : napile.lang.String?)
+	final this(val value : napile.lang.String? = null)
 	{
 		// compiled code
 	}

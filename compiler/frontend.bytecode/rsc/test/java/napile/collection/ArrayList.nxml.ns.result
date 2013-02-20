@@ -44,7 +44,7 @@ static class ArrayList<E : napile.lang.Any?> : napile.collection.List<E>
 		// compiled code
 	}
 
-	final this(val predefinedSize : napile.lang.Int)
+	final this(val predefinedSize : napile.lang.Int = 10)
 	{
 		// compiled code
 	}

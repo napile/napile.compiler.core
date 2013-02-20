@@ -322,9 +322,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitConstantExpression(NapileConstantExpression expression, ExpressionTypingContext context)
 	{
-		ASTNode node = expression.getNode();
-		IElementType elementType = node.getElementType();
-		String text = node.getText();
+		IElementType elementType = expression.getElementType();
+		String text = expression.getText();
 
 		CompileTimeConstantResolver compileTimeConstantResolver = context.getCompileTimeConstantResolver();
 
@@ -358,7 +357,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		if(value instanceof ErrorValue)
 		{
 			ErrorValue errorValue = (ErrorValue) value;
-			context.trace.report(ERROR_COMPILE_TIME_VALUE.on(node.getPsi(), errorValue.getMessage()));
+			context.trace.report(ERROR_COMPILE_TIME_VALUE.on(expression, errorValue.getMessage()));
 			return JetTypeInfo.create(ExpressionTypingUtils.getDefaultType(elementType, context.scope), context.dataFlowInfo);
 		}
 		else

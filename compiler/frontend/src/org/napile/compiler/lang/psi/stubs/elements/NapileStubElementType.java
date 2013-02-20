@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi.stubs.elements;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.NapileLanguage;
-import org.napile.compiler.lang.psi.NapileAnonymMethodImpl;
+import org.napile.compiler.lang.psi.NapileAnonymMethod;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileWithExpressionInitializer;
@@ -72,7 +72,7 @@ public abstract class NapileStubElementType<StubT extends StubElement, PsiT exte
 		PsiElement psi = node.getPsi();
 
 		// Do not create stubs inside function literals
-		if(PsiTreeUtil.getParentOfType(psi, NapileAnonymMethodImpl.class) != null)
+		if(PsiTreeUtil.getParentOfType(psi, NapileAnonymMethod.class) != null)
 		{
 			return false;
 		}

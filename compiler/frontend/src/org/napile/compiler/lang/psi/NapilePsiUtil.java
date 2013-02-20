@@ -18,7 +18,6 @@ package org.napile.compiler.lang.psi;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
@@ -207,9 +206,9 @@ public class NapilePsiUtil
 				}
 			}
 		}
-		if(parent instanceof NapileAnonymMethodImpl)
+		if(parent instanceof NapileAnonymMethod)
 		{
-			NapileAnonymMethodImpl functionLiteral = (NapileAnonymMethodImpl) parent;
+			NapileAnonymMethod functionLiteral = (NapileAnonymMethod) parent;
 			if(functionLiteral.getBodyExpression() == block)
 			{
 				return parent;
@@ -239,8 +238,8 @@ public class NapilePsiUtil
 		if(!(parent instanceof NapileBlockExpression))
 			return true;
 		NapileBlockExpression block = (NapileBlockExpression) parent;
-		List<NapileElement> statements = block.getStatements();
-		if(statements.get(statements.size() - 1) == element)
+		NapileElement[] statements = block.getStatements();
+		if(statements[statements.length - 1] == element)
 		{
 			NapileExpression expression = getDirectParentOfTypeForBlock(block, NapileIfExpression.class);
 			if(expression == null)
@@ -249,7 +248,7 @@ public class NapilePsiUtil
 			}
 			if(expression == null)
 			{
-				expression = getDirectParentOfTypeForBlock(block, NapileAnonymMethodImpl.class);
+				expression = getDirectParentOfTypeForBlock(block, NapileAnonymMethod.class);
 			}
 			if(expression == null)
 			{

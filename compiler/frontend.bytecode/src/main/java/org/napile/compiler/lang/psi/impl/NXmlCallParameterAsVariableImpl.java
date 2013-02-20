@@ -21,10 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileToken;
-import org.napile.compiler.lang.psi.NXmlElementBase;
 import org.napile.compiler.lang.psi.NXmlParentedElementBase;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
-import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileTypeReference;
@@ -44,6 +42,7 @@ import com.intellij.util.IncorrectOperationException;
  */
 public class NXmlCallParameterAsVariableImpl extends NXmlParentedElementBase implements NapileCallParameterAsVariable
 {
+	private NapileExpression defaultValue;
 	private NXmlTypeReferenceImpl returnType;
 	private boolean mutable;
 	private boolean ref;
@@ -65,6 +64,11 @@ public class NXmlCallParameterAsVariableImpl extends NXmlParentedElementBase imp
 		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getNameIdentifier());
 		mutable = mirror.isMutable();
 		ref = mirror.isRef();
+		final NapileExpression defaultValue = mirror.getDefaultValue();
+		if(defaultValue != null)
+		{
+			this.defaultValue = NXmlMirrorUtil.mirrorExpression(this, defaultValue);
+		}
 	}
 
 	@Nullable
@@ -96,7 +100,7 @@ public class NXmlCallParameterAsVariableImpl extends NXmlParentedElementBase imp
 	@Override
 	public NapileExpression getDefaultValue()
 	{
-		return null;
+		return defaultValue;
 	}
 
 	@NotNull

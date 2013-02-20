@@ -36,6 +36,7 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.psi.NapileCallParameter;
 import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
@@ -81,7 +82,7 @@ public class MethodCodegen
 	{
 		MethodNode methodNode = MethodNode.constructor(ModifierCodegen.gen(methodDescriptor));
 
-		InstructionAdapter adapter = prepareMethodToCodegen(methodDescriptor, methodNode, bindingTrace, classNode);
+		InstructionAdapter adapter = prepareMethodToCodegen(constructor, methodDescriptor, methodNode, bindingTrace, classNode);
 
 		genSuperCalls(adapter, constructor, bindingTrace, classNode);
 
@@ -94,7 +95,7 @@ public class MethodCodegen
 	{
 		MethodNode methodNode = methodDescriptor.isMacro() ? new MacroNode(ModifierCodegen.gen(methodDescriptor), methodDescriptor.getName(), TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode)) : new MethodNode(ModifierCodegen.gen(methodDescriptor), methodDescriptor.getName(), TypeTransformer.toAsmType(bindingTrace, methodDescriptor.getReturnType(), classNode));
 
-		InstructionAdapter adapter = prepareMethodToCodegen(methodDescriptor, methodNode, bindingTrace, classNode);
+		InstructionAdapter adapter = prepareMethodToCodegen(method, methodDescriptor, methodNode, bindingTrace, classNode);
 
 		genReferenceParameters(method, methodDescriptor, adapter, bindingTrace, classNode);
 
@@ -109,7 +110,7 @@ public class MethodCodegen
 		return methodNode;
 	}
 
-	public static InstructionAdapter prepareMethodToCodegen(@NotNull MethodDescriptor methodDescriptor, @NotNull MethodNode methodNode, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
+	public static InstructionAdapter prepareMethodToCodegen(@NotNull NapileDeclarationWithBody declarationWithBody, @NotNull MethodDescriptor methodDescriptor, @NotNull MethodNode methodNode, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
 		InstructionAdapter instructionAdapter = new InstructionAdapter();
 		if(!methodDescriptor.isStatic())
@@ -117,8 +118,15 @@ public class MethodCodegen
 
 		TypeParameterCodegen.gen(methodDescriptor.getTypeParameters(), methodNode, bindingTrace, classNode);
 
-		for(CallParameterDescriptor declaration : methodDescriptor.getValueParameters())
-			methodNode.parameters.add(new MethodParameterNode(ModifierCodegen.gen(declaration), declaration.getName(), TypeTransformer.toAsmType(bindingTrace, declaration.getType(), classNode)));
+		final NapileCallParameter[] callParameters = declarationWithBody.getCallParameters();
+		final List<CallParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
+		for(int i = 0; i < callParameters.length; i++)
+		{
+			NapileCallParameter parameter = callParameters[i];
+			CallParameterDescriptor descriptor = valueParameters.get(i);
+
+			methodNode.parameters.add(new MethodParameterNode(ModifierCodegen.gen(descriptor), descriptor.getName(), TypeTransformer.toAsmType(bindingTrace, descriptor.getType(), classNode), ExpressionToQualifiedExpressionVisitor.convert(parameter.getDefaultValue())));
+		}
 		return instructionAdapter;
 	}
 

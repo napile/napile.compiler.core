@@ -981,6 +981,7 @@
 				<type nullable="false">
 					<class_type name="napile.lang.Int"/>
 				</type>
+				<default-value>10</default-value>
 			</parameter>
 		</parameters>
 		<code max-locals="3">

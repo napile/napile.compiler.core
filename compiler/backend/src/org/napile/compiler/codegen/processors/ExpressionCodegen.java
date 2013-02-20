@@ -222,8 +222,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	@Override
 	public StackValue visitBlockExpression(NapileBlockExpression expression, StackValue receiver)
 	{
-		List<NapileElement> statements = expression.getStatements();
-		return generateBlock(statements);
+		NapileElement[] statements = expression.getStatements();
+		return generateBlock(Arrays.asList(statements));
 	}
 
 	@Override
@@ -1077,8 +1077,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	{
 		if(exp instanceof NapileBlockExpression)
 		{
-			final List<NapileElement> statements = ((NapileBlockExpression) exp).getStatements();
-			NapileElement last = statements.size() > 0 ? statements.get(statements.size() - 1) : null;
+			final NapileElement[] statements = ((NapileBlockExpression) exp).getStatements();
+			NapileElement last = statements.length > 0 ? statements[statements.length - 1] : null;
 			return last instanceof NapileExpression ? (NapileExpression) last : exp;
 		}
 		else
@@ -1092,8 +1092,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 		if(expr instanceof NapileBlockExpression)
 		{
 			NapileBlockExpression blockExpression = (NapileBlockExpression) expr;
-			List<NapileElement> statements = blockExpression.getStatements();
-			if(statements.size() == 0 || statements.size() == 1 && isEmptyExpression(statements.get(0)))
+			NapileElement[] statements = blockExpression.getStatements();
+			if(statements.length== 0 || statements.length == 1 && isEmptyExpression(statements[0]))
 				return true;
 		}
 		return false;

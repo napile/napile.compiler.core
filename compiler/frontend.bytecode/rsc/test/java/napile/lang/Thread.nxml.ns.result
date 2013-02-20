@@ -66,11 +66,13 @@ static class Thread : napile.lang.Any
 	}
 
 	local native meth start0() : napile.lang.Null
+
+	final this(val threadName : napile.lang.String? = null, val threadGroup : napile.lang.ThreadGroup? = null, val target : {() -> napile.lang.Null} = {})
 	{
 		// compiled code
 	}
 
-	final this(val threadName : napile.lang.String?, val threadGroup : napile.lang.ThreadGroup?, val target : {() -> napile.lang.Null})
+	static this()
 	{
 		// compiled code
 	}

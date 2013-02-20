@@ -14,7 +14,7 @@ static class Button : napile.ui.Component
 		set
 	}
 
-	final this(val text : napile.lang.String)
+	final this(val text : napile.lang.String = "")
 	{
 		// compiled code
 	}

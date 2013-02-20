@@ -7,25 +7,16 @@ static class Any
 		// compiled code
 	}
 
-	static meth assert(val cond : napile.lang.Bool, val message : napile.lang.String?) : napile.lang.Null
+	static meth assert(val cond : napile.lang.Bool, val message : napile.lang.String? = null) : napile.lang.Null
 	{
 		// compiled code
 	}
 
 	native meth getClass() : napile.reflect.Class<this>
-	{
-		// compiled code
-	}
 
 	native meth getType() : napile.reflect.Type<this>
-	{
-		// compiled code
-	}
 
 	native meth hashCode() : napile.lang.Int
-	{
-		// compiled code
-	}
 
 	meth equals(val o : napile.lang.Any?) : napile.lang.Bool
 	{
@@ -33,9 +24,6 @@ static class Any
 	}
 
 	final native meth fullyEquals(val o : napile.lang.Any?) : napile.lang.Bool
-	{
-		// compiled code
-	}
 
 	heritable meth clone() : this
 	{

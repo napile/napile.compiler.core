@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
-
-import java.util.Arrays;
-import java.util.List;
+package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileBlockExpression;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileExpressionImpl;
+import org.napile.compiler.lang.psi.NapileModifiableBlockHelper;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -30,9 +33,9 @@ import com.intellij.psi.PsiModifiableCodeBlock;
 /**
  * @author max
  */
-public class NapileBlockExpression extends NapileExpressionImpl implements NapileStatementExpression, PsiModifiableCodeBlock
+public class NapileBlockExpressionImpl extends NapileExpressionImpl implements PsiModifiableCodeBlock, NapileBlockExpression
 {
-	public NapileBlockExpression(@NotNull ASTNode node)
+	public NapileBlockExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -55,12 +58,14 @@ public class NapileBlockExpression extends NapileExpressionImpl implements Napil
 		return visitor.visitBlockExpression(this, data);
 	}
 
+	@Override
 	@NotNull
-	public List<NapileElement> getStatements()
+	public NapileElement[] getStatements()
 	{
-		return Arrays.asList(findChildrenByClass(NapileElement.class));
+		return findChildrenByClass(NapileElement.class);
 	}
 
+	@Override
 	@Nullable
 	public TextRange getLastBracketRange()
 	{

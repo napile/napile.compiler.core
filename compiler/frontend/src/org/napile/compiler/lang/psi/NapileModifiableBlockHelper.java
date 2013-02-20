@@ -56,7 +56,7 @@ public final class NapileModifiableBlockHelper
 
 				return shouldChangeModificationCount(property);
 			}
-			else if(declaration instanceof NapileAnonymMethodImpl)
+			else if(declaration instanceof NapileAnonymMethod)
 			{
 				// TODO: Check return type
 				return shouldChangeModificationCount(declaration);

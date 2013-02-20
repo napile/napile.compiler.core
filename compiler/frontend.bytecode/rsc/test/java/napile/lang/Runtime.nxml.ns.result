@@ -9,11 +9,13 @@ static class Runtime : napile.lang.Any
 	}
 
 	native meth exit(val code : napile.lang.Int) : napile.lang.Null
+
+	local final this()
 	{
 		// compiled code
 	}
 
-	local final this()
+	static this()
 	{
 		// compiled code
 	}
