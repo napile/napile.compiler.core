@@ -64,7 +64,7 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 		}
 		catch(InvalidMirrorException e)
 		{
-			System.out.println(getContainingFile().getVirtualFile());
+			System.out.println("NXmlClassImpl mirroring failed: " + getContainingFile().getVirtualFile() + ", " + e.getMessage());
 		}
 
 		PsiElement t = mirror.getSuperTypesElement();
