@@ -303,7 +303,7 @@ public class CallMaker
 
 			@NotNull
 			@Override
-			public List<NapileTypeReference> getTypeArguments()
+			public List<? extends NapileTypeReference> getTypeArguments()
 			{
 				return callElement.getTypeArguments();
 			}

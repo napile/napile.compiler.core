@@ -57,6 +57,7 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 		setMirrorCheckingType(element, null);
 
 		setMirrorIfPresent(getTypeParameterList(), mirror.getTypeParameterList());
+		setMirrorIfPresent(getModifierList(),  mirror.getModifierList());
 
 		try
 		{
@@ -167,7 +168,7 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return NXmlMirrorUtil.getAllToPsiArray(superTypeList, nameIdentifier, getDeclarations());
+		return NXmlMirrorUtil.getAllToPsiArray(superTypeList, getModifierList(), nameIdentifier, getDeclarations());
 	}
 
 	@Override

@@ -761,7 +761,7 @@ public class CallResolver
 			checkUnmappedArgumentTypes(context.toBasic(), unmappedArguments);
 		}
 
-		List<NapileTypeReference> jetTypeArguments = context.call.getTypeArguments();
+		List<? extends NapileTypeReference> jetTypeArguments = context.call.getTypeArguments();
 		if(jetTypeArguments.isEmpty())
 		{
 			if(!candidate.getTypeParameters().isEmpty())
@@ -1240,7 +1240,7 @@ public class CallResolver
 		}
 	}
 
-	private void checkGenericBoundsInAFunctionCall(List<NapileTypeReference> jetTypeArguments, List<JetType> typeArguments, CallableDescriptor functionDescriptor, BindingTrace trace)
+	private void checkGenericBoundsInAFunctionCall(List<? extends NapileTypeReference> jetTypeArguments, List<JetType> typeArguments, CallableDescriptor functionDescriptor, BindingTrace trace)
 	{
 		Map<TypeConstructor, JetType> context = Maps.newHashMap();
 

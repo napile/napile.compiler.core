@@ -54,16 +54,17 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 	@Override
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
-		final NapileVariable variable = SourceTreeToPsiMap.treeToPsiNotNull(element);
+		final NapileVariable mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
 
 		setMirrorCheckingType(element, null);
+		setMirrorIfPresent(getModifierList(),  mirror.getModifierList());
 
-		returnType = NXmlMirrorUtil.mirrorType(this, variable.getType());
-		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, variable.getNameIdentifier());
-		mutable = variable.isMutable();
+		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getType());
+		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getNameIdentifier());
+		mutable = mirror.isMutable();
 		accessors.clear();
 
-		for(NapileVariableAccessor accessor : variable.getAccessors())
+		for(NapileVariableAccessor accessor : mirror.getAccessors())
 		{
 			final NXmlVariableAccessorImpl variableAccessor = new NXmlVariableAccessorImpl(this);
 			variableAccessor.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(accessor));
@@ -71,14 +72,14 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 			accessors.add(variableAccessor);
 		}
 
-		setMirrors(getAccessors(),  variable.getAccessors());
+		setMirrors(getAccessors(), mirror.getAccessors());
 	}
 
 	@NotNull
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, returnType, accessors);
+		return NXmlMirrorUtil.getAllToPsiArray(getModifierList(), nameIdentifier, returnType, accessors);
 	}
 
 	@Nullable

@@ -94,7 +94,7 @@ public class DelegatingCall implements Call
 
 	@Override
 	@NotNull
-	public List<NapileTypeReference> getTypeArguments()
+	public List<? extends NapileTypeReference> getTypeArguments()
 	{
 		return delegate.getTypeArguments();
 	}

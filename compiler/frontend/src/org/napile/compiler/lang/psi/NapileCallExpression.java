@@ -106,7 +106,7 @@ public class NapileCallExpression extends NapileExpressionImpl implements Napile
 
 	@Override
 	@NotNull
-	public List<NapileTypeReference> getTypeArguments()
+	public List<? extends NapileTypeReference> getTypeArguments()
 	{
 		NapileTypeArgumentList list = getTypeArgumentList();
 		return list != null ? list.getArguments() : Collections.<NapileTypeReference>emptyList();

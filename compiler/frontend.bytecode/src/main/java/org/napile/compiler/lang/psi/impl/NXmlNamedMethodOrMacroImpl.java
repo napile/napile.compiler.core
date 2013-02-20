@@ -53,6 +53,7 @@ public abstract class NXmlNamedMethodOrMacroImpl<S extends NamedStub> extends NX
 
 		setMirrorCheckingType(element, null);
 
+		setMirrorIfPresent(getModifierList(),  mirror.getModifierList());
 		setMirrorIfPresent(getTypeParameterList(), mirror.getTypeParameterList());
 		setMirrorIfPresent(getCallParameterList(), mirror.getCallParameterList());
 
@@ -65,7 +66,7 @@ public abstract class NXmlNamedMethodOrMacroImpl<S extends NamedStub> extends NX
 	@NotNull
 	public PsiElement[] getChildren()
 	{
-		return NXmlMirrorUtil.getAllToPsiArray(getTypeParameterList(), nameIdentifier, getCallParameterList(), returnType);
+		return NXmlMirrorUtil.getAllToPsiArray(getModifierList(), getTypeParameterList(), nameIdentifier, getCallParameterList(), returnType);
 	}
 
 	@Nullable

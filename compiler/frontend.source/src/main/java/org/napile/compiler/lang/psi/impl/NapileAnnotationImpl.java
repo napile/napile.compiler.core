@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,14 +22,15 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.*;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileAnnotation extends NapileElementImpl implements NapileCallElement
+public class NapileAnnotationImpl extends NapileElementImpl implements NapileAnnotation
 {
-	public NapileAnnotation(@NotNull ASTNode node)
+	public NapileAnnotationImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -46,19 +47,17 @@ public class NapileAnnotation extends NapileElementImpl implements NapileCallEle
 		return visitor.visitAnnotation(this, data);
 	}
 
-
+	@Override
 	@Nullable
 	@IfNotParsed
 	public NapileTypeReference getTypeReference()
 	{
 		NapileConstructorCalleeExpression calleeExpression = getCalleeExpression();
-		if(calleeExpression == null)
-		{
-			return null;
-		}
+
 		return calleeExpression.getTypeReference();
 	}
 
+	@NotNull
 	@Override
 	public NapileConstructorCalleeExpression getCalleeExpression()
 	{

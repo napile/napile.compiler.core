@@ -20,12 +20,11 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.intellij.psi.PsiElement;
 
 /**
  * @author abreslav
  */
-public interface NapileCallElement extends PsiElement
+public interface NapileCallElement extends NapileElement
 {
 	@Nullable
 	NapileExpression getCalleeExpression();
@@ -40,7 +39,7 @@ public interface NapileCallElement extends PsiElement
 	List<NapileExpression> getFunctionLiteralArguments();
 
 	@NotNull
-	List<NapileTypeReference> getTypeArguments();
+	List<? extends NapileTypeReference> getTypeArguments();
 
 	@Nullable
 	NapileTypeArgumentList getTypeArgumentList();

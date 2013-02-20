@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.NapileElementImpl;
+import org.napile.compiler.lang.psi.NapileValueArgument;
+import org.napile.compiler.lang.psi.NapileValueArgumentList;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileValueArgumentList extends NapileElementImpl
+public class NapileValueArgumentListImpl extends NapileElementImpl implements NapileValueArgumentList
 {
-	public NapileValueArgumentList(@NotNull ASTNode node)
+	public NapileValueArgumentListImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -44,6 +49,7 @@ public class NapileValueArgumentList extends NapileElementImpl
 		return visitor.visitValueArgumentList(this, data);
 	}
 
+	@Override
 	public List<NapileValueArgument> getArguments()
 	{
 		return findChildrenByType(NapileNodes.VALUE_ARGUMENT);

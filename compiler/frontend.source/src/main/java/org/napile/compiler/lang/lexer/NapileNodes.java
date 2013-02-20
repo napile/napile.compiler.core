@@ -47,7 +47,7 @@ public interface NapileNodes
 	NapileNode DELEGATION_SPECIFIER_LIST = new NapileNode("DELEGATION_SPECIFIER_LIST", NapileDelegationSpecifierList.class);
 
 	NapileNode DELEGATOR_SUPER_CALL = new NapileNode("DELEGATOR_SUPER_CALL", NapileDelegationToSuperCall.class);
-	NapileNode CONSTRUCTOR_CALLEE = new NapileNode("CONSTRUCTOR_CALLEE", NapileConstructorCalleeExpression.class);
+	NapileNode CONSTRUCTOR_CALLEE = new NapileNode("CONSTRUCTOR_CALLEE", NapileConstructorCalleeExpressionImpl.class);
 
 	IElementType CALL_PARAMETER_LIST = NapileStubElementTypes.CALL_PARAMETER_LIST;
 	IElementType CALL_PARAMETER_AS_VARIABLE = NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE;
@@ -56,12 +56,12 @@ public interface NapileNodes
 	NapileNode CLASS_BODY = new NapileNode("CLASS_BODY", NapileClassBody.class);
 	NapileNode IMPORT_DIRECTIVE = new NapileNode("IMPORT_DIRECTIVE", NapileImportDirective.class);
 	IElementType MODIFIER_LIST = NapileStubElementTypes.MODIFIER_LIST;
-	NapileNode ANNOTATION = new NapileNode("ANNOTATION", NapileAnnotation.class);
+	NapileNode ANNOTATION = new NapileNode("ANNOTATION", NapileAnnotationImpl.class);
 
 	NapileNode EXTEND_TYPE_LIST = new NapileNode("EXTEND_TYPE_LIST", NapileTypeListImpl.class);
 	NapileNode LINK_METHOD_TYPE_LIST = new NapileNode("LINK_METHOD_TYPE_LIST", NapileTypeListImpl.class);
 	NapileNode TYPE_ARGUMENT_LIST = new NapileNode("TYPE_ARGUMENT_LIST", NapileTypeArgumentListImpl.class);
-	NapileNode VALUE_ARGUMENT_LIST = new NapileNode("VALUE_ARGUMENT_LIST", NapileValueArgumentList.class);
+	NapileNode VALUE_ARGUMENT_LIST = new NapileNode("VALUE_ARGUMENT_LIST", NapileValueArgumentListImpl.class);
 	NapileNode VALUE_ARGUMENT = new NapileNode("VALUE_ARGUMENT", NapileValueArgument.class);
 	NapileNode VALUE_ARGUMENT_NAME = new NapileNode("VALUE_ARGUMENT_NAME", NapileValueArgumentName.class);
 	NapileNode TYPE_REFERENCE = new NapileNode("TYPE_REFERENCE", NapileTypeReferenceImpl.class);

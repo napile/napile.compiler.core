@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.psi.IfNotParsed;
+import org.napile.compiler.lang.psi.NapileConstructorCalleeExpression;
+import org.napile.compiler.lang.psi.NapileExpressionImpl;
+import org.napile.compiler.lang.psi.NapileReferenceExpression;
+import org.napile.compiler.lang.psi.NapileTypeElement;
+import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileUserType;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author abreslav
  */
-public class NapileConstructorCalleeExpression extends NapileExpressionImpl
+public class NapileConstructorCalleeExpressionImpl extends NapileExpressionImpl implements NapileConstructorCalleeExpression
 {
-	public NapileConstructorCalleeExpression(@NotNull ASTNode node)
+	public NapileConstructorCalleeExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
 
+	@Override
 	@Nullable
 	@IfNotParsed
 	public NapileTypeReference getTypeReference()
@@ -37,16 +45,7 @@ public class NapileConstructorCalleeExpression extends NapileExpressionImpl
 		return findChildByClass(NapileTypeReference.class);
 	}
 
-	@Nullable
-	@IfNotParsed
-	public NapileTypeElement getConstructorType()
-	{
-		NapileTypeReference typeReference = getTypeReference();
-		if(typeReference == null)
-			return null;
-		return typeReference.getTypeElement();
-	}
-
+	@Override
 	@Nullable
 	@IfNotParsed
 	@Deprecated

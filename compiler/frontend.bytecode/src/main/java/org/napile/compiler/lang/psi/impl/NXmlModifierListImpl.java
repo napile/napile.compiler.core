@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.psi.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,8 +29,10 @@ import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiModifierListStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.util.NXmlMirrorUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.tree.IElementType;
@@ -40,6 +43,8 @@ import com.intellij.psi.tree.IElementType;
  */
 public class NXmlModifierListImpl extends NXmlStubElementBase<NapilePsiModifierListStub> implements NapileModifierList
 {
+	private List<NapileAnnotation> annotations = Collections.emptyList();
+
 	public NXmlModifierListImpl(NapilePsiModifierListStub stub)
 	{
 		super(stub);
@@ -48,7 +53,19 @@ public class NXmlModifierListImpl extends NXmlStubElementBase<NapilePsiModifierL
 	@Override
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
+		final NapileModifierList mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
+
 		setMirrorCheckingType(element, null);
+
+		final List<NapileAnnotation> mirrorAnnotations = mirror.getAnnotations();
+		annotations = new ArrayList<NapileAnnotation>(mirrorAnnotations.size());
+		for(NapileAnnotation annotation : mirrorAnnotations)
+		{
+			NXmlAnnotationImpl nXmlAnnotation = new NXmlAnnotationImpl(this);
+			nXmlAnnotation.setMirror(annotation);
+
+			annotations.add(nXmlAnnotation);
+		}
 	}
 
 	@Override
@@ -67,7 +84,7 @@ public class NXmlModifierListImpl extends NXmlStubElementBase<NapilePsiModifierL
 	@Override
 	public List<NapileAnnotation> getAnnotations()
 	{
-		return Collections.emptyList();
+		return annotations;
 	}
 
 	@Override
@@ -92,6 +109,6 @@ public class NXmlModifierListImpl extends NXmlStubElementBase<NapilePsiModifierL
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return PsiElement.EMPTY_ARRAY;
+		return NXmlMirrorUtil.getAllToPsiArray(annotations);
 	}
 }
