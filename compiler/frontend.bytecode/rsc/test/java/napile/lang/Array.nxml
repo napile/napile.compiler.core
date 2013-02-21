@@ -129,6 +129,19 @@
 		</return_type>
 	</method>
 	<method name="set">
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.ImmutableTarget"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
 		<return_type>
 			<type nullable="false">
 				<this_type/>

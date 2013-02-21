@@ -65,7 +65,7 @@ public class NXmlPsiFromStubFactory implements NapilePsiFromStubFactory
 	@Override
 	public NapileEnumValue createEnumValue(NapilePsiEnumValueStub stub)
 	{
-		return null;
+		return new NXmlEnumValueImpl(stub);
 	}
 
 	@NotNull

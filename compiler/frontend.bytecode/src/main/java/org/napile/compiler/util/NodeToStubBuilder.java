@@ -34,7 +34,7 @@ import org.napile.compiler.lang.psi.stubs.*;
 import org.napile.compiler.lang.psi.stubs.elements.NapileModifierListElementType;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.util.io.StringRef;
+import com.intellij.util.ArrayUtil;
 
 /**
  * @author VISTALL
@@ -103,7 +103,7 @@ public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 		NapilePsiCallParameterListStub list = new NapilePsiCallParameterListStub(methodStub);
 		for(MethodParameterNode node : methodNode.parameters)
 		{
-			new NapilePsiCallParameterAsVariableStub(list, node.name.getName(), node.returnType.toString(), null);
+			new NapilePsiCallParameterAsVariableStub(list, node.name.getName());
 		}
 
 		acceptModifierList(methodNode, methodStub);
@@ -121,7 +121,7 @@ public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 		NapilePsiCallParameterListStub list = new NapilePsiCallParameterListStub(macroStub);
 		for(MethodParameterNode node : methodNode.parameters)
 		{
-			new NapilePsiCallParameterAsVariableStub(list, node.name.getName(), node.returnType.toString(), null);
+			new NapilePsiCallParameterAsVariableStub(list, node.name.getName());
 		}
 
 		acceptModifierList(methodNode, macroStub);
@@ -132,9 +132,18 @@ public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 	@Override
 	public Void visitVariableNode(VariableNode variableNode, StubElement a2)
 	{
-		final NapilePsiVariableStub variableStub = new NapilePsiVariableStub(a2, variableNode.name.getName(), AsmToStringUtil.typeToString(variableNode.returnType), null);
+		if(ArrayUtil.contains(Modifier.ENUM, variableNode.modifiers))
+		{
+			final NapilePsiEnumValueStub variableStub = new NapilePsiEnumValueStub(a2, variableNode.name.getName());
 
-		acceptModifierList(variableNode, variableStub);
+			acceptModifierList(variableNode, variableStub);
+		}
+		else
+		{
+			final NapilePsiVariableStub variableStub = new NapilePsiVariableStub(a2, variableNode.name.getName());
+
+			acceptModifierList(variableNode, variableStub);
+		}
 
 		return null;
 	}
@@ -164,7 +173,7 @@ public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 	@Override
 	public Void visitTypeParameter(TypeParameterNode typeParameterNode, StubElement a2)
 	{
-		NapilePsiTypeParameterStub stub = new NapilePsiTypeParameterStub(a2, typeParameterNode.name.getName(), StringRef.EMPTY_ARRAY);
+		NapilePsiTypeParameterStub stub = new NapilePsiTypeParameterStub(a2, typeParameterNode.name.getName());
 		return null;
 	}
 }

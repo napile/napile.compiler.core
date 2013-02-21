@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileDelegationSpecifierList;
+import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
+import org.napile.compiler.lang.psi.NapileElementImpl;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author max
  */
-public class NapileDelegationSpecifierList extends NapileElementImpl
+public class NapileDelegationSpecifierListImpl extends NapileElementImpl implements NapileDelegationSpecifierList
 {
-	public NapileDelegationSpecifierList(@NotNull ASTNode node)
+	public NapileDelegationSpecifierListImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -44,6 +49,7 @@ public class NapileDelegationSpecifierList extends NapileElementImpl
 		return visitor.visitDelegationSpecifierList(this, data);
 	}
 
+	@Override
 	public List<NapileDelegationToSuperCall> getDelegationSpecifiers()
 	{
 		return PsiTreeUtil.getChildrenOfTypeAsList(this, NapileDelegationToSuperCall.class);

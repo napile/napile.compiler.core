@@ -24,7 +24,6 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.util.NXmlMirrorUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceService;
@@ -53,7 +52,7 @@ public class NXmlSimpleNameExpressionImpl extends NXmlParentedElementBase implem
 
 		setMirrorCheckingType(element, null);
 
-		identifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getReferencedNameElement());
+		identifier = new NXmlIdentifierImpl(this, mirror.getReferencedNameElement());
 	}
 
 	@NotNull

@@ -20,11 +20,9 @@ import java.io.IOException;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.impl.NapileVariableImpl;
 import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IndexSink;
@@ -74,29 +72,20 @@ public class NapileVariableElementType extends NapileStubElementType<NapilePsiVa
 	@Override
 	public NapilePsiVariableStub createStub(@NotNull NapileVariable psi, StubElement parentStub)
 	{
-		NapileTypeReference typeRef = psi.getType();
-		NapileExpression expression = psi.getInitializer();
-
-
-		return new NapilePsiVariableStub(parentStub, psi.getName(), typeRef != null ? typeRef.getText() : null, expression != null ? expression.getText() : null);
+		return new NapilePsiVariableStub(parentStub, psi.getName());
 	}
 
 	@Override
 	public void serialize(NapilePsiVariableStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
-		dataStream.writeName(stub.getTypeText());
-		dataStream.writeName(stub.getInferenceBodyText());
 	}
 
 	@Override
 	public NapilePsiVariableStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
 		StringRef name = dataStream.readName();
-		StringRef typeText = dataStream.readName();
-		StringRef inferenceBodyText = dataStream.readName();
-
-		return new NapilePsiVariableStub(parentStub, name, typeText, inferenceBodyText);
+		return new NapilePsiVariableStub(parentStub, name);
 	}
 
 	@Override

@@ -35,19 +35,19 @@ public class MultiTypeEntryVariableDescriptorImpl extends VariableDescriptorImpl
 
 	protected MultiTypeEntryVariableDescriptorImpl(@Nullable VariableDescriptorImpl original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable, int index)
 	{
-		super(original, containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable);
+		super(original, containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable, false);
 		this.index = index;
 	}
 
 	public MultiTypeEntryVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable, int index)
 	{
-		super(containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable);
+		super(containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable, false);
 		this.index = index;
 	}
 
 	public MultiTypeEntryVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic, boolean mutable, int index)
 	{
-		super(containingDeclaration, annotations, modality, visibility, expectedThisObject, name, outType, kind, isStatic, mutable);
+		super(containingDeclaration, annotations, modality, visibility, expectedThisObject, name, outType, kind, isStatic, mutable, false);
 		this.index = index;
 	}
 

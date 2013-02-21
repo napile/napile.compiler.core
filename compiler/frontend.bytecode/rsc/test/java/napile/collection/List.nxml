@@ -29,6 +29,19 @@
 		<modifiers>
 			<abstract/>
 		</modifiers>
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.ImmutableTarget"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
 		<return_type>
 			<type nullable="false">
 				<class_type name="napile.lang.Bool"/>
@@ -47,6 +60,19 @@
 		<modifiers>
 			<abstract/>
 		</modifiers>
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.ImmutableTarget"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
 		<return_type>
 			<type nullable="false">
 				<class_type name="napile.lang.Null"/>

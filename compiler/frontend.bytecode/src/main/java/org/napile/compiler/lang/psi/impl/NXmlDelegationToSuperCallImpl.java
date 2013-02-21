@@ -1,3 +1,19 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.napile.compiler.lang.psi.impl;
 
 import java.util.Collections;
@@ -13,34 +29,47 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 19:29/20.02.13
+ * @date 16:27/21.02.13
  */
-public class NXmlAnnotationImpl extends NXmlParentedElementBase implements NapileAnnotation
+public class NXmlDelegationToSuperCallImpl extends NXmlParentedElementBase implements NapileDelegationToSuperCall
 {
 	private NXmlConstructorCalleeExpressionImpl calleeExpression;
 
-	public NXmlAnnotationImpl(PsiElement parent)
+	public NXmlDelegationToSuperCallImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
-		NapileAnnotation mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
+		NapileDelegationToSuperCall mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
 
 		setMirrorCheckingType(element, null);
 
 		calleeExpression = new NXmlConstructorCalleeExpressionImpl(this, mirror.getCalleeExpression());
 	}
 
-	@Nullable
 	@Override
 	public NapileTypeReference getTypeReference()
 	{
-		NapileConstructorCalleeExpression calleeExpression = getCalleeExpression();
+		return getCalleeExpression().getTypeReference();
+	}
 
-		return calleeExpression.getTypeReference();
+	@Override
+	@Nullable
+	public NapileUserType getTypeAsUserType()
+	{
+		final NapileTypeReference reference = getTypeReference();
+		if(reference != null)
+		{
+			final NapileTypeElement element = reference.getTypeElement();
+			if(element instanceof NapileUserType)
+			{
+				return ((NapileUserType) element);
+			}
+		}
+		return null;
 	}
 
 	@NotNull
@@ -75,7 +104,7 @@ public class NXmlAnnotationImpl extends NXmlParentedElementBase implements Napil
 	@Override
 	public List<? extends NapileTypeReference> getTypeArguments()
 	{
-		return getTypeReference().getTypeElement().getTypeArguments();
+		return Collections.emptyList();
 	}
 
 	@Nullable
@@ -88,13 +117,13 @@ public class NXmlAnnotationImpl extends NXmlParentedElementBase implements Napil
 	@Override
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
-		visitor.visitAnnotation(this);
+		visitor.visitDelegationToSuperCallSpecifier(this);
 	}
 
 	@Override
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
-		return visitor.visitAnnotation(this, data);
+		return visitor.visitDelegationToSuperCallSpecifier(this, data);
 	}
 
 	@NotNull

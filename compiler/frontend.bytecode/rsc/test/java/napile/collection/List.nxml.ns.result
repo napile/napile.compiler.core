@@ -2,8 +2,10 @@ package napile.collection
 
 abstract static class List<E : napile.lang.Any?> : napile.collection.Collection<E>
 {
+	@napile.annotation.ImmutableTarget
 	abstract meth add(val e : E) : napile.lang.Bool
 
+	@napile.annotation.ImmutableTarget
 	abstract meth set(val index : napile.lang.Int, val e : E) : napile.lang.Null
 
 	abstract meth get(val index : napile.lang.Int) : E

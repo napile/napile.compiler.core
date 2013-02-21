@@ -59,7 +59,7 @@ public abstract class NXmlNamedMethodOrMacroImpl<S extends NamedStub> extends NX
 
 		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getReturnTypeRef());
 
-		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getNameIdentifier());
+		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 	}
 
 	@Override

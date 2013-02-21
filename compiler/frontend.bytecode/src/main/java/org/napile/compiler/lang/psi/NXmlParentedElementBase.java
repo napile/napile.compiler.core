@@ -26,6 +26,14 @@ public abstract class NXmlParentedElementBase extends NXmlElementBase
 {
 	private final PsiElement parent;
 
+	public NXmlParentedElementBase(PsiElement parent, PsiElement mirror)
+	{
+		this(parent);
+
+		if(mirror != null)
+			setMirror(mirror);
+	}
+
 	public NXmlParentedElementBase(PsiElement parent)
 	{
 		this.parent = parent;

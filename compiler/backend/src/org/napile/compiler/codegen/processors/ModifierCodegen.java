@@ -64,6 +64,8 @@ public class ModifierCodegen
 		List<Modifier> list = new ArrayList<Modifier>(Arrays.asList(gen((DeclarationDescriptorWithVisibility) variableDescriptor)));
 		if(variableDescriptor.isMutable())
 			list.add(Modifier.MUTABLE);
+		if(variableDescriptor.isEnumValue())
+			list.add(Modifier.ENUM);
 
 		return list.isEmpty() ? Modifier.EMPTY : list.toArray(new Modifier[list.size()]);
 	}

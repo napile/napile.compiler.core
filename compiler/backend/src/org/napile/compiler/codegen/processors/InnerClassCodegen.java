@@ -110,7 +110,7 @@ public class InnerClassCodegen
 			constructorNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, variableNode.name, variableNode.returnType));
 
 			// create getter & setter
-			VariableDescriptorImpl varDesc = new VariableDescriptorImpl(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibility.PUBLIC, variableNode.name, CallableMemberDescriptor.Kind.DECLARATION, false, false);
+			VariableDescriptorImpl varDesc = new VariableDescriptorImpl(classDescriptor, Collections.<AnnotationDescriptor>emptyList(), Modality.FINAL, Visibility.PUBLIC, variableNode.name, CallableMemberDescriptor.Kind.DECLARATION, false, false, false);
 			varDesc.setType(classDescriptor.getDefaultType(), Collections.<TypeParameterDescriptor>emptyList(), ReceiverDescriptor.NO_RECEIVER);
 
 			VariableCodegen.getSetterAndGetter(varDesc, null, anonymClassNode, gen.bindingTrace, false);

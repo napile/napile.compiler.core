@@ -145,4 +145,10 @@ public abstract class AbstractVariableDescriptorImpl extends DeclarationDescript
 	{
 		return getType();
 	}
+
+	@Override
+	public boolean isEnumValue()
+	{
+		return false;
+	}
 }

@@ -14,6 +14,7 @@ static class ArrayList<E : napile.lang.Any?> : napile.collection.List<E>
 		set
 	}
 
+	@napile.annotation.ImmutableTarget
 	meth add(val e : E) : napile.lang.Bool
 	{
 		// compiled code

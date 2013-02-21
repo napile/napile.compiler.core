@@ -24,6 +24,7 @@ static class ListIterator<E : napile.lang.Any?> : napile.collection.Iterator<E>
 		// compiled code
 	}
 
+	@napile.annotation.ImmutableTarget
 	meth remove() : napile.lang.Null
 	{
 		// compiled code

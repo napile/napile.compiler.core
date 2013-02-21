@@ -44,9 +44,9 @@ public interface NapileNodes
 	IElementType TYPE_PARAMETER_LIST = NapileStubElementTypes.TYPE_PARAMETER_LIST;
 	IElementType TYPE_PARAMETER = NapileStubElementTypes.TYPE_PARAMETER;
 
-	NapileNode DELEGATION_SPECIFIER_LIST = new NapileNode("DELEGATION_SPECIFIER_LIST", NapileDelegationSpecifierList.class);
+	NapileNode DELEGATION_SPECIFIER_LIST = new NapileNode("DELEGATION_SPECIFIER_LIST", NapileDelegationSpecifierListImpl.class);
 
-	NapileNode DELEGATOR_SUPER_CALL = new NapileNode("DELEGATOR_SUPER_CALL", NapileDelegationToSuperCall.class);
+	NapileNode DELEGATOR_SUPER_CALL = new NapileNode("DELEGATOR_SUPER_CALL", NapileDelegationToSuperCallImpl.class);
 	NapileNode CONSTRUCTOR_CALLEE = new NapileNode("CONSTRUCTOR_CALLEE", NapileConstructorCalleeExpressionImpl.class);
 
 	IElementType CALL_PARAMETER_LIST = NapileStubElementTypes.CALL_PARAMETER_LIST;

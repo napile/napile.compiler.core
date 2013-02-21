@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.descriptors;
+package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.TypeSubstitutor;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * @author abreslav
+ * @author VISTALL
+ * @date 15:02/21.02.13
  */
-public interface VariableDescriptor extends CallableMemberDescriptor
+public interface NapileDelegationToSuperCall extends NapileCallElement
 {
-	boolean isMutable();
+	NapileTypeReference getTypeReference();
 
-	boolean isEnumValue();
-
-	@NotNull
-	JetType getType();
+	@Nullable
+	NapileUserType getTypeAsUserType();
 
 	@Override
 	@NotNull
-	DeclarationDescriptor getContainingDeclaration();
-
-	@Override
-	VariableDescriptor substitute(TypeSubstitutor substitutor);
+	NapileConstructorCalleeExpression getCalleeExpression();
 }

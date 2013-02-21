@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.napile.asm.AsmConstants;
 import org.napile.asm.Modifier;
+import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.AbstractMemberNode;
@@ -46,6 +47,8 @@ import com.intellij.util.ArrayUtil;
 /**
  * @author VISTALL
  * @date 17:52/15.02.13
+ *
+ * TODO [VISTALL] rework to implements NodeVisitor
  */
 public class NodeToStringBuilder
 {
@@ -116,38 +119,78 @@ public class NodeToStringBuilder
 
 		appendModifiers(variableNode.modifiers, builder);
 
-		appendVariableInfo(variableNode.modifiers, variableNode.name, variableNode.returnType, null, builder);
-
-		builder.append("\n");
-		StringUtil.repeatSymbol(builder, '\t', indent);
-
-		builder.append("{\n");
-
-		for(AbstractMemberNode<?> memberNode : classNode.getMembers())
+		if(ArrayUtil.contains(Modifier.ENUM, variableNode.modifiers))
 		{
-			if(memberNode instanceof MethodNode)
+			builder.append("val ").append(variableNode.name);
+
+			ClassTypeNode t = (ClassTypeNode)variableNode.returnType.typeConstructorNode;
+
+			ClassNode targetClass = null;
+			for(AbstractMemberNode<?> memberNode : classNode.getMembers())
 			{
-				MethodNode methodNode = (MethodNode) memberNode;
-
-				String name = methodNode.name.getName();
-
-				String methodStartName = variableNode.name + "$";
-				if(name.startsWith(methodStartName))
+				if(memberNode instanceof ClassNode && ((ClassNode) memberNode).name.equals(t.className))
 				{
-					StringUtil.repeatSymbol(builder, '\t', indent + 1);
+					targetClass = (ClassNode) memberNode;
+					break;
+				}
+			}
 
-					appendModifiers(methodNode.modifiers, builder);
+			builder.append(" : ");
+			if(targetClass == null)
+			{
+				// error in bytecode
+				builder.append(NapileLangPackage.ANY);
+			}
+			else
+			{
+				final List<TypeNode> supers = targetClass.supers;
+				for(int i = 0; i < supers.size(); i++)
+				{
+					if(i != 0)
+						builder.append(" & ");
 
-					builder.append(name.substring(methodStartName.length(), name.length()));
-
-					builder.append("\n");
+					TypeNode typeNode = supers.get(i);
+					appendType(typeNode, builder);
+					builder.append("()");
 				}
 			}
 		}
+		else
+		{
+			appendVariableInfo(variableNode.modifiers, variableNode.name, variableNode.returnType, null, builder);
 
-		StringUtil.repeatSymbol(builder, '\t', indent);
+			builder.append("\n");
+			StringUtil.repeatSymbol(builder, '\t', indent);
 
-		builder.append("}\n\n");
+			builder.append("{\n");
+
+			for(AbstractMemberNode<?> memberNode : classNode.getMembers())
+			{
+				if(memberNode instanceof MethodNode)
+				{
+					MethodNode methodNode = (MethodNode) memberNode;
+
+					String name = methodNode.name.getName();
+
+					String methodStartName = variableNode.name + "$";
+					if(name.startsWith(methodStartName))
+					{
+						StringUtil.repeatSymbol(builder, '\t', indent + 1);
+
+						appendModifiers(methodNode.modifiers, builder);
+
+						builder.append(name.substring(methodStartName.length(), name.length()));
+
+						builder.append("\n");
+					}
+				}
+			}
+
+			StringUtil.repeatSymbol(builder, '\t', indent);
+
+			builder.append("}");
+		}
+		builder.append("\n\n");
 	}
 
 	private static void appendMethod(MethodNode methodNode, StringBuilder builder, String key, int indent)

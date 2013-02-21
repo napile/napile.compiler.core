@@ -22,45 +22,46 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.stubs.NapilePsiEnumValueStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.util.NXmlMirrorUtil;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.SourceTreeToPsiMap;
+import com.intellij.psi.impl.source.tree.TreeElement;
+import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
- * @date 21:04/08.01.13
+ * @date 14:34/21.02.13
  */
-public class NapileEnumValueImpl extends NapileTypeParameterListOwnerStub<NapilePsiEnumValueStub> implements NapileEnumValue
+public class NXmlEnumValueImpl extends NXmlNamedDeclarationImpl<NapilePsiEnumValueStub> implements NapileEnumValue
 {
-	public NapileEnumValueImpl(@NotNull NapilePsiEnumValueStub stub)
-	{
-		super(stub, NapileStubElementTypes.ENUM_VALUE);
-	}
+	private NapileDelegationSpecifierList delegationSpecifierList;
+	private NXmlIdentifierImpl identifier;
 
-	public NapileEnumValueImpl(@NotNull ASTNode node)
+	public NXmlEnumValueImpl(NapilePsiEnumValueStub stub)
 	{
-		super(node);
-	}
-
-	@Override
-	public void accept(@NotNull NapileVisitorVoid visitor)
-	{
-		visitor.visitEnumValue(this);
+		super(stub);
 	}
 
 	@Override
-	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
+	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
-		return visitor.visitEnumValue(this, data);
+		NapileEnumValue mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
+
+		setMirrorCheckingType(element, null);
+
+		delegationSpecifierList = new NXmlDelegationSpecifierListImpl(this, mirror.getDelegationSpecifierList());
+		identifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 	}
 
-	@Override
 	@Nullable
+	@Override
 	public NapileDelegationSpecifierList getDelegationSpecifierList()
 	{
-		return (NapileDelegationSpecifierList) findChildByType(NapileNodes.DELEGATION_SPECIFIER_LIST);
+		return delegationSpecifierList;
 	}
 
 	@NotNull
@@ -73,7 +74,7 @@ public class NapileEnumValueImpl extends NapileTypeParameterListOwnerStub<Napile
 
 	@NotNull
 	@Override
-	public List<NapileTypeReference> getSuperTypes()
+	public List<? extends NapileTypeReference> getSuperTypes()
 	{
 		List<NapileDelegationToSuperCall> specifiers = getDelegationSpecifiers();
 		List<NapileTypeReference> list = new ArrayList<NapileTypeReference>(specifiers.size());
@@ -86,7 +87,7 @@ public class NapileEnumValueImpl extends NapileTypeParameterListOwnerStub<Napile
 	@Override
 	public NapileElement getSuperTypesElement()
 	{
-		return getDelegationSpecifierList();
+		return null;
 	}
 
 	@Nullable
@@ -118,8 +119,54 @@ public class NapileEnumValueImpl extends NapileTypeParameterListOwnerStub<Napile
 
 	@Nullable
 	@Override
+	public NapileTypeParameterList getTypeParameterList()
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public NapileTypeParameter[] getTypeParameters()
+	{
+		return NapileTypeParameter.EMPTY_ARRAY;
+	}
+
+	@Override
+	public void accept(@NotNull NapileVisitorVoid visitor)
+	{
+		visitor.visitEnumValue(this);
+	}
+
+	@Override
+	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
+	{
+		return visitor.visitEnumValue(this, data);
+	}
+
+	@Nullable
+	@Override
 	public NapileExpression getInitializer()
 	{
 		return null;
+	}
+
+	@Override
+	public IStubElementType getElementType()
+	{
+		return NapileStubElementTypes.ENUM_VALUE;
+	}
+
+	@NotNull
+	@Override
+	public PsiElement[] getChildren()
+	{
+		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, delegationSpecifierList);
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getNameIdentifier()
+	{
+		return identifier;
 	}
 }

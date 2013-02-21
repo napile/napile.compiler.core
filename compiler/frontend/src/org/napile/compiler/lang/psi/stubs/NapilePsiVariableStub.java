@@ -30,31 +30,16 @@ public class NapilePsiVariableStub extends StubBase<NapileVariable> implements N
 {
 	private final StringRef name;
 
-	private final StringRef typeText;
-	private final StringRef inferenceBodyText;
-
-	public NapilePsiVariableStub(StubElement parent, StringRef name, StringRef typeText, StringRef inferenceBodyText)
+	public NapilePsiVariableStub(StubElement parent, StringRef name)
 	{
 		super(parent, NapileStubElementTypes.VARIABLE);
 
 		this.name = name;
-		this.typeText = typeText;
-		this.inferenceBodyText = inferenceBodyText;
 	}
 
-	public NapilePsiVariableStub(StubElement parent, String name, String typeText, String inferenceBodyText)
+	public NapilePsiVariableStub(StubElement parent, String name)
 	{
-		this(parent, StringRef.fromString(name), StringRef.fromString(typeText), StringRef.fromString(inferenceBodyText));
-	}
-
-	public String getTypeText()
-	{
-		return StringRef.toString(typeText);
-	}
-
-	public String getInferenceBodyText()
-	{
-		return StringRef.toString(inferenceBodyText);
+		this(parent, StringRef.fromString(name));
 	}
 
 	@Override
@@ -70,9 +55,6 @@ public class NapilePsiVariableStub extends StubBase<NapileVariable> implements N
 
 		builder.append("NapilePsiVariableStub[");
 		builder.append("name=").append(getName());
-		builder.append(" typeText=").append(getTypeText());
-		builder.append(" bodyText=").append(getInferenceBodyText());
-
 		builder.append("]");
 
 		return builder.toString();

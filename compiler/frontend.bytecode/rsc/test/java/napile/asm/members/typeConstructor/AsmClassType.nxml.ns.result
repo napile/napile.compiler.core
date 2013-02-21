@@ -2,6 +2,7 @@ package napile.asm.members.typeConstructor
 
 static class AsmClassType : napile.asm.members.AsmTypeConstructor
 {
+	@napile.annotation.Equality
 	val qualifiedName : napile.lang.String
 	{
 		get

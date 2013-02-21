@@ -11,6 +11,7 @@
 	</extends>
 	<variable name="INFO">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -21,6 +22,7 @@
 	</variable>
 	<method name="INFO$get">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -70,6 +72,7 @@
 	</class>
 	<variable name="WARN">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -80,6 +83,7 @@
 	</variable>
 	<method name="WARN$get">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -129,6 +133,7 @@
 	</class>
 	<variable name="ERROR">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -139,6 +144,7 @@
 	</variable>
 	<method name="ERROR$get">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>

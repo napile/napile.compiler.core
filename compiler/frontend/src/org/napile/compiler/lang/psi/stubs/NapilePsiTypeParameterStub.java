@@ -16,13 +16,11 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
-import com.intellij.openapi.util.text.StringUtil;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
 import com.intellij.psi.stubs.StubBase;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.util.Function;
 import com.intellij.util.io.StringRef;
 
 /**
@@ -31,24 +29,17 @@ import com.intellij.util.io.StringRef;
 public class NapilePsiTypeParameterStub extends StubBase<NapileTypeParameter> implements NamedStub<NapileTypeParameter>
 {
 	private final StringRef name;
-	private final StringRef[] extendBoundTypeText;
 
-	public NapilePsiTypeParameterStub(final StubElement parent, StringRef name, StringRef[] extendBoundTypeText)
+	public NapilePsiTypeParameterStub(final StubElement parent, StringRef name)
 	{
 		super(parent, NapileStubElementTypes.TYPE_PARAMETER);
 
 		this.name = name;
-		this.extendBoundTypeText = extendBoundTypeText;
 	}
 
-	public NapilePsiTypeParameterStub(final StubElement parent, String name, StringRef[] extendBoundTypeText)
+	public NapilePsiTypeParameterStub(final StubElement parent, String name)
 	{
-		this(parent, StringRef.fromString(name), extendBoundTypeText);
-	}
-
-	public StringRef[] getExtendBoundTypeText()
-	{
-		return extendBoundTypeText;
+		this(parent, StringRef.fromString(name));
 	}
 
 	@Override
@@ -64,14 +55,6 @@ public class NapilePsiTypeParameterStub extends StubBase<NapileTypeParameter> im
 		builder.append("NapilePsiTypeParameterStub[");
 
 		builder.append("name=").append(getName());
-		builder.append(" extendText=").append(StringUtil.join(extendBoundTypeText, new Function<StringRef, String>()
-		{
-			@Override
-			public String fun(StringRef stringRef)
-			{
-				return stringRef.getString();
-			}
-		}, ","));
 
 		builder.append("]");
 

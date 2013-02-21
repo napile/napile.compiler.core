@@ -21,9 +21,9 @@ public class NXmlConstructorCalleeExpressionImpl extends NXmlParentedElementBase
 {
 	private NapileTypeReference typeReference;
 
-	public NXmlConstructorCalleeExpressionImpl(PsiElement parent)
+	public NXmlConstructorCalleeExpressionImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

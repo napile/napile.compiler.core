@@ -11,6 +11,7 @@
 	</extends>
 	<variable name="GREATER">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -21,6 +22,7 @@
 	</variable>
 	<method name="GREATER$get">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -70,6 +72,7 @@
 	</class>
 	<variable name="EQUAL">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -80,6 +83,7 @@
 	</variable>
 	<method name="EQUAL$get">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -129,6 +133,7 @@
 	</class>
 	<variable name="LOWER">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -139,6 +144,7 @@
 	</variable>
 	<method name="LOWER$get">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>

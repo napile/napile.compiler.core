@@ -54,7 +54,7 @@ public class NXmlTypeParameterImpl extends NXmlNamedDeclarationImpl<NapilePsiTyp
 
 		setMirrorCheckingType(element, null);
 
-		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getNameIdentifier());
+		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 		superTypes = NXmlMirrorUtil.mirrorTypes(this, mirror.getSuperTypes());
 	}
 

@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.NamedStub;
@@ -31,37 +30,21 @@ public class NapilePsiCallParameterAsVariableStub extends StubBase<NapileCallPar
 {
 	private final StringRef name;
 
-	private final StringRef typeText;
-	private final StringRef defaultValueText;
-
-	public NapilePsiCallParameterAsVariableStub(StubElement parent, StringRef name, StringRef typeText, StringRef defaultValueText)
+	public NapilePsiCallParameterAsVariableStub(StubElement parent, StringRef name)
 	{
 		super(parent, NapileStubElementTypes.CALL_PARAMETER_AS_VARIABLE);
 		this.name = name;
-		this.typeText = typeText;
-		this.defaultValueText = defaultValueText;
 	}
 
-	public NapilePsiCallParameterAsVariableStub(StubElement parent, String name, String typeText, String defaultValueText)
+	public NapilePsiCallParameterAsVariableStub(StubElement parent, String name)
 	{
-		this(parent, StringRef.fromString(name), StringRef.fromString(typeText), StringRef.fromString(defaultValueText));
+		this(parent, StringRef.fromString(name));
 	}
 
 	@Override
 	public String getName()
 	{
 		return StringRef.toString(name);
-	}
-
-	@Nullable
-	public String getTypeText()
-	{
-		return StringRef.toString(typeText);
-	}
-
-	public String getDefaultValueText()
-	{
-		return StringRef.toString(defaultValueText);
 	}
 
 	@Override
@@ -73,9 +56,6 @@ public class NapilePsiCallParameterAsVariableStub extends StubBase<NapileCallPar
 		builder.append("var ");
 
 		builder.append("name=").append(getName());
-		builder.append(" typeText=").append(getTypeText());
-		builder.append(" defaultValue=").append(getDefaultValueText());
-
 		builder.append("]");
 
 		return builder.toString();

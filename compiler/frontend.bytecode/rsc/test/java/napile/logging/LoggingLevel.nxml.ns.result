@@ -2,20 +2,11 @@ package napile.logging
 
 static class LoggingLevel : napile.lang.Any
 {
-	static val INFO : napile.logging.LoggingLevel$INFO
-	{
-		static get
-	}
+	static enum val INFO : napile.logging.LoggingLevel()
 
-	static val WARN : napile.logging.LoggingLevel$WARN
-	{
-		static get
-	}
+	static enum val WARN : napile.logging.LoggingLevel()
 
-	static val ERROR : napile.logging.LoggingLevel$ERROR
-	{
-		static get
-	}
+	static enum val ERROR : napile.logging.LoggingLevel()
 
 	local final this()
 	{

@@ -24,7 +24,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.impl.NXmlIdentifierImpl;
 import org.napile.compiler.lang.psi.impl.NXmlMethodTypeImpl;
 import org.napile.compiler.lang.psi.impl.NXmlMultiTypeImpl;
 import org.napile.compiler.lang.psi.impl.NXmlNullableTypeImpl;
@@ -85,14 +84,6 @@ public class NXmlMirrorUtil
 			return null;
 		NXmlSimpleNameExpressionImpl e = new NXmlSimpleNameExpressionImpl(parent);
 		e.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(expression));
-		return e;
-	}
-
-	@Nullable
-	public static NXmlIdentifierImpl mirrorIdentifier(PsiElement parent, @NotNull PsiElement name)
-	{
-		NXmlIdentifierImpl e = new NXmlIdentifierImpl(parent);
-		e.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(name));
 		return e;
 	}
 

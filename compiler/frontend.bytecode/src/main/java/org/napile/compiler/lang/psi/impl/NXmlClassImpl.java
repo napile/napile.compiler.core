@@ -75,7 +75,7 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 			superTypeList.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(t));
 		}
 
-		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getNameIdentifier());
+		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 	}
 
 	@Nullable

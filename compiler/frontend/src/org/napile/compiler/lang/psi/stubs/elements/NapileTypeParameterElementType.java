@@ -17,20 +17,17 @@
 package org.napile.compiler.lang.psi.stubs.elements;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.impl.NapileTypeParameterImpl;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.stubs.NapilePsiTypeParameterStub;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import com.intellij.util.io.StringRef;
 
 /**
  * @author Nikolay Krasko
@@ -57,35 +54,19 @@ public class NapileTypeParameterElementType extends NapileStubElementType<Napile
 	@Override
 	public NapilePsiTypeParameterStub createStub(@NotNull NapileTypeParameter psi, StubElement parentStub)
 	{
-		List<? extends NapileTypeReference> extendsBound = psi.getSuperTypes();
-		StringRef[] stringRefs = StringRef.createArray(extendsBound.size());
-		for(int i = 0; i < extendsBound.size(); i++)
-			stringRefs[i] = StringRef.fromString(extendsBound.get(i).getText());
-
-		return new NapilePsiTypeParameterStub(parentStub, psi.getName(), stringRefs);
+		return new NapilePsiTypeParameterStub(parentStub, psi.getName());
 	}
 
 	@Override
 	public void serialize(NapilePsiTypeParameterStub stub, StubOutputStream dataStream) throws IOException
 	{
 		dataStream.writeName(stub.getName());
-		StringRef[] refs = stub.getExtendBoundTypeText();
-		dataStream.writeInt(refs.length);
-		for(StringRef stringRef : refs)
-			dataStream.writeName(stringRef.getString());
 	}
 
 	@Override
 	public NapilePsiTypeParameterStub deserialize(StubInputStream dataStream, StubElement parentStub) throws IOException
 	{
-		StringRef name = dataStream.readName();
-		int count = dataStream.readInt();
-
-		StringRef[] refs = new StringRef[count];
-		for(int i = 0; i < count; i++)
-			refs[i] = dataStream.readName();
-
-		return new NapilePsiTypeParameterStub(parentStub, name, refs);
+		return new NapilePsiTypeParameterStub(parentStub, dataStream.readName());
 	}
 
 	@Override

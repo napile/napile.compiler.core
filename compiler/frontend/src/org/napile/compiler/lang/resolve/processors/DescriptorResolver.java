@@ -409,7 +409,7 @@ public class DescriptorResolver
 	@NotNull
 	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable variable, BindingTrace trace)
 	{
-		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, variable, trace), Modality.resolve(variable), Visibility.PUBLIC, NapilePsiUtil.safeName(variable.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(variable), variable.isMutable());
+		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, variable, trace), Modality.resolve(variable), Visibility.PUBLIC, NapilePsiUtil.safeName(variable.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(variable), variable.isMutable(), false);
 
 		List<TypeParameterDescriptor> typeParameterDescriptors;
 
@@ -441,7 +441,7 @@ public class DescriptorResolver
 	@NotNull
 	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, @NotNull NapileEnumValue enumValue, @NotNull MutableClassDescriptor m, BindingTrace trace)
 	{
-		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, enumValue, trace), Modality.resolve(enumValue), Visibility.resolve(enumValue), NapilePsiUtil.safeName(enumValue.getName()), CallableMemberDescriptor.Kind.DECLARATION, true, false);
+		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, enumValue, trace), Modality.resolve(enumValue), Visibility.resolve(enumValue), NapilePsiUtil.safeName(enumValue.getName()), CallableMemberDescriptor.Kind.DECLARATION, true, false, true);
 
 		List<TypeParameterDescriptor> typeParameterDescriptors;
 

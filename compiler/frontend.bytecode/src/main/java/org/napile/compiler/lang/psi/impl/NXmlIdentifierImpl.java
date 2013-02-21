@@ -30,9 +30,9 @@ import com.intellij.psi.impl.source.tree.TreeElement;
  */
 public class NXmlIdentifierImpl extends NXmlParentedElementBase
 {
-	public NXmlIdentifierImpl(PsiElement parent)
+	public NXmlIdentifierImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

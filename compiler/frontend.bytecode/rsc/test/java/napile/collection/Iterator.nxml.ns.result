@@ -6,6 +6,7 @@ abstract static class Iterator<E : napile.lang.Any?> : napile.lang.Any
 
 	abstract meth next() : E
 
+	@napile.annotation.ImmutableTarget
 	abstract meth remove() : napile.lang.Null
 
 }

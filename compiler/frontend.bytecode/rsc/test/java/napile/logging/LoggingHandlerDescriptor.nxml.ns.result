@@ -8,6 +8,7 @@ static class LoggingHandlerDescriptor<T : napile.logging.LoggingHandler> : napil
 		static set
 	}
 
+	@xml.annotation.DomAttribute
 	val id : napile.lang.String
 	{
 		get

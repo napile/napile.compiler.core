@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.psi;
+package org.napile.compiler.lang.psi.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,14 +22,15 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.*;
 import com.intellij.lang.ASTNode;
 
 /**
  * @author max
  */
-public class NapileDelegationToSuperCall extends NapileElementImpl implements NapileCallElement
+public class NapileDelegationToSuperCallImpl extends NapileElementImpl implements NapileDelegationToSuperCall
 {
-	public NapileDelegationToSuperCall(@NotNull ASTNode node)
+	public NapileDelegationToSuperCallImpl(@NotNull ASTNode node)
 	{
 		super(node);
 	}
@@ -75,11 +76,13 @@ public class NapileDelegationToSuperCall extends NapileElementImpl implements Na
 		return Collections.emptyList();
 	}
 
+	@Override
 	public NapileTypeReference getTypeReference()
 	{
 		return getCalleeExpression().getTypeReference();
 	}
 
+	@Override
 	@Nullable
 	public NapileUserType getTypeAsUserType()
 	{

@@ -38,32 +38,34 @@ import com.google.common.collect.Sets;
  */
 public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl implements CallableMemberDescriptor
 {
-	private Visibility visibility;
+	private final Visibility visibility;
 
 	private final Set<VariableDescriptorImpl> overriddenProperties = Sets.newLinkedHashSet(); // LinkedHashSet is essential here
 	private final VariableDescriptorImpl original;
 	private final Kind kind;
+	private final boolean isEnumValue;
 
 	private ReceiverDescriptor expectedThisObject;
 	private List<TypeParameterDescriptor> typeParameters;
 
-	protected VariableDescriptorImpl(@Nullable VariableDescriptorImpl original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable)
+	protected VariableDescriptorImpl(@Nullable VariableDescriptorImpl original, @NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable, boolean isEnumValue)
 	{
 		super(containingDeclaration, annotations, name, modality, isStatic, mutable);
 
 		this.visibility = visibility;
 		this.original = original == null ? this : original.getOriginal();
 		this.kind = kind;
+		this.isEnumValue = isEnumValue;
 	}
 
-	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable)
+	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull Name name, @NotNull Kind kind, boolean isStatic, boolean mutable, boolean isEnumValue)
 	{
-		this(null, containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable);
+		this(null, containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable, isEnumValue);
 	}
 
-	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic, boolean mutable)
+	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic, boolean mutable, boolean isEnumValue)
 	{
-		this(containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable);
+		this(containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable, isEnumValue);
 		setType(outType, Collections.<TypeParameterDescriptor>emptyList(), expectedThisObject);
 	}
 
@@ -74,11 +76,6 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 		this.typeParameters = Lists.newArrayList(typeParameters);
 
 		this.expectedThisObject = isStatic() ? ReceiverDescriptor.NO_RECEIVER : expectedThisObject;
-	}
-
-	public void setVisibility(@NotNull Visibility visibility)
-	{
-		this.visibility = visibility;
 	}
 
 	@NotNull
@@ -93,13 +90,6 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 	public ReceiverDescriptor getExpectedThisObject()
 	{
 		return expectedThisObject;
-	}
-
-	@NotNull
-	@Override
-	public JetType getReturnType()
-	{
-		return getType();
 	}
 
 	@NotNull
@@ -159,7 +149,7 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 
 	protected VariableDescriptorImpl createInstance(DeclarationDescriptor newOwner, Modality newModality, Visibility newVisibility, boolean preserveOriginal, Kind kind)
 	{
-		return new VariableDescriptorImpl(preserveOriginal ? getOriginal() : this, newOwner, getAnnotations(), newModality, newVisibility, getName(), kind, isStatic(), isMutable());
+		return new VariableDescriptorImpl(preserveOriginal ? getOriginal() : this, newOwner, getAnnotations(), newModality, newVisibility, getName(), kind, isStatic(), isMutable(), isEnumValue());
 	}
 
 	@Override
@@ -180,6 +170,12 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 	public Kind getKind()
 	{
 		return kind;
+	}
+
+	@Override
+	public boolean isEnumValue()
+	{
+		return isEnumValue;
 	}
 
 	@Override

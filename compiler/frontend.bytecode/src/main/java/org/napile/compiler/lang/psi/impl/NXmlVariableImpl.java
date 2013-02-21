@@ -60,7 +60,7 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 		setMirrorIfPresent(getModifierList(),  mirror.getModifierList());
 
 		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getType());
-		nameIdentifier = NXmlMirrorUtil.mirrorIdentifier(this, mirror.getNameIdentifier());
+		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 		mutable = mirror.isMutable();
 		accessors.clear();
 

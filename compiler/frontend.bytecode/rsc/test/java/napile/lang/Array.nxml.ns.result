@@ -15,6 +15,7 @@ final static class Array<E : napile.lang.Any?> : napile.collection.Iterable<E> &
 
 	native meth init() : napile.lang.Null
 
+	@napile.annotation.ImmutableTarget
 	meth set(val index : napile.lang.Int, val value : E) : this
 	{
 		// compiled code

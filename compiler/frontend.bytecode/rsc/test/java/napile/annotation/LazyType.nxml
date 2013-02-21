@@ -12,6 +12,7 @@
 	</extends>
 	<variable name="SIMPLE">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -22,6 +23,7 @@
 	</variable>
 	<method name="SIMPLE$get">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -71,6 +73,7 @@
 	</class>
 	<variable name="INJECTION">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>
@@ -81,6 +84,7 @@
 	</variable>
 	<method name="INJECTION$get">
 		<modifiers>
+			<enum/>
 			<static/>
 		</modifiers>
 		<return_type>

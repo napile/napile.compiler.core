@@ -2,6 +2,7 @@ package napile.collection
 
 abstract static class Map<K : napile.lang.Any?, V : napile.lang.Any?> : napile.collection.Sizeable
 {
+	@napile.annotation.ImmutableTarget
 	abstract meth put(val key : K, val value : V) : napile.lang.Null
 
 	abstract meth get(val key : K) : V

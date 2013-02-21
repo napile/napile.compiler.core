@@ -2,15 +2,9 @@ package napile.annotation
 
 final static class LazyType : napile.lang.Any
 {
-	static val SIMPLE : napile.annotation.LazyType$SIMPLE
-	{
-		static get
-	}
+	static enum val SIMPLE : napile.annotation.LazyType()
 
-	static val INJECTION : napile.annotation.LazyType$INJECTION
-	{
-		static get
-	}
+	static enum val INJECTION : napile.annotation.LazyType()
 
 	final this()
 	{

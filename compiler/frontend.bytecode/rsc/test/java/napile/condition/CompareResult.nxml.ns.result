@@ -2,20 +2,11 @@ package napile.condition
 
 static class CompareResult : napile.lang.Any
 {
-	static val GREATER : napile.condition.CompareResult$GREATER
-	{
-		static get
-	}
+	static enum val GREATER : napile.condition.CompareResult()
 
-	static val EQUAL : napile.condition.CompareResult$EQUAL
-	{
-		static get
-	}
+	static enum val EQUAL : napile.condition.CompareResult()
 
-	static val LOWER : napile.condition.CompareResult$LOWER
-	{
-		static get
-	}
+	static enum val LOWER : napile.condition.CompareResult()
 
 	final this()
 	{
