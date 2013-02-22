@@ -104,6 +104,7 @@
 		<moduleType id="NAPILE_MODULE" implementationClass="org.napile.idea.plugin.module.type.NapileModuleType" />
 		<moduleConfigurationEditorProvider implementation="org.napile.idea.plugin.module.type.DefaultModuleEditorsProvider" />
 
+		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.NapileWordSelectioner" order="first"/>
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetStatementGroupSelectioner"/>
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetCodeBlockSelectioner"/>
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetListSelectioner"/>

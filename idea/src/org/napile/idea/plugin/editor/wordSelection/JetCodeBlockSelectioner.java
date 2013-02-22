@@ -34,11 +34,13 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
  */
 public class JetCodeBlockSelectioner extends BasicSelectioner
 {
+	@Override
 	public boolean canSelect(PsiElement e)
 	{
 		return e instanceof NapileBlockExpression || e instanceof NapileWhenExpression;
 	}
 
+	@Override
 	public List<TextRange> select(PsiElement e, CharSequence editorText, int cursorOffset, Editor editor)
 	{
 		List<TextRange> result = new ArrayList<TextRange>();

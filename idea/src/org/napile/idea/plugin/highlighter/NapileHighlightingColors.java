@@ -66,7 +66,7 @@ public class NapileHighlightingColors
 
 	public static final TextAttributesKey LINE_COMMENT = DefaultLanguageHighlighterColors.LINE_COMMENT;
 
-	public static final TextAttributesKey BLOCK_COMMENT = DefaultLanguageHighlighterColors.BLOCk_COMMENT;
+	public static final TextAttributesKey BLOCK_COMMENT = DefaultLanguageHighlighterColors.BLOCK_COMMENT;
 
 	public static final TextAttributesKey DOC_COMMENT = DefaultLanguageHighlighterColors.DOC_COMMENT;
 
