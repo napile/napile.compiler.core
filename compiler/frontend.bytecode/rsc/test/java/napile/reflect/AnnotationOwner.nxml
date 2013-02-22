@@ -176,16 +176,15 @@
 		</return_type>
 	</variable>
 	<method name="findAnnotation">
-		<type_parameters>
-			<type_parameter name="A">
+		<type-parameters>
+			<type-parameter name="A">
 				<extends>
 					<type nullable="true">
 						<class_type name="napile.lang.Any"/>
 					</type>
 				</extends>
-				<type_parameter_constructors/>
-			</type_parameter>
-		</type_parameters>
+			</type-parameter>
+		</type-parameters>
 		<return_type>
 			<type nullable="true">
 				<type_parameter_value_type name="A"/>
@@ -320,16 +319,15 @@
 		</code>
 	</method>
 	<method name="findAnnotations">
-		<type_parameters>
-			<type_parameter name="A">
+		<type-parameters>
+			<type-parameter name="A">
 				<extends>
 					<type nullable="true">
 						<class_type name="napile.lang.Any"/>
 					</type>
 				</extends>
-				<type_parameter_constructors/>
-			</type_parameter>
-		</type_parameters>
+			</type-parameter>
+		</type-parameters>
 		<return_type>
 			<type nullable="false">
 				<class_type name="napile.collection.List"/>

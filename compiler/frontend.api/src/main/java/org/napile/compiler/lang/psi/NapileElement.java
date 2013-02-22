@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.PsiInvalidElementAccessException;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.util.ArrayFactory;
 
 /**
@@ -36,6 +37,8 @@ public interface NapileElement extends NavigatablePsiElement
 			return count == 0 ? EMPTY_ARRAY : new NapileElement[count];
 		}
 	};
+
+	IElementType getElementType();
 
 	<D> void acceptChildren(@NotNull NapileTreeVisitor<D> visitor, D data);
 

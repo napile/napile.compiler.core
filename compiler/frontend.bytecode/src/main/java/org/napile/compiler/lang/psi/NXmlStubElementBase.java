@@ -18,6 +18,7 @@ package org.napile.compiler.lang.psi;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.StubBasedPsiElement;
+import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 
 /**
@@ -38,6 +39,9 @@ public abstract class NXmlStubElementBase<S extends StubElement> extends NXmlEle
 	{
 		return stub.getParentStub().getPsi();
 	}
+
+	@Override
+	public abstract IStubElementType<S, ?> getElementType();
 
 	@Override
 	public S getStub()

@@ -274,6 +274,22 @@ public class NodeToStringBuilder
 			TypeParameterNode typeParameterNode = typeParameterNodes.get(i);
 			builder.append(typeParameterNode.name);
 
+			for(List<MethodParameterNode> list : typeParameterNode.constructors)
+			{
+				builder.append("(");
+
+				for(int j = 0; j < list.size(); j++)
+				{
+					if(j != 0)
+						builder.append(", ");
+
+					final MethodParameterNode parameterNode = list.get(j);
+
+					appendVariableInfo(parameterNode.modifiers, parameterNode.name, parameterNode.returnType, parameterNode.defaultValue, builder);
+				}
+				builder.append(")");
+			}
+
 			if(!typeParameterNode.supers.isEmpty())
 			{
 				builder.append(" : ");

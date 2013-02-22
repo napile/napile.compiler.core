@@ -192,6 +192,13 @@ public abstract class NXmlElementBase extends PsiElementBase implements PsiCompi
 	}
 
 	@Override
+	public IElementType getElementType()
+	{
+		final PsiElement mirror = getMirror();
+		return mirror == null ? null : mirror.getNode().getElementType();
+	}
+
+	@Override
 	public PsiElement findElementAt(int offset)
 	{
 		PsiElement mirrorAt = getMirror().findElementAt(offset);

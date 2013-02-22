@@ -168,7 +168,7 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return NXmlMirrorUtil.getAllToPsiArray(superTypeList, getModifierList(), nameIdentifier, getDeclarations());
+		return NXmlMirrorUtil.getAllToPsiArray(superTypeList, getModifierList(), getTypeParameterList(), nameIdentifier, getDeclarations());
 	}
 
 	@Override

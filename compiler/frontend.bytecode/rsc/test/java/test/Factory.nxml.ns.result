@@ -1,0 +1,10 @@
+package test
+
+static class Factory<T(val a : napile.lang.String)(val a : napile.lang.Int) : napile.lang.Any?> : napile.lang.Any
+{
+	meth test<T(val a : napile.lang.String)(val a : napile.lang.Int) : napile.lang.Any?>() : napile.lang.Null
+	{
+		// compiled code
+	}
+
+}

@@ -71,7 +71,7 @@ public class NXmlCallParameterAsVariableStubbedImpl extends NXmlNamedDeclaration
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, returnType);
+		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, returnType, defaultValue);
 	}
 
 	@Nullable
@@ -97,7 +97,7 @@ public class NXmlCallParameterAsVariableStubbedImpl extends NXmlNamedDeclaration
 	@Override
 	public boolean isRef()
 	{
-		return false;
+		return ref;
 	}
 
 	@Override

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="test.Factory">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<type-parameters>
+		<type-parameter name="T">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+			<constructor>
+				<parameters>
+					<parameter name="a">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</parameter>
+				</parameters>
+			</constructor>
+			<constructor>
+				<parameters>
+					<parameter name="a">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</parameter>
+				</parameters>
+			</constructor>
+		</type-parameter>
+	</type-parameters>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="test">
+		<type-parameters>
+			<type-parameter name="T">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+				<constructor>
+					<parameters>
+						<parameter name="a">
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameter>
+					</parameters>
+				</constructor>
+				<constructor>
+					<parameters>
+						<parameter name="a">
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</constructor>
+			</type-parameter>
+		</type-parameters>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

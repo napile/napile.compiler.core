@@ -32,11 +32,11 @@ import com.intellij.psi.impl.source.tree.TreeElement;
  */
 public class NXmlCallParameterListImpl extends NXmlParentedElementBase implements NapileCallParameterList
 {
-	private NapileCallParameter[] parameters = NapileCallParameter.EMPTY_ARRAY;
+	private NapileCallParameter[] parameters;
 
-	public NXmlCallParameterListImpl(PsiElement parent)
+	public NXmlCallParameterListImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override
@@ -50,14 +50,12 @@ public class NXmlCallParameterListImpl extends NXmlParentedElementBase implement
 		parameters = new NapileCallParameter[mirrorParameters.length];
 		for(int i = 0; i < parameters.length; i++)
 		{
-			final NXmlCallParameterAsVariableImpl nXmlCallParameterAsVariable = new NXmlCallParameterAsVariableImpl(this);
-			nXmlCallParameterAsVariable.setMirror(mirrorParameters[i]);
-
-			parameters[i] = nXmlCallParameterAsVariable;
+			parameters[i] = new NXmlCallParameterAsVariableImpl(this, mirrorParameters[i]);
 		}
 	}
 
 	@Override
+	@NotNull
 	public NapileCallParameter[] getParameters()
 	{
 		return parameters;

@@ -56,8 +56,7 @@ public class NXmlMethodTypeImpl extends NXmlParentedElementBase implements Napil
 		setMirrorCheckingType(element, null);
 
 		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getReturnTypeRef());
-		callParameterList = new NXmlCallParameterListImpl(this);
-		callParameterList.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(mirror.getParameterList()));
+		callParameterList = new NXmlCallParameterListImpl(this, mirror.getParameterList());
 	}
 
 	@Nullable

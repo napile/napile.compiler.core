@@ -41,6 +41,7 @@ import com.intellij.psi.stubs.IStubElementType;
 public class NXmlTypeParameterImpl extends NXmlNamedDeclarationImpl<NapilePsiTypeParameterStub> implements NapileTypeParameter
 {
 	private List<NXmlTypeReferenceImpl> superTypes;
+	private NapileCallParameterList[] parameterLists;
 
 	public NXmlTypeParameterImpl(NapilePsiTypeParameterStub stub)
 	{
@@ -56,6 +57,11 @@ public class NXmlTypeParameterImpl extends NXmlNamedDeclarationImpl<NapilePsiTyp
 
 		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 		superTypes = NXmlMirrorUtil.mirrorTypes(this, mirror.getSuperTypes());
+
+		final NapileCallParameterList[] mirrorParametersList = mirror.getConstructorParameterLists();
+		parameterLists = new NapileCallParameterList[mirrorParametersList.length];
+		for(int i = 0; i < mirrorParametersList.length; i++)
+			parameterLists[i] = new NXmlCallParameterListImpl(this, mirrorParametersList[i]);
 	}
 
 	@Override
@@ -80,7 +86,7 @@ public class NXmlTypeParameterImpl extends NXmlNamedDeclarationImpl<NapilePsiTyp
 	@Override
 	public NapileCallParameterList[] getConstructorParameterLists()
 	{
-		return new NapileCallParameterList[0];   //TODO [VISTALL]
+		return parameterLists;
 	}
 
 	@NotNull
@@ -101,6 +107,6 @@ public class NXmlTypeParameterImpl extends NXmlNamedDeclarationImpl<NapilePsiTyp
 	@NotNull
 	public PsiElement[] getChildren()
 	{
-		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, superTypes);
+		return NXmlMirrorUtil.getAllToPsiArray(nameIdentifier, superTypes, parameterLists);
 	}
 }

@@ -62,8 +62,7 @@ public class NXmlAnonymMethodImpl extends NXmlParentedElementBase implements Nap
 		final NapileCallParameterList callParameterList = mirror.getCallParameterList();
 		if(callParameterList != null)
 		{
-			this.callParameterList = new NXmlCallParameterListImpl(this);
-			this.callParameterList.setMirror(callParameterList);
+			this.callParameterList = new NXmlCallParameterListImpl(this, callParameterList);
 		}
 
 		final NapileBlockExpression blockExpression = mirror.getBodyExpression();

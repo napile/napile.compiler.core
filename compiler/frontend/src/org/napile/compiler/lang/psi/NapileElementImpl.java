@@ -24,6 +24,7 @@ import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiInvalidElementAccessException;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author max
@@ -59,6 +60,12 @@ public class NapileElementImpl extends ASTWrapperPsiElement implements NapileEle
 		{
 			visitor.visitElement(this);
 		}
+	}
+
+	@Override
+	public IElementType getElementType()
+	{
+		return getNode().getElementType();
 	}
 
 	@Override

@@ -441,5 +441,5 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile, StubBas
 	public PsiFile getDecompiledPsiFile()
 	{
 		return getMirror();
-	}   */
+	} */
 }

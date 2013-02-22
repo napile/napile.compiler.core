@@ -132,6 +132,7 @@ public class ConvertTest extends ConvertTestCase
 	public void test$org_apache_harmony_nio_FileChannelFactory() {}
 	public void test$org_napile_vm_MainCaller() {}
 	public void test$org_napile_vm_VmStartupError() {}
+	public void test$test_Factory() {}
 	public void test$xml_annotation_DomAttribute() {}
 	public void test$xml_annotation_DomElement() {}
 	public void test$xml_impl_XmlDocumentImpl() {}

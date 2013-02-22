@@ -1,6 +1,6 @@
 package napile.logging
 
-static class LoggingHandlerDescriptor<T : napile.logging.LoggingHandler> : napile.lang.Any
+static class LoggingHandlerDescriptor<T() : napile.logging.LoggingHandler> : napile.lang.Any
 {
 	static val EP : napile.module.extension.ExtensionPointName<napile.logging.LoggingHandlerDescriptor<napile.logging.LoggingHandler>>
 	{

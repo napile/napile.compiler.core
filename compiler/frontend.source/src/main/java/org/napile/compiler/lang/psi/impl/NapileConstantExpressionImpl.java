@@ -22,7 +22,6 @@ import org.napile.compiler.lang.psi.NapileExpressionImpl;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * @author max
@@ -44,12 +43,5 @@ public class NapileConstantExpressionImpl extends NapileExpressionImpl implement
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitConstantExpression(this, data);
-	}
-
-	@NotNull
-	@Override
-	public IElementType getElementType()
-	{
-		return getNode().getElementType();
 	}
 }

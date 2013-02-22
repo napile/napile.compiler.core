@@ -16,15 +16,10 @@
 
 package org.napile.compiler.lang.psi;
 
-import org.jetbrains.annotations.NotNull;
-import com.intellij.psi.tree.IElementType;
-
 /**
  * @author VISTALL
  * @date 13:23/19.02.13
  */
 public interface NapileConstantExpression extends NapileExpression
 {
-	@NotNull
-	IElementType getElementType();
 }

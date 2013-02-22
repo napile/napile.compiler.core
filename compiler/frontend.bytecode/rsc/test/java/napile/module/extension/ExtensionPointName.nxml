@@ -4,16 +4,15 @@
 	<modifiers>
 		<static/>
 	</modifiers>
-	<type_parameters>
-		<type_parameter name="T">
+	<type-parameters>
+		<type-parameter name="T">
 			<extends>
 				<type nullable="true">
 					<class_type name="napile.lang.Any"/>
 				</type>
 			</extends>
-			<type_parameter_constructors/>
-		</type_parameter>
-	</type_parameters>
+		</type-parameter>
+	</type-parameters>
 	<extends>
 		<type nullable="false">
 			<class_type name="napile.lang.Any"/>
@@ -157,16 +156,15 @@
 		<modifiers>
 			<final/>
 		</modifiers>
-		<type_parameters>
-			<type_parameter name="T">
+		<type-parameters>
+			<type-parameter name="T">
 				<extends>
 					<type nullable="true">
 						<class_type name="napile.lang.Any"/>
 					</type>
 				</extends>
-				<type_parameter_constructors/>
-			</type_parameter>
-		</type_parameters>
+			</type-parameter>
+		</type-parameters>
 		<return_type>
 			<type nullable="false">
 				<this_type/>

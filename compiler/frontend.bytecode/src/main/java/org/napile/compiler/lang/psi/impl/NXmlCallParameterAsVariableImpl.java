@@ -48,9 +48,9 @@ public class NXmlCallParameterAsVariableImpl extends NXmlParentedElementBase imp
 	private boolean ref;
 	private NXmlIdentifierImpl nameIdentifier;
 
-	public NXmlCallParameterAsVariableImpl(PsiElement parent)
+	public NXmlCallParameterAsVariableImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override
@@ -179,6 +179,6 @@ public class NXmlCallParameterAsVariableImpl extends NXmlParentedElementBase imp
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return NXmlMirrorUtil.getAllToPsiArray(returnType);
+		return NXmlMirrorUtil.getAllToPsiArray(defaultValue, returnType, nameIdentifier);
 	}
 }
