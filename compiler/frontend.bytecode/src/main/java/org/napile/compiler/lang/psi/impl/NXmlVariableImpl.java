@@ -1,82 +1,44 @@
-/*
- * Copyright 2010-2012 napile.org
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.napile.compiler.lang.psi.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.psi.NapileVariableAccessor;
-import org.napile.compiler.lang.psi.NapileVisitor;
-import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.lexer.NapileToken;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.util.NXmlMirrorUtil;
+import org.napile.doc.lang.psi.NapileDoc;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
-import com.intellij.psi.stubs.IStubElementType;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
- * @date 15:07/19.10.12
+ * @date 16:16/22.02.13
  */
-public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariableStub> implements NapileVariable
+public class NXmlVariableImpl extends NXmlParentedElementBase implements NapileVariable
 {
-	private boolean mutable;
 	private NXmlTypeReferenceImpl returnType;
-	private List<NXmlVariableAccessorImpl> accessors = new ArrayList<NXmlVariableAccessorImpl>(2);
+	private boolean mutable;
+	private NXmlIdentifierImpl nameIdentifier;
 
-	public NXmlVariableImpl(NapilePsiVariableStub stub)
+	public NXmlVariableImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(stub);
+		super(parent, mirror);
 	}
 
 	@Override
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
-		final NapileVariable mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
+		NapileVariable mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
 
 		setMirrorCheckingType(element, null);
-		setMirrorIfPresent(getModifierList(),  mirror.getModifierList());
 
 		returnType = new NXmlTypeReferenceImpl(this, mirror.getType());
-		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 		mutable = mirror.isMutable();
-		accessors.clear();
-
-		for(NapileVariableAccessor accessor : mirror.getAccessors())
-		{
-			accessors.add(new NXmlVariableAccessorImpl(this, accessor));
-		}
-
-		setMirrors(getAccessors(), mirror.getAccessors());
-	}
-
-	@NotNull
-	@Override
-	public PsiElement[] getChildren()
-	{
-		return NXmlMirrorUtil.getAllToPsiArray(getModifierList(), nameIdentifier, returnType, accessors);
+		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 	}
 
 	@Nullable
@@ -103,7 +65,35 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 	@Override
 	public NapileVariableAccessor[] getAccessors()
 	{
-		return accessors.toArray(new NapileVariableAccessor[accessors.size()]);
+		return NapileVariableAccessor.EMPTY_ARRAY;
+	}
+
+	@Nullable
+	@Override
+	public NapileTypeParameterList getTypeParameterList()
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public NapileTypeParameter[] getTypeParameters()
+	{
+		return NapileTypeParameter.EMPTY_ARRAY;
+	}
+
+	@NotNull
+	@Override
+	public Name getNameAsSafeName()
+	{
+		return Name.identifier(getName());
+	}
+
+	@Nullable
+	@Override
+	public NapileDoc getDocComment()
+	{
+		return null;
 	}
 
 	@Override
@@ -120,14 +110,61 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 
 	@Nullable
 	@Override
-	public NapileExpression getInitializer()
+	public NapileModifierList getModifierList()
 	{
 		return null;
 	}
 
 	@Override
-	public IStubElementType getElementType()
+	public boolean hasModifier(NapileToken modifier)
 	{
-		return NapileStubElementTypes.VARIABLE;
+		return false;
+	}
+
+	@Nullable
+	@Override
+	public ASTNode getModifierNode(NapileToken token)
+	{
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public Name getNameAsName()
+	{
+		return getNameAsSafeName();
+	}
+
+	@Nullable
+	@Override
+	public NapileExpression getInitializer()
+	{
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getNameIdentifier()
+	{
+		return nameIdentifier;
+	}
+
+	@Override
+	public String getName()
+	{
+		return getNameIdentifier().getText();
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public PsiElement[] getChildren()
+	{
+		return NXmlMirrorUtil.getAllToPsiArray(returnType, nameIdentifier);
 	}
 }

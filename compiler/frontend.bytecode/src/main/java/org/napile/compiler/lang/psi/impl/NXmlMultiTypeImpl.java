@@ -36,6 +36,8 @@ import com.intellij.psi.impl.source.tree.TreeElement;
  */
 public class NXmlMultiTypeImpl extends NXmlParentedElementBase implements NapileMultiType
 {
+	private NapileVariable[] variables;
+
 	public NXmlMultiTypeImpl(PsiElement parent, PsiElement mirror)
 	{
 		super(parent, mirror);
@@ -45,12 +47,21 @@ public class NXmlMultiTypeImpl extends NXmlParentedElementBase implements Napile
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
 		NapileMultiType mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
+
+		setMirrorCheckingType(element, null);
+
+		final NapileVariable[] mirrorVariables = mirror.getVariables();
+		variables = new NapileVariable[mirrorVariables.length];
+		for(int i = 0; i < variables.length; i++)
+		{
+			variables[i] = new NXmlVariableImpl(this, mirrorVariables[i]);
+		}
 	}
 
 	@Override
 	public NapileVariable[] getVariables()
 	{
-		return new NapileVariable[0];
+		return variables;
 	}
 
 	@NotNull
@@ -76,6 +87,6 @@ public class NXmlMultiTypeImpl extends NXmlParentedElementBase implements Napile
 	@Override
 	public PsiElement[] getChildren()
 	{
-		return new PsiElement[0];
+		return getVariables();
 	}
 }

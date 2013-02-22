@@ -58,7 +58,7 @@ public class NXmlPsiFromStubFactory implements NapilePsiFromStubFactory
 	@Override
 	public NapileVariable createVariable(NapilePsiVariableStub stub)
 	{
-		return new NXmlVariableImpl(stub);
+		return new NXmlVariableStubbedImpl(stub);
 	}
 
 	@NotNull
