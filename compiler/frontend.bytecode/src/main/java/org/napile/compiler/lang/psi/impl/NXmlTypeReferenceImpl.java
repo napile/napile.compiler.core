@@ -17,7 +17,6 @@
 package org.napile.compiler.lang.psi.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,12 +38,12 @@ import com.intellij.psi.impl.source.tree.TreeElement;
  */
 public class NXmlTypeReferenceImpl extends NXmlParentedElementBase implements NapileTypeReference
 {
-	private List<NapileAnnotation> annotations = Collections.emptyList();
+	private List<NapileAnnotation> annotations;
 	private NapileTypeElement typeElement;
 
-	public NXmlTypeReferenceImpl(PsiElement parent)
+	public NXmlTypeReferenceImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override
@@ -62,10 +61,7 @@ public class NXmlTypeReferenceImpl extends NXmlParentedElementBase implements Na
 		annotations = new ArrayList<NapileAnnotation>(mirrorAnnotations.size());
 		for(NapileAnnotation annotation : mirrorAnnotations)
 		{
-			NXmlAnnotationImpl nXmlAnnotation = new NXmlAnnotationImpl(this);
-			nXmlAnnotation.setMirror(annotation);
-
-			annotations.add(nXmlAnnotation);
+			annotations.add(new NXmlAnnotationImpl(this, annotation));
 		}
 	}
 

@@ -19,9 +19,9 @@ public class NXmlAnnotationImpl extends NXmlParentedElementBase implements Napil
 {
 	private NXmlConstructorCalleeExpressionImpl calleeExpression;
 
-	public NXmlAnnotationImpl(PsiElement parent)
+	public NXmlAnnotationImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

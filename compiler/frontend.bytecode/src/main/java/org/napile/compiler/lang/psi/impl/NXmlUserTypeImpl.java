@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NXmlParentedElementBase;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeArgumentList;
@@ -32,7 +31,6 @@ import org.napile.compiler.util.NXmlMirrorUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
-import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
@@ -44,9 +42,9 @@ public class NXmlUserTypeImpl extends NXmlParentedElementBase implements NapileU
 	private NapileUserType qualifier;
 	private NapileSimpleNameExpression ref;
 
-	public NXmlUserTypeImpl(PsiElement parent)
+	public NXmlUserTypeImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override
@@ -58,7 +56,7 @@ public class NXmlUserTypeImpl extends NXmlParentedElementBase implements NapileU
 
 		parameters = NXmlMirrorUtil.mirrorTypes(this, mirror.getTypeArguments());
 		qualifier = (NapileUserType) NXmlMirrorUtil.mirrorTypeElement(this, mirror.getQualifier());
-		ref = NXmlMirrorUtil.mirrorSimpleNameExpression(this, mirror.getReferenceExpression());
+		ref = new NXmlSimpleNameExpressionImpl(this, mirror.getReferenceExpression());
 	}
 
 	@Nullable

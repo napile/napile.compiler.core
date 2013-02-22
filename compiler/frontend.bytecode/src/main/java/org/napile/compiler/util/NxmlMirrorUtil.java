@@ -28,11 +28,9 @@ import org.napile.compiler.lang.psi.impl.NXmlMethodTypeImpl;
 import org.napile.compiler.lang.psi.impl.NXmlMultiTypeImpl;
 import org.napile.compiler.lang.psi.impl.NXmlNullableTypeImpl;
 import org.napile.compiler.lang.psi.impl.NXmlSelfTypeImpl;
-import org.napile.compiler.lang.psi.impl.NXmlSimpleNameExpressionImpl;
 import org.napile.compiler.lang.psi.impl.NXmlTypeReferenceImpl;
 import org.napile.compiler.lang.psi.impl.NXmlUserTypeImpl;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 
 /**
  * @author VISTALL
@@ -77,31 +75,14 @@ public class NXmlMirrorUtil
 		return list.toArray(new PsiElement[list.size()]);
 	}
 
-	@Nullable
-	public static NapileSimpleNameExpression mirrorSimpleNameExpression(PsiElement parent, @Nullable NapileSimpleNameExpression expression)
-	{
-		if(expression == null)
-			return null;
-		NXmlSimpleNameExpressionImpl e = new NXmlSimpleNameExpressionImpl(parent);
-		e.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(expression));
-		return e;
-	}
-
 	public static List<NXmlTypeReferenceImpl> mirrorTypes(PsiElement parent, Collection<? extends NapileTypeReference> typeReferences)
 	{
 		List<NXmlTypeReferenceImpl> list = new ArrayList<NXmlTypeReferenceImpl>(typeReferences.size());
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			list.add(mirrorType(parent, typeReference));
+			list.add(new NXmlTypeReferenceImpl(parent, typeReference));
 		}
 		return list;
-	}
-
-	public static NXmlTypeReferenceImpl mirrorType(PsiElement parent, NapileTypeReference typeReference)
-	{
-		NXmlTypeReferenceImpl nXmlTypeReference = new NXmlTypeReferenceImpl(parent);
-		nXmlTypeReference.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(typeReference));
-		return nXmlTypeReference;
 	}
 
 	public static NapileTypeElement mirrorTypeElement(PsiElement parent, @Nullable NapileTypeElement typeElement)
@@ -112,31 +93,28 @@ public class NXmlMirrorUtil
 		NXmlParentedElementBase type = null;
 		if(typeElement instanceof NapileUserType)
 		{
-			type = new NXmlUserTypeImpl(parent);
+			type = new NXmlUserTypeImpl(parent, typeElement);
 		}
 		else if(typeElement instanceof NapileNullableType)
 		{
-			type = new NXmlNullableTypeImpl(parent);
+			type = new NXmlNullableTypeImpl(parent, typeElement);
 		}
 		else if(typeElement instanceof NapileSelfType)
 		{
-			type = new NXmlSelfTypeImpl(parent);
+			type = new NXmlSelfTypeImpl(parent, typeElement);
 		}
 		else if(typeElement instanceof NapileMultiType)
 		{
-			type = new NXmlMultiTypeImpl(parent);
+			type = new NXmlMultiTypeImpl(parent, typeElement);
 		}
 		else if(typeElement instanceof NapileMethodType)
 		{
-			type = new NXmlMethodTypeImpl(parent);
+			type = new NXmlMethodTypeImpl(parent, typeElement);
 		}
 		else
 		{
 			throw new UnsupportedOperationException(typeElement.getClass().getName());
 		}
-
-		type.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(typeElement));
-
 		return (NapileTypeElement) type;
 	}
 }

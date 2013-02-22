@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileNodes;
-import org.napile.compiler.lang.psi.NXmlElementBase;
+import org.napile.compiler.lang.psi.NXmlParentedElementBase;
 import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -40,15 +40,13 @@ import com.intellij.psi.impl.source.tree.TreeElement;
  * @author VISTALL
  * @date 11:43/16.02.13
  */
-public class NXmlPackageImpl extends NXmlElementBase implements NapilePackage
+public class NXmlPackageImpl extends NXmlParentedElementBase implements NapilePackage
 {
-	private final NXmlFileImpl parent;
-
 	private NapileSimpleNameExpression[] expressions;
 
-	public NXmlPackageImpl(NXmlFileImpl parent)
+	public NXmlPackageImpl(PsiElement parent, PsiElement mirror)
 	{
-		this.parent = parent;
+		super(parent, mirror);
 	}
 
 	@NotNull
@@ -70,8 +68,7 @@ public class NXmlPackageImpl extends NXmlElementBase implements NapilePackage
 		expressions = new NapileSimpleNameExpression[mirrorExpressions.length];
 		for(int i = 0; i < expressions.length; i++)
 		{
-			final NXmlSimpleNameExpressionImpl simpleNameExpression = new NXmlSimpleNameExpressionImpl(this);
-			simpleNameExpression.setMirror((TreeElement) SourceTreeToPsiMap.psiElementToTree(mirrorExpressions[i]));
+			final NXmlSimpleNameExpressionImpl simpleNameExpression = new NXmlSimpleNameExpressionImpl(this, mirrorExpressions[i]);
 
 			expressions[i] = simpleNameExpression;
 		}
@@ -92,12 +89,6 @@ public class NXmlPackageImpl extends NXmlElementBase implements NapilePackage
 	{
 		PsiReference[] references = getReferences();
 		return references.length == 1 ? references[0] : null;
-	}
-
-	@Override
-	public PsiElement getParent()
-	{
-		return parent;
 	}
 
 	@Override

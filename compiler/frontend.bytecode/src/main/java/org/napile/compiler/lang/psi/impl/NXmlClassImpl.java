@@ -58,21 +58,12 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 
 		setMirrorIfPresent(getTypeParameterList(), mirror.getTypeParameterList());
 		setMirrorIfPresent(getModifierList(),  mirror.getModifierList());
-
-		try
-		{
-			setMirrors(getDeclarations(), mirror.getDeclarations());
-		}
-		catch(InvalidMirrorException e)
-		{
-			System.out.println("NXmlClassImpl mirroring failed: " + getContainingFile().getVirtualFile() + ", " + e.getMessage());
-		}
+		setMirrors(getDeclarations(), mirror.getDeclarations());
 
 		PsiElement t = mirror.getSuperTypesElement();
 		if(t != null)
 		{
-			superTypeList = new NXmlTypeListImpl(this);
-			superTypeList.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(t));
+			superTypeList = new NXmlTypeListImpl(this, t);
 		}
 
 		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());

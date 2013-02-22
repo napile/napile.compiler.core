@@ -56,7 +56,7 @@ public class NXmlCallParameterAsVariableStubbedImpl extends NXmlNamedDeclaration
 
 		setMirrorCheckingType(element, null);
 
-		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getTypeReference());
+		returnType = new NXmlTypeReferenceImpl(this, mirror.getTypeReference());
 		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 		mutable = mirror.isMutable();
 		ref = mirror.isRef();

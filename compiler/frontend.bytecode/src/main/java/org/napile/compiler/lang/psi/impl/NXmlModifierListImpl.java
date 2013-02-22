@@ -61,10 +61,7 @@ public class NXmlModifierListImpl extends NXmlStubElementBase<NapilePsiModifierL
 		annotations = new ArrayList<NapileAnnotation>(mirrorAnnotations.size());
 		for(NapileAnnotation annotation : mirrorAnnotations)
 		{
-			NXmlAnnotationImpl nXmlAnnotation = new NXmlAnnotationImpl(this);
-			nXmlAnnotation.setMirror(annotation);
-
-			annotations.add(nXmlAnnotation);
+			annotations.add(new NXmlAnnotationImpl(this, annotation));
 		}
 	}
 

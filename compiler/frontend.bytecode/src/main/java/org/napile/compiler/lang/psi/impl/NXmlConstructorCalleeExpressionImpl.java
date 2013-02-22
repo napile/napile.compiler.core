@@ -33,7 +33,7 @@ public class NXmlConstructorCalleeExpressionImpl extends NXmlParentedElementBase
 
 		setMirrorCheckingType(element, null);
 
-		typeReference = NXmlMirrorUtil.mirrorType(this, mirror.getTypeReference());
+		typeReference = new NXmlTypeReferenceImpl(this, mirror.getTypeReference());
 	}
 
 	@Nullable

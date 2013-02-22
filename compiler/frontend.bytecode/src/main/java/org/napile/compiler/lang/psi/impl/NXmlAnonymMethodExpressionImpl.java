@@ -46,8 +46,7 @@ public class NXmlAnonymMethodExpressionImpl extends NXmlParentedElementBase impl
 
 		setMirrorCheckingType(element, null);
 
-		anonymMethod = new NXmlAnonymMethodImpl(this);
-		anonymMethod.setMirror(expression.getAnonymMethod());
+		anonymMethod = new NXmlAnonymMethodImpl(this, expression.getAnonymMethod());
 	}
 
 	@NotNull

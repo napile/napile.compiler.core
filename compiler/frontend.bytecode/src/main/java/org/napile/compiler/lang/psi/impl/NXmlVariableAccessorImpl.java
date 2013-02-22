@@ -43,9 +43,9 @@ public class NXmlVariableAccessorImpl extends NXmlParentedElementBase implements
 {
 	private IElementType elementType;
 
-	public NXmlVariableAccessorImpl(PsiElement parent)
+	public NXmlVariableAccessorImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

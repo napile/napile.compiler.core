@@ -39,9 +39,9 @@ public class NXmlNullableTypeImpl extends NXmlParentedElementBase implements Nap
 {
 	private NapileTypeElement innerType;
 
-	public NXmlNullableTypeImpl(PsiElement parent)
+	public NXmlNullableTypeImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

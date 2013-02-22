@@ -37,9 +37,9 @@ public class NXmlTypeListImpl extends NXmlParentedElementBase implements NapileT
 {
 	private List<? extends NapileTypeReference> list;
 
-	public NXmlTypeListImpl(PsiElement parent)
+	public NXmlTypeListImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

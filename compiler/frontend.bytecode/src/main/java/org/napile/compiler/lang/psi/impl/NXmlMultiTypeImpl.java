@@ -36,9 +36,9 @@ import com.intellij.psi.impl.source.tree.TreeElement;
  */
 public class NXmlMultiTypeImpl extends NXmlParentedElementBase implements NapileMultiType
 {
-	public NXmlMultiTypeImpl(PsiElement parent)
+	public NXmlMultiTypeImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

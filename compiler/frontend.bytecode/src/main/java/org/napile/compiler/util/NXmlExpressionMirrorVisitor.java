@@ -48,7 +48,7 @@ public class NXmlExpressionMirrorVisitor extends NapileVisitor<NXmlElementBase, 
 	@Override
 	public NXmlElementBase visitSimpleNameExpression(NapileSimpleNameExpression expression, NXmlElementBase parent)
 	{
-		return new NXmlSimpleNameExpressionImpl(parent);
+		return new NXmlSimpleNameExpressionImpl(parent, null);
 	}
 
 	@Override

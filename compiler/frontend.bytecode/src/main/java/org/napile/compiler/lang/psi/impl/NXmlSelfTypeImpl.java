@@ -34,9 +34,9 @@ import com.intellij.psi.impl.source.tree.TreeElement;
  */
 public class NXmlSelfTypeImpl extends NXmlParentedElementBase implements NapileSelfType
 {
-	public NXmlSelfTypeImpl(PsiElement parent)
+	public NXmlSelfTypeImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

@@ -40,9 +40,9 @@ public class NXmlAnonymMethodImpl extends NXmlParentedElementBase implements Nap
 	private NXmlCallParameterListImpl callParameterList;
 	private NapileBlockExpression bodyExpression;
 
-	public NXmlAnonymMethodImpl(PsiElement parent)
+	public NXmlAnonymMethodImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override
@@ -55,8 +55,7 @@ public class NXmlAnonymMethodImpl extends NXmlParentedElementBase implements Nap
 		final NapileTypeReference returnTypeRef = mirror.getReturnTypeRef();
 		if(returnTypeRef != null)
 		{
-			returnType = new NXmlTypeReferenceImpl(this);
-			returnType.setMirror(returnTypeRef);
+			returnType = new NXmlTypeReferenceImpl(this, returnTypeRef);
 		}
 
 		final NapileCallParameterList callParameterList = mirror.getCallParameterList();

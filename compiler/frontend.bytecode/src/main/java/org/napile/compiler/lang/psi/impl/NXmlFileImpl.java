@@ -154,8 +154,8 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile, StubBas
 
 		final NapileFile mirrorFile = (NapileFile) mirrorElement;
 
-		packageImpl = new NXmlPackageImpl(this);
-		packageImpl.setMirror((TreeElement) SourceTreeToPsiMap.psiElementToTree(mirrorFile.getPackage()));
+		packageImpl = new NXmlPackageImpl(this, mirrorFile.getPackage());
+
 		setMirrors(getDeclarations(), mirrorFile.getDeclarations());
 	}
 

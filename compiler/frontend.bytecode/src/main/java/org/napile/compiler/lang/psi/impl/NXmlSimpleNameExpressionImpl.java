@@ -40,9 +40,9 @@ public class NXmlSimpleNameExpressionImpl extends NXmlParentedElementBase implem
 {
 	private NXmlIdentifierImpl identifier;
 
-	public NXmlSimpleNameExpressionImpl(PsiElement parent)
+	public NXmlSimpleNameExpressionImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override

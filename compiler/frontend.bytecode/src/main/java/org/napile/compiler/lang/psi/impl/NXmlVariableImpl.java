@@ -59,17 +59,14 @@ public class NXmlVariableImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariab
 		setMirrorCheckingType(element, null);
 		setMirrorIfPresent(getModifierList(),  mirror.getModifierList());
 
-		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getType());
+		returnType = new NXmlTypeReferenceImpl(this, mirror.getType());
 		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 		mutable = mirror.isMutable();
 		accessors.clear();
 
 		for(NapileVariableAccessor accessor : mirror.getAccessors())
 		{
-			final NXmlVariableAccessorImpl variableAccessor = new NXmlVariableAccessorImpl(this);
-			variableAccessor.setMirror(SourceTreeToPsiMap.psiToTreeNotNull(accessor));
-
-			accessors.add(variableAccessor);
+			accessors.add(new NXmlVariableAccessorImpl(this, accessor));
 		}
 
 		setMirrors(getAccessors(), mirror.getAccessors());

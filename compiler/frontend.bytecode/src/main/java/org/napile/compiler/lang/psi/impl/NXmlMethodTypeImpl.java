@@ -43,9 +43,9 @@ public class NXmlMethodTypeImpl extends NXmlParentedElementBase implements Napil
 	private NXmlTypeReferenceImpl returnType;
 	private NXmlCallParameterListImpl callParameterList;
 
-	public NXmlMethodTypeImpl(PsiElement parent)
+	public NXmlMethodTypeImpl(PsiElement parent, PsiElement mirror)
 	{
-		super(parent);
+		super(parent, mirror);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class NXmlMethodTypeImpl extends NXmlParentedElementBase implements Napil
 
 		setMirrorCheckingType(element, null);
 
-		returnType = NXmlMirrorUtil.mirrorType(this, mirror.getReturnTypeRef());
+		returnType = new NXmlTypeReferenceImpl(this, mirror.getReturnTypeRef());
 		callParameterList = new NXmlCallParameterListImpl(this, mirror.getParameterList());
 	}
 
