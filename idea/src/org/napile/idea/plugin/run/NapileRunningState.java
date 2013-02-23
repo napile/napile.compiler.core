@@ -52,7 +52,7 @@ public class NapileRunningState extends CommandLineState
 		parameters.getVMParametersList().add("-classpath");
 		parameters.getVMParametersList().add(configuration.napileJvm);
 
-		VirtualFile outpath = CompilerPaths.getModuleOutputDirectory(configuration.getConfigurationModule().getModule(), false);
+		VirtualFile outpath = CompilerPaths.getModuleOutputDirectory(configuration.getConfigurationModule().getModule(), configuration.isInTestRoot);
 		if(outpath == null)
 			throw new ExecutionException("Cant find module output");
 

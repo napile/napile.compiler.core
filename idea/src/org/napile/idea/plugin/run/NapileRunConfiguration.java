@@ -51,6 +51,7 @@ public class NapileRunConfiguration extends ModuleBasedConfiguration<NapileRunCo
 	public String mainClass;
 	public String jdkName;
 	public String napileJvm = "C:/napile.jvm/*;";
+	public boolean isInTestRoot;
 
 	public NapileRunConfiguration(Project project, String name, ConfigurationFactory f)
 	{
@@ -95,7 +96,7 @@ public class NapileRunConfiguration extends ModuleBasedConfiguration<NapileRunCo
 
 		readModule(element);
 
-		XmlSerializer.serializeInto(this, element);
+		XmlSerializer.deserializeInto(this, element);
 	}
 
 	@Override
@@ -105,7 +106,7 @@ public class NapileRunConfiguration extends ModuleBasedConfiguration<NapileRunCo
 
 		writeModule(element);
 
-		XmlSerializer.deserializeInto(this, element);
+		XmlSerializer.serializeInto(this, element);
 	}
 
 	@Nullable
