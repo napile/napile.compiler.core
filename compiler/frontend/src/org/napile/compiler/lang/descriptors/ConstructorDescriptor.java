@@ -47,7 +47,7 @@ public class ConstructorDescriptor extends AbstractMethodDescriptorImpl
 
 	public ConstructorDescriptor initialize(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull List<CallParameterDescriptor> unsubstitutedValueParameters, Visibility visibility)
 	{
-		super.initialize(isStatic() ? ReceiverDescriptor.NO_RECEIVER : getExpectedThisObject(getContainingDeclaration()), typeParameters, unsubstitutedValueParameters, null, Modality.FINAL, visibility);
+		super.initialize(isStatic() ? ReceiverDescriptor.NO_RECEIVER : getExpectedThisObject(getContainingDeclaration()), typeParameters, unsubstitutedValueParameters, null, Modality.OPEN, visibility);
 		return this;
 	}
 

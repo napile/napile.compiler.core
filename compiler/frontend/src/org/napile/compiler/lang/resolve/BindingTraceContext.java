@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.util.slicedmap.MutableSlicedMap;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
@@ -69,6 +70,9 @@ public class BindingTraceContext implements BindingTrace
 	@Override
 	public void report(@NotNull Diagnostic diagnostic)
 	{
+		if(diagnostic.getPsiFile().getVirtualFile().getFileType() == NXmlFileType.INSTANCE)
+			return;
+
 		diagnostics.add(diagnostic);
 	}
 

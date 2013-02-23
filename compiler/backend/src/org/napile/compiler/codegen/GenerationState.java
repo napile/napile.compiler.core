@@ -21,6 +21,7 @@ package org.napile.compiler.codegen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class GenerationState
 {
 	private final Progress progress;
 	@NotNull
-	private final List<NapileFile> files;
+	private final Collection<NapileFile> files;
 	@NotNull
 	private final BindingTrace bindingTrace;
 
@@ -50,7 +51,7 @@ public class GenerationState
 
 	private boolean used = false;
 
-	public GenerationState(@NotNull Project project, Progress progress, @NotNull AnalyzeExhaust exhaust, @NotNull List<NapileFile> files)
+	public GenerationState(@NotNull Project project, Progress progress, @NotNull AnalyzeExhaust exhaust, @NotNull Collection<NapileFile> files)
 	{
 		this.progress = progress;
 		this.files = files;

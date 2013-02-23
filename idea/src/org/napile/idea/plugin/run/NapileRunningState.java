@@ -52,12 +52,14 @@ public class NapileRunningState extends CommandLineState
 		parameters.getVMParametersList().add("-classpath");
 		parameters.getVMParametersList().add(configuration.napileJvm);
 
-		VirtualFile virtualFile = CompilerPaths.getModuleOutputDirectory(configuration.getConfigurationModule().getModule(), false);
-		if(virtualFile == null)
+		VirtualFile outpath = CompilerPaths.getModuleOutputDirectory(configuration.getConfigurationModule().getModule(), false);
+		if(outpath == null)
 			throw new ExecutionException("Cant find module output");
 
+		NapileClasspathCollector classpathCollector = new NapileClasspathCollector(configuration.getConfigurationModule().getModule());
+
 		parameters.getProgramParametersList().add("-cp");
-		parameters.getProgramParametersList().add(virtualFile.getPath());
+		parameters.getProgramParametersList().add(classpathCollector.getClasspath() + outpath.getPath());
 		parameters.getProgramParametersList().add(configuration.mainClass);
 
 		return parameters.createOSProcessHandler();
