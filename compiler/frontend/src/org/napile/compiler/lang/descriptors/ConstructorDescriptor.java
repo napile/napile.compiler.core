@@ -97,7 +97,7 @@ public class ConstructorDescriptor extends AbstractMethodDescriptorImpl
 		if(kind != Kind.DECLARATION)
 			throw new IllegalStateException();
 
-		return new ConstructorDescriptor((ClassDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList(), isStatic());//TODO annotation list
+		return new ConstructorDescriptor((ClassifierDescriptor) newOwner, this, Collections.<AnnotationDescriptor>emptyList(), isStatic());//TODO annotation list
 	}
 
 	@NotNull

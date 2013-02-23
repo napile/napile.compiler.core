@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptorImpl;
@@ -77,6 +78,10 @@ public class DescriptorSubstitutor
 				substituted.getUpperBounds().add(substitutor.substitute(upperBound, null));
 			}
 
+			for(ConstructorDescriptor constructorDescriptor  : descriptor.getConstructors())
+			{
+				substituted.addConstructor((ConstructorDescriptor)constructorDescriptor.substitute(substitutor));
+			}
 			result.add(substituted);
 		}
 
