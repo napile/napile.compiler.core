@@ -117,7 +117,9 @@ public class DeclarationsChecker
 	{
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType jetType = trace.safeGet(BindingContext.TYPE, typeReference);
+			JetType jetType = trace.get(BindingContext.TYPE, typeReference);
+			if(jetType == null)
+				continue;
 
 			ClassifierDescriptor classifierDescriptor = jetType.getConstructor().getDeclarationDescriptor();
 			if(classifierDescriptor instanceof ClassDescriptor)
@@ -135,7 +137,10 @@ public class DeclarationsChecker
 		List<JetType> list = new ArrayList<JetType>(typeReferences.size());
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType jetType = trace.safeGet(BindingContext.TYPE, typeReference);
+			JetType jetType = trace.get(BindingContext.TYPE, typeReference);
+			if(jetType == null)
+				continue;
+
 			if(list.contains(jetType))
 				trace.report(Errors.SUPERTYPE_APPEARS_TWICE.on(typeReference));
 			else
