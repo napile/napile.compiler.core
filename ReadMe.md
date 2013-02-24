@@ -10,10 +10,23 @@ It have some special futures:
  * mutable & immutable types
  * and many others
 
+# Hello World
+
+```
+import napile.logging.Logger
+
+class Main
+{
+	static meth main(val arg : Array<String>)
+	{
+		Logger.System.info("Hello World!!!")
+	}
+}
+```
 
 # Developing
 
- * U need last build IntelliJ IDEA 12
+ * Need [IntelliJ IDEA 12.1 EAP](http://confluence.jetbrains.com/display/IDEADEV/IDEA+12.1+EAP)
  * Downloaded sources of
     * [napile.compiler](https://github.com/napile-lang/napile.compiler) - base source, compiler + IDEA plugin
     * [napile.classpath.draft](https://github.com/napile-lang/napile.classpath.draft) - draft classlib in napile
