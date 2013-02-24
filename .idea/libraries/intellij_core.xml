@@ -118,8 +118,6 @@
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/IntentionPowerPak/testSrc" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/IntentionPowerPak/test" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/IntentionPowerPak/src" />
-      <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/spellchecker/testSrc" />
-      <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/spellchecker/src" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/InspectionGadgets/test" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/InspectionGadgets/testsrc" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/InspectionGadgets/src" />
@@ -142,7 +140,6 @@
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/ui-designer/jps-plugin/testSrc" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/ui-designer/jps-plugin/src" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/ui-designer/testSrc" />
-      <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/ui-designer/ui-designer-new/src" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/ui-designer/src" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/hg4idea/testSrc" />
       <root url="jar://G:/Programs/IDEA CE/sources.zip!/plugins/hg4idea/src" />
