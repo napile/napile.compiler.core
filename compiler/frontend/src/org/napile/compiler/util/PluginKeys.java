@@ -9,5 +9,5 @@ import com.intellij.openapi.util.Key;
  */
 public interface PluginKeys
 {
-	Key<DeclarationDescriptor> DESCRIPTOR_KEY = Key.create("napile-class");
+	Key<DeclarationDescriptor> DESCRIPTOR_KEY = Key.create("napile-descriptor-key");
 }
