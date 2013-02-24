@@ -42,8 +42,6 @@ import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiCompiledFile;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 
@@ -134,7 +132,7 @@ public class TopDownAnalyzer
 		this.bodyResolver = bodyResolver;
 	}
 
-	public void doProcessSource(JetScope outerScope, DescriptorBuilder owner, Collection<? extends PsiElement> declarations)
+	public void doProcess(JetScope outerScope, DescriptorBuilder owner, Collection<? extends NapileFile> declarations)
 	{
 		//        context.enableDebugOutput();
 		context.debug("Enter");
@@ -163,7 +161,7 @@ public class TopDownAnalyzer
 		{
 			mutableClassDescriptor.lockScopes();
 		}
-		for(Map.Entry<NapileFile, WritableScope> namespaceScope : context.getNamespaceScopes().entrySet())
+		for(Map.Entry<NapileFile, WritableScope> namespaceScope : context.getPackageScope().entrySet())
 		{
 			namespaceScope.getValue().changeLockLevel(WritableScope.LockLevel.READING);
 		}
@@ -198,7 +196,7 @@ public class TopDownAnalyzer
 
 		// dummy builder is used because "root" is module descriptor,
 		// namespaces added to module explicitly in
-		doProcessSource(scope, owner, files);
+		doProcess(scope, owner, files);
 	}
 
 	private void collect(@NotNull List<NapileFile> list, @NotNull VirtualFile virtualFile, @NotNull PsiManager manager)

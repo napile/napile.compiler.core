@@ -70,7 +70,7 @@ public class NapileVisitorVoid extends PsiElementVisitor
 
 	public void visitNapileFile(NapileFile file)
 	{
-		visitFile(file);
+		visitJetElement(file);
 	}
 
 	public void visitImportDirective(NapileImportDirective importDirective)

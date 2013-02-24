@@ -32,7 +32,6 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptor;
-import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
@@ -42,6 +41,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.util.PluginKeys;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -199,9 +199,9 @@ public class DeclarationResolver
 
 	private void checkRedeclarationsInNamespaces()
 	{
-		for(PackageDescriptorImpl descriptor : context.getNamespaceDescriptors().values())
+		for(PackageDescriptor descriptor : context.getPackages().values())
 		{
-			Multimap<Name, DeclarationDescriptor> simpleNameDescriptors = descriptor.getMemberScope().getDeclaredDescriptorsAccessibleBySimpleName();
+			Multimap<Name, DeclarationDescriptor> simpleNameDescriptors = ((WritableScope) descriptor.getMemberScope()).getDeclaredDescriptorsAccessibleBySimpleName();
 			for(Name name : simpleNameDescriptors.keySet())
 			{
 				Collection<DeclarationDescriptor> descriptors = simpleNameDescriptors.get(name);

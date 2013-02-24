@@ -25,18 +25,24 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lang.NapileLanguage;
+import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePackage;
+import org.napile.compiler.lang.psi.NapileTreeVisitor;
+import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.psi.FileViewProvider;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.stubs.StubElement;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 
 public class NapileFileImpl extends PsiFileBase implements NapileFile
@@ -127,5 +133,42 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 		{
 			visitor.visitFile(this);
 		}
+	}
+
+	@NotNull
+	@Override
+	public NapileFile getContainingFile()
+	{
+		return this;
+	}
+
+	@Override
+	public IElementType getElementType()
+	{
+		return NapileNodes.NAPILE_FILE;
+	}
+
+	@Override
+	public <D> void acceptChildren(@NotNull NapileTreeVisitor<D> visitor, D data)
+	{
+		PsiElement child = getFirstChild();
+		while(child != null)
+		{
+			if(child instanceof NapileElement)
+				((NapileElement) child).accept(visitor, data);
+			child = child.getNextSibling();
+		}
+	}
+
+	@Override
+	public void accept(@NotNull NapileVisitorVoid visitor)
+	{
+		visitor.visitNapileFile(this);
+	}
+
+	@Override
+	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
+	{
+		return visitor.visitNapileFile(this, data);
 	}
 }

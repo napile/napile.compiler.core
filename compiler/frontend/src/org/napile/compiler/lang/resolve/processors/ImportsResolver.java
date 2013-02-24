@@ -98,9 +98,9 @@ public class ImportsResolver
 
 	private void processImports(boolean onlyClasses, @NotNull JetScope rootScope)
 	{
-		for(NapileFile file : context.getNamespaceDescriptors().keySet())
+		for(NapileFile file : context.getPackages().keySet())
 		{
-			WritableScope namespaceScope = context.getNamespaceScopes().get(file);
+			WritableScope namespaceScope = context.getPackageScope().get(file);
 			processImportsInFile(onlyClasses, namespaceScope, file.getImportDirectives(), rootScope);
 		}
 	}

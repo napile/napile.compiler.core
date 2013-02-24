@@ -22,6 +22,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
@@ -30,6 +31,7 @@ import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileEnumValue;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -43,6 +45,12 @@ public interface BodiesResolveContext
 	{
 		@Override
 		public Map<NapileClass, MutableClassDescriptor> getClasses()
+		{
+			return Collections.emptyMap();
+		}
+
+		@Override
+		public Map<NapileFile, PackageDescriptor> getPackages()
 		{
 			return Collections.emptyMap();
 		}
@@ -97,6 +105,8 @@ public interface BodiesResolveContext
 	};
 
 	Map<NapileClass, MutableClassDescriptor> getClasses();
+
+	Map<NapileFile, PackageDescriptor> getPackages();
 
 	Map<NapileAnonymClass, MutableClassDescriptor> getAnonymous();
 

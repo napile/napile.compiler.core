@@ -22,9 +22,18 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileEnumValue;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 
 /**
@@ -40,7 +49,8 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors;
 	private final Map<NapileVariable, VariableDescriptor> variables;
 	private final Map<NapileEnumValue, MutableClassDescriptor> enumValues;
-	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> functions;
+	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> methods;
+	private final Map<NapileFile, PackageDescriptor> packages;
 	private final Map<NapileDeclaration, JetScope> declaringScopes;
 
 	private
@@ -54,7 +64,8 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 		constructors = Collections.unmodifiableMap(context.getConstructors());
 		variables = Collections.unmodifiableMap(context.getVariables());
 		enumValues = Collections.unmodifiableMap(context.getEnumValues());
-		functions = Collections.unmodifiableMap(context.getMethods());
+		methods = Collections.unmodifiableMap(context.getMethods());
+		packages = Collections.unmodifiableMap(context.getPackages());
 		declaringScopes = Collections.unmodifiableMap(context.getDeclaringScopes());
 
 		topDownAnalysisParameters = context.getTopDownAnalysisParameters();
@@ -64,6 +75,12 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	public Map<NapileClass, MutableClassDescriptor> getClasses()
 	{
 		return classes;
+	}
+
+	@Override
+	public Map<NapileFile, PackageDescriptor> getPackages()
+	{
+		return packages;
 	}
 
 	@Override
@@ -93,7 +110,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	@Override
 	public Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods()
 	{
-		return functions;
+		return methods;
 	}
 
 	@Override

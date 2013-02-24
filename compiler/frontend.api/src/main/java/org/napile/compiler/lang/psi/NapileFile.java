@@ -27,7 +27,7 @@ import com.intellij.psi.impl.source.PsiFileWithStubSupport;
  * @author VISTALL
  * @date 20:02/09.10.12
  */
-public interface NapileFile extends NapileDeclarationContainer<NapileClass>, PsiFileWithStubSupport, PsiFileEx
+public interface NapileFile extends NapileDeclarationContainer<NapileClass>, PsiFileWithStubSupport, PsiFileEx, NapileElement
 {
 	@NotNull
 	NapilePackage getPackage();

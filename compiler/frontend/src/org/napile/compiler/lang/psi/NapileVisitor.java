@@ -25,8 +25,7 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 {
 	public R visitNapileFile(NapileFile dcl, D data)
 	{
-		visitFile(dcl);
-		return null;
+		return visitJetElement(dcl, data);
 	}
 
 	public R visitJetElement(NapileElement element, D data)

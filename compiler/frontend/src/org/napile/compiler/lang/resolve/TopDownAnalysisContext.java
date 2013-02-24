@@ -27,11 +27,18 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.descriptors.WithDeferredResolve;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileAnonymClass;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileEnumValue;
+import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Maps;
@@ -44,7 +51,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 
 	private final Map<NapileClass, MutableClassDescriptor> classes = Maps.newLinkedHashMap();
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects = Maps.newLinkedHashMap();
-	protected final Map<NapileFile, PackageDescriptorImpl> namespaceDescriptors = Maps.newHashMap();
+	private final Map<NapileFile, PackageDescriptor> packages = Maps.newHashMap();
 
 	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
@@ -54,11 +61,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	private Map<NapileDeclaration, CallableMemberDescriptor> members = null;
 
 	// File scopes - package scope extended with imports
-	protected final Map<NapileFile, WritableScope> namespaceScopes = Maps.newHashMap();
-
-	public final Map<NapileDeclarationContainer, WithDeferredResolve> forDeferredResolver = Maps.newHashMap();
-
-	public final Map<NapileDeclarationContainer, JetScope> normalScope = Maps.newHashMap();
+	protected final Map<NapileFile, WritableScope> packageScopes = Maps.newHashMap();
 
 	private StringBuilder debugOutput;
 
@@ -126,14 +129,15 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 		return objects;
 	}
 
-	public Map<NapileFile, WritableScope> getNamespaceScopes()
+	public Map<NapileFile, WritableScope> getPackageScope()
 	{
-		return namespaceScopes;
+		return packageScopes;
 	}
 
-	public Map<NapileFile, PackageDescriptorImpl> getNamespaceDescriptors()
+	@Override
+	public Map<NapileFile, PackageDescriptor> getPackages()
 	{
-		return namespaceDescriptors;
+		return packages;
 	}
 
 	@Override

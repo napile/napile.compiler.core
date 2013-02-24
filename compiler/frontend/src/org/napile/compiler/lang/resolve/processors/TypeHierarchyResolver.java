@@ -25,18 +25,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -56,6 +53,7 @@ import org.napile.compiler.util.PluginKeys;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNameIdentifierOwner;
 
@@ -124,37 +122,9 @@ public class TypeHierarchyResolver
 		this.annotationResolver = annotationResolver;
 	}
 
-	public void process(@NotNull JetScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends PsiElement> declarations)
+	public void process(@NotNull JetScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends NapileFile> napileFiles)
 	{
-
-		{
-			// TODO: Very temp code - main goal is to remove recursion from collectNamespacesAndClassifiers
-			Queue<NapileDeclarationContainer> forDeferredResolve = new LinkedList<NapileDeclarationContainer>();
-			forDeferredResolve.addAll(collectNamespacesAndClassifiers(outerScope, owner, declarations.toArray(new PsiElement[declarations.size()])));
-
-			while(!forDeferredResolve.isEmpty())
-			{
-				NapileDeclarationContainer declarationContainer = forDeferredResolve.poll();
-				assert declarationContainer != null;
-
-				WithDeferredResolve descriptorForDeferredResolve = context.forDeferredResolver.get(declarationContainer);
-				JetScope scope = context.normalScope.get(declarationContainer);
-
-				// Even more temp code
-				if(descriptorForDeferredResolve instanceof MutableClassDescriptorLite)
-				{
-					forDeferredResolve.addAll(collectNamespacesAndClassifiers(scope, ((MutableClassDescriptorLite) descriptorForDeferredResolve).getBuilder(), declarationContainer.getDeclarations()));
-				}
-				else if(descriptorForDeferredResolve instanceof PackageDescriptorImpl)
-				{
-					forDeferredResolve.addAll(collectNamespacesAndClassifiers(scope, ((PackageDescriptorImpl) descriptorForDeferredResolve).getBuilder(), declarationContainer.getDeclarations()));
-				}
-				else
-				{
-					assert false;
-				}
-			}
-		}
+		collectDescriptors(outerScope, owner, napileFiles);
 
 		importsResolver.processTypeImports(outerScope);
 
@@ -174,47 +144,53 @@ public class TypeHierarchyResolver
 		checkTypesInClassHeaders(); // Check bounds in the types used in generic bounds and supertype lists
 	}
 
-	@Nullable
-	private Collection<NapileDeclarationContainer> collectNamespacesAndClassifiers(@NotNull final JetScope outerScope, @NotNull final DescriptorBuilder owner, @NotNull PsiElement[] declarations)
+	private void collectDescriptors(@NotNull JetScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends NapileFile> files)
 	{
-		final Collection<NapileDeclarationContainer> forDeferredResolve = new ArrayList<NapileDeclarationContainer>();
-
-		for(PsiElement declaration : declarations)
+		for(NapileFile file : files)
 		{
-			declaration.accept(new NapileVisitorVoid()
+			file.accept(new NapileTreeVisitor<Pair<DescriptorBuilder, JetScope>>()
 			{
 				@Override
-				public void visitNapileFile(NapileFile file)
+				public Void visitNapileFile(NapileFile file, Pair<DescriptorBuilder, JetScope> pair)
 				{
-					PackageDescriptorImpl namespaceDescriptor = namespaceFactory.createNamespaceDescriptorPathIfNeeded(file, outerScope, RedeclarationHandler.DO_NOTHING);
-					context.getNamespaceDescriptors().put(file, namespaceDescriptor);
+					//final DescriptorBuilder builder = pair.getFirst();
+					final JetScope scope = pair.getSecond();
 
-					WriteThroughScope namespaceScope = new WriteThroughScope(outerScope, namespaceDescriptor.getMemberScope(), new TraceBasedRedeclarationHandler(trace), "namespace");
+					PackageDescriptorImpl packageDescriptor = namespaceFactory.createNamespaceDescriptorPathIfNeeded(file, scope, RedeclarationHandler.DO_NOTHING);
+					context.getPackages().put(file, packageDescriptor);
+
+					WriteThroughScope namespaceScope = new WriteThroughScope(scope, packageDescriptor.getMemberScope(), new TraceBasedRedeclarationHandler(trace), "package");
 					namespaceScope.changeLockLevel(WritableScope.LockLevel.BOTH);
-					context.getNamespaceScopes().put(file, namespaceScope);
+					context.getPackageScope().put(file, namespaceScope);
 
-					prepareForDeferredCall(namespaceScope, namespaceDescriptor, file);
+					file.acceptChildren(this, new Pair<DescriptorBuilder, JetScope>(packageDescriptor.getBuilder(), namespaceScope));
+					return null;
 				}
 
 				@Override
-				public void visitClass(NapileClass declaration)
+				public Void visitClass(NapileClass declaration, Pair<DescriptorBuilder, JetScope> pair)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), NapilePsiUtil.isStatic(declaration));
+					final DescriptorBuilder builder = pair.getFirst();
+					final JetScope scope = pair.getSecond();
+
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(builder.getOwnerForChildren(), scope, ClassKind.CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(scope, declaration, trace), NapilePsiUtil.isStatic(declaration));
 
 					context.getClasses().put(declaration, mutableClassDescriptor);
 					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(declaration), mutableClassDescriptor);
 
-					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
+					builder.addClassifierDescriptor(mutableClassDescriptor);
 
-					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
-
-					owner.addClassifierDescriptor(mutableClassDescriptor);
+					declaration.acceptChildren(this, new Pair<DescriptorBuilder, JetScope>(mutableClassDescriptor.getBuilder(), mutableClassDescriptor.getScopeForMemberResolution()));
+					return null;
 				}
 
 				@Override
-				public void visitEnumValue(NapileEnumValue value)
+				public Void visitEnumValue(NapileEnumValue value, Pair<DescriptorBuilder, JetScope> pair)
 				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.CLASS, value.getNameAsSafeName(), annotationResolver.bindAnnotations(outerScope, value, trace), true);
+					final DescriptorBuilder builder = pair.getFirst();
+					final JetScope scope = pair.getSecond();
+
+					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(builder.getOwnerForChildren(), scope, ClassKind.CLASS, value.getNameAsSafeName(), annotationResolver.bindAnnotations(scope, value, trace), true);
 
 					ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(mutableClassDescriptor, Collections.<AnnotationDescriptor>emptyList(), false);
 					constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), Visibility.PUBLIC);
@@ -225,38 +201,12 @@ public class TypeHierarchyResolver
 					context.getEnumValues().put(value, mutableClassDescriptor);
 
 					trace.record(BindingContext.CLASS, value, mutableClassDescriptor);
+
+					value.acceptChildren(this, new Pair<DescriptorBuilder, JetScope>(mutableClassDescriptor.getBuilder(), mutableClassDescriptor.getScopeForMemberResolution()));
+					return null;
 				}
-
-				@Override
-				public void visitAnonymClass(NapileAnonymClass declaration)
-				{
-					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner.getOwnerForChildren(), outerScope, ClassKind.ANONYM_CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(outerScope, declaration, trace), false);
-					context.getAnonymous().put(declaration, mutableClassDescriptor);
-
-					JetScope classScope = mutableClassDescriptor.getScopeForMemberResolution();
-
-					prepareForDeferredCall(classScope, mutableClassDescriptor, declaration);
-
-					ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(mutableClassDescriptor, Collections.<AnnotationDescriptor>emptyList(), false);
-					constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), Visibility.PUBLIC);
-					mutableClassDescriptor.addConstructor(constructorDescriptor);
-
-					trace.record(BindingContext.CONSTRUCTOR, declaration, constructorDescriptor);
-
-					owner.addAnonymClassDescriptor(mutableClassDescriptor);
-					trace.record(BindingContext.CLASS, declaration, mutableClassDescriptor);
-				}
-
-				private void prepareForDeferredCall(@NotNull JetScope outerScope, @NotNull WithDeferredResolve withDeferredResolve, @NotNull NapileDeclarationContainer container)
-				{
-					forDeferredResolve.add(container);
-					context.normalScope.put(container, outerScope);
-					context.forDeferredResolver.put(container, withDeferredResolve);
-				}
-			});
+			}, new Pair<DescriptorBuilder, JetScope>(owner, outerScope));
 		}
-
-		return forDeferredResolve;
 	}
 
 
