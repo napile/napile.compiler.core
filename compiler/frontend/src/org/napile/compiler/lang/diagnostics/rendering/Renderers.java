@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.Named;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -128,11 +129,11 @@ public class Renderers
 		}
 	};
 
-	public static final Renderer<Collection<? extends CallableDescriptor>> AMBIGUOUS_DESCRIPTIONS = new Renderer<Collection<? extends CallableDescriptor>>()
+	public static final Renderer<Collection<? extends MethodDescriptor>> AMBIGUOUS_DESCRIPTIONS = new Renderer<Collection<? extends MethodDescriptor>>()
 	{
 		@NotNull
 		@Override
-		public String render(@NotNull Collection<? extends CallableDescriptor> argument)
+		public String render(@NotNull Collection<? extends MethodDescriptor> argument)
 		{
 			StringBuilder stringBuilder = new StringBuilder("\n");
 			for(CallableDescriptor call : argument)

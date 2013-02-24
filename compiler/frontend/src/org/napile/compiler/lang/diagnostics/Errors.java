@@ -24,6 +24,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
@@ -183,8 +184,8 @@ public interface Errors
 	SimpleDiagnosticFactory<PsiElement> NO_GENERICS_IN_SUPERTYPE_SPECIFIER = SimpleDiagnosticFactory.create(Severity.ERROR);
 
 	SimpleDiagnosticFactory<NapileExpression> ITERATOR_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
-	AmbiguousDescriptorCallDiagnosticFactory ITERATOR_AMBIGUITY = AmbiguousDescriptorCallDiagnosticFactory.create();
-	AmbiguousDescriptorDiagnosticFactory AMBIGUOUS_LINK_METHOD = AmbiguousDescriptorDiagnosticFactory.create();
+	DiagnosticFactory1<PsiElement, Collection<? extends ResolvedCall<? extends CallableDescriptor>>> ITERATOR_AMBIGUITY = DiagnosticFactory1.create(Severity.ERROR);
+	DiagnosticFactory1<PsiElement, Collection<? extends MethodDescriptor>> AMBIGUOUS_LINK_METHOD = DiagnosticFactory1.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileSimpleNameExpression, JetType> COMPARE_TO_TYPE_MISMATCH = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, JetType> CALLEE_NOT_A_FUNCTION = DiagnosticFactory1.create(Severity.ERROR);
@@ -283,8 +284,8 @@ public interface Errors
 	DiagnosticFactory3<NapileExpression, String, JetType, JetType> RESULT_TYPE_MISMATCH = DiagnosticFactory3.create(Severity.ERROR);
 	DiagnosticFactory3<NapileReferenceExpression, String, String, String> UNSAFE_INFIX_CALL = DiagnosticFactory3.create(Severity.ERROR);
 
-	AmbiguousDescriptorCallDiagnosticFactory OVERLOAD_RESOLUTION_AMBIGUITY = new AmbiguousDescriptorCallDiagnosticFactory();
-	AmbiguousDescriptorCallDiagnosticFactory NONE_APPLICABLE = new AmbiguousDescriptorCallDiagnosticFactory();
+	DiagnosticFactory1<PsiElement, Collection<? extends ResolvedCall<? extends CallableDescriptor>>> OVERLOAD_RESOLUTION_AMBIGUITY = DiagnosticFactory1.create(Severity.ERROR);
+	DiagnosticFactory1<PsiElement, Collection<? extends ResolvedCall<? extends CallableDescriptor>>> NONE_APPLICABLE = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, CallParameterDescriptor> NO_VALUE_FOR_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReferenceExpression> NO_RECEIVER_ADMITTED = SimpleDiagnosticFactory.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, ClassifierDescriptor> NO_CLASS_OBJECT = DiagnosticFactory1.create(Severity.ERROR);
