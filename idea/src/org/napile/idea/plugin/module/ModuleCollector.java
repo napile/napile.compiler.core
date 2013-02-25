@@ -16,12 +16,10 @@
 
 package org.napile.idea.plugin.module;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.analyzer.AnalyzeContext;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -31,7 +29,6 @@ import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
-import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentIterator;
 import com.intellij.openapi.roots.LibraryOrderEntry;
@@ -53,44 +50,6 @@ import com.intellij.util.SmartList;
  */
 public class ModuleCollector
 {
-	public static AnalyzeContext createAnalyzeContext(final @NotNull NapileFile rootFile)
-	{
-		VirtualFile virtualFile = rootFile.getVirtualFile();
-		if(virtualFile == null)
-			return AnalyzeContext.EMPTY;
-
-		Module module = ModuleUtilCore.findModuleForPsiElement(rootFile);
-
-		// TODO [VISTALL] rework it
-		if(module == null && virtualFile.getFileType() == NXmlFileType.INSTANCE)
-		{
-			VirtualFile lib = null;
-			VirtualFile parent = virtualFile.getParent();
-			while(parent != null)
-			{
-				if("nzip".equals(parent.getExtension()))
-				{
-					lib = parent;
-					break;
-				}
-				parent = parent.getParent();
-			}
-
-			return new AnalyzeContext(Collections.<NapileFile>emptyList(), Collections.singletonList(lib == null ? virtualFile : lib), Collections.<VirtualFile>emptyList());
-		}
-
-		if(module == null || ModuleType.get(module) != NapileModuleType.getInstance())
-		{
-			return AnalyzeContext.EMPTY;
-		}
-
-		ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-
-		final boolean test = moduleRootManager.getFileIndex().isInTestSourceContent(virtualFile);
-
-		return getAnalyzeContext(rootFile.getProject(), rootFile, test, module);
-	}
-
 	public static AnalyzeContext getAnalyzeContext(@NotNull final Project project, @Nullable final NapileFile rootFile, final boolean test, @NotNull Module module)
 	{
 		final Set<NapileFile> analyzeFiles = Sets.newLinkedHashSet();
