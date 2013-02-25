@@ -33,7 +33,9 @@ import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.OrderEntry;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.roots.libraries.LibraryUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -94,6 +96,15 @@ public class ModuleAnalyzerUtil
 	private static AnalyzeExhaust analyzeFileWithCache(@NotNull final NapileFile file)
 	{
 		Module module = ModuleUtilCore.findModuleForPsiElement(file);
+		if(module == null)
+		{
+			final OrderEntry libraryEntry = LibraryUtil.findLibraryEntry(file.getVirtualFile(), file.getProject());
+			if(libraryEntry != null)
+			{
+				module = libraryEntry.getOwnerModule();
+			}
+		}
+
 		if(module == null)
 		{
 			return ModuleAnalyzer.EMPTY;
