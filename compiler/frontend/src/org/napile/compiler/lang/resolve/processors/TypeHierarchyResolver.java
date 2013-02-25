@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
@@ -141,7 +142,7 @@ public class TypeHierarchyResolver
 		checkSupertypesForConsistency();
 		//        computeSuperclasses();
 
-		checkTypesInClassHeaders(); // Check bounds in the types used in generic bounds and supertype lists
+		checkBoundsInTypes(); // Check bounds in the types used in generic bounds and supertype lists
 	}
 
 	private void collectDescriptors(@NotNull JetScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends NapileFile> files)
@@ -446,30 +447,67 @@ public class TypeHierarchyResolver
 		}
 	}
 
-	private void checkTypesInClassHeaders()
+	private void checkBoundsInTypes()
 	{
 		for(Map.Entry<NapileClass, MutableClassDescriptor> entry : context.getClasses().entrySet())
 		{
 			NapileClass napileClass = entry.getKey();
 
-			for(NapileTypeReference typeReference : napileClass.getSuperTypes())
+			checkBounds(napileClass.getSuperTypes());
+
+			for(NapileTypeParameter typeParameter : napileClass.getTypeParameters())
 			{
-				JetType type = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
-				if(type != null)
-						descriptorResolver.checkBounds(typeReference, type, trace);
+				checkBounds(typeParameter.getSuperTypes());
+			}
+		}
+
+		for(Map.Entry<NapileVariable, VariableDescriptor> entry : context.getVariables().entrySet())
+		{
+			final NapileVariable variable = entry.getKey();
+
+			checkBounds(variable.getType());
+		}
+
+		for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : context.getMethods().entrySet())
+		{
+			final NapileNamedMethodOrMacro namedMethodOrMacro = entry.getKey();
+
+			checkBounds(namedMethodOrMacro.getReturnTypeRef());
+
+			for(NapileTypeParameter typeParameter : namedMethodOrMacro.getTypeParameters())
+			{
+				checkBounds(typeParameter.getSuperTypes());
 			}
 
-			for(NapileTypeParameter jetTypeParameter : napileClass.getTypeParameters())
+			for(NapileCallParameter callParameter : namedMethodOrMacro.getCallParameters())
 			{
-				for(NapileTypeReference extendsBound : jetTypeParameter.getSuperTypes())
+				if(callParameter instanceof NapileCallParameterAsVariable)
 				{
-					JetType type = trace.getBindingContext().get(BindingContext.TYPE, extendsBound);
-					if(type != null)
-					{
-						descriptorResolver.checkBounds(extendsBound, type, trace);
-					}
+					checkBounds(((NapileCallParameterAsVariable) callParameter).getTypeReference());
 				}
 			}
+		}
+	}
+
+	private void checkBounds(@NotNull List<? extends NapileTypeReference> typeReferences)
+	{
+		for(NapileTypeReference typeReference : typeReferences)
+		{
+			checkBounds(typeReference);
+		}
+	}
+
+	private void checkBounds(@Nullable NapileTypeReference typeReference)
+	{
+		if(typeReference == null)
+		{
+			return;
+		}
+
+		JetType type = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
+		if(type != null)
+		{
+			descriptorResolver.checkBounds(typeReference, type, trace);
 		}
 	}
 }

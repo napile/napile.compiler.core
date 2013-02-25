@@ -173,7 +173,7 @@ public class DescriptorResolver
 		NapileTypeReference returnTypeRef = method.getReturnTypeRef();
 		JetType returnType;
 		if(returnTypeRef != null)
-			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, true);
+			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, false);
 		else if(method.hasBlockBody())
 			returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
 		else
@@ -221,7 +221,7 @@ public class DescriptorResolver
 		NapileTypeReference returnTypeRef = macro.getReturnTypeRef();
 		JetType returnType;
 		if(returnTypeRef != null)
-			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, true);
+			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, false);
 		else if(macro.hasBlockBody())
 			returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
 		else
@@ -274,7 +274,7 @@ public class DescriptorResolver
 					type = ErrorUtils.createErrorType("Type annotation was missing");
 				}
 				else
-					type = typeResolver.resolveType(parameterScope, typeReference, trace, true);
+					type = typeResolver.resolveType(parameterScope, typeReference, trace, false);
 
 				callParameterDescriptor = resolveCallParameterDescriptor(parameterScope, methodDescriptor, ((NapileCallParameterAsVariable) parameter), i, type, trace);
 				parameterScope.addVariableDescriptor(callParameterDescriptor);
@@ -565,7 +565,7 @@ public class DescriptorResolver
 		}
 		else
 		{
-			return typeResolver.resolveType(scope, propertyTypeRef, trace, true);
+			return typeResolver.resolveType(scope, propertyTypeRef, trace, false);
 		}
 	}
 
