@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.resolve.processors.members;
 
-import static org.napile.compiler.lang.diagnostics.Errors.FINAL_CLASS_OBJECT_UPPER_BOUND;
 import static org.napile.compiler.lang.diagnostics.Errors.FINAL_UPPER_BOUND;
 
 import java.util.ArrayList;
@@ -35,7 +34,9 @@ import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterListOwner;
+import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
@@ -47,9 +48,8 @@ import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
+import com.intellij.openapi.util.Pair;
 
 /**
  * @author VISTALL
@@ -57,20 +57,6 @@ import com.google.common.collect.Lists;
  */
 public class TypeParameterResolver
 {
-	static final class UpperBoundCheckerTask
-	{
-		NapileTypeReference upperBound;
-		JetType upperBoundType;
-		boolean isClassObjectConstraint;
-
-		private UpperBoundCheckerTask(NapileTypeReference upperBound, JetType upperBoundType, boolean classObjectConstraint)
-		{
-			this.upperBound = upperBound;
-			this.upperBoundType = upperBoundType;
-			isClassObjectConstraint = classObjectConstraint;
-		}
-	}
-
 	@NotNull
 	private AnnotationResolver annotationResolver;
 
@@ -152,7 +138,7 @@ public class TypeParameterResolver
 
 	private void resolveGenericBounds(@NotNull NapileTypeParameterListOwner declaration, JetScope scope, List<TypeParameterDescriptor> parameters, BindingTrace trace)
 	{
-		List<UpperBoundCheckerTask> deferredUpperBoundCheckerTasks = Lists.newArrayList();
+		List<Pair<NapileTypeReference, JetType>> deferredUpperBoundCheckerTasks = Lists.newArrayList();
 
 		NapileTypeParameter[] typeParameters = declaration.getTypeParameters();
 		for(int i = 0; i < typeParameters.length; i++)
@@ -164,7 +150,7 @@ public class TypeParameterResolver
 			{
 				JetType type = typeResolver.resolveType(scope, extendsBound, trace, false);
 				((TypeParameterDescriptorImpl) typeParameterDescriptor).addUpperBound(type);
-				deferredUpperBoundCheckerTasks.add(new UpperBoundCheckerTask(extendsBound, type, false));
+				deferredUpperBoundCheckerTasks.add(new Pair<NapileTypeReference, JetType>(extendsBound, type));
 			}
 		}
 
@@ -173,31 +159,17 @@ public class TypeParameterResolver
 			((TypeParameterDescriptorImpl) typeParameterDescriptor).addDefaultUpperBound(scope);
 
 			((TypeParameterDescriptorImpl) typeParameterDescriptor).setInitialized();
-
-			/*if(false)
-			{
-				PsiElement nameIdentifier = typeParameters.get(typeParameterDescriptor.getIndex()).getNameIdentifier();
-				if(nameIdentifier != null)
-					trace.report(CONFLICTING_UPPER_BOUNDS.on(nameIdentifier, typeParameterDescriptor));
-			}  */
 		}
 
-		for(UpperBoundCheckerTask checkerTask : deferredUpperBoundCheckerTasks)
-			checkUpperBoundType(checkerTask.upperBound, checkerTask.upperBoundType, checkerTask.isClassObjectConstraint, trace);
+		for(Pair<NapileTypeReference, JetType> checkerTask : deferredUpperBoundCheckerTasks)
+			checkUpperBoundType(checkerTask.getFirst(), checkerTask.getSecond(), trace);
 	}
 
-	private static void checkUpperBoundType(NapileTypeReference upperBound, JetType upperBoundType, boolean isClassObjectConstraint, BindingTrace trace)
+	private static void checkUpperBoundType(NapileTypeReference upperBound, JetType upperBoundType, BindingTrace trace)
 	{
 		if(!TypeUtils.canHaveSubtypes(JetTypeChecker.INSTANCE, upperBoundType))
 		{
-			if(isClassObjectConstraint)
-			{
-				trace.report(FINAL_CLASS_OBJECT_UPPER_BOUND.on(upperBound, upperBoundType));
-			}
-			else
-			{
-				trace.report(FINAL_UPPER_BOUND.on(upperBound, upperBoundType));
-			}
+			trace.report(FINAL_UPPER_BOUND.on(upperBound, upperBoundType));
 		}
 	}
 }

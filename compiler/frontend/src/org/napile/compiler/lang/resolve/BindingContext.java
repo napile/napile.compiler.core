@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
@@ -179,22 +178,8 @@ public interface BindingContext extends BindingReader
 			VALUE_PARAMETER
 	};
 
-	WritableSlice<FqName, ClassDescriptor> FQNAME_TO_CLASS_DESCRIPTOR = new BasicWritableSlice<FqName, ClassDescriptor>(RewritePolicy.DO_NOTHING, true);
-	WritableSlice<FqName, MethodDescriptor> FQNAME_TO_METHOD_DESCRIPTOR = new BasicWritableSlice<FqName, MethodDescriptor>(RewritePolicy.DO_NOTHING, true);
-	WritableSlice<FqName, VariableDescriptorImpl> FQNAME_TO_VARIABLE_DESCRIPTOR = new BasicWritableSlice<FqName, VariableDescriptorImpl>(RewritePolicy.DO_NOTHING, true);
-
-	WritableSlice<FqName, PackageDescriptor> FQNAME_TO_NAMESPACE_DESCRIPTOR = new BasicWritableSlice<FqName, PackageDescriptor>(RewritePolicy.DO_NOTHING);
 
 	WritableSlice<CallParameterDescriptor, NapileExpression> DEFAULT_VALUE_OF_PARAMETER = Slices.createSimpleSlice();
-
-	WritableSlice[] FQNAME_TO_DESCRIPTORS = new WritableSlice[]
-	{
-		FQNAME_TO_CLASS_DESCRIPTOR,
-		FQNAME_TO_METHOD_DESCRIPTOR,
-		FQNAME_TO_VARIABLE_DESCRIPTOR
-	};
-
-	ReadOnlySlice<FqName, DeclarationDescriptor> FQNAME_TO_DESCRIPTOR = Slices.<FqName, DeclarationDescriptor>sliceBuilder().setFurtherLookupSlices(FQNAME_TO_DESCRIPTORS).build();
 
 	ReadOnlySlice<PsiElement, DeclarationDescriptor> DECLARATION_TO_DESCRIPTOR = Slices.<PsiElement, DeclarationDescriptor>sliceBuilder().setFurtherLookupSlices(DECLARATIONS_TO_DESCRIPTORS).build();
 

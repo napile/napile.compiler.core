@@ -430,7 +430,6 @@ public class DescriptorResolver
 
 		variableDescriptor.setType(type, typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
 
-		trace.record(BindingContext.FQNAME_TO_VARIABLE_DESCRIPTOR, DescriptorUtils.getFQName(variableDescriptor).toSafe(), variableDescriptor);
 		trace.record(BindingContext.VARIABLE, variable, variableDescriptor);
 
 		resolveVariableAccessors(containingDeclaration, scope, variable, trace, variableDescriptor);
@@ -459,7 +458,6 @@ public class DescriptorResolver
 		variableDescriptor.setType(m.getDefaultType(), typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
 
 		resolveVariableAccessors(containingDeclaration, scope, enumValue, trace, variableDescriptor);
-		trace.record(BindingContext.FQNAME_TO_VARIABLE_DESCRIPTOR, DescriptorUtils.getFQName(variableDescriptor).toSafe(), variableDescriptor);
 		trace.record(BindingContext.VARIABLE, enumValue, variableDescriptor);
 
 		return variableDescriptor;

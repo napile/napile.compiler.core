@@ -231,6 +231,5 @@ public class BindingContextUtils
 			throw new IllegalArgumentException("function of kind " + method.getKind() + " cannot have declaration");
 
 		trace.record(BindingContext.METHOD, psiElement, method);
-		trace.record(BindingContext.FQNAME_TO_METHOD_DESCRIPTOR, DescriptorUtils.getFQName(method).toSafe(), method);
 	}
 }

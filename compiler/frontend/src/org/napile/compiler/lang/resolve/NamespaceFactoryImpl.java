@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.resolve;
 
-import static org.napile.compiler.lang.resolve.BindingContext.FQNAME_TO_NAMESPACE_DESCRIPTOR;
 import static org.napile.compiler.lang.resolve.BindingContext.NAMESPACE_TO_FILES;
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.RESOLUTION_SCOPE;
@@ -32,10 +31,11 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
+import org.napile.compiler.lang.descriptors.NamespaceDescriptorParent;
 import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptorImpl;
-import org.napile.compiler.lang.descriptors.NamespaceDescriptorParent;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
@@ -44,7 +44,6 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
-import org.napile.compiler.lang.psi.NapileFile;
 import com.google.common.collect.Sets;
 import com.intellij.psi.PsiElement;
 
@@ -177,7 +176,6 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 		PackageDescriptorImpl namespaceDescriptor;
 		namespaceDescriptor = new PackageDescriptorImpl(owner, Collections.<AnnotationDescriptor>emptyList(), // TODO: annotations
 				name);
-		trace.record(FQNAME_TO_NAMESPACE_DESCRIPTOR, fqName, namespaceDescriptor);
 
 		WritableScopeImpl scope = new WritableScopeImpl(JetScope.EMPTY, namespaceDescriptor, handler, "Namespace member scope");
 		scope.changeLockLevel(WritableScope.LockLevel.BOTH);

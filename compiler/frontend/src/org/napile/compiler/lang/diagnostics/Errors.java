@@ -200,7 +200,7 @@ public interface Errors
 
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> UPPER_BOUND_VIOLATED = DiagnosticFactory2.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileTypeReference> CONSTRUCTORS_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
-	DiagnosticFactory1<NapileTypeReference, JetType> FINAL_CLASS_OBJECT_UPPER_BOUND = DiagnosticFactory1.create(Severity.ERROR);
+
 	DiagnosticFactory1<NapileTypeReference, JetType> FINAL_UPPER_BOUND = DiagnosticFactory1.create(Severity.WARNING);
 	DiagnosticFactory1<NapileExpression, JetType> USELESS_ELVIS = DiagnosticFactory1.create(Severity.WARNING);
 	DiagnosticFactory1<PsiElement, TypeParameterDescriptor> CONFLICTING_UPPER_BOUNDS = DiagnosticFactory1.create(Severity.ERROR);

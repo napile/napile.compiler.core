@@ -176,7 +176,6 @@ public class TypeHierarchyResolver
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(builder.getOwnerForChildren(), scope, ClassKind.CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(scope, declaration, trace), NapilePsiUtil.isStatic(declaration));
 
 					context.getClasses().put(declaration, mutableClassDescriptor);
-					trace.record(BindingContext.FQNAME_TO_CLASS_DESCRIPTOR, NapilePsiUtil.getFQName(declaration), mutableClassDescriptor);
 
 					builder.addClassifierDescriptor(mutableClassDescriptor);
 
