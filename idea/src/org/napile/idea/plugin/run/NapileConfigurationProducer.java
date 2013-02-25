@@ -27,7 +27,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.util.RunUtil;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.execution.Location;
 import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.actions.ConfigurationContext;
@@ -67,7 +67,7 @@ public class NapileConfigurationProducer extends RuntimeConfigurationProducer im
 
 		if(element instanceof NapileFile)
 		{
-			analyzeExhaust = Analyzer.analyzeAll((NapileFile) element);
+			analyzeExhaust = ModuleAnalyzerUtil.analyzeAll((NapileFile) element);
 
 			if(((NapileFile) element).getDeclarations().length == 0)
 				return null;
@@ -77,7 +77,7 @@ public class NapileConfigurationProducer extends RuntimeConfigurationProducer im
 		else if(element instanceof NapileClass)
 		{
 			napileClass = (NapileClass) element;
-			analyzeExhaust = Analyzer.analyzeAll(((NapileClass) element).getContainingFile());
+			analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(((NapileClass) element).getContainingFile());
 		}
 		else
 			return null;

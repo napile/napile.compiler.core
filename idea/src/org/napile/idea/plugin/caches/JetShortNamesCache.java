@@ -35,7 +35,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import org.napile.idea.plugin.stubindex.NapileFullClassNameIndex;
 import org.napile.idea.plugin.stubindex.NapileShortClassNameIndex;
 import org.napile.idea.plugin.stubindex.NapileShortMethodNameIndex;
@@ -70,11 +70,11 @@ public class JetShortNamesCache
 	@NotNull
 	public Map<NapileClassLike, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
 	{
-		BindingContext context = Analyzer.analyzeAll(napileElement.getContainingFile()).getBindingContext();
+		BindingContext context = ModuleAnalyzerUtil.analyzeAll(napileElement.getContainingFile()).getBindingContext();
 
 		Map<NapileClassLike, ClassDescriptor> result = new HashMap<NapileClassLike, ClassDescriptor>();
 
-		for(NapileFile temp : Analyzer.getFilesInScope(napileElement, globalSearchScope))
+		for(NapileFile temp : ModuleAnalyzerUtil.getFilesInScope(napileElement, globalSearchScope))
 		{
 			for(NapileClass napileClass : temp.getDeclarations())
 			{
@@ -109,7 +109,7 @@ public class JetShortNamesCache
 
 	public List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> getDescriptorsForImport(@NotNull Condition<String> acceptedShortNameCondition, @NotNull NapileFile napileFile)
 	{
-		BindingContext context = Analyzer.analyzeAll(napileFile).getBindingContext();
+		BindingContext context = ModuleAnalyzerUtil.analyzeAll(napileFile).getBindingContext();
 		List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> map = new ArrayList<Pair<DeclarationDescriptor, NapileNamedDeclaration>>();
 		GlobalSearchScope scope = GlobalSearchScope.moduleWithLibrariesScope(ModuleUtil.findModuleForPsiElement(napileFile));
 

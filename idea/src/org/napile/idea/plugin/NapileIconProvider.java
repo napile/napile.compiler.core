@@ -39,7 +39,7 @@ import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.util.RunUtil;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.ide.IconLayerProvider;
 import com.intellij.ide.IconProvider;
 import com.intellij.openapi.extensions.Extensions;
@@ -82,7 +82,7 @@ public class NapileIconProvider extends IconProvider
 		else if(psiElement instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) psiElement;
-			MutableClassDescriptor descriptor = (MutableClassDescriptor) Analyzer.getDescriptorOrAnalyze(napileClass);
+			MutableClassDescriptor descriptor = (MutableClassDescriptor) ModuleAnalyzerUtil.getDescriptorOrAnalyze(napileClass);
 
 			icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_CLASS : NapileIcons.CLASS;
 

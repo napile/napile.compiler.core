@@ -27,7 +27,7 @@ import org.napile.compiler.checkers.CheckerTestUtil;
 import org.napile.compiler.lang.resolve.AnalyzingUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -49,7 +49,7 @@ public class CopyAsDiagnosticTestAction extends AnAction
 		PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
 		assert editor != null && psiFile != null;
 
-		BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) psiFile).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) psiFile).getBindingContext();
 		List<PsiErrorElement> syntaxError = AnalyzingUtils.getSyntaxErrorRanges(psiFile);
 
 		String result = CheckerTestUtil.addDiagnosticMarkersToText(psiFile, bindingContext, syntaxError).toString();

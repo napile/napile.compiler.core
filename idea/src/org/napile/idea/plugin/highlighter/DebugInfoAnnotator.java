@@ -39,7 +39,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.google.common.collect.Sets;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -82,7 +82,7 @@ public class DebugInfoAnnotator implements Annotator
 			NapileFile file = (NapileFile) element;
 			try
 			{
-				final BindingContext bindingContext = Analyzer.analyzeAll(file).getBindingContext();
+				final BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
 
 				final Set<NapileReferenceExpression> unresolvedReferences = Sets.newHashSet();
 				for(Diagnostic diagnostic : bindingContext.getDiagnostics())

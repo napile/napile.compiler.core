@@ -39,7 +39,7 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.render.DescriptorRenderer;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.codeInsight.CodeInsightBundle;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.lang.ASTNode;
@@ -233,7 +233,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 			if(descriptor instanceof MethodDescriptor)
 			{
 				NapileFile file = argumentList.getContainingFile();
-				BindingContext bindingContext = Analyzer.analyze(file).getBindingContext();
+				BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
 				MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 				StringBuilder builder = new StringBuilder();
 				List<CallParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
@@ -430,7 +430,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		{
 			return null;
 		}
-		BindingContext bindingContext = Analyzer.analyze((NapileFile) file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) file).getBindingContext();
 		NapileExpression calleeExpression = callExpression.getCalleeExpression();
 		if(calleeExpression == null)
 			return null;

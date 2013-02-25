@@ -61,7 +61,7 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import org.napile.idea.plugin.internal.EditorLocation;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -150,7 +150,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 			if(oldLocation == null || !Comparing.equal(oldLocation.getEditor(), location.getEditor()) || oldLocation.getStartOffset() != startOffset || oldLocation.getEndOffset() != endOffset)
 			{
 
-				BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) psiFile).getBindingContext();
+				BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) psiFile).getBindingContext();
 
 
 				PsiElement elementAtOffset;

@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import org.napile.idea.plugin.quickfix.ImportInsertHelper;
 
 public class ReferenceToClassesShortening
@@ -41,7 +41,7 @@ public class ReferenceToClassesShortening
 			return;
 		}
 		final NapileFile file = elementsToCompact.get(0).getContainingFile();
-		final BindingContext bc = Analyzer.analyzeAll(file).getBindingContext();
+		final BindingContext bc = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
 		for(NapileElement element : elementsToCompact)
 		{
 			element.accept(new NapileVisitorVoid()

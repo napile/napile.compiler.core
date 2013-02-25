@@ -121,7 +121,7 @@ public class NapileCompiler implements TranslatingCompiler
 		Set<VirtualFile> classpath = new HashSet<VirtualFile>();
 		for(Module module : modules)
 		{
-			final AnalyzeContext analyzeContext = ModuleCollector.getAnalyzeContext(project, null, test, true, module);
+			final AnalyzeContext analyzeContext = ModuleCollector.getAnalyzeContext(project, null, test, module);
 			files.addAll(analyzeContext.getFiles());
 			bootpath.addAll(analyzeContext.getBootpath());
 			classpath.addAll(analyzeContext.getClasspath());

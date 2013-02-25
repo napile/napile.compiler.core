@@ -36,7 +36,7 @@ import org.napile.compiler.codegen.GenerationState;
 import org.napile.compiler.codegen.Progress;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.idea.plugin.internal.EditorLocation;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Result;
@@ -140,7 +140,7 @@ public class BytecodeToolwindow extends JPanel implements Disposable
 		GenerationState state;
 		try
 		{
-			AnalyzeExhaust binding = Analyzer.analyzeAll(file);
+			AnalyzeExhaust binding = ModuleAnalyzerUtil.analyzeAll(file);
 			//            AnalyzingUtils.throwExceptionOnErrors(binding);
 			if(binding.isError())
 			{

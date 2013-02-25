@@ -21,7 +21,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.codeInsight.CodeInsightUtilBase;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -44,7 +44,7 @@ public class ShowExpressionTypeAction extends AnAction
 		PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
 		assert editor != null && psiFile != null;
 		NapileExpression expression;
-		BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) psiFile).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) psiFile).getBindingContext();
 		if(editor.getSelectionModel().hasSelection())
 		{
 			int startOffset = editor.getSelectionModel().getSelectionStart();

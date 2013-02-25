@@ -43,7 +43,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
@@ -71,7 +71,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					NapileElement napileElement = (NapileElement) element;
-					AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(napileElement.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(napileElement.getContainingFile());
 
 					DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
 					if(!isValidCallable(descriptor))
@@ -110,7 +110,7 @@ public enum LineMarkers
 						return;
 
 					NapileClass napileClass = (NapileClass) element;
-					AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(napileClass.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(napileClass.getContainingFile());
 
 					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
 
@@ -216,7 +216,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					final NapileClass napileClass = (NapileClass) element;
-					AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(napileClass.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(napileClass.getContainingFile());
 
 					BindingContext bindingContext = analyzeExhaust.getBindingContext();
 					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);

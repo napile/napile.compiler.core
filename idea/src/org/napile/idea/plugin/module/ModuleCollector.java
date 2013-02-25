@@ -53,7 +53,7 @@ import com.intellij.util.SmartList;
  */
 public class ModuleCollector
 {
-	public static AnalyzeContext createAnalyzeContext(final @NotNull NapileFile rootFile, final boolean collect)
+	public static AnalyzeContext createAnalyzeContext(final @NotNull NapileFile rootFile)
 	{
 		VirtualFile virtualFile = rootFile.getVirtualFile();
 		if(virtualFile == null)
@@ -61,6 +61,7 @@ public class ModuleCollector
 
 		Module module = ModuleUtilCore.findModuleForPsiElement(rootFile);
 
+		// TODO [VISTALL] rework it
 		if(module == null && virtualFile.getFileType() == NXmlFileType.INSTANCE)
 		{
 			VirtualFile lib = null;
@@ -87,10 +88,10 @@ public class ModuleCollector
 
 		final boolean test = moduleRootManager.getFileIndex().isInTestSourceContent(virtualFile);
 
-		return getAnalyzeContext(rootFile.getProject(), rootFile, test, collect, module);
+		return getAnalyzeContext(rootFile.getProject(), rootFile, test, module);
 	}
 
-	public static AnalyzeContext getAnalyzeContext(@NotNull final Project project, @Nullable final NapileFile rootFile, final boolean test, final boolean collect, @NotNull Module module)
+	public static AnalyzeContext getAnalyzeContext(@NotNull final Project project, @Nullable final NapileFile rootFile, final boolean test, @NotNull Module module)
 	{
 		final Set<NapileFile> analyzeFiles = Sets.newLinkedHashSet();
 		final SmartList<VirtualFile> bootpath = new SmartList<VirtualFile>();
@@ -119,17 +120,13 @@ public class ModuleCollector
 				@Override
 				public Object visitModuleSourceOrderEntry(ModuleSourceOrderEntry moduleSourceOrderEntry, Object value)
 				{
-					if(collect)
-						collectSourcesInModule(project, moduleSourceOrderEntry.getOwnerModule(), test, analyzeFiles, rootFile);
+					collectSourcesInModule(project, moduleSourceOrderEntry.getOwnerModule(), test, analyzeFiles, rootFile);
 					return null;
 				}
 
 				@Override
 				public Object visitModuleOrderEntry(ModuleOrderEntry moduleOrderEntry, Object value)
 				{
-					if(!collect)
-						return null;
-
 					Module module = moduleOrderEntry.getModule();
 					if(module == null || !moduleOrderEntry.isExported())
 						return null;

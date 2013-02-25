@@ -9,7 +9,7 @@ import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.util.RunUtil;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 
 /**
  * @author VISTALL
@@ -19,7 +19,7 @@ public class IdePsiUtil extends RunUtil
 {
 	public static boolean isDeprecated(@NotNull NapileDeclaration declaration)
 	{
-		DeclarationDescriptor descriptor = Analyzer.getDescriptorOrAnalyze(declaration);
+		DeclarationDescriptor descriptor = ModuleAnalyzerUtil.getDescriptorOrAnalyze(declaration);
 		if(descriptor == null)
 			return false;
 		return AnnotationUtils.hasAnnotation(descriptor, NapileAnnotationPackage.DEPRECATED);
@@ -27,7 +27,7 @@ public class IdePsiUtil extends RunUtil
 
 	public static boolean hasRunMethod(@NotNull NapileClassLike classLike)
 	{
-		MutableClassDescriptor descriptor = Analyzer.getDescriptorOrAnalyze(classLike);
+		MutableClassDescriptor descriptor = ModuleAnalyzerUtil.getDescriptorOrAnalyze(classLike);
 		if(descriptor == null)
 			return false;
 

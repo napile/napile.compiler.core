@@ -29,7 +29,7 @@ import org.napile.compiler.lang.psi.NapileCallExpression;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
@@ -62,7 +62,7 @@ public class RecursiveLineMarkerProvider implements LineMarkerProvider
 			{
 				NapileCallExpression exp = (NapileCallExpression) psiElement;
 
-				AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(exp.getContainingFile());
+				AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(exp.getContainingFile());
 				BindingContext bindingContext = analyzeExhaust.getBindingContext();
 
 				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingContext.get(BindingContext.RESOLVED_CALL, exp.getCalleeExpression());

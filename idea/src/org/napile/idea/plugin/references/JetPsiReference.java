@@ -29,7 +29,7 @@ import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementResolveResult;
@@ -114,7 +114,7 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	protected PsiElement doResolve()
 	{
 		NapileFile file = (NapileFile) getElement().getContainingFile();
-		BindingContext bindingContext = Analyzer.analyzeAll(file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
 		List<PsiElement> psiElement = BindingContextUtils.resolveToDeclarationPsiElements(bindingContext, myExpression);
 		if(psiElement.size() == 1)
 		{
@@ -136,7 +136,7 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	protected ResolveResult[] doMultiResolve()
 	{
 		NapileFile file = (NapileFile) getElement().getContainingFile();
-		BindingContext bindingContext = Analyzer.analyzeAll(file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
 		Collection<? extends DeclarationDescriptor> declarationDescriptors = bindingContext.get(AMBIGUOUS_REFERENCE_TARGET, myExpression);
 		if(declarationDescriptors == null)
 			return ResolveResult.EMPTY_ARRAY;

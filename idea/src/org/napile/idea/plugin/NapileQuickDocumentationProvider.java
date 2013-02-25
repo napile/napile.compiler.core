@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.render.DescriptorRenderer;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import org.napile.idea.plugin.util.NapileDocUtil;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.psi.PsiElement;
@@ -51,7 +51,7 @@ public class NapileQuickDocumentationProvider extends AbstractDocumentationProvi
 		PsiElement declarationPsiElement = PsiTreeUtil.getParentOfType(originalElement, NapileDeclaration.class);
 		if(ref != null || declarationPsiElement != null)
 		{
-			BindingContext bindingContext = Analyzer.analyzeAll((NapileFile) originalElement.getContainingFile()).getBindingContext();
+			BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) originalElement.getContainingFile()).getBindingContext();
 
 			if(ref != null)
 			{

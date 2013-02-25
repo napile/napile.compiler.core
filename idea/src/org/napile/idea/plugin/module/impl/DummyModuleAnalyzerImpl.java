@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,31 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.codeInsight.problems;
+package org.napile.idea.plugin.module.impl;
 
-import org.napile.idea.plugin.util.FileRootUtil;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.vfs.VirtualFile;
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.analyzer.AnalyzeExhaust;
+import org.napile.idea.plugin.module.ModuleAnalyzer;
 
 /**
  * @author VISTALL
- * @date 6:16/19.08.12
+ * @date 13:41/25.02.13
  */
-public class DefaultProblemFileHighlightFilter implements Condition<VirtualFile>
+public class DummyModuleAnalyzerImpl extends ModuleAnalyzer
 {
-	private final Project project;
+	public static final DummyModuleAnalyzerImpl INSTANCE = new DummyModuleAnalyzerImpl();
 
-	public DefaultProblemFileHighlightFilter(Project project)
+	@NotNull
+	@Override
+	public AnalyzeExhaust getSourceAnalyze()
 	{
-		this.project = project;
+		return ModuleAnalyzer.EMPTY;
 	}
 
+	@NotNull
 	@Override
-	public boolean value(VirtualFile virtualFile)
+	public AnalyzeExhaust getTestSourceAnalyze()
 	{
-		return FileRootUtil.isNapileSourceFile(project, virtualFile);
+		return ModuleAnalyzer.EMPTY;
 	}
 }

@@ -38,7 +38,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.codeInsight.ReferenceToClassesShortening;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import org.napile.idea.plugin.refactoring.JetIntroduceHandlerBase;
 import org.napile.idea.plugin.refactoring.JetNameSuggester;
 import org.napile.idea.plugin.refactoring.JetNameValidatorImpl;
@@ -140,7 +140,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				return;
 			}
 		}
-		BindingContext bindingContext = Analyzer.analyze((NapileFile) expression.getContainingFile()).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) expression.getContainingFile()).getBindingContext();
 		final JetType expressionType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression); //can be null or error type
 		JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, expression);
 		if(scope != null)
@@ -151,7 +151,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				dataFlowInfo = DataFlowInfo.EMPTY;
 			}
 
-			AnalyzeExhaust analyzeExhaust = Analyzer.analyzeAll(expression.getContainingFile());
+			AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(expression.getContainingFile());
 			InjectorForTopDownAnalyzerBasic injector = analyzeExhaust.getInjector();
 			if(injector == null)
 				return;
@@ -501,7 +501,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 
 		final ArrayList<NapileExpression> result = new ArrayList<NapileExpression>();
 
-		final BindingContext bindingContext = Analyzer.analyze((NapileFile) expression.getContainingFile()).getBindingContext();
+		final BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) expression.getContainingFile()).getBindingContext();
 
 		NapileVisitorVoid visitor = new NapileVisitorVoid()
 		{

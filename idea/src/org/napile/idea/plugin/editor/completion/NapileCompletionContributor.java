@@ -43,7 +43,7 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.idea.plugin.editor.completion.lookup.DescriptionLookupBuilder;
-import org.napile.idea.plugin.module.Analyzer;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
@@ -94,7 +94,7 @@ public class NapileCompletionContributor extends CompletionContributor
 				if(!(containingFile instanceof NapileFile))
 					return;
 
-				AnalyzeExhaust analyze = Analyzer.analyzeAll((NapileFile) containingFile);
+				AnalyzeExhaust analyze = ModuleAnalyzerUtil.analyzeAll((NapileFile) containingFile);
 
 				NapileDeclaration declaration = PsiTreeUtil.getParentOfType(position, NapileDeclaration.class);
 				if(declaration == null)
@@ -132,7 +132,7 @@ public class NapileCompletionContributor extends CompletionContributor
 
 				NapileDotQualifiedExpressionImpl dotQualifiedExpression = (NapileDotQualifiedExpressionImpl) prevElement;
 
-				AnalyzeExhaust analyze = Analyzer.analyzeAll((NapileFile) containingFile);
+				AnalyzeExhaust analyze = ModuleAnalyzerUtil.analyzeAll((NapileFile) containingFile);
 
 				//BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
 
@@ -169,7 +169,7 @@ public class NapileCompletionContributor extends CompletionContributor
 				if(!(containingFile instanceof NapileFile))
 					return;
 
-				AnalyzeExhaust analyze = Analyzer.analyzeAll((NapileFile) containingFile);
+				AnalyzeExhaust analyze = ModuleAnalyzerUtil.analyzeAll((NapileFile) containingFile);
 
 				BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
 
