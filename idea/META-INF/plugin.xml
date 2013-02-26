@@ -109,7 +109,7 @@
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetStatementGroupSelectioner"/>
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetCodeBlockSelectioner"/>
 		<extendWordSelectionHandler implementation="org.napile.idea.plugin.editor.wordSelection.JetListSelectioner"/>
-		<typedHandler implementation="org.napile.idea.plugin.editor.KotlinTypedHandler"/>
+		<typedHandler implementation="org.napile.idea.plugin.editor.NapileTypedHandler"/>
 
 		<documentationProvider implementation="org.napile.idea.plugin.NapileQuickDocumentationProvider"/>
 
