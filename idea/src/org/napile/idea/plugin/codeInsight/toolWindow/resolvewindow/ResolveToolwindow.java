@@ -17,7 +17,7 @@
 /*
  * @author max
  */
-package org.napile.idea.plugin.internal.resolvewindow;
+package org.napile.idea.plugin.codeInsight.toolWindow.resolvewindow;
 
 import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
@@ -33,13 +33,15 @@ import static org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo.RESULT;
 import static org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo.TASKS;
 
 import java.awt.BorderLayout;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -60,21 +62,19 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.WritableSlice;
-import org.napile.idea.plugin.internal.EditorLocation;
+import org.napile.idea.plugin.codeInsight.toolWindow.EditorLocation;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
+import org.napile.idea.plugin.util.LongRunningReadTask;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Result;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilCore;
 import com.intellij.util.Alarm;
@@ -84,26 +84,138 @@ import com.intellij.util.Alarm;
  */
 public class ResolveToolwindow extends JPanel implements Disposable
 {
-
 	public static final String BAR = "\n\n===\n\n";
 
-	private static final int UPDATE_DELAY = 500;
+	private static final int UPDATE_DELAY = 1000;
 	private static final String DEFAULT_TEXT = "/*\n" +
-			"Information about symbols resolved by\nKotlin compiler.\n" +
+			"Information about symbols resolved by\n" +
+			"Napile compiler.\n" +
 			"No Napile source file is opened.\n" +
 			"*/";
+
+	public class UpdateToolWindowTask extends LongRunningReadTask<EditorLocation, String>
+	{
+		@Nullable
+		@Override
+		protected EditorLocation prepareRequestInfo()
+		{
+			EditorLocation location = EditorLocation.fromEditor(FileEditorManager.getInstance(myProject).getSelectedTextEditor(), myProject);
+			if(location.getEditor() == null || location.getFile() == null)
+			{
+				return null;
+			}
+
+			return location;
+		}
+
+		@NotNull
+		@Override
+		protected EditorLocation cloneRequestInfo(@NotNull EditorLocation location)
+		{
+			EditorLocation newLocation = super.cloneRequestInfo(location);
+			assert location.equals(newLocation) : "cloneRequestInfo should generate same location object";
+			return newLocation;
+		}
+
+		@Override
+		protected void hideResultOnInvalidLocation()
+		{
+			setText(DEFAULT_TEXT);
+		}
+
+		@Nullable
+		@Override
+		protected String processRequest(@NotNull EditorLocation editorLocation)
+		{
+			final NapileFile psiFile = editorLocation.getFile();
+
+			BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(psiFile).getBindingContext();
+
+
+			PsiElement elementAtOffset;
+			final int startOffset = editorLocation.startOffset;
+			final int endOffset = editorLocation.endOffset;
+
+			if(startOffset == endOffset)
+			{
+				elementAtOffset = PsiUtilCore.getElementAtOffset(psiFile, startOffset);
+			}
+			else
+			{
+				PsiElement start = PsiUtilCore.getElementAtOffset(psiFile, startOffset);
+				PsiElement end = PsiUtilCore.getElementAtOffset(psiFile, endOffset - 1);
+				elementAtOffset = PsiTreeUtil.findCommonParent(start, end);
+			}
+
+			PsiElement currentElement = elementAtOffset;
+
+
+			PsiElement elementWithDebugInfo = findData(bindingContext, currentElement, RESOLUTION_DEBUG_INFO);
+			if(elementWithDebugInfo != null)
+			{
+				return renderDebugInfo(elementWithDebugInfo, bindingContext.get(RESOLUTION_DEBUG_INFO, elementWithDebugInfo), null);
+			}
+			else
+			{
+				PsiElement elementWithResolvedCall = findData(bindingContext, currentElement, (WritableSlice) RESOLVED_CALL);
+				if(elementWithResolvedCall instanceof NapileElement)
+				{
+					return renderDebugInfo(elementWithResolvedCall, null, bindingContext.get(RESOLVED_CALL, (NapileElement) elementWithResolvedCall));
+				}
+			}
+
+			NapileExpression parentExpression = (elementAtOffset instanceof NapileExpression) ? (NapileExpression) elementAtOffset : PsiTreeUtil.getParentOfType(elementAtOffset, NapileExpression.class);
+			if(parentExpression != null)
+			{
+				JetType type = bindingContext.get(EXPRESSION_TYPE, parentExpression);
+				String text = parentExpression + "|" + parentExpression.getText() + "| : " + type;
+				if(parentExpression instanceof NapileReferenceExpression)
+				{
+					NapileReferenceExpression referenceExpression = (NapileReferenceExpression) parentExpression;
+					DeclarationDescriptor target = bindingContext.get(REFERENCE_TARGET, referenceExpression);
+					text += "\nReference target: \n" + target;
+				}
+				return text;
+			}
+
+			return DEFAULT_TEXT;
+		}
+
+		private String printStackTraceToString(Throwable e)
+		{
+			StringWriter out = new StringWriter(1024);
+			e.printStackTrace(new PrintWriter(out));
+			return out.toString().replace("\r", "");
+		}
+
+		@Override
+		protected void onResultReady(@NotNull EditorLocation requestInfo, final String resultText)
+		{
+			Editor editor = requestInfo.getEditor();
+			assert editor != null;
+
+			if(resultText == null)
+			{
+				return;
+			}
+
+			setText(resultText);
+		}
+	}
+
 	private final Editor myEditor;
 	private final Alarm myUpdateAlarm;
-	private EditorLocation myCurrentLocation;
-	private final Project myProject;
 
+	private final Project myProject;
+	private UpdateToolWindowTask currentTask;
 
 	public ResolveToolwindow(Project project)
 	{
 		super(new BorderLayout());
 		myProject = project;
-		myEditor = EditorFactory.getInstance().createEditor(EditorFactory.getInstance().createDocument(""), project, NapileFileType.INSTANCE, true);
+		myEditor = EditorFactory.getInstance().createEditor(EditorFactory.getInstance().createDocument(""), project, PlainTextFileType.INSTANCE, true);
 		add(myEditor.getComponent());
+
 		myUpdateAlarm = new Alarm(Alarm.ThreadToUse.SWING_THREAD, this);
 		myUpdateAlarm.addRequest(new Runnable()
 		{
@@ -111,100 +223,20 @@ public class ResolveToolwindow extends JPanel implements Disposable
 			public void run()
 			{
 				myUpdateAlarm.addRequest(this, UPDATE_DELAY);
-				EditorLocation location = EditorLocation.fromEditor(FileEditorManager.getInstance(myProject).getSelectedTextEditor());
-				if(!Comparing.equal(location, myCurrentLocation))
+				UpdateToolWindowTask task = new UpdateToolWindowTask();
+				task.init();
+
+				if(task.shouldStart(currentTask))
 				{
-					render(location, myCurrentLocation);
-					myCurrentLocation = location;
+					currentTask = task;
+					currentTask.run();
 				}
 			}
 		}, UPDATE_DELAY);
+
+		setText(DEFAULT_TEXT);
 	}
 
-	private void render(EditorLocation location, EditorLocation oldLocation)
-	{
-		Editor editor = location.getEditor();
-		if(editor == null)
-		{
-			setText(DEFAULT_TEXT);
-		}
-		else
-		{
-			VirtualFile vFile = ((EditorEx) editor).getVirtualFile();
-			if(vFile == null)
-			{
-				setText(DEFAULT_TEXT);
-				return;
-			}
-
-			PsiFile psiFile = PsiManager.getInstance(myProject).findFile(vFile);
-			if(!(psiFile instanceof NapileFile))
-			{
-				setText(DEFAULT_TEXT);
-				return;
-			}
-
-
-			int startOffset = location.getStartOffset();
-			int endOffset = location.getEndOffset();
-			if(oldLocation == null || !Comparing.equal(oldLocation.getEditor(), location.getEditor()) || oldLocation.getStartOffset() != startOffset || oldLocation.getEndOffset() != endOffset)
-			{
-
-				BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) psiFile).getBindingContext();
-
-
-				PsiElement elementAtOffset;
-				if(startOffset == endOffset)
-				{
-					elementAtOffset = PsiUtilCore.getElementAtOffset(psiFile, startOffset);
-				}
-				else
-				{
-					PsiElement start = PsiUtilCore.getElementAtOffset(psiFile, startOffset);
-					PsiElement end = PsiUtilCore.getElementAtOffset(psiFile, endOffset - 1);
-					elementAtOffset = PsiTreeUtil.findCommonParent(start, end);
-				}
-
-				PsiElement currentElement = elementAtOffset;
-
-				boolean callFound = false;
-
-				PsiElement elementWithDebugInfo = findData(bindingContext, currentElement, RESOLUTION_DEBUG_INFO);
-				if(elementWithDebugInfo != null)
-				{
-					callFound = true;
-					setText(renderDebugInfo(elementWithDebugInfo, bindingContext.get(RESOLUTION_DEBUG_INFO, elementWithDebugInfo), null));
-				}
-				else
-				{
-					PsiElement elementWithResolvedCall = findData(bindingContext, currentElement, (WritableSlice) RESOLVED_CALL);
-					if(elementWithResolvedCall instanceof NapileElement)
-					{
-						callFound = true;
-						setText(renderDebugInfo(elementWithResolvedCall, null, bindingContext.get(RESOLVED_CALL, (NapileElement) elementWithResolvedCall)));
-					}
-				}
-
-				if(!callFound)
-				{
-
-					NapileExpression parentExpression = (elementAtOffset instanceof NapileExpression) ? (NapileExpression) elementAtOffset : PsiTreeUtil.getParentOfType(elementAtOffset, NapileExpression.class);
-					if(parentExpression != null)
-					{
-						JetType type = bindingContext.get(EXPRESSION_TYPE, parentExpression);
-						String text = parentExpression + "|" + parentExpression.getText() + "| : " + type;
-						if(parentExpression instanceof NapileReferenceExpression)
-						{
-							NapileReferenceExpression referenceExpression = (NapileReferenceExpression) parentExpression;
-							DeclarationDescriptor target = bindingContext.get(REFERENCE_TARGET, referenceExpression);
-							text += "\nReference target: \n" + target;
-						}
-						setText(text);
-					}
-				}
-			}
-		}
-	}
 
 	@Nullable
 	private static <D> PsiElement findData(BindingContext bindingContext, PsiElement currentElement, ReadOnlySlice<PsiElement, D> slice)

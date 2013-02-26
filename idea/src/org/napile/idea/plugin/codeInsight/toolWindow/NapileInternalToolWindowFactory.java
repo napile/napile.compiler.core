@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.internal;
+package org.napile.idea.plugin.codeInsight.toolWindow;
 
-import org.napile.idea.plugin.internal.codewindow.BytecodeToolwindow;
-import org.napile.idea.plugin.internal.codewindow.DocPreviewToolwindow;
-import org.napile.idea.plugin.internal.codewindow.TextBytecodeToolwindow;
-import org.napile.idea.plugin.internal.resolvewindow.ResolveToolwindow;
+import org.napile.idea.plugin.codeInsight.toolWindow.codewindow.BytecodeToolwindow;
+import org.napile.idea.plugin.codeInsight.toolWindow.codewindow.TextBytecodeToolwindow;
+import org.napile.idea.plugin.codeInsight.toolWindow.codewindow.DocPreviewToolwindow;
+import org.napile.idea.plugin.codeInsight.toolWindow.resolvewindow.ResolveToolwindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -30,7 +30,7 @@ import com.intellij.ui.content.ContentManager;
  * @author Evgeny Gerashchenko
  * @since 2/20/12
  */
-public class KotlinInternalToolWindowFactory implements ToolWindowFactory
+public class NapileInternalToolWindowFactory implements ToolWindowFactory
 {
 	@Override
 	public void createToolWindowContent(Project project, ToolWindow toolWindow)

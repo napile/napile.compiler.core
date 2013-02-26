@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2013 napile.org
+ * Copyright 2010-2012 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,57 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.internal;
+package org.napile.idea.plugin.codeInsight.toolWindow;
 
+import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 
-/**
-* @author VISTALL
-* @date 10:30/31.01.13
-*/
 public class EditorLocation
 {
 	public final Editor editor;
 	public final long modificationStamp;
 	public final int startOffset;
 	public final int endOffset;
+	private final NapileFile file;
 
-	EditorLocation(Editor editor)
+	EditorLocation(Editor editor, Project project)
 	{
 		this.editor = editor;
-		modificationStamp = editor != null ? editor.getDocument().getModificationStamp() : 0;
-		startOffset = editor != null ? editor.getSelectionModel().getSelectionStart() : 0;
-		endOffset = editor != null ? editor.getSelectionModel().getSelectionEnd() : 0;
+
+		if(editor != null)
+		{
+			modificationStamp = editor.getDocument().getModificationStamp();
+			startOffset = editor.getSelectionModel().getSelectionStart();
+			endOffset = editor.getSelectionModel().getSelectionEnd();
+
+			VirtualFile vFile = ((EditorEx) editor).getVirtualFile();
+			if(vFile == null)
+			{
+				file = null;
+			}
+			else
+			{
+				PsiFile psiFile = PsiManager.getInstance(project).findFile(vFile);
+				file = psiFile instanceof NapileFile ? (NapileFile) psiFile : null;
+			}
+		}
+		else
+		{
+			modificationStamp = 0;
+			startOffset = 0;
+			endOffset = 0;
+			file = null;
+		}
 	}
 
-	public static EditorLocation fromEditor(Editor editor)
+	public static EditorLocation fromEditor(Editor editor, Project project)
 	{
-		return new EditorLocation(editor);
+		return new EditorLocation(editor, project);
 	}
 
 	public Editor getEditor()
@@ -92,5 +117,10 @@ public class EditorLocation
 		result = 31 * result + startOffset;
 		result = 31 * result + endOffset;
 		return result;
+	}
+
+	public NapileFile getFile()
+	{
+		return file;
 	}
 }
