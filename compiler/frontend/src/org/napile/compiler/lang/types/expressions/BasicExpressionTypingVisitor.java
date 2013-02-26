@@ -753,7 +753,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			if(classDescriptor == null || !classDescriptor.getTypeConstructor().getParameters().isEmpty())
 			{
 				for(int i = 0; i < children.length; i++)
-					context.trace.report(Errors.UNRESOLVED_REFERENCE.on(children[i]));
+					context.trace.report(Errors.UNRESOLVED_REFERENCE.on(children[i], children[i].getText()));
 				methodDescriptors = Collections.emptyList();
 			}
 			else
@@ -809,7 +809,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		else
 		{
 			if(methodDescriptors.isEmpty())
-				context.trace.report(Errors.UNRESOLVED_REFERENCE.on(target));
+				context.trace.report(Errors.UNRESOLVED_REFERENCE.on(target, target.getText()));
 			else if(methodDescriptors.size() > 1)
 			{
 				context.trace.record(BindingContext.AMBIGUOUS_REFERENCE_TARGET, target, methodDescriptors);

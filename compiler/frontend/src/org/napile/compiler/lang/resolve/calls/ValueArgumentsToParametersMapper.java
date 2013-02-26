@@ -117,7 +117,7 @@ import com.google.common.collect.Sets;
 				CallParameterDescriptor parameterDescriptor = parameterByName.get(nameReference.getReferencedNameAsName());
 				if(parameterDescriptor == null)
 				{
-					temporaryTrace.report(NAMED_PARAMETER_NOT_FOUND.on(nameReference));
+					temporaryTrace.report(NAMED_PARAMETER_NOT_FOUND.on(nameReference, nameReference.getText()));
 					unmappedArguments.add(valueArgument);
 					status = WEAK_ERROR;
 				}

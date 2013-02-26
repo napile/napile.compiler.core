@@ -529,7 +529,7 @@ public class CallResolver
 		}
 		else
 		{
-			context.trace.report(UNRESOLVED_REFERENCE.on(reference));
+			context.trace.report(UNRESOLVED_REFERENCE.on(reference, reference.getText()));
 			checkTypesWithNoCallee(context);
 		}
 		return resultsForFirstNonemptyCandidateSet != null ? resultsForFirstNonemptyCandidateSet : OverloadResolutionResultsImpl.<F>nameNotFound();

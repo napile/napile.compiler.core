@@ -313,7 +313,7 @@ public class DescriptorResolver
 
 			if(variableDescriptor == null)
 			{
-				trace.report(Errors.UNRESOLVED_REFERENCE.on(ref));
+				trace.report(Errors.UNRESOLVED_REFERENCE.on(ref, ref.getText()));
 				type = ErrorUtils.createErrorType("Reference expected");
 			}
 			else

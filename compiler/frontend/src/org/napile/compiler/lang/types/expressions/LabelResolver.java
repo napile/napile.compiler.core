@@ -103,7 +103,7 @@ public class LabelResolver
 		{
 			if(reportUnresolved)
 			{
-				context.trace.report(UNRESOLVED_REFERENCE.on(labelExpression));
+				context.trace.report(UNRESOLVED_REFERENCE.on(labelExpression, labelExpression.getText()));
 			}
 			return null;
 		}

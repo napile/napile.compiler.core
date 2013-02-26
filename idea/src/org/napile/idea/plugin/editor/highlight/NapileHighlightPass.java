@@ -27,6 +27,7 @@ import org.napile.compiler.lang.diagnostics.AbstractDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.highlighter.JetPsiChecker;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
@@ -37,6 +38,8 @@ import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.MultiRangeReference;
+import com.intellij.psi.PsiReference;
 
 /**
  * @author VISTALL
@@ -81,14 +84,65 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 			if(!diagnostic.isValid())
 				continue;
 
+			final List<TextRange> textRanges = diagnostic.getTextRanges();
+
 			switch(diagnostic.getSeverity())
 			{
 				case INFO:
 					break;
 				case ERROR:
+					if(UNRESOLVED_REFERENCES.contains(diagnostic.getFactory()))
+					{
+						NapileReferenceExpression referenceExpression = (NapileReferenceExpression) diagnostic.getPsiElement();
+						PsiReference reference = referenceExpression.getReference();
+						if(reference instanceof MultiRangeReference)
+						{
+							MultiRangeReference mrr = (MultiRangeReference) reference;
+							for(TextRange range : mrr.getRanges())
+							{
+								final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.UNUSED_SYMBOL);
+								builder.range(range.shiftRight(referenceExpression.getTextOffset()));
+								builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
+								builder.unescapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+
+								infos.add(builder.create());
+							}
+						}
+						else
+						{
+							for(TextRange textRange : textRanges)
+							{
+								final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.UNUSED_SYMBOL);
+								builder.range(textRange);
+								builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
+								builder.unescapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+
+								infos.add(builder.create());
+							}
+						}
+
+						continue;
+					}
+
+					if(REDECLARATION.contains(diagnostic.getFactory()))
+					{
+						//registerQuickFix(markRedeclaration(redeclarations, diagnostic, holder), diagnostic);
+						continue;
+					}
+
+					// Generic annotation
+					for(TextRange textRange : textRanges)
+					{
+						final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(diagnostic.getFactory() == Errors.INVISIBLE_REFERENCE ? HighlightInfoType.UNUSED_SYMBOL : HighlightInfoType.WARNING);
+						builder.range(textRange);
+						builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
+						builder.unescapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+
+						infos.add(builder.create());
+					}
 					break;
 				case WARNING:
-					for(TextRange textRange : diagnostic.getTextRanges())
+					for(TextRange textRange : textRanges)
 					{
 						final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(WARNINGS_LIKE_UNUSED.contains(diagnostic.getFactory()) ? HighlightInfoType.UNUSED_SYMBOL : HighlightInfoType.WARNING);
 						builder.range(textRange);

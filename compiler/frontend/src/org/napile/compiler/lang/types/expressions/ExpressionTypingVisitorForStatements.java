@@ -159,7 +159,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		if(leftType == null)
 		{
 			facade.getTypeInfo(right, context);
-			context.trace.report(UNRESOLVED_REFERENCE.on(operationSign));
+			context.trace.report(UNRESOLVED_REFERENCE.on(operationSign, operationSign.getText()));
 			temporaryBindingTrace.commit();
 			return null;
 		}

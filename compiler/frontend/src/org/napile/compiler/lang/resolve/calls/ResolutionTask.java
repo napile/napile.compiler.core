@@ -154,7 +154,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		@Override
 		public void unresolvedReference(@NotNull BindingTrace trace)
 		{
-			trace.report(UNRESOLVED_REFERENCE.on(reference));
+			trace.report(UNRESOLVED_REFERENCE.on(reference, reference.getText()));
 		}
 
 		@Override
