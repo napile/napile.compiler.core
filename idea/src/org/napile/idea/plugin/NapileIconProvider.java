@@ -82,7 +82,7 @@ public class NapileIconProvider extends IconProvider
 		else if(psiElement instanceof NapileClass)
 		{
 			NapileClass napileClass = (NapileClass) psiElement;
-			MutableClassDescriptor descriptor = (MutableClassDescriptor) ModuleAnalyzerUtil.getDescriptorOrAnalyze(napileClass);
+			MutableClassDescriptor descriptor = ModuleAnalyzerUtil.getDescriptorOrAnalyze(napileClass);
 
 			icon = napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) ? NapileIcons.ABSTRACT_CLASS : NapileIcons.CLASS;
 

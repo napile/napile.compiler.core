@@ -72,7 +72,7 @@ public class GotoSuperActionHandler implements CodeInsightActionHandler
 		if(funOrClass == null)
 			return;
 
-		final BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) file).getBindingContext();
+		final BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) file).getBindingContext();
 
 		final DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, funOrClass);
 

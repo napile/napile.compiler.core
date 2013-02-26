@@ -107,7 +107,7 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	public Object[] getVariants()
 	{
 		NapileFile file = (NapileFile) getElement().getContainingFile();
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
 
 		JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, myExpression);
 		if(scope == null)
@@ -137,7 +137,7 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	protected PsiElement doResolve()
 	{
 		NapileFile file = (NapileFile) getElement().getContainingFile();
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze(file).getBindingContext();
 		List<PsiElement> psiElement = BindingContextUtils.resolveToDeclarationPsiElements(bindingContext, myExpression);
 		if(psiElement.size() == 1)
 		{
@@ -159,7 +159,7 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	protected ResolveResult[] doMultiResolve()
 	{
 		NapileFile file = (NapileFile) getElement().getContainingFile();
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze(file).getBindingContext();
 		Collection<? extends DeclarationDescriptor> declarationDescriptors = bindingContext.get(AMBIGUOUS_REFERENCE_TARGET, myExpression);
 		if(declarationDescriptors == null)
 			return ResolveResult.EMPTY_ARRAY;

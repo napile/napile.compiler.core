@@ -54,8 +54,8 @@ public abstract class ModuleAnalyzer
 	}
 
 	@NotNull
-	public abstract AnalyzeExhaust getSourceAnalyze();
+	public abstract AnalyzeExhaust getSourceAnalyze(boolean updateIfNeed);
 
 	@NotNull
-	public abstract AnalyzeExhaust getTestSourceAnalyze();
+	public abstract AnalyzeExhaust getTestSourceAnalyze(boolean updateIfNeed);
 }

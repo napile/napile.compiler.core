@@ -62,7 +62,7 @@ public class RecursiveLineMarkerProvider implements LineMarkerProvider
 			{
 				NapileCallExpression exp = (NapileCallExpression) psiElement;
 
-				AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(exp.getContainingFile());
+				AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(exp.getContainingFile());
 				BindingContext bindingContext = analyzeExhaust.getBindingContext();
 
 				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingContext.get(BindingContext.RESOLVED_CALL, exp.getCalleeExpression());

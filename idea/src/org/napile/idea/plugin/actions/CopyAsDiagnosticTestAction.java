@@ -49,7 +49,7 @@ public class CopyAsDiagnosticTestAction extends AnAction
 		PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
 		assert editor != null && psiFile != null;
 
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) psiFile).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) psiFile).getBindingContext();
 		List<PsiErrorElement> syntaxError = AnalyzingUtils.getSyntaxErrorRanges(psiFile);
 
 		String result = CheckerTestUtil.addDiagnosticMarkersToText(psiFile, bindingContext, syntaxError).toString();

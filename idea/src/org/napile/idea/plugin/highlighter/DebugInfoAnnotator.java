@@ -82,7 +82,7 @@ public class DebugInfoAnnotator implements Annotator
 			NapileFile file = (NapileFile) element;
 			try
 			{
-				final BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
+				final BindingContext bindingContext = ModuleAnalyzerUtil.analyze(file).getBindingContext();
 
 				final Set<NapileReferenceExpression> unresolvedReferences = Sets.newHashSet();
 				for(Diagnostic diagnostic : bindingContext.getDiagnostics())

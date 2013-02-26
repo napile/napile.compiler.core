@@ -30,14 +30,14 @@ public class DummyModuleAnalyzerImpl extends ModuleAnalyzer
 
 	@NotNull
 	@Override
-	public AnalyzeExhaust getSourceAnalyze()
+	public AnalyzeExhaust getSourceAnalyze(boolean updateIfNeed)
 	{
 		return ModuleAnalyzer.EMPTY;
 	}
 
 	@NotNull
 	@Override
-	public AnalyzeExhaust getTestSourceAnalyze()
+	public AnalyzeExhaust getTestSourceAnalyze(boolean updateIfNeed)
 	{
 		return ModuleAnalyzer.EMPTY;
 	}

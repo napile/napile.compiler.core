@@ -163,7 +163,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 
 	private static boolean hasPublicMemberDiagnostic(@NotNull NapileNamedDeclaration declaration)
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) declaration.getContainingFile()).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) declaration.getContainingFile()).getBindingContext();
 		for(Diagnostic diagnostic : bindingContext.getDiagnostics())
 		{
 			//noinspection ConstantConditions
@@ -178,7 +178,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 	@NotNull
 	private static JetType getTypeForDeclaration(@NotNull NapileNamedDeclaration declaration)
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) declaration.getContainingFile()).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) declaration.getContainingFile()).getBindingContext();
 		DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
 
 		JetType type;

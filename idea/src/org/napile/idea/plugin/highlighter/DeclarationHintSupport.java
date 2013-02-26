@@ -89,7 +89,7 @@ public class DeclarationHintSupport extends AbstractProjectComponent
 			NapileNamedDeclaration declaration = PsiTreeUtil.getParentOfType(elementAtCursor, NapileNamedDeclaration.class);
 			if(declaration != null && declaration.getNameIdentifier() == elementAtCursor)
 			{
-				BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(jetFile).getBindingContext();
+				BindingContext bindingContext = ModuleAnalyzerUtil.analyze(jetFile).getBindingContext();
 
 				DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
 

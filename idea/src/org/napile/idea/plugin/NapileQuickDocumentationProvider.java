@@ -51,7 +51,7 @@ public class NapileQuickDocumentationProvider extends AbstractDocumentationProvi
 		PsiElement declarationPsiElement = PsiTreeUtil.getParentOfType(originalElement, NapileDeclaration.class);
 		if(ref != null || declarationPsiElement != null)
 		{
-			BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) originalElement.getContainingFile()).getBindingContext();
+			BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) originalElement.getContainingFile()).getBindingContext();
 
 			if(ref != null)
 			{

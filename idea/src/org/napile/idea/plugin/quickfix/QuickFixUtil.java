@@ -63,7 +63,7 @@ public class QuickFixUtil
 		PsiFile file = declaration.getContainingFile();
 		if(!(file instanceof NapileFile))
 			return null;
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) file).getBindingContext();
 		DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
 		if(!(descriptor instanceof CallableDescriptor))
 			return null;

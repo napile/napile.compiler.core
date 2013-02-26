@@ -71,7 +71,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					NapileElement napileElement = (NapileElement) element;
-					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(napileElement.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(napileElement.getContainingFile());
 
 					DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
 					if(!isValidCallable(descriptor))
@@ -110,7 +110,7 @@ public enum LineMarkers
 						return;
 
 					NapileClass napileClass = (NapileClass) element;
-					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(napileClass.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(napileClass.getContainingFile());
 
 					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
 
@@ -216,7 +216,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					final NapileClass napileClass = (NapileClass) element;
-					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyzeAll(napileClass.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(napileClass.getContainingFile());
 
 					BindingContext bindingContext = analyzeExhaust.getBindingContext();
 					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);

@@ -49,28 +49,33 @@ public class ModuleAnalyzerImpl extends ModuleAnalyzer
 
 	@NotNull
 	@Override
-	public AnalyzeExhaust getSourceAnalyze()
+	public AnalyzeExhaust getSourceAnalyze(boolean updateIfNeed)
 	{
-		return getOrUpdate(false);
+		return getOrUpdate(false, updateIfNeed);
 	}
 
 	@NotNull
 	@Override
-	public AnalyzeExhaust getTestSourceAnalyze()
+	public AnalyzeExhaust getTestSourceAnalyze(boolean updateIfNeed)
 	{
-		return getOrUpdate(true);
+		return getOrUpdate(true, updateIfNeed);
 	}
 
-	private AnalyzeExhaust getOrUpdate(boolean test)
+	private AnalyzeExhaust getOrUpdate(boolean test, boolean updateIfNeed)
 	{
 		ModuleAnalyzerHolder analyzerHolder = holders[test ? 1 : 0];
-		synchronized(analyzerHolder)
+		if(!updateIfNeed)
+			return analyzerHolder.getAnalyzeExhaust();
+		else
 		{
-			final long modificationCount = psiModificationTracker.getModificationCount();
-			if(analyzerHolder.getModificationCount() != modificationCount)
+			synchronized(analyzerHolder)
 			{
-				analyzerHolder.setAnalyzeExhaust(AnalyzerFacade.analyzeFiles(module.getProject(), ModuleCollector.getAnalyzeContext(module.getProject(), null, test, module), Predicates.<NapileFile>alwaysTrue()));
-				analyzerHolder.setModificationCount(modificationCount);
+				final long modificationCount = psiModificationTracker.getModificationCount();
+				if(analyzerHolder.getModificationCount() != modificationCount)
+				{
+					analyzerHolder.setAnalyzeExhaust(AnalyzerFacade.analyzeFiles(module.getProject(), ModuleCollector.getAnalyzeContext(module.getProject(), null, test, module), Predicates.<NapileFile>alwaysTrue()));
+					analyzerHolder.setModificationCount(modificationCount);
+				}
 			}
 		}
 		return analyzerHolder.getAnalyzeExhaust();

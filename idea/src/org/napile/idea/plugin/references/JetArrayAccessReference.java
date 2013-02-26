@@ -68,7 +68,7 @@ class JetArrayAccessReference extends JetPsiReference implements MultiRangeRefer
 	@Override
 	protected PsiElement doResolve()
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) getElement().getContainingFile()).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) getElement().getContainingFile()).getBindingContext();
 		ResolvedCall<MethodDescriptor> getFunction = bindingContext.get(INDEXED_LVALUE_GET, expression);
 		ResolvedCall<MethodDescriptor> setFunction = bindingContext.get(INDEXED_LVALUE_SET, expression);
 		if(getFunction != null && setFunction != null)
@@ -81,7 +81,7 @@ class JetArrayAccessReference extends JetPsiReference implements MultiRangeRefer
 	@Override
 	protected ResolveResult[] doMultiResolve()
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) getElement().getContainingFile()).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) getElement().getContainingFile()).getBindingContext();
 		ResolvedCall<MethodDescriptor> getFunction = bindingContext.get(INDEXED_LVALUE_GET, expression);
 		ResolvedCall<MethodDescriptor> setFunction = bindingContext.get(INDEXED_LVALUE_SET, expression);
 		if(getFunction == null || setFunction == null)

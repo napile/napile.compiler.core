@@ -79,7 +79,7 @@ public class JetNameSuggester
 	{
 		ArrayList<String> result = new ArrayList<String>();
 
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) expression.getContainingFile()).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) expression.getContainingFile()).getBindingContext();
 		JetType jetType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression);
 		if(jetType != null)
 		{

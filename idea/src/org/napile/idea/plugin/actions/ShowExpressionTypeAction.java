@@ -44,7 +44,7 @@ public class ShowExpressionTypeAction extends AnAction
 		PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
 		assert editor != null && psiFile != null;
 		NapileExpression expression;
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) psiFile).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) psiFile).getBindingContext();
 		if(editor.getSelectionModel().hasSelection())
 		{
 			int startOffset = editor.getSelectionModel().getSelectionStart();

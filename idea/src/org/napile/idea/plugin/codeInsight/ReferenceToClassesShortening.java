@@ -41,7 +41,7 @@ public class ReferenceToClassesShortening
 			return;
 		}
 		final NapileFile file = elementsToCompact.get(0).getContainingFile();
-		final BindingContext bc = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
+		final BindingContext bc = ModuleAnalyzerUtil.analyze(file).getBindingContext();
 		for(NapileElement element : elementsToCompact)
 		{
 			element.accept(new NapileVisitorVoid()

@@ -49,16 +49,22 @@ import com.intellij.psi.search.GlobalSearchScope;
 public class ModuleAnalyzerUtil
 {
 	@NotNull
-	public static AnalyzeExhaust analyzeAll(@NotNull final NapileFile file)
+	public static AnalyzeExhaust analyze(@NotNull final NapileFile file)
 	{
-		return analyzeFileWithCache(file);
+		return analyzeFileWithCache(file, true);
+	}
+
+	@NotNull
+	public static AnalyzeExhaust lastAnalyze(@NotNull final NapileFile file)
+	{
+		return analyzeFileWithCache(file, false);
 	}
 
 	public static <T extends DeclarationDescriptor> T getDescriptorOrAnalyze(@NotNull NapileElement napileElement)
 	{
 		DeclarationDescriptor declarationDescriptor = napileElement.getUserData(PluginKeys.DESCRIPTOR_KEY);
 		if(declarationDescriptor == null)
-			analyzeAll(napileElement.getContainingFile());
+			analyze(napileElement.getContainingFile());
 		declarationDescriptor = napileElement.getUserData(PluginKeys.DESCRIPTOR_KEY);
 		return ((T) declarationDescriptor);
 	}
@@ -93,7 +99,7 @@ public class ModuleAnalyzerUtil
 	}
 
 	@NotNull
-	private static AnalyzeExhaust analyzeFileWithCache(@NotNull final NapileFile file)
+	private static AnalyzeExhaust analyzeFileWithCache(@NotNull final NapileFile file, boolean updateIfNeed)
 	{
 		Module module = ModuleUtilCore.findModuleForPsiElement(file);
 		if(module == null)
@@ -121,6 +127,6 @@ public class ModuleAnalyzerUtil
 
 		final ModuleAnalyzer instance = ModuleAnalyzer.getInstance(module);
 
-		return test ? instance.getTestSourceAnalyze() : instance.getSourceAnalyze();
+		return test ? instance.getTestSourceAnalyze(updateIfNeed) : instance.getSourceAnalyze(updateIfNeed);
 	}
 }

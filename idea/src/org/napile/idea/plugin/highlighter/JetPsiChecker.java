@@ -129,7 +129,7 @@ public class JetPsiChecker implements Annotator
 
 			try
 			{
-				BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
+				BindingContext bindingContext = ModuleAnalyzerUtil.analyze(file).getBindingContext();
 
 				boolean isInContent = ProjectFileIndex.SERVICE.getInstance(element.getProject()).isInContent(file.getVirtualFile());
 				if(errorReportingEnabled && isInContent)

@@ -94,7 +94,7 @@ public class NapileCompletionContributor extends CompletionContributor
 				if(!(containingFile instanceof NapileFile))
 					return;
 
-				AnalyzeExhaust analyze = ModuleAnalyzerUtil.analyzeAll((NapileFile) containingFile);
+				AnalyzeExhaust analyze = ModuleAnalyzerUtil.lastAnalyze((NapileFile) containingFile);
 
 				NapileDeclaration declaration = PsiTreeUtil.getParentOfType(position, NapileDeclaration.class);
 				if(declaration == null)
@@ -132,7 +132,7 @@ public class NapileCompletionContributor extends CompletionContributor
 
 				NapileDotQualifiedExpressionImpl dotQualifiedExpression = (NapileDotQualifiedExpressionImpl) prevElement;
 
-				AnalyzeExhaust analyze = ModuleAnalyzerUtil.analyzeAll((NapileFile) containingFile);
+				AnalyzeExhaust analyze = ModuleAnalyzerUtil.lastAnalyze((NapileFile) containingFile);
 
 				//BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
 
@@ -169,7 +169,7 @@ public class NapileCompletionContributor extends CompletionContributor
 				if(!(containingFile instanceof NapileFile))
 					return;
 
-				AnalyzeExhaust analyze = ModuleAnalyzerUtil.analyzeAll((NapileFile) containingFile);
+				AnalyzeExhaust analyze = ModuleAnalyzerUtil.lastAnalyze((NapileFile) containingFile);
 
 				BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
 

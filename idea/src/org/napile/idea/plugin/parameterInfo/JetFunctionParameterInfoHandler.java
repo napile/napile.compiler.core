@@ -233,7 +233,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 			if(descriptor instanceof MethodDescriptor)
 			{
 				NapileFile file = argumentList.getContainingFile();
-				BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
+				BindingContext bindingContext = ModuleAnalyzerUtil.analyze(file).getBindingContext();
 				MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 				StringBuilder builder = new StringBuilder();
 				List<CallParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
@@ -430,7 +430,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		{
 			return null;
 		}
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll((NapileFile) file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) file).getBindingContext();
 		NapileExpression calleeExpression = callExpression.getCalleeExpression();
 		if(calleeExpression == null)
 			return null;
