@@ -251,7 +251,7 @@ public class ExpressionTypingServices
 	{
 		NapileExpression bodyExpression = function.getBodyExpression();
 		assert bodyExpression != null;
-		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(outerScope, methodDescriptor, function, trace);
+		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(outerScope, methodDescriptor, trace, false);
 		getExpressionTypingFacade().getTypeInfo(bodyExpression, ExpressionTypingContext.newContext(this, trace, functionInnerScope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false), !function.hasBlockBody());
 		//todo function literals
 		final Collection<NapileExpression> returnedExpressions = Lists.newArrayList();

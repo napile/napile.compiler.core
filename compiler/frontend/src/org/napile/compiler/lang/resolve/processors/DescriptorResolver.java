@@ -482,7 +482,7 @@ public class DescriptorResolver
 			{
 				List<CallParameterDescriptor> list = Collections.<CallParameterDescriptor>singletonList(new CallParameterAsReferenceDescriptorImpl(variableAccessorDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), variableDescriptor.getType(), variableDescriptor));
 
-				variableAccessorDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), list, variableDescriptor.getType(), Modality.resolve(variableAccessor), Visibility.resolve(variableAccessor));
+				variableAccessorDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), list, TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), Modality.resolve(variableAccessor), Visibility.resolve(variableAccessor));
 
 				trace.record(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor, variableAccessorDescriptor);
 				set = variableAccessorDescriptor;
@@ -494,6 +494,16 @@ public class DescriptorResolver
 				trace.record(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor, variableAccessorDescriptor);
 				get = variableAccessorDescriptor;
 			}
+
+			NapileExpression expression = variableAccessor.getBodyExpression();
+			if(expression != null)
+			{
+				SimpleMethodDescriptorImpl dummyMethodDescriptor = new SimpleMethodDescriptorImpl(containingDeclaration, Collections.<AnnotationDescriptor>emptyList(), name, CallableMemberDescriptor.Kind.DECLARATION, variableDescriptor.isStatic(), false, false);
+				dummyMethodDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), variableDescriptor.getType(), Modality.resolve(variableAccessor), Visibility.resolve(variableAccessor));
+
+				trace.record(BindingContext.DUMMY_VARIABLE_ACCESSORS_SCOPE, dummyMethodDescriptor, scope);
+				trace.record(BindingContext.DUMMY_VARIABLE_ACCESSORS, dummyMethodDescriptor, variableAccessor);
+			}
 		}
 
 		if(set == null)
@@ -501,7 +511,7 @@ public class DescriptorResolver
 			VariableAccessorDescriptorImpl variableAccessorDescriptor = new VariableAccessorDescriptorImpl(containingDeclaration, Collections.<AnnotationDescriptor>emptyList(), Name.identifier(variableDescriptor.getName().getName() + AsmConstants.ANONYM_SPLITTER + "set"), CallableMemberDescriptor.Kind.DECLARATION, variableDescriptor.isStatic(), false, true, variableDescriptor);
 
 			List<CallParameterDescriptor> list = Collections.<CallParameterDescriptor>singletonList(new CallParameterAsReferenceDescriptorImpl(variableAccessorDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), variableDescriptor.getType(), variableDescriptor));
-			variableAccessorDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), list, variableDescriptor.getType(), Modality.resolve(variable), Visibility.resolve(variable));
+			variableAccessorDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), list, TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), Modality.resolve(variable), Visibility.resolve(variable));
 
 			trace.record(BindingContext.VARIABLE_SET_ACCESSOR, variable, variableAccessorDescriptor);
 			set = variableAccessorDescriptor;

@@ -98,7 +98,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 			parameterTypes.put(valueParameter.getName(), valueParameter.getType());
 
 		JetType returnType = TypeUtils.NO_EXPECTED_TYPE;
-		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, functionLiteral, context.trace);
+		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, context.trace, false);
 		NapileTypeReference returnTypeRef = functionLiteral.getReturnTypeRef();
 		TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(context.trace);
 		if(returnTypeRef != null)

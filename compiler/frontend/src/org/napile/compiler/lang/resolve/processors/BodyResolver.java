@@ -33,6 +33,7 @@ import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
@@ -132,11 +133,7 @@ public class BodyResolver
 
 		resolveDelegationSpecifierLists();
 
-		resolvePropertyDeclarationBodies();
-
-		resolveFunctionBodies();
-
-		resolveConstructorBodies();
+		resolveBodies();
 
 		if(!topDownAnalysisParameters.isDeclaredLocally())
 		{
@@ -187,26 +184,6 @@ public class BodyResolver
 		}
 	}
 
-	private void resolvePropertyDeclarationBodies()
-	{
-		for(Map.Entry<NapileVariable, VariableDescriptor> entry : this.context.getVariables().entrySet())
-		{
-			NapileVariable property = entry.getKey();
-			if(!context.completeAnalysisNeeded(property))
-				continue;
-
-			final VariableDescriptor propertyDescriptor = entry.getValue();
-
-			computeDeferredType(propertyDescriptor.getReturnType());
-
-			JetScope declaringScope = this.context.getDeclaringScopes().get(property);
-
-			NapileExpression initializer = property.getInitializer();
-			if(initializer != null)
-				resolvePropertyInitializer(property, propertyDescriptor, initializer, declaringScope);
-		}
-	}
-
 	public void resolvePropertyInitializer(NapileVariable property, VariableDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
 	{
 		//JetFlowInformationProvider flowInformationProvider = context.getDescriptorResolver().computeFlowData(property, initializer); // TODO : flow JET-15
@@ -224,8 +201,25 @@ public class BodyResolver
 		//        }
 	}
 
-	private void resolveFunctionBodies()
+	private void resolveBodies()
 	{
+		for(Map.Entry<NapileVariable, VariableDescriptor> entry : this.context.getVariables().entrySet())
+		{
+			NapileVariable property = entry.getKey();
+			if(!context.completeAnalysisNeeded(property))
+				continue;
+
+			final VariableDescriptor propertyDescriptor = entry.getValue();
+
+			computeDeferredType(propertyDescriptor.getReturnType());
+
+			JetScope declaringScope = this.context.getDeclaringScopes().get(property);
+
+			NapileExpression initializer = property.getInitializer();
+			if(initializer != null)
+				resolvePropertyInitializer(property, propertyDescriptor, initializer, declaringScope);
+		}
+
 		for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
 		{
 			NapileNamedMethodOrMacro declaration = entry.getKey();
@@ -236,14 +230,9 @@ public class BodyResolver
 			JetScope declaringScope = this.context.getDeclaringScopes().get(declaration);
 			assert declaringScope != null;
 
-			resolveFunctionBody(trace, declaration, descriptor, declaringScope);
-
-			assert descriptor.getReturnType() != null;
+			resolveBody(trace, declaration, descriptor, declaringScope, false);
 		}
-	}
 
-	private void resolveConstructorBodies()
-	{
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : context.getConstructors().entrySet())
 		{
 			NapileConstructor declaration = entry.getKey();
@@ -252,18 +241,27 @@ public class BodyResolver
 			JetScope declaringScope = context.getDeclaringScopes().get(declaration);
 			assert declaringScope != null;
 
-			resolveFunctionBody(trace, declaration, descriptor, declaringScope);
+			resolveBody(trace, declaration, descriptor, declaringScope, false);
+		}
+
+		final Collection<MethodDescriptor> keys = trace.getKeys(BindingContext.DUMMY_VARIABLE_ACCESSORS);
+		for(MethodDescriptor key : keys)
+		{
+			NapileVariableAccessor accessor = trace.safeGet(BindingContext.DUMMY_VARIABLE_ACCESSORS, key);
+
+			JetScope scope = trace.safeGet(BindingContext.DUMMY_VARIABLE_ACCESSORS_SCOPE, key);
+
+			resolveBody(trace, accessor, key, scope, true);
 		}
 	}
 
-
-	public void resolveFunctionBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull JetScope declaringScope)
+	public void resolveBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull JetScope declaringScope, boolean variableAccessor)
 	{
 		if(!context.completeAnalysisNeeded(function))
 			return;
 
 		NapileExpression bodyExpression = function.getBodyExpression();
-		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(declaringScope, methodDescriptor, function, trace);
+		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(declaringScope, methodDescriptor, trace, variableAccessor);
 		if(bodyExpression != null)
 			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, methodDescriptor, DataFlowInfo.EMPTY, null, trace);
 	}

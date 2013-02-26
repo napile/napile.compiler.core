@@ -24,7 +24,7 @@ import com.intellij.psi.tree.IElementType;
  * @author VISTALL
  * @date 15:27/05.12.12
  */
-public interface NapileVariableAccessor extends NapileNamedDeclaration
+public interface NapileVariableAccessor extends NapileNamedDeclaration, NapileDeclarationWithBody
 {
 	NapileVariableAccessor[] EMPTY_ARRAY = new NapileVariableAccessor[0];
 
@@ -33,7 +33,4 @@ public interface NapileVariableAccessor extends NapileNamedDeclaration
 
 	@Nullable
 	IElementType getAccessorElementType();
-
-	@Nullable
-	NapileExpression getBodyExpression();
 }

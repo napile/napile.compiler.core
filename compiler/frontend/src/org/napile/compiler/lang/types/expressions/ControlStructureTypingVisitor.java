@@ -27,6 +27,7 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
@@ -494,7 +495,11 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, parentDeclaration);
 		MethodDescriptor containingMethodDescriptor = DescriptorUtils.getParentOfType(declarationDescriptor, MethodDescriptor.class, false);
 
-		if(containingMethodDescriptor != null)
+		if(declarationDescriptor instanceof VariableAccessorDescriptor)
+		{
+			expectedType = ((VariableAccessorDescriptor) declarationDescriptor).getVariable().getType();
+		}
+		else if(containingMethodDescriptor != null)
 		{
 			PsiElement containingFunction = BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor);
 			assert containingFunction != null;

@@ -119,7 +119,7 @@ public class AnonymClassResolver
 				@Override
 				public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro method)
 				{
-					bodyResolver.resolveFunctionBody(bindingTrace, method, bindingTrace.safeGet(BindingContext.METHOD, method), mutableClassDescriptor.getScopeForMemberResolution());
+					bodyResolver.resolveBody(bindingTrace, method, bindingTrace.safeGet(BindingContext.METHOD, method), mutableClassDescriptor.getScopeForMemberResolution(), false);
 				}
 			});
 		}

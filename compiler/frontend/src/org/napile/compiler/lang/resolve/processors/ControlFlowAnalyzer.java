@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
+import java.util.Collection;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -23,8 +24,8 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.cfg.JetFlowInformationProvider;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
+import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
@@ -33,7 +34,8 @@ import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileVariable;
+import org.napile.compiler.lang.psi.NapileVariableAccessor;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
@@ -83,7 +85,7 @@ public class ControlFlowAnalyzer
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
 			final JetType expectedReturnType = !function.hasBlockBody() && !function.hasDeclaredReturnType() ? TypeUtils.NO_EXPECTED_TYPE : functionDescriptor.getReturnType();
-			checkFunction(function, expectedReturnType);
+			checkMethod(function, expectedReturnType);
 		}
 
 		for(Map.Entry<NapileConstructor, ConstructorDescriptor> entry : bodiesResolveContext.getConstructors().entrySet())
@@ -92,17 +94,30 @@ public class ControlFlowAnalyzer
 			if(!bodiesResolveContext.completeAnalysisNeeded(constructor))
 				continue;
 
-			checkFunction(constructor, TypeUtils.NO_EXPECTED_TYPE);
+			checkMethod(constructor, TypeUtils.NO_EXPECTED_TYPE);
 		}
 
-		for(Map.Entry<NapileVariable, VariableDescriptor> entry : bodiesResolveContext.getVariables().entrySet())
+		final Collection<MethodDescriptor> keys = trace.getKeys(BindingContext.DUMMY_VARIABLE_ACCESSORS);
+		for(MethodDescriptor key : keys)
+		{
+			NapileVariableAccessor accessor = trace.safeGet(BindingContext.DUMMY_VARIABLE_ACCESSORS, key);
+
+			if(!bodiesResolveContext.completeAnalysisNeeded(accessor))
+				continue;
+
+			//JetScope scope = trace.safeGet(BindingContext.DUMMY_VARIABLE_ACCESSORS_SCOPE, key);
+
+			checkMethod(accessor, key.getReturnType());
+		}
+
+		/*for(Map.Entry<NapileVariable, VariableDescriptor> entry : bodiesResolveContext.getVariables().entrySet())
 		{
 			NapileVariable property = entry.getKey();
 			if(!bodiesResolveContext.completeAnalysisNeeded(property))
 				continue;
 			VariableDescriptor variableDescriptor = entry.getValue();
 			//checkProperty(property, variableDescriptor);
-		}
+		}  */
 	}
 
 	private void checkClassLike(NapileClassLike klass)
@@ -112,7 +127,7 @@ public class ControlFlowAnalyzer
 		flowInformationProvider.markUninitializedVariables(topDownAnalysisParameters.isDeclaredLocally());
 	}
 
-	private void checkFunction(NapileDeclarationWithBody function, final @NotNull JetType expectedReturnType)
+	private void checkMethod(NapileDeclarationWithBody function, final @NotNull JetType expectedReturnType)
 	{
 		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider(function, trace);
 

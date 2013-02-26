@@ -18,10 +18,16 @@ package org.napile.compiler.lang.psi.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileCallParameter;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileTypeParameterListOwnerStub;
+import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
@@ -76,31 +82,6 @@ public abstract class NapileNamedMethodOrMacroImpl<S extends NamedStub> extends 
 	public NapileExpression getInitializer()
 	{
 		return PsiTreeUtil.getNextSiblingOfType(getEqualsToken(), NapileExpression.class);
-	}
-
-	/**
-	 * Returns full qualified name for function "package_fqn.function_name"
-	 * Not null for top level functions.
-	 *
-	 * @return
-	 */
-	@Nullable
-	public FqName getQualifiedName()
-	{
-		PsiElement parent = getParent();
-		if(parent instanceof NapileFile)
-		{
-			// fqname is different in scripts
-			if(((NapileFile) parent).getPackage() == null)
-			{
-				return null;
-			}
-			NapileFile jetFile = (NapileFile) parent;
-			final FqName fileFQN = NapilePsiUtil.getFQName(jetFile);
-			return fileFQN.child(getNameAsName());
-		}
-
-		return null;
 	}
 
 	@NotNull

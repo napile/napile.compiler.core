@@ -580,9 +580,16 @@ public class JetParsing extends AbstractJetParsing
 					{
 						advance();
 
-						marker.done(VARIABLE_ACCESSOR);
+						if(at(NapileTokens.SEMICOLON))
+						{
+							advance();
+						}
+						else if(at(NapileTokens.EQ) || at(NapileTokens.LBRACE))
+						{
+							parseMethodOrMacroBody();
+						}
 
-						consumeIf(NapileTokens.SEMICOLON);
+						marker.done(VARIABLE_ACCESSOR);
 					}
 					else
 					{

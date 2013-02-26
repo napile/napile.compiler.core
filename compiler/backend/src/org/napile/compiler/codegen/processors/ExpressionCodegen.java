@@ -547,7 +547,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 			VariableDescriptor variableDescriptor = (VariableDescriptor) descriptor;
 			boolean directToVar = variableDescriptor instanceof LocalVariableDescriptor && bindingTrace.safeGet(BindingContext.AUTO_CREATED_IT, variableDescriptor);
-			VariableDescriptor targetVar = directToVar ? bindingTrace.safeGet(BindingContext.AUTO_CREATED_TO, variableDescriptor) : variableDescriptor;
+			VariableDescriptor targetVar = variableDescriptor;
 
 			boolean isStatic = targetVar.isStatic();
 			NapileExpression r = getReceiverForSelector(expression);

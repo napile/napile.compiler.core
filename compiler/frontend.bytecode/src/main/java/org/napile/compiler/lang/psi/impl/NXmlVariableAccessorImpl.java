@@ -22,6 +22,8 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.psi.NXmlParentedElementBase;
+import org.napile.compiler.lang.psi.NapileCallParameter;
+import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
@@ -77,6 +79,32 @@ public class NXmlVariableAccessorImpl extends NXmlParentedElementBase implements
 	public NapileExpression getBodyExpression()
 	{
 		return null;
+	}
+
+	@Override
+	public boolean hasBlockBody()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean hasDeclaredReturnType()
+	{
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public NapileCallParameterList getCallParameterList()
+	{
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public NapileCallParameter[] getCallParameters()
+	{
+		return NapileCallParameter.EMPTY_ARRAY;
 	}
 
 	@NotNull

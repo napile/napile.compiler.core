@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -109,13 +109,21 @@ public class MethodDescriptorUtil
 	}
 
 	@NotNull
-	public static JetScope getMethodInnerScope(@NotNull JetScope outerScope, @NotNull MethodDescriptor descriptor, @NotNull NapileDeclarationWithBody declarationWithBody, @NotNull BindingTrace trace)
+	public static JetScope getMethodInnerScope(@NotNull JetScope outerScope, @NotNull MethodDescriptor descriptor, @NotNull BindingTrace trace, boolean variableAccessor)
 	{
 		WritableScope parameterScope = new WritableScopeImpl(outerScope, descriptor, new TraceBasedRedeclarationHandler(trace), "Function inner scope");
 		for(TypeParameterDescriptor typeParameter : descriptor.getTypeParameters())
 			parameterScope.addTypeParameterDescriptor(typeParameter);
 		for(CallParameterDescriptor parameterDescriptor : descriptor.getValueParameters())
 			parameterScope.addVariableDescriptor(parameterDescriptor);
+
+		if(variableAccessor)
+		{
+			LocalVariableDescriptor variableDescriptor = new LocalVariableDescriptor(descriptor, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), descriptor.getReturnType(), Modality.OPEN, false);
+			parameterScope.addVariableDescriptor(variableDescriptor);
+
+			trace.record(BindingContext.AUTO_CREATED_IT, variableDescriptor, Boolean.TRUE);
+		}
 
 		parameterScope.changeLockLevel(WritableScope.LockLevel.READING);
 		return parameterScope;

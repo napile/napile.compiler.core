@@ -114,8 +114,10 @@ public interface BindingContext extends BindingReader
 
 	WritableSlice<NapileExpression, Boolean> VARIABLE_REASSIGNMENT = Slices.createSimpleSetSlice();
 	WritableSlice<VariableDescriptor, Boolean> AUTO_CREATED_IT = Slices.createSimpleSetSlice();
-	WritableSlice<VariableDescriptor, VariableDescriptor> AUTO_CREATED_TO = Slices.createSimpleSlice();
 	WritableSlice<NapileExpression, DataFlowInfo> DATAFLOW_INFO_AFTER_CONDITION = Slices.createSimpleSlice();
+
+	WritableSlice<MethodDescriptor, NapileVariableAccessor> DUMMY_VARIABLE_ACCESSORS = new BasicWritableSlice<MethodDescriptor, NapileVariableAccessor>(RewritePolicy.DO_NOTHING, true);
+	WritableSlice<MethodDescriptor, JetScope> DUMMY_VARIABLE_ACCESSORS_SCOPE = Slices.createSimpleSlice();
 
 	/**
 	 * Has type of current expression has been already resolved

@@ -660,7 +660,7 @@ public class JetControlFlowProcessor
 			{
 				subroutine = ((NapileAnonymMethodExpression) subroutine).getAnonymMethod();
 			}
-			if(subroutine instanceof NapileMethod)
+			if(subroutine instanceof NapileDeclarationWithBody)
 			{
 				if(returnedExpression == null)
 				{
