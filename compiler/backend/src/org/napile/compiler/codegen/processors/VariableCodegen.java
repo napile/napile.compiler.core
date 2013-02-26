@@ -32,8 +32,10 @@ import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.visitors.BinaryCodegenVisitor;
+import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -64,10 +66,26 @@ public class VariableCodegen
 
 		if(variableAccessor == null)
 			getSetterCode(bindingTrace, classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
-		else if(variableAccessor.getBodyExpression() == null)
-			getSetterCode(bindingTrace, classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
 		else
-			throw new UnsupportedOperationException("Variable accessors with body is not supported");
+		{
+			final NapileExpression bodyExpression = variableAccessor.getBodyExpression();
+
+			if(bodyExpression == null)
+				getSetterCode(bindingTrace, classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
+			else
+			{
+				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor);
+
+				ExpressionCodegen codegen = new ExpressionCodegen(bindingTrace, descriptor, classNode, ExpressionCodegenContext.empty(), null);
+				codegen.returnExpression(bodyExpression, false);
+
+				MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, AsmConstants.NULL_TYPE);
+				methodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)));
+				methodNode.code = new CodeInfo(codegen.instructs);
+
+				classNode.addMember(methodNode);
+			}
+		}
 	}
 
 	private static void getSetterCode(@NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull MethodNode setterMethodNode, @NotNull VariableDescriptor variableDescriptor)
@@ -106,10 +124,24 @@ public class VariableCodegen
 
 		if(variableAccessor == null)
 			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(variableDescriptor), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)), variableDescriptor, bindingTrace, variable);
-		else if(variableAccessor.getBodyExpression() == null)
-			getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)), variableDescriptor, bindingTrace, variable);
 		else
-			throw new UnsupportedOperationException("Variable accessors with body is not supported");
+		{
+			final NapileExpression bodyExpression = variableAccessor.getBodyExpression();
+			if(bodyExpression == null)
+				getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)), variableDescriptor, bindingTrace, variable);
+			else
+			{
+				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor);
+
+				ExpressionCodegen codegen = new ExpressionCodegen(bindingTrace, descriptor, classNode, ExpressionCodegenContext.empty(), null);
+				codegen.returnExpression(bodyExpression, false);
+
+				MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, codegen.toAsmType(descriptor.getVariable().getType()));
+				methodNode.code = new CodeInfo(codegen.instructs);
+
+				classNode.addMember(methodNode);
+			}
+		}
 	}
 
 	private static void getGetterCode(@NotNull ClassNode classNode, @NotNull MethodNode getterMethodNode, @NotNull VariableDescriptor variableDescriptor, @NotNull BindingTrace bindingTrace, @Nullable NapileVariable variable)
