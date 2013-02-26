@@ -23,20 +23,11 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.*;
+import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.lexer.NapileKeywordToken;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -50,10 +41,9 @@ import com.intellij.psi.impl.source.tree.LeafPsiElement;
  */
 public interface Errors
 {
-
 	DiagnosticFactory1<NapileFile, Throwable> EXCEPTION_WHILE_ANALYZING = DiagnosticFactory1.create(Severity.ERROR);
 
-	UnresolvedReferenceDiagnosticFactory UNRESOLVED_REFERENCE = UnresolvedReferenceDiagnosticFactory.create();
+	DiagnosticFactory1<NapileReferenceExpression, String> UNRESOLVED_REFERENCE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ELEMENT_RANGE_OR_BRACKETS);
 
 	//Elements with "INVISIBLE_REFERENCE" error are marked as unresolved, unlike elements with "INVISIBLE_MEMBER" error
 	DiagnosticFactory2<NapileSimpleNameExpression, DeclarationDescriptor, DeclarationDescriptor> INVISIBLE_REFERENCE = DiagnosticFactory2.create(Severity.ERROR);
@@ -96,7 +86,7 @@ public interface Errors
 
 	SimpleDiagnosticFactory<PsiElement> MIXING_NAMED_AND_POSITIONED_ARGUMENTS = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<NapileReferenceExpression> ARGUMENT_PASSED_TWICE = SimpleDiagnosticFactory.create(Severity.ERROR);
-	UnresolvedReferenceDiagnosticFactory NAMED_PARAMETER_NOT_FOUND = UnresolvedReferenceDiagnosticFactory.create();
+	DiagnosticFactory1<NapileReferenceExpression, String> NAMED_PARAMETER_NOT_FOUND = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ELEMENT_RANGE_OR_BRACKETS);
 	SimpleDiagnosticFactory<NapileExpression> VARARG_OUTSIDE_PARENTHESES = SimpleDiagnosticFactory.create(Severity.ERROR);
 	SimpleDiagnosticFactory<LeafPsiElement> NON_VARARG_SPREAD = SimpleDiagnosticFactory.create(Severity.ERROR);
 
@@ -134,9 +124,9 @@ public interface Errors
 
 	DiagnosticFactory1<NapileSimpleNameExpression, VariableDescriptor> UNINITIALIZED_VARIABLE = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, CallParameterDescriptor> UNINITIALIZED_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
-	UnusedElementDiagnosticFactory<NapileVariable, VariableDescriptor> UNUSED_VARIABLE = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
-	UnusedElementDiagnosticFactory<NapileCallParameterAsVariable, VariableDescriptor> UNUSED_PARAMETER = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
-	UnusedElementDiagnosticFactory<NapileNamedDeclaration, DeclarationDescriptor> ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE = UnusedElementDiagnosticFactory.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
+	DiagnosticFactory1<NapileVariable, VariableDescriptor> UNUSED_VARIABLE = DiagnosticFactory1.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
+	DiagnosticFactory1<NapileCallParameterAsVariable, VariableDescriptor> UNUSED_PARAMETER = DiagnosticFactory1.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
+	DiagnosticFactory1<NapileNamedDeclaration, DeclarationDescriptor> ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE = DiagnosticFactory1.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> VARIABLE_WITH_REDUNDANT_INITIALIZER = DiagnosticFactory1.create(Severity.WARNING);
 	DiagnosticFactory2<NapileElement, NapileElement, DeclarationDescriptor> UNUSED_VALUE = DiagnosticFactory2.create(Severity.WARNING);
 	DiagnosticFactory1<NapileElement, NapileElement> UNUSED_CHANGED_VALUE = DiagnosticFactory1.create(Severity.WARNING);

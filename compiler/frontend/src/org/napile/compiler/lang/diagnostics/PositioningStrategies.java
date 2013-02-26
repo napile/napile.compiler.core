@@ -48,6 +48,24 @@ public class PositioningStrategies
 
 	public static final PositioningStrategy<PsiElement> DEFAULT = new PositioningStrategy<PsiElement>();
 
+	public static final PositioningStrategy<NapileReferenceExpression> ELEMENT_RANGE_OR_BRACKETS = new PositioningStrategy<NapileReferenceExpression>()
+	{
+		@NotNull
+		@Override
+		public List<TextRange> mark(@NotNull NapileReferenceExpression element)
+		{
+			if(element instanceof NapileArrayAccessExpressionImpl)
+			{
+				List<TextRange> ranges = ((NapileArrayAccessExpressionImpl) element).getBracketRanges();
+				if(!ranges.isEmpty())
+				{
+					return ranges;
+				}
+			}
+			return Collections.singletonList(element.getTextRange());
+		}
+	};
+
 	public static final PositioningStrategy<NapileInjectionExpression> INJECTION_NAME = new PositioningStrategy<NapileInjectionExpression>()
 	{
 		@NotNull

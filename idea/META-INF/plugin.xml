@@ -11,6 +11,9 @@
 		<!--<component>
 			<implementation-class>org.napile.idea.plugin.highlighter.DeclarationHintSupport</implementation-class>
 		</component>        -->
+		<component>
+			<implementation-class>org.napile.idea.plugin.editor.highlight.NapileHighlightPassFactory</implementation-class>
+		</component>
 	</project-components>
 	<application-components>
 		<component>
@@ -99,8 +102,8 @@
 		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameJetClassProcessor"/>
 		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameKotlinFunctionProcessor"/>
 
-		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>
-		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.DebugInfoAnnotator"/>
+	<!--	<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>
+		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.DebugInfoAnnotator"/>  -->
 
 		<moduleType id="NAPILE_MODULE" implementationClass="org.napile.idea.plugin.module.type.NapileModuleType"/>
 		<moduleConfigurationEditorProvider implementation="org.napile.idea.plugin.module.type.DefaultModuleEditorsProvider"/>

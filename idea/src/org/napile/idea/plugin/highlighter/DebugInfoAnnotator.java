@@ -16,29 +16,29 @@
 
 package org.napile.idea.plugin.highlighter;
 
+import static org.napile.compiler.lang.lexer.NapileTokens.*;
 import static org.napile.compiler.lang.resolve.BindingContext.AMBIGUOUS_REFERENCE_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
 import static org.napile.compiler.lang.resolve.BindingContext.LABEL_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
-import static org.napile.compiler.lang.lexer.NapileTokens.*;
 
 import java.util.Collection;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.diagnostics.UnresolvedReferenceDiagnosticFactory;
+import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.lexer.NapileTokens;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.idea.plugin.editor.highlight.NapileHighlightPass;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.google.common.collect.Sets;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -87,7 +87,7 @@ public class DebugInfoAnnotator implements Annotator
 				final Set<NapileReferenceExpression> unresolvedReferences = Sets.newHashSet();
 				for(Diagnostic diagnostic : bindingContext.getDiagnostics())
 				{
-					if(diagnostic.getFactory() instanceof UnresolvedReferenceDiagnosticFactory)
+					if(NapileHighlightPass.UNRESOLVED_REFERENCES.contains(diagnostic.getFactory()))
 					{
 						unresolvedReferences.add((NapileReferenceExpression) diagnostic.getPsiElement());
 					}

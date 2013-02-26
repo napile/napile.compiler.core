@@ -29,13 +29,12 @@ import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.diagnostics.RedeclarationDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.Severity;
-import org.napile.compiler.lang.diagnostics.UnresolvedReferenceDiagnosticFactory;
-import org.napile.compiler.lang.diagnostics.UnusedElementDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.idea.plugin.editor.highlight.NapileHighlightPass;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import org.napile.idea.plugin.quickfix.JetIntentionActionFactory;
 import org.napile.idea.plugin.quickfix.QuickFixes;
@@ -177,7 +176,7 @@ public class JetPsiChecker implements Annotator
 		List<TextRange> textRanges = diagnostic.getTextRanges();
 		if(diagnostic.getSeverity() == Severity.ERROR)
 		{
-			if(diagnostic.getFactory() instanceof UnresolvedReferenceDiagnosticFactory)
+			if(NapileHighlightPass.UNRESOLVED_REFERENCES.contains(diagnostic.getFactory()))
 			{
 				NapileReferenceExpression referenceExpression = (NapileReferenceExpression) diagnostic.getPsiElement();
 				PsiReference reference = referenceExpression.getReference();
@@ -187,7 +186,7 @@ public class JetPsiChecker implements Annotator
 					for(TextRange range : mrr.getRanges())
 					{
 						Annotation annotation = holder.createErrorAnnotation(range.shiftRight(referenceExpression.getTextOffset()), getDefaultMessage(diagnostic));
-						annotation.setTooltip(getMessage(diagnostic));
+						annotation.setTooltip(getTooltipMessage(diagnostic));
 
 						registerQuickFix(annotation, diagnostic);
 
@@ -199,7 +198,7 @@ public class JetPsiChecker implements Annotator
 					for(TextRange textRange : textRanges)
 					{
 						Annotation annotation = holder.createErrorAnnotation(textRange, getDefaultMessage(diagnostic));
-						annotation.setTooltip(getMessage(diagnostic));
+						annotation.setTooltip(getTooltipMessage(diagnostic));
 						registerQuickFix(annotation, diagnostic);
 						annotation.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
 					}
@@ -218,7 +217,7 @@ public class JetPsiChecker implements Annotator
 			for(TextRange textRange : textRanges)
 			{
 				Annotation errorAnnotation = holder.createErrorAnnotation(textRange, getDefaultMessage(diagnostic));
-				errorAnnotation.setTooltip(getMessage(diagnostic));
+				errorAnnotation.setTooltip(getTooltipMessage(diagnostic));
 				registerQuickFix(errorAnnotation, diagnostic);
 
 				if(diagnostic.getFactory() == Errors.INVISIBLE_REFERENCE)
@@ -232,10 +231,10 @@ public class JetPsiChecker implements Annotator
 			for(TextRange textRange : textRanges)
 			{
 				Annotation annotation = holder.createWarningAnnotation(textRange, getDefaultMessage(diagnostic));
-				annotation.setTooltip(getMessage(diagnostic));
+				annotation.setTooltip(getTooltipMessage(diagnostic));
 				registerQuickFix(annotation, diagnostic);
 
-				if(diagnostic.getFactory() instanceof UnusedElementDiagnosticFactory)
+				if(NapileHighlightPass.WARNINGS_LIKE_UNUSED.contains(diagnostic.getFactory()))
 				{
 					annotation.setHighlightType(ProblemHighlightType.LIKE_UNUSED_SYMBOL);
 				}
@@ -278,7 +277,7 @@ public class JetPsiChecker implements Annotator
 	}
 
 	@NotNull
-	private static String getMessage(@NotNull Diagnostic diagnostic)
+	public static String getTooltipMessage(@NotNull Diagnostic diagnostic)
 	{
 		String message = IdeErrorMessages.RENDERER.render(diagnostic);
 		if(ApplicationManager.getApplication().isInternal() || ApplicationManager.getApplication().isUnitTestMode())
@@ -301,7 +300,7 @@ public class JetPsiChecker implements Annotator
 	}
 
 	@NotNull
-	private static String getDefaultMessage(@NotNull Diagnostic diagnostic)
+	public static String getDefaultMessage(@NotNull Diagnostic diagnostic)
 	{
 		String message = DefaultErrorMessages.RENDERER.render(diagnostic);
 		if(ApplicationManager.getApplication().isInternal() || ApplicationManager.getApplication().isUnitTestMode())
@@ -320,7 +319,7 @@ public class JetPsiChecker implements Annotator
 		if(!redeclarationDiagnostic.isValid())
 			return null;
 		Annotation annotation = holder.createErrorAnnotation(textRanges.get(0), "");
-		annotation.setTooltip(getMessage(redeclarationDiagnostic));
+		annotation.setTooltip(getTooltipMessage(redeclarationDiagnostic));
 		return annotation;
 	}
 }
