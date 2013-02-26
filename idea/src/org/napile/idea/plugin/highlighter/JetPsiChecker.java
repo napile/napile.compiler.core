@@ -27,7 +27,6 @@ import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
-import org.napile.compiler.lang.diagnostics.RedeclarationDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.Severity;
 import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -207,7 +206,7 @@ public class JetPsiChecker implements Annotator
 				return;
 			}
 
-			if(diagnostic.getFactory() instanceof RedeclarationDiagnosticFactory)
+			if(NapileHighlightPass.REDECLARATION.contains(diagnostic.getFactory()))
 			{
 				registerQuickFix(markRedeclaration(redeclarations, diagnostic, holder), diagnostic);
 				return;

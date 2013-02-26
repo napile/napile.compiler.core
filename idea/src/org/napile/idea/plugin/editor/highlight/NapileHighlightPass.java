@@ -46,6 +46,7 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 {
 	public static final Set<? extends AbstractDiagnosticFactory> WARNINGS_LIKE_UNUSED = ImmutableSet.<AbstractDiagnosticFactory>builder().add(Errors.UNUSED_VARIABLE, Errors.UNUSED_PARAMETER, Errors.ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE).build();
 	public static final Set<? extends AbstractDiagnosticFactory> UNRESOLVED_REFERENCES = ImmutableSet.<AbstractDiagnosticFactory>builder().add(Errors.NAMED_PARAMETER_NOT_FOUND, Errors.UNRESOLVED_REFERENCE).build();
+	public static final Set<? extends AbstractDiagnosticFactory> REDECLARATION = ImmutableSet.<AbstractDiagnosticFactory>builder().add(Errors.REDECLARATION, Errors.NAME_SHADOWING).build();
 
 	private final NapileFile file;
 

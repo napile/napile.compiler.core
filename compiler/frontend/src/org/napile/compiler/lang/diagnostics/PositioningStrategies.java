@@ -48,6 +48,33 @@ public class PositioningStrategies
 
 	public static final PositioningStrategy<PsiElement> DEFAULT = new PositioningStrategy<PsiElement>();
 
+	public static final PositioningStrategy<PsiElement> POSITION_REDECLARATION = new PositioningStrategy<PsiElement>()
+	{
+		@NotNull
+		@Override
+		public List<TextRange> mark(@NotNull PsiElement element)
+		{
+			if(element instanceof NapileNamedDeclaration)
+			{
+				PsiElement nameIdentifier = ((NapileNamedDeclaration) element).getNameIdentifier();
+				if(nameIdentifier != null)
+				{
+					return markElement(nameIdentifier);
+				}
+			}
+			else if(element instanceof NapileFile)
+			{
+				NapileFile file = (NapileFile) element;
+				PsiElement nameIdentifier = file.getPackage().getLastPartExpression();
+				if(nameIdentifier != null)
+				{
+					return markElement(nameIdentifier);
+				}
+			}
+			return markElement(element);
+		}
+	};
+
 	public static final PositioningStrategy<NapileReferenceExpression> ELEMENT_RANGE_OR_BRACKETS = new PositioningStrategy<NapileReferenceExpression>()
 	{
 		@NotNull

@@ -50,8 +50,8 @@ public interface Errors
 	DiagnosticFactory2<PsiElement, DeclarationDescriptor, DeclarationDescriptor> INVISIBLE_MEMBER = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.CALL_ELEMENT);
 	DiagnosticFactory2<PsiElement, DeclarationDescriptor, DeclarationDescriptor> IMMUTABLE_INVISIBLE_MEMBER = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.CALL_ELEMENT);
 
-	RedeclarationDiagnosticFactory REDECLARATION = new RedeclarationDiagnosticFactory(Severity.ERROR);
-	RedeclarationDiagnosticFactory NAME_SHADOWING = new RedeclarationDiagnosticFactory(Severity.WARNING);
+	DiagnosticFactory1<PsiElement, String> REDECLARATION = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.POSITION_REDECLARATION);
+	DiagnosticFactory1<PsiElement, String> NAME_SHADOWING = DiagnosticFactory1.create(Severity.WARNING, PositioningStrategies.POSITION_REDECLARATION);
 
 	DiagnosticFactory2<PsiElement, JetType, JetType> TYPE_MISMATCH = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, Collection<NapileKeywordToken>> INCOMPATIBLE_MODIFIERS = DiagnosticFactory1.create(Severity.ERROR);
@@ -59,47 +59,47 @@ public interface Errors
 
 	DiagnosticFactory2<PsiElement, NapileKeywordToken, NapileKeywordToken> REDUNDANT_MODIFIER_WITH_MODIFIER = DiagnosticFactory2.create(Severity.WARNING);
 
-	SimpleDiagnosticFactory<PsiElement> REDUNDANT_MODIFIER_IN_GETTER = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<PsiElement> REDUNDANT_MODIFIER = SimpleDiagnosticFactory.create(Severity.WARNING);
+	DiagnosticFactory0<PsiElement> REDUNDANT_MODIFIER_IN_GETTER = DiagnosticFactory0.create(Severity.WARNING);
+	DiagnosticFactory0<PsiElement> REDUNDANT_MODIFIER = DiagnosticFactory0.create(Severity.WARNING);
 
-	SimpleDiagnosticFactory<PsiElement> NAPILE_LANG_CLASS_IMPORT_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<PsiElement> NAPILE_LANG_TYPE_IMPORT_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileInjectionExpression> UNKNOWN_INJECTION = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.INJECTION_NAME);
+	DiagnosticFactory0<PsiElement> NAPILE_LANG_CLASS_IMPORT_EXPECTED = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<PsiElement> NAPILE_LANG_TYPE_IMPORT_EXPECTED = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileInjectionExpression> UNKNOWN_INJECTION = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.INJECTION_NAME);
 
-	SimpleDiagnosticFactory<NapileExpression> TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileReturnExpression> RETURN_NOT_ALLOWED = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileSimpleNameExpression> LABEL_NAME_CLASH = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileSimpleNameExpression> EXPRESSION_EXPECTED_NAMESPACE_FOUND = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileReturnExpression> RETURN_NOT_ALLOWED = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileSimpleNameExpression> LABEL_NAME_CLASH = DiagnosticFactory0.create(Severity.WARNING);
+	DiagnosticFactory0<NapileSimpleNameExpression> EXPRESSION_EXPECTED_NAMESPACE_FOUND = DiagnosticFactory0.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileSimpleNameExpression, DeclarationDescriptor> CANNOT_IMPORT_FROM_ELEMENT = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, DeclarationDescriptor> CANNOT_BE_IMPORTED = DiagnosticFactory1.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> USELESS_HIDDEN_IMPORT = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileExpression> USELESS_SIMPLE_IMPORT = SimpleDiagnosticFactory.create(Severity.WARNING);
+	DiagnosticFactory0<NapileExpression> USELESS_HIDDEN_IMPORT = DiagnosticFactory0.create(Severity.WARNING);
+	DiagnosticFactory0<NapileExpression> USELESS_SIMPLE_IMPORT = DiagnosticFactory0.create(Severity.WARNING);
 	DiagnosticFactory1<NapileReferenceExpression, String> TARGET_IS_DEPRECATED = DiagnosticFactory1.create(Severity.WARNING);
 
-	SimpleDiagnosticFactory<NapileCallParameterAsVariable> CANNOT_INFER_PARAMETER_TYPE = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileCallParameterAsVariable> CANNOT_INFER_PARAMETER_TYPE = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileElement> NO_BACKING_FIELD_ABSTRACT_PROPERTY = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileElement> NO_BACKING_FIELD_CUSTOM_ACCESSORS = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileElement> INACCESSIBLE_BACKING_FIELD = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileElement> NOT_PROPERTY_BACKING_FIELD = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileElement> NO_BACKING_FIELD_ABSTRACT_PROPERTY = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileElement> NO_BACKING_FIELD_CUSTOM_ACCESSORS = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileElement> INACCESSIBLE_BACKING_FIELD = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileElement> NOT_PROPERTY_BACKING_FIELD = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<PsiElement> MIXING_NAMED_AND_POSITIONED_ARGUMENTS = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileReferenceExpression> ARGUMENT_PASSED_TWICE = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<PsiElement> MIXING_NAMED_AND_POSITIONED_ARGUMENTS = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileReferenceExpression> ARGUMENT_PASSED_TWICE = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory1<NapileReferenceExpression, String> NAMED_PARAMETER_NOT_FOUND = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ELEMENT_RANGE_OR_BRACKETS);
-	SimpleDiagnosticFactory<NapileExpression> VARARG_OUTSIDE_PARENTHESES = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<LeafPsiElement> NON_VARARG_SPREAD = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> VARARG_OUTSIDE_PARENTHESES = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<LeafPsiElement> NON_VARARG_SPREAD = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileExpression> MANY_FUNCTION_LITERAL_ARGUMENTS = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileVariable> PROPERTY_WITH_NO_TYPE_NO_INITIALIZER = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	DiagnosticFactory0<NapileExpression> MANY_FUNCTION_LITERAL_ARGUMENTS = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileVariable> PROPERTY_WITH_NO_TYPE_NO_INITIALIZER = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
-	SimpleDiagnosticFactory<PsiElement> INSTANCE_CALL_FROM_STATIC_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<PsiElement> STATIC_CALL_EXPECT_INSTANCE_CALL = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<PsiElement> INSTANCE_CALL_FROM_STATIC_CONTEXT = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<PsiElement> STATIC_CALL_EXPECT_INSTANCE_CALL = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileVariable> MUST_BE_INITIALIZED = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
-	SimpleDiagnosticFactory<NapileVariable> MUST_BE_INITIALIZED_OR_BE_ABSTRACT = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	DiagnosticFactory0<NapileVariable> MUST_BE_INITIALIZED = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	DiagnosticFactory0<NapileVariable> MUST_BE_INITIALIZED_OR_BE_ABSTRACT = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
-	SimpleDiagnosticFactory<NapileExpression> PROPERTY_INITIALIZER_NO_BACKING_FIELD = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> PROPERTY_INITIALIZER_NO_BACKING_FIELD = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory2<NapileModifierListOwner, String, ClassDescriptor> ABSTRACT_PROPERTY_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	DiagnosticFactory2<NapileMethod, String, ClassDescriptor> ABSTRACT_FUNCTION_IN_NON_ABSTRACT_CLASS = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.ABSTRACT_MODIFIER);
 	DiagnosticFactory1<PsiElement, SimpleMethodDescriptor> NATIVE_OR_ABSTRACT_METHOD_WITH_BODY = DiagnosticFactory1.create(Severity.ERROR);
@@ -114,13 +114,13 @@ public interface Errors
 	DiagnosticFactory1<NapileMethod, MethodDescriptor> GET_PROPERTY_WITH_LAZY_PROPERTY = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 	DiagnosticFactory1<NapileMethod, MethodDescriptor> SET_PROPERTY_WITH_FINAL_VARIABLE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
-	SimpleDiagnosticFactory<NapileNamedDeclaration> PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
+	DiagnosticFactory0<NapileNamedDeclaration> PUBLIC_MEMBER_SHOULD_SPECIFY_TYPE = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 
-	SimpleDiagnosticFactory<NapileTypeReference> MANY_CALLS_TO_THIS = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> MANY_CALLS_TO_THIS = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory1<NapileModifierListOwner, CallableMemberDescriptor> NOTHING_TO_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.OVERRIDE_MODIFIER);
 	DiagnosticFactory3<PsiNameIdentifierOwner, CallableMemberDescriptor, CallableMemberDescriptor, DeclarationDescriptor> VIRTUAL_MEMBER_HIDDEN = DiagnosticFactory3.create(Severity.ERROR, PositioningStrategies.NAMED_ELEMENT);
 	DiagnosticFactory3<NapileModifierListOwner, CallableMemberDescriptor, CallableDescriptor, DeclarationDescriptor> CANNOT_OVERRIDE_INVISIBLE_MEMBER = DiagnosticFactory3.create(Severity.ERROR, PositioningStrategies.OVERRIDE_MODIFIER);
-	SimpleDiagnosticFactory<NapileDeclaration> CANNOT_INFER_VISIBILITY = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.DECLARATION);
+	DiagnosticFactory0<NapileDeclaration> CANNOT_INFER_VISIBILITY = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.DECLARATION);
 
 	DiagnosticFactory1<NapileSimpleNameExpression, VariableDescriptor> UNINITIALIZED_VARIABLE = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, CallParameterDescriptor> UNINITIALIZED_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
@@ -130,58 +130,58 @@ public interface Errors
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> VARIABLE_WITH_REDUNDANT_INITIALIZER = DiagnosticFactory1.create(Severity.WARNING);
 	DiagnosticFactory2<NapileElement, NapileElement, DeclarationDescriptor> UNUSED_VALUE = DiagnosticFactory2.create(Severity.WARNING);
 	DiagnosticFactory1<NapileElement, NapileElement> UNUSED_CHANGED_VALUE = DiagnosticFactory1.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileElement> UNUSED_EXPRESSION = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileAnonymMethodExpression> UNUSED_FUNCTION_LITERAL = SimpleDiagnosticFactory.create(Severity.WARNING);
+	DiagnosticFactory0<NapileElement> UNUSED_EXPRESSION = DiagnosticFactory0.create(Severity.WARNING);
+	DiagnosticFactory0<NapileAnonymMethodExpression> UNUSED_FUNCTION_LITERAL = DiagnosticFactory0.create(Severity.WARNING);
 
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> VAL_REASSIGNMENT = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> INITIALIZATION_BEFORE_DECLARATION = DiagnosticFactory1.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> VARIABLE_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> VARIABLE_EXPECTED = DiagnosticFactory0.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> INITIALIZATION_USING_BACKING_FIELD_CUSTOM_SETTER = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, DeclarationDescriptor> INITIALIZATION_USING_BACKING_FIELD_OPEN_SETTER = DiagnosticFactory1.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileSimpleNameExpression, DeclarationDescriptor> FUNCTION_PARAMETERS_OF_INLINE_FUNCTION = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileElement> UNREACHABLE_CODE = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileElement> UNREACHABLE_CODE = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<PsiElement> NO_CONSTRUCTOR = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> NOT_A_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<PsiElement> NO_CONSTRUCTOR = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> NOT_A_CLASS = DiagnosticFactory0.create(Severity.ERROR);
 
 	DiagnosticFactory1<PsiElement, JetType> MISSED_SUPER_CALL = DiagnosticFactory1.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileTypeReference> INVALID_SUPER_CALL = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> INVALID_SUPER_CALL = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileTypeReference> LOCAL_EXTENSION_PROPERTY = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> LOCAL_EXTENSION_PROPERTY = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileArrayAccessExpressionImpl> NO_GET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
-	SimpleDiagnosticFactory<NapileArrayAccessExpressionImpl> NO_SET_METHOD = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
+	DiagnosticFactory0<NapileArrayAccessExpressionImpl> NO_GET_METHOD = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
+	DiagnosticFactory0<NapileArrayAccessExpressionImpl> NO_SET_METHOD = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.ARRAY_ACCESS);
 
-	SimpleDiagnosticFactory<NapileSimpleNameExpression> EQUALS_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileBinaryExpression> ASSIGNMENT_IN_EXPRESSION_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileSimpleNameExpression> EQUALS_MISSING = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileBinaryExpression> ASSIGNMENT_IN_EXPRESSION_CONTEXT = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSuperExpression, String> SUPER_IS_NOT_AN_EXPRESSION = DiagnosticFactory1.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileDeclaration> DECLARATION_IN_ILLEGAL_CONTEXT = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> SETTER_PARAMETER_WITH_DEFAULT_VALUE = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileThisExpression> NO_THIS = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileSuperExpression> SUPER_NOT_AVAILABLE = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileSuperExpression> AMBIGUOUS_SUPER = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> ABSTRACT_SUPER_CALL = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileTypeReference> NOT_A_SUPERTYPE = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<PsiElement> TYPE_ARGUMENTS_REDUNDANT_IN_SUPER_QUALIFIER = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileSimpleNameExpression> USELESS_CAST_STATIC_ASSERT_IS_FINE = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileSimpleNameExpression> USELESS_CAST = SimpleDiagnosticFactory.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileSimpleNameExpression> CAST_NEVER_SUCCEEDS = SimpleDiagnosticFactory.create(Severity.WARNING);
+	DiagnosticFactory0<NapileDeclaration> DECLARATION_IN_ILLEGAL_CONTEXT = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> SETTER_PARAMETER_WITH_DEFAULT_VALUE = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileThisExpression> NO_THIS = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileSuperExpression> SUPER_NOT_AVAILABLE = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileSuperExpression> AMBIGUOUS_SUPER = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> ABSTRACT_SUPER_CALL = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> NOT_A_SUPERTYPE = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<PsiElement> TYPE_ARGUMENTS_REDUNDANT_IN_SUPER_QUALIFIER = DiagnosticFactory0.create(Severity.WARNING);
+	DiagnosticFactory0<NapileSimpleNameExpression> USELESS_CAST_STATIC_ASSERT_IS_FINE = DiagnosticFactory0.create(Severity.WARNING);
+	DiagnosticFactory0<NapileSimpleNameExpression> USELESS_CAST = DiagnosticFactory0.create(Severity.WARNING);
+	DiagnosticFactory0<NapileSimpleNameExpression> CAST_NEVER_SUCCEEDS = DiagnosticFactory0.create(Severity.WARNING);
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> WRONG_SETTER_PARAMETER_TYPE = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> WRONG_GETTER_RETURN_TYPE = DiagnosticFactory2.create(Severity.ERROR);
-	SimpleDiagnosticFactory<PsiElement> NO_GENERICS_IN_SUPERTYPE_SPECIFIER = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<PsiElement> NO_GENERICS_IN_SUPERTYPE_SPECIFIER = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileExpression> ITERATOR_MISSING = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> ITERATOR_MISSING = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, Collection<? extends ResolvedCall<? extends CallableDescriptor>>> ITERATOR_AMBIGUITY = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, Collection<? extends MethodDescriptor>> AMBIGUOUS_LINK_METHOD = DiagnosticFactory1.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileSimpleNameExpression, JetType> COMPARE_TO_TYPE_MISMATCH = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, JetType> CALLEE_NOT_A_FUNCTION = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileReturnExpression> RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileDeclarationWithBody> NO_RETURN_IN_FUNCTION_WITH_BLOCK_BODY = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.DECLARATION_WITH_BODY);
+	DiagnosticFactory0<NapileReturnExpression> RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileDeclarationWithBody> NO_RETURN_IN_FUNCTION_WITH_BLOCK_BODY = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.DECLARATION_WITH_BODY);
 	DiagnosticFactory1<NapileExpression, JetType> RETURN_TYPE_MISMATCH = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, JetType> EXPECTED_TYPE_MISMATCH = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileBinaryExpression, JetType> ASSIGNMENT_TYPE_MISMATCH = DiagnosticFactory1.create(Severity.ERROR);
@@ -189,7 +189,7 @@ public interface Errors
 	DiagnosticFactory1<NapileExpression, NapileExpression> EXPRESSION_EXPECTED = DiagnosticFactory1.create(Severity.ERROR);
 
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> UPPER_BOUND_VIOLATED = DiagnosticFactory2.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileTypeReference> CONSTRUCTORS_EXPECTED = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> CONSTRUCTORS_EXPECTED = DiagnosticFactory0.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileTypeReference, JetType> FINAL_UPPER_BOUND = DiagnosticFactory1.create(Severity.WARNING);
 	DiagnosticFactory1<NapileExpression, JetType> USELESS_ELVIS = DiagnosticFactory1.create(Severity.WARNING);
@@ -199,26 +199,26 @@ public interface Errors
 	DiagnosticFactory1<PsiElement, CallableDescriptor> TOO_MANY_ARGUMENTS = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, String> ERROR_COMPILE_TIME_VALUE = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileWhenEntry> ELSE_MISPLACED_IN_WHEN = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.ELSE_ENTRY);
+	DiagnosticFactory0<NapileWhenEntry> ELSE_MISPLACED_IN_WHEN = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.ELSE_ENTRY);
 
-	SimpleDiagnosticFactory<NapileWhenExpression> NO_ELSE_IN_WHEN = new SimpleDiagnosticFactory<NapileWhenExpression>(Severity.ERROR, PositioningStrategies.WHEN_EXPRESSION);
-	SimpleDiagnosticFactory<NapileWhenConditionInRange> TYPE_MISMATCH_IN_RANGE = new SimpleDiagnosticFactory<NapileWhenConditionInRange>(Severity.ERROR, PositioningStrategies.WHEN_CONDITION_IN_RANGE);
-	SimpleDiagnosticFactory<PsiElement> CYCLIC_INHERITANCE_HIERARCHY = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileWhenExpression> NO_ELSE_IN_WHEN = new DiagnosticFactory0<NapileWhenExpression>(Severity.ERROR, PositioningStrategies.WHEN_EXPRESSION);
+	DiagnosticFactory0<NapileWhenConditionInRange> TYPE_MISMATCH_IN_RANGE = new DiagnosticFactory0<NapileWhenConditionInRange>(Severity.ERROR, PositioningStrategies.WHEN_CONDITION_IN_RANGE);
+	DiagnosticFactory0<PsiElement> CYCLIC_INHERITANCE_HIERARCHY = DiagnosticFactory0.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileTypeReference> SUPERTYPE_APPEARS_TWICE = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileTypeReference> FINAL_SUPERTYPE = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileTypeReference> TRAITED_CLASS_CANT_EXTEND_CLASS_WITH_CONSTRUCTORS = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> SUPERTYPE_APPEARS_TWICE = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> FINAL_SUPERTYPE = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> TRAITED_CLASS_CANT_EXTEND_CLASS_WITH_CONSTRUCTORS = DiagnosticFactory0.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileExpression, String> ILLEGAL_SELECTOR = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileCallParameterAsVariable> VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileExpression> BREAK_OR_CONTINUE_OUTSIDE_A_LOOP = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileCallParameterAsVariable> VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileExpression> BREAK_OR_CONTINUE_OUTSIDE_A_LOOP = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory1<NapileExpression, String> NOT_A_LOOP_LABEL = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileReturnExpression, String> NOT_A_RETURN_LABEL = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileNullableType> NULLABLE_SUPERTYPE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.NULLABLE_TYPE);
+	DiagnosticFactory0<NapileNullableType> NULLABLE_SUPERTYPE = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.NULLABLE_TYPE);
 	DiagnosticFactory1<PsiElement, JetType> UNSAFE_CALL = DiagnosticFactory1.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileSimpleNameExpression> AMBIGUOUS_LABEL = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileSimpleNameExpression> AMBIGUOUS_LABEL = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, String> UNSUPPORTED = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, JetType> UNNECESSARY_SAFE_CALL = DiagnosticFactory1.create(Severity.WARNING);
 	DiagnosticFactory1<PsiElement, JetType> UNNECESSARY_NOT_NULL_ASSERTION = DiagnosticFactory1.create(Severity.WARNING);
@@ -228,7 +228,7 @@ public interface Errors
 	DiagnosticFactory1<NapileElement, JetType> TYPE_MISMATCH_IN_CONDITION = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory2<NapileTypeReference, JetType, JetType> TYPE_MISMATCH_IN_BINDING_PATTERN = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory2<NapileElement, JetType, JetType> INCOMPATIBLE_TYPES = DiagnosticFactory2.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileWhenCondition> EXPECTED_CONDITION = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileWhenCondition> EXPECTED_CONDITION = DiagnosticFactory0.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileElement, JetType> CANNOT_CHECK_FOR_ERASED = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory2<NapileBinaryExpressionWithTypeRHS, JetType, JetType> UNCHECKED_CAST = DiagnosticFactory2.create(Severity.WARNING);
@@ -238,7 +238,7 @@ public interface Errors
 	DiagnosticFactory3<NapileBinaryExpression, NapileSimpleNameExpression, JetType, JetType> EQUALITY_NOT_APPLICABLE = DiagnosticFactory3.create(Severity.ERROR);
 
 	DiagnosticFactory2<NapileBinaryExpression, NapileBinaryExpression, Boolean> SENSELESS_COMPARISON = DiagnosticFactory2.create(Severity.WARNING);
-	SimpleDiagnosticFactory<NapileElement> SENSELESS_NULL_IN_WHEN = SimpleDiagnosticFactory.create(Severity.WARNING);
+	DiagnosticFactory0<NapileElement> SENSELESS_NULL_IN_WHEN = DiagnosticFactory0.create(Severity.WARNING);
 
 	DiagnosticFactory2<PsiElement, CallableMemberDescriptor, DeclarationDescriptor> OVERRIDING_FINAL_MEMBER = DiagnosticFactory2.create(Severity.ERROR);
 	DiagnosticFactory3<NapileModifierListOwner, Visibility, CallableMemberDescriptor, DeclarationDescriptor> CANNOT_WEAKEN_ACCESS_PRIVILEGE = DiagnosticFactory3.create(Severity.ERROR, PositioningStrategies.VISIBILITY_MODIFIER);
@@ -260,7 +260,7 @@ public interface Errors
 
 	DiagnosticFactory2<PsiElement, NapileClassLike, CallableMemberDescriptor> MANY_IMPL_MEMBER_NOT_IMPLEMENTED = DiagnosticFactory2.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileCallParameterAsVariable> DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE = SimpleDiagnosticFactory.create(Severity.ERROR, PositioningStrategies.PARAMETER_DEFAULT_VALUE);
+	DiagnosticFactory0<NapileCallParameterAsVariable> DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.PARAMETER_DEFAULT_VALUE);
 	DiagnosticFactory1<NapileCallParameterAsVariable, CallParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<NapileClassLike, CallParameterDescriptor> MULTIPLE_DEFAULTS_INHERITED_FROM_SUPERTYPES_WHEN_NO_EXPLICIT_OVERRIDE = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
 	DiagnosticFactory2<NapileCallParameterAsVariable, ClassDescriptor, CallParameterDescriptor> PARAMETER_NAME_CHANGED_ON_OVERRIDE = DiagnosticFactory2.create(Severity.WARNING, PositioningStrategies.NAME_IDENTIFIER);
@@ -277,10 +277,10 @@ public interface Errors
 	DiagnosticFactory1<PsiElement, Collection<? extends ResolvedCall<? extends CallableDescriptor>>> OVERLOAD_RESOLUTION_AMBIGUITY = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, Collection<? extends ResolvedCall<? extends CallableDescriptor>>> NONE_APPLICABLE = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, CallParameterDescriptor> NO_VALUE_FOR_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileReferenceExpression> NO_RECEIVER_ADMITTED = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileReferenceExpression> NO_RECEIVER_ADMITTED = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory1<NapileSimpleNameExpression, ClassifierDescriptor> NO_CLASS_OBJECT = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<PsiElement> CREATING_AN_INSTANCE_OF_ABSTRACT_CLASS = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<PsiElement> CREATING_AN_INSTANCE_OF_ABSTRACT_CLASS = DiagnosticFactory0.create(Severity.ERROR);
 
 	DiagnosticFactory1<PsiElement, InferenceErrorData> TYPE_INFERENCE_NO_INFORMATION_FOR_PARAMETER = DiagnosticFactory1.create(Severity.ERROR);
 	DiagnosticFactory1<PsiElement, InferenceErrorData> TYPE_INFERENCE_CONFLICTING_SUBSTITUTIONS = DiagnosticFactory1.create(Severity.ERROR);
@@ -291,13 +291,13 @@ public interface Errors
 
 	DiagnosticFactory1<NapileElement, Integer> WRONG_NUMBER_OF_TYPE_ARGUMENTS = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileExpression> DANGLING_FUNCTION_LITERAL_ARGUMENT_SUSPECTED = SimpleDiagnosticFactory.create(Severity.WARNING);
+	DiagnosticFactory0<NapileExpression> DANGLING_FUNCTION_LITERAL_ARGUMENT_SUSPECTED = DiagnosticFactory0.create(Severity.WARNING);
 
 	// annotations
 	DiagnosticFactory1<NapileAnnotation, String> NOT_AN_ANNOTATION_CLASS = DiagnosticFactory1.create(Severity.ERROR);
 
-	SimpleDiagnosticFactory<NapileAnnotation> DUPLICATE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
-	SimpleDiagnosticFactory<NapileAnnotation> NONE_APPLICABLE_ANNOTATION = SimpleDiagnosticFactory.create(Severity.ERROR);
+	DiagnosticFactory0<NapileAnnotation> DUPLICATE_ANNOTATION = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileAnnotation> NONE_APPLICABLE_ANNOTATION = DiagnosticFactory0.create(Severity.ERROR);
 
 
 	// This field is needed to make the Initializer class load (interfaces cannot have static initializers)

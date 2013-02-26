@@ -22,17 +22,26 @@ import com.intellij.psi.PsiElement;
 /**
  * @author svtk
  */
-public class SimpleDiagnostic<E extends PsiElement> extends AbstractDiagnostic<E>
+public class DiagnosticFactory0<E extends PsiElement> extends DiagnosticFactoryWithPsiElement<E>
 {
-	public SimpleDiagnostic(@NotNull E psiElement, @NotNull SimpleDiagnosticFactory<E> factory, @NotNull Severity severity)
+	protected DiagnosticFactory0(Severity severity, PositioningStrategy<? super E> positioningStrategy)
 	{
-		super(psiElement, factory, severity);
+		super(severity, positioningStrategy);
+	}
+
+	public static <T extends PsiElement> DiagnosticFactory0<T> create(Severity severity)
+	{
+		return create(severity, PositioningStrategies.DEFAULT);
+	}
+
+	public static <T extends PsiElement> DiagnosticFactory0<T> create(Severity severity, PositioningStrategy<? super T> positioningStrategy)
+	{
+		return new DiagnosticFactory0<T>(severity, positioningStrategy);
 	}
 
 	@NotNull
-	@Override
-	public SimpleDiagnosticFactory<E> getFactory()
+	public DiagnosticImpl<E> on(@NotNull E element)
 	{
-		return (SimpleDiagnosticFactory<E>) super.getFactory();
+		return new DiagnosticImpl<E>(element, this, severity);
 	}
 }

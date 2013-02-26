@@ -24,10 +24,10 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
+import org.napile.compiler.lang.diagnostics.DiagnosticFactory0;
 import org.napile.compiler.lang.diagnostics.DiagnosticUtils;
 import org.napile.compiler.lang.diagnostics.Severity;
-import org.napile.compiler.lang.diagnostics.SimpleDiagnostic;
-import org.napile.compiler.lang.diagnostics.SimpleDiagnosticFactory;
+import org.napile.compiler.lang.diagnostics.DiagnosticImpl;
 import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
 import org.napile.compiler.lang.psi.NapileIdeTemplate;
 import org.napile.compiler.lang.resolve.AnalyzingUtils;
@@ -62,9 +62,9 @@ public final class AnalyzerWithCompilerReport
 	}
 
 	@NotNull
-	private static final SimpleDiagnosticFactory<PsiErrorElement> SYNTAX_ERROR_FACTORY = SimpleDiagnosticFactory.create(Severity.ERROR);
+	private static final DiagnosticFactory0<PsiErrorElement> SYNTAX_ERROR_FACTORY = DiagnosticFactory0.create(Severity.ERROR);
 	@NotNull
-	private static final SimpleDiagnosticFactory<NapileIdeTemplate> UNRESOLVED_IDE_TEMPLATE_ERROR_FACTORY = SimpleDiagnosticFactory.create(Severity.ERROR);
+	private static final DiagnosticFactory0<NapileIdeTemplate> UNRESOLVED_IDE_TEMPLATE_ERROR_FACTORY = DiagnosticFactory0.create(Severity.ERROR);
 
 	private boolean hasErrors = false;
 	@NotNull
@@ -171,7 +171,7 @@ public final class AnalyzerWithCompilerReport
 			boolean hasErrors = false;
 			boolean onlyErrorAtEof = false;
 
-			private <E extends PsiElement> void reportDiagnostic(E element, SimpleDiagnosticFactory<E> factory, String message)
+			private <E extends PsiElement> void reportDiagnostic(E element, DiagnosticFactory0<E> factory, String message)
 			{
 				MyDiagnostic<?> diagnostic = new MyDiagnostic<E>(element, factory, message);
 				AnalyzerWithCompilerReport.reportDiagnostic(diagnostic, messageCollector);
@@ -223,11 +223,11 @@ public final class AnalyzerWithCompilerReport
 	}
 
 
-	private static class MyDiagnostic<E extends PsiElement> extends SimpleDiagnostic<E>
+	private static class MyDiagnostic<E extends PsiElement> extends DiagnosticImpl<E>
 	{
 		private String message;
 
-		public MyDiagnostic(@NotNull E psiElement, @NotNull SimpleDiagnosticFactory<E> factory, String message)
+		public MyDiagnostic(@NotNull E psiElement, @NotNull DiagnosticFactory0<E> factory, String message)
 		{
 			super(psiElement, factory, Severity.ERROR);
 			this.message = message;

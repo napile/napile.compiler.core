@@ -22,10 +22,10 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.AbstractDiagnosticFactory;
+import org.napile.compiler.lang.diagnostics.DiagnosticFactory0;
 import org.napile.compiler.lang.diagnostics.DiagnosticFactory1;
 import org.napile.compiler.lang.diagnostics.DiagnosticFactory2;
 import org.napile.compiler.lang.diagnostics.DiagnosticFactory3;
-import org.napile.compiler.lang.diagnostics.SimpleDiagnosticFactory;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -45,7 +45,7 @@ public final class DiagnosticFactoryToRendererMap
 		}
 	}
 
-	public <E extends PsiElement> void put(@NotNull SimpleDiagnosticFactory<E> factory, @NotNull String message)
+	public <E extends PsiElement> void put(@NotNull DiagnosticFactory0<E> factory, @NotNull String message)
 	{
 		checkMutability();
 		map.put(factory, new SimpleDiagnosticRenderer(message));
