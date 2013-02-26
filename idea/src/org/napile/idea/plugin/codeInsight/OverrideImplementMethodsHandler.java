@@ -75,7 +75,7 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	@NotNull
 	public Set<CallableMemberDescriptor> collectMethodsToGenerate(@NotNull NapileClassLike classOrObject)
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) classOrObject.getContainingFile()).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) classOrObject.getContainingFile()).getBindingContext();
 		final DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, classOrObject);
 		if(descriptor instanceof MutableClassDescriptor)
 		{

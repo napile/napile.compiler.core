@@ -39,7 +39,7 @@ public class JetTypeDeclarationProvider implements TypeDeclarationProvider
 	{
 		if(symbol instanceof NapileElement && symbol.getContainingFile() instanceof NapileFile)
 		{
-			BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) symbol.getContainingFile()).getBindingContext();
+			BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) symbol.getContainingFile()).getBindingContext();
 			DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, symbol);
 			if(descriptor instanceof CallableDescriptor)
 			{

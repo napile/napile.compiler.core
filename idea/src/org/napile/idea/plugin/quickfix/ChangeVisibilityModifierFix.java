@@ -83,7 +83,7 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<NapileModifi
 
 	private NapileKeywordToken findVisibilityChangeTo(NapileFile file)
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyze(file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
 		DeclarationDescriptor descriptor;
 		descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
 

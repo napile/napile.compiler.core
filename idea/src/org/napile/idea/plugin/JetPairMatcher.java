@@ -35,16 +35,19 @@ public class JetPairMatcher implements PairedBraceMatcher
 			new BracePair(NapileTokens.LBRACKET, NapileTokens.RBRACKET, false)
 	};
 
+	@Override
 	public BracePair[] getPairs()
 	{
 		return pairs;
 	}
 
+	@Override
 	public boolean isPairedBracesAllowedBeforeType(@NotNull final IElementType lbraceType, @Nullable final IElementType contextType)
 	{
 		return NapileTokens.WHITE_SPACE_OR_COMMENT_BIT_SET.contains(contextType) || contextType == NapileTokens.SEMICOLON || contextType == NapileTokens.COMMA || contextType == NapileTokens.RPAR || contextType == NapileTokens.RBRACKET || contextType == NapileTokens.RBRACE || contextType == NapileTokens.LBRACE;
 	}
 
+	@Override
 	public int getCodeConstructStart(final PsiFile file, final int openingBraceOffset)
 	{
 		return openingBraceOffset;

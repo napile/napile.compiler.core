@@ -23,17 +23,15 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
-import org.napile.asm.lib.NapileAnnotationPackage;
-import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.diagnostics.Severity;
 import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
-import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightPass;
+import org.napile.idea.plugin.editor.highlight.messageRendering.IdeErrorMessages;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import org.napile.idea.plugin.quickfix.JetIntentionActionFactory;
 import org.napile.idea.plugin.quickfix.QuickFixes;
@@ -44,8 +42,6 @@ import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.colors.CodeInsightColors;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.util.TextRange;
@@ -57,6 +53,7 @@ import com.intellij.xml.util.XmlStringUtil;
 /**
  * @author abreslav
  */
+@Deprecated
 public class JetPsiChecker implements Annotator
 {
 	private static volatile boolean errorReportingEnabled = true;
@@ -83,43 +80,10 @@ public class JetPsiChecker implements Annotator
 		return !ApplicationManager.getApplication().isUnitTestMode() || namesHighlightingTest;
 	}
 
-	static void highlightName(@NotNull AnnotationHolder holder, @NotNull PsiElement psiElement, @NotNull TextAttributesKey attributesKey, Annotated annotated)
-	{
-		if(isNamesHighlightingEnabled())
-		{
-			holder.createInfoAnnotation(psiElement, null).setTextAttributes(attributesKey);
-
-			if(annotated != null && AnnotationUtils.hasAnnotation(annotated, NapileAnnotationPackage.DEPRECATED))
-				holder.createInfoAnnotation(psiElement, null).setTextAttributes(CodeInsightColors.DEPRECATED_ATTRIBUTES);
-		}
-	}
-
-	private static HighlightingVisitor[] getBeforeAnalysisVisitors(AnnotationHolder holder)
-	{
-		return new HighlightingVisitor[]{
-				new SoftKeywordsHighlightingVisitor(holder),
-				new LabelsHighlightingVisitor(holder),
-		};
-	}
-
-	private static HighlightingVisitor[] getAfterAnalysisVisitor(AnnotationHolder holder, BindingContext bindingContext)
-	{
-		return new AfterAnalysisHighlightingVisitor[]{
-				new PropertiesHighlightingVisitor(holder, bindingContext),
-				new FunctionsHighlightingVisitor(holder, bindingContext),
-				new VariablesHighlightingVisitor(holder, bindingContext),
-				new TypeKindHighlightingVisitor(holder, bindingContext),
-				new InjectionHighlightingVisitor(holder, bindingContext),
-		};
-	}
 
 	@Override
 	public void annotate(@NotNull PsiElement element, @NotNull final AnnotationHolder holder)
 	{
-		for(HighlightingVisitor visitor : getBeforeAnalysisVisitors(holder))
-		{
-			element.accept(visitor);
-		}
 
 		if(element instanceof NapileFile)
 		{
@@ -127,7 +91,7 @@ public class JetPsiChecker implements Annotator
 
 			try
 			{
-				BindingContext bindingContext = ModuleAnalyzerUtil.analyze(file).getBindingContext();
+				BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
 
 				boolean isInContent = ProjectFileIndex.SERVICE.getInstance(element.getProject()).isInContent(file.getVirtualFile());
 				if(errorReportingEnabled && isInContent)
@@ -144,10 +108,7 @@ public class JetPsiChecker implements Annotator
 					}
 				}
 
-				for(HighlightingVisitor visitor : getAfterAnalysisVisitor(holder, bindingContext))
-				{
-					file.acceptChildren(visitor);
-				}
+
 			}
 			catch(ProcessCanceledException e)
 			{

@@ -24,7 +24,6 @@ import org.napile.idea.plugin.module.ModuleAnalyzer;
 import org.napile.idea.plugin.module.ModuleCollector;
 import com.google.common.base.Predicates;
 import com.intellij.openapi.module.Module;
-import com.intellij.psi.util.PsiModificationTracker;
 
 /**
  * @author VISTALL
@@ -32,52 +31,41 @@ import com.intellij.psi.util.PsiModificationTracker;
  */
 public class ModuleAnalyzerImpl extends ModuleAnalyzer
 {
-	private final ModuleAnalyzerHolder[] holders = new ModuleAnalyzerHolder[]
-	{
-			new ModuleAnalyzerHolder(-1, EMPTY),
-			new ModuleAnalyzerHolder(-1, EMPTY)
-	};
+	private volatile AnalyzeExhaust srcAnalyzeExhaust;
+	private volatile AnalyzeExhaust testAnalyzeExhaust;
 
-	private final PsiModificationTracker psiModificationTracker;
 	private final Module module;
 
 	public ModuleAnalyzerImpl(Module module)
 	{
 		this.module = module;
-		psiModificationTracker = PsiModificationTracker.SERVICE.getInstance(module.getProject());
 	}
 
 	@NotNull
 	@Override
 	public AnalyzeExhaust getSourceAnalyze(boolean updateIfNeed)
 	{
-		return getOrUpdate(false, updateIfNeed);
+		srcAnalyzeExhaust = getOrUpdate(false, updateIfNeed, srcAnalyzeExhaust);
+		return srcAnalyzeExhaust;
 	}
 
 	@NotNull
 	@Override
 	public AnalyzeExhaust getTestSourceAnalyze(boolean updateIfNeed)
 	{
-		return getOrUpdate(true, updateIfNeed);
+		testAnalyzeExhaust = getOrUpdate(true, updateIfNeed, testAnalyzeExhaust);
+		return testAnalyzeExhaust;
 	}
 
-	private AnalyzeExhaust getOrUpdate(boolean test, boolean updateIfNeed)
+	private AnalyzeExhaust getOrUpdate(boolean test, boolean needUpdate, AnalyzeExhaust old)
 	{
-		ModuleAnalyzerHolder analyzerHolder = holders[test ? 1 : 0];
-		if(!updateIfNeed)
-			return analyzerHolder.getAnalyzeExhaust();
+		if(old == null || needUpdate)
+		{
+			return AnalyzerFacade.analyzeFiles(module.getProject(), ModuleCollector.getAnalyzeContext(module.getProject(), null, test, module), Predicates.<NapileFile>alwaysTrue());
+		}
 		else
 		{
-			synchronized(analyzerHolder)
-			{
-				final long modificationCount = psiModificationTracker.getModificationCount();
-				if(analyzerHolder.getModificationCount() != modificationCount)
-				{
-					analyzerHolder.setAnalyzeExhaust(AnalyzerFacade.analyzeFiles(module.getProject(), ModuleCollector.getAnalyzeContext(module.getProject(), null, test, module), Predicates.<NapileFile>alwaysTrue()));
-					analyzerHolder.setModificationCount(modificationCount);
-				}
-			}
+			return old;
 		}
-		return analyzerHolder.getAnalyzeExhaust();
 	}
 }

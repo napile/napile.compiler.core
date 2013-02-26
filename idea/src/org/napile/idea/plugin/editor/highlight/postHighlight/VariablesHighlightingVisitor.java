@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight.postHighlight;
 
 import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
 import static org.napile.compiler.lang.resolve.BindingContext.AUTO_CREATED_IT;
 import static org.napile.compiler.lang.resolve.BindingContext.CAPTURED_IN_CLOSURE;
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.VARIABLE;
+
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -34,14 +36,19 @@ import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.render.DescriptorRenderer;
-import com.intellij.lang.annotation.AnnotationHolder;
+import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.psi.PsiElement;
 
-class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
+/**
+ * @author VISTALL
+ * @date 21:25/26.02.13
+ */
+public class VariablesHighlightingVisitor extends PostHighlightVisitor
 {
-	VariablesHighlightingVisitor(AnnotationHolder holder, BindingContext bindingContext)
+	public VariablesHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
 	{
-		super(holder, bindingContext);
+		super(context, holder);
 	}
 
 	@Override
@@ -54,7 +61,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		if(target instanceof VariableDescriptor)
 		{
 			if(Boolean.TRUE.equals(bindingContext.get(AUTO_CREATED_IT, (VariableDescriptor) target)))
-				holder.createInfoAnnotation(expression, "Auto-generated variable").setTextAttributes(NapileHighlightingColors.AUTO_GENERATED_VAR);
+				highlightInfo(expression, "Auto-generated variable", NapileHighlightingColors.AUTO_GENERATED_VAR);
 
 			highlightVariable(expression, (VariableDescriptor) target);
 		}
@@ -89,7 +96,7 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		JetType autoCast = bindingContext.get(AUTOCAST, expression);
 		if(autoCast != null)
 		{
-			holder.createInfoAnnotation(expression, "Automatically cast to " + DescriptorRenderer.TEXT.renderType(autoCast)).setTextAttributes(NapileHighlightingColors.AUTO_CASTED_VALUE);
+			highlightInfo(expression, "Automatically cast to " + DescriptorRenderer.TEXT.renderType(autoCast) ,NapileHighlightingColors.AUTO_CASTED_VALUE);
 		}
 		super.visitExpression(expression);
 	}
@@ -107,9 +114,9 @@ class VariablesHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		if(Boolean.TRUE.equals(bindingContext.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
 		{
 			String msg = variableDescriptor.isMutable() ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
-			holder.createInfoAnnotation(elementToHighlight, msg).setTextAttributes(NapileHighlightingColors.WRAPPED_INTO_REF);
+			highlightInfo(elementToHighlight, msg, NapileHighlightingColors.WRAPPED_INTO_REF);
 		}
 
-		JetPsiChecker.highlightName(holder, elementToHighlight, NapileHighlightingColors.getAttributes(variableDescriptor), variableDescriptor);
+		highlightName(elementToHighlight, NapileHighlightingColors.getAttributes(variableDescriptor), variableDescriptor);
 	}
 }

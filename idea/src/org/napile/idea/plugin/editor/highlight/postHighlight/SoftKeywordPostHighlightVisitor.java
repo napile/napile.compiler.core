@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,32 @@
  * limitations under the License.
  */
 
-/*
- * @author max
- */
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight.postHighlight;
+
+import java.util.List;
 
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileAnonymMethod;
 import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileMethodType;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
 
-class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
+/**
+ * @author VISTALL
+ * @date 20:29/26.02.13
+ */
+public class SoftKeywordPostHighlightVisitor extends PostHighlightVisitor
 {
-	SoftKeywordsHighlightingVisitor(AnnotationHolder holder)
+	public SoftKeywordPostHighlightVisitor(BindingContext context, List<HighlightInfo> holder)
 	{
-		super(holder);
+		super(context, holder);
 	}
 
 	@Override
@@ -44,11 +49,12 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 		{
 			IElementType elementType = ((LeafPsiElement) element).getElementType();
 			if(NapileTokens.SOFT_KEYWORDS.contains(elementType))
-				holder.createInfoAnnotation(element, null).setTextAttributes(NapileHighlightingColors.KEYWORD);
+				highlightInfo(element, null, NapileHighlightingColors.KEYWORD);
 
 			if(NapileTokens.SAFE_ACCESS.equals(elementType))
-				holder.createInfoAnnotation(element, null).setTextAttributes(NapileHighlightingColors.SAFE_ACCESS);
+				highlightInfo(element, null, NapileHighlightingColors.SAFE_ACCESS);
 		}
+		super.visitElement(element);
 	}
 
 	@Override
@@ -56,16 +62,16 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 	{
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;
-		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+		highlightInfo(functionLiteral.getOpenBraceNode(), null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
 		if(closingBraceNode != null)
 		{
-			holder.createInfoAnnotation(closingBraceNode, null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			highlightInfo(closingBraceNode, null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 		ASTNode arrowNode = functionLiteral.getArrowNode();
 		if(arrowNode != null)
 		{
-			holder.createInfoAnnotation(arrowNode, null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			highlightInfo(arrowNode, null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 	}
 
@@ -75,16 +81,16 @@ class SoftKeywordsHighlightingVisitor extends HighlightingVisitor
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;
 		NapileAnonymMethod functionLiteral = expression.getAnonymMethod();
-		holder.createInfoAnnotation(functionLiteral.getOpenBraceNode(), null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+		highlightInfo(functionLiteral.getOpenBraceNode(), null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
 		if(closingBraceNode != null)
 		{
-			holder.createInfoAnnotation(closingBraceNode, null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			highlightInfo(closingBraceNode, null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 		ASTNode arrowNode = functionLiteral.getArrowNode();
 		if(arrowNode != null)
 		{
-			holder.createInfoAnnotation(arrowNode, null).setTextAttributes(NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			highlightInfo(arrowNode, null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
 		}
 	}
 }

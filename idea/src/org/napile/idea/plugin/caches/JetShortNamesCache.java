@@ -70,7 +70,7 @@ public class JetShortNamesCache
 	@NotNull
 	public Map<NapileClassLike, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
 	{
-		BindingContext context = ModuleAnalyzerUtil.analyze(napileElement.getContainingFile()).getBindingContext();
+		BindingContext context = ModuleAnalyzerUtil.lastAnalyze(napileElement.getContainingFile()).getBindingContext();
 
 		Map<NapileClassLike, ClassDescriptor> result = new HashMap<NapileClassLike, ClassDescriptor>();
 
@@ -109,7 +109,7 @@ public class JetShortNamesCache
 
 	public List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> getDescriptorsForImport(@NotNull Condition<String> acceptedShortNameCondition, @NotNull NapileFile napileFile)
 	{
-		BindingContext context = ModuleAnalyzerUtil.analyze(napileFile).getBindingContext();
+		BindingContext context = ModuleAnalyzerUtil.lastAnalyze(napileFile).getBindingContext();
 		List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> map = new ArrayList<Pair<DeclarationDescriptor, NapileNamedDeclaration>>();
 		GlobalSearchScope scope = GlobalSearchScope.moduleWithLibrariesScope(ModuleUtil.findModuleForPsiElement(napileFile));
 

@@ -29,13 +29,22 @@ import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.idea.plugin.editor.highlight.postHighlight.InjectionHighlightingVisitor;
+import org.napile.idea.plugin.editor.highlight.postHighlight.LabelsHighlightingVisitor;
+import org.napile.idea.plugin.editor.highlight.postHighlight.MethodssHighlightingVisitor;
+import org.napile.idea.plugin.editor.highlight.postHighlight.PostHighlightVisitor;
+import org.napile.idea.plugin.editor.highlight.postHighlight.SoftKeywordPostHighlightVisitor;
+import org.napile.idea.plugin.editor.highlight.postHighlight.TypeKindHighlightingVisitor;
+import org.napile.idea.plugin.editor.highlight.postHighlight.VariablesHighlightingVisitor;
 import org.napile.idea.plugin.highlighter.JetPsiChecker;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.google.common.collect.ImmutableSet;
 import com.intellij.codeHighlighting.TextEditorHighlightingPass;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
+import com.intellij.codeInsight.daemon.impl.UpdateHighlightersUtil;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.MultiRangeReference;
@@ -52,6 +61,7 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 	public static final Set<? extends AbstractDiagnosticFactory> REDECLARATION = ImmutableSet.<AbstractDiagnosticFactory>builder().add(Errors.REDECLARATION, Errors.NAME_SHADOWING).build();
 
 	private final NapileFile file;
+	private List<HighlightInfo> infos;
 
 	protected NapileHighlightPass(@NotNull NapileFile file, @Nullable Document document)
 	{
@@ -63,25 +73,14 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 	@Override
 	public void doCollectInformation(@NotNull ProgressIndicator progress)
 	{
-	}
-
-	@Override
-	public void doApplyInformationToEditor()
-	{
-	}
-
-	@Nullable
-	@Override
-	public List<HighlightInfo> getInfos()
-	{
-		List<HighlightInfo> infos = new ArrayList<HighlightInfo>();
+		infos = new ArrayList<HighlightInfo>();
 
 		final AnalyzeExhaust analyze = ModuleAnalyzerUtil.analyze(file);
 		final BindingContext bindingContext = analyze.getBindingContext();
 
-		for(Diagnostic diagnostic :  bindingContext.getDiagnostics())
+		for(Diagnostic diagnostic : bindingContext.getDiagnostics())
 		{
-			if(!diagnostic.isValid())
+			if(!diagnostic.isValid() || diagnostic.getPsiFile() != file)
 				continue;
 
 			final List<TextRange> textRanges = diagnostic.getTextRanges();
@@ -100,24 +99,36 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 							MultiRangeReference mrr = (MultiRangeReference) reference;
 							for(TextRange range : mrr.getRanges())
 							{
-								final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.UNUSED_SYMBOL);
+								final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.ERROR);
 								builder.range(range.shiftRight(referenceExpression.getTextOffset()));
 								builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
-								builder.unescapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+								builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+								builder.textAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
 
-								infos.add(builder.create());
+								final HighlightInfo e = builder.create();
+								if(e != null)
+								{
+									NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
+									infos.add(e);
+								}
 							}
 						}
 						else
 						{
 							for(TextRange textRange : textRanges)
 							{
-								final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.UNUSED_SYMBOL);
+								final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.ERROR);
 								builder.range(textRange);
 								builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
-								builder.unescapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+								builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+								builder.textAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
 
-								infos.add(builder.create());
+								final HighlightInfo e = builder.create();
+								if(e != null)
+								{
+									NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
+									infos.add(e);
+								}
 							}
 						}
 
@@ -133,12 +144,17 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 					// Generic annotation
 					for(TextRange textRange : textRanges)
 					{
-						final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(diagnostic.getFactory() == Errors.INVISIBLE_REFERENCE ? HighlightInfoType.UNUSED_SYMBOL : HighlightInfoType.WARNING);
+						final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.ERROR);
 						builder.range(textRange);
 						builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
-						builder.unescapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+						builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
 
-						infos.add(builder.create());
+						final HighlightInfo e = builder.create();
+						if(e != null)
+						{
+							NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
+							infos.add(e);
+						}
 					}
 					break;
 				case WARNING:
@@ -147,14 +163,38 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 						final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(WARNINGS_LIKE_UNUSED.contains(diagnostic.getFactory()) ? HighlightInfoType.UNUSED_SYMBOL : HighlightInfoType.WARNING);
 						builder.range(textRange);
 						builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
-						builder.unescapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+						builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
 
-						infos.add(builder.create());
+						final HighlightInfo e = builder.create();
+						if(e != null)
+						{
+							NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
+							infos.add(e);
+						}
 					}
 					break;
 			}
 		}
 
-		return infos;
+		for(PostHighlightVisitor visitor : new PostHighlightVisitor[]{
+				new LabelsHighlightingVisitor(bindingContext, infos),
+				new MethodssHighlightingVisitor(bindingContext, infos),
+				new VariablesHighlightingVisitor(bindingContext, infos),
+				new TypeKindHighlightingVisitor(bindingContext, infos),
+				new SoftKeywordPostHighlightVisitor(bindingContext, infos),
+				new InjectionHighlightingVisitor(bindingContext, infos)
+		})
+		{
+			file.accept(visitor);
+		}
+	}
+
+	@Override
+	public void doApplyInformationToEditor()
+	{
+		if(infos == null)
+			return;
+
+		UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, 0, file.getTextLength(), infos, getColorsScheme(), getId());
 	}
 }

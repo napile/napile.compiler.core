@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight.messageRendering;
 
 import static org.napile.compiler.lang.diagnostics.Errors.*;
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.RENDER_CLASS_OR_OBJECT;
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.TO_STRING;
 import static org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TextElementType;
-import static org.napile.idea.plugin.highlighter.HtmlTabledDescriptorRenderer.tableForTypes;
+import static org.napile.idea.plugin.editor.highlight.messageRendering.HtmlTabledDescriptorRenderer.tableForTypes;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;

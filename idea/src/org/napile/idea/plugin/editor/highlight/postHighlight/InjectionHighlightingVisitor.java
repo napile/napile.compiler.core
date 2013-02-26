@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight.postHighlight;
+
+import java.util.List;
 
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.diagnostics.PositioningStrategies;
 import org.napile.compiler.lang.psi.NapileInjectionExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.IdeaInjectionSupport;
-import com.intellij.lang.annotation.AnnotationHolder;
+import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
+import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
@@ -29,13 +33,13 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
- * @date 14:32/27.10.12
+ * @date 21:47/26.02.13
  */
-public class InjectionHighlightingVisitor extends AfterAnalysisHighlightingVisitor
+public class InjectionHighlightingVisitor extends PostHighlightVisitor
 {
-	protected InjectionHighlightingVisitor(AnnotationHolder holder, BindingContext bindingContext)
+	public InjectionHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
 	{
-		super(holder, bindingContext);
+		super(context, holder);
 	}
 
 	@Override
@@ -54,7 +58,7 @@ public class InjectionHighlightingVisitor extends AfterAnalysisHighlightingVisit
 
 			TextAttributesKey[] key = syntaxHighlighter.getTokenHighlights(element.getNode().getElementType());
 			if(key.length > 0)
-				holder.createInfoAnnotation(element, null).setTextAttributes(key[0]);
+				highlightInfo(element, null, key[0]);
 		}
 	}
 
@@ -67,16 +71,16 @@ public class InjectionHighlightingVisitor extends AfterAnalysisHighlightingVisit
 
 		if(codeInjection != null)
 		{
-			holder.createInfoAnnotation(PositioningStrategies.INJECTION_NAME.mark(injectionExpression).get(0), null).setTextAttributes(NapileHighlightingColors.KEYWORD);
+			highlightInfo(PositioningStrategies.INJECTION_NAME.mark(injectionExpression).get(0), null, NapileHighlightingColors.KEYWORD);
 
 			IdeaInjectionSupport<?> ideaInjectionSupport = IdeaInjectionSupport.IDEA_SUPPORT.getValue(codeInjection);
-			PsiElementVisitor elementVisitor = ideaInjectionSupport.createVisitorForAnnotator(holder);
+			PsiElementVisitor elementVisitor = ideaInjectionSupport.createVisitorForHighlight(holder);
 			if(elementVisitor != null)
 				injectionExpression.acceptChildren(elementVisitor);
 		}
 
 		PsiElement blockElement = injectionExpression.getBlock();
 		if(blockElement != null)
-			holder.createInfoAnnotation(blockElement, null).setTextAttributes(NapileHighlightingColors.INJECTION_BLOCK);
+			highlightInfo(blockElement, null, NapileHighlightingColors.INJECTION_BLOCK);
 	}
 }

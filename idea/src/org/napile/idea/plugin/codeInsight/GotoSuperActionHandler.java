@@ -25,24 +25,24 @@ import org.napile.compiler.lang.descriptors.CallableMemberDescriptor;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
-import com.intellij.codeInsight.CodeInsightActionHandler;
 import com.intellij.codeInsight.navigation.NavigationUtil;
 import com.intellij.codeInsight.navigation.actions.GotoSuperAction;
 import com.intellij.featureStatistics.FeatureUsageTracker;
 import com.intellij.ide.util.EditSourceUtil;
+import com.intellij.lang.LanguageCodeInsightActionHandler;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopup;
@@ -58,7 +58,7 @@ import com.intellij.util.containers.ContainerUtil;
  * @author Evgeny Gerashchenko
  * @since 06.05.12
  */
-public class GotoSuperActionHandler implements CodeInsightActionHandler
+public class GotoSuperActionHandler implements LanguageCodeInsightActionHandler
 {
 	@Override
 	public void invoke(@NotNull Project project, @NotNull Editor editor, @NotNull PsiFile file)
@@ -72,7 +72,7 @@ public class GotoSuperActionHandler implements CodeInsightActionHandler
 		if(funOrClass == null)
 			return;
 
-		final BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) file).getBindingContext();
+		final BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) file).getBindingContext();
 
 		final DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, funOrClass);
 
@@ -154,5 +154,11 @@ public class GotoSuperActionHandler implements CodeInsightActionHandler
 	public boolean startInWriteAction()
 	{
 		return false;
+	}
+
+	@Override
+	public boolean isValidFor(Editor editor, PsiFile file)
+	{
+		return true;
 	}
 }

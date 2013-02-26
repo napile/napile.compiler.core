@@ -17,7 +17,7 @@
 /*
  * @author max
  */
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +54,7 @@ public class NapileHighlighter extends SyntaxHighlighterBase
 	{
 		keys = new HashMap<IElementType, TextAttributesKey>();
 
-		fillMap(keys, NapileTokens.KEYWORDS, NapileHighlightingColors.KEYWORD);
+		SyntaxHighlighterBase.fillMap(keys, NapileTokens.KEYWORDS, NapileHighlightingColors.KEYWORD);
 
 		keys.put(NapileTokens.AS_SAFE, NapileHighlightingColors.KEYWORD);
 

@@ -93,7 +93,7 @@ public class BytecodeToolwindow extends JPanel implements Disposable
 			GenerationState state;
 			try
 			{
-				AnalyzeExhaust binding = ModuleAnalyzerUtil.analyze(editorLocation.getFile());
+				AnalyzeExhaust binding = ModuleAnalyzerUtil.lastAnalyze(editorLocation.getFile());
 				//            AnalyzingUtils.throwExceptionOnErrors(binding);
 				if(binding.isError())
 				{

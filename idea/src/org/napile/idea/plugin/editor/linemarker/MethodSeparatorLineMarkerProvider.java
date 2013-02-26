@@ -1,4 +1,4 @@
-package org.napile.idea.plugin.highlighter.linemarker;
+package org.napile.idea.plugin.editor.lineMarker;
 
 import java.util.Collection;
 import java.util.List;

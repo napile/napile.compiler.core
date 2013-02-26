@@ -50,7 +50,6 @@ import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
-import org.napile.compiler.util.PluginKeys;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -218,7 +217,6 @@ public class TypeHierarchyResolver
 			MutableClassDescriptor descriptor = entry.getValue();
 			descriptorResolver.resolveMutableClassDescriptor(napileClass, descriptor, trace);
 			descriptor.createTypeConstructor();
-			napileClass.putUserData(PluginKeys.DESCRIPTOR_KEY, descriptor);
 		}
 
 		for(Map.Entry<NapileAnonymClass, MutableClassDescriptor> entry : context.getAnonymous().entrySet())
@@ -229,7 +227,6 @@ public class TypeHierarchyResolver
 			descriptor.setVisibility(Visibility.PUBLIC);
 			descriptor.setTypeParameterDescriptors(new ArrayList<TypeParameterDescriptor>(0));
 			descriptor.createTypeConstructor();
-			napileClass.putUserData(PluginKeys.DESCRIPTOR_KEY, descriptor);
 		}
 
 		for(Map.Entry<NapileEnumValue, MutableClassDescriptor> entry : context.getEnumValues().entrySet())

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.presentation;
+package org.napile.idea.plugin.editor.presentation;
 
 import javax.swing.Icon;
 
@@ -22,18 +22,19 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.idea.plugin.NapileIconProvider;
+import org.napile.idea.plugin.util.IdePsiUtil;
 import com.intellij.navigation.ColoredItemPresentation;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProvider;
+import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Iconable;
 
 /**
  * @author Nikolay Krasko
  */
-public class JetClassPresenter implements ItemPresentationProvider<NapileClass>
+public class NapileClassPresenter implements ItemPresentationProvider<NapileClass>
 {
-
 	@Override
 	public ItemPresentation getPresentation(final NapileClass item)
 	{
@@ -42,6 +43,8 @@ public class JetClassPresenter implements ItemPresentationProvider<NapileClass>
 			@Override
 			public TextAttributesKey getTextAttributesKey()
 			{
+				if(IdePsiUtil.isDeprecated(item))
+					return CodeInsightColors.DEPRECATED_ATTRIBUTES;
 				return null;
 			}
 

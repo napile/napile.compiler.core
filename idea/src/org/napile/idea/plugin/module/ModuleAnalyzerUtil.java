@@ -26,7 +26,7 @@ import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.util.PluginKeys;
+import org.napile.compiler.lang.resolve.BindingContext;
 import com.intellij.openapi.compiler.ex.CompilerPathsEx;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
@@ -49,24 +49,24 @@ import com.intellij.psi.search.GlobalSearchScope;
 public class ModuleAnalyzerUtil
 {
 	@NotNull
-	public static AnalyzeExhaust analyze(@NotNull final NapileFile file)
+	public static AnalyzeExhaust lastAnalyze(@NotNull final NapileFile file)
 	{
-		return analyzeFileWithCache(file, true);
+		return analyzeOrGet(file, false);
 	}
 
 	@NotNull
-	public static AnalyzeExhaust lastAnalyze(@NotNull final NapileFile file)
+	public static AnalyzeExhaust analyze(@NotNull final NapileFile file)
 	{
-		return analyzeFileWithCache(file, false);
+		return analyzeOrGet(file, true);
 	}
 
 	public static <T extends DeclarationDescriptor> T getDescriptorOrAnalyze(@NotNull NapileElement napileElement)
 	{
-		DeclarationDescriptor declarationDescriptor = napileElement.getUserData(PluginKeys.DESCRIPTOR_KEY);
-		if(declarationDescriptor == null)
-			analyze(napileElement.getContainingFile());
-		declarationDescriptor = napileElement.getUserData(PluginKeys.DESCRIPTOR_KEY);
-		return ((T) declarationDescriptor);
+		AnalyzeExhaust analyzeExhaust = lastAnalyze(napileElement.getContainingFile());
+
+		DeclarationDescriptor declarationDescriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
+
+		return (T) declarationDescriptor;
 	}
 
 	@NotNull
@@ -99,7 +99,7 @@ public class ModuleAnalyzerUtil
 	}
 
 	@NotNull
-	private static AnalyzeExhaust analyzeFileWithCache(@NotNull final NapileFile file, boolean updateIfNeed)
+	private static AnalyzeExhaust analyzeOrGet(@NotNull final NapileFile file, boolean updateIfNeed)
 	{
 		Module module = ModuleUtilCore.findModuleForPsiElement(file);
 		if(module == null)

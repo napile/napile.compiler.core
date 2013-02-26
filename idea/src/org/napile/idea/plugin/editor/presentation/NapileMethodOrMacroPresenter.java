@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.presentation;
+package org.napile.idea.plugin.editor.presentation;
 
 import javax.swing.Icon;
 
@@ -28,9 +28,11 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.util.QualifiedNamesUtil;
 import org.napile.idea.plugin.NapileIconProvider;
+import org.napile.idea.plugin.util.IdePsiUtil;
 import com.intellij.navigation.ColoredItemPresentation;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProvider;
+import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.util.Iconable;
 import com.intellij.openapi.util.text.StringUtil;
@@ -39,7 +41,7 @@ import com.intellij.util.Function;
 /**
  * @author Nikolay Krasko
  */
-public class JetFunctionPresenter implements ItemPresentationProvider<NapileNamedMethodOrMacro>
+public class NapileMethodOrMacroPresenter implements ItemPresentationProvider<NapileNamedMethodOrMacro>
 {
 	@Override
 	public ItemPresentation getPresentation(final NapileNamedMethodOrMacro function)
@@ -49,6 +51,8 @@ public class JetFunctionPresenter implements ItemPresentationProvider<NapileName
 			@Override
 			public TextAttributesKey getTextAttributesKey()
 			{
+				if(IdePsiUtil.isDeprecated(function))
+					return CodeInsightColors.DEPRECATED_ATTRIBUTES;
 				return null;
 			}
 

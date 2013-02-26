@@ -16,11 +16,13 @@
 
 package org.napile.idea.plugin;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
-import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.openapi.util.NotNullLazyKey;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.util.NotNullFunction;
@@ -80,7 +82,7 @@ public abstract class IdeaInjectionSupport<T extends CodeInjection>
 	}
 
 	@Nullable
-	public PsiElementVisitor createVisitorForAnnotator(@NotNull AnnotationHolder holder)
+	public PsiElementVisitor createVisitorForHighlight(@NotNull List<HighlightInfo> holder)
 	{
 		return null;
 	}

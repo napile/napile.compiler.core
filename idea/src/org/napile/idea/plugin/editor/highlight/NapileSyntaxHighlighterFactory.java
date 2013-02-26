@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight;
 
 import org.jetbrains.annotations.NotNull;
 import com.intellij.openapi.fileTypes.SingleLazyInstanceSyntaxHighlighterFactory;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 
-public class JetSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory
+public class NapileSyntaxHighlighterFactory extends SingleLazyInstanceSyntaxHighlighterFactory
 {
 	@NotNull
 	@Override

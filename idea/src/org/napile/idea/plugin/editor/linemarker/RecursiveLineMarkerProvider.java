@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter.linemarker;
+package org.napile.idea.plugin.editor.lineMarker;
 
 import java.awt.event.MouseEvent;
 import java.util.Collection;
@@ -62,7 +62,7 @@ public class RecursiveLineMarkerProvider implements LineMarkerProvider
 			{
 				NapileCallExpression exp = (NapileCallExpression) psiElement;
 
-				AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(exp.getContainingFile());
+				AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(exp.getContainingFile());
 				BindingContext bindingContext = analyzeExhaust.getBindingContext();
 
 				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingContext.get(BindingContext.RESOLVED_CALL, exp.getCalleeExpression());

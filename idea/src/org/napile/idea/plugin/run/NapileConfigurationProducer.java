@@ -67,7 +67,7 @@ public class NapileConfigurationProducer extends RuntimeConfigurationProducer im
 
 		if(element instanceof NapileFile)
 		{
-			analyzeExhaust = ModuleAnalyzerUtil.analyze((NapileFile) element);
+			analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze((NapileFile) element);
 
 			if(((NapileFile) element).getDeclarations().length == 0)
 				return null;
@@ -77,7 +77,7 @@ public class NapileConfigurationProducer extends RuntimeConfigurationProducer im
 		else if(element instanceof NapileClass)
 		{
 			napileClass = (NapileClass) element;
-			analyzeExhaust = ModuleAnalyzerUtil.analyze(((NapileClass) element).getContainingFile());
+			analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(((NapileClass) element).getContainingFile());
 		}
 		else
 			return null;

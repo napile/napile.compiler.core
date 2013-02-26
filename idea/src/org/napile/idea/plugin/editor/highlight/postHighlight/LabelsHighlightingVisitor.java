@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,41 +14,48 @@
  * limitations under the License.
  */
 
-/*
- * @author max
- */
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight.postHighlight;
+
+import java.util.List;
 
 import org.napile.compiler.lang.psi.NapileBreakExpression;
 import org.napile.compiler.lang.psi.NapileLabelExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import com.intellij.lang.annotation.AnnotationHolder;
+import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.psi.PsiElement;
 
-class LabelsHighlightingVisitor extends HighlightingVisitor
+/**
+ * @author VISTALL
+ * @date 21:55/26.02.13
+ */
+public class LabelsHighlightingVisitor extends PostHighlightVisitor
 {
-	LabelsHighlightingVisitor(AnnotationHolder holder)
+	public LabelsHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
 	{
-		super(holder);
+		super(context, holder);
 	}
 
 	@Override
 	public void visitLabelExpression(NapileLabelExpression expression)
 	{
+		super.visitLabelExpression(expression);
 		PsiElement targetLabel = expression.getLabelNameElement();
 		if(targetLabel != null)
 		{
-			JetPsiChecker.highlightName(holder, targetLabel, NapileHighlightingColors.LABEL, null);
+			highlightName(targetLabel, NapileHighlightingColors.LABEL, null);
 		}
 	}
 
 	@Override
 	public void visitBreakExpression(NapileBreakExpression expression)
 	{
+		super.visitBreakExpression(expression);
 		NapileSimpleNameExpression targetLabel = expression.getTargetLabel();
 		if(targetLabel != null)
 		{
-			JetPsiChecker.highlightName(holder, targetLabel, NapileHighlightingColors.LABEL, null);
+			highlightName(targetLabel, NapileHighlightingColors.LABEL, null);
 		}
 	}
 }

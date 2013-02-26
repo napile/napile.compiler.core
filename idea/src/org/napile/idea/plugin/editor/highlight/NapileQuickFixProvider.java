@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight;
 
-import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import com.intellij.lang.annotation.AnnotationHolder;
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.diagnostics.Diagnostic;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 
-abstract class HighlightingVisitor extends NapileVisitorVoid
+/**
+ * @author VISTALL
+ * @date 22:29/26.02.13
+ */
+public interface NapileQuickFixProvider
 {
-	protected AnnotationHolder holder;
-
-	protected HighlightingVisitor(AnnotationHolder holder)
-	{
-		this.holder = holder;
-	}
+	void registerQuickFix(@NotNull Diagnostic diagnostic, @NotNull HighlightInfo highlightInfo);
 }

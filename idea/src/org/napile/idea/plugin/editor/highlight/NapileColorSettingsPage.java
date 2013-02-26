@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

@@ -140,7 +140,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				return;
 			}
 		}
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) expression.getContainingFile()).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) expression.getContainingFile()).getBindingContext();
 		final JetType expressionType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression); //can be null or error type
 		JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, expression);
 		if(scope != null)
@@ -151,7 +151,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				dataFlowInfo = DataFlowInfo.EMPTY;
 			}
 
-			AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(expression.getContainingFile());
+			AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(expression.getContainingFile());
 			InjectorForTopDownAnalyzerBasic injector = analyzeExhaust.getInjector();
 			if(injector == null)
 				return;
@@ -501,7 +501,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 
 		final ArrayList<NapileExpression> result = new ArrayList<NapileExpression>();
 
-		final BindingContext bindingContext = ModuleAnalyzerUtil.analyze((NapileFile) expression.getContainingFile()).getBindingContext();
+		final BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) expression.getContainingFile()).getBindingContext();
 
 		NapileVisitorVoid visitor = new NapileVisitorVoid()
 		{

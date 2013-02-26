@@ -132,7 +132,7 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		{
 			final NapileFile jetFile = (NapileFile) myElement;
 
-			context = ModuleAnalyzerUtil.analyze(jetFile).getBindingContext();
+			context = ModuleAnalyzerUtil.lastAnalyze(jetFile).getBindingContext();
 
 			return wrapDeclarations(jetFile.getDeclarations());
 		}

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -129,7 +129,7 @@ public class NapileHighlightingColors
 	}
 
 	@NotNull
-	protected static TextAttributesKey getAttributes(DeclarationDescriptor declarationDescriptor)
+	public static TextAttributesKey getAttributes(DeclarationDescriptor declarationDescriptor)
 	{
 		if(declarationDescriptor instanceof LocalVariableDescriptor)
 			return LOCAL_VARIABLE;

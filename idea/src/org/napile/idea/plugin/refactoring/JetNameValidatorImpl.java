@@ -110,7 +110,7 @@ public class JetNameValidatorImpl implements JetNameValidator
 	{
 		if(myBindingContext == null)
 		{
-			myBindingContext = ModuleAnalyzerUtil.analyze((NapileFile) myContainer.getContainingFile()).getBindingContext();
+			myBindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) myContainer.getContainingFile()).getBindingContext();
 		}
 		final Ref<Boolean> result = new Ref<Boolean>(true);
 		NapileVisitorVoid visitor = new NapileVisitorVoid()

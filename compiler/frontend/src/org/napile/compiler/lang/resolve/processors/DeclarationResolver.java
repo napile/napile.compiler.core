@@ -42,7 +42,6 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
-import org.napile.compiler.util.PluginKeys;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
@@ -134,7 +133,6 @@ public class DeclarationResolver
 				public void visitNamedMethod(NapileNamedMethod method)
 				{
 					SimpleMethodDescriptor methodDescriptor = descriptorResolver.resolveMethodDescriptor(ownerDescription, scope, method, trace);
-					method.putUserData(PluginKeys.DESCRIPTOR_KEY, methodDescriptor);
 					ownerDescription.getBuilder().addMethodDescriptor(methodDescriptor);
 
 					context.getMethods().put(method, methodDescriptor);
@@ -145,7 +143,6 @@ public class DeclarationResolver
 				public void visitNamedMacro(NapileNamedMacro macro)
 				{
 					SimpleMethodDescriptor methodDescriptor = descriptorResolver.resolveMacroDescriptor(ownerDescription, scope, macro, trace);
-					macro.putUserData(PluginKeys.DESCRIPTOR_KEY, methodDescriptor);
 					ownerDescription.getBuilder().addMethodDescriptor(methodDescriptor);
 
 					context.getMethods().put(macro, methodDescriptor);
@@ -156,7 +153,6 @@ public class DeclarationResolver
 				public void visitConstructor(NapileConstructor constructor)
 				{
 					ConstructorDescriptor constructorDescriptor = descriptorResolver.resolveConstructorDescriptor(scope, ownerDescription, constructor, trace);
-					constructor.putUserData(PluginKeys.DESCRIPTOR_KEY, constructorDescriptor);
 					ownerDescription.getBuilder().addConstructorDescriptor(constructorDescriptor);
 
 					context.getConstructors().put(constructor, constructorDescriptor);
@@ -167,7 +163,6 @@ public class DeclarationResolver
 				public void visitVariable(NapileVariable variable)
 				{
 					VariableDescriptor variableDescriptor = descriptorResolver.resolveVariableDescriptor(ownerDescription, scope, variable, trace);
-					variable.putUserData(PluginKeys.DESCRIPTOR_KEY, variableDescriptor);
 					ownerDescription.getBuilder().addVariableDescriptor(variableDescriptor);
 
 					context.getVariables().put(variable, variableDescriptor);
@@ -179,7 +174,6 @@ public class DeclarationResolver
 				{
 					MutableClassDescriptor mutableClassDescriptor = context.getEnumValues().get(value);
 					VariableDescriptor variableDescriptor = descriptorResolver.resolveVariableDescriptor(ownerDescription, scope, value, mutableClassDescriptor, trace);
-					value.putUserData(PluginKeys.DESCRIPTOR_KEY, variableDescriptor);
 					ownerDescription.getBuilder().addVariableDescriptor(variableDescriptor);
 
 					context.getVariables().put(value, variableDescriptor);

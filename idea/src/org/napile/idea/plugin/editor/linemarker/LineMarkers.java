@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter.linemarker;
+package org.napile.idea.plugin.editor.lineMarker;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					NapileElement napileElement = (NapileElement) element;
-					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(napileElement.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(napileElement.getContainingFile());
 
 					DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
 					if(!isValidCallable(descriptor))
@@ -110,7 +110,7 @@ public enum LineMarkers
 						return;
 
 					NapileClass napileClass = (NapileClass) element;
-					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(napileClass.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(napileClass.getContainingFile());
 
 					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
 
@@ -216,7 +216,7 @@ public enum LineMarkers
 						return Collections.emptyList();
 
 					final NapileClass napileClass = (NapileClass) element;
-					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.analyze(napileClass.getContainingFile());
+					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(napileClass.getContainingFile());
 
 					BindingContext bindingContext = analyzeExhaust.getBindingContext();
 					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);

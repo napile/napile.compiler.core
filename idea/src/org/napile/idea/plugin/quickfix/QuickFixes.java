@@ -34,6 +34,7 @@ import com.intellij.codeInsight.intention.IntentionAction;
 /**
  * @author svtk
  */
+@Deprecated
 public class QuickFixes
 {
 

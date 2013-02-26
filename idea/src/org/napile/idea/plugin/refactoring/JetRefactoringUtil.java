@@ -123,7 +123,7 @@ public class JetRefactoringUtil
 				if(addExpression)
 				{
 					NapileExpression expression = (NapileExpression) element;
-					BindingContext bindingContext = ModuleAnalyzerUtil.analyze(expression.getContainingFile()).getBindingContext();
+					BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(expression.getContainingFile()).getBindingContext();
 					JetType expressionType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression);
 					if(expressionType == null || !(expressionType instanceof NamespaceType))
 					{

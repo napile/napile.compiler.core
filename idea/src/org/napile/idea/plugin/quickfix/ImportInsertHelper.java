@@ -68,7 +68,7 @@ public class ImportInsertHelper
 		{
 			return;
 		}
-		BindingContext bindingContext = ModuleAnalyzerUtil.analyze(file).getBindingContext();
+		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
 		PsiElement element = BindingContextUtils.descriptorToDeclaration(bindingContext, type.getMemberScope().getContainingDeclaration());
 		if(element != null && element.getContainingFile() == file)
 		{ //declaration is in the same file, so no import is needed

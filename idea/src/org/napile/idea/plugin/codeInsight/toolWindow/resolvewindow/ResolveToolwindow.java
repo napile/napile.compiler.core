@@ -129,7 +129,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 		{
 			final NapileFile psiFile = editorLocation.getFile();
 
-			BindingContext bindingContext = ModuleAnalyzerUtil.analyze(psiFile).getBindingContext();
+			BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(psiFile).getBindingContext();
 
 
 			PsiElement elementAtOffset;

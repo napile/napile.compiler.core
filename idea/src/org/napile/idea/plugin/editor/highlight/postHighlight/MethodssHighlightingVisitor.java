@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight.postHighlight;
+
+import java.util.List;
 
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileTypeReference;
-import com.intellij.lang.annotation.AnnotationHolder;
+import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.psi.PsiElement;
 
 /**
- * @author Evgeny Gerashchenko
- * @since 4/2/12
+ * @author VISTALL
+ * @date 21:51/26.02.13
  */
-public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisitor
+public class MethodssHighlightingVisitor extends PostHighlightVisitor
 {
-	public FunctionsHighlightingVisitor(AnnotationHolder holder, BindingContext bindingContext)
+	public MethodssHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
 	{
-		super(holder, bindingContext);
+		super(context, holder);
 	}
 
 	@Override
@@ -45,7 +44,7 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 		PsiElement nameIdentifier = function.getNameIdentifier();
 		if(nameIdentifier != null)
 		{
-			JetPsiChecker.highlightName(holder, nameIdentifier, NapileHighlightingColors.FUNCTION_DECLARATION, null);
+			highlightName(nameIdentifier, NapileHighlightingColors.FUNCTION_DECLARATION, null);
 		}
 
 		super.visitNamedMethodOrMacro(function);
@@ -64,7 +63,7 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 				NapileSimpleNameExpression nameExpression = ((NapileUserType) typeElement).getReferenceExpression();
 				if(nameExpression != null)
 				{
-					JetPsiChecker.highlightName(holder, nameExpression, NapileHighlightingColors.CONSTRUCTOR_CALL, null);
+					highlightName(nameExpression, NapileHighlightingColors.CONSTRUCTOR_CALL, null);
 				}
 			}
 		}
@@ -82,16 +81,16 @@ public class FunctionsHighlightingVisitor extends AfterAnalysisHighlightingVisit
 			{
 				if(calleeDescriptor instanceof ConstructorDescriptor)
 				{
-					JetPsiChecker.highlightName(holder, callee, NapileHighlightingColors.CONSTRUCTOR_CALL, calleeDescriptor);
+					highlightName(callee, NapileHighlightingColors.CONSTRUCTOR_CALL, calleeDescriptor);
 				}
 				else if(calleeDescriptor instanceof MethodDescriptor)
 				{
 					MethodDescriptor fun = (MethodDescriptor) calleeDescriptor;
-					JetPsiChecker.highlightName(holder, callee, NapileHighlightingColors.METHOD_CALL, fun);
+					highlightName(callee, NapileHighlightingColors.METHOD_CALL, fun);
 					if(fun.isStatic())
-						JetPsiChecker.highlightName(holder, callee, NapileHighlightingColors.STATIC_METHOD_CALL, fun);
+						highlightName(callee, NapileHighlightingColors.STATIC_METHOD_CALL, fun);
 					if(fun.isMacro())
-						JetPsiChecker.highlightName(holder, expression, NapileHighlightingColors.MACRO_CALL, fun);
+						highlightName(expression, NapileHighlightingColors.MACRO_CALL, fun);
 				}
 			}
 		}

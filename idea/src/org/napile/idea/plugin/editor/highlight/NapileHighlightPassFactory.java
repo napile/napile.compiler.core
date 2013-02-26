@@ -19,6 +19,7 @@ package org.napile.idea.plugin.editor.highlight;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileFile;
+import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeHighlighting.TextEditorHighlightingPass;
 import com.intellij.codeHighlighting.TextEditorHighlightingPassFactory;
 import com.intellij.codeHighlighting.TextEditorHighlightingPassRegistrar;
@@ -33,18 +34,18 @@ import com.intellij.psi.PsiFile;
  */
 public class NapileHighlightPassFactory extends AbstractProjectComponent implements TextEditorHighlightingPassFactory
 {
-	public NapileHighlightPassFactory(Project project)
+	public NapileHighlightPassFactory(Project project, TextEditorHighlightingPassRegistrar registrar)
 	{
 		super(project);
 
-		TextEditorHighlightingPassRegistrar.getInstance(project).registerTextEditorHighlightingPass(this, null, null, false, -1);
+		registrar.registerTextEditorHighlightingPass(this, null, new int[]{Pass.UPDATE_ALL}, false, -1);
 	}
 
 	@Nullable
 	@Override
 	public TextEditorHighlightingPass createHighlightingPass(@NotNull PsiFile file, @NotNull Editor editor)
 	{
-		if(!(editor instanceof NapileFile))
+		if(!(file instanceof NapileFile))
 			return null;
 
 		return new NapileHighlightPass((NapileFile) file, editor.getDocument());

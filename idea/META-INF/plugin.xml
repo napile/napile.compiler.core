@@ -8,9 +8,6 @@
 	<depends>com.intellij.copyright</depends>
 
 	<project-components>
-		<!--<component>
-			<implementation-class>org.napile.idea.plugin.highlighter.DeclarationHintSupport</implementation-class>
-		</component>        -->
 		<component>
 			<implementation-class>org.napile.idea.plugin.editor.highlight.NapileHighlightPassFactory</implementation-class>
 		</component>
@@ -35,19 +32,24 @@
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
 
-		<action id="ToggleJetErrorReporting" class="org.napile.idea.plugin.actions.ToggleErrorReportingAction" text="Error Reporting Enabled">
-			<keyboard-shortcut keymap="$default" first-keystroke="control alt shift E"/>
-			<add-to-group group-id="RefactoringMenu" anchor="last"/>
-		</action>
+
 		<action id="ConvertJavaToNapile" class="org.napile.idea.plugin.actions.ConvertJavaToNapileAction" text="Convert Java2Napile">
 			<add-to-group group-id="RefactoringMenu" anchor="last"/>
 		</action>
-
-
 	</actions>
+
+	<extensionPoints>
+		<extensionPoint name="quickFix" beanClass="org.napile.idea.plugin.editor.highlight.NapileQuickFixProviderEP">
+			<with attribute="implementationClass" implements="org.napile.idea.plugin.editor.highlight.NapileQuickFixProvider"/>
+		</extensionPoint>
+	</extensionPoints>
 
 	<extensions defaultExtensionNs="com.intellij.copyright">
 		<updater filetype="Napile" implementationClass="org.napile.idea.plugin.editor.copyright.UpdateNapileCopyrightsProvider"/>
+	</extensions>
+
+	<extensions defaultExtensionNs="org.napile.idea.lang">
+		<quickFix diagnosticName="UNRESOLVED_REFERENCE" implementationClass="org.napile.idea.plugin.editor.highlight.quickFix.ImportClassQuickFixProvider" />
 	</extensions>
 
 	<extensions defaultExtensionNs="com.intellij">
@@ -64,7 +66,7 @@
 
 		<fileTypeFactory implementation="org.napile.idea.plugin.JetFileFactory"/>
 
-		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetSyntaxHighlighterFactory"/>
+		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.napile.idea.plugin.editor.highlight.NapileSyntaxHighlighterFactory"/>
 		<lang.braceMatcher language="NAPILE" implementationClass="org.napile.idea.plugin.JetPairMatcher"/>
 
 		<lang.parserDefinition language="NAPILE" implementationClass="org.napile.compiler.lang.parsing.NapileParserDefinition"/>
@@ -82,7 +84,7 @@
 		<refactoring.copyHandler implementation="org.napile.idea.plugin.refactoring.copy.JetCopyClassHandler"/>
 		<treeStructureProvider implementation="org.napile.idea.plugin.projectView.NapileProjectViewProvider"/>
 
-		<colorSettingsPage implementation="org.napile.idea.plugin.highlighter.NapileColorSettingsPage"/>
+		<colorSettingsPage implementation="org.napile.idea.plugin.editor.highlight.NapileColorSettingsPage"/>
 
 		<codeStyleSettingsProvider implementation="org.napile.idea.plugin.formatter.JetCodeStyleSettingsProvider"/>
 		<langCodeStyleSettingsProvider implementation="org.napile.idea.plugin.formatter.JetLanguageCodeStyleSettingsProvider"/>
@@ -102,9 +104,6 @@
 		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameJetClassProcessor"/>
 		<renamePsiElementProcessor implementation="org.napile.idea.plugin.refactoring.rename.RenameKotlinFunctionProcessor"/>
 
-	<!--	<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.JetPsiChecker"/>
-		<annotator language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.DebugInfoAnnotator"/>  -->
-
 		<moduleType id="NAPILE_MODULE" implementationClass="org.napile.idea.plugin.module.type.NapileModuleType"/>
 		<moduleConfigurationEditorProvider implementation="org.napile.idea.plugin.module.type.DefaultModuleEditorsProvider"/>
 
@@ -116,13 +115,13 @@
 
 		<documentationProvider implementation="org.napile.idea.plugin.NapileQuickDocumentationProvider"/>
 
-		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.linemarker.NewLineMarkerProvider"/>
-		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.linemarker.RecursiveLineMarkerProvider"/>
-		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.highlighter.linemarker.MethodSeparatorLineMarkerProvider"/>
+		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.editor.lineMarker.NewLineMarkerProvider"/>
+		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.editor.lineMarker.RecursiveLineMarkerProvider"/>
+		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.editor.lineMarker.MethodSeparatorLineMarkerProvider"/>
 		<iconProvider implementation="org.napile.idea.plugin.NapileIconProvider"/>
 
-		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetFunctionPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedMethodOrMacro"/>
-		<itemPresentationProvider implementationClass="org.napile.idea.plugin.presentation.JetClassPresenter" forClass="org.napile.compiler.lang.psi.NapileClass"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.editor.presentation.NapileMethodOrMacroPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedMethodOrMacro"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.editor.presentation.NapileClassPresenter" forClass="org.napile.compiler.lang.psi.NapileClass"/>
 
 		<elementDescriptionProvider implementation="org.napile.idea.plugin.findUsages.JetElementDescriptionProvider"/>
 		<findUsagesHandlerFactory implementation="org.napile.idea.plugin.findUsages.NapileFindUsagesHandlerFactory"/>
@@ -157,7 +156,7 @@
 		<filetype.decompiler filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileDecompiler"/>
 		<fileType.fileViewProviderFactory filetype="NXML" implementationClass="org.napile.compiler.lang.psi.impl.file.NXmlFileViewProviderFactory"/>
 		<filetype.stubBuilder filetype="NXML" implementationClass="org.napile.idea.plugin.psi.file.NXmlFileStubBuilder"/>
-		<syntaxHighlighter key="NXML" implementationClass="org.napile.idea.plugin.highlighter.NapileHighlighter"/>
+		<syntaxHighlighter key="NXML" implementationClass="org.napile.idea.plugin.editor.highlight.NapileHighlighter"/>
 		<writingAccessProvider implementation="org.napile.idea.plugin.psi.file.NXmlWritingAccessProvider"/>
 		<intentionAction>
 			<className>org.napile.idea.plugin.intentions.SpecifyTypeExplicitlyAction</className>

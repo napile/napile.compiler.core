@@ -16,6 +16,8 @@
 
 package org.napile.idea.plugin.injection.text;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.text.TextCodeInjection;
@@ -23,7 +25,8 @@ import org.napile.compiler.injection.text.lang.psi.TextExpressionInsert;
 import org.napile.compiler.injection.text.lang.psi.TextPsiVisitor;
 import org.napile.idea.plugin.IdeaInjectionSupport;
 import org.napile.idea.plugin.injection.text.highlighter.TextHighlighterColors;
-import com.intellij.lang.annotation.AnnotationHolder;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 
@@ -42,7 +45,7 @@ public class TextIdeaInjectionSupport extends IdeaInjectionSupport<TextCodeInjec
 
 	@Nullable
 	@Override
-	public PsiElementVisitor createVisitorForAnnotator(@NotNull final AnnotationHolder holder)
+	public PsiElementVisitor createVisitorForHighlight(@NotNull final List<HighlightInfo> holder)
 	{
 		return new TextPsiVisitor()
 		{
@@ -55,7 +58,11 @@ public class TextIdeaInjectionSupport extends IdeaInjectionSupport<TextCodeInjec
 			@Override
 			public void visitTextInsertElement(TextExpressionInsert e)
 			{
-				holder.createInfoAnnotation(e, null).setTextAttributes(TextHighlighterColors.EXPRESSION_INSERT_COLORS);
+				HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.INFORMATION);
+				builder.range(e);
+				builder.textAttributes(TextHighlighterColors.EXPRESSION_INSERT_COLORS);
+
+				holder.add(builder.create());
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight.postHighlight;
+
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileAnnotationPackage;
@@ -26,49 +28,49 @@ import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
+import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.psi.NapileTypeParameter;
-import com.intellij.lang.annotation.AnnotationHolder;
+import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
+import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 
 /**
- * @author Evgeny Gerashchenko
- * @since 3/29/12
+ * @author VISTALL
+ * @date 21:44/26.02.13
  */
-class TypeKindHighlightingVisitor extends AfterAnalysisHighlightingVisitor
+public class TypeKindHighlightingVisitor extends PostHighlightVisitor
 {
-	TypeKindHighlightingVisitor(AnnotationHolder holder, BindingContext bindingContext)
+	public TypeKindHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
 	{
-		super(holder, bindingContext);
+		super(context, holder);
 	}
 
 	@Override
 	public void visitSimpleNameExpression(NapileSimpleNameExpression expression)
 	{
+		super.visitSimpleNameExpression(expression);
 		PsiReference ref = expression.getReference();
 		if(ref == null)
 			return;
-		if(JetPsiChecker.isNamesHighlightingEnabled())
-		{
-			if(NapileTokens.KEYWORDS.contains(expression.getReferencedNameElementType()))
-				return;
-			DeclarationDescriptor referenceTarget = bindingContext.get(BindingContext.REFERENCE_TARGET, expression);
-			if(referenceTarget instanceof ConstructorDescriptor)
-			{
-				referenceTarget = referenceTarget.getContainingDeclaration();
-			}
 
-			if(referenceTarget instanceof ClassDescriptor)
-			{
-				highlightClassByKind((ClassDescriptor) referenceTarget, expression);
-			}
-			else if(referenceTarget instanceof TypeParameterDescriptor)
-			{
-				JetPsiChecker.highlightName(holder, expression, NapileHighlightingColors.TYPE_PARAMETER, referenceTarget);
-			}
+		if(NapileTokens.KEYWORDS.contains(expression.getReferencedNameElementType()))
+			return;
+		DeclarationDescriptor referenceTarget = bindingContext.get(BindingContext.REFERENCE_TARGET, expression);
+		if(referenceTarget instanceof ConstructorDescriptor)
+		{
+			referenceTarget = referenceTarget.getContainingDeclaration();
+		}
+
+		if(referenceTarget instanceof ClassDescriptor)
+		{
+			highlightClassByKind((ClassDescriptor) referenceTarget, expression);
+		}
+		else if(referenceTarget instanceof TypeParameterDescriptor)
+		{
+			highlightName(expression, NapileHighlightingColors.TYPE_PARAMETER, referenceTarget);
 		}
 	}
 
@@ -78,7 +80,7 @@ class TypeKindHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		PsiElement identifier = parameter.getNameIdentifier();
 		if(identifier != null)
 		{
-			JetPsiChecker.highlightName(holder, identifier, NapileHighlightingColors.TYPE_PARAMETER, null);
+			highlightName(identifier, NapileHighlightingColors.TYPE_PARAMETER, null);
 		}
 		super.visitTypeParameter(parameter);
 	}
@@ -103,6 +105,6 @@ class TypeKindHighlightingVisitor extends AfterAnalysisHighlightingVisitor
 		else
 			textAttributes = classDescriptor.getModality() == Modality.ABSTRACT ? NapileHighlightingColors.ABSTRACT_CLASS : NapileHighlightingColors.CLASS;
 
-		JetPsiChecker.highlightName(holder, whatToHighlight, textAttributes, classDescriptor);
+		highlightName(whatToHighlight, textAttributes, classDescriptor);
 	}
 }

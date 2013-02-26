@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.napile.idea.plugin.highlighter;
+package org.napile.idea.plugin.editor.highlight.messageRendering;
 
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.renderConflictingSubstitutionsInferenceError;
 import static org.napile.compiler.lang.diagnostics.rendering.Renderers.renderNoInformationForParameterError;
@@ -46,6 +46,7 @@ import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.render.DescriptorRenderer;
+import org.napile.idea.plugin.editor.highlight.messageRendering.HtmlTabledDescriptorRenderer;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
