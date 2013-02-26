@@ -21,7 +21,6 @@ import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
 
 /**
@@ -57,13 +56,6 @@ public class JetSimpleNameReference extends JetPsiReference
 	public TextRange getRangeInElement()
 	{
 		return new TextRange(0, getElement().getTextLength());
-	}
-
-	@NotNull
-	@Override
-	public Object[] getVariants()
-	{
-		return ArrayUtil.EMPTY_OBJECT_ARRAY;
 	}
 
 	@Override

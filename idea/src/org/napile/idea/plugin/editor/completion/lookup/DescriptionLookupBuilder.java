@@ -41,9 +41,16 @@ public class DescriptionLookupBuilder
 {
 	public static void addElement(DeclarationDescriptor declarationDescriptor, CompletionResultSet resultSet)
 	{
+		LookupElementBuilder builder = buildElement(declarationDescriptor);
+		if(builder != null)
+			resultSet.addElement(builder);
+	}
+
+	public static LookupElementBuilder buildElement(DeclarationDescriptor declarationDescriptor)
+	{
 		Name name = declarationDescriptor.getName();
 		if(name.getIdentifier().contains(AsmConstants.ANONYM_SPLITTER))
-			return;
+			return null;
 
 		LookupElementBuilder b = null;
 		if(declarationDescriptor instanceof MethodDescriptor)
@@ -57,7 +64,7 @@ public class DescriptionLookupBuilder
 		else
 			throw new UnsupportedOperationException("Unsupported descriptor " + declarationDescriptor);
 
-		resultSet.addElement(b);
+		return b;
 	}
 
 	@NotNull

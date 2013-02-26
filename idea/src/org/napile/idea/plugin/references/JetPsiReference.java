@@ -25,16 +25,21 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
+import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.idea.plugin.editor.completion.lookup.DescriptionLookupBuilder;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
+import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementResolveResult;
 import com.intellij.psi.PsiPolyVariantReference;
 import com.intellij.psi.ResolveResult;
+import com.intellij.util.ArrayUtil;
 import com.intellij.util.IncorrectOperationException;
 
 public abstract class JetPsiReference implements PsiPolyVariantReference
@@ -101,7 +106,25 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	@Override
 	public Object[] getVariants()
 	{
-		return EMPTY_ARRAY;
+		NapileFile file = (NapileFile) getElement().getContainingFile();
+		BindingContext bindingContext = ModuleAnalyzerUtil.analyzeAll(file).getBindingContext();
+
+		JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, myExpression);
+		if(scope == null)
+			return ArrayUtil.EMPTY_OBJECT_ARRAY;
+		else
+		{
+			List<LookupElementBuilder> builders = new ArrayList<LookupElementBuilder>();
+			for(DeclarationDescriptor declarationDescriptor : scope.getAllDescriptors())
+			{
+				if(declarationDescriptor instanceof PackageDescriptor)
+					continue;
+
+				builders.add(DescriptionLookupBuilder.buildElement(declarationDescriptor));
+			}
+
+			return builders.toArray();
+		}
 	}
 
 	@Override

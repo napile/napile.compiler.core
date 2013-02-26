@@ -112,7 +112,12 @@ public class ModuleAnalyzerUtil
 
 		ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
 
-		final boolean test = moduleRootManager.getFileIndex().isInTestSourceContent(file.getVirtualFile());
+		final VirtualFile virtualFile = file.getVirtualFile();
+		if(virtualFile == null)
+		{
+			return ModuleAnalyzer.EMPTY;
+		}
+		final boolean test = moduleRootManager.getFileIndex().isInTestSourceContent(virtualFile);
 
 		final ModuleAnalyzer instance = ModuleAnalyzer.getInstance(module);
 
