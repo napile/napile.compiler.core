@@ -31,6 +31,8 @@ import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.util.NXmlMirrorUtil;
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
@@ -129,5 +131,11 @@ public class NXmlVariableStubbedImpl extends NXmlTypeParameterOwnerStub<NapilePs
 	public IStubElementType getElementType()
 	{
 		return NapileStubElementTypes.VARIABLE;
+	}
+
+	@Override
+	public ItemPresentation getPresentation()
+	{
+		return ItemPresentationProviders.getItemPresentation(this);
 	}
 }

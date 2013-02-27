@@ -40,8 +40,15 @@ public class JetGotoSymbolContributor implements ChooseByNameContributor
 	@Override
 	public String[] getNames(Project project, boolean includeNonProjectItems)
 	{
-		final Collection<String> items = StubIndex.getInstance().getAllKeys(NapileIndexKeys.METHODS_SHORT_NAME_KEY, project);
-		return ArrayUtil.toStringArray(items);
+		final Collection<String> it1 = StubIndex.getInstance().getAllKeys(NapileIndexKeys.METHODS_SHORT_NAME_KEY, project);
+		final Collection<String> it2 = StubIndex.getInstance().getAllKeys(NapileIndexKeys.VARIABLES_SHORT_NAME_KEY, project);
+		final Collection<String> it3 = StubIndex.getInstance().getAllKeys(NapileIndexKeys.MACROS_SHORT_NAME_KEY, project);
+
+		List<String> list = new ArrayList<String>(it1.size() + it2.size() + it3.size());
+		list.addAll(it1);
+		list.addAll(it2);
+		list.addAll(it3);
+		return ArrayUtil.toStringArray(list);
 	}
 
 	@NotNull
@@ -50,9 +57,16 @@ public class JetGotoSymbolContributor implements ChooseByNameContributor
 	{
 		final GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
 
-		final Collection<? extends NavigationItem> functions = StubIndex.getInstance().get(NapileIndexKeys.METHODS_SHORT_NAME_KEY, name, project, scope);
+		final Collection<? extends NavigationItem> it1 = StubIndex.getInstance().get(NapileIndexKeys.METHODS_SHORT_NAME_KEY, name, project, scope);
+		final Collection<? extends NavigationItem> it2 = StubIndex.getInstance().get(NapileIndexKeys.MACROS_SHORT_NAME_KEY, name, project, scope);
+		final Collection<? extends NavigationItem> it3 = StubIndex.getInstance().get(NapileIndexKeys.VARIABLES_SHORT_NAME_KEY, name, project, scope);
 
-		final List<NavigationItem> items = new ArrayList<NavigationItem>(Collections2.filter(functions, Predicates.notNull()));
+		List<NavigationItem> symbols = new ArrayList<NavigationItem>(it1.size() + it2.size() + it3.size());
+		symbols.addAll(it1);
+		symbols.addAll(it2);
+		symbols.addAll(it3);
+
+		final List<NavigationItem> items = new ArrayList<NavigationItem>(Collections2.filter(symbols, Predicates.notNull()));
 		return ArrayUtil.toObjectArray(items, NavigationItem.class);
 	}
 }

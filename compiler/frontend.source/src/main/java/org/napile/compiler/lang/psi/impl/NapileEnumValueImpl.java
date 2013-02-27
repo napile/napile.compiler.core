@@ -27,6 +27,8 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.stubs.NapilePsiEnumValueStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.navigation.ItemPresentationProviders;
 
 /**
  * @author VISTALL
@@ -121,5 +123,11 @@ public class NapileEnumValueImpl extends NapileTypeParameterListOwnerStub<Napile
 	public NapileExpression getInitializer()
 	{
 		return null;
+	}
+
+	@Override
+	public ItemPresentation getPresentation()
+	{
+		return ItemPresentationProviders.getItemPresentation(this);
 	}
 }

@@ -29,6 +29,8 @@ import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiVariableStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.navigation.ItemPresentationProviders;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -91,5 +93,11 @@ public class NapileVariableImpl extends NapileTypeParameterListOwnerStub<NapileP
 	{
 		ASTNode ast = getVarOrValNode();
 		return ast == null || ast.getElementType() == NapileTokens.VAR_KEYWORD;
+	}
+
+	@Override
+	public ItemPresentation getPresentation()
+	{
+		return ItemPresentationProviders.getItemPresentation(this);
 	}
 }

@@ -122,6 +122,7 @@
 
 		<itemPresentationProvider implementationClass="org.napile.idea.plugin.editor.presentation.NapileMethodOrMacroPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedMethodOrMacro"/>
 		<itemPresentationProvider implementationClass="org.napile.idea.plugin.editor.presentation.NapileClassPresenter" forClass="org.napile.compiler.lang.psi.NapileClass"/>
+		<itemPresentationProvider implementationClass="org.napile.idea.plugin.editor.presentation.NapileVariablePresenter" forClass="org.napile.compiler.lang.psi.NapileVariable"/>
 
 		<elementDescriptionProvider implementation="org.napile.idea.plugin.findUsages.JetElementDescriptionProvider"/>
 		<findUsagesHandlerFactory implementation="org.napile.idea.plugin.findUsages.NapileFindUsagesHandlerFactory"/>
