@@ -602,4 +602,14 @@ public class TypeUtils
 			list.add(bound.getMemberScope());
 		return new ChainedScope(null, list.toArray(new JetScope[list.size()]));
 	}
+
+	@Nullable
+	public static FqName getFqName(@NotNull JetType jetType)
+	{
+		ClassifierDescriptor classifierDescriptor = jetType.getConstructor().getDeclarationDescriptor();
+		if(classifierDescriptor == null)
+			return null;
+		else
+			return DescriptorUtils.getFQName(classifierDescriptor).toSafe();
+	}
 }

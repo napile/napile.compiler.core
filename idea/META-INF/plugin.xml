@@ -119,6 +119,7 @@
 		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.editor.lineMarker.RecursiveLineMarkerProvider"/>
 		<codeInsight.lineMarkerProvider language="NAPILE" implementationClass="org.napile.idea.plugin.editor.lineMarker.MethodSeparatorLineMarkerProvider"/>
 		<iconProvider implementation="org.napile.idea.plugin.NapileIconProvider"/>
+		<colorProvider implementation="org.napile.idea.plugin.editor.lineMarker.NapileColorElementProvider" />
 
 		<itemPresentationProvider implementationClass="org.napile.idea.plugin.editor.presentation.NapileMethodOrMacroPresenter" forClass="org.napile.compiler.lang.psi.NapileNamedMethodOrMacro"/>
 		<itemPresentationProvider implementationClass="org.napile.idea.plugin.editor.presentation.NapileClassPresenter" forClass="org.napile.compiler.lang.psi.NapileClass"/>

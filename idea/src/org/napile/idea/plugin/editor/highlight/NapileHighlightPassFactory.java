@@ -38,7 +38,7 @@ public class NapileHighlightPassFactory extends AbstractProjectComponent impleme
 	{
 		super(project);
 
-		registrar.registerTextEditorHighlightingPass(this, null, new int[]{Pass.UPDATE_ALL}, false, -1);
+		registrar.registerTextEditorHighlightingPass(this, TextEditorHighlightingPassRegistrar.Anchor.AFTER, Pass.UPDATE_FOLDING, false, false);
 	}
 
 	@Nullable

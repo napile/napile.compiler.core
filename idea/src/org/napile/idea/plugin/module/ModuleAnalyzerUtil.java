@@ -54,6 +54,11 @@ public class ModuleAnalyzerUtil
 		return analyzeOrGet(file, false);
 	}
 
+	/**
+	 * Return new AnalyzeExhaust
+	 * @param file
+	 * @return
+	 */
 	@NotNull
 	public static AnalyzeExhaust analyze(@NotNull final NapileFile file)
 	{
