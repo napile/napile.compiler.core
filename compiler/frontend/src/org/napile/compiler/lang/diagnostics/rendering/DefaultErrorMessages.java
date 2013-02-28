@@ -179,7 +179,7 @@ public class DefaultErrorMessages
 		MAP.put(NO_GET_METHOD, "No get method providing array access");
 		MAP.put(NO_SET_METHOD, "No set method providing array access");
 
-		MAP.put(EQUALS_MISSING, "No method 'equals(idea.Any?) : idea.Boolean' available");
+		MAP.put(EQUALS_MISSING, "No method 'equals(napile.lang.Any?) : napile.lang.Boolean' available");
 		MAP.put(ASSIGNMENT_IN_EXPRESSION_CONTEXT, "Assignments are not expressions, and only expressions are allowed in this context");
 		MAP.put(SUPER_IS_NOT_AN_EXPRESSION, "''{0}'' is not an expression, it can only be used on the left-hand side of a dot ('.')", TO_STRING);
 		MAP.put(DECLARATION_IN_ILLEGAL_CONTEXT, "Declarations are not allowed in this position");
@@ -201,7 +201,7 @@ public class DefaultErrorMessages
 		MAP.put(ITERATOR_MISSING, "For-loop range must have an iterator() method");
 		MAP.put(ITERATOR_AMBIGUITY, "Method ''iterator()'' is ambiguous for this expression: {0}", AMBIGUOUS_CALLS);
 
-		MAP.put(COMPARE_TO_TYPE_MISMATCH, "''compareTo()'' must return idea.Int, but returns {0}", RENDER_TYPE);
+		MAP.put(COMPARE_TO_TYPE_MISMATCH, "''compareTo()'' must return napile.lang.Int, but returns {0}", RENDER_TYPE);
 		MAP.put(CALLEE_NOT_A_FUNCTION, "Expecting a function type, but found {0}", RENDER_TYPE);
 
 		MAP.put(RETURN_IN_FUNCTION_WITH_EXPRESSION_BODY, "Returns are not allowed for functions with expression body. Use block body in '{...}'");
@@ -260,10 +260,10 @@ public class DefaultErrorMessages
 		MAP.put(CONSTRUCTORS_EXPECTED, "Constructors expected");
 
 		MAP.put(TYPE_MISMATCH_IN_FOR_LOOP, "The loop iterates over values of type {0} but the parameter is declared to be {1}", RENDER_TYPE, RENDER_TYPE);
-		MAP.put(TYPE_MISMATCH_IN_CONDITION, "Condition must be of type idea.Boolean, but is of type {0}", RENDER_TYPE);
+		MAP.put(TYPE_MISMATCH_IN_CONDITION, "Condition must be of type napile.lang.Boolean, but is of type {0}", RENDER_TYPE);
 		MAP.put(TYPE_MISMATCH_IN_BINDING_PATTERN, "{0} is not a supertype of {1}. Use ''is'' to match against {0}", RENDER_TYPE, RENDER_TYPE);
 		MAP.put(INCOMPATIBLE_TYPES, "Incompatible types: {0} and {1}", RENDER_TYPE, RENDER_TYPE);
-		MAP.put(EXPECTED_CONDITION, "Expected condition of idea.Boolean type");
+		MAP.put(EXPECTED_CONDITION, "Expected condition of napile.lang.Boolean type");
 
 		MAP.put(CANNOT_CHECK_FOR_ERASED, "Cannot check for instance of erased type: {0}", RENDER_TYPE);
 		MAP.put(UNCHECKED_CAST, "Unchecked cast: {0} to {1}", RENDER_TYPE, RENDER_TYPE);
