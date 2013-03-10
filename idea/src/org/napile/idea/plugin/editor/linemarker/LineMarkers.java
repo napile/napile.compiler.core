@@ -39,6 +39,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
+import org.napile.compiler.lang.psi.util.NapileNameComparator;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingContextUtils;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
@@ -284,6 +285,8 @@ public enum LineMarkers
 					public void navigate(MouseEvent e, PsiElement elt)
 					{
 						List<NapileElement> objects = getTargets(elt.getParent());
+						Collections.sort(objects, NapileNameComparator.INSTANCE);
+
 						PsiElementListNavigator.openTargets(e, objects.toArray(new NapileElement[objects.size()]), getTitle(), getTitle(), new DefaultPsiElementCellRenderer());
 					}
 				}, GutterIconRenderer.Alignment.LEFT
