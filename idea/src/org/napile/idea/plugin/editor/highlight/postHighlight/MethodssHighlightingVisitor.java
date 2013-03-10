@@ -44,7 +44,7 @@ public class MethodssHighlightingVisitor extends PostHighlightVisitor
 		PsiElement nameIdentifier = function.getNameIdentifier();
 		if(nameIdentifier != null)
 		{
-			highlightName(nameIdentifier, NapileHighlightingColors.FUNCTION_DECLARATION, null);
+			highlightName(nameIdentifier, NapileHighlightingColors.METHOD_DECLARATION, null);
 		}
 
 		super.visitNamedMethodOrMacro(function);

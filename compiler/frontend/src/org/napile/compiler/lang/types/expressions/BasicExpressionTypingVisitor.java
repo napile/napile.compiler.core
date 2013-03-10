@@ -517,7 +517,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			}
 		}
 
-		{
+		/*{
 			JetType targetTypeClerared = TypeUtils.makeUnsubstitutedType((ClassDescriptor) targetType.getConstructor().getDeclarationDescriptor(), null);
 
 			Multimap<TypeConstructor, JetType> clearTypeSubstitutionMap = SubstitutionUtils.buildDeepSubstitutionMultimap(targetTypeClerared);
@@ -546,7 +546,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					return true;
 				}
 			}
-		}
+		}   */
 		return false;
 	}
 

@@ -116,12 +116,6 @@ public class JetLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 	}
 
 	@Override
-	public boolean usesSharedPreview()
-	{
-		return false;
-	}
-
-	@Override
 	public CommonCodeStyleSettings getDefaultCommonSettings()
 	{
 		CommonCodeStyleSettings commonCodeStyleSettings = new CommonCodeStyleSettings(getLanguage());

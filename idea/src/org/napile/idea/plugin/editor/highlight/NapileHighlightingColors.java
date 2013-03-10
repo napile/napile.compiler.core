@@ -20,10 +20,12 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.descriptors.CallParameterAsVariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import com.intellij.lang.Language;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
 import com.intellij.openapi.editor.SyntaxHighlighterColors;
@@ -34,41 +36,41 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 
 public class NapileHighlightingColors
 {
-	public final static TextAttributesKey KEYWORD = DefaultLanguageHighlighterColors.KEYWORD;
+	public final static TextAttributesKey KEYWORD = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.KEYWORD);
 
-	public static final TextAttributesKey NUMBER = DefaultLanguageHighlighterColors.NUMBER;
+	public static final TextAttributesKey NUMBER = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.NUMBER);
 
-	public static final TextAttributesKey STRING = DefaultLanguageHighlighterColors.STRING;
+	public static final TextAttributesKey STRING = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.STRING);
 
 	public static final TextAttributesKey STRING_ESCAPE = DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE;
 
 	public static final TextAttributesKey INVALID_STRING_ESCAPE = DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE;
 
-	public static final TextAttributesKey OPERATOR_SIGN = DefaultLanguageHighlighterColors.OPERATION_SIGN;
+	public static final TextAttributesKey OPERATOR_SIGN = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.OPERATION_SIGN);
 
-	public static final TextAttributesKey PARENTHESIS = DefaultLanguageHighlighterColors.PARENTHESES;
+	public static final TextAttributesKey PARENTHESIS = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.PARENTHESES);
 
-	public static final TextAttributesKey BRACES = DefaultLanguageHighlighterColors.BRACES;
+	public static final TextAttributesKey BRACES = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.BRACES);
 
-	public static final TextAttributesKey BRACKETS = DefaultLanguageHighlighterColors.BRACKETS;
+	public static final TextAttributesKey BRACKETS = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.BRACKETS);
 
-	public static final TextAttributesKey FUNCTION_LITERAL_BRACES_AND_ARROW = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_LITERAL_BRACES_AND_ARROW", new TextAttributes(null, null, null, null, Font.BOLD));
+	public static final TextAttributesKey METHOD_LITERAL_BRACES_AND_ARROW = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_LITERAL_BRACES_AND_ARROW", new TextAttributes(null, null, null, null, Font.BOLD));
 
-	public static final TextAttributesKey COMMA = DefaultLanguageHighlighterColors.COMMA;
+	public static final TextAttributesKey COMMA = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.COMMA);
 
-	public static final TextAttributesKey SEMICOLON = DefaultLanguageHighlighterColors.SEMICOLON;
+	public static final TextAttributesKey SEMICOLON = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.SEMICOLON);
 
-	public static final TextAttributesKey DOT = DefaultLanguageHighlighterColors.DOT;
+	public static final TextAttributesKey DOT = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.DOT);
 
-	public static final TextAttributesKey SAFE_ACCESS = TextAttributesKey.createTextAttributesKey("NAPILE_SAFE_ACCESS", SyntaxHighlighterColors.DOT.getDefaultAttributes());
+	public static final TextAttributesKey SAFE_ACCESS = createKey(NapileLanguage.INSTANCE, "SAFE_ACCESS", DefaultLanguageHighlighterColors.DOT);
 
-	public static final TextAttributesKey ARROW = TextAttributesKey.createTextAttributesKey("NAPILE_ARROW", SyntaxHighlighterColors.PARENTHS.getDefaultAttributes());
+	public static final TextAttributesKey ARROW = createKey(NapileLanguage.INSTANCE, "ARROW", DefaultLanguageHighlighterColors.PARENTHESES);
 
-	public static final TextAttributesKey LINE_COMMENT = DefaultLanguageHighlighterColors.LINE_COMMENT;
+	public static final TextAttributesKey LINE_COMMENT = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.LINE_COMMENT);
 
-	public static final TextAttributesKey BLOCK_COMMENT = DefaultLanguageHighlighterColors.BLOCK_COMMENT;
+	public static final TextAttributesKey BLOCK_COMMENT = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.BLOCK_COMMENT);
 
-	public static final TextAttributesKey DOC_COMMENT = DefaultLanguageHighlighterColors.DOC_COMMENT;
+	public static final TextAttributesKey DOC_COMMENT = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.DOC_COMMENT);
 
 	public static final TextAttributesKey DOC_COMMENT_TAG = TextAttributesKey.createTextAttributesKey("NAPILE_DOC_COMMENT_TAG", SyntaxHighlighterColors.DOC_COMMENT_TAG.getDefaultAttributes());
 
@@ -76,47 +78,45 @@ public class NapileHighlightingColors
 
 	public static final TextAttributesKey DOC_COMMENT_MARKUP = TextAttributesKey.createTextAttributesKey("NAPILE_DOC_COMMENT_MARKUP", SyntaxHighlighterColors.DOC_COMMENT_MARKUP.getDefaultAttributes());
 
-	public static final TextAttributesKey CLASS = TextAttributesKey.createTextAttributesKey("NAPILE_CLASS", CodeInsightColors.CLASS_NAME_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey CLASS = createKey(NapileLanguage.INSTANCE, "CLASS", DefaultLanguageHighlighterColors.CLASS_NAME);
 
-	public static final TextAttributesKey TYPE_PARAMETER = TextAttributesKey.createTextAttributesKey("NAPILE_TYPE_PARAMETER", CodeInsightColors.TYPE_PARAMETER_NAME_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey TYPE_PARAMETER = createKey(NapileLanguage.INSTANCE, CodeInsightColors.TYPE_PARAMETER_NAME_ATTRIBUTES);
 
-	public static final TextAttributesKey ABSTRACT_CLASS = TextAttributesKey.createTextAttributesKey("NAPILE_ABSTRACT_CLASS", CodeInsightColors.ABSTRACT_CLASS_NAME_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey ABSTRACT_CLASS = createKey(NapileLanguage.INSTANCE, "ABSTRACT_CLASS", DefaultLanguageHighlighterColors.CLASS_NAME);
 
-	public static final TextAttributesKey ANNOTATION = DefaultLanguageHighlighterColors.METADATA;
+	public static final TextAttributesKey ANNOTATION = createKey(NapileLanguage.INSTANCE, "ANNOTATION", DefaultLanguageHighlighterColors.METADATA);
 
 	public static final TextAttributesKey MUTABLE_VARIABLE = TextAttributesKey.createTextAttributesKey("NAPILE_MUTABLE_VARIABLE", new TextAttributes(null, null, Color.BLACK, EffectType.LINE_UNDERSCORE, 0));
 
-	public static final TextAttributesKey LOCAL_VARIABLE = TextAttributesKey.createTextAttributesKey("NAPILE_LOCAL_VARIABLE", CodeInsightColors.LOCAL_VARIABLE_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey LOCAL_VARIABLE = createKey(NapileLanguage.INSTANCE, CodeInsightColors.LOCAL_VARIABLE_ATTRIBUTES);
 
-	public static final TextAttributesKey PARAMETER = TextAttributesKey.createTextAttributesKey("NAPILE_PARAMETER", CodeInsightColors.PARAMETER_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey PARAMETER = createKey(NapileLanguage.INSTANCE, CodeInsightColors.PARAMETER_ATTRIBUTES);
 
-	public static final TextAttributesKey WRAPPED_INTO_REF = TextAttributesKey.createTextAttributesKey("NAPILE_WRAPPED_INTO_REF", CodeInsightColors.IMPLICIT_ANONYMOUS_CLASS_PARAMETER_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey WRAPPED_INTO_REF = createKey(NapileLanguage.INSTANCE, "WRAPPED_INTO_REF", CodeInsightColors.IMPLICIT_ANONYMOUS_CLASS_PARAMETER_ATTRIBUTES);
 
-	public static final TextAttributesKey INSTANCE_PROPERTY = TextAttributesKey.createTextAttributesKey("NAPILE_INSTANCE_PROPERTY", CodeInsightColors.INSTANCE_FIELD_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey INSTANCE_VARIABLE = createKey(NapileLanguage.INSTANCE, "INSTANCE_VARIABLE", DefaultLanguageHighlighterColors.INSTANCE_FIELD);
 
-	public static final TextAttributesKey STATIC_PROPERTY = TextAttributesKey.createTextAttributesKey("NAPILE_NAMESPACE_PROPERTY", CodeInsightColors.STATIC_FIELD_ATTRIBUTES.getDefaultAttributes());
-
-	public static final TextAttributesKey EXTENSION_PROPERTY = TextAttributesKey.createTextAttributesKey("NAPILE_EXTENSION_PROPERTY", new TextAttributes());
+	public static final TextAttributesKey STATIC_VARIABLE = createKey(NapileLanguage.INSTANCE, "STATIC_VARIABLE", DefaultLanguageHighlighterColors.STATIC_FIELD);
 
 	public static final TextAttributesKey AUTO_GENERATED_VAR = TextAttributesKey.createTextAttributesKey("NAPILE_CLOSURE_DEFAULT_PARAMETER", new TextAttributes(null, new Color(0xdbffdb), null, null, Font.PLAIN));
 
-	public static final TextAttributesKey FUNCTION_DECLARATION = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_DECLARATION", CodeInsightColors.METHOD_DECLARATION_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey METHOD_DECLARATION = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.INSTANCE_METHOD);
 
-	public static final TextAttributesKey METHOD_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_FUNCTION_CALL", CodeInsightColors.METHOD_CALL_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey METHOD_CALL = createKey(NapileLanguage.INSTANCE, CodeInsightColors.METHOD_CALL_ATTRIBUTES);
 
-	public static final TextAttributesKey STATIC_METHOD_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_NAMESPACE_FUNCTION_CALL", CodeInsightColors.STATIC_METHOD_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey STATIC_METHOD_CALL = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.STATIC_METHOD);
 
-	public static final TextAttributesKey EXTENSION_FUNCTION_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_EXTENSION_FUNCTION_CALL", new TextAttributes());
+	public static final TextAttributesKey EXTENSION_METHOD_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_EXTENSION_FUNCTION_CALL", new TextAttributes());
 
-	public static final TextAttributesKey CONSTRUCTOR_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_CONSTRUCTOR", CodeInsightColors.CONSTRUCTOR_CALL_ATTRIBUTES.getDefaultAttributes());
+	public static final TextAttributesKey CONSTRUCTOR_CALL = createKey(NapileLanguage.INSTANCE, CodeInsightColors.CONSTRUCTOR_CALL_ATTRIBUTES);
 
-	public static final TextAttributesKey BAD_CHARACTER = TextAttributesKey.createTextAttributesKey("NAPILE_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER.getDefaultAttributes());
+	public static final TextAttributesKey BAD_CHARACTER = createKey(NapileLanguage.INSTANCE, HighlighterColors.BAD_CHARACTER);
 
-	public static final TextAttributesKey MACRO_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_MACRO_CALL", new TextAttributes(null, new Color(-4930817), null, null, Font.PLAIN));
+	public static final TextAttributesKey MACRO_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_MACRO_CALL", new TextAttributes(null, new Color(0xb4c2ff), null, null, Font.PLAIN));
 
 	public static final TextAttributesKey AUTO_CASTED_VALUE = TextAttributesKey.createTextAttributesKey("NAPILE_AUTO_CASTED_VALUE", new TextAttributes(null, new Color(0xdbffdb), null, null, Font.PLAIN));
 
-	public static final TextAttributesKey INJECTION_BLOCK = DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR;
+	public static final TextAttributesKey INJECTION_BLOCK = createKey(NapileLanguage.INSTANCE, "INJECTION_BLOCK", DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR);
 
 	public static final TextAttributesKey LABEL = TextAttributesKey.createTextAttributesKey("NAPILE_LABEL", new TextAttributes(new Color(0x4a86e8), null, null, null, Font.PLAIN));
 
@@ -129,6 +129,18 @@ public class NapileHighlightingColors
 	}
 
 	@NotNull
+	public static TextAttributesKey createKey(@NotNull Language language, @NotNull TextAttributesKey defaultKey)
+	{
+		return createKey(language, defaultKey.getExternalName(), defaultKey);
+	}
+
+	@NotNull
+	public static TextAttributesKey createKey(@NotNull Language language, @NotNull String name, @NotNull TextAttributesKey defaultKey)
+	{
+		return TextAttributesKey.createTextAttributesKey(language.getID() + "." + name, defaultKey);
+	}
+
+	@NotNull
 	public static TextAttributesKey getAttributes(DeclarationDescriptor declarationDescriptor)
 	{
 		if(declarationDescriptor instanceof LocalVariableDescriptor)
@@ -136,7 +148,7 @@ public class NapileHighlightingColors
 		if(declarationDescriptor instanceof CallParameterAsVariableDescriptorImpl)
 			return PARAMETER;
 		if(declarationDescriptor instanceof VariableDescriptor)
-			return ((VariableDescriptor) declarationDescriptor).isStatic() ? STATIC_PROPERTY : INSTANCE_PROPERTY;
+			return ((VariableDescriptor) declarationDescriptor).isStatic() ? STATIC_VARIABLE : INSTANCE_VARIABLE;
 		throw new IllegalArgumentException("invalid : " + declarationDescriptor);
 	}
 }

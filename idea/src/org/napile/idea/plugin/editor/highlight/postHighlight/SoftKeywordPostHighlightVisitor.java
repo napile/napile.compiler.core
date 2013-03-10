@@ -62,16 +62,16 @@ public class SoftKeywordPostHighlightVisitor extends PostHighlightVisitor
 	{
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;
-		highlightInfo(functionLiteral.getOpenBraceNode(), null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+		highlightInfo(functionLiteral.getOpenBraceNode(), null, NapileHighlightingColors.METHOD_LITERAL_BRACES_AND_ARROW);
 		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
 		if(closingBraceNode != null)
 		{
-			highlightInfo(closingBraceNode, null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			highlightInfo(closingBraceNode, null, NapileHighlightingColors.METHOD_LITERAL_BRACES_AND_ARROW);
 		}
 		ASTNode arrowNode = functionLiteral.getArrowNode();
 		if(arrowNode != null)
 		{
-			highlightInfo(arrowNode, null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			highlightInfo(arrowNode, null, NapileHighlightingColors.METHOD_LITERAL_BRACES_AND_ARROW);
 		}
 	}
 
@@ -81,16 +81,16 @@ public class SoftKeywordPostHighlightVisitor extends PostHighlightVisitor
 		if(ApplicationManager.getApplication().isUnitTestMode())
 			return;
 		NapileAnonymMethod functionLiteral = expression.getAnonymMethod();
-		highlightInfo(functionLiteral.getOpenBraceNode(), null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+		highlightInfo(functionLiteral.getOpenBraceNode(), null, NapileHighlightingColors.METHOD_LITERAL_BRACES_AND_ARROW);
 		ASTNode closingBraceNode = functionLiteral.getClosingBraceNode();
 		if(closingBraceNode != null)
 		{
-			highlightInfo(closingBraceNode, null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			highlightInfo(closingBraceNode, null, NapileHighlightingColors.METHOD_LITERAL_BRACES_AND_ARROW);
 		}
 		ASTNode arrowNode = functionLiteral.getArrowNode();
 		if(arrowNode != null)
 		{
-			highlightInfo(arrowNode, null, NapileHighlightingColors.FUNCTION_LITERAL_BRACES_AND_ARROW);
+			highlightInfo(arrowNode, null, NapileHighlightingColors.METHOD_LITERAL_BRACES_AND_ARROW);
 		}
 	}
 }

@@ -40,7 +40,7 @@ public class KotlinReferencesSearcher extends QueryExecutorBase<PsiReference, Re
 			String className = ((NapileClass) element).getName();
 			if(className != null)
 			{
-				queryParameters.getOptimizer().searchWord(className, queryParameters.getScope(), true, element);
+				queryParameters.getOptimizer().searchWord(className, queryParameters.getEffectiveSearchScope(), true, element);
 			}
 		}
 		else if(element instanceof NapileMethod)
@@ -49,7 +49,7 @@ public class KotlinReferencesSearcher extends QueryExecutorBase<PsiReference, Re
 			final String name = function.getName();
 			if(function.getParent() instanceof NapileClassBody && name != null)
 			{
-				queryParameters.getOptimizer().searchWord(name, queryParameters.getScope(), true, element);
+				queryParameters.getOptimizer().searchWord(name, queryParameters.getEffectiveSearchScope(), true, element);
 			}
 		}
 	}
