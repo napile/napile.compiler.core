@@ -136,7 +136,7 @@ public class ExpressionTypingContext
 	{
 		if(compileTimeConstantResolver == null)
 		{
-			compileTimeConstantResolver = new CompileTimeConstantResolver();
+			compileTimeConstantResolver = new CompileTimeConstantResolver(trace);
 		}
 		return compileTimeConstantResolver;
 	}

@@ -342,10 +342,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 		else if(elementType == NapileNodes.CHARACTER_CONSTANT)
 		{
-			value = compileTimeConstantResolver.getCharValue(text, context.expectedType);
+			value = compileTimeConstantResolver.getCharValue(expression, text, context.expectedType);
 		}
 		else if(elementType == NapileNodes.STRING_CONSTANT)
-			value = compileTimeConstantResolver.getStringValue(text, context.expectedType);
+			value = compileTimeConstantResolver.getStringValue(expression, text, context.expectedType);
 		else if(elementType == NapileNodes.NULL)
 		{
 			value = compileTimeConstantResolver.getNullValue(context.expectedType);

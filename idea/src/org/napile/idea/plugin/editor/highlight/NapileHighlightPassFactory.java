@@ -27,6 +27,7 @@ import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.util.PsiModificationTracker;
 
 /**
  * @author VISTALL
@@ -34,7 +35,7 @@ import com.intellij.psi.PsiFile;
  */
 public class NapileHighlightPassFactory extends AbstractProjectComponent implements TextEditorHighlightingPassFactory
 {
-	public NapileHighlightPassFactory(Project project, TextEditorHighlightingPassRegistrar registrar)
+	public NapileHighlightPassFactory(Project project, TextEditorHighlightingPassRegistrar registrar, PsiModificationTracker modificationTracker)
 	{
 		super(project);
 

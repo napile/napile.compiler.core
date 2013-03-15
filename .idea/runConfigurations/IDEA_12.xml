@@ -3,7 +3,7 @@
     <module name="idea.napile-lang" />
     <option name="VM_PARAMETERS" value="-Xmx4022m -Xms2000m -XX:MaxPermSize=1000m -Didea.is.internal=true -ea" />
     <option name="PROGRAM_PARAMETERS" value="" />
-    <log_file path="$APPLICATION_HOME_DIR$/.data/system/plugins-sandbox/system/log/idea.log" checked="false" skipped="true" show_all="false" alias="IDEA LOG" />
+    <log_file path="$SANDBOX_HOME$/system/log/idea.log" checked="false" skipped="true" show_all="false" alias="IDEA LOG" />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="" />
       <option name="TRANSPORT" value="0" />

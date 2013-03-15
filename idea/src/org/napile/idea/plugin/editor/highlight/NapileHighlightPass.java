@@ -88,6 +88,25 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 			switch(diagnostic.getSeverity())
 			{
 				case INFO:
+					// Generic annotation
+					for(TextRange textRange : textRanges)
+					{
+						final HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.INFORMATION);
+						builder.range(textRange);
+						builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
+						builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+						if(diagnostic.getFactory() == Errors.VALID_STRING_ESCAPE)
+						{
+							builder.textAttributes(NapileHighlightingColors.VALID_STRING_ESCAPE);
+						}
+
+						final HighlightInfo e = builder.create();
+						if(e != null)
+						{
+							NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
+							infos.add(e);
+						}
+					}
 					break;
 				case ERROR:
 					if(UNRESOLVED_REFERENCES.contains(diagnostic.getFactory()))
@@ -148,6 +167,10 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 						builder.range(textRange);
 						builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
 						builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
+						if(diagnostic.getFactory() == Errors.INVALID_STRING_ESCAPE)
+						{
+							builder.textAttributes(NapileHighlightingColors.INVALID_STRING_ESCAPE);
+						}
 
 						final HighlightInfo e = builder.create();
 						if(e != null)

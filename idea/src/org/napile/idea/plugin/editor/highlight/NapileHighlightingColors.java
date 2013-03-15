@@ -42,9 +42,9 @@ public class NapileHighlightingColors
 
 	public static final TextAttributesKey STRING = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.STRING);
 
-	public static final TextAttributesKey STRING_ESCAPE = DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE;
+	public static final TextAttributesKey VALID_STRING_ESCAPE = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE);
 
-	public static final TextAttributesKey INVALID_STRING_ESCAPE = DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE;
+	public static final TextAttributesKey INVALID_STRING_ESCAPE = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE);
 
 	public static final TextAttributesKey OPERATOR_SIGN = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.OPERATION_SIGN);
 

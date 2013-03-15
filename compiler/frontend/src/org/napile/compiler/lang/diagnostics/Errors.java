@@ -61,6 +61,8 @@ public interface Errors
 
 	DiagnosticFactory0<PsiElement> REDUNDANT_MODIFIER_IN_GETTER = DiagnosticFactory0.create(Severity.WARNING);
 	DiagnosticFactory0<PsiElement> REDUNDANT_MODIFIER = DiagnosticFactory0.create(Severity.WARNING);
+	DiagnosticFactory1<PsiElement, TextRange> VALID_STRING_ESCAPE = DiagnosticFactory1.create(Severity.INFO, PositioningStrategies.TEXT_RANGE1);
+	DiagnosticFactory2<PsiElement, TextRange, String> INVALID_STRING_ESCAPE = DiagnosticFactory2.create(Severity.ERROR, PositioningStrategies.TEXT_RANGE2);
 
 	DiagnosticFactory0<PsiElement> NAPILE_LANG_CLASS_IMPORT_EXPECTED = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory0<PsiElement> NAPILE_LANG_TYPE_IMPORT_EXPECTED = DiagnosticFactory0.create(Severity.ERROR);

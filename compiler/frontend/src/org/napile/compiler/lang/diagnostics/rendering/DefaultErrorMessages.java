@@ -57,6 +57,8 @@ public class DefaultErrorMessages
 		});
 
 		MAP.put(UNRESOLVED_REFERENCE, "Unresolved reference: {0}", TO_STRING);
+		MAP.put(VALID_STRING_ESCAPE, "", TO_STRING);
+		MAP.put(INVALID_STRING_ESCAPE, "Invalid string escape ''{1}''", TO_STRING, TO_STRING);
 
 		MAP.put(INVISIBLE_REFERENCE, "Cannot access ''{0}'' in ''{1}''", NAME, NAME);
 		MAP.put(INVISIBLE_MEMBER, "Cannot access ''{0}'' in ''{1}''", NAME, NAME);

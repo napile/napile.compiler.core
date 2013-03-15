@@ -520,7 +520,7 @@ public class JetControlFlowProcessor
 			boolean conditionIsTrueConstant = false;
 			if(condition instanceof NapileConstantExpression && condition.getNode().getElementType() == NapileNodes.BOOLEAN_CONSTANT)
 			{
-				if(BoolValue.TRUE == new CompileTimeConstantResolver().getBooleanValue(condition.getText()))
+				if(BoolValue.TRUE == new CompileTimeConstantResolver(trace).getBooleanValue(condition.getText()))
 				{
 					conditionIsTrueConstant = true;
 				}

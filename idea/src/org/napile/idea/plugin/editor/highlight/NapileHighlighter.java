@@ -28,6 +28,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
+import com.intellij.psi.StringEscapesTokenTypes;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -72,7 +73,9 @@ public class NapileHighlighter extends SyntaxHighlighterBase
 		keys.put(NapileTokens.SEMICOLON, NapileHighlightingColors.SEMICOLON);
 		keys.put(NapileTokens.DOT, NapileHighlightingColors.DOT);
 		keys.put(NapileTokens.ARROW, NapileHighlightingColors.ARROW);
-
+		keys.put(StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN, NapileHighlightingColors.VALID_STRING_ESCAPE);
+		keys.put(StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN, NapileHighlightingColors.INVALID_STRING_ESCAPE);
+		keys.put(StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN, NapileHighlightingColors.INVALID_STRING_ESCAPE);
 
 		keys.put(NapileTokens.CHARACTER_LITERAL, NapileHighlightingColors.STRING);
 		keys.put(NapileTokens.STRING_LITERAL, NapileHighlightingColors.STRING);

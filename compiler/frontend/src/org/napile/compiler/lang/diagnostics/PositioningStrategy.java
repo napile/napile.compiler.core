@@ -41,6 +41,13 @@ public class PositioningStrategy<E extends PsiElement>
 	}
 
 	@NotNull
+	@SuppressWarnings("unchecked")
+	public List<TextRange> markDiagnostic(ParametrizedDiagnostic<?> mark)
+	{
+		return mark((E) mark.getPsiElement());
+	}
+
+	@NotNull
 	protected static List<TextRange> markElement(@NotNull PsiElement element)
 	{
 		return Collections.singletonList(element.getTextRange());

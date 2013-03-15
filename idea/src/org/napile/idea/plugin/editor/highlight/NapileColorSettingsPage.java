@@ -60,10 +60,9 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				"\n" +
 				"<KEYWORD>import</KEYWORD> napile.io.Console // line comment\n" +
 				"\n" +
-				"/**\n" +
-				" * Doc comment here for `MyClass`\n" +
-				" * @see Iterator#next()\n" +
-				" */\n" +
+				"/~\n" +
+				" ~ Doc comment here for `MyClass`\n" +
+				" ~/\n" +
 				"<ANNOTATION>@Deprecated</ANNOTATION>\n" +
 				"<KEYWORD>covered</KEYWORD> class <CLASS>MyClass</CLASS><<TYPE_PARAMETER>T</TYPE_PARAMETER>> : <CLASS>Iterable</CLASS><<TYPE_PARAMETER>T</TYPE_PARAMETER>>\n" +
 				"{" +
@@ -83,7 +82,7 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				"    meth <METHOD_DECLARATION>test</METHOD_DECLARATION>(<PARAMETER>nullable</PARAMETER> : <CLASS>String</CLASS>?, <PARAMETER>f</PARAMETER> : <METHOD_LITERAL_BRACES_AND_ARROW>{</METHOD_LITERAL_BRACES_AND_ARROW>(<PARAMETER>el</PARAMETER> : <CLASS>Int</CLASS>) <METHOD_LITERAL_BRACES_AND_ARROW>-></METHOD_LITERAL_BRACES_AND_ARROW> <CLASS>Int</CLASS><METHOD_LITERAL_BRACES_AND_ARROW>}</METHOD_LITERAL_BRACES_AND_ARROW>)" +
 				"\n" +
 				"    {\n" +
-				"        <CLASS>Console</CLASS>.<METHOD_CALL><STATIC_METHOD_CALL>writeLine</STATIC_METHOD_CALL></METHOD_CALL>(\"Hello world !!!. <INVALID_STRING_ESCAPE><STRING_ESCAPE>\\e</STRING_ESCAPE></INVALID_STRING_ESCAPE>\")\n" +
+				"        <CLASS>Console</CLASS>.<METHOD_CALL><STATIC_METHOD_CALL>writeLine</STATIC_METHOD_CALL></METHOD_CALL>(\"Hello world !!!\")\n" +
 				"        val <LOCAL_VARIABLE>ints</LOCAL_VARIABLE> = napile.collection.<CLASS>ArrayList</CLASS><<CLASS>Int</CLASS>?>(2)\n" +
 				"        <LOCAL_VARIABLE>ints</LOCAL_VARIABLE>[0] = 102 + <PARAMETER>f</PARAMETER>()\n" +
 				"        var <LOCAL_VARIABLE>testIt</LOCAL_VARIABLE> = <METHOD_CALL>test</METHOD_CALL>(<KEYWORD>null</KEYWORD>, <METHOD_LITERAL_BRACES_AND_ARROW>{<AUTO_GENERATED_VAR>value</AUTO_GENERATED_VAR>}</METHOD_LITERAL_BRACES_AND_ARROW>)" +
@@ -98,6 +97,7 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				"\n" +
 				"        var obj : <CLASS>String</CLASS> = /<KEYWORD>text</KEYWORD>/ {<INJECTION_BLOCK>Hello my friends.</INJECTION_BLOCK>}" +
 				"\n" +
+				"        var escape  = \"This is valid string escape <VALID_STRING_ESCAPE>\\n</VALID_STRING_ESCAPE> but this is invalid <INVALID_STRING_ESCAPE>\\str</INVALID_STRING_ESCAPE> \"\n" +
 				"        <MACRO_CALL>myMacro</MACRO_CALL>()" +
 				"\n" +
 				"    }" +
@@ -155,7 +155,7 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.number"), NapileHighlightingColors.NUMBER),
 
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.string"), NapileHighlightingColors.STRING),
-				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.string.escape"), NapileHighlightingColors.STRING_ESCAPE),
+				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.string.escape"), NapileHighlightingColors.VALID_STRING_ESCAPE),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.invalid.escape.in.string"), NapileHighlightingColors.INVALID_STRING_ESCAPE),
 
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.operator.sign"), NapileHighlightingColors.OPERATOR_SIGN),
@@ -181,7 +181,7 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.class"), NapileHighlightingColors.CLASS),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.type.parameter"), NapileHighlightingColors.TYPE_PARAMETER),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.abstract.class"), NapileHighlightingColors.ABSTRACT_CLASS),
-				//new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.annotation"), NapileHighlightingColors.ANNOTATION),
+				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.annotation"), NapileHighlightingColors.ANNOTATION),
 
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.var"), NapileHighlightingColors.MUTABLE_VARIABLE),
 

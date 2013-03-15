@@ -19,12 +19,20 @@ package org.napile.compiler.lang.resolve.constants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.constants.stringLexer.StringEscapesTokenTypes;
+import org.napile.compiler.lang.resolve.constants.stringLexer.StringLiteralLexer;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author abreslav
@@ -33,9 +41,13 @@ public class CompileTimeConstantResolver
 {
 	public static final ErrorValue OUT_OF_RANGE = new ErrorValue("The value is out of range");
 
-	public CompileTimeConstantResolver()
+	@NotNull
+	private final BindingTrace bindingTrace;
+
+	public CompileTimeConstantResolver(@NotNull BindingTrace bindingTrace)
 	{
 
+		this.bindingTrace = bindingTrace;
 	}
 
 	@NotNull
@@ -137,16 +149,6 @@ public class CompileTimeConstantResolver
 		}
 	}
 
-	@Nullable
-	private CompileTimeConstant<?> checkNativeType(String text, JetType expectedType, String title, JetType nativeType)
-	{
-		if(!noExpectedType(expectedType) && !JetTypeChecker.INSTANCE.isSubtypeOf(nativeType, expectedType))
-		{
-			return new ErrorValue("A " + title + " literal " + text + " does not conform to the expected type " + expectedType);
-		}
-		return null;
-	}
-
 	@NotNull
 	public CompileTimeConstant<?> getBooleanValue(@NotNull String text)
 	{
@@ -162,119 +164,61 @@ public class CompileTimeConstantResolver
 	}
 
 	@NotNull
-	public CompileTimeConstant<?> getCharValue(@NotNull String text, @NotNull JetType expectedType)
+	public CompileTimeConstant<?> getCharValue(PsiElement psiElement, @NotNull String text, @NotNull JetType expectedType)
 	{
-		CompileTimeConstant<?> error = checkNativeType(text, expectedType, "character", TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.CHAR, false));
-		if(error != null)
+		markEscapes(text, psiElement, NapileTokens.CHARACTER_LITERAL);
+
+		String c = StringUtil.unescapeStringCharacters(StringUtil.unquoteString(text));
+		if(c.length() != 1)
 		{
-			return error;
+			return new ErrorValue("Invalid char value \'" + c + "\'");
 		}
 
-		// Strip the quotes
-		if(text.length() < 2 || text.charAt(0) != '\'' || text.charAt(text.length() - 1) != '\'')
-		{
-			return new ErrorValue("Incorrect character literal");
-		}
-		text = text.substring(1, text.length() - 1); // now there're no quotes
+		return new CharValue(c.charAt(0));
+	}
 
-		if(text.length() == 0)
-		{
-			return new ErrorValue("Empty character literal");
-		}
+	@NotNull
+	public CompileTimeConstant<?> getStringValue(PsiElement psiElement, @NotNull String text, @NotNull JetType expectedType)
+	{
+		markEscapes(text, psiElement, NapileTokens.STRING_LITERAL);
 
-		if(text.charAt(0) != '\\')
+		return new StringValue(StringUtil.unescapeStringCharacters(StringUtil.unquoteString(text)));
+	}
+
+	private void markEscapes(String text, PsiElement psiElement, IElementType elementType)
+	{
+		StringLiteralLexer literalLexer = new StringLiteralLexer(elementType == NapileTokens.STRING_LITERAL ? '\"' : '\'', elementType);
+		literalLexer.start(text);
+
+		while(true)
 		{
-			// No escape
-			if(text.length() == 1)
+			final IElementType tokenType = literalLexer.getTokenType();
+			if(tokenType == null)
 			{
-				return new CharValue(text.charAt(0));
-			}
-			return new ErrorValue("Too many characters in a character literal '" + text + "'");
-		}
-		return escapedStringToCharValue(text);
-	}
-
-	@NotNull
-	public static CompileTimeConstant<?> escapedStringToCharValue(@NotNull String text)
-	{
-		assert text.length() > 0 && text.charAt(0) == '\\' : "Only escaped sequences must be passed to this routine: " + text;
-
-		// Escape
-		String escape = text.substring(1); // strip the slash
-		switch(escape.length())
-		{
-			case 0:
-				// bare slash
-				return illegalEscape(text);
-			case 1:
-				// one-char escape
-				Character escaped = translateEscape(escape.charAt(0));
-				if(escaped == null)
-				{
-					return illegalEscape(text);
-				}
-				return new CharValue(escaped);
-			case 5:
-				// unicode escape
-				if(escape.charAt(0) == 'u')
-				{
-					try
-					{
-						Integer intValue = Integer.valueOf(escape.substring(1), 16);
-						return new CharValue((char) intValue.intValue());
-					}
-					catch(NumberFormatException e)
-					{
-						// Will be reported below
-					}
-				}
 				break;
+			}
+
+			try
+			{
+				if(StringEscapesTokenTypes.STRING_LITERAL_ESCAPES.contains(tokenType))
+				{
+					final TextRange textRange = new TextRange(psiElement.getTextOffset() + literalLexer.getTokenStart(), psiElement.getTextOffset() + literalLexer.getTokenEnd());
+
+					if(tokenType == StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN)
+					{
+						bindingTrace.report(Errors.VALID_STRING_ESCAPE.on(psiElement, textRange));
+					}
+					else
+					{
+						bindingTrace.report(Errors.INVALID_STRING_ESCAPE.on(psiElement, textRange, literalLexer.getTokenText()));
+					}
+				}
+			}
+			finally
+			{
+				literalLexer.advance();
+			}
 		}
-		return illegalEscape(text);
-	}
-
-	private static ErrorValue illegalEscape(String text)
-	{
-		return new ErrorValue("Illegal escape: " + text);
-	}
-
-	@Nullable
-	public static Character translateEscape(char c)
-	{
-		switch(c)
-		{
-			case 't':
-				return '\t';
-			case 'b':
-				return '\b';
-			case 'n':
-				return '\n';
-			case 'r':
-				return '\r';
-			case '\'':
-				return '\'';
-			case '\"':
-				return '\"';
-			case '\\':
-				return '\\';
-			case '$':
-				return '$';
-		}
-		return null;
-	}
-
-	@NotNull
-	public CompileTimeConstant<?> getStringValue(@NotNull String unescapedText, @NotNull JetType expectedType)
-	{
-		/*CompileTimeConstant<?> error = checkNativeType("\"...\"", expectedType, "string", TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.STRING, false));
-		if(error != null)
-		{
-			return error;
-		}   */
-		if(unescapedText.length() <= 1)
-			return new ErrorValue("Invalid string");
-
-		return new StringValue(StringUtil.unquoteString(unescapedText));
 	}
 
 	@NotNull

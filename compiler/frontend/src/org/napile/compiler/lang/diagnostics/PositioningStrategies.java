@@ -428,6 +428,26 @@ public class PositioningStrategies
 		}
 	};
 
+	public static PositioningStrategy<PsiElement> TEXT_RANGE1 = new PositioningStrategy<PsiElement>()
+	{
+		@Override
+		@NotNull
+		public List<TextRange> markDiagnostic(ParametrizedDiagnostic<?> mark)
+		{
+			return markRange((TextRange) ((DiagnosticWithParameters1) mark).getA());
+		}
+	};
+
+	public static PositioningStrategy<PsiElement> TEXT_RANGE2 = new PositioningStrategy<PsiElement>()
+	{
+		@Override
+		@NotNull
+		public List<TextRange> markDiagnostic(ParametrizedDiagnostic<?> mark)
+		{
+			return markRange((TextRange) ((DiagnosticWithParameters2) mark).getA());
+		}
+	};
+
 	public static PositioningStrategy<NapileExpression> CALL_EXPRESSION = new PositioningStrategy<NapileExpression>()
 	{
 		@NotNull

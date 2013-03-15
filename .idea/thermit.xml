@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ThermitConfiguration">
     <defaultAnt name="Napile Thermit version 1.0" />
-    <buildFile url="file://$PROJECT_DIR$/../napile.classpath.draft/build.txml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="2" />
-      <properties />
-    </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/build-compiler.txml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="2" />
-      <properties />
-    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/../napile.classpath.draft/build.txml" />
+    <buildFile url="file://$PROJECT_DIR$/build-compiler.txml" />
   </component>
 </project>
 
