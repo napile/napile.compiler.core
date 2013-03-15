@@ -32,7 +32,6 @@ import org.napile.asm.LangVersion;
 import org.napile.asm.io.AsmWriterOption;
 import org.napile.asm.io.xml.out.AsmTextTextWriter;
 import org.napile.asm.tree.members.ClassNode;
-import org.napile.compiler.NapileFileType;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.codegen.CompilationErrorHandler;
 import org.napile.compiler.codegen.GenerationState;
@@ -46,6 +45,7 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileTypes.PlainTextFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.Alarm;
 
@@ -153,7 +153,7 @@ public class TextBytecodeToolwindow extends JPanel implements Disposable
 	{
 		super(new BorderLayout());
 		myProject = project;
-		myEditor = EditorFactory.getInstance().createEditor(EditorFactory.getInstance().createDocument(""), project, NapileFileType.INSTANCE, true);
+		myEditor = EditorFactory.getInstance().createEditor(EditorFactory.getInstance().createDocument(""), project, PlainTextFileType.INSTANCE, true);
 		add(myEditor.getComponent());
 
 		myUpdateAlarm = new Alarm(Alarm.ThreadToUse.SWING_THREAD, this);
