@@ -31,9 +31,9 @@ import com.intellij.psi.PsiElement;
  * @author VISTALL
  * @since 21:51/26.02.13
  */
-public class MethodssHighlightingVisitor extends PostHighlightVisitor
+public class MethodsHighlightingVisitor extends PostHighlightVisitor
 {
-	public MethodssHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
+	public MethodsHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

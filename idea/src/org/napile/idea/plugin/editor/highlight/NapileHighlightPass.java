@@ -33,7 +33,7 @@ import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.editor.highlight.postHighlight.InjectionHighlightingVisitor;
 import org.napile.idea.plugin.editor.highlight.postHighlight.LabelsHighlightingVisitor;
-import org.napile.idea.plugin.editor.highlight.postHighlight.MethodssHighlightingVisitor;
+import org.napile.idea.plugin.editor.highlight.postHighlight.MethodsHighlightingVisitor;
 import org.napile.idea.plugin.editor.highlight.postHighlight.PostHighlightVisitor;
 import org.napile.idea.plugin.editor.highlight.postHighlight.SoftKeywordPostHighlightVisitor;
 import org.napile.idea.plugin.editor.highlight.postHighlight.TypeKindHighlightingVisitor;
@@ -93,7 +93,7 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 		for(PostHighlightVisitor visitor : new PostHighlightVisitor[]
 		{
 				new LabelsHighlightingVisitor(bindingContext, selfInfos),
-				new MethodssHighlightingVisitor(bindingContext, selfInfos),
+				new MethodsHighlightingVisitor(bindingContext, selfInfos),
 				new VariablesHighlightingVisitor(bindingContext, selfInfos),
 				new TypeKindHighlightingVisitor(bindingContext, selfInfos),
 				new SoftKeywordPostHighlightVisitor(bindingContext, selfInfos),
