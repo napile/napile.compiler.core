@@ -30,7 +30,7 @@ public class NapileProblemHighlightFilter extends ProblemHighlightFilter
 	@Override
 	public boolean shouldHighlight(@NotNull PsiFile psiFile)
 	{
-		return FileRootUtil.isNapileSourceFile(psiFile.getProject(), psiFile.getVirtualFile());
+		return !FileRootUtil.isNapileSourceFile(psiFile.getProject(), psiFile.getVirtualFile());
 	}
 
 	@Override
