@@ -19,7 +19,7 @@ package org.napile.idea.plugin.stubindex;
 import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileClass;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.stubs.StringStubIndexExtension;
@@ -28,7 +28,7 @@ import com.intellij.psi.stubs.StubIndexKey;
 /**
  * @author Nikolay Krasko
  */
-public class NapileShortClassNameIndex extends StringStubIndexExtension<NapileClassLike>
+public class NapileShortClassNameIndex extends StringStubIndexExtension<NapileClass>
 {
 	private static final NapileShortClassNameIndex ourInstance = new NapileShortClassNameIndex();
 
@@ -39,13 +39,13 @@ public class NapileShortClassNameIndex extends StringStubIndexExtension<NapileCl
 
 	@NotNull
 	@Override
-	public StubIndexKey<String, NapileClassLike> getKey()
+	public StubIndexKey<String, NapileClass> getKey()
 	{
 		return NapileIndexKeys.CLASSES_SHORT_NAME_KEY;
 	}
 
 	@Override
-	public Collection<NapileClassLike> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
+	public Collection<NapileClass> get(final String s, final Project project, @NotNull final GlobalSearchScope scope)
 	{
 		return super.get(s, project, new NapileSourceFilterScope(scope));
 	}

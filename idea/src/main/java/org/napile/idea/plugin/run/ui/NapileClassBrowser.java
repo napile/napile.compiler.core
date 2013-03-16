@@ -20,7 +20,7 @@ package org.napile.idea.plugin.run.ui;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.idea.plugin.caches.JetShortNamesCache;
+import org.napile.idea.plugin.caches.NapileClassResolver;
 import org.napile.idea.plugin.psi.filter.NapileClassFilterWithScope;
 import org.napile.idea.plugin.util.IdePsiUtil;
 import com.intellij.execution.ExecutionBundle;
@@ -149,7 +149,7 @@ public abstract class NapileClassBrowser extends BrowseModuleValueActionListener
 		{
 			try
 			{
-				NapileClassLike[] classes = JetShortNamesCache.getInstance(myProject).getClassesByName(className, getFilter().getScope());
+				NapileClassLike[] classes = NapileClassResolver.getInstance(myProject).getClassesByFqName(className, getFilter().getScope());
 				return classes.length > 0 ? classes[0] : null;
 			}
 			catch(NoFilterException e)

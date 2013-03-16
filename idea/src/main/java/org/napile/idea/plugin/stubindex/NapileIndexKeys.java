@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.stubindex;
 
-import org.napile.compiler.lang.psi.NapileClassLike;
+import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import com.intellij.psi.stubs.StubIndexKey;
@@ -26,9 +26,9 @@ import com.intellij.psi.stubs.StubIndexKey;
  */
 public interface NapileIndexKeys
 {
-	StubIndexKey<String, NapileClassLike> FQN_KEY = StubIndexKey.createIndexKey("napile.fqn");
+	StubIndexKey<String, NapileClass> FQN_KEY = StubIndexKey.createIndexKey("napile.fqn");
 
-	StubIndexKey<String, NapileClassLike> CLASSES_SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.classes.short.name");
+	StubIndexKey<String, NapileClass> CLASSES_SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.classes.short.name");
 
 	StubIndexKey<String, NapileNamedMethodOrMacro> METHODS_SHORT_NAME_KEY = StubIndexKey.createIndexKey("napile.methods.short.name");
 

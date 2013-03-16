@@ -51,7 +51,6 @@ public class NapileRunConfiguration extends ModuleBasedConfiguration<NapileRunCo
 	public String mainClass;
 	public String jdkName;
 	public String napileJvm = "C:/napile.jvm/*;";
-	public boolean isInTestRoot;
 
 	public NapileRunConfiguration(Project project, String name, ConfigurationFactory f)
 	{

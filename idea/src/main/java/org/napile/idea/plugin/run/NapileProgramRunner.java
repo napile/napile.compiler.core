@@ -17,8 +17,12 @@
 package org.napile.idea.plugin.run;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.idea.plugin.caches.NapileClassResolver;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.runners.DefaultProgramRunner;
+import com.intellij.openapi.module.Module;
+import com.intellij.psi.search.GlobalSearchScope;
 
 /**
  * @author VISTALL
@@ -37,8 +41,23 @@ public class NapileProgramRunner extends DefaultProgramRunner
 	public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile)
 	{
 		if(!(profile instanceof NapileRunConfiguration))
+		{
 			return false;
+		}
+
 		NapileRunConfiguration runConfiguration = (NapileRunConfiguration) profile;
+
+		final Module module = runConfiguration.getConfigurationModule().getModule();
+		if(module == null)
+		{
+			return false;
+		}
+
+		NapileClass[] classesByName = NapileClassResolver.getInstance(runConfiguration.getProject()).getClassesByFqName(runConfiguration.mainClass, GlobalSearchScope.moduleWithDependenciesScope(module));
+		if(classesByName.length != 1)
+		{
+			return false;
+		}
 
 		return runConfiguration.getConfigurationModule().getModule() != null && runConfiguration.findSdk() != null;
 	}

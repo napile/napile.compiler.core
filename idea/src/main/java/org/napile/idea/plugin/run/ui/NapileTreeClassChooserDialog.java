@@ -23,7 +23,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.idea.plugin.caches.JetShortNamesCache;
+import org.napile.idea.plugin.caches.NapileClassResolver;
 import org.napile.idea.plugin.projectView.NapileClassTreeNode;
 import org.napile.idea.plugin.psi.filter.NapileClassFilterWithScope;
 import com.intellij.ide.util.AbstractTreeClassChooserDialog;
@@ -58,8 +58,8 @@ public class NapileTreeClassChooserDialog extends AbstractTreeClassChooserDialog
 	@Override
 	protected List<NapileClassLike> getClassesByName(final String name, final boolean checkBoxState, final String pattern, final GlobalSearchScope searchScope)
 	{
-		final JetShortNamesCache cache = JetShortNamesCache.getInstance(getProject());
-		NapileClassLike[] classes = cache.getClassesByName(name, checkBoxState ? searchScope : GlobalSearchScope.projectScope(getProject()).intersectWith(searchScope));
+		final NapileClassResolver cache = NapileClassResolver.getInstance(getProject());
+		NapileClassLike[] classes = cache.getClassesByFqName(name, checkBoxState ? searchScope : GlobalSearchScope.projectScope(getProject()).intersectWith(searchScope));
 		return ContainerUtil.newArrayList(classes);
 	}
 }

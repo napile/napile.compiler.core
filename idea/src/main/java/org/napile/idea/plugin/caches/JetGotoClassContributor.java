@@ -16,23 +16,16 @@
 
 package org.napile.idea.plugin.caches;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.idea.plugin.stubindex.NapileShortClassNameIndex;
 import com.intellij.navigation.GotoClassContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.ArrayUtil;
 
 /**
  * @author Nikolay Krasko
@@ -42,8 +35,8 @@ public class JetGotoClassContributor implements GotoClassContributor
 	@Override
 	public String getQualifiedName(NavigationItem item)
 	{
-		if(item instanceof NapileClassLike)
-			return ((NapileClassLike) item).getFqName().toString();
+		if(item instanceof NapileClass)
+			return ((NapileClass) item).getFqName().toString();
 		return StringUtils.EMPTY;
 	}
 
@@ -57,7 +50,7 @@ public class JetGotoClassContributor implements GotoClassContributor
 	@Override
 	public String[] getNames(Project project, boolean includeNonProjectItems)
 	{
-		return JetShortNamesCache.getInstance(project).getAllClassNames();
+		return NapileClassResolver.getInstance(project).getAllClassNames();
 	}
 
 	@NotNull
@@ -66,32 +59,8 @@ public class JetGotoClassContributor implements GotoClassContributor
 	{
 		final GlobalSearchScope scope = GlobalSearchScope.allScope(project);
 
-		ArrayList<NavigationItem> items = new ArrayList<NavigationItem>();
-		Collection<NapileClassLike> classesOrObjects = NapileShortClassNameIndex.getInstance().get(name, project, scope);
+		Collection<NapileClass> classes = NapileShortClassNameIndex.getInstance().get(name, project, scope);
 
-		for(NapileClassLike classOrObject : classesOrObjects)
-		{
-			if(classOrObject instanceof NapileNamedDeclaration)
-			{
-				FqName fqName = NapilePsiUtil.getFQName((NapileNamedDeclaration) classOrObject);
-				if(fqName == null)
-					continue;
-
-				if(classOrObject instanceof NapileAnonymClass)
-				{
-					// items.add((NapileObjectDeclaration) classOrObject);
-				}
-				else if(classOrObject instanceof NapileClass)
-				{
-					items.add(classOrObject);
-				}
-				else
-				{
-					assert false;
-				}
-			}
-		}
-
-		return ArrayUtil.toObjectArray(items, NavigationItem.class);
+		return classes.toArray(NapileClass.EMPTY_ARRAY);
 	}
 }

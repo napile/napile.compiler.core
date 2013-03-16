@@ -17,13 +17,19 @@
 package org.napile.idea.plugin.run;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.idea.plugin.caches.NapileClassResolver;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.JavaParameters;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.compiler.CompilerPaths;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.search.GlobalSearchScope;
 
 /**
  * @author VISTALL
@@ -42,19 +48,33 @@ public class NapileRunningState extends CommandLineState
 	{
 		NapileRunConfiguration configuration = (NapileRunConfiguration) getEnvironment().getRunProfile();
 
-		if(configuration.findSdk() == null)
+		final Sdk sdk = configuration.findSdk();
+		if(sdk == null)
+		{
 			throw new ExecutionException("Cant find java.exe");
+		}
 
 		JavaParameters parameters = new JavaParameters();
 
-		parameters.setJdk(configuration.findSdk());
+		parameters.setJdk(sdk);
 		parameters.setMainClass("org.napile.vm.Main");
 		parameters.getVMParametersList().add("-classpath");
 		parameters.getVMParametersList().add(configuration.napileJvm);
 
-		VirtualFile outpath = CompilerPaths.getModuleOutputDirectory(configuration.getConfigurationModule().getModule(), configuration.isInTestRoot);
+		final Module module = configuration.getConfigurationModule().getModule();
+		NapileClass[] classesByName = NapileClassResolver.getInstance(configuration.getProject()).getClassesByFqName(configuration.mainClass, GlobalSearchScope.moduleWithDependenciesScope(module));
+		if(classesByName.length != 1)
+		{
+			throw new ExecutionException("Wrong class name");
+		}
+
+		ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+
+		VirtualFile outpath = CompilerPaths.getModuleOutputDirectory(configuration.getConfigurationModule().getModule(),  moduleRootManager.getFileIndex().isInTestSourceContent(classesByName[0].getContainingFile().getVirtualFile()));
 		if(outpath == null)
+		{
 			throw new ExecutionException("Cant find module output");
+		}
 
 		NapileClasspathCollector classpathCollector = new NapileClasspathCollector(configuration.getConfigurationModule().getModule());
 

@@ -18,9 +18,7 @@ package org.napile.idea.plugin.caches;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +28,6 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
@@ -48,47 +45,23 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.ArrayUtil;
 
 /**
- * All those declaration are planned to be used in completion.
- *
- * @author Nikolay Krasko
+ * @author VISTALL
  */
-public class JetShortNamesCache
+public class NapileClassResolver
 {
 	private final Project project;
 
 	@NotNull
-	public static JetShortNamesCache getInstance(final Project project)
+	public static NapileClassResolver getInstance(final Project project)
 	{
-		return ServiceManager.getService(project, JetShortNamesCache.class);
+		return ServiceManager.getService(project, NapileClassResolver.class);
 	}
 
-	public JetShortNamesCache(Project project)
+	public NapileClassResolver(Project project)
 	{
 		this.project = project;
 	}
 
-	@NotNull
-	public Map<NapileClassLike, ClassDescriptor> getAllClassesAndDescriptors(@NotNull NapileElement napileElement, @NotNull GlobalSearchScope globalSearchScope)
-	{
-		BindingContext context = ModuleAnalyzerUtil.lastAnalyze(napileElement.getContainingFile()).getBindingContext();
-
-		Map<NapileClassLike, ClassDescriptor> result = new HashMap<NapileClassLike, ClassDescriptor>();
-
-		for(NapileFile temp : ModuleAnalyzerUtil.getFilesInScope(napileElement, globalSearchScope))
-		{
-			for(NapileClass napileClass : temp.getDeclarations())
-			{
-				DeclarationDescriptor declarationDescriptor = context.get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileClass);
-
-				result.put(napileClass, (ClassDescriptor) declarationDescriptor);
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Return idea class names form idea project sources which should be visible from java.
-	 */
 	@NotNull
 	public String[] getAllClassNames()
 	{
@@ -96,15 +69,20 @@ public class JetShortNamesCache
 		return ArrayUtil.toStringArray(classNames);
 	}
 
-	/**
-	 * Return class names form idea sources in given scope which should be visible as Java classes.
-	 */
 	@NotNull
-	public NapileClassLike[] getClassesByName(@NotNull @NonNls String name, @NotNull GlobalSearchScope scope)
+	public NapileClass[] getClassesByName(@NotNull @NonNls String name, @NotNull GlobalSearchScope scope)
 	{
-		// Quick check for classes from getAllClassNames()
-		Collection<NapileClassLike> classOrObjects = NapileShortClassNameIndex.getInstance().get(name, project, scope);
-		return classOrObjects.isEmpty() ? NapileClassLike.EMPTY_ARRAY : classOrObjects.toArray(NapileClassLike.EMPTY_ARRAY);
+		Collection<NapileClass> classOrObjects = NapileShortClassNameIndex.getInstance().get(name, project, scope);
+
+		return classOrObjects.isEmpty() ? NapileClass.EMPTY_ARRAY : classOrObjects.toArray(NapileClass.EMPTY_ARRAY);
+	}
+
+	@NotNull
+	public NapileClass[] getClassesByFqName(@NotNull @NonNls String name, @NotNull GlobalSearchScope scope)
+	{
+		Collection<NapileClass> classOrObjects = NapileFullClassNameIndex.getInstance().get(name, project, scope);
+
+		return classOrObjects.isEmpty() ? NapileClass.EMPTY_ARRAY : classOrObjects.toArray(NapileClass.EMPTY_ARRAY);
 	}
 
 	public List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> getDescriptorsForImport(@NotNull Condition<String> acceptedShortNameCondition, @NotNull NapileFile napileFile)
@@ -118,7 +96,7 @@ public class JetShortNamesCache
 			FqName classFQName = new FqName(fqName);
 			if(acceptedShortNameCondition.value(classFQName.shortName().getName()))
 			{
-				Collection<NapileClassLike> list = NapileFullClassNameIndex.getInstance().get(fqName, project, scope);
+				Collection<NapileClass> list = NapileFullClassNameIndex.getInstance().get(fqName, project, scope);
 				for(NapileClassLike classLike : list)
 				{
 					ClassDescriptor classDescriptor = context.get(BindingContext.CLASS, classLike);

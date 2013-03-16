@@ -55,7 +55,7 @@
 	<extensions defaultExtensionNs="com.intellij">
 		<applicationService serviceInterface="org.napile.compiler.lang.psi.stubs.elements.StubIndexService" serviceImplementation="org.napile.idea.plugin.stubindex.StubIndexServiceImpl"/>
 
-		<projectService serviceInterface="org.napile.idea.plugin.caches.JetShortNamesCache" serviceImplementation="org.napile.idea.plugin.caches.JetShortNamesCache"/>
+		<projectService serviceInterface="org.napile.idea.plugin.caches.NapileClassResolver" serviceImplementation="org.napile.idea.plugin.caches.NapileClassResolver"/>
 		<moduleService serviceInterface="org.napile.idea.plugin.module.ModuleAnalyzer" serviceImplementation="org.napile.idea.plugin.module.impl.ModuleAnalyzerImpl"/>
 
 		<internalFileTemplate name="Napile Class"/>

@@ -119,9 +119,6 @@ public class NapileConfigurationProducer extends RuntimeConfigurationProducer im
 			configuration.mainClass = fqName.getFqName();
 			configuration.jdkName = sdk.getName();
 
-			ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
-			configuration.isInTestRoot=  moduleRootManager.getFileIndex().isInTestSourceContent(element.getContainingFile().getVirtualFile());
-
 			return settings;
 		}
 

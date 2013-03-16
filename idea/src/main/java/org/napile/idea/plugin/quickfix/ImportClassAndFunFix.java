@@ -30,7 +30,7 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.actions.NapileAddImportAction;
-import org.napile.idea.plugin.caches.JetShortNamesCache;
+import org.napile.idea.plugin.caches.NapileClassResolver;
 import com.intellij.codeInsight.daemon.impl.ShowAutoImportPass;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.HighPriorityAction;
@@ -81,7 +81,7 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 
 	private static List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> getDescriptorsForImport(@NotNull final String typeName, @NotNull NapileFile file)
 	{
-		JetShortNamesCache cache = JetShortNamesCache.getInstance(file.getProject());
+		NapileClassResolver cache = NapileClassResolver.getInstance(file.getProject());
 
 		return cache.getDescriptorsForImport(new Condition<String>()
 		{
