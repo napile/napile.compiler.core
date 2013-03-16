@@ -22,7 +22,7 @@ import org.napile.compiler.lang.psi.NapileVisitor;
 
 /**
  * @author VISTALL
- * @date 15:20/21.01.13
+ * @since 15:20/21.01.13
  */
 public class CodegenVisitor extends NapileVisitor<StackValue, StackValue>
 {

@@ -16,14 +16,45 @@
 
 package org.napile.doc.lang.lexer;
 
+import org.napile.compiler.lang.NapileLanguage;
+import org.napile.compiler.lang.parsing.JetParsing;
+import org.napile.compiler.lang.parsing.SemanticWhitespaceAwarePsiBuilderImpl;
 import org.napile.doc.lang.psi.impl.NapileDocLineImpl;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.PsiBuilderFactory;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.impl.source.tree.LazyParseablePsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.ILazyParseableElementType;
 
 /**
  * @author VISTALL
- * @date 9:12/31.01.13
+ * @since 9:12/31.01.13
  */
 public interface NapileDocNodes
 {
 	IElementType DOC_LINE = new NapileDocNode("DOC_LINE", NapileDocLineImpl.class);
+
+	IElementType CODE_BLOCK = new ILazyParseableElementType("CODE_BLOCK")
+	{
+		@Override
+		public ASTNode parseContents(final ASTNode chameleon)
+		{
+			final Project project = chameleon.getPsi().getProject();
+
+			final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, NapileLanguage.INSTANCE, chameleon.getChars());
+			JetParsing jetParsing = JetParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(builder));
+
+			jetParsing.getExpressionParser().parseExpression();
+
+			return builder.getTreeBuilt();
+		}
+
+		@Override
+		public ASTNode createNode(final CharSequence text)
+		{
+			return new LazyParseablePsiElement(this, text);
+		}
+	};
 }

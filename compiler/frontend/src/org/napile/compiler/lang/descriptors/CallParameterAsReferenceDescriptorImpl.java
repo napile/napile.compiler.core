@@ -27,7 +27,7 @@ import com.google.common.collect.Lists;
 
 /**
  * @author VISTALL
- * @date 13:56/06.09.12
+ * @since 13:56/06.09.12
  */
 public class CallParameterAsReferenceDescriptorImpl extends AbstractCallParameterDescriptorImpl implements CallParameterAsReferenceDescriptor
 {

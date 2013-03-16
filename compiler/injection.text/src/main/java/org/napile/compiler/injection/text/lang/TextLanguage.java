@@ -20,7 +20,7 @@ import com.intellij.lang.Language;
 
 /**
  * @author VISTALL
- * @date 20:21/09.11.12
+ * @since 20:21/09.11.12
  */
 public class TextLanguage extends Language
 {

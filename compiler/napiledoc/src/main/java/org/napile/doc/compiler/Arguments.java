@@ -18,7 +18,7 @@ package org.napile.doc.compiler;
 
 /**
  * @author VISTALL
- * @date 10:32/02.02.13
+ * @since 10:32/02.02.13
  */
 public class Arguments
 {

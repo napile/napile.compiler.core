@@ -26,7 +26,7 @@ import org.napile.asm.tree.members.bytecode.tryCatch.TryCatchBlockNode;
 
 /**
  * @author VISTALL
- * @date 12:35/15.02.13
+ * @since 12:35/15.02.13
  */
 public class DelegateInstructionAdapter extends InstructionAdapter
 {

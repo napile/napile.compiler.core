@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author VISTALL
- * @date 13:30/05.12.12
+ * @since 13:30/05.12.12
  */
 public interface NapileLinkMethodExpression extends NapileExpression
 {

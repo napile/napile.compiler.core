@@ -43,7 +43,7 @@ import org.napile.compiler.lang.types.SelfTypeConstructor;
 
 /**
  * @author VISTALL
- * @date 0:48/07.09.12
+ * @since 0:48/07.09.12
  */
 public class TypeTransformer
 {

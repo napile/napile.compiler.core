@@ -33,7 +33,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 20:29/26.02.13
+ * @since 20:29/26.02.13
  */
 public class SoftKeywordPostHighlightVisitor extends PostHighlightVisitor
 {

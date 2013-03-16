@@ -21,7 +21,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 7:56/20.10.12
+ * @since 7:56/20.10.12
  */
 public interface NapileNullableType extends NapileTypeElement
 {

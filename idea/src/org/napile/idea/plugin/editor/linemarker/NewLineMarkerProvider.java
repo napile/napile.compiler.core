@@ -27,7 +27,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 17:57/23.08.12
+ * @since 17:57/23.08.12
  */
 public class NewLineMarkerProvider implements LineMarkerProvider
 {

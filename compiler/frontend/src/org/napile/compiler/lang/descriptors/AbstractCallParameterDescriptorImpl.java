@@ -30,7 +30,7 @@ import com.google.common.collect.Sets;
 
 /**
  * @author VISTALL
- * @date 20:34/01.12.12
+ * @since 20:34/01.12.12
  */
 public abstract class AbstractCallParameterDescriptorImpl extends AbstractVariableDescriptorImpl implements CallParameterDescriptor
 {

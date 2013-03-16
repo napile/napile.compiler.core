@@ -37,7 +37,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 
 /**
  * @author VISTALL
- * @date 21:38/22.09.12
+ * @since 21:38/22.09.12
  */
 public abstract class NapileClassBrowser extends BrowseModuleValueActionListener
 {

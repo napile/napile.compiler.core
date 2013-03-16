@@ -22,7 +22,7 @@ import com.intellij.ide.util.TreeChooser;
 
 /**
  * @author VISTALL
- * @date 21:47/22.09.12
+ * @since 21:47/22.09.12
  */
 public interface NapileFilter<A extends NapileElement> extends TreeChooser.Filter<A>
 {

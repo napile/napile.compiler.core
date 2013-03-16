@@ -37,7 +37,7 @@ import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
- * @date 15:28/05.12.12
+ * @since 15:28/05.12.12
  */
 public class NapileVariableAccessorImpl extends NapileDeclarationImpl implements NapileVariableAccessor
 {

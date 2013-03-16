@@ -38,7 +38,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 11:43/16.02.13
+ * @since 11:43/16.02.13
  */
 public class NXmlPackageImpl extends NXmlParentedElementBase implements NapilePackage
 {

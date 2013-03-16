@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 /**
  * @author VISTALL
- * @date 15:54/27.11.12
+ * @since 15:54/27.11.12
  */
 public interface NapileNamedMacro extends NapileNamedMethodOrMacro
 {

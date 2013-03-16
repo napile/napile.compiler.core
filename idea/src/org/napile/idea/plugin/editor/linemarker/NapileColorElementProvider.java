@@ -49,7 +49,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 12:23/27.02.13
+ * @since 12:23/27.02.13
  */
 public class NapileColorElementProvider implements ElementColorProvider
 {

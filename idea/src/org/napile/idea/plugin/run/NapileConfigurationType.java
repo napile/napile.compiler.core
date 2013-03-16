@@ -30,7 +30,7 @@ import com.intellij.util.containers.ContainerUtil;
 
 /**
  * @author VISTALL
- * @date 19:53/22.09.12
+ * @since 19:53/22.09.12
  */
 public class NapileConfigurationType implements ConfigurationType
 {

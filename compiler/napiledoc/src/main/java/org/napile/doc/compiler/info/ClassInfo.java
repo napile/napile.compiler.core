@@ -34,7 +34,7 @@ import com.intellij.util.Function;
 
 /**
  * @author VISTALL
- * @date 14:56/01.02.13
+ * @since 14:56/01.02.13
  */
 public class ClassInfo extends NamedDocableInfo<NapileClass>
 {

@@ -21,7 +21,7 @@ import com.intellij.util.ArrayFactory;
 
 /**
  * @author VISTALL
- * @date 21:23/09.10.12
+ * @since 21:23/09.10.12
  */
 public interface NapileClass extends NapileNamedDeclaration, NapileTypeParameterListOwner, NapileClassLike
 {

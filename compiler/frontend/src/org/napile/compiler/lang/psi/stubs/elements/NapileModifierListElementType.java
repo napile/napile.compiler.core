@@ -37,7 +37,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 13:46/17.02.13
+ * @since 13:46/17.02.13
  */
 public class NapileModifierListElementType extends NapileStubElementType<NapilePsiModifierListStub, NapileModifierList>
 {

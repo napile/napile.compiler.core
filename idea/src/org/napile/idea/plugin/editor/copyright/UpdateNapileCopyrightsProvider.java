@@ -26,7 +26,7 @@ import com.maddyhome.idea.copyright.psi.UpdateCopyrightsProvider;
 
 /**
  * @author VISTALL
- * @date 12:22/10.01.13
+ * @since 12:22/10.01.13
  */
 public class UpdateNapileCopyrightsProvider extends UpdateCopyrightsProvider
 {

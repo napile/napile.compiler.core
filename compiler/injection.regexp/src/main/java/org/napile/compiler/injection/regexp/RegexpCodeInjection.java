@@ -30,7 +30,7 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
- * @date 7:20/08.11.12
+ * @since 7:20/08.11.12
  */
 public class RegexpCodeInjection extends CodeInjection
 {

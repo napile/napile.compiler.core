@@ -9,7 +9,7 @@ import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 
 /**
  * @author VISTALL
- * @date 20:37/17.09.12
+ * @since 20:37/17.09.12
  */
 public interface TypeConstants
 {

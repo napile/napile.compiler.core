@@ -24,7 +24,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 20:49/08.09.12
+ * @since 20:49/08.09.12
  */
 public class NapileLabelExpression extends NapileLoopExpression
 {

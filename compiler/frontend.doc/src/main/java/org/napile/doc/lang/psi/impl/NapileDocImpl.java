@@ -24,7 +24,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 9:54/31.01.13
+ * @since 9:54/31.01.13
  */
 public class NapileDocImpl extends LazyParseablePsiElement implements NapileDoc
 {

@@ -15,7 +15,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 20:05/20.02.13
+ * @since 20:05/20.02.13
  */
 public class NXmlConstructorCalleeExpressionImpl extends NXmlParentedElementBase implements NapileConstructorCalleeExpression
 {

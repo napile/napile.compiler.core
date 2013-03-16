@@ -33,7 +33,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
- * @date 21:47/26.02.13
+ * @since 21:47/26.02.13
  */
 public class InjectionHighlightingVisitor extends PostHighlightVisitor
 {

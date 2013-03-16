@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author VISTALL
- * @date 20:08/01.12.12
+ * @since 20:08/01.12.12
  */
 public interface NapileCallParameterAsReference extends NapileCallParameter
 {

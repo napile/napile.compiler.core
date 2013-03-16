@@ -60,7 +60,7 @@ import com.intellij.psi.PsiReference;
 
 /**
  * @author VISTALL
- * @date 19:21/26.02.13
+ * @since 19:21/26.02.13
  */
 public class NapileHighlightPass extends TextEditorHighlightingPass
 {

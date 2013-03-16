@@ -23,7 +23,7 @@ import com.intellij.util.xmlb.annotations.Attribute;
 
 /**
  * @author VISTALL
- * @date 22:31/26.02.13
+ * @since 22:31/26.02.13
  */
 public class NapileQuickFixProviderEP
 {

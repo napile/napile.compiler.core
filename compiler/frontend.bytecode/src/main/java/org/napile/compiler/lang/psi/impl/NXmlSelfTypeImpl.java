@@ -30,7 +30,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 18:49/16.02.13
+ * @since 18:49/16.02.13
  */
 public class NXmlSelfTypeImpl extends NXmlParentedElementBase implements NapileSelfType
 {

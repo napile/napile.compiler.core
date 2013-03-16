@@ -32,7 +32,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 7:38/08.11.12
+ * @since 7:38/08.11.12
  */
 public class RegExpHighlighter implements InjectionSyntaxHighlighter
 {

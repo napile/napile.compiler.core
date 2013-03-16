@@ -26,7 +26,7 @@ import com.intellij.psi.PsiManager;
 
 /**
  * @author VISTALL
- * @date 18:11/09.10.12
+ * @since 18:11/09.10.12
  */
 public class NXmlFileDecompiler implements BinaryFileDecompiler
 {

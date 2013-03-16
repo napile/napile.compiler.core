@@ -29,7 +29,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 
 /**
  * @author VISTALL
- * @date 18:55/01.02.13
+ * @since 18:55/01.02.13
  */
 public class ConstructorInfo extends NamedDocableInfo<NapileConstructor>
 {

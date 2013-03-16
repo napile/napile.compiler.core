@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author VISTALL
- * @date 20:01/20.02.13
+ * @since 20:01/20.02.13
  */
 public interface NapileConstructorCalleeExpression extends NapileExpression
 {

@@ -16,7 +16,7 @@ import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
- * @date 19:57/08.10.12
+ * @since 19:57/08.10.12
  */
 public class TypeParameterCodegen
 {

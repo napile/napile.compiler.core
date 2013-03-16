@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author VISTALL
- * @date 11:34/02.02.13
+ * @since 11:34/02.02.13
  */
 public class MapUtil
 {

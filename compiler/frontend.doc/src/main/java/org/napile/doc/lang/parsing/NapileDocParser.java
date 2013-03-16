@@ -27,7 +27,7 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
- * @date 23:04/30.01.13
+ * @since 23:04/30.01.13
  */
 public class NapileDocParser implements PsiParser, NapileDocTokens, NapileDocNodes
 {
@@ -94,6 +94,35 @@ public class NapileDocParser implements PsiParser, NapileDocTokens, NapileDocNod
 
 			if(builder.getTokenType() == WHITE_SPACE || builder.getTokenType() == TILDE)
 				builder.remapCurrentToken(TEXT_PART);
+
+			if(builder.getTokenType() == NapileDocTokens.CODE_MARKER)
+			{
+				PsiBuilder.Marker codeMarker = builder.mark();
+
+				builder.advanceLexer();
+
+				while(!builder.eof())
+				{
+					if(builder.getTokenType() == NapileDocTokens.CODE_MARKER)
+					{
+						break;
+					}
+					else
+					{
+						builder.advanceLexer();
+					}
+				}
+
+				if(builder.getTokenType() != NapileDocTokens.CODE_MARKER)
+				{
+					codeMarker.drop();
+				}
+				else
+				{
+					builder.advanceLexer();
+					codeMarker.done(NapileDocNodes.CODE_BLOCK);
+				}
+			}
 
 			builder.advanceLexer();
 		}

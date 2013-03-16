@@ -30,7 +30,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 18:02/26.12.12
+ * @since 18:02/26.12.12
  */
 public class NapileMultiTypeImpl extends NapileElementImpl implements NapileMultiType
 {

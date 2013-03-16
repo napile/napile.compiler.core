@@ -22,7 +22,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 14:33/06.02.13
+ * @since 14:33/06.02.13
  */
 public interface PositionMarker
 {

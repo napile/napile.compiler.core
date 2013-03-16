@@ -28,7 +28,7 @@ import com.intellij.vcsUtil.VcsUtil;
 
 /**
  * @author VISTALL
- * @date 13:13/04.01.13
+ * @since 13:13/04.01.13
  */
 public class Java2NapileConverter
 {

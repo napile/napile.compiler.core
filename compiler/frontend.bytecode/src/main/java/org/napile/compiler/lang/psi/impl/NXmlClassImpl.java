@@ -38,7 +38,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
- * @date 15:05/19.10.12
+ * @since 15:05/19.10.12
  */
 public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub> implements NapileClass
 {

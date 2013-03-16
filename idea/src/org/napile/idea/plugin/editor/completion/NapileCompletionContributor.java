@@ -57,7 +57,7 @@ import com.intellij.util.ProcessingContext;
 
 /**
  * @author VISTALL
- * @date 17:16/24.01.13
+ * @since 17:16/24.01.13
  */
 public class NapileCompletionContributor extends CompletionContributor
 {

@@ -23,7 +23,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 12:38/15.02.13
+ * @since 12:38/15.02.13
  */
 public class MarkerInstructionAdapter extends DelegateInstructionAdapter
 {

@@ -22,7 +22,7 @@ import com.intellij.util.FunctionUtil;
 
 /**
  * @author VISTALL
- * @date 19:11/20.02.13
+ * @since 19:11/20.02.13
  */
 public class MethodSeparatorLineMarkerProvider implements LineMarkerProvider
 {

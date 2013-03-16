@@ -29,7 +29,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
- * @date 12:27/27.02.13
+ * @since 12:27/27.02.13
  */
 public class ConstantVisitor extends NapileVisitor<Constant, Object>
 {

@@ -48,7 +48,7 @@ import com.intellij.openapi.util.Pair;
 
 /**
  * @author VISTALL
- * @date 19:51/12.01.13
+ * @since 19:51/12.01.13
  */
 public class ClassCodegen extends NapileVisitorVoid
 {

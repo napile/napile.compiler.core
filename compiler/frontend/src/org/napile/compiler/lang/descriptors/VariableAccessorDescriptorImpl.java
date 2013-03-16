@@ -25,7 +25,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
  * @author VISTALL
- * @date 19:01/05.12.12
+ * @since 19:01/05.12.12
  */
 public class VariableAccessorDescriptorImpl extends AbstractMethodDescriptorImpl implements VariableAccessorDescriptor
 {

@@ -30,7 +30,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 23:06/08.12.12
+ * @since 23:06/08.12.12
  */
 public class VariableAccessor extends StackValue
 {

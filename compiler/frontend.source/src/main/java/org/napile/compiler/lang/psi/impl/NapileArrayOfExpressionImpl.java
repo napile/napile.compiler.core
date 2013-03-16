@@ -26,7 +26,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 13:16/18.10.12
+ * @since 13:16/18.10.12
  */
 public class NapileArrayOfExpressionImpl extends NapileExpressionImpl implements NapileArrayOfExpression
 {

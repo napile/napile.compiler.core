@@ -21,7 +21,7 @@ import org.napile.compiler.lang.resolve.BindingReader;
 
 /**
  * @author VISTALL
- * @date 12:28/27.02.13
+ * @since 12:28/27.02.13
  */
 public class ConstantUtil
 {

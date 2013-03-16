@@ -23,7 +23,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 
 /**
  * @author VISTALL
- * @date 18:19/01.02.13
+ * @since 18:19/01.02.13
  */
 public class VariableInfo extends NamedDocableInfo<NapileVariable>
 {

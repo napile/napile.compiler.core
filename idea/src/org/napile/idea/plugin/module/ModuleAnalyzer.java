@@ -28,7 +28,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 13:26/25.02.13
+ * @since 13:26/25.02.13
  */
 public abstract class ModuleAnalyzer
 {

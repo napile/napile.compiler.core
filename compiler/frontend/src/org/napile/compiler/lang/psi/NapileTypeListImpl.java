@@ -24,7 +24,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 0:26/23.09.12
+ * @since 0:26/23.09.12
  */
 public class NapileTypeListImpl extends NapileElementImpl implements NapileTypeList
 {

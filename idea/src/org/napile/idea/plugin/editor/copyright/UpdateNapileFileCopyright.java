@@ -33,7 +33,7 @@ import com.maddyhome.idea.copyright.psi.UpdatePsiFileCopyright;
 
 /**
  * @author VISTALL
- * @date 12:23/10.01.13
+ * @since 12:23/10.01.13
  */
 public class UpdateNapileFileCopyright extends UpdatePsiFileCopyright
 {

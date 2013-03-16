@@ -13,7 +13,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 19:29/20.02.13
+ * @since 19:29/20.02.13
  */
 public class NXmlAnnotationImpl extends NXmlParentedElementBase implements NapileAnnotation
 {

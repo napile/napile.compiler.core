@@ -21,7 +21,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 15:20/19.10.12
+ * @since 15:20/19.10.12
  */
 public interface NapileNamedMethodOrMacro extends NapileMethod, NapileWithExpressionInitializer
 {

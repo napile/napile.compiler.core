@@ -23,7 +23,7 @@ import org.pegdown.PegDownProcessor;
 
 /**
  * @author VISTALL
- * @date 16:00/08.02.13
+ * @since 16:00/08.02.13
  */
 //FIXME [VISTALL] move to frontend.doc
 public class NapileDocUtil

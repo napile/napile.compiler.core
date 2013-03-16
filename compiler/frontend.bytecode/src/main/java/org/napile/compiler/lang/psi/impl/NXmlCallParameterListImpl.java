@@ -28,7 +28,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 14:50/17.02.13
+ * @since 14:50/17.02.13
  */
 public class NXmlCallParameterListImpl extends NXmlParentedElementBase implements NapileCallParameterList
 {

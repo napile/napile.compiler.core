@@ -21,7 +21,7 @@ import org.napile.compiler.lang.psi.NapileLabelExpression;
 
 /**
  * @author VISTALL
- * @date 16:19/03.10.12
+ * @since 16:19/03.10.12
  */
 public class LabelLoopCodegen extends LoopCodegen<NapileLabelExpression>
 {

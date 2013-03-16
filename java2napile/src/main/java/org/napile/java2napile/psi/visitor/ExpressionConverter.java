@@ -24,7 +24,7 @@ import com.intellij.psi.PsiReturnStatement;
 
 /**
  * @author VISTALL
- * @date 16:18/04.01.13
+ * @since 16:18/04.01.13
  */
 public class ExpressionConverter extends JavaElementVisitor
 {

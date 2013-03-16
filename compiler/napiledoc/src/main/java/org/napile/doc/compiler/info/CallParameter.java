@@ -18,7 +18,7 @@ package org.napile.doc.compiler.info;
 
 /**
  * @author VISTALL
- * @date 18:47/01.02.13
+ * @since 18:47/01.02.13
  */
 public interface CallParameter
 {

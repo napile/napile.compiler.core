@@ -21,7 +21,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 15:56/12.11.12
+ * @since 15:56/12.11.12
  */
 public interface TextNodes
 {

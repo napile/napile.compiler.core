@@ -18,7 +18,7 @@ package org.napile.compiler.lang.descriptors;
 
 /**
  * @author VISTALL
- * @date 18:19/05.01.13
+ * @since 18:19/05.01.13
  */
 public interface MultiTypeEntryVariableDescriptor extends VariableDescriptor
 {

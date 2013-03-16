@@ -32,7 +32,7 @@ import com.intellij.psi.PsiElementVisitor;
 
 /**
  * @author VISTALL
- * @date 21:28/09.11.12
+ * @since 21:28/09.11.12
  */
 public class TextIdeaInjectionSupport extends IdeaInjectionSupport<TextCodeInjection>
 {

@@ -44,7 +44,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 
 /**
  * @author VISTALL
- * @date 15:31/11.01.13
+ * @since 15:31/11.01.13
  */
 public class ModuleAnalyzerUtil
 {

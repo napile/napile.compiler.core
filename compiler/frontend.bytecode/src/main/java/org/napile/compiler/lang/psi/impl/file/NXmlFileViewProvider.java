@@ -30,7 +30,7 @@ import com.intellij.psi.SingleRootFileViewProvider;
 
 /**
  * @author VISTALL
- * @date 18:44/09.10.12
+ * @since 18:44/09.10.12
  */
 public class NXmlFileViewProvider extends SingleRootFileViewProvider
 {

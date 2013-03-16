@@ -22,7 +22,7 @@ import org.napile.doc.compiler.info.AllInfo;
 
 /**
  * @author VISTALL
- * @date 13:52/01.02.13
+ * @since 13:52/01.02.13
  */
 public interface DocGenerator
 {

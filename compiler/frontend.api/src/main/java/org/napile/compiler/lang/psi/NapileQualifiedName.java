@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 /**
  * @author VISTALL
- * @date 19:52/25.11.12
+ * @since 19:52/25.11.12
  */
 public interface NapileQualifiedName
 {

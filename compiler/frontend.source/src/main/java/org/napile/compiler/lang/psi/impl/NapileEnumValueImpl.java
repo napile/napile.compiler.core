@@ -32,7 +32,7 @@ import com.intellij.navigation.ItemPresentationProviders;
 
 /**
  * @author VISTALL
- * @date 21:04/08.01.13
+ * @since 21:04/08.01.13
  */
 public class NapileEnumValueImpl extends NapileTypeParameterListOwnerStub<NapilePsiEnumValueStub> implements NapileEnumValue
 {

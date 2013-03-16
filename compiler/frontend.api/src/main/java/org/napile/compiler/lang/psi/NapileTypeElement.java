@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author VISTALL
- * @date 7:50/20.10.12
+ * @since 7:50/20.10.12
  */
 public interface NapileTypeElement extends NapileElement
 {

@@ -21,7 +21,7 @@ import com.intellij.openapi.project.Project;
 
 /**
  * @author VISTALL
- * @date 11:45/08.01.13
+ * @since 11:45/08.01.13
  */
 public class NapileRunConfigurationModule extends RunConfigurationModule
 {

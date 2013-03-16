@@ -27,7 +27,7 @@ import com.intellij.psi.stubs.StubIndexKey;
 
 /**
  * @author VISTALL
- * @date 14:56/11.10.12
+ * @since 14:56/11.10.12
  */
 public class NapileShortVariableNameIndex extends StringStubIndexExtension<NapileVariable>
 {

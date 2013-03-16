@@ -20,7 +20,7 @@ import com.intellij.util.ArrayFactory;
 
 /**
  * @author VISTALL
- * @date 19:51/01.12.12
+ * @since 19:51/01.12.12
  */
 public interface NapileCallParameter extends NapileDeclaration
 {

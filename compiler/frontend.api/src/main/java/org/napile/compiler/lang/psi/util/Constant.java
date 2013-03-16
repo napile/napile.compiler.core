@@ -23,7 +23,7 @@ import org.napile.asm.resolve.name.FqName;
 
 /**
  * @author VISTALL
- * @date 12:27/27.02.13
+ * @since 12:27/27.02.13
  */
 public class Constant
 {

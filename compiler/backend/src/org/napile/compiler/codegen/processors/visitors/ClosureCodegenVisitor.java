@@ -46,7 +46,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 15:19/21.01.13
+ * @since 15:19/21.01.13
  */
 public class ClosureCodegenVisitor extends CodegenVisitor
 {

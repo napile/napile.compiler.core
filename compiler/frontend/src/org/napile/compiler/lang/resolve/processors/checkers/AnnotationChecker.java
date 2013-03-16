@@ -37,7 +37,7 @@ import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
- * @date 15:27/26.08.12
+ * @since 15:27/26.08.12
  */
 public class AnnotationChecker
 {

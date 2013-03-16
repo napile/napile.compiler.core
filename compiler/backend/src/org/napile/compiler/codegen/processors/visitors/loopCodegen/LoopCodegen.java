@@ -28,7 +28,7 @@ import org.napile.compiler.lang.psi.NapileLoopExpression;
 
 /**
  * @author VISTALL
- * @date 21:16/02.10.12
+ * @since 21:16/02.10.12
  */
 public abstract class LoopCodegen<E extends NapileLoopExpression>
 {

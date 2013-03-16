@@ -38,7 +38,7 @@ import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
- * @date 10:46/24.01.13
+ * @since 10:46/24.01.13
  */
 public class TryThrowCodegenVisitor extends CodegenVisitor
 {

@@ -29,7 +29,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 
 /**
  * @author VISTALL
- * @date 18:17/01.02.13
+ * @since 18:17/01.02.13
  */
 public class MethodInfo extends NamedDocableInfo<NapileNamedMethodOrMacro>
 {

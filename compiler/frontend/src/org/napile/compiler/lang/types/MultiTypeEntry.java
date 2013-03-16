@@ -33,7 +33,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 /**
  * @author VISTALL
- * @date 20:12/26.12.12
+ * @since 20:12/26.12.12
  */
 public class MultiTypeEntry
 {

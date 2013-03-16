@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author VISTALL
- * @date 8:10/20.10.12
+ * @since 8:10/20.10.12
  */
 public interface NapileTypeArgumentList extends NapileElement
 {

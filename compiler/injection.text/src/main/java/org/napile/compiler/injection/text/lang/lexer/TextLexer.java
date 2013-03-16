@@ -22,7 +22,7 @@ import com.intellij.lexer.FlexAdapter;
 
 /**
  * @author VISTALL
- * @date 21:22/09.11.12
+ * @since 21:22/09.11.12
  */
 public class TextLexer extends FlexAdapter
 {

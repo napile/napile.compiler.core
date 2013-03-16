@@ -21,7 +21,7 @@ import org.napile.compiler.render.DescriptorRenderer;
 
 /**
  * @author VISTALL
- * @date 12:13/07.02.13
+ * @since 12:13/07.02.13
  */
 public class CompletionRender extends DescriptorRenderer
 {

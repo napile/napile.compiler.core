@@ -23,7 +23,7 @@ import com.intellij.openapi.roots.ModifiableRootModel;
 
 /**
  * @author VISTALL
- * @date 15:18/11.01.13
+ * @since 15:18/11.01.13
  */
 public class NapileModuleBuilder extends ModuleBuilder
 {

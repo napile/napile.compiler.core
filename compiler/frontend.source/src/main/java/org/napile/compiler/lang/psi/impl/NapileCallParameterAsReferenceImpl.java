@@ -30,7 +30,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 13:34/06.09.12
+ * @since 13:34/06.09.12
  */
 public class NapileCallParameterAsReferenceImpl extends NapileDeclarationImpl implements NapileCallParameterAsReference
 {

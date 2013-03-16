@@ -23,7 +23,7 @@ import com.intellij.psi.PsiFile;
 
 /**
  * @author VISTALL
- * @date 12:37/25.02.13
+ * @since 12:37/25.02.13
  */
 public class NapileProblemHighlightFilter extends ProblemHighlightFilter
 {

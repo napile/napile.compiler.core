@@ -26,7 +26,7 @@ import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
- * @date 15:06/19.10.12
+ * @since 15:06/19.10.12
  */
 public class NXmlNamedMethodImpl extends NXmlNamedMethodOrMacroImpl<NapilePsiMethodStub> implements NapileNamedMethod
 {

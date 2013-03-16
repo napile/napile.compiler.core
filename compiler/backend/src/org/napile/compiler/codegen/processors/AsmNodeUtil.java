@@ -38,7 +38,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 
 /**
  * @author VISTALL
- * @date 22:10/07.09.12
+ * @since 22:10/07.09.12
  */
 public class AsmNodeUtil
 {

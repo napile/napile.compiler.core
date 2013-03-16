@@ -29,7 +29,7 @@ import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
 /**
  * @author VISTALL
- * @date 12:17/15.09.12
+ * @since 12:17/15.09.12
  */
 public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl implements MethodTypeConstructor
 {

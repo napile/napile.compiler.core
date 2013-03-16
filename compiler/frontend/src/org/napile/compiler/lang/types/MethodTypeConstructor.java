@@ -23,7 +23,7 @@ import org.napile.asm.resolve.name.Name;
 
 /**
  * @author VISTALL
- * @date 12:16/15.09.12
+ * @since 12:16/15.09.12
  */
 public interface MethodTypeConstructor extends TypeConstructor
 {

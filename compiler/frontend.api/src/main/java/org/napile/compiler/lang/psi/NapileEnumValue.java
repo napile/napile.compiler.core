@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 /**
  * @author VISTALL
- * @date 21:02/08.01.13
+ * @since 21:02/08.01.13
  */
 public interface NapileEnumValue extends NapileDelegationSpecifierListOwner, NapileSuperListOwner, NapileVariable
 {

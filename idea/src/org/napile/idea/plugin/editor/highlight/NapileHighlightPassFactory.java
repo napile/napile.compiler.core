@@ -30,7 +30,7 @@ import com.intellij.psi.PsiFile;
 
 /**
  * @author VISTALL
- * @date 19:22/26.02.13
+ * @since 19:22/26.02.13
  */
 public class NapileHighlightPassFactory extends AbstractProjectComponent implements TextEditorHighlightingPassFactory
 {

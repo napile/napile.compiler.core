@@ -32,7 +32,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 18:48/16.02.13
+ * @since 18:48/16.02.13
  */
 public class NXmlMultiTypeImpl extends NXmlParentedElementBase implements NapileMultiType
 {

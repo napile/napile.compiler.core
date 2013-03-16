@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author VISTALL
- * @date 21:50/25.12.12
+ * @since 21:50/25.12.12
  */
 public enum IntConstantFactory
 {

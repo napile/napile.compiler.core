@@ -36,7 +36,7 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
- * @date 23:09/30.01.13
+ * @since 23:09/30.01.13
  */
 public class NapileDocParserDefinition implements ParserDefinition
 {

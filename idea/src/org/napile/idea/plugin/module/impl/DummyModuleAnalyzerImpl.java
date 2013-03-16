@@ -22,7 +22,7 @@ import org.napile.idea.plugin.module.ModuleAnalyzer;
 
 /**
  * @author VISTALL
- * @date 13:41/25.02.13
+ * @since 13:41/25.02.13
  */
 public class DummyModuleAnalyzerImpl extends ModuleAnalyzer
 {

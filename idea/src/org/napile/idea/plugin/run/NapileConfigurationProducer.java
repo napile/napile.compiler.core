@@ -40,7 +40,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 13:22/08.01.13
+ * @since 13:22/08.01.13
  */
 public class NapileConfigurationProducer extends RuntimeConfigurationProducer implements Cloneable
 {

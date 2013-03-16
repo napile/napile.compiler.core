@@ -18,7 +18,7 @@ package main;
 
 /**
  * @author VISTALL
- * @date 17:06/04.01.13
+ * @since 17:06/04.01.13
  */
 public class Parent
 {

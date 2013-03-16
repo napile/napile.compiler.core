@@ -29,7 +29,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 21:51/26.02.13
+ * @since 21:51/26.02.13
  */
 public class MethodssHighlightingVisitor extends PostHighlightVisitor
 {

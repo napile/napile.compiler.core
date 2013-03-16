@@ -34,7 +34,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 20:25/26.02.13
+ * @since 20:25/26.02.13
  */
 public class PostHighlightVisitor extends NapileVisitorVoid
 {

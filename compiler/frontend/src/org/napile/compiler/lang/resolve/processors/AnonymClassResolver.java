@@ -37,7 +37,7 @@ import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
- * @date 14:59/12.01.13
+ * @since 14:59/12.01.13
  */
 public class AnonymClassResolver
 {

@@ -23,7 +23,7 @@ import com.intellij.psi.stubs.StubElement;
 
 /**
  * @author VISTALL
- * @date 13:57/16.02.13
+ * @since 13:57/16.02.13
  */
 public abstract class NXmlStubElementBase<S extends StubElement> extends NXmlElementBase implements StubBasedPsiElement<S>
 {

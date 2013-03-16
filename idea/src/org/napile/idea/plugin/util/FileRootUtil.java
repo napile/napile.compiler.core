@@ -25,7 +25,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 6:17/19.08.12
+ * @since 6:17/19.08.12
  */
 public class FileRootUtil
 {

@@ -37,7 +37,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 19:08/12.11.12
+ * @since 19:08/12.11.12
  */
 public class PartToPartGenVisitor extends TextPsiVisitor
 {

@@ -25,7 +25,7 @@ import org.napile.compiler.util.slicedmap.WritableSlice;
 
 /**
  * @author VISTALL
- * @date 8:04/28.11.12
+ * @since 8:04/28.11.12
  */
 public interface BindingReader
 {

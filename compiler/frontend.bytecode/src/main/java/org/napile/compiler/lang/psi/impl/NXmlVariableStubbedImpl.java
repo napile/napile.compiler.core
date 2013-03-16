@@ -40,7 +40,7 @@ import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
- * @date 15:07/19.10.12
+ * @since 15:07/19.10.12
  */
 public class NXmlVariableStubbedImpl extends NXmlTypeParameterOwnerStub<NapilePsiVariableStub> implements NapileVariable
 {

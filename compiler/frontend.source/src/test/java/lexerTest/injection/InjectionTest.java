@@ -21,7 +21,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 13:54/27.10.12
+ * @since 13:54/27.10.12
  */
 public class InjectionTest
 {

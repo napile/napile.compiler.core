@@ -23,7 +23,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 14:54/01.02.13
+ * @since 14:54/01.02.13
  */
 public abstract class DocableInfo<E extends PsiElement> implements Comparable<DocableInfo<?>>
 {

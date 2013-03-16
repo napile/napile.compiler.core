@@ -38,7 +38,7 @@ import com.intellij.util.ArrayUtil;
 
 /**
  * @author VISTALL
- * @date 13:19/16.02.13
+ * @since 13:19/16.02.13
  */
 public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 {

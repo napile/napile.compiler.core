@@ -27,7 +27,7 @@ import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
- * @date 18:19/05.01.13
+ * @since 18:19/05.01.13
  */
 public class MultiTypeEntryVariableDescriptorImpl extends VariableDescriptorImpl implements MultiTypeEntryVariableDescriptor
 {

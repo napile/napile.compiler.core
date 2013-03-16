@@ -27,7 +27,7 @@ import com.intellij.openapi.module.Module;
 
 /**
  * @author VISTALL
- * @date 13:27/25.02.13
+ * @since 13:27/25.02.13
  */
 public class ModuleAnalyzerImpl extends ModuleAnalyzer
 {

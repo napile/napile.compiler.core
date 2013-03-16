@@ -28,7 +28,7 @@ import com.intellij.psi.PsiVariable;
 
 /**
  * @author VISTALL
- * @date 15:13/04.01.13
+ * @since 15:13/04.01.13
  */
 public class ModifierConverter
 {

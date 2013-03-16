@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author VISTALL
- * @date 19:58/19.10.12
+ * @since 19:58/19.10.12
  */
 public interface NapileTypeReference extends NapileElement, NapileAnnotationOwner
 {

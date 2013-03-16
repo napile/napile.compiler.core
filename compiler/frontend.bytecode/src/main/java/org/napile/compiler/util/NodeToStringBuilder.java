@@ -46,7 +46,7 @@ import com.intellij.util.ArrayUtil;
 
 /**
  * @author VISTALL
- * @date 17:52/15.02.13
+ * @since 17:52/15.02.13
  *
  * TODO [VISTALL] rework to implements NodeVisitor
  */

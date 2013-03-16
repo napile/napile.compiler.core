@@ -28,7 +28,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 13:22/19.02.13
+ * @since 13:22/19.02.13
  */
 public class NXmlConstantExpressionImpl extends NXmlParentedElementBase implements NapileConstantExpression
 {

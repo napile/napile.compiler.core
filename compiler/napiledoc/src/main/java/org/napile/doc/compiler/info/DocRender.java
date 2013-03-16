@@ -29,7 +29,7 @@ import org.napile.doc.compiler.Arguments;
 
 /**
  * @author VISTALL
- * @date 10:27/02.02.13
+ * @since 10:27/02.02.13
  */
 public class DocRender extends DescriptorRenderer.HtmlDescriptorRenderer
 {

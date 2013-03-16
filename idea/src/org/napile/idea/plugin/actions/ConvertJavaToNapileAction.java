@@ -29,7 +29,7 @@ import com.intellij.vcsUtil.VcsUtil;
 
 /**
  * @author VISTALL
- * @date 18:56/04.01.13
+ * @since 18:56/04.01.13
  */
 public class ConvertJavaToNapileAction extends AnAction
 {

@@ -27,7 +27,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 18:02/09.10.12
+ * @since 18:02/09.10.12
  */
 public class NXmlFileType implements FileType
 {

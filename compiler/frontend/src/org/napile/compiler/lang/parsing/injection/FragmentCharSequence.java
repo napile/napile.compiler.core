@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author VISTALL
- * @date 12:39/12.10.12
+ * @since 12:39/12.10.12
  */
 public class FragmentCharSequence implements CharSequence
 {

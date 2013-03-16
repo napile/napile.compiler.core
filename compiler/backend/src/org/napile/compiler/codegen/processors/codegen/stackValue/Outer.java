@@ -25,7 +25,7 @@ import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 
 /**
  * @author VISTALL
- * @date 10:20/13.01.13
+ * @since 10:20/13.01.13
  */
 public class Outer extends StackValue
 {

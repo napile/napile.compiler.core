@@ -22,7 +22,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 21:52/10.10.12
+ * @since 21:52/10.10.12
  */
 public interface NapileModifierList extends NapileElement, NapileAnnotationOwner
 {

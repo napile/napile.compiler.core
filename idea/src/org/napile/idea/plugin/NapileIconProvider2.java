@@ -43,7 +43,7 @@ import com.intellij.util.PlatformIcons;
 
 /**
  * @author VISTALL
- * @date 20:35/24.01.13
+ * @since 20:35/24.01.13
  * FIXME [VISTALL] rework
  */
 public class NapileIconProvider2

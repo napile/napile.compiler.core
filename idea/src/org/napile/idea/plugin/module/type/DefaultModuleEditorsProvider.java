@@ -30,7 +30,7 @@ import com.intellij.openapi.roots.ui.configuration.ModuleConfigurationState;
 
 /**
  * @author VISTALL
- * @date 15:28/11.01.13
+ * @since 15:28/11.01.13
  */
 public class DefaultModuleEditorsProvider implements ModuleConfigurationEditorProvider
 {

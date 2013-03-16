@@ -28,7 +28,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 15:31/19.02.13
+ * @since 15:31/19.02.13
  */
 public class NXmlAnonymMethodExpressionImpl extends NXmlParentedElementBase implements NapileAnonymMethodExpression
 {

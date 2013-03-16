@@ -33,7 +33,7 @@ import com.intellij.openapi.util.io.FileUtil;
 
 /**
  * @author VISTALL
- * @date 12:42/01.02.13
+ * @since 12:42/01.02.13
  */
 public abstract class TemplateDocGenerator implements DocGenerator
 {

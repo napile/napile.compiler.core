@@ -53,7 +53,7 @@ import com.intellij.openapi.util.Pair;
 
 /**
  * @author VISTALL
- * @date 18:42/08.10.12
+ * @since 18:42/08.10.12
  */
 public class TypeParameterResolver
 {

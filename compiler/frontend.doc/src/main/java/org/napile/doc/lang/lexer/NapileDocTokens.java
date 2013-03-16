@@ -18,7 +18,7 @@ package org.napile.doc.lang.lexer;
 
 /**
  * @author VISTALL
- * @date 22:46/30.01.13
+ * @since 22:46/30.01.13
  */
 public interface NapileDocTokens
 {
@@ -33,4 +33,6 @@ public interface NapileDocTokens
 	NapileDocToken TEXT_PART = new NapileDocToken("TEXT_PART");
 
 	NapileDocToken TILDE = new NapileDocToken("TILDE");
+
+	NapileDocToken CODE_MARKER = new NapileDocToken("CODE_MARKER");
 }

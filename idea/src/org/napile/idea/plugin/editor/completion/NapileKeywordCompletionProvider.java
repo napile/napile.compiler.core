@@ -30,7 +30,7 @@ import com.intellij.util.ProcessingContext;
 
 /**
  * @author VISTALL
- * @date 19:24/24.01.13
+ * @since 19:24/24.01.13
  */
 public class NapileKeywordCompletionProvider extends CompletionProvider<CompletionParameters>
 {

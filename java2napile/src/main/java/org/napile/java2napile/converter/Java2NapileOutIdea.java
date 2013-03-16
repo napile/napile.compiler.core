@@ -27,7 +27,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 18:47/04.01.13
+ * @since 18:47/04.01.13
  */
 public class Java2NapileOutIdea
 {

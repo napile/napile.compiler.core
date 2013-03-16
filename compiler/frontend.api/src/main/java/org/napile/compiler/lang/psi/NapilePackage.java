@@ -24,7 +24,7 @@ import org.napile.asm.resolve.name.Name;
 
 /**
  * @author VISTALL
- * @date 11:41/16.02.13
+ * @since 11:41/16.02.13
  */
 public interface NapilePackage extends NapileReferenceExpression
 {

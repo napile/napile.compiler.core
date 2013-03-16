@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * @author VISTALL
- * @date 14:59/21.02.13
+ * @since 14:59/21.02.13
  */
 public interface NapileDelegationSpecifierList extends NapileElement
 {

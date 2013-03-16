@@ -11,7 +11,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
- * @date 15:55/12.11.12
+ * @since 15:55/12.11.12
  */
 public class TextExpressionInsert extends ASTWrapperPsiElement
 {

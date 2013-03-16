@@ -24,7 +24,7 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 
 /**
  * @author VISTALL
- * @date 15:37/12.11.12
+ * @since 15:37/12.11.12
  */
 public interface TextHighlighterColors
 {

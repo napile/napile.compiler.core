@@ -23,7 +23,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 
 /**
  * @author VISTALL
- * @date 18:44/01.02.13
+ * @since 18:44/01.02.13
  */
 public class CallParameterAsVariable extends NamedDocableInfo<NapileCallParameterAsVariable> implements CallParameter
 {

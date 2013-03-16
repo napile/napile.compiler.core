@@ -22,7 +22,7 @@ import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 
 /**
  * @author VISTALL
- * @date 22:29/26.02.13
+ * @since 22:29/26.02.13
  */
 public interface NapileQuickFixProvider
 {

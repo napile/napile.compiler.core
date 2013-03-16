@@ -36,7 +36,7 @@ import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
- * @date 21:21/15.02.13
+ * @since 21:21/15.02.13
  */
 public abstract class NXmlNamedDeclarationImpl<T extends NamedStub> extends NXmlStubElementBase<T> implements NapileNamedDeclaration, StubBasedPsiElement<T>
 {

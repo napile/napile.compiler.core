@@ -21,7 +21,7 @@ import org.napile.compiler.lang.psi.*;
 
 /**
  * @author VISTALL
- * @date 18:33/19.10.12
+ * @since 18:33/19.10.12
  */
 public interface NapilePsiFromStubFactory
 {

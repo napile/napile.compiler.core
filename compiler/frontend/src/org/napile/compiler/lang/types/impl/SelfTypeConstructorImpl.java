@@ -26,7 +26,7 @@ import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
 /**
  * @author VISTALL
- * @date 19:02/12.09.12
+ * @since 19:02/12.09.12
  */
 public class SelfTypeConstructorImpl extends AbstractTypeConstructorImpl implements SelfTypeConstructor
 {

@@ -35,7 +35,7 @@ import com.intellij.psi.tree.IFileElementType;
 
 /**
  * @author VISTALL
- * @date 21:50/27.09.12
+ * @since 21:50/27.09.12
  */
 public abstract class CodeInjection implements ParserDefinition, UserDataHolder
 {

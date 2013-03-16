@@ -34,7 +34,7 @@ import org.napile.asm.tree.members.types.constructors.TypeParameterValueTypeNode
 
 /**
  * @author VISTALL
- * @date 18:30/15.02.13
+ * @since 18:30/15.02.13
  */
 public class DummyNodeVisitor<A> implements NodeVisitor<A, Void>
 {

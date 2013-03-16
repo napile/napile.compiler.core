@@ -26,7 +26,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 13:04/04.01.13
+ * @since 13:04/04.01.13
  */
 public class MainTest extends Assert
 {

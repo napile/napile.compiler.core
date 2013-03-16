@@ -25,7 +25,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 16:11/15.02.13
+ * @since 16:11/15.02.13
  */
 public class AnalyzeContext
 {

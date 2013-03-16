@@ -22,7 +22,7 @@ import org.napile.compiler.lang.psi.NapileVisitorVoid;
 
 /**
  * @author VISTALL
- * @date 12:50/19.02.13
+ * @since 12:50/19.02.13
  * TODO [VISTALL] make converted from ArrayUtil.copy() to napile.lang.ArrayUtil.copy()
  */
 public class ExpressionToQualifiedExpressionVisitor extends NapileVisitorVoid

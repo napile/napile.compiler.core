@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author VISTALL
- * @date 15:02/21.02.13
+ * @since 15:02/21.02.13
  */
 public interface NapileDelegationToSuperCall extends NapileCallElement
 {

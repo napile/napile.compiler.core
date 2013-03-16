@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 /**
  * @author VISTALL
- * @date 7:54/20.10.12
+ * @since 7:54/20.10.12
  */
 public interface NapileSelfType extends NapileTypeElement
 {

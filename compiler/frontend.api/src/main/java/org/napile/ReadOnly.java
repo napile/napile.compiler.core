@@ -18,7 +18,7 @@ package org.napile;
 
 /**
  * @author VISTALL
- * @date 18:21/26.12.12
+ * @since 18:21/26.12.12
  */
 public @interface ReadOnly
 {

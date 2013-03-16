@@ -22,7 +22,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 15:28/19.10.12
+ * @since 15:28/19.10.12
  */
 public interface NapileVariable extends NapileTypeParameterListOwner, NapileWithExpressionInitializer
 {

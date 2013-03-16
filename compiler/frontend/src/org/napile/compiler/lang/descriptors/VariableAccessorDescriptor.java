@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * @author VISTALL
- * @date 19:02/05.12.12
+ * @since 19:02/05.12.12
  */
 
 public interface VariableAccessorDescriptor extends MethodDescriptor

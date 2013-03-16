@@ -18,7 +18,7 @@ package org.napile.compiler.lang.descriptors;
 
 /**
  * @author VISTALL
- * @date 20:44/01.12.12
+ * @since 20:44/01.12.12
  */
 public interface CallParameterAsReferenceDescriptor extends CallParameterDescriptor
 {

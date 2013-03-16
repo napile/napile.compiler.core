@@ -23,7 +23,7 @@ import com.intellij.codeInsight.lookup.LookupElement;
 
 /**
  * @author VISTALL
- * @date 12:16/07.02.13
+ * @since 12:16/07.02.13
  */
 public class MethodParenthesesInsertHandler extends ParenthesesInsertHandler<LookupElement>
 {

@@ -26,7 +26,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 19:43/26.12.12
+ * @since 19:43/26.12.12
  */
 public class NapileMultiTypeExpressionImpl extends NapileExpressionImpl implements NapileMultiTypeExpression
 {

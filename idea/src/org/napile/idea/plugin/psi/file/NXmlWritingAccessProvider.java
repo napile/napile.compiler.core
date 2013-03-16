@@ -26,7 +26,7 @@ import com.intellij.openapi.vfs.WritingAccessProvider;
 
 /**
  * @author VISTALL
- * @date 18:42/16.02.13
+ * @since 18:42/16.02.13
  */
 public class NXmlWritingAccessProvider extends WritingAccessProvider
 {

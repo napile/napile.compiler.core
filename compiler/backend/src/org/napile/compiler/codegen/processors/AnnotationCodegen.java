@@ -33,7 +33,7 @@ import com.intellij.util.ArrayUtil;
 
 /**
  * @author VISTALL
- * @date 15:03/14.10.12
+ * @since 15:03/14.10.12
  */
 public class AnnotationCodegen
 {

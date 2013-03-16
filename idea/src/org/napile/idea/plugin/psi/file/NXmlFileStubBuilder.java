@@ -34,7 +34,7 @@ import com.intellij.util.io.StringRef;
 
 /**
  * @author VISTALL
- * @date 14:35/15.10.12
+ * @since 14:35/15.10.12
  */
 public class NXmlFileStubBuilder implements BinaryFileStubBuilder
 {

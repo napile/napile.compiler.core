@@ -32,7 +32,7 @@ import org.napile.compiler.lang.types.TypeConstructor;
 
 /**
  * @author VISTALL
- * @date 21:48/26.12.12
+ * @since 21:48/26.12.12
  */
 public abstract class AbstractTypeConstructorImpl implements TypeConstructor
 {

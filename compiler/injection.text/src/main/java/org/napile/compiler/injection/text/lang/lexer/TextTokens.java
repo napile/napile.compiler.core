@@ -30,7 +30,7 @@ import com.intellij.psi.tree.IReparseableElementType;
 
 /**
  * @author VISTALL
- * @date 21:18/09.11.12
+ * @since 21:18/09.11.12
  */
 public interface TextTokens
 {

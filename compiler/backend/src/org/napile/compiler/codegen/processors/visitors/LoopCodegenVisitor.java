@@ -40,7 +40,7 @@ import com.intellij.openapi.util.Comparing;
 
 /**
  * @author VISTALL
- * @date 10:37/24.01.13
+ * @since 10:37/24.01.13
  */
 public class LoopCodegenVisitor extends CodegenVisitor
 {

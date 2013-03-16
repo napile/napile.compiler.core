@@ -53,7 +53,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 15:59/23.12.12
+ * @since 15:59/23.12.12
  */
 public class InnerClassCodegen
 {

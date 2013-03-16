@@ -35,7 +35,7 @@ import com.intellij.util.Function;
 
 /**
  * @author VISTALL
- * @date 12:21/07.02.13
+ * @since 12:21/07.02.13
  */
 public class DescriptionLookupBuilder
 {

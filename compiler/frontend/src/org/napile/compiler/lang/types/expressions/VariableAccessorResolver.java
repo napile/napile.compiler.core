@@ -51,7 +51,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 
 /**
  * @author VISTALL
- * @date 17:32/19.12.12
+ * @since 17:32/19.12.12
  */
 public class VariableAccessorResolver
 {

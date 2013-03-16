@@ -22,7 +22,7 @@ import org.napile.doc.compiler.info.AllInfo;
 
 /**
  * @author VISTALL
- * @date 13:40/01.02.13
+ * @since 13:40/01.02.13
  */
 public class OverviewSummaryGenerator extends TemplateDocGenerator
 {

@@ -46,7 +46,7 @@ import org.napile.compiler.lang.types.JetType;
 
 /**
  * @author VISTALL
- * @date 10:31/24.01.13
+ * @since 10:31/24.01.13
  */
 public class ConditionCodegenVisitor extends CodegenVisitor
 {

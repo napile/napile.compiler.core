@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.NapileDoWhileExpression;
 
 /**
  * @author VISTALL
- * @date 15:04/03.10.12
+ * @since 15:04/03.10.12
  */
 public class DoWhileLoopCodegen extends LoopCodegen<NapileDoWhileExpression>
 {

@@ -23,7 +23,7 @@ import org.napile.ReadOnly;
 
 /**
  * @author VISTALL
- * @date 18:11/26.12.12
+ * @since 18:11/26.12.12
  */
 public interface MultiTypeConstructor extends TypeConstructor
 {

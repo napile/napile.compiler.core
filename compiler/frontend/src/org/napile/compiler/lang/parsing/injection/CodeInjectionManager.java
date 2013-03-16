@@ -25,7 +25,7 @@ import org.napile.compiler.injection.CodeInjection;
 
 /**
  * @author VISTALL
- * @date 10:38/28.09.12
+ * @since 10:38/28.09.12
  */
 public class CodeInjectionManager
 {

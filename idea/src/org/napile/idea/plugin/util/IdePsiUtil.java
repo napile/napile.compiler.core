@@ -13,7 +13,7 @@ import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 
 /**
  * @author VISTALL
- * @date 14:23/08.10.12
+ * @since 14:23/08.10.12
  */
 public class IdePsiUtil extends RunUtil
 {

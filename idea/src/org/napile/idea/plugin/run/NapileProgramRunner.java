@@ -22,7 +22,7 @@ import com.intellij.execution.runners.DefaultProgramRunner;
 
 /**
  * @author VISTALL
- * @date 11:40/08.01.13
+ * @since 11:40/08.01.13
  */
 public class NapileProgramRunner extends DefaultProgramRunner
 {

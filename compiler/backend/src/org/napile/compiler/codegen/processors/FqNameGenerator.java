@@ -34,7 +34,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
- * @date 19:49/03.09.12
+ * @since 19:49/03.09.12
  */
 public class FqNameGenerator extends NapileTreeVisitor<FqName>
 {

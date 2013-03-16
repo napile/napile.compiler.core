@@ -27,7 +27,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 11:52/08.01.13
+ * @since 11:52/08.01.13
  */
 public class NapileRunningState extends CommandLineState
 {

@@ -28,7 +28,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 14:51/18.09.12
+ * @since 14:51/18.09.12
  */
 public class CallableMethod
 {

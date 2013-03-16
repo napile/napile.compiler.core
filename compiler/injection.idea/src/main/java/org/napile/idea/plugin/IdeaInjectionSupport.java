@@ -29,7 +29,7 @@ import com.intellij.util.NotNullFunction;
 
 /**
  * @author VISTALL
- * @date 17:58/27.10.12
+ * @since 17:58/27.10.12
  */
 public abstract class IdeaInjectionSupport<T extends CodeInjection>
 {

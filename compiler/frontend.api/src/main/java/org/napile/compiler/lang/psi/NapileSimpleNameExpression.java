@@ -24,7 +24,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 8:13/20.10.12
+ * @since 8:13/20.10.12
  */
 public interface NapileSimpleNameExpression extends NapileReferenceExpression
 {

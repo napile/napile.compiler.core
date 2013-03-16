@@ -53,7 +53,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 19:52/28.08.12
+ * @since 19:52/28.08.12
  */
 public class ModifiersChecker
 {

@@ -26,7 +26,7 @@ import com.intellij.codeInsight.daemon.impl.quickfix.QuickFixAction;
 
 /**
  * @author VISTALL
- * @date 22:40/26.02.13
+ * @since 22:40/26.02.13
  */
 public class ImportClassQuickFixProvider implements NapileQuickFixProvider
 {

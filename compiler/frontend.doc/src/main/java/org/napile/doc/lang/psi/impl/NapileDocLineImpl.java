@@ -23,7 +23,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 9:13/31.01.13
+ * @since 9:13/31.01.13
  */
 public class NapileDocLineImpl extends ASTWrapperPsiElement implements NapileDocLine
 {

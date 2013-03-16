@@ -39,7 +39,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 14:03/17.02.13
+ * @since 14:03/17.02.13
  */
 public class NXmlModifierListImpl extends NXmlStubElementBase<NapilePsiModifierListStub> implements NapileModifierList
 {

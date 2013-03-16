@@ -29,7 +29,7 @@ import org.napile.compiler.lang.psi.impl.NXmlSimpleNameExpressionImpl;
 
 /**
  * @author VISTALL
- * @date 13:24/19.02.13
+ * @since 13:24/19.02.13
  */
 public class NXmlExpressionMirrorVisitor extends NapileVisitor<NXmlElementBase, NXmlElementBase>
 {

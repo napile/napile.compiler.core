@@ -81,7 +81,7 @@ import com.intellij.util.Function;
 
 /**
  * @author VISTALL
- * @date 0:24/07.09.12
+ * @since 0:24/07.09.12
  * <p/>
  * base code getting from Kotlin
  */

@@ -10,6 +10,7 @@
     <orderEntry type="library" scope="PROVIDED" name="intellij-core" level="project" />
     <orderEntry type="module" module-name="frontend.api" />
     <orderEntry type="library" exported="" name="pegdown" level="project" />
+    <orderEntry type="module" module-name="frontend" />
   </component>
 </module>
 

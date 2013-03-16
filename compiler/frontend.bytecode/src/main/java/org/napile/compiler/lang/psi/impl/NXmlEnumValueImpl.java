@@ -36,7 +36,7 @@ import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
- * @date 14:34/21.02.13
+ * @since 14:34/21.02.13
  */
 public class NXmlEnumValueImpl extends NXmlNamedDeclarationImpl<NapilePsiEnumValueStub> implements NapileEnumValue
 {

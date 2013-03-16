@@ -23,7 +23,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 22:46/30.01.13
+ * @since 22:46/30.01.13
  */
 public class NapileDocToken extends IElementType
 {

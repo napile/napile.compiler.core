@@ -31,4 +31,6 @@ import com.intellij.psi.tree.IElementType;
 
 "~"  {return NapileDocTokens.TILDE;}
 
+"`"  {return NapileDocTokens.CODE_MARKER;}
+
 .  {return NapileDocTokens.TEXT_PART;}

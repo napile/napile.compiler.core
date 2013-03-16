@@ -24,7 +24,7 @@ import org.napile.doc.lang.psi.NapileDocLine;
 
 /**
  * @author VISTALL
- * @date 18:18/01.02.13
+ * @since 18:18/01.02.13
  */
 public abstract class NamedDocableInfo<E extends NapileNamedDeclaration> extends DocableInfo<E>
 {

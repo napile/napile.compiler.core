@@ -20,7 +20,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 9:54/31.01.13
+ * @since 9:54/31.01.13
  */
 public interface NapileDoc extends PsiElement
 {

@@ -27,7 +27,7 @@ import com.intellij.psi.stubs.StubElement;
 
 /**
  * @author VISTALL
- * @date 21:31/15.02.13
+ * @since 21:31/15.02.13
  */
 public abstract class NXmlTypeParameterOwnerStub<T extends NamedStub> extends NXmlNamedDeclarationImpl<T> implements NapileTypeParameterListOwner
 {

@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * @author VISTALL
- * @date 16:19/31.12.12
+ * @since 16:19/31.12.12
  */
 public interface NapileAnnotationOwner
 {

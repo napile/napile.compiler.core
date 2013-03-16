@@ -57,7 +57,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 10:26/24.01.13
+ * @since 10:26/24.01.13
  */
 public class BinaryCodegenVisitor extends CodegenVisitor
 {

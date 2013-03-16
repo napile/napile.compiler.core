@@ -25,7 +25,7 @@ import com.intellij.psi.PsiManager;
 
 /**
  * @author VISTALL
- * @date 18:43/09.10.12
+ * @since 18:43/09.10.12
  */
 public class NXmlFileViewProviderFactory implements FileViewProviderFactory
 {

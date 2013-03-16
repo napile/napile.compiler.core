@@ -21,7 +21,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 19:56/01.12.12
+ * @since 19:56/01.12.12
  */
 public interface NapileCallParameterAsVariable extends NapileCallParameter, NapileNamedDeclaration
 {

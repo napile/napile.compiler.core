@@ -21,7 +21,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 21:47/09.11.12
+ * @since 21:47/09.11.12
  */
 public class LexerTest
 {

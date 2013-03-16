@@ -34,7 +34,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 16:16/16.02.13
+ * @since 16:16/16.02.13
  */
 public class NXmlMirrorUtil
 {

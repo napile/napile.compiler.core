@@ -22,7 +22,7 @@ import com.intellij.lang.PsiBuilder;
 
 /**
  * @author VISTALL
- * @date 11:42/12.10.12
+ * @since 11:42/12.10.12
  */
 public class CodeInjectionParser
 {

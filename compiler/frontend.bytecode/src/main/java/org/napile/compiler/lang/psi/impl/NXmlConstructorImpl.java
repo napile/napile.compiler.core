@@ -33,7 +33,7 @@ import com.intellij.psi.stubs.StubElement;
 
 /**
  * @author VISTALL
- * @date 15:07/19.10.12
+ * @since 15:07/19.10.12
  */
 public class NXmlConstructorImpl extends NXmlTypeParameterOwnerStub<NapilePsiConstructorStub> implements NapileConstructor
 {

@@ -37,7 +37,7 @@ import com.intellij.openapi.util.Disposer;
 
 /**
  * @author VISTALL
- * @date 12:32/01.02.13
+ * @since 12:32/01.02.13
  */
 public class DocProcessor
 {

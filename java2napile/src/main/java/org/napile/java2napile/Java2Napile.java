@@ -18,7 +18,7 @@ package org.napile.java2napile;
 
 /**
  * @author VISTALL
- * @date 12:56/04.01.13
+ * @since 12:56/04.01.13
  */
 public class Java2Napile
 {

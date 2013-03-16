@@ -30,7 +30,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 17:21/12.10.12
+ * @since 17:21/12.10.12
  */
 public class NapileInjectionExpressionImpl extends NapileExpressionImpl implements NapileInjectionExpression
 {

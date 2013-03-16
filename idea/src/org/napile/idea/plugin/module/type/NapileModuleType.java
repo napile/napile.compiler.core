@@ -24,7 +24,7 @@ import com.intellij.openapi.module.ModuleTypeManager;
 
 /**
  * @author VISTALL
- * @date 15:18/11.01.13
+ * @since 15:18/11.01.13
  */
 public class NapileModuleType extends ModuleType<NapileModuleBuilder>
 {

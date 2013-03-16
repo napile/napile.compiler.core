@@ -24,7 +24,7 @@ import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
 
 /**
  * @author VISTALL
- * @date 17:59/27.10.12
+ * @since 17:59/27.10.12
  */
 public class PbIdeaInjectionSupport extends IdeaInjectionSupport<ProtobufCodeInjection>
 {

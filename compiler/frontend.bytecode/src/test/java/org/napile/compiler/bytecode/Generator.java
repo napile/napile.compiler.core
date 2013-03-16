@@ -22,7 +22,7 @@ import com.intellij.openapi.util.io.FileUtil;
 
 /**
  * @author VISTALL
- * @date 18:05/15.02.13
+ * @since 18:05/15.02.13
  */
 public class Generator
 {

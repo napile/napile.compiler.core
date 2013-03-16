@@ -16,7 +16,7 @@ import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
- * @date 16:16/22.02.13
+ * @since 16:16/22.02.13
  */
 public class NXmlVariableImpl extends NXmlParentedElementBase implements NapileVariable
 {

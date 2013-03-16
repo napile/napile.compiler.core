@@ -22,7 +22,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 7:59/20.10.12
+ * @since 7:59/20.10.12
  */
 public interface NapileMethodType extends NapileTypeElement
 {

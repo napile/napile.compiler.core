@@ -20,7 +20,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 16:19/16.02.13
+ * @since 16:19/16.02.13
  */
 public abstract class NXmlParentedElementBase extends NXmlElementBase
 {

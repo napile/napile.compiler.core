@@ -24,7 +24,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 21:24/09.11.12
+ * @since 21:24/09.11.12
  */
 public class TextParser implements PsiParser
 {

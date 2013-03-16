@@ -20,7 +20,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 13:12/04.01.13
+ * @since 13:12/04.01.13
  */
 public interface Java2NapileConvertAction
 {

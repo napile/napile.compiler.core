@@ -31,7 +31,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 16:22/21.02.13
+ * @since 16:22/21.02.13
  */
 public class NXmlDelegationSpecifierListImpl extends NXmlParentedElementBase implements NapileDelegationSpecifierList
 {

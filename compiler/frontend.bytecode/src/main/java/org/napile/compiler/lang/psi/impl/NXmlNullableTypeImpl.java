@@ -33,7 +33,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 17:04/16.02.13
+ * @since 17:04/16.02.13
  */
 public class NXmlNullableTypeImpl extends NXmlParentedElementBase implements NapileNullableType
 {

@@ -22,7 +22,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 11:40/15.02.13
+ * @since 11:40/15.02.13
  */
 public class NapileFindConstructorUsageHandler extends FindUsagesHandler
 {

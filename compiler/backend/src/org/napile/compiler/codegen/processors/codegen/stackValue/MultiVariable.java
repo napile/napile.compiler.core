@@ -32,7 +32,7 @@ import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 
 /**
  * @author VISTALL
- * @date 18:55/05.01.13
+ * @since 18:55/05.01.13
  */
 public class MultiVariable extends StackValue
 {

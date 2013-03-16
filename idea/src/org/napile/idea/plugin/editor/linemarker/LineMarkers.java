@@ -58,7 +58,7 @@ import com.intellij.util.Function;
 
 /**
  * @author VISTALL
- * @date 17:54/23.08.12
+ * @since 17:54/23.08.12
  */
 public enum LineMarkers
 {

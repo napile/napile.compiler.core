@@ -28,7 +28,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 16:58/24.01.13
+ * @since 16:58/24.01.13
  */
 public class NapileQualifiedNameProvider implements QualifiedNameProvider
 {

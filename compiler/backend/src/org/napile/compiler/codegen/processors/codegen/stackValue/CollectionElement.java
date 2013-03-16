@@ -29,7 +29,7 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 
 /**
  * @author VISTALL
- * @date 2:39/20.09.12
+ * @since 2:39/20.09.12
  */
 public class CollectionElement extends StackValue
 {

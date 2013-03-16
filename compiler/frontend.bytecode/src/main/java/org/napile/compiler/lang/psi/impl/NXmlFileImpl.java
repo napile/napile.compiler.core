@@ -61,7 +61,7 @@ import com.intellij.util.io.StringRef;
 
 /**
  * @author VISTALL
- * @date 20:39/09.10.12
+ * @since 20:39/09.10.12
  * <p/>
  * Stub & Mirror system was 'copied' from IDEA CE
  */

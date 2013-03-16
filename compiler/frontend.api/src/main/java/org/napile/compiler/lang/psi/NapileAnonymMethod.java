@@ -22,7 +22,7 @@ import com.intellij.lang.ASTNode;
 
 /**
  * @author VISTALL
- * @date 15:21/19.02.13
+ * @since 15:21/19.02.13
  */
 public interface NapileAnonymMethod extends NapileMethod
 {

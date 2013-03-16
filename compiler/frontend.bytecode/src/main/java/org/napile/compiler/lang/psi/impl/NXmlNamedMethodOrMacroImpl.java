@@ -35,7 +35,7 @@ import com.intellij.psi.stubs.StubElement;
 
 /**
  * @author VISTALL
- * @date 13:12/16.02.13
+ * @since 13:12/16.02.13
  */
 public abstract class NXmlNamedMethodOrMacroImpl<S extends NamedStub> extends NXmlTypeParameterOwnerStub<S> implements NapileNamedMethodOrMacro
 {

@@ -20,7 +20,7 @@ import org.napile.compiler.analyzer.AnalyzeExhaust;
 
 /**
  * @author VISTALL
- * @date 13:33/25.02.13
+ * @since 13:33/25.02.13
  */
 public class ModuleAnalyzerHolder
 {

@@ -25,7 +25,7 @@ import com.intellij.psi.stubs.StubElement;
 
 /**
  * @author VISTALL
- * @date 12:17/16.02.13
+ * @since 12:17/16.02.13
  */
 public class NapilePsiConstructorStub extends StubBase<NapileConstructor> implements NamedStub<NapileConstructor>
 {

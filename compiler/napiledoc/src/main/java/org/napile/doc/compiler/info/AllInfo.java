@@ -26,7 +26,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 
 /**
  * @author VISTALL
- * @date 14:57/01.02.13
+ * @since 14:57/01.02.13
  */
 public class AllInfo
 {

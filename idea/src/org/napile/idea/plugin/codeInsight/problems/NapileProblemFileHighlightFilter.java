@@ -23,7 +23,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 6:16/19.08.12
+ * @since 6:16/19.08.12
  */
 public class NapileProblemFileHighlightFilter implements Condition<VirtualFile>
 {

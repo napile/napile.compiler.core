@@ -20,7 +20,7 @@ import com.intellij.psi.PsiElementVisitor;
 
 /**
  * @author VISTALL
- * @date 16:07/12.11.12
+ * @since 16:07/12.11.12
  */
 public class TextPsiVisitor extends PsiElementVisitor
 {

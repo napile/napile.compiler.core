@@ -51,7 +51,7 @@ import com.intellij.openapi.util.Pair;
 
 /**
  * @author VISTALL
- * @date 18:47/07.09.12
+ * @since 18:47/07.09.12
  */
 public class MethodCodegen
 {

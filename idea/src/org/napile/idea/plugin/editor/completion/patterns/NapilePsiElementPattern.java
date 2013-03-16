@@ -23,7 +23,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 17:28/24.01.13
+ * @since 17:28/24.01.13
  */
 public class NapilePsiElementPattern<T extends PsiElement, Self extends NapilePsiElementPattern<T, Self>> extends PsiElementPattern<T, Self>
 {

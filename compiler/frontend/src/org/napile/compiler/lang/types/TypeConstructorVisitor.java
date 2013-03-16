@@ -18,7 +18,7 @@ package org.napile.compiler.lang.types;
 
 /**
  * @author VISTALL
- * @date 10:56/28.12.12
+ * @since 10:56/28.12.12
  */
 public abstract class TypeConstructorVisitor<A, R>
 {

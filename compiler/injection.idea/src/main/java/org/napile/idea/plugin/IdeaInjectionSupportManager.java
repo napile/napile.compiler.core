@@ -29,7 +29,7 @@ import com.intellij.openapi.components.ServiceManager;
 
 /**
  * @author VISTALL
- * @date 17:59/27.10.12
+ * @since 17:59/27.10.12
  */
 public class IdeaInjectionSupportManager implements ApplicationComponent, Iterable<IdeaInjectionSupport<?>>
 {

@@ -25,7 +25,7 @@ import org.napile.doc.compiler.info.PackageInfo;
 
 /**
  * @author VISTALL
- * @date 18:01/01.02.13
+ * @since 18:01/01.02.13
  */
 public class ClassSummaryGenerator extends TemplateDocGenerator
 {

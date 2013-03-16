@@ -22,7 +22,7 @@ import org.napile.compiler.lang.psi.impl.*;
 
 /**
  * @author VISTALL
- * @date 18:36/19.10.12
+ * @since 18:36/19.10.12
  */
 public class SourcePsiFromStubFactory implements NapilePsiFromStubFactory
 {

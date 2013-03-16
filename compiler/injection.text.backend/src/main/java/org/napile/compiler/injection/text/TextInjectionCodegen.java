@@ -27,7 +27,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 18:47/12.11.12
+ * @since 18:47/12.11.12
  */
 public class TextInjectionCodegen implements InjectionCodegen<TextCodeInjection>
 {

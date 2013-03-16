@@ -46,7 +46,7 @@ import com.intellij.util.SmartList;
 
 /**
  * @author VISTALL
- * @date 15:31/11.01.13
+ * @since 15:31/11.01.13
  */
 public class ModuleCollector
 {

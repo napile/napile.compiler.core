@@ -24,7 +24,7 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
- * @date 17:56/27.10.12
+ * @since 17:56/27.10.12
  */
 public class SyntaxHighlighterUtil
 {

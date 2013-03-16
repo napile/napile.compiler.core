@@ -22,7 +22,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 15:27/05.12.12
+ * @since 15:27/05.12.12
  */
 public interface NapileVariableAccessor extends NapileNamedDeclaration, NapileDeclarationWithBody
 {

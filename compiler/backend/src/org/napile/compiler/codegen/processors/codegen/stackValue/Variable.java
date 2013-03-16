@@ -25,7 +25,7 @@ import org.napile.compiler.codegen.processors.PositionMarker;
 
 /**
  * @author VISTALL
- * @date 23:21/18.09.12
+ * @since 23:21/18.09.12
  */
 public class Variable extends StackValue
 {

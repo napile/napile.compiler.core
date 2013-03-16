@@ -26,7 +26,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 
 /**
  * @author VISTALL
- * @date 12:33/25.08.12
+ * @since 12:33/25.08.12
  */
 public class AnnotationUtils
 {

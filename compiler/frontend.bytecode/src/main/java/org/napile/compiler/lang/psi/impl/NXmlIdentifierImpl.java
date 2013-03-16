@@ -26,7 +26,7 @@ import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
  * @author VISTALL
- * @date 17:39/16.02.13
+ * @since 17:39/16.02.13
  */
 public class NXmlIdentifierImpl extends NXmlParentedElementBase
 {

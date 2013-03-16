@@ -38,7 +38,7 @@ import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
- * @date 14:54/17.02.13
+ * @since 14:54/17.02.13
  */
 public class NXmlCallParameterAsVariableImpl extends NXmlParentedElementBase implements NapileCallParameterAsVariable
 {

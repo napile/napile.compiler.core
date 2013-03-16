@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * @author VISTALL
- * @date 11:24/09.01.13
+ * @since 11:24/09.01.13
  */
 public interface NapileSuperListOwner extends NapileNamedDeclaration
 {

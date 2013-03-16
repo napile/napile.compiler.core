@@ -41,7 +41,7 @@ import com.intellij.util.Alarm;
 
 /**
  * @author VISTALL
- * @date 10:18/31.01.13
+ * @since 10:18/31.01.13
  */
 public class DocPreviewToolwindow extends JPanel implements Disposable
 {

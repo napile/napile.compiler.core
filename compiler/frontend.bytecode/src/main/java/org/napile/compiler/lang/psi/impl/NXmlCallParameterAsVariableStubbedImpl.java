@@ -34,7 +34,7 @@ import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
- * @date 20:25/16.02.13
+ * @since 20:25/16.02.13
  */
 public class NXmlCallParameterAsVariableStubbedImpl extends NXmlNamedDeclarationImpl<NapilePsiCallParameterAsVariableStub> implements NapileCallParameterAsVariable
 {

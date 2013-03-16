@@ -30,7 +30,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 
 /**
  * @author VISTALL
- * @date 12:35/04.09.12
+ * @since 12:35/04.09.12
  */
 public class ModifierCodegen
 {

@@ -42,7 +42,7 @@ import com.intellij.util.Function;
 
 /**
  * @author VISTALL
- * @date 22:07/10.02.13
+ * @since 22:07/10.02.13
  */
 public class RecursiveLineMarkerProvider implements LineMarkerProvider
 {

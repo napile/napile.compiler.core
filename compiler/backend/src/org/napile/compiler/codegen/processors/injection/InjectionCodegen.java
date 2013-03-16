@@ -26,7 +26,7 @@ import com.intellij.util.NotNullFunction;
 
 /**
  * @author VISTALL
- * @date 18:32/12.11.12
+ * @since 18:32/12.11.12
  */
 public interface InjectionCodegen<T extends CodeInjection>
 {

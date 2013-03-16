@@ -39,7 +39,7 @@ import com.intellij.psi.PsiReference;
 
 /**
  * @author VISTALL
- * @date 21:44/26.02.13
+ * @since 21:44/26.02.13
  */
 public class TypeKindHighlightingVisitor extends PostHighlightVisitor
 {

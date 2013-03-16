@@ -40,7 +40,7 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
- * @date 20:19/09.11.12
+ * @since 20:19/09.11.12
  */
 public class TextCodeInjection extends CodeInjection
 {

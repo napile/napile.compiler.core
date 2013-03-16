@@ -24,7 +24,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 19:00/12.11.12
+ * @since 19:00/12.11.12
  */
 public class OnlyStringCheckVisitor extends TextPsiVisitor
 {

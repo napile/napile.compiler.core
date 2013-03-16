@@ -44,7 +44,7 @@ import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
- * @date 13:32/29.09.12
+ * @since 13:32/29.09.12
  */
 public class VariableCodegen
 {

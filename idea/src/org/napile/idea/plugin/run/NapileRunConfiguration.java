@@ -44,7 +44,7 @@ import com.intellij.util.xmlb.XmlSerializer;
 
 /**
  * @author VISTALL
- * @date 20:30/22.09.12
+ * @since 20:30/22.09.12
  */
 public class NapileRunConfiguration extends ModuleBasedConfiguration<NapileRunConfigurationModule>
 {

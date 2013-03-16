@@ -39,7 +39,7 @@ import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
- * @date 11:04/12.10.12
+ * @since 11:04/12.10.12
  */
 public class ProtobufCodeInjection extends CodeInjection
 {

@@ -18,7 +18,7 @@ package org.napile.compiler.lang.psi;
 
 /**
  * @author VISTALL
- * @date 8:12/20.10.12
+ * @since 8:12/20.10.12
  */
 public interface NapileReferenceExpression extends NapileExpression
 {

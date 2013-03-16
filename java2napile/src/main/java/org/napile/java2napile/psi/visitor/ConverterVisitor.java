@@ -24,7 +24,7 @@ import com.intellij.util.Function;
 
 /**
  * @author VISTALL
- * @date 14:07/04.01.13
+ * @since 14:07/04.01.13
  */
 public class ConverterVisitor extends JavaElementVisitor
 {

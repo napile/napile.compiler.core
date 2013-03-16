@@ -21,7 +21,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 
 /**
  * @author VISTALL
- * @date 19:02/12.09.12
+ * @since 19:02/12.09.12
  */
 public interface SelfTypeConstructor extends TypeConstructor
 {

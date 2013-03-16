@@ -22,7 +22,7 @@ import org.napile.doc.compiler.info.AllInfo;
 
 /**
  * @author VISTALL
- * @date 13:34/01.02.13
+ * @since 13:34/01.02.13
  */
 public class StylesheetGenerator extends TemplateDocGenerator
 {

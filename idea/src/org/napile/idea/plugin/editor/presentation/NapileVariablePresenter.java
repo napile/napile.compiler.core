@@ -33,7 +33,7 @@ import com.intellij.openapi.util.Iconable;
 
 /**
  * @author VISTALL
- * @date 11:24/27.02.13
+ * @since 11:24/27.02.13
  */
 public class NapileVariablePresenter implements ItemPresentationProvider<NapileVariable>
 {

@@ -18,7 +18,7 @@ package org.napile.compiler.codegen.processors;
 
 /**
 * @author VISTALL
-* @date 13:30/29.09.12
+* @since 13:30/29.09.12
 */
 public class Triple<A, B, C>
 {

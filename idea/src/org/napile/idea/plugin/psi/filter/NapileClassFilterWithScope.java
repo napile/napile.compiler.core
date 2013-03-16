@@ -22,7 +22,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 
 /**
  * @author VISTALL
- * @date 21:48/22.09.12
+ * @since 21:48/22.09.12
  */
 public interface NapileClassFilterWithScope extends NapileFilter<NapileClassLike>
 {

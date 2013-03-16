@@ -20,7 +20,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 
 /**
  * @author VISTALL
- * @date 4:06/22.09.12
+ * @since 4:06/22.09.12
  */
 public interface DescriptorWithParent
 {

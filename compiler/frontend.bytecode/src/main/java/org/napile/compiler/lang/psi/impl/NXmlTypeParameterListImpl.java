@@ -31,7 +31,7 @@ import com.intellij.psi.stubs.IStubElementType;
 
 /**
  * @author VISTALL
- * @date 13:56/16.02.13
+ * @since 13:56/16.02.13
  */
 public class NXmlTypeParameterListImpl extends NXmlStubElementBase<NapilePsiTypeParameterListStub> implements NapileTypeParameterList
 {

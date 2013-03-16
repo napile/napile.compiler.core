@@ -34,7 +34,7 @@ import com.intellij.util.containers.ContainerUtil;
 
 /**
  * @author VISTALL
- * @date 21:42/22.09.12
+ * @since 21:42/22.09.12
  */
 public class NapileTreeClassChooserDialog extends AbstractTreeClassChooserDialog<NapileClassLike> implements TreeChooser<NapileClassLike>
 {

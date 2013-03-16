@@ -25,7 +25,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 
 /**
  * @author VISTALL
- * @date 14:54/01.02.13
+ * @since 14:54/01.02.13
  */
 public class PackageInfo extends DocableInfo<NapileFile>
 {

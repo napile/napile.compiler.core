@@ -20,7 +20,7 @@ import com.intellij.lang.Language;
 
 /**
  * @author VISTALL
- * @date 9:33/31.01.13
+ * @since 9:33/31.01.13
  */
 public class NapileDocLanguage extends Language
 {

@@ -26,7 +26,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 
 /**
  * @author VISTALL
- * @date 13:04/13.01.13
+ * @since 13:04/13.01.13
  */
 public class WrappedVar extends StackValue
 {

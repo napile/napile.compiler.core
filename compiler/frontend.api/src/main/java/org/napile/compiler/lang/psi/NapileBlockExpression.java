@@ -22,7 +22,7 @@ import com.intellij.openapi.util.TextRange;
 
 /**
  * @author VISTALL
- * @date 17:21/19.02.13
+ * @since 17:21/19.02.13
  */
 public interface NapileBlockExpression extends NapileStatementExpression, NapileExpression
 {

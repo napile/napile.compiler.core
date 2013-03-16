@@ -48,7 +48,7 @@ import com.intellij.util.ReflectionCache;
 
 /**
  * @author VISTALL
- * @date 19:36/09.10.12
+ * @since 19:36/09.10.12
  */
 public abstract class NXmlElementBase extends PsiElementBase implements PsiCompiledElement, NapileElement
 {

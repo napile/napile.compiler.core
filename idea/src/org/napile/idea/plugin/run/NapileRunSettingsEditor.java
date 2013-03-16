@@ -34,7 +34,7 @@ import com.intellij.openapi.roots.ui.configuration.projectRoot.ProjectSdksModel;
 
 /**
  * @author VISTALL
- * @date 21:22/22.09.12
+ * @since 21:22/22.09.12
  */
 public class NapileRunSettingsEditor extends SettingsEditor<NapileRunConfiguration>
 {

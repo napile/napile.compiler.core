@@ -28,7 +28,7 @@ import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
- * @date 21:55/26.02.13
+ * @since 21:55/26.02.13
  */
 public class LabelsHighlightingVisitor extends PostHighlightVisitor
 {

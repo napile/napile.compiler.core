@@ -31,7 +31,7 @@ import com.intellij.psi.stubs.StubOutputStream;
 
 /**
  * @author VISTALL
- * @date 12:17/16.02.13
+ * @since 12:17/16.02.13
  */
 public class NapileConstructorElementType extends NapileStubElementType<NapilePsiConstructorStub, NapileConstructor>
 {

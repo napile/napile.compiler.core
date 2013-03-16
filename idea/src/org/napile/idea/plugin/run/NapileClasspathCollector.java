@@ -27,7 +27,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 /**
  * @author VISTALL
- * @date 16:50/22.02.13
+ * @since 16:50/22.02.13
  */
 public class NapileClasspathCollector extends RootPolicy<Object>
 {

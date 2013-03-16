@@ -39,7 +39,7 @@ import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
- * @date 21:25/16.02.13
+ * @since 21:25/16.02.13
  */
 public class NXmlVariableAccessorImpl extends NXmlParentedElementBase implements NapileVariableAccessor
 {

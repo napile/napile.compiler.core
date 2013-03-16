@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 
 /**
  * @author VISTALL
- * @date 18:06/15.02.13
+ * @since 18:06/15.02.13
  */
 public abstract class ConvertTestCase extends TestCase
 {

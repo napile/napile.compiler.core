@@ -38,7 +38,7 @@ import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
 /**
  * @author VISTALL
- * @date 11:40/28.12.12
+ * @since 11:40/28.12.12
  */
 public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<JetType, Boolean>
 {

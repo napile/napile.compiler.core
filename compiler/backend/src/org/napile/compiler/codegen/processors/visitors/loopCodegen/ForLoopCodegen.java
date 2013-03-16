@@ -38,7 +38,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
 
 /**
  * @author VISTALL
- * @date 21:16/02.10.12
+ * @since 21:16/02.10.12
  */
 public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 {

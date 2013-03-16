@@ -26,7 +26,7 @@ import com.intellij.util.Function;
 
 /**
  * @author VISTALL
- * @date 15:31/04.01.13
+ * @since 15:31/04.01.13
  */
 public class TypeConverter
 {
