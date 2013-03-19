@@ -30,15 +30,15 @@ import com.intellij.psi.PsiFile;
 
 /**
  * @author VISTALL
- * @since 19:22/26.02.13
+ * @since 16:56/19.03.13
  */
-public class NapileHighlightPassFactory extends AbstractProjectComponent implements TextEditorHighlightingPassFactory
+public class NapileAnalyzeHighlightPassFactory extends AbstractProjectComponent implements TextEditorHighlightingPassFactory
 {
-	public NapileHighlightPassFactory(Project project, TextEditorHighlightingPassRegistrar registrar)
+	public NapileAnalyzeHighlightPassFactory(Project project, TextEditorHighlightingPassRegistrar registrar)
 	{
 		super(project);
 
-		registrar.registerTextEditorHighlightingPass(this, new int[] {Pass.UPDATE_ALL}, null, false, -1);
+		registrar.registerTextEditorHighlightingPass(this, new int[] {Pass.UPDATE_FOLDING}, null, false, -1);
 	}
 
 	@Nullable
@@ -48,6 +48,6 @@ public class NapileHighlightPassFactory extends AbstractProjectComponent impleme
 		if(!(file instanceof NapileFile))
 			return null;
 
-		return new NapileHighlightPass((NapileFile) file, editor.getDocument());
+		return new NapileAnalyzeHighlightPass((NapileFile) file, editor.getDocument());
 	}
 }

@@ -17,8 +17,11 @@
 package org.napile.idea.plugin.codeInsight.problems;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.idea.plugin.util.FileRootUtil;
+import org.napile.compiler.NapileFileType;
 import com.intellij.codeInsight.daemon.ProblemHighlightFilter;
+import com.intellij.ide.projectView.impl.ProjectRootsUtil;
+import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 
 /**
@@ -30,12 +33,24 @@ public class NapileProblemHighlightFilter extends ProblemHighlightFilter
 	@Override
 	public boolean shouldHighlight(@NotNull PsiFile psiFile)
 	{
-		return !FileRootUtil.isNapileSourceFile(psiFile.getProject(), psiFile.getVirtualFile());
+		return psiFile.getFileType() != NapileFileType.INSTANCE || !ProjectRootsUtil.isOutsideSourceRoot(psiFile);
 	}
 
 	@Override
 	public boolean shouldProcessInBatch(@NotNull PsiFile psiFile)
 	{
-		return shouldHighlight(psiFile);
+		final boolean shouldHighlight = shouldHighlightFile(psiFile);
+		if(shouldHighlight)
+		{
+			if(psiFile.getFileType() == NapileFileType.INSTANCE)
+			{
+				final VirtualFile virtualFile = psiFile.getVirtualFile();
+				if(virtualFile != null && ProjectRootManager.getInstance(psiFile.getProject()).getFileIndex().isInLibrarySource(virtualFile))
+				{
+					return false;
+				}
+			}
+		}
+		return shouldHighlight;
 	}
 }

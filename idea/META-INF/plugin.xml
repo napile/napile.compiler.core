@@ -11,6 +11,9 @@
 		<component>
 			<implementation-class>org.napile.idea.plugin.editor.highlight.NapileHighlightPassFactory</implementation-class>
 		</component>
+		<component>
+			<implementation-class>org.napile.idea.plugin.editor.highlight.NapileAnalyzeHighlightPassFactory</implementation-class>
+		</component>
 	</project-components>
 	<application-components>
 		<component>

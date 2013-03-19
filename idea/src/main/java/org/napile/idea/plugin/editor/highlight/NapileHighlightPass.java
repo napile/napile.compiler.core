@@ -81,7 +81,7 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 	@Override
 	public void doCollectInformation(@NotNull ProgressIndicator progress)
 	{
-		final AnalyzeExhaust analyze = ModuleAnalyzerUtil.analyze(file);
+		final AnalyzeExhaust analyze = ModuleAnalyzerUtil.lastAnalyze(file);
 		final BindingContext bindingContext = analyze.getBindingContext();
 
 		infos = convertDiagnostic(bindingContext);
