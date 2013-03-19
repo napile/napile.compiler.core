@@ -45,7 +45,12 @@ public enum Modality
 		{
 			NapileClass napileClass = PsiTreeUtil.getParentOfType(modifierListOwner, NapileClass.class);
 			if(napileClass != null &&  napileClass.hasModifier(NapileTokens.ABSTRACT_KEYWORD) && ((NapileDeclarationWithBody) modifierListOwner).getBodyExpression() == null)
-				return ABSTRACT;
+			{
+				if(!modifierListOwner.hasModifier(NapileTokens.NATIVE_KEYWORD))
+				{
+					return ABSTRACT;
+				}
+			}
 		}
 		return OPEN;
 	}
