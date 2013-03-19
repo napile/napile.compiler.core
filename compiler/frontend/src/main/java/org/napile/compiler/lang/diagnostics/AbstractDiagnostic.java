@@ -85,7 +85,7 @@ public abstract class AbstractDiagnostic<E extends PsiElement> implements Parame
 			return false;
 		if(psiElement.getNode().findChildByType(NapileNodes.IDE_TEMPLATE_EXPRESSION) != null)
 			return false;
-		return true;
+		return getPsiElement().isValid();
 	}
 
 	private static boolean hasSyntaxErrors(@NotNull PsiElement psiElement)

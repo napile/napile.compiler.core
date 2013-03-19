@@ -6,8 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NapileClassBody;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
+import org.napile.compiler.lang.psi.NapileDeclaration;
 import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.DaemonCodeAnalyzerSettings;
 import com.intellij.codeInsight.daemon.LineMarkerInfo;
@@ -39,13 +38,18 @@ public class MethodSeparatorLineMarkerProvider implements LineMarkerProvider
 	@Override
 	public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element)
 	{
-		if(daemonCodeAnalyzerSettings.SHOW_METHOD_SEPARATORS && (element instanceof NapileNamedMethodOrMacro || element instanceof NapileConstructor))
+		if(daemonCodeAnalyzerSettings.SHOW_METHOD_SEPARATORS && (element instanceof NapileDeclaration))
 		{
 			if(element.getNode().getTreeParent() == null)
 				return null;
 
-			NapileClassBody classBody = (NapileClassBody) element.getParent();
-			if(classBody.getDeclarations()[0] == element)
+			final PsiElement parent = element.getParent();
+			if(!(parent instanceof NapileClassBody))
+			{
+				return null;
+			}
+
+			if(((NapileClassBody) parent).getDeclarations()[0] == element)
 				return null;
 
 			LineMarkerInfo info = new LineMarkerInfo<PsiElement>(element, element.getTextRange(), null, Pass.UPDATE_ALL, FunctionUtil.<Object, String>nullConstant(), null, GutterIconRenderer.Alignment.RIGHT);

@@ -424,7 +424,7 @@ public class CheckerTestUtil
 		@Override
 		public boolean isValid()
 		{
-			return true;
+			return errorElement.isValid();
 		}
 	}
 

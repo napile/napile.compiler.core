@@ -236,7 +236,7 @@ public final class AnalyzerWithCompilerReport
 		@Override
 		public boolean isValid()
 		{
-			return true;
+			return getPsiElement().isValid();
 		}
 	}
 }
