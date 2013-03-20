@@ -20,6 +20,8 @@ import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.doc.lang.psi.NapileDoc;
 import org.napile.doc.lang.psi.NapileDocLine;
 import org.pegdown.PegDownProcessor;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.Function;
 
 /**
  * @author VISTALL
@@ -41,11 +43,14 @@ public class NapileDocUtil
 
 	public static String render(NapileDoc doc)
 	{
-		StringBuilder builder = new StringBuilder();
-		for(NapileDocLine line : doc.getLines())
+		String text = StringUtil.join(doc.getLines(), new Function<NapileDocLine, String>()
 		{
-			builder.append(line.getText()).append("\n\r");
-		}
-		return PROCESSOR.markdownToHtml(builder.toString());
+			@Override
+			public String fun(NapileDocLine napileDocLine)
+			{
+				return napileDocLine.getText();
+			}
+		}, "\n\n");
+		return PROCESSOR.markdownToHtml(text);
 	}
 }

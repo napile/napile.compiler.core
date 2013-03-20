@@ -97,7 +97,8 @@ public class NapileDocParser implements PsiParser, NapileDocTokens, NapileDocNod
 
 			if(builder.getTokenType() == NapileDocTokens.CODE_MARKER)
 			{
-				PsiBuilder.Marker codeMarker = builder.mark();
+				builder.remapCurrentToken(TEXT_PART); //FIXME [VISTALL] remove this
+				/*PsiBuilder.Marker codeMarker = builder.mark();
 
 				builder.advanceLexer();
 
@@ -121,7 +122,7 @@ public class NapileDocParser implements PsiParser, NapileDocTokens, NapileDocNod
 				{
 					builder.advanceLexer();
 					codeMarker.done(NapileDocNodes.CODE_BLOCK);
-				}
+				} */
 			}
 
 			builder.advanceLexer();
