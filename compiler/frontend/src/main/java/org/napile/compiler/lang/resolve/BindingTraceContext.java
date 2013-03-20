@@ -20,13 +20,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.util.slicedmap.MutableSlicedMap;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.SlicedMapImpl;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.collect.Lists;
+import com.intellij.psi.PsiCompiledElement;
 
 /**
  * @author abreslav
@@ -70,7 +70,7 @@ public class BindingTraceContext implements BindingTrace
 	@Override
 	public void report(@NotNull Diagnostic diagnostic)
 	{
-		if(diagnostic.getPsiFile().getVirtualFile().getFileType() == NXmlFileType.INSTANCE)
+		if(diagnostic.getPsiElement() instanceof PsiCompiledElement)
 			return;
 
 		diagnostics.add(diagnostic);
