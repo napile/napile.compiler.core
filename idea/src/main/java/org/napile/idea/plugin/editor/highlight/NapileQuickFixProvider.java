@@ -17,8 +17,11 @@
 package org.napile.idea.plugin.editor.highlight;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import com.intellij.codeInsight.intention.IntentionAction;
+import com.intellij.openapi.editor.Editor;
 
 /**
  * @author VISTALL
@@ -26,5 +29,6 @@ import com.intellij.codeInsight.daemon.impl.HighlightInfo;
  */
 public interface NapileQuickFixProvider
 {
-	void registerQuickFix(@NotNull Diagnostic diagnostic, @NotNull HighlightInfo highlightInfo);
+	@Nullable
+	IntentionAction createQuickFix(@NotNull Diagnostic diagnostic, @NotNull Editor editor, @NotNull HighlightInfo highlightInfo);
 }

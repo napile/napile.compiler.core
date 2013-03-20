@@ -16,15 +16,15 @@
 
 package org.napile.idea.plugin.editor.highlight.postHighlight;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.diagnostics.PositioningStrategies;
 import org.napile.compiler.lang.psi.NapileInjectionExpression;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.idea.plugin.IdeaInjectionSupport;
-import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
+import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
@@ -37,7 +37,7 @@ import com.intellij.psi.util.PsiTreeUtil;
  */
 public class InjectionHighlightingVisitor extends PostHighlightVisitor
 {
-	public InjectionHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
+	public InjectionHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

@@ -22,15 +22,18 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
+import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.actions.NapileAddImportAction;
 import org.napile.idea.plugin.caches.NapileClassResolver;
+import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.codeInsight.daemon.impl.ShowAutoImportPass;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.codeInsight.intention.HighPriorityAction;
@@ -64,7 +67,7 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 	private static List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> computeSuggestions(@NotNull NapileSimpleNameExpression element)
 	{
 		final PsiFile file = element.getContainingFile();
-		if(!(file instanceof NapileFile))
+		if(file == null)
 		{
 			return Collections.emptyList();
 		}
@@ -118,6 +121,33 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 
 			HintManager.getInstance().showQuestionHint(editor, hintText, element.getTextOffset(), element.getTextRange().getEndOffset(), createAction(project, editor));
 		}
+
+		return needShowHint(editor);
+	}
+
+	public boolean needShowHint(@NotNull final Editor editor)
+	{
+		final AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(element.getContainingFile());
+
+		final DeclarationDescriptor declarationDescriptor = analyzeExhaust.getBindingContext().get(BindingContext.REFERENCE_TARGET, element);
+		if(declarationDescriptor != null)
+		{
+			return false;
+		}
+
+		/*if(suggestions.size() == 1 && CodeInsightSettings.getInstance().ADD_UNAMBIGIOUS_IMPORTS_ON_THE_FLY)
+		{
+			ApplicationManager.getApplication().invokeLater(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					createAction(element.getProject(), editor).execute();
+				}
+			});
+
+			return false;
+		}*/
 
 		return true;
 	}

@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.editor.highlight.postHighlight;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.napile.compiler.lang.psi.NapileBreakExpression;
 import org.napile.compiler.lang.psi.NapileLabelExpression;
@@ -32,7 +32,7 @@ import com.intellij.psi.PsiElement;
  */
 public class LabelsHighlightingVisitor extends PostHighlightVisitor
 {
-	public LabelsHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
+	public LabelsHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

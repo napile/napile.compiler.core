@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -82,7 +82,7 @@ public abstract class IdeaInjectionSupport<T extends CodeInjection>
 	}
 
 	@Nullable
-	public PsiElementVisitor createVisitorForHighlight(@NotNull List<HighlightInfo> holder)
+	public PsiElementVisitor createVisitorForHighlight(@NotNull Collection<HighlightInfo> holder)
 	{
 		return null;
 	}

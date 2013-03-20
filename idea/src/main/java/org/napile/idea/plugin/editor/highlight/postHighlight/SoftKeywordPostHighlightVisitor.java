@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.editor.highlight.postHighlight;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileAnonymMethod;
@@ -37,7 +37,7 @@ import com.intellij.psi.tree.IElementType;
  */
 public class SoftKeywordPostHighlightVisitor extends PostHighlightVisitor
 {
-	public SoftKeywordPostHighlightVisitor(BindingContext context, List<HighlightInfo> holder)
+	public SoftKeywordPostHighlightVisitor(BindingContext context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

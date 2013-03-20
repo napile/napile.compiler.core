@@ -17,13 +17,12 @@
 package org.napile.idea.plugin.editor.highlight;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.diagnostics.AbstractDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
@@ -45,9 +44,11 @@ import com.intellij.codeHighlighting.TextEditorHighlightingPass;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.codeInsight.daemon.impl.UpdateHighlightersUtil;
+import com.intellij.codeInsight.daemon.impl.quickfix.QuickFixAction;
+import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.problems.ProblemImpl;
 import com.intellij.lang.annotation.HighlightSeverity;
-import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.util.TextRange;
@@ -57,6 +58,7 @@ import com.intellij.problems.WolfTheProblemSolver;
 import com.intellij.psi.MultiRangeReference;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
+import com.intellij.util.containers.MultiMap;
 
 /**
  * @author VISTALL
@@ -69,13 +71,17 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 	public static final Set<? extends AbstractDiagnosticFactory> REDECLARATION = ImmutableSet.<AbstractDiagnosticFactory>builder().add(Errors.REDECLARATION, Errors.NAME_SHADOWING).build();
 
 	private final NapileFile file;
-	private Map<PsiFile, List<HighlightInfo>> infos;
+	private final Editor editor;
 
-	protected NapileHighlightPass(@NotNull NapileFile file, @Nullable Document document)
+	private MultiMap<PsiFile, HighlightInfo> infos;
+	private MultiMap<HighlightInfo, IntentionAction> quickFixes;
+
+	protected NapileHighlightPass(@NotNull NapileFile file, @NotNull Editor editor)
 	{
-		super(file.getProject(), document);
+		super(file.getProject(), editor.getDocument());
 
 		this.file = file;
+		this.editor = editor;
 	}
 
 	@Override
@@ -84,11 +90,12 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 		final AnalyzeExhaust analyze = ModuleAnalyzerUtil.lastAnalyze(file);
 		final BindingContext bindingContext = analyze.getBindingContext();
 
-		infos = convertDiagnostic(bindingContext);
+		quickFixes = new MultiMap<HighlightInfo, IntentionAction>();
+		infos = new MultiMap<PsiFile, HighlightInfo>();
 
-		List<HighlightInfo> selfInfos = infos.get(file);
-		if(selfInfos == null)
-			infos.put(file, selfInfos = new ArrayList<HighlightInfo>());
+		convertDiagnostic(bindingContext);
+
+		Collection<HighlightInfo> selfInfos = infos.getModifiable(file);
 
 		for(PostHighlightVisitor visitor : new PostHighlightVisitor[]
 		{
@@ -104,18 +111,13 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 		}
 	}
 
-	private static Map<PsiFile, List<HighlightInfo>> convertDiagnostic(BindingContext bindingContext)
+	private void convertDiagnostic(BindingContext bindingContext)
 	{
-		Map<PsiFile, List<HighlightInfo>> data = new HashMap<PsiFile, List<HighlightInfo>>();
+		MultiMap<PsiFile, HighlightInfo> data = new MultiMap<PsiFile, HighlightInfo>();
 		for(Diagnostic diagnostic : bindingContext.getDiagnostics())
 		{
 			if(!diagnostic.isValid())
 				continue;
-
-			List<HighlightInfo> infos = data.get(diagnostic.getPsiFile());
-			if(infos == null)
-				data.put(diagnostic.getPsiFile(), infos = new ArrayList<HighlightInfo>());
-
 
 			final List<TextRange> textRanges = diagnostic.getTextRanges();
 
@@ -134,12 +136,7 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 							builder.textAttributes(NapileHighlightingColors.VALID_STRING_ESCAPE);
 						}
 
-						final HighlightInfo e = builder.create();
-						if(e != null)
-						{
-							NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
-							infos.add(e);
-						}
+						putHighlightAndActions(builder, diagnostic);
 					}
 					break;
 				case ERROR:
@@ -158,12 +155,7 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 								builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
 								builder.textAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
 
-								final HighlightInfo e = builder.create();
-								if(e != null)
-								{
-									NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
-									infos.add(e);
-								}
+								putHighlightAndActions(builder, diagnostic);
 							}
 						}
 						else
@@ -176,12 +168,7 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 								builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
 								builder.textAttributes(CodeInsightColors.WRONG_REFERENCES_ATTRIBUTES);
 
-								final HighlightInfo e = builder.create();
-								if(e != null)
-								{
-									NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
-									infos.add(e);
-								}
+								putHighlightAndActions(builder, diagnostic);
 							}
 						}
 
@@ -206,12 +193,7 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 							builder.textAttributes(NapileHighlightingColors.INVALID_STRING_ESCAPE);
 						}
 
-						final HighlightInfo e = builder.create();
-						if(e != null)
-						{
-							NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
-							infos.add(e);
-						}
+						putHighlightAndActions(builder, diagnostic);
 					}
 					break;
 				case WARNING:
@@ -222,52 +204,68 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 						builder.description(JetPsiChecker.getDefaultMessage(diagnostic));
 						builder.escapedToolTip(JetPsiChecker.getTooltipMessage(diagnostic));
 
-						final HighlightInfo e = builder.create();
-						if(e != null)
-						{
-							NapileQuickFixProviderEP.callRegisterFor(diagnostic, e);
-							infos.add(e);
-						}
+						putHighlightAndActions(builder, diagnostic);
 					}
 					break;
 			}
 		}
+	}
 
-		return data;
+	private void putHighlightAndActions(HighlightInfo.Builder builder, Diagnostic diagnostic)
+	{
+		final HighlightInfo e = builder.create();
+		if(e != null)
+		{
+			infos.putValue(diagnostic.getPsiFile(), e);
+
+			NapileQuickFixProviderEP.collectionQuickActions(editor, diagnostic, e, quickFixes);
+		}
 	}
 
 	@Override
 	public void doApplyInformationToEditor()
 	{
-		if(infos == null)
-			return;
-
-		for(Map.Entry<PsiFile, List<HighlightInfo>> entry : infos.entrySet())
+		if(infos != null)
 		{
-			final PsiFile key = entry.getKey();
-			final List<HighlightInfo> value = entry.getValue();
-
-			if(key == file)
+			for(Map.Entry<PsiFile, Collection<HighlightInfo>> entry : infos.entrySet())
 			{
-				assert myDocument != null;
+				final PsiFile key = entry.getKey();
+				final Collection<HighlightInfo> value = entry.getValue();
 
-				UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, 0, file.getTextLength(), value, getColorsScheme(), getId());
-			}
-			else
-			{
-				final VirtualFile virtualFile = key.getVirtualFile();
-
-				assert virtualFile != null;
-
-				List<Problem> problems = new ArrayList<Problem>(value.size());
-				for(HighlightInfo highlightInfo : value)
+				if(key == file)
 				{
-					if(highlightInfo.getSeverity() == HighlightSeverity.ERROR)
-					{
-						problems.add(new ProblemImpl(virtualFile, highlightInfo, false));
-					}
+					assert myDocument != null;
+
+					UpdateHighlightersUtil.setHighlightersToEditor(myProject, myDocument, 0, file.getTextLength(), value, getColorsScheme(), getId());
 				}
-				WolfTheProblemSolver.getInstance(myProject).weHaveGotProblems(virtualFile, problems);
+				else
+				{
+					final VirtualFile virtualFile = key.getVirtualFile();
+
+					assert virtualFile != null;
+
+					List<Problem> problems = new ArrayList<Problem>(value.size());
+					for(HighlightInfo highlightInfo : value)
+					{
+						if(highlightInfo.getSeverity() == HighlightSeverity.ERROR)
+						{
+							problems.add(new ProblemImpl(virtualFile, highlightInfo, false));
+						}
+					}
+					WolfTheProblemSolver.getInstance(myProject).weHaveGotProblems(virtualFile, problems);
+				}
+			}
+		}
+
+		if(quickFixes != null)
+		{
+
+			for(Map.Entry<HighlightInfo, Collection<IntentionAction>> entry : quickFixes.entrySet())
+			{
+				for(IntentionAction intentionAction : entry.getValue())
+				{
+					QuickFixAction.registerQuickFixAction(entry.getKey(), intentionAction);
+				}
 			}
 		}
 	}

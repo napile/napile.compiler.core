@@ -22,7 +22,9 @@ import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.idea.plugin.editor.highlight.NapileQuickFixProvider;
 import org.napile.idea.plugin.quickfix.ImportClassAndFunFix;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
-import com.intellij.codeInsight.daemon.impl.quickfix.QuickFixAction;
+import com.intellij.codeInsight.intention.IntentionAction;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
@@ -31,14 +33,19 @@ import com.intellij.codeInsight.daemon.impl.quickfix.QuickFixAction;
 public class ImportClassQuickFixProvider implements NapileQuickFixProvider
 {
 	@Override
-	public void registerQuickFix(@NotNull Diagnostic diagnostic, @NotNull HighlightInfo highlightInfo)
+	public IntentionAction createQuickFix(@NotNull Diagnostic diagnostic, @NotNull Editor editor, @NotNull HighlightInfo highlightInfo)
 	{
 		// There could be different psi elements (i.e. NapileArrayAccessExpressionImpl), but we can fix only NapileSimpleNameExpressionImpl case
-		if(diagnostic.getPsiElement() instanceof NapileSimpleNameExpression)
+		final PsiElement element = diagnostic.getPsiElement();
+		if(element instanceof NapileSimpleNameExpression)
 		{
-			NapileSimpleNameExpression psiElement = (NapileSimpleNameExpression) diagnostic.getPsiElement();
-
-			QuickFixAction.registerQuickFixAction(highlightInfo, new ImportClassAndFunFix(psiElement));
+			final ImportClassAndFunFix importClassAndFunFix = new ImportClassAndFunFix((NapileSimpleNameExpression) element);
+			if(importClassAndFunFix.needShowHint(editor))
+			{
+				return importClassAndFunFix;
+			}
 		}
+
+		return null;
 	}
 }

@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.editor.highlight.postHighlight;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,9 +39,9 @@ import com.intellij.psi.PsiElement;
 public class PostHighlightVisitor extends NapileVisitorVoid
 {
 	protected final BindingContext bindingContext;
-	protected final List<HighlightInfo> holder;
+	protected final Collection<HighlightInfo> holder;
 
-	public PostHighlightVisitor(BindingContext context, List<HighlightInfo> holder)
+	public PostHighlightVisitor(BindingContext context, Collection<HighlightInfo> holder)
 	{
 		this.bindingContext = context;
 		this.holder = holder;

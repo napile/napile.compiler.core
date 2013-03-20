@@ -16,9 +16,14 @@
 
 package org.napile.idea.plugin.editor.highlight;
 
+import java.util.Collection;
+
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
+import com.intellij.codeInsight.intention.IntentionAction;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.extensions.ExtensionPointName;
+import com.intellij.util.containers.MultiMap;
 import com.intellij.util.xmlb.annotations.Attribute;
 
 /**
@@ -35,36 +40,54 @@ public class NapileQuickFixProviderEP
 	@Attribute("implementationClass")
 	public String implementationClass;
 
-	private NapileQuickFixProvider implementationInstance;
+	private static MultiMap<String, NapileQuickFixProvider> QUICK_FIX_PROVIDER_CACHE;
 
-	public NapileQuickFixProvider getImplementationInstance()
+	public NapileQuickFixProvider createInstance()
 	{
-		if(implementationInstance == null)
-		{
-			try
-			{
-				final Class<?> aClass = Class.forName(implementationClass);
-				implementationInstance = (NapileQuickFixProvider) aClass.newInstance();
-			}
-			catch(Exception e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
 
-		return implementationInstance;
+		try
+		{
+			final Class<?> aClass = Class.forName(implementationClass);
+			return (NapileQuickFixProvider) aClass.newInstance();
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
-	public static void callRegisterFor(Diagnostic diagnostic, HighlightInfo highlightInfo)
+	public static void collectionQuickActions(Editor editor,Diagnostic diagnostic, HighlightInfo highlightInfo, MultiMap<HighlightInfo, IntentionAction> map)
 	{
+		if(QUICK_FIX_PROVIDER_CACHE == null)
+		{
+			QUICK_FIX_PROVIDER_CACHE = initCache();
+		}
+
+		final Collection<NapileQuickFixProvider> providers = QUICK_FIX_PROVIDER_CACHE.get(diagnostic.getFactory().getName());
+		if(providers.isEmpty())
+		{
+			return;
+		}
+
+		for(NapileQuickFixProvider ep : providers)
+		{
+			final IntentionAction quickFix = ep.createQuickFix(diagnostic, editor, highlightInfo);
+			if(quickFix != null)
+			{
+				map.putValue(highlightInfo, quickFix);
+			}
+		}
+	}
+
+	private static MultiMap<String, NapileQuickFixProvider> initCache()
+	{
+		MultiMap<String, NapileQuickFixProvider> map = new MultiMap<String, NapileQuickFixProvider>();
+
 		for(NapileQuickFixProviderEP ep : EP_NAME.getExtensions())
 		{
-			if(!ep.diagnosticName.equals(diagnostic.getFactory().getName()))
-			{
-				continue;
-			}
-
-			ep.getImplementationInstance().registerQuickFix(diagnostic, highlightInfo);
+			map.putValue(ep.diagnosticName, ep.createInstance());
 		}
+
+		return map;
 	}
 }

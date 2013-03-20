@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.editor.highlight.postHighlight;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileAnnotationPackage;
@@ -43,7 +43,7 @@ import com.intellij.psi.PsiReference;
  */
 public class TypeKindHighlightingVisitor extends PostHighlightVisitor
 {
-	public TypeKindHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
+	public TypeKindHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

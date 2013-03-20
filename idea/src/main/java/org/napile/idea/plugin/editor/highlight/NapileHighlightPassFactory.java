@@ -48,6 +48,6 @@ public class NapileHighlightPassFactory extends AbstractProjectComponent impleme
 		if(!(file instanceof NapileFile))
 			return null;
 
-		return new NapileHighlightPass((NapileFile) file, editor.getDocument());
+		return new NapileHighlightPass((NapileFile) file, editor);
 	}
 }

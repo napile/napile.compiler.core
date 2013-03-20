@@ -22,7 +22,7 @@ import static org.napile.compiler.lang.resolve.BindingContext.CAPTURED_IN_CLOSUR
 import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
 import static org.napile.compiler.lang.resolve.BindingContext.VARIABLE;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -46,7 +46,7 @@ import com.intellij.psi.PsiElement;
  */
 public class VariablesHighlightingVisitor extends PostHighlightVisitor
 {
-	public VariablesHighlightingVisitor(BindingContext context, List<HighlightInfo> holder)
+	public VariablesHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

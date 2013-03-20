@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.injection.text;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public class TextIdeaInjectionSupport extends IdeaInjectionSupport<TextCodeInjec
 
 	@Nullable
 	@Override
-	public PsiElementVisitor createVisitorForHighlight(@NotNull final List<HighlightInfo> holder)
+	public PsiElementVisitor createVisitorForHighlight(@NotNull final Collection<HighlightInfo> holder)
 	{
 		return new TextPsiVisitor()
 		{
