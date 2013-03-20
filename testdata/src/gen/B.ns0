@@ -1,6 +1,0 @@
-package gen
-
-class B
-{
-	this()
-}
