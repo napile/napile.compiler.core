@@ -128,7 +128,7 @@ public class VariableCodegen
 		{
 			final NapileExpression bodyExpression = variableAccessor.getBodyExpression();
 			if(bodyExpression == null)
-				getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)), variableDescriptor, bindingTrace, variable);
+				getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor)), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)), variableDescriptor, bindingTrace, variable);
 			else
 			{
 				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor);
