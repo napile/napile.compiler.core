@@ -71,7 +71,13 @@ public class VariableCodegen
 			final NapileExpression bodyExpression = variableAccessor.getBodyExpression();
 
 			if(bodyExpression == null)
-				getSetterCode(bindingTrace, classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor)), accessorFq, AsmConstants.NULL_TYPE), variableDescriptor);
+			{
+				final VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor);
+				final MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, AsmConstants.NULL_TYPE);
+				AnnotationCodegen.gen(bindingTrace, descriptor, methodNode, classNode);
+
+				getSetterCode(bindingTrace, classNode, methodNode, variableDescriptor);
+			}
 			else
 			{
 				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor);
@@ -80,6 +86,8 @@ public class VariableCodegen
 				codegen.returnExpression(bodyExpression, false);
 
 				MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, AsmConstants.NULL_TYPE);
+				AnnotationCodegen.gen(bindingTrace, descriptor, methodNode, classNode);
+
 				methodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)));
 				methodNode.code = new CodeInfo(codegen.instructs);
 
@@ -128,7 +136,13 @@ public class VariableCodegen
 		{
 			final NapileExpression bodyExpression = variableAccessor.getBodyExpression();
 			if(bodyExpression == null)
-				getGetterCode(classNode, new MethodNode(ModifierCodegen.gen(bindingTrace.safeGet(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor)), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)), variableDescriptor, bindingTrace, variable);
+			{
+				final VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor);
+				final MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode));
+
+				AnnotationCodegen.gen(bindingTrace, descriptor, methodNode, classNode);
+				getGetterCode(classNode, methodNode, variableDescriptor, bindingTrace, variable);
+			}
 			else
 			{
 				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor);
@@ -137,6 +151,7 @@ public class VariableCodegen
 				codegen.returnExpression(bodyExpression, false);
 
 				MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, codegen.toAsmType(descriptor.getVariable().getType()));
+				AnnotationCodegen.gen(bindingTrace, descriptor, methodNode, classNode);
 				methodNode.code = new CodeInfo(codegen.instructs);
 
 				classNode.addMember(methodNode);
