@@ -128,6 +128,20 @@ public class ClassCodegen extends NapileVisitorVoid
 
 			classNode.addMember(methodNode);
 		}
+
+		if(classDescriptor.isTraited())
+		{
+			adapter = constructorsAdapters.get(Boolean.FALSE);
+			MethodNode methodNode = MethodNode.constructor(Modifier.HERITABLE);
+
+			adapter.visitLocalVariable("this");
+
+			adapter.localGet(0);
+			adapter.returnValues(1);
+
+			methodNode.code = new CodeInfo(adapter);
+			classNode.addMember(methodNode);
+		}
 		return classNode;
 	}
 

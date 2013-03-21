@@ -30,6 +30,7 @@ import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ThisTypeNode;
 import org.napile.compiler.codegen.processors.codegen.CallTransformer;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -42,10 +43,10 @@ import org.napile.compiler.lang.resolve.BindingTrace;
  */
 public class AsmNodeUtil
 {
-	//public static MethodRef constructorRef(@NotNull FqName fqName)
-	//{
-	//	return new MethodRef(fqName.child(Name.identifier("this")), Collections.<TypeNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new ClassTypeNode(fqName)));
-	//}
+	public static MethodRef constructorRef(@NotNull FqName fqName)
+	{
+		return new MethodRef(fqName.child(Name.identifier("this")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), new TypeNode(false, new ThisTypeNode()));
+	}
 
 	public static MethodParameterNode parameterNode(String name, TypeNode typeNode)
 	{
