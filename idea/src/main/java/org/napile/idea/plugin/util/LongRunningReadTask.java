@@ -150,7 +150,7 @@ public abstract class LongRunningReadTask<RequestInfo, ResultData>
 						}
 						catch(ProcessCanceledException e)
 						{
-							//hideResultOnInvalidLocation();
+//							hideResultOnInvalidLocation();
 						}
 					}
 				});

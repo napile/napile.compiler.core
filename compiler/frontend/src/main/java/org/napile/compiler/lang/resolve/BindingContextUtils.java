@@ -193,8 +193,9 @@ public class BindingContextUtils
 			if(overriddenDescriptors.size() != 1)
 			{
 				// TODO evil code
-				throw new IllegalStateException("cannot find declaration: fake descriptor" +
-						" has more then one overridden descriptor: " + callable);
+				//throw new IllegalStateException("cannot find declaration: fake descriptor" +
+				//		" has more then one overridden descriptor: " + callable);
+				return null;
 			}
 
 			return callableDescriptorToDeclaration(context, overriddenDescriptors.iterator().next());

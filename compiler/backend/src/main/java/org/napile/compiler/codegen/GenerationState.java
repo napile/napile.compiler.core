@@ -37,6 +37,7 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
+import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.project.Project;
 
 public class GenerationState
@@ -107,6 +108,10 @@ public class GenerationState
 				ClassNode classNode = classCodegen.gen(napileClass, ExpressionCodegenContext.empty());
 				classNodes.put(classNode.name, classNode);
 			}
+		}
+		catch(ProcessCanceledException pce)
+		{
+			throw pce;
 		}
 		catch(Exception e)
 		{
