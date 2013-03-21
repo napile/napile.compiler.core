@@ -24,6 +24,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.lang.descriptors.ClassDescriptor;
+import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
@@ -31,8 +33,8 @@ import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
@@ -172,14 +174,36 @@ public class BodyResolver
 		{
 			NapileTypeReference typeReference = call.getTypeReference();
 			if(typeReference == null)
+			{
 				continue;
+			}
+
+			JetType type = trace.get(BindingContext.TYPE, typeReference);
+			if(type == null)
+			{
+				continue;
+			}
 
 			if(!canSuperTraitedClass)
+			{
 				callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+			}
 			else
 			{
-				NapileValueArgumentList valueArgumentList = call.getValueArgumentList();
-				//TODO [VISTALL]
+				final ClassifierDescriptor typeOwner = type.getConstructor().getDeclarationDescriptor();
+				final boolean isTypeOwnerIsTraited = typeOwner instanceof ClassDescriptor && ((ClassDescriptor) typeOwner).isTraited();
+
+				if(isTypeOwnerIsTraited)
+				{
+					NapileValueArgumentList valueArgumentList = call.getValueArgumentList();
+					if(valueArgumentList != null)
+					{
+						trace.report(Errors.FROM_TRAITED_CLASS_CANT_CALL_CONSTRUCTOR.on(typeReference));
+					}
+					continue;
+				}
+
+				callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 			}
 		}
 	}

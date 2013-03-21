@@ -210,6 +210,7 @@ public interface Errors
 	DiagnosticFactory0<NapileTypeReference> SUPERTYPE_APPEARS_TWICE = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory0<NapileTypeReference> FINAL_SUPERTYPE = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory0<NapileTypeReference> TRAITED_CLASS_CANT_EXTEND_CLASS_WITH_CONSTRUCTORS = DiagnosticFactory0.create(Severity.ERROR);
+	DiagnosticFactory0<NapileTypeReference> FROM_TRAITED_CLASS_CANT_CALL_CONSTRUCTOR = DiagnosticFactory0.create(Severity.ERROR);
 
 	DiagnosticFactory1<NapileExpression, String> ILLEGAL_SELECTOR = DiagnosticFactory1.create(Severity.ERROR);
 
