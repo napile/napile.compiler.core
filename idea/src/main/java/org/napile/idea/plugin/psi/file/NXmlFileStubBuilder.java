@@ -17,7 +17,6 @@
 package org.napile.idea.plugin.psi.file;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.io.xml.in.AsmXmlFileReader;
@@ -26,6 +25,8 @@ import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileFileElementType;
 import org.napile.compiler.util.NodeToStubBuilder;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.stubs.BinaryFileStubBuilder;
@@ -38,6 +39,8 @@ import com.intellij.util.io.StringRef;
  */
 public class NXmlFileStubBuilder implements BinaryFileStubBuilder
 {
+	private static final Logger LOGGER = Logger.getInstance(NXmlFileStubBuilder.class);
+
 	private final NodeToStubBuilder builder = new NodeToStubBuilder();
 
 	@Override
@@ -52,21 +55,39 @@ public class NXmlFileStubBuilder implements BinaryFileStubBuilder
 	{
 		AsmXmlFileReader reader = new AsmXmlFileReader();
 
+		ClassNode classNode;
 		try
 		{
-			ClassNode classNode = reader.read(new ByteArrayInputStream(content));
+			classNode = reader.read(new ByteArrayInputStream(content));
+		}
+		catch(Throwable e)
+		{
+			// show error only in internal mode
+			if(ApplicationManager.getApplication().isInternal())
+			{
+				LOGGER.error(e);
+			}
+			classNode = null;
+		}
 
-			NapilePsiFileStub psiFileStub = new NapilePsiFileStub(null, StringRef.fromString(classNode.name.parent().getFqName()), true);
+		if(classNode == null)
+		{
+			return null;
+		}
+
+		NapilePsiFileStub psiFileStub = null;
+		try
+		{
+			psiFileStub = new NapilePsiFileStub(null, StringRef.fromString(classNode.name.parent().getFqName()), true);
 
 			classNode.accept(builder, psiFileStub);
-
-			return psiFileStub;
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
-			e.printStackTrace();
+			LOGGER.error(e);
 		}
-		return null;
+
+		return psiFileStub;
 	}
 
 	@Override
