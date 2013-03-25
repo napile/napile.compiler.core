@@ -106,7 +106,7 @@ public class DependencyInjectorGenerator
 				satisfyDependenciesFor(field, field);
 			}
 
-			String copyright = "injector-generator/copyright.txt";
+			String copyright = "compiler/injector-generator/copyright.txt";
 			out.println(FileUtil.loadFile(new File(copyright)));
 			out.println();
 
