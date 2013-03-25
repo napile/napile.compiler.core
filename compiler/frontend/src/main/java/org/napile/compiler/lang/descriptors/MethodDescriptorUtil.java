@@ -25,6 +25,7 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.NapileConstants;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -119,10 +120,21 @@ public class MethodDescriptorUtil
 
 		if(variableAccessor)
 		{
-			LocalVariableDescriptor variableDescriptor = new LocalVariableDescriptor(descriptor, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), descriptor.getReturnType(), Modality.OPEN, false);
-			parameterScope.addVariableDescriptor(variableDescriptor);
+			LocalVariableDescriptor temp = null;
 
-			trace.record(BindingContext.AUTO_CREATED_IT, variableDescriptor, Boolean.TRUE);
+			if(descriptor.getName().getIdentifier().endsWith("get"))
+			{
+				temp = new LocalVariableDescriptor(descriptor, Collections.<AnnotationDescriptor>emptyList(), NapileConstants.VARIABLE_FIELD_NAME, descriptor.getReturnType(), Modality.OPEN, false);
+			}
+			else
+			{
+				trace.record(BindingContext.AUTO_CREATED_IT, descriptor.getValueParameters().get(0), Boolean.TRUE);
+
+				temp = new LocalVariableDescriptor(descriptor, Collections.<AnnotationDescriptor>emptyList(), NapileConstants.VARIABLE_FIELD_NAME, descriptor.getReturnType(), Modality.OPEN, true);
+			}
+
+			trace.record(BindingContext.AUTO_CREATED_IT, temp, Boolean.TRUE);
+			parameterScope.addVariableDescriptor(temp);
 		}
 
 		parameterScope.changeLockLevel(WritableScope.LockLevel.READING);

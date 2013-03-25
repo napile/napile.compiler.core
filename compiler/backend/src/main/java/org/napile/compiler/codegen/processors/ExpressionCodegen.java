@@ -53,8 +53,8 @@ import org.napile.compiler.codegen.processors.visitors.ConditionCodegenVisitor;
 import org.napile.compiler.codegen.processors.visitors.LoopCodegenVisitor;
 import org.napile.compiler.codegen.processors.visitors.TryThrowCodegenVisitor;
 import org.napile.compiler.injection.CodeInjection;
+import org.napile.compiler.lang.NapileConstants;
 import org.napile.compiler.lang.descriptors.*;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -68,6 +68,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.progress.ProcessCanceledException;
@@ -75,7 +76,6 @@ import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.Function;
 
@@ -542,7 +542,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 			VariableDescriptor variableDescriptor = (VariableDescriptor) descriptor;
 
-			boolean directToVar = variableDescriptor instanceof LocalVariableDescriptor && bindingTrace.safeGet(BindingContext.AUTO_CREATED_IT, variableDescriptor);
+			boolean directToVar = variableDescriptor instanceof LocalVariableDescriptor && bindingTrace.safeGet(BindingContext.AUTO_CREATED_IT, variableDescriptor) && variableDescriptor.getName().equals(NapileConstants.VARIABLE_FIELD_NAME);
 
 			boolean isStatic = variableDescriptor.isStatic();
 
@@ -551,21 +551,13 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 				NapileVariableAccessor accessor = PsiTreeUtil.getParentOfType(expression, NapileVariableAccessor.class);
 				if(accessor != null)
 				{
-					VariableAccessorDescriptor accessorDescriptor = bindingTrace.get(accessor.getAccessorElementType() == NapileTokens.SET_KEYWORD ? BindingContext.VARIABLE_SET_ACCESSOR : BindingContext.VARIABLE_GET_ACCESSOR, accessor);
+					VariableAccessorDescriptor accessorDescriptor = bindingTrace.safeGet(VariableAccessorResolver.getSliceForAccessor(accessor), accessor);
 
-					if(accessor.getAccessorElementType() == NapileTokens.GET_KEYWORD)
+					if(!accessorDescriptor.isStatic())
 					{
-						if(!accessorDescriptor.isStatic())
-						{
-							instructs.localGet(0);
-						}
-						return StackValue.variable(bindingTrace, classNode, accessorDescriptor.getVariable());
+						instructs.localGet(0);
 					}
-					else
-					{
-						// get call parameter index
-						return StackValue.local(expression, accessorDescriptor.isStatic() ? 0 : 1, toAsmType(accessorDescriptor.getVariable().getType()));
-					}
+					return StackValue.variable(bindingTrace, classNode, accessorDescriptor.getVariable());
 				}
 			}
 
@@ -1048,49 +1040,14 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 		NapileExpression lastExp = lastExpressionOfBody(expr);
 		if(lastExp instanceof NapileThrowExpression || lastExp instanceof NapileReturnExpression)
 		{}
-		else if(expr.getParent() instanceof NapileVariableAccessor)
+		else if(expr instanceof NapileBlockExpression && (expr.getParent() instanceof NapileNamedMethodOrMacro || expr.getParent() instanceof NapileConstructor || expr.getParent() instanceof NapileVariableAccessor))
 		{
-			NapileVariableAccessor variableAccessor = (NapileVariableAccessor) expr.getParent();
-
-			if(expr instanceof NapileBlockExpression)
-			{
-				visitReturn(null);
-			}
-			else
-			{
-				lastValue.put(returnType, instructs, this);
-
-				final IElementType accessorElementType = variableAccessor.getAccessorElementType();
-				if(accessorElementType == NapileTokens.SET_KEYWORD)
-				{
-					VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor);
-					if(!descriptor.isStatic())
-						instructs.localGet(0);
-
-					lastValue.put(returnType, instructs, this);
-
-					StackValue.variable(bindingTrace, classNode, descriptor.getVariable()).store(toAsmType(descriptor.getVariable().getType()), instructs, this);
-
-					instructs.putNull();
-					instructs.returnValues(1);
-				}
-				else if(accessorElementType == NapileTokens.GET_KEYWORD)
-				{
-					instructs.returnValues(1);
-				}
-			}
+			visitReturn(null);
 		}
 		else
 		{
-			if(expr instanceof NapileBlockExpression && (expr.getParent() instanceof NapileNamedMethodOrMacro || expr.getParent() instanceof NapileConstructor))
-			{
-				visitReturn(null);
-			}
-			else
-			{
-				lastValue.put(returnType, instructs, this);
-				instructs.returnValues(1);
-			}
+			lastValue.put(returnType, instructs, this);
+			instructs.returnValues(1);
 		}
 	}
 
@@ -1100,32 +1057,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 		int size = putRefVariables();
 
-		NapileDeclaration declaration = PsiTreeUtil.getParentOfType(exp, NapileDeclaration.class);
-		if(declaration instanceof NapileVariableAccessor)
-		{
-			final IElementType accessorElementType = ((NapileVariableAccessor) declaration).getAccessorElementType();
+		genOrPutExp(exp);
 
-			if(accessorElementType == NapileTokens.SET_KEYWORD)
-			{
-				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, declaration);
-				if(!descriptor.isStatic())
-					instructs.localGet(0);
-
-				genOrPutExp(exp);
-
-				StackValue.variable(bindingTrace, classNode, descriptor.getVariable()).store(toAsmType(descriptor.getVariable().getType()), instructs, this);
-
-				instructs.putNull();
-			}
-			else if(accessorElementType == NapileTokens.GET_KEYWORD)
-			{
-				genOrPutExp(exp);
-			}
-		}
-		else
-		{
-			genOrPutExp(exp);
-		}
 		instructs.returnValues(size);
 	}
 

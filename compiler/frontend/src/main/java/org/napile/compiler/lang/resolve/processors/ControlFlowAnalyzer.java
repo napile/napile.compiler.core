@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
-import java.util.Collection;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -24,23 +23,16 @@ import javax.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.cfg.JetFlowInformationProvider;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.psi.NapileAnonymClass;
-import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.psi.NapileClassLike;
-import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.psi.NapileVariableAccessor;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
+import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
 
 /**
  * @author svtk
@@ -97,27 +89,25 @@ public class ControlFlowAnalyzer
 			checkMethod(constructor, TypeUtils.NO_EXPECTED_TYPE);
 		}
 
-		final Collection<MethodDescriptor> keys = trace.getKeys(BindingContext.DUMMY_VARIABLE_ACCESSORS);
-		for(MethodDescriptor key : keys)
+		for(Map.Entry<NapileVariable, VariableDescriptor> entry : bodiesResolveContext.getVariables().entrySet())
 		{
-			NapileVariableAccessor accessor = trace.safeGet(BindingContext.DUMMY_VARIABLE_ACCESSORS, key);
-
-			if(!bodiesResolveContext.completeAnalysisNeeded(accessor))
+			NapileVariable variable = entry.getKey();
+			if(!bodiesResolveContext.completeAnalysisNeeded(variable))
 				continue;
 
-			//JetScope scope = trace.safeGet(BindingContext.DUMMY_VARIABLE_ACCESSORS_SCOPE, key);
+			//VariableDescriptor variableDescriptor = entry.getValue();
 
-			checkMethod(accessor, key.getReturnType());
+			for(NapileVariableAccessor accessor : variable.getAccessors())
+			{
+				final VariableAccessorDescriptor descriptor = trace.get(VariableAccessorResolver.getSliceForAccessor(accessor), accessor);
+				if(descriptor == null || accessor.getBodyExpression() == null)
+				{
+					continue;
+				}
+
+				checkMethod(accessor, descriptor.getReturnType());
+			}
 		}
-
-		/*for(Map.Entry<NapileVariable, VariableDescriptor> entry : bodiesResolveContext.getVariables().entrySet())
-		{
-			NapileVariable property = entry.getKey();
-			if(!bodiesResolveContext.completeAnalysisNeeded(property))
-				continue;
-			VariableDescriptor variableDescriptor = entry.getValue();
-			//checkProperty(property, variableDescriptor);
-		}  */
 	}
 
 	private void checkClassLike(NapileClassLike klass)

@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
+import org.napile.compiler.lang.NapileConstants;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClassExpression;
@@ -169,7 +170,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		{
 			CallParameterDescriptor parameterDescriptor = expectedValueParameters.get(0);
 
-			AbstractCallParameterDescriptorImpl value = new CallParameterAsVariableDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), Name.identifier("value"), parameterDescriptor.getType(), Modality.FINAL, false, false);
+			AbstractCallParameterDescriptorImpl value = new CallParameterAsVariableDescriptorImpl(functionDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), NapileConstants.ANONYM_METHOD_SINGLE_PARAMETER_NAME, parameterDescriptor.getType(), Modality.FINAL, false, false);
 			value.setHasDefaultValue(parameterDescriptor.hasDefaultValue());
 
 			parameterDescriptors.add(value);

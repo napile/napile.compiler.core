@@ -29,6 +29,7 @@ import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.AsmNodeUtil;
 import org.napile.compiler.codegen.processors.PositionMarker;
 import org.napile.compiler.codegen.processors.codegen.CallableMethod;
+import org.napile.compiler.lang.NapileConstants;
 
 public class SimpleVariableAccessor extends StackValue
 {
@@ -42,7 +43,7 @@ public class SimpleVariableAccessor extends StackValue
 		callType = s;
 		// convert 'A.var' -> A + var$set -> A.var$set
 		FqName setterFq = fqName.parent().child(Name.identifier(fqName.shortName() + "$set"));
-		setter = new MethodRef(setterFq, Collections.singletonList(AsmNodeUtil.parameterNode("value", getType())), Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE);
+		setter = new MethodRef(setterFq, Collections.singletonList(AsmNodeUtil.parameterNode(NapileConstants.VARIABLE_SET_PARAMETER_NAME.getName(), getType())), Collections.<TypeNode>emptyList(), AsmConstants.NULL_TYPE);
 		// convert 'A.var' -> A + var$get -> A.var$get
 		FqName getterFq = fqName.parent().child(Name.identifier(fqName.shortName() + "$get"));
 		getter = new MethodRef(getterFq, Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), getType());

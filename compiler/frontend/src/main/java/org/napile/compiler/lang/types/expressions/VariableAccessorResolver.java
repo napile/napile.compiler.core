@@ -26,9 +26,11 @@ import org.napile.compiler.lang.descriptors.AbstractCallParameterDescriptorImpl;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.LocalVariableDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileArrayAccessExpressionImpl;
 import org.napile.compiler.lang.psi.NapileBinaryExpression;
 import org.napile.compiler.lang.psi.NapileDotQualifiedExpressionImpl;
@@ -36,6 +38,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileUnaryExpression;
+import org.napile.compiler.lang.psi.NapileVariableAccessor;
 import org.napile.compiler.lang.resolve.BindingContext;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
@@ -48,6 +51,8 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
+import org.napile.compiler.util.slicedmap.WritableSlice;
+import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
@@ -191,5 +196,11 @@ public class VariableAccessorResolver
 		for(Diagnostic d : trace.getDiagnostics())
 			if(d.getFactory() == Errors.INVISIBLE_MEMBER)
 				context.trace.report(d);
+	}
+
+	@NotNull
+	public static WritableSlice<PsiElement, VariableAccessorDescriptor> getSliceForAccessor(@NotNull NapileVariableAccessor accessor)
+	{
+		return accessor.getAccessorElementType() == NapileTokens.SET_KEYWORD ? BindingContext.VARIABLE_SET_ACCESSOR : BindingContext.VARIABLE_GET_ACCESSOR;
 	}
 }

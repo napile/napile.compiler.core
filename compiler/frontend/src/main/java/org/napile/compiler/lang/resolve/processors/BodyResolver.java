@@ -24,15 +24,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
-import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
-import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
-import org.napile.compiler.lang.descriptors.MutableClassDescriptor;
-import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableDescriptor;
+import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingContext;
@@ -51,6 +43,7 @@ import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
+import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 import org.napile.compiler.util.slicedmap.WritableSlice;
@@ -229,19 +222,30 @@ public class BodyResolver
 	{
 		for(Map.Entry<NapileVariable, VariableDescriptor> entry : this.context.getVariables().entrySet())
 		{
-			NapileVariable property = entry.getKey();
-			if(!context.completeAnalysisNeeded(property))
+			NapileVariable variable = entry.getKey();
+			if(!context.completeAnalysisNeeded(variable))
 				continue;
 
 			final VariableDescriptor propertyDescriptor = entry.getValue();
 
 			computeDeferredType(propertyDescriptor.getReturnType());
 
-			JetScope declaringScope = this.context.getDeclaringScopes().get(property);
+			JetScope declaringScope = this.context.getDeclaringScopes().get(variable);
 
-			NapileExpression initializer = property.getInitializer();
+			NapileExpression initializer = variable.getInitializer();
 			if(initializer != null)
-				resolvePropertyInitializer(property, propertyDescriptor, initializer, declaringScope);
+				resolvePropertyInitializer(variable, propertyDescriptor, initializer, declaringScope);
+
+			for(NapileVariableAccessor accessor : variable.getAccessors())
+			{
+				final VariableAccessorDescriptor descriptor = trace.get(VariableAccessorResolver.getSliceForAccessor(accessor), accessor);
+				if(descriptor == null || accessor.getBodyExpression() == null)
+				{
+					continue;
+				}
+
+				resolveBody(trace, accessor, descriptor, declaringScope, true);
+			}
 		}
 
 		for(Map.Entry<NapileNamedMethodOrMacro, SimpleMethodDescriptor> entry : this.context.getMethods().entrySet())
@@ -266,16 +270,6 @@ public class BodyResolver
 			assert declaringScope != null;
 
 			resolveBody(trace, declaration, descriptor, declaringScope, false);
-		}
-
-		final Collection<MethodDescriptor> keys = trace.getKeys(BindingContext.DUMMY_VARIABLE_ACCESSORS);
-		for(MethodDescriptor key : keys)
-		{
-			NapileVariableAccessor accessor = trace.safeGet(BindingContext.DUMMY_VARIABLE_ACCESSORS, key);
-
-			JetScope scope = trace.safeGet(BindingContext.DUMMY_VARIABLE_ACCESSORS_SCOPE, key);
-
-			resolveBody(trace, accessor, key, scope, true);
 		}
 	}
 

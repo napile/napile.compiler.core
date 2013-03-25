@@ -27,7 +27,6 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
@@ -49,10 +48,6 @@ import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.JetTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.psi.NapileTypeReference;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -495,11 +490,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, parentDeclaration);
 		MethodDescriptor containingMethodDescriptor = DescriptorUtils.getParentOfType(declarationDescriptor, MethodDescriptor.class, false);
 
-		if(declarationDescriptor instanceof VariableAccessorDescriptor)
-		{
-			expectedType = ((VariableAccessorDescriptor) declarationDescriptor).getVariable().getType();
-		}
-		else if(containingMethodDescriptor != null)
+		if(containingMethodDescriptor != null)
 		{
 			PsiElement containingFunction = BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor);
 			assert containingFunction != null;

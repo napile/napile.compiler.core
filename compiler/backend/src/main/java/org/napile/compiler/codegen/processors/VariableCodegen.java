@@ -32,6 +32,7 @@ import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.bytecode.adapter.ReservedInstruction;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.visitors.BinaryCodegenVisitor;
+import org.napile.compiler.lang.NapileConstants;
 import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
@@ -88,7 +89,7 @@ public class VariableCodegen
 				MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, AsmConstants.NULL_TYPE);
 				AnnotationCodegen.gen(bindingTrace, descriptor, methodNode, classNode);
 
-				methodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)));
+				methodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), NapileConstants.VARIABLE_SET_PARAMETER_NAME, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)));
 				methodNode.code = new CodeInfo(codegen.instructs);
 
 				classNode.addMember(methodNode);
@@ -98,7 +99,7 @@ public class VariableCodegen
 
 	private static void getSetterCode(@NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull MethodNode setterMethodNode, @NotNull VariableDescriptor variableDescriptor)
 	{
-		setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), Name.identifier("value"), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)));
+		setterMethodNode.parameters.add(new MethodParameterNode(Modifier.list(Modifier.FINAL), NapileConstants.VARIABLE_SET_PARAMETER_NAME, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode)));
 
 		InstructionAdapter adapter = new InstructionAdapter();
 
