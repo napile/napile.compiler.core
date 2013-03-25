@@ -19,7 +19,7 @@ package org.napile.compiler.analyzer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 
 /**
@@ -28,7 +28,7 @@ import org.napile.compiler.lang.resolve.BodiesResolveContext;
 public class AnalyzeExhaust
 {
 	@NotNull
-	private final BindingContext bindingContext;
+	private final BindingTrace bindingTrace;
 	private final Throwable error;
 
 	@NotNull
@@ -36,20 +36,20 @@ public class AnalyzeExhaust
 	@Nullable
 	private final InjectorForTopDownAnalyzerBasic injector;
 
-	private AnalyzeExhaust(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, @Nullable Throwable error, InjectorForTopDownAnalyzerBasic analyzerBasic)
+	private AnalyzeExhaust(@NotNull BindingTrace bindingTrace, @NotNull BodiesResolveContext bodiesResolveContext, @Nullable Throwable error, InjectorForTopDownAnalyzerBasic analyzerBasic)
 	{
-		this.bindingContext = bindingContext;
+		this.bindingTrace = bindingTrace;
 		this.error = error;
 		this.bodiesResolveContext = bodiesResolveContext;
 		this.injector = analyzerBasic;
 	}
 
-	public static AnalyzeExhaust success(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, InjectorForTopDownAnalyzerBasic analyzerBasic)
+	public static AnalyzeExhaust success(@NotNull BindingTrace bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, InjectorForTopDownAnalyzerBasic analyzerBasic)
 	{
 		return new AnalyzeExhaust(bindingContext, bodiesResolveContext, null, analyzerBasic);
 	}
 
-	public static AnalyzeExhaust error(@NotNull BindingContext bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, @NotNull Throwable error)
+	public static AnalyzeExhaust error(@NotNull BindingTrace bindingContext, @NotNull BodiesResolveContext bodiesResolveContext, @NotNull Throwable error)
 	{
 		return new AnalyzeExhaust(bindingContext, bodiesResolveContext, error, null);
 	}
@@ -61,9 +61,9 @@ public class AnalyzeExhaust
 	}
 
 	@NotNull
-	public BindingContext getBindingContext()
+	public BindingTrace getBindingTrace()
 	{
-		return bindingContext;
+		return bindingTrace;
 	}
 
 	@Nullable

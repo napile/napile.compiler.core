@@ -35,8 +35,8 @@ import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
@@ -213,7 +213,7 @@ public class DeclarationResolver
 		if(declarationDescriptor instanceof PackageDescriptor)
 		{
 			final PackageDescriptor namespace = (PackageDescriptor) declarationDescriptor;
-			Collection<NapileFile> files = trace.get(BindingContext.NAMESPACE_TO_FILES, namespace);
+			Collection<NapileFile> files = trace.get(BindingTraceKeys.NAMESPACE_TO_FILES, namespace);
 
 			if(files == null)
 			{
@@ -232,7 +232,7 @@ public class DeclarationResolver
 		}
 		else
 		{
-			declarations = Collections.singletonList(BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declarationDescriptor));
+			declarations = Collections.singletonList(BindingTraceUtil.descriptorToDeclaration(trace, declarationDescriptor));
 		}
 		return declarations;
 	}
@@ -259,7 +259,7 @@ public class DeclarationResolver
 				{
 					for(DeclarationDescriptor descriptor : descriptors)
 					{
-						trace.report(REDECLARATION.on(BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), (ClassDescriptor) descriptor), descriptor.getName().getName()));
+						trace.report(REDECLARATION.on(BindingTraceUtil.classDescriptorToDeclaration(trace, (ClassDescriptor) descriptor), descriptor.getName().getName()));
 					}
 				}
 			}

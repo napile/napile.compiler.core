@@ -33,7 +33,7 @@ import org.napile.compiler.lang.diagnostics.AbstractDiagnosticFactory;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Severity;
 import org.napile.compiler.lang.resolve.AnalyzingUtils;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultiset;
@@ -83,7 +83,7 @@ public class CheckerTestUtil
 	private static final Pattern RANGE_START_OR_END_PATTERN = Pattern.compile("(<!\\w+(,\\s*\\w+)*!>)|(<!>)");
 	private static final Pattern INDIVIDUAL_DIAGNOSTIC_PATTERN = Pattern.compile("\\w+");
 
-	public static List<Diagnostic> getDiagnosticsIncludingSyntaxErrors(BindingContext bindingContext, PsiElement root)
+	public static List<Diagnostic> getDiagnosticsIncludingSyntaxErrors(BindingTrace bindingContext, PsiElement root)
 	{
 		ArrayList<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
 		diagnostics.addAll(bindingContext.getDiagnostics());
@@ -257,7 +257,7 @@ public class CheckerTestUtil
 		return matcher.replaceAll("");
 	}
 
-	public static StringBuffer addDiagnosticMarkersToText(PsiFile psiFile, BindingContext bindingContext, List<PsiErrorElement> syntaxErrors)
+	public static StringBuffer addDiagnosticMarkersToText(PsiFile psiFile, BindingTrace bindingContext, List<PsiErrorElement> syntaxErrors)
 	{
 		Collection<Diagnostic> diagnostics = new ArrayList<Diagnostic>();
 		diagnostics.addAll(bindingContext.getDiagnostics());

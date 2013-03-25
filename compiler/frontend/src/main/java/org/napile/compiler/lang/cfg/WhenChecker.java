@@ -24,7 +24,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -39,7 +39,7 @@ public class WhenChecker
 		NapileExpression subjectExpression = expression.getSubjectExpression();
 		if(subjectExpression == null)
 			return false;
-		JetType type = trace.get(BindingContext.EXPRESSION_TYPE, subjectExpression);
+		JetType type = trace.get(BindingTraceKeys.EXPRESSION_TYPE, subjectExpression);
 		if(type == null)
 			return false;
 		DeclarationDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();

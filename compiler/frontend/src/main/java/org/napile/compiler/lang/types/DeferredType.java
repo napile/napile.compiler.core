@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.util.Box;
@@ -36,7 +36,7 @@ public class DeferredType implements JetType
 	public static DeferredType create(BindingTrace trace, LazyValue<JetType> lazyValue)
 	{
 		DeferredType deferredType = new DeferredType(lazyValue);
-		trace.record(BindingContext.DEFERRED_TYPE, new Box<DeferredType>(deferredType));
+		trace.record(BindingTraceKeys.DEFERRED_TYPE, new Box<DeferredType>(deferredType));
 		return deferredType;
 	}
 

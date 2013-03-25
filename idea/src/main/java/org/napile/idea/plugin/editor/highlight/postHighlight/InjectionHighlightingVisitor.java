@@ -21,7 +21,7 @@ import java.util.Collection;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.diagnostics.PositioningStrategies;
 import org.napile.compiler.lang.psi.NapileInjectionExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.IdeaInjectionSupport;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
@@ -37,7 +37,7 @@ import com.intellij.psi.util.PsiTreeUtil;
  */
 public class InjectionHighlightingVisitor extends PostHighlightVisitor
 {
-	public InjectionHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
+	public InjectionHighlightingVisitor(BindingTrace context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

@@ -17,10 +17,10 @@
 package org.napile.idea.plugin.highlighter;
 
 import static org.napile.compiler.lang.lexer.NapileTokens.*;
-import static org.napile.compiler.lang.resolve.BindingContext.AMBIGUOUS_REFERENCE_TARGET;
-import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
-import static org.napile.compiler.lang.resolve.BindingContext.LABEL_TARGET;
-import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.AMBIGUOUS_REFERENCE_TARGET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.EXPRESSION_TYPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.LABEL_TARGET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.REFERENCE_TARGET;
 
 import java.util.Collection;
 import java.util.Set;
@@ -35,7 +35,7 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightPass;
@@ -83,7 +83,7 @@ public class DebugInfoAnnotator implements Annotator
 			NapileFile file = (NapileFile) element;
 			try
 			{
-				final BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
+				final BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
 
 				final Set<NapileReferenceExpression> unresolvedReferences = Sets.newHashSet();
 				for(Diagnostic diagnostic : bindingContext.getDiagnostics())

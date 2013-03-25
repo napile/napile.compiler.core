@@ -40,7 +40,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileLinkMethodExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.types.JetType;
 import com.intellij.psi.PsiElement;
 
@@ -58,9 +58,9 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 	@Override
 	public StackValue visitLinkMethodExpression(NapileLinkMethodExpression expression, StackValue data)
 	{
-		JetType jetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+		JetType jetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
-		MethodDescriptor target = (MethodDescriptor) gen.bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getTarget());
+		MethodDescriptor target = (MethodDescriptor) gen.bindingTrace.safeGet(BindingTraceKeys.REFERENCE_TARGET, expression.getTarget());
 
 		InstructionAdapter adapter = new InstructionAdapter();
 
@@ -94,7 +94,7 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 	@Override
 	public StackValue visitAnonymMethodExpression(NapileAnonymMethodExpression expression, StackValue data)
 	{
-		final SimpleMethodDescriptor methodDescriptor = gen.bindingTrace.safeGet(BindingContext.METHOD, expression);
+		final SimpleMethodDescriptor methodDescriptor = gen.bindingTrace.safeGet(BindingTraceKeys.METHOD, expression);
 
 		InstructionAdapter adapter = new InstructionAdapter();
 
@@ -115,7 +115,7 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 			@Override
 			public void visitSimpleNameExpression(NapileSimpleNameExpression expression)
 			{
-				DeclarationDescriptor descriptor = gen.bindingTrace.get(BindingContext.REFERENCE_TARGET, expression);
+				DeclarationDescriptor descriptor = gen.bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, expression);
 				if(descriptor instanceof LocalVariableDescriptor || descriptor instanceof CallParameterDescriptor)
 				{
 					if(descriptor.getContainingDeclaration() != methodDescriptor)
@@ -145,7 +145,7 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 
 		gen.marker(expression).putAnonym(pairs, new CodeInfo(adapter));
 
-		JetType jetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+		JetType jetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
 		return StackValue.onStack(gen.toAsmType(jetType));
 	}

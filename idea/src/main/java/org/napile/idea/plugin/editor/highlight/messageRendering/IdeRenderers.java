@@ -46,7 +46,6 @@ import org.napile.compiler.lang.resolve.calls.ResolvedValueArgument;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.render.DescriptorRenderer;
-import org.napile.idea.plugin.editor.highlight.messageRendering.HtmlTabledDescriptorRenderer;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -124,7 +123,7 @@ public class IdeRenderers
 			Set<CallParameterDescriptor> parameters = new HashSet<CallParameterDescriptor>();
 			if(call instanceof ResolvedCallImpl)
 			{
-				Collection<Diagnostic> diagnostics = ((ResolvedCallImpl) call).getTrace().getBindingContext().getDiagnostics();
+				Collection<Diagnostic> diagnostics = ((ResolvedCallImpl) call).getTrace().getDiagnostics();
 				for(Diagnostic diagnostic : diagnostics)
 				{
 					if(diagnostic.getFactory() == Errors.TOO_MANY_ARGUMENTS)

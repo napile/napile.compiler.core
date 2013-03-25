@@ -37,7 +37,7 @@ import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeParameterListOwner;
 import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
@@ -100,7 +100,7 @@ public class TypeParameterResolver
 		TypeParameterDescriptorImpl typeParameterDescriptor = new TypeParameterDescriptorImpl(containingDescriptor, annotationResolver.bindAnnotations(extensibleScope, typeParameter, trace), NapilePsiUtil.safeName(typeParameter.getName()), index);
 
 		extensibleScope.addTypeParameterDescriptor(typeParameterDescriptor);
-		trace.record(BindingContext.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
+		trace.record(BindingTraceKeys.TYPE_PARAMETER, typeParameter, typeParameterDescriptor);
 		return typeParameterDescriptor;
 	}
 

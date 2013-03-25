@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileConstructor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.types.JetType;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Function;
@@ -44,7 +44,7 @@ public class ClassInfo extends NamedDocableInfo<NapileClass>
 	private final List<MethodInfo> methods = new ArrayList<MethodInfo>();
 	private final List<ConstructorInfo> constructors = new ArrayList<ConstructorInfo>();
 
-	public ClassInfo(BindingContext bindingContext, NapileClass element, String p)
+	public ClassInfo(BindingTrace bindingContext, NapileClass element, String p)
 	{
 		super(bindingContext, element);
 		this.packageName = p;
@@ -62,7 +62,7 @@ public class ClassInfo extends NamedDocableInfo<NapileClass>
 
 	public String getSupers()
 	{
-		ClassDescriptor classDescriptor = bindingContext.get(BindingContext.CLASS, element);
+		ClassDescriptor classDescriptor = bindingTrace.get(BindingTraceKeys.CLASS, element);
 
 		return StringUtil.join(classDescriptor.getSupertypes(), new Function<JetType, String>()
 		{
@@ -78,7 +78,7 @@ public class ClassInfo extends NamedDocableInfo<NapileClass>
 	@Override
 	public String getDeclaration()
 	{
-		ClassDescriptor classDescriptor = bindingContext.get(BindingContext.CLASS, element);
+		ClassDescriptor classDescriptor = bindingTrace.get(BindingTraceKeys.CLASS, element);
 		return classDescriptor == null ? null : DocRender.DOC_RENDER.render(classDescriptor);
 	}
 

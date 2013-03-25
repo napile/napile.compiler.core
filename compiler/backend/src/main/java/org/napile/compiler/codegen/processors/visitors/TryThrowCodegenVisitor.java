@@ -33,7 +33,7 @@ import org.napile.compiler.lang.psi.NapileCatchClause;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileThrowExpression;
 import org.napile.compiler.lang.psi.NapileTryExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.types.JetType;
 
 /**
@@ -50,7 +50,7 @@ public class TryThrowCodegenVisitor extends CodegenVisitor
 	@Override
 	public StackValue visitTryExpression(NapileTryExpression expression, StackValue data)
 	{
-		JetType jetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+		JetType jetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
 		TypeNode expectedAsmType = TypeTransformer.toAsmType(gen.bindingTrace, jetType, gen.classNode);
 
@@ -66,7 +66,7 @@ public class TryThrowCodegenVisitor extends CodegenVisitor
 
 		for(NapileCatchClause catchClause : expression.getCatchClauses())
 		{
-			VariableDescriptor catchParameter = (VariableDescriptor) gen.bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, catchClause.getCatchParameter());
+			VariableDescriptor catchParameter = (VariableDescriptor) gen.bindingTrace.safeGet(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, catchClause.getCatchParameter());
 
 			int index = gen.frameMap.enter(catchParameter);
 

@@ -30,8 +30,8 @@ import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -68,8 +68,8 @@ public class ImportInsertHelper
 		{
 			return;
 		}
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
-		PsiElement element = BindingContextUtils.descriptorToDeclaration(bindingContext, type.getMemberScope().getContainingDeclaration());
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
+		PsiElement element = BindingTraceUtil.descriptorToDeclaration(bindingContext, type.getMemberScope().getContainingDeclaration());
 		if(element != null && element.getContainingFile() == file)
 		{ //declaration is in the same file, so no import is needed
 			return;

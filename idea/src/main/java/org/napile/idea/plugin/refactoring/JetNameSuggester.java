@@ -27,7 +27,8 @@ import org.napile.compiler.lang.lexer.NapileLexer;
 import org.napile.compiler.lang.psi.NapileCallExpression;
 import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
@@ -79,8 +80,8 @@ public class JetNameSuggester
 	{
 		ArrayList<String> result = new ArrayList<String>();
 
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) expression.getContainingFile()).getBindingContext();
-		JetType jetType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression);
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) expression.getContainingFile()).getBindingTrace();
+		JetType jetType = bindingContext.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
 		if(jetType != null)
 		{
 			addNamesForType(result, jetType, validator);

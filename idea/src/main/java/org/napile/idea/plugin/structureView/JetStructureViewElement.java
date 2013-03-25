@@ -28,7 +28,8 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.render.DescriptorRenderer;
@@ -50,11 +51,11 @@ public class JetStructureViewElement implements StructureViewTreeElement
 
 	// For file context will be updated after each construction
 	// For other tree sub-elements it's immutable.
-	private BindingContext context;
+	private BindingTrace context;
 
 	private String elementText;
 
-	public JetStructureViewElement(NavigatablePsiElement element, BindingContext context)
+	public JetStructureViewElement(NavigatablePsiElement element, BindingTrace context)
 	{
 		myElement = element;
 		this.context = context;
@@ -131,7 +132,7 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		{
 			final NapileFile jetFile = (NapileFile) myElement;
 
-			context = ModuleAnalyzerUtil.lastAnalyze(jetFile).getBindingContext();
+			context = ModuleAnalyzerUtil.lastAnalyze(jetFile).getBindingTrace();
 
 			return wrapDeclarations(jetFile.getDeclarations());
 		}
@@ -158,7 +159,7 @@ public class JetStructureViewElement implements StructureViewTreeElement
 		{
 			NapileDeclaration declaration = (NapileDeclaration) myElement;
 
-			final DeclarationDescriptor descriptor = context.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
+			final DeclarationDescriptor descriptor = context.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, declaration);
 			if(descriptor != null)
 			{
 				text = getDescriptorTreeText(descriptor);

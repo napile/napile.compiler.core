@@ -17,12 +17,9 @@
 package org.napile.compiler.lang.resolve;
 
 import java.util.Collection;
-import java.util.Collections;
 
-import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
@@ -43,37 +40,8 @@ import com.intellij.psi.PsiElement;
 /**
  * @author abreslav
  */
-public interface BindingContext extends BindingReader
+public interface BindingTraceKeys
 {
-	BindingContext EMPTY = new BindingContext()
-	{
-		@Override
-		public Collection<Diagnostic> getDiagnostics()
-		{
-			return Collections.emptyList();
-		}
-
-		@Override
-		public <K, V> V get(ReadOnlySlice<K, V> slice, K key)
-		{
-			return null;
-		}
-
-		@NotNull
-		@Override
-		public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
-		{
-			throw new IllegalArgumentException();
-		}
-
-		@NotNull
-		@Override
-		public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
-		{
-			return Collections.emptyList();
-		}
-	};
-
 	WritableSlice<NapileAnnotation, AnnotationDescriptor> ANNOTATION = Slices.createSimpleSlice();
 	WritableSlice<NapileAnnotation, JetScope> ANNOTATION_SCOPE = new BasicWritableSlice<NapileAnnotation, JetScope>(RewritePolicy.DO_NOTHING, true);
 
@@ -150,18 +118,18 @@ public interface BindingContext extends BindingReader
 		}
 	};
 
-	WritableSlice<PsiElement, PackageDescriptor> PACKAGE = Slices.<PsiElement, PackageDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<PsiElement, ClassDescriptor> CLASS = Slices.<PsiElement, ClassDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<NapileTypeParameter, TypeParameterDescriptor> TYPE_PARAMETER = Slices.<NapileTypeParameter, TypeParameterDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, PackageDescriptor> PACKAGE = Slices.<PsiElement, PackageDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, ClassDescriptor> CLASS = Slices.<PsiElement, ClassDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<NapileTypeParameter, TypeParameterDescriptor> TYPE_PARAMETER = Slices.<NapileTypeParameter, TypeParameterDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
 	/**
-	 * @see BindingContextUtils#recordFunctionDeclarationToDescriptor(BindingTrace, PsiElement, org.napile.compiler.lang.descriptors.SimpleMethodDescriptor)}
+	 * @see BindingTraceUtil#recordFunctionDeclarationToDescriptor(BindingTrace, PsiElement, org.napile.compiler.lang.descriptors.SimpleMethodDescriptor)}
 	 */
-	WritableSlice<PsiElement, SimpleMethodDescriptor> METHOD = Slices.<PsiElement, SimpleMethodDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<PsiElement, ConstructorDescriptor> CONSTRUCTOR = Slices.<PsiElement, ConstructorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<PsiElement, VariableAccessorDescriptor> VARIABLE_GET_ACCESSOR = Slices.<PsiElement, VariableAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<PsiElement, VariableAccessorDescriptor> VARIABLE_SET_ACCESSOR = Slices.<PsiElement, VariableAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
-	WritableSlice<NapileCallParameterAsVariable, VariableDescriptor> VALUE_PARAMETER = Slices.<NapileCallParameterAsVariable, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingContextUtils.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, SimpleMethodDescriptor> METHOD = Slices.<PsiElement, SimpleMethodDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, ConstructorDescriptor> CONSTRUCTOR = Slices.<PsiElement, ConstructorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, VariableDescriptor> VARIABLE = Slices.<PsiElement, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, VariableAccessorDescriptor> VARIABLE_GET_ACCESSOR = Slices.<PsiElement, VariableAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<PsiElement, VariableAccessorDescriptor> VARIABLE_SET_ACCESSOR = Slices.<PsiElement, VariableAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
+	WritableSlice<NapileCallParameterAsVariable, VariableDescriptor> VALUE_PARAMETER = Slices.<NapileCallParameterAsVariable, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
 
 	WritableSlice[] DECLARATIONS_TO_DESCRIPTORS = new WritableSlice[]
 	{
@@ -199,7 +167,5 @@ public interface BindingContext extends BindingReader
 	@SuppressWarnings("UnusedDeclaration")
 	@Deprecated
 	// This field is needed only for the side effects of its initializer
-			Void _static_initializer = BasicWritableSlice.initSliceDebugNames(BindingContext.class);
-
-	Collection<Diagnostic> getDiagnostics();
+	Void _static_initializer = BasicWritableSlice.initSliceDebugNames(BindingTraceKeys.class);
 }

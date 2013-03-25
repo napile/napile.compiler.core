@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.types.expressions;
 
 import static org.napile.compiler.lang.diagnostics.Errors.CANNOT_INFER_PARAMETER_TYPE;
-import static org.napile.compiler.lang.resolve.BindingContext.AUTO_CREATED_IT;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.AUTO_CREATED_IT;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -38,8 +38,8 @@ import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileTypeReference;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.processors.AnonymClassResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -73,7 +73,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	@Override
 	public JetTypeInfo visitAnonymClassExpression(final NapileAnonymClassExpression expression, final ExpressionTypingContext context)
 	{
-		ClassDescriptor classDescriptor = context.trace.get(BindingContext.CLASS, expression.getAnonymClass());
+		ClassDescriptor classDescriptor = context.trace.get(BindingTraceKeys.CLASS, expression.getAnonymClass());
 		if(classDescriptor == null)
 			classDescriptor = anonymClassResolver.resolveAnonymClass(context.scope.getContainingDeclaration(), context.scope, context.trace, expression.getAnonymClass());
 
@@ -122,9 +122,9 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 			@Override
 			public boolean apply(@Nullable WritableSlice slice)
 			{
-				return (slice != BindingContext.RESOLUTION_RESULTS_FOR_FUNCTION &&
-						slice != BindingContext.RESOLUTION_RESULTS_FOR_PROPERTY &&
-						slice != BindingContext.TRACE_DELTAS_CACHE);
+				return (slice != BindingTraceKeys.RESOLUTION_RESULTS_FOR_FUNCTION &&
+						slice != BindingTraceKeys.RESOLUTION_RESULTS_FOR_PROPERTY &&
+						slice != BindingTraceKeys.TRACE_DELTAS_CACHE);
 			}
 		}, true);
 		JetType safeReturnType = returnType == null ? ErrorUtils.createErrorType("<return type>") : returnType;
@@ -153,8 +153,8 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 		List<CallParameterDescriptor> parameterDescriptors = createValueParameterDescriptors(context, functionLiteral, functionDescriptor, functionTypeExpected);
 
 		functionDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptorImpl>emptyList(), parameterDescriptors, null, Modality.FINAL, Visibility.LOCAL);
-		context.trace.record(BindingContext.METHOD, expression, functionDescriptor);
-		BindingContextUtils.recordMethodDeclarationToDescriptor(context.trace, expression, functionDescriptor);
+		context.trace.record(BindingTraceKeys.METHOD, expression, functionDescriptor);
+		BindingTraceUtil.recordMethodDeclarationToDescriptor(context.trace, expression, functionDescriptor);
 		return functionDescriptor;
 	}
 

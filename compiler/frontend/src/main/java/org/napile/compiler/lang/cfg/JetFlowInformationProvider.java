@@ -36,8 +36,8 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -68,7 +68,7 @@ public class JetFlowInformationProvider
 		subroutine = declaration;
 		this.trace = trace;
 		pseudocode = new JetControlFlowProcessor(trace).generatePseudocode(declaration);
-		pseudocodeVariablesData = new PseudocodeVariablesData(pseudocode, trace.getBindingContext());
+		pseudocodeVariablesData = new PseudocodeVariablesData(pseudocode, trace);
 	}
 
 	private void collectReturnExpressions(@NotNull final Collection<NapileElement> returnedExpressions)
@@ -167,7 +167,7 @@ public class JetFlowInformationProvider
 		for(NapileElement element : rootUnreachableElements)
 			trace.report(Errors.UNREACHABLE_CODE.on(element));
 
-		DeclarationDescriptor descriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, function);
+		DeclarationDescriptor descriptor = trace.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, function);
 		if(descriptor instanceof SimpleMethodDescriptor && ((SimpleMethodDescriptor) descriptor).isMacro())
 			return;
 
@@ -235,7 +235,7 @@ public class JetFlowInformationProvider
 			public void execute(@NotNull Instruction instruction, @Nullable Map<VariableDescriptor, VariableInitState> in, @Nullable Map<VariableDescriptor, VariableInitState> out)
 			{
 				assert in != null && out != null;
-				VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, true, trace.getBindingContext());
+				VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, true, trace);
 				if(variableDescriptor == null)
 					return;
 				if(!(instruction instanceof ReadValueInstruction) && !(instruction instanceof WriteValueInstruction))
@@ -289,7 +289,7 @@ public class JetFlowInformationProvider
 		boolean isInitialized = variableInitState.isInitialized;
 		if(variableDescriptor instanceof VariableDescriptorImpl)
 		{
-			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor))
+			if(!trace.safeGet(BindingTraceKeys.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor))
 			{
 				isInitialized = true;
 			}
@@ -386,9 +386,9 @@ public class JetFlowInformationProvider
 		{
 			//if(variableDescriptor.getModality() != Modality.ABSTRACT)
 			//	return false;
-			if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor))
+			if(!trace.safeGet(BindingTraceKeys.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor))
 				return false;
-			PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
+			PsiElement property = BindingTraceUtil.descriptorToDeclaration(trace, variableDescriptor);
 			assert property instanceof NapileVariable;
 			/*if(((PropertyDescriptor) variableDescriptor).getModality() == Modality.FINAL && ((NapileVariableImpl) property).getSetter() == null)
 			{
@@ -438,9 +438,9 @@ public class JetFlowInformationProvider
 			trace.report(Errors.NOT_PROPERTY_BACKING_FIELD.on(element));
 			return true;
 		}
-		PsiElement property = BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), variableDescriptor);
+		PsiElement property = BindingTraceUtil.descriptorToDeclaration(trace, variableDescriptor);
 		boolean insideSelfAccessors = PsiTreeUtil.isAncestor(property, element, false);
-		if(!trace.safeGet(BindingContext.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor) && !insideSelfAccessors)
+		if(!trace.safeGet(BindingTraceKeys.BACKING_FIELD_REQUIRED, (VariableDescriptorImpl) variableDescriptor) && !insideSelfAccessors)
 		{ // not to generate error in accessors of abstract properties, there is one: declared accessor of abstract property
 
 			if(((VariableDescriptorImpl) variableDescriptor).getModality() == Modality.ABSTRACT)
@@ -457,7 +457,7 @@ public class JetFlowInformationProvider
 			return false;
 
 		NapileNamedDeclaration parentDeclaration = PsiTreeUtil.getParentOfType(element, NapileNamedDeclaration.class);
-		DeclarationDescriptor declarationDescriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, parentDeclaration);
+		DeclarationDescriptor declarationDescriptor = trace.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, parentDeclaration);
 		if(declarationDescriptor == null)
 			return false;
 
@@ -504,7 +504,7 @@ public class JetFlowInformationProvider
 				VariableInitState variableInitState = initializers.in.get(variable);
 				if(variableInitState == null)
 					return;
-				trace.record(BindingContext.IS_INITIALIZED, (VariableDescriptorImpl) variable, variableInitState.isInitialized);
+				trace.record(BindingTraceKeys.IS_INITIALIZED, (VariableDescriptorImpl) variable, variableInitState.isInitialized);
 			}
 		}
 	}
@@ -523,7 +523,7 @@ public class JetFlowInformationProvider
 
 				assert in != null && out != null;
 				Set<VariableDescriptor> declaredVariables = pseudocodeVariablesData.getDeclaredVariables(instruction.getOwner());
-				VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, false, trace.getBindingContext());
+				VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, false, trace);
 				if(variableDescriptor == null || !declaredVariables.contains(variableDescriptor) ||
 						!DescriptorUtils.isLocal(variableDescriptor.getContainingDeclaration(), variableDescriptor))
 				{
@@ -532,7 +532,7 @@ public class JetFlowInformationProvider
 				VariableUseState variableUseState = in.get(variableDescriptor);
 				if(instruction instanceof WriteValueInstruction)
 				{
-					if(trace.safeGet(BindingContext.CAPTURED_IN_CLOSURE, variableDescriptor))
+					if(trace.safeGet(BindingTraceKeys.CAPTURED_IN_CLOSURE, variableDescriptor))
 						return;
 					NapileElement element = ((WriteValueInstruction) instruction).getElement();
 					if(variableUseState != VariableUseState.LAST_READ)
@@ -576,7 +576,7 @@ public class JetFlowInformationProvider
 								{
 									if(psiElement instanceof NapileAnonymMethod)
 										return;
-									DeclarationDescriptor descriptor = trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, psiElement);
+									DeclarationDescriptor descriptor = trace.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, psiElement);
 									assert descriptor instanceof MethodDescriptor : psiElement.getText();
 									MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 									if(!RunUtil.isRunPoint(methodDescriptor) &&
@@ -658,12 +658,12 @@ public class JetFlowInformationProvider
 					if(refExp == null)
 						return;
 
-					DeclarationDescriptor descriptor = trace.get(BindingContext.REFERENCE_TARGET, refExp);
+					DeclarationDescriptor descriptor = trace.get(BindingTraceKeys.REFERENCE_TARGET, refExp);
 					// if property is not final, or description is not found dont check
 					if(!(descriptor instanceof VariableDescriptorImpl) || ((VariableDescriptorImpl) descriptor).getModality() == Modality.OPEN)
 						return;
 
-					boolean isInitialized = trace.safeGet(BindingContext.IS_INITIALIZED, (VariableDescriptorImpl) descriptor);
+					boolean isInitialized = trace.safeGet(BindingTraceKeys.IS_INITIALIZED, (VariableDescriptorImpl) descriptor);
 					if(isInitialized)
 						trace.report(Errors.VAL_REASSIGNMENT.on(refExp, descriptor));
 				}

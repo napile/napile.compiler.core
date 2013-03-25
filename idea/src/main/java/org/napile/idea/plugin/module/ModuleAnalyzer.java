@@ -18,7 +18,7 @@ package org.napile.idea.plugin.module;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.idea.plugin.module.impl.DummyModuleAnalyzerImpl;
 import com.intellij.openapi.module.Module;
@@ -32,7 +32,7 @@ import com.intellij.psi.PsiElement;
  */
 public abstract class ModuleAnalyzer
 {
-	public static final AnalyzeExhaust EMPTY = AnalyzeExhaust.success(BindingContext.EMPTY, BodiesResolveContext.EMPTY, null);
+	public static final AnalyzeExhaust EMPTY = AnalyzeExhaust.success(BindingTrace.EMPTY, BodiesResolveContext.EMPTY, null);
 
 	@NotNull
 	public static ModuleAnalyzer getInstance(@NotNull Module module)

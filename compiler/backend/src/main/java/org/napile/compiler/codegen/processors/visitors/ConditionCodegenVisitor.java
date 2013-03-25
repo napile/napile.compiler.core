@@ -41,7 +41,7 @@ import org.napile.compiler.lang.psi.NapileWhenConditionIsPattern;
 import org.napile.compiler.lang.psi.NapileWhenConditionWithExpression;
 import org.napile.compiler.lang.psi.NapileWhenEntry;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.types.JetType;
 
 /**
@@ -58,9 +58,9 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 	@Override
 	public StackValue visitIsExpression(NapileIsExpression expression, StackValue data)
 	{
-		gen.gen(expression.getLeftHandSide(), TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeftHandSide()), gen.classNode));
+		gen.gen(expression.getLeftHandSide(), TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression.getLeftHandSide()), gen.classNode));
 
-		JetType rightType = gen.bindingTrace.safeGet(BindingContext.TYPE, expression.getTypeRef());
+		JetType rightType = gen.bindingTrace.safeGet(BindingTraceKeys.TYPE, expression.getTypeRef());
 
 		InstructionAdapter marker = gen.marker(expression.getOperationReference());
 
@@ -136,11 +136,11 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 	public StackValue visitWhenExpression(NapileWhenExpression expression, StackValue data)
 	{
 		InstructionAdapter instructs = gen.instructs;
-		JetType expType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression);
+		JetType expType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
 		NapileExpression subjectExpression = expression.getSubjectExpression();
 		if(subjectExpression != null)
-			gen.gen(subjectExpression, TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, subjectExpression), gen.classNode));
+			gen.gen(subjectExpression, TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, subjectExpression), gen.classNode));
 
 		List<NapileWhenEntry> whenEntries = expression.getEntries();
 		List<ReservedInstruction> jumpToBlocks = new ArrayList<ReservedInstruction>(whenEntries.size());
@@ -159,7 +159,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 				{
 					instructs.dup();
 
-					TypeNode typeNode = TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingContext.TYPE, ((NapileWhenConditionIsPattern) condition).getTypeRef()), gen.classNode);
+					TypeNode typeNode = TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingTraceKeys.TYPE, ((NapileWhenConditionIsPattern) condition).getTypeRef()), gen.classNode);
 
 					instructs.is(typeNode);
 
@@ -179,7 +179,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 					if(subjectExpression != null)
 						instructs.dup();
 
-					gen.gen(condExp, TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, condExp), gen.classNode));
+					gen.gen(condExp, TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, condExp), gen.classNode));
 
 					if(subjectExpression != null)
 						instructs.invokeVirtual(BinaryCodegenVisitor.ANY_EQUALS, false);
@@ -209,7 +209,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 
 			instructs.replace(reservedInstruction).jump(instructs.size());
 
-			gen.gen(whenExp, TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, whenExp), gen.classNode));
+			gen.gen(whenExp, TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, whenExp), gen.classNode));
 
 			jumpOut.add(instructs.reserve());
 		}

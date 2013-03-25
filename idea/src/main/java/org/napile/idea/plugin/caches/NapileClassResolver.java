@@ -31,7 +31,8 @@ import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import org.napile.idea.plugin.stubindex.NapileFullClassNameIndex;
 import org.napile.idea.plugin.stubindex.NapileShortClassNameIndex;
@@ -87,7 +88,7 @@ public class NapileClassResolver
 
 	public List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> getDescriptorsForImport(@NotNull Condition<String> acceptedShortNameCondition, @NotNull NapileFile napileFile)
 	{
-		BindingContext context = ModuleAnalyzerUtil.lastAnalyze(napileFile).getBindingContext();
+		BindingTrace context = ModuleAnalyzerUtil.lastAnalyze(napileFile).getBindingTrace();
 		List<Pair<DeclarationDescriptor, NapileNamedDeclaration>> map = new ArrayList<Pair<DeclarationDescriptor, NapileNamedDeclaration>>();
 		GlobalSearchScope scope = GlobalSearchScope.moduleWithLibrariesScope(ModuleUtil.findModuleForPsiElement(napileFile));
 
@@ -99,7 +100,7 @@ public class NapileClassResolver
 				Collection<NapileClass> list = NapileFullClassNameIndex.getInstance().get(fqName, project, scope);
 				for(NapileClassLike classLike : list)
 				{
-					ClassDescriptor classDescriptor = context.get(BindingContext.CLASS, classLike);
+					ClassDescriptor classDescriptor = context.get(BindingTraceKeys.CLASS, classLike);
 					if(classDescriptor != null && classDescriptor.isStatic())
 						map.add(new Pair<DeclarationDescriptor, NapileNamedDeclaration>(classDescriptor, classLike));
 				}
@@ -113,7 +114,7 @@ public class NapileClassResolver
 				Collection<NapileNamedMethodOrMacro> list = NapileShortMethodNameIndex.getInstance().get(name, project, scope);
 				for(NapileNamedMethodOrMacro method : list)
 				{
-					SimpleMethodDescriptor methodDescriptor = context.get(BindingContext.METHOD, method);
+					SimpleMethodDescriptor methodDescriptor = context.get(BindingTraceKeys.METHOD, method);
 					if(methodDescriptor != null && methodDescriptor.isStatic())
 						map.add(new Pair<DeclarationDescriptor, NapileNamedDeclaration>(methodDescriptor, method));
 				}

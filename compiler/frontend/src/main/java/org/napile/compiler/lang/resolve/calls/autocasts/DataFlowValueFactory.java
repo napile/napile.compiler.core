@@ -26,7 +26,8 @@ import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
 import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileThisExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
@@ -44,7 +45,7 @@ public class DataFlowValueFactory
 	}
 
 	@NotNull
-	public DataFlowValue createDataFlowValue(@NotNull NapileExpression expression, @NotNull JetType type, @NotNull BindingContext bindingContext)
+	public DataFlowValue createDataFlowValue(@NotNull NapileExpression expression, @NotNull JetType type, @NotNull BindingTrace bindingTrace)
 	{
 		if(expression instanceof NapileConstantExpression)
 		{
@@ -55,7 +56,7 @@ public class DataFlowValueFactory
 		if(TypeUtils.isEqualFqName(type, NapileLangPackage.NULL))
 			return new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(type.getMemberScope(), NapileLangPackage.NULL, true), false, Nullability.NULL);
 
-		Pair<Object, Boolean> result = getIdForStableIdentifier(expression, bindingContext, false);
+		Pair<Object, Boolean> result = getIdForStableIdentifier(expression, bindingTrace, false);
 		return new DataFlowValue(result.first == null ? expression : result.first, type, result.second, getImmanentNullability(type));
 	}
 
@@ -79,7 +80,7 @@ public class DataFlowValueFactory
 	}
 
 	@NotNull
-	private static Pair<Object, Boolean> getIdForStableIdentifier(@NotNull NapileExpression expression, @NotNull BindingContext bindingContext, boolean allowNamespaces)
+	private static Pair<Object, Boolean> getIdForStableIdentifier(@NotNull NapileExpression expression, @NotNull BindingTrace bindingTrace, boolean allowNamespaces)
 	{
 		if(expression instanceof NapileParenthesizedExpression)
 		{
@@ -89,7 +90,7 @@ public class DataFlowValueFactory
 			{
 				return Pair.create(null, false);
 			}
-			return getIdForStableIdentifier(innerExpression, bindingContext, allowNamespaces);
+			return getIdForStableIdentifier(innerExpression, bindingTrace, allowNamespaces);
 		}
 		else if(expression instanceof NapileQualifiedExpressionImpl)
 		{
@@ -99,14 +100,14 @@ public class DataFlowValueFactory
 			{
 				return Pair.create(null, false);
 			}
-			Pair<Object, Boolean> receiverId = getIdForStableIdentifier(qualifiedExpression.getReceiverExpression(), bindingContext, true);
-			Pair<Object, Boolean> selectorId = getIdForStableIdentifier(selectorExpression, bindingContext, allowNamespaces);
+			Pair<Object, Boolean> receiverId = getIdForStableIdentifier(qualifiedExpression.getReceiverExpression(), bindingTrace, true);
+			Pair<Object, Boolean> selectorId = getIdForStableIdentifier(selectorExpression, bindingTrace, allowNamespaces);
 			return receiverId.second ? selectorId : Pair.create(receiverId.first, false);
 		}
 		if(expression instanceof NapileSimpleNameExpression)
 		{
 			NapileSimpleNameExpression simpleNameExpression = (NapileSimpleNameExpression) expression;
-			DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, simpleNameExpression);
+			DeclarationDescriptor declarationDescriptor = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, simpleNameExpression);
 			if(declarationDescriptor instanceof VariableDescriptor || declarationDescriptor instanceof VariableAccessorDescriptor)
 			{
 				return Pair.create((Object) declarationDescriptor, isStableVariable(declarationDescriptor));
@@ -124,7 +125,7 @@ public class DataFlowValueFactory
 		else if(expression instanceof NapileThisExpression)
 		{
 			NapileThisExpression thisExpression = (NapileThisExpression) expression;
-			DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, thisExpression.getInstanceReference());
+			DeclarationDescriptor declarationDescriptor = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, thisExpression.getInstanceReference());
 			if(declarationDescriptor instanceof CallableDescriptor)
 			{
 				return Pair.create(null, true);

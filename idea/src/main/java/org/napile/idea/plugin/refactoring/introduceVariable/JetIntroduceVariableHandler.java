@@ -29,7 +29,8 @@ import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -140,12 +141,12 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 				return;
 			}
 		}
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) expression.getContainingFile()).getBindingContext();
-		final JetType expressionType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression); //can be null or error type
-		JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, expression);
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) expression.getContainingFile()).getBindingTrace();
+		final JetType expressionType = bindingContext.get(BindingTraceKeys.EXPRESSION_TYPE, expression); //can be null or error type
+		JetScope scope = bindingContext.get(BindingTraceKeys.RESOLUTION_SCOPE, expression);
 		if(scope != null)
 		{
-			DataFlowInfo dataFlowInfo = bindingContext.get(BindingContext.NON_DEFAULT_EXPRESSION_DATA_FLOW, expression);
+			DataFlowInfo dataFlowInfo = bindingContext.get(BindingTraceKeys.NON_DEFAULT_EXPRESSION_DATA_FLOW, expression);
 			if(dataFlowInfo == null)
 			{
 				dataFlowInfo = DataFlowInfo.EMPTY;
@@ -501,7 +502,7 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 
 		final ArrayList<NapileExpression> result = new ArrayList<NapileExpression>();
 
-		final BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) expression.getContainingFile()).getBindingContext();
+		final BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) expression.getContainingFile()).getBindingTrace();
 
 		NapileVisitorVoid visitor = new NapileVisitorVoid()
 		{
@@ -526,8 +527,8 @@ public class JetIntroduceVariableHandler extends JetIntroduceHandlerBase
 							{
 								NapileSimpleNameExpression expr1 = (NapileSimpleNameExpression) element1.getParent();
 								NapileSimpleNameExpression expr2 = (NapileSimpleNameExpression) element2.getParent();
-								DeclarationDescriptor descr1 = bindingContext.get(BindingContext.REFERENCE_TARGET, expr1);
-								DeclarationDescriptor descr2 = bindingContext.get(BindingContext.REFERENCE_TARGET, expr2);
+								DeclarationDescriptor descr1 = bindingContext.get(BindingTraceKeys.REFERENCE_TARGET, expr1);
+								DeclarationDescriptor descr2 = bindingContext.get(BindingTraceKeys.REFERENCE_TARGET, expr2);
 								if(descr1 != descr2)
 								{
 									return 1;

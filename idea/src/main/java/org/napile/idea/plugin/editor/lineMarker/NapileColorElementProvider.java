@@ -37,8 +37,8 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.ValueArgument;
 import org.napile.compiler.lang.psi.util.Constant;
 import org.napile.compiler.lang.psi.util.ConstantUtil;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingReader;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.JetType;
@@ -122,20 +122,20 @@ public class NapileColorElementProvider implements ElementColorProvider
 		{
 			final AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze((NapileFile) element.getContainingFile());
 
-			final ResolvedCall<? extends CallableDescriptor> resolvedCall = analyzeExhaust.getBindingContext().get(BindingContext.RESOLVED_CALL, ((NapileCallExpression) element).getCalleeExpression());
+			final ResolvedCall<? extends CallableDescriptor> resolvedCall = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.RESOLVED_CALL, ((NapileCallExpression) element).getCalleeExpression());
 
 			CallableDescriptor descriptor = resolvedCall == null ? null : resolvedCall.getResultingDescriptor();
 
 			if(descriptor instanceof ConstructorDescriptor && DescriptorUtils.getFQName(descriptor.getContainingDeclaration()).equals(RGB_COLOR))
 			{
-				return getColorOf(analyzeExhaust.getBindingContext(), ((NapileCallExpression) element).getValueArguments());
+				return getColorOf(analyzeExhaust.getBindingTrace(), ((NapileCallExpression) element).getValueArguments());
 			}
 		}
 		else if(element instanceof NapileDelegationToSuperCall)
 		{
 			final AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze((NapileFile) element.getContainingFile());
 
-			final JetType type = analyzeExhaust.getBindingContext().get(BindingContext.TYPE, ((NapileDelegationToSuperCall) element).getTypeReference());
+			final JetType type = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.TYPE, ((NapileDelegationToSuperCall) element).getTypeReference());
 			if(type == null)
 			{
 				return null;
@@ -143,13 +143,13 @@ public class NapileColorElementProvider implements ElementColorProvider
 
 			if(RGB_COLOR.equals(TypeUtils.getFqName(type)))
 			{
-				return getColorOf(analyzeExhaust.getBindingContext(), ((NapileDelegationToSuperCall) element).getValueArguments());
+				return getColorOf(analyzeExhaust.getBindingTrace(), ((NapileDelegationToSuperCall) element).getValueArguments());
 			}
 		}
 		return null;
 	}
 
-	private static Color getColorOf(BindingReader bindingTrace, List<? extends ValueArgument> valueArgumentList)
+	private static Color getColorOf(BindingTrace bindingTrace, List<? extends ValueArgument> valueArgumentList)
 	{
 		List<Constant> constants = new ArrayList<Constant>(valueArgumentList.size());
 

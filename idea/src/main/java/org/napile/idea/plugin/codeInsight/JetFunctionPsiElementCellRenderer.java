@@ -18,7 +18,8 @@ package org.napile.idea.plugin.codeInsight;
 
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.render.DescriptorRenderer;
 import com.intellij.ide.util.DefaultPsiElementCellRenderer;
 import com.intellij.psi.PsiElement;
@@ -29,9 +30,9 @@ import com.intellij.psi.PsiElement;
  */
 public class JetFunctionPsiElementCellRenderer extends DefaultPsiElementCellRenderer
 {
-	private final BindingContext bindingContext;
+	private final BindingTrace bindingContext;
 
-	public JetFunctionPsiElementCellRenderer(BindingContext bindingContext)
+	public JetFunctionPsiElementCellRenderer(BindingTrace bindingContext)
 	{
 		this.bindingContext = bindingContext;
 	}
@@ -42,7 +43,7 @@ public class JetFunctionPsiElementCellRenderer extends DefaultPsiElementCellRend
 		if(element instanceof NapileNamedMethodOrMacro)
 		{
 			NapileNamedMethodOrMacro function = (NapileNamedMethodOrMacro) element;
-			SimpleMethodDescriptor fd = bindingContext.get(BindingContext.METHOD, function);
+			SimpleMethodDescriptor fd = bindingContext.get(BindingTraceKeys.METHOD, function);
 			assert fd != null;
 			return DescriptorRenderer.TEXT.render(fd);
 		}

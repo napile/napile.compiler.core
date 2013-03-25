@@ -34,7 +34,7 @@ import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.NapileForExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 
 /**
  * @author VISTALL
@@ -54,7 +54,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 	@Override
 	protected void beforeLoop(ExpressionCodegen gen, InstructionAdapter instructions)
 	{
-		loopParameterDescriptor = gen.bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, expression.getLoopParameter());
+		loopParameterDescriptor = gen.bindingTrace.safeGet(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, expression.getLoopParameter());
 		int loopParameterIndex = gen.frameMap.enter(loopParameterDescriptor);
 
 		// temp var for iterator ref
@@ -63,7 +63,7 @@ public class ForLoopCodegen extends LoopCodegen<NapileForExpression>
 		instructions.visitLocalVariable(loopParameterDescriptor.getName().getName());
 
 		// put Iterator instance to stack
-		MethodDescriptor methodDescriptor = gen.bindingTrace.safeGet(BindingContext.LOOP_RANGE_ITERATOR, expression.getLoopRange());
+		MethodDescriptor methodDescriptor = gen.bindingTrace.safeGet(BindingTraceKeys.LOOP_RANGE_ITERATOR, expression.getLoopRange());
 		gen.gen(expression.getLoopRange(), TypeConstants.ITERATOR__ANY__);
 		instructions.invokeVirtual(AsmNodeUtil.ref(methodDescriptor, gen.bindingTrace, gen.classNode), false);
 		instructions.localPut(loopIteratorIndex);

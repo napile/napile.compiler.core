@@ -37,7 +37,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -86,7 +86,7 @@ public class TypeResolver
 	@NotNull
 	public JetType resolveType(@NotNull final JetScope scope, @NotNull final NapileTypeReference typeReference, BindingTrace trace, boolean checkBounds)
 	{
-		JetType cachedType = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
+		JetType cachedType = trace.get(BindingTraceKeys.TYPE, typeReference);
 		if(cachedType != null)
 			return cachedType;
 
@@ -94,8 +94,8 @@ public class TypeResolver
 
 		NapileTypeElement typeElement = typeReference.getTypeElement();
 		JetType type = resolveTypeElement(scope, annotations, typeElement, false, trace, checkBounds);
-		trace.record(BindingContext.TYPE, typeReference, type);
-		trace.record(BindingContext.TYPE_RESOLUTION_SCOPE, typeReference, scope);
+		trace.record(BindingTraceKeys.TYPE, typeReference, type);
+		trace.record(BindingTraceKeys.TYPE_RESOLUTION_SCOPE, typeReference, scope);
 
 		return type;
 	}
@@ -130,7 +130,7 @@ public class TypeResolver
 					{
 						TypeParameterDescriptor typeParameterDescriptor = (TypeParameterDescriptor) classifierDescriptor;
 
-						trace.record(BindingContext.REFERENCE_TARGET, referenceExpression, typeParameterDescriptor);
+						trace.record(BindingTraceKeys.REFERENCE_TARGET, referenceExpression, typeParameterDescriptor);
 
 						JetScope scopeForTypeParameter = getScopeForTypeParameter(typeParameterDescriptor, checkBounds);
 						if(scopeForTypeParameter instanceof ErrorUtils.ErrorScope)
@@ -148,7 +148,7 @@ public class TypeResolver
 					{
 						ClassDescriptor classDescriptor = (ClassDescriptor) classifierDescriptor;
 
-						trace.record(BindingContext.REFERENCE_TARGET, referenceExpression, classifierDescriptor);
+						trace.record(BindingTraceKeys.REFERENCE_TARGET, referenceExpression, classifierDescriptor);
 						TypeConstructor typeConstructor = classifierDescriptor.getTypeConstructor();
 						List<JetType> arguments = resolveTypes(scope, type.getTypeArguments(), trace, checkBounds);
 						List<TypeParameterDescriptor> parameters = typeConstructor.getParameters();
@@ -241,7 +241,7 @@ public class TypeResolver
 
 						MultiTypeEntry entry = new MultiTypeEntry(i, variable.isMutable(), variable.getNameAsSafeName(), type);
 
-						trace.record(BindingContext.VARIABLE, variable, entry.descriptor);
+						trace.record(BindingTraceKeys.VARIABLE, variable, entry.descriptor);
 
 						variableDescriptors.add(entry);
 					}
@@ -262,7 +262,7 @@ public class TypeResolver
 
 					assert classLike != null;
 
-					ClassDescriptor classDescriptor = trace.safeGet(BindingContext.CLASS, classLike);
+					ClassDescriptor classDescriptor = trace.safeGet(BindingTraceKeys.CLASS, classLike);
 
 					result[0] = new JetTypeImpl(annotations, new SelfTypeConstructorImpl(classDescriptor), nullable, Collections.<JetType>emptyList(), scope);
 				}

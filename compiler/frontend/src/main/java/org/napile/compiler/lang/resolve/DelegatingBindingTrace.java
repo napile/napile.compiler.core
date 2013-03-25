@@ -16,7 +16,6 @@
 
 package org.napile.compiler.lang.resolve;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -38,51 +37,13 @@ import com.google.common.collect.Lists;
  */
 public class DelegatingBindingTrace implements BindingTrace
 {
-	private final BindingContext parentContext;
+	private final BindingTrace parentTrace;
 	private final MutableSlicedMap map = SlicedMapImpl.create();
 	private final List<Diagnostic> diagnostics = Lists.newArrayList();
 
-	private final BindingContext bindingContext = new BindingContext()
+	public DelegatingBindingTrace(BindingTrace parentTrace)
 	{
-		@Override
-		public Collection<Diagnostic> getDiagnostics()
-		{
-			ArrayList<Diagnostic> mergedDiagnostics = new ArrayList<Diagnostic>(diagnostics);
-			mergedDiagnostics.addAll(parentContext.getDiagnostics());
-			return mergedDiagnostics;
-		}
-
-		@Override
-		public <K, V> V get(ReadOnlySlice<K, V> slice, K key)
-		{
-			return DelegatingBindingTrace.this.get(slice, key);
-		}
-
-		@NotNull
-		@Override
-		public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
-		{
-			return DelegatingBindingTrace.this.safeGet(slice, key);
-		}
-
-		@NotNull
-		@Override
-		public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
-		{
-			return DelegatingBindingTrace.this.getKeys(slice);
-		}
-	};
-
-	public DelegatingBindingTrace(BindingContext parentContext)
-	{
-		this.parentContext = parentContext;
-	}
-
-	@Override
-	@NotNull
-	public BindingContext getBindingContext()
-	{
-		return bindingContext;
+		this.parentTrace = parentTrace;
 	}
 
 	@Override
@@ -95,6 +56,13 @@ public class DelegatingBindingTrace implements BindingTrace
 	public <K> void record(WritableSlice<K, Boolean> slice, K key)
 	{
 		record(slice, key, true);
+	}
+
+	@Nullable
+	@Override
+	public BindingTrace getParent()
+	{
+		return parentTrace;
 	}
 
 	@Override
@@ -112,7 +80,7 @@ public class DelegatingBindingTrace implements BindingTrace
 			return value;
 		}
 
-		return parentContext.get(slice, key);
+		return parentTrace.get(slice, key);
 	}
 
 	@Override
@@ -127,7 +95,7 @@ public class DelegatingBindingTrace implements BindingTrace
 	public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
 	{
 		Collection<K> keys = map.getKeys(slice);
-		Collection<K> fromParent = parentContext.getKeys(slice);
+		Collection<K> fromParent = parentTrace.getKeys(slice);
 		if(keys.isEmpty())
 			return fromParent;
 		if(fromParent.isEmpty())

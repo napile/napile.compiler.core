@@ -19,7 +19,8 @@ package org.napile.doc.compiler.info;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 
 /**
  * @author VISTALL
@@ -27,7 +28,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
  */
 public class VariableInfo extends NamedDocableInfo<NapileVariable>
 {
-	public VariableInfo(BindingContext bindingContext, NapileVariable element)
+	public VariableInfo(BindingTrace bindingContext, NapileVariable element)
 	{
 		super(bindingContext, element);
 	}
@@ -36,7 +37,7 @@ public class VariableInfo extends NamedDocableInfo<NapileVariable>
 	@NotNull
 	public String getDeclaration()
 	{
-		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VARIABLE, element);
+		VariableDescriptor variableDescriptor = bindingTrace.get(BindingTraceKeys.VARIABLE, element);
 		return variableDescriptor == null ? "null" : DocRender.DOC_RENDER.render(variableDescriptor);
 	}
 
@@ -47,7 +48,7 @@ public class VariableInfo extends NamedDocableInfo<NapileVariable>
 
 	public String getReturnType()
 	{
-		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VARIABLE, element);
+		VariableDescriptor variableDescriptor = bindingTrace.get(BindingTraceKeys.VARIABLE, element);
 		return variableDescriptor == null ? "null" : DocRender.DOC_RENDER.renderTypeWithShortNames(variableDescriptor.getType());
 	}
 }

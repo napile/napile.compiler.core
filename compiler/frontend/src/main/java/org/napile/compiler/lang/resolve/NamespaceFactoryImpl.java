@@ -16,9 +16,9 @@
 
 package org.napile.compiler.lang.resolve;
 
-import static org.napile.compiler.lang.resolve.BindingContext.NAMESPACE_TO_FILES;
-import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
-import static org.napile.compiler.lang.resolve.BindingContext.RESOLUTION_SCOPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.NAMESPACE_TO_FILES;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.REFERENCE_TARGET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.RESOLUTION_SCOPE;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -89,7 +89,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 
 			PackageDescriptorImpl namespaceDescriptor = createNamespaceDescriptorIfNeeded(null, currentOwner, namespaceName, nameExpression, handler);
 
-			trace.record(BindingContext.NAMESPACE_IS_SRC, namespaceDescriptor, true);
+			trace.record(BindingTraceKeys.NAMESPACE_IS_SRC, namespaceDescriptor, true);
 			trace.record(RESOLUTION_SCOPE, nameExpression, outerScope);
 
 			outerScope = namespaceDescriptor.getMemberScope();
@@ -109,7 +109,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 			name = filePackage.getNameAsName();
 			namespaceDescriptor = createNamespaceDescriptorIfNeeded(file, currentOwner, name, filePackage.getLastPartExpression(), handler);
 
-			trace.record(BindingContext.NAMESPACE_IS_SRC, namespaceDescriptor, true);
+			trace.record(BindingTraceKeys.NAMESPACE_IS_SRC, namespaceDescriptor, true);
 			trace.record(RESOLUTION_SCOPE, filePackage, outerScope);
 		}
 
@@ -186,7 +186,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 		owner.addNamespace(namespaceDescriptor);
 		if(expression != null)
 		{
-			trace.record(BindingContext.PACKAGE, expression, namespaceDescriptor);
+			trace.record(BindingTraceKeys.PACKAGE, expression, namespaceDescriptor);
 		}
 		return namespaceDescriptor;
 	}
@@ -200,7 +200,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 
 		if(file != null)
 		{
-			trace.record(BindingContext.FILE_TO_NAMESPACE, file, packageDescriptor);
+			trace.record(BindingTraceKeys.FILE_TO_NAMESPACE, file, packageDescriptor);
 
 			// Register files corresponding to this namespace
 			// The trace currently does not support bi-di multimaps that would handle this task nicer
@@ -210,7 +210,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 				files = Sets.newIdentityHashSet();
 			}
 			files.add(file);
-			trace.record(BindingContext.NAMESPACE_TO_FILES, packageDescriptor, files);
+			trace.record(BindingTraceKeys.NAMESPACE_TO_FILES, packageDescriptor, files);
 		}
 	}
 }

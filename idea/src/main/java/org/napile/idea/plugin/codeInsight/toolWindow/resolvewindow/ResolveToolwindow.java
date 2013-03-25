@@ -19,9 +19,9 @@
  */
 package org.napile.idea.plugin.codeInsight.toolWindow.resolvewindow;
 
-import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
-import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
-import static org.napile.compiler.lang.resolve.BindingContext.RESOLVED_CALL;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.EXPRESSION_TYPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.REFERENCE_TARGET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.RESOLVED_CALL;
 import static org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo.BOUNDS_FOR_KNOWNS;
 import static org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo.BOUNDS_FOR_UNKNOWNS;
 import static org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo.Data;
@@ -51,7 +51,7 @@ import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo;
 import org.napile.compiler.lang.resolve.calls.ResolutionTask;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
@@ -129,7 +129,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 		{
 			final NapileFile psiFile = editorLocation.getFile();
 
-			BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(psiFile).getBindingContext();
+			BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(psiFile).getBindingTrace();
 
 
 			PsiElement elementAtOffset;
@@ -239,7 +239,7 @@ public class ResolveToolwindow extends JPanel implements Disposable
 
 
 	@Nullable
-	private static <D> PsiElement findData(BindingContext bindingContext, PsiElement currentElement, ReadOnlySlice<PsiElement, D> slice)
+	private static <D> PsiElement findData(BindingTrace bindingContext, PsiElement currentElement, ReadOnlySlice<PsiElement, D> slice)
 	{
 		while(currentElement != null && !(currentElement instanceof PsiFile))
 		{

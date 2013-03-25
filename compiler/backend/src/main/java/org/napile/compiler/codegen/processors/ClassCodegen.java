@@ -41,7 +41,7 @@ import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
 import com.intellij.openapi.util.Pair;
@@ -65,8 +65,8 @@ public class ClassCodegen extends NapileVisitorVoid
 
 	public ClassNode gen(NapileClass napileClass, ExpressionCodegenContext context)
 	{
-		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, napileClass);
-		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, napileClass);
+		FqName fqName = bindingTrace.safeGet(BindingTraceKeys2.DECLARATION_TO_FQ_NAME, napileClass);
+		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingTraceKeys.CLASS, napileClass);
 
 		classNode = new ClassNode(ModifierCodegen.gen(classDescriptor), fqName);
 
@@ -75,8 +75,8 @@ public class ClassCodegen extends NapileVisitorVoid
 
 	public ClassNode gen(NapileAnonymClass anonymClass, ExpressionCodegenContext context)
 	{
-		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, anonymClass);
-		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, anonymClass);
+		FqName fqName = bindingTrace.safeGet(BindingTraceKeys2.DECLARATION_TO_FQ_NAME, anonymClass);
+		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingTraceKeys.CLASS, anonymClass);
 
 		classNode = new ClassNode(Modifier.list(Modifier.FINAL, Modifier.STATIC), fqName);
 
@@ -148,7 +148,7 @@ public class ClassCodegen extends NapileVisitorVoid
 	@Override
 	public void visitConstructor(NapileConstructor constructor)
 	{
-		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingContext.CONSTRUCTOR, constructor);
+		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingTraceKeys.CONSTRUCTOR, constructor);
 		if(constructorDescriptor.isStatic())
 		{
 			NapileExpression expression = constructor.getBodyExpression();
@@ -188,7 +188,7 @@ public class ClassCodegen extends NapileVisitorVoid
 	@Override
 	public void visitVariable(NapileVariable variable)
 	{
-		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, variable);
+		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingTraceKeys.VARIABLE, variable);
 
 		TypeNode type = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
 
@@ -226,7 +226,7 @@ public class ClassCodegen extends NapileVisitorVoid
 	@Override
 	public void visitEnumValue(NapileEnumValue value)
 	{
-		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingContext.VARIABLE, value);
+		VariableDescriptor variableDescriptor = bindingTrace.safeGet(BindingTraceKeys.VARIABLE, value);
 
 		FqName classFqName = classNode.name.parent().child(Name.identifier(classNode.name.shortName() + AsmConstants.ANONYM_SPLITTER + variableDescriptor.getName()));
 
@@ -240,7 +240,7 @@ public class ClassCodegen extends NapileVisitorVoid
 
 		VariableCodegen.getSetterAndGetter(variableDescriptor, value, classNode, bindingTrace, true);
 
-		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingContext.CLASS, value);
+		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingTraceKeys.CLASS, value);
 		ClassNode innerClassNode = new ClassNode(Modifier.list(Modifier.STATIC, Modifier.FINAL), classFqName);
 		for(JetType superType : classDescriptor.getSupertypes())
 			innerClassNode.supers.add(TypeTransformer.toAsmType(bindingTrace, superType, classNode));
@@ -270,7 +270,7 @@ public class ClassCodegen extends NapileVisitorVoid
 	@Override
 	public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro method)
 	{
-		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, method);
+		SimpleMethodDescriptor methodDescriptor = (SimpleMethodDescriptor) bindingTrace.safeGet(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, method);
 
 		MethodNode methodNode = MethodCodegen.genMethodOrMacro(method, methodDescriptor, bindingTrace, classNode, context.clone());
 

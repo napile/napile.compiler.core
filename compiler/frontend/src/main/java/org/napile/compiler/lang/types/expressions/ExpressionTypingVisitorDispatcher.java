@@ -21,7 +21,7 @@ import static org.napile.compiler.lang.diagnostics.Errors.TYPECHECKER_HAS_RUN_IN
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
@@ -136,23 +136,23 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	@NotNull
 	private JetTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, NapileVisitor<JetTypeInfo, ExpressionTypingContext> visitor)
 	{
-		if(context.trace.safeGet(BindingContext.PROCESSED, expression))
+		if(context.trace.safeGet(BindingTraceKeys.PROCESSED, expression))
 		{
-			DataFlowInfo dataFlowInfo = context.trace.get(BindingContext.EXPRESSION_DATA_FLOW_INFO, expression);
+			DataFlowInfo dataFlowInfo = context.trace.get(BindingTraceKeys.EXPRESSION_DATA_FLOW_INFO, expression);
 			if(dataFlowInfo == null)
 			{
 				dataFlowInfo = context.dataFlowInfo;
 			}
-			return JetTypeInfo.create(context.trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression), dataFlowInfo);
+			return JetTypeInfo.create(context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression), dataFlowInfo);
 		}
 		JetTypeInfo result;
 		try
 		{
 			result = expression.accept(visitor, context);
 			// Some recursive definitions (object expressions) must put their types in the cache manually:
-			if(context.trace.safeGet(BindingContext.PROCESSED, expression))
+			if(context.trace.safeGet(BindingTraceKeys.PROCESSED, expression))
 			{
-				return JetTypeInfo.create(context.trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression), result.getDataFlowInfo());
+				return JetTypeInfo.create(context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression), result.getDataFlowInfo());
 			}
 
 			if(result.getType() instanceof DeferredType)
@@ -161,7 +161,7 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 			}
 			if(result.getType() != null)
 			{
-				context.trace.record(BindingContext.EXPRESSION_TYPE, expression, result.getType());
+				context.trace.record(BindingTraceKeys.EXPRESSION_TYPE, expression, result.getType());
 			}
 		}
 		catch(ReenteringLazyValueComputationException e)
@@ -170,14 +170,14 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 			result = JetTypeInfo.create(null, context.dataFlowInfo);
 		}
 
-		if(!context.trace.get(BindingContext.PROCESSED, expression) && !(expression instanceof NapileReferenceExpression))
+		if(!context.trace.get(BindingTraceKeys.PROCESSED, expression) && !(expression instanceof NapileReferenceExpression))
 		{
-			context.trace.record(BindingContext.RESOLUTION_SCOPE, expression, context.scope);
+			context.trace.record(BindingTraceKeys.RESOLUTION_SCOPE, expression, context.scope);
 		}
-		context.trace.record(BindingContext.PROCESSED, expression);
+		context.trace.record(BindingTraceKeys.PROCESSED, expression);
 		if(result.getDataFlowInfo() != context.dataFlowInfo)
 		{
-			context.trace.record(BindingContext.EXPRESSION_DATA_FLOW_INFO, expression, result.getDataFlowInfo());
+			context.trace.record(BindingTraceKeys.EXPRESSION_DATA_FLOW_INFO, expression, result.getDataFlowInfo());
 		}
 		return result;
 	}

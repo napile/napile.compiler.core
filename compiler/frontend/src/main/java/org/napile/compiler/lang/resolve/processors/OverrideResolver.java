@@ -37,7 +37,7 @@ import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
@@ -180,7 +180,7 @@ public class OverrideResolver
 				@Override
 				public void conflict(@NotNull CallableMemberDescriptor fromSuper, @NotNull CallableMemberDescriptor fromCurrent)
 				{
-					NapileDeclaration declaration = (NapileDeclaration) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), fromCurrent);
+					NapileDeclaration declaration = (NapileDeclaration) BindingTraceUtil.descriptorToDeclaration(trace, fromCurrent);
 					trace.report(Errors.CONFLICTING_OVERLOADS.on(declaration, fromCurrent, fromCurrent.getContainingDeclaration().getName().getName()));
 				}
 			});
@@ -489,7 +489,7 @@ public class OverrideResolver
 
 	private void checkOverrideForMember(@NotNull CallableMemberDescriptor declared)
 	{
-		NapileNamedDeclaration member = (NapileNamedDeclaration) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared);
+		NapileNamedDeclaration member = (NapileNamedDeclaration) BindingTraceUtil.descriptorToDeclaration(trace, declared);
 		if(member == null)
 		{
 			if(declared.getKind() != CallableMemberDescriptor.Kind.DELEGATION)
@@ -616,7 +616,7 @@ public class OverrideResolver
 		if(!fakeOverride)
 		{
 			// No check if the function is not marked as 'override'
-			NapileModifierListOwner declaration = (NapileModifierListOwner) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared);
+			NapileModifierListOwner declaration = (NapileModifierListOwner) BindingTraceUtil.descriptorToDeclaration(trace, declared);
 			if(!declaration.hasModifier(NapileTokens.OVERRIDE_KEYWORD))
 			{
 				return;
@@ -630,9 +630,9 @@ public class OverrideResolver
 		//  b) p1 must have the same name as p2
 		for(CallParameterDescriptor parameterFromSubclass : declared.getValueParameters())
 		{
-			NapileCallParameterAsVariable parameter = fakeOverride ? null : (NapileCallParameterAsVariable) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), parameterFromSubclass);
+			NapileCallParameterAsVariable parameter = fakeOverride ? null : (NapileCallParameterAsVariable) BindingTraceUtil.descriptorToDeclaration(trace, parameterFromSubclass);
 
-			NapileClassLike classElement = fakeOverride ? (NapileClassLike) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), declared.getContainingDeclaration()) : null;
+			NapileClassLike classElement = fakeOverride ? (NapileClassLike) BindingTraceUtil.descriptorToDeclaration(trace, declared.getContainingDeclaration()) : null;
 
 			if(parameterFromSubclass.declaresDefaultValue() && !fakeOverride)
 			{

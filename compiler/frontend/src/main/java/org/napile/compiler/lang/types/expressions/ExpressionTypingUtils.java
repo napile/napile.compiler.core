@@ -17,9 +17,9 @@
 package org.napile.compiler.lang.types.expressions;
 
 import static org.napile.compiler.lang.diagnostics.Errors.RESULT_TYPE_MISMATCH;
-import static org.napile.compiler.lang.resolve.BindingContext.CAPTURED_IN_CLOSURE;
-import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
-import static org.napile.compiler.lang.resolve.BindingContext.PROCESSED;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.CAPTURED_IN_CLOSURE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.EXPRESSION_TYPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.PROCESSED;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,9 +39,9 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileImportDirective;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.BindingTraceContext;
+import org.napile.compiler.lang.resolve.BindingTraceImpl;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemImpl;
@@ -164,7 +164,7 @@ public class ExpressionTypingUtils
 
 	public static void checkWrappingInRef(NapileSimpleNameExpression expression, ExpressionTypingContext context)
 	{
-		VariableDescriptor variable = BindingContextUtils.extractVariableDescriptorIfAny(context.trace.getBindingContext(), expression, true);
+		VariableDescriptor variable = BindingTraceUtil.extractVariableDescriptorIfAny(context.trace, expression, true);
 		if(variable != null)
 		{
 			DeclarationDescriptor containingDeclaration = variable.getContainingDeclaration();
@@ -197,7 +197,7 @@ public class ExpressionTypingUtils
 
 		NapileImportDirective importDirective = NapilePsiFactory.createImportDirective(project, callableFQN.getFqName());
 
-		Collection<? extends DeclarationDescriptor> declarationDescriptors = new QualifiedExpressionResolver().analyseImportReference(importDirective, scope, new BindingTraceContext());
+		Collection<? extends DeclarationDescriptor> declarationDescriptors = new QualifiedExpressionResolver().analyseImportReference(importDirective, scope, new BindingTraceImpl());
 
 		List<CallableDescriptor> callableExtensionDescriptors = new ArrayList<CallableDescriptor>();
 		ReceiverDescriptor receiverDescriptor = new ExpressionReceiver(receiverExpression, receiverType);

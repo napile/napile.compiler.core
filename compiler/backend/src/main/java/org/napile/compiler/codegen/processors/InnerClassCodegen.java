@@ -47,7 +47,7 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileAnonymClassExpression;
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.intellij.psi.PsiElement;
 
@@ -63,8 +63,8 @@ public class InnerClassCodegen
 
 		ClassCodegen classCodegen = new ClassCodegen(gen.bindingTrace);
 
-		FqName fqName = gen.bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, anonymClass);
-		ClassDescriptor classDescriptor = gen.bindingTrace.safeGet(BindingContext.CLASS, anonymClass);
+		FqName fqName = gen.bindingTrace.safeGet(BindingTraceKeys2.DECLARATION_TO_FQ_NAME, anonymClass);
+		ClassDescriptor classDescriptor = gen.bindingTrace.safeGet(BindingTraceKeys.CLASS, anonymClass);
 		TypeNode anonymClassType = new TypeNode(false, new ClassTypeNode(fqName));
 
 		List<ClassDescriptor> outerClasses = findOuterClasses(anonymClass, gen);
@@ -152,7 +152,7 @@ public class InnerClassCodegen
 		PsiElement p = element.getParent();
 		while(p != null)
 		{
-			DeclarationDescriptor descriptor = gen.bindingTrace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, p);
+			DeclarationDescriptor descriptor = gen.bindingTrace.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, p);
 			if(!(descriptor instanceof ClassDescriptor))
 			{}
 			else if(p instanceof NapileAnonymClass)

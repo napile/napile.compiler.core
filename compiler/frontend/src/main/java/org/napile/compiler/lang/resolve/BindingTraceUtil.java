@@ -39,10 +39,27 @@ import com.intellij.psi.PsiElement;
  * @author abreslav
  * @author svtk
  */
-public class BindingContextUtils
+public class BindingTraceUtil
 {
-	private BindingContextUtils()
+	private BindingTraceUtil()
 	{
+	}
+
+	@NotNull
+	public static BindingTrace getLastParent(@NotNull final BindingTrace reader)
+	{
+		BindingTrace last = reader;
+		while(true)
+		{
+			BindingTrace parentReader = last.getParent();
+
+			if(parentReader == null)
+			{
+				return last;
+			}
+
+			last = parentReader;
+		}
 	}
 
 	private static final Slices.KeyNormalizer<DeclarationDescriptor> DECLARATION_DESCRIPTOR_NORMALIZER = new Slices.KeyNormalizer<DeclarationDescriptor>()
@@ -71,15 +88,15 @@ public class BindingContextUtils
 	/*package*/ static final ReadOnlySlice<DeclarationDescriptor, PsiElement> DESCRIPTOR_TO_DECLARATION = Slices.<DeclarationDescriptor, PsiElement>sliceBuilder().setKeyNormalizer(DECLARATION_DESCRIPTOR_NORMALIZER).setDebugName("DESCRIPTOR_TO_DECLARATION").build();
 
 	@Nullable
-	public static PsiElement resolveToDeclarationPsiElement(@NotNull BindingContext bindingContext, @Nullable NapileReferenceExpression referenceExpression)
+	public static PsiElement resolveToDeclarationPsiElement(@NotNull BindingTrace bindingTrace, @Nullable NapileReferenceExpression referenceExpression)
 	{
-		DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, referenceExpression);
+		DeclarationDescriptor declarationDescriptor = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, referenceExpression);
 		if(declarationDescriptor == null)
 		{
-			return bindingContext.get(BindingContext.LABEL_TARGET, referenceExpression);
+			return bindingTrace.get(BindingTraceKeys.LABEL_TARGET, referenceExpression);
 		}
 
-		PsiElement element = descriptorToDeclaration(bindingContext, declarationDescriptor);
+		PsiElement element = descriptorToDeclaration(bindingTrace, declarationDescriptor);
 		if(element != null)
 		{
 			return element;
@@ -89,15 +106,15 @@ public class BindingContextUtils
 	}
 
 	@NotNull
-	public static List<PsiElement> resolveToDeclarationPsiElements(@NotNull BindingContext bindingContext, @Nullable NapileReferenceExpression referenceExpression)
+	public static List<PsiElement> resolveToDeclarationPsiElements(@NotNull BindingTrace bindingTrace, @Nullable NapileReferenceExpression referenceExpression)
 	{
-		DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, referenceExpression);
+		DeclarationDescriptor declarationDescriptor = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, referenceExpression);
 		if(declarationDescriptor == null)
 		{
-			return Lists.newArrayList(bindingContext.get(BindingContext.LABEL_TARGET, referenceExpression));
+			return Lists.newArrayList(bindingTrace.get(BindingTraceKeys.LABEL_TARGET, referenceExpression));
 		}
 
-		List<PsiElement> elements = descriptorToDeclarations(bindingContext, declarationDescriptor);
+		List<PsiElement> elements = descriptorToDeclarations(bindingTrace, declarationDescriptor);
 		if(elements.size() > 0)
 		{
 			return elements;
@@ -108,20 +125,20 @@ public class BindingContextUtils
 
 
 	@Nullable
-	public static VariableDescriptor extractVariableDescriptorIfAny(@NotNull BindingContext bindingContext, @Nullable NapileElement element, boolean onlyReference)
+	public static VariableDescriptor extractVariableDescriptorIfAny(@NotNull BindingTrace bindingTrace, @Nullable NapileElement element, boolean onlyReference)
 	{
 		DeclarationDescriptor descriptor = null;
 		if(!onlyReference && (element instanceof NapileVariable || element instanceof NapileCallParameterAsVariable))
 		{
-			descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
+			descriptor = bindingTrace.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, element);
 		}
 		else if(element instanceof NapileSimpleNameExpression)
 		{
-			descriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, (NapileSimpleNameExpression) element);
+			descriptor = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, (NapileSimpleNameExpression) element);
 		}
 		else if(element instanceof NapileQualifiedExpressionImpl)
 		{
-			descriptor = extractVariableDescriptorIfAny(bindingContext, ((NapileQualifiedExpressionImpl) element).getSelectorExpression(), onlyReference);
+			descriptor = extractVariableDescriptorIfAny(bindingTrace, ((NapileQualifiedExpressionImpl) element).getSelectorExpression(), onlyReference);
 		}
 		if(descriptor instanceof VariableDescriptor)
 			return (VariableDescriptor) descriptor;
@@ -134,20 +151,20 @@ public class BindingContextUtils
 
 	// NOTE this is used by KDoc
 	@Nullable
-	public static PackageDescriptor namespaceDescriptor(@NotNull BindingContext context, @NotNull NapileFile source)
+	public static PackageDescriptor namespaceDescriptor(@NotNull BindingTrace context, @NotNull NapileFile source)
 	{
-		return context.get(BindingContext.FILE_TO_NAMESPACE, source);
+		return context.get(BindingTraceKeys.FILE_TO_NAMESPACE, source);
 	}
 
 	@Nullable
-	private static PsiElement doGetDescriptorToDeclaration(@NotNull BindingContext context, @NotNull DeclarationDescriptor descriptor)
+	private static PsiElement doGetDescriptorToDeclaration(@NotNull BindingTrace context, @NotNull DeclarationDescriptor descriptor)
 	{
 		return context.get(DESCRIPTOR_TO_DECLARATION, descriptor);
 	}
 
 	// NOTE this is also used by KDoc
 	@Nullable
-	public static PsiElement descriptorToDeclaration(@NotNull BindingContext context, @NotNull DeclarationDescriptor descriptor)
+	public static PsiElement descriptorToDeclaration(@NotNull BindingTrace context, @NotNull DeclarationDescriptor descriptor)
 	{
 		if(descriptor instanceof CallableMemberDescriptor)
 		{
@@ -164,7 +181,7 @@ public class BindingContextUtils
 	}
 
 	@NotNull
-	public static List<PsiElement> descriptorToDeclarations(@NotNull BindingContext context, @NotNull DeclarationDescriptor descriptor)
+	public static List<PsiElement> descriptorToDeclarations(@NotNull BindingTrace context, @NotNull DeclarationDescriptor descriptor)
 	{
 		if(descriptor instanceof CallableMemberDescriptor)
 		{
@@ -185,7 +202,7 @@ public class BindingContextUtils
 	}
 
 	@Nullable
-	public static PsiElement callableDescriptorToDeclaration(@NotNull BindingContext context, @NotNull CallableMemberDescriptor callable)
+	public static PsiElement callableDescriptorToDeclaration(@NotNull BindingTrace context, @NotNull CallableMemberDescriptor callable)
 	{
 		if(callable.getKind() != CallableMemberDescriptor.Kind.DECLARATION)
 		{
@@ -204,7 +221,7 @@ public class BindingContextUtils
 		return doGetDescriptorToDeclaration(context, callable.getOriginal());
 	}
 
-	private static List<PsiElement> callableDescriptorToDeclarations(@NotNull BindingContext context, @NotNull CallableMemberDescriptor callable)
+	private static List<PsiElement> callableDescriptorToDeclarations(@NotNull BindingTrace bindingTrace, @NotNull CallableMemberDescriptor callable)
 	{
 		if(callable.getKind() != CallableMemberDescriptor.Kind.DECLARATION)
 		{
@@ -212,16 +229,16 @@ public class BindingContextUtils
 			Set<? extends CallableMemberDescriptor> overriddenDescriptors = callable.getOverriddenDescriptors();
 			for(CallableMemberDescriptor overridden : overriddenDescriptors)
 			{
-				r.addAll(callableDescriptorToDeclarations(context, overridden));
+				r.addAll(callableDescriptorToDeclarations(bindingTrace, overridden));
 			}
 			return r;
 		}
-		PsiElement psiElement = doGetDescriptorToDeclaration(context, callable);
+		PsiElement psiElement = doGetDescriptorToDeclaration(bindingTrace, callable);
 		return psiElement != null ? Lists.newArrayList(psiElement) : Lists.<PsiElement>newArrayList();
 	}
 
 	@Nullable
-	public static PsiElement classDescriptorToDeclaration(@NotNull BindingContext context, @NotNull ClassDescriptor clazz)
+	public static PsiElement classDescriptorToDeclaration(@NotNull BindingTrace context, @NotNull ClassDescriptor clazz)
 	{
 		return doGetDescriptorToDeclaration(context, clazz);
 	}
@@ -231,6 +248,6 @@ public class BindingContextUtils
 		if(method.getKind() != CallableMemberDescriptor.Kind.DECLARATION)
 			throw new IllegalArgumentException("function of kind " + method.getKind() + " cannot have declaration");
 
-		trace.record(BindingContext.METHOD, psiElement, method);
+		trace.record(BindingTraceKeys.METHOD, psiElement, method);
 	}
 }

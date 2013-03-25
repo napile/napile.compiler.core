@@ -21,7 +21,7 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.di.InjectorForTopDownAnalyzerBasic;
 import org.napile.compiler.lang.descriptors.ModuleDescriptor;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.BindingTraceContext;
+import org.napile.compiler.lang.resolve.BindingTraceImpl;
 import org.napile.compiler.lang.resolve.CachedBodiesResolveContext;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
@@ -40,18 +40,18 @@ public class AnalyzerFacade
 	@NotNull
 	public static AnalyzeExhaust analyzeFiles(@NotNull Project project, @NotNull AnalyzeContext analyzeContext, @NotNull Predicate<NapileFile> predicate)
 	{
-		BindingTraceContext bindingTraceContext = new BindingTraceContext();
+		BindingTraceImpl bindingTraceImpl = new BindingTraceImpl();
 
 		final ModuleDescriptor owner = new ModuleDescriptor(Name.special("<module>"));
 
 		TopDownAnalysisParameters topDownAnalysisParameters = new TopDownAnalysisParameters(predicate, false);
 
-		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceContext), owner);
+		InjectorForTopDownAnalyzerBasic injector = new InjectorForTopDownAnalyzerBasic(project, topDownAnalysisParameters, new ObservableBindingTrace(bindingTraceImpl), owner);
 		try
 		{
 			injector.getTopDownAnalyzer().analyzeFiles(project, analyzeContext);
 
-			return AnalyzeExhaust.success(bindingTraceContext.getBindingContext(), new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()), injector);
+			return AnalyzeExhaust.success(bindingTraceImpl, new CachedBodiesResolveContext(injector.getTopDownAnalysisContext()), injector);
 		}
 		finally
 		{

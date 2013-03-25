@@ -16,11 +16,11 @@
 
 package org.napile.idea.plugin.editor.highlight.postHighlight;
 
-import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
-import static org.napile.compiler.lang.resolve.BindingContext.AUTO_CREATED_IT;
-import static org.napile.compiler.lang.resolve.BindingContext.CAPTURED_IN_CLOSURE;
-import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
-import static org.napile.compiler.lang.resolve.BindingContext.VARIABLE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.AUTOCAST;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.AUTO_CREATED_IT;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.CAPTURED_IN_CLOSURE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.REFERENCE_TARGET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.VARIABLE;
 
 import java.util.Collection;
 
@@ -33,7 +33,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
@@ -46,7 +46,7 @@ import com.intellij.psi.PsiElement;
  */
 public class VariablesHighlightingVisitor extends PostHighlightVisitor
 {
-	public VariablesHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
+	public VariablesHighlightingVisitor(BindingTrace context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}
@@ -54,13 +54,13 @@ public class VariablesHighlightingVisitor extends PostHighlightVisitor
 	@Override
 	public void visitSimpleNameExpression(@NotNull NapileSimpleNameExpression expression)
 	{
-		DeclarationDescriptor target = bindingContext.get(REFERENCE_TARGET, expression);
+		DeclarationDescriptor target = bindingTrace.get(REFERENCE_TARGET, expression);
 		if(target == null)
 			return;
 
 		if(target instanceof VariableDescriptor)
 		{
-			if(Boolean.TRUE.equals(bindingContext.get(AUTO_CREATED_IT, (VariableDescriptor) target)))
+			if(Boolean.TRUE.equals(bindingTrace.get(AUTO_CREATED_IT, (VariableDescriptor) target)))
 				highlightInfo(expression, "Auto-generated variable", NapileHighlightingColors.AUTO_GENERATED_VAR);
 
 			highlightVariable(expression, (VariableDescriptor) target);
@@ -93,7 +93,7 @@ public class VariablesHighlightingVisitor extends PostHighlightVisitor
 	@Override
 	public void visitExpression(@NotNull NapileExpression expression)
 	{
-		JetType autoCast = bindingContext.get(AUTOCAST, expression);
+		JetType autoCast = bindingTrace.get(AUTOCAST, expression);
 		if(autoCast != null)
 		{
 			highlightInfo(expression, "Automatically cast to " + DescriptorRenderer.TEXT.renderType(autoCast) ,NapileHighlightingColors.AUTO_CASTED_VALUE);
@@ -103,7 +103,7 @@ public class VariablesHighlightingVisitor extends PostHighlightVisitor
 
 	private void visitVariableDeclaration(NapileNamedDeclaration declaration)
 	{
-		VariableDescriptor declarationDescriptor = bindingContext.get(VARIABLE, declaration);
+		VariableDescriptor declarationDescriptor = bindingTrace.get(VARIABLE, declaration);
 		PsiElement nameIdentifier = declaration.getNameIdentifier();
 		if(nameIdentifier != null && declarationDescriptor != null)
 			highlightVariable(nameIdentifier, declarationDescriptor);
@@ -111,7 +111,7 @@ public class VariablesHighlightingVisitor extends PostHighlightVisitor
 
 	private void highlightVariable(@NotNull PsiElement elementToHighlight, @NotNull VariableDescriptor variableDescriptor)
 	{
-		if(Boolean.TRUE.equals(bindingContext.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
+		if(Boolean.TRUE.equals(bindingTrace.get(CAPTURED_IN_CLOSURE, variableDescriptor)))
 		{
 			String msg = variableDescriptor.isMutable() ? "Wrapped into a reference object to be modified when captured in a closure" : "Value captured in a closure";
 			highlightInfo(elementToHighlight, msg, NapileHighlightingColors.WRAPPED_INTO_REF);

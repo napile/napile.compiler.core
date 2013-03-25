@@ -22,12 +22,13 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.Visibilities;
 import org.napile.compiler.lang.descriptors.Visibility;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.openapi.editor.Editor;
@@ -83,9 +84,9 @@ public class ChangeVisibilityModifierFix extends JetIntentionAction<NapileModifi
 
 	private NapileKeywordToken findVisibilityChangeTo(NapileFile file)
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
 		DeclarationDescriptor descriptor;
-		descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
+		descriptor = bindingContext.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, element);
 
 		if(!(descriptor instanceof CallableMemberDescriptor))
 			return null;

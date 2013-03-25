@@ -21,7 +21,7 @@ import java.util.Collection;
 import org.napile.compiler.lang.psi.NapileBreakExpression;
 import org.napile.compiler.lang.psi.NapileLabelExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.psi.PsiElement;
@@ -32,7 +32,7 @@ import com.intellij.psi.PsiElement;
  */
 public class LabelsHighlightingVisitor extends PostHighlightVisitor
 {
-	public LabelsHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
+	public LabelsHighlightingVisitor(BindingTrace context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

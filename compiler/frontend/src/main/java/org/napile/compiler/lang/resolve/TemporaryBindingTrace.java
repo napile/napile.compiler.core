@@ -35,7 +35,7 @@ public class TemporaryBindingTrace extends DelegatingBindingTrace
 
 	protected TemporaryBindingTrace(@NotNull BindingTrace trace)
 	{
-		super(trace.getBindingContext());
+		super(trace);
 		this.trace = trace;
 	}
 

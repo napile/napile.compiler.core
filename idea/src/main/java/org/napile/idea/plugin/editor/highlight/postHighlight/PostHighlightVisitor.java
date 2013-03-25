@@ -24,7 +24,7 @@ import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
 import com.intellij.lang.ASTNode;
@@ -38,12 +38,12 @@ import com.intellij.psi.PsiElement;
  */
 public class PostHighlightVisitor extends NapileVisitorVoid
 {
-	protected final BindingContext bindingContext;
+	protected final BindingTrace bindingTrace;
 	protected final Collection<HighlightInfo> holder;
 
-	public PostHighlightVisitor(BindingContext context, Collection<HighlightInfo> holder)
+	public PostHighlightVisitor(BindingTrace context, Collection<HighlightInfo> holder)
 	{
-		this.bindingContext = context;
+		this.bindingTrace = context;
 		this.holder = holder;
 	}
 

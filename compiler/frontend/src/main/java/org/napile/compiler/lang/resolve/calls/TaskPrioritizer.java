@@ -120,7 +120,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 
 		ProgressIndicatorProvider.checkCanceled();
 
-		AutoCastServiceImpl autoCastService = new AutoCastServiceImpl(context.dataFlowInfo, context.trace.getBindingContext());
+		AutoCastServiceImpl autoCastService = new AutoCastServiceImpl(context.dataFlowInfo, context.trace);
 		List<ReceiverDescriptor> implicitReceivers = Lists.newArrayList();
 		scope.getImplicitReceiversHierarchy(implicitReceivers);
 		boolean hasExplicitThisObject = context.call.getThisObject().exists();

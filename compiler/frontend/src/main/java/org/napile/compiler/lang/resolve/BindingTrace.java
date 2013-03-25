@@ -16,20 +16,90 @@
 
 package org.napile.compiler.lang.resolve;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.DiagnosticHolder;
+import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 
 /**
  * @author abreslav
  */
-public interface BindingTrace extends DiagnosticHolder, BindingReader
+public interface BindingTrace extends DiagnosticHolder
 {
-	@NotNull
-	BindingContext getBindingContext();
+	BindingTrace EMPTY = new BindingTrace()
+	{
+		@Override
+		public <K, V> void record(WritableSlice<K, V> slice, K key, V value)
+		{
+		}
+
+		@Override
+		public <K> void record(WritableSlice<K, Boolean> slice, K key)
+		{
+		}
+
+		@Nullable
+		@Override
+		public BindingTrace getParent()
+		{
+			return null;
+		}
+
+		@Nullable
+		@Override
+		public <K, V> V get(ReadOnlySlice<K, V> slice, K key)
+		{
+			return null;
+		}
+
+		@NotNull
+		@Override
+		public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
+		{
+			throw new IllegalArgumentException();
+		}
+
+		@NotNull
+		@Override
+		public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
+		{
+			return Collections.emptyList();
+		}
+
+		@Override
+		public void report(@NotNull Diagnostic diagnostic)
+		{
+		}
+
+		@NotNull
+		@Override
+		public List<Diagnostic> getDiagnostics()
+		{
+			return Collections.emptyList();
+		}
+	};
 
 	<K, V> void record(WritableSlice<K, V> slice, K key, V value);
 
 	// Writes TRUE for a boolean value
 	<K> void record(WritableSlice<K, Boolean> slice, K key);
+
+	@Nullable
+	BindingTrace getParent();
+
+	@Nullable
+	<K, V> V get(ReadOnlySlice<K, V> slice, K key);
+
+	@NotNull
+	<K, V> V safeGet(ReadOnlySlice<K, V> slice, K key);
+
+	// slice.isCollective() must be true
+	@NotNull
+	<K, V> Collection<K> getKeys(WritableSlice<K, V> slice);
 }

@@ -29,7 +29,7 @@ import org.napile.compiler.lang.diagnostics.Severity;
 import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightPass;
 import org.napile.idea.plugin.editor.highlight.messageRendering.IdeErrorMessages;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
@@ -91,7 +91,7 @@ public class JetPsiChecker implements Annotator
 
 			try
 			{
-				BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
+				BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
 
 				boolean isInContent = ProjectFileIndex.SERVICE.getInstance(element.getProject()).isInContent(file.getVirtualFile());
 				if(errorReportingEnabled && isInContent)

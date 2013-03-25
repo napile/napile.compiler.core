@@ -27,7 +27,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassKind;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -67,7 +67,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 			fqName = fqName.parent().child(Name.identifier(shortName.getName() + AsmConstants.ANONYM_SPLITTER + klass.getName()));
 		}
 
-		record(bindingTrace.safeGet(BindingContext.CLASS, klass), klass, fqName);
+		record(bindingTrace.safeGet(BindingTraceKeys.CLASS, klass), klass, fqName);
 		return super.visitClass(klass, fqName);
 	}
 
@@ -76,7 +76,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	{
 		NapileMethod method = PsiTreeUtil.getParentOfType(property, NapileMethod.class);
 		if(method == null)
-			record(bindingTrace.safeGet(BindingContext.VARIABLE, property), property, data.child(NapilePsiUtil.safeName(property.getName())));
+			record(bindingTrace.safeGet(BindingTraceKeys.VARIABLE, property), property, data.child(NapilePsiUtil.safeName(property.getName())));
 		return super.visitVariable(property, data);
 	}
 
@@ -85,7 +85,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	{
 		NapileMethod method = PsiTreeUtil.getParentOfType(enumValue, NapileMethod.class);
 		if(method == null)
-			record(bindingTrace.safeGet(BindingContext.VARIABLE, enumValue), enumValue, data.child(NapilePsiUtil.safeName(enumValue.getName())));
+			record(bindingTrace.safeGet(BindingTraceKeys.VARIABLE, enumValue), enumValue, data.child(NapilePsiUtil.safeName(enumValue.getName())));
 		return super.visitVariable(enumValue, data);
 	}
 
@@ -94,16 +94,16 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 	{
 		NapileVariable variable = PsiTreeUtil.getParentOfType(accessor, NapileVariable.class);
 
-		FqName fqName = bindingTrace.safeGet(BindingContext2.DECLARATION_TO_FQ_NAME, variable);
+		FqName fqName = bindingTrace.safeGet(BindingTraceKeys2.DECLARATION_TO_FQ_NAME, variable);
 
-		record(bindingTrace.safeGet(BindingContext.DECLARATION_TO_DESCRIPTOR, accessor), accessor, fqName.child(Name.identifier(fqName.shortName().getName() + AsmConstants.ANONYM_SPLITTER + accessor.getAccessorElement().getText())));
+		record(bindingTrace.safeGet(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, accessor), accessor, fqName.child(Name.identifier(fqName.shortName().getName() + AsmConstants.ANONYM_SPLITTER + accessor.getAccessorElement().getText())));
 		return super.visitVariableAccessor(accessor, data);
 	}
 
 	@Override
 	public Void visitNamedMethodOrMacro(NapileNamedMethodOrMacro function, FqName data)
 	{
-		record(bindingTrace.safeGet(BindingContext.METHOD, function), function, data.child(NapilePsiUtil.safeName(function.getName())));
+		record(bindingTrace.safeGet(BindingTraceKeys.METHOD, function), function, data.child(NapilePsiUtil.safeName(function.getName())));
 		return super.visitNamedMethodOrMacro(function, data);
 	}
 
@@ -117,14 +117,14 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 			anonymClassCounts.put(data, ++ anonymCount);
 
 		data = data.parent().child(Name.identifier(data.shortName() + AsmConstants.ANONYM_SPLITTER + anonymCount));
-		record(bindingTrace.safeGet(BindingContext.CLASS, element), element, data);
+		record(bindingTrace.safeGet(BindingTraceKeys.CLASS, element), element, data);
 		return super.visitAnonymClass(element, data);
 	}
 
 	private void record(DeclarationDescriptor descriptor, NapileDeclaration declaration, FqName fqName)
 	{
-		bindingTrace.record(BindingContext2.DECLARATION_TO_FQ_NAME, declaration, fqName);
-		bindingTrace.record(BindingContext2.DESCRIPTOR_TO_FQ_NAME, descriptor, fqName);
+		bindingTrace.record(BindingTraceKeys2.DECLARATION_TO_FQ_NAME, declaration, fqName);
+		bindingTrace.record(BindingTraceKeys2.DESCRIPTOR_TO_FQ_NAME, descriptor, fqName);
 	}
 
 	public static FqName getFqName(DeclarationDescriptor declarationDescriptor, BindingTrace bindingTrace)
@@ -132,7 +132,7 @@ public class FqNameGenerator extends NapileTreeVisitor<FqName>
 		if(declarationDescriptor instanceof ClassDescriptor)
 		{
 			if(((ClassDescriptor)declarationDescriptor).getKind() == ClassKind.ANONYM_CLASS)
-				return bindingTrace.safeGet(BindingContext2.DESCRIPTOR_TO_FQ_NAME, declarationDescriptor);
+				return bindingTrace.safeGet(BindingTraceKeys2.DESCRIPTOR_TO_FQ_NAME, declarationDescriptor);
 			else
 				return DescriptorUtils.getFQName(declarationDescriptor).toSafe();
 		}

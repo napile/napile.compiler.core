@@ -17,7 +17,7 @@
 package org.napile.doc.compiler.info;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.pegdown.PegDownProcessor;
 import com.intellij.psi.PsiElement;
 
@@ -29,13 +29,13 @@ public abstract class DocableInfo<E extends PsiElement> implements Comparable<Do
 {
 	protected static final PegDownProcessor PEG_DOWN_PROCESSOR = new PegDownProcessor();
 
-	protected final BindingContext bindingContext;
+	protected final BindingTrace bindingTrace;
 
 	public final E element;
 
-	public DocableInfo(BindingContext bindingContext, E element)
+	public DocableInfo(BindingTrace bindingTrace, E element)
 	{
-		this.bindingContext = bindingContext;
+		this.bindingTrace = bindingTrace;
 		this.element = element;
 	}
 
@@ -51,8 +51,8 @@ public abstract class DocableInfo<E extends PsiElement> implements Comparable<Do
 		return getName().compareTo(o.getName());
 	}
 
-	public BindingContext getBindingContext()
+	public BindingTrace getBindingTrace()
 	{
-		return bindingContext;
+		return bindingTrace;
 	}
 }

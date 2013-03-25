@@ -18,7 +18,7 @@ package org.napile.doc.compiler.info;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 
 /**
  * @author VISTALL
@@ -26,7 +26,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
  */
 public class CallParameterAsReference extends DocableInfo<NapileCallParameterAsReference> implements CallParameter
 {
-	public CallParameterAsReference(BindingContext bindingContext, NapileCallParameterAsReference element)
+	public CallParameterAsReference(BindingTrace bindingContext, NapileCallParameterAsReference element)
 	{
 		super(bindingContext, element);
 	}

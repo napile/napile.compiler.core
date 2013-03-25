@@ -43,7 +43,7 @@ import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileUserType;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.Importer;
@@ -363,7 +363,7 @@ public class QualifiedExpressionResolver
 		// Simple case of no descriptors
 		if(descriptors.isEmpty())
 		{
-			trace.record(BindingContext.RESOLUTION_SCOPE, referenceExpression, resolutionScope);
+			trace.record(BindingTraceKeys.RESOLUTION_SCOPE, referenceExpression, resolutionScope);
 			trace.report(UNRESOLVED_REFERENCE.on(referenceExpression, referenceExpression.getText()));
 			return;
 		}
@@ -381,8 +381,8 @@ public class QualifiedExpressionResolver
 		}
 		if(descriptor != null)
 		{
-			trace.record(BindingContext.REFERENCE_TARGET, referenceExpression, descriptors.iterator().next());
-			trace.record(BindingContext.RESOLUTION_SCOPE, referenceExpression, resolutionScope);
+			trace.record(BindingTraceKeys.REFERENCE_TARGET, referenceExpression, descriptors.iterator().next());
+			trace.record(BindingTraceKeys.RESOLUTION_SCOPE, referenceExpression, resolutionScope);
 
 			if(descriptor instanceof DeclarationDescriptorWithVisibility)
 			{
@@ -399,7 +399,7 @@ public class QualifiedExpressionResolver
 		}
 		if(canBeImportedDescriptors.size() > 1)
 		{
-			trace.record(BindingContext.AMBIGUOUS_REFERENCE_TARGET, referenceExpression, descriptors);
+			trace.record(BindingTraceKeys.AMBIGUOUS_REFERENCE_TARGET, referenceExpression, descriptors);
 		}
 	}
 
@@ -433,8 +433,8 @@ public class QualifiedExpressionResolver
 			{
 				if(DescriptorUtils.getFQName(packageDescriptor).equalsTo(DescriptorUtils.getFQName(classDescriptor)))
 				{
-					trace.record(BindingContext.REFERENCE_TARGET, referenceExpression, classDescriptor);
-					trace.record(BindingContext.RESOLUTION_SCOPE, referenceExpression, resolutionScope);
+					trace.record(BindingTraceKeys.REFERENCE_TARGET, referenceExpression, classDescriptor);
+					trace.record(BindingTraceKeys.RESOLUTION_SCOPE, referenceExpression, resolutionScope);
 					checkVisibility(classDescriptor, trace, referenceExpression, scopeToCheckVisibility);
 					return true;
 				}

@@ -25,7 +25,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
@@ -57,7 +57,7 @@ public class JetNameValidatorImpl implements JetNameValidator
 
 	private final PsiElement myContainer;
 	private PsiElement myAnchor;
-	BindingContext myBindingContext;
+	BindingTrace myBindingContext;
 
 	public JetNameValidatorImpl(PsiElement container, PsiElement anchor)
 	{
@@ -110,7 +110,7 @@ public class JetNameValidatorImpl implements JetNameValidator
 	{
 		if(myBindingContext == null)
 		{
-			myBindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) myContainer.getContainingFile()).getBindingContext();
+			myBindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) myContainer.getContainingFile()).getBindingTrace();
 		}
 		final Ref<Boolean> result = new Ref<Boolean>(true);
 		NapileVisitorVoid visitor = new NapileVisitorVoid()

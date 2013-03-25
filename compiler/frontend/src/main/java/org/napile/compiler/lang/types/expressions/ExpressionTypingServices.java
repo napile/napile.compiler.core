@@ -37,7 +37,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptorUtil;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
@@ -288,8 +288,8 @@ public class ExpressionTypingServices
 		Map<NapileExpression, JetType> typeMap = new HashMap<NapileExpression, JetType>();
 		for(NapileExpression returnedExpression : returnedExpressions)
 		{
-			JetType cachedType = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, returnedExpression);
-			trace.record(BindingContext.STATEMENT, returnedExpression, false);
+			JetType cachedType = trace.get(BindingTraceKeys.EXPRESSION_TYPE, returnedExpression);
+			trace.record(BindingTraceKeys.STATEMENT, returnedExpression, false);
 			if(cachedType != null)
 			{
 				typeMap.put(returnedExpression, cachedType);
@@ -322,7 +322,7 @@ public class ExpressionTypingServices
 			{
 				continue;
 			}
-			trace.record(BindingContext.STATEMENT, statement);
+			trace.record(BindingTraceKeys.STATEMENT, statement);
 			final NapileExpression statementExpression = (NapileExpression) statement;
 			//TODO constructor assert context.expectedType != FORBIDDEN : ""
 			if(!iterator.hasNext())

@@ -22,7 +22,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileAnonymMethod;
 import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileMethodType;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.lang.ASTNode;
@@ -37,7 +37,7 @@ import com.intellij.psi.tree.IElementType;
  */
 public class SoftKeywordPostHighlightVisitor extends PostHighlightVisitor
 {
-	public SoftKeywordPostHighlightVisitor(BindingContext context, Collection<HighlightInfo> holder)
+	public SoftKeywordPostHighlightVisitor(BindingTrace context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}

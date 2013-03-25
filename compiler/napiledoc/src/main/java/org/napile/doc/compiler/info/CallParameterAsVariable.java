@@ -19,7 +19,8 @@ package org.napile.doc.compiler.info;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 
 /**
  * @author VISTALL
@@ -27,7 +28,7 @@ import org.napile.compiler.lang.resolve.BindingContext;
  */
 public class CallParameterAsVariable extends NamedDocableInfo<NapileCallParameterAsVariable> implements CallParameter
 {
-	public CallParameterAsVariable(BindingContext bindingContext, NapileCallParameterAsVariable element)
+	public CallParameterAsVariable(BindingTrace bindingContext, NapileCallParameterAsVariable element)
 	{
 		super(bindingContext, element);
 	}
@@ -36,21 +37,21 @@ public class CallParameterAsVariable extends NamedDocableInfo<NapileCallParamete
 	@Override
 	public String getDeclaration()
 	{
-		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VALUE_PARAMETER, element);
+		VariableDescriptor variableDescriptor = bindingTrace.get(BindingTraceKeys.VALUE_PARAMETER, element);
 		return variableDescriptor == null ? "null" : DocRender.DOC_RENDER.render(variableDescriptor);
 	}
 
 	@Override
 	public String getReturnType()
 	{
-		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VALUE_PARAMETER, element);
+		VariableDescriptor variableDescriptor = bindingTrace.get(BindingTraceKeys.VALUE_PARAMETER, element);
 		return variableDescriptor == null ? "null" : DocRender.DOC_RENDER.renderTypeWithShortNames(variableDescriptor.getType());
 	}
 
 	@Override
 	public String getReturnTypeNoHtml()
 	{
-		VariableDescriptor variableDescriptor = bindingContext.get(BindingContext.VALUE_PARAMETER, element);
+		VariableDescriptor variableDescriptor = bindingTrace.get(BindingTraceKeys.VALUE_PARAMETER, element);
 		return variableDescriptor == null ? "null" : variableDescriptor.getType().toString();
 	}
 

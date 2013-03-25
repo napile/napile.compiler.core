@@ -21,7 +21,6 @@ package org.napile.compiler.lang.resolve;
  */
 public class ChainedTemporaryBindingTrace extends TemporaryBindingTrace
 {
-
 	public static ChainedTemporaryBindingTrace create(TemporaryBindingTrace trace)
 	{
 		return new ChainedTemporaryBindingTrace(trace);

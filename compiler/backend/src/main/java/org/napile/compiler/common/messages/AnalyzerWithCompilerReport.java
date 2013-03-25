@@ -31,7 +31,8 @@ import org.napile.compiler.lang.diagnostics.DiagnosticImpl;
 import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
 import org.napile.compiler.lang.psi.NapileIdeTemplate;
 import org.napile.compiler.lang.resolve.AnalyzingUtils;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.psi.NapileFile;
 import com.intellij.openapi.util.text.StringUtil;
@@ -111,7 +112,7 @@ public final class AnalyzerWithCompilerReport
 	private void reportIncompleteHierarchies()
 	{
 		assert analyzeExhaust != null;
-		Collection<ClassDescriptor> incompletes = analyzeExhaust.getBindingContext().getKeys(BindingContext.INCOMPLETE_HIERARCHY);
+		Collection<ClassDescriptor> incompletes = analyzeExhaust.getBindingTrace().getKeys(BindingTraceKeys.INCOMPLETE_HIERARCHY);
 		if(!incompletes.isEmpty())
 		{
 			StringBuilder message = new StringBuilder("The following classes have incomplete hierarchies:\n");
@@ -124,7 +125,7 @@ public final class AnalyzerWithCompilerReport
 		}
 	}
 
-	public static boolean reportDiagnostics(@NotNull BindingContext bindingContext, @NotNull MessageCollector messageCollector)
+	public static boolean reportDiagnostics(@NotNull BindingTrace bindingContext, @NotNull MessageCollector messageCollector)
 	{
 		boolean hasErrors = false;
 		for(Diagnostic diagnostic : DiagnosticUtils.sortedDiagnostics(bindingContext.getDiagnostics()))
@@ -218,7 +219,7 @@ public final class AnalyzerWithCompilerReport
 	{
 		reportSyntaxErrors(files);
 		analyzeExhaust = analyzer.fun(null);
-		reportDiagnostics(analyzeExhaust.getBindingContext(), messageCollectorWrapper);
+		reportDiagnostics(analyzeExhaust.getBindingTrace(), messageCollectorWrapper);
 		reportIncompleteHierarchies();
 	}
 

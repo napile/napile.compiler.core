@@ -21,7 +21,7 @@ import java.util.TreeMap;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 
 /**
  * @author VISTALL
@@ -33,7 +33,7 @@ public class PackageInfo extends DocableInfo<NapileFile>
 
 	private final Map<String, ClassInfo> classes = new TreeMap<String, ClassInfo>();
 
-	public PackageInfo(BindingContext bindingContext, NapileFile element)
+	public PackageInfo(BindingTrace bindingContext, NapileFile element)
 	{
 		super(bindingContext, element);
 	}

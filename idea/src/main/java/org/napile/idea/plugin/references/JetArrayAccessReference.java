@@ -16,21 +16,21 @@
 
 package org.napile.idea.plugin.references;
 
-import static org.napile.compiler.lang.resolve.BindingContext.INDEXED_LVALUE_GET;
-import static org.napile.compiler.lang.resolve.BindingContext.INDEXED_LVALUE_SET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.INDEXED_LVALUE_GET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.INDEXED_LVALUE_SET;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileArrayAccessExpressionImpl;
 import org.napile.compiler.lang.psi.NapileContainerNode;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
-import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
@@ -68,7 +68,7 @@ class JetArrayAccessReference extends JetPsiReference implements MultiRangeRefer
 	@Override
 	protected PsiElement doResolve()
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) getElement().getContainingFile()).getBindingContext();
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) getElement().getContainingFile()).getBindingTrace();
 		ResolvedCall<MethodDescriptor> getFunction = bindingContext.get(INDEXED_LVALUE_GET, expression);
 		ResolvedCall<MethodDescriptor> setFunction = bindingContext.get(INDEXED_LVALUE_SET, expression);
 		if(getFunction != null && setFunction != null)
@@ -81,16 +81,16 @@ class JetArrayAccessReference extends JetPsiReference implements MultiRangeRefer
 	@Override
 	protected ResolveResult[] doMultiResolve()
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) getElement().getContainingFile()).getBindingContext();
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) getElement().getContainingFile()).getBindingTrace();
 		ResolvedCall<MethodDescriptor> getFunction = bindingContext.get(INDEXED_LVALUE_GET, expression);
 		ResolvedCall<MethodDescriptor> setFunction = bindingContext.get(INDEXED_LVALUE_SET, expression);
 		if(getFunction == null || setFunction == null)
 		{
 			return new ResolveResult[0];
 		}
-		PsiElement getFunctionElement = BindingContextUtils.callableDescriptorToDeclaration(bindingContext, getFunction.getResultingDescriptor());
+		PsiElement getFunctionElement = BindingTraceUtil.callableDescriptorToDeclaration(bindingContext, getFunction.getResultingDescriptor());
 		assert getFunctionElement != null;
-		PsiElement setFunctionElement = BindingContextUtils.callableDescriptorToDeclaration(bindingContext, setFunction.getResultingDescriptor());
+		PsiElement setFunctionElement = BindingTraceUtil.callableDescriptorToDeclaration(bindingContext, setFunction.getResultingDescriptor());
 		assert setFunctionElement != null;
 		return new ResolveResult[]{
 				new PsiElementResolveResult(getFunctionElement, true),

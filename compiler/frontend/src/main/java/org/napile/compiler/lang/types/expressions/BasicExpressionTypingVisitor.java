@@ -17,13 +17,13 @@
 package org.napile.compiler.lang.types.expressions;
 
 import static org.napile.compiler.lang.diagnostics.Errors.*;
-import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
-import static org.napile.compiler.lang.resolve.BindingContext.INDEXED_LVALUE_GET;
-import static org.napile.compiler.lang.resolve.BindingContext.INDEXED_LVALUE_SET;
-import static org.napile.compiler.lang.resolve.BindingContext.NON_DEFAULT_EXPRESSION_DATA_FLOW;
-import static org.napile.compiler.lang.resolve.BindingContext.REFERENCE_TARGET;
-import static org.napile.compiler.lang.resolve.BindingContext.RESOLUTION_SCOPE;
-import static org.napile.compiler.lang.resolve.BindingContext.RESOLVED_CALL;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.EXPRESSION_TYPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.INDEXED_LVALUE_GET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.INDEXED_LVALUE_SET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.NON_DEFAULT_EXPRESSION_DATA_FLOW;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.REFERENCE_TARGET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.RESOLUTION_SCOPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.RESOLVED_CALL;
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.BYTE;
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.DOUBLE;
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.FLOAT;
@@ -55,8 +55,8 @@ import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
@@ -362,7 +362,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 		else
 		{
-			context.trace.record(BindingContext.COMPILE_TIME_VALUE, expression, value);
+			context.trace.record(BindingTraceKeys.COMPILE_TIME_VALUE, expression, value);
 
 			return DataFlowUtils.checkType(value.getType(context.scope), expression, context, context.dataFlowInfo);
 		}
@@ -404,7 +404,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					dataFlowInfo = typeInfo.getDataFlowInfo();
 					if(operationType == NapileTokens.AS_KEYWORD)
 					{
-						DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(left, typeInfo.getType(), context.trace.getBindingContext());
+						DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(left, typeInfo.getType(), context.trace);
 						dataFlowInfo = dataFlowInfo.establishSubtyping(new DataFlowValue[]{value}, targetType);
 					}
 				}
@@ -565,7 +565,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			else
 			{
 				result = thisReceiver.getType();
-				context.trace.record(BindingContext.EXPRESSION_TYPE, expression.getInstanceReference(), result);
+				context.trace.record(BindingTraceKeys.EXPRESSION_TYPE, expression.getInstanceReference(), result);
 			}
 		}
 		return DataFlowUtils.checkType(result, expression, context, context.dataFlowInfo);
@@ -669,11 +669,11 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			}
 			if(result != null)
 			{
-				context.trace.record(BindingContext.EXPRESSION_TYPE, expression.getInstanceReference(), result);
-				context.trace.record(BindingContext.REFERENCE_TARGET, expression.getInstanceReference(), result.getConstructor().getDeclarationDescriptor());
+				context.trace.record(BindingTraceKeys.EXPRESSION_TYPE, expression.getInstanceReference(), result);
+				context.trace.record(BindingTraceKeys.REFERENCE_TARGET, expression.getInstanceReference(), result.getConstructor().getDeclarationDescriptor());
 				if(superTypeQualifier != null)
 				{
-					context.trace.record(BindingContext.TYPE_RESOLUTION_SCOPE, superTypeQualifier, context.scope);
+					context.trace.record(BindingTraceKeys.TYPE_RESOLUTION_SCOPE, superTypeQualifier, context.scope);
 				}
 			}
 		}
@@ -760,9 +760,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			{
 				List<Name> packages = fqName.parent().pathSegments();
 				for(int i = 0; i < (children.length - 1); i++)
-					context.trace.record(BindingContext.REFERENCE_TARGET, children[i], context.scope.getPackage(packages.get(i)));
+					context.trace.record(BindingTraceKeys.REFERENCE_TARGET, children[i], context.scope.getPackage(packages.get(i)));
 
-				context.trace.record(BindingContext.REFERENCE_TARGET, children[children.length - 1], classDescriptor);
+				context.trace.record(BindingTraceKeys.REFERENCE_TARGET, children[children.length - 1], classDescriptor);
 				methodDescriptors = classDescriptor.getMemberScope(Collections.<JetType>emptyList()).getMethods(target.getReferencedNameAsName());
 			}
 		}
@@ -801,7 +801,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			for(CallParameterDescriptor parameterDescriptor : targetMethod.getValueParameters())
 				valueParameters.put(parameterDescriptor.getName(), parameterDescriptor.getType());
 
-			context.trace.record(BindingContext.REFERENCE_TARGET, target, targetMethod);
+			context.trace.record(BindingTraceKeys.REFERENCE_TARGET, target, targetMethod);
 
 			return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(targetMethod.getReturnType(), valueParameters, context.scope), context.scope), expression, context, context.dataFlowInfo);
 
@@ -812,7 +812,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				context.trace.report(Errors.UNRESOLVED_REFERENCE.on(target, target.getText()));
 			else if(methodDescriptors.size() > 1)
 			{
-				context.trace.record(BindingContext.AMBIGUOUS_REFERENCE_TARGET, target, methodDescriptors);
+				context.trace.record(BindingTraceKeys.AMBIGUOUS_REFERENCE_TARGET, target, methodDescriptors);
 				context.trace.report(Errors.AMBIGUOUS_LINK_METHOD.on(target, methodDescriptors));
 			}
 
@@ -858,7 +858,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		// TODO : this is suspicious: remove this code?
 		if(selectorReturnType != null)
 		{
-			context.trace.record(BindingContext.EXPRESSION_TYPE, selectorExpression, selectorReturnType);
+			context.trace.record(BindingTraceKeys.EXPRESSION_TYPE, selectorExpression, selectorReturnType);
 		}
 		return DataFlowUtils.checkType(selectorReturnType, expression, context, selectorReturnTypeInfo.getDataFlowInfo());
 	}
@@ -866,9 +866,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	private void propagateConstantValues(NapileQualifiedExpressionImpl expression, ExpressionTypingContext context, NapileSimpleNameExpression selectorExpression)
 	{
 		NapileExpression receiverExpression = expression.getReceiverExpression();
-		CompileTimeConstant<?> receiverValue = context.trace.getBindingContext().get(BindingContext.COMPILE_TIME_VALUE, receiverExpression);
-		CompileTimeConstant<?> wholeExpressionValue = context.trace.getBindingContext().get(BindingContext.COMPILE_TIME_VALUE, expression);
-		DeclarationDescriptor declarationDescriptor = context.trace.getBindingContext().get(BindingContext.REFERENCE_TARGET, selectorExpression);
+		CompileTimeConstant<?> receiverValue = context.trace.get(BindingTraceKeys.COMPILE_TIME_VALUE, receiverExpression);
+		CompileTimeConstant<?> wholeExpressionValue = context.trace.get(BindingTraceKeys.COMPILE_TIME_VALUE, expression);
+		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingTraceKeys.REFERENCE_TARGET, selectorExpression);
 		if(wholeExpressionValue == null &&
 				receiverValue != null &&
 				!(receiverValue instanceof ErrorValue) &&
@@ -881,27 +881,27 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			{
 				if(DOUBLE.equals(referencedName))
 				{
-					context.trace.record(BindingContext.COMPILE_TIME_VALUE, expression, new DoubleValue(value.doubleValue()));
+					context.trace.record(BindingTraceKeys.COMPILE_TIME_VALUE, expression, new DoubleValue(value.doubleValue()));
 				}
 				else if(FLOAT.equals(referencedName))
 				{
-					context.trace.record(BindingContext.COMPILE_TIME_VALUE, expression, new FloatValue(value.floatValue()));
+					context.trace.record(BindingTraceKeys.COMPILE_TIME_VALUE, expression, new FloatValue(value.floatValue()));
 				}
 				else if(LONG.equals(referencedName))
 				{
-					context.trace.record(BindingContext.COMPILE_TIME_VALUE, expression, new LongValue(value.longValue()));
+					context.trace.record(BindingTraceKeys.COMPILE_TIME_VALUE, expression, new LongValue(value.longValue()));
 				}
 				else if(SHORT.equals(referencedName))
 				{
-					context.trace.record(BindingContext.COMPILE_TIME_VALUE, expression, new ShortValue(value.shortValue()));
+					context.trace.record(BindingTraceKeys.COMPILE_TIME_VALUE, expression, new ShortValue(value.shortValue()));
 				}
 				else if(BYTE.equals(referencedName))
 				{
-					context.trace.record(BindingContext.COMPILE_TIME_VALUE, expression, new ByteValue(value.byteValue()));
+					context.trace.record(BindingTraceKeys.COMPILE_TIME_VALUE, expression, new ByteValue(value.byteValue()));
 				}
 				else if(INT.equals(referencedName))
 				{
-					context.trace.record(BindingContext.COMPILE_TIME_VALUE, expression, new IntValue(value.intValue()));
+					context.trace.record(BindingTraceKeys.COMPILE_TIME_VALUE, expression, new IntValue(value.intValue()));
 				}
 			}
 		}
@@ -1070,7 +1070,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			NapileExpression calleeExpression = callExpression.getCalleeExpression();
 			if(calleeExpression instanceof NapileSimpleNameExpression)
 			{
-				DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.REFERENCE_TARGET, (NapileSimpleNameExpression) calleeExpression);
+				DeclarationDescriptor declarationDescriptor = context.trace.get(BindingTraceKeys.REFERENCE_TARGET, (NapileSimpleNameExpression) calleeExpression);
 				if(declarationDescriptor instanceof VariableDescriptor)
 					VariableAccessorResolver.resolveGetter((NapileSimpleNameExpression) calleeExpression, ReceiverDescriptor.NO_RECEIVER, context);
 			}
@@ -1179,7 +1179,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				context.trace.report(RESULT_TYPE_MISMATCH.on(operationSign, name.getName(), receiverType, returnType));
 			else
 			{
-				context.trace.record(BindingContext.VARIABLE_REASSIGNMENT, expression);
+				context.trace.record(BindingTraceKeys.VARIABLE_REASSIGNMENT, expression);
 
 				checkLValue(context.trace, baseExpression);
 			}
@@ -1219,7 +1219,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 		else
 		{
-			DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(baseExpression, type, context.trace.getBindingContext());
+			DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(baseExpression, type, context.trace);
 			dataFlowInfo = dataFlowInfo.disequate(value, new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, true), false, Nullability.NULL));
 		}
 		return JetTypeInfo.create(TypeUtils.makeNotNullable(type), dataFlowInfo);
@@ -1231,7 +1231,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		assert type != null : "This method is only supposed to be called when the type is not null";
 		if(!type.isNullable())
 			return true;
-		List<JetType> possibleTypes = context.dataFlowInfo.getPossibleTypes(DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, type, context.trace.getBindingContext()));
+		List<JetType> possibleTypes = context.dataFlowInfo.getPossibleTypes(DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, type, context.trace));
 		for(JetType possibleType : possibleTypes)
 		{
 			if(!possibleType.isNullable())
@@ -1257,7 +1257,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 		if(canBeThis && expression instanceof NapileThisExpression)
 			return;
-		VariableDescriptor variable = BindingContextUtils.extractVariableDescriptorIfAny(trace.getBindingContext(), expression, true);
+		VariableDescriptor variable = BindingTraceUtil.extractVariableDescriptorIfAny(trace, expression, true);
 		if(variable == null)
 		{
 			trace.report(VARIABLE_EXPECTED.on(expression != null ? expression : expressionWithParenthesis));
@@ -1438,7 +1438,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
 		JetType type = facade.getTypeInfo(expr, context).getType();
-		DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(expr, type, context.trace.getBindingContext());
+		DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(expr, type, context.trace);
 		Nullability nullability = context.dataFlowInfo.getNullability(value);
 
 		boolean expressionIsAlways;

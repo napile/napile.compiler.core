@@ -19,8 +19,9 @@ package org.napile.idea.plugin.codeInsight;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -39,8 +40,8 @@ public class JetTypeDeclarationProvider implements TypeDeclarationProvider
 	{
 		if(symbol instanceof NapileElement && symbol.getContainingFile() instanceof NapileFile)
 		{
-			BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) symbol.getContainingFile()).getBindingContext();
-			DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, symbol);
+			BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) symbol.getContainingFile()).getBindingTrace();
+			DeclarationDescriptor descriptor = bindingContext.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, symbol);
 			if(descriptor instanceof CallableDescriptor)
 			{
 				JetType type = ((CallableDescriptor) descriptor).getReturnType();
@@ -49,7 +50,7 @@ public class JetTypeDeclarationProvider implements TypeDeclarationProvider
 					ClassifierDescriptor classifierDescriptor = type.getConstructor().getDeclarationDescriptor();
 					if(classifierDescriptor != null)
 					{
-						PsiElement typeElement = BindingContextUtils.descriptorToDeclaration(bindingContext, classifierDescriptor);
+						PsiElement typeElement = BindingTraceUtil.descriptorToDeclaration(bindingContext, classifierDescriptor);
 						if(typeElement != null)
 						{
 							return new PsiElement[]{typeElement};

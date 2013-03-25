@@ -21,7 +21,7 @@ import static org.napile.compiler.lang.diagnostics.Errors.EXPECTED_TYPE_MISMATCH
 import static org.napile.compiler.lang.diagnostics.Errors.EXPRESSION_EXPECTED;
 import static org.napile.compiler.lang.diagnostics.Errors.IMPLICIT_CAST_TO_UNIT_OR_ANY;
 import static org.napile.compiler.lang.diagnostics.Errors.TYPE_MISMATCH;
-import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.AUTOCAST;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,7 @@ import org.napile.compiler.lang.psi.NapileIsExpression;
 import org.napile.compiler.lang.psi.NapileParenthesizedExpression;
 import org.napile.compiler.lang.psi.NapileUnaryExpression;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
@@ -67,7 +67,7 @@ public class DataFlowUtils
 			{
 				if(conditionValue && !expression.isNegated() || !conditionValue && expression.isNegated())
 				{
-					result.set(context.trace.get(BindingContext.DATAFLOW_INFO_AFTER_CONDITION, expression));
+					result.set(context.trace.get(BindingTraceKeys.DATAFLOW_INFO_AFTER_CONDITION, expression));
 				}
 			}
 
@@ -102,16 +102,15 @@ public class DataFlowUtils
 					if(right == null)
 						return;
 
-					JetType lhsType = context.trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, left);
+					JetType lhsType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, left);
 					if(lhsType == null)
 						return;
-					JetType rhsType = context.trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, right);
+					JetType rhsType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, right);
 					if(rhsType == null)
 						return;
 
-					BindingContext bindingContext = context.trace.getBindingContext();
-					DataFlowValue leftValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(left, lhsType, bindingContext);
-					DataFlowValue rightValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(right, rhsType, bindingContext);
+					DataFlowValue leftValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(left, lhsType, context.trace);
+					DataFlowValue rightValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(right, rhsType, context.trace);
 
 					Boolean equals = null;
 					if(operationToken == NapileTokens.EQEQ)
@@ -182,7 +181,7 @@ public class DataFlowUtils
 			return expressionType;
 		}
 
-		DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, expressionType, context.trace.getBindingContext());
+		DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, expressionType, context.trace);
 		for(JetType possibleType : context.dataFlowInfo.getPossibleTypes(dataFlowValue))
 		{
 			if(JetTypeChecker.INSTANCE.isSubtypeOf(possibleType, context.expectedType))

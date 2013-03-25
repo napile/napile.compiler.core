@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.util.slicedmap.MutableSlicedMap;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
@@ -31,41 +32,11 @@ import com.intellij.psi.PsiCompiledElement;
 /**
  * @author abreslav
  */
-public class BindingTraceContext implements BindingTrace
+public class BindingTraceImpl implements BindingTrace
 {
 	private final List<Diagnostic> diagnostics = Lists.newArrayList();
 
 	private final MutableSlicedMap map = SlicedMapImpl.create();
-
-	private final BindingContext bindingContext = new BindingContext()
-	{
-
-		@Override
-		public Collection<Diagnostic> getDiagnostics()
-		{
-			return diagnostics;
-		}
-
-		@Override
-		public <K, V> V get(ReadOnlySlice<K, V> slice, K key)
-		{
-			return BindingTraceContext.this.get(slice, key);
-		}
-
-		@NotNull
-		@Override
-		public <K, V> V safeGet(ReadOnlySlice<K, V> slice, K key)
-		{
-			return BindingTraceContext.this.safeGet(slice, key);
-		}
-
-		@NotNull
-		@Override
-		public <K, V> Collection<K> getKeys(WritableSlice<K, V> slice)
-		{
-			return BindingTraceContext.this.getKeys(slice);
-		}
-	};
 
 	@Override
 	public void report(@NotNull Diagnostic diagnostic)
@@ -88,11 +59,11 @@ public class BindingTraceContext implements BindingTrace
 		diagnostics.clear();
 	}
 
-	@NotNull
+	@Nullable
 	@Override
-	public BindingContext getBindingContext()
+	public BindingTrace getParent()
 	{
-		return bindingContext;
+		return null;
 	}
 
 	@Override

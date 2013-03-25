@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.NapileConstants;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -128,12 +128,12 @@ public class MethodDescriptorUtil
 			}
 			else
 			{
-				trace.record(BindingContext.AUTO_CREATED_IT, descriptor.getValueParameters().get(0), Boolean.TRUE);
+				trace.record(BindingTraceKeys.AUTO_CREATED_IT, descriptor.getValueParameters().get(0), Boolean.TRUE);
 
 				temp = new LocalVariableDescriptor(descriptor, Collections.<AnnotationDescriptor>emptyList(), NapileConstants.VARIABLE_FIELD_NAME, descriptor.getReturnType(), Modality.OPEN, true);
 			}
 
-			trace.record(BindingContext.AUTO_CREATED_IT, temp, Boolean.TRUE);
+			trace.record(BindingTraceKeys.AUTO_CREATED_IT, temp, Boolean.TRUE);
 			parameterScope.addVariableDescriptor(temp);
 		}
 

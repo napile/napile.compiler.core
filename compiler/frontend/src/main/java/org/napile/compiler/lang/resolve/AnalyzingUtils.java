@@ -77,7 +77,7 @@ public class AnalyzingUtils
 		return r;
 	}
 
-	public static void throwExceptionOnErrors(BindingContext bindingContext)
+	public static void throwExceptionOnErrors(BindingTrace bindingContext)
 	{
 		for(Diagnostic diagnostic : bindingContext.getDiagnostics())
 		{

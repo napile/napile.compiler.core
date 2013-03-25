@@ -37,7 +37,8 @@ import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileDotQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -102,7 +103,7 @@ public class NapileCompletionContributor extends CompletionContributor
 
 				BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
 
-				JetScope scope = analyze.getBindingContext().get(BindingContext.RESOLUTION_SCOPE, declaration);
+				JetScope scope = analyze.getBindingTrace().get(BindingTraceKeys.RESOLUTION_SCOPE, declaration);
 				if(scope == null)
 				{
 					return;
@@ -136,9 +137,9 @@ public class NapileCompletionContributor extends CompletionContributor
 
 				//BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
 
-				BindingContext bindingContext = analyze.getBindingContext();
+				BindingTrace bindingTrace = analyze.getBindingTrace();
 
-				JetType type = bindingContext.get(BindingContext.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
+				JetType type = bindingTrace.get(BindingTraceKeys.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
 				if(type == null)
 					return;
 
@@ -173,14 +174,14 @@ public class NapileCompletionContributor extends CompletionContributor
 
 				BodiesResolveContext bodiesResolveContext = analyze.getBodiesResolveContext();
 
-				BindingContext bindingContext = analyze.getBindingContext();
+				BindingTrace bindingContext = analyze.getBindingTrace();
 
 				NapileExpression e = PsiTreeUtil.getParentOfType(position, NapileExpression.class);
 
 				if(e == null)
 					return;
 
-				JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, e);
+				JetScope scope = bindingContext.get(BindingTraceKeys.RESOLUTION_SCOPE, e);
 				if(scope == null)
 				{
 					NapileDeclaration declaration = PsiTreeUtil.getParentOfType(position, NapileDeclaration.class);

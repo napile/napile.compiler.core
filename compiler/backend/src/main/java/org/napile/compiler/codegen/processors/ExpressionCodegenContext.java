@@ -24,7 +24,7 @@ import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.codegen.processors.codegen.stackValue.WrappedVar;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 
 /**
  * @author VISTALL
@@ -53,7 +53,7 @@ public class ExpressionCodegenContext
 
 	public boolean wrapVariableIfNeed(VariableDescriptor variableDescriptor)
 	{
-		boolean wrappedInClosure = gen.bindingTrace.safeGet(BindingContext.CAPTURED_IN_CLOSURE, variableDescriptor);
+		boolean wrappedInClosure = gen.bindingTrace.safeGet(BindingTraceKeys.CAPTURED_IN_CLOSURE, variableDescriptor);
 		/*if(wrappedInClosure)
 		{
 			MethodDescriptor ownerMethod = (MethodDescriptor) variableDescriptor.getContainingDeclaration();

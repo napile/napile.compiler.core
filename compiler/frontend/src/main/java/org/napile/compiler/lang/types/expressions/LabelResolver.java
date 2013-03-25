@@ -31,7 +31,7 @@ import org.napile.compiler.lang.psi.NapileBreakExpression;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 
 /**
  * @author abreslav
@@ -113,7 +113,7 @@ public class LabelResolver
 		}
 
 		NapileElement result = stack.peek();
-		context.trace.record(BindingContext.LABEL_TARGET, labelExpression, result);
+		context.trace.record(BindingTraceKeys.LABEL_TARGET, labelExpression, result);
 		return result;
 	}
 }

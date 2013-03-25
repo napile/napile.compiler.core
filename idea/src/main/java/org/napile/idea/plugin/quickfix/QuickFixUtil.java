@@ -21,7 +21,8 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -63,8 +64,8 @@ public class QuickFixUtil
 		PsiFile file = declaration.getContainingFile();
 		if(!(file instanceof NapileFile))
 			return null;
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) file).getBindingContext();
-		DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) file).getBindingTrace();
+		DeclarationDescriptor descriptor = bindingContext.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, declaration);
 		if(!(descriptor instanceof CallableDescriptor))
 			return null;
 		JetType type = ((CallableDescriptor) descriptor).getReturnType();

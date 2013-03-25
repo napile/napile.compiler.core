@@ -16,7 +16,7 @@
 
 package org.napile.idea.plugin.references;
 
-import static org.napile.compiler.lang.resolve.BindingContext.AMBIGUOUS_REFERENCE_TARGET;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.AMBIGUOUS_REFERENCE_TARGET;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,9 +27,10 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.idea.plugin.editor.completion.lookup.DescriptionLookupBuilder;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
@@ -107,9 +108,9 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	public Object[] getVariants()
 	{
 		NapileFile file = (NapileFile) getElement().getContainingFile();
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
 
-		JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, myExpression);
+		JetScope scope = bindingContext.get(BindingTraceKeys.RESOLUTION_SCOPE, myExpression);
 		if(scope == null)
 			return ArrayUtil.EMPTY_OBJECT_ARRAY;
 		else
@@ -137,8 +138,8 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	protected PsiElement doResolve()
 	{
 		NapileFile file = (NapileFile) getElement().getContainingFile();
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
-		List<PsiElement> psiElement = BindingContextUtils.resolveToDeclarationPsiElements(bindingContext, myExpression);
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
+		List<PsiElement> psiElement = BindingTraceUtil.resolveToDeclarationPsiElements(bindingContext, myExpression);
 		if(psiElement.size() == 1)
 		{
 			return psiElement.iterator().next();
@@ -159,7 +160,7 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 	protected ResolveResult[] doMultiResolve()
 	{
 		NapileFile file = (NapileFile) getElement().getContainingFile();
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
 		Collection<? extends DeclarationDescriptor> declarationDescriptors = bindingContext.get(AMBIGUOUS_REFERENCE_TARGET, myExpression);
 		if(declarationDescriptors == null)
 			return ResolveResult.EMPTY_ARRAY;
@@ -168,7 +169,7 @@ public abstract class JetPsiReference implements PsiPolyVariantReference
 
 		for(DeclarationDescriptor descriptor : declarationDescriptors)
 		{
-			List<PsiElement> elements = BindingContextUtils.descriptorToDeclarations(bindingContext, descriptor);
+			List<PsiElement> elements = BindingTraceUtil.descriptorToDeclarations(bindingContext, descriptor);
 			if(elements.isEmpty())
 			{
 				// TODO: Need a better resolution for Intrinsic function (KT-975)

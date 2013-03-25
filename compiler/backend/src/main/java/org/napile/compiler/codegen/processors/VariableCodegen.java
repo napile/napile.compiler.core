@@ -39,7 +39,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import com.intellij.psi.tree.IElementType;
 
@@ -73,7 +73,7 @@ public class VariableCodegen
 
 			if(bodyExpression == null)
 			{
-				final VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor);
+				final VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingTraceKeys.VARIABLE_SET_ACCESSOR, variableAccessor);
 				final MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, AsmConstants.NULL_TYPE);
 				AnnotationCodegen.gen(bindingTrace, descriptor, methodNode, classNode);
 
@@ -81,7 +81,7 @@ public class VariableCodegen
 			}
 			else
 			{
-				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor);
+				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingTraceKeys.VARIABLE_SET_ACCESSOR, variableAccessor);
 
 				ExpressionCodegen codegen = new ExpressionCodegen(bindingTrace, descriptor, classNode, ExpressionCodegenContext.empty(), null);
 				codegen.returnExpression(bodyExpression, false);
@@ -138,7 +138,7 @@ public class VariableCodegen
 			final NapileExpression bodyExpression = variableAccessor.getBodyExpression();
 			if(bodyExpression == null)
 			{
-				final VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor);
+				final VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingTraceKeys.VARIABLE_GET_ACCESSOR, variableAccessor);
 				final MethodNode methodNode = new MethodNode(ModifierCodegen.gen(descriptor), accessorFq, TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode));
 
 				AnnotationCodegen.gen(bindingTrace, descriptor, methodNode, classNode);
@@ -146,7 +146,7 @@ public class VariableCodegen
 			}
 			else
 			{
-				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor);
+				VariableAccessorDescriptor descriptor = bindingTrace.safeGet(BindingTraceKeys.VARIABLE_GET_ACCESSOR, variableAccessor);
 
 				ExpressionCodegen codegen = new ExpressionCodegen(bindingTrace, descriptor, classNode, ExpressionCodegenContext.empty(), null);
 				codegen.returnExpression(bodyExpression, false);

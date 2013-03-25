@@ -18,7 +18,7 @@ package org.napile.doc.compiler.info;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.doc.lang.psi.NapileDoc;
 import org.napile.doc.lang.psi.NapileDocLine;
 
@@ -28,7 +28,7 @@ import org.napile.doc.lang.psi.NapileDocLine;
  */
 public abstract class NamedDocableInfo<E extends NapileNamedDeclaration> extends DocableInfo<E>
 {
-	public NamedDocableInfo(BindingContext bindingContext, E element)
+	public NamedDocableInfo(BindingTrace bindingContext, E element)
 	{
 		super(bindingContext, element);
 	}

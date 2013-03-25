@@ -22,7 +22,8 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.psi.PsiElement;
@@ -33,7 +34,7 @@ import com.intellij.psi.PsiElement;
  */
 public class MethodsHighlightingVisitor extends PostHighlightVisitor
 {
-	public MethodsHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
+	public MethodsHighlightingVisitor(BindingTrace context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}
@@ -76,7 +77,7 @@ public class MethodsHighlightingVisitor extends PostHighlightVisitor
 		NapileExpression callee = expression.getCalleeExpression();
 		if(callee instanceof NapileReferenceExpression)
 		{
-			DeclarationDescriptor calleeDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, (NapileReferenceExpression) callee);
+			DeclarationDescriptor calleeDescriptor = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, (NapileReferenceExpression) callee);
 			if(calleeDescriptor != null)
 			{
 				if(calleeDescriptor instanceof ConstructorDescriptor)

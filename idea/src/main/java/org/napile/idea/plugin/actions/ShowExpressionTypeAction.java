@@ -17,7 +17,8 @@
 package org.napile.idea.plugin.actions;
 
 import org.napile.compiler.lang.NapileLanguage;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -44,7 +45,7 @@ public class ShowExpressionTypeAction extends AnAction
 		PsiFile psiFile = e.getData(LangDataKeys.PSI_FILE);
 		assert editor != null && psiFile != null;
 		NapileExpression expression;
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) psiFile).getBindingContext();
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) psiFile).getBindingTrace();
 		if(editor.getSelectionModel().hasSelection())
 		{
 			int startOffset = editor.getSelectionModel().getSelectionStart();
@@ -55,7 +56,7 @@ public class ShowExpressionTypeAction extends AnAction
 		{
 			int offset = editor.getCaretModel().getOffset();
 			expression = PsiTreeUtil.getParentOfType(psiFile.findElementAt(offset), NapileExpression.class);
-			while(expression != null && bindingContext.get(BindingContext.EXPRESSION_TYPE, expression) == null)
+			while(expression != null && bindingContext.get(BindingTraceKeys.EXPRESSION_TYPE, expression) == null)
 			{
 				expression = PsiTreeUtil.getParentOfType(expression, NapileExpression.class);
 			}
@@ -66,7 +67,7 @@ public class ShowExpressionTypeAction extends AnAction
 		}
 		if(expression != null)
 		{
-			JetType type = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression);
+			JetType type = bindingContext.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
 			if(type != null)
 			{
 				HintManager.getInstance().showInformationHint(editor, type.toString());

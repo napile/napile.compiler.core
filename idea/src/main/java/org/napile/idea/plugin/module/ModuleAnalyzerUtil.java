@@ -26,7 +26,7 @@ import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import com.intellij.openapi.compiler.ex.CompilerPathsEx;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
@@ -69,7 +69,7 @@ public class ModuleAnalyzerUtil
 	{
 		AnalyzeExhaust analyzeExhaust = lastAnalyze(napileElement.getContainingFile());
 
-		DeclarationDescriptor declarationDescriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
+		DeclarationDescriptor declarationDescriptor = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, napileElement);
 
 		return (T) declarationDescriptor;
 	}

@@ -22,7 +22,8 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
@@ -41,7 +42,7 @@ public class ReferenceToClassesShortening
 			return;
 		}
 		final NapileFile file = elementsToCompact.get(0).getContainingFile();
-		final BindingContext bc = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
+		final BindingTrace bc = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
 		for(NapileElement element : elementsToCompact)
 		{
 			element.accept(new NapileVisitorVoid()
@@ -65,13 +66,13 @@ public class ReferenceToClassesShortening
 					if(typeElement instanceof NapileUserType)
 					{
 						NapileUserType userType = (NapileUserType) typeElement;
-						DeclarationDescriptor target = bc.get(BindingContext.REFERENCE_TARGET, userType.getReferenceExpression());
+						DeclarationDescriptor target = bc.get(BindingTraceKeys.REFERENCE_TARGET, userType.getReferenceExpression());
 						if(target instanceof ClassDescriptor)
 						{
 							ClassDescriptor targetClass = (ClassDescriptor) target;
 							ClassDescriptor targetTopLevelClass = ImportInsertHelper.getTopLevelClass(targetClass);
 
-							JetScope scope = bc.get(BindingContext.TYPE_RESOLUTION_SCOPE, typeReference);
+							JetScope scope = bc.get(BindingTraceKeys.TYPE_RESOLUTION_SCOPE, typeReference);
 							ClassifierDescriptor classifier = scope.getClassifier(targetTopLevelClass.getName());
 							if(targetTopLevelClass == classifier)
 							{

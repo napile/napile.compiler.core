@@ -20,8 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileElement;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
 
 /**
  * @author svtk
@@ -29,7 +29,7 @@ import org.napile.compiler.lang.resolve.BindingContextUtils;
 public class PseudocodeUtil
 {
 	@Nullable
-	public static VariableDescriptor extractVariableDescriptorIfAny(@NotNull Instruction instruction, boolean onlyReference, @NotNull BindingContext bindingContext)
+	public static VariableDescriptor extractVariableDescriptorIfAny(@NotNull Instruction instruction, boolean onlyReference, @NotNull BindingTrace bindingTrace)
 	{
 		NapileElement element = null;
 		if(instruction instanceof ReadValueInstruction)
@@ -44,6 +44,6 @@ public class PseudocodeUtil
 		{
 			element = ((VariableDeclarationInstruction) instruction).getVariableDeclarationElement();
 		}
-		return BindingContextUtils.extractVariableDescriptorIfAny(bindingContext, element, onlyReference);
+		return BindingTraceUtil.extractVariableDescriptorIfAny(bindingTrace, element, onlyReference);
 	}
 }

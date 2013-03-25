@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.types.expressions;
 
-import static org.napile.compiler.lang.resolve.BindingContext.EXPRESSION_TYPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.EXPRESSION_TYPE;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +39,7 @@ import org.napile.compiler.lang.psi.NapilePsiFactory;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileUnaryExpression;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
@@ -76,7 +76,7 @@ public class VariableAccessorResolver
 		{
 			NapileDotQualifiedExpressionImpl dotQualifiedExpression = ((NapileDotQualifiedExpressionImpl) exp);
 
-			JetType receiverType = context.trace.get(BindingContext.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
+			JetType receiverType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
 			if(receiverType != null && receiverType.getConstructor() instanceof MultiTypeConstructor)
 				return null;
 
@@ -93,7 +93,7 @@ public class VariableAccessorResolver
 		else if(exp instanceof NapileArrayAccessExpressionImpl)
 			return null;
 
-		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.REFERENCE_TARGET, nameExpression);
+		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingTraceKeys.REFERENCE_TARGET, nameExpression);
 		// local variable and call parameter cant have setter and getter
 		if(declarationDescriptor instanceof LocalVariableDescriptor || declarationDescriptor instanceof AbstractCallParameterDescriptorImpl)
 			return null;
@@ -119,7 +119,7 @@ public class VariableAccessorResolver
 
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiverDescriptor, expression, expression, argument), expression, name, false);
 		if(results.isSuccess())
-			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
+			context.trace.record(BindingTraceKeys.VARIABLE_CALL, expression, results.getResultingDescriptor());
 
 		copyResolvingErrors(context, trace);
 
@@ -144,7 +144,7 @@ public class VariableAccessorResolver
 
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiverDescriptor, expression.getOperationReference(), left, argument), expression.getOperationReference(), name, false);
 		if(results.isSingleResult())
-			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
+			context.trace.record(BindingTraceKeys.VARIABLE_CALL, expression, results.getResultingDescriptor());
 
 		copyResolvingErrors(context, trace);
 	}
@@ -165,14 +165,14 @@ public class VariableAccessorResolver
 
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableSetCall(receiverDescriptor, expression.getBaseExpression(), left, argument), nameExpression, name, false);
 		if(results.isSingleResult())
-			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
+			context.trace.record(BindingTraceKeys.VARIABLE_CALL, expression, results.getResultingDescriptor());
 		else
 			copyResolvingErrors(context, trace);
 	}
 
 	public static void resolveGetter(@NotNull NapileSimpleNameExpression expression, @NotNull ReceiverDescriptor receiverDescriptor, @NotNull ExpressionTypingContext context)
 	{
-		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.REFERENCE_TARGET, expression);
+		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingTraceKeys.REFERENCE_TARGET, expression);
 		// local variable and call parameter cant have setter and getter
 		if(declarationDescriptor instanceof LocalVariableDescriptor || declarationDescriptor instanceof AbstractCallParameterDescriptorImpl)
 			return;
@@ -186,7 +186,7 @@ public class VariableAccessorResolver
 		OverloadResolutionResults<MethodDescriptor> results = context.replaceBindingTrace(trace).resolveCallWithGivenName(CallMaker.makeVariableGetCall(receiverDescriptor, expression, argument), argument, name, false);
 
 		if(results.isSingleResult())
-			context.trace.record(BindingContext.VARIABLE_CALL, expression, results.getResultingDescriptor());
+			context.trace.record(BindingTraceKeys.VARIABLE_CALL, expression, results.getResultingDescriptor());
 		else
 			copyResolvingErrors(context, trace);
 	}
@@ -201,6 +201,6 @@ public class VariableAccessorResolver
 	@NotNull
 	public static WritableSlice<PsiElement, VariableAccessorDescriptor> getSliceForAccessor(@NotNull NapileVariableAccessor accessor)
 	{
-		return accessor.getAccessorElementType() == NapileTokens.SET_KEYWORD ? BindingContext.VARIABLE_SET_ACCESSOR : BindingContext.VARIABLE_GET_ACCESSOR;
+		return accessor.getAccessorElementType() == NapileTokens.SET_KEYWORD ? BindingTraceKeys.VARIABLE_SET_ACCESSOR : BindingTraceKeys.VARIABLE_GET_ACCESSOR;
 	}
 }

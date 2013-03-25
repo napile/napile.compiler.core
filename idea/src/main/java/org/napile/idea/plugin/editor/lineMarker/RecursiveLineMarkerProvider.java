@@ -27,7 +27,8 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileCallExpression;
 import org.napile.compiler.lang.psi.NapileMethod;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import com.intellij.codeHighlighting.Pass;
@@ -63,9 +64,9 @@ public class RecursiveLineMarkerProvider implements LineMarkerProvider
 				NapileCallExpression exp = (NapileCallExpression) psiElement;
 
 				AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(exp.getContainingFile());
-				BindingContext bindingContext = analyzeExhaust.getBindingContext();
+				BindingTrace bindingContext = analyzeExhaust.getBindingTrace();
 
-				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingContext.get(BindingContext.RESOLVED_CALL, exp.getCalleeExpression());
+				ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingContext.get(BindingTraceKeys.RESOLVED_CALL, exp.getCalleeExpression());
 				if(resolvedCall == null)
 					continue;
 
@@ -73,7 +74,7 @@ public class RecursiveLineMarkerProvider implements LineMarkerProvider
 				if(methodOrMacro == null)
 					continue;
 
-				SimpleMethodDescriptor methodDescriptor = bindingContext.get(BindingContext.METHOD, methodOrMacro);
+				SimpleMethodDescriptor methodDescriptor = bindingContext.get(BindingTraceKeys.METHOD, methodOrMacro);
 				if(methodDescriptor == null)
 					continue;
 

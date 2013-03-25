@@ -57,7 +57,7 @@ public class GenerationState
 		this.progress = progress;
 		this.files = files;
 
-		this.bindingTrace = new DelegatingBindingTrace(exhaust.getBindingContext());
+		this.bindingTrace = new DelegatingBindingTrace(exhaust.getBindingTrace());
 	}
 
 	private void markUsed()

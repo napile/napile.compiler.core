@@ -21,12 +21,12 @@ import static org.napile.compiler.lang.diagnostics.Errors.CALLEE_NOT_A_FUNCTION;
 import static org.napile.compiler.lang.diagnostics.Errors.NOT_A_CLASS;
 import static org.napile.compiler.lang.diagnostics.Errors.NO_CONSTRUCTOR;
 import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
-import static org.napile.compiler.lang.resolve.BindingContext.AUTOCAST;
-import static org.napile.compiler.lang.resolve.BindingContext.NON_DEFAULT_EXPRESSION_DATA_FLOW;
-import static org.napile.compiler.lang.resolve.BindingContext.RESOLUTION_RESULTS_FOR_FUNCTION;
-import static org.napile.compiler.lang.resolve.BindingContext.RESOLUTION_RESULTS_FOR_PROPERTY;
-import static org.napile.compiler.lang.resolve.BindingContext.RESOLUTION_SCOPE;
-import static org.napile.compiler.lang.resolve.BindingContext.TRACE_DELTAS_CACHE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.AUTOCAST;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.NON_DEFAULT_EXPRESSION_DATA_FLOW;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.RESOLUTION_RESULTS_FOR_FUNCTION;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.RESOLUTION_RESULTS_FOR_PROPERTY;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.RESOLUTION_SCOPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.TRACE_DELTAS_CACHE;
 import static org.napile.compiler.lang.resolve.calls.ResolvedCallImpl.MAP_TO_CANDIDATE;
 import static org.napile.compiler.lang.resolve.calls.ResolvedCallImpl.MAP_TO_RESULT;
 
@@ -49,9 +49,9 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.BindingTraceContext;
+import org.napile.compiler.lang.resolve.BindingTraceImpl;
 import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverridingUtil;
@@ -299,7 +299,7 @@ public class CallResolver
 		TemporaryBindingTrace delegatingBindingTrace = TemporaryBindingTrace.create(context.trace);
 		BasicResolutionContext newContext = context.replaceTrace(delegatingBindingTrace);
 		OverloadResolutionResults<F> results = doResolveCall(newContext, prioritizedTasks, callTransformer, reference, bindReference);
-		DelegatingBindingTrace cloneDelta = new DelegatingBindingTrace(new BindingTraceContext().getBindingContext());
+		DelegatingBindingTrace cloneDelta = new DelegatingBindingTrace(new BindingTraceImpl());
 		delegatingBindingTrace.addAllMyDataTo(cloneDelta);
 		cacheResults(resolutionResultsSlice, context, results, cloneDelta);
 
@@ -614,9 +614,9 @@ public class CallResolver
 					@Override
 					public boolean apply(@Nullable WritableSlice slice)
 					{
-						return slice == BindingContext.RESOLUTION_RESULTS_FOR_FUNCTION ||
-								slice == BindingContext.RESOLUTION_RESULTS_FOR_PROPERTY ||
-								slice == BindingContext.TRACE_DELTAS_CACHE;
+						return slice == BindingTraceKeys.RESOLUTION_RESULTS_FOR_FUNCTION ||
+								slice == BindingTraceKeys.RESOLUTION_RESULTS_FOR_PROPERTY ||
+								slice == BindingTraceKeys.TRACE_DELTAS_CACHE;
 					}
 				}, false);
 			}
@@ -682,13 +682,13 @@ public class CallResolver
 	{
 		if(expression == null)
 			return false;
-		JetType type = context.trace.get(BindingContext.EXPRESSION_TYPE, expression);
+		JetType type = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
 		return type != null && AnnotationUtils.hasAnnotation(type, fqName);
 	}
 
 	private static boolean isNotExpression(@Nullable NapileExpression expression, CallResolutionContext<?, ?> context)
 	{
-		return expression instanceof NapileSimpleNameExpression && context.trace.get(BindingContext.REFERENCE_TARGET, (NapileSimpleNameExpression) expression) instanceof MutableClassDescriptor;
+		return expression instanceof NapileSimpleNameExpression && context.trace.get(BindingTraceKeys.REFERENCE_TARGET, (NapileSimpleNameExpression) expression) instanceof MutableClassDescriptor;
 	}
 
 	@Nullable
@@ -988,7 +988,7 @@ public class CallResolver
 		{
 			boolean safeAccess = isExplicitReceiver && !implicitInvokeCheck && candidateCall.isSafeCall();
 			JetType receiverArgumentType = receiverArgument.getType();
-			AutoCastServiceImpl autoCastService = new AutoCastServiceImpl(context.dataFlowInfo, context.candidateCall.getTrace().getBindingContext());
+			AutoCastServiceImpl autoCastService = new AutoCastServiceImpl(context.dataFlowInfo, context.candidateCall.getTrace());
 			if(!safeAccess && !receiverParameter.getType().isNullable() && !autoCastService.isNotNull(receiverArgument))
 			{
 
@@ -1269,7 +1269,7 @@ public class CallResolver
 	{
 		List<ResolutionCandidate<MethodDescriptor>> candidates = findCandidatesByExactSignature(scope, receiver, name, parameterTypes);
 
-		BindingTraceContext trace = new BindingTraceContext();
+		BindingTraceImpl trace = new BindingTraceImpl();
 		TemporaryBindingTrace temporaryBindingTrace = TemporaryBindingTrace.create(trace);
 		Set<ResolvedCallWithTrace<MethodDescriptor>> calls = Sets.newLinkedHashSet();
 		for(ResolutionCandidate<MethodDescriptor> candidate : candidates)

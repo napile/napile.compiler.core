@@ -42,11 +42,11 @@ public class AllInfo
 
 			PackageInfo packageInfo = packages.get(packageName);
 			if(packageInfo == null)
-				packages.put(packageName, packageInfo = new PackageInfo(analyzeExhaust.getBindingContext(), napileFile));
+				packages.put(packageName, packageInfo = new PackageInfo(analyzeExhaust.getBindingTrace(), napileFile));
 
 			for(NapileClass napileClass : napileFile.getDeclarations())
 			{
-				ClassInfo classInfo = new ClassInfo(analyzeExhaust.getBindingContext(), napileClass, packageName);
+				ClassInfo classInfo = new ClassInfo(analyzeExhaust.getBindingTrace(), napileClass, packageName);
 				packageInfo.getClasses().put(classInfo.getName(), classInfo);
 			}
 		}

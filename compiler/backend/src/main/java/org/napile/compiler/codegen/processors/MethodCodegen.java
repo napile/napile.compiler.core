@@ -39,7 +39,7 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.JetType;
@@ -54,17 +54,17 @@ public class MethodCodegen
 {
 	public static void genSuperCalls(@NotNull InstructionAdapter adapter, @NotNull NapileDelegationSpecifierListOwner owner, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode)
 	{
-		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingContext.CONSTRUCTOR, owner);
+		ConstructorDescriptor constructorDescriptor = bindingTrace.safeGet(BindingTraceKeys.CONSTRUCTOR, owner);
 		List<NapileDelegationToSuperCall> delegationSpecifiers = owner.getDelegationSpecifiers();
 		// delegation list is empty - if no extends
 		for(NapileDelegationToSuperCall specifier : delegationSpecifiers)
 		{
-			ResolvedCall<? extends CallableDescriptor> call = bindingTrace.get(BindingContext.RESOLVED_CALL, specifier.getCalleeExpression());
+			ResolvedCall<? extends CallableDescriptor> call = bindingTrace.get(BindingTraceKeys.RESOLVED_CALL, specifier.getCalleeExpression());
 			if(call == null)
 			{
 				final NapileTypeReference typeReference = specifier.getTypeReference();
 
-				JetType type = bindingTrace.safeGet(BindingContext.TYPE, typeReference);
+				JetType type = bindingTrace.safeGet(BindingTraceKeys.TYPE, typeReference);
 
 				adapter.localGet(0);
 
@@ -92,7 +92,7 @@ public class MethodCodegen
 
 			for(NapileTypeReference typeReference : napileClass.getSuperTypes())
 			{
-				JetType type = bindingTrace.safeGet(BindingContext.TYPE, typeReference);
+				JetType type = bindingTrace.safeGet(BindingTraceKeys.TYPE, typeReference);
 
 				final ClassifierDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
 				if(declarationDescriptor instanceof ClassDescriptor && ((ClassDescriptor) declarationDescriptor).isTraited())
@@ -179,8 +179,8 @@ public class MethodCodegen
 			if(parameterDescriptor instanceof CallParameterAsReferenceDescriptorImpl)
 			{
 				NapileCallParameterAsReference refParameter = (NapileCallParameterAsReference) declarationWithBody.getCallParameters()[parameterDescriptor.getIndex()];
-				MethodDescriptor resolvedSetter = bindingTrace.safeGet(BindingContext.VARIABLE_CALL, refParameter.getReferenceExpression());
-				VariableDescriptor variableDescriptor = (VariableDescriptor) bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, refParameter.getReferenceExpression());
+				MethodDescriptor resolvedSetter = bindingTrace.safeGet(BindingTraceKeys.VARIABLE_CALL, refParameter.getReferenceExpression());
+				VariableDescriptor variableDescriptor = (VariableDescriptor) bindingTrace.safeGet(BindingTraceKeys.REFERENCE_TARGET, refParameter.getReferenceExpression());
 
 				TypeNode typeNode = TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode);
 

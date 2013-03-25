@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve.calls.autocasts;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import com.google.common.collect.Lists;
 
@@ -29,19 +29,19 @@ import com.google.common.collect.Lists;
 public class AutoCastServiceImpl implements AutoCastService
 {
 	private final DataFlowInfo dataFlowInfo;
-	private final BindingContext bindingContext;
+	private final BindingTrace bindingTrace;
 
-	public AutoCastServiceImpl(DataFlowInfo dataFlowInfo, BindingContext bindingContext)
+	public AutoCastServiceImpl(DataFlowInfo dataFlowInfo, BindingTrace bindingTrace)
 	{
 		this.dataFlowInfo = dataFlowInfo;
-		this.bindingContext = bindingContext;
+		this.bindingTrace = bindingTrace;
 	}
 
 	@NotNull
 	@Override
 	public List<ReceiverDescriptor> getVariantsForReceiver(@NotNull ReceiverDescriptor receiverDescriptor)
 	{
-		List<ReceiverDescriptor> variants = Lists.newArrayList(AutoCastUtils.getAutoCastVariants(bindingContext, dataFlowInfo, receiverDescriptor));
+		List<ReceiverDescriptor> variants = Lists.newArrayList(AutoCastUtils.getAutoCastVariants(bindingTrace, dataFlowInfo, receiverDescriptor));
 		variants.add(receiverDescriptor);
 		return variants;
 	}
@@ -59,7 +59,7 @@ public class AutoCastServiceImpl implements AutoCastService
 		if(!receiver.getType().isNullable())
 			return true;
 
-		List<ReceiverDescriptor> autoCastVariants = AutoCastUtils.getAutoCastVariants(bindingContext, dataFlowInfo, receiver);
+		List<ReceiverDescriptor> autoCastVariants = AutoCastUtils.getAutoCastVariants(bindingTrace, dataFlowInfo, receiver);
 		for(ReceiverDescriptor autoCastVariant : autoCastVariants)
 		{
 			if(!autoCastVariant.getType().isNullable())

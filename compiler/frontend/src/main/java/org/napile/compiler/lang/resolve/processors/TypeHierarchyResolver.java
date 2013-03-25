@@ -35,8 +35,8 @@ import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.NamespaceFactoryImpl;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
@@ -195,11 +195,11 @@ public class TypeHierarchyResolver
 					constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), Visibility.PUBLIC);
 					mutableClassDescriptor.addConstructor(constructorDescriptor);
 
-					trace.record(BindingContext.CONSTRUCTOR, value, constructorDescriptor);
+					trace.record(BindingTraceKeys.CONSTRUCTOR, value, constructorDescriptor);
 
 					context.getEnumValues().put(value, mutableClassDescriptor);
 
-					trace.record(BindingContext.CLASS, value, mutableClassDescriptor);
+					trace.record(BindingTraceKeys.CLASS, value, mutableClassDescriptor);
 
 					value.acceptChildren(this, new Pair<DescriptorBuilder, JetScope>(mutableClassDescriptor.getBuilder(), mutableClassDescriptor.getScopeForMemberResolution()));
 					return null;
@@ -359,7 +359,7 @@ public class TypeHierarchyResolver
 			ClassDescriptor classDescriptor = currentPath.get(i);
 
 			ClassDescriptor superclass = (i < size - 1) ? currentPath.get(i + 1) : current;
-			PsiElement psiElement = BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), classDescriptor);
+			PsiElement psiElement = BindingTraceUtil.classDescriptorToDeclaration(trace, classDescriptor);
 
 			PsiElement elementToMark = null;
 			if(psiElement instanceof NapileClass)
@@ -367,7 +367,7 @@ public class TypeHierarchyResolver
 				NapileClass napileClass = (NapileClass) psiElement;
 				for(NapileTypeReference typeReference : napileClass.getSuperTypes())
 				{
-					JetType supertype = trace.get(BindingContext.TYPE, typeReference);
+					JetType supertype = trace.get(BindingTraceKeys.TYPE, typeReference);
 					if(supertype != null && supertype.getConstructor() == superclass.getTypeConstructor())
 						elementToMark = typeReference;
 				}
@@ -380,7 +380,7 @@ public class TypeHierarchyResolver
 					NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
 					if(typeReference == null)
 						continue;
-					JetType supertype = trace.get(BindingContext.TYPE, typeReference);
+					JetType supertype = trace.get(BindingTraceKeys.TYPE, typeReference);
 					if(supertype != null && supertype.getConstructor() == superclass.getTypeConstructor())
 						elementToMark = typeReference;
 				}
@@ -434,7 +434,7 @@ public class TypeHierarchyResolver
 					{
 						DeclarationDescriptor containingDeclaration = typeParameterDescriptor.getContainingDeclaration();
 						assert containingDeclaration instanceof ClassDescriptor : containingDeclaration;
-						NapileClassLike psiElement = (NapileClassLike) BindingContextUtils.classDescriptorToDeclaration(trace.getBindingContext(), mutableClassDescriptor);
+						NapileClassLike psiElement = (NapileClassLike) BindingTraceUtil.classDescriptorToDeclaration(trace, mutableClassDescriptor);
 						NapileElement extendTypeListElement = psiElement.getSuperTypesElement();
 						assert extendTypeListElement != null;
 						trace.report(Errors.INCONSISTENT_TYPE_PARAMETER_VALUES.on(extendTypeListElement, typeParameterDescriptor, (ClassDescriptor) containingDeclaration, conflictingTypes));
@@ -501,7 +501,7 @@ public class TypeHierarchyResolver
 			return;
 		}
 
-		JetType type = trace.getBindingContext().get(BindingContext.TYPE, typeReference);
+		JetType type = trace.get(BindingTraceKeys.TYPE, typeReference);
 		if(type != null)
 		{
 			descriptorResolver.checkBounds(typeReference, type, trace);

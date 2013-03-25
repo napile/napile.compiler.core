@@ -30,7 +30,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -88,9 +88,9 @@ public class AnonymClassResolver
 		constructorDescriptor.initialize(Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), Visibility.PUBLIC);
 		mutableClassDescriptor.addConstructor(constructorDescriptor);
 
-		bindingTrace.record(BindingContext.CONSTRUCTOR, anonymClass, constructorDescriptor);
+		bindingTrace.record(BindingTraceKeys.CONSTRUCTOR, anonymClass, constructorDescriptor);
 
-		bindingTrace.record(BindingContext.CLASS, anonymClass, mutableClassDescriptor);
+		bindingTrace.record(BindingTraceKeys.CLASS, anonymClass, mutableClassDescriptor);
 
 		for(JetType type : descriptorResolver.resolveSupertypes(mutableClassDescriptor.getScopeForSupertypeResolution(), anonymClass, bindingTrace))
 			mutableClassDescriptor.addSupertype(type);
@@ -113,13 +113,13 @@ public class AnonymClassResolver
 				{
 					NapileExpression initializer = property.getInitializer();
 					if(initializer != null)
-						bodyResolver.resolvePropertyInitializer(property, bindingTrace.safeGet(BindingContext.VARIABLE, property), initializer, mutableClassDescriptor.getScopeForMemberResolution());
+						bodyResolver.resolvePropertyInitializer(property, bindingTrace.safeGet(BindingTraceKeys.VARIABLE, property), initializer, mutableClassDescriptor.getScopeForMemberResolution());
 				}
 
 				@Override
 				public void visitNamedMethodOrMacro(NapileNamedMethodOrMacro method)
 				{
-					bodyResolver.resolveBody(bindingTrace, method, bindingTrace.safeGet(BindingContext.METHOD, method), mutableClassDescriptor.getScopeForMemberResolution(), false);
+					bodyResolver.resolveBody(bindingTrace, method, bindingTrace.safeGet(BindingTraceKeys.METHOD, method), mutableClassDescriptor.getScopeForMemberResolution(), false);
 				}
 			});
 		}

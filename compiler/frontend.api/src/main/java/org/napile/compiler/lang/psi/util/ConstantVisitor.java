@@ -20,8 +20,8 @@ import org.napile.compiler.lang.psi.NapileConstantExpression;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileVisitor;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingReader;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.TypeUtils;
@@ -33,9 +33,9 @@ import com.intellij.psi.util.PsiTreeUtil;
  */
 public class ConstantVisitor extends NapileVisitor<Constant, Object>
 {
-	private final BindingReader bindingTrace;
+	private final BindingTrace bindingTrace;
 
-	public ConstantVisitor(BindingReader bindingTrace)
+	public ConstantVisitor(BindingTrace bindingTrace)
 	{
 		this.bindingTrace = bindingTrace;
 	}
@@ -43,13 +43,13 @@ public class ConstantVisitor extends NapileVisitor<Constant, Object>
 	@Override
 	public Constant visitConstantExpression(NapileConstantExpression expression, Object o)
 	{
-		JetScope jetScope = bindingTrace.get(BindingContext.RESOLUTION_SCOPE, expression);
+		JetScope jetScope = bindingTrace.get(BindingTraceKeys.RESOLUTION_SCOPE, expression);
 		if(jetScope == null)
 		{
 			NapileDelegationToSuperCall delegationToSuperCall = PsiTreeUtil.getParentOfType(expression, NapileDelegationToSuperCall.class);
 			if(delegationToSuperCall != null)
 			{
-				jetScope = bindingTrace.get(BindingContext.TYPE_RESOLUTION_SCOPE, delegationToSuperCall.getTypeReference());
+				jetScope = bindingTrace.get(BindingTraceKeys.TYPE_RESOLUTION_SCOPE, delegationToSuperCall.getTypeReference());
 			}
 
 			if(jetScope == null)
@@ -58,7 +58,7 @@ public class ConstantVisitor extends NapileVisitor<Constant, Object>
 			}
 		}
 
-		final CompileTimeConstant<?> compileTimeConstant = bindingTrace.get(BindingContext.COMPILE_TIME_VALUE, expression);
+		final CompileTimeConstant<?> compileTimeConstant = bindingTrace.get(BindingTraceKeys.COMPILE_TIME_VALUE, expression);
 		if(compileTimeConstant != null)
 			return new Constant(TypeUtils.getFqName(compileTimeConstant.getType(jetScope)), compileTimeConstant.getValue());
 		else

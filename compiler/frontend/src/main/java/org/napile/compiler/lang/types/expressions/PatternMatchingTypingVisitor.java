@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
@@ -66,9 +66,9 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 
 		if(expression.getTypeRef() != null)
 		{
-			DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(leftHandSide, knownType, context.trace.getBindingContext());
+			DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(leftHandSide, knownType, context.trace);
 			DataFlowInfo newDataFlowInfo = checkTypeForIs(context, knownType, expression.getTypeRef(), dataFlowValue).thenInfo;
-			context.trace.record(BindingContext.DATAFLOW_INFO_AFTER_CONDITION, expression, newDataFlowInfo);
+			context.trace.record(BindingTraceKeys.DATAFLOW_INFO_AFTER_CONDITION, expression, newDataFlowInfo);
 		}
 		return DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.BOOL, false), expression, contextWithExpectedType, context.dataFlowInfo);
 	}
@@ -86,7 +86,7 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 		final NapileExpression subjectExpression = expression.getSubjectExpression();
 
 		final JetType subjectType = subjectExpression != null ? context.expressionTypingServices.safeGetType(context.scope, subjectExpression, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace) : ErrorUtils.createErrorType("Unknown type");
-		final DataFlowValue variableDescriptor = subjectExpression != null ? DataFlowValueFactory.INSTANCE.createDataFlowValue(subjectExpression, subjectType, context.trace.getBindingContext()) : new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, true), false, Nullability.NULL);
+		final DataFlowValue variableDescriptor = subjectExpression != null ? DataFlowValueFactory.INSTANCE.createDataFlowValue(subjectExpression, subjectType, context.trace) : new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, true), false, Nullability.NULL);
 
 		// TODO : exhaustive patterns
 
@@ -268,7 +268,7 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 			return noChange(context);
 		}
 		checkTypeCompatibility(context, type, subjectType, expression);
-		DataFlowValue expressionDataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, type, context.trace.getBindingContext());
+		DataFlowValue expressionDataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, type, context.trace);
 		DataFlowInfos result = noChange(context);
 		for(DataFlowValue subjectVariable : subjectVariables)
 		{

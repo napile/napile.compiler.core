@@ -37,8 +37,8 @@ import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.constants.BoolValue;
@@ -609,7 +609,7 @@ public class JetControlFlowProcessor
 			{
 				NapileSimpleNameExpression targetLabel = expression.getTargetLabel();
 				assert targetLabel != null;
-				PsiElement labeledElement = BindingContextUtils.resolveToDeclarationPsiElement(trace.getBindingContext(), targetLabel);
+				PsiElement labeledElement = BindingTraceUtil.resolveToDeclarationPsiElement(trace, targetLabel);
 				if(labeledElement != null)
 				{
 					loop = (NapileElement) labeledElement;
@@ -729,9 +729,9 @@ public class JetControlFlowProcessor
 				value(selectorExpression, false);
 			}
 			builder.read(expression);
-			if(trace.safeGet(BindingContext.PROCESSED, expression))
+			if(trace.safeGet(BindingTraceKeys.PROCESSED, expression))
 			{
-				JetType type = trace.getBindingContext().get(BindingContext.EXPRESSION_TYPE, expression);
+				JetType type = trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
 				if(type != null && false)
 				{
 					builder.jumpToError(expression);
@@ -768,14 +768,14 @@ public class JetControlFlowProcessor
 
 			label :
 			{
-				ResolvedCall<? extends CallableDescriptor> resolvedCall = trace.get(BindingContext.RESOLVED_CALL, expression.getCalleeExpression());
+				ResolvedCall<? extends CallableDescriptor> resolvedCall = trace.get(BindingTraceKeys.RESOLVED_CALL, expression.getCalleeExpression());
 				if(resolvedCall == null)
 					break label;
 
 				CallableDescriptor callableDescriptor = resolvedCall.getCandidateDescriptor();
 				if(callableDescriptor instanceof SimpleMethodDescriptor && ((SimpleMethodDescriptor) callableDescriptor).isMacro())
 				{
-					NapileExpression bodyExp = trace.get(BindingContext.MACRO_BODY, callableDescriptor);
+					NapileExpression bodyExp = trace.get(BindingTraceKeys.MACRO_BODY, callableDescriptor);
 					if(bodyExp == null)
 						break label;
 

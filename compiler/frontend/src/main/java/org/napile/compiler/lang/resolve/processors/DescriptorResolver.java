@@ -39,8 +39,8 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
@@ -110,7 +110,7 @@ public class DescriptorResolver
 
 		descriptor.setVisibility(Visibility.resolve(classElement));
 
-		trace.record(BindingContext.CLASS, classElement, descriptor);
+		trace.record(BindingTraceKeys.CLASS, classElement, descriptor);
 	}
 
 	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileSuperListOwner superListOwner, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
@@ -199,7 +199,7 @@ public class DescriptorResolver
 
 		methodDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, parameterDescriptors, returnType, modality, visibility);
 
-		BindingContextUtils.recordMethodDeclarationToDescriptor(trace, method, methodDescriptor);
+		BindingTraceUtil.recordMethodDeclarationToDescriptor(trace, method, methodDescriptor);
 
 		return methodDescriptor;
 	}
@@ -243,14 +243,14 @@ public class DescriptorResolver
 		}
 
 		if(bodyExpression != null)
-			trace.record(BindingContext.MACRO_BODY, methodDescriptor, bodyExpression);
+			trace.record(BindingTraceKeys.MACRO_BODY, methodDescriptor, bodyExpression);
 
 		Modality modality = Modality.resolve(macro);
 		Visibility visibility = Visibility.resolve(macro);
 
 		methodDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDescriptor), typeParameterDescriptors, parameterDescriptors, returnType, modality, visibility);
 
-		BindingContextUtils.recordMethodDeclarationToDescriptor(trace, macro, methodDescriptor);
+		BindingTraceUtil.recordMethodDeclarationToDescriptor(trace, macro, methodDescriptor);
 
 		return methodDescriptor;
 	}
@@ -293,7 +293,7 @@ public class DescriptorResolver
 	{
 		AbstractCallParameterDescriptorImpl descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), parameter.isMutable(), parameter.isRef());
 
-		trace.record(BindingContext.VALUE_PARAMETER, parameter, descriptor);
+		trace.record(BindingTraceKeys.VALUE_PARAMETER, parameter, descriptor);
 
 		resolveCallParameterDefaultValue(scope, parameter, trace, descriptor);
 
@@ -320,7 +320,7 @@ public class DescriptorResolver
 			else
 			{
 				type = variableDescriptor.getType();
-				trace.record(BindingContext.REFERENCE_TARGET, ref, variableDescriptor);
+				trace.record(BindingTraceKeys.REFERENCE_TARGET, ref, variableDescriptor);
 			}
 		}
 
@@ -344,7 +344,7 @@ public class DescriptorResolver
 
 			expressionTypingServices.getType(scope, defaultValue, descriptor.getType(), DataFlowInfo.EMPTY, trace);
 
-			trace.record(BindingContext.DEFAULT_VALUE_OF_PARAMETER, descriptor, defaultValue);
+			trace.record(BindingTraceKeys.DEFAULT_VALUE_OF_PARAMETER, descriptor, defaultValue);
 		}
 	}
 
@@ -375,7 +375,7 @@ public class DescriptorResolver
 	public VariableDescriptor resolveLocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileCallParameterAsVariable parameter, @NotNull JetType type, BindingTrace trace, JetScope scope)
 	{
 		VariableDescriptor variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), parameter.isMutable());
-		trace.record(BindingContext.VALUE_PARAMETER, parameter, variableDescriptor);
+		trace.record(BindingTraceKeys.VALUE_PARAMETER, parameter, variableDescriptor);
 		return variableDescriptor;
 	}
 
@@ -394,7 +394,7 @@ public class DescriptorResolver
 	public AbstractVariableDescriptorImpl resolveLocalVariableDescriptorWithType(DeclarationDescriptor containingDeclaration, NapileVariable variable, JetType type, BindingTrace trace, @NotNull JetScope scope)
 	{
 		AbstractVariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.bindAnnotations(scope, variable, trace), NapilePsiUtil.safeName(variable.getName()), type, Modality.resolve(variable), variable.isMutable());
-		trace.record(BindingContext.VARIABLE, variable, variableDescriptor);
+		trace.record(BindingTraceKeys.VARIABLE, variable, variableDescriptor);
 		return variableDescriptor;
 	}
 
@@ -431,7 +431,7 @@ public class DescriptorResolver
 
 		variableDescriptor.setType(type, typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
 
-		trace.record(BindingContext.VARIABLE, variable, variableDescriptor);
+		trace.record(BindingTraceKeys.VARIABLE, variable, variableDescriptor);
 
 		resolveVariableAccessors(containingDeclaration, scope, variable, trace, variableDescriptor);
 
@@ -459,7 +459,7 @@ public class DescriptorResolver
 		variableDescriptor.setType(m.getDefaultType(), typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
 
 		resolveVariableAccessors(containingDeclaration, scope, enumValue, trace, variableDescriptor);
-		trace.record(BindingContext.VARIABLE, enumValue, variableDescriptor);
+		trace.record(BindingTraceKeys.VARIABLE, enumValue, variableDescriptor);
 
 		return variableDescriptor;
 	}
@@ -485,14 +485,14 @@ public class DescriptorResolver
 
 				variableAccessorDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), list, TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), Modality.resolve(variableAccessor), Visibility.resolve(variableAccessor));
 
-				trace.record(BindingContext.VARIABLE_SET_ACCESSOR, variableAccessor, variableAccessorDescriptor);
+				trace.record(BindingTraceKeys.VARIABLE_SET_ACCESSOR, variableAccessor, variableAccessorDescriptor);
 				set = variableAccessorDescriptor;
 			}
 			else
 			{
 				variableAccessorDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), variableDescriptor.getType(), Modality.resolve(variableAccessor), Visibility.resolve(variableAccessor));
 
-				trace.record(BindingContext.VARIABLE_GET_ACCESSOR, variableAccessor, variableAccessorDescriptor);
+				trace.record(BindingTraceKeys.VARIABLE_GET_ACCESSOR, variableAccessor, variableAccessorDescriptor);
 				get = variableAccessorDescriptor;
 			}
 		}
@@ -504,7 +504,7 @@ public class DescriptorResolver
 			List<CallParameterDescriptor> list = Collections.<CallParameterDescriptor>singletonList(new CallParameterAsVariableDescriptorImpl(variableAccessorDescriptor, 0, Collections.<AnnotationDescriptor>emptyList(), NapileConstants.VARIABLE_SET_PARAMETER_NAME, variableDescriptor.getType(), Modality.OPEN, false, false));
 			variableAccessorDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), list, TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), Modality.resolve(variable), Visibility.resolve(variable));
 
-			trace.record(BindingContext.VARIABLE_SET_ACCESSOR, variable, variableAccessorDescriptor);
+			trace.record(BindingTraceKeys.VARIABLE_SET_ACCESSOR, variable, variableAccessorDescriptor);
 			set = variableAccessorDescriptor;
 		}
 
@@ -513,7 +513,7 @@ public class DescriptorResolver
 			VariableAccessorDescriptorImpl variableAccessorDescriptor = new VariableAccessorDescriptorImpl(containingDeclaration, Collections.<AnnotationDescriptor>emptyList(), Name.identifier(variableDescriptor.getName().getName() + AsmConstants.ANONYM_SPLITTER + "get"), CallableMemberDescriptor.Kind.DECLARATION, variableDescriptor.isStatic(), false, true, variableDescriptor);
 			variableAccessorDescriptor.initialize(DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration), Collections.<TypeParameterDescriptor>emptyList(), Collections.<CallParameterDescriptor>emptyList(), variableDescriptor.getType(), Modality.resolve(variable), Visibility.resolve(variable));
 
-			trace.record(BindingContext.VARIABLE_GET_ACCESSOR, variable, variableAccessorDescriptor);
+			trace.record(BindingTraceKeys.VARIABLE_GET_ACCESSOR, variable, variableAccessorDescriptor);
 			get = variableAccessorDescriptor;
 		}
 
@@ -575,7 +575,7 @@ public class DescriptorResolver
 	{
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, annotationResolver.bindAnnotations(scope, constructor, trace), resolveStatic(constructor));
 		constructorDescriptor.setReturnType(classDescriptor.getDefaultType());
-		trace.record(BindingContext.CONSTRUCTOR, constructor, constructorDescriptor);
+		trace.record(BindingTraceKeys.CONSTRUCTOR, constructor, constructorDescriptor);
 		WritableScopeImpl parameterScope = new WritableScopeImpl(scope, constructorDescriptor, new TraceBasedRedeclarationHandler(trace), "Scope with value parameters of a constructor");
 		parameterScope.changeLockLevel(WritableScope.LockLevel.BOTH);
 		constructorDescriptor.setParametersScope(parameterScope);

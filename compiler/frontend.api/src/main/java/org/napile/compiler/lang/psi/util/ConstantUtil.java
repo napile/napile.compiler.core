@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.psi.util;
 
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.resolve.BindingReader;
+import org.napile.compiler.lang.resolve.BindingTrace;
 
 /**
  * @author VISTALL
@@ -25,7 +25,7 @@ import org.napile.compiler.lang.resolve.BindingReader;
  */
 public class ConstantUtil
 {
-	public static Constant getConstant(BindingReader trace, NapileExpression e)
+	public static Constant getConstant(BindingTrace trace, NapileExpression e)
 	{
 		ConstantVisitor visitor = new ConstantVisitor(trace);
 

@@ -22,8 +22,9 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileLabelExpression;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
 import org.napile.idea.plugin.util.NapileDocUtil;
@@ -51,19 +52,19 @@ public class NapileQuickDocumentationProvider extends AbstractDocumentationProvi
 		PsiElement declarationPsiElement = PsiTreeUtil.getParentOfType(originalElement, NapileDeclaration.class);
 		if(ref != null || declarationPsiElement != null)
 		{
-			BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) originalElement.getContainingFile()).getBindingContext();
+			BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) originalElement.getContainingFile()).getBindingTrace();
 
 			if(ref != null)
 			{
 				if(declarationPsiElement != null)
 				{
-					declarationPsiElement = BindingContextUtils.resolveToDeclarationPsiElement(bindingContext, ref);
+					declarationPsiElement = BindingTraceUtil.resolveToDeclarationPsiElement(bindingContext, ref);
 				}
 			}
 
 			if(declarationPsiElement != null)
 			{
-				DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declarationPsiElement);
+				DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, declarationPsiElement);
 				if(declarationDescriptor != null)
 				{
 					return renderDoc(declarationDescriptor, declarationPsiElement, doc);

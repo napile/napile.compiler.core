@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
 import org.napile.compiler.util.slicedmap.WritableSlice;
@@ -33,7 +34,6 @@ public class ObservableBindingTrace implements BindingTrace
 {
 	public interface RecordHandler<K, V>
 	{
-
 		void handleRecord(WritableSlice<K, V> slice, K key, V value);
 	}
 
@@ -59,11 +59,11 @@ public class ObservableBindingTrace implements BindingTrace
 		return originalTrace.getDiagnostics();
 	}
 
-	@NotNull
+	@Nullable
 	@Override
-	public BindingContext getBindingContext()
+	public BindingTrace getParent()
 	{
-		return originalTrace.getBindingContext();
+		return originalTrace;
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -45,7 +45,7 @@ public class AnnotationChecker
 	{
 		for(NapileAnnotation annotation : annotations)
 		{
-			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingContext.ANNOTATION, annotation);
+			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingTraceKeys.ANNOTATION, annotation);
 
 			checkIsAnnotationClass(annotation, annotationDescriptor, trace);
 

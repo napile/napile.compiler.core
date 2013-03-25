@@ -40,8 +40,9 @@ import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.psi.util.NapileNameComparator;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
@@ -74,14 +75,14 @@ public enum LineMarkers
 					NapileElement napileElement = (NapileElement) element;
 					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(napileElement.getContainingFile());
 
-					DeclarationDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.DECLARATION_TO_DESCRIPTOR, napileElement);
+					DeclarationDescriptor descriptor = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, napileElement);
 					if(!isValidCallable(descriptor))
 						return Collections.emptyList();
 
 					List<NapileElement> list = new ArrayList<NapileElement>(((CallableDescriptor) descriptor).getOverriddenDescriptors().size());
 					for(CallableDescriptor overrideDescriptor : ((CallableDescriptor) descriptor).getOverriddenDescriptors())
 					{
-						NapileElement declarationPsiElement = (NapileElement) BindingContextUtils.descriptorToDeclaration(analyzeExhaust.getBindingContext(), overrideDescriptor);
+						NapileElement declarationPsiElement = (NapileElement) BindingTraceUtil.descriptorToDeclaration(analyzeExhaust.getBindingTrace(), overrideDescriptor);
 						list.add(declarationPsiElement);
 					}
 
@@ -115,7 +116,7 @@ public enum LineMarkers
 
 					BodiesResolveContext context = analyzeExhaust.getBodiesResolveContext();
 
-					ClassDescriptor descriptor = analyzeExhaust.getBindingContext().get(BindingContext.CLASS, napileClass);
+					ClassDescriptor descriptor = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.CLASS, napileClass);
 					if(descriptor == null)
 						return;
 
@@ -123,7 +124,7 @@ public enum LineMarkers
 					{
 						if(declaration instanceof NapileMethod)
 						{
-							MethodDescriptor methodDescriptor = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, declaration);
+							MethodDescriptor methodDescriptor = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.METHOD, declaration);
 							if(methodDescriptor == null)
 								continue;
 
@@ -138,7 +139,7 @@ public enum LineMarkers
 									{
 										if(declaration2 instanceof NapileMethod)
 										{
-											MethodDescriptor methodDescriptor2 = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, declaration2);
+											MethodDescriptor methodDescriptor2 = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.METHOD, declaration2);
 											if(methodDescriptor2 != null && methodDescriptor2.getOverriddenDescriptors().contains(methodDescriptor))
 												elements.add(declaration2);
 										}
@@ -219,8 +220,8 @@ public enum LineMarkers
 					final NapileClass napileClass = (NapileClass) element;
 					AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(napileClass.getContainingFile());
 
-					BindingContext bindingContext = analyzeExhaust.getBindingContext();
-					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
+					BindingTrace bindingContext = analyzeExhaust.getBindingTrace();
+					ClassDescriptor classDeclaration = (ClassDescriptor) bindingContext.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, element);
 					if(classDeclaration == null)
 						return Collections.emptyList();
 					List<NapileElement> result = new ArrayList<NapileElement>();

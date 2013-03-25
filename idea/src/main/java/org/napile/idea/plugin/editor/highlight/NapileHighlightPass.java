@@ -29,7 +29,7 @@ import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.editor.highlight.postHighlight.InjectionHighlightingVisitor;
 import org.napile.idea.plugin.editor.highlight.postHighlight.LabelsHighlightingVisitor;
 import org.napile.idea.plugin.editor.highlight.postHighlight.MethodsHighlightingVisitor;
@@ -88,32 +88,31 @@ public class NapileHighlightPass extends TextEditorHighlightingPass
 	public void doCollectInformation(@NotNull ProgressIndicator progress)
 	{
 		final AnalyzeExhaust analyze = ModuleAnalyzerUtil.lastAnalyze(file);
-		final BindingContext bindingContext = analyze.getBindingContext();
+		final BindingTrace bindingTrace = analyze.getBindingTrace();
 
 		quickFixes = new MultiMap<HighlightInfo, IntentionAction>();
 		infos = new MultiMap<PsiFile, HighlightInfo>();
 
-		convertDiagnostic(bindingContext);
+		convertDiagnostic(bindingTrace);
 
 		Collection<HighlightInfo> selfInfos = infos.getModifiable(file);
 
 		for(PostHighlightVisitor visitor : new PostHighlightVisitor[]
 		{
-				new LabelsHighlightingVisitor(bindingContext, selfInfos),
-				new MethodsHighlightingVisitor(bindingContext, selfInfos),
-				new VariablesHighlightingVisitor(bindingContext, selfInfos),
-				new TypeKindHighlightingVisitor(bindingContext, selfInfos),
-				new SoftKeywordPostHighlightVisitor(bindingContext, selfInfos),
-				new InjectionHighlightingVisitor(bindingContext, selfInfos)
+				new LabelsHighlightingVisitor(bindingTrace, selfInfos),
+				new MethodsHighlightingVisitor(bindingTrace, selfInfos),
+				new VariablesHighlightingVisitor(bindingTrace, selfInfos),
+				new TypeKindHighlightingVisitor(bindingTrace, selfInfos),
+				new SoftKeywordPostHighlightVisitor(bindingTrace, selfInfos),
+				new InjectionHighlightingVisitor(bindingTrace, selfInfos)
 		})
 		{
 			file.accept(visitor);
 		}
 	}
 
-	private void convertDiagnostic(BindingContext bindingContext)
+	private void convertDiagnostic(BindingTrace bindingContext)
 	{
-		MultiMap<PsiFile, HighlightInfo> data = new MultiMap<PsiFile, HighlightInfo>();
 		for(Diagnostic diagnostic : bindingContext.getDiagnostics())
 		{
 			if(!diagnostic.isValid())

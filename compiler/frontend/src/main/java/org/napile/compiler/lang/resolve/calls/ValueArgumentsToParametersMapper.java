@@ -38,7 +38,7 @@ import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.ValueArgument;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -123,7 +123,7 @@ import com.google.common.collect.Sets;
 				}
 				else
 				{
-					temporaryTrace.record(BindingContext.REFERENCE_TARGET, nameReference, parameterDescriptor);
+					temporaryTrace.record(BindingTraceKeys.REFERENCE_TARGET, nameReference, parameterDescriptor);
 					if(!usedParameters.add(parameterDescriptor))
 					{
 						temporaryTrace.report(ARGUMENT_PASSED_TWICE.on(nameReference));
@@ -231,7 +231,7 @@ import com.google.common.collect.Sets;
 			if(!usedParameters.contains(valueParameter))
 			{
 				if(valueParameter.hasDefaultValue())
-					candidateCall.recordValueArgument(valueParameter, new DefaultValueArgument(temporaryTrace.safeGet(BindingContext.DEFAULT_VALUE_OF_PARAMETER, valueParameter)));
+					candidateCall.recordValueArgument(valueParameter, new DefaultValueArgument(temporaryTrace.safeGet(BindingTraceKeys.DEFAULT_VALUE_OF_PARAMETER, valueParameter)));
 				//else if(valueParameter.getVarargElementType() != null)
 				//	candidateCall.recordValueArgument(valueParameter, new VarargValueArgument());
 				else

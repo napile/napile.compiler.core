@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.AutoCastReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
@@ -44,7 +44,7 @@ public class AutoCastUtils
 	/**
 	 * @return variants @param receiverToCast may be cast to according to @param dataFlowInfo, @param receiverToCast itself is NOT included
 	 */
-	public static List<ReceiverDescriptor> getAutoCastVariants(@NotNull final BindingContext bindingContext, @NotNull final DataFlowInfo dataFlowInfo, @NotNull ReceiverDescriptor receiverToCast)
+	public static List<ReceiverDescriptor> getAutoCastVariants(@NotNull final BindingTrace bindingTrace, @NotNull final DataFlowInfo dataFlowInfo, @NotNull ReceiverDescriptor receiverToCast)
 	{
 		return receiverToCast.accept(new ReceiverDescriptorVisitor<List<ReceiverDescriptor>, Object>()
 		{
@@ -81,7 +81,7 @@ public class AutoCastUtils
 				//                else if (expression instanceof NapileThisExpression) {
 				//                    return castThis(dataFlowInfo, receiver);
 				//                }
-				DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(receiver.getExpression(), receiver.getType(), bindingContext);
+				DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(receiver.getExpression(), receiver.getType(), bindingTrace);
 				List<ReceiverDescriptor> result = Lists.newArrayList();
 				for(JetType possibleType : dataFlowInfo.getPossibleTypes(dataFlowValue))
 				{

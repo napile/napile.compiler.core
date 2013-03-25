@@ -30,7 +30,8 @@ import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -43,7 +44,7 @@ import com.intellij.psi.PsiReference;
  */
 public class TypeKindHighlightingVisitor extends PostHighlightVisitor
 {
-	public TypeKindHighlightingVisitor(BindingContext context, Collection<HighlightInfo> holder)
+	public TypeKindHighlightingVisitor(BindingTrace context, Collection<HighlightInfo> holder)
 	{
 		super(context, holder);
 	}
@@ -58,7 +59,7 @@ public class TypeKindHighlightingVisitor extends PostHighlightVisitor
 
 		if(NapileTokens.KEYWORDS.contains(expression.getReferencedNameElementType()))
 			return;
-		DeclarationDescriptor referenceTarget = bindingContext.get(BindingContext.REFERENCE_TARGET, expression);
+		DeclarationDescriptor referenceTarget = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, expression);
 		if(referenceTarget instanceof ConstructorDescriptor)
 		{
 			referenceTarget = referenceTarget.getContainingDeclaration();
@@ -89,7 +90,7 @@ public class TypeKindHighlightingVisitor extends PostHighlightVisitor
 	public void visitClass(NapileClass klass)
 	{
 		PsiElement identifier = klass.getNameIdentifier();
-		ClassDescriptor classDescriptor = bindingContext.get(BindingContext.CLASS, klass);
+		ClassDescriptor classDescriptor = bindingTrace.get(BindingTraceKeys.CLASS, klass);
 		if(identifier != null && classDescriptor != null)
 		{
 			highlightClassByKind(classDescriptor, identifier);

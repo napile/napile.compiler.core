@@ -35,7 +35,8 @@ import org.napile.compiler.lang.cfg.pseudocode.WriteValueInstruction;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
@@ -45,7 +46,7 @@ import com.google.common.collect.Sets;
 public class PseudocodeVariablesData
 {
 	private final Pseudocode pseudocode;
-	private final BindingContext bindingContext;
+	private final BindingTrace bindingTrace;
 
 	private final Map<Pseudocode, Set<VariableDescriptor>> declaredVariablesInEachDeclaration = Maps.newHashMap();
 	private final Map<Pseudocode, Set<VariableDescriptor>> usedVariablesInEachDeclaration = Maps.newHashMap();
@@ -53,10 +54,10 @@ public class PseudocodeVariablesData
 	private Map<Instruction, Edges<Map<VariableDescriptor, VariableInitState>>> variableInitializersMap;
 	private Map<Instruction, Edges<Map<VariableDescriptor, VariableUseState>>> variableStatusMap;
 
-	public PseudocodeVariablesData(@NotNull Pseudocode pseudocode, @NotNull BindingContext bindingContext)
+	public PseudocodeVariablesData(@NotNull Pseudocode pseudocode, @NotNull BindingTrace bindingTrace)
 	{
 		this.pseudocode = pseudocode;
-		this.bindingContext = bindingContext;
+		this.bindingTrace = bindingTrace;
 	}
 
 	@NotNull
@@ -77,7 +78,7 @@ public class PseudocodeVariablesData
 				@Override
 				public void execute(@NotNull Instruction instruction)
 				{
-					VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, false, bindingContext);
+					VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, false, bindingTrace);
 					if(variableDescriptor != null)
 					{
 						result.add(variableDescriptor);
@@ -102,7 +103,7 @@ public class PseudocodeVariablesData
 				if(instruction instanceof VariableDeclarationInstruction)
 				{
 					NapileDeclaration variableDeclarationElement = ((VariableDeclarationInstruction) instruction).getVariableDeclarationElement();
-					VariableDescriptor descriptor = bindingContext.get(BindingContext.VARIABLE, variableDeclarationElement);
+					VariableDescriptor descriptor = bindingTrace.get(BindingTraceKeys.VARIABLE, variableDeclarationElement);
 					if(descriptor != null)
 						declaredVariables.add(descriptor);
 				}
@@ -222,7 +223,7 @@ public class PseudocodeVariablesData
 		{
 			return enterInstructionData;
 		}
-		VariableDescriptor variable = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, false, bindingContext);
+		VariableDescriptor variable = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, false, bindingTrace);
 		if(variable == null)
 		{
 			return enterInstructionData;
@@ -275,7 +276,7 @@ public class PseudocodeVariablesData
 							enterResult.put(variableDescriptor, variableUseState.merge(enterResult.get(variableDescriptor)));
 						}
 					}
-					VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, true, bindingContext);
+					VariableDescriptor variableDescriptor = PseudocodeUtil.extractVariableDescriptorIfAny(instruction, true, bindingTrace);
 					if(variableDescriptor == null || (!(instruction instanceof ReadValueInstruction) && !(instruction instanceof WriteValueInstruction)))
 					{
 						return Edges.create(enterResult, enterResult);

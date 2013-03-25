@@ -39,7 +39,7 @@ import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeArgumentList;
 import org.napile.compiler.lang.psi.NapileValueArgumentList;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
@@ -129,16 +129,16 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 			if(variableCallInfo != null)
 				descriptor = variableCallInfo.getFirst();
 
-			DeclarationDescriptor storedReference = trace.get(BindingContext.REFERENCE_TARGET, reference);
+			DeclarationDescriptor storedReference = trace.get(BindingTraceKeys.REFERENCE_TARGET, reference);
 			if(storedReference == null || !ErrorUtils.isError(descriptor))
-				trace.record(BindingContext.REFERENCE_TARGET, reference, descriptor);
+				trace.record(BindingTraceKeys.REFERENCE_TARGET, reference, descriptor);
 		}
 
 		@Override
 		public <D extends CallableDescriptor> void bindResolvedCall(@NotNull BindingTrace trace, @NotNull ResolvedCallWithTrace<D> resolvedCall)
 		{
-			trace.record(BindingContext.RESOLVED_CALL, call.getCalleeExpression(), resolvedCall);
-			trace.record(BindingContext.CALL, call.getCalleeExpression(), call);
+			trace.record(BindingTraceKeys.RESOLVED_CALL, call.getCalleeExpression(), resolvedCall);
+			trace.record(BindingTraceKeys.CALL, call.getCalleeExpression(), call);
 		}
 
 		@Override
@@ -148,7 +148,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 			for(ResolvedCallWithTrace<D> candidate : candidates)
 				descriptors.add(candidate.getCandidateDescriptor());
 
-			trace.record(BindingContext.AMBIGUOUS_REFERENCE_TARGET, reference, descriptors);
+			trace.record(BindingTraceKeys.AMBIGUOUS_REFERENCE_TARGET, reference, descriptors);
 		}
 
 		@Override

@@ -33,7 +33,7 @@ import org.napile.compiler.lang.psi.NapileAnonymClass;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileDeclaration;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.OverloadUtil;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
@@ -136,7 +136,7 @@ public class OverloadResolver
 				OverloadUtil.OverloadCompatibilityInfo overloadable = OverloadUtil.isOverloadable(member, member2);
 				if(!overloadable.isSuccess())
 				{
-					NapileDeclaration jetDeclaration = (NapileDeclaration) BindingContextUtils.descriptorToDeclaration(trace.getBindingContext(), member);
+					NapileDeclaration jetDeclaration = (NapileDeclaration) BindingTraceUtil.descriptorToDeclaration(trace, member);
 					redeclarations.add(Pair.create(jetDeclaration, member));
 				}
 			}

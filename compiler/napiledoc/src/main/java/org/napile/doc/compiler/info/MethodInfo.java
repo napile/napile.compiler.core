@@ -25,7 +25,8 @@ import org.napile.compiler.lang.psi.NapileCallParameter;
 import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 
 /**
  * @author VISTALL
@@ -35,7 +36,7 @@ public class MethodInfo extends NamedDocableInfo<NapileNamedMethodOrMacro>
 {
 	private final List<CallParameter> parameters;
 
-	public MethodInfo(BindingContext bindingContext, NapileNamedMethodOrMacro element)
+	public MethodInfo(BindingTrace bindingContext, NapileNamedMethodOrMacro element)
 	{
 		super(bindingContext, element);
 		NapileCallParameter[] ps = element.getCallParameters();
@@ -58,13 +59,13 @@ public class MethodInfo extends NamedDocableInfo<NapileNamedMethodOrMacro>
 	@Override
 	public String getDeclaration()
 	{
-		SimpleMethodDescriptor methodDescriptor = bindingContext.get(BindingContext.METHOD, element);
+		SimpleMethodDescriptor methodDescriptor = bindingTrace.get(BindingTraceKeys.METHOD, element);
 		return methodDescriptor == null ? "null" : DocRender.DOC_RENDER.render(methodDescriptor);
 	}
 
 	public String getReturnType()
 	{
-		SimpleMethodDescriptor methodDescriptor = bindingContext.get(BindingContext.METHOD, element);
+		SimpleMethodDescriptor methodDescriptor = bindingTrace.get(BindingTraceKeys.METHOD, element);
 		return methodDescriptor == null ? "null" : DocRender.DOC_RENDER.renderTypeWithShortNames(methodDescriptor.getReturnType());
 	}
 

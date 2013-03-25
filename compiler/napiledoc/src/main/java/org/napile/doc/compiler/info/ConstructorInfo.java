@@ -25,7 +25,8 @@ import org.napile.compiler.lang.psi.NapileCallParameter;
 import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
 import org.napile.compiler.lang.psi.NapileCallParameterAsVariable;
 import org.napile.compiler.lang.psi.NapileConstructor;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 
 /**
  * @author VISTALL
@@ -35,7 +36,7 @@ public class ConstructorInfo extends NamedDocableInfo<NapileConstructor>
 {
 	private final List<CallParameter> parameters;
 
-	public ConstructorInfo(BindingContext bindingContext, NapileConstructor element)
+	public ConstructorInfo(BindingTrace bindingContext, NapileConstructor element)
 	{
 		super(bindingContext, element);
 		NapileCallParameter[] ps = element.getCallParameters();
@@ -58,7 +59,7 @@ public class ConstructorInfo extends NamedDocableInfo<NapileConstructor>
 	@Override
 	public String getDeclaration()
 	{
-		ConstructorDescriptor constructorDescriptor = bindingContext.get(BindingContext.CONSTRUCTOR, element);
+		ConstructorDescriptor constructorDescriptor = bindingTrace.get(BindingTraceKeys.CONSTRUCTOR, element);
 		return constructorDescriptor == null ? "null" : DocRender.DOC_RENDER.render(constructorDescriptor);
 	}
 

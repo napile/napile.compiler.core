@@ -27,7 +27,8 @@ import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.render.DescriptorRenderer;
@@ -163,7 +164,7 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 
 	private static boolean hasPublicMemberDiagnostic(@NotNull NapileNamedDeclaration declaration)
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) declaration.getContainingFile()).getBindingContext();
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) declaration.getContainingFile()).getBindingTrace();
 		for(Diagnostic diagnostic : bindingContext.getDiagnostics())
 		{
 			//noinspection ConstantConditions
@@ -178,8 +179,8 @@ public class SpecifyTypeExplicitlyAction extends PsiElementBaseIntentionAction
 	@NotNull
 	private static JetType getTypeForDeclaration(@NotNull NapileNamedDeclaration declaration)
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) declaration.getContainingFile()).getBindingContext();
-		DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, declaration);
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) declaration.getContainingFile()).getBindingTrace();
+		DeclarationDescriptor descriptor = bindingContext.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, declaration);
 
 		JetType type;
 		if(descriptor instanceof VariableDescriptor)

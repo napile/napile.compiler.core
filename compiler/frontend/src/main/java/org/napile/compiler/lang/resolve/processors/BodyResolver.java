@@ -16,7 +16,7 @@
 
 package org.napile.compiler.lang.resolve.processors;
 
-import static org.napile.compiler.lang.resolve.BindingContext.DEFERRED_TYPE;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.DEFERRED_TYPE;
 
 import java.util.Collection;
 import java.util.Map;
@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.ObservableBindingTrace;
@@ -171,7 +171,7 @@ public class BodyResolver
 				continue;
 			}
 
-			JetType type = trace.get(BindingContext.TYPE, typeReference);
+			JetType type = trace.get(BindingTraceKeys.TYPE, typeReference);
 			if(type == null)
 			{
 				continue;

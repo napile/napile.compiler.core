@@ -48,7 +48,7 @@ import org.napile.compiler.lang.psi.NapileBinaryExpressionWithTypeRHS;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapilePostfixExpression;
 import org.napile.compiler.lang.psi.NapilePrefixExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
@@ -82,7 +82,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 		//FIXME [VISTALL] currently VM prototype not supported CASTs
 		TypeNode leftType = gen.expressionType(expression.getLeft());
-		TypeNode rightType = gen.toAsmType(gen.bindingTrace.safeGet(BindingContext.TYPE, expression.getRight()));
+		TypeNode rightType = gen.toAsmType(gen.bindingTrace.safeGet(BindingTraceKeys.TYPE, expression.getRight()));
 		if(elementType == NapileTokens.AS_KEYWORD)
 		{
 			gen.gen(leftExp, leftType);
@@ -122,8 +122,8 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 	@Override
 	public StackValue visitPrefixExpression(NapilePrefixExpression expression, StackValue receiver)
 	{
-		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
-		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
+		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingTraceKeys.REFERENCE_TARGET, expression.getOperationReference());
+		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingTraceKeys.RESOLVED_CALL, expression.getOperationReference());
 
 		final CallableMethod callableMethod = CallTransformer.transformToCallable(gen, resolvedCall, false, false, false);
 
@@ -139,7 +139,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 			value.put(type, gen.instructs, gen);
 			callableMethod.invoke(gen.instructs, gen, expression.getOperationReference());
 
-			MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+			MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingTraceKeys.VARIABLE_CALL, expression);
 			if(methodDescriptor != null)
 				StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false, expression.getBaseExpression()).store(callableMethod.getReturnType(), gen.instructs, gen);
 			else
@@ -155,12 +155,12 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 		if(expression.getOperationReference().getReferencedNameElementType() == NapileTokens.EXCLEXCL)
 			return genSure(expression, receiver);
 
-		DeclarationDescriptor op = gen.bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+		DeclarationDescriptor op = gen.bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, expression.getOperationReference());
 		if(op instanceof MethodDescriptor)
 		{
 			if(op.getName().getName().equals("inc") || op.getName().getName().equals("dec"))
 			{
-				ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
+				ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingTraceKeys.RESOLVED_CALL, expression.getOperationReference());
 
 				final CallableMethod callable = CallTransformer.transformToCallable(gen, resolvedCall, false, false, false);
 
@@ -184,7 +184,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 				callable.invoke(gen.instructs, gen, expression.getOperationReference());
 
-				MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+				MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingTraceKeys.VARIABLE_CALL, expression);
 				if(methodDescriptor != null)
 					value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false, null);
 				value.store(callable.getReturnType(), gen.instructs, gen);
@@ -221,7 +221,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 		else */
 		else
 		{
-			DeclarationDescriptor op = gen.bindingTrace.get(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+			DeclarationDescriptor op = gen.bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, expression.getOperationReference());
 			final CallableMethod callable = CallTransformer.transformToCallable(gen, (MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
 
 			return gen.invokeOperation(expression, (MethodDescriptor) op, callable);
@@ -231,7 +231,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 	public StackValue genSure(@NotNull NapilePostfixExpression expression, @NotNull StackValue receiver)
 	{
 		NapileExpression baseExpression = expression.getBaseExpression();
-		JetType type = gen.bindingTrace.get(BindingContext.EXPRESSION_TYPE, baseExpression);
+		JetType type = gen.bindingTrace.get(BindingTraceKeys.EXPRESSION_TYPE, baseExpression);
 		StackValue base = gen.genQualified(receiver, baseExpression);
 		if(type != null && type.isNullable())
 		{
@@ -342,7 +342,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 		gen.gen(expression.getRight(), leftStackValue.getType());
 
-		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingTraceKeys.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
 			leftStackValue = StackValue.variableAccessor(methodDescriptor, leftStackValue.getType(), gen, false, expression.getOperationReference());
 
@@ -357,17 +357,17 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 		NapileExpression left = expression.getLeft();
 		NapileExpression right = expression.getRight();
 
-		JetType leftJetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, left);
+		JetType leftJetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, left);
 		TypeNode leftType = TypeTransformer.toAsmType(gen.bindingTrace, leftJetType, gen.classNode);
 
-		JetType rightJetType = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, right);
+		JetType rightJetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, right);
 		TypeNode rightType = TypeTransformer.toAsmType(gen.bindingTrace, rightJetType, gen.classNode);
 
 		gen.gen(left, leftType);
 
 		gen.gen(right, rightType);
 
-		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingContext.REFERENCE_TARGET, expression.getOperationReference());
+		DeclarationDescriptor op = gen.bindingTrace.safeGet(BindingTraceKeys.REFERENCE_TARGET, expression.getOperationReference());
 		final CallableMethod callable = CallTransformer.transformToCallable(gen, (MethodDescriptor) op, Collections.<TypeNode>emptyList(), false, false, false);
 		callable.invoke(gen.instructs, gen, expression.getOperationReference());
 
@@ -386,7 +386,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 
 		TypeNode lhsType = gen.expressionType(lhs);
 
-		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingContext.RESOLVED_CALL, expression.getOperationReference());
+		ResolvedCall<? extends CallableDescriptor> resolvedCall = gen.bindingTrace.safeGet(BindingTraceKeys.RESOLVED_CALL, expression.getOperationReference());
 
 		final CallableMethod callable = CallTransformer.transformToCallable(gen, resolvedCall, false, false, false);
 
@@ -404,7 +404,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 		gen.pushMethodArguments(resolvedCall, callable.getValueParameterTypes());
 		callable.invoke(instructs, gen, expression.getOperationReference());
 
-		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingContext.VARIABLE_CALL, expression);
+		MethodDescriptor methodDescriptor = gen.bindingTrace.get(BindingTraceKeys.VARIABLE_CALL, expression);
 		if(methodDescriptor != null)
 			value = StackValue.variableAccessor(methodDescriptor, value.getType(), gen, false, expression.getOperationReference());
 
@@ -416,7 +416,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 	public StackValue genElvis(@NotNull NapileBinaryExpression expression)
 	{
 		final TypeNode exprType = gen.expressionType(expression);
-		JetType type = gen.bindingTrace.safeGet(BindingContext.EXPRESSION_TYPE, expression.getLeft());
+		JetType type = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression.getLeft());
 		final TypeNode leftType = TypeTransformer.toAsmType(gen.bindingTrace, type, gen.classNode);
 
 		gen.gen(expression.getLeft(), leftType);

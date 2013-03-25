@@ -28,7 +28,7 @@ import org.napile.compiler.lang.diagnostics.Diagnostic;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.idea.plugin.JetBundle;
 import org.napile.idea.plugin.actions.NapileAddImportAction;
@@ -129,7 +129,7 @@ public class ImportClassAndFunFix extends JetHintAction<NapileSimpleNameExpressi
 	{
 		final AnalyzeExhaust analyzeExhaust = ModuleAnalyzerUtil.lastAnalyze(element.getContainingFile());
 
-		final DeclarationDescriptor declarationDescriptor = analyzeExhaust.getBindingContext().get(BindingContext.REFERENCE_TARGET, element);
+		final DeclarationDescriptor declarationDescriptor = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.REFERENCE_TARGET, element);
 		if(declarationDescriptor != null)
 		{
 			return false;

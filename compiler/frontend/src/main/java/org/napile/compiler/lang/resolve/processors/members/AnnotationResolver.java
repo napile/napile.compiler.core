@@ -31,8 +31,9 @@ import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.psi.NapileAnnotationOwner;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -83,13 +84,15 @@ public class AnnotationResolver
 		if(annotations.isEmpty())
 			return Collections.emptyList();
 
+		final BindingTrace lastTrace = BindingTraceUtil.getLastParent(trace);
+
 		List<AnnotationDescriptor> result = new ArrayList<AnnotationDescriptor>(annotations.size());
 		for(NapileAnnotation annotation : annotations)
 		{
 			AnnotationDescriptor descriptor = new AnnotationDescriptor();
 
-			trace.record(BindingContext.ANNOTATION, annotation, descriptor);
-			trace.record(BindingContext.ANNOTATION_SCOPE, annotation, scope);
+			lastTrace.record(BindingTraceKeys.ANNOTATION, annotation, descriptor);
+			lastTrace.record(BindingTraceKeys.ANNOTATION_SCOPE, annotation, scope);
 
 			result.add(descriptor);
 		}
@@ -98,11 +101,11 @@ public class AnnotationResolver
 
 	public void resolveBindAnnotations(@NotNull final BindingTrace trace)
 	{
-		Collection<NapileAnnotation> annotations = trace.getKeys(BindingContext.ANNOTATION_SCOPE);
+		Collection<NapileAnnotation> annotations = trace.getKeys(BindingTraceKeys.ANNOTATION_SCOPE);
 		for(NapileAnnotation annotation : annotations)
 		{
-			JetScope scope = trace.safeGet(BindingContext.ANNOTATION_SCOPE, annotation);
-			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingContext.ANNOTATION, annotation);
+			JetScope scope = trace.safeGet(BindingTraceKeys.ANNOTATION_SCOPE, annotation);
+			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingTraceKeys.ANNOTATION, annotation);
 
 			resolveAnnotation(scope, annotation, annotationDescriptor, trace);
 		}

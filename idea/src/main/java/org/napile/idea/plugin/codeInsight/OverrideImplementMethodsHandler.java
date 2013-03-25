@@ -38,7 +38,8 @@ import org.napile.compiler.lang.psi.NapileClassLike;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapilePsiFactory;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.render.DescriptorRenderer;
@@ -75,8 +76,8 @@ public abstract class OverrideImplementMethodsHandler implements LanguageCodeIns
 	@NotNull
 	public Set<CallableMemberDescriptor> collectMethodsToGenerate(@NotNull NapileClassLike classOrObject)
 	{
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) classOrObject.getContainingFile()).getBindingContext();
-		final DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, classOrObject);
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) classOrObject.getContainingFile()).getBindingTrace();
+		final DeclarationDescriptor descriptor = bindingContext.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, classOrObject);
 		if(descriptor instanceof MutableClassDescriptor)
 		{
 			return collectMethodsToGenerate((MutableClassDescriptor) descriptor);

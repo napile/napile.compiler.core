@@ -25,8 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import com.google.common.collect.Lists;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.application.ApplicationManager;
@@ -59,12 +59,12 @@ public class DiagnosticUtils
 	{
 	}
 
-	public static String atLocation(BindingContext bindingContext, DeclarationDescriptor descriptor)
+	public static String atLocation(BindingTrace bindingContext, DeclarationDescriptor descriptor)
 	{
-		PsiElement element = BindingContextUtils.descriptorToDeclaration(bindingContext, descriptor);
+		PsiElement element = BindingTraceUtil.descriptorToDeclaration(bindingContext, descriptor);
 		if(element == null)
 		{
-			element = BindingContextUtils.descriptorToDeclaration(bindingContext, descriptor.getOriginal());
+			element = BindingTraceUtil.descriptorToDeclaration(bindingContext, descriptor.getOriginal());
 		}
 		if(element == null && descriptor instanceof ASTNode)
 		{

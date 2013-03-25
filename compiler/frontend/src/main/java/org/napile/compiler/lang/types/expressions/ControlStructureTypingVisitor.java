@@ -30,10 +30,10 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.BindingTraceContext;
+import org.napile.compiler.lang.resolve.BindingTraceImpl;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -205,7 +205,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			public Void visitBreakExpression(NapileBreakExpression breakExpression, NapileLoopExpression outerLoop)
 			{
 				NapileSimpleNameExpression targetLabel = breakExpression.getTargetLabel();
-				PsiElement element = targetLabel != null ? context.trace.get(BindingContext.LABEL_TARGET, targetLabel) : null;
+				PsiElement element = targetLabel != null ? context.trace.get(BindingTraceKeys.LABEL_TARGET, targetLabel) : null;
 				if(element == loopExpression || (targetLabel == null && outerLoop == loopExpression))
 				{
 					result[0] = true;
@@ -245,7 +245,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 				WritableScope writableScope = ExpressionTypingUtils.newWritableScopeImpl(context, "do..while body scope");
 				conditionScope = writableScope;
 				context.expressionTypingServices.getBlockReturnedTypeWithWritableScope(writableScope, Arrays.asList(function.getAnonymMethod().getBodyExpression().getStatements()), CoercionStrategy.NO_COERCION, context, context.trace);
-				context.trace.record(BindingContext.BLOCK, function);
+				context.trace.record(BindingTraceKeys.BLOCK, function);
 			}
 			else
 			{
@@ -335,7 +335,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 				VariableDescriptor olderVariable = context.scope.getLocalVariable(variableDescriptor.getName());
 				if(olderVariable != null && DescriptorUtils.isLocal(context.scope.getContainingDeclaration(), olderVariable))
 				{
-					PsiElement declaration = BindingContextUtils.descriptorToDeclaration(context.trace.getBindingContext(), variableDescriptor);
+					PsiElement declaration = BindingTraceUtil.descriptorToDeclaration(context.trace, variableDescriptor);
 					context.trace.report(Errors.NAME_SHADOWING.on(declaration, variableDescriptor.getName().getName()));
 				}
 			}
@@ -380,7 +380,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			if(/*!JetTypeChecker.INSTANCE.isSubtypeOf(iteratorType, TypeUtils.getTypeOfClassOrErrorType(context.scope, CodeTodo.ITERATOR)) || */iteratorType.getArguments().size() != 1)
 				return ErrorUtils.createErrorType("Invalid iteration type");
 
-			context.trace.record(BindingContext.LOOP_RANGE_ITERATOR, loopRangeExpression, iteratorMethod);
+			context.trace.record(BindingTraceKeys.LOOP_RANGE_ITERATOR, loopRangeExpression, iteratorMethod);
 
 			return iteratorType.getArguments().get(0);
 		}
@@ -406,7 +406,7 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 	public static OverloadResolutionResults<MethodDescriptor> resolveFakeCall(ExpressionReceiver receiver, ExpressionTypingContext context, Name name)
 	{
 		NapileReferenceExpression fake = NapilePsiFactory.createSimpleName(context.expressionTypingServices.getProject(), "fake");
-		BindingTrace fakeTrace = new BindingTraceContext();
+		BindingTrace fakeTrace = new BindingTraceImpl();
 		Call call = CallMaker.makeCall(fake, receiver, null, fake, Collections.<ValueArgument>emptyList());
 		return context.replaceBindingTrace(fakeTrace).resolveCallWithGivenName(call, fake, name);
 	}
@@ -487,19 +487,19 @@ public class ControlStructureTypingVisitor extends ExpressionTypingVisitor
 			context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));
 		}
 		assert parentDeclaration != null;
-		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingContext.DECLARATION_TO_DESCRIPTOR, parentDeclaration);
+		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, parentDeclaration);
 		MethodDescriptor containingMethodDescriptor = DescriptorUtils.getParentOfType(declarationDescriptor, MethodDescriptor.class, false);
 
 		if(containingMethodDescriptor != null)
 		{
-			PsiElement containingFunction = BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor);
+			PsiElement containingFunction = BindingTraceUtil.callableDescriptorToDeclaration(context.trace, containingMethodDescriptor);
 			assert containingFunction != null;
 			if(containingFunction instanceof NapileAnonymMethodExpression)
 			{
 				do
 				{
 					containingMethodDescriptor = DescriptorUtils.getParentOfType(containingMethodDescriptor, MethodDescriptor.class);
-					containingFunction = containingMethodDescriptor != null ? BindingContextUtils.callableDescriptorToDeclaration(context.trace.getBindingContext(), containingMethodDescriptor) : null;
+					containingFunction = containingMethodDescriptor != null ? BindingTraceUtil.callableDescriptorToDeclaration(context.trace, containingMethodDescriptor) : null;
 				}
 				while(containingFunction instanceof NapileAnonymMethodExpression);
 				context.trace.report(Errors.RETURN_NOT_ALLOWED.on(expression));

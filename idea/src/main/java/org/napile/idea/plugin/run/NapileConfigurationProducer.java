@@ -24,7 +24,7 @@ import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.NapileFile;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.util.RunUtil;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
@@ -82,14 +82,14 @@ public class NapileConfigurationProducer extends RuntimeConfigurationProducer im
 		else
 			return null;
 
-		MutableClassDescriptor descriptor = (MutableClassDescriptor) analyzeExhaust.getBindingContext().get(BindingContext.CLASS, napileClass);
+		MutableClassDescriptor descriptor = (MutableClassDescriptor) analyzeExhaust.getBindingTrace().get(BindingTraceKeys.CLASS, napileClass);
 		if(descriptor == null)
 			return null;
 
 		NapileDeclaration mainMethod = null;
 		for(NapileDeclaration inner : napileClass.getDeclarations())
 		{
-			SimpleMethodDescriptor methodDescriptor = analyzeExhaust.getBindingContext().get(BindingContext.METHOD, inner);
+			SimpleMethodDescriptor methodDescriptor = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.METHOD, inner);
 			if(methodDescriptor != null && RunUtil.isRunPoint(methodDescriptor))
 			{
 				mainMethod = inner;

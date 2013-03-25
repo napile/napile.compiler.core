@@ -28,7 +28,8 @@ import javax.swing.event.ListSelectionListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.idea.plugin.module.ModuleAnalyzerUtil;
@@ -123,8 +124,8 @@ public class JetRefactoringUtil
 				if(addExpression)
 				{
 					NapileExpression expression = (NapileExpression) element;
-					BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(expression.getContainingFile()).getBindingContext();
-					JetType expressionType = bindingContext.get(BindingContext.EXPRESSION_TYPE, expression);
+					BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(expression.getContainingFile()).getBindingTrace();
+					JetType expressionType = bindingContext.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
 					if(expressionType == null || !(expressionType instanceof NamespaceType))
 					{
 						expressions.add(expression);

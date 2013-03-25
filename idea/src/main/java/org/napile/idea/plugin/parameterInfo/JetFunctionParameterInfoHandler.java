@@ -33,8 +33,9 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.compiler.lang.types.checker.JetTypeChecker;
@@ -171,7 +172,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		return true;
 	}
 
-	private static String renderParameter(CallParameterDescriptor descriptor, boolean named, BindingContext bindingContext)
+	private static String renderParameter(CallParameterDescriptor descriptor, boolean named, BindingTrace bindingContext)
 	{
 		StringBuilder builder = new StringBuilder();
 		if(named)
@@ -181,7 +182,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 				append(DescriptorRenderer.TEXT.renderType(descriptor.getType()));
 		if(descriptor.hasDefaultValue())
 		{
-			PsiElement element = BindingContextUtils.descriptorToDeclaration(bindingContext, descriptor);
+			PsiElement element = BindingTraceUtil.descriptorToDeclaration(bindingContext, descriptor);
 			String defaultExpression = "?";
 			if(element instanceof NapileCallParameterAsVariable)
 			{
@@ -233,7 +234,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 			if(descriptor instanceof MethodDescriptor)
 			{
 				NapileFile file = argumentList.getContainingFile();
-				BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingContext();
+				BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze(file).getBindingTrace();
 				MethodDescriptor methodDescriptor = (MethodDescriptor) descriptor;
 				StringBuilder builder = new StringBuilder();
 				List<CallParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
@@ -264,7 +265,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 					}
 					if(refExpression != null)
 					{
-						DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingContext.REFERENCE_TARGET, refExpression);
+						DeclarationDescriptor declarationDescriptor = bindingContext.get(BindingTraceKeys.REFERENCE_TARGET, refExpression);
 						if(declarationDescriptor != null)
 						{
 							if(declarationDescriptor == methodDescriptor)
@@ -311,7 +312,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 										//check type
 
 										JetType paramType = param.getType();
-										JetType exprType = bindingContext.get(BindingContext.EXPRESSION_TYPE, argument.getArgumentExpression());
+										JetType exprType = bindingContext.get(BindingTraceKeys.EXPRESSION_TYPE, argument.getArgumentExpression());
 										if(exprType != null && !JetTypeChecker.INSTANCE.isSubtypeOf(exprType, paramType))
 											isGrey = true;
 									}
@@ -354,7 +355,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 												//check type
 
 												JetType paramType = param.getType();
-												JetType exprType = bindingContext.get(BindingContext.EXPRESSION_TYPE, argument.getArgumentExpression());
+												JetType exprType = bindingContext.get(BindingTraceKeys.EXPRESSION_TYPE, argument.getArgumentExpression());
 												if(exprType != null && !JetTypeChecker.INSTANCE.isSubtypeOf(exprType, paramType))
 												{
 													isGrey = true;
@@ -430,7 +431,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		{
 			return null;
 		}
-		BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) file).getBindingContext();
+		BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) file).getBindingTrace();
 		NapileExpression calleeExpression = callExpression.getCalleeExpression();
 		if(calleeExpression == null)
 			return null;
@@ -449,7 +450,7 @@ public class JetFunctionParameterInfoHandler implements ParameterInfoHandlerWith
 		}
 		if(refExpression != null)
 		{
-			JetScope scope = bindingContext.get(BindingContext.RESOLUTION_SCOPE, refExpression);
+			JetScope scope = bindingContext.get(BindingTraceKeys.RESOLUTION_SCOPE, refExpression);
 			DeclarationDescriptor placeDescriptor = null;
 			if(scope != null)
 			{

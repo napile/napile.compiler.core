@@ -18,7 +18,7 @@ package org.napile.compiler.lang.types.expressions;
 
 import static org.napile.compiler.lang.diagnostics.Errors.UNRESOLVED_REFERENCE;
 import static org.napile.compiler.lang.diagnostics.Errors.UNSUPPORTED;
-import static org.napile.compiler.lang.resolve.BindingContext.VARIABLE_REASSIGNMENT;
+import static org.napile.compiler.lang.resolve.BindingTraceKeys.VARIABLE_REASSIGNMENT;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +30,8 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -95,7 +95,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		VariableDescriptor olderVariable = scope.getLocalVariable(propertyDescriptor.getName());
 		if(olderVariable != null && DescriptorUtils.isLocal(propertyDescriptor.getContainingDeclaration(), olderVariable))
 		{
-			PsiElement declaration = BindingContextUtils.descriptorToDeclaration(context.trace.getBindingContext(), propertyDescriptor);
+			PsiElement declaration = BindingTraceUtil.descriptorToDeclaration(context.trace, propertyDescriptor);
 			context.trace.report(Errors.NAME_SHADOWING.on(declaration, propertyDescriptor.getName().getName()));
 		}
 
@@ -107,7 +107,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	public JetTypeInfo visitClass(NapileClass klass, ExpressionTypingContext context)
 	{
 		//TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), klass);
-		ClassDescriptor classDescriptor = context.trace.getBindingContext().get(BindingContext.CLASS, klass);
+		ClassDescriptor classDescriptor = context.trace.get(BindingTraceKeys.CLASS, klass);
 		/*if(classDescriptor != null)
 		{
 			scope.addClassifierDescriptor(classDescriptor);

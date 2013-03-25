@@ -32,8 +32,9 @@ import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedDeclaration;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.BindingContext;
-import org.napile.compiler.lang.resolve.BindingContextUtils;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.resolve.BindingTraceUtil;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.JetType;
 import org.napile.idea.plugin.JetBundle;
@@ -72,9 +73,9 @@ public class GotoSuperActionHandler implements LanguageCodeInsightActionHandler
 		if(funOrClass == null)
 			return;
 
-		final BindingContext bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) file).getBindingContext();
+		final BindingTrace bindingContext = ModuleAnalyzerUtil.lastAnalyze((NapileFile) file).getBindingTrace();
 
-		final DeclarationDescriptor descriptor = bindingContext.get(BindingContext.DECLARATION_TO_DESCRIPTOR, funOrClass);
+		final DeclarationDescriptor descriptor = bindingContext.get(BindingTraceKeys.DECLARATION_TO_DESCRIPTOR, funOrClass);
 
 
 		Collection<? extends DeclarationDescriptor> superDescriptors;
@@ -129,7 +130,7 @@ public class GotoSuperActionHandler implements LanguageCodeInsightActionHandler
 				{
 					return null;
 				}
-				return BindingContextUtils.descriptorToDeclaration(bindingContext, descriptor);
+				return BindingTraceUtil.descriptorToDeclaration(bindingContext, descriptor);
 			}
 		});
 		if(superDeclarations.isEmpty())

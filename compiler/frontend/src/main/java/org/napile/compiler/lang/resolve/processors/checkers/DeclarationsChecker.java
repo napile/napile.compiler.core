@@ -38,7 +38,7 @@ import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileTypeParameter;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
-import org.napile.compiler.lang.resolve.BindingContext;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.types.JetType;
@@ -117,7 +117,7 @@ public class DeclarationsChecker
 	{
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType jetType = trace.get(BindingContext.TYPE, typeReference);
+			JetType jetType = trace.get(BindingTraceKeys.TYPE, typeReference);
 			if(jetType == null)
 				continue;
 
@@ -137,7 +137,7 @@ public class DeclarationsChecker
 		List<JetType> list = new ArrayList<JetType>(typeReferences.size());
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType jetType = trace.get(BindingContext.TYPE, typeReference);
+			JetType jetType = trace.get(BindingTraceKeys.TYPE, typeReference);
 			if(jetType == null)
 				continue;
 
@@ -152,7 +152,7 @@ public class DeclarationsChecker
 	{
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType jetType = trace.safeGet(BindingContext.TYPE, typeReference);
+			JetType jetType = trace.safeGet(BindingTraceKeys.TYPE, typeReference);
 
 			ClassifierDescriptor classifierDescriptor = jetType.getConstructor().getDeclarationDescriptor();
 			if(classifierDescriptor instanceof ClassDescriptor && !classifierDescriptor.getConstructors().isEmpty())
@@ -201,7 +201,7 @@ public class DeclarationsChecker
 		Map<NapileTypeReference, JetType> types = new LinkedHashMap<NapileTypeReference, JetType>(list.size());
 		for(NapileTypeReference typeReference : list)
 		{
-			JetType type = trace.safeGet(BindingContext.TYPE, typeReference);
+			JetType type = trace.safeGet(BindingTraceKeys.TYPE, typeReference);
 			ClassifierDescriptor constructorDescriptor = type.getConstructor().getDeclarationDescriptor();
 			// traited class don't have constructors
 			if(constructorDescriptor instanceof ClassDescriptor && ((ClassDescriptor) constructorDescriptor).isTraited())
@@ -218,7 +218,7 @@ public class DeclarationsChecker
 		Map<NapileTypeReference, JetType> types = new LinkedHashMap<NapileTypeReference, JetType>(list.size());
 		for(NapileDelegationToSuperCall delegationSpecifier : list)
 		{
-			JetType type = trace.get(BindingContext.TYPE, delegationSpecifier.getTypeReference());
+			JetType type = trace.get(BindingTraceKeys.TYPE, delegationSpecifier.getTypeReference());
 			types.put(delegationSpecifier.getTypeReference(), type);
 		}
 
