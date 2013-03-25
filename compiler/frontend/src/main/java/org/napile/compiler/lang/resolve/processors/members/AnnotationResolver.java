@@ -31,15 +31,14 @@ import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.psi.NapileAnnotationOwner;
 import org.napile.compiler.lang.psi.NapileModifierList;
 import org.napile.compiler.lang.psi.NapileModifierListOwner;
-import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
@@ -53,14 +52,6 @@ public class AnnotationResolver
 {
 	@NotNull
 	private CallResolver callResolver;
-	@NotNull
-	private AnnotationChecker annotationChecker;
-
-	@Inject
-	public void setAnnotationChecker(@NotNull AnnotationChecker annotationChecker)
-	{
-		this.annotationChecker = annotationChecker;
-	}
 
 	@Inject
 	public void setCallResolver(@NotNull CallResolver callResolver)
@@ -109,13 +100,16 @@ public class AnnotationResolver
 
 			resolveAnnotation(scope, annotation, annotationDescriptor, trace);
 		}
-
-		annotationChecker.process(annotations, trace);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void resolveAnnotation(@NotNull JetScope scope, @NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor, BindingTrace trace)
 	{
+		if(annotationDescriptor.getType() != null)
+		{
+			return;
+		}
+
 		OverloadResolutionResults<? extends MethodDescriptor> results = callResolver.resolveFunctionCall(trace, scope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, annotation), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 		if(results.isSuccess())
 		{

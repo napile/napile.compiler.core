@@ -35,11 +35,10 @@ import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTraceUtil;
-import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
-import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.base.Function;
@@ -54,8 +53,6 @@ import com.intellij.psi.PsiElement;
 public class DeclarationResolver
 {
 	@NotNull
-	private AnnotationResolver annotationResolver;
-	@NotNull
 	private TopDownAnalysisContext context;
 	@NotNull
 	private ImportsResolver importsResolver;
@@ -63,15 +60,6 @@ public class DeclarationResolver
 	private DescriptorResolver descriptorResolver;
 	@NotNull
 	private BindingTrace trace;
-	@NotNull
-	private TypeResolver typeResolver;
-
-
-	@Inject
-	public void setAnnotationResolver(@NotNull AnnotationResolver annotationResolver)
-	{
-		this.annotationResolver = annotationResolver;
-	}
 
 	@Inject
 	public void setContext(@NotNull TopDownAnalysisContext context)
@@ -97,17 +85,12 @@ public class DeclarationResolver
 		this.trace = trace;
 	}
 
-	@Inject
-	public void setTypeResolver(@NotNull TypeResolver typeResolver)
-	{
-		this.typeResolver = typeResolver;
-	}
-
 	public void process(@NotNull JetScope rootScope)
 	{
 		resolveDeclarations();
-		annotationResolver.resolveBindAnnotations(trace);
+
 		importsResolver.processMembersImports(rootScope);
+
 		checkRedeclarationsInNamespaces();
 		checkRedeclarationsInInnerClassNames();
 	}

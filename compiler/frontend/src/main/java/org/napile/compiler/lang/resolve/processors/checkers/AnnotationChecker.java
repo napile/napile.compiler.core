@@ -18,6 +18,8 @@ package org.napile.compiler.lang.resolve.processors.checkers;
 
 import java.util.Collection;
 
+import javax.inject.Inject;
+
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileAnnotationPackage;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
@@ -29,8 +31,8 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileAnnotation;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
-import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.JetType;
@@ -41,21 +43,30 @@ import org.napile.compiler.lang.types.JetType;
  */
 public class AnnotationChecker
 {
-	public void process(@NotNull Collection<NapileAnnotation> annotations, @NotNull BindingTrace trace)
+	private BindingTrace bindingTrace;
+
+	@Inject
+	public void setBindingTrace(@NotNull BindingTrace bindingTrace)
 	{
+		this.bindingTrace = bindingTrace;
+	}
+
+	public void process()
+	{
+		Collection<NapileAnnotation> annotations = bindingTrace.getKeys(BindingTraceKeys.ANNOTATION_SCOPE);
 		for(NapileAnnotation annotation : annotations)
 		{
-			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingTraceKeys.ANNOTATION, annotation);
+			AnnotationDescriptor annotationDescriptor = bindingTrace.safeGet(BindingTraceKeys.ANNOTATION, annotation);
 
-			checkIsAnnotationClass(annotation, annotationDescriptor, trace);
+			checkIsAnnotationClass(annotation, annotationDescriptor);
 
-			checkRepeatable(annotation, annotationDescriptor, trace);
+			checkRepeatable(annotation, annotationDescriptor);
 
-			checkExtension(annotation, annotationDescriptor, trace);
+			checkExtension(annotation, annotationDescriptor);
 		}
 	}
 
-	private void checkIsAnnotationClass(@NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor, @NotNull BindingTrace trace)
+	private void checkIsAnnotationClass(@NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor)
 	{
 		ResolvedCall<ConstructorDescriptor> resolvedCall = annotationDescriptor.getResolvedCall();
 		if(resolvedCall == null)
@@ -67,11 +78,11 @@ public class AnnotationChecker
 			ConstructorDescriptor constructor = (ConstructorDescriptor) descriptor;
 			ClassifierDescriptor classDescriptor = constructor.getContainingDeclaration();
 			if(!AnnotationUtils.isAnnotation(classDescriptor))
-				trace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(annotation, classDescriptor.getName().getName()));
+				bindingTrace.report(Errors.NOT_AN_ANNOTATION_CLASS.on(annotation, classDescriptor.getName().getName()));
 		}
 	}
 
-	private void checkRepeatable(@NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor, @NotNull BindingTrace trace)
+	private void checkRepeatable(@NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor)
 	{
 		JetType type = annotationDescriptor.getType();
 
@@ -90,13 +101,13 @@ public class AnnotationChecker
 
 			if(otherAnnotation.getType().equals(annotationDescriptor.getType()))
 			{
-				trace.report(Errors.DUPLICATE_ANNOTATION.on(annotation));
+				bindingTrace.report(Errors.DUPLICATE_ANNOTATION.on(annotation));
 				break;
 			}
 		}
 	}
 
-	private void checkExtension(NapileAnnotation annotation, AnnotationDescriptor annotationDescriptor, BindingTrace trace)
+	private void checkExtension(NapileAnnotation annotation, AnnotationDescriptor annotationDescriptor)
 	{
 		Annotated owner = annotationDescriptor.getOwner();
 		if(owner == null)
@@ -108,6 +119,6 @@ public class AnnotationChecker
 		if(owner instanceof MethodDescriptor && ((MethodDescriptor) owner).isStatic() && !((MethodDescriptor) owner).getValueParameters().isEmpty())
 			return;
 
-		trace.report(Errors.NONE_APPLICABLE_ANNOTATION.on(annotation));
+		bindingTrace.report(Errors.NONE_APPLICABLE_ANNOTATION.on(annotation));
 	}
 }

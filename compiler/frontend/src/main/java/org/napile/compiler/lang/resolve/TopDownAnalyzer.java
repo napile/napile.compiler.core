@@ -37,6 +37,8 @@ import org.napile.compiler.lang.resolve.processors.DeclarationResolver;
 import org.napile.compiler.lang.resolve.processors.OverloadResolver;
 import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
+import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
+import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
@@ -71,6 +73,10 @@ public class TopDownAnalyzer
 	private NamespaceFactoryImpl namespaceFactory;
 	@NotNull
 	private BodyResolver bodyResolver;
+	@NotNull
+	private AnnotationResolver annotationResolver;
+	@NotNull
+	private AnnotationChecker annotationChecker;
 
 	@Inject
 	public void setDeclarationResolver(@NotNull DeclarationResolver declarationResolver)
@@ -132,6 +138,18 @@ public class TopDownAnalyzer
 		this.bodyResolver = bodyResolver;
 	}
 
+	@Inject
+	public void setAnnotationResolver(@NotNull AnnotationResolver annotationResolver)
+	{
+		this.annotationResolver = annotationResolver;
+	}
+
+	@Inject
+	public void setAnnotationChecker(@NotNull AnnotationChecker annotationChecker)
+	{
+		this.annotationChecker = annotationChecker;
+	}
+
 	public void doProcess(JetScope outerScope, DescriptorBuilder owner, Collection<? extends NapileFile> declarations)
 	{
 		//        context.enableDebugOutput();
@@ -145,7 +163,13 @@ public class TopDownAnalyzer
 
 		overloadResolver.process();
 
+		annotationResolver.resolveBindAnnotations(trace); // check declarations annotations
+
 		bodyResolver.resolveBodies(context);
+
+		annotationResolver.resolveBindAnnotations(trace); // need call again for body annotations
+
+		annotationChecker.process();
 
 		context.debug("Exit");
 		context.printDebugOutput(System.out);

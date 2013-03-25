@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 package org.napile.compiler.di;
 
 import javax.annotation.PreDestroy;
@@ -52,13 +51,13 @@ public class InjectorForTopDownAnalyzerBasic
 	private final BindingTrace bindingTrace;
 	private final ModuleDescriptor moduleDescriptor;
 	private NamespaceFactoryImpl namespaceFactory;
-	private DeclarationResolver declarationResolver;
-	private AnnotationResolver annotationResolver;
 	private AnnotationChecker annotationChecker;
+	private AnnotationResolver annotationResolver;
 	private CallResolver callResolver;
 	private OverloadingConflictResolver overloadingConflictResolver;
 	private TypeResolver typeResolver;
 	private QualifiedExpressionResolver qualifiedExpressionResolver;
+	private DeclarationResolver declarationResolver;
 	private ImportsResolver importsResolver;
 	private OverloadResolver overloadResolver;
 	private OverrideResolver overrideResolver;
@@ -81,13 +80,13 @@ public class InjectorForTopDownAnalyzerBasic
 		this.bindingTrace = bindingTrace;
 		this.moduleDescriptor = moduleDescriptor;
 		this.namespaceFactory = new NamespaceFactoryImpl();
-		this.declarationResolver = new DeclarationResolver();
-		this.annotationResolver = new AnnotationResolver();
 		this.annotationChecker = new AnnotationChecker();
+		this.annotationResolver = new AnnotationResolver();
 		this.callResolver = new CallResolver();
 		this.overloadingConflictResolver = new OverloadingConflictResolver();
 		this.typeResolver = new TypeResolver();
 		this.qualifiedExpressionResolver = new QualifiedExpressionResolver();
+		this.declarationResolver = new DeclarationResolver();
 		this.importsResolver = new ImportsResolver();
 		this.overloadResolver = new OverloadResolver();
 		this.overrideResolver = new OverrideResolver();
@@ -96,6 +95,8 @@ public class InjectorForTopDownAnalyzerBasic
 		this.modifiersChecker = new ModifiersChecker();
 		this.anonymClassResolver = new AnonymClassResolver();
 
+		this.topDownAnalyzer.setAnnotationChecker(annotationChecker);
+		this.topDownAnalyzer.setAnnotationResolver(annotationResolver);
 		this.topDownAnalyzer.setBodyResolver(bodyResolver);
 		this.topDownAnalyzer.setContext(topDownAnalysisContext);
 		this.topDownAnalyzer.setDeclarationResolver(declarationResolver);
@@ -128,23 +129,17 @@ public class InjectorForTopDownAnalyzerBasic
 		this.descriptorResolver.setTypeParameterResolver(typeParameterResolver);
 		this.descriptorResolver.setTypeResolver(typeResolver);
 
+		this.expressionTypingServices.setAnonymClassResolver(anonymClassResolver);
 		this.expressionTypingServices.setCallResolver(callResolver);
 		this.expressionTypingServices.setDescriptorResolver(descriptorResolver);
-		this.expressionTypingServices.setAnonymClassResolver(anonymClassResolver);
 		this.expressionTypingServices.setProject(project);
 		this.expressionTypingServices.setTypeResolver(typeResolver);
 
 		namespaceFactory.setModuleDescriptor(moduleDescriptor);
 		namespaceFactory.setTrace(bindingTrace);
 
-		declarationResolver.setAnnotationResolver(annotationResolver);
-		declarationResolver.setContext(topDownAnalysisContext);
-		declarationResolver.setDescriptorResolver(descriptorResolver);
-		declarationResolver.setImportsResolver(importsResolver);
-		declarationResolver.setTrace(bindingTrace);
-		declarationResolver.setTypeResolver(typeResolver);
+		annotationChecker.setBindingTrace(bindingTrace);
 
-		annotationResolver.setAnnotationChecker(annotationChecker);
 		annotationResolver.setCallResolver(callResolver);
 
 		callResolver.setDescriptorResolver(descriptorResolver);
@@ -155,6 +150,11 @@ public class InjectorForTopDownAnalyzerBasic
 		typeResolver.setAnnotationResolver(annotationResolver);
 		typeResolver.setDescriptorResolver(descriptorResolver);
 		typeResolver.setQualifiedExpressionResolver(qualifiedExpressionResolver);
+
+		declarationResolver.setContext(topDownAnalysisContext);
+		declarationResolver.setDescriptorResolver(descriptorResolver);
+		declarationResolver.setImportsResolver(importsResolver);
+		declarationResolver.setTrace(bindingTrace);
 
 		importsResolver.setContext(topDownAnalysisContext);
 		importsResolver.setProject(project);
