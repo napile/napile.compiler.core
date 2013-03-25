@@ -61,6 +61,6 @@ public class AllInjectorsGenerator
 		generator.addParameter(ModuleDescriptor.class);
 
 		generator.addField(NamespaceFactoryImpl.class);
-		generator.generate("compiler/frontend/src", "org.napile.compiler.di", "InjectorForTopDownAnalyzerBasic");
+		generator.generate("compiler/frontend/src/main/java", "org.napile.compiler.di", "InjectorForTopDownAnalyzerBasic");
 	}
 }
