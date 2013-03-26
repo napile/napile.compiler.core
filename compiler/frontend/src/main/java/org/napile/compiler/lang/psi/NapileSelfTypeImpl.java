@@ -50,4 +50,11 @@ public class NapileSelfTypeImpl extends NapileElementImpl implements NapileSelfT
 	{
 		return visitor.visitSelfType(this, data);
 	}
+
+	@NotNull
+	@Override
+	public NapileSimpleNameExpression getThisExpression()
+	{
+		return findNotNullChildByClass(NapileSimpleNameExpression.class);
+	}
 }

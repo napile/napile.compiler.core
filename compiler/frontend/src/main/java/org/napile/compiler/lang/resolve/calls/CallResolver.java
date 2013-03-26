@@ -221,7 +221,7 @@ public class CallResolver
 				JetType constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
 				DeclarationDescriptor declarationDescriptor = constructedType.getConstructor().getDeclarationDescriptor();
 
-				if(declarationDescriptor instanceof ClassifierDescriptor)
+				if(declarationDescriptor != null)
 				{
 					ClassifierDescriptor classDescriptor = (ClassifierDescriptor) declarationDescriptor;
 					Set<ConstructorDescriptor> constructors = classDescriptor.getConstructors();

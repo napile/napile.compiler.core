@@ -16,10 +16,14 @@
 
 package org.napile.compiler.lang.psi;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author VISTALL
  * @since 7:54/20.10.12
  */
 public interface NapileSelfType extends NapileTypeElement
 {
+	@NotNull
+	NapileSimpleNameExpression getThisExpression();
 }

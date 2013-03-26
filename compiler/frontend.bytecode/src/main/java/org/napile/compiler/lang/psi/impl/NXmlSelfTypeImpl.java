@@ -22,10 +22,13 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NXmlParentedElementBase;
 import org.napile.compiler.lang.psi.NapileSelfType;
+import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.util.NXmlMirrorUtil;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
 
 /**
@@ -34,6 +37,8 @@ import com.intellij.psi.impl.source.tree.TreeElement;
  */
 public class NXmlSelfTypeImpl extends NXmlParentedElementBase implements NapileSelfType
 {
+	private NapileSimpleNameExpression expression;
+
 	public NXmlSelfTypeImpl(PsiElement parent, PsiElement mirror)
 	{
 		super(parent, mirror);
@@ -43,6 +48,10 @@ public class NXmlSelfTypeImpl extends NXmlParentedElementBase implements NapileS
 	public void setMirror(@NotNull TreeElement element) throws InvalidMirrorException
 	{
 		setMirrorCheckingType(element, null);
+
+		NapileSelfType mirror = SourceTreeToPsiMap.treeToPsiNotNull(element);
+
+		expression = (NapileSimpleNameExpression) NXmlMirrorUtil.mirrorExpression(this, mirror.getThisExpression());
 	}
 
 	@NotNull
@@ -69,5 +78,12 @@ public class NXmlSelfTypeImpl extends NXmlParentedElementBase implements NapileS
 	public PsiElement[] getChildren()
 	{
 		return PsiElement.EMPTY_ARRAY;
+	}
+
+	@NotNull
+	@Override
+	public NapileSimpleNameExpression getThisExpression()
+	{
+		return expression;
 	}
 }

@@ -264,6 +264,8 @@ public class TypeResolver
 
 					ClassDescriptor classDescriptor = trace.safeGet(BindingTraceKeys.CLASS, classLike);
 
+					trace.record(BindingTraceKeys.REFERENCE_TARGET, type.getThisExpression(), classDescriptor);
+
 					result[0] = new JetTypeImpl(annotations, new SelfTypeConstructorImpl(classDescriptor), nullable, Collections.<JetType>emptyList(), scope);
 				}
 			});

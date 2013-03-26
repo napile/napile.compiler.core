@@ -984,7 +984,11 @@ public class JetParsing extends AbstractJetParsing
 		assert _at(NapileTokens.THIS_KEYWORD);
 
 		PsiBuilder.Marker type = mark();
+
+		PsiBuilder.Marker referenceMarker = mark();
 		advance(); // THIS_KEYWORD
+		referenceMarker.done(NapileNodes.REFERENCE_EXPRESSION);
+
 		type.done(SELF_TYPE);
 	}
 
