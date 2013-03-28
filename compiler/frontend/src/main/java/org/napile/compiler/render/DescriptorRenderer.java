@@ -567,7 +567,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 					builder.append(renderType(supertype));
 					if(iterator.hasNext())
 					{
-						builder.append(", ");
+						builder.append(" & ");
 					}
 				}
 			}
