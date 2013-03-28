@@ -1,0 +1,12 @@
+class ThisIsASampleClass
+{
+    meth foo1(val i1 : Int, val i2 : Int, val i3 : Int) : Int
+    {
+        return 0
+    }
+
+    meth foo2() : Int
+    {
+        return foo1(12, 13, 14)
+    }
+}

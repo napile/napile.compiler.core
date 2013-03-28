@@ -18,6 +18,7 @@ package org.napile.idea.plugin.formatter;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.NapileLanguage;
+import com.intellij.application.options.CodeStyleAbstractPanel;
 import com.intellij.application.options.IndentOptionsEditor;
 import com.intellij.application.options.SmartIndentOptionsEditor;
 import com.intellij.lang.Language;
@@ -43,35 +44,9 @@ public class JetLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
 		switch(settingsType)
 		{
 			case WRAPPING_AND_BRACES_SETTINGS:
-				return "class ThisIsASampleClass\n" +
-						"{\n" +
-						"    meth foo1(i1: Int,\n" +
-						"                     i2: Int,\n" +
-						"                     i3: Int) : Int " +
-						"    \n{\n" +
-						"        return 0\n" +
-						"    }\n" +
-						"    meth foo2():Int " +
-						"    \n{\n" +
-						"        return foo1(12,\n" +
-						"                13,\n" +
-						"                14\n" +
-						"        )\n" +
-						"    }\n" +
-						"}";
+				return CodeStyleAbstractPanel.readFromFile(JetLanguageCodeStyleSettingsProvider.class, "wrapping.ns.preview");
 			default:
-				return "class Some" +
-						"\n{\n" +
-						"  meth foo() : Int\n" +
-						"  {\n" +
-						"    val test : Int = 12\n" +
-						"    return test\n" +
-						"  }\n" +
-						"  meth <T>foo2():Int where T : List<T>\n" +
-						"  {\n" +
-						"    return 0\n" +
-						"  }\n" +
-						"}";
+				return CodeStyleAbstractPanel.readFromFile(JetLanguageCodeStyleSettingsProvider.class, "default.ns.preview");
 		}
 	}
 

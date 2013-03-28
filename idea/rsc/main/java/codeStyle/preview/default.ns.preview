@@ -1,0 +1,13 @@
+class Some
+{
+  meth foo() : Int
+  {
+    val test : Int = 12
+    return test
+  }
+
+  meth <T>foo2() : Int
+  {
+    return 0
+  }
+}

@@ -19,6 +19,7 @@
       <entry name="?*.kt" />
       <entry name="?*.template" />
       <entry name="?*.zip" />
+      <entry name="?*.ns.preview" />
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="false">
