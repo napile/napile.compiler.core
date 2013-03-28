@@ -279,16 +279,14 @@ public class PatternMatchingTypingVisitor extends ExpressionTypingVisitor
 
 	private static void checkTypeCompatibility(@NotNull ExpressionTypingContext context, @Nullable JetType type, @NotNull JetType subjectType, @NotNull NapileElement reportErrorOn)
 	{
-		// TODO : Take auto casts into account?
 		if(type == null)
 		{
 			return;
 		}
-		if(TypeUtils.isIntersectionEmpty(type, subjectType))
+
+		if(!JetTypeChecker.INSTANCE.isSubtypeOf(subjectType, type) && !JetTypeChecker.INSTANCE.isSubtypeOf(type, subjectType))
 		{
 			context.trace.report(Errors.INCOMPATIBLE_TYPES.on(reportErrorOn, type, subjectType));
-			return;
 		}
-
 	}
 }
