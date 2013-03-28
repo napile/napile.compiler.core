@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templateSet group="Napile">
+	<template resource-bundle="org.napile.idea.plugin.JetBundle" key="livetemplate.description.main" name="main" toReformat="true" toShortenFQNames="true" value="static meth main(var arg : Array&lt;String&gt;){}">
+		<context>
+			<option name="NAPILE_CLASS" value="true" />
+		</context>
+	</template>
+</templateSet>
