@@ -18,12 +18,13 @@ package org.napile.idea.plugin.editor.highlight.postHighlight;
 
 import java.util.Collection;
 
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.psi.PsiElement;
@@ -74,28 +75,40 @@ public class MethodsHighlightingVisitor extends PostHighlightVisitor
 	@Override
 	public void visitCallExpression(NapileCallExpression expression)
 	{
-		NapileExpression callee = expression.getCalleeExpression();
-		if(callee instanceof NapileReferenceExpression)
-		{
-			DeclarationDescriptor calleeDescriptor = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, (NapileReferenceExpression) callee);
-			if(calleeDescriptor != null)
-			{
-				if(calleeDescriptor instanceof ConstructorDescriptor)
-				{
-					highlightName(callee, NapileHighlightingColors.CONSTRUCTOR_CALL, calleeDescriptor);
-				}
-				else if(calleeDescriptor instanceof MethodDescriptor)
-				{
-					MethodDescriptor fun = (MethodDescriptor) calleeDescriptor;
-					highlightName(callee, NapileHighlightingColors.METHOD_CALL, fun);
-					if(fun.isStatic())
-						highlightName(callee, NapileHighlightingColors.STATIC_METHOD_CALL, fun);
-					if(fun.isMacro())
-						highlightName(expression, NapileHighlightingColors.MACRO_CALL, fun);
-				}
-			}
-		}
+		highlightMethodName(expression.getCalleeExpression());
 
 		super.visitCallExpression(expression);
+	}
+
+	@Override
+	public void visitLinkMethodExpression(NapileLinkMethodExpression expression)
+	{
+		highlightMethodName(expression.getTarget());
+		super.visitLinkMethodExpression(expression);
+	}
+
+	private void highlightMethodName(@Nullable NapileElement highlightTarget)
+	{
+		if(!(highlightTarget instanceof NapileReferenceExpression))
+		{
+			return;
+		}
+		DeclarationDescriptor calleeDescriptor = bindingTrace.get(BindingTraceKeys.REFERENCE_TARGET, (NapileReferenceExpression) highlightTarget);
+		if(calleeDescriptor != null)
+		{
+			if(calleeDescriptor instanceof ConstructorDescriptor)
+			{
+				highlightName(highlightTarget, NapileHighlightingColors.CONSTRUCTOR_CALL, calleeDescriptor);
+			}
+			else if(calleeDescriptor instanceof MethodDescriptor)
+			{
+				MethodDescriptor fun = (MethodDescriptor) calleeDescriptor;
+				highlightName(highlightTarget, NapileHighlightingColors.METHOD_CALL, fun);
+				if(fun.isStatic())
+					highlightName(highlightTarget, NapileHighlightingColors.STATIC_METHOD_CALL, fun);
+				if(fun.isMacro())
+					highlightName(highlightTarget, NapileHighlightingColors.MACRO_CALL, fun);
+			}
+		}
 	}
 }
