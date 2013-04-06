@@ -46,6 +46,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileTypes.PlainTextFileType;
+import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.Alarm;
 
@@ -104,6 +105,10 @@ public class TextBytecodeToolwindow extends JPanel implements Disposable
 				}
 				state = new GenerationState(myProject, Progress.DEAF, binding, Collections.singletonList(editorLocation.getFile()));
 				state.compileAndGenerate(CompilationErrorHandler.THROW_EXCEPTION);
+			}
+			catch(ProcessCanceledException e)
+			{
+				throw e;
 			}
 			catch(Exception e)
 			{
