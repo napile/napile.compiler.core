@@ -31,15 +31,7 @@ import static org.napile.compiler.lang.types.expressions.OperatorConventions.INT
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.LONG;
 import static org.napile.compiler.lang.types.expressions.OperatorConventions.SHORT;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,9 +47,9 @@ import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTraceUtil;
-import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
@@ -738,7 +730,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				parameterTypes.add(context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, false));
 		}
 
-		MethodDescriptor targetMethod = null;
+
 		Collection<MethodDescriptor> methodDescriptors = context.scope.getMethods(target.getReferencedNameAsName());
 
 		NapileDotQualifiedExpressionImpl classTarget = expression.getClassTarget();
@@ -767,6 +759,72 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			}
 		}
 
+		final MethodDescriptor method = findMethod(methodDescriptors, parameterTypes, expression.getTarget(), context);
+
+
+		if(method != null)
+		{
+			Map<Name, JetType> valueParameters = new LinkedHashMap<Name, JetType>(method.getValueParameters().size());
+			for(CallParameterDescriptor parameterDescriptor : method.getValueParameters())
+				valueParameters.put(parameterDescriptor.getName(), parameterDescriptor.getType());
+
+			return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(method.getName(), method.getReturnType(), valueParameters, context.scope), context.scope), expression, context, context.dataFlowInfo);
+		}
+		else
+		{
+			return JetTypeInfo.create(null, context.dataFlowInfo);
+		}
+	}
+
+	@Override
+	public JetTypeInfo visitDoubleArrowExpression(NapileDoubleArrowExpression expression, ExpressionTypingContext data)
+	{
+		final NapileExpression targetExpression = expression.getTargetExpression();
+		if(targetExpression == null)
+		{
+			return JetTypeInfo.create(ErrorUtils.createErrorType("No target expression"), data.dataFlowInfo);
+		}
+
+		final JetType type = data.expressionTypingServices.getType(data.scope, targetExpression, TypeUtils.NO_EXPECTED_TYPE, data.dataFlowInfo, data.trace);
+		if(type == null)
+		{
+			return JetTypeInfo.create(ErrorUtils.createErrorType("Wrong expression"), data.dataFlowInfo);
+		}
+
+		final TypeConstructor constructor = data.expectedType.getConstructor();
+		if(!(constructor instanceof MethodTypeConstructor))
+		{
+			return JetTypeInfo.create(ErrorUtils.createErrorType("Wrong left type"), data.dataFlowInfo);
+		}
+
+		final MethodTypeConstructor expectedMethodTypeConstructor = (MethodTypeConstructor) constructor;
+		final Name expectedName = expectedMethodTypeConstructor.getExpectedName();
+		if(expectedName == null)
+		{
+			return JetTypeInfo.create(ErrorUtils.createErrorType("Method name expected"), data.dataFlowInfo);
+		}
+
+		final ClassifierDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
+		if(declarationDescriptor instanceof ClassDescriptor)
+		{
+			final Collection<MethodDescriptor> methods = ((ClassDescriptor) declarationDescriptor).getMemberScope(Collections.<JetType>emptyList()).getMethods(expectedName);
+
+			final MethodDescriptor method = findMethod(methods, expectedMethodTypeConstructor.getParameterTypes().values(), expression.getArrow(), data);
+			if(method != null)
+			{
+				return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(expectedName, expectedMethodTypeConstructor.getReturnType(), expectedMethodTypeConstructor.getParameterTypes(), data.scope), data.scope), expression, data, data.dataFlowInfo);
+			}
+		}
+		else
+		{
+			data.trace.report(Errors.UNRESOLVED_REFERENCE.on(expression.getArrow(), expectedName.getName()));
+		}
+
+		return JetTypeInfo.create(null, data.dataFlowInfo);
+	}
+
+	private MethodDescriptor findMethod(Collection<MethodDescriptor> methodDescriptors, Collection<JetType> parameterTypes, NapileReferenceExpression target, ExpressionTypingContext context)
+	{
 		if(!parameterTypes.isEmpty())
 		{
 			Collection<MethodDescriptor> targets = new ArrayList<MethodDescriptor>(2);
@@ -776,12 +834,16 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				if(parameters.size() != parameterTypes.size())
 					continue;
 
+				Iterator<CallParameterDescriptor> it1 = parameters.iterator();
+				Iterator<JetType> it2 = parameterTypes.iterator();
+
 				boolean find = true;
-				for(int i = 0; i < parameters.size(); i++)
+
+				while(it1.hasNext() && it1.hasNext())
 				{
-					JetType expectedType = parameterTypes.get(i);
-					JetType foundType = parameters.get(i).getType();
-					if(!JetTypeChecker.INSTANCE.equalTypes(foundType, expectedType))
+					CallParameterDescriptor parameterDescriptor = it1.next();
+					JetType parameterType = it2.next();
+					if(!JetTypeChecker.INSTANCE.equalTypes(parameterDescriptor.getType(), parameterType))
 						find = false;
 				}
 
@@ -793,18 +855,12 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 
 		if(methodDescriptors.size() == 1)
-			targetMethod = methodDescriptors.iterator().next();
-
-		if(targetMethod != null)
 		{
-			Map<Name, JetType> valueParameters = new LinkedHashMap<Name, JetType>(targetMethod.getValueParameters().size());
-			for(CallParameterDescriptor parameterDescriptor : targetMethod.getValueParameters())
-				valueParameters.put(parameterDescriptor.getName(), parameterDescriptor.getType());
+			MethodDescriptor targetMethod = methodDescriptors.iterator().next();
 
 			context.trace.record(BindingTraceKeys.REFERENCE_TARGET, target, targetMethod);
 
-			return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(targetMethod.getReturnType(), valueParameters, context.scope), context.scope), expression, context, context.dataFlowInfo);
-
+			return targetMethod;
 		}
 		else
 		{
@@ -816,7 +872,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				context.trace.report(Errors.AMBIGUOUS_LINK_METHOD.on(target, methodDescriptors));
 			}
 
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return null;
 		}
 	}
 
@@ -1493,7 +1549,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@NotNull
-    public OverloadResolutionResults<MethodDescriptor> getResolutionResultsForBinaryCall(JetScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression, ReceiverDescriptor receiver)
+	public OverloadResolutionResults<MethodDescriptor> getResolutionResultsForBinaryCall(JetScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression, ReceiverDescriptor receiver)
 	{
 		return context.replaceScope(scope).resolveCallWithGivenName(CallMaker.makeCall(receiver, binaryExpression), binaryExpression.getOperationReference(), name);
 	}

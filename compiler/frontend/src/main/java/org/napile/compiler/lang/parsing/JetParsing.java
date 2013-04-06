@@ -912,6 +912,7 @@ public class JetParsing extends AbstractJetParsing
 		// {() -> String}
 		else if(at(NapileTokens.LBRACE))
 			parseAnonymMethodType();
+		// [val a : String]
 		else if(at(NapileTokens.LBRACKET))
 			parseMultiType();
 		// this
@@ -997,6 +998,11 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker anonymMethodType = mark();
 
 		advance(); // LBRACE
+
+		if(at(NapileTokens.IDENTIFIER))
+		{
+			advance();
+		}
 
 		if(at(NapileTokens.LPAR))
 		{

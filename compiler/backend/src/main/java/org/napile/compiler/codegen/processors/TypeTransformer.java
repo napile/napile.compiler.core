@@ -61,6 +61,7 @@ public class TypeTransformer
 
 			MethodTypeNode methodTypeNode = (MethodTypeNode) typeConstructorNode;
 
+			methodTypeNode.name = methodTypeConstructor.getExpectedName();
 			methodTypeNode.returnType = toAsmType(bindingTrace, methodTypeConstructor.getReturnType(), classNode);
 			for(Map.Entry<Name, JetType> entry : methodTypeConstructor.getParameterTypes().entrySet())
 				methodTypeNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, entry.getKey(), toAsmType(bindingTrace, entry.getValue(), classNode)));

@@ -37,8 +37,8 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
@@ -54,6 +54,7 @@ import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.MultiTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.SelfTypeConstructorImpl;
 import org.napile.compiler.util.lazy.LazyValue;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -219,7 +220,23 @@ public class TypeResolver
 					else
 						returnType = TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL, false);
 
-					MethodTypeConstructor methodTypeConstructor = new MethodTypeConstructorImpl(returnType, parameterTypes, scope);
+					final String name = type.getName();
+					Name expectedName = null;
+					if(name == null)
+					{
+						final PsiElement parent = type.getParent().getParent(); // first parent is NapileTypeReference
+
+						if(parent instanceof NapileVariable || parent instanceof NapileCallParameterAsVariable)
+						{
+							expectedName = ((NapileNamedDeclaration) parent).getNameAsSafeName();
+						}
+					}
+					else
+					{
+						expectedName = Name.identifier(name);
+					}
+
+					MethodTypeConstructor methodTypeConstructor = new MethodTypeConstructorImpl(expectedName, returnType, parameterTypes, scope);
 					result[0] = new JetTypeImpl(annotations, methodTypeConstructor, false, Collections.<JetType>emptyList(), scope);
 				}
 

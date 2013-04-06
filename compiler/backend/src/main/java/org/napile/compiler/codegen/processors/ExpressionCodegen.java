@@ -292,6 +292,12 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	}
 
 	@Override
+	public StackValue visitDoubleArrowExpression(NapileDoubleArrowExpression expression, StackValue data)
+	{
+		return expression.accept(closureCodegenVisitor, data);
+	}
+
+	@Override
 	public StackValue visitBreakExpression(NapileBreakExpression expression, StackValue data)
 	{
 		return expression.accept(loopCodegenVisitor, data);

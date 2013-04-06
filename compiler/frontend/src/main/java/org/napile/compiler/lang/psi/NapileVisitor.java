@@ -423,4 +423,9 @@ public class NapileVisitor<R, D> extends PsiElementVisitor
 	{
 		return visitExpression(expression, data);
 	}
+
+	public R visitDoubleArrowExpression(NapileDoubleArrowExpression expression, D data)
+	{
+		return visitExpression(expression, data);
+	}
 }

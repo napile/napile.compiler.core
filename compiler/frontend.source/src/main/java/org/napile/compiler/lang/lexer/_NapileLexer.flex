@@ -295,6 +295,7 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
 "%="         { return NapileTokens.PERCEQ    ; }
 "+="         { return NapileTokens.PLUSEQ    ; }
 "-="         { return NapileTokens.MINUSEQ   ; }
+"->>"        { return NapileTokens.DOUBLE_ARROW ; }
 "->"         { return NapileTokens.ARROW     ; }
 ".."         { return NapileTokens.RANGE     ; }
 "["          { return NapileTokens.LBRACKET  ; }

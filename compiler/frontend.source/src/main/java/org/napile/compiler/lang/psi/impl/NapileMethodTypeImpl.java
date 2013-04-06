@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi.impl;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
@@ -32,6 +33,8 @@ import org.napile.compiler.lang.psi.NapileTypeReference;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author max
@@ -104,5 +107,34 @@ public class NapileMethodTypeImpl extends NapileElementImpl implements NapileMet
 	public ASTNode getArrowNode()
 	{
 		return getNode().findChildByType(NapileTokens.ARROW);
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getNameIdentifier()
+	{
+		final ASTNode openBraceNode = getOpenBraceNode();
+		// { test () -> String)
+		//   ^^^ select this element
+
+		final ASTNode treeNext = openBraceNode.getTreeNext();
+		if(treeNext.getElementType() == NapileTokens.IDENTIFIER)
+		{
+			return treeNext.getPsi();
+		}
+		return null;
+	}
+
+	@Override
+	public String getName()
+	{
+		final PsiElement nameIdentifier = getNameIdentifier();
+		return nameIdentifier == null ? null : nameIdentifier.getText();
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
+		throw new IncorrectOperationException();
 	}
 }

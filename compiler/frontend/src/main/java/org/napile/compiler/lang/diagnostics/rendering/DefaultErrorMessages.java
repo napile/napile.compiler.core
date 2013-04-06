@@ -57,6 +57,7 @@ public class DefaultErrorMessages
 		});
 
 		MAP.put(UNRESOLVED_REFERENCE, "Unresolved reference: {0}", TO_STRING);
+		MAP.put(EXPECTED_METHOD_NOT_FOUND, "Expected method not found: {0}", TO_STRING);
 		MAP.put(VALID_STRING_ESCAPE, "", TO_STRING);
 		MAP.put(INVALID_STRING_ESCAPE, "Invalid string escape ''{1}''", TO_STRING, TO_STRING);
 

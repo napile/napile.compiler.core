@@ -112,6 +112,7 @@ public interface NapileNodes
 
 	NapileNode INJECTION_EXPRESSION = new NapileNode("INJECTION_EXPRESSION", NapileInjectionExpressionImpl.class);
 	NapileNode LINK_METHOD_EXPRESSION = new NapileNode("LINK_METHOD_EXPRESSION", NapileLinkMethodExpressionImpl.class);
+	NapileNode DOUBLE_ARROW_EXPRESSION = new NapileNode("DOUBLE_ARROW_EXPRESSION", NapileDoubleArrowExpressionImpl.class);
 	NapileNode SUPER_EXPRESSION = new NapileNode("SUPER_EXPRESSION", NapileSuperExpression.class);
 	NapileNode BINARY_EXPRESSION = new NapileNode("BINARY_EXPRESSION", NapileBinaryExpression.class);
 	NapileNode BINARY_WITH_TYPE = new NapileNode("BINARY_WITH_TYPE", NapileBinaryExpressionWithTypeRHS.class);

@@ -120,6 +120,7 @@ public interface NapileTokens
 	NapileToken LTEQ = new NapileToken("LTEQ");
 	NapileToken GTEQ = new NapileToken("GTEQ");
 	NapileToken ARROW = new NapileToken("ARROW");
+	NapileToken DOUBLE_ARROW = new NapileToken("DOUBLE_ARROW");
 	NapileToken EQEQ = new NapileToken("EQEQ");
 	NapileToken EXCLEQ = new NapileToken("EXCLEQ");
 	NapileToken EXCLEXCL = new NapileToken("EXCLEXCL");

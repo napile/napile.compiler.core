@@ -19,12 +19,13 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiNameIdentifierOwner;
 
 /**
  * @author VISTALL
  * @since 7:59/20.10.12
  */
-public interface NapileMethodType extends NapileTypeElement
+public interface NapileMethodType extends NapileTypeElement, PsiNameIdentifierOwner
 {
 	@Nullable
 	NapileCallParameterList getParameterList();

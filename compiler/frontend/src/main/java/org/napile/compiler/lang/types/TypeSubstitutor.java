@@ -194,7 +194,7 @@ public class TypeSubstitutor
 				for(Map.Entry<Name, JetType> entry : t.getParameterTypes().entrySet())
 					parameters.put(entry.getKey(), unsafeSubstitute(entry.getValue(), ownerDescriptor, recursionDepth));
 				JetScope scope = new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this);
-				return new JetTypeImpl(type.getAnnotations(), new MethodTypeConstructorImpl(subReturnType, parameters, scope), type.isNullable(), type.getArguments(), scope);
+				return new JetTypeImpl(type.getAnnotations(), new MethodTypeConstructorImpl(t.getExpectedName(), subReturnType, parameters, scope), type.isNullable(), type.getArguments(), scope);
 			}
 
 			@Override

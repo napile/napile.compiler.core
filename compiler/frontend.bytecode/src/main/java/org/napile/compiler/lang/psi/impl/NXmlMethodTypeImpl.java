@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi.impl;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.psi.NXmlParentedElementBase;
@@ -33,6 +34,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
@@ -126,5 +128,25 @@ public class NXmlMethodTypeImpl extends NXmlParentedElementBase implements Napil
 	public PsiElement[] getChildren()
 	{
 		return NXmlMirrorUtil.getAllToPsiArray(returnType, callParameterList);
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getNameIdentifier()
+	{
+		return null;
+	}
+
+	@Override
+	public String getName()
+	{
+		final PsiElement nameIdentifier = getNameIdentifier();
+		return nameIdentifier == null ? null : nameIdentifier.getText();
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
+		return null;
 	}
 }

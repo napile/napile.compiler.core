@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
@@ -33,13 +34,14 @@ import org.napile.compiler.lang.types.TypeConstructorVisitor;
  */
 public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl implements MethodTypeConstructor
 {
+	private final Name name;
 	private final JetType returnType;
 	private final Map<Name, JetType> parameterTypes;
 
-	public MethodTypeConstructorImpl(@NotNull JetType returnType, Map<Name, JetType> parameterTypes, @NotNull JetScope scope)
+	public MethodTypeConstructorImpl(@Nullable Name name, @NotNull JetType returnType, Map<Name, JetType> parameterTypes, @NotNull JetScope scope)
 	{
 		super(scope, new FqName("napile.lang.AnonymContext"));
-
+		this.name = name;
 		this.returnType = returnType;
 		this.parameterTypes = parameterTypes;
 	}
@@ -48,6 +50,13 @@ public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl imple
 	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
 	{
 		return visitor.visitMethodType(type, this, arg);
+	}
+
+	@Override
+	@Nullable
+	public Name getExpectedName()
+	{
+		return name;
 	}
 
 	@NotNull

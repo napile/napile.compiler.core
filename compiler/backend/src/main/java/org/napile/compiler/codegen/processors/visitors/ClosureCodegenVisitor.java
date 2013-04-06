@@ -24,10 +24,14 @@ import java.util.Set;
 
 import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
+import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.util.IntIntPair;
 import org.napile.compiler.codegen.processors.AsmNodeUtil;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.ExpressionCodegenContext;
 import org.napile.compiler.codegen.processors.TypeTransformer;
+import org.napile.compiler.codegen.processors.codegen.CallTransformer;
+import org.napile.compiler.codegen.processors.codegen.CallableMethod;
 import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -36,6 +40,7 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.psi.NapileAnonymMethodExpression;
+import org.napile.compiler.lang.psi.NapileDoubleArrowExpression;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileLinkMethodExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
@@ -88,6 +93,42 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 
 		gen.marker(expression).putAnonym(Collections.<IntIntPair>emptyList(), new CodeInfo(adapter));
 
+		return StackValue.onStack(TypeTransformer.toAsmType(gen.bindingTrace, jetType, gen.classNode));
+	}
+
+	@Override
+	public StackValue visitDoubleArrowExpression(NapileDoubleArrowExpression expression, StackValue data)
+	{
+		JetType jetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
+
+
+		MethodDescriptor methodDescriptor = (MethodDescriptor) gen.bindingTrace.safeGet(BindingTraceKeys.REFERENCE_TARGET, expression.getArrow());
+
+		InstructionAdapter adapter = new InstructionAdapter();
+
+		ExpressionCodegen expressionCodegen = new ExpressionCodegen(gen.bindingTrace, null, gen.classNode, ExpressionCodegenContext.empty(), adapter);
+
+		final NapileExpression targetExpression = expression.getTargetExpression();
+
+		assert targetExpression != null;
+
+		expressionCodegen.gen(targetExpression, gen.toAsmType(gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, targetExpression)));
+
+		int index = 0;
+
+		for(CallParameterDescriptor descriptor : methodDescriptor.getValueParameters())
+		{
+			adapter.localGet(index);
+			adapter.visitLocalVariable("l" + index);
+			index ++;
+		}
+
+		CallableMethod method = CallTransformer.transformToCallable(gen, methodDescriptor, Collections.<TypeNode>emptyList(), false, false, false);
+		method.invoke(adapter, gen, targetExpression);
+
+		adapter.returnValues(1);
+
+		gen.marker(expression).putAnonym(Collections.<IntIntPair>emptyList(), new CodeInfo(adapter));
 		return StackValue.onStack(TypeTransformer.toAsmType(gen.bindingTrace, jetType, gen.classNode));
 	}
 

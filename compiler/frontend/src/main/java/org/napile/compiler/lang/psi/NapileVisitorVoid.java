@@ -425,4 +425,9 @@ public class NapileVisitorVoid extends PsiElementVisitor
 	{
 		visitExpression(expression);
 	}
+
+	public void visitDoubleArrowExpression(NapileDoubleArrowExpression expression)
+	{
+		visitExpression(expression);
+	}
 }

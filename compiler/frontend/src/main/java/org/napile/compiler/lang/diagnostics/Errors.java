@@ -89,6 +89,7 @@ public interface Errors
 	DiagnosticFactory0<PsiElement> MIXING_NAMED_AND_POSITIONED_ARGUMENTS = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory0<NapileReferenceExpression> ARGUMENT_PASSED_TWICE = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory1<NapileReferenceExpression, String> NAMED_PARAMETER_NOT_FOUND = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ELEMENT_RANGE_OR_BRACKETS);
+	DiagnosticFactory1<NapileReferenceExpression, String> EXPECTED_METHOD_NOT_FOUND = DiagnosticFactory1.create(Severity.ERROR, PositioningStrategies.ELEMENT_RANGE_OR_BRACKETS);
 	DiagnosticFactory0<NapileExpression> VARARG_OUTSIDE_PARENTHESES = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory0<LeafPsiElement> NON_VARARG_SPREAD = DiagnosticFactory0.create(Severity.ERROR);
 

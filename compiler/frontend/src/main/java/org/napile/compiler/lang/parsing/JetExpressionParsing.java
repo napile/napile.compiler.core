@@ -62,6 +62,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 			NapileTokens.LPAR, // parenthesized
 			NapileTokens.HASH, // method targeting
+			NapileTokens.DOUBLE_ARROW, // expression targeting
 
 			// literal constant
 			NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.INTEGER_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.NULL_KEYWORD,
@@ -366,7 +367,13 @@ public class JetExpressionParsing extends AbstractJetParsing
 				expressionMarker.done(DOT_QUALIFIED_EXPRESSION);
 			}
 			else if(at(NapileTokens.HASH))
+			{
 				parseLinkMethodExpression(expressionMarker);
+			}
+			else if(at(NapileTokens.DOUBLE_ARROW))
+			{
+				parseDoubleArrowExpression();
+			}
 			else if(at(NapileTokens.SAFE_ACCESS))
 			{
 				advance(); // SAFE_ACCESS
@@ -387,6 +394,19 @@ public class JetExpressionParsing extends AbstractJetParsing
 			expressionMarker = expressionMarker.precede();
 		}
 		expressionMarker.drop();
+	}
+
+	private void parseDoubleArrowExpression()
+	{
+		PsiBuilder.Marker marker = mark();
+
+		PsiBuilder.Marker temp = mark();
+		advance();
+		temp.done(REFERENCE_EXPRESSION);
+
+		parseExpression();
+
+		marker.done(DOUBLE_ARROW_EXPRESSION);
 	}
 
 	/*
@@ -565,6 +585,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 			parseArrayExpression();
 		else if(at(NapileTokens.HASH))
 			parseLinkMethodExpression(null);
+		else if(at(NapileTokens.DOUBLE_ARROW))
+		{
+			parseDoubleArrowExpression();
+		}
 		else if(at(NapileTokens.IDENTIFIER))
 			parseOneTokenExpression(REFERENCE_EXPRESSION);
 		else if(at(NapileTokens.LBRACE))

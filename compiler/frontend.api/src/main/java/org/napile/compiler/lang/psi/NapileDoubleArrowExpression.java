@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 napile.org
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.types;
-
-import java.util.Map;
+package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.name.Name;
 
 /**
  * @author VISTALL
- * @since 12:16/15.09.12
+ * @since 17:37/03.04.13
  */
-public interface MethodTypeConstructor extends TypeConstructor
+public interface NapileDoubleArrowExpression extends NapileExpression
 {
 	@Nullable
-	Name getExpectedName();
+	NapileExpression getTargetExpression();
 
 	@NotNull
-	JetType getReturnType();
-
-	@NotNull
-	Map<Name, JetType> getParameterTypes();
+	NapileSimpleNameExpression getArrow();
 }
