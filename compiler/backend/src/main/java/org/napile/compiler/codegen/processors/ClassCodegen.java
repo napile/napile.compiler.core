@@ -219,7 +219,7 @@ public class ClassCodegen extends NapileVisitorVoid
 				else
 					new ExpressionCodegen(bindingTrace, null, classNode, context.clone(), adapter).gen(initializer, type);
 
-				StackValue.variable(bindingTrace, classNode, variableDescriptor).store(type, adapter, PositionMarker.EMPTY);
+				StackValue.variable(initializer, bindingTrace, classNode, variableDescriptor).store(type, adapter, PositionMarker.EMPTY);
 			}
 		}
 	}

@@ -564,7 +564,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 					{
 						instructs.localGet(0);
 					}
-					return StackValue.variable(bindingTrace, classNode, accessorDescriptor.getVariable());
+					return StackValue.variable(expression, bindingTrace, classNode, accessorDescriptor.getVariable());
 				}
 			}
 
@@ -656,7 +656,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 			//return StackValue.simpleVariableAccessor(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic() ? CallableMethod.CallType.STATIC : CallableMethod.CallType.VIRTUAL);
 		}
 		else
-			return StackValue.variable(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic());
+			return StackValue.variable(expression, FqNameGenerator.getFqName(variableDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, variableDescriptor.getType(), classNode), variableDescriptor.isStatic());
 	}
 
 	private StackValue generateConstructorCall(NapileCallExpression expression, NapileSimpleNameExpression constructorReference, StackValue receiver)

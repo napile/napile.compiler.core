@@ -82,15 +82,15 @@ public abstract class StackValue
 	}
 
 	@NotNull
-	public static StackValue variable(@NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull VariableDescriptor propertyDescriptor)
+	public static StackValue variable(@NotNull PsiElement psiElement, @NotNull BindingTrace bindingTrace, @NotNull ClassNode classNode, @NotNull VariableDescriptor propertyDescriptor)
 	{
-		return new Variable(FqNameGenerator.getFqName(propertyDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, propertyDescriptor.getType(), classNode), propertyDescriptor.isStatic());
+		return new Variable(psiElement, FqNameGenerator.getFqName(propertyDescriptor, bindingTrace), TypeTransformer.toAsmType(bindingTrace, propertyDescriptor.getType(), classNode), propertyDescriptor.isStatic());
 	}
 
 	@NotNull
-	public static StackValue variable(@NotNull FqName fqName, @NotNull TypeNode type, boolean staticVar)
+	public static StackValue variable(@NotNull PsiElement psiElement, @NotNull FqName fqName, @NotNull TypeNode type, boolean staticVar)
 	{
-		return new Variable(fqName, type, staticVar);
+		return new Variable(psiElement, fqName, type, staticVar);
 	}
 
 	@NotNull

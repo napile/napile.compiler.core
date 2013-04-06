@@ -22,6 +22,7 @@ import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.compiler.codegen.processors.PositionMarker;
+import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
@@ -32,9 +33,9 @@ public class Variable extends StackValue
 	private final VariableRef variableRef;
 	private final boolean staticVar;
 
-	public Variable(@NotNull FqName fqName, @NotNull TypeNode type, boolean s)
+	public Variable(@NotNull PsiElement psiElement, @NotNull FqName fqName, @NotNull TypeNode type, boolean s)
 	{
-		super(null, type);
+		super(psiElement, type);
 
 		variableRef = new VariableRef(fqName, type);
 		staticVar = s;
@@ -44,9 +45,9 @@ public class Variable extends StackValue
 	public void put(TypeNode type, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		if(staticVar)
-			instructionAdapter.getStaticVar(variableRef);
+			join(instructionAdapter, positionMarker).getStaticVar(variableRef);
 		else
-			instructionAdapter.getVar(variableRef);
+			join(instructionAdapter, positionMarker).getVar(variableRef);
 
 		castTo(type, instructionAdapter);
 	}
@@ -55,9 +56,9 @@ public class Variable extends StackValue
 	public void store(TypeNode topOfStackType, InstructionAdapter instructionAdapter, PositionMarker positionMarker)
 	{
 		if(staticVar)
-			instructionAdapter.putToStaticVar(variableRef);
+			join(instructionAdapter, positionMarker).putToStaticVar(variableRef);
 		else
-			instructionAdapter.putToVar(variableRef);
+			join(instructionAdapter, positionMarker).putToVar(variableRef);
 	}
 
 	@Override

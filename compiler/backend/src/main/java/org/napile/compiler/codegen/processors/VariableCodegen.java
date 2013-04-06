@@ -169,7 +169,7 @@ public class VariableCodegen
 			if(!variableDescriptor.isStatic())
 				adapter.visitLocalVariable("this");
 
-			final StackValue varStackValue = StackValue.variable(bindingTrace, classNode, variableDescriptor);
+			final StackValue varStackValue = StackValue.variable(variable, bindingTrace, classNode, variableDescriptor);
 
 			if(!variableDescriptor.isStatic())
 				adapter.localGet(0);
