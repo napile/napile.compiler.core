@@ -29,6 +29,7 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.asm.tree.members.CodeInfo;
 import org.napile.asm.tree.members.MethodNode;
+import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.VariableNode;
 import org.napile.asm.tree.members.bytecode.VariableRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
@@ -263,7 +264,7 @@ public class ClassCodegen extends NapileVisitorVoid
 
 		InstructionAdapter adapter = constructorsAdapters.get(Boolean.TRUE);
 
-		adapter.newObject(type, Collections.<TypeNode>emptyList());
+		adapter.newObject(type, Collections.<MethodParameterNode>emptyList());
 		adapter.putToStaticVar(new VariableRef(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), type));
 	}
 

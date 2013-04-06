@@ -58,7 +58,7 @@ public class AnnotationCodegen
 
 		gen.pushMethodArguments(resolvedCall, callableMethod.getValueParameterTypes());
 
-		gen.instructs.newObject(type, callableMethod.getValueParameterTypes());
+		callableMethod.newObject(gen.instructs, gen, null, type);
 
 		return new AnnotationNode(new CodeInfo(gen.instructs), ArrayUtil.EMPTY_STRING_ARRAY); //TODO [VISTALL]
 	}

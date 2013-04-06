@@ -59,7 +59,7 @@ public class PartToPartGenVisitor extends TextPsiVisitor
 		//countInstruction = adapter.reserve();
 
 		//TODO [VISTALL] change constructor call
-		adapter.newObject(TypeConstants.STRING_BUILDER, Arrays.<TypeNode>asList(/*AsmConstants.INT_TYPE*/));
+		adapter.newObject(TypeConstants.STRING_BUILDER, Arrays.<MethodParameterNode>asList(/*TODO size*/));
 	}
 
 	@Override

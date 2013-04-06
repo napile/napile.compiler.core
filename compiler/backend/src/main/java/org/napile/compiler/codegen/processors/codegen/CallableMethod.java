@@ -19,6 +19,7 @@ package org.napile.compiler.codegen.processors.codegen;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import org.napile.asm.tree.members.bytecode.MethodRef;
 import org.napile.asm.tree.members.bytecode.adapter.InstructionAdapter;
@@ -57,7 +58,14 @@ public class CallableMethod
 		this.nullable = nullable;
 	}
 
-	public void invoke(InstructionAdapter instructionAdapter, PositionMarker marker, PsiElement target)
+	public void newObject(@NotNull InstructionAdapter instructionAdapter, @NotNull PositionMarker marker,  @Nullable PsiElement target, @NotNull TypeNode typeNode)
+	{
+		Instruction instruction = instructionAdapter.newObject(typeNode, methodRef.parameters);
+
+		marker.mark(instruction, target);
+	}
+
+	public void invoke(@NotNull InstructionAdapter instructionAdapter, @NotNull PositionMarker marker, @Nullable PsiElement target)
 	{
 		Instruction instruction = null;
 		switch(callType)

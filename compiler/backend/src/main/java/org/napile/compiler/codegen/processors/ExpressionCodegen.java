@@ -26,6 +26,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.AsmConstants;
+import org.napile.asm.Modifier;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.asm.tree.members.ClassNode;
@@ -473,7 +474,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 		NapileExpression[] exps = expression.getExpressions();
 
 		instructs.newInt(exps.length);
-		instructs.newObject(new TypeNode(false, new ClassTypeNode(NapileLangPackage.MULTI)), Arrays.asList(AsmConstants.INT_TYPE));
+		instructs.newObject(new TypeNode(false, new ClassTypeNode(NapileLangPackage.MULTI)), Collections.singletonList(new MethodParameterNode(Modifier.EMPTY, Name.identifier("length"), AsmConstants.INT_TYPE)));
 
 		int i = 0;
 		for(NapileExpression exp : exps)
@@ -626,7 +627,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 		instructs.newInt(expressions.length);
 
-		instructs.newObject(typeNode, Collections.singletonList(AsmConstants.INT_TYPE));
+		instructs.newObject(typeNode, Collections.singletonList(new MethodParameterNode(Modifier.EMPTY, Name.identifier("length"), AsmConstants.INT_TYPE)));
 
 		// set ref need return 'this' not real type
 		MethodRef setRef = new MethodRef(NapileLangPackage.ARRAY.child(Name.identifier("set")), Arrays.<MethodParameterNode>asList(AsmNodeUtil.parameterNode("index", AsmConstants.INT_TYPE), AsmNodeUtil.parameterNode("element", new TypeNode(false, new TypeParameterValueTypeNode(Name.identifier("E"))))), Collections.<TypeNode>emptyList(), typeNode);
@@ -681,7 +682,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 
 			pushMethodArguments(resolvedCall, method.getValueParameterTypes());
 
-			marker(expression).newObject(type, method.getValueParameterTypes());
+			method.newObject(instructs, this, expression, type);
 		}
 		else
 		{

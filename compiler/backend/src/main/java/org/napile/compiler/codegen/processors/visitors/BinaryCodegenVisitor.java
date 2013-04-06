@@ -20,6 +20,7 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.AsmConstants;
+import org.napile.asm.Modifier;
 import org.napile.asm.lib.NapileConditionPackage;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
@@ -94,7 +95,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 			marker.putFalse();
 			ReservedInstruction ifReserve = marker.reserve();
 			marker.putNull();
-			marker.newObject(new TypeNode(false, new ClassTypeNode(new FqName("napile.lang.ClassCastException"))), Collections.singletonList(TypeConstants.STRING_NULLABLE));
+			marker.newObject(new TypeNode(false, new ClassTypeNode(new FqName("napile.lang.ClassCastException"))), Collections.singletonList(new MethodParameterNode(Modifier.EMPTY, Name.identifier("message"), TypeConstants.STRING_NULLABLE)));
 			marker.throwVal();
 			marker.replace(ifReserve).jumpIf(marker.size());
 		}
@@ -249,7 +250,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 			ReservedInstruction jump = marker.reserve();
 
 			marker.newString("'" + baseExpression.getText() + "' cant be null");
-			marker.newObject(TypeConstants.NULL_POINTER_EXCEPTION, Collections.<TypeNode>singletonList(TypeConstants.STRING_NULLABLE));
+			marker.newObject(TypeConstants.NULL_POINTER_EXCEPTION, Collections.singletonList(new MethodParameterNode(Modifier.EMPTY, Name.identifier("message"), TypeConstants.STRING_NULLABLE)));
 			marker.throwVal();
 
 			marker.replace(jump).jumpIf(marker.size());

@@ -17,6 +17,7 @@
 package org.napile.compiler.codegen.processors;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.asm.tree.members.bytecode.Instruction;
 import com.intellij.psi.PsiElement;
 
@@ -37,5 +38,5 @@ public interface PositionMarker
 	};
 
 	@NotNull
-	<T extends Instruction> T mark(@NotNull T instruction, PsiElement target);
+	<T extends Instruction> T mark(@NotNull T instruction, @Nullable PsiElement target);
 }

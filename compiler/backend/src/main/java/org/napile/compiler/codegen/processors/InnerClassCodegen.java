@@ -136,10 +136,7 @@ public class InnerClassCodegen
 				stackValue.put(AsmConstants.ANY_TYPE, gen.instructs, PositionMarker.EMPTY);
 		}
 
-		List<TypeNode> parameters = new ArrayList<TypeNode>(constructorNode.parameters.size());
-		for(MethodParameterNode p : constructorNode.parameters)
-			parameters.add(p.returnType);
-		gen.instructs.newObject(anonymClassType, parameters);
+		gen.instructs.newObject(anonymClassType, constructorNode.parameters);
 
 		gen.classNode.addMember(anonymClassNode);
 
