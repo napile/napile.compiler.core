@@ -32,3 +32,9 @@ class Main
     * [napile.classpath.draft](https://github.com/napile-lang/napile.classpath.draft) - draft classlib in napile
     * [napile.jvm](https://github.com/napile-lang/napile.jvm) - only for running, and bytecode improvements
     * [napile.asm](https://github.com/napile-lang/napile.asm) - only for bytecode improvements
+
+# Help & Development
+
+I am working on napile itself. I have free time. But my expirence in some futures is small(ex: VM on C++).
+
+If you wana help me, email me.
