@@ -14,8 +14,7 @@ public class InjectionLexer extends LookAheadLexer
 	private final IElementType lbraceType;
 	private final IElementType rbraceType;
 
-	private boolean expressionStarted;
-
+	private int braceCount;
 
 	public InjectionLexer(Lexer baseLexer, IElementType sharpTypes, IElementType lbraceTypes, IElementType rbraceTypes)
 	{
@@ -31,28 +30,7 @@ public class InjectionLexer extends LookAheadLexer
 	{
 		final IElementType tokenType = baseLexer.getTokenType();
 
-		if(expressionStarted)
-		{
-			if(tokenType == rbraceType)
-			{
-				expressionStarted = false;
-
-				advanceAs(baseLexer, InjectionTokens.INNER_EXPRESSION_STOP);
-			}
-			else
-			{
-				if(tokenType == null)
-				{
-					expressionStarted = false;
-					addToken(baseLexer.getBufferEnd(), InjectionTokens.INNER_EXPRESSION);
-				}
-				else
-				{
-					advanceAs(baseLexer, InjectionTokens.INNER_EXPRESSION);
-				}
-			}
-		}
-		else if(tokenType == sharpType)
+		if(tokenType == sharpType)
 		{
 			int startEnd = baseLexer.getTokenEnd();
 
@@ -67,7 +45,51 @@ public class InjectionLexer extends LookAheadLexer
 
 					addToken(baseLexer.getTokenStart(), InjectionTokens.INNER_EXPRESSION_START);
 
-					expressionStarted = true;
+					boolean hasBody = false;
+					while(true)
+					{
+						IElementType elementType = baseLexer.getTokenType();
+						if(elementType == lbraceType)
+						{
+							braceCount ++;
+
+							hasBody = true;
+
+							baseLexer.advance();
+						}
+						if(elementType == rbraceType)
+						{
+							if(braceCount > 0)
+							{
+								braceCount --;
+								baseLexer.advance();
+							}
+							else
+							{
+								if(hasBody)
+								{
+									addToken(baseLexer.getTokenStart(), InjectionTokens.INNER_EXPRESSION);
+								}
+
+								advanceAs(baseLexer, InjectionTokens.INNER_EXPRESSION_STOP);
+								break;
+							}
+						}
+						else if(elementType == null)
+						{
+							if(hasBody)
+							{
+								addToken(InjectionTokens.INNER_EXPRESSION);
+							}
+							break;
+						}
+						else
+						{
+							hasBody = true;
+
+							baseLexer.advance();
+						}
+					}
 				}
 				else
 				{

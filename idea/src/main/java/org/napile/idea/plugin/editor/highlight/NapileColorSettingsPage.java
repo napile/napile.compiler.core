@@ -96,7 +96,7 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				"\n" +
 				"    {" +
 				"\n" +
-				"        var obj : <CLASS>String</CLASS> = /<KEYWORD>text</KEYWORD>/ {<INJECTION_BLOCK>Hello my friends. This is my var <INJECTION_INNER_EXPRESSION_MARK>#{</INJECTION_INNER_EXPRESSION_MARK>myVar<INJECTION_INNER_EXPRESSION_MARK>}</INJECTION_INNER_EXPRESSION_MARK></INJECTION_BLOCK>}" +
+				"        var obj : <CLASS>String</CLASS> = /:<KEYWORD>text</KEYWORD> <INJECTION_BLOCK>Hello my friends. This is my var <INJECTION_INNER_EXPRESSION_MARK>#{</INJECTION_INNER_EXPRESSION_MARK>myVar<INJECTION_INNER_EXPRESSION_MARK>}</INJECTION_INNER_EXPRESSION_MARK></INJECTION_BLOCK>:/" +
 				"\n" +
 				"        var escape  = \"This is valid string escape <VALID_STRING_ESCAPE>\\n</VALID_STRING_ESCAPE> but this is invalid <INVALID_STRING_ESCAPE>\\str</INVALID_STRING_ESCAPE> \"\n" +
 				"        <MACRO_CALL>myMacro</MACRO_CALL>()" +

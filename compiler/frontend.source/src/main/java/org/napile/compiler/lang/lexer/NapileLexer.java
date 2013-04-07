@@ -63,7 +63,10 @@ public class NapileLexer extends LookAheadLexer implements NapileTokens
 					}
 					else if(tokenType == INJECTION_STOP)
 					{
-						addToken(baseLexer.getTokenStart(), INJECTION_BLOCK);
+						if(hasBody)
+						{
+							addToken(baseLexer.getTokenStart(), INJECTION_BLOCK);
+						}
 						break;
 					}
 					else

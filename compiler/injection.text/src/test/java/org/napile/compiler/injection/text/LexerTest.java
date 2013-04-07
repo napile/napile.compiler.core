@@ -27,7 +27,7 @@ public class LexerTest
 {
 	public static void main(String... arg)
 	{
-		String str = "myVar is #{myVar} #{empty} #} # # # # # # }}}}} #{fsdfsdfsd";
+		String str = "myVar is #{myVar fdsfv dsv sdvsdv vsd{dsadas} dsad dsad} #{empty} #} # # # # # # }}}}} #{fsdfsdfsd";
 
 		TextCodeInjection injection = new TextCodeInjection();
 
