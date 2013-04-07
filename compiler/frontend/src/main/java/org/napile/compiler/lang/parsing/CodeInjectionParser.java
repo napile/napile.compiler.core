@@ -18,13 +18,15 @@ package org.napile.compiler.lang.parsing;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author VISTALL
  * @since 11:42/12.10.12
  */
-public class CodeInjectionParser
+public class CodeInjectionParser implements NapileTokens
 {
 	private final AbstractJetParsing parent;
 
@@ -35,16 +37,52 @@ public class CodeInjectionParser
 
 	public void parse()
 	{
-		PsiBuilder.Marker marker = parent.mark();
+		PsiBuilder.Marker marker = mark();
 
-		parent.advance(); // injection start
+		if(tt() == NapileTokens.INJECTION_START)
+		{
+			advance();
 
-		parent.advance(); // {
+			while(true)
+			{
+				IElementType tt = tt();
+				if(tt == INJECTION_STOP)
+				{
+					break;
+				}
 
-		parent.advance(); // block
+				advance();
+			}
 
-		parent.advance(); // }
+			if(tt() != INJECTION_STOP)
+			{
+				parent.error("Expected ':/'");
+			}
+			else
+			{
+				advance();
+			}
 
-		marker.done(NapileNodes.INJECTION_EXPRESSION);
+			marker.done(NapileNodes.INJECTION_EXPRESSION);
+		}
+		else
+		{
+			marker.error("Expected injection name");
+		}
+	}
+
+	public PsiBuilder.Marker mark()
+	{
+		return parent.mark();
+	}
+
+	public IElementType tt()
+	{
+		return parent.tt();
+	}
+
+	public void advance()
+	{
+		parent.advance();
 	}
 }

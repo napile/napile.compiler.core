@@ -19,11 +19,9 @@ package org.napile.idea.plugin.editor.highlight.postHighlight;
 import java.util.Collection;
 
 import org.napile.compiler.injection.CodeInjection;
-import org.napile.compiler.lang.diagnostics.PositioningStrategies;
 import org.napile.compiler.lang.psi.NapileInjectionExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.IdeaInjectionSupport;
-import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
 import org.napile.idea.plugin.highlighter.InjectionHighlightColors;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
@@ -72,8 +70,6 @@ public class InjectionHighlightingVisitor extends PostHighlightVisitor
 
 		if(codeInjection != null)
 		{
-			highlightInfo(PositioningStrategies.INJECTION_NAME.mark(injectionExpression).get(0), null, NapileHighlightingColors.KEYWORD);
-
 			IdeaInjectionSupport<?> ideaInjectionSupport = IdeaInjectionSupport.IDEA_SUPPORT.getValue(codeInjection);
 			PsiElementVisitor elementVisitor = ideaInjectionSupport.createVisitorForHighlight(holder);
 			if(elementVisitor != null)

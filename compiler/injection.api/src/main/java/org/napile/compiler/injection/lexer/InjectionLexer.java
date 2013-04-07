@@ -1,5 +1,6 @@
 package org.napile.compiler.injection.lexer;
 
+import org.napile.compiler.lexer.LookAheadLexer;
 import com.intellij.lexer.Lexer;
 import com.intellij.psi.tree.IElementType;
 

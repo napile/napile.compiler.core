@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.napile.compiler.injection.lexer;
+package org.napile.compiler.lexer;
 
 import com.intellij.lexer.Lexer;
 import com.intellij.lexer.LexerBase;

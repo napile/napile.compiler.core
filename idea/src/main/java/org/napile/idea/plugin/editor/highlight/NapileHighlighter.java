@@ -42,6 +42,7 @@ public class NapileHighlighter extends SyntaxHighlighterBase
 		safeMap(keys, NapileTokens.KEYWORDS, NapileHighlightingColors.KEYWORD);
 
 		safeMap(keys, NapileTokens.AS_SAFE, NapileHighlightingColors.KEYWORD);
+		safeMap(keys, NapileTokens.INJECTION_NAME, NapileHighlightingColors.KEYWORD);
 
 		safeMap(keys, NapileTokens.INTEGER_LITERAL, NapileHighlightingColors.NUMBER);
 		safeMap(keys, NapileTokens.FLOAT_LITERAL, NapileHighlightingColors.NUMBER);

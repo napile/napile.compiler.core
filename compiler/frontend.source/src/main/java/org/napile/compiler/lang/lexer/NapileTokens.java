@@ -92,6 +92,12 @@ public interface NapileTokens
 
 	NapileToken IDENTIFIER = new NapileToken("IDENTIFIER");
 
+	NapileToken INJECTION_NAME = new NapileToken("INJECTION_NAME");
+
+	NapileToken INJECTION_START = new NapileToken("INJECTION_START");
+
+	NapileToken INJECTION_STOP = new NapileToken("INJECTION_STOP");
+
 	@Deprecated
 	NapileToken FIELD_IDENTIFIER = new NapileToken("FIELD_IDENTIFIER");
 	NapileToken LBRACKET = new NapileToken("LBRACKET");
@@ -149,8 +155,6 @@ public interface NapileTokens
 	NapileToken NOT_IS = NapileKeywordToken.keyword("NOT_IS");
 	NapileToken HASH = new NapileToken("HASH");
 	NapileToken AT = new NapileToken("AT");
-
-	IElementType INJECTION_START = new NapileToken("INJECTION_START");
 
 	IElementType INJECTION_BLOCK = new ILazyParseableElementType("INJECTION_BLOCK")
 	{

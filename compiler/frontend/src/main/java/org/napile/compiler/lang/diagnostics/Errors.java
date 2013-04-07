@@ -66,7 +66,7 @@ public interface Errors
 
 	DiagnosticFactory0<PsiElement> NAPILE_LANG_CLASS_IMPORT_EXPECTED = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory0<PsiElement> NAPILE_LANG_TYPE_IMPORT_EXPECTED = DiagnosticFactory0.create(Severity.ERROR);
-	DiagnosticFactory0<NapileInjectionExpression> UNKNOWN_INJECTION = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.INJECTION_NAME);
+	DiagnosticFactory0<NapileInjectionExpression> UNKNOWN_INJECTION = DiagnosticFactory0.create(Severity.ERROR, PositioningStrategies.NAME_IDENTIFIER);
 
 	DiagnosticFactory0<NapileExpression> TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM = DiagnosticFactory0.create(Severity.ERROR);
 	DiagnosticFactory0<NapileReturnExpression> RETURN_NOT_ALLOWED = DiagnosticFactory0.create(Severity.ERROR);

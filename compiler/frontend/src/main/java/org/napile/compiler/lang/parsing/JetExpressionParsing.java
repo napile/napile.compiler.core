@@ -512,7 +512,9 @@ public class JetExpressionParsing extends AbstractJetParsing
 		//System.out.println("atom at "  + tt());
 
 		if(at(NapileTokens.INJECTION_START))
+		{
 			codeInjectionParser.parse();
+		}
 		else if(at(NapileTokens.LPAR))
 		{
 			parseParenthesizedExpression();

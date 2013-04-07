@@ -16,6 +16,7 @@
 
 package org.napile.compiler.lang.psi.impl;
 
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.CodeInjection;
@@ -27,6 +28,7 @@ import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import com.intellij.util.IncorrectOperationException;
 
 /**
  * @author VISTALL
@@ -55,11 +57,12 @@ public class NapileInjectionExpressionImpl extends NapileExpressionImpl implemen
 	@Override
 	public CodeInjection getCodeInjection()
 	{
-		PsiElement first = getFirstChild();
-
-		String text = first.getText();
-		String str = first.getText().substring(1, text.lastIndexOf("/"));
-		return CodeInjectionManager.INSTANCE.getInjection(str);
+		final String name = getName();
+		if(name == null)
+		{
+			return null;
+		}
+		return CodeInjectionManager.INSTANCE.getInjection(name);
 	}
 
 	@Nullable
@@ -67,5 +70,25 @@ public class NapileInjectionExpressionImpl extends NapileExpressionImpl implemen
 	public PsiElement getBlock()
 	{
 		return findChildByType(NapileTokens.INJECTION_BLOCK);
+	}
+
+	@Nullable
+	@Override
+	public PsiElement getNameIdentifier()
+	{
+		return findChildByType(NapileTokens.INJECTION_NAME);
+	}
+
+	@Override
+	public String getName()
+	{
+		final PsiElement nameIdentifier = getNameIdentifier();
+		return nameIdentifier == null ? null : nameIdentifier.getText();
+	}
+
+	@Override
+	public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException
+	{
+		return null;
 	}
 }

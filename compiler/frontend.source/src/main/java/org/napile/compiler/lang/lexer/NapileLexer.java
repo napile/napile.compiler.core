@@ -21,12 +21,62 @@ package org.napile.compiler.lang.lexer;
 
 import java.io.Reader;
 
+import org.napile.compiler.lexer.LookAheadLexer;
 import com.intellij.lexer.FlexAdapter;
+import com.intellij.lexer.Lexer;
+import com.intellij.psi.tree.IElementType;
 
-public class NapileLexer extends FlexAdapter
+public class NapileLexer extends LookAheadLexer implements NapileTokens
 {
 	public NapileLexer()
 	{
-		super(new _NapileLexer((Reader) null));
+		super(new FlexAdapter(new _NapileLexer((Reader) null)));
+	}
+
+	@Override
+	protected void lookAhead(Lexer baseLexer)
+	{
+		if(baseLexer.getTokenType() == INJECTION_START)
+		{
+			advanceLexer(baseLexer);
+
+			if(baseLexer.getTokenType() == IDENTIFIER)
+			{
+				advanceAs(baseLexer, INJECTION_NAME);
+
+				if(WHITESPACES.contains(baseLexer.getTokenType()))
+				{
+					advanceLexer(baseLexer);
+				}
+
+				boolean hasBody = false;
+				while(true)
+				{
+					final IElementType tokenType = baseLexer.getTokenType();
+					if(tokenType == null)
+					{
+						if(hasBody)
+						{
+							addToken(INJECTION_BLOCK);
+						}
+						break;
+					}
+					else if(tokenType == INJECTION_STOP)
+					{
+						addToken(baseLexer.getTokenStart(), INJECTION_BLOCK);
+						break;
+					}
+					else
+					{
+						hasBody = true;
+						baseLexer.advance();
+					}
+				}
+			}
+		}
+		else
+		{
+			advanceLexer(baseLexer);
+		}
 	}
 }

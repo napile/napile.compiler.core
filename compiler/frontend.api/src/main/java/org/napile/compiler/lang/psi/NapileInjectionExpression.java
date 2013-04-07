@@ -19,12 +19,13 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.CodeInjection;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNameIdentifierOwner;
 
 /**
  * @author VISTALL
  * @since 13:19/27.10.12
  */
-public interface NapileInjectionExpression extends NapileExpression
+public interface NapileInjectionExpression extends NapileExpression, PsiNameIdentifierOwner
 {
 	@Nullable
 	CodeInjection getCodeInjection();

@@ -31,12 +31,8 @@ import com.intellij.psi.tree.IElementType;
     private int commentStart;
     private int commentDepth;
 
-	private int injectionBraceCount;
-	private int injectionStart;
-	private int injectionStart2;
-	private boolean isInjectionBlock;
-
-    private void pushState(int state) {
+    private void pushState(int state)
+    {
         states.push(new State(yystate()));
         yybegin(state);
     }
@@ -54,7 +50,7 @@ import com.intellij.psi.tree.IElementType;
   return;
 %eof}
 
-%xstate STRING BLOCK_COMMENT DOC_COMMENT INJECTION INJECTION_BLOCK
+%xstate STRING BLOCK_COMMENT DOC_COMMENT
 
 DIGIT=[0-9]
 HEX_DIGIT=[0-9A-Fa-f]
@@ -153,74 +149,6 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
     .|{WHITE_SPACE_CHAR} {}
 }
 
-// Injections
-"/" {IDENTIFIER} "/"
-{
-	pushState(INJECTION);
-
-	injectionStart = getTokenStart();
-
-	return NapileTokens.INJECTION_START;
-}
-
-<INJECTION>
-{
-	"{"
-	{
-		if(!isInjectionBlock)
-		{
-			isInjectionBlock = true;
-
-			pushState(INJECTION_BLOCK);
-
-			injectionStart2 = getTokenStart() + 1;
-
-			return NapileTokens.LBRACE;
-		}
-	}
-
-	"}"
-	{
-		if(isInjectionBlock)
-		{
-			isInjectionBlock = false;
-			popState();
-			return NapileTokens.RBRACE;
-		}
-	}
-
-	.|{WHITE_SPACE_CHAR} {}
-}
-
-<INJECTION_BLOCK>
-{
-	"{"
-	{
-		injectionBraceCount ++;
-	}
-
-	<<EOF>>
-	{
-		popState();
-		zzStartRead = injectionStart2;
-		return NapileTokens.INJECTION_BLOCK;
-    }
-
-	"}"
-	{
-		if(injectionBraceCount > 0)
-			injectionBraceCount --;
-		else
-		{
-			popState();
-			yypushback(1);
-			zzStartRead = injectionStart2;
-			return NapileTokens.INJECTION_BLOCK;
-		}
-	}
-
-	.|{WHITE_SPACE_CHAR} {}
-}
 // Mere mortals
 
 ({WHITE_SPACE_CHAR})+ { return NapileTokens.WHITE_SPACE; }
@@ -287,6 +215,8 @@ ESCAPE_SEQUENCE=\\(u{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}{HEX_DIGIT}|[^\n])
 "||"         { return NapileTokens.OROR      ; }
 "|"          { return NapileTokens.OR        ; }
 "|="         { return NapileTokens.OREQ      ; }
+"/:"         { return NapileTokens.INJECTION_START; }
+":/"         { return NapileTokens.INJECTION_STOP; }
 "~"          { return NapileTokens.TILDE     ; }
 "^"          { return NapileTokens.XOR       ; }
 "^="         { return NapileTokens.XOREQ     ; }
