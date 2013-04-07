@@ -14,7 +14,7 @@ public class InjectionLexer extends LookAheadLexer
 	private final IElementType rbraceType;
 
 	private boolean expressionStarted;
-	private boolean haveExpressionBody;
+
 
 	public InjectionLexer(Lexer baseLexer, IElementType sharpTypes, IElementType lbraceTypes, IElementType rbraceTypes)
 	{
