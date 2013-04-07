@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.idea.plugin.JetBundle;
+import org.napile.idea.plugin.highlighter.InjectionHighlightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.OptionsBundle;
@@ -95,7 +96,7 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				"\n" +
 				"    {" +
 				"\n" +
-				"        var obj : <CLASS>String</CLASS> = /<KEYWORD>text</KEYWORD>/ {<INJECTION_BLOCK>Hello my friends.</INJECTION_BLOCK>}" +
+				"        var obj : <CLASS>String</CLASS> = /<KEYWORD>text</KEYWORD>/ {<INJECTION_BLOCK>Hello my friends. This is my var <INJECTION_INNER_EXPRESSION_MARK>#{</INJECTION_INNER_EXPRESSION_MARK>myVar<INJECTION_INNER_EXPRESSION_MARK>}</INJECTION_INNER_EXPRESSION_MARK></INJECTION_BLOCK>}" +
 				"\n" +
 				"        var escape  = \"This is valid string escape <VALID_STRING_ESCAPE>\\n</VALID_STRING_ESCAPE> but this is invalid <INVALID_STRING_ESCAPE>\\str</INVALID_STRING_ESCAPE> \"\n" +
 				"        <MACRO_CALL>myMacro</MACRO_CALL>()" +
@@ -128,17 +129,23 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 	public Map<String, TextAttributesKey> getAdditionalHighlightingTagToDescriptorMap()
 	{
 		Map<String, TextAttributesKey> map = new HashMap<String, TextAttributesKey>();
-		for(Field field : NapileHighlightingColors.class.getFields())
+		for(Class<?> clazz : new Class[]{
+				NapileHighlightingColors.class,
+				InjectionHighlightColors.class
+		})
 		{
-			if(Modifier.isStatic(field.getModifiers()))
+			for(Field field : clazz.getFields())
 			{
-				try
+				if(Modifier.isStatic(field.getModifiers()))
 				{
-					map.put(field.getName(), (TextAttributesKey) field.get(null));
-				}
-				catch(IllegalAccessException e)
-				{
-					assert false;
+					try
+					{
+						map.put(field.getName(), (TextAttributesKey) field.get(null));
+					}
+					catch(IllegalAccessException e)
+					{
+						assert false;
+					}
 				}
 			}
 		}
@@ -149,8 +156,7 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 	@Override
 	public AttributesDescriptor[] getAttributeDescriptors()
 	{
-		return new AttributesDescriptor[]
-		{
+		return new AttributesDescriptor[]{
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.keyword"), NapileHighlightingColors.KEYWORD),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.number"), NapileHighlightingColors.NUMBER),
 
@@ -172,12 +178,6 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.line.comment"), NapileHighlightingColors.LINE_COMMENT),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.block.comment"), NapileHighlightingColors.BLOCK_COMMENT),
 
-				// KDoc highlighting options are temporarily disabled, until actual highlighting and parsing of them is implemented
-				//new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.kdoc.comment"), NapileHighlightingColors.DOC_COMMENT),
-				//new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.kdoc.tag"), JetHighlightingColors.DOC_COMMENT_TAG),
-				//new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.kdoc.tag.value"), JetHighlightingColors.DOC_COMMENT_TAG_VALUE),
-				//new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.kdoc.markup"), JetHighlightingColors.DOC_COMMENT_MARKUP),
-
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.class"), NapileHighlightingColors.CLASS),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.type.parameter"), NapileHighlightingColors.TYPE_PARAMETER),
 				new AttributesDescriptor(OptionsBundle.message("options.java.attribute.descriptor.abstract.class"), NapileHighlightingColors.ABSTRACT_CLASS),
@@ -192,7 +192,8 @@ public class NapileColorSettingsPage implements ColorSettingsPage, DisplayPriori
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.instance.property"), NapileHighlightingColors.INSTANCE_VARIABLE),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.namespace.property"), NapileHighlightingColors.STATIC_VARIABLE),
 
-				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.injection.block"), NapileHighlightingColors.INJECTION_BLOCK),
+				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.injection.block"), InjectionHighlightColors.INJECTION_BLOCK),
+				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.injection.block"), InjectionHighlightColors.INJECTION_INNER_EXPRESSION_MARK),
 
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.it"), NapileHighlightingColors.AUTO_GENERATED_VAR),
 				new AttributesDescriptor(JetBundle.message("options.idea.attribute.descriptor.fun"), NapileHighlightingColors.METHOD_DECLARATION),

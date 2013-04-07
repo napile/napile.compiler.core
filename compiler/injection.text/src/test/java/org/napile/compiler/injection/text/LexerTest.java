@@ -16,7 +16,7 @@
 
 package org.napile.compiler.injection.text;
 
-import org.napile.compiler.injection.text.lang.lexer.TextLexer;
+import com.intellij.lexer.Lexer;
 import com.intellij.psi.tree.IElementType;
 
 /**
@@ -27,15 +27,17 @@ public class LexerTest
 {
 	public static void main(String... arg)
 	{
-		String str = "myVar is #{myVar}";
+		String str = "myVar is #{myVar} #{empty} #} # # # # # # }}}}} #{fsdfsdfsd";
 
-		TextLexer textLexer = new TextLexer();
+		TextCodeInjection injection = new TextCodeInjection();
+
+		Lexer textLexer = injection.createLexer(null);
 		textLexer.start(str);
 
 		IElementType token = null;
 		while((token = textLexer.getTokenType()) != null)
 		{
-			System.out.println(token + " - " + textLexer.getTokenText());
+			System.out.println("[" + token + "] - [" + textLexer.getTokenText() + "]");
 			textLexer.advance();
 		}
 	}

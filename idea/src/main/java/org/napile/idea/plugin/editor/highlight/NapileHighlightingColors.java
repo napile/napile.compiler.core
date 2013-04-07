@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 JetBrains s.r.o.
+ * Copyright 2010-2013 napile.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import com.intellij.lang.Language;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
-import com.intellij.openapi.editor.SyntaxHighlighterColors;
 import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.EffectType;
@@ -72,12 +71,6 @@ public class NapileHighlightingColors
 
 	public static final TextAttributesKey DOC_COMMENT = createKey(NapileLanguage.INSTANCE, DefaultLanguageHighlighterColors.DOC_COMMENT);
 
-	public static final TextAttributesKey DOC_COMMENT_TAG = TextAttributesKey.createTextAttributesKey("NAPILE_DOC_COMMENT_TAG", SyntaxHighlighterColors.DOC_COMMENT_TAG.getDefaultAttributes());
-
-	public static final TextAttributesKey DOC_COMMENT_TAG_VALUE = TextAttributesKey.createTextAttributesKey("NAPILE_DOC_COMMENT_TAG_VALUE", CodeInsightColors.DOC_COMMENT_TAG_VALUE.getDefaultAttributes());
-
-	public static final TextAttributesKey DOC_COMMENT_MARKUP = TextAttributesKey.createTextAttributesKey("NAPILE_DOC_COMMENT_MARKUP", SyntaxHighlighterColors.DOC_COMMENT_MARKUP.getDefaultAttributes());
-
 	public static final TextAttributesKey CLASS = createKey(NapileLanguage.INSTANCE, "CLASS", DefaultLanguageHighlighterColors.CLASS_NAME);
 
 	public static final TextAttributesKey TYPE_PARAMETER = createKey(NapileLanguage.INSTANCE, CodeInsightColors.TYPE_PARAMETER_NAME_ATTRIBUTES);
@@ -115,8 +108,6 @@ public class NapileHighlightingColors
 	public static final TextAttributesKey MACRO_CALL = TextAttributesKey.createTextAttributesKey("NAPILE_MACRO_CALL", new TextAttributes(null, new Color(0xb4c2ff), null, null, Font.PLAIN));
 
 	public static final TextAttributesKey AUTO_CASTED_VALUE = TextAttributesKey.createTextAttributesKey("NAPILE_AUTO_CASTED_VALUE", new TextAttributes(null, new Color(0xdbffdb), null, null, Font.PLAIN));
-
-	public static final TextAttributesKey INJECTION_BLOCK = createKey(NapileLanguage.INSTANCE, "INJECTION_BLOCK", DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR);
 
 	public static final TextAttributesKey LABEL = TextAttributesKey.createTextAttributesKey("NAPILE_LABEL", new TextAttributes(new Color(0x4a86e8), null, null, null, Font.PLAIN));
 

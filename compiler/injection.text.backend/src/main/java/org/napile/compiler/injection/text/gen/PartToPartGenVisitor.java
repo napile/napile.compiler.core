@@ -30,16 +30,15 @@ import org.napile.compiler.codegen.processors.AsmNodeUtil;
 import org.napile.compiler.codegen.processors.ExpressionCodegen;
 import org.napile.compiler.codegen.processors.codegen.TypeConstants;
 import org.napile.compiler.injection.text.lang.lexer.TextTokens;
-import org.napile.compiler.injection.text.lang.psi.TextExpressionInsert;
-import org.napile.compiler.injection.text.lang.psi.TextPsiVisitor;
 import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
  * @since 19:08/12.11.12
  */
-public class PartToPartGenVisitor extends TextPsiVisitor
+public class PartToPartGenVisitor extends NapileVisitorVoid
 {
 	private static final MethodRef PLUS_REF = new MethodRef(NapileLangPackage.STRING_BUILDER.child(Name.identifier("plus")), Arrays.asList(AsmNodeUtil.parameterNode("element", TypeConstants.ANY_NULLABLE)), Collections.<TypeNode>emptyList(),  TypeConstants.STRING_BUILDER);
 	private static final MethodRef TO_STRING_REF = new MethodRef(NapileLangPackage.ANY.child(Name.identifier("toString")), Collections.<MethodParameterNode>emptyList(), Collections.<TypeNode>emptyList(), AsmConstants.STRING_TYPE);
@@ -77,13 +76,12 @@ public class PartToPartGenVisitor extends TextPsiVisitor
 	}
 
 	@Override
-	public void visitTextInsertElement(TextExpressionInsert e)
+	public void visitExpression(NapileExpression expression)
 	{
 		appendLastString();
 
-		NapileExpression exp = e.getExpression();
+		generator.gen(expression, AsmConstants.ANY_TYPE);
 
-		generator.gen(exp, AsmConstants.ANY_TYPE);
 		adapter.invokeVirtual(PLUS_REF, false);
 	}
 

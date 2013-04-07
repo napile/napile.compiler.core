@@ -21,17 +21,24 @@ import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.compiler.injection.lexer.InjectionLexer;
+import org.napile.compiler.injection.lexer.InjectionTokens;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
+import com.intellij.lexer.Lexer;
+import com.intellij.lexer.MergingLexerAdapter;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.UserDataHolder;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
+import com.intellij.psi.tree.TokenSet;
 
 /**
  * @author VISTALL
@@ -59,7 +66,40 @@ public abstract class CodeInjection implements ParserDefinition, UserDataHolder
 	public abstract Language getLanguage();
 
 	@NotNull
+	protected abstract Lexer getBaseLexer();
+
+	@Nullable
+	protected IElementType getSharpElementType()
+	{
+		return null;
+	}
+
+	@Nullable
+	protected IElementType getLbraceElementTypeInfo()
+	{
+		return null;
+	}
+
+	@Nullable
+	protected IElementType getRbraceElementTypeInfo()
+	{
+		return null;
+	}
+
+	@NotNull
 	public abstract JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope);
+
+	@NotNull
+	@Override
+	public Lexer createLexer(Project project)
+	{
+		final IElementType sharpElementTypeInfo = getSharpElementType();
+		if(sharpElementTypeInfo == null)
+		{
+			return getBaseLexer();
+		}
+		return new MergingLexerAdapter(new InjectionLexer(getBaseLexer(), sharpElementTypeInfo, getLbraceElementTypeInfo(), getRbraceElementTypeInfo()), TokenSet.create(InjectionTokens.INNER_EXPRESSION));
+	}
 
 	@Override
 	public final IFileElementType getFileNodeType()

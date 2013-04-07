@@ -18,15 +18,15 @@ package org.napile.compiler.injection.text.gen;
 
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.text.lang.lexer.TextTokens;
-import org.napile.compiler.injection.text.lang.psi.TextExpressionInsert;
-import org.napile.compiler.injection.text.lang.psi.TextPsiVisitor;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.psi.PsiElement;
 
 /**
  * @author VISTALL
  * @since 19:00/12.11.12
  */
-public class OnlyStringCheckVisitor extends TextPsiVisitor
+public class OnlyStringCheckVisitor extends NapileVisitorVoid
 {
 	private StringBuilder builder = new StringBuilder();
 
@@ -42,7 +42,7 @@ public class OnlyStringCheckVisitor extends TextPsiVisitor
 	}
 
 	@Override
-	public void visitTextInsertElement(TextExpressionInsert e)
+	public void visitExpression(NapileExpression expression)
 	{
 		builder = null;
 	}

@@ -16,19 +16,9 @@
 
 package org.napile.idea.plugin.injection.text;
 
-import java.util.Collection;
-
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.text.TextCodeInjection;
-import org.napile.compiler.injection.text.lang.psi.TextExpressionInsert;
-import org.napile.compiler.injection.text.lang.psi.TextPsiVisitor;
 import org.napile.idea.plugin.IdeaInjectionSupport;
-import org.napile.idea.plugin.injection.text.highlighter.TextHighlighterColors;
-import com.intellij.codeInsight.daemon.impl.HighlightInfo;
-import com.intellij.codeInsight.daemon.impl.HighlightInfoType;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
 
 /**
  * @author VISTALL
@@ -41,29 +31,5 @@ public class TextIdeaInjectionSupport extends IdeaInjectionSupport<TextCodeInjec
 	public Class<TextCodeInjection> getInjectionType()
 	{
 		return TextCodeInjection.class;
-	}
-
-	@Nullable
-	@Override
-	public PsiElementVisitor createVisitorForHighlight(@NotNull final Collection<HighlightInfo> holder)
-	{
-		return new TextPsiVisitor()
-		{
-			@Override
-			public void visitElement(PsiElement e)
-			{
-				e.acceptChildren(this);
-			}
-
-			@Override
-			public void visitTextInsertElement(TextExpressionInsert e)
-			{
-				HighlightInfo.Builder builder = HighlightInfo.newHighlightInfo(HighlightInfoType.INFORMATION);
-				builder.range(e);
-				builder.textAttributes(TextHighlighterColors.EXPRESSION_INSERT_COLORS);
-
-				holder.add(builder.create());
-			}
-		};
 	}
 }

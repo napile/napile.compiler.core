@@ -35,7 +35,41 @@ import com.intellij.psi.tree.TokenSet;
 
 public class NapileHighlighter extends SyntaxHighlighterBase
 {
-	private static final Map<IElementType, TextAttributesKey> keys;
+	private static final Map<IElementType, TextAttributesKey> keys = new HashMap<IElementType, TextAttributesKey>();
+
+	static
+	{
+		safeMap(keys, NapileTokens.KEYWORDS, NapileHighlightingColors.KEYWORD);
+
+		safeMap(keys, NapileTokens.AS_SAFE, NapileHighlightingColors.KEYWORD);
+
+		safeMap(keys, NapileTokens.INTEGER_LITERAL, NapileHighlightingColors.NUMBER);
+		safeMap(keys, NapileTokens.FLOAT_LITERAL, NapileHighlightingColors.NUMBER);
+
+		safeMap(keys, NapileTokens.OPERATIONS.minus(TokenSet.create(NapileTokens.IDENTIFIER)).minus(NapileTokens.KEYWORDS), NapileHighlightingColors.OPERATOR_SIGN);
+		safeMap(keys, NapileTokens.LPAR, NapileHighlightingColors.PARENTHESIS);
+		safeMap(keys, NapileTokens.RPAR, NapileHighlightingColors.PARENTHESIS);
+		safeMap(keys, NapileTokens.LBRACE, NapileHighlightingColors.BRACES);
+		safeMap(keys, NapileTokens.RBRACE, NapileHighlightingColors.BRACES);
+		safeMap(keys, NapileTokens.LBRACKET, NapileHighlightingColors.BRACKETS);
+		safeMap(keys, NapileTokens.RBRACKET, NapileHighlightingColors.BRACKETS);
+		safeMap(keys, NapileTokens.COMMA, NapileHighlightingColors.COMMA);
+		safeMap(keys, NapileTokens.SEMICOLON, NapileHighlightingColors.SEMICOLON);
+		//safeMap(keys, NapileTokens.DOT, NapileHighlightingColors.DOT); conflict with OPERATIONS
+		safeMap(keys, NapileTokens.ARROW, NapileHighlightingColors.ARROW);
+		safeMap(keys, StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN, NapileHighlightingColors.VALID_STRING_ESCAPE);
+		safeMap(keys, StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN, NapileHighlightingColors.INVALID_STRING_ESCAPE);
+		safeMap(keys, StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN, NapileHighlightingColors.INVALID_STRING_ESCAPE);
+
+		safeMap(keys, NapileTokens.CHARACTER_LITERAL, NapileHighlightingColors.STRING);
+		safeMap(keys, NapileTokens.STRING_LITERAL, NapileHighlightingColors.STRING);
+
+		safeMap(keys, NapileTokens.EOL_COMMENT, NapileHighlightingColors.LINE_COMMENT);
+		safeMap(keys, NapileTokens.BLOCK_COMMENT, NapileHighlightingColors.BLOCK_COMMENT);
+		safeMap(keys, NapileTokens.DOC_COMMENT, NapileHighlightingColors.DOC_COMMENT);
+
+		safeMap(keys, TokenType.BAD_CHARACTER, NapileHighlightingColors.BAD_CHARACTER);
+	}
 
 	@NotNull
 	@Override
@@ -49,41 +83,5 @@ public class NapileHighlighter extends SyntaxHighlighterBase
 	public TextAttributesKey[] getTokenHighlights(IElementType tokenType)
 	{
 		return pack(keys.get(tokenType));
-	}
-
-	static
-	{
-		keys = new HashMap<IElementType, TextAttributesKey>();
-
-		SyntaxHighlighterBase.fillMap(keys, NapileTokens.KEYWORDS, NapileHighlightingColors.KEYWORD);
-
-		keys.put(NapileTokens.AS_SAFE, NapileHighlightingColors.KEYWORD);
-
-		keys.put(NapileTokens.INTEGER_LITERAL, NapileHighlightingColors.NUMBER);
-		keys.put(NapileTokens.FLOAT_LITERAL, NapileHighlightingColors.NUMBER);
-
-		fillMap(keys, NapileTokens.OPERATIONS.minus(TokenSet.create(NapileTokens.IDENTIFIER)).minus(NapileTokens.KEYWORDS), NapileHighlightingColors.OPERATOR_SIGN);
-		keys.put(NapileTokens.LPAR, NapileHighlightingColors.PARENTHESIS);
-		keys.put(NapileTokens.RPAR, NapileHighlightingColors.PARENTHESIS);
-		keys.put(NapileTokens.LBRACE, NapileHighlightingColors.BRACES);
-		keys.put(NapileTokens.RBRACE, NapileHighlightingColors.BRACES);
-		keys.put(NapileTokens.LBRACKET, NapileHighlightingColors.BRACKETS);
-		keys.put(NapileTokens.RBRACKET, NapileHighlightingColors.BRACKETS);
-		keys.put(NapileTokens.COMMA, NapileHighlightingColors.COMMA);
-		keys.put(NapileTokens.SEMICOLON, NapileHighlightingColors.SEMICOLON);
-		keys.put(NapileTokens.DOT, NapileHighlightingColors.DOT);
-		keys.put(NapileTokens.ARROW, NapileHighlightingColors.ARROW);
-		keys.put(StringEscapesTokenTypes.VALID_STRING_ESCAPE_TOKEN, NapileHighlightingColors.VALID_STRING_ESCAPE);
-		keys.put(StringEscapesTokenTypes.INVALID_CHARACTER_ESCAPE_TOKEN, NapileHighlightingColors.INVALID_STRING_ESCAPE);
-		keys.put(StringEscapesTokenTypes.INVALID_UNICODE_ESCAPE_TOKEN, NapileHighlightingColors.INVALID_STRING_ESCAPE);
-
-		keys.put(NapileTokens.CHARACTER_LITERAL, NapileHighlightingColors.STRING);
-		keys.put(NapileTokens.STRING_LITERAL, NapileHighlightingColors.STRING);
-
-		keys.put(NapileTokens.EOL_COMMENT, NapileHighlightingColors.LINE_COMMENT);
-		keys.put(NapileTokens.BLOCK_COMMENT, NapileHighlightingColors.BLOCK_COMMENT);
-		keys.put(NapileTokens.DOC_COMMENT, NapileHighlightingColors.DOC_COMMENT);
-
-		keys.put(TokenType.BAD_CHARACTER, NapileHighlightingColors.BAD_CHARACTER);
 	}
 }

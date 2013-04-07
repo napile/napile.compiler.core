@@ -22,9 +22,8 @@ import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.injection.text.lang.TextLanguage;
 import org.napile.compiler.injection.text.lang.lexer.TextLexer;
-import org.napile.compiler.injection.text.lang.lexer.TextNodes;
 import org.napile.compiler.injection.text.lang.lexer.TextParser;
-import org.napile.compiler.injection.text.lang.psi.TextExpressionInsert;
+import org.napile.compiler.injection.text.lang.lexer.TextTokens;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.JetScope;
 import org.napile.compiler.lang.types.JetType;
@@ -34,8 +33,10 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
+import com.intellij.lexer.MergingLexerAdapter;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 
 /**
@@ -60,6 +61,13 @@ public class TextCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
+	protected Lexer getBaseLexer()
+	{
+		return new MergingLexerAdapter(new TextLexer(), TokenSet.create(TextTokens.TEXT_PART));
+	}
+
+	@NotNull
+	@Override
 	public JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope)
 	{
 		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.STRING);
@@ -67,9 +75,23 @@ public class TextCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
-	public Lexer createLexer(Project project)
+	protected IElementType getSharpElementType()
 	{
-		return new TextLexer();
+		return TextTokens.HASH;
+	}
+
+	@NotNull
+	@Override
+	protected IElementType getLbraceElementTypeInfo()
+	{
+		return TextTokens.LBRACE;
+	}
+
+	@NotNull
+	@Override
+	protected IElementType getRbraceElementTypeInfo()
+	{
+		return TextTokens.RBRACE;
 	}
 
 	@Override
@@ -103,9 +125,6 @@ public class TextCodeInjection extends CodeInjection
 	@Override
 	public PsiElement createElement(ASTNode node)
 	{
-		if(node.getElementType() == TextNodes.EXPRESSION_INSERT)
-			return new TextExpressionInsert(node);
-		else
-			return new ASTWrapperPsiElement(node);
+		return new ASTWrapperPsiElement(node);
 	}
 }

@@ -70,7 +70,7 @@
 		<fileTypeFactory implementation="org.napile.idea.plugin.JetFileFactory"/>
 
 		<lang.syntaxHighlighterFactory key="NAPILE" implementationClass="org.napile.idea.plugin.editor.highlight.NapileSyntaxHighlighterFactory"/>
-		<lang.braceMatcher language="NAPILE" implementationClass="org.napile.idea.plugin.JetPairMatcher"/>
+		<lang.braceMatcher language="NAPILE" implementationClass="org.napile.idea.plugin.editor.NapilePairedBraceMatcher"/>
 
 		<lang.parserDefinition language="NAPILE" implementationClass="org.napile.compiler.lang.parsing.NapileParserDefinition"/>
 		<lang.parserDefinition language="NAPILE-DOC" implementationClass="org.napile.doc.lang.parsing.NapileDocParserDefinition"/>

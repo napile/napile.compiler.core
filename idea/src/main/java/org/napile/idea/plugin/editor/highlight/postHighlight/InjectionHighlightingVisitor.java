@@ -24,6 +24,7 @@ import org.napile.compiler.lang.psi.NapileInjectionExpression;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.idea.plugin.IdeaInjectionSupport;
 import org.napile.idea.plugin.editor.highlight.NapileHighlightingColors;
+import org.napile.idea.plugin.highlighter.InjectionHighlightColors;
 import org.napile.idea.plugin.highlighter.InjectionSyntaxHighlighter;
 import com.intellij.codeInsight.daemon.impl.HighlightInfo;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
@@ -81,6 +82,8 @@ public class InjectionHighlightingVisitor extends PostHighlightVisitor
 
 		PsiElement blockElement = injectionExpression.getBlock();
 		if(blockElement != null)
-			highlightInfo(blockElement, null, NapileHighlightingColors.INJECTION_BLOCK);
+		{
+			highlightInfo(blockElement, null, InjectionHighlightColors.INJECTION_BLOCK);
+		}
 	}
 }

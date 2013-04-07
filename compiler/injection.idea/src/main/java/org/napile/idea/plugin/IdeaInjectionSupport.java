@@ -78,7 +78,7 @@ public abstract class IdeaInjectionSupport<T extends CodeInjection>
 	@NotNull
 	public InjectionSyntaxHighlighter createSyntaxHighlighter()
 	{
-		return InjectionSyntaxHighlighter.EMPTY;
+		return InjectionSyntaxHighlighter.DEFAULT;
 	}
 
 	@Nullable

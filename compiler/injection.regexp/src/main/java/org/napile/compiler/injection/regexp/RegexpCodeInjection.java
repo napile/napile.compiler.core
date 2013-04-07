@@ -52,16 +52,16 @@ public class RegexpCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
-	public JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope)
+	protected Lexer getBaseLexer()
 	{
-		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY);
+		return new RegExpLexer(EnumSet.of(RegExpCapability.NESTED_CHARACTER_CLASSES));
 	}
 
 	@NotNull
 	@Override
-	public Lexer createLexer(Project project)
+	public JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope)
 	{
-		return new RegExpLexer(EnumSet.of(RegExpCapability.NESTED_CHARACTER_CLASSES));
+		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY);
 	}
 
 	@Override

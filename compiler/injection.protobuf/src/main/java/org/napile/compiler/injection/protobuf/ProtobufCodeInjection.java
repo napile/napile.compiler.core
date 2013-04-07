@@ -59,16 +59,16 @@ public class ProtobufCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
-	public JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope)
+	protected Lexer getBaseLexer()
 	{
-		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY);
+		return new PbMergingLexer();
 	}
 
 	@NotNull
 	@Override
-	public Lexer createLexer(Project project)
+	public JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope)
 	{
-		return new PbMergingLexer();
+		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY);
 	}
 
 	@Override
