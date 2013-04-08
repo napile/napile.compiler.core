@@ -18,7 +18,7 @@
       <module fileurl="file://$PROJECT_DIR$/injection.text.backend/injection.text.backend.iml" filepath="$PROJECT_DIR$/injection.text.backend/injection.text.backend.iml" group="compiler/injection.backend" />
       <module fileurl="file://$PROJECT_DIR$/injection.text.idea/injection.text.idea.iml" filepath="$PROJECT_DIR$/injection.text.idea/injection.text.idea.iml" group="idea/injection" />
       <module fileurl="file://$PROJECT_DIR$/injector-generator/injector-generator.iml" filepath="$PROJECT_DIR$/injector-generator/injector-generator.iml" group="compiler" />
-      <module fileurl="file://$PROJECT_DIR$/napile.iml" filepath="$PROJECT_DIR$/napile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/napile.compiler.core.iml" filepath="$PROJECT_DIR$/napile.compiler.core.iml" />
       <module fileurl="file://$PROJECT_DIR$/napilec/napilec.iml" filepath="$PROJECT_DIR$/napilec/napilec.iml" group="compiler" />
       <module fileurl="file://$PROJECT_DIR$/napiledoc/napiledoc.iml" filepath="$PROJECT_DIR$/napiledoc/napiledoc.iml" />
     </modules>

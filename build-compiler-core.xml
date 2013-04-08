@@ -16,13 +16,13 @@
 		<delete dir="${build.dir}" />
 	</target>
 
-	<target name="make" description="Create the output directories.">
+	<target name="make">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.dist.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
 	</target>
 
-	<target name="compile" description="Compile the source.">
+	<target name="compile.compiler" depends="make">
 		<mkdir dir="${build.classes.dir}/compiler" />
 		<javac destdir="${build.classes.dir}/compiler" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
 			<classpath refid="classpath"/>
@@ -33,30 +33,59 @@
 				<dirset dir="frontend.doc/src/main/java" />
 				<dirset dir="frontend.bytecode/src/main/java" />
 				<dirset dir="frontend.source/src/main/java" />
-
 				<dirset dir="injection.api/src/main/java" />
+			</src>
+		</javac>
+	</target>
+
+	<target name="jar.compiler" depends="compile.compiler">
+		<tstamp>
+			<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>
+		</tstamp>
+
+		<jar destfile="${build.dist.dir}/napile.compiler-core.jar">
+			<fileset dir="${build.classes.dir}/compiler"/>
+			<manifest>
+				<attribute name="Build-By" value="${user.name}"/>
+				<attribute name="Build-Date" value="${build.tstamp}"/>
+				<attribute name="Version" value="${version}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="compile.injection-text">
+		<delete dir="${build.classes.dir}/injection.text" />
+		<mkdir dir="${build.classes.dir}/injection.text" />
+		<javac destdir="${build.classes.dir}/injection.text" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
+			<classpath refid="classpath"/>
+			<classpath>
+				<fileset dir="${build.dist.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<src>
 				<dirset dir="injection.text/src/main/java" />
 				<dirset dir="injection.text.backend/src/main/java" />
 			</src>
 		</javac>
 	</target>
 
-	<target name="jar" description="Create the jar file">
+	<target name="jar.injection-text" depends="compile.injection-text">
 		<tstamp>
 			<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>
 		</tstamp>
 
-		<jar destfile="${build.dist.dir}/napile.compiler-${version}.jar">
-			<fileset dir="${build.classes.dir}/compiler"/>
+		<jar destfile="${build.dist.dir}/napile.injection-text.jar">
+			<fileset dir="${build.classes.dir}/injection.text"/>
 			<manifest>
 				<attribute name="Build-By" value="${user.name}"/>
 				<attribute name="Build-Date" value="${build.tstamp}"/>
-				<attribute name="Main-Class" value="org.napile.compiler.Main"/>
+				<attribute name="Version" value="${version}"/>
 			</manifest>
 		</jar>
 	</target>
 
-	<target name="copy" description="">
+	<target name="copy.lib">
 		<copy todir="${build.dist.dir}" failonerror="false">
 			<fileset dir="lib">
 				<include name="*.jar" />
@@ -66,5 +95,5 @@
 		</copy>
 	</target>
 
-	<target name="dist" depends="clean, make, compile, jar, copy" />
+	<target name="dist" depends="jar.compiler, jar.injection-text, copy.lib" />
 </project>
