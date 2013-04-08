@@ -53,36 +53,43 @@
 		</jar>
 	</target>
 
-	<target name="compile.injection-text">
-		<delete dir="${build.classes.dir}/injection.text" />
-		<mkdir dir="${build.classes.dir}/injection.text" />
-		<javac destdir="${build.classes.dir}/injection.text" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
-			<classpath refid="classpath"/>
-			<classpath>
-				<fileset dir="${build.dist.dir}">
-					<include name="*.jar" />
-				</fileset>
-			</classpath>
-			<src>
-				<dirset dir="injection.text/src/main/java" />
-				<dirset dir="injection.text.backend/src/main/java" />
-			</src>
-		</javac>
-	</target>
+	<macrodef name="compile.injection">
+		<attribute name="name" />
+		<sequential>
+			<delete dir="${build.classes.dir}/@{name}" />
+			<mkdir dir="${build.classes.dir}/@{name}" />
+			<javac destdir="${build.classes.dir}/@{name}" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
+				<classpath refid="classpath"/>
+				<classpath>
+					<fileset dir="${build.dist.dir}">
+						<include name="*.jar" />
+					</fileset>
+				</classpath>
+				<src>
+					<dirset dir="@{name}/src/main/java" />
+					<dirset dir="@{name}.backend/src/main/java" erroronmissingdir="false"/>
+				</src>
+			</javac>
 
-	<target name="jar.injection-text" depends="compile.injection-text">
-		<tstamp>
-			<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>
-		</tstamp>
+			<tstamp>
+				<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>
+			</tstamp>
 
-		<jar destfile="${build.dist.dir}/napile.injection-text.jar">
-			<fileset dir="${build.classes.dir}/injection.text"/>
-			<manifest>
-				<attribute name="Build-By" value="${user.name}"/>
-				<attribute name="Build-Date" value="${build.tstamp}"/>
-				<attribute name="Version" value="${version}"/>
-			</manifest>
-		</jar>
+			<jar destfile="${build.dist.dir}/napile.@{name}.jar">
+				<fileset dir="${build.classes.dir}/@{name}"/>
+				<manifest>
+					<attribute name="Build-By" value="${user.name}"/>
+					<attribute name="Build-Date" value="${build.tstamp}"/>
+					<attribute name="Version" value="${version}"/>
+				</manifest>
+			</jar>
+		</sequential>
+	</macrodef>
+
+	<target name="compile.injections">
+		<compile.injection name="injection.text" />
+		<compile.injection name="injection.regexp" />
+		<compile.injection name="injection.protobuf" />
 	</target>
 
 	<target name="copy.lib">
@@ -95,5 +102,5 @@
 		</copy>
 	</target>
 
-	<target name="dist" depends="jar.compiler, jar.injection-text, copy.lib" />
+	<target name="dist" depends="jar.compiler, compile.injections, copy.lib" />
 </project>
