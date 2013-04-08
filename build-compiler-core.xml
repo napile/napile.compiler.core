@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="napile.compiler-core" default="dist" basedir=".">
+	<property name="build.dir" value="build" />
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	<property name="build.dist.dir" value="${build.dir}/dist" />
+
+	<property name="version" value="0.3" />
+
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="make" description="Create the output directories.">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${build.dist.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+	</target>
+
+	<target name="compile" description="Compile the source.">
+		<mkdir dir="${build.classes.dir}/compiler" />
+		<javac destdir="${build.classes.dir}/compiler" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
+			<classpath refid="classpath"/>
+			<src>
+				<dirset dir="backend/src" />
+				<dirset dir="frontend/src" />
+				<dirset dir="frontend.api/src/main/java" />
+				<dirset dir="frontend.doc/src/main/java" />
+				<dirset dir="frontend.bytecode/src/main/java" />
+				<dirset dir="frontend.source/src/main/java" />
+
+				<dirset dir="injection.api/src/main/java" />
+				<dirset dir="injection.text/src/main/java" />
+				<dirset dir="injection.text.backend/src/main/java" />
+			</src>
+		</javac>
+	</target>
+
+	<target name="jar" description="Create the jar file">
+		<tstamp>
+			<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>
+		</tstamp>
+
+		<jar destfile="${build.dist.dir}/napile.compiler-${version}.jar">
+			<fileset dir="${build.classes.dir}/compiler"/>
+			<manifest>
+				<attribute name="Build-By" value="${user.name}"/>
+				<attribute name="Build-Date" value="${build.tstamp}"/>
+				<attribute name="Main-Class" value="org.napile.compiler.Main"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="copy" description="">
+		<copy todir="${build.dist.dir}" failonerror="false">
+			<fileset dir="lib">
+				<include name="*.jar" />
+				<exclude name="**-src.jar" />
+				<exclude name="**-sources.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="dist" depends="clean, make, compile, jar, copy" />
+</project>

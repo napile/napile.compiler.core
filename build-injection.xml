@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="napile.injection" default="dist" basedir=".">
+	<macrodef name="injection.build">
+		<attribute name="name" />
+		<sequential>
+
+		</sequential>
+	</macrodef>
+	<target name="dist">
+
+	</target>
+</project>
