@@ -1,0 +1,9 @@
+package napile.lang
+
+/**
+ * @author VISTALL
+ */
+class UnsupportedOperationException : Exception
+{
+	this(val message : String? = null) : Exception(message)
+}

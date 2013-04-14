@@ -1,0 +1,26 @@
+package napile.module
+
+import napile.resource.ResourceBundle
+import napile.annotation.Immutable
+import napile.module.extension.ExtensionPoint
+
+/**
+ * @author VISTALL
+ */
+class Module
+{
+	val id : String
+
+	val name : String
+
+	val extensionPoints : @Immutable Array<ExtensionPoint> = getExtensionPoints()
+
+	this(id, name)
+
+	local native meth getExtensionPoints() : Array<ExtensionPoint>
+
+	static meth getBundle() : ResourceBundle
+	{
+		throw IllegalArgumentException() // TODO [VISTALL]
+	}
+}

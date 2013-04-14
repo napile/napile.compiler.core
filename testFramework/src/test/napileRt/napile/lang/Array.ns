@@ -1,0 +1,85 @@
+package napile.lang
+
+import napile.collection.Iterator
+import napile.collection.Iterable
+import napile.collection.Sizeable
+import napile.reflect.Type
+import napile.annotation.InheritImmutable
+import napile.annotation.ImmutableTarget
+import napile.util.TypeUtil
+import napile.logging.Logger
+
+/**
+ * @author VISTALL
+ */
+final class Array<E> : Iterable<E> & Sizeable
+{
+	val length : Int
+
+	this(length)
+	{
+		init()
+
+		// dont do anything if is empty array
+		if(length != 0)
+		{
+			val defaultValue : E = TypeUtil.getDefaultValue(false);
+			for(c in 0..length)
+				set(c, defaultValue)
+		}
+	}
+
+	override meth size() : Int = length
+
+	native meth init()
+
+	@ImmutableTarget
+	meth set(val index : Int, val value : E) : this
+	{
+		if(index < 0 || index >= length)
+			throw ArrayIndexOutOfBoundsException(index.toString());
+
+		return set0(index, value)
+	}
+
+	local native meth set0(val index : Int, val value : E) : this
+
+	meth get(val index : Int) : E
+	{
+		if(index < 0 || index >= length)
+			throw ArrayIndexOutOfBoundsException(index.toString());
+
+		return get0(index)
+	}
+
+	local native meth get0(val index : Int) : E
+
+	override meth iterator() : @InheritImmutable Iterator<E> = ArrayIterator<E>(this)
+
+	override meth clone() : this = ArrayUtil.copyOfRange(this, 0, length)
+
+	override meth equals(val o : Any?) : Bool
+	{
+		if(o is Array<E>)
+		{
+			if(o.size() != size())
+			{
+				return false
+			}
+
+			for(i in 0..size())
+			{
+				if(o[i] != this[i])
+				{
+					return false
+				}
+			}
+
+			return true
+		}
+		else
+		{
+			return false
+		}
+	}
+}

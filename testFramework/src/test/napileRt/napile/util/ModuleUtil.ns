@@ -1,0 +1,17 @@
+package napile.util
+
+import napile.module.Module
+import napile.reflect.Class
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+util class ModuleUtil
+{
+	meth findModuleByAny(val object : Any) : Module = findModuleByClass(object.getClass())
+
+	native meth findModuleByClass(val clazz : Class<Any>) : Module
+
+	native meth getAllCurrentlyLoadedModules() : Array<Module>
+}

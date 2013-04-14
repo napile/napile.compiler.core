@@ -1,0 +1,19 @@
+package napile.lang
+
+/**
+ * @author VISTALL
+ */
+abstract class Number
+{
+	meth toByte() : Byte
+
+	meth toShort() : Short
+
+	meth toInt() : Int
+
+	meth toLong() : Long
+
+	meth toFloat() : Float
+
+	meth toDouble() : Double
+}

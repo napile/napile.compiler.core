@@ -1,0 +1,12 @@
+package napile.annotation
+
+/**
+ * @author VISTALL
+ */
+@Annotation
+final class DefaultValue
+{
+	val value : Any
+
+	this(value)
+}

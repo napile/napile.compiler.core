@@ -1,0 +1,43 @@
+package napile.lang
+
+import napile.logging.Logger
+
+/**
+ * @author VISTALL
+ */
+class Exception
+{
+	final val message : String?
+
+	final val stack : Array<StackTraceElement>
+
+	this(message = null)
+	{
+		stack = generateStack();
+	}
+
+	local native meth generateStack() : Array<StackTraceElement>
+
+	meth printStackTrace(val b : StringBuilder)
+	{
+		b += getClass().name
+		if(message != null)
+		{
+			b += " : "
+			b += message
+		}
+
+		b += "\n"
+		for(i in stack)
+		{
+			b += "\tat "
+			b += i
+			b += "\n"
+		}
+	}
+
+	meth printStackTrace()
+	{
+		Logger.System.error(exception = this)
+	}
+}

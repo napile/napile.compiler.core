@@ -1,0 +1,104 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.apache.harmony.luni.platform
+
+import napile.io.FileDescriptor
+import napile.io.FileNotFoundException
+import napile.io.IOException
+
+/**
+ * @author VISTALL
+ */
+covered class OSFileSystem : IFileSystem
+{
+	static val INSTANCE : OSFileSystem = OSFileSystem()
+
+	this()
+
+	override meth transfer(var fileHandler: Long, var socketDescriptor: FileDescriptor?, var offset: Long, var count: Long): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth seek(var fileDescriptor: Long, var offset: Long, var whence: Int): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth close(var fileDescriptor: Long) {
+		throw UnsupportedOperationException()
+	}
+	override meth truncate(var fileDescriptor: Long, var size: Long) {
+		throw UnsupportedOperationException()
+	}
+	override meth getAllocGranularity(): Int {
+		throw UnsupportedOperationException()
+	}
+	override meth readDirect(var fileDescriptor: Long, var address: Long, var offset: Int, var length: Int): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth lock(var fileDescriptor: Long, var start: Long, var length: Long, var type: Int, var waitFlag: Bool): Bool {
+		throw UnsupportedOperationException()
+	}
+	override meth unlock(var fileDescriptor: Long, var start: Long, var length: Long) {
+		throw UnsupportedOperationException()
+	}
+	override meth ttyAvailable(): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth writev(var fileDescriptor: Long, var buffers: Array<Any?>?, var offsets: Array<Int>?, var lengths: Array<Int>?, var size: Int): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth size(var fileDescriptor: Long): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth writeDirect(var fileDescriptor: Long, var address: Long, var offset: Int, var length: Int): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth available(var fileDescriptor: Long): Long {
+		throw UnsupportedOperationException()
+	}
+
+	override meth write(var fileDescriptor: Long, var bytes: Array<Byte>, var offset: Int, var length: Int): Long
+	{
+		val fd = writeImpl(fileDescriptor, bytes, offset, length)
+		if(fd < 0)
+			throw IOException()
+		return fd
+	}
+
+	native meth writeImpl(var fileDescriptor: Long, var bytes: Array<Byte>, var offset: Int, var length: Int): Long;
+
+	override meth ttyRead(var bytes: Array<Byte>, var offset: Int, var length: Int): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth readv(var fileDescriptor: Long, var addresses: Array<Long>?, var offsets: Array<Int>?, var lengths: Array<Int>?, var size: Int): Long {
+		throw UnsupportedOperationException()
+	}
+	override meth fflush(var fileDescriptor: Long, var metadata: Bool) {
+		throw UnsupportedOperationException()
+	}
+	override meth read(var fileDescriptor: Long, var bytes: Array<Byte>, var offset: Int, var length: Int): Long {
+		throw UnsupportedOperationException()
+	}
+
+	override meth open(var fileName: Array<Byte>, var mode: Int): Long
+	{
+		val fd = openImpl(fileName, mode)
+		if(fd < 0)
+			throw FileNotFoundException()
+		return fd
+	}
+
+	native meth openImpl(var fileName: Array<Byte>, var mode: Int): Long;
+}

@@ -41,7 +41,6 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeExtension;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.PackageIndex;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileTypeFileViewProviders;
@@ -92,25 +91,6 @@ public class JetCoreEnvironment
 		for(String path : configuration.getList(CompilerConfigurationKeys.SOURCE_ROOTS_KEY))
 			addSources(path);
 
-		PackageIndex packageIndex = PackageIndex.getInstance(project);
-
-		VirtualFile[] virtualFiles = packageIndex.getDirectoriesByPackageName("gen", true);
-
-	/*	for(VirtualFile v : virtualFiles)
-		{
-			VfsUtilCore.visitChildrenRecursively(v, new VirtualFileVisitor()
-			{
-				@Override
-				public boolean visitFile(@NotNull VirtualFile file)
-				{
-					if(file.isDirectory())
-						return true;
-					PsiFile psiFile = PsiManager.getInstance(project).findFile(file);
-
-					return super.visitFile(file);
-				}
-			});
-		}   */
 
 		initialized = true;
 	}
@@ -210,5 +190,10 @@ public class JetCoreEnvironment
 	public List<NapileFile> getSourceFiles()
 	{
 		return sourceFiles;
+	}
+
+	public CoreApplicationEnvironment getApplicationEnvironment()
+	{
+		return applicationEnvironment;
 	}
 }

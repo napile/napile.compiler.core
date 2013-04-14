@@ -1,0 +1,30 @@
+NapileFileImpl: Condition.ns
+  NapilePackageImpl(PACKAGE)
+    PsiElement(package)('package')
+    PsiWhiteSpace(' ')
+    NapileSimpleNameExpressionImpl(REFERENCE_EXPRESSION)
+      PsiElement(IDENTIFIER)('napile')
+    PsiElement(DOT)('.')
+    NapileSimpleNameExpressionImpl(REFERENCE_EXPRESSION)
+      PsiElement(IDENTIFIER)('condition')
+  PsiWhiteSpace('\n\n')
+  PsiComment(BLOCK_COMMENT)('/**\n * @author VISTALL\n */')
+  PsiWhiteSpace('\n')
+  CLASS
+    MODIFIER_LIST
+      PsiElement(abstract)('abstract')
+    PsiWhiteSpace(' ')
+    PsiElement(class)('class')
+    PsiWhiteSpace(' ')
+    PsiElement(IDENTIFIER)('Condition')
+    TYPE_PARAMETER_LIST
+      PsiElement(LT)('<')
+      TYPE_PARAMETER
+        MODIFIER_LIST('')
+        PsiElement(IDENTIFIER)('E')
+      PsiElement(GT)('>')
+    PsiWhiteSpace('\n')
+    NapileClassBody(CLASS_BODY)
+      PsiElement(LBRACE)('{')
+      PsiWhiteSpace('\n')
+      PsiElement(RBRACE)('}')

@@ -2,21 +2,22 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" group="compiler" />
-      <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" group="compiler/frontend" />
-      <module fileurl="file://$PROJECT_DIR$/frontend.api/frontend.api.iml" filepath="$PROJECT_DIR$/frontend.api/frontend.api.iml" group="compiler/frontend" />
-      <module fileurl="file://$PROJECT_DIR$/frontend.bytecode/frontend.bytecode.iml" filepath="$PROJECT_DIR$/frontend.bytecode/frontend.bytecode.iml" group="compiler/frontend" />
-      <module fileurl="file://$PROJECT_DIR$/frontend.doc/frontend.doc.iml" filepath="$PROJECT_DIR$/frontend.doc/frontend.doc.iml" group="compiler/frontend" />
-      <module fileurl="file://$PROJECT_DIR$/frontend.source/frontend.source.iml" filepath="$PROJECT_DIR$/frontend.source/frontend.source.iml" group="compiler/frontend" />
-      <module fileurl="file://$PROJECT_DIR$/injection.api/injection.api.iml" filepath="$PROJECT_DIR$/injection.api/injection.api.iml" group="compiler/injection" />
-      <module fileurl="file://$PROJECT_DIR$/injection.protobuf/injection.protobuf.iml" filepath="$PROJECT_DIR$/injection.protobuf/injection.protobuf.iml" group="compiler/injection" />
-      <module fileurl="file://$PROJECT_DIR$/injection.regexp/injection.regexp.iml" filepath="$PROJECT_DIR$/injection.regexp/injection.regexp.iml" group="compiler/injection" />
-      <module fileurl="file://$PROJECT_DIR$/injection.text/injection.text.iml" filepath="$PROJECT_DIR$/injection.text/injection.text.iml" group="compiler/injection" />
-      <module fileurl="file://$PROJECT_DIR$/injection.text.backend/injection.text.backend.iml" filepath="$PROJECT_DIR$/injection.text.backend/injection.text.backend.iml" group="compiler/injection.backend" />
-      <module fileurl="file://$PROJECT_DIR$/injector-generator/injector-generator.iml" filepath="$PROJECT_DIR$/injector-generator/injector-generator.iml" group="compiler" />
+      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend.api/frontend.api.iml" filepath="$PROJECT_DIR$/frontend.api/frontend.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend.bytecode/frontend.bytecode.iml" filepath="$PROJECT_DIR$/frontend.bytecode/frontend.bytecode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend.doc/frontend.doc.iml" filepath="$PROJECT_DIR$/frontend.doc/frontend.doc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend.source/frontend.source.iml" filepath="$PROJECT_DIR$/frontend.source/frontend.source.iml" />
+      <module fileurl="file://$PROJECT_DIR$/injection.api/injection.api.iml" filepath="$PROJECT_DIR$/injection.api/injection.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/injection.protobuf/injection.protobuf.iml" filepath="$PROJECT_DIR$/injection.protobuf/injection.protobuf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/injection.regexp/injection.regexp.iml" filepath="$PROJECT_DIR$/injection.regexp/injection.regexp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/injection.text/injection.text.iml" filepath="$PROJECT_DIR$/injection.text/injection.text.iml" />
+      <module fileurl="file://$PROJECT_DIR$/injection.text.backend/injection.text.backend.iml" filepath="$PROJECT_DIR$/injection.text.backend/injection.text.backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/injector-generator/injector-generator.iml" filepath="$PROJECT_DIR$/injector-generator/injector-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/napile.compiler.core.iml" filepath="$PROJECT_DIR$/napile.compiler.core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/napilec/napilec.iml" filepath="$PROJECT_DIR$/napilec/napilec.iml" group="compiler" />
+      <module fileurl="file://$PROJECT_DIR$/napilec/napilec.iml" filepath="$PROJECT_DIR$/napilec/napilec.iml" />
       <module fileurl="file://$PROJECT_DIR$/napiledoc/napiledoc.iml" filepath="$PROJECT_DIR$/napiledoc/napiledoc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/testFramework/testFramework.iml" filepath="$PROJECT_DIR$/testFramework/testFramework.iml" />
     </modules>
   </component>
 </project>

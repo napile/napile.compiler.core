@@ -1,0 +1,13 @@
+package napile.resource
+
+import napile.annotation.VarArgs
+/**
+ * @author VISTALL
+ */
+class ResourceBundle
+{
+	meth getString(val key : String, val arg : /*@VarArgs*/ Array<Any>? = null) : String
+	{
+		throw IllegalArgumentException() // TODO [VISTALL]
+	}
+}

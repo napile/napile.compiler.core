@@ -1,0 +1,108 @@
+package napile.reflect
+
+import napile.reflect.Class
+import napile.annotation.Immutable
+import napile.asm.members.AsmType
+
+/**
+ * @author VISTALL
+ */
+final class Class<E> : Member
+{
+	/**
+	 * @return immutable array variables of class
+	 */
+	lazy val variables : @Immutable Array<Variable> = getVariables()
+
+	/**
+	 * @return immutable array constructors of class
+	 */
+	lazy val constructors : @Immutable Array<Constructor> = getConstructors()
+
+	/**
+	 * @return immutable array methods of class
+	 */
+	lazy val methods : @Immutable Array<Method> = getMethods()
+
+	/**
+	 * @return immutable array macros of class
+	 */
+	lazy val macros : @Immutable Array<Macro> = getMacros()
+
+	/**
+	 * @return super classes of this class
+	 */
+	lazy val superClasses : @Immutable Array<Class<Any>> = getSuperClasses()
+
+	/**
+	 * Main constructor of class. Access modifier is 'local'. Called only by VM
+	 */
+	local this(
+			val owner : Class<Any>?,
+			val name : String,
+			val modifiers : Array<Modifier>,
+			val annotations : Array<Any>) : Member(owner, name, modifiers, annotations)
+
+	local native meth getVariables() : Array<Variable>
+
+	local native meth getMacros() : Array<Macro>
+
+	local native meth getMethods() : Array<Method>
+
+	local native meth getConstructors() : Array<Constructor>
+
+	local native meth getSuperClasses() : Array<Class<Any>>
+
+	native meth getXmlDoc() : String
+
+	/**
+	 * Searching method by name
+	 */
+	meth findMethod(val name : String, val parameters : @Immutable Array<AsmType>, val parent : Bool) : Method?
+	{
+		for (m in methods)
+			if (!m.isStatic() && isValidMethodLike(m, name, parameters))
+				return m
+
+		if(parent)
+			for(p in superClasses)
+			{
+				val m = findMethod(name, parameters, true)
+				if(m != null)
+					return m
+			}
+		return null;
+	}
+
+	/**
+	 * Searching static method by name
+	 */
+	meth findStaticMethod(val name : String, val parameters : @Immutable Array<AsmType>) : Method?
+	{
+		for (m in methods)
+			if (m.isStatic() && isValidMethodLike(m, name, parameters))
+				return m
+		return null;
+	}
+
+	local meth isValidMethodLike(val methodLike : MethodLike, val name : String, val parameters : @Immutable Array<AsmType>) : Bool
+	{
+		if(methodLike.name != name)
+			return false
+
+		val mParameters = methodLike.parameters
+
+		if(mParameters.size() != parameters.size())
+			return false
+
+		for(i in 0..parameters.size())
+		{
+			val mParameter = mParameters[i]
+			val parameter = parameters[i]
+
+			if(mParameter.type != parameter)
+				return false
+		}
+		return true
+	}
+}

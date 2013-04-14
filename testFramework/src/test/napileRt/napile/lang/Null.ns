@@ -1,0 +1,14 @@
+package napile.lang
+
+/**
+ * @author VISTALL
+ */
+final class Null
+{
+	// need nullable flag
+	static val INSTANCE : Null? = Null()
+
+	local this()
+
+	override meth toString() = "null"
+}

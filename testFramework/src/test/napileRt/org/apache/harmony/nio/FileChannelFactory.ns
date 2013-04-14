@@ -1,0 +1,14 @@
+package org.apache.harmony.nio
+
+import napile.nio.channels.FileChannel
+
+/**
+ * @author VISTALL
+ */
+class FileChannelFactory
+{
+	static meth getFileChannel(val stream : Any, val fd : Long, val mode : Int) : FileChannel
+	{
+		return FileChannel()
+	}
+}

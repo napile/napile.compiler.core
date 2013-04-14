@@ -1,0 +1,58 @@
+package napile.reflect
+
+import napile.annotation.DefaultValue
+import napile.annotation.Immutable
+import napile.io.NativeConsole
+
+/**
+ * @author VISTALL
+ */
+class Type<E> : AnnotationOwner
+{
+	val constructorClass : Class<E>
+
+	val nullable : Bool
+
+	val parameters : @Immutable Array<Type<Any>>
+
+	lazy val defaultValue : E? = findDefaultValue()
+
+	local this(constructorClass, parameters, nullable, val annotations : Array<Any>) : AnnotationOwner(annotations)
+
+	local meth findDefaultValue() : E?
+	{
+		if(nullable)
+			return null
+
+		var annotation : DefaultValue? = findAnnotation()
+		if(annotation != null)
+			return annotation.value as E
+
+		annotation = constructorClass.findAnnotation<DefaultValue>()
+		if(annotation != null)
+			return annotation.value as E
+
+		return null
+	}
+
+	override meth toString() : String
+	{
+		val builder = StringBuilder()
+		builder += constructorClass.name
+		if(parameters.length > 0)
+		{
+			builder += "<"
+			var i = 0
+			while(i < parameters.length)
+			{
+				if(i != 0)
+					builder += ", "
+				builder += parameters[i ++]
+			}
+			builder += ">"
+		}
+		if(nullable)
+			builder += "?"
+		return builder.toString()
+	}
+}

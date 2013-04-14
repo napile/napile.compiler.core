@@ -1,0 +1,9 @@
+package napile.lang
+
+/**
+ * @author VISTALL
+ */
+class IndexOutOfBoundsException : Exception
+{
+	this(val message : String? = null) : Exception(message)
+}

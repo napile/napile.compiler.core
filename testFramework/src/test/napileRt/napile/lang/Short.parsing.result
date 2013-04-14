@@ -1,0 +1,34 @@
+NapileFileImpl: Short.ns
+  NapilePackageImpl(PACKAGE)
+    PsiElement(package)('package')
+    PsiWhiteSpace(' ')
+    NapileSimpleNameExpressionImpl(REFERENCE_EXPRESSION)
+      PsiElement(IDENTIFIER)('napile')
+    PsiElement(DOT)('.')
+    NapileSimpleNameExpressionImpl(REFERENCE_EXPRESSION)
+      PsiElement(IDENTIFIER)('lang')
+  PsiWhiteSpace('\n\n')
+  PsiComment(BLOCK_COMMENT)('/**\n * @author VISTALL\n */')
+  PsiWhiteSpace('\n')
+  CLASS
+    MODIFIER_LIST
+      PsiElement(final)('final')
+    PsiWhiteSpace(' ')
+    PsiElement(class)('class')
+    PsiWhiteSpace(' ')
+    PsiElement(IDENTIFIER)('Short')
+    PsiWhiteSpace('\n')
+    TYPE_PARAMETER_LIST('')
+    NapileClassBody(CLASS_BODY)
+      PsiElement(LBRACE)('{')
+      PsiWhiteSpace('\n\t')
+      CONSTRUCTOR
+        MODIFIER_LIST
+          PsiElement(local)('local')
+        PsiWhiteSpace(' ')
+        PsiElement(this)('this')
+        CALL_PARAMETER_LIST
+          PsiElement(LPAR)('(')
+          PsiElement(RPAR)(')')
+      PsiWhiteSpace('\n')
+      PsiElement(RBRACE)('}')

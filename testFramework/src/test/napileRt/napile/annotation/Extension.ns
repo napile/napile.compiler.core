@@ -1,0 +1,10 @@
+package napile.annotation
+
+/**
+ * @author VISTALL
+ */
+@Annotation
+final class Extension
+{
+	this()
+}

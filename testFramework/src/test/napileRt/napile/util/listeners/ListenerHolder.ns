@@ -14,14 +14,32 @@
  * limitations under the License.
  */
 
-package org.napile;
+package napile.util.listeners
 
-import junit.framework.TestCase;
+import napile.collection.List
+import napile.collection.ArrayList
 
-/**
- * @author VISTALL
- * @since 16:35/10.03.13
- */
-public class NapileCompilerTestCase extends TestCase
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+final class ListenerHolder<E>
 {
+	local val listeners : List<{(val e : E) -> Null}> = ArrayList()
+
+	this()
+
+	meth plus(val impl : {(val e : E) -> Null}) : this
+	{
+		listeners.add(impl)
+		return this
+	}
+
+	meth fire(val event : E)
+	{
+		for(l in listeners)
+		{
+			l(event)
+		}
+	}
 }

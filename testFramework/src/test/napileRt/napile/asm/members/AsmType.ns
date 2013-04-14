@@ -1,0 +1,74 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package napile.asm.members
+
+import napile.annotation.Immutable
+import napile.logging.Logger
+
+/**
+ * @author VISTALL
+ * @date 10:46/17.01.13
+ */
+class AsmType
+{
+	val annotations : @Immutable Array<AsmAnnotation>
+
+	val constructor : AsmTypeConstructor
+
+	val parameters : @Immutable Array<AsmType>
+
+	val nullable : Bool
+
+	this(annotations, constructor, parameters, nullable)
+
+	override meth equals(val o : Any?) : Bool
+	{
+		if(o is AsmType)
+		{
+			if(nullable != o.nullable)
+				return false
+
+			if(parameters != o.parameters)
+				return false;
+
+			return constructor == o.constructor
+		}
+		else
+			return false
+	}
+
+	override meth toString() : String
+	{
+		val builder = StringBuilder()
+		builder += constructor
+		if(parameters.length > 0)
+		{
+			builder += "<"
+			var i = 0
+			while(i < parameters.length)
+			{
+				if(i != 0)
+					builder += ", "
+				builder += parameters[i ++]
+			}
+			builder += ">"
+		}
+		if(nullable)
+			builder += "?"
+		return builder.toString()
+	}
+}

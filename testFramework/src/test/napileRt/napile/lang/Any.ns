@@ -1,0 +1,35 @@
+package napile.lang
+
+import napile.reflect.Class
+import napile.reflect.Type
+
+/~
+ ~ This class is parent of all classes.
+ ~/
+class Any
+{
+	static meth synchronized(val obj : Any?, val fun : {})
+	{
+		fun()  //FIXME [VISTALL] stub - need discuss
+	}
+
+	static meth assert(val cond : Bool, val message : String? = null)
+	{
+		if(!cond)
+			throw AssertionError(message)
+	}
+
+	native meth getClass() : Class<this>
+
+	native meth getType() : Type<this>
+
+	native meth hashCode() : Int
+
+	meth equals(val o : Any?) : Bool = fullyEquals(o)
+
+	final native meth fullyEquals(val o : Any?) : Bool;
+
+	heritable meth clone() : this = throw Exception()
+
+	meth toString() : String = getClass().name + "@" + hashCode()
+}

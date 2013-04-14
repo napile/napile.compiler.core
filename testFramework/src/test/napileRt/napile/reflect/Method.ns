@@ -1,0 +1,31 @@
+package napile.reflect
+
+/**
+ * @author VISTALL
+ */
+class Method : MethodLike
+{
+	local this(
+			val owner : Class<Any>?,
+			val name : String,
+			val modifiers : Array<Modifier>,
+			val annotations : Array<Any>) : MethodLike(owner, name, modifiers, annotations)
+
+	meth invoke(val object : Any, val arguments : Array<Any?>) : Any?
+	{
+		return null //TODO [VISTALL]
+	}
+
+	/**
+	 * @return returnValues, last value if return value, others if values to ref parameters
+	 */
+	meth invokeStatic(val arguments : Array<Any?>) : Array<Any?>
+	{
+		if (!isStatic())
+			throw IllegalArgumentException("Use 'invoke' for instance method call")
+
+		return invokeStatic0(arguments)
+	}
+
+	local native meth invokeStatic0(val arguments : Array<Any?>) : Array<Any?>
+}

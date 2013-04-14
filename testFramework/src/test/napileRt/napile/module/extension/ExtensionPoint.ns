@@ -1,0 +1,16 @@
+package napile.module.extension
+
+import napile.reflect.Class
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+class ExtensionPoint
+{
+	val name : String
+
+	val descriptor : Class<Any>
+
+	this(name, descriptor)
+}

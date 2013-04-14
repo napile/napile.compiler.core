@@ -1,0 +1,58 @@
+package napile.io
+
+import napile.nio.channels.FileChannel
+import org.apache.harmony.luni.platform.IFileSystem
+import org.apache.harmony.luni.platform.Platform
+import org.apache.harmony.nio.FileChannelFactory
+
+/**
+ * @author VISTALL
+ */
+class FileInputStream : InputStream
+{
+	static local val fileSystem = Platform.getFileSystem()
+
+	//local val repositioningLock = anonym : Any
+	local val fd : FileDescriptor
+	local val channel : FileChannel
+
+	this(val file : File)
+	{
+		fd = FileDescriptor()
+		fd.readOnly = true;
+		fd.descriptor = Platform.getFileSystem().open(file.properPath(true), IFileSystem.O_RDONLY);
+		channel = FileChannelFactory.getFileChannel(this, fd.descriptor, IFileSystem.O_RDONLY);
+	}
+
+	override meth read() : Int
+	{
+		val readed = Array<Byte>(0)
+		val result = read(readed, 0, 1);
+		return if (result == -1) -1 else readed[0] & 0xff;
+	}
+
+	override meth read(var buffer : Array<Byte>, var offset : Int, var count : Int) : Int
+	{
+		if (count > buffer.length - offset || count < 0 || offset < 0)
+			throw IndexOutOfBoundsException();
+
+		if (count == 0)
+			return 0;
+
+		openCheck()
+
+		//synchronized (repositioningLock)
+		//{
+			// stdin requires special handling
+			if (fd == FileDescriptor.systemIn)
+				return fileSystem.ttyRead(buffer, offset, count).toInt();
+			return fileSystem.read(fd.descriptor, buffer, offset, count).toInt();
+		//}
+	}
+
+	local meth openCheck()
+	{
+		if (fd.descriptor < 0)
+			throw IOException()
+	}
+}

@@ -1,0 +1,87 @@
+package napile.lang
+
+import napile.annotation.DefaultValue
+import napile.condition.CompareResult
+
+/**
+ * @author VISTALL
+ */
+@DefaultValue(0.toByte())
+final class Byte : Number
+{
+	static val MIN_VALUE : Byte = -128.toByte()
+	static val MAX_VALUE : Byte = 127.toByte()
+
+	local this()
+
+	meth rangeTo(val value : Byte) : Array<Byte>
+	{
+		var array = Array<Byte>(value - this - 1)
+
+		var index = 0
+		var me = this
+		while (index != array.length)
+			array[index ++] = me ++
+
+		return array
+	}
+
+	override meth toByte() = this
+
+	override native meth toShort() : Short
+
+	override native meth toInt() : Int
+
+	override native meth toLong() : Long
+
+	override native meth toFloat() : Float
+
+	override native meth toDouble() : Double
+
+	native meth plus() : Byte
+
+	native meth minus() : Byte
+
+	native meth inc() : Byte
+
+	native meth dec() : Byte
+
+	// bit operators
+	native meth bitNot() : Byte
+
+	native meth bitXor(val value : Int) : Byte
+
+	native meth bitOr(val value : Int) : Int
+
+	native meth bitAnd(val value : Int) : Int
+
+	native meth bitShiftLeft(val value : Int) : Int
+
+	native meth bitShiftRight(val value : Int) : Int
+
+	native meth bitShiftRightZ(val value : Int) : Int
+
+	native meth plus(val value : Byte) : Byte
+
+	native meth times(val value : Byte) : Byte
+
+	native meth minus(val value : Int) : Int
+
+	native meth minus(val value : Byte) : Byte
+
+	native meth mod(val value : Byte) : Byte
+
+	native meth div(val value : Byte) : Byte
+
+	native meth compareTo(val value : Byte) : CompareResult
+
+	native meth compareTo(val value : Short) : CompareResult
+
+	native meth compareTo(val value : Int) : CompareResult
+
+	native meth compareTo(val value : Long) : CompareResult
+
+	override native meth equals(val o : Any?) : Bool
+
+	override native meth toString() : String
+}

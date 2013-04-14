@@ -1,0 +1,24 @@
+package napile.reflect
+
+import napile.annotation.Immutable
+import napile.asm.members.AsmType
+
+/**
+ * @author VISTALL
+ */
+class MethodLike : Member
+{
+	lazy val parameters : @Immutable Array<CallParameter> = getCallParameters()
+
+	lazy val returnType : AsmType = getReturnType()
+
+	covered this(
+			val owner : Class<Any>?,
+			val name : String,
+			val modifiers : Array<Modifier>,
+			val annotations : Array<Any>) : Member(owner, name, modifiers, annotations)
+
+	local native meth getCallParameters() : Array<CallParameter>
+
+	local native meth getReturnType() : AsmType
+}

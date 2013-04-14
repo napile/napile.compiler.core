@@ -1,0 +1,15 @@
+package napile.lang
+
+/**
+ * @author VISTALL
+ */
+class ThreadState
+{
+	static val NEW : ThreadState = ThreadState()
+
+	static val STARTED : ThreadState = ThreadState()
+
+	static val FINISHED : ThreadState = ThreadState()
+
+	this()
+}

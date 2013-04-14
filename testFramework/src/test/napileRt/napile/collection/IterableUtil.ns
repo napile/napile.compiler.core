@@ -1,0 +1,27 @@
+package napile.collection
+
+import napile.annotation.Extension
+/**
+ * @author VISTALL
+ */
+util class IterableUtil
+{
+	@Extension
+	meth select<E>(val iterable : Iterable<E>, val filter : {(val arg : E) -> Bool}) : E?
+	{
+		for (c in iterable)
+			if(filter(c))
+				return c
+		return null
+	}
+
+	@Extension
+	meth filter<E>(val iterable : Iterable<E>, val filter : {(val arg : E) -> Bool}) : List<E>
+	{
+		val list = ArrayList<E>(5)
+		for (c in iterable)
+			if(filter(c))
+				list.add(c)
+		return list
+	}
+}

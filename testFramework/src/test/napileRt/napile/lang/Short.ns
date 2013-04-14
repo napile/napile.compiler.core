@@ -1,0 +1,9 @@
+package napile.lang
+
+/**
+ * @author VISTALL
+ */
+final class Short
+{
+	local this()
+}

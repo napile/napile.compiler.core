@@ -1,0 +1,14 @@
+package napile.nio.channels
+
+/**
+ * @author VISTALL
+ */
+class FileChannel
+{
+	// TODO [VISTALL] dummy
+	this()
+
+	meth isOpened() : Bool = false
+
+	meth close() {}
+}
