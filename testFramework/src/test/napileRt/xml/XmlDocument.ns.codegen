@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="xml.XmlDocument">
+	<modifiers>
+		<static/>
+		<abstract/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="xml.XmlElementHolder"/>
+		</type>
+	</extends>
+	<method name="this">
+		<modifiers>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

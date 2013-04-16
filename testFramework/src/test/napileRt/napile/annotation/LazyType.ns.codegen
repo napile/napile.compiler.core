@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.annotation.LazyType">
+	<modifiers>
+		<static/>
+		<final/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<variable name="SIMPLE">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.annotation.LazyType$SIMPLE"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="SIMPLE$get">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.annotation.LazyType.SIMPLE"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.annotation.LazyType.SIMPLE">
+						<type nullable="false">
+							<class_type name="napile.annotation.LazyType.SIMPLE"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<class version="0" name="napile.annotation.LazyType$SIMPLE">
+		<modifiers>
+			<static/>
+			<final/>
+		</modifiers>
+		<extends>
+			<type nullable="false">
+				<class_type name="napile.annotation.LazyType"/>
+			</type>
+		</extends>
+		<method name="this">
+			<modifiers>
+				<local/>
+			</modifiers>
+			<return_type>
+				<type nullable="false">
+					<this_type/>
+				</type>
+			</return_type>
+			<code max-locals="2">
+				<instructions>
+					<local-get val="0"/>
+					<invoke-special>
+						<position line="25" column="20" file="napile/annotation/LazyType.ns"/>
+						<method name="napile.annotation.LazyType.this">
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.annotation.LazyType"/>
+								</type>
+							</return_type>
+						</method>
+					</invoke-special>
+					<pop/>
+					<local-get val="0"/>
+					<return val="1"/>
+				</instructions>
+			</code>
+		</method>
+	</class>
+	<variable name="INJECTION">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.annotation.LazyType$INJECTION"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="INJECTION$get">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.annotation.LazyType.INJECTION"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.annotation.LazyType.INJECTION">
+						<type nullable="false">
+							<class_type name="napile.annotation.LazyType.INJECTION"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<class version="0" name="napile.annotation.LazyType$INJECTION">
+		<modifiers>
+			<static/>
+			<final/>
+		</modifiers>
+		<extends>
+			<type nullable="false">
+				<class_type name="napile.annotation.LazyType"/>
+			</type>
+		</extends>
+		<method name="this">
+			<modifiers>
+				<local/>
+			</modifiers>
+			<return_type>
+				<type nullable="false">
+					<this_type/>
+				</type>
+			</return_type>
+			<code max-locals="2">
+				<instructions>
+					<local-get val="0"/>
+					<invoke-special>
+						<position line="27" column="23" file="napile/annotation/LazyType.ns"/>
+						<method name="napile.annotation.LazyType.this">
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.annotation.LazyType"/>
+								</type>
+							</return_type>
+						</method>
+					</invoke-special>
+					<pop/>
+					<local-get val="0"/>
+					<return val="1"/>
+				</instructions>
+			</code>
+		</method>
+	</class>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.annotation.LazyType$SIMPLE"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.annotation.LazyType.SIMPLE">
+						<type nullable="false">
+							<class_type name="napile.annotation.LazyType$SIMPLE"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.annotation.LazyType$INJECTION"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.annotation.LazyType.INJECTION">
+						<type nullable="false">
+							<class_type name="napile.annotation.LazyType$INJECTION"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
+	</method>
+</class>

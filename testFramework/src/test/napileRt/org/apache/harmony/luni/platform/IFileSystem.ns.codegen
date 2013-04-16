@@ -1,0 +1,2020 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="org.apache.harmony.luni.platform.IFileSystem">
+	<modifiers>
+		<static/>
+		<abstract/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="SHARED_LOCK_TYPE$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SHARED_LOCK_TYPE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="SHARED_LOCK_TYPE$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SHARED_LOCK_TYPE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="SHARED_LOCK_TYPE">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="EXCLUSIVE_LOCK_TYPE$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.EXCLUSIVE_LOCK_TYPE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="EXCLUSIVE_LOCK_TYPE$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.EXCLUSIVE_LOCK_TYPE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="EXCLUSIVE_LOCK_TYPE">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="SEEK_SET$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_SET">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="SEEK_SET$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_SET">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="SEEK_SET">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="SEEK_CUR$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_CUR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="SEEK_CUR$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_CUR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="SEEK_CUR">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="SEEK_END$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_END">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="SEEK_END$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_END">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="SEEK_END">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_RDONLY$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDONLY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_RDONLY$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDONLY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_RDONLY">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_WRONLY$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_WRONLY$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_WRONLY">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_RDWR$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_RDWR$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_RDWR">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_RDWRSYNC$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWRSYNC">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_RDWRSYNC$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWRSYNC">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_RDWRSYNC">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_APPEND$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_APPEND$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_APPEND">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_CREAT$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_CREAT">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_CREAT$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_CREAT">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_CREAT">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_EXCL$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_EXCL">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_EXCL$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_EXCL">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_EXCL">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_NOCTTY$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NOCTTY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_NOCTTY$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NOCTTY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_NOCTTY">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_NONBLOCK$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NONBLOCK">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_NONBLOCK$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NONBLOCK">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_NONBLOCK">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="O_TRUNC$get">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_TRUNC">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="O_TRUNC$set">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_TRUNC">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="O_TRUNC">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="read">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="bytes">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Byte"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="offset">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="length">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="write">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="bytes">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Byte"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="offset">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="length">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="readv">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="addresses">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="true">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="offsets">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="true">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="lengths">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="true">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="size">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="writev">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="buffers">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="true">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="true">
+							<class_type name="napile.lang.Any"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="offsets">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="true">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="lengths">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="true">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="size">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="readDirect">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="address">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="offset">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="length">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="writeDirect">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="address">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="offset">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="length">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="lock">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="start">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="length">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="type">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="waitFlag">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Bool"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="unlock">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="start">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="length">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="seek">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="offset">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="whence">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="fflush">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="metadata">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Bool"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="close">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="truncate">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="size">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="getAllocGranularity">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1"/>
+	</method>
+	<method name="open">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileName">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Byte"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="mode">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="transfer">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileHandler">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="socketDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="true">
+					<class_type name="napile.io.FileDescriptor"/>
+				</type>
+			</parameter>
+			<parameter name="offset">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+			<parameter name="count">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="ttyAvailable">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<code max-locals="1"/>
+	</method>
+	<method name="available">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="size">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="fileDescriptor">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="ttyRead">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="bytes">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Byte"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="offset">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="length">
+				<modifiers>
+					<mutable/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="1">
+					<position line="29" column="38" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SHARED_LOCK_TYPE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="2">
+					<position line="31" column="41" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.EXCLUSIVE_LOCK_TYPE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="1">
+					<position line="33" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_SET">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="2">
+					<position line="35" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_CUR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="4">
+					<position line="37" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_END">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="0">
+					<position line="39" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDONLY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="1">
+					<position line="41" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="16">
+					<position line="43" column="28" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="32">
+					<position line="45" column="32" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWRSYNC">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="256">
+					<position line="47" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="4096">
+					<position line="49" column="29" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_CREAT">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="65536">
+					<position line="51" column="28" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_EXCL">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="1048576">
+					<position line="53" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NOCTTY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="16777216">
+					<position line="55" column="32" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NONBLOCK">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-int val="268435456">
+					<position line="57" column="29" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_TRUNC">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="org.apache.harmony.luni.platform.Platform">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="getFileSystem">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<invoke-static>
+					<position line="8" column="59" file="org/apache/harmony/luni/platform/Platform.ns"/>
+					<method name="org.apache.harmony.luni.platform.OSFileSystem.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="org.apache.harmony.luni.platform.OSFileSystem"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

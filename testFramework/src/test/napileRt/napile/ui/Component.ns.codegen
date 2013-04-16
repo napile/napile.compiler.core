@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.ui.Component">
+	<modifiers>
+		<static/>
+		<abstract/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="x$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.Component.x">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="x$set">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.Component.x">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="x">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="y$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.Component.y">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="y$set">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.Component.y">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="y">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="width$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.Component.width">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="width$set">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.Component.width">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="width">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="height$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.Component.height">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="height$set">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.Component.height">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="height">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="enabled$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.Component.enabled">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="enabled$set">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Bool"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.Component.enabled">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="enabled">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="visible$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.Component.visible">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="visible$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Bool"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<position line="43" column="14" file="napile/ui/Component.ns"/>
+					<variable name="napile.ui.Component.visible">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</get-variable>
+				<local-put val="2"/>
+				<local-get val="0"/>
+				<local-get val="1">
+					<position line="45" column="12" file="napile/ui/Component.ns"/>
+				</local-get>
+				<put-to-variable>
+					<position line="45" column="4" file="napile/ui/Component.ns"/>
+					<variable name="napile.ui.Component.visible">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="47" column="4" file="napile/ui/Component.ns"/>
+					<method name="napile.ui.Component.variableChangeListener$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.util.listeners.ListenerHolder"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.util.listeners.VariableChangeEvent"/>
+										<type_arguments>
+											<type nullable="false">
+												<class_type name="napile.lang.Any"/>
+											</type>
+										</type_arguments>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<new-string val="visible">
+					<position line="47" column="58" file="napile/ui/Component.ns"/>
+				</new-string>
+				<local-get val="2">
+					<position line="47" column="69" file="napile/ui/Component.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="47" column="74" file="napile/ui/Component.ns"/>
+				</local-get>
+				<new-object>
+					<position line="47" column="32" file="napile/ui/Component.ns"/>
+					<type nullable="false">
+						<class_type name="napile.util.listeners.VariableChangeEvent"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="name">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameter>
+						<parameter name="oldValue">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<type_parameter_value_type name="T"/>
+							</type>
+						</parameter>
+						<parameter name="newValue">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<type_parameter_value_type name="T"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<invoke-virtual>
+					<position line="47" column="27" file="napile/ui/Component.ns"/>
+					<method name="napile.util.listeners.ListenerHolder.fire">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="event">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="visible">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="variableChangeListener$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.util.listeners.ListenerHolder"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.util.listeners.VariableChangeEvent"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.lang.Any"/>
+							</type>
+						</type_arguments>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.Component.variableChangeListener">
+						<type nullable="false">
+							<class_type name="napile.util.listeners.ListenerHolder"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.util.listeners.VariableChangeEvent"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="variableChangeListener$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.util.listeners.ListenerHolder"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.util.listeners.VariableChangeEvent"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</type_arguments>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.Component.variableChangeListener">
+						<type nullable="false">
+							<class_type name="napile.util.listeners.ListenerHolder"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.util.listeners.VariableChangeEvent"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="variableChangeListener">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.util.listeners.ListenerHolder"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.util.listeners.VariableChangeEvent"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.lang.Any"/>
+							</type>
+						</type_arguments>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="add">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="c">
+				<type nullable="false">
+					<class_type name="napile.ui.Component"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="render">
+		<modifiers>
+			<abstract/>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="render">
+				<type nullable="false">
+					<class_type name="napile.ui.render.UiRender"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="29" column="16" file="napile/ui/Component.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.ui.Component.x">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="31" column="16" file="napile/ui/Component.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.ui.Component.y">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="33" column="20" file="napile/ui/Component.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.ui.Component.width">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="35" column="21" file="napile/ui/Component.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.ui.Component.height">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="37" column="23" file="napile/ui/Component.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.ui.Component.enabled">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="49" column="6" file="napile/ui/Component.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.ui.Component.visible">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<new-object>
+					<position line="51" column="74" file="napile/ui/Component.ns"/>
+					<type nullable="false">
+						<class_type name="napile.util.listeners.ListenerHolder"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.util.listeners.VariableChangeEvent"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.Any"/>
+									</type>
+								</type_arguments>
+							</type>
+						</type_arguments>
+					</type>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.ui.Component.variableChangeListener">
+						<type nullable="false">
+							<class_type name="napile.util.listeners.ListenerHolder"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.util.listeners.VariableChangeEvent"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

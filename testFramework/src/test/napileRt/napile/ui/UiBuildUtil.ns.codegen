@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.ui.UiBuildUtil">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="build">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<type-parameters>
+			<type-parameter name="T">
+				<extends>
+					<type nullable="false">
+						<class_type name="napile.ui.Component"/>
+					</type>
+				</extends>
+				<constructor>
+					<parameters>
+						<parameter name="text">
+							<type nullable="true">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameter>
+					</parameters>
+				</constructor>
+			</type-parameter>
+		</type-parameters>
+		<return_type>
+			<type nullable="false">
+				<type_parameter_value_type name="T"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="text">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+			<parameter name="builder">
+				<type nullable="false">
+					<method_type name="builder">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="v">
+								<type nullable="false">
+									<type_parameter_value_type name="T"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method_type>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0">
+					<position line="29" column="13" file="napile/ui/UiBuildUtil.ns"/>
+				</local-get>
+				<new-object>
+					<position line="29" column="11" file="napile/ui/UiBuildUtil.ns"/>
+					<type nullable="false">
+						<type_parameter_value_type name="T"/>
+					</type>
+					<parameters>
+						<parameter name="text">
+							<type nullable="true">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<local-put val="2"/>
+				<local-get val="1">
+					<position line="31" column="3" file="napile/ui/UiBuildUtil.ns"/>
+				</local-get>
+				<local-get val="2">
+					<position line="31" column="11" file="napile/ui/UiBuildUtil.ns"/>
+				</local-get>
+				<invoke-anonym>
+					<position line="31" column="3" file="napile/ui/UiBuildUtil.ns"/>
+					<method>
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="v">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<type_parameter_value_type name="T"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-anonym>
+				<local-get val="2">
+					<position line="33" column="10" file="napile/ui/UiBuildUtil.ns"/>
+				</local-get>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="plus">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.Extension"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="comp">
+				<type nullable="false">
+					<class_type name="napile.ui.Component"/>
+				</type>
+			</parameter>
+			<parameter name="member">
+				<type nullable="false">
+					<class_type name="napile.ui.Component"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0">
+					<position line="39" column="3" file="napile/ui/UiBuildUtil.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="39" column="12" file="napile/ui/UiBuildUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="39" column="8" file="napile/ui/UiBuildUtil.ns"/>
+					<method name="napile.ui.Component.add">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="c">
+								<type nullable="false">
+									<class_type name="napile.ui.Component"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

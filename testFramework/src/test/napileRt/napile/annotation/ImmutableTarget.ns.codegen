@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.annotation.ImmutableTarget">
+	<modifiers>
+		<static/>
+		<final/>
+	</modifiers>
+	<annotations>
+		<annotation>
+			<code max-locals="0">
+				<instructions>
+					<invoke-static>
+						<position line="6" column="13" file="napile/annotation/ImmutableTarget.ns"/>
+						<method name="napile.lang.Null.INSTANCE$get">
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.lang.Null"/>
+								</type>
+							</return_type>
+						</method>
+					</invoke-static>
+					<new-object>
+						<type nullable="false">
+							<class_type name="napile.annotation.Annotation"/>
+						</type>
+						<parameters>
+							<parameter name="cond">
+								<type nullable="true">
+									<class_type name="napile.condition.Condition"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</new-object>
+				</instructions>
+			</code>
+		</annotation>
+	</annotations>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

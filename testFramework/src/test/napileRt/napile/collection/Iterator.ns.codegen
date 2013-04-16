@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.collection.Iterator">
+	<modifiers>
+		<static/>
+		<abstract/>
+	</modifiers>
+	<type-parameters>
+		<type-parameter name="E">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+		</type-parameter>
+	</type-parameters>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="hasNext">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<code max-locals="1"/>
+	</method>
+	<method name="next">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<type_parameter_value_type name="E"/>
+			</type>
+		</return_type>
+		<code max-locals="1"/>
+	</method>
+	<method name="remove">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.ImmutableTarget"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="1"/>
+	</method>
+	<method name="this">
+		<modifiers>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

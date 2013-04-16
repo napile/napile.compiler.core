@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.reflect.ClassNotFoundException">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Exception"/>
+		</type>
+	</extends>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="message">
+				<type nullable="true">
+					<class_type name="napile.lang.String"/>
+				</type>
+				<default-value>null</default-value>
+			</parameter>
+		</parameters>
+		<code max-locals="5">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1">
+					<position line="8" column="44" file="napile/reflect/ClassNotFoundException.ns"/>
+				</local-get>
+				<invoke-special>
+					<position line="8" column="39" file="napile/reflect/ClassNotFoundException.ns"/>
+					<method name="napile.reflect.ClassNotFoundException.this">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.reflect.ClassNotFoundException"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="message">
+								<type nullable="true">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<pop/>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

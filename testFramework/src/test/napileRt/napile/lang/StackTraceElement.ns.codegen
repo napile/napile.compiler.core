@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.StackTraceElement">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="className$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.StackTraceElement.className">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="className$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.StackTraceElement.className">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="className">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="methodName$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.StackTraceElement.methodName">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="methodName$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.StackTraceElement.methodName">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="methodName">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="fileName$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.StackTraceElement.fileName">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="fileName$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.StackTraceElement.fileName">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="fileName">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="line$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.StackTraceElement.line">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="line$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.StackTraceElement.line">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="line">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="column$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.StackTraceElement.column">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="column$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.StackTraceElement.column">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="column">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="toString">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+		<code max-locals="3">
+			<instructions>
+				<new-object>
+					<position line="23" column="11" file="napile/lang/StackTraceElement.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.StringBuilder"/>
+					</type>
+				</new-object>
+				<local-put val="1"/>
+				<local-get val="1">
+					<position line="24" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="24" column="8" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StackTraceElement.className$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="24" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="24" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="25" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<new-string val=".">
+					<position line="25" column="8" file="napile/lang/StackTraceElement.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="25" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="25" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="26" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="26" column="8" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StackTraceElement.methodName$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="26" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="26" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="27" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<new-string val="(">
+					<position line="27" column="8" file="napile/lang/StackTraceElement.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="27" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="27" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="28" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="28" column="8" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StackTraceElement.fileName$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="28" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="28" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="29" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<new-string val="@">
+					<position line="29" column="8" file="napile/lang/StackTraceElement.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="29" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="29" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="30" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="30" column="8" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StackTraceElement.line$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="30" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="30" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="31" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<new-string val=":">
+					<position line="31" column="8" file="napile/lang/StackTraceElement.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="31" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="31" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="32" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<local-get val="0"/>
+				<invoke-virtual>
+					<position line="32" column="8" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StackTraceElement.column$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="32" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="32" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="33" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<new-string val=")">
+					<position line="33" column="8" file="napile/lang/StackTraceElement.ns"/>
+				</new-string>
+				<invoke-virtual>
+					<position line="33" column="5" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.plus">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="1">
+					<position line="33" column="3" file="napile/lang/StackTraceElement.ns"/>
+				</local-put>
+				<local-get val="1">
+					<position line="34" column="10" file="napile/lang/StackTraceElement.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="34" column="12" file="napile/lang/StackTraceElement.ns"/>
+					<method name="napile.lang.StringBuilder.toString">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="className">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+			<parameter name="methodName">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+			<parameter name="fileName">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+			<parameter name="line">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="column">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="7">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<invoke-virtual>
+					<method name="napile.lang.StackTraceElement.className$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="2"/>
+				<invoke-virtual>
+					<method name="napile.lang.StackTraceElement.methodName$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.lang.StackTraceElement.fileName$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="4"/>
+				<invoke-virtual>
+					<method name="napile.lang.StackTraceElement.line$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="5"/>
+				<invoke-virtual>
+					<method name="napile.lang.StackTraceElement.column$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

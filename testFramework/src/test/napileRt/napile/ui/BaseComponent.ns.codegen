@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.ui.BaseComponent">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.ui.Component"/>
+		</type>
+	</extends>
+	<method name="members$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.ui.Component"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.BaseComponent.members">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.ui.Component"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="members$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.collection.List"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.ui.Component"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.BaseComponent.members">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.ui.Component"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="members">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.collection.List"/>
+				<type_arguments>
+					<type nullable="false">
+						<class_type name="napile.ui.Component"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+	</variable>
+	<method name="add">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="c">
+				<type nullable="false">
+					<class_type name="napile.ui.Component"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="35" column="3" file="napile/ui/BaseComponent.ns"/>
+					<method name="napile.ui.BaseComponent.members$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.collection.List"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.ui.Component"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<local-get val="1">
+					<position line="35" column="15" file="napile/ui/BaseComponent.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="35" column="11" file="napile/ui/BaseComponent.ns"/>
+					<method name="napile.collection.List.add">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="e">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="render">
+		<modifiers>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="render">
+				<type nullable="false">
+					<class_type name="napile.ui.render.UiRender"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="31" column="11" file="napile/ui/BaseComponent.ns"/>
+					<method name="napile.ui.Component.this">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.ui.Component"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<pop/>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="29" column="40" file="napile/ui/BaseComponent.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.ui.Component"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="predefinedSize">
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.ui.BaseComponent.members">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.ui.Component"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

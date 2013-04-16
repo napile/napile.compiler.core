@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.module.extension.descriptors.SimpleFactoryExtension">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<type-parameters>
+		<type-parameter name="T">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+			<constructor/>
+		</type-parameter>
+	</type-parameters>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="create">
+		<return_type>
+			<type nullable="false">
+				<type_parameter_value_type name="T"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<new-object>
+					<position line="25" column="22" file="napile/module/extension/descriptors/SimpleFactoryExtension.ns"/>
+					<type nullable="false">
+						<type_parameter_value_type name="T"/>
+					</type>
+				</new-object>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<type-parameters>
+			<type-parameter name="T">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+				<constructor/>
+			</type-parameter>
+		</type-parameters>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

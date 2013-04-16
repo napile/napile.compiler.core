@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.reflect.CallParameter">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.reflect.Member"/>
+		</type>
+	</extends>
+	<method name="type$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.asm.members.AsmType"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.reflect.CallParameter.type">
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmType"/>
+						</type>
+					</variable>
+				</get-variable>
+				<dup/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="14"/>
+				<local-get val="0"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="10" column="28" file="napile/reflect/CallParameter.ns"/>
+					<method name="napile.reflect.CallParameter.getReturnType">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.asm.members.AsmType"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<put-to-variable>
+					<variable name="napile.reflect.CallParameter.type">
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmType"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.reflect.CallParameter.type">
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmType"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="type$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.asm.members.AsmType"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.reflect.CallParameter.type">
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmType"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="type">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.asm.members.AsmType"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="getReturnType">
+		<modifiers>
+			<native/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.asm.members.AsmType"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="this">
+		<modifiers>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="owner">
+				<type nullable="true">
+					<class_type name="napile.reflect.Class"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Any"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="name">
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+			<parameter name="modifiers">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="annotations">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<class_type name="napile.lang.Any"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="11">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1">
+					<position line="16" column="43" file="napile/reflect/CallParameter.ns"/>
+				</local-get>
+				<local-get val="2">
+					<position line="16" column="50" file="napile/reflect/CallParameter.ns"/>
+				</local-get>
+				<local-get val="3">
+					<position line="16" column="56" file="napile/reflect/CallParameter.ns"/>
+				</local-get>
+				<local-get val="4">
+					<position line="16" column="67" file="napile/reflect/CallParameter.ns"/>
+				</local-get>
+				<invoke-special>
+					<position line="16" column="36" file="napile/reflect/CallParameter.ns"/>
+					<method name="napile.reflect.Member.this">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.reflect.Member"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="ownerClass">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="true">
+									<class_type name="napile.reflect.Class"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="name">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+							<parameter name="modifiers">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<annotations>
+										<annotation>
+											<code max-locals="0">
+												<instructions>
+													<new-object>
+														<type nullable="false">
+															<class_type name="napile.annotation.Immutable"/>
+														</type>
+													</new-object>
+												</instructions>
+											</code>
+										</annotation>
+									</annotations>
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.reflect.Modifier"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="annotations">
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<pop/>
+				<local-get val="0"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.reflect.CallParameter.type">
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmType"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

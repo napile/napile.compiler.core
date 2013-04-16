@@ -45,7 +45,7 @@ public abstract class NapileTestCase extends TestCase
 {
 	private final File testDir = new File("testFramework/src/test/napileRt");
 	protected JetCoreEnvironment environment;
-	protected boolean genResults;
+	protected boolean genResults = true;
 	protected AnalyzeExhaust analyzeExhaust;
 
 	public NapileTestCase()

@@ -1,0 +1,1347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.Thread">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="threadOrdinalNum$get">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.Thread.threadOrdinalNum">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="threadOrdinalNum$set">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.Thread.threadOrdinalNum">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="threadOrdinalNum">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="systemThreadGroup$get">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadGroup"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.Thread.systemThreadGroup">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadGroup"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="systemThreadGroup$set">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.ThreadGroup"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.Thread.systemThreadGroup">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadGroup"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="systemThreadGroup">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadGroup"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="mainThreadGroup$get">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadGroup"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.lang.Thread.mainThreadGroup">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadGroup"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="mainThreadGroup$set">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.ThreadGroup"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<put-to-static-variable>
+					<variable name="napile.lang.Thread.mainThreadGroup">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadGroup"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="mainThreadGroup">
+		<modifiers>
+			<mutable/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadGroup"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="target$get">
+		<return_type>
+			<type nullable="false">
+				<method_type name="target">
+					<return_type>
+						<type nullable="false">
+							<class_type name="napile.lang.Null"/>
+						</type>
+					</return_type>
+				</method_type>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.Thread.target">
+						<type nullable="false">
+							<method_type name="target">
+								<return_type>
+									<type nullable="false">
+										<class_type name="napile.lang.Null"/>
+									</type>
+								</return_type>
+							</method_type>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="target$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<method_type name="target">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method_type>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.Thread.target">
+						<type nullable="false">
+							<method_type name="target">
+								<return_type>
+									<type nullable="false">
+										<class_type name="napile.lang.Null"/>
+									</type>
+								</return_type>
+							</method_type>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="target">
+		<return_type>
+			<type nullable="false">
+				<method_type name="target">
+					<return_type>
+						<type nullable="false">
+							<class_type name="napile.lang.Null"/>
+						</type>
+					</return_type>
+				</method_type>
+			</type>
+		</return_type>
+	</variable>
+	<method name="state$get">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadState"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.Thread.state">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="state$set">
+		<modifiers>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.ThreadState"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.Thread.state">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="state">
+		<modifiers>
+			<mutable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadState"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="threadId$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.Thread.threadId">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="threadId$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Long"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.Thread.threadId">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="threadId">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="name$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.Thread.name">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="name$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.String"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.Thread.name">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="name">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.String"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="group$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadGroup"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.lang.Thread.group">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadGroup"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="group$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.ThreadGroup"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.lang.Thread.group">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadGroup"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="group">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.ThreadGroup"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="getNextThreadId">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Long"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<invoke-static>
+					<position line="52" column="44" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.threadOrdinalNum$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="52" column="41" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Long.inc">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<position line="52" column="44" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.threadOrdinalNum$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<pop>
+					<position line="52" column="44" file="napile/lang/Thread.ns"/>
+				</pop>
+				<invoke-static>
+					<position line="52" column="44" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.threadOrdinalNum$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="run">
+		<modifiers>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="86" column="3" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.target$get">
+						<return_type>
+							<type nullable="false">
+								<method_type name="target">
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Null"/>
+										</type>
+									</return_type>
+								</method_type>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-anonym>
+					<position line="86" column="3" file="napile/lang/Thread.ns"/>
+					<method>
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-anonym>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="88" column="23" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.ThreadState.FINISHED$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.ThreadState"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-special>
+					<position line="88" column="9" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.state$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.ThreadState"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<pop>
+					<position line="88" column="9" file="napile/lang/Thread.ns"/>
+				</pop>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="start">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="93" column="6" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.state$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.ThreadState"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-static>
+					<position line="93" column="27" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.ThreadState.NEW$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.ThreadState"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="93" column="12" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.ThreadState.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="93" column="12" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Bool.not">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="10"/>
+				<invoke-static>
+					<position line="8" column="31" file="napile/lang/IllegalStateException.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="94" column="10" file="napile/lang/Thread.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.IllegalStateException"/>
+					</type>
+					<parameters>
+						<parameter name="message">
+							<type nullable="true">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<throw/>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="96" column="23" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.ThreadState.STARTED$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.ThreadState"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-special>
+					<position line="96" column="9" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.state$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.ThreadState"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<pop>
+					<position line="96" column="9" file="napile/lang/Thread.ns"/>
+				</pop>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="98" column="3" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.start0">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="start0">
+		<modifiers>
+			<native/>
+			<local/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+	</method>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="threadName">
+				<type nullable="true">
+					<class_type name="napile.lang.String"/>
+				</type>
+				<default-value>null</default-value>
+			</parameter>
+			<parameter name="threadGroup">
+				<type nullable="true">
+					<class_type name="napile.lang.ThreadGroup"/>
+				</type>
+				<default-value>null</default-value>
+			</parameter>
+			<parameter name="target">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<method_type name="target">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method_type>
+				</type>
+				<default-value>{}</default-value>
+			</parameter>
+		</parameters>
+		<code max-locals="5">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="3"/>
+				<invoke-special>
+					<method name="napile.lang.Thread.target$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<method_type name="target">
+										<return_type>
+											<type nullable="false">
+												<class_type name="napile.lang.Null"/>
+											</type>
+										</return_type>
+									</method_type>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<pop/>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="68" column="18" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.ThreadState.NEW$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.ThreadState"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.lang.Thread.state">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="79" column="14" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.getNextThreadId">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-special>
+					<position line="79" column="12" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.threadId$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.Long"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-special>
+				<pop>
+					<position line="79" column="12" file="napile/lang/Thread.ns"/>
+				</pop>
+				<local-get val="0"/>
+				<local-get val="1">
+					<position line="80" column="10" file="napile/lang/Thread.ns"/>
+				</local-get>
+				<dup/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="23"/>
+				<pop/>
+				<new-string val="Thread: ">
+					<position line="80" column="24" file="napile/lang/Thread.ns"/>
+				</new-string>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="80" column="37" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.threadId$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<invoke-virtual>
+					<position line="80" column="35" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.String.plus">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="a">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<position line="80" column="8" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.name$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.String"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="80" column="8" file="napile/lang/Thread.ns"/>
+				</pop>
+				<local-get val="0"/>
+				<local-get val="2">
+					<position line="81" column="11" file="napile/lang/Thread.ns"/>
+				</local-get>
+				<dup/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="34"/>
+				<pop/>
+				<invoke-static>
+					<position line="81" column="26" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.mainThreadGroup$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.ThreadGroup"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<position line="81" column="9" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.group$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.ThreadGroup"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop>
+					<position line="81" column="9" file="napile/lang/Thread.ns"/>
+				</pop>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="0">
+					<position line="50" column="45" file="napile/lang/Thread.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<position line="50" column="47" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Int.toLong">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Long"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<put-to-static-variable>
+					<variable name="napile.lang.Thread.threadOrdinalNum">
+						<type nullable="false">
+							<class_type name="napile.lang.Long"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-string val="system">
+					<position line="59" column="35" file="napile/lang/Thread.ns"/>
+				</new-string>
+				<invoke-static>
+					<position line="41" column="22" file="napile/lang/ThreadGroup.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="59" column="23" file="napile/lang/Thread.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.ThreadGroup"/>
+					</type>
+					<parameters>
+						<parameter name="name">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameter>
+						<parameter name="parent">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="true">
+								<class_type name="napile.lang.ThreadGroup"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<invoke-static>
+					<position line="59" column="21" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.systemThreadGroup$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.ThreadGroup"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<pop>
+					<position line="59" column="21" file="napile/lang/Thread.ns"/>
+				</pop>
+				<new-string val="main">
+					<position line="60" column="33" file="napile/lang/Thread.ns"/>
+				</new-string>
+				<invoke-static>
+					<position line="60" column="41" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.systemThreadGroup$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.ThreadGroup"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="60" column="21" file="napile/lang/Thread.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.ThreadGroup"/>
+					</type>
+					<parameters>
+						<parameter name="name">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameter>
+						<parameter name="parent">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="true">
+								<class_type name="napile.lang.ThreadGroup"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<invoke-static>
+					<position line="60" column="19" file="napile/lang/Thread.ns"/>
+					<method name="napile.lang.Thread.mainThreadGroup$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.ThreadGroup"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<pop>
+					<position line="60" column="19" file="napile/lang/Thread.ns"/>
+				</pop>
+			</instructions>
+		</code>
+	</method>
+</class>

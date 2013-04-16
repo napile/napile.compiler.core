@@ -36,7 +36,6 @@ import org.napile.compiler.codegen.processors.FqNameGenerator;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.DelegatingBindingTrace;
 import com.intellij.openapi.progress.ProcessCanceledException;
 import com.intellij.openapi.project.Project;
 
@@ -57,7 +56,7 @@ public class GenerationState
 		this.progress = progress;
 		this.files = files;
 
-		this.bindingTrace = new DelegatingBindingTrace(exhaust.getBindingTrace());
+		this.bindingTrace = exhaust.getBindingTrace();
 	}
 
 	private void markUsed()

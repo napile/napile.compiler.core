@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.module.extension.descriptors.SimpleInstanceExtension">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<type-parameters>
+		<type-parameter name="T">
+			<extends>
+				<type nullable="true">
+					<class_type name="napile.lang.Any"/>
+				</type>
+			</extends>
+			<constructor/>
+		</type-parameter>
+	</type-parameters>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="impl$get">
+		<return_type>
+			<type nullable="false">
+				<type_parameter_value_type name="T"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.module.extension.descriptors.SimpleInstanceExtension.impl">
+						<type nullable="false">
+							<type_parameter_value_type name="T"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="impl$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<type_parameter_value_type name="T"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.module.extension.descriptors.SimpleInstanceExtension.impl">
+						<type nullable="false">
+							<type_parameter_value_type name="T"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="impl">
+		<return_type>
+			<type nullable="false">
+				<type_parameter_value_type name="T"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="this">
+		<type-parameters>
+			<type-parameter name="T">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+				<constructor/>
+			</type-parameter>
+		</type-parameters>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="0"/>
+				<new-object>
+					<position line="30" column="17" file="napile/module/extension/descriptors/SimpleInstanceExtension.ns"/>
+					<type nullable="false">
+						<type_parameter_value_type name="T"/>
+					</type>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.module.extension.descriptors.SimpleInstanceExtension.impl">
+						<type nullable="false">
+							<type_parameter_value_type name="T"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

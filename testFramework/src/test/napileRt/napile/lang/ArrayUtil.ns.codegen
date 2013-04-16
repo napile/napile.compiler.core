@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.lang.ArrayUtil">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="copyOf">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<type-parameters>
+			<type-parameter name="E">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+			</type-parameter>
+		</type-parameters>
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.Extension"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<type_parameter_value_type name="E"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="oldArray">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="E"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="newSize">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="1">
+					<position line="14" column="21" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<new-object>
+					<position line="14" column="12" file="napile/lang/ArrayUtil.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Array"/>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="length">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<local-put val="2"/>
+				<local-get val="0">
+					<position line="15" column="8" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="15" column="18" file="napile/lang/ArrayUtil.ns"/>
+				</new-int>
+				<local-get val="2">
+					<position line="15" column="21" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="15" column="25" file="napile/lang/ArrayUtil.ns"/>
+				</new-int>
+				<local-get val="0">
+					<position line="15" column="41" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="15" column="50" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Array.length$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-get val="1">
+					<position line="15" column="58" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-static>
+					<position line="15" column="37" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.util.MathUtil.min">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="a">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="b">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<position line="15" column="3" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.ArrayUtil.copy">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="src">
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<type_parameter_value_type name="E"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="srcOffset">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="desc">
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<type_parameter_value_type name="E"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="descOffset">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="length">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</type_arguments>
+					</method>
+				</invoke-static>
+				<local-get val="2">
+					<position line="16" column="10" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="copyOfRange">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<type-parameters>
+			<type-parameter name="E">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+			</type-parameter>
+		</type-parameters>
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.Extension"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Array"/>
+				<type_arguments>
+					<type nullable="false">
+						<type_parameter_value_type name="E"/>
+					</type>
+				</type_arguments>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="original">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="E"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="from">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="to">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="5">
+			<instructions>
+				<local-get val="2">
+					<position line="22" column="19" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="22" column="24" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="22" column="22" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Int.minus">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-put val="3"/>
+				<local-get val="3">
+					<position line="24" column="20" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<new-object>
+					<position line="24" column="11" file="napile/lang/ArrayUtil.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Array"/>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="length">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<local-put val="4"/>
+				<local-get val="3">
+					<position line="25" column="6" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="25" column="19" file="napile/lang/ArrayUtil.ns"/>
+				</new-int>
+				<invoke-virtual>
+					<position line="25" column="16" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Int.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="14"/>
+				<local-get val="4">
+					<position line="26" column="11" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<return val="1"/>
+				<local-get val="0">
+					<position line="28" column="8" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="28" column="18" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="4">
+					<position line="28" column="24" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<new-int val="0">
+					<position line="28" column="27" file="napile/lang/ArrayUtil.ns"/>
+				</new-int>
+				<local-get val="2">
+					<position line="28" column="30" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-static>
+					<position line="28" column="3" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.ArrayUtil.copy">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="src">
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<type_parameter_value_type name="E"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="srcOffset">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="desc">
+								<type nullable="false">
+									<class_type name="napile.lang.Array"/>
+									<type_arguments>
+										<type nullable="false">
+											<type_parameter_value_type name="E"/>
+										</type>
+									</type_arguments>
+								</type>
+							</parameter>
+							<parameter name="descOffset">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="length">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</type_arguments>
+					</method>
+				</invoke-static>
+				<local-get val="4">
+					<position line="30" column="10" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="copy">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<type-parameters>
+			<type-parameter name="E">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+			</type-parameter>
+		</type-parameters>
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.Extension"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="src">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="E"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="srcOffset">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="desc">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="E"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="descOffset">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="length">
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="6">
+			<instructions>
+				<new-int val="0">
+					<position line="36" column="11" file="napile/lang/ArrayUtil.ns"/>
+				</new-int>
+				<local-put val="5"/>
+				<local-get val="5">
+					<position line="37" column="10" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="4">
+					<position line="37" column="14" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.lang.Int.compareTo">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.condition.CompareResult.LOWER$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.condition.CompareResult"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-virtual>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="object">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="11"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump val="12"/>
+				<invoke-static>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="29"/>
+				<local-get val="2">
+					<position line="39" column="4" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="3">
+					<position line="39" column="9" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="5">
+					<position line="39" column="22" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="39" column="20" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Int.plus">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="0">
+					<position line="39" column="27" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="39" column="31" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="5">
+					<position line="39" column="43" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="39" column="41" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Int.plus">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="value">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<method name="napile.lang.Array.get">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-virtual>
+					<method name="napile.lang.Array.set">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="index">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+							<parameter name="value">
+								<type nullable="false">
+									<type_parameter_value_type name="E"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<local-get val="5">
+					<position line="40" column="4" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<dup/>
+				<invoke-virtual>
+					<position line="40" column="5" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Int.inc">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="5">
+					<position line="40" column="4" file="napile/lang/ArrayUtil.ns"/>
+				</local-put>
+				<jump val="2"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="contains">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<type-parameters>
+			<type-parameter name="E">
+				<extends>
+					<type nullable="true">
+						<class_type name="napile.lang.Any"/>
+					</type>
+				</extends>
+			</type-parameter>
+		</type-parameters>
+		<annotations>
+			<annotation>
+				<code max-locals="0">
+					<instructions>
+						<new-object>
+							<type nullable="false">
+								<class_type name="napile.annotation.Extension"/>
+							</type>
+						</new-object>
+					</instructions>
+				</code>
+			</annotation>
+		</annotations>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Bool"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="src">
+				<type nullable="false">
+					<class_type name="napile.lang.Array"/>
+					<type_arguments>
+						<type nullable="false">
+							<type_parameter_value_type name="E"/>
+						</type>
+					</type_arguments>
+				</type>
+			</parameter>
+			<parameter name="object">
+				<type nullable="false">
+					<type_parameter_value_type name="E"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="4">
+			<instructions>
+				<local-get val="0">
+					<position line="47" column="12" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<method name="napile.lang.Array.iterator">
+						<return_type>
+							<type nullable="false">
+								<annotations>
+									<annotation>
+										<code max-locals="0">
+											<instructions>
+												<new-object>
+													<type nullable="false">
+														<class_type name="napile.annotation.InheritImmutable"/>
+													</type>
+												</new-object>
+											</instructions>
+										</code>
+									</annotation>
+								</annotations>
+								<class_type name="napile.collection.Iterator"/>
+								<type_arguments>
+									<type nullable="false">
+										<type_parameter_value_type name="E"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="3"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.collection.Iterator.hasNext">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="18"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.collection.Iterator.next">
+						<return_type>
+							<type nullable="false">
+								<type_parameter_value_type name="E"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-virtual>
+				<local-put val="2"/>
+				<local-get val="2">
+					<position line="48" column="7" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<local-get val="1">
+					<position line="48" column="12" file="napile/lang/ArrayUtil.ns"/>
+				</local-get>
+				<invoke-virtual>
+					<position line="48" column="9" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Any.equals">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="o">
+								<type nullable="true">
+									<class_type name="napile.lang.Any"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<invoke-static>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<jump-if val="17"/>
+				<invoke-static>
+					<position line="49" column="12" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Bool.TRUE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+				<jump val="3"/>
+				<invoke-static>
+					<position line="50" column="10" file="napile/lang/ArrayUtil.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>

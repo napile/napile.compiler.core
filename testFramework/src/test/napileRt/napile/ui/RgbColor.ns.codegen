@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.ui.RgbColor">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.ui.Color"/>
+		</type>
+	</extends>
+	<variable name="RED">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor$RED"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="RED$get">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor.RED"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.ui.RgbColor.RED">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor.RED"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<class version="0" name="napile.ui.RgbColor$RED">
+		<modifiers>
+			<static/>
+			<final/>
+		</modifiers>
+		<extends>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor"/>
+			</type>
+		</extends>
+		<method name="this">
+			<modifiers>
+				<local/>
+			</modifiers>
+			<return_type>
+				<type nullable="false">
+					<this_type/>
+				</type>
+			</return_type>
+			<code max-locals="2">
+				<instructions>
+					<local-get val="0"/>
+					<new-int val="255">
+						<position line="9" column="26" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<new-int val="0">
+						<position line="9" column="32" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<new-int val="0">
+						<position line="9" column="38" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<invoke-special>
+						<position line="9" column="17" file="napile/ui/RgbColor.ns"/>
+						<method name="napile.ui.RgbColor.this">
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.ui.RgbColor"/>
+								</type>
+							</return_type>
+							<parameters>
+								<parameter name="red">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+								<parameter name="green">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+								<parameter name="blue">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+							</parameters>
+						</method>
+					</invoke-special>
+					<pop/>
+					<local-get val="0"/>
+					<return val="1"/>
+				</instructions>
+			</code>
+		</method>
+	</class>
+	<variable name="GREEN">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor$GREEN"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="GREEN$get">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor.GREEN"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.ui.RgbColor.GREEN">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor.GREEN"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<class version="0" name="napile.ui.RgbColor$GREEN">
+		<modifiers>
+			<static/>
+			<final/>
+		</modifiers>
+		<extends>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor"/>
+			</type>
+		</extends>
+		<method name="this">
+			<modifiers>
+				<local/>
+			</modifiers>
+			<return_type>
+				<type nullable="false">
+					<this_type/>
+				</type>
+			</return_type>
+			<code max-locals="2">
+				<instructions>
+					<local-get val="0"/>
+					<new-int val="0">
+						<position line="11" column="28" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<new-int val="255">
+						<position line="11" column="34" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<new-int val="0">
+						<position line="11" column="40" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<invoke-special>
+						<position line="11" column="19" file="napile/ui/RgbColor.ns"/>
+						<method name="napile.ui.RgbColor.this">
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.ui.RgbColor"/>
+								</type>
+							</return_type>
+							<parameters>
+								<parameter name="red">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+								<parameter name="green">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+								<parameter name="blue">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+							</parameters>
+						</method>
+					</invoke-special>
+					<pop/>
+					<local-get val="0"/>
+					<return val="1"/>
+				</instructions>
+			</code>
+		</method>
+	</class>
+	<variable name="BLUE">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor$BLUE"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="BLUE$get">
+		<modifiers>
+			<enum/>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor.BLUE"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<get-static-variable>
+					<variable name="napile.ui.RgbColor.BLUE">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor.BLUE"/>
+						</type>
+					</variable>
+				</get-static-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<class version="0" name="napile.ui.RgbColor$BLUE">
+		<modifiers>
+			<static/>
+			<final/>
+		</modifiers>
+		<extends>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor"/>
+			</type>
+		</extends>
+		<method name="this">
+			<modifiers>
+				<local/>
+			</modifiers>
+			<return_type>
+				<type nullable="false">
+					<this_type/>
+				</type>
+			</return_type>
+			<code max-locals="2">
+				<instructions>
+					<local-get val="0"/>
+					<new-int val="0">
+						<position line="13" column="27" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<new-int val="0">
+						<position line="13" column="33" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<new-int val="255">
+						<position line="13" column="39" file="napile/ui/RgbColor.ns"/>
+					</new-int>
+					<invoke-special>
+						<position line="13" column="18" file="napile/ui/RgbColor.ns"/>
+						<method name="napile.ui.RgbColor.this">
+							<return_type>
+								<type nullable="false">
+									<class_type name="napile.ui.RgbColor"/>
+								</type>
+							</return_type>
+							<parameters>
+								<parameter name="red">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+								<parameter name="green">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+								<parameter name="blue">
+									<modifiers>
+										<final/>
+									</modifiers>
+									<type nullable="false">
+										<class_type name="napile.lang.Int"/>
+									</type>
+								</parameter>
+							</parameters>
+						</method>
+					</invoke-special>
+					<pop/>
+					<local-get val="0"/>
+					<return val="1"/>
+				</instructions>
+			</code>
+		</method>
+	</class>
+	<method name="red$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.RgbColor.red">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="red$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.RgbColor.red">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="red">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="green$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.RgbColor.green">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="green$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.RgbColor.green">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="green">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="blue$get">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<get-variable>
+					<variable name="napile.ui.RgbColor.blue">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</get-variable>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="blue$set">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="newValue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<put-to-variable>
+					<variable name="napile.ui.RgbColor.blue">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<variable name="blue">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Int"/>
+			</type>
+		</return_type>
+	</variable>
+	<method name="toCmykColor">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.CmykColor"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<invoke-static>
+					<position line="8" column="31" file="napile/lang/UnsupportedOperationException.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="23" column="9" file="napile/ui/RgbColor.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.UnsupportedOperationException"/>
+					</type>
+					<parameters>
+						<parameter name="message">
+							<type nullable="true">
+								<class_type name="napile.lang.String"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<throw/>
+			</instructions>
+		</code>
+	</method>
+	<method name="toRgbColor">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.ui.RgbColor"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="red">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="green">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+			<parameter name="blue">
+				<modifiers>
+					<final/>
+				</modifiers>
+				<type nullable="false">
+					<class_type name="napile.lang.Int"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="5">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-special>
+					<method name="napile.ui.Color.this">
+						<return_type>
+							<type nullable="false">
+								<this_type/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="1"/>
+				<invoke-virtual>
+					<method name="napile.ui.RgbColor.red$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="2"/>
+				<invoke-virtual>
+					<method name="napile.ui.RgbColor.green$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<local-get val="3"/>
+				<invoke-virtual>
+					<method name="napile.ui.RgbColor.blue$set">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="newValue">
+								<type nullable="false">
+									<class_type name="napile.lang.Int"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-virtual>
+				<pop/>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+	<method name="static">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.ui.RgbColor$RED"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.ui.RgbColor.RED">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor$RED"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.ui.RgbColor$GREEN"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.ui.RgbColor.GREEN">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor$GREEN"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.ui.RgbColor$BLUE"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.ui.RgbColor.BLUE">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor$BLUE"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
+	</method>
+</class>

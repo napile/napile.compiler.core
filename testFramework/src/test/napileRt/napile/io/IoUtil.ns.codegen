@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<class version="0" name="napile.io.IoUtil">
+	<modifiers>
+		<static/>
+	</modifiers>
+	<extends>
+		<type nullable="false">
+			<class_type name="napile.lang.Any"/>
+		</type>
+	</extends>
+	<method name="use">
+		<modifiers>
+			<static/>
+		</modifiers>
+		<type-parameters>
+			<type-parameter name="T">
+				<extends>
+					<type nullable="false">
+						<class_type name="napile.io.Closeable"/>
+					</type>
+				</extends>
+			</type-parameter>
+		</type-parameters>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="stream">
+				<type nullable="false">
+					<type_parameter_value_type name="T"/>
+				</type>
+			</parameter>
+			<parameter name="block">
+				<type nullable="false">
+					<method_type name="block">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="it">
+								<type nullable="false">
+									<type_parameter_value_type name="T"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method_type>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="3">
+			<instructions>
+				<local-get val="1">
+					<position line="28" column="4" file="napile/io/IoUtil.ns"/>
+				</local-get>
+				<local-get val="0">
+					<position line="28" column="10" file="napile/io/IoUtil.ns"/>
+				</local-get>
+				<invoke-anonym>
+					<position line="28" column="4" file="napile/io/IoUtil.ns"/>
+					<method>
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+						<parameters>
+							<parameter name="it">
+								<modifiers>
+									<final/>
+								</modifiers>
+								<type nullable="false">
+									<type_parameter_value_type name="T"/>
+								</type>
+							</parameter>
+						</parameters>
+					</method>
+				</invoke-anonym>
+				<jump val="5"/>
+				<jump val="5"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<return val="1"/>
+			</instructions>
+			<try-catch-blocks>
+				<try-catch-block>
+					<try start_index="0" end_index="4"/>
+					<catch start_index="4" end_index="5" variable_index="2">
+						<type nullable="false">
+							<class_type name="napile.lang.Exception"/>
+						</type>
+					</catch>
+				</try-catch-block>
+			</try-catch-blocks>
+		</code>
+	</method>
+	<method name="this">
+		<modifiers>
+			<heritable/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
+</class>
