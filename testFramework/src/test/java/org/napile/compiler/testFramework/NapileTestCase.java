@@ -45,12 +45,12 @@ public abstract class NapileTestCase extends TestCase
 {
 	private final File testDir = new File("testFramework/src/test/napileRt");
 	protected JetCoreEnvironment environment;
-	protected boolean genResults = true;
+	protected boolean genResults;
 	protected AnalyzeExhaust analyzeExhaust;
 
 	public NapileTestCase()
 	{
-
+		genResults
 	}
 
 	@Override
