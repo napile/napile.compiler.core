@@ -41,7 +41,7 @@ import junit.framework.TestCase;
  * @author VISTALL
  * @since 14:45/14.04.13
  */
-public class NapileTestCase extends TestCase
+public abstract class NapileTestCase extends TestCase
 {
 	private final File testDir = new File("testFramework/src/test/napileRt");
 	protected JetCoreEnvironment environment;
