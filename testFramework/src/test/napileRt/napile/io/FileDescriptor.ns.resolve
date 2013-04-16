@@ -1,0 +1,83 @@
+/*
+ * Copyright 2010-2013 napile.org
+ * Copyright Apache Harmony
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]></null>
+
+/**
+ * The lowest-level representation of a file, device, or
+ * socket. If is often used for wrapping an operating system "handle". Some
+ * I/O classes can be queried for the FileDescriptor they are operating on, and
+ * this descriptor can subsequently be used during the instantiation of another
+ * I/O class, so that the new object will reuse it.
+ * <p>
+ * The FileDescriptor class also contains static fields representing the
+ * system's standard input, output and error streams. These can be used directly
+ * if desired, but it is recommended to go through System.in, System.out, and
+ * System.err streams respectively.
+ * <p>
+ * Applications should not create new FileDescriptors.
+ *
+ * @see FileInputStream#getFD()
+ * @see FileOutputStream#getFD()
+ * @see RandomAccessFile#getFD()
+ */
+class FileDescriptor
+{
+	/**
+	 * The FileDescriptor representing standard input.
+	 */
+	static val systemIn : <MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]> = <ConstructorDescriptor[napile.io.FileDescriptor.this]>FileDescriptor</ConstructorDescriptor[napile.io.FileDescriptor.this]>();
+
+	/**
+	 * FileDescriptor representing standard out.
+	 */
+	static val systemOut : <MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]> = <ConstructorDescriptor[napile.io.FileDescriptor.this]>FileDescriptor</ConstructorDescriptor[napile.io.FileDescriptor.this]>();
+
+	/**
+	 * FileDescriptor representing standard error.
+	 */
+	static val systemErr : <MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]> = <ConstructorDescriptor[napile.io.FileDescriptor.this]>FileDescriptor</ConstructorDescriptor[napile.io.FileDescriptor.this]>();
+
+	static this()
+	{
+		<VariableDescriptorImpl[napile.io.FileDescriptor.systemIn]>systemIn</VariableDescriptorImpl[napile.io.FileDescriptor.systemIn]>.<VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]>descriptor</VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]> <null>=</null> <SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdInDescriptor]>getStdInDescriptor</SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdInDescriptor]>()
+
+		<VariableDescriptorImpl[napile.io.FileDescriptor.systemOut]>systemOut</VariableDescriptorImpl[napile.io.FileDescriptor.systemOut]>.<VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]>descriptor</VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]> <null>=</null> <SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdOutDescriptor]>getStdOutDescriptor</SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdOutDescriptor]>()
+
+		<VariableDescriptorImpl[napile.io.FileDescriptor.systemErr]>systemErr</VariableDescriptorImpl[napile.io.FileDescriptor.systemErr]>.<VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]>descriptor</VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]> <null>=</null> <SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdErrDescriptor]>getStdErrDescriptor</SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdErrDescriptor]>()
+	}
+
+	static local native meth getStdInDescriptor() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+
+	static local native meth getStdOutDescriptor() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+
+	static local native meth getStdErrDescriptor() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+
+	covered var readOnly: <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = false
+
+	/**
+	 * Represents a link to any underlying OS resources for this FileDescriptor.
+	 * A value of -1 indicates that this FileDescriptor is invalid.
+	 */
+	covered var descriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> = <SimpleMethodDescriptorImpl[napile.lang.Long.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Long.minus]>1.<SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>toLong</SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>()
+
+	/**
+	 * Constructs a new FileDescriptor containing an invalid handle. The
+	 * contained handle is usually modified by native code at a later point.
+	 */
+	this()
+}

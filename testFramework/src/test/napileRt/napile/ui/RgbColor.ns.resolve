@@ -1,0 +1,27 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]></null>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+class RgbColor : <MutableClassDescriptor[napile.ui.Color]>Color</MutableClassDescriptor[napile.ui.Color]>
+{
+	enum val RED : <MutableClassDescriptor[napile.ui.RgbColor]>RgbColor</MutableClassDescriptor[napile.ui.RgbColor]>(0xFF, 0x00, 0x00)
+
+	enum val GREEN : <MutableClassDescriptor[napile.ui.RgbColor]>RgbColor</MutableClassDescriptor[napile.ui.RgbColor]>(0x00, 0xFF, 0x00)
+
+	enum val BLUE : <MutableClassDescriptor[napile.ui.RgbColor]>RgbColor</MutableClassDescriptor[napile.ui.RgbColor]>(0x00, 0x00, 0xFF)
+
+	val red : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	val green : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	val blue : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+
+	this(<VariableDescriptorImpl[napile.ui.RgbColor.red]>red</VariableDescriptorImpl[napile.ui.RgbColor.red]>, <VariableDescriptorImpl[napile.ui.RgbColor.green]>green</VariableDescriptorImpl[napile.ui.RgbColor.green]>, <VariableDescriptorImpl[napile.ui.RgbColor.blue]>blue</VariableDescriptorImpl[napile.ui.RgbColor.blue]>)
+
+	override meth toCmykColor() : <MutableClassDescriptor[napile.ui.CmykColor]>CmykColor</MutableClassDescriptor[napile.ui.CmykColor]>
+	{
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+
+	override meth toRgbColor() : <MutableClassDescriptor[napile.ui.RgbColor]>RgbColor</MutableClassDescriptor[napile.ui.RgbColor]> = <MutableClassDescriptor[napile.ui.RgbColor]>this</MutableClassDescriptor[napile.ui.RgbColor]>
+}

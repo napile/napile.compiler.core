@@ -1,0 +1,18 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+class Extensions
+{
+	val forId : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+
+	val extensions : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.module.extension.Extension]>Extension</MutableClassDescriptor[napile.module.extension.Extension]>> = <SimpleMethodDescriptorImpl[napile.module.extension.Extensions.getExtensions]>getExtensions</SimpleMethodDescriptorImpl[napile.module.extension.Extensions.getExtensions]>()
+
+	this(<VariableDescriptorImpl[napile.module.extension.Extensions.forId]>forId</VariableDescriptorImpl[napile.module.extension.Extensions.forId]>)
+
+	local native meth getExtensions() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.module.extension.Extension]>Extension</MutableClassDescriptor[napile.module.extension.Extension]>>
+}

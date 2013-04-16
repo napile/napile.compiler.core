@@ -1,0 +1,35 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]>
+
+/~
+ ~ This class is parent of all classes.
+ ~/
+class Any
+{
+	static meth synchronized(val obj : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?, val fun : {})
+	{
+		<CallParameterAsVariableDescriptorImpl[napile.lang.Any.synchronized.fun]>fun</CallParameterAsVariableDescriptorImpl[napile.lang.Any.synchronized.fun]>()  //FIXME [VISTALL] stub - need discuss
+	}
+
+	static meth assert(val cond : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>, val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null)
+	{
+		if(<SimpleMethodDescriptorImpl[napile.lang.Bool.not]>!</SimpleMethodDescriptorImpl[napile.lang.Bool.not]><CallParameterAsVariableDescriptorImpl[napile.lang.Any.assert.cond]>cond</CallParameterAsVariableDescriptorImpl[napile.lang.Any.assert.cond]>)
+			throw <ConstructorDescriptor[napile.lang.AssertionError.this]>AssertionError</ConstructorDescriptor[napile.lang.AssertionError.this]>(<CallParameterAsVariableDescriptorImpl[napile.lang.Any.assert.message]>message</CallParameterAsVariableDescriptorImpl[napile.lang.Any.assert.message]>)
+	}
+
+	native meth getClass() : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>this</MutableClassDescriptor[napile.lang.Any]>>
+
+	native meth getType() : <MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]><<MutableClassDescriptor[napile.lang.Any]>this</MutableClassDescriptor[napile.lang.Any]>>
+
+	native meth hashCode() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+
+	meth equals(val o : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <SimpleMethodDescriptorImpl[napile.lang.Any.fullyEquals]>fullyEquals</SimpleMethodDescriptorImpl[napile.lang.Any.fullyEquals]>(<CallParameterAsVariableDescriptorImpl[napile.lang.Any.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.lang.Any.equals.o]>)
+
+	final native meth fullyEquals(val o : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>;
+
+	heritable meth clone() : <MutableClassDescriptor[napile.lang.Any]>this</MutableClassDescriptor[napile.lang.Any]> = throw <ConstructorDescriptor[napile.lang.Exception.this]>Exception</ConstructorDescriptor[napile.lang.Exception.this]>()
+
+	meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]> = <SimpleMethodDescriptorImpl[napile.lang.Any.getClass]>getClass</SimpleMethodDescriptorImpl[napile.lang.Any.getClass]>().<VariableDescriptorImpl[napile.reflect.Class.name]>name</VariableDescriptorImpl[napile.reflect.Class.name]> <SimpleMethodDescriptorImpl[napile.lang.String.plus]>+</SimpleMethodDescriptorImpl[napile.lang.String.plus]> "@" <SimpleMethodDescriptorImpl[napile.lang.String.plus]>+</SimpleMethodDescriptorImpl[napile.lang.String.plus]> <SimpleMethodDescriptorImpl[napile.lang.Any.hashCode]>hashCode</SimpleMethodDescriptorImpl[napile.lang.Any.hashCode]>()
+}

@@ -1,0 +1,25 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.Iterator]>Iterator</MutableClassDescriptor[napile.collection.Iterator]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+
+/**
+ * @author VISTALL
+ */
+class ArrayIterator<E> : <MutableClassDescriptor[napile.collection.Iterator]>Iterator</MutableClassDescriptor[napile.collection.Iterator]><<TypeParameterDescriptorImpl[napile.lang.ArrayIterator.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayIterator.E]>>
+{
+	local var index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+	local val array : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.ArrayIterator.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayIterator.E]>>
+
+	this(<VariableDescriptorImpl[napile.lang.ArrayIterator.array]>array</VariableDescriptorImpl[napile.lang.ArrayIterator.array]>)
+
+	override meth next() : <TypeParameterDescriptorImpl[napile.lang.ArrayIterator.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayIterator.E]> = <SimpleMethodDescriptorImpl[napile.lang.Array.get]><VariableDescriptorImpl[napile.lang.ArrayIterator.array]>array</VariableDescriptorImpl[napile.lang.ArrayIterator.array]>[<VariableDescriptorImpl[napile.lang.ArrayIterator.index]>index</VariableDescriptorImpl[napile.lang.ArrayIterator.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>
+
+	override meth hasNext() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <VariableDescriptorImpl[napile.lang.ArrayIterator.index]>index</VariableDescriptorImpl[napile.lang.ArrayIterator.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> <VariableDescriptorImpl[napile.lang.ArrayIterator.array]>array</VariableDescriptorImpl[napile.lang.ArrayIterator.array]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>
+
+	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+	override meth remove()
+	{
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+}

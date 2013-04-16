@@ -1,0 +1,15 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.condition]>condition</PackageDescriptorImpl[napile.condition]></null>
+
+/**
+ * @author VISTALL
+ */
+class CompareResult
+{
+	enum val GREATER : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>()
+
+	enum val EQUAL : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>()
+
+	enum val LOWER : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>()
+
+	this()
+}

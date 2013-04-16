@@ -1,0 +1,41 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+util class UiBuildUtil
+{
+	meth build<T(val text : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>>(val text : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>, val builder : {(val v : <TypeParameterDescriptorImpl[napile.ui.UiBuildUtil.build.T]>T</TypeParameterDescriptorImpl[napile.ui.UiBuildUtil.build.T]>) -> <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]>}) : <TypeParameterDescriptorImpl[napile.ui.UiBuildUtil.build.T]>T</TypeParameterDescriptorImpl[napile.ui.UiBuildUtil.build.T]>
+	{
+		val t = <ConstructorDescriptor[napile.ui.UiBuildUtil.build.T.this]>T</ConstructorDescriptor[napile.ui.UiBuildUtil.build.T.this]>(<CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.build.text]>text</CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.build.text]>)
+
+		<CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.build.builder]>builder</CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.build.builder]>(<LocalVariableDescriptor[napile.ui.UiBuildUtil.build.t]>t</LocalVariableDescriptor[napile.ui.UiBuildUtil.build.t]>)
+
+		return <LocalVariableDescriptor[napile.ui.UiBuildUtil.build.t]>t</LocalVariableDescriptor[napile.ui.UiBuildUtil.build.t]>
+	}
+
+	@<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+	meth plus(val comp : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>, val member : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>)
+	{
+		<CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.plus.comp]>comp</CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.plus.comp]>.<SimpleMethodDescriptorImpl[napile.ui.Component.add]>add</SimpleMethodDescriptorImpl[napile.ui.Component.add]>(<CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.plus.member]>member</CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.plus.member]>)
+	}
+}

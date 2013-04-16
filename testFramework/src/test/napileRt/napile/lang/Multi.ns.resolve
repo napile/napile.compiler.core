@@ -1,0 +1,38 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+/**
+ * @author VISTALL
+ */
+class Multi
+{
+	local val data : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>
+
+	this(val length : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>)
+	{
+		<VariableDescriptorImpl[napile.lang.Multi.data]>data</VariableDescriptorImpl[napile.lang.Multi.data]> <null>=</null> <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>(<CallParameterAsVariableDescriptorImpl[napile.lang.Multi.this.length]>length</CallParameterAsVariableDescriptorImpl[napile.lang.Multi.this.length]>)
+	}
+
+	meth set(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val value : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?)
+	{
+		<SimpleMethodDescriptorImpl[napile.lang.Array.set]><VariableDescriptorImpl[napile.lang.Multi.data]>data</VariableDescriptorImpl[napile.lang.Multi.data]>[<CallParameterAsVariableDescriptorImpl[napile.lang.Multi.set.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Multi.set.index]>]</SimpleMethodDescriptorImpl[napile.lang.Array.set]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.lang.Multi.set.value]>value</CallParameterAsVariableDescriptorImpl[napile.lang.Multi.set.value]>
+	}
+
+	meth get(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>? = <SimpleMethodDescriptorImpl[napile.lang.Array.get]><VariableDescriptorImpl[napile.lang.Multi.data]>data</VariableDescriptorImpl[napile.lang.Multi.data]>[<CallParameterAsVariableDescriptorImpl[napile.lang.Multi.get.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Multi.get.index]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>
+
+	override meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	{
+		var i = 0
+		var b = <ConstructorDescriptor[napile.lang.StringBuilder.this]>StringBuilder</ConstructorDescriptor[napile.lang.StringBuilder.this]>()
+		<LocalVariableDescriptor[napile.lang.Multi.toString.b]>b</LocalVariableDescriptor[napile.lang.Multi.toString.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "["
+
+		for (c in <VariableDescriptorImpl[napile.lang.Multi.data]>data</VariableDescriptorImpl[napile.lang.Multi.data]>)
+		{
+			if(<LocalVariableDescriptor[napile.lang.Multi.toString.i]>i</LocalVariableDescriptor[napile.lang.Multi.toString.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
+				<LocalVariableDescriptor[napile.lang.Multi.toString.b]>b</LocalVariableDescriptor[napile.lang.Multi.toString.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> ", "
+			<LocalVariableDescriptor[napile.lang.Multi.toString.i]>i</LocalVariableDescriptor[napile.lang.Multi.toString.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>
+			<LocalVariableDescriptor[napile.lang.Multi.toString.b]>b</LocalVariableDescriptor[napile.lang.Multi.toString.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> <LocalVariableDescriptor[napile.lang.Multi.toString.c]>c</LocalVariableDescriptor[napile.lang.Multi.toString.c]>.<SimpleMethodDescriptorImpl[napile.lang.Any.toString]>toString</SimpleMethodDescriptorImpl[napile.lang.Any.toString]>()
+		}
+		<LocalVariableDescriptor[napile.lang.Multi.toString.b]>b</LocalVariableDescriptor[napile.lang.Multi.toString.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "]"
+		return <LocalVariableDescriptor[napile.lang.Multi.toString.b]>b</LocalVariableDescriptor[napile.lang.Multi.toString.b]>.<SimpleMethodDescriptorImpl[napile.lang.StringBuilder.toString]>toString</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.toString]>()
+	}
+}

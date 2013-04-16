@@ -1,0 +1,8 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]></null>
+
+/**
+ * @author VISTALL
+ */
+abstract class Set<E> : <MutableClassDescriptor[napile.collection.Collection]>Collection</MutableClassDescriptor[napile.collection.Collection]><<TypeParameterDescriptorImpl[napile.collection.Set.E]>E</TypeParameterDescriptorImpl[napile.collection.Set.E]>>
+{
+}

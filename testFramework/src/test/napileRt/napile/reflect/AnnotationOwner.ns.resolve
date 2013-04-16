@@ -1,0 +1,32 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.ArrayList]>ArrayList</MutableClassDescriptor[napile.collection.ArrayList]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+
+/**
+ * @author VISTALL
+ */
+class AnnotationOwner
+{
+	final val annotations : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>
+
+	covered this(<VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>annotations</VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>)
+
+	meth findAnnotation<A>() : <TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotation.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotation.A]>?
+	{
+		for(a in <VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>annotations</VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>)
+			if (<LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotation.a]>a</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotation.a]> <null>is</null> <TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotation.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotation.A]>)
+				return <LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotation.a]>a</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotation.a]>
+		return null
+	}
+
+	meth findAnnotations<A>() : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>>
+	{
+		val list = <ConstructorDescriptor[napile.collection.ArrayList.this]>ArrayList</ConstructorDescriptor[napile.collection.ArrayList.this]><<TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>>(2)
+		for (a in <VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>annotations</VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>)
+			if(<LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.a]>a</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.a]> <null>is</null> <TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>)
+				<LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.list]>list</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.list]>.<SimpleMethodDescriptorImpl[napile.collection.ArrayList.add]>add</SimpleMethodDescriptorImpl[napile.collection.ArrayList.add]>(<LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.a]>a</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.a]>)
+		return <LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.list]>list</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.list]>
+	}
+}

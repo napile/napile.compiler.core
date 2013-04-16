@@ -1,0 +1,50 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]>
+
+/**
+ * @author VISTALL
+ */
+class ArrayList<E> : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>E</TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>>
+{
+	local var data : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>E</TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>>
+	local var size : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+
+	this(val predefinedSize : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 10)
+	{
+		<VariableDescriptorImpl[napile.collection.ArrayList.data]>data</VariableDescriptorImpl[napile.collection.ArrayList.data]> <null>=</null> <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>E</TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>>(<CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.this.predefinedSize]>predefinedSize</CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.this.predefinedSize]>)
+	}
+
+	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+	override meth add(val e : <TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>E</TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	{
+		<SimpleMethodDescriptorImpl[napile.collection.ArrayList.ensureCapacity]>ensureCapacity</SimpleMethodDescriptorImpl[napile.collection.ArrayList.ensureCapacity]>(<VariableDescriptorImpl[napile.collection.ArrayList.size]>size</VariableDescriptorImpl[napile.collection.ArrayList.size]> <SimpleMethodDescriptorImpl[napile.lang.Int.plus]>+</SimpleMethodDescriptorImpl[napile.lang.Int.plus]> 1);
+		<SimpleMethodDescriptorImpl[napile.lang.Array.set]><VariableDescriptorImpl[napile.collection.ArrayList.data]>data</VariableDescriptorImpl[napile.collection.ArrayList.data]>[<VariableDescriptorImpl[napile.collection.ArrayList.size]>size</VariableDescriptorImpl[napile.collection.ArrayList.size]><SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>]</SimpleMethodDescriptorImpl[napile.lang.Array.set]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.add.e]>e</CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.add.e]>;
+		return true;
+	}
+
+	override meth set(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val e : <TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>E</TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>)
+	{
+		<SimpleMethodDescriptorImpl[napile.lang.Array.set]><VariableDescriptorImpl[napile.collection.ArrayList.data]>data</VariableDescriptorImpl[napile.collection.ArrayList.data]>[<CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.set.index]>index</CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.set.index]>]</SimpleMethodDescriptorImpl[napile.lang.Array.set]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.set.e]>e</CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.set.e]>
+	}
+
+	override meth get(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>E</TypeParameterDescriptorImpl[napile.collection.ArrayList.E]> = <SimpleMethodDescriptorImpl[napile.lang.Array.get]><VariableDescriptorImpl[napile.collection.ArrayList.data]>data</VariableDescriptorImpl[napile.collection.ArrayList.data]>[<CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.get.index]>index</CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.get.index]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>
+
+	local meth ensureCapacity(val minCapacity : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>)
+	{
+		var oldCapacity = <VariableDescriptorImpl[napile.collection.ArrayList.data]>data</VariableDescriptorImpl[napile.collection.ArrayList.data]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>;
+		if (<CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.ensureCapacity.minCapacity]>minCapacity</CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.ensureCapacity.minCapacity]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>></SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.oldCapacity]>oldCapacity</LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.oldCapacity]>)
+		{
+			var newCapacity = (<LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.oldCapacity]>oldCapacity</LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.oldCapacity]> <SimpleMethodDescriptorImpl[napile.lang.Int.times]>*</SimpleMethodDescriptorImpl[napile.lang.Int.times]> 3) <SimpleMethodDescriptorImpl[napile.lang.Int.div]>/</SimpleMethodDescriptorImpl[napile.lang.Int.div]> 2 <SimpleMethodDescriptorImpl[napile.lang.Int.plus]>+</SimpleMethodDescriptorImpl[napile.lang.Int.plus]> 1;
+			if (<LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.newCapacity]>newCapacity</LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.newCapacity]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.ensureCapacity.minCapacity]>minCapacity</CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.ensureCapacity.minCapacity]>)
+				<LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.newCapacity]>newCapacity</LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.newCapacity]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.ensureCapacity.minCapacity]>minCapacity</CallParameterAsVariableDescriptorImpl[napile.collection.ArrayList.ensureCapacity.minCapacity]>;
+
+			<VariableDescriptorImpl[napile.collection.ArrayList.data]>data</VariableDescriptorImpl[napile.collection.ArrayList.data]> <null>=</null> <MutableClassDescriptor[napile.lang.ArrayUtil]>ArrayUtil</MutableClassDescriptor[napile.lang.ArrayUtil]>.<SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOf]>copyOf</SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOf]>(<VariableDescriptorImpl[napile.collection.ArrayList.data]>data</VariableDescriptorImpl[napile.collection.ArrayList.data]>, <LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.newCapacity]>newCapacity</LocalVariableDescriptor[napile.collection.ArrayList.ensureCapacity.newCapacity]>);
+		}
+	}
+
+	override meth iterator() : @<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]> <MutableClassDescriptor[napile.collection.Iterator]>Iterator</MutableClassDescriptor[napile.collection.Iterator]><<TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>E</TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>> = <ConstructorDescriptor[napile.collection.ListIterator.this]>ListIterator</ConstructorDescriptor[napile.collection.ListIterator.this]><<TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>E</TypeParameterDescriptorImpl[napile.collection.ArrayList.E]>>(<MutableClassDescriptor[napile.collection.ArrayList]>this</MutableClassDescriptor[napile.collection.ArrayList]>)
+
+	override meth size() = <VariableDescriptorImpl[napile.collection.ArrayList.size]>size</VariableDescriptorImpl[napile.collection.ArrayList.size]>
+}

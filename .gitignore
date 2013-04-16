@@ -19,3 +19,4 @@ tmp
 .*.swp
 gh-pages
 *.class
+/testFramework/testProject/.idea/workspace.xml

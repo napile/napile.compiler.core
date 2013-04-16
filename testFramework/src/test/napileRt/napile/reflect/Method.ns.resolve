@@ -1,0 +1,31 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]></null>
+
+/**
+ * @author VISTALL
+ */
+class Method : <MutableClassDescriptor[napile.reflect.MethodLike]>MethodLike</MutableClassDescriptor[napile.reflect.MethodLike]>
+{
+	local this(
+			val owner : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>?,
+			val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>,
+			val modifiers : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]>>,
+			val annotations : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>) : <MutableClassDescriptor[napile.reflect.MethodLike]>MethodLike</MutableClassDescriptor[napile.reflect.MethodLike]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.Method.this.owner]>owner</CallParameterAsVariableDescriptorImpl[napile.reflect.Method.this.owner]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Method.this.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.Method.this.name]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Method.this.modifiers]>modifiers</CallParameterAsVariableDescriptorImpl[napile.reflect.Method.this.modifiers]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Method.this.annotations]>annotations</CallParameterAsVariableDescriptorImpl[napile.reflect.Method.this.annotations]>)
+
+	meth invoke(val object : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>, val arguments : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>) : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?
+	{
+		return null //TODO [VISTALL]
+	}
+
+	/**
+	 * @return returnValues, last value if return value, others if values to ref parameters
+	 */
+	meth invokeStatic(val arguments : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>) : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>
+	{
+		if (<SimpleMethodDescriptorImpl[napile.lang.Bool.not]>!</SimpleMethodDescriptorImpl[napile.lang.Bool.not]><SimpleMethodDescriptorImpl[napile.reflect.Method.isStatic]>isStatic</SimpleMethodDescriptorImpl[napile.reflect.Method.isStatic]>())
+			throw <ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>IllegalArgumentException</ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>("Use 'invoke' for instance method call")
+
+		return <SimpleMethodDescriptorImpl[napile.reflect.Method.invokeStatic0]>invokeStatic0</SimpleMethodDescriptorImpl[napile.reflect.Method.invokeStatic0]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.Method.invokeStatic.arguments]>arguments</CallParameterAsVariableDescriptorImpl[napile.reflect.Method.invokeStatic.arguments]>)
+	}
+
+	local native meth invokeStatic0(val arguments : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>) : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>
+}

@@ -1,0 +1,102 @@
+/*
+ * Copyright 2010-2013 napile.org
+ * Copyright Apache Harmony
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+/**
+ * A {@code Thread} is a concurrent unit of execution. It has its own call stack
+ * for methods being invoked, their arguments and local variables. Each virtual
+ * machine instance has at least one main {@code Thread} running when it is
+ * started; typically, there are several others for housekeeping. The
+ * application might decide to launch additional {@code Thread}s for specific
+ * purposes.
+ * <p>
+ * {@code Thread}s in the same VM interact and synchronize by the use of shared
+ * objects and monitors associated with these objects. Synchronized methods and
+ * part of the API in {@link Object} also allow {@code Thread}s to cooperate.
+ * <p>
+ * There are basically two main ways of having a {@code Thread} execute
+ * application code. One is providing a new class that extends {@code Thread}
+ * and overriding its {@link #run()} method. The other is providing a new
+ * {@code Thread} instance with a {@link Runnable} object during its creation.
+ * In both cases, the {@link #start()} method must be called to actually execute
+ * the new {@code Thread}.
+ * <p>
+ * Each {@code Thread} has an integer priority that basically determines the
+ * amount of CPU time the {@code Thread} gets. It can be set using the
+ * {@link #setPriority(int)} method. A {@code Thread} can also be made a daemon,
+ * which makes it run in the background. The latter also affects VM termination
+ * behavior: the VM does not terminate automatically as long as there are
+ * non-daemon threads running.
+ *
+ * @see napile.lang.ThreadGroup
+ */
+class Thread
+{
+	local static var threadOrdinalNum : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> = 0.<SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>toLong</SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>()
+
+	static meth getNextThreadId() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> = <SimpleMethodDescriptorImpl[napile.lang.Long.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Long.inc]> <VariableDescriptorImpl[napile.lang.Thread.threadOrdinalNum]>threadOrdinalNum</VariableDescriptorImpl[napile.lang.Thread.threadOrdinalNum]>
+
+	static var systemThreadGroup : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>
+	static var mainThreadGroup : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>
+
+	static this()
+	{
+		<VariableDescriptorImpl[napile.lang.Thread.systemThreadGroup]>systemThreadGroup</VariableDescriptorImpl[napile.lang.Thread.systemThreadGroup]> <null>=</null> <ConstructorDescriptor[napile.lang.ThreadGroup.this]>ThreadGroup</ConstructorDescriptor[napile.lang.ThreadGroup.this]>("system")
+		<VariableDescriptorImpl[napile.lang.Thread.mainThreadGroup]>mainThreadGroup</VariableDescriptorImpl[napile.lang.Thread.mainThreadGroup]> <null>=</null> <ConstructorDescriptor[napile.lang.ThreadGroup.this]>ThreadGroup</ConstructorDescriptor[napile.lang.ThreadGroup.this]>("main", <VariableDescriptorImpl[napile.lang.Thread.systemThreadGroup]>systemThreadGroup</VariableDescriptorImpl[napile.lang.Thread.systemThreadGroup]>)
+	}
+
+	local val target : {}
+
+	local var state
+	{
+		local set
+	} = <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]>.<VariableDescriptorImpl[napile.lang.ThreadState.NEW]>NEW</VariableDescriptorImpl[napile.lang.ThreadState.NEW]>
+
+	/**
+	 * Thread's ID
+	 */
+	local val threadId : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	val group : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>
+
+	this(val threadName : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null, val threadGroup : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>? = null, <VariableDescriptorImpl[napile.lang.Thread.target]>target</VariableDescriptorImpl[napile.lang.Thread.target]> = {})
+	{
+		<VariableDescriptorImpl[napile.lang.Thread.threadId]>threadId</VariableDescriptorImpl[napile.lang.Thread.threadId]> <null>=</null> <SimpleMethodDescriptorImpl[napile.lang.Thread.getNextThreadId]>getNextThreadId</SimpleMethodDescriptorImpl[napile.lang.Thread.getNextThreadId]>()
+		<VariableDescriptorImpl[napile.lang.Thread.name]>name</VariableDescriptorImpl[napile.lang.Thread.name]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.lang.Thread.this.threadName]>threadName</CallParameterAsVariableDescriptorImpl[napile.lang.Thread.this.threadName]> <null>?:</null> "Thread: " <SimpleMethodDescriptorImpl[napile.lang.String.plus]>+</SimpleMethodDescriptorImpl[napile.lang.String.plus]> <VariableDescriptorImpl[napile.lang.Thread.threadId]>threadId</VariableDescriptorImpl[napile.lang.Thread.threadId]>
+		<VariableDescriptorImpl[napile.lang.Thread.group]>group</VariableDescriptorImpl[napile.lang.Thread.group]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.lang.Thread.this.threadGroup]>threadGroup</CallParameterAsVariableDescriptorImpl[napile.lang.Thread.this.threadGroup]> <null>?:</null> <VariableDescriptorImpl[napile.lang.Thread.mainThreadGroup]>mainThreadGroup</VariableDescriptorImpl[napile.lang.Thread.mainThreadGroup]>
+	}
+
+	local meth run()
+	{
+		<VariableDescriptorImpl[napile.lang.Thread.target]>target</VariableDescriptorImpl[napile.lang.Thread.target]>()
+
+		<VariableDescriptorImpl[napile.lang.Thread.state]>state</VariableDescriptorImpl[napile.lang.Thread.state]> <null>=</null> <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]>.<VariableDescriptorImpl[napile.lang.ThreadState.FINISHED]>FINISHED</VariableDescriptorImpl[napile.lang.ThreadState.FINISHED]>
+	}
+
+	meth start()
+	{
+		if(<VariableDescriptorImpl[napile.lang.Thread.state]>state</VariableDescriptorImpl[napile.lang.Thread.state]> <SimpleMethodDescriptorImpl[napile.lang.ThreadState.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.ThreadState.equals]> <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]>.<VariableDescriptorImpl[napile.lang.ThreadState.NEW]>NEW</VariableDescriptorImpl[napile.lang.ThreadState.NEW]>)
+			throw <ConstructorDescriptor[napile.lang.IllegalStateException.this]>IllegalStateException</ConstructorDescriptor[napile.lang.IllegalStateException.this]>()
+
+		<VariableDescriptorImpl[napile.lang.Thread.state]>state</VariableDescriptorImpl[napile.lang.Thread.state]> <null>=</null> <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]>.<VariableDescriptorImpl[napile.lang.ThreadState.STARTED]>STARTED</VariableDescriptorImpl[napile.lang.ThreadState.STARTED]>
+
+		<SimpleMethodDescriptorImpl[napile.lang.Thread.start0]>start0</SimpleMethodDescriptorImpl[napile.lang.Thread.start0]>()
+	}
+
+	local native meth start0();
+}

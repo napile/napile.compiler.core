@@ -1,0 +1,16 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+class ExtensionPoint
+{
+	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+
+	val descriptor : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>
+
+	this(<VariableDescriptorImpl[napile.module.extension.ExtensionPoint.name]>name</VariableDescriptorImpl[napile.module.extension.ExtensionPoint.name]>, <VariableDescriptorImpl[napile.module.extension.ExtensionPoint.descriptor]>descriptor</VariableDescriptorImpl[napile.module.extension.ExtensionPoint.descriptor]>)
+}

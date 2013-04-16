@@ -1,0 +1,17 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]>
+
+/**
+ * @author VISTALL
+ */
+abstract class Map<K, V> : <MutableClassDescriptor[napile.collection.Sizeable]>Sizeable</MutableClassDescriptor[napile.collection.Sizeable]>
+{
+	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+	meth put(val key : <TypeParameterDescriptorImpl[napile.collection.Map.K]>K</TypeParameterDescriptorImpl[napile.collection.Map.K]>, val value : <TypeParameterDescriptorImpl[napile.collection.Map.V]>V</TypeParameterDescriptorImpl[napile.collection.Map.V]>)
+
+	meth get(val key : <TypeParameterDescriptorImpl[napile.collection.Map.K]>K</TypeParameterDescriptorImpl[napile.collection.Map.K]>) : <TypeParameterDescriptorImpl[napile.collection.Map.V]>V</TypeParameterDescriptorImpl[napile.collection.Map.V]>
+
+	meth entrySet() : @<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]> <MutableClassDescriptor[napile.collection.Set]>Set</MutableClassDescriptor[napile.collection.Set]><[val key : <TypeParameterDescriptorImpl[napile.collection.Map.K]>K</TypeParameterDescriptorImpl[napile.collection.Map.K]>, val value : <TypeParameterDescriptorImpl[napile.collection.Map.V]>V</TypeParameterDescriptorImpl[napile.collection.Map.V]>]>
+}

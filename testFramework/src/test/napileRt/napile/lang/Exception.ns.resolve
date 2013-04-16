@@ -1,0 +1,43 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
+
+/**
+ * @author VISTALL
+ */
+class Exception
+{
+	final val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>?
+
+	final val stack : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.StackTraceElement]>StackTraceElement</MutableClassDescriptor[napile.lang.StackTraceElement]>>
+
+	this(<VariableDescriptorImpl[napile.lang.Exception.message]>message</VariableDescriptorImpl[napile.lang.Exception.message]> = null)
+	{
+		<VariableDescriptorImpl[napile.lang.Exception.stack]>stack</VariableDescriptorImpl[napile.lang.Exception.stack]> <null>=</null> <SimpleMethodDescriptorImpl[napile.lang.Exception.generateStack]>generateStack</SimpleMethodDescriptorImpl[napile.lang.Exception.generateStack]>();
+	}
+
+	local native meth generateStack() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.StackTraceElement]>StackTraceElement</MutableClassDescriptor[napile.lang.StackTraceElement]>>
+
+	meth printStackTrace(val b : <MutableClassDescriptor[napile.lang.StringBuilder]>StringBuilder</MutableClassDescriptor[napile.lang.StringBuilder]>)
+	{
+		<CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]>b</CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> <SimpleMethodDescriptorImpl[napile.lang.Exception.getClass]>getClass</SimpleMethodDescriptorImpl[napile.lang.Exception.getClass]>().<VariableDescriptorImpl[napile.reflect.Class.name]>name</VariableDescriptorImpl[napile.reflect.Class.name]>
+		if(<VariableDescriptorImpl[napile.lang.Exception.message]>message</VariableDescriptorImpl[napile.lang.Exception.message]> <SimpleMethodDescriptorImpl[napile.lang.String.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.String.equals]> null)
+		{
+			<CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]>b</CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> " : "
+			<CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]>b</CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> <VariableDescriptorImpl[napile.lang.Exception.message]>message</VariableDescriptorImpl[napile.lang.Exception.message]>
+		}
+
+		<CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]>b</CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "\n"
+		for(i in <VariableDescriptorImpl[napile.lang.Exception.stack]>stack</VariableDescriptorImpl[napile.lang.Exception.stack]>)
+		{
+			<CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]>b</CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "\tat "
+			<CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]>b</CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> <LocalVariableDescriptor[napile.lang.Exception.printStackTrace.i]>i</LocalVariableDescriptor[napile.lang.Exception.printStackTrace.i]>
+			<CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]>b</CallParameterAsVariableDescriptorImpl[napile.lang.Exception.printStackTrace.b]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "\n"
+		}
+	}
+
+	meth printStackTrace()
+	{
+		<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>.<VariableDescriptorImpl[napile.logging.Logger.System]>System</VariableDescriptorImpl[napile.logging.Logger.System]>.<SimpleMethodDescriptorImpl[napile.logging.Logger.error]>error</SimpleMethodDescriptorImpl[napile.logging.Logger.error]>(<CallParameterAsVariableDescriptorImpl[napile.logging.Logger.error.exception]>exception</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.error.exception]> = <MutableClassDescriptor[napile.lang.Exception]>this</MutableClassDescriptor[napile.lang.Exception]>)
+	}
+}

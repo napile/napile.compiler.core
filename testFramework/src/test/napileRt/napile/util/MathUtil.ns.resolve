@@ -1,0 +1,26 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]></null>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+util class MathUtil
+{
+	meth min(val a : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val b : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = if(<CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.a]>a</CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.a]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><=</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.b]>b</CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.b]>) <CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.a]>a</CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.a]> else <CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.b]>b</CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.b]>
+}

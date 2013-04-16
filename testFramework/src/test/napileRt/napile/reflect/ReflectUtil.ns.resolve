@@ -1,0 +1,18 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]></null>
+
+/**
+ * @author VISTALL
+ */
+util class ReflectUtil
+{
+	/**
+	 * @throw ClassNotFoundException
+	*/
+	meth findClass(val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>
+	{
+		//TODO [VISTALL] get class-loader and then get by name, when they ill implemented
+		return <SimpleMethodDescriptorImpl[napile.reflect.ReflectUtil.findClass0]>findClass0</SimpleMethodDescriptorImpl[napile.reflect.ReflectUtil.findClass0]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.ReflectUtil.findClass.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.ReflectUtil.findClass.name]>)
+	}
+
+	native meth findClass0(val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>
+}

@@ -1,0 +1,12 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.condition]>condition</PackageDescriptorImpl[napile.condition]>.<MutableClassDescriptor[napile.condition.Condition]>Condition</MutableClassDescriptor[napile.condition.Condition]>
+
+/**
+ * @author VISTALL
+ */
+@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+final class Annotation
+{
+	this(val cond : <MutableClassDescriptor[napile.condition.Condition]>Condition</MutableClassDescriptor[napile.condition.Condition]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>? = null)
+}

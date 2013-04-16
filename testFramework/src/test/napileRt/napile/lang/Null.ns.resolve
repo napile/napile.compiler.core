@@ -1,0 +1,14 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+/**
+ * @author VISTALL
+ */
+final class Null
+{
+	// need nullable flag
+	static val INSTANCE : <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]>? = <ConstructorDescriptor[napile.lang.Null.this]>Null</ConstructorDescriptor[napile.lang.Null.this]>()
+
+	local this()
+
+	override meth toString() = "null"
+}

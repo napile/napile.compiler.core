@@ -1,0 +1,35 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+
+/**
+ * @author VISTALL
+ */
+class ExtensionPointName<T>
+{
+	val id : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+
+	this(<VariableDescriptorImpl[napile.module.extension.ExtensionPointName.id]>id</VariableDescriptorImpl[napile.module.extension.ExtensionPointName.id]>, <VariableDescriptorImpl[napile.module.extension.ExtensionPointName.name]>name</VariableDescriptorImpl[napile.module.extension.ExtensionPointName.name]>)
+
+	meth getValues() : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.module.extension.ExtensionPointName.T]>T</TypeParameterDescriptorImpl[napile.module.extension.ExtensionPointName.T]>>
+	{
+		return <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<TypeParameterDescriptorImpl[napile.module.extension.ExtensionPointName.T]>T</TypeParameterDescriptorImpl[napile.module.extension.ExtensionPointName.T]>>(0) //TODO [VISTALL]
+	}
+}

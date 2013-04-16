@@ -1,0 +1,9 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]></null>
+
+/**
+ * @author VISTALL
+ */
+class ClassNotFoundException : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>
+{
+	this(val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.reflect.ClassNotFoundException]>this</MutableClassDescriptor[napile.reflect.ClassNotFoundException]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.ClassNotFoundException.this.message]>message</CallParameterAsVariableDescriptorImpl[napile.reflect.ClassNotFoundException.this.message]>)
+}

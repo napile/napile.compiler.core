@@ -1,0 +1,43 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+/**
+ * @author VISTALL
+ */
+final class StringBuilder
+{
+	local var array : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Char]>Char</MutableClassDescriptor[napile.lang.Char]>> = <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<MutableClassDescriptor[napile.lang.Char]>Char</MutableClassDescriptor[napile.lang.Char]>>(10)
+	local var count : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+
+	this()
+
+	meth plus(val value : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.StringBuilder]>this</MutableClassDescriptor[napile.lang.StringBuilder]>
+	{
+		var str = if(<CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.plus.value]>value</CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.plus.value]> <null>is</null> <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) <CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.plus.value]>value</CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.plus.value]> <null>as</null> <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]> else <CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.plus.value]>value</CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.plus.value]>.<SimpleMethodDescriptorImpl[napile.lang.Any.toString]>toString</SimpleMethodDescriptorImpl[napile.lang.Any.toString]>()
+
+		var newCount = <LocalVariableDescriptor[napile.lang.StringBuilder.plus.str]>str</LocalVariableDescriptor[napile.lang.StringBuilder.plus.str]>.<SimpleMethodDescriptorImpl[napile.lang.String.size]>size</SimpleMethodDescriptorImpl[napile.lang.String.size]>() <SimpleMethodDescriptorImpl[napile.lang.Int.plus]>+</SimpleMethodDescriptorImpl[napile.lang.Int.plus]> <VariableDescriptorImpl[napile.lang.StringBuilder.count]>count</VariableDescriptorImpl[napile.lang.StringBuilder.count]>
+		if(<LocalVariableDescriptor[napile.lang.StringBuilder.plus.newCount]>newCount</LocalVariableDescriptor[napile.lang.StringBuilder.plus.newCount]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>></SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <VariableDescriptorImpl[napile.lang.StringBuilder.array]>array</VariableDescriptorImpl[napile.lang.StringBuilder.array]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
+			<SimpleMethodDescriptorImpl[napile.lang.StringBuilder.expandCapacity]>expandCapacity</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.expandCapacity]>(<LocalVariableDescriptor[napile.lang.StringBuilder.plus.newCount]>newCount</LocalVariableDescriptor[napile.lang.StringBuilder.plus.newCount]>)
+
+		<LocalVariableDescriptor[napile.lang.StringBuilder.plus.str]>str</LocalVariableDescriptor[napile.lang.StringBuilder.plus.str]>.<SimpleMethodDescriptorImpl[napile.lang.String.getChars]>getChars</SimpleMethodDescriptorImpl[napile.lang.String.getChars]>(0, <LocalVariableDescriptor[napile.lang.StringBuilder.plus.str]>str</LocalVariableDescriptor[napile.lang.StringBuilder.plus.str]>.<SimpleMethodDescriptorImpl[napile.lang.String.size]>size</SimpleMethodDescriptorImpl[napile.lang.String.size]>(), <VariableDescriptorImpl[napile.lang.StringBuilder.array]>array</VariableDescriptorImpl[napile.lang.StringBuilder.array]>, <VariableDescriptorImpl[napile.lang.StringBuilder.count]>count</VariableDescriptorImpl[napile.lang.StringBuilder.count]>)
+
+		<VariableDescriptorImpl[napile.lang.StringBuilder.count]>count</VariableDescriptorImpl[napile.lang.StringBuilder.count]> <null>=</null> <LocalVariableDescriptor[napile.lang.StringBuilder.plus.newCount]>newCount</LocalVariableDescriptor[napile.lang.StringBuilder.plus.newCount]>;
+
+		return <MutableClassDescriptor[napile.lang.StringBuilder]>this</MutableClassDescriptor[napile.lang.StringBuilder]>
+	}
+
+	meth expandCapacity(val minimumCapacity : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>)
+	{
+		var newCapacity = (<VariableDescriptorImpl[napile.lang.StringBuilder.array]>array</VariableDescriptorImpl[napile.lang.StringBuilder.array]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]> <SimpleMethodDescriptorImpl[napile.lang.Int.plus]>+</SimpleMethodDescriptorImpl[napile.lang.Int.plus]> 1) <SimpleMethodDescriptorImpl[napile.lang.Int.times]>*</SimpleMethodDescriptorImpl[napile.lang.Int.times]> 2;
+		if (<LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]>newCapacity</LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> 0)
+			<LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]>newCapacity</LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]> <null>=</null> <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>.<VariableDescriptorImpl[napile.lang.Int.MAX_VALUE]>MAX_VALUE</VariableDescriptorImpl[napile.lang.Int.MAX_VALUE]>;
+		else if (<CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.expandCapacity.minimumCapacity]>minimumCapacity</CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.expandCapacity.minimumCapacity]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>></SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]>newCapacity</LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]>)
+			<LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]>newCapacity</LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.expandCapacity.minimumCapacity]>minimumCapacity</CallParameterAsVariableDescriptorImpl[napile.lang.StringBuilder.expandCapacity.minimumCapacity]>;
+
+		<VariableDescriptorImpl[napile.lang.StringBuilder.array]>array</VariableDescriptorImpl[napile.lang.StringBuilder.array]> <null>=</null> <MutableClassDescriptor[napile.lang.ArrayUtil]>ArrayUtil</MutableClassDescriptor[napile.lang.ArrayUtil]>.<SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOf]>copyOf</SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOf]>(<VariableDescriptorImpl[napile.lang.StringBuilder.array]>array</VariableDescriptorImpl[napile.lang.StringBuilder.array]>, <LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]>newCapacity</LocalVariableDescriptor[napile.lang.StringBuilder.expandCapacity.newCapacity]>);
+	}
+
+	override meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	{
+		return <ConstructorDescriptor[napile.lang.String.this]>String</ConstructorDescriptor[napile.lang.String.this]>(<VariableDescriptorImpl[napile.lang.StringBuilder.array]>array</VariableDescriptorImpl[napile.lang.StringBuilder.array]>, 0, <VariableDescriptorImpl[napile.lang.StringBuilder.count]>count</VariableDescriptorImpl[napile.lang.StringBuilder.count]>);
+	}
+}

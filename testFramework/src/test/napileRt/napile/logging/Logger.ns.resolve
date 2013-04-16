@@ -1,0 +1,59 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<PackageDescriptorImpl[napile.logging.impl]>impl</PackageDescriptorImpl[napile.logging.impl]>.<MutableClassDescriptor[napile.logging.impl.LoggerImpl]>LoggerImpl</MutableClassDescriptor[napile.logging.impl.LoggerImpl]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<MutableClassDescriptor[napile.module.extension.ExtensionPointName]>ExtensionPointName</MutableClassDescriptor[napile.module.extension.ExtensionPointName]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<PackageDescriptorImpl[napile.module.extension.descriptors]>descriptors</PackageDescriptorImpl[napile.module.extension.descriptors]>.<MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtensionWithId]>SimpleFactoryExtensionWithId</MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtensionWithId]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.IterableUtil]>IterableUtil</MutableClassDescriptor[napile.collection.IterableUtil]>.<SimpleMethodDescriptorImpl[napile.collection.IterableUtil.select]>select</SimpleMethodDescriptorImpl[napile.collection.IterableUtil.select]>
+
+/**
+ * @author VISTALL
+ */
+abstract class Logger
+{
+	static val EP_NAME : <MutableClassDescriptor[napile.module.extension.ExtensionPointName]>ExtensionPointName</MutableClassDescriptor[napile.module.extension.ExtensionPointName]><<MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtensionWithId]>SimpleFactoryExtensionWithId</MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtensionWithId]><<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>>> = <ConstructorDescriptor[napile.module.extension.ExtensionPointName.this]>ExtensionPointName</ConstructorDescriptor[napile.module.extension.ExtensionPointName.this]>("napile.lang", "logger")
+
+	static val System : <MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]> = <MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>.<SimpleMethodDescriptorImpl[napile.logging.Logger.getLogger]>getLogger</SimpleMethodDescriptorImpl[napile.logging.Logger.getLogger]>("System");
+
+	static meth getLogger(val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) : <MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
+	{
+		// select extension by name
+		val extension = <VariableDescriptorImpl[napile.logging.Logger.EP_NAME]>EP_NAME</VariableDescriptorImpl[napile.logging.Logger.EP_NAME]>.<SimpleMethodDescriptorImpl[napile.module.extension.ExtensionPointName.getValues]>getValues</SimpleMethodDescriptorImpl[napile.module.extension.ExtensionPointName.getValues]>().<SimpleMethodDescriptorImpl[napile.collection.IterableUtil.select]>select</SimpleMethodDescriptorImpl[napile.collection.IterableUtil.select]>{<CallParameterAsVariableDescriptorImpl[napile.logging.Logger.getLogger.@noname.value]>value</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.getLogger.@noname.value]>.<VariableDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.id]>id</VariableDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.id]> <SimpleMethodDescriptorImpl[napile.lang.String.equals]>==</SimpleMethodDescriptorImpl[napile.lang.String.equals]> <CallParameterAsVariableDescriptorImpl[napile.logging.Logger.getLogger.name]>name</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.getLogger.name]>}
+
+		if(<LocalVariableDescriptor[napile.logging.Logger.getLogger.extension]>extension</LocalVariableDescriptor[napile.logging.Logger.getLogger.extension]> <SimpleMethodDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.equals]>!=</SimpleMethodDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.equals]> null)
+		{
+			return <LocalVariableDescriptor[napile.logging.Logger.getLogger.extension]>extension</LocalVariableDescriptor[napile.logging.Logger.getLogger.extension]>.<SimpleMethodDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.create]>create</SimpleMethodDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.create]>()
+		}
+
+		//TODO [VISTALL] if no extension get by '*'
+		return <ConstructorDescriptor[napile.logging.impl.LoggerImpl.this]>LoggerImpl</ConstructorDescriptor[napile.logging.impl.LoggerImpl.this]>(<CallParameterAsVariableDescriptorImpl[napile.logging.Logger.getLogger.name]>name</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.getLogger.name]>)
+	}
+
+	static meth getLogger(val clazz : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>) : <MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]> = <SimpleMethodDescriptorImpl[napile.logging.Logger.getLogger]>getLogger</SimpleMethodDescriptorImpl[napile.logging.Logger.getLogger]>(<CallParameterAsVariableDescriptorImpl[napile.logging.Logger.getLogger.clazz]>clazz</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.getLogger.clazz]>.<VariableDescriptorImpl[napile.reflect.Class.name]>name</VariableDescriptorImpl[napile.reflect.Class.name]>)
+
+	this()
+
+	meth info(val message : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>? = null, val exception : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>? = null) : <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]> = <SimpleMethodDescriptorImpl[napile.logging.Logger.log]>log</SimpleMethodDescriptorImpl[napile.logging.Logger.log]>(<MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>.<VariableDescriptorImpl[napile.logging.LoggingLevel.INFO]>INFO</VariableDescriptorImpl[napile.logging.LoggingLevel.INFO]>, <CallParameterAsVariableDescriptorImpl[napile.logging.Logger.info.message]>message</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.info.message]>, <CallParameterAsVariableDescriptorImpl[napile.logging.Logger.info.exception]>exception</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.info.exception]>)
+
+	meth warn(val message : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>? = null, val exception : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>? = null) : <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]> = <SimpleMethodDescriptorImpl[napile.logging.Logger.log]>log</SimpleMethodDescriptorImpl[napile.logging.Logger.log]>(<MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>.<VariableDescriptorImpl[napile.logging.LoggingLevel.WARN]>WARN</VariableDescriptorImpl[napile.logging.LoggingLevel.WARN]>, <CallParameterAsVariableDescriptorImpl[napile.logging.Logger.warn.message]>message</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.warn.message]>, <CallParameterAsVariableDescriptorImpl[napile.logging.Logger.warn.exception]>exception</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.warn.exception]>)
+
+	meth error(val message : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>? = null, val exception : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>? = null) : <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]> = <SimpleMethodDescriptorImpl[napile.logging.Logger.log]>log</SimpleMethodDescriptorImpl[napile.logging.Logger.log]>(<MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>.<VariableDescriptorImpl[napile.logging.LoggingLevel.ERROR]>ERROR</VariableDescriptorImpl[napile.logging.LoggingLevel.ERROR]>, <CallParameterAsVariableDescriptorImpl[napile.logging.Logger.error.message]>message</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.error.message]>, <CallParameterAsVariableDescriptorImpl[napile.logging.Logger.error.exception]>exception</CallParameterAsVariableDescriptorImpl[napile.logging.Logger.error.exception]>)
+
+	meth log(val level : <MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>, val message : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>? = null, val exception : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>? = null)
+}

@@ -1,0 +1,10 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>.<PackageDescriptorImpl[napile.ui.render]>render</PackageDescriptorImpl[napile.ui.render]></null>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+abstract class UiRender
+{
+
+}

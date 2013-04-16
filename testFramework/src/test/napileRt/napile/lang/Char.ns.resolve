@@ -1,0 +1,28 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>
+
+/**
+ * @author VISTALL
+ */
+@<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>('\0')
+final class Char : <MutableClassDescriptor[napile.lang.Number]>Number</MutableClassDescriptor[napile.lang.Number]>
+{
+	local this()
+
+	native override meth toByte() : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+
+	native override meth toShort() : <MutableClassDescriptor[napile.lang.Short]>Short</MutableClassDescriptor[napile.lang.Short]>
+
+	native override meth toInt() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+
+	native override meth toLong() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+
+	native override meth toFloat() : <MutableClassDescriptor[napile.lang.Float]>Float</MutableClassDescriptor[napile.lang.Float]>
+
+	native override meth toDouble() : <MutableClassDescriptor[napile.lang.Double]>Double</MutableClassDescriptor[napile.lang.Double]>
+
+	override native meth equals(val o : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+
+	override native meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+}

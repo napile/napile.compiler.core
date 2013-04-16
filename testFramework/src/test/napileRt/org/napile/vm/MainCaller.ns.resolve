@@ -1,0 +1,53 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[org]>org</PackageDescriptorImpl[org]>.<PackageDescriptorImpl[org.napile]>napile</PackageDescriptorImpl[org.napile]>.<PackageDescriptorImpl[org.napile.vm]>vm</PackageDescriptorImpl[org.napile.vm]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.ReflectUtil]>ReflectUtil</MutableClassDescriptor[napile.reflect.ReflectUtil]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Method]>Method</MutableClassDescriptor[napile.reflect.Method]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<MutableClassDescriptor[napile.asm.AsmUtil]>AsmUtil</MutableClassDescriptor[napile.asm.AsmUtil]>.<null>toAsmType</null>
+
+/**
+ * @author VISTALL
+ */
+util class MainCaller
+{
+	meth main(val arg : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>>)
+	{
+		if(<CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>arg</CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
+			throw <ConstructorDescriptor[org.napile.vm.VmStartupError.this]>VmStartupError</ConstructorDescriptor[org.napile.vm.VmStartupError.this]>("Class name - expected")
+
+		val clazz = <MutableClassDescriptor[napile.reflect.ReflectUtil]>ReflectUtil</MutableClassDescriptor[napile.reflect.ReflectUtil]>.<SimpleMethodDescriptorImpl[napile.reflect.ReflectUtil.findClass]>findClass</SimpleMethodDescriptorImpl[napile.reflect.ReflectUtil.findClass]>(<SimpleMethodDescriptorImpl[napile.lang.Array.get]><CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>arg</CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>[0]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>)
+		val mainMethod = <LocalVariableDescriptor[org.napile.vm.MainCaller.main.clazz]>clazz</LocalVariableDescriptor[org.napile.vm.MainCaller.main.clazz]>.<SimpleMethodDescriptorImpl[napile.reflect.Class.findStaticMethod]>findStaticMethod</SimpleMethodDescriptorImpl[napile.reflect.Class.findStaticMethod]>("main", arrayOf(<SimpleMethodDescriptorImpl[napile.asm.AsmUtil.toAsmType]>toAsmType</SimpleMethodDescriptorImpl[napile.asm.AsmUtil.toAsmType]><<MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>>>()))
+		if(<LocalVariableDescriptor[org.napile.vm.MainCaller.main.mainMethod]>mainMethod</LocalVariableDescriptor[org.napile.vm.MainCaller.main.mainMethod]> <SimpleMethodDescriptorImpl[napile.reflect.Method.equals]>==</SimpleMethodDescriptorImpl[napile.reflect.Method.equals]> null)
+			throw <ConstructorDescriptor[org.napile.vm.VmStartupError.this]>VmStartupError</ConstructorDescriptor[org.napile.vm.VmStartupError.this]>("'static meth main(val arg : Array<String>)' method expected")
+
+		val thread = <ConstructorDescriptor[napile.lang.Thread.this]>Thread</ConstructorDescriptor[napile.lang.Thread.this]> {
+			try
+			{
+				<LocalVariableDescriptor[org.napile.vm.MainCaller.main.mainMethod]>mainMethod</LocalVariableDescriptor[org.napile.vm.MainCaller.main.mainMethod]><null>!!</null>.<SimpleMethodDescriptorImpl[napile.reflect.Method.invokeStatic]>invokeStatic</SimpleMethodDescriptorImpl[napile.reflect.Method.invokeStatic]>(<MutableClassDescriptor[napile.lang.ArrayUtil]>ArrayUtil</MutableClassDescriptor[napile.lang.ArrayUtil]>.<SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOfRange]>copyOfRange</SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOfRange]>(<CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>arg</CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>, 1, <CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>arg</CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>))
+			}
+			catch(val e : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>)
+			{
+				<LocalVariableDescriptor[org.napile.vm.MainCaller.main.@noname.e]>e</LocalVariableDescriptor[org.napile.vm.MainCaller.main.@noname.e]>.<SimpleMethodDescriptorImpl[napile.lang.Exception.printStackTrace]>printStackTrace</SimpleMethodDescriptorImpl[napile.lang.Exception.printStackTrace]>()
+			}
+			null
+		}
+
+		<LocalVariableDescriptor[org.napile.vm.MainCaller.main.thread]>thread</LocalVariableDescriptor[org.napile.vm.MainCaller.main.thread]>.<SimpleMethodDescriptorImpl[napile.lang.Thread.start]>start</SimpleMethodDescriptorImpl[napile.lang.Thread.start]>()
+	}
+}

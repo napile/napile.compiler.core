@@ -1,0 +1,104 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[org]>org</PackageDescriptorImpl[org]>.<PackageDescriptorImpl[org.apache]>apache</PackageDescriptorImpl[org.apache]>.<PackageDescriptorImpl[org.apache.harmony]>harmony</PackageDescriptorImpl[org.apache.harmony]>.<PackageDescriptorImpl[org.apache.harmony.luni]>luni</PackageDescriptorImpl[org.apache.harmony.luni]>.<PackageDescriptorImpl[org.apache.harmony.luni.platform]>platform</PackageDescriptorImpl[org.apache.harmony.luni.platform]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>.<MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>.<MutableClassDescriptor[napile.io.FileNotFoundException]>FileNotFoundException</MutableClassDescriptor[napile.io.FileNotFoundException]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>.<MutableClassDescriptor[napile.io.IOException]>IOException</MutableClassDescriptor[napile.io.IOException]>
+
+/**
+ * @author VISTALL
+ */
+covered class OSFileSystem : <MutableClassDescriptor[org.apache.harmony.luni.platform.IFileSystem]>IFileSystem</MutableClassDescriptor[org.apache.harmony.luni.platform.IFileSystem]>
+{
+	static val INSTANCE : <MutableClassDescriptor[org.apache.harmony.luni.platform.OSFileSystem]>OSFileSystem</MutableClassDescriptor[org.apache.harmony.luni.platform.OSFileSystem]> = <ConstructorDescriptor[org.apache.harmony.luni.platform.OSFileSystem.this]>OSFileSystem</ConstructorDescriptor[org.apache.harmony.luni.platform.OSFileSystem.this]>()
+
+	this()
+
+	override meth transfer(var fileHandler: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var socketDescriptor: <MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]>?, var offset: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var count: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth seek(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var offset: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var whence: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth close(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>) {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth truncate(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var size: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>) {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth getAllocGranularity(): <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth readDirect(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var address: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var offset: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, var length: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth lock(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var start: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var length: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var type: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, var waitFlag: <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>): <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth unlock(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var start: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var length: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>) {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth ttyAvailable(): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth writev(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var buffers: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>?, var offsets: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>>?, var lengths: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>>?, var size: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth size(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth writeDirect(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var address: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var offset: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, var length: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth available(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+
+	override meth write(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var bytes: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>, var offset: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, var length: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	{
+		val fd = <SimpleMethodDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.writeImpl]>writeImpl</SimpleMethodDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.writeImpl]>(<CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.write.fileDescriptor]>fileDescriptor</CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.write.fileDescriptor]>, <CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.write.bytes]>bytes</CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.write.bytes]>, <CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.write.offset]>offset</CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.write.offset]>, <CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.write.length]>length</CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.write.length]>)
+		if(<LocalVariableDescriptor[org.apache.harmony.luni.platform.OSFileSystem.write.fd]>fd</LocalVariableDescriptor[org.apache.harmony.luni.platform.OSFileSystem.write.fd]> <SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]> 0)
+			throw <ConstructorDescriptor[napile.io.IOException.this]>IOException</ConstructorDescriptor[napile.io.IOException.this]>()
+		return <LocalVariableDescriptor[org.apache.harmony.luni.platform.OSFileSystem.write.fd]>fd</LocalVariableDescriptor[org.apache.harmony.luni.platform.OSFileSystem.write.fd]>
+	}
+
+	native meth writeImpl(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var bytes: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>, var offset: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, var length: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>;
+
+	override meth ttyRead(var bytes: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>, var offset: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, var length: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth readv(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var addresses: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>>?, var offsets: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>>?, var lengths: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>>?, var size: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth fflush(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var metadata: <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>) {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+	override meth read(var fileDescriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, var bytes: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>, var offset: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, var length: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> {
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+
+	override meth open(var fileName: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>, var mode: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	{
+		val fd = <SimpleMethodDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.openImpl]>openImpl</SimpleMethodDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.openImpl]>(<CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.open.fileName]>fileName</CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.open.fileName]>, <CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.open.mode]>mode</CallParameterAsVariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.open.mode]>)
+		if(<LocalVariableDescriptor[org.apache.harmony.luni.platform.OSFileSystem.open.fd]>fd</LocalVariableDescriptor[org.apache.harmony.luni.platform.OSFileSystem.open.fd]> <SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]> 0)
+			throw <ConstructorDescriptor[napile.io.FileNotFoundException.this]>FileNotFoundException</ConstructorDescriptor[napile.io.FileNotFoundException.this]>()
+		return <LocalVariableDescriptor[org.apache.harmony.luni.platform.OSFileSystem.open.fd]>fd</LocalVariableDescriptor[org.apache.harmony.luni.platform.OSFileSystem.open.fd]>
+	}
+
+	native meth openImpl(var fileName: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>, var mode: <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>): <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>;
+}

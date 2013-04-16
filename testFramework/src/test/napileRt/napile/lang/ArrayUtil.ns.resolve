@@ -1,0 +1,52 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<MutableClassDescriptor[napile.util.MathUtil]>MathUtil</MutableClassDescriptor[napile.util.MathUtil]>
+
+/**
+ * @author VISTALL
+ */
+util class ArrayUtil
+{
+	@<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+	meth copyOf<E>(val oldArray : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOf.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOf.E]>>, val newSize : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOf.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOf.E]>>
+	{
+		var c1 = <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOf.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOf.E]>>(<CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOf.newSize]>newSize</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOf.newSize]>)
+		<SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copy]>copy</SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copy]>(<CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOf.oldArray]>oldArray</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOf.oldArray]>, 0, <LocalVariableDescriptor[napile.lang.ArrayUtil.copyOf.c1]>c1</LocalVariableDescriptor[napile.lang.ArrayUtil.copyOf.c1]>, 0, <MutableClassDescriptor[napile.util.MathUtil]>MathUtil</MutableClassDescriptor[napile.util.MathUtil]>.<SimpleMethodDescriptorImpl[napile.util.MathUtil.min]>min</SimpleMethodDescriptorImpl[napile.util.MathUtil.min]>(<CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOf.oldArray]>oldArray</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOf.oldArray]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>, <CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOf.newSize]>newSize</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOf.newSize]>));
+		return <LocalVariableDescriptor[napile.lang.ArrayUtil.copyOf.c1]>c1</LocalVariableDescriptor[napile.lang.ArrayUtil.copyOf.c1]>
+	}
+
+	@<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+	meth copyOfRange<E>(val original : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.E]>>, val from : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val to : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.E]>>
+	{
+		var newLength = <CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.to]>to</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.to]> <SimpleMethodDescriptorImpl[napile.lang.Int.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Int.minus]> <CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.from]>from</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.from]>;
+
+		var c = <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.E]>>(<LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.newLength]>newLength</LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.newLength]>)
+		if(<LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.newLength]>newLength</LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.newLength]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
+			return <LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.c]>c</LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.c]>
+
+		<SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copy]>copy</SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copy]>(<CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.original]>original</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.original]>, <CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.from]>from</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.from]>, <LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.c]>c</LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.c]>, 0, <CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.to]>to</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copyOfRange.to]>)
+
+		return <LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.c]>c</LocalVariableDescriptor[napile.lang.ArrayUtil.copyOfRange.c]>
+	}
+
+	@<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+	meth copy<E>(val src : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copy.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copy.E]>>, val srcOffset : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val desc : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copy.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.copy.E]>>, val descOffset : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val length : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>)
+	{
+		var i = 0
+		while (<LocalVariableDescriptor[napile.lang.ArrayUtil.copy.i]>i</LocalVariableDescriptor[napile.lang.ArrayUtil.copy.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.length]>length</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.length]>)
+		{
+			<SimpleMethodDescriptorImpl[napile.lang.Array.set]><CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.desc]>desc</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.desc]>[<CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.descOffset]>descOffset</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.descOffset]> <SimpleMethodDescriptorImpl[napile.lang.Int.plus]>+</SimpleMethodDescriptorImpl[napile.lang.Int.plus]> <LocalVariableDescriptor[napile.lang.ArrayUtil.copy.i]>i</LocalVariableDescriptor[napile.lang.ArrayUtil.copy.i]>]</SimpleMethodDescriptorImpl[napile.lang.Array.set]> <null>=</null> <SimpleMethodDescriptorImpl[napile.lang.Array.get]><CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.src]>src</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.src]>[<CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.srcOffset]>srcOffset</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.copy.srcOffset]> <SimpleMethodDescriptorImpl[napile.lang.Int.plus]>+</SimpleMethodDescriptorImpl[napile.lang.Int.plus]> <LocalVariableDescriptor[napile.lang.ArrayUtil.copy.i]>i</LocalVariableDescriptor[napile.lang.ArrayUtil.copy.i]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>
+			<LocalVariableDescriptor[napile.lang.ArrayUtil.copy.i]>i</LocalVariableDescriptor[napile.lang.ArrayUtil.copy.i]><SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>
+		}
+	}
+
+	@<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+	meth contains<E>(val src : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.ArrayUtil.contains.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.contains.E]>>, val object : <TypeParameterDescriptorImpl[napile.lang.ArrayUtil.contains.E]>E</TypeParameterDescriptorImpl[napile.lang.ArrayUtil.contains.E]>) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	{
+		for(e in <CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.contains.src]>src</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.contains.src]>)
+			if(<LocalVariableDescriptor[napile.lang.ArrayUtil.contains.e]>e</LocalVariableDescriptor[napile.lang.ArrayUtil.contains.e]> <SimpleMethodDescriptorImpl[napile.lang.Any.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Any.equals]> <CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.contains.object]>object</CallParameterAsVariableDescriptorImpl[napile.lang.ArrayUtil.contains.object]>)
+				return true;
+		return false;
+	}
+}

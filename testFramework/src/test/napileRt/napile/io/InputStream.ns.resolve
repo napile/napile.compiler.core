@@ -1,0 +1,237 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one or more
+ *  contributor license agreements.  See the NOTICE file distributed with
+ *  this work for additional information regarding copyright ownership.
+ *  The ASF licenses this file to You under the Apache License, Version 2.0
+ *  (the "License"); you may not use this file except in compliance with
+ *  the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]>
+
+
+/**
+ * The base class for all input streams. An input stream is a means of reading
+ * data from a source in a byte-wise manner.
+ * <p>
+ * Some input streams also support marking a position in the input stream and
+ * returning to this position later. This abstract class does not provide a
+ * fully working implementation, so it needs to be subclassed, and at least the
+ * {@link #read()} method needs to be overridden. Overriding some of the
+ * non-abstract methods is also often advised, since it might result in higher
+ * efficiency.
+ * <p>
+ * Many specialized input streams for purposes like reading from a file already
+ * exist in this package.
+ *
+ * @see OutputStream
+ */
+abstract class InputStream : <MutableClassDescriptor[napile.io.Closeable]>Closeable</MutableClassDescriptor[napile.io.Closeable]>
+{
+	static local var skipBuf : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>?
+
+	/**
+	 * Returns the number of bytes that are available before this stream will
+	 * block. This implementation always returns 0. Subclasses should override
+	 * and indicate the correct number of bytes available.
+	 *
+	 * @return the number of bytes available before blocking.
+	 * @throws IOException
+	 *             if an error occurs in this stream.
+	 */
+	meth available() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+
+	/**
+	 * Closes this stream. Concrete implementations of this class should free
+	 * any resources during close. This implementation does nothing.
+	 *
+	 * @throws IOException
+	 *             if an error occurs while closing this stream.
+	 */
+	override meth close()
+	{
+	}
+
+	/**
+	 * Sets a mark position in this InputStream. The parameter {@code readlimit}
+	 * indicates how many bytes can be read before the mark is invalidated.
+	 * Sending {@code reset()} will reposition the stream back to the marked
+	 * position provided {@code readLimit} has not been surpassed.
+	 * <p>
+	 * This default implementation does nothing and concrete subclasses must
+	 * provide their own implementation.
+	 *
+	 * @param readlimit
+	 *            the number of bytes that can be read from this stream before
+	 *            the mark is invalidated.
+	 * @see #markSupported()
+	 * @see #reset()
+	 */
+	meth mark(var readlimit : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>)
+	{
+	}
+
+	/**
+	 * Indicates whether this stream supports the {@code mark()} and
+	 * {@code reset()} methods. The default implementation returns {@code false}.
+	 *
+	 * @return always {@code false}.
+	 * @see #mark(int)
+	 * @see #reset()
+	 */
+	meth markSupported() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = false
+
+	/**
+	 * Reads a single byte from this stream and returns it as an integer in the
+	 * range from 0 to 255. Returns -1 if the end of the stream has been
+	 * reached. Blocks until one byte has been read, the end of the source
+	 * stream is detected or an exception is thrown.
+	 *
+	 * @return the byte read or -1 if the end of stream has been reached.
+	 * @throws IOException
+	 *             if the stream is closed or another IOException occurs.
+	 */
+	meth read() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+
+	/**
+	 * Reads bytes from this stream and stores them in the byte array {@code b}.
+	 *
+	 * @param b
+	 *            the byte array in which to store the bytes read.
+	 * @return the number of bytes actually read or -1 if the end of the stream
+	 *         has been reached.
+	 * @throws IOException
+	 *             if this stream is closed or another IOException occurs.
+	 */
+	meth read(var b : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = <SimpleMethodDescriptorImpl[napile.io.InputStream.read]>read</SimpleMethodDescriptorImpl[napile.io.InputStream.read]>(<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.b]>b</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.b]>, 0, <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.b]>b</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.b]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
+
+	/**
+	 * Reads at most {@code length} bytes from this stream and stores them in
+	 * the byte array {@code b} starting at {@code offset}.
+	 *
+	 * @param b
+	 *            the byte array in which to store the bytes read.
+	 * @param offset
+	 *            the initial position in {@code buffer} to store the bytes read
+	 *            from this stream.
+	 * @param length
+	 *            the maximum number of bytes to store in {@code b}.
+	 * @return the number of bytes actually read or -1 if the end of the stream
+	 *         has been reached.
+	 * @throws IndexOutOfBoundsException
+	 *             if {@code offset < 0} or {@code length < 0}, or if
+	 *             {@code offset + length} is greater than the length of
+	 *             {@code b}.
+	 * @throws IOException
+	 *             if the stream is closed or another IOException occurs.
+	 */
+	meth read(var buffer : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>, var offset : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, var count : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	{
+		// Force null check for b first!
+		if (<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]>offset</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>></SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.buffer]>buffer</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.buffer]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]> <null>||</null> <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]>offset</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> 0)
+			throw <ConstructorDescriptor[napile.lang.ArrayIndexOutOfBoundsException.this]>ArrayIndexOutOfBoundsException</ConstructorDescriptor[napile.lang.ArrayIndexOutOfBoundsException.this]>(<MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]>.<SimpleMethodDescriptorImpl[napile.module.Module.getBundle]>getBundle</SimpleMethodDescriptorImpl[napile.module.Module.getBundle]>().<SimpleMethodDescriptorImpl[napile.resource.ResourceBundle.getString]>getString</SimpleMethodDescriptorImpl[napile.resource.ResourceBundle.getString]>("luni.12", arrayOf(<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]>offset</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]>)));
+
+		if (<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]>count</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> 0 <null>||</null> <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]>count</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>></SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.buffer]>buffer</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.buffer]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]> <SimpleMethodDescriptorImpl[napile.lang.Int.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Int.minus]> <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]>offset</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]>)
+			throw <ConstructorDescriptor[napile.lang.ArrayIndexOutOfBoundsException.this]>ArrayIndexOutOfBoundsException</ConstructorDescriptor[napile.lang.ArrayIndexOutOfBoundsException.this]>(<MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]>.<SimpleMethodDescriptorImpl[napile.module.Module.getBundle]>getBundle</SimpleMethodDescriptorImpl[napile.module.Module.getBundle]>().<SimpleMethodDescriptorImpl[napile.resource.ResourceBundle.getString]>getString</SimpleMethodDescriptorImpl[napile.resource.ResourceBundle.getString]>("luni.18", arrayOf(<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]>count</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]>)));
+
+
+		var i = 0;
+		while(<LocalVariableDescriptor[napile.io.InputStream.read.i]>i</LocalVariableDescriptor[napile.io.InputStream.read.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]>count</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]>)
+		{
+
+			var c : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+			try
+			{
+				<LocalVariableDescriptor[napile.io.InputStream.read.c]>c</LocalVariableDescriptor[napile.io.InputStream.read.c]> <null>=</null> <SimpleMethodDescriptorImpl[napile.io.InputStream.read]>read</SimpleMethodDescriptorImpl[napile.io.InputStream.read]>()
+				if (<LocalVariableDescriptor[napile.io.InputStream.read.c]>c</LocalVariableDescriptor[napile.io.InputStream.read.c]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> <SimpleMethodDescriptorImpl[napile.lang.Int.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Int.minus]>1)
+					return if(<LocalVariableDescriptor[napile.io.InputStream.read.i]>i</LocalVariableDescriptor[napile.io.InputStream.read.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0) <SimpleMethodDescriptorImpl[napile.lang.Int.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Int.minus]>1 else <LocalVariableDescriptor[napile.io.InputStream.read.i]>i</LocalVariableDescriptor[napile.io.InputStream.read.i]>;
+
+			}
+			catch (val e : <MutableClassDescriptor[napile.io.IOException]>IOException</MutableClassDescriptor[napile.io.IOException]>)
+			{
+				if (<LocalVariableDescriptor[napile.io.InputStream.read.i]>i</LocalVariableDescriptor[napile.io.InputStream.read.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
+					return <LocalVariableDescriptor[napile.io.InputStream.read.i]>i</LocalVariableDescriptor[napile.io.InputStream.read.i]>;
+
+				throw <LocalVariableDescriptor[napile.io.InputStream.read.e]>e</LocalVariableDescriptor[napile.io.InputStream.read.e]>;
+			}
+
+			<SimpleMethodDescriptorImpl[napile.lang.Array.set]><CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.buffer]>buffer</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.buffer]>[<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]>offset</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.offset]> <SimpleMethodDescriptorImpl[napile.lang.Int.plus]>+</SimpleMethodDescriptorImpl[napile.lang.Int.plus]> <LocalVariableDescriptor[napile.io.InputStream.read.i]>i</LocalVariableDescriptor[napile.io.InputStream.read.i]>]</SimpleMethodDescriptorImpl[napile.lang.Array.set]> <null>=</null> <LocalVariableDescriptor[napile.io.InputStream.read.c]>c</LocalVariableDescriptor[napile.io.InputStream.read.c]>.<SimpleMethodDescriptorImpl[napile.lang.Int.toByte]>toByte</SimpleMethodDescriptorImpl[napile.lang.Int.toByte]>();
+			<LocalVariableDescriptor[napile.io.InputStream.read.i]>i</LocalVariableDescriptor[napile.io.InputStream.read.i]><SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>
+		}
+		return <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]>count</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.read.count]>;
+	}
+
+	/**
+	 * Resets this stream to the last marked location. Throws an
+	 * {@code IOException} if the number of bytes read since the mark has been
+	 * set is greater than the limit provided to {@code mark}, or if no mark
+	 * has been set.
+	 * <p>
+	 * This implementation always throws an {@code IOException} and concrete
+	 * subclasses should provide the proper implementation.
+	 *
+	 * @throws IOException
+	 *             if this stream is closed or another IOException occurs.
+	 */
+	meth reset()
+	{
+		
+	}
+
+	/**
+	 * Skips at most {@code n} bytes in this stream. It does nothing and returns
+	 * 0 if {@code n} is negative. Less than {@code n} characters are skipped if
+	 * the end of this stream is reached before the operation completes.
+	 * <p>
+	 * This default implementation reads {@code n} bytes into a temporary
+	 * buffer. Concrete subclasses should provide their own implementation.
+	 *
+	 * @param n
+	 *            the number of bytes to skip.
+	 * @return the number of bytes actually skipped.
+	 * @throws IOException
+	 *             if this stream is closed or another IOException occurs.
+	 */
+	meth skip(var n : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>) : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	{
+		if (<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]>n</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]> <SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]><=</SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]> 0)
+			return 0.<SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>toLong</SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>()
+
+		var skipped : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> = 0.<SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>toLong</SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>()
+		var toRead : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = if(<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]>n</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]> <SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]> 4096) <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]>n</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]>.<SimpleMethodDescriptorImpl[napile.lang.Long.toInt]>toInt</SimpleMethodDescriptorImpl[napile.lang.Long.toInt]>() else 4096;
+		// We are unsynchronized, so take a local copy of the skipBuf at some
+		// point in time.
+		var localBuf : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>? = <VariableDescriptorImpl[napile.io.InputStream.skipBuf]>skipBuf</VariableDescriptorImpl[napile.io.InputStream.skipBuf]>;
+		if (<LocalVariableDescriptor[napile.io.InputStream.skip.localBuf]>localBuf</LocalVariableDescriptor[napile.io.InputStream.skip.localBuf]> <SimpleMethodDescriptorImpl[napile.lang.Array.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Array.equals]> null <null>||</null> <LocalVariableDescriptor[napile.io.InputStream.skip.localBuf]>localBuf</LocalVariableDescriptor[napile.io.InputStream.skip.localBuf]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>toRead</LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>)
+		{
+			// May be lazily written back to the static. No matter if it
+			// overwrites somebody else's store.
+			<LocalVariableDescriptor[napile.io.InputStream.skip.localBuf]>localBuf</LocalVariableDescriptor[napile.io.InputStream.skip.localBuf]> <null>=</null> <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>(<LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>toRead</LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>)
+			<VariableDescriptorImpl[napile.io.InputStream.skipBuf]>skipBuf</VariableDescriptorImpl[napile.io.InputStream.skipBuf]> <null>=</null> <LocalVariableDescriptor[napile.io.InputStream.skip.localBuf]>localBuf</LocalVariableDescriptor[napile.io.InputStream.skip.localBuf]>
+		}
+
+		while (<LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>skipped</LocalVariableDescriptor[napile.io.InputStream.skip.skipped]> <SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]> <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]>n</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]>)
+		{
+			var read : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0// read(localBuf, 0, toRead);
+			if (<LocalVariableDescriptor[napile.io.InputStream.skip.read]>read</LocalVariableDescriptor[napile.io.InputStream.skip.read]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> <SimpleMethodDescriptorImpl[napile.lang.Int.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Int.minus]>1)
+				return <LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>skipped</LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>;
+
+			<LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>skipped</LocalVariableDescriptor[napile.io.InputStream.skip.skipped]> <SimpleMethodDescriptorImpl[napile.lang.Long.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.Long.plus]> <LocalVariableDescriptor[napile.io.InputStream.skip.read]>read</LocalVariableDescriptor[napile.io.InputStream.skip.read]>;
+			if (<LocalVariableDescriptor[napile.io.InputStream.skip.read]>read</LocalVariableDescriptor[napile.io.InputStream.skip.read]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>toRead</LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>)
+				return <LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>skipped</LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>;
+			if (<CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]>n</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]> <SimpleMethodDescriptorImpl[napile.lang.Long.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Long.minus]> <LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>skipped</LocalVariableDescriptor[napile.io.InputStream.skip.skipped]> <SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Long.compareTo]> <LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>toRead</LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>)
+				<LocalVariableDescriptor[napile.io.InputStream.skip.toRead]>toRead</LocalVariableDescriptor[napile.io.InputStream.skip.toRead]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]>n</CallParameterAsVariableDescriptorImpl[napile.io.InputStream.skip.n]> <SimpleMethodDescriptorImpl[napile.lang.Long.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Long.minus]> <LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>skipped</LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>;
+		}
+		return <LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>skipped</LocalVariableDescriptor[napile.io.InputStream.skip.skipped]>;
+	}
+}

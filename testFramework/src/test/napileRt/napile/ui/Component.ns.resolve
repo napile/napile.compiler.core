@@ -1,0 +1,58 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>.<PackageDescriptorImpl[napile.ui.render]>render</PackageDescriptorImpl[napile.ui.render]>.<MutableClassDescriptor[napile.ui.render.UiRender]>UiRender</MutableClassDescriptor[napile.ui.render.UiRender]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<PackageDescriptorImpl[napile.util.listeners]>listeners</PackageDescriptorImpl[napile.util.listeners]>.<MutableClassDescriptor[napile.util.listeners.VariableChangeEvent]>VariableChangeEvent</MutableClassDescriptor[napile.util.listeners.VariableChangeEvent]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<PackageDescriptorImpl[napile.util.listeners]>listeners</PackageDescriptorImpl[napile.util.listeners]>.<MutableClassDescriptor[napile.util.listeners.ListenerHolder]>ListenerHolder</MutableClassDescriptor[napile.util.listeners.ListenerHolder]>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+abstract class Component
+{
+	var x : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+
+	var y : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+
+	var width : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+
+	var height : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+
+	var enabled : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = false
+
+	var visible : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	{
+		set
+		{
+			val old = <LocalVariableDescriptor[napile.ui.Component.visible$set.value]>value</LocalVariableDescriptor[napile.ui.Component.visible$set.value]>
+
+			<LocalVariableDescriptor[napile.ui.Component.visible$set.value]>value</LocalVariableDescriptor[napile.ui.Component.visible$set.value]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.ui.Component.visible$set.newValue]>newValue</CallParameterAsVariableDescriptorImpl[napile.ui.Component.visible$set.newValue]>
+
+			<VariableDescriptorImpl[napile.ui.Component.variableChangeListener]>variableChangeListener</VariableDescriptorImpl[napile.ui.Component.variableChangeListener]>.<SimpleMethodDescriptorImpl[napile.util.listeners.ListenerHolder.fire]>fire</SimpleMethodDescriptorImpl[napile.util.listeners.ListenerHolder.fire]>(<ConstructorDescriptor[napile.util.listeners.VariableChangeEvent.this]>VariableChangeEvent</ConstructorDescriptor[napile.util.listeners.VariableChangeEvent.this]><<MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>>("visible", <LocalVariableDescriptor[napile.ui.Component.visible$set.old]>old</LocalVariableDescriptor[napile.ui.Component.visible$set.old]>, <CallParameterAsVariableDescriptorImpl[napile.ui.Component.visible$set.newValue]>newValue</CallParameterAsVariableDescriptorImpl[napile.ui.Component.visible$set.newValue]>))
+		}
+	} = false
+
+	val variableChangeListener : <MutableClassDescriptor[napile.util.listeners.ListenerHolder]>ListenerHolder</MutableClassDescriptor[napile.util.listeners.ListenerHolder]><<MutableClassDescriptor[napile.util.listeners.VariableChangeEvent]>VariableChangeEvent</MutableClassDescriptor[napile.util.listeners.VariableChangeEvent]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>> = <ConstructorDescriptor[napile.util.listeners.ListenerHolder.this]>ListenerHolder</ConstructorDescriptor[napile.util.listeners.ListenerHolder.this]>();
+
+	this()
+
+	meth add(val c : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>)
+
+	heritable meth render(val render : <MutableClassDescriptor[napile.ui.render.UiRender]>UiRender</MutableClassDescriptor[napile.ui.render.UiRender]>)
+}

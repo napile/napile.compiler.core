@@ -1,0 +1,15 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+/**
+ * @author VISTALL
+ */
+class ThreadState
+{
+	static val NEW : <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]> = <ConstructorDescriptor[napile.lang.ThreadState.this]>ThreadState</ConstructorDescriptor[napile.lang.ThreadState.this]>()
+
+	static val STARTED : <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]> = <ConstructorDescriptor[napile.lang.ThreadState.this]>ThreadState</ConstructorDescriptor[napile.lang.ThreadState.this]>()
+
+	static val FINISHED : <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]> = <ConstructorDescriptor[napile.lang.ThreadState.this]>ThreadState</ConstructorDescriptor[napile.lang.ThreadState.this]>()
+
+	this()
+}

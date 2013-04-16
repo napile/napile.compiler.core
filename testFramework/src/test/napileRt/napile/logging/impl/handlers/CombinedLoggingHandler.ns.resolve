@@ -1,0 +1,37 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<PackageDescriptorImpl[napile.logging.impl]>impl</PackageDescriptorImpl[napile.logging.impl]>.<PackageDescriptorImpl[napile.logging.impl.handlers]>handlers</PackageDescriptorImpl[napile.logging.impl.handlers]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.LoggingMessage]>LoggingMessage</MutableClassDescriptor[napile.logging.LoggingMessage]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.Iterable]>Iterable</MutableClassDescriptor[napile.collection.Iterable]>
+
+/**
+ * @author VISTALL
+ */
+class CombinedLoggingHandler : <MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>
+{
+	local val items : <MutableClassDescriptor[napile.collection.Iterable]>Iterable</MutableClassDescriptor[napile.collection.Iterable]><<MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>>
+
+	this(<VariableDescriptorImpl[napile.logging.impl.handlers.CombinedLoggingHandler.items]>items</VariableDescriptorImpl[napile.logging.impl.handlers.CombinedLoggingHandler.items]>) : <MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>()
+
+	override meth log(val message: <MutableClassDescriptor[napile.logging.LoggingMessage]>LoggingMessage</MutableClassDescriptor[napile.logging.LoggingMessage]>)
+	{
+		for(i in <VariableDescriptorImpl[napile.logging.impl.handlers.CombinedLoggingHandler.items]>items</VariableDescriptorImpl[napile.logging.impl.handlers.CombinedLoggingHandler.items]>)
+			<LocalVariableDescriptor[napile.logging.impl.handlers.CombinedLoggingHandler.log.i]>i</LocalVariableDescriptor[napile.logging.impl.handlers.CombinedLoggingHandler.log.i]>.<SimpleMethodDescriptorImpl[napile.logging.LoggingHandler.log]>log</SimpleMethodDescriptorImpl[napile.logging.LoggingHandler.log]>(<CallParameterAsVariableDescriptorImpl[napile.logging.impl.handlers.CombinedLoggingHandler.log.message]>message</CallParameterAsVariableDescriptorImpl[napile.logging.impl.handlers.CombinedLoggingHandler.log.message]>)
+	}
+}

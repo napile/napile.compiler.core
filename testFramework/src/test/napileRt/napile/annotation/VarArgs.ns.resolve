@@ -1,0 +1,12 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]></null>
+
+/**
+ * @author VISTALL
+ */
+@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+final class VarArgs
+{
+	val length : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>?
+
+	this(<VariableDescriptorImpl[napile.annotation.VarArgs.length]>length</VariableDescriptorImpl[napile.annotation.VarArgs.length]> = null)
+}

@@ -1,0 +1,32 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.impl]>impl</PackageDescriptorImpl[xml.impl]></null>
+
+import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>
+
+/**
+ * @author VISTALL
+ */
+class XmlElementImpl : <MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]> & <MutableClassDescriptor[xml.impl.XmlElementHolderImpl]>XmlElementHolderImpl</MutableClassDescriptor[xml.impl.XmlElementHolderImpl]>
+{
+	this(val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>, val elements : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>>) : <MutableClassDescriptor[xml.impl.XmlElementHolderImpl]>XmlElementHolderImpl</MutableClassDescriptor[xml.impl.XmlElementHolderImpl]>(<CallParameterAsVariableDescriptorImpl[xml.impl.XmlElementImpl.this.elements]>elements</CallParameterAsVariableDescriptorImpl[xml.impl.XmlElementImpl.this.elements]>) & <MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>(<CallParameterAsVariableDescriptorImpl[xml.impl.XmlElementImpl.this.name]>name</CallParameterAsVariableDescriptorImpl[xml.impl.XmlElementImpl.this.name]>)
+
+	override meth getName() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	{
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+}

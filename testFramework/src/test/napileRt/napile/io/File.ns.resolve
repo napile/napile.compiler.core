@@ -1,0 +1,63 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]></null>
+
+/**
+ * @author VISTALL
+ */
+class File
+{
+	val path : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	{
+		local set
+	}
+
+	local var properPath : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>? = null
+
+	this(val cName : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>)
+	{
+		<VariableDescriptorImpl[napile.io.File.path]>path</VariableDescriptorImpl[napile.io.File.path]> <null>=</null> <SimpleMethodDescriptorImpl[napile.io.File.fixSlashes]>fixSlashes</SimpleMethodDescriptorImpl[napile.io.File.fixSlashes]>(<CallParameterAsVariableDescriptorImpl[napile.io.File.this.cName]>cName</CallParameterAsVariableDescriptorImpl[napile.io.File.this.cName]>)
+	}
+
+	meth exists() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	{
+		if(<VariableDescriptorImpl[napile.io.File.path]>path</VariableDescriptorImpl[napile.io.File.path]>.<VariableDescriptorImpl[napile.lang.String.count]>count</VariableDescriptorImpl[napile.lang.String.count]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
+			return false
+
+		<MutableClassDescriptor[napile.io.SecurityManager]>SecurityManager</MutableClassDescriptor[napile.io.SecurityManager]>.<VariableDescriptorImpl[napile.io.SecurityManager.INSTANCE]>INSTANCE</VariableDescriptorImpl[napile.io.SecurityManager.INSTANCE]>?.<SimpleMethodDescriptorImpl[napile.io.SecurityManager.checkRead]>checkRead</SimpleMethodDescriptorImpl[napile.io.SecurityManager.checkRead]>(<VariableDescriptorImpl[napile.io.File.path]>path</VariableDescriptorImpl[napile.io.File.path]>)
+
+		return <SimpleMethodDescriptorImpl[napile.io.File.existsImpl]>existsImpl</SimpleMethodDescriptorImpl[napile.io.File.existsImpl]>(<SimpleMethodDescriptorImpl[napile.io.File.properPath]>properPath</SimpleMethodDescriptorImpl[napile.io.File.properPath]>(true))
+	}
+
+	local native meth existsImpl(val array : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+
+	local meth fixSlashes(val cName : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	{
+		//TODO [VISTALL]
+		return <CallParameterAsVariableDescriptorImpl[napile.io.File.fixSlashes.cName]>cName</CallParameterAsVariableDescriptorImpl[napile.io.File.fixSlashes.cName]>
+	}
+
+	covered meth properPath(val internal : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>) : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>
+	{
+		if (<VariableDescriptorImpl[napile.io.File.properPath]>properPath</VariableDescriptorImpl[napile.io.File.properPath]> <SimpleMethodDescriptorImpl[napile.lang.Array.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Array.equals]> null)
+			return <VariableDescriptorImpl[napile.io.File.properPath]>properPath</VariableDescriptorImpl[napile.io.File.properPath]><null>!!</null>
+
+		//TODO [VISTALL]
+		<VariableDescriptorImpl[napile.io.File.properPath]>properPath</VariableDescriptorImpl[napile.io.File.properPath]> <null>=</null> <VariableDescriptorImpl[napile.io.File.path]>path</VariableDescriptorImpl[napile.io.File.path]>.<SimpleMethodDescriptorImpl[napile.lang.String.getBytes]>getBytes</SimpleMethodDescriptorImpl[napile.lang.String.getBytes]>()
+		return <VariableDescriptorImpl[napile.io.File.properPath]>properPath</VariableDescriptorImpl[napile.io.File.properPath]><null>!!</null>
+	}
+}

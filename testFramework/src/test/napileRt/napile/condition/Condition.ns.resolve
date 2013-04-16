@@ -1,0 +1,8 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.condition]>condition</PackageDescriptorImpl[napile.condition]></null>
+
+/**
+ * @author VISTALL
+ */
+abstract class Condition<E>
+{
+}

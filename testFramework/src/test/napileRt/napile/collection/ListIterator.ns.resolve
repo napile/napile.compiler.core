@@ -1,0 +1,24 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+
+/**
+ * @author VISTALL
+ */
+class ListIterator<E> : <MutableClassDescriptor[napile.collection.Iterator]>Iterator</MutableClassDescriptor[napile.collection.Iterator]><<TypeParameterDescriptorImpl[napile.collection.ListIterator.E]>E</TypeParameterDescriptorImpl[napile.collection.ListIterator.E]>>
+{
+	local val list : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<TypeParameterDescriptorImpl[napile.collection.ListIterator.E]>E</TypeParameterDescriptorImpl[napile.collection.ListIterator.E]>>
+	local var index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+
+	this(<VariableDescriptorImpl[napile.collection.ListIterator.list]>list</VariableDescriptorImpl[napile.collection.ListIterator.list]>)
+
+	override meth hasNext() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <VariableDescriptorImpl[napile.collection.ListIterator.list]>list</VariableDescriptorImpl[napile.collection.ListIterator.list]>.<SimpleMethodDescriptorImpl[napile.collection.List.size]>size</SimpleMethodDescriptorImpl[napile.collection.List.size]>() <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> <VariableDescriptorImpl[napile.collection.ListIterator.index]>index</VariableDescriptorImpl[napile.collection.ListIterator.index]>
+
+	override meth next() : <TypeParameterDescriptorImpl[napile.collection.ListIterator.E]>E</TypeParameterDescriptorImpl[napile.collection.ListIterator.E]> = <SimpleMethodDescriptorImpl[napile.collection.List.get]><VariableDescriptorImpl[napile.collection.ListIterator.list]>list</VariableDescriptorImpl[napile.collection.ListIterator.list]>[<VariableDescriptorImpl[napile.collection.ListIterator.index]>index</VariableDescriptorImpl[napile.collection.ListIterator.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>]</SimpleMethodDescriptorImpl[napile.collection.List.get]>
+
+	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+	override meth remove()
+	{
+		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+	}
+}

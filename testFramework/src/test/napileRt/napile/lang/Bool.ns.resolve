@@ -1,0 +1,21 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>
+
+/**
+ * @author VISTALL
+ */
+@<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>(<MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>.<VariableDescriptorImpl[napile.lang.Bool.FALSE]>FALSE</VariableDescriptorImpl[napile.lang.Bool.FALSE]>)
+final class Bool
+{
+	// enum val ?
+	static val TRUE : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <ConstructorDescriptor[napile.lang.Bool.this]>Bool</ConstructorDescriptor[napile.lang.Bool.this]>()
+
+	static val FALSE : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <ConstructorDescriptor[napile.lang.Bool.this]>Bool</ConstructorDescriptor[napile.lang.Bool.this]>()
+
+	local this()
+
+	meth not() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = if(<MutableClassDescriptor[napile.lang.Bool]>this</MutableClassDescriptor[napile.lang.Bool]>) <VariableDescriptorImpl[napile.lang.Bool.FALSE]>FALSE</VariableDescriptorImpl[napile.lang.Bool.FALSE]> else <VariableDescriptorImpl[napile.lang.Bool.TRUE]>TRUE</VariableDescriptorImpl[napile.lang.Bool.TRUE]>
+
+	override meth toString() = if(<MutableClassDescriptor[napile.lang.Bool]>this</MutableClassDescriptor[napile.lang.Bool]> <SimpleMethodDescriptorImpl[napile.lang.Bool.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Bool.equals]> <VariableDescriptorImpl[napile.lang.Bool.TRUE]>TRUE</VariableDescriptorImpl[napile.lang.Bool.TRUE]>) "true" else "false"
+}

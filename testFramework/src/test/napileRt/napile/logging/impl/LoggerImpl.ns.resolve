@@ -1,0 +1,46 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<PackageDescriptorImpl[napile.logging.impl]>impl</PackageDescriptorImpl[napile.logging.impl]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.ArrayList]>ArrayList</MutableClassDescriptor[napile.collection.ArrayList]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.LoggingMessage]>LoggingMessage</MutableClassDescriptor[napile.logging.LoggingMessage]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<PackageDescriptorImpl[napile.logging.impl]>impl</PackageDescriptorImpl[napile.logging.impl]>.<PackageDescriptorImpl[napile.logging.impl.handlers]>handlers</PackageDescriptorImpl[napile.logging.impl.handlers]>.<MutableClassDescriptor[napile.logging.impl.handlers.ConsoleLoggingHandler]>ConsoleLoggingHandler</MutableClassDescriptor[napile.logging.impl.handlers.ConsoleLoggingHandler]>
+
+/**
+ * @author VISTALL
+ */
+class LoggerImpl : <MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
+{
+	local val handlers : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>> = <ConstructorDescriptor[napile.collection.ArrayList.this]>ArrayList</ConstructorDescriptor[napile.collection.ArrayList.this]><<MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>>()
+
+	this(val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) : <MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>()
+	{
+		<VariableDescriptorImpl[napile.logging.impl.LoggerImpl.handlers]>handlers</VariableDescriptorImpl[napile.logging.impl.LoggerImpl.handlers]>.<SimpleMethodDescriptorImpl[napile.collection.List.add]>add</SimpleMethodDescriptorImpl[napile.collection.List.add]>(<ConstructorDescriptor[napile.logging.impl.handlers.ConsoleLoggingHandler.this]>ConsoleLoggingHandler</ConstructorDescriptor[napile.logging.impl.handlers.ConsoleLoggingHandler.this]>())
+	}
+
+	override meth log(val level : <MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>, val message : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?, val exception : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>?)
+	{
+		val loggingMessage = <ConstructorDescriptor[napile.logging.LoggingMessage.this]>LoggingMessage</ConstructorDescriptor[napile.logging.LoggingMessage.this]>(<CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.level]>level</CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.level]>, if(<CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.message]>message</CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.message]> <null>is</null> <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) <CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.message]>message</CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.message]> else <CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.message]>message</CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.message]>.<SimpleMethodDescriptorImpl[napile.lang.Any.toString]>toString</SimpleMethodDescriptorImpl[napile.lang.Any.toString]>(), <CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.exception]>exception</CallParameterAsVariableDescriptorImpl[napile.logging.impl.LoggerImpl.log.exception]>)
+
+		for(h in <VariableDescriptorImpl[napile.logging.impl.LoggerImpl.handlers]>handlers</VariableDescriptorImpl[napile.logging.impl.LoggerImpl.handlers]>)
+			<LocalVariableDescriptor[napile.logging.impl.LoggerImpl.log.h]>h</LocalVariableDescriptor[napile.logging.impl.LoggerImpl.log.h]>.<SimpleMethodDescriptorImpl[napile.logging.LoggingHandler.log]>log</SimpleMethodDescriptorImpl[napile.logging.LoggingHandler.log]>(<LocalVariableDescriptor[napile.logging.impl.LoggerImpl.log.loggingMessage]>loggingMessage</LocalVariableDescriptor[napile.logging.impl.LoggerImpl.log.loggingMessage]>)
+	}
+}

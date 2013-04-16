@@ -1,0 +1,12 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]></null>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+class Extension
+{
+	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+
+	this(<VariableDescriptorImpl[napile.module.extension.Extension.name]>name</VariableDescriptorImpl[napile.module.extension.Extension.name]>)
+}

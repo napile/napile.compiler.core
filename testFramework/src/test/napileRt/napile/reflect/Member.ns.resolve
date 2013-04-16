@@ -1,0 +1,18 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+/**
+ * @author VISTALL
+ */
+abstract class Member : <MutableClassDescriptor[napile.reflect.AnnotationOwner]>AnnotationOwner</MutableClassDescriptor[napile.reflect.AnnotationOwner]>
+{
+	final val ownerClass : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>?
+
+	final val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+
+	final val modifiers : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]>>
+
+	covered this(<VariableDescriptorImpl[napile.reflect.Member.ownerClass]>ownerClass</VariableDescriptorImpl[napile.reflect.Member.ownerClass]>, <VariableDescriptorImpl[napile.reflect.Member.name]>name</VariableDescriptorImpl[napile.reflect.Member.name]>, <VariableDescriptorImpl[napile.reflect.Member.modifiers]>modifiers</VariableDescriptorImpl[napile.reflect.Member.modifiers]>, val annotations : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>) : <MutableClassDescriptor[napile.reflect.AnnotationOwner]>AnnotationOwner</MutableClassDescriptor[napile.reflect.AnnotationOwner]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.Member.this.annotations]>annotations</CallParameterAsVariableDescriptorImpl[napile.reflect.Member.this.annotations]>)
+
+	meth isStatic() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <MutableClassDescriptor[napile.lang.ArrayUtil]>ArrayUtil</MutableClassDescriptor[napile.lang.ArrayUtil]>.<SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.contains]>contains</SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.contains]>(<VariableDescriptorImpl[napile.reflect.Member.modifiers]>modifiers</VariableDescriptorImpl[napile.reflect.Member.modifiers]>, <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]>.<VariableDescriptorImpl[napile.reflect.Modifier.STATIC]>STATIC</VariableDescriptorImpl[napile.reflect.Modifier.STATIC]>)
+}

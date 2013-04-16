@@ -1,0 +1,108 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>.<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>
+
+/**
+ * @author VISTALL
+ */
+final class Class<E> : <MutableClassDescriptor[napile.reflect.Member]>Member</MutableClassDescriptor[napile.reflect.Member]>
+{
+	/**
+	 * @return immutable array variables of class
+	 */
+	lazy val variables : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Variable]>Variable</MutableClassDescriptor[napile.reflect.Variable]>> = <SimpleMethodDescriptorImpl[napile.reflect.Class.getVariables]>getVariables</SimpleMethodDescriptorImpl[napile.reflect.Class.getVariables]>()
+
+	/**
+	 * @return immutable array constructors of class
+	 */
+	lazy val constructors : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Constructor]>Constructor</MutableClassDescriptor[napile.reflect.Constructor]>> = <SimpleMethodDescriptorImpl[napile.reflect.Class.getConstructors]>getConstructors</SimpleMethodDescriptorImpl[napile.reflect.Class.getConstructors]>()
+
+	/**
+	 * @return immutable array methods of class
+	 */
+	lazy val methods : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Method]>Method</MutableClassDescriptor[napile.reflect.Method]>> = <SimpleMethodDescriptorImpl[napile.reflect.Class.getMethods]>getMethods</SimpleMethodDescriptorImpl[napile.reflect.Class.getMethods]>()
+
+	/**
+	 * @return immutable array macros of class
+	 */
+	lazy val macros : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Macro]>Macro</MutableClassDescriptor[napile.reflect.Macro]>> = <SimpleMethodDescriptorImpl[napile.reflect.Class.getMacros]>getMacros</SimpleMethodDescriptorImpl[napile.reflect.Class.getMacros]>()
+
+	/**
+	 * @return super classes of this class
+	 */
+	lazy val superClasses : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>> = <SimpleMethodDescriptorImpl[napile.reflect.Class.getSuperClasses]>getSuperClasses</SimpleMethodDescriptorImpl[napile.reflect.Class.getSuperClasses]>()
+
+	/**
+	 * Main constructor of class. Access modifier is 'local'. Called only by VM
+	 */
+	local this(
+			val owner : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>?,
+			val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>,
+			val modifiers : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]>>,
+			val annotations : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>) : <MutableClassDescriptor[napile.reflect.Member]>Member</MutableClassDescriptor[napile.reflect.Member]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.Class.this.owner]>owner</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.this.owner]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.this.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.this.name]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.this.modifiers]>modifiers</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.this.modifiers]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.this.annotations]>annotations</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.this.annotations]>)
+
+	local native meth getVariables() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Variable]>Variable</MutableClassDescriptor[napile.reflect.Variable]>>
+
+	local native meth getMacros() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Macro]>Macro</MutableClassDescriptor[napile.reflect.Macro]>>
+
+	local native meth getMethods() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Method]>Method</MutableClassDescriptor[napile.reflect.Method]>>
+
+	local native meth getConstructors() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Constructor]>Constructor</MutableClassDescriptor[napile.reflect.Constructor]>>
+
+	local native meth getSuperClasses() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>>
+
+	native meth getXmlDoc() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+
+	/**
+	 * Searching method by name
+	 */
+	meth findMethod(val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>, val parameters : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>>, val parent : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>) : <MutableClassDescriptor[napile.reflect.Method]>Method</MutableClassDescriptor[napile.reflect.Method]>?
+	{
+		for (m in <VariableDescriptorImpl[napile.reflect.Class.methods]>methods</VariableDescriptorImpl[napile.reflect.Class.methods]>)
+			if (<SimpleMethodDescriptorImpl[napile.lang.Bool.not]>!</SimpleMethodDescriptorImpl[napile.lang.Bool.not]><LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>m</LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>.<SimpleMethodDescriptorImpl[napile.reflect.Method.isStatic]>isStatic</SimpleMethodDescriptorImpl[napile.reflect.Method.isStatic]>() <null>&&</null> <SimpleMethodDescriptorImpl[napile.reflect.Class.isValidMethodLike]>isValidMethodLike</SimpleMethodDescriptorImpl[napile.reflect.Class.isValidMethodLike]>(<LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>m</LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.name]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.parameters]>parameters</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.parameters]>))
+				return <LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>m</LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>
+
+		if(<CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.parent]>parent</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.parent]>)
+			for(p in <VariableDescriptorImpl[napile.reflect.Class.superClasses]>superClasses</VariableDescriptorImpl[napile.reflect.Class.superClasses]>)
+			{
+				val m = <SimpleMethodDescriptorImpl[napile.reflect.Class.findMethod]>findMethod</SimpleMethodDescriptorImpl[napile.reflect.Class.findMethod]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.name]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.parameters]>parameters</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findMethod.parameters]>, true)
+				if(<LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>m</LocalVariableDescriptor[napile.reflect.Class.findMethod.m]> <SimpleMethodDescriptorImpl[napile.reflect.Method.equals]>!=</SimpleMethodDescriptorImpl[napile.reflect.Method.equals]> null)
+					return <LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>m</LocalVariableDescriptor[napile.reflect.Class.findMethod.m]>
+			}
+		return null;
+	}
+
+	/**
+	 * Searching static method by name
+	 */
+	meth findStaticMethod(val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>, val parameters : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>>) : <MutableClassDescriptor[napile.reflect.Method]>Method</MutableClassDescriptor[napile.reflect.Method]>?
+	{
+		for (m in <VariableDescriptorImpl[napile.reflect.Class.methods]>methods</VariableDescriptorImpl[napile.reflect.Class.methods]>)
+			if (<LocalVariableDescriptor[napile.reflect.Class.findStaticMethod.m]>m</LocalVariableDescriptor[napile.reflect.Class.findStaticMethod.m]>.<SimpleMethodDescriptorImpl[napile.reflect.Method.isStatic]>isStatic</SimpleMethodDescriptorImpl[napile.reflect.Method.isStatic]>() <null>&&</null> <SimpleMethodDescriptorImpl[napile.reflect.Class.isValidMethodLike]>isValidMethodLike</SimpleMethodDescriptorImpl[napile.reflect.Class.isValidMethodLike]>(<LocalVariableDescriptor[napile.reflect.Class.findStaticMethod.m]>m</LocalVariableDescriptor[napile.reflect.Class.findStaticMethod.m]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findStaticMethod.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findStaticMethod.name]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findStaticMethod.parameters]>parameters</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.findStaticMethod.parameters]>))
+				return <LocalVariableDescriptor[napile.reflect.Class.findStaticMethod.m]>m</LocalVariableDescriptor[napile.reflect.Class.findStaticMethod.m]>
+		return null;
+	}
+
+	local meth isValidMethodLike(val methodLike : <MutableClassDescriptor[napile.reflect.MethodLike]>MethodLike</MutableClassDescriptor[napile.reflect.MethodLike]>, val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>, val parameters : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>>) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	{
+		if(<CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.methodLike]>methodLike</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.methodLike]>.<VariableDescriptorImpl[napile.reflect.MethodLike.name]>name</VariableDescriptorImpl[napile.reflect.MethodLike.name]> <SimpleMethodDescriptorImpl[napile.lang.String.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.String.equals]> <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.name]>)
+			return false
+
+		val mParameters = <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.methodLike]>methodLike</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.methodLike]>.<VariableDescriptorImpl[napile.reflect.MethodLike.parameters]>parameters</VariableDescriptorImpl[napile.reflect.MethodLike.parameters]>
+
+		if(<LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.mParameters]>mParameters</LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.mParameters]>.<SimpleMethodDescriptorImpl[napile.lang.Array.size]>size</SimpleMethodDescriptorImpl[napile.lang.Array.size]>() <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> <CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.parameters]>parameters</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.parameters]>.<SimpleMethodDescriptorImpl[napile.lang.Array.size]>size</SimpleMethodDescriptorImpl[napile.lang.Array.size]>())
+			return false
+
+		for(i in 0<SimpleMethodDescriptorImpl[napile.lang.Int.rangeTo]>..</SimpleMethodDescriptorImpl[napile.lang.Int.rangeTo]><CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.parameters]>parameters</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.parameters]>.<SimpleMethodDescriptorImpl[napile.lang.Array.size]>size</SimpleMethodDescriptorImpl[napile.lang.Array.size]>())
+		{
+			val mParameter = <SimpleMethodDescriptorImpl[napile.lang.Array.get]><LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.mParameters]>mParameters</LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.mParameters]>[<LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.i]>i</LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.i]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>
+			val parameter = <SimpleMethodDescriptorImpl[napile.lang.Array.get]><CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.parameters]>parameters</CallParameterAsVariableDescriptorImpl[napile.reflect.Class.isValidMethodLike.parameters]>[<LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.i]>i</LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.i]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>
+
+			if(<LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.mParameter]>mParameter</LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.mParameter]>.<VariableDescriptorImpl[napile.reflect.CallParameter.type]>type</VariableDescriptorImpl[napile.reflect.CallParameter.type]> <SimpleMethodDescriptorImpl[napile.asm.members.AsmType.equals]>!=</SimpleMethodDescriptorImpl[napile.asm.members.AsmType.equals]> <LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.parameter]>parameter</LocalVariableDescriptor[napile.reflect.Class.isValidMethodLike.parameter]>)
+				return false
+		}
+		return true
+	}
+}

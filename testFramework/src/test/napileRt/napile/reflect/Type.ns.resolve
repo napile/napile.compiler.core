@@ -1,0 +1,58 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>.<MutableClassDescriptor[napile.io.NativeConsole]>NativeConsole</MutableClassDescriptor[napile.io.NativeConsole]>
+
+/**
+ * @author VISTALL
+ */
+class Type<E> : <MutableClassDescriptor[napile.reflect.AnnotationOwner]>AnnotationOwner</MutableClassDescriptor[napile.reflect.AnnotationOwner]>
+{
+	val constructorClass : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<TypeParameterDescriptorImpl[napile.reflect.Type.E]>E</TypeParameterDescriptorImpl[napile.reflect.Type.E]>>
+
+	val nullable : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+
+	val parameters : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>>
+
+	lazy val defaultValue : <TypeParameterDescriptorImpl[napile.reflect.Type.E]>E</TypeParameterDescriptorImpl[napile.reflect.Type.E]>? = <SimpleMethodDescriptorImpl[napile.reflect.Type.findDefaultValue]>findDefaultValue</SimpleMethodDescriptorImpl[napile.reflect.Type.findDefaultValue]>()
+
+	local this(<VariableDescriptorImpl[napile.reflect.Type.constructorClass]>constructorClass</VariableDescriptorImpl[napile.reflect.Type.constructorClass]>, <VariableDescriptorImpl[napile.reflect.Type.parameters]>parameters</VariableDescriptorImpl[napile.reflect.Type.parameters]>, <VariableDescriptorImpl[napile.reflect.Type.nullable]>nullable</VariableDescriptorImpl[napile.reflect.Type.nullable]>, val annotations : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>) : <MutableClassDescriptor[napile.reflect.AnnotationOwner]>AnnotationOwner</MutableClassDescriptor[napile.reflect.AnnotationOwner]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.Type.this.annotations]>annotations</CallParameterAsVariableDescriptorImpl[napile.reflect.Type.this.annotations]>)
+
+	local meth findDefaultValue() : <TypeParameterDescriptorImpl[napile.reflect.Type.E]>E</TypeParameterDescriptorImpl[napile.reflect.Type.E]>?
+	{
+		if(<VariableDescriptorImpl[napile.reflect.Type.nullable]>nullable</VariableDescriptorImpl[napile.reflect.Type.nullable]>)
+			return null
+
+		var annotation : <MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>? = <SimpleMethodDescriptorImpl[napile.reflect.Type.findAnnotation]>findAnnotation</SimpleMethodDescriptorImpl[napile.reflect.Type.findAnnotation]>()
+		if(<LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]>annotation</LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]> <SimpleMethodDescriptorImpl[napile.annotation.DefaultValue.equals]>!=</SimpleMethodDescriptorImpl[napile.annotation.DefaultValue.equals]> null)
+			return <LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]>annotation</LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]>.<VariableDescriptorImpl[napile.annotation.DefaultValue.value]>value</VariableDescriptorImpl[napile.annotation.DefaultValue.value]> <null>as</null> <TypeParameterDescriptorImpl[napile.reflect.Type.E]>E</TypeParameterDescriptorImpl[napile.reflect.Type.E]>
+
+		<LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]>annotation</LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]> <null>=</null> <VariableDescriptorImpl[napile.reflect.Type.constructorClass]>constructorClass</VariableDescriptorImpl[napile.reflect.Type.constructorClass]>.<SimpleMethodDescriptorImpl[napile.reflect.Class.findAnnotation]>findAnnotation</SimpleMethodDescriptorImpl[napile.reflect.Class.findAnnotation]><<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>>()
+		if(<LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]>annotation</LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]> <SimpleMethodDescriptorImpl[napile.annotation.DefaultValue.equals]>!=</SimpleMethodDescriptorImpl[napile.annotation.DefaultValue.equals]> null)
+			return <LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]>annotation</LocalVariableDescriptor[napile.reflect.Type.findDefaultValue.annotation]>.<VariableDescriptorImpl[napile.annotation.DefaultValue.value]>value</VariableDescriptorImpl[napile.annotation.DefaultValue.value]> <null>as</null> <TypeParameterDescriptorImpl[napile.reflect.Type.E]>E</TypeParameterDescriptorImpl[napile.reflect.Type.E]>
+
+		return null
+	}
+
+	override meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	{
+		val builder = <ConstructorDescriptor[napile.lang.StringBuilder.this]>StringBuilder</ConstructorDescriptor[napile.lang.StringBuilder.this]>()
+		<LocalVariableDescriptor[napile.reflect.Type.toString.builder]>builder</LocalVariableDescriptor[napile.reflect.Type.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> <VariableDescriptorImpl[napile.reflect.Type.constructorClass]>constructorClass</VariableDescriptorImpl[napile.reflect.Type.constructorClass]>.<VariableDescriptorImpl[napile.reflect.Class.name]>name</VariableDescriptorImpl[napile.reflect.Class.name]>
+		if(<VariableDescriptorImpl[napile.reflect.Type.parameters]>parameters</VariableDescriptorImpl[napile.reflect.Type.parameters]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>></SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> 0)
+		{
+			<LocalVariableDescriptor[napile.reflect.Type.toString.builder]>builder</LocalVariableDescriptor[napile.reflect.Type.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "<"
+			var i = 0
+			while(<LocalVariableDescriptor[napile.reflect.Type.toString.i]>i</LocalVariableDescriptor[napile.reflect.Type.toString.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <VariableDescriptorImpl[napile.reflect.Type.parameters]>parameters</VariableDescriptorImpl[napile.reflect.Type.parameters]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
+			{
+				if(<LocalVariableDescriptor[napile.reflect.Type.toString.i]>i</LocalVariableDescriptor[napile.reflect.Type.toString.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
+					<LocalVariableDescriptor[napile.reflect.Type.toString.builder]>builder</LocalVariableDescriptor[napile.reflect.Type.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> ", "
+				<LocalVariableDescriptor[napile.reflect.Type.toString.builder]>builder</LocalVariableDescriptor[napile.reflect.Type.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> <SimpleMethodDescriptorImpl[napile.lang.Array.get]><VariableDescriptorImpl[napile.reflect.Type.parameters]>parameters</VariableDescriptorImpl[napile.reflect.Type.parameters]>[<LocalVariableDescriptor[napile.reflect.Type.toString.i]>i</LocalVariableDescriptor[napile.reflect.Type.toString.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>
+			}
+			<LocalVariableDescriptor[napile.reflect.Type.toString.builder]>builder</LocalVariableDescriptor[napile.reflect.Type.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> ">"
+		}
+		if(<VariableDescriptorImpl[napile.reflect.Type.nullable]>nullable</VariableDescriptorImpl[napile.reflect.Type.nullable]>)
+			<LocalVariableDescriptor[napile.reflect.Type.toString.builder]>builder</LocalVariableDescriptor[napile.reflect.Type.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "?"
+		return <LocalVariableDescriptor[napile.reflect.Type.toString.builder]>builder</LocalVariableDescriptor[napile.reflect.Type.toString.builder]>.<SimpleMethodDescriptorImpl[napile.lang.StringBuilder.toString]>toString</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.toString]>()
+	}
+}

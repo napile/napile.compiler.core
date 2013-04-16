@@ -1,0 +1,9 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+
+/**
+ * @author VISTALL
+ */
+class UnsupportedOperationException : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>
+{
+	this(val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>(<CallParameterAsVariableDescriptorImpl[napile.lang.UnsupportedOperationException.this.message]>message</CallParameterAsVariableDescriptorImpl[napile.lang.UnsupportedOperationException.this.message]>)
+}

@@ -1,0 +1,13 @@
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]></null>
+
+/**
+ * @author VISTALL
+ */
+class Macro : <MutableClassDescriptor[napile.reflect.MethodLike]>MethodLike</MutableClassDescriptor[napile.reflect.MethodLike]>
+{
+	local this(
+			val owner : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>?,
+			val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>,
+			val modifiers : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]>>,
+			val annotations : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>) : <MutableClassDescriptor[napile.reflect.MethodLike]>MethodLike</MutableClassDescriptor[napile.reflect.MethodLike]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.Macro.this.owner]>owner</CallParameterAsVariableDescriptorImpl[napile.reflect.Macro.this.owner]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Macro.this.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.Macro.this.name]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Macro.this.modifiers]>modifiers</CallParameterAsVariableDescriptorImpl[napile.reflect.Macro.this.modifiers]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.Macro.this.annotations]>annotations</CallParameterAsVariableDescriptorImpl[napile.reflect.Macro.this.annotations]>)
+}

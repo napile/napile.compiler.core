@@ -1,0 +1,54 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+util class TypeUtil
+{
+	meth getDefaultValue<E>(val throwIfNotFound : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>) : <TypeParameterDescriptorImpl[napile.util.TypeUtil.getDefaultValue.E]>E</TypeParameterDescriptorImpl[napile.util.TypeUtil.getDefaultValue.E]>
+	{
+		val type = typeOf(<TypeParameterDescriptorImpl[napile.util.TypeUtil.getDefaultValue.E]>E</TypeParameterDescriptorImpl[napile.util.TypeUtil.getDefaultValue.E]>)
+		if(<LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>type</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>.<VariableDescriptorImpl[napile.reflect.Type.nullable]>nullable</VariableDescriptorImpl[napile.reflect.Type.nullable]>)
+			return <SimpleMethodDescriptorImpl[napile.util.TypeUtil.getNullAsNotNull]>getNullAsNotNull</SimpleMethodDescriptorImpl[napile.util.TypeUtil.getNullAsNotNull]>()
+		else
+		{
+			val def = <LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>type</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>.<VariableDescriptorImpl[napile.reflect.Type.defaultValue]>defaultValue</VariableDescriptorImpl[napile.reflect.Type.defaultValue]>
+			if(<LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.def]>def</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.def]> <SimpleMethodDescriptorImpl[napile.lang.Any.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Any.equals]> null)
+			{
+				if(<CallParameterAsVariableDescriptorImpl[napile.util.TypeUtil.getDefaultValue.throwIfNotFound]>throwIfNotFound</CallParameterAsVariableDescriptorImpl[napile.util.TypeUtil.getDefaultValue.throwIfNotFound]>)
+					throw <ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>IllegalArgumentException</ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>("cant find default value on type " <SimpleMethodDescriptorImpl[napile.lang.String.plus]>+</SimpleMethodDescriptorImpl[napile.lang.String.plus]> <LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>type</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>)
+				else
+					return <SimpleMethodDescriptorImpl[napile.util.TypeUtil.getInvalidNotNull]>getInvalidNotNull</SimpleMethodDescriptorImpl[napile.util.TypeUtil.getInvalidNotNull]>()
+			}
+			else
+				return <LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.def]>def</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.def]>
+		}
+	}
+
+	/~
+	 ~ Return null as notNull type.
+	 ~ This is a hack to use null - for return if type constructor is type parameter
+	 ~/
+	local native meth getNullAsNotNull<E>() : <TypeParameterDescriptorImpl[napile.util.TypeUtil.getNullAsNotNull.E]>E</TypeParameterDescriptorImpl[napile.util.TypeUtil.getNullAsNotNull.E]>
+
+	local native meth getInvalidNotNull<E>() : <TypeParameterDescriptorImpl[napile.util.TypeUtil.getInvalidNotNull.E]>E</TypeParameterDescriptorImpl[napile.util.TypeUtil.getInvalidNotNull.E]>
+}

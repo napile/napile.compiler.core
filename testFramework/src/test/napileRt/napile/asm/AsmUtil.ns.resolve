@@ -1,0 +1,50 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>.<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>.<MutableClassDescriptor[napile.asm.members.AsmAnnotation]>AsmAnnotation</MutableClassDescriptor[napile.asm.members.AsmAnnotation]>
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>.<PackageDescriptorImpl[napile.asm.members.typeConstructor]>typeConstructor</PackageDescriptorImpl[napile.asm.members.typeConstructor]>.<MutableClassDescriptor[napile.asm.members.typeConstructor.AsmClassType]>AsmClassType</MutableClassDescriptor[napile.asm.members.typeConstructor.AsmClassType]>
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+util class AsmUtil
+{
+	/~
+	 ~ Return : asm type equivalent of `T` type
+	 ~/
+	meth toAsmType<T>() : <MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]> = <SimpleMethodDescriptorImpl[napile.asm.AsmUtil.toAsmType]>toAsmType</SimpleMethodDescriptorImpl[napile.asm.AsmUtil.toAsmType]>(typeOf(<TypeParameterDescriptorImpl[napile.asm.AsmUtil.toAsmType.T]>T</TypeParameterDescriptorImpl[napile.asm.AsmUtil.toAsmType.T]>))
+
+	/~
+	 ~ Return : asm type equivalent of `type`
+	 ~/
+	meth toAsmType(val type : <MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?>) : <MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>
+	{
+		val parameters = <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>>(<CallParameterAsVariableDescriptorImpl[napile.asm.AsmUtil.toAsmType.type]>type</CallParameterAsVariableDescriptorImpl[napile.asm.AsmUtil.toAsmType.type]>.<VariableDescriptorImpl[napile.reflect.Type.parameters]>parameters</VariableDescriptorImpl[napile.reflect.Type.parameters]>.<SimpleMethodDescriptorImpl[napile.lang.Array.size]>size</SimpleMethodDescriptorImpl[napile.lang.Array.size]>())
+
+		var i = 0
+		for(c in <CallParameterAsVariableDescriptorImpl[napile.asm.AsmUtil.toAsmType.type]>type</CallParameterAsVariableDescriptorImpl[napile.asm.AsmUtil.toAsmType.type]>.<VariableDescriptorImpl[napile.reflect.Type.parameters]>parameters</VariableDescriptorImpl[napile.reflect.Type.parameters]>)
+			<SimpleMethodDescriptorImpl[napile.lang.Array.set]><LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.parameters]>parameters</LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.parameters]>[<LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.i]>i</LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>]</SimpleMethodDescriptorImpl[napile.lang.Array.set]> <null>=</null> <SimpleMethodDescriptorImpl[napile.asm.AsmUtil.toAsmType]>toAsmType</SimpleMethodDescriptorImpl[napile.asm.AsmUtil.toAsmType]>(<LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.c]>c</LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.c]>)
+
+		val annotations = <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<MutableClassDescriptor[napile.asm.members.AsmAnnotation]>AsmAnnotation</MutableClassDescriptor[napile.asm.members.AsmAnnotation]>>(0)
+		//TODO [VISTALL] no annotations - currently
+		return <ConstructorDescriptor[napile.asm.members.AsmType.this]>AsmType</ConstructorDescriptor[napile.asm.members.AsmType.this]>(<LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.annotations]>annotations</LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.annotations]>, <ConstructorDescriptor[napile.asm.members.typeConstructor.AsmClassType.this]>AsmClassType</ConstructorDescriptor[napile.asm.members.typeConstructor.AsmClassType.this]>(<CallParameterAsVariableDescriptorImpl[napile.asm.AsmUtil.toAsmType.type]>type</CallParameterAsVariableDescriptorImpl[napile.asm.AsmUtil.toAsmType.type]>.<VariableDescriptorImpl[napile.reflect.Type.constructorClass]>constructorClass</VariableDescriptorImpl[napile.reflect.Type.constructorClass]>.<VariableDescriptorImpl[napile.reflect.Class.name]>name</VariableDescriptorImpl[napile.reflect.Class.name]>), <LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.parameters]>parameters</LocalVariableDescriptor[napile.asm.AsmUtil.toAsmType.parameters]>, <CallParameterAsVariableDescriptorImpl[napile.asm.AsmUtil.toAsmType.type]>type</CallParameterAsVariableDescriptorImpl[napile.asm.AsmUtil.toAsmType.type]>.<VariableDescriptorImpl[napile.reflect.Type.nullable]>nullable</VariableDescriptorImpl[napile.reflect.Type.nullable]>)
+	}
+}

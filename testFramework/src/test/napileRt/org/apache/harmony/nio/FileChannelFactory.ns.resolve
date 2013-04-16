@@ -1,0 +1,14 @@
+<null>package <PackageDescriptorImpl[org]>org</PackageDescriptorImpl[org]>.<PackageDescriptorImpl[org.apache]>apache</PackageDescriptorImpl[org.apache]>.<PackageDescriptorImpl[org.apache.harmony]>harmony</PackageDescriptorImpl[org.apache.harmony]>.<PackageDescriptorImpl[org.apache.harmony.nio]>nio</PackageDescriptorImpl[org.apache.harmony.nio]></null>
+
+import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.nio]>nio</PackageDescriptorImpl[napile.nio]>.<PackageDescriptorImpl[napile.nio.channels]>channels</PackageDescriptorImpl[napile.nio.channels]>.<MutableClassDescriptor[napile.nio.channels.FileChannel]>FileChannel</MutableClassDescriptor[napile.nio.channels.FileChannel]>
+
+/**
+ * @author VISTALL
+ */
+class FileChannelFactory
+{
+	static meth getFileChannel(val stream : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>, val fd : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, val mode : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.nio.channels.FileChannel]>FileChannel</MutableClassDescriptor[napile.nio.channels.FileChannel]>
+	{
+		return <ConstructorDescriptor[napile.nio.channels.FileChannel.this]>FileChannel</ConstructorDescriptor[napile.nio.channels.FileChannel.this]>()
+	}
+}
