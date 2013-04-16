@@ -50,7 +50,7 @@ public abstract class NapileTestCase extends TestCase
 
 	public NapileTestCase()
 	{
-		genResults
+
 	}
 
 	@Override
