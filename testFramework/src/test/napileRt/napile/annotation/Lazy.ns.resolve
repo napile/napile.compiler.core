@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>
 
 /**
  * @author VISTALL
  * @date 11:07/17.01.13
  */
-@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+@<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>
 final class Lazy
 {
-	val value : <MutableClassDescriptor[napile.annotation.LazyType]>LazyType</MutableClassDescriptor[napile.annotation.LazyType]>
+	val value : <ref class="MutableClassDescriptor" to="napile.annotation.LazyType">LazyType</ref>
 
-	this(<VariableDescriptorImpl[napile.annotation.Lazy.value]>value</VariableDescriptorImpl[napile.annotation.Lazy.value]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.annotation.Lazy.value">value</ref>)
 }

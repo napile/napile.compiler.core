@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.logging">logging</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<MutableClassDescriptor[napile.module.extension.ExtensionPointName]>ExtensionPointName</MutableClassDescriptor[napile.module.extension.ExtensionPointName]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<PackageDescriptorImpl[napile.module.extension.descriptors]>descriptors</PackageDescriptorImpl[napile.module.extension.descriptors]>.<MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtensionWithId]>SimpleFactoryExtensionWithId</MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtensionWithId]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>.<ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPointName">ExtensionPointName</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension.descriptors">descriptors</ref>.<ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId">SimpleFactoryExtensionWithId</ref>
 
 /**
  * @author VISTALL
  */
 abstract class LoggingHandler
 {
-	static val EP_NAME : <MutableClassDescriptor[napile.module.extension.ExtensionPointName]>ExtensionPointName</MutableClassDescriptor[napile.module.extension.ExtensionPointName]><<MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtensionWithId]>SimpleFactoryExtensionWithId</MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtensionWithId]><<MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>>> = <ConstructorDescriptor[napile.module.extension.ExtensionPointName.this]>ExtensionPointName</ConstructorDescriptor[napile.module.extension.ExtensionPointName.this]>("napile.lang", "loggingHandler")
+	static val EP_NAME : <ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPointName">ExtensionPointName</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId">SimpleFactoryExtensionWithId</ref><<ref class="MutableClassDescriptor" to="napile.logging.LoggingHandler">LoggingHandler</ref>>> = <ref class="ConstructorDescriptor" to="napile.module.extension.ExtensionPointName.this">ExtensionPointName</ref>("napile.lang", "loggingHandler")
 
 	this()
 
-	meth log(val message : <MutableClassDescriptor[napile.logging.LoggingMessage]>LoggingMessage</MutableClassDescriptor[napile.logging.LoggingMessage]>)
+	meth log(val message : <ref class="MutableClassDescriptor" to="napile.logging.LoggingMessage">LoggingMessage</ref>)
 }

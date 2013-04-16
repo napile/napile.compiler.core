@@ -1,26 +1,26 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.resource]>resource</PackageDescriptorImpl[napile.resource]>.<MutableClassDescriptor[napile.resource.ResourceBundle]>ResourceBundle</MutableClassDescriptor[napile.resource.ResourceBundle]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<MutableClassDescriptor[napile.module.extension.ExtensionPoint]>ExtensionPoint</MutableClassDescriptor[napile.module.extension.ExtensionPoint]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.resource">resource</ref>.<ref class="MutableClassDescriptor" to="napile.resource.ResourceBundle">ResourceBundle</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>.<ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPoint">ExtensionPoint</ref>
 
 /**
  * @author VISTALL
  */
 class Module
 {
-	val id : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	val id : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 
-	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 
-	val extensionPoints : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.module.extension.ExtensionPoint]>ExtensionPoint</MutableClassDescriptor[napile.module.extension.ExtensionPoint]>> = <SimpleMethodDescriptorImpl[napile.module.Module.getExtensionPoints]>getExtensionPoints</SimpleMethodDescriptorImpl[napile.module.Module.getExtensionPoints]>()
+	val extensionPoints : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPoint">ExtensionPoint</ref>> = <ref class="SimpleMethodDescriptorImpl" to="napile.module.Module.getExtensionPoints">getExtensionPoints</ref>()
 
-	this(<VariableDescriptorImpl[napile.module.Module.id]>id</VariableDescriptorImpl[napile.module.Module.id]>, <VariableDescriptorImpl[napile.module.Module.name]>name</VariableDescriptorImpl[napile.module.Module.name]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.module.Module.id">id</ref>, <ref class="VariableDescriptorImpl" to="napile.module.Module.name">name</ref>)
 
-	local native meth getExtensionPoints() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.module.extension.ExtensionPoint]>ExtensionPoint</MutableClassDescriptor[napile.module.extension.ExtensionPoint]>>
+	local native meth getExtensionPoints() : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPoint">ExtensionPoint</ref>>
 
-	static meth getBundle() : <MutableClassDescriptor[napile.resource.ResourceBundle]>ResourceBundle</MutableClassDescriptor[napile.resource.ResourceBundle]>
+	static meth getBundle() : <ref class="MutableClassDescriptor" to="napile.resource.ResourceBundle">ResourceBundle</ref>
 	{
-		throw <ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>IllegalArgumentException</ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>() // TODO [VISTALL]
+		throw <ref class="ConstructorDescriptor" to="napile.lang.IllegalArgumentException.this">IllegalArgumentException</ref>() // TODO [VISTALL]
 	}
 }

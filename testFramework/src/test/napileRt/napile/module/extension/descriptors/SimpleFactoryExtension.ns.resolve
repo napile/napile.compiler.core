@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<PackageDescriptorImpl[napile.module.extension.descriptors]>descriptors</PackageDescriptorImpl[napile.module.extension.descriptors]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension.descriptors">descriptors</ref>
 
 /~
  ~ Authors
@@ -22,7 +22,7 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  ~/
 class SimpleFactoryExtension<T()>
 {
-	meth create() : <TypeParameterDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtension.T]>T</TypeParameterDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtension.T]> = <ConstructorDescriptor[napile.module.extension.descriptors.SimpleFactoryExtension.T.this]>T</ConstructorDescriptor[napile.module.extension.descriptors.SimpleFactoryExtension.T.this]>()
+	meth create() : <ref class="TypeParameterDescriptorImpl" to="napile.module.extension.descriptors.SimpleFactoryExtension.T">T</ref> = <ref class="ConstructorDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtension.T.this">T</ref>()
 
 	this()
 }

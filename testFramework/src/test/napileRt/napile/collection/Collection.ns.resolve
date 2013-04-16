@@ -1,23 +1,23 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
 /**
  * @author VISTALL
  */
-abstract class Collection<E> : <MutableClassDescriptor[napile.collection.Iterable]>Iterable</MutableClassDescriptor[napile.collection.Iterable]><<TypeParameterDescriptorImpl[napile.collection.Collection.E]>E</TypeParameterDescriptorImpl[napile.collection.Collection.E]>> & <MutableClassDescriptor[napile.collection.Sizeable]>Sizeable</MutableClassDescriptor[napile.collection.Sizeable]>
+abstract class Collection<E> : <ref class="MutableClassDescriptor" to="napile.collection.Iterable">Iterable</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.Collection.E">E</ref>> & <ref class="MutableClassDescriptor" to="napile.collection.Sizeable">Sizeable</ref>
 {
-	local val emptyArray = <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<TypeParameterDescriptorImpl[napile.collection.Collection.E]>E</TypeParameterDescriptorImpl[napile.collection.Collection.E]>>(0)
+	local val emptyArray = <ref class="ConstructorDescriptor" to="napile.lang.Array.this">Array</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.Collection.E">E</ref>>(0)
 
-	meth toArray() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.collection.Collection.E]>E</TypeParameterDescriptorImpl[napile.collection.Collection.E]>>
+	meth toArray() : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.Collection.E">E</ref>>
 	{
-		if (<SimpleMethodDescriptorImpl[napile.collection.Collection.isEmpty]>isEmpty</SimpleMethodDescriptorImpl[napile.collection.Collection.isEmpty]>())
-			return <VariableDescriptorImpl[napile.collection.Collection.emptyArray]>emptyArray</VariableDescriptorImpl[napile.collection.Collection.emptyArray]>
+		if (<ref class="SimpleMethodDescriptorImpl" to="napile.collection.Collection.isEmpty">isEmpty</ref>())
+			return <ref class="VariableDescriptorImpl" to="napile.collection.Collection.emptyArray">emptyArray</ref>
 		else
 		{
-			var array = <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<TypeParameterDescriptorImpl[napile.collection.Collection.E]>E</TypeParameterDescriptorImpl[napile.collection.Collection.E]>>(<SimpleMethodDescriptorImpl[napile.collection.Collection.size]>size</SimpleMethodDescriptorImpl[napile.collection.Collection.size]>())
+			var array = <ref class="ConstructorDescriptor" to="napile.lang.Array.this">Array</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.Collection.E">E</ref>>(<ref class="SimpleMethodDescriptorImpl" to="napile.collection.Collection.size">size</ref>())
 			var index = 0
-			for(e in <MutableClassDescriptor[napile.collection.Collection]>this</MutableClassDescriptor[napile.collection.Collection]>)
-				<SimpleMethodDescriptorImpl[napile.lang.Array.set]><LocalVariableDescriptor[napile.collection.Collection.toArray.array]>array</LocalVariableDescriptor[napile.collection.Collection.toArray.array]>[<LocalVariableDescriptor[napile.collection.Collection.toArray.index]>index</LocalVariableDescriptor[napile.collection.Collection.toArray.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>]</SimpleMethodDescriptorImpl[napile.lang.Array.set]> <null>=</null> <LocalVariableDescriptor[napile.collection.Collection.toArray.e]>e</LocalVariableDescriptor[napile.collection.Collection.toArray.e]>
-			return <LocalVariableDescriptor[napile.collection.Collection.toArray.array]>array</LocalVariableDescriptor[napile.collection.Collection.toArray.array]>
+			for(e in <ref class="MutableClassDescriptor" to="napile.collection.Collection">this</ref>)
+				<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.set"><ref class="LocalVariableDescriptor" to="napile.collection.Collection.toArray.array">array</ref>[<ref class="LocalVariableDescriptor" to="napile.collection.Collection.toArray.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.inc">++</ref>]</ref> <ref to="null">=</ref> <ref class="LocalVariableDescriptor" to="napile.collection.Collection.toArray.e">e</ref>
+			return <ref class="LocalVariableDescriptor" to="napile.collection.Collection.toArray.array">array</ref>
 		}
 	}
 }

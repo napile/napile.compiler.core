@@ -14,14 +14,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * Thrown when an assertion has failed.
  *
  * @since 1.4
  */
-class AssertionError : <MutableClassDescriptor[napile.lang.Error]>Error</MutableClassDescriptor[napile.lang.Error]>
+class AssertionError : <ref class="MutableClassDescriptor" to="napile.lang.Error">Error</ref>
 {
-	this(val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.lang.Error]>Error</MutableClassDescriptor[napile.lang.Error]>(<CallParameterAsVariableDescriptorImpl[napile.lang.AssertionError.this.message]>message</CallParameterAsVariableDescriptorImpl[napile.lang.AssertionError.this.message]>)
+	this(val message : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null) : <ref class="MutableClassDescriptor" to="napile.lang.Error">Error</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.AssertionError.this.message">message</ref>)
 }

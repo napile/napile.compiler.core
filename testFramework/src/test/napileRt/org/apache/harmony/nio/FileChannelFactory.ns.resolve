@@ -1,14 +1,14 @@
-package <PackageDescriptorImpl[org]>org</PackageDescriptorImpl[org]>.<PackageDescriptorImpl[org.apache]>apache</PackageDescriptorImpl[org.apache]>.<PackageDescriptorImpl[org.apache.harmony]>harmony</PackageDescriptorImpl[org.apache.harmony]>.<PackageDescriptorImpl[org.apache.harmony.nio]>nio</PackageDescriptorImpl[org.apache.harmony.nio]>
+package <ref class="PackageDescriptorImpl" to="org">org</ref>.<ref class="PackageDescriptorImpl" to="org.apache">apache</ref>.<ref class="PackageDescriptorImpl" to="org.apache.harmony">harmony</ref>.<ref class="PackageDescriptorImpl" to="org.apache.harmony.nio">nio</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.nio]>nio</PackageDescriptorImpl[napile.nio]>.<PackageDescriptorImpl[napile.nio.channels]>channels</PackageDescriptorImpl[napile.nio.channels]>.<MutableClassDescriptor[napile.nio.channels.FileChannel]>FileChannel</MutableClassDescriptor[napile.nio.channels.FileChannel]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.nio">nio</ref>.<ref class="PackageDescriptorImpl" to="napile.nio.channels">channels</ref>.<ref class="MutableClassDescriptor" to="napile.nio.channels.FileChannel">FileChannel</ref>
 
 /**
  * @author VISTALL
  */
 class FileChannelFactory
 {
-	static meth getFileChannel(val stream : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>, val fd : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>, val mode : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.nio.channels.FileChannel]>FileChannel</MutableClassDescriptor[napile.nio.channels.FileChannel]>
+	static meth getFileChannel(val stream : <ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>, val fd : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>, val mode : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.nio.channels.FileChannel">FileChannel</ref>
 	{
-		return <ConstructorDescriptor[napile.nio.channels.FileChannel.this]>FileChannel</ConstructorDescriptor[napile.nio.channels.FileChannel.this]>()
+		return <ref class="ConstructorDescriptor" to="napile.nio.channels.FileChannel.this">FileChannel</ref>()
 	}
 }

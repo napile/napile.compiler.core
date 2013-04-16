@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<PackageDescriptorImpl[napile.util.listeners]>listeners</PackageDescriptorImpl[napile.util.listeners]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.util">util</ref>.<ref class="PackageDescriptorImpl" to="napile.util.listeners">listeners</ref>
 
 /~
  ~ Authors
@@ -22,9 +22,9 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  ~/
 class VariableChangeEvent<T>
 {
-	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
-	val oldValue : <TypeParameterDescriptorImpl[napile.util.listeners.VariableChangeEvent.T]>T</TypeParameterDescriptorImpl[napile.util.listeners.VariableChangeEvent.T]>
-	val newValue : <TypeParameterDescriptorImpl[napile.util.listeners.VariableChangeEvent.T]>T</TypeParameterDescriptorImpl[napile.util.listeners.VariableChangeEvent.T]>
+	val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
+	val oldValue : <ref class="TypeParameterDescriptorImpl" to="napile.util.listeners.VariableChangeEvent.T">T</ref>
+	val newValue : <ref class="TypeParameterDescriptorImpl" to="napile.util.listeners.VariableChangeEvent.T">T</ref>
 
-	this(<VariableDescriptorImpl[napile.util.listeners.VariableChangeEvent.name]>name</VariableDescriptorImpl[napile.util.listeners.VariableChangeEvent.name]>, <VariableDescriptorImpl[napile.util.listeners.VariableChangeEvent.oldValue]>oldValue</VariableDescriptorImpl[napile.util.listeners.VariableChangeEvent.oldValue]>, <VariableDescriptorImpl[napile.util.listeners.VariableChangeEvent.newValue]>newValue</VariableDescriptorImpl[napile.util.listeners.VariableChangeEvent.newValue]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.util.listeners.VariableChangeEvent.name">name</ref>, <ref class="VariableDescriptorImpl" to="napile.util.listeners.VariableChangeEvent.oldValue">oldValue</ref>, <ref class="VariableDescriptorImpl" to="napile.util.listeners.VariableChangeEvent.newValue">newValue</ref>)
 }

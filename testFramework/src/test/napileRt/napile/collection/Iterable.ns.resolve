@@ -1,11 +1,11 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.InheritImmutable">InheritImmutable</ref>
 
 /**
  * @author VISTALL
  */
 abstract class Iterable<E>
 {
-	meth iterator() : @<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]> <MutableClassDescriptor[napile.collection.Iterator]>Iterator</MutableClassDescriptor[napile.collection.Iterator]><<TypeParameterDescriptorImpl[napile.collection.Iterable.E]>E</TypeParameterDescriptorImpl[napile.collection.Iterable.E]>>
+	meth iterator() : @<ref class="MutableClassDescriptor" to="napile.annotation.InheritImmutable">InheritImmutable</ref> <ref class="MutableClassDescriptor" to="napile.collection.Iterator">Iterator</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.Iterable.E">E</ref>>
 }

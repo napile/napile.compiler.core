@@ -1,87 +1,87 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.condition]>condition</PackageDescriptorImpl[napile.condition]>.<MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.condition">condition</ref>.<ref class="MutableClassDescriptor" to="napile.condition.CompareResult">CompareResult</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>(0.<SimpleMethodDescriptorImpl[napile.lang.Int.toByte]>toByte</SimpleMethodDescriptorImpl[napile.lang.Int.toByte]>())
-final class Byte : <MutableClassDescriptor[napile.lang.Number]>Number</MutableClassDescriptor[napile.lang.Number]>
+@<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>(0.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.toByte">toByte</ref>())
+final class Byte : <ref class="MutableClassDescriptor" to="napile.lang.Number">Number</ref>
 {
-	static val MIN_VALUE : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]> = <SimpleMethodDescriptorImpl[napile.lang.Byte.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Byte.minus]>128.<SimpleMethodDescriptorImpl[napile.lang.Int.toByte]>toByte</SimpleMethodDescriptorImpl[napile.lang.Int.toByte]>()
-	static val MAX_VALUE : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]> = 127.<SimpleMethodDescriptorImpl[napile.lang.Int.toByte]>toByte</SimpleMethodDescriptorImpl[napile.lang.Int.toByte]>()
+	static val MIN_VALUE : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref> = <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Byte.minus">-</ref>128.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.toByte">toByte</ref>()
+	static val MAX_VALUE : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref> = 127.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.toByte">toByte</ref>()
 
 	local this()
 
-	meth rangeTo(val value : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>) : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>
+	meth rangeTo(val value : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>>
 	{
-		var array = <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>>(<CallParameterAsVariableDescriptorImpl[napile.lang.Byte.rangeTo.value]>value</CallParameterAsVariableDescriptorImpl[napile.lang.Byte.rangeTo.value]> <SimpleMethodDescriptorImpl[napile.lang.Byte.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Byte.minus]> <MutableClassDescriptor[napile.lang.Byte]>this</MutableClassDescriptor[napile.lang.Byte]> <SimpleMethodDescriptorImpl[napile.lang.Byte.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Byte.minus]> 1)
+		var array = <ref class="ConstructorDescriptor" to="napile.lang.Array.this">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Byte.rangeTo.value">value</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Byte.minus">-</ref> <ref class="MutableClassDescriptor" to="napile.lang.Byte">this</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Byte.minus">-</ref> 1)
 
 		var index = 0
-		var me = <MutableClassDescriptor[napile.lang.Byte]>this</MutableClassDescriptor[napile.lang.Byte]>
-		while (<LocalVariableDescriptor[napile.lang.Byte.rangeTo.index]>index</LocalVariableDescriptor[napile.lang.Byte.rangeTo.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> <LocalVariableDescriptor[napile.lang.Byte.rangeTo.array]>array</LocalVariableDescriptor[napile.lang.Byte.rangeTo.array]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
-			<SimpleMethodDescriptorImpl[napile.lang.Array.set]><LocalVariableDescriptor[napile.lang.Byte.rangeTo.array]>array</LocalVariableDescriptor[napile.lang.Byte.rangeTo.array]>[<LocalVariableDescriptor[napile.lang.Byte.rangeTo.index]>index</LocalVariableDescriptor[napile.lang.Byte.rangeTo.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>]</SimpleMethodDescriptorImpl[napile.lang.Array.set]> <null>=</null> <LocalVariableDescriptor[napile.lang.Byte.rangeTo.me]>me</LocalVariableDescriptor[napile.lang.Byte.rangeTo.me]> <SimpleMethodDescriptorImpl[napile.lang.Byte.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Byte.inc]>
+		var me = <ref class="MutableClassDescriptor" to="napile.lang.Byte">this</ref>
+		while (<ref class="LocalVariableDescriptor" to="napile.lang.Byte.rangeTo.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">!=</ref> <ref class="LocalVariableDescriptor" to="napile.lang.Byte.rangeTo.array">array</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>)
+			<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.set"><ref class="LocalVariableDescriptor" to="napile.lang.Byte.rangeTo.array">array</ref>[<ref class="LocalVariableDescriptor" to="napile.lang.Byte.rangeTo.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.inc">++</ref>]</ref> <ref to="null">=</ref> <ref class="LocalVariableDescriptor" to="napile.lang.Byte.rangeTo.me">me</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Byte.inc">++</ref>
 
-		return <LocalVariableDescriptor[napile.lang.Byte.rangeTo.array]>array</LocalVariableDescriptor[napile.lang.Byte.rangeTo.array]>
+		return <ref class="LocalVariableDescriptor" to="napile.lang.Byte.rangeTo.array">array</ref>
 	}
 
-	override meth toByte() = <MutableClassDescriptor[napile.lang.Byte]>this</MutableClassDescriptor[napile.lang.Byte]>
+	override meth toByte() = <ref class="MutableClassDescriptor" to="napile.lang.Byte">this</ref>
 
-	override native meth toShort() : <MutableClassDescriptor[napile.lang.Short]>Short</MutableClassDescriptor[napile.lang.Short]>
+	override native meth toShort() : <ref class="MutableClassDescriptor" to="napile.lang.Short">Short</ref>
 
-	override native meth toInt() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	override native meth toInt() : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	override native meth toLong() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	override native meth toLong() : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>
 
-	override native meth toFloat() : <MutableClassDescriptor[napile.lang.Float]>Float</MutableClassDescriptor[napile.lang.Float]>
+	override native meth toFloat() : <ref class="MutableClassDescriptor" to="napile.lang.Float">Float</ref>
 
-	override native meth toDouble() : <MutableClassDescriptor[napile.lang.Double]>Double</MutableClassDescriptor[napile.lang.Double]>
+	override native meth toDouble() : <ref class="MutableClassDescriptor" to="napile.lang.Double">Double</ref>
 
-	native meth plus() : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth plus() : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth minus() : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth minus() : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth inc() : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth inc() : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth dec() : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth dec() : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
 	// bit operators
-	native meth bitNot() : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth bitNot() : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth bitXor(val value : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth bitXor(val value : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth bitOr(val value : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	native meth bitOr(val value : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	native meth bitAnd(val value : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	native meth bitAnd(val value : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	native meth bitShiftLeft(val value : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	native meth bitShiftLeft(val value : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	native meth bitShiftRight(val value : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	native meth bitShiftRight(val value : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	native meth bitShiftRightZ(val value : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	native meth bitShiftRightZ(val value : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	native meth plus(val value : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>) : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth plus(val value : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth times(val value : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>) : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth times(val value : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth minus(val value : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	native meth minus(val value : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	native meth minus(val value : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>) : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth minus(val value : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth mod(val value : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>) : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth mod(val value : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth div(val value : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>) : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native meth div(val value : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native meth compareTo(val value : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>) : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>
+	native meth compareTo(val value : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>) : <ref class="MutableClassDescriptor" to="napile.condition.CompareResult">CompareResult</ref>
 
-	native meth compareTo(val value : <MutableClassDescriptor[napile.lang.Short]>Short</MutableClassDescriptor[napile.lang.Short]>) : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>
+	native meth compareTo(val value : <ref class="MutableClassDescriptor" to="napile.lang.Short">Short</ref>) : <ref class="MutableClassDescriptor" to="napile.condition.CompareResult">CompareResult</ref>
 
-	native meth compareTo(val value : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>
+	native meth compareTo(val value : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.condition.CompareResult">CompareResult</ref>
 
-	native meth compareTo(val value : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>) : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>
+	native meth compareTo(val value : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>) : <ref class="MutableClassDescriptor" to="napile.condition.CompareResult">CompareResult</ref>
 
-	override native meth equals(val o : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	override native meth equals(val o : <ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>?) : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>
 
-	override native meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	override native meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 }

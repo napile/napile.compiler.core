@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.impl]>impl</PackageDescriptorImpl[xml.impl]>
+package <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="PackageDescriptorImpl" to="xml.impl">impl</ref>
 
-import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>
+import <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="MutableClassDescriptor" to="xml.XmlElement">XmlElement</ref>
 
 /**
  * @author VISTALL
  */
-class XmlElementImpl : <MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]> & <MutableClassDescriptor[xml.impl.XmlElementHolderImpl]>XmlElementHolderImpl</MutableClassDescriptor[xml.impl.XmlElementHolderImpl]>
+class XmlElementImpl : <ref class="MutableClassDescriptor" to="xml.XmlElement">XmlElement</ref> & <ref class="MutableClassDescriptor" to="xml.impl.XmlElementHolderImpl">XmlElementHolderImpl</ref>
 {
-	this(val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>, val elements : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>>) : <MutableClassDescriptor[xml.impl.XmlElementHolderImpl]>XmlElementHolderImpl</MutableClassDescriptor[xml.impl.XmlElementHolderImpl]>(<CallParameterAsVariableDescriptorImpl[xml.impl.XmlElementImpl.this.elements]>elements</CallParameterAsVariableDescriptorImpl[xml.impl.XmlElementImpl.this.elements]>) & <MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>(<CallParameterAsVariableDescriptorImpl[xml.impl.XmlElementImpl.this.name]>name</CallParameterAsVariableDescriptorImpl[xml.impl.XmlElementImpl.this.name]>)
+	this(val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>, val elements : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="xml.XmlElement">XmlElement</ref>>) : <ref class="MutableClassDescriptor" to="xml.impl.XmlElementHolderImpl">XmlElementHolderImpl</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="xml.impl.XmlElementImpl.this.elements">elements</ref>) & <ref class="MutableClassDescriptor" to="xml.XmlElement">XmlElement</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="xml.impl.XmlElementImpl.this.name">name</ref>)
 
-	override meth getName() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	override meth getName() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 	{
-		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+		throw <ref class="ConstructorDescriptor" to="napile.lang.UnsupportedOperationException.this">UnsupportedOperationException</ref>()
 	}
 }

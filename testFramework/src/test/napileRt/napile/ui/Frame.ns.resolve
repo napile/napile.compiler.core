@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>
 
 /~
  ~ Authors
  ~ * VISTALL
  ~/
-class Frame : <MutableClassDescriptor[napile.ui.BaseComponent]>BaseComponent</MutableClassDescriptor[napile.ui.BaseComponent]> & <MutableClassDescriptor[napile.ui.Textable]>Textable</MutableClassDescriptor[napile.ui.Textable]>
+class Frame : <ref class="MutableClassDescriptor" to="napile.ui.BaseComponent">BaseComponent</ref> & <ref class="MutableClassDescriptor" to="napile.ui.Textable">Textable</ref>
 {
-	this(val text : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.ui.BaseComponent]>BaseComponent</MutableClassDescriptor[napile.ui.BaseComponent]>() & <MutableClassDescriptor[napile.ui.Textable]>Textable</MutableClassDescriptor[napile.ui.Textable]>(<CallParameterAsVariableDescriptorImpl[napile.ui.Frame.this.text]>text</CallParameterAsVariableDescriptorImpl[napile.ui.Frame.this.text]>)
+	this(val text : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null) : <ref class="MutableClassDescriptor" to="napile.ui.BaseComponent">BaseComponent</ref>() & <ref class="MutableClassDescriptor" to="napile.ui.Textable">Textable</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.Frame.this.text">text</ref>)
 }

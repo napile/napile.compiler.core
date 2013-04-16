@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<PackageDescriptorImpl[napile.module.extension.descriptors]>descriptors</PackageDescriptorImpl[napile.module.extension.descriptors]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension.descriptors">descriptors</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<MutableClassDescriptor[napile.module.extension.ExtensionPointName]>ExtensionPointName</MutableClassDescriptor[napile.module.extension.ExtensionPointName]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>.<ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPointName">ExtensionPointName</ref>
 
 /~
  ~ This is simple extension - that have one variable - instance of `T`
@@ -27,7 +27,7 @@ import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<Pa
  ~/
 class SimpleInstanceExtension<T()>
 {
-	val impl : <TypeParameterDescriptorImpl[napile.module.extension.descriptors.SimpleInstanceExtension.T]>T</TypeParameterDescriptorImpl[napile.module.extension.descriptors.SimpleInstanceExtension.T]> = <ConstructorDescriptor[napile.module.extension.descriptors.SimpleInstanceExtension.T.this]>T</ConstructorDescriptor[napile.module.extension.descriptors.SimpleInstanceExtension.T.this]>()
+	val impl : <ref class="TypeParameterDescriptorImpl" to="napile.module.extension.descriptors.SimpleInstanceExtension.T">T</ref> = <ref class="ConstructorDescriptor" to="napile.module.extension.descriptors.SimpleInstanceExtension.T.this">T</ref>()
 
 	this()
 }

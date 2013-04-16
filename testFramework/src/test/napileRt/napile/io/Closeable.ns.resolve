@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.io">io</ref>
 
 /**
  * @author VISTALL

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>
 
 /~
  ~ Authors
  ~ * VISTALL
  ~/
-class RootPanel : <MutableClassDescriptor[napile.ui.BaseComponent]>BaseComponent</MutableClassDescriptor[napile.ui.BaseComponent]>
+class RootPanel : <ref class="MutableClassDescriptor" to="napile.ui.BaseComponent">BaseComponent</ref>
 {
-	this() : <MutableClassDescriptor[napile.ui.BaseComponent]>BaseComponent</MutableClassDescriptor[napile.ui.BaseComponent]>()
+	this() : <ref class="MutableClassDescriptor" to="napile.ui.BaseComponent">BaseComponent</ref>()
 }

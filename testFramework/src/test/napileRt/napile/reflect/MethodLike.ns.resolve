@@ -1,24 +1,24 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>.<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.asm">asm</ref>.<ref class="PackageDescriptorImpl" to="napile.asm.members">members</ref>.<ref class="MutableClassDescriptor" to="napile.asm.members.AsmType">AsmType</ref>
 
 /**
  * @author VISTALL
  */
-class MethodLike : <MutableClassDescriptor[napile.reflect.Member]>Member</MutableClassDescriptor[napile.reflect.Member]>
+class MethodLike : <ref class="MutableClassDescriptor" to="napile.reflect.Member">Member</ref>
 {
-	lazy val parameters : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.CallParameter]>CallParameter</MutableClassDescriptor[napile.reflect.CallParameter]>> = <SimpleMethodDescriptorImpl[napile.reflect.MethodLike.getCallParameters]>getCallParameters</SimpleMethodDescriptorImpl[napile.reflect.MethodLike.getCallParameters]>()
+	lazy val parameters : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.reflect.CallParameter">CallParameter</ref>> = <ref class="SimpleMethodDescriptorImpl" to="napile.reflect.MethodLike.getCallParameters">getCallParameters</ref>()
 
-	lazy val returnType : <MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]> = <SimpleMethodDescriptorImpl[napile.reflect.MethodLike.getReturnType]>getReturnType</SimpleMethodDescriptorImpl[napile.reflect.MethodLike.getReturnType]>()
+	lazy val returnType : <ref class="MutableClassDescriptor" to="napile.asm.members.AsmType">AsmType</ref> = <ref class="SimpleMethodDescriptorImpl" to="napile.reflect.MethodLike.getReturnType">getReturnType</ref>()
 
 	covered this(
-			val owner : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>?,
-			val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>,
-			val modifiers : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]>>,
-			val annotations : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>) : <MutableClassDescriptor[napile.reflect.Member]>Member</MutableClassDescriptor[napile.reflect.Member]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.MethodLike.this.owner]>owner</CallParameterAsVariableDescriptorImpl[napile.reflect.MethodLike.this.owner]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.MethodLike.this.name]>name</CallParameterAsVariableDescriptorImpl[napile.reflect.MethodLike.this.name]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.MethodLike.this.modifiers]>modifiers</CallParameterAsVariableDescriptorImpl[napile.reflect.MethodLike.this.modifiers]>, <CallParameterAsVariableDescriptorImpl[napile.reflect.MethodLike.this.annotations]>annotations</CallParameterAsVariableDescriptorImpl[napile.reflect.MethodLike.this.annotations]>)
+			val owner : <ref class="MutableClassDescriptor" to="napile.reflect.Class">Class</ref><<ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>>?,
+			val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>,
+			val modifiers : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref>>,
+			val annotations : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>>) : <ref class="MutableClassDescriptor" to="napile.reflect.Member">Member</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.reflect.MethodLike.this.owner">owner</ref>, <ref class="CallParameterAsVariableDescriptorImpl" to="napile.reflect.MethodLike.this.name">name</ref>, <ref class="CallParameterAsVariableDescriptorImpl" to="napile.reflect.MethodLike.this.modifiers">modifiers</ref>, <ref class="CallParameterAsVariableDescriptorImpl" to="napile.reflect.MethodLike.this.annotations">annotations</ref>)
 
-	local native meth getCallParameters() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.reflect.CallParameter]>CallParameter</MutableClassDescriptor[napile.reflect.CallParameter]>>
+	local native meth getCallParameters() : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.reflect.CallParameter">CallParameter</ref>>
 
-	local native meth getReturnType() : <MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>
+	local native meth getReturnType() : <ref class="MutableClassDescriptor" to="napile.asm.members.AsmType">AsmType</ref>
 }

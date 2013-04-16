@@ -1,17 +1,17 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.InheritImmutable">InheritImmutable</ref>
 
 /**
  * @author VISTALL
  */
-abstract class Map<K, V> : <MutableClassDescriptor[napile.collection.Sizeable]>Sizeable</MutableClassDescriptor[napile.collection.Sizeable]>
+abstract class Map<K, V> : <ref class="MutableClassDescriptor" to="napile.collection.Sizeable">Sizeable</ref>
 {
-	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
-	meth put(val key : <TypeParameterDescriptorImpl[napile.collection.Map.K]>K</TypeParameterDescriptorImpl[napile.collection.Map.K]>, val value : <TypeParameterDescriptorImpl[napile.collection.Map.V]>V</TypeParameterDescriptorImpl[napile.collection.Map.V]>)
+	@<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
+	meth put(val key : <ref class="TypeParameterDescriptorImpl" to="napile.collection.Map.K">K</ref>, val value : <ref class="TypeParameterDescriptorImpl" to="napile.collection.Map.V">V</ref>)
 
-	meth get(val key : <TypeParameterDescriptorImpl[napile.collection.Map.K]>K</TypeParameterDescriptorImpl[napile.collection.Map.K]>) : <TypeParameterDescriptorImpl[napile.collection.Map.V]>V</TypeParameterDescriptorImpl[napile.collection.Map.V]>
+	meth get(val key : <ref class="TypeParameterDescriptorImpl" to="napile.collection.Map.K">K</ref>) : <ref class="TypeParameterDescriptorImpl" to="napile.collection.Map.V">V</ref>
 
-	meth entrySet() : @<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]> <MutableClassDescriptor[napile.collection.Set]>Set</MutableClassDescriptor[napile.collection.Set]><[val key : <TypeParameterDescriptorImpl[napile.collection.Map.K]>K</TypeParameterDescriptorImpl[napile.collection.Map.K]>, val value : <TypeParameterDescriptorImpl[napile.collection.Map.V]>V</TypeParameterDescriptorImpl[napile.collection.Map.V]>]>
+	meth entrySet() : @<ref class="MutableClassDescriptor" to="napile.annotation.InheritImmutable">InheritImmutable</ref> <ref class="MutableClassDescriptor" to="napile.collection.Set">Set</ref><[val key : <ref class="TypeParameterDescriptorImpl" to="napile.collection.Map.K">K</ref>, val value : <ref class="TypeParameterDescriptorImpl" to="napile.collection.Map.V">V</ref>]>
 }

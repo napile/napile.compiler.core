@@ -1,4 +1,4 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.condition]>condition</PackageDescriptorImpl[napile.condition]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.condition">condition</ref>
 
 /**
  * @author VISTALL

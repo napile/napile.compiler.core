@@ -1,16 +1,16 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
 /**
  * @author VISTALL
  */
-abstract class List<E> : <MutableClassDescriptor[napile.collection.Collection]>Collection</MutableClassDescriptor[napile.collection.Collection]><<TypeParameterDescriptorImpl[napile.collection.List.E]>E</TypeParameterDescriptorImpl[napile.collection.List.E]>>
+abstract class List<E> : <ref class="MutableClassDescriptor" to="napile.collection.Collection">Collection</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.List.E">E</ref>>
 {
-	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
-	meth add(val e : <TypeParameterDescriptorImpl[napile.collection.List.E]>E</TypeParameterDescriptorImpl[napile.collection.List.E]>) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	@<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
+	meth add(val e : <ref class="TypeParameterDescriptorImpl" to="napile.collection.List.E">E</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>
 
-	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
-	meth set(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val e : <TypeParameterDescriptorImpl[napile.collection.List.E]>E</TypeParameterDescriptorImpl[napile.collection.List.E]>)
+	@<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
+	meth set(val index : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>, val e : <ref class="TypeParameterDescriptorImpl" to="napile.collection.List.E">E</ref>)
 
-	meth get(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <TypeParameterDescriptorImpl[napile.collection.List.E]>E</TypeParameterDescriptorImpl[napile.collection.List.E]>
+	meth get(val index : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="TypeParameterDescriptorImpl" to="napile.collection.List.E">E</ref>
 }

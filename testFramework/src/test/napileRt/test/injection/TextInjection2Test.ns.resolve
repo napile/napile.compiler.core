@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[test]>test</PackageDescriptorImpl[test]>.<PackageDescriptorImpl[test.injection]>injection</PackageDescriptorImpl[test.injection]>
+package <ref class="PackageDescriptorImpl" to="test">test</ref>.<ref class="PackageDescriptorImpl" to="test.injection">injection</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.logging">logging</ref>.<ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>
 
 class TextInjection2Test
 {
-	static meth main(val arg : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>>)
+	static meth main(val arg : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>>)
 	{
-		var i : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]> =  /:text this call of method: #{<SimpleMethodDescriptorImpl[test.injection.TextInjection2Test.callTo]>callTo</SimpleMethodDescriptorImpl[test.injection.TextInjection2Test.callTo]>()}() :/
+		var i : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> =  /:text this call of method: #{<ref class="SimpleMethodDescriptorImpl" to="test.injection.TextInjection2Test.callTo">callTo</ref>()}() :/
 
-		<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>.<VariableDescriptorImpl[napile.logging.Logger.System]>System</VariableDescriptorImpl[napile.logging.Logger.System]>.<SimpleMethodDescriptorImpl[napile.logging.Logger.info]>info</SimpleMethodDescriptorImpl[napile.logging.Logger.info]>(<LocalVariableDescriptor[test.injection.TextInjection2Test.main.i]>i</LocalVariableDescriptor[test.injection.TextInjection2Test.main.i]>)
+		<ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>.<ref class="VariableDescriptorImpl" to="napile.logging.Logger.System">System</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.logging.Logger.info">info</ref>(<ref class="LocalVariableDescriptor" to="test.injection.TextInjection2Test.main.i">i</ref>)
 	}
 
-	static meth callTo() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	static meth callTo() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 	{
 		return "callTo"
 	}

@@ -1,32 +1,32 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.ArrayList]>ArrayList</MutableClassDescriptor[napile.collection.ArrayList]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.ArrayList">ArrayList</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.List">List</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref>
 
 /**
  * @author VISTALL
  */
 class AnnotationOwner
 {
-	final val annotations : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>
+	final val annotations : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>>
 
-	covered this(<VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>annotations</VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>)
+	covered this(<ref class="VariableDescriptorImpl" to="napile.reflect.AnnotationOwner.annotations">annotations</ref>)
 
-	meth findAnnotation<A>() : <TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotation.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotation.A]>?
+	meth findAnnotation<A>() : <ref class="TypeParameterDescriptorImpl" to="napile.reflect.AnnotationOwner.findAnnotation.A">A</ref>?
 	{
-		for(a in <VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>annotations</VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>)
-			if (<LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotation.a]>a</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotation.a]> <null>is</null> <TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotation.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotation.A]>)
-				return <LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotation.a]>a</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotation.a]>
+		for(a in <ref class="VariableDescriptorImpl" to="napile.reflect.AnnotationOwner.annotations">annotations</ref>)
+			if (<ref class="LocalVariableDescriptor" to="napile.reflect.AnnotationOwner.findAnnotation.a">a</ref> <ref to="null">is</ref> <ref class="TypeParameterDescriptorImpl" to="napile.reflect.AnnotationOwner.findAnnotation.A">A</ref>)
+				return <ref class="LocalVariableDescriptor" to="napile.reflect.AnnotationOwner.findAnnotation.a">a</ref>
 		return null
 	}
 
-	meth findAnnotations<A>() : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>>
+	meth findAnnotations<A>() : <ref class="MutableClassDescriptor" to="napile.collection.List">List</ref><<ref class="TypeParameterDescriptorImpl" to="napile.reflect.AnnotationOwner.findAnnotations.A">A</ref>>
 	{
-		val list = <ConstructorDescriptor[napile.collection.ArrayList.this]>ArrayList</ConstructorDescriptor[napile.collection.ArrayList.this]><<TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>>(2)
-		for (a in <VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>annotations</VariableDescriptorImpl[napile.reflect.AnnotationOwner.annotations]>)
-			if(<LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.a]>a</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.a]> <null>is</null> <TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>A</TypeParameterDescriptorImpl[napile.reflect.AnnotationOwner.findAnnotations.A]>)
-				<LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.list]>list</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.list]>.<SimpleMethodDescriptorImpl[napile.collection.ArrayList.add]>add</SimpleMethodDescriptorImpl[napile.collection.ArrayList.add]>(<LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.a]>a</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.a]>)
-		return <LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.list]>list</LocalVariableDescriptor[napile.reflect.AnnotationOwner.findAnnotations.list]>
+		val list = <ref class="ConstructorDescriptor" to="napile.collection.ArrayList.this">ArrayList</ref><<ref class="TypeParameterDescriptorImpl" to="napile.reflect.AnnotationOwner.findAnnotations.A">A</ref>>(2)
+		for (a in <ref class="VariableDescriptorImpl" to="napile.reflect.AnnotationOwner.annotations">annotations</ref>)
+			if(<ref class="LocalVariableDescriptor" to="napile.reflect.AnnotationOwner.findAnnotations.a">a</ref> <ref to="null">is</ref> <ref class="TypeParameterDescriptorImpl" to="napile.reflect.AnnotationOwner.findAnnotations.A">A</ref>)
+				<ref class="LocalVariableDescriptor" to="napile.reflect.AnnotationOwner.findAnnotations.list">list</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.ArrayList.add">add</ref>(<ref class="LocalVariableDescriptor" to="napile.reflect.AnnotationOwner.findAnnotations.a">a</ref>)
+		return <ref class="LocalVariableDescriptor" to="napile.reflect.AnnotationOwner.findAnnotations.list">list</ref>
 	}
 }

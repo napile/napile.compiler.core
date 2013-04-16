@@ -1,4 +1,4 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>
 
 /**
  * @author VISTALL
@@ -8,32 +8,32 @@ class Modifier
 	/**
 	 * access modifier
 	*/
-	static val LOCAL : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val LOCAL : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
 	/**
 	 * access modifier
 	*/
-	static val HERITABLE : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val HERITABLE : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
 	/**
 	 * access modifier
 	*/
-	static val COVERED : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val COVERED : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
 	/**
 	 * variable modifier
 	*/
-	static val MUTABLE : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val MUTABLE : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
-	static val STATIC : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val STATIC : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
-	static val ABSTRACT : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val ABSTRACT : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
-	static val FINAL : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val FINAL : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
-	static val NATIVE : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val NATIVE : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
-	static val UTIL : <MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]> = <ConstructorDescriptor[napile.reflect.Modifier.this]>Modifier</ConstructorDescriptor[napile.reflect.Modifier.this]>()
+	static val UTIL : <ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref> = <ref class="ConstructorDescriptor" to="napile.reflect.Modifier.this">Modifier</ref>()
 
 	local this()
 }

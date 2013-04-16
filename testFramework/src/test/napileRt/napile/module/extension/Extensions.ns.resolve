@@ -1,6 +1,6 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref>
 
 /~
  ~ Authors
@@ -8,11 +8,11 @@ import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<Pa
  ~/
 class Extensions
 {
-	val forId : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	val forId : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 
-	val extensions : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.module.extension.Extension]>Extension</MutableClassDescriptor[napile.module.extension.Extension]>> = <SimpleMethodDescriptorImpl[napile.module.extension.Extensions.getExtensions]>getExtensions</SimpleMethodDescriptorImpl[napile.module.extension.Extensions.getExtensions]>()
+	val extensions : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.Extension">Extension</ref>> = <ref class="SimpleMethodDescriptorImpl" to="napile.module.extension.Extensions.getExtensions">getExtensions</ref>()
 
-	this(<VariableDescriptorImpl[napile.module.extension.Extensions.forId]>forId</VariableDescriptorImpl[napile.module.extension.Extensions.forId]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.module.extension.Extensions.forId">forId</ref>)
 
-	local native meth getExtensions() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.module.extension.Extension]>Extension</MutableClassDescriptor[napile.module.extension.Extension]>>
+	local native meth getExtensions() : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.Extension">Extension</ref>>
 }

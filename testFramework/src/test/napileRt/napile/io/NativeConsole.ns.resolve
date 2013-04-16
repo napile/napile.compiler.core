@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.io">io</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Deprecated]>Deprecated</MutableClassDescriptor[napile.annotation.Deprecated]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Deprecated">Deprecated</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[napile.annotation.Deprecated]>Deprecated</MutableClassDescriptor[napile.annotation.Deprecated]>("Need rework")
+@<ref class="MutableClassDescriptor" to="napile.annotation.Deprecated">Deprecated</ref>("Need rework")
 util class NativeConsole
 {
-	native meth write(val value : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>)
+	native meth write(val value : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>)
 
-	native meth writeLine(val value : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>)
+	native meth writeLine(val value : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>)
 }

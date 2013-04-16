@@ -61,18 +61,16 @@ public class ResolveTest extends NapileMassTestCase
 			String ref = null;
 			if(declarationDescriptor == null)
 			{
-				ref = "null";
+				builder.append("<ref to=\"null\">");
 			}
 			else
 			{
-				ref = declarationDescriptor.getClass().getSimpleName() + "[" + DescriptorUtils.getFQName(declarationDescriptor).getFqName() + "]";
+				builder.append("<ref class=\"").append(declarationDescriptor.getClass().getSimpleName()).append("\" to=\"").append(DescriptorUtils.getFQName(declarationDescriptor)).append("\">");
 			}
-
-			builder.append("<").append(ref).append(">");
 
 			walk(temp, builder);
 
-			builder.append("</").append(ref).append(">");
+			builder.append("</ref>");
 		}
 		else
 		{

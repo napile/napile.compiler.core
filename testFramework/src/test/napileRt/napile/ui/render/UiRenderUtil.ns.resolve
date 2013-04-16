@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>.<PackageDescriptorImpl[napile.ui.render]>render</PackageDescriptorImpl[napile.ui.render]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>.<ref class="PackageDescriptorImpl" to="napile.ui.render">render</ref>
 
 /~
  ~ Authors
@@ -22,8 +22,8 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  ~/
 util class UiRenderUtil
 {
-	meth createRender() : <MutableClassDescriptor[napile.ui.render.UiRender]>UiRender</MutableClassDescriptor[napile.ui.render.UiRender]>
+	meth createRender() : <ref class="MutableClassDescriptor" to="napile.ui.render.UiRender">UiRender</ref>
 	{
-		return <ConstructorDescriptor[napile.ui.render.DesktopUiRender.this]>DesktopUiRender</ConstructorDescriptor[napile.ui.render.DesktopUiRender.this]>()
+		return <ref class="ConstructorDescriptor" to="napile.ui.render.DesktopUiRender.this">DesktopUiRender</ref>()
 	}
 }

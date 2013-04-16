@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.testing]>testing</PackageDescriptorImpl[napile.testing]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.testing">testing</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>
 
 /~
  ~ Authors
  ~ * VISTALL
  ~/
-@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+@<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>
 final class Before
 {
 	this()

@@ -1,12 +1,12 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+@<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>
 final class DefaultValue
 {
-	val value : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>
+	val value : <ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>
 
-	this(<VariableDescriptorImpl[napile.annotation.DefaultValue.value]>value</VariableDescriptorImpl[napile.annotation.DefaultValue.value]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.annotation.DefaultValue.value">value</ref>)
 }

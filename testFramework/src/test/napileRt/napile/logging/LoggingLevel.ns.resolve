@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.logging">logging</ref>
 
 /**
  * @author VISTALL
  */
 class LoggingLevel
 {
-	enum val INFO : <MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>()
+	enum val INFO : <ref class="MutableClassDescriptor" to="napile.logging.LoggingLevel">LoggingLevel</ref>()
 
-	enum val WARN : <MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>()
+	enum val WARN : <ref class="MutableClassDescriptor" to="napile.logging.LoggingLevel">LoggingLevel</ref>()
 
-	enum val ERROR : <MutableClassDescriptor[napile.logging.LoggingLevel]>LoggingLevel</MutableClassDescriptor[napile.logging.LoggingLevel]>()
+	enum val ERROR : <ref class="MutableClassDescriptor" to="napile.logging.LoggingLevel">LoggingLevel</ref>()
 
 	local this()
 }

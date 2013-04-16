@@ -1,4 +1,4 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.nio]>nio</PackageDescriptorImpl[napile.nio]>.<PackageDescriptorImpl[napile.nio.channels]>channels</PackageDescriptorImpl[napile.nio.channels]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.nio">nio</ref>.<ref class="PackageDescriptorImpl" to="napile.nio.channels">channels</ref>
 
 /**
  * @author VISTALL
@@ -8,7 +8,7 @@ class FileChannel
 	// TODO [VISTALL] dummy
 	this()
 
-	meth isOpened() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = false
+	meth isOpened() : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref> = false
 
 	meth close() {}
 }

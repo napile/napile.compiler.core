@@ -1,6 +1,6 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>.<ref class="MutableClassDescriptor" to="napile.reflect.Class">Class</ref>
 
 /~
  ~ Authors
@@ -8,9 +8,9 @@ import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<Pa
  ~/
 class ExtensionPoint
 {
-	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 
-	val descriptor : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>
+	val descriptor : <ref class="MutableClassDescriptor" to="napile.reflect.Class">Class</ref><<ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>>
 
-	this(<VariableDescriptorImpl[napile.module.extension.ExtensionPoint.name]>name</VariableDescriptorImpl[napile.module.extension.ExtensionPoint.name]>, <VariableDescriptorImpl[napile.module.extension.ExtensionPoint.descriptor]>descriptor</VariableDescriptorImpl[napile.module.extension.ExtensionPoint.descriptor]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.module.extension.ExtensionPoint.name">name</ref>, <ref class="VariableDescriptorImpl" to="napile.module.extension.ExtensionPoint.descriptor">descriptor</ref>)
 }

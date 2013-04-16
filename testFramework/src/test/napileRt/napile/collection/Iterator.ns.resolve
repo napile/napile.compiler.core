@@ -1,16 +1,16 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
 
 /**
  * @author VISTALL
  */
 abstract class Iterator<E>
 {
-	meth hasNext() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	meth hasNext() : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>
 
-	meth next() : <TypeParameterDescriptorImpl[napile.collection.Iterator.E]>E</TypeParameterDescriptorImpl[napile.collection.Iterator.E]>
+	meth next() : <ref class="TypeParameterDescriptorImpl" to="napile.collection.Iterator.E">E</ref>
 
-	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
+	@<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
 	meth remove()
 }

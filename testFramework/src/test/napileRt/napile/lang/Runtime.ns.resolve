@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * @author VISTALL
  */
 class Runtime
 {
-	static val INSTANCE : <MutableClassDescriptor[napile.lang.Runtime]>Runtime</MutableClassDescriptor[napile.lang.Runtime]> = <ConstructorDescriptor[napile.lang.Runtime.this]>Runtime</ConstructorDescriptor[napile.lang.Runtime.this]>()
+	static val INSTANCE : <ref class="MutableClassDescriptor" to="napile.lang.Runtime">Runtime</ref> = <ref class="ConstructorDescriptor" to="napile.lang.Runtime.this">Runtime</ref>()
 
 	local this()
 
-	native meth exit(val code : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>)
+	native meth exit(val code : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>)
 }

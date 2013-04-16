@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.util">util</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>.<ref class="MutableClassDescriptor" to="napile.reflect.Type">Type</ref>
 
 /~
  ~ Authors
@@ -24,23 +24,23 @@ import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<Pa
  ~/
 util class TypeUtil
 {
-	meth getDefaultValue<E>(val throwIfNotFound : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>) : <TypeParameterDescriptorImpl[napile.util.TypeUtil.getDefaultValue.E]>E</TypeParameterDescriptorImpl[napile.util.TypeUtil.getDefaultValue.E]>
+	meth getDefaultValue<E>(val throwIfNotFound : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>) : <ref class="TypeParameterDescriptorImpl" to="napile.util.TypeUtil.getDefaultValue.E">E</ref>
 	{
-		val type = typeOf(<TypeParameterDescriptorImpl[napile.util.TypeUtil.getDefaultValue.E]>E</TypeParameterDescriptorImpl[napile.util.TypeUtil.getDefaultValue.E]>)
-		if(<LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>type</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>.<VariableDescriptorImpl[napile.reflect.Type.nullable]>nullable</VariableDescriptorImpl[napile.reflect.Type.nullable]>)
-			return <SimpleMethodDescriptorImpl[napile.util.TypeUtil.getNullAsNotNull]>getNullAsNotNull</SimpleMethodDescriptorImpl[napile.util.TypeUtil.getNullAsNotNull]>()
+		val type = typeOf(<ref class="TypeParameterDescriptorImpl" to="napile.util.TypeUtil.getDefaultValue.E">E</ref>)
+		if(<ref class="LocalVariableDescriptor" to="napile.util.TypeUtil.getDefaultValue.type">type</ref>.<ref class="VariableDescriptorImpl" to="napile.reflect.Type.nullable">nullable</ref>)
+			return <ref class="SimpleMethodDescriptorImpl" to="napile.util.TypeUtil.getNullAsNotNull">getNullAsNotNull</ref>()
 		else
 		{
-			val def = <LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>type</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>.<VariableDescriptorImpl[napile.reflect.Type.defaultValue]>defaultValue</VariableDescriptorImpl[napile.reflect.Type.defaultValue]>
-			if(<LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.def]>def</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.def]> <SimpleMethodDescriptorImpl[napile.lang.Any.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Any.equals]> null)
+			val def = <ref class="LocalVariableDescriptor" to="napile.util.TypeUtil.getDefaultValue.type">type</ref>.<ref class="VariableDescriptorImpl" to="napile.reflect.Type.defaultValue">defaultValue</ref>
+			if(<ref class="LocalVariableDescriptor" to="napile.util.TypeUtil.getDefaultValue.def">def</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.equals">==</ref> null)
 			{
-				if(<CallParameterAsVariableDescriptorImpl[napile.util.TypeUtil.getDefaultValue.throwIfNotFound]>throwIfNotFound</CallParameterAsVariableDescriptorImpl[napile.util.TypeUtil.getDefaultValue.throwIfNotFound]>)
-					throw <ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>IllegalArgumentException</ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>("cant find default value on type " <SimpleMethodDescriptorImpl[napile.lang.String.plus]>+</SimpleMethodDescriptorImpl[napile.lang.String.plus]> <LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>type</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.type]>)
+				if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.TypeUtil.getDefaultValue.throwIfNotFound">throwIfNotFound</ref>)
+					throw <ref class="ConstructorDescriptor" to="napile.lang.IllegalArgumentException.this">IllegalArgumentException</ref>("cant find default value on type " <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> <ref class="LocalVariableDescriptor" to="napile.util.TypeUtil.getDefaultValue.type">type</ref>)
 				else
-					return <SimpleMethodDescriptorImpl[napile.util.TypeUtil.getInvalidNotNull]>getInvalidNotNull</SimpleMethodDescriptorImpl[napile.util.TypeUtil.getInvalidNotNull]>()
+					return <ref class="SimpleMethodDescriptorImpl" to="napile.util.TypeUtil.getInvalidNotNull">getInvalidNotNull</ref>()
 			}
 			else
-				return <LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.def]>def</LocalVariableDescriptor[napile.util.TypeUtil.getDefaultValue.def]>
+				return <ref class="LocalVariableDescriptor" to="napile.util.TypeUtil.getDefaultValue.def">def</ref>
 		}
 	}
 
@@ -48,7 +48,7 @@ util class TypeUtil
 	 ~ Return null as notNull type.
 	 ~ This is a hack to use null - for return if type constructor is type parameter
 	 ~/
-	local native meth getNullAsNotNull<E>() : <TypeParameterDescriptorImpl[napile.util.TypeUtil.getNullAsNotNull.E]>E</TypeParameterDescriptorImpl[napile.util.TypeUtil.getNullAsNotNull.E]>
+	local native meth getNullAsNotNull<E>() : <ref class="TypeParameterDescriptorImpl" to="napile.util.TypeUtil.getNullAsNotNull.E">E</ref>
 
-	local native meth getInvalidNotNull<E>() : <TypeParameterDescriptorImpl[napile.util.TypeUtil.getInvalidNotNull.E]>E</TypeParameterDescriptorImpl[napile.util.TypeUtil.getInvalidNotNull.E]>
+	local native meth getInvalidNotNull<E>() : <ref class="TypeParameterDescriptorImpl" to="napile.util.TypeUtil.getInvalidNotNull.E">E</ref>
 }

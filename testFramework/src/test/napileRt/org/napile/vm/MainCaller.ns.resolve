@@ -14,40 +14,40 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[org]>org</PackageDescriptorImpl[org]>.<PackageDescriptorImpl[org.napile]>napile</PackageDescriptorImpl[org.napile]>.<PackageDescriptorImpl[org.napile.vm]>vm</PackageDescriptorImpl[org.napile.vm]>
+package <ref class="PackageDescriptorImpl" to="org">org</ref>.<ref class="PackageDescriptorImpl" to="org.napile">napile</ref>.<ref class="PackageDescriptorImpl" to="org.napile.vm">vm</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.ReflectUtil]>ReflectUtil</MutableClassDescriptor[napile.reflect.ReflectUtil]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Method]>Method</MutableClassDescriptor[napile.reflect.Method]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<MutableClassDescriptor[napile.asm.AsmUtil]>AsmUtil</MutableClassDescriptor[napile.asm.AsmUtil]>.<null>toAsmType</null>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>.<ref class="MutableClassDescriptor" to="napile.reflect.ReflectUtil">ReflectUtil</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.logging">logging</ref>.<ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>.<ref class="MutableClassDescriptor" to="napile.reflect.Method">Method</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.asm">asm</ref>.<ref class="MutableClassDescriptor" to="napile.asm.AsmUtil">AsmUtil</ref>.<ref to="null">toAsmType</ref>
 
 /**
  * @author VISTALL
  */
 util class MainCaller
 {
-	meth main(val arg : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>>)
+	meth main(val arg : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>>)
 	{
-		if(<CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>arg</CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
-			throw <ConstructorDescriptor[org.napile.vm.VmStartupError.this]>VmStartupError</ConstructorDescriptor[org.napile.vm.VmStartupError.this]>("Class name - expected")
+		if(<ref class="CallParameterAsVariableDescriptorImpl" to="org.napile.vm.MainCaller.main.arg">arg</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">==</ref> 0)
+			throw <ref class="ConstructorDescriptor" to="org.napile.vm.VmStartupError.this">VmStartupError</ref>("Class name - expected")
 
-		val clazz = <MutableClassDescriptor[napile.reflect.ReflectUtil]>ReflectUtil</MutableClassDescriptor[napile.reflect.ReflectUtil]>.<SimpleMethodDescriptorImpl[napile.reflect.ReflectUtil.findClass]>findClass</SimpleMethodDescriptorImpl[napile.reflect.ReflectUtil.findClass]>(<SimpleMethodDescriptorImpl[napile.lang.Array.get]><CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>arg</CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>[0]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>)
-		val mainMethod = <LocalVariableDescriptor[org.napile.vm.MainCaller.main.clazz]>clazz</LocalVariableDescriptor[org.napile.vm.MainCaller.main.clazz]>.<SimpleMethodDescriptorImpl[napile.reflect.Class.findStaticMethod]>findStaticMethod</SimpleMethodDescriptorImpl[napile.reflect.Class.findStaticMethod]>("main", arrayOf(<SimpleMethodDescriptorImpl[napile.asm.AsmUtil.toAsmType]>toAsmType</SimpleMethodDescriptorImpl[napile.asm.AsmUtil.toAsmType]><<MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>>>()))
-		if(<LocalVariableDescriptor[org.napile.vm.MainCaller.main.mainMethod]>mainMethod</LocalVariableDescriptor[org.napile.vm.MainCaller.main.mainMethod]> <SimpleMethodDescriptorImpl[napile.reflect.Method.equals]>==</SimpleMethodDescriptorImpl[napile.reflect.Method.equals]> null)
-			throw <ConstructorDescriptor[org.napile.vm.VmStartupError.this]>VmStartupError</ConstructorDescriptor[org.napile.vm.VmStartupError.this]>("'static meth main(val arg : Array<String>)' method expected")
+		val clazz = <ref class="MutableClassDescriptor" to="napile.reflect.ReflectUtil">ReflectUtil</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.reflect.ReflectUtil.findClass">findClass</ref>(<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.get"><ref class="CallParameterAsVariableDescriptorImpl" to="org.napile.vm.MainCaller.main.arg">arg</ref>[0]</ref>)
+		val mainMethod = <ref class="LocalVariableDescriptor" to="org.napile.vm.MainCaller.main.clazz">clazz</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.reflect.Class.findStaticMethod">findStaticMethod</ref>("main", arrayOf(<ref class="SimpleMethodDescriptorImpl" to="napile.asm.AsmUtil.toAsmType">toAsmType</ref><<ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>>>()))
+		if(<ref class="LocalVariableDescriptor" to="org.napile.vm.MainCaller.main.mainMethod">mainMethod</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.reflect.Method.equals">==</ref> null)
+			throw <ref class="ConstructorDescriptor" to="org.napile.vm.VmStartupError.this">VmStartupError</ref>("'static meth main(val arg : Array<String>)' method expected")
 
-		val thread = <ConstructorDescriptor[napile.lang.Thread.this]>Thread</ConstructorDescriptor[napile.lang.Thread.this]> {
+		val thread = <ref class="ConstructorDescriptor" to="napile.lang.Thread.this">Thread</ref> {
 			try
 			{
-				<LocalVariableDescriptor[org.napile.vm.MainCaller.main.mainMethod]>mainMethod</LocalVariableDescriptor[org.napile.vm.MainCaller.main.mainMethod]><null>!!</null>.<SimpleMethodDescriptorImpl[napile.reflect.Method.invokeStatic]>invokeStatic</SimpleMethodDescriptorImpl[napile.reflect.Method.invokeStatic]>(<MutableClassDescriptor[napile.lang.ArrayUtil]>ArrayUtil</MutableClassDescriptor[napile.lang.ArrayUtil]>.<SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOfRange]>copyOfRange</SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOfRange]>(<CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>arg</CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>, 1, <CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>arg</CallParameterAsVariableDescriptorImpl[org.napile.vm.MainCaller.main.arg]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>))
+				<ref class="LocalVariableDescriptor" to="org.napile.vm.MainCaller.main.mainMethod">mainMethod</ref><ref to="null">!!</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.reflect.Method.invokeStatic">invokeStatic</ref>(<ref class="MutableClassDescriptor" to="napile.lang.ArrayUtil">ArrayUtil</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.ArrayUtil.copyOfRange">copyOfRange</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="org.napile.vm.MainCaller.main.arg">arg</ref>, 1, <ref class="CallParameterAsVariableDescriptorImpl" to="org.napile.vm.MainCaller.main.arg">arg</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>))
 			}
-			catch(val e : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>)
+			catch(val e : <ref class="MutableClassDescriptor" to="napile.lang.Exception">Exception</ref>)
 			{
-				<LocalVariableDescriptor[org.napile.vm.MainCaller.main.@noname.e]>e</LocalVariableDescriptor[org.napile.vm.MainCaller.main.@noname.e]>.<SimpleMethodDescriptorImpl[napile.lang.Exception.printStackTrace]>printStackTrace</SimpleMethodDescriptorImpl[napile.lang.Exception.printStackTrace]>()
+				<ref class="LocalVariableDescriptor" to="org.napile.vm.MainCaller.main.@noname.e">e</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Exception.printStackTrace">printStackTrace</ref>()
 			}
 			null
 		}
 
-		<LocalVariableDescriptor[org.napile.vm.MainCaller.main.thread]>thread</LocalVariableDescriptor[org.napile.vm.MainCaller.main.thread]>.<SimpleMethodDescriptorImpl[napile.lang.Thread.start]>start</SimpleMethodDescriptorImpl[napile.lang.Thread.start]>()
+		<ref class="LocalVariableDescriptor" to="org.napile.vm.MainCaller.main.thread">thread</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Thread.start">start</ref>()
 	}
 }

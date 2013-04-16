@@ -1,19 +1,19 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * @author VISTALL
  */
 abstract class Number
 {
-	meth toByte() : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	meth toByte() : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	meth toShort() : <MutableClassDescriptor[napile.lang.Short]>Short</MutableClassDescriptor[napile.lang.Short]>
+	meth toShort() : <ref class="MutableClassDescriptor" to="napile.lang.Short">Short</ref>
 
-	meth toInt() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	meth toInt() : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	meth toLong() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	meth toLong() : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>
 
-	meth toFloat() : <MutableClassDescriptor[napile.lang.Float]>Float</MutableClassDescriptor[napile.lang.Float]>
+	meth toFloat() : <ref class="MutableClassDescriptor" to="napile.lang.Float">Float</ref>
 
-	meth toDouble() : <MutableClassDescriptor[napile.lang.Double]>Double</MutableClassDescriptor[napile.lang.Double]>
+	meth toDouble() : <ref class="MutableClassDescriptor" to="napile.lang.Double">Double</ref>
 }

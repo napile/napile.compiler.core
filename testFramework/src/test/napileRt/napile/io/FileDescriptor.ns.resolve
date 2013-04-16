@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.io">io</ref>
 
 /**
  * The lowest-level representation of a file, device, or
@@ -40,40 +40,40 @@ class FileDescriptor
 	/**
 	 * The FileDescriptor representing standard input.
 	 */
-	static val systemIn : <MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]> = <ConstructorDescriptor[napile.io.FileDescriptor.this]>FileDescriptor</ConstructorDescriptor[napile.io.FileDescriptor.this]>();
+	static val systemIn : <ref class="MutableClassDescriptor" to="napile.io.FileDescriptor">FileDescriptor</ref> = <ref class="ConstructorDescriptor" to="napile.io.FileDescriptor.this">FileDescriptor</ref>();
 
 	/**
 	 * FileDescriptor representing standard out.
 	 */
-	static val systemOut : <MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]> = <ConstructorDescriptor[napile.io.FileDescriptor.this]>FileDescriptor</ConstructorDescriptor[napile.io.FileDescriptor.this]>();
+	static val systemOut : <ref class="MutableClassDescriptor" to="napile.io.FileDescriptor">FileDescriptor</ref> = <ref class="ConstructorDescriptor" to="napile.io.FileDescriptor.this">FileDescriptor</ref>();
 
 	/**
 	 * FileDescriptor representing standard error.
 	 */
-	static val systemErr : <MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]> = <ConstructorDescriptor[napile.io.FileDescriptor.this]>FileDescriptor</ConstructorDescriptor[napile.io.FileDescriptor.this]>();
+	static val systemErr : <ref class="MutableClassDescriptor" to="napile.io.FileDescriptor">FileDescriptor</ref> = <ref class="ConstructorDescriptor" to="napile.io.FileDescriptor.this">FileDescriptor</ref>();
 
 	static this()
 	{
-		<VariableDescriptorImpl[napile.io.FileDescriptor.systemIn]>systemIn</VariableDescriptorImpl[napile.io.FileDescriptor.systemIn]>.<VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]>descriptor</VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]> <null>=</null> <SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdInDescriptor]>getStdInDescriptor</SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdInDescriptor]>()
+		<ref class="VariableDescriptorImpl" to="napile.io.FileDescriptor.systemIn">systemIn</ref>.<ref class="VariableDescriptorImpl" to="napile.io.FileDescriptor.descriptor">descriptor</ref> <ref to="null">=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.io.FileDescriptor.getStdInDescriptor">getStdInDescriptor</ref>()
 
-		<VariableDescriptorImpl[napile.io.FileDescriptor.systemOut]>systemOut</VariableDescriptorImpl[napile.io.FileDescriptor.systemOut]>.<VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]>descriptor</VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]> <null>=</null> <SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdOutDescriptor]>getStdOutDescriptor</SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdOutDescriptor]>()
+		<ref class="VariableDescriptorImpl" to="napile.io.FileDescriptor.systemOut">systemOut</ref>.<ref class="VariableDescriptorImpl" to="napile.io.FileDescriptor.descriptor">descriptor</ref> <ref to="null">=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.io.FileDescriptor.getStdOutDescriptor">getStdOutDescriptor</ref>()
 
-		<VariableDescriptorImpl[napile.io.FileDescriptor.systemErr]>systemErr</VariableDescriptorImpl[napile.io.FileDescriptor.systemErr]>.<VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]>descriptor</VariableDescriptorImpl[napile.io.FileDescriptor.descriptor]> <null>=</null> <SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdErrDescriptor]>getStdErrDescriptor</SimpleMethodDescriptorImpl[napile.io.FileDescriptor.getStdErrDescriptor]>()
+		<ref class="VariableDescriptorImpl" to="napile.io.FileDescriptor.systemErr">systemErr</ref>.<ref class="VariableDescriptorImpl" to="napile.io.FileDescriptor.descriptor">descriptor</ref> <ref to="null">=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.io.FileDescriptor.getStdErrDescriptor">getStdErrDescriptor</ref>()
 	}
 
-	static local native meth getStdInDescriptor() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	static local native meth getStdInDescriptor() : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>
 
-	static local native meth getStdOutDescriptor() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	static local native meth getStdOutDescriptor() : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>
 
-	static local native meth getStdErrDescriptor() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	static local native meth getStdErrDescriptor() : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>
 
-	covered var readOnly: <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = false
+	covered var readOnly: <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref> = false
 
 	/**
 	 * Represents a link to any underlying OS resources for this FileDescriptor.
 	 * A value of -1 indicates that this FileDescriptor is invalid.
 	 */
-	covered var descriptor: <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> = <SimpleMethodDescriptorImpl[napile.lang.Long.minus]>-</SimpleMethodDescriptorImpl[napile.lang.Long.minus]>1.<SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>toLong</SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>()
+	covered var descriptor: <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref> = <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Long.minus">-</ref>1.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.toLong">toLong</ref>()
 
 	/**
 	 * Constructs a new FileDescriptor containing an invalid handle. The

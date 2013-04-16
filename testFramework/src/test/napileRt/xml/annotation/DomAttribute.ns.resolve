@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.annotation]>annotation</PackageDescriptorImpl[xml.annotation]>
+package <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="PackageDescriptorImpl" to="xml.annotation">annotation</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>
 
 /**
  * @author VISTALL
  * @date 11:00/17.01.13
  */
-@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+@<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>
 class DomAttribute
 {
-	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 
-	val converter : {(val arg : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) -> <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>}
+	val converter : {(val arg : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>) -> <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>}
 
-	this(<VariableDescriptorImpl[xml.annotation.DomAttribute.name]>name</VariableDescriptorImpl[xml.annotation.DomAttribute.name]>, <VariableDescriptorImpl[xml.annotation.DomAttribute.converter]>converter</VariableDescriptorImpl[xml.annotation.DomAttribute.converter]> = {<CallParameterAsVariableDescriptorImpl[xml.annotation.DomAttribute.this.@noname.value]>value</CallParameterAsVariableDescriptorImpl[xml.annotation.DomAttribute.this.@noname.value]>})
+	this(<ref class="VariableDescriptorImpl" to="xml.annotation.DomAttribute.name">name</ref>, <ref class="VariableDescriptorImpl" to="xml.annotation.DomAttribute.converter">converter</ref> = {<ref class="CallParameterAsVariableDescriptorImpl" to="xml.annotation.DomAttribute.this.@noname.value">value</ref>})
 }

@@ -1,27 +1,27 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Extension">Extension</ref>
 /**
  * @author VISTALL
  */
 util class IterableUtil
 {
-	@<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
-	meth select<E>(val iterable : <MutableClassDescriptor[napile.collection.Iterable]>Iterable</MutableClassDescriptor[napile.collection.Iterable]><<TypeParameterDescriptorImpl[napile.collection.IterableUtil.select.E]>E</TypeParameterDescriptorImpl[napile.collection.IterableUtil.select.E]>>, val filter : {(val arg : <TypeParameterDescriptorImpl[napile.collection.IterableUtil.select.E]>E</TypeParameterDescriptorImpl[napile.collection.IterableUtil.select.E]>) -> <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>}) : <TypeParameterDescriptorImpl[napile.collection.IterableUtil.select.E]>E</TypeParameterDescriptorImpl[napile.collection.IterableUtil.select.E]>?
+	@<ref class="MutableClassDescriptor" to="napile.annotation.Extension">Extension</ref>
+	meth select<E>(val iterable : <ref class="MutableClassDescriptor" to="napile.collection.Iterable">Iterable</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.IterableUtil.select.E">E</ref>>, val filter : {(val arg : <ref class="TypeParameterDescriptorImpl" to="napile.collection.IterableUtil.select.E">E</ref>) -> <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>}) : <ref class="TypeParameterDescriptorImpl" to="napile.collection.IterableUtil.select.E">E</ref>?
 	{
-		for (c in <CallParameterAsVariableDescriptorImpl[napile.collection.IterableUtil.select.iterable]>iterable</CallParameterAsVariableDescriptorImpl[napile.collection.IterableUtil.select.iterable]>)
-			if(<CallParameterAsVariableDescriptorImpl[napile.collection.IterableUtil.select.filter]>filter</CallParameterAsVariableDescriptorImpl[napile.collection.IterableUtil.select.filter]>(<LocalVariableDescriptor[napile.collection.IterableUtil.select.c]>c</LocalVariableDescriptor[napile.collection.IterableUtil.select.c]>))
-				return <LocalVariableDescriptor[napile.collection.IterableUtil.select.c]>c</LocalVariableDescriptor[napile.collection.IterableUtil.select.c]>
+		for (c in <ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.IterableUtil.select.iterable">iterable</ref>)
+			if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.IterableUtil.select.filter">filter</ref>(<ref class="LocalVariableDescriptor" to="napile.collection.IterableUtil.select.c">c</ref>))
+				return <ref class="LocalVariableDescriptor" to="napile.collection.IterableUtil.select.c">c</ref>
 		return null
 	}
 
-	@<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
-	meth filter<E>(val iterable : <MutableClassDescriptor[napile.collection.Iterable]>Iterable</MutableClassDescriptor[napile.collection.Iterable]><<TypeParameterDescriptorImpl[napile.collection.IterableUtil.filter.E]>E</TypeParameterDescriptorImpl[napile.collection.IterableUtil.filter.E]>>, val filter : {(val arg : <TypeParameterDescriptorImpl[napile.collection.IterableUtil.filter.E]>E</TypeParameterDescriptorImpl[napile.collection.IterableUtil.filter.E]>) -> <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>}) : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<TypeParameterDescriptorImpl[napile.collection.IterableUtil.filter.E]>E</TypeParameterDescriptorImpl[napile.collection.IterableUtil.filter.E]>>
+	@<ref class="MutableClassDescriptor" to="napile.annotation.Extension">Extension</ref>
+	meth filter<E>(val iterable : <ref class="MutableClassDescriptor" to="napile.collection.Iterable">Iterable</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.IterableUtil.filter.E">E</ref>>, val filter : {(val arg : <ref class="TypeParameterDescriptorImpl" to="napile.collection.IterableUtil.filter.E">E</ref>) -> <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>}) : <ref class="MutableClassDescriptor" to="napile.collection.List">List</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.IterableUtil.filter.E">E</ref>>
 	{
-		val list = <ConstructorDescriptor[napile.collection.ArrayList.this]>ArrayList</ConstructorDescriptor[napile.collection.ArrayList.this]><<TypeParameterDescriptorImpl[napile.collection.IterableUtil.filter.E]>E</TypeParameterDescriptorImpl[napile.collection.IterableUtil.filter.E]>>(5)
-		for (c in <CallParameterAsVariableDescriptorImpl[napile.collection.IterableUtil.filter.iterable]>iterable</CallParameterAsVariableDescriptorImpl[napile.collection.IterableUtil.filter.iterable]>)
-			if(<CallParameterAsVariableDescriptorImpl[napile.collection.IterableUtil.filter.filter]>filter</CallParameterAsVariableDescriptorImpl[napile.collection.IterableUtil.filter.filter]>(<LocalVariableDescriptor[napile.collection.IterableUtil.filter.c]>c</LocalVariableDescriptor[napile.collection.IterableUtil.filter.c]>))
-				<LocalVariableDescriptor[napile.collection.IterableUtil.filter.list]>list</LocalVariableDescriptor[napile.collection.IterableUtil.filter.list]>.<SimpleMethodDescriptorImpl[napile.collection.ArrayList.add]>add</SimpleMethodDescriptorImpl[napile.collection.ArrayList.add]>(<LocalVariableDescriptor[napile.collection.IterableUtil.filter.c]>c</LocalVariableDescriptor[napile.collection.IterableUtil.filter.c]>)
-		return <LocalVariableDescriptor[napile.collection.IterableUtil.filter.list]>list</LocalVariableDescriptor[napile.collection.IterableUtil.filter.list]>
+		val list = <ref class="ConstructorDescriptor" to="napile.collection.ArrayList.this">ArrayList</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.IterableUtil.filter.E">E</ref>>(5)
+		for (c in <ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.IterableUtil.filter.iterable">iterable</ref>)
+			if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.IterableUtil.filter.filter">filter</ref>(<ref class="LocalVariableDescriptor" to="napile.collection.IterableUtil.filter.c">c</ref>))
+				<ref class="LocalVariableDescriptor" to="napile.collection.IterableUtil.filter.list">list</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.ArrayList.add">add</ref>(<ref class="LocalVariableDescriptor" to="napile.collection.IterableUtil.filter.c">c</ref>)
+		return <ref class="LocalVariableDescriptor" to="napile.collection.IterableUtil.filter.list">list</ref>
 	}
 }

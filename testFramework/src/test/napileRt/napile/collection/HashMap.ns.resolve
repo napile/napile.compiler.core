@@ -14,64 +14,64 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<MutableClassDescriptor[napile.util.TypeUtil]>TypeUtil</MutableClassDescriptor[napile.util.TypeUtil]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>.<ref class="MutableClassDescriptor" to="napile.reflect.Class">Class</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.InheritImmutable">InheritImmutable</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.util">util</ref>.<ref class="MutableClassDescriptor" to="napile.util.TypeUtil">TypeUtil</ref>
 
 /**
  * @author VISTALL
  */
-class HashMap<K, V> : <MutableClassDescriptor[napile.collection.Map]>Map</MutableClassDescriptor[napile.collection.Map]><<TypeParameterDescriptorImpl[napile.collection.HashMap.K]>K</TypeParameterDescriptorImpl[napile.collection.HashMap.K]>, <TypeParameterDescriptorImpl[napile.collection.HashMap.V]>V</TypeParameterDescriptorImpl[napile.collection.HashMap.V]>>
+class HashMap<K, V> : <ref class="MutableClassDescriptor" to="napile.collection.Map">Map</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.K">K</ref>, <ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.V">V</ref>>
 {
-	local val keys : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<TypeParameterDescriptorImpl[napile.collection.HashMap.K]>K</TypeParameterDescriptorImpl[napile.collection.HashMap.K]>> = <ConstructorDescriptor[napile.collection.ArrayList.this]>ArrayList</ConstructorDescriptor[napile.collection.ArrayList.this]><<TypeParameterDescriptorImpl[napile.collection.HashMap.K]>K</TypeParameterDescriptorImpl[napile.collection.HashMap.K]>>()
-	local val values : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<TypeParameterDescriptorImpl[napile.collection.HashMap.V]>V</TypeParameterDescriptorImpl[napile.collection.HashMap.V]>> = <ConstructorDescriptor[napile.collection.ArrayList.this]>ArrayList</ConstructorDescriptor[napile.collection.ArrayList.this]><<TypeParameterDescriptorImpl[napile.collection.HashMap.V]>V</TypeParameterDescriptorImpl[napile.collection.HashMap.V]>>()
+	local val keys : <ref class="MutableClassDescriptor" to="napile.collection.List">List</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.K">K</ref>> = <ref class="ConstructorDescriptor" to="napile.collection.ArrayList.this">ArrayList</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.K">K</ref>>()
+	local val values : <ref class="MutableClassDescriptor" to="napile.collection.List">List</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.V">V</ref>> = <ref class="ConstructorDescriptor" to="napile.collection.ArrayList.this">ArrayList</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.V">V</ref>>()
 
-	local var size : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = 0
+	local var size : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref> = 0
 
 	this()
 
-	override meth entrySet(): @<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]> <MutableClassDescriptor[napile.collection.Set]>Set</MutableClassDescriptor[napile.collection.Set]><[val key: <TypeParameterDescriptorImpl[napile.collection.HashMap.K]>K</TypeParameterDescriptorImpl[napile.collection.HashMap.K]>, val value: <TypeParameterDescriptorImpl[napile.collection.HashMap.V]>V</TypeParameterDescriptorImpl[napile.collection.HashMap.V]>]>
+	override meth entrySet(): @<ref class="MutableClassDescriptor" to="napile.annotation.InheritImmutable">InheritImmutable</ref> <ref class="MutableClassDescriptor" to="napile.collection.Set">Set</ref><[val key: <ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.K">K</ref>, val value: <ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.V">V</ref>]>
 	{
-		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+		throw <ref class="ConstructorDescriptor" to="napile.lang.UnsupportedOperationException.this">UnsupportedOperationException</ref>()
 	}
 
-	override meth put(val key : <TypeParameterDescriptorImpl[napile.collection.HashMap.K]>K</TypeParameterDescriptorImpl[napile.collection.HashMap.K]>, val value : <TypeParameterDescriptorImpl[napile.collection.HashMap.V]>V</TypeParameterDescriptorImpl[napile.collection.HashMap.V]>)
+	override meth put(val key : <ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.K">K</ref>, val value : <ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.V">V</ref>)
 	{
 		val index = 0
-		while(<LocalVariableDescriptor[napile.collection.HashMap.put.index]>index</LocalVariableDescriptor[napile.collection.HashMap.put.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <VariableDescriptorImpl[napile.collection.HashMap.keys]>keys</VariableDescriptorImpl[napile.collection.HashMap.keys]>.<SimpleMethodDescriptorImpl[napile.collection.List.size]>size</SimpleMethodDescriptorImpl[napile.collection.List.size]>())
+		while(<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.put.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo"><</ref> <ref class="VariableDescriptorImpl" to="napile.collection.HashMap.keys">keys</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.size">size</ref>())
 		{
-			var k = <SimpleMethodDescriptorImpl[napile.collection.List.get]><VariableDescriptorImpl[napile.collection.HashMap.keys]>keys</VariableDescriptorImpl[napile.collection.HashMap.keys]>[<LocalVariableDescriptor[napile.collection.HashMap.put.index]>index</LocalVariableDescriptor[napile.collection.HashMap.put.index]>]</SimpleMethodDescriptorImpl[napile.collection.List.get]>
-			if(<LocalVariableDescriptor[napile.collection.HashMap.put.k]>k</LocalVariableDescriptor[napile.collection.HashMap.put.k]> <SimpleMethodDescriptorImpl[napile.lang.Any.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Any.equals]> <CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.put.key]>key</CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.put.key]>)
+			var k = <ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.get"><ref class="VariableDescriptorImpl" to="napile.collection.HashMap.keys">keys</ref>[<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.put.index">index</ref>]</ref>
+			if(<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.put.k">k</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.equals">==</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.HashMap.put.key">key</ref>)
 			{
-				<SimpleMethodDescriptorImpl[napile.collection.List.set]><VariableDescriptorImpl[napile.collection.HashMap.values]>values</VariableDescriptorImpl[napile.collection.HashMap.values]>[<LocalVariableDescriptor[napile.collection.HashMap.put.index]>index</LocalVariableDescriptor[napile.collection.HashMap.put.index]>]</SimpleMethodDescriptorImpl[napile.collection.List.set]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.put.value]>value</CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.put.value]>
+				<ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.set"><ref class="VariableDescriptorImpl" to="napile.collection.HashMap.values">values</ref>[<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.put.index">index</ref>]</ref> <ref to="null">=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.HashMap.put.value">value</ref>
 				return
 			}
 
-			<LocalVariableDescriptor[napile.collection.HashMap.put.index]>index</LocalVariableDescriptor[napile.collection.HashMap.put.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>
+			<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.put.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.inc">++</ref>
 		}
 
-		<VariableDescriptorImpl[napile.collection.HashMap.keys]>keys</VariableDescriptorImpl[napile.collection.HashMap.keys]>.<SimpleMethodDescriptorImpl[napile.collection.List.add]>add</SimpleMethodDescriptorImpl[napile.collection.List.add]>(<CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.put.key]>key</CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.put.key]>)
-		<VariableDescriptorImpl[napile.collection.HashMap.values]>values</VariableDescriptorImpl[napile.collection.HashMap.values]>.<SimpleMethodDescriptorImpl[napile.collection.List.add]>add</SimpleMethodDescriptorImpl[napile.collection.List.add]>(<CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.put.value]>value</CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.put.value]>)
-		<VariableDescriptorImpl[napile.collection.HashMap.size]>size</VariableDescriptorImpl[napile.collection.HashMap.size]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>
+		<ref class="VariableDescriptorImpl" to="napile.collection.HashMap.keys">keys</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.add">add</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.HashMap.put.key">key</ref>)
+		<ref class="VariableDescriptorImpl" to="napile.collection.HashMap.values">values</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.add">add</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.HashMap.put.value">value</ref>)
+		<ref class="VariableDescriptorImpl" to="napile.collection.HashMap.size">size</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.inc">++</ref>
 	}
 
-	override meth get(val key : <TypeParameterDescriptorImpl[napile.collection.HashMap.K]>K</TypeParameterDescriptorImpl[napile.collection.HashMap.K]>) : <TypeParameterDescriptorImpl[napile.collection.HashMap.V]>V</TypeParameterDescriptorImpl[napile.collection.HashMap.V]>
+	override meth get(val key : <ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.K">K</ref>) : <ref class="TypeParameterDescriptorImpl" to="napile.collection.HashMap.V">V</ref>
 	{
 		val index = 0
-		while(<LocalVariableDescriptor[napile.collection.HashMap.get.index]>index</LocalVariableDescriptor[napile.collection.HashMap.get.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <VariableDescriptorImpl[napile.collection.HashMap.keys]>keys</VariableDescriptorImpl[napile.collection.HashMap.keys]>.<SimpleMethodDescriptorImpl[napile.collection.List.size]>size</SimpleMethodDescriptorImpl[napile.collection.List.size]>())
+		while(<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.get.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo"><</ref> <ref class="VariableDescriptorImpl" to="napile.collection.HashMap.keys">keys</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.size">size</ref>())
 		{
-			var k = <SimpleMethodDescriptorImpl[napile.collection.List.get]><VariableDescriptorImpl[napile.collection.HashMap.keys]>keys</VariableDescriptorImpl[napile.collection.HashMap.keys]>[<LocalVariableDescriptor[napile.collection.HashMap.get.index]>index</LocalVariableDescriptor[napile.collection.HashMap.get.index]>]</SimpleMethodDescriptorImpl[napile.collection.List.get]>
-			if(<LocalVariableDescriptor[napile.collection.HashMap.get.k]>k</LocalVariableDescriptor[napile.collection.HashMap.get.k]> <SimpleMethodDescriptorImpl[napile.lang.Any.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Any.equals]> <CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.get.key]>key</CallParameterAsVariableDescriptorImpl[napile.collection.HashMap.get.key]>)
-				return <SimpleMethodDescriptorImpl[napile.collection.List.get]><VariableDescriptorImpl[napile.collection.HashMap.values]>values</VariableDescriptorImpl[napile.collection.HashMap.values]>[<LocalVariableDescriptor[napile.collection.HashMap.get.index]>index</LocalVariableDescriptor[napile.collection.HashMap.get.index]>]</SimpleMethodDescriptorImpl[napile.collection.List.get]>
+			var k = <ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.get"><ref class="VariableDescriptorImpl" to="napile.collection.HashMap.keys">keys</ref>[<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.get.index">index</ref>]</ref>
+			if(<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.get.k">k</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.equals">==</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.collection.HashMap.get.key">key</ref>)
+				return <ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.get"><ref class="VariableDescriptorImpl" to="napile.collection.HashMap.values">values</ref>[<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.get.index">index</ref>]</ref>
 
-			<LocalVariableDescriptor[napile.collection.HashMap.get.index]>index</LocalVariableDescriptor[napile.collection.HashMap.get.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>
+			<ref class="LocalVariableDescriptor" to="napile.collection.HashMap.get.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.inc">++</ref>
 		}
 
-		return <MutableClassDescriptor[napile.util.TypeUtil]>TypeUtil</MutableClassDescriptor[napile.util.TypeUtil]>.<SimpleMethodDescriptorImpl[napile.util.TypeUtil.getDefaultValue]>getDefaultValue</SimpleMethodDescriptorImpl[napile.util.TypeUtil.getDefaultValue]>(true)
+		return <ref class="MutableClassDescriptor" to="napile.util.TypeUtil">TypeUtil</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.util.TypeUtil.getDefaultValue">getDefaultValue</ref>(true)
 	}
 
-	override meth size() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = <VariableDescriptorImpl[napile.collection.HashMap.size]>size</VariableDescriptorImpl[napile.collection.HashMap.size]>
+	override meth size() : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref> = <ref class="VariableDescriptorImpl" to="napile.collection.HashMap.size">size</ref>
 }

@@ -1,9 +1,9 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+@<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>
 final class Extension
 {
 	this()

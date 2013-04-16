@@ -1,22 +1,22 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.asm">asm</ref>.<ref class="PackageDescriptorImpl" to="napile.asm.members">members</ref>
 
-import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.annotation]>annotation</PackageDescriptorImpl[xml.annotation]>.<MutableClassDescriptor[xml.annotation.DomElement]>DomElement</MutableClassDescriptor[xml.annotation.DomElement]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Modifier]>Modifier</MutableClassDescriptor[napile.reflect.Modifier]>
-import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.annotation]>annotation</PackageDescriptorImpl[xml.annotation]>.<MutableClassDescriptor[xml.annotation.DomAttribute]>DomAttribute</MutableClassDescriptor[xml.annotation.DomAttribute]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.LazyType]>LazyType</MutableClassDescriptor[napile.annotation.LazyType]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Lazy]>Lazy</MutableClassDescriptor[napile.annotation.Lazy]>
+import <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="PackageDescriptorImpl" to="xml.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="xml.annotation.DomElement">DomElement</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>.<ref class="MutableClassDescriptor" to="napile.reflect.Modifier">Modifier</ref>
+import <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="PackageDescriptorImpl" to="xml.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="xml.annotation.DomAttribute">DomAttribute</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.LazyType">LazyType</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Lazy">Lazy</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[xml.annotation.DomElement]>DomElement</MutableClassDescriptor[xml.annotation.DomElement]>("class")
+@<ref class="MutableClassDescriptor" to="xml.annotation.DomElement">DomElement</ref>("class")
 class AsmClass
 {
-	@<MutableClassDescriptor[xml.annotation.DomAttribute]>DomAttribute</MutableClassDescriptor[xml.annotation.DomAttribute]>("name")
-	@<MutableClassDescriptor[napile.annotation.Lazy]>Lazy</MutableClassDescriptor[napile.annotation.Lazy]>(<MutableClassDescriptor[napile.annotation.LazyType]>LazyType</MutableClassDescriptor[napile.annotation.LazyType]>.<VariableDescriptorImpl[napile.annotation.LazyType.INJECTION]>INJECTION</VariableDescriptorImpl[napile.annotation.LazyType.INJECTION]>)
-	lazy val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]> = "this is need rework"
+	@<ref class="MutableClassDescriptor" to="xml.annotation.DomAttribute">DomAttribute</ref>("name")
+	@<ref class="MutableClassDescriptor" to="napile.annotation.Lazy">Lazy</ref>(<ref class="MutableClassDescriptor" to="napile.annotation.LazyType">LazyType</ref>.<ref class="VariableDescriptorImpl" to="napile.annotation.LazyType.INJECTION">INJECTION</ref>)
+	lazy val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = "this is need rework"
 
 	this()
 
-	this(<VariableDescriptorImpl[napile.asm.members.AsmClass.name]>name</VariableDescriptorImpl[napile.asm.members.AsmClass.name]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmClass.name">name</ref>)
 }

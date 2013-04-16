@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>
 
 /**
  * @author VISTALL
@@ -22,9 +22,9 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  */
 final class LazyType
 {
-	enum val SIMPLE : <MutableClassDescriptor[napile.annotation.LazyType]>LazyType</MutableClassDescriptor[napile.annotation.LazyType]>()
+	enum val SIMPLE : <ref class="MutableClassDescriptor" to="napile.annotation.LazyType">LazyType</ref>()
 
-	enum val INJECTION : <MutableClassDescriptor[napile.annotation.LazyType]>LazyType</MutableClassDescriptor[napile.annotation.LazyType]>()
+	enum val INJECTION : <ref class="MutableClassDescriptor" to="napile.annotation.LazyType">LazyType</ref>()
 
 	this()
 }

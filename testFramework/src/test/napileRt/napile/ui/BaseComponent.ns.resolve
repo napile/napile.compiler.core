@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.ArrayList]>ArrayList</MutableClassDescriptor[napile.collection.ArrayList]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>.<PackageDescriptorImpl[napile.ui.render]>render</PackageDescriptorImpl[napile.ui.render]>.<MutableClassDescriptor[napile.ui.render.UiRender]>UiRender</MutableClassDescriptor[napile.ui.render.UiRender]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.ArrayList">ArrayList</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.List">List</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>.<ref class="PackageDescriptorImpl" to="napile.ui.render">render</ref>.<ref class="MutableClassDescriptor" to="napile.ui.render.UiRender">UiRender</ref>
 
 /~
  ~ Authors
  ~ * VISTALL
  ~/
-class BaseComponent : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>
+class BaseComponent : <ref class="MutableClassDescriptor" to="napile.ui.Component">Component</ref>
 {
-	local val members : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><<MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>> = <ConstructorDescriptor[napile.collection.ArrayList.this]>ArrayList</ConstructorDescriptor[napile.collection.ArrayList.this]>()
+	local val members : <ref class="MutableClassDescriptor" to="napile.collection.List">List</ref><<ref class="MutableClassDescriptor" to="napile.ui.Component">Component</ref>> = <ref class="ConstructorDescriptor" to="napile.collection.ArrayList.this">ArrayList</ref>()
 
-	this() : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>()
+	this() : <ref class="MutableClassDescriptor" to="napile.ui.Component">Component</ref>()
 
-	override meth add(val c : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>)
+	override meth add(val c : <ref class="MutableClassDescriptor" to="napile.ui.Component">Component</ref>)
 	{
-		<VariableDescriptorImpl[napile.ui.BaseComponent.members]>members</VariableDescriptorImpl[napile.ui.BaseComponent.members]>.<SimpleMethodDescriptorImpl[napile.collection.List.add]>add</SimpleMethodDescriptorImpl[napile.collection.List.add]>(<CallParameterAsVariableDescriptorImpl[napile.ui.BaseComponent.add.c]>c</CallParameterAsVariableDescriptorImpl[napile.ui.BaseComponent.add.c]>)
+		<ref class="VariableDescriptorImpl" to="napile.ui.BaseComponent.members">members</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.add">add</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.BaseComponent.add.c">c</ref>)
 	}
 
-	override heritable meth render(val render : <MutableClassDescriptor[napile.ui.render.UiRender]>UiRender</MutableClassDescriptor[napile.ui.render.UiRender]>)
+	override heritable meth render(val render : <ref class="MutableClassDescriptor" to="napile.ui.render.UiRender">UiRender</ref>)
 	{
 
 	}

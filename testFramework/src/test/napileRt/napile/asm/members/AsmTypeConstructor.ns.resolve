@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.asm">asm</ref>.<ref class="PackageDescriptorImpl" to="napile.asm.members">members</ref>
 
 /**
  * @author VISTALL

@@ -1,7 +1,7 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.util">util</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="MutableClassDescriptor" to="napile.module.Module">Module</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>.<ref class="MutableClassDescriptor" to="napile.reflect.Class">Class</ref>
 
 /~
  ~ Authors
@@ -9,9 +9,9 @@ import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<Pa
  ~/
 util class ModuleUtil
 {
-	meth findModuleByAny(val object : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>) : <MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]> = <SimpleMethodDescriptorImpl[napile.util.ModuleUtil.findModuleByClass]>findModuleByClass</SimpleMethodDescriptorImpl[napile.util.ModuleUtil.findModuleByClass]>(<CallParameterAsVariableDescriptorImpl[napile.util.ModuleUtil.findModuleByAny.object]>object</CallParameterAsVariableDescriptorImpl[napile.util.ModuleUtil.findModuleByAny.object]>.<SimpleMethodDescriptorImpl[napile.lang.Any.getClass]>getClass</SimpleMethodDescriptorImpl[napile.lang.Any.getClass]>())
+	meth findModuleByAny(val object : <ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>) : <ref class="MutableClassDescriptor" to="napile.module.Module">Module</ref> = <ref class="SimpleMethodDescriptorImpl" to="napile.util.ModuleUtil.findModuleByClass">findModuleByClass</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.ModuleUtil.findModuleByAny.object">object</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.getClass">getClass</ref>())
 
-	native meth findModuleByClass(val clazz : <MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>) : <MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]>
+	native meth findModuleByClass(val clazz : <ref class="MutableClassDescriptor" to="napile.reflect.Class">Class</ref><<ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>>) : <ref class="MutableClassDescriptor" to="napile.module.Module">Module</ref>
 
-	native meth getAllCurrentlyLoadedModules() : <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]>>
+	native meth getAllCurrentlyLoadedModules() : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.module.Module">Module</ref>>
 }

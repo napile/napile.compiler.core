@@ -1,9 +1,9 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>
 
 /**
  * @author VISTALL
  */
-class ClassNotFoundException : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>
+class ClassNotFoundException : <ref class="MutableClassDescriptor" to="napile.lang.Exception">Exception</ref>
 {
-	this(val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.reflect.ClassNotFoundException]>this</MutableClassDescriptor[napile.reflect.ClassNotFoundException]>(<CallParameterAsVariableDescriptorImpl[napile.reflect.ClassNotFoundException.this.message]>message</CallParameterAsVariableDescriptorImpl[napile.reflect.ClassNotFoundException.this.message]>)
+	this(val message : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null) : <ref class="MutableClassDescriptor" to="napile.reflect.ClassNotFoundException">this</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.reflect.ClassNotFoundException.this.message">message</ref>)
 }

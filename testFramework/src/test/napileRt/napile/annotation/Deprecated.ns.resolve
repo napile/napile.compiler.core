@@ -1,12 +1,12 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>(null)
+@<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>(null)
 final class Deprecated
 {
-	val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>?
+	val message : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>?
 
-	this(<VariableDescriptorImpl[napile.annotation.Deprecated.message]>message</VariableDescriptorImpl[napile.annotation.Deprecated.message]> = null)
+	this(<ref class="VariableDescriptorImpl" to="napile.annotation.Deprecated.message">message</ref> = null)
 }

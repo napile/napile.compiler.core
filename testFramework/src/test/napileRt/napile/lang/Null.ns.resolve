@@ -1,4 +1,4 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * @author VISTALL
@@ -6,7 +6,7 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
 final class Null
 {
 	// need nullable flag
-	static val INSTANCE : <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]>? = <ConstructorDescriptor[napile.lang.Null.this]>Null</ConstructorDescriptor[napile.lang.Null.this]>()
+	static val INSTANCE : <ref class="MutableClassDescriptor" to="napile.lang.Null">Null</ref>? = <ref class="ConstructorDescriptor" to="napile.lang.Null.this">Null</ref>()
 
 	local this()
 

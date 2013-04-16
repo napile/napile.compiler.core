@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * @author VISTALL
  */
-class ClassCastException : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>
+class ClassCastException : <ref class="MutableClassDescriptor" to="napile.lang.Exception">Exception</ref>
 {
-	this(val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>(<CallParameterAsVariableDescriptorImpl[napile.lang.ClassCastException.this.message]>message</CallParameterAsVariableDescriptorImpl[napile.lang.ClassCastException.this.message]>)
+	this(val message : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null) : <ref class="MutableClassDescriptor" to="napile.lang.Exception">Exception</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.ClassCastException.this.message">message</ref>)
 }

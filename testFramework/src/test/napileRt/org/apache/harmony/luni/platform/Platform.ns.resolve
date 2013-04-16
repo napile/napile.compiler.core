@@ -1,9 +1,9 @@
-package <PackageDescriptorImpl[org]>org</PackageDescriptorImpl[org]>.<PackageDescriptorImpl[org.apache]>apache</PackageDescriptorImpl[org.apache]>.<PackageDescriptorImpl[org.apache.harmony]>harmony</PackageDescriptorImpl[org.apache.harmony]>.<PackageDescriptorImpl[org.apache.harmony.luni]>luni</PackageDescriptorImpl[org.apache.harmony.luni]>.<PackageDescriptorImpl[org.apache.harmony.luni.platform]>platform</PackageDescriptorImpl[org.apache.harmony.luni.platform]>
+package <ref class="PackageDescriptorImpl" to="org">org</ref>.<ref class="PackageDescriptorImpl" to="org.apache">apache</ref>.<ref class="PackageDescriptorImpl" to="org.apache.harmony">harmony</ref>.<ref class="PackageDescriptorImpl" to="org.apache.harmony.luni">luni</ref>.<ref class="PackageDescriptorImpl" to="org.apache.harmony.luni.platform">platform</ref>
 
 /**
  * @author VISTALL
  */
 class Platform
 {
-	static meth getFileSystem() : <MutableClassDescriptor[org.apache.harmony.luni.platform.IFileSystem]>IFileSystem</MutableClassDescriptor[org.apache.harmony.luni.platform.IFileSystem]> = <MutableClassDescriptor[org.apache.harmony.luni.platform.OSFileSystem]>OSFileSystem</MutableClassDescriptor[org.apache.harmony.luni.platform.OSFileSystem]>.<VariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.INSTANCE]>INSTANCE</VariableDescriptorImpl[org.apache.harmony.luni.platform.OSFileSystem.INSTANCE]>
+	static meth getFileSystem() : <ref class="MutableClassDescriptor" to="org.apache.harmony.luni.platform.IFileSystem">IFileSystem</ref> = <ref class="MutableClassDescriptor" to="org.apache.harmony.luni.platform.OSFileSystem">OSFileSystem</ref>.<ref class="VariableDescriptorImpl" to="org.apache.harmony.luni.platform.OSFileSystem.INSTANCE">INSTANCE</ref>
 }

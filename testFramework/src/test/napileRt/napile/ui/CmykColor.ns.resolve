@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>
 
 /~
  ~ Authors
  ~ * VISTALL
  ~/
-class CmykColor : <MutableClassDescriptor[napile.ui.Color]>Color</MutableClassDescriptor[napile.ui.Color]>
+class CmykColor : <ref class="MutableClassDescriptor" to="napile.ui.Color">Color</ref>
 {
-	override meth toRgbColor(): <MutableClassDescriptor[napile.ui.RgbColor]>RgbColor</MutableClassDescriptor[napile.ui.RgbColor]>
+	override meth toRgbColor(): <ref class="MutableClassDescriptor" to="napile.ui.RgbColor">RgbColor</ref>
 	{
-		throw <ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>UnsupportedOperationException</ConstructorDescriptor[napile.lang.UnsupportedOperationException.this]>()
+		throw <ref class="ConstructorDescriptor" to="napile.lang.UnsupportedOperationException.this">UnsupportedOperationException</ref>()
 	}
 
-	override meth toCmykColor(): <MutableClassDescriptor[napile.ui.CmykColor]>CmykColor</MutableClassDescriptor[napile.ui.CmykColor]> = <MutableClassDescriptor[napile.ui.CmykColor]>this</MutableClassDescriptor[napile.ui.CmykColor]>
+	override meth toCmykColor(): <ref class="MutableClassDescriptor" to="napile.ui.CmykColor">CmykColor</ref> = <ref class="MutableClassDescriptor" to="napile.ui.CmykColor">this</ref>
 }

@@ -1,28 +1,28 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>('\0')
-final class Char : <MutableClassDescriptor[napile.lang.Number]>Number</MutableClassDescriptor[napile.lang.Number]>
+@<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>('\0')
+final class Char : <ref class="MutableClassDescriptor" to="napile.lang.Number">Number</ref>
 {
 	local this()
 
-	native override meth toByte() : <MutableClassDescriptor[napile.lang.Byte]>Byte</MutableClassDescriptor[napile.lang.Byte]>
+	native override meth toByte() : <ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>
 
-	native override meth toShort() : <MutableClassDescriptor[napile.lang.Short]>Short</MutableClassDescriptor[napile.lang.Short]>
+	native override meth toShort() : <ref class="MutableClassDescriptor" to="napile.lang.Short">Short</ref>
 
-	native override meth toInt() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	native override meth toInt() : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	native override meth toLong() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
+	native override meth toLong() : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>
 
-	native override meth toFloat() : <MutableClassDescriptor[napile.lang.Float]>Float</MutableClassDescriptor[napile.lang.Float]>
+	native override meth toFloat() : <ref class="MutableClassDescriptor" to="napile.lang.Float">Float</ref>
 
-	native override meth toDouble() : <MutableClassDescriptor[napile.lang.Double]>Double</MutableClassDescriptor[napile.lang.Double]>
+	native override meth toDouble() : <ref class="MutableClassDescriptor" to="napile.lang.Double">Double</ref>
 
-	override native meth equals(val o : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	override native meth equals(val o : <ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>?) : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>
 
-	override native meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	override native meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 }

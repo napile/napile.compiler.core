@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref>
 
 /**
  * @author VISTALL
  */
 class ExtensionPointName<T>
 {
-	val id : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
-	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	val id : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
+	val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 
-	this(<VariableDescriptorImpl[napile.module.extension.ExtensionPointName.id]>id</VariableDescriptorImpl[napile.module.extension.ExtensionPointName.id]>, <VariableDescriptorImpl[napile.module.extension.ExtensionPointName.name]>name</VariableDescriptorImpl[napile.module.extension.ExtensionPointName.name]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.module.extension.ExtensionPointName.id">id</ref>, <ref class="VariableDescriptorImpl" to="napile.module.extension.ExtensionPointName.name">name</ref>)
 
-	meth getValues() : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.module.extension.ExtensionPointName.T]>T</TypeParameterDescriptorImpl[napile.module.extension.ExtensionPointName.T]>>
+	meth getValues() : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="TypeParameterDescriptorImpl" to="napile.module.extension.ExtensionPointName.T">T</ref>>
 	{
-		return <ConstructorDescriptor[napile.lang.Array.this]>Array</ConstructorDescriptor[napile.lang.Array.this]><<TypeParameterDescriptorImpl[napile.module.extension.ExtensionPointName.T]>T</TypeParameterDescriptorImpl[napile.module.extension.ExtensionPointName.T]>>(0) //TODO [VISTALL]
+		return <ref class="ConstructorDescriptor" to="napile.lang.Array.this">Array</ref><<ref class="TypeParameterDescriptorImpl" to="napile.module.extension.ExtensionPointName.T">T</ref>>(0) //TODO [VISTALL]
 	}
 }

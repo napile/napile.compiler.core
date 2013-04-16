@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>
+package <ref class="PackageDescriptorImpl" to="xml">xml</ref>
 
 /**
  * @author VISTALL
  */
-abstract class XmlDocument : <MutableClassDescriptor[xml.XmlElementHolder]>XmlElementHolder</MutableClassDescriptor[xml.XmlElementHolder]>
+abstract class XmlDocument : <ref class="MutableClassDescriptor" to="xml.XmlElementHolder">XmlElementHolder</ref>
 {
 }

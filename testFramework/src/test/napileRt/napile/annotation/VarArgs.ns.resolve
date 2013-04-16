@@ -1,12 +1,12 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[napile.annotation.Annotation]>Annotation</MutableClassDescriptor[napile.annotation.Annotation]>
+@<ref class="MutableClassDescriptor" to="napile.annotation.Annotation">Annotation</ref>
 final class VarArgs
 {
-	val length : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>?
+	val length : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>?
 
-	this(<VariableDescriptorImpl[napile.annotation.VarArgs.length]>length</VariableDescriptorImpl[napile.annotation.VarArgs.length]> = null)
+	this(<ref class="VariableDescriptorImpl" to="napile.annotation.VarArgs.length">length</ref> = null)
 }

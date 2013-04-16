@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.asm">asm</ref>.<ref class="PackageDescriptorImpl" to="napile.asm.members">members</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.logging">logging</ref>.<ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>
 
 /**
  * @author VISTALL
@@ -25,50 +25,50 @@ import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<Pa
  */
 class AsmType
 {
-	val annotations : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.asm.members.AsmAnnotation]>AsmAnnotation</MutableClassDescriptor[napile.asm.members.AsmAnnotation]>>
+	val annotations : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.asm.members.AsmAnnotation">AsmAnnotation</ref>>
 
-	val constructor : <MutableClassDescriptor[napile.asm.members.AsmTypeConstructor]>AsmTypeConstructor</MutableClassDescriptor[napile.asm.members.AsmTypeConstructor]>
+	val constructor : <ref class="MutableClassDescriptor" to="napile.asm.members.AsmTypeConstructor">AsmTypeConstructor</ref>
 
-	val parameters : @<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>>
+	val parameters : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.asm.members.AsmType">AsmType</ref>>
 
-	val nullable : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	val nullable : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>
 
-	this(<VariableDescriptorImpl[napile.asm.members.AsmType.annotations]>annotations</VariableDescriptorImpl[napile.asm.members.AsmType.annotations]>, <VariableDescriptorImpl[napile.asm.members.AsmType.constructor]>constructor</VariableDescriptorImpl[napile.asm.members.AsmType.constructor]>, <VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>parameters</VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>, <VariableDescriptorImpl[napile.asm.members.AsmType.nullable]>nullable</VariableDescriptorImpl[napile.asm.members.AsmType.nullable]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.annotations">annotations</ref>, <ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.constructor">constructor</ref>, <ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref>, <ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.nullable">nullable</ref>)
 
-	override meth equals(val o : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	override meth equals(val o : <ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>?) : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>
 	{
-		if(<CallParameterAsVariableDescriptorImpl[napile.asm.members.AsmType.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.asm.members.AsmType.equals.o]> <null>is</null> <MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>)
+		if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.asm.members.AsmType.equals.o">o</ref> <ref to="null">is</ref> <ref class="MutableClassDescriptor" to="napile.asm.members.AsmType">AsmType</ref>)
 		{
-			if(<VariableDescriptorImpl[napile.asm.members.AsmType.nullable]>nullable</VariableDescriptorImpl[napile.asm.members.AsmType.nullable]> <SimpleMethodDescriptorImpl[napile.lang.Bool.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Bool.equals]> <CallParameterAsVariableDescriptorImpl[napile.asm.members.AsmType.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.asm.members.AsmType.equals.o]>.<VariableDescriptorImpl[napile.asm.members.AsmType.nullable]>nullable</VariableDescriptorImpl[napile.asm.members.AsmType.nullable]>)
+			if(<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.nullable">nullable</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Bool.equals">!=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.asm.members.AsmType.equals.o">o</ref>.<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.nullable">nullable</ref>)
 				return false
 
-			if(<VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>parameters</VariableDescriptorImpl[napile.asm.members.AsmType.parameters]> <SimpleMethodDescriptorImpl[napile.lang.Array.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Array.equals]> <CallParameterAsVariableDescriptorImpl[napile.asm.members.AsmType.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.asm.members.AsmType.equals.o]>.<VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>parameters</VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>)
+			if(<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.equals">!=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.asm.members.AsmType.equals.o">o</ref>.<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref>)
 				return false;
 
-			return <VariableDescriptorImpl[napile.asm.members.AsmType.constructor]>constructor</VariableDescriptorImpl[napile.asm.members.AsmType.constructor]> <SimpleMethodDescriptorImpl[napile.asm.members.AsmTypeConstructor.equals]>==</SimpleMethodDescriptorImpl[napile.asm.members.AsmTypeConstructor.equals]> <CallParameterAsVariableDescriptorImpl[napile.asm.members.AsmType.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.asm.members.AsmType.equals.o]>.<VariableDescriptorImpl[napile.asm.members.AsmType.constructor]>constructor</VariableDescriptorImpl[napile.asm.members.AsmType.constructor]>
+			return <ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.constructor">constructor</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.asm.members.AsmTypeConstructor.equals">==</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.asm.members.AsmType.equals.o">o</ref>.<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.constructor">constructor</ref>
 		}
 		else
 			return false
 	}
 
-	override meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	override meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 	{
-		val builder = <ConstructorDescriptor[napile.lang.StringBuilder.this]>StringBuilder</ConstructorDescriptor[napile.lang.StringBuilder.this]>()
-		<LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]>builder</LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> <VariableDescriptorImpl[napile.asm.members.AsmType.constructor]>constructor</VariableDescriptorImpl[napile.asm.members.AsmType.constructor]>
-		if(<VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>parameters</VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>></SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> 0)
+		val builder = <ref class="ConstructorDescriptor" to="napile.lang.StringBuilder.this">StringBuilder</ref>()
+		<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.constructor">constructor</ref>
+		if(<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo">></ref> 0)
 		{
-			<LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]>builder</LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "<"
+			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "<"
 			var i = 0
-			while(<LocalVariableDescriptor[napile.asm.members.AsmType.toString.i]>i</LocalVariableDescriptor[napile.asm.members.AsmType.toString.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>parameters</VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>.<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
+			while(<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.i">i</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo"><</ref> <ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>)
 			{
-				if(<LocalVariableDescriptor[napile.asm.members.AsmType.toString.i]>i</LocalVariableDescriptor[napile.asm.members.AsmType.toString.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
-					<LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]>builder</LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> ", "
-				<LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]>builder</LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> <SimpleMethodDescriptorImpl[napile.lang.Array.get]><VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>parameters</VariableDescriptorImpl[napile.asm.members.AsmType.parameters]>[<LocalVariableDescriptor[napile.asm.members.AsmType.toString.i]>i</LocalVariableDescriptor[napile.asm.members.AsmType.toString.i]> <SimpleMethodDescriptorImpl[napile.lang.Int.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Int.inc]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>
+				if(<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.i">i</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">!=</ref> 0)
+					<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ", "
+				<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.get"><ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref>[<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.i">i</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.inc">++</ref>]</ref>
 			}
-			<LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]>builder</LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> ">"
+			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ">"
 		}
-		if(<VariableDescriptorImpl[napile.asm.members.AsmType.nullable]>nullable</VariableDescriptorImpl[napile.asm.members.AsmType.nullable]>)
-			<LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]>builder</LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]> <SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]>+=</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.plus]> "?"
-		return <LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]>builder</LocalVariableDescriptor[napile.asm.members.AsmType.toString.builder]>.<SimpleMethodDescriptorImpl[napile.lang.StringBuilder.toString]>toString</SimpleMethodDescriptorImpl[napile.lang.StringBuilder.toString]>()
+		if(<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.nullable">nullable</ref>)
+			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "?"
+		return <ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.toString">toString</ref>()
 	}
 }

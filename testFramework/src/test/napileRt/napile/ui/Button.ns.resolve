@@ -14,17 +14,17 @@
  * limitations under the License.
 */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<PackageDescriptorImpl[napile.util.listeners]>listeners</PackageDescriptorImpl[napile.util.listeners]>.<MutableClassDescriptor[napile.util.listeners.ListenerHolder]>ListenerHolder</MutableClassDescriptor[napile.util.listeners.ListenerHolder]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.util">util</ref>.<ref class="PackageDescriptorImpl" to="napile.util.listeners">listeners</ref>.<ref class="MutableClassDescriptor" to="napile.util.listeners.ListenerHolder">ListenerHolder</ref>
 
 /~
  ~ Authors
  ~ * VISTALL
  ~/
-class Button : <MutableClassDescriptor[napile.ui.BaseComponent]>BaseComponent</MutableClassDescriptor[napile.ui.BaseComponent]> & <MutableClassDescriptor[napile.ui.Textable]>Textable</MutableClassDescriptor[napile.ui.Textable]>
+class Button : <ref class="MutableClassDescriptor" to="napile.ui.BaseComponent">BaseComponent</ref> & <ref class="MutableClassDescriptor" to="napile.ui.Textable">Textable</ref>
 {
-	val clickListener : <MutableClassDescriptor[napile.util.listeners.ListenerHolder]>ListenerHolder</MutableClassDescriptor[napile.util.listeners.ListenerHolder]><<MutableClassDescriptor[napile.ui.ClickEvent]>ClickEvent</MutableClassDescriptor[napile.ui.ClickEvent]>> = <ConstructorDescriptor[napile.util.listeners.ListenerHolder.this]>ListenerHolder</ConstructorDescriptor[napile.util.listeners.ListenerHolder.this]>()
+	val clickListener : <ref class="MutableClassDescriptor" to="napile.util.listeners.ListenerHolder">ListenerHolder</ref><<ref class="MutableClassDescriptor" to="napile.ui.ClickEvent">ClickEvent</ref>> = <ref class="ConstructorDescriptor" to="napile.util.listeners.ListenerHolder.this">ListenerHolder</ref>()
 
-	this(val text : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.ui.BaseComponent]>BaseComponent</MutableClassDescriptor[napile.ui.BaseComponent]>() & <MutableClassDescriptor[napile.ui.Textable]>Textable</MutableClassDescriptor[napile.ui.Textable]>(<CallParameterAsVariableDescriptorImpl[napile.ui.Button.this.text]>text</CallParameterAsVariableDescriptorImpl[napile.ui.Button.this.text]>)
+	this(val text : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null) : <ref class="MutableClassDescriptor" to="napile.ui.BaseComponent">BaseComponent</ref>() & <ref class="MutableClassDescriptor" to="napile.ui.Textable">Textable</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.Button.this.text">text</ref>)
 }

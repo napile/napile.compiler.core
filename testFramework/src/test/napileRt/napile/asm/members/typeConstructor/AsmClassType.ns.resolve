@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>.<PackageDescriptorImpl[napile.asm.members.typeConstructor]>typeConstructor</PackageDescriptorImpl[napile.asm.members.typeConstructor]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.asm">asm</ref>.<ref class="PackageDescriptorImpl" to="napile.asm.members">members</ref>.<ref class="PackageDescriptorImpl" to="napile.asm.members.typeConstructor">typeConstructor</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>.<MutableClassDescriptor[napile.asm.members.AsmTypeConstructor]>AsmTypeConstructor</MutableClassDescriptor[napile.asm.members.AsmTypeConstructor]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Equality]>Equality</MutableClassDescriptor[napile.annotation.Equality]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.asm">asm</ref>.<ref class="PackageDescriptorImpl" to="napile.asm.members">members</ref>.<ref class="MutableClassDescriptor" to="napile.asm.members.AsmTypeConstructor">AsmTypeConstructor</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Equality">Equality</ref>
 
 /**
  * @author VISTALL
  * @date 10:58/17.01.13
  */
-class AsmClassType : <MutableClassDescriptor[napile.asm.members.AsmTypeConstructor]>AsmTypeConstructor</MutableClassDescriptor[napile.asm.members.AsmTypeConstructor]>
+class AsmClassType : <ref class="MutableClassDescriptor" to="napile.asm.members.AsmTypeConstructor">AsmTypeConstructor</ref>
 {
-	@<MutableClassDescriptor[napile.annotation.Equality]>Equality</MutableClassDescriptor[napile.annotation.Equality]>
-	val qualifiedName : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	@<ref class="MutableClassDescriptor" to="napile.annotation.Equality">Equality</ref>
+	val qualifiedName : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 
-	this(<VariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.qualifiedName]>qualifiedName</VariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.qualifiedName]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.asm.members.typeConstructor.AsmClassType.qualifiedName">qualifiedName</ref>)
 
-	override meth equals(val o : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	override meth equals(val o : <ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>?) : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>
 	{
-		if(<CallParameterAsVariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.equals.o]> <null>is</null> <MutableClassDescriptor[napile.asm.members.typeConstructor.AsmClassType]>AsmClassType</MutableClassDescriptor[napile.asm.members.typeConstructor.AsmClassType]>)
-			return <VariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.qualifiedName]>qualifiedName</VariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.qualifiedName]> <SimpleMethodDescriptorImpl[napile.lang.String.equals]>==</SimpleMethodDescriptorImpl[napile.lang.String.equals]> <CallParameterAsVariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.equals.o]>.<VariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.qualifiedName]>qualifiedName</VariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.qualifiedName]>
+		if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.asm.members.typeConstructor.AsmClassType.equals.o">o</ref> <ref to="null">is</ref> <ref class="MutableClassDescriptor" to="napile.asm.members.typeConstructor.AsmClassType">AsmClassType</ref>)
+			return <ref class="VariableDescriptorImpl" to="napile.asm.members.typeConstructor.AsmClassType.qualifiedName">qualifiedName</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.equals">==</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.asm.members.typeConstructor.AsmClassType.equals.o">o</ref>.<ref class="VariableDescriptorImpl" to="napile.asm.members.typeConstructor.AsmClassType.qualifiedName">qualifiedName</ref>
 		else
 			return false
 	}
 
-	override meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]> = <VariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.qualifiedName]>qualifiedName</VariableDescriptorImpl[napile.asm.members.typeConstructor.AsmClassType.qualifiedName]>
+	override meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = <ref class="VariableDescriptorImpl" to="napile.asm.members.typeConstructor.AsmClassType.qualifiedName">qualifiedName</ref>
 }

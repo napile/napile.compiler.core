@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.io">io</ref>
 
 /**
  * @author VISTALL
  */
-class FileNotFoundException : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>
+class FileNotFoundException : <ref class="MutableClassDescriptor" to="napile.lang.Exception">Exception</ref>
 {
-	this(val message : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>(<CallParameterAsVariableDescriptorImpl[napile.io.FileNotFoundException.this.message]>message</CallParameterAsVariableDescriptorImpl[napile.io.FileNotFoundException.this.message]>)
+	this(val message : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null) : <ref class="MutableClassDescriptor" to="napile.lang.Exception">Exception</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.io.FileNotFoundException.this.message">message</ref>)
 }

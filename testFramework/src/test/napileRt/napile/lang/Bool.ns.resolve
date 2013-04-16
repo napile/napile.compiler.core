@@ -1,21 +1,21 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>
 
 /**
  * @author VISTALL
  */
-@<MutableClassDescriptor[napile.annotation.DefaultValue]>DefaultValue</MutableClassDescriptor[napile.annotation.DefaultValue]>(<MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>.<VariableDescriptorImpl[napile.lang.Bool.FALSE]>FALSE</VariableDescriptorImpl[napile.lang.Bool.FALSE]>)
+@<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>(<ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Bool.FALSE">FALSE</ref>)
 final class Bool
 {
 	// enum val ?
-	static val TRUE : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <ConstructorDescriptor[napile.lang.Bool.this]>Bool</ConstructorDescriptor[napile.lang.Bool.this]>()
+	static val TRUE : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref> = <ref class="ConstructorDescriptor" to="napile.lang.Bool.this">Bool</ref>()
 
-	static val FALSE : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <ConstructorDescriptor[napile.lang.Bool.this]>Bool</ConstructorDescriptor[napile.lang.Bool.this]>()
+	static val FALSE : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref> = <ref class="ConstructorDescriptor" to="napile.lang.Bool.this">Bool</ref>()
 
 	local this()
 
-	meth not() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = if(<MutableClassDescriptor[napile.lang.Bool]>this</MutableClassDescriptor[napile.lang.Bool]>) <VariableDescriptorImpl[napile.lang.Bool.FALSE]>FALSE</VariableDescriptorImpl[napile.lang.Bool.FALSE]> else <VariableDescriptorImpl[napile.lang.Bool.TRUE]>TRUE</VariableDescriptorImpl[napile.lang.Bool.TRUE]>
+	meth not() : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref> = if(<ref class="MutableClassDescriptor" to="napile.lang.Bool">this</ref>) <ref class="VariableDescriptorImpl" to="napile.lang.Bool.FALSE">FALSE</ref> else <ref class="VariableDescriptorImpl" to="napile.lang.Bool.TRUE">TRUE</ref>
 
-	override meth toString() = if(<MutableClassDescriptor[napile.lang.Bool]>this</MutableClassDescriptor[napile.lang.Bool]> <SimpleMethodDescriptorImpl[napile.lang.Bool.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Bool.equals]> <VariableDescriptorImpl[napile.lang.Bool.TRUE]>TRUE</VariableDescriptorImpl[napile.lang.Bool.TRUE]>) "true" else "false"
+	override meth toString() = if(<ref class="MutableClassDescriptor" to="napile.lang.Bool">this</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Bool.equals">==</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Bool.TRUE">TRUE</ref>) "true" else "false"
 }

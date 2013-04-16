@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<PackageDescriptorImpl[napile.util.listeners]>listeners</PackageDescriptorImpl[napile.util.listeners]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.util">util</ref>.<ref class="PackageDescriptorImpl" to="napile.util.listeners">listeners</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.ArrayList]>ArrayList</MutableClassDescriptor[napile.collection.ArrayList]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.List">List</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.ArrayList">ArrayList</ref>
 
 /~
  ~ Authors
@@ -25,21 +25,21 @@ import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<Pa
  ~/
 final class ListenerHolder<E>
 {
-	local val listeners : <MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]><{(val e : <TypeParameterDescriptorImpl[napile.util.listeners.ListenerHolder.E]>E</TypeParameterDescriptorImpl[napile.util.listeners.ListenerHolder.E]>) -> <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]>}> = <ConstructorDescriptor[napile.collection.ArrayList.this]>ArrayList</ConstructorDescriptor[napile.collection.ArrayList.this]>()
+	local val listeners : <ref class="MutableClassDescriptor" to="napile.collection.List">List</ref><{(val e : <ref class="TypeParameterDescriptorImpl" to="napile.util.listeners.ListenerHolder.E">E</ref>) -> <ref class="MutableClassDescriptor" to="napile.lang.Null">Null</ref>}> = <ref class="ConstructorDescriptor" to="napile.collection.ArrayList.this">ArrayList</ref>()
 
 	this()
 
-	meth plus(val impl : {(val e : <TypeParameterDescriptorImpl[napile.util.listeners.ListenerHolder.E]>E</TypeParameterDescriptorImpl[napile.util.listeners.ListenerHolder.E]>) -> <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]>}) : <MutableClassDescriptor[napile.util.listeners.ListenerHolder]>this</MutableClassDescriptor[napile.util.listeners.ListenerHolder]>
+	meth plus(val impl : {(val e : <ref class="TypeParameterDescriptorImpl" to="napile.util.listeners.ListenerHolder.E">E</ref>) -> <ref class="MutableClassDescriptor" to="napile.lang.Null">Null</ref>}) : <ref class="MutableClassDescriptor" to="napile.util.listeners.ListenerHolder">this</ref>
 	{
-		<VariableDescriptorImpl[napile.util.listeners.ListenerHolder.listeners]>listeners</VariableDescriptorImpl[napile.util.listeners.ListenerHolder.listeners]>.<SimpleMethodDescriptorImpl[napile.collection.List.add]>add</SimpleMethodDescriptorImpl[napile.collection.List.add]>(<CallParameterAsVariableDescriptorImpl[napile.util.listeners.ListenerHolder.plus.impl]>impl</CallParameterAsVariableDescriptorImpl[napile.util.listeners.ListenerHolder.plus.impl]>)
-		return <MutableClassDescriptor[napile.util.listeners.ListenerHolder]>this</MutableClassDescriptor[napile.util.listeners.ListenerHolder]>
+		<ref class="VariableDescriptorImpl" to="napile.util.listeners.ListenerHolder.listeners">listeners</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.List.add">add</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.listeners.ListenerHolder.plus.impl">impl</ref>)
+		return <ref class="MutableClassDescriptor" to="napile.util.listeners.ListenerHolder">this</ref>
 	}
 
-	meth fire(val event : <TypeParameterDescriptorImpl[napile.util.listeners.ListenerHolder.E]>E</TypeParameterDescriptorImpl[napile.util.listeners.ListenerHolder.E]>)
+	meth fire(val event : <ref class="TypeParameterDescriptorImpl" to="napile.util.listeners.ListenerHolder.E">E</ref>)
 	{
-		for(l in <VariableDescriptorImpl[napile.util.listeners.ListenerHolder.listeners]>listeners</VariableDescriptorImpl[napile.util.listeners.ListenerHolder.listeners]>)
+		for(l in <ref class="VariableDescriptorImpl" to="napile.util.listeners.ListenerHolder.listeners">listeners</ref>)
 		{
-			<LocalVariableDescriptor[napile.util.listeners.ListenerHolder.fire.l]>l</LocalVariableDescriptor[napile.util.listeners.ListenerHolder.fire.l]>(<CallParameterAsVariableDescriptorImpl[napile.util.listeners.ListenerHolder.fire.event]>event</CallParameterAsVariableDescriptorImpl[napile.util.listeners.ListenerHolder.fire.event]>)
+			<ref class="LocalVariableDescriptor" to="napile.util.listeners.ListenerHolder.fire.l">l</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.listeners.ListenerHolder.fire.event">event</ref>)
 		}
 	}
 }

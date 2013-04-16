@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>
 
 /~
  ~ Authors
@@ -22,7 +22,7 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  ~/
 abstract class Color
 {
-	meth toRgbColor() : <MutableClassDescriptor[napile.ui.RgbColor]>RgbColor</MutableClassDescriptor[napile.ui.RgbColor]>
+	meth toRgbColor() : <ref class="MutableClassDescriptor" to="napile.ui.RgbColor">RgbColor</ref>
 
-	meth toCmykColor() : <MutableClassDescriptor[napile.ui.CmykColor]>CmykColor</MutableClassDescriptor[napile.ui.CmykColor]>
+	meth toCmykColor() : <ref class="MutableClassDescriptor" to="napile.ui.CmykColor">CmykColor</ref>
 }

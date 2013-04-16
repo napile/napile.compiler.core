@@ -1,8 +1,8 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
 /**
  * @author VISTALL
  */
-abstract class Set<E> : <MutableClassDescriptor[napile.collection.Collection]>Collection</MutableClassDescriptor[napile.collection.Collection]><<TypeParameterDescriptorImpl[napile.collection.Set.E]>E</TypeParameterDescriptorImpl[napile.collection.Set.E]>>
+abstract class Set<E> : <ref class="MutableClassDescriptor" to="napile.collection.Collection">Collection</ref><<ref class="TypeParameterDescriptorImpl" to="napile.collection.Set.E">E</ref>>
 {
 }

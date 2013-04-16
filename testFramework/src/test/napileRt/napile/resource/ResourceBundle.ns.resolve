@@ -1,13 +1,13 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.resource]>resource</PackageDescriptorImpl[napile.resource]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.resource">resource</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.VarArgs]>VarArgs</MutableClassDescriptor[napile.annotation.VarArgs]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.VarArgs">VarArgs</ref>
 /**
  * @author VISTALL
  */
 class ResourceBundle
 {
-	meth getString(val key : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>, val arg : /*@VarArgs*/ <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>>? = null) : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	meth getString(val key : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>, val arg : /*@VarArgs*/ <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>>? = null) : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 	{
-		throw <ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>IllegalArgumentException</ConstructorDescriptor[napile.lang.IllegalArgumentException.this]>() // TODO [VISTALL]
+		throw <ref class="ConstructorDescriptor" to="napile.lang.IllegalArgumentException.this">IllegalArgumentException</ref>() // TODO [VISTALL]
 	}
 }

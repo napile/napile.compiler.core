@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.io">io</ref>
 
 /**
  * @author VISTALL
  */
 util class IoUtil
 {
-	meth use<T : <MutableClassDescriptor[napile.io.Closeable]>Closeable</MutableClassDescriptor[napile.io.Closeable]>>(val stream : <TypeParameterDescriptorImpl[napile.io.IoUtil.use.T]>T</TypeParameterDescriptorImpl[napile.io.IoUtil.use.T]>, val block : {(val it : <TypeParameterDescriptorImpl[napile.io.IoUtil.use.T]>T</TypeParameterDescriptorImpl[napile.io.IoUtil.use.T]>) -> <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]>})
+	meth use<T : <ref class="MutableClassDescriptor" to="napile.io.Closeable">Closeable</ref>>(val stream : <ref class="TypeParameterDescriptorImpl" to="napile.io.IoUtil.use.T">T</ref>, val block : {(val it : <ref class="TypeParameterDescriptorImpl" to="napile.io.IoUtil.use.T">T</ref>) -> <ref class="MutableClassDescriptor" to="napile.lang.Null">Null</ref>})
 	{
 		try
 		{
-			<CallParameterAsVariableDescriptorImpl[napile.io.IoUtil.use.block]>block</CallParameterAsVariableDescriptorImpl[napile.io.IoUtil.use.block]>(<CallParameterAsVariableDescriptorImpl[napile.io.IoUtil.use.stream]>stream</CallParameterAsVariableDescriptorImpl[napile.io.IoUtil.use.stream]>)
+			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.io.IoUtil.use.block">block</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.io.IoUtil.use.stream">stream</ref>)
 		}
-		catch(val e : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>)
+		catch(val e : <ref class="MutableClassDescriptor" to="napile.lang.Exception">Exception</ref>)
 		{
 			// ignore
 		}
@@ -35,9 +35,9 @@ util class IoUtil
 		{
 			try
 			{
-				<CallParameterAsVariableDescriptorImpl[napile.io.IoUtil.use.stream]>stream</CallParameterAsVariableDescriptorImpl[napile.io.IoUtil.use.stream]>.<SimpleMethodDescriptorImpl[napile.io.Closeable.close]>close</SimpleMethodDescriptorImpl[napile.io.Closeable.close]>()
+				<ref class="CallParameterAsVariableDescriptorImpl" to="napile.io.IoUtil.use.stream">stream</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.io.Closeable.close">close</ref>()
 			}
-			catch(val e : <MutableClassDescriptor[napile.lang.Exception]>Exception</MutableClassDescriptor[napile.lang.Exception]>)
+			catch(val e : <ref class="MutableClassDescriptor" to="napile.lang.Exception">Exception</ref>)
 			{
 				// ignore
 			}

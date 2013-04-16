@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>
 
 /**
  * @author VISTALL
  */
 abstract class Sizeable
 {
-	meth size() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	meth size() : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	meth isEmpty() : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]> = <SimpleMethodDescriptorImpl[napile.collection.Sizeable.size]>size</SimpleMethodDescriptorImpl[napile.collection.Sizeable.size]>() <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>==</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0
+	meth isEmpty() : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref> = <ref class="SimpleMethodDescriptorImpl" to="napile.collection.Sizeable.size">size</ref>() <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">==</ref> 0
 }

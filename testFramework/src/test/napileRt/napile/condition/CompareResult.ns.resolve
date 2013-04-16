@@ -1,15 +1,15 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.condition]>condition</PackageDescriptorImpl[napile.condition]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.condition">condition</ref>
 
 /**
  * @author VISTALL
  */
 class CompareResult
 {
-	enum val GREATER : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>()
+	enum val GREATER : <ref class="MutableClassDescriptor" to="napile.condition.CompareResult">CompareResult</ref>()
 
-	enum val EQUAL : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>()
+	enum val EQUAL : <ref class="MutableClassDescriptor" to="napile.condition.CompareResult">CompareResult</ref>()
 
-	enum val LOWER : <MutableClassDescriptor[napile.condition.CompareResult]>CompareResult</MutableClassDescriptor[napile.condition.CompareResult]>()
+	enum val LOWER : <ref class="MutableClassDescriptor" to="napile.condition.CompareResult">CompareResult</ref>()
 
 	this()
 }

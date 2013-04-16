@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.ui">ui</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.Extension">Extension</ref>
 
 /~
  ~ Authors
@@ -24,18 +24,18 @@ import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<Pa
  ~/
 util class UiBuildUtil
 {
-	meth build<T(val text : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null) : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>>(val text : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>, val builder : {(val v : <TypeParameterDescriptorImpl[napile.ui.UiBuildUtil.build.T]>T</TypeParameterDescriptorImpl[napile.ui.UiBuildUtil.build.T]>) -> <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]>}) : <TypeParameterDescriptorImpl[napile.ui.UiBuildUtil.build.T]>T</TypeParameterDescriptorImpl[napile.ui.UiBuildUtil.build.T]>
+	meth build<T(val text : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null) : <ref class="MutableClassDescriptor" to="napile.ui.Component">Component</ref>>(val text : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>, val builder : {(val v : <ref class="TypeParameterDescriptorImpl" to="napile.ui.UiBuildUtil.build.T">T</ref>) -> <ref class="MutableClassDescriptor" to="napile.lang.Null">Null</ref>}) : <ref class="TypeParameterDescriptorImpl" to="napile.ui.UiBuildUtil.build.T">T</ref>
 	{
-		val t = <ConstructorDescriptor[napile.ui.UiBuildUtil.build.T.this]>T</ConstructorDescriptor[napile.ui.UiBuildUtil.build.T.this]>(<CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.build.text]>text</CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.build.text]>)
+		val t = <ref class="ConstructorDescriptor" to="napile.ui.UiBuildUtil.build.T.this">T</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.UiBuildUtil.build.text">text</ref>)
 
-		<CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.build.builder]>builder</CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.build.builder]>(<LocalVariableDescriptor[napile.ui.UiBuildUtil.build.t]>t</LocalVariableDescriptor[napile.ui.UiBuildUtil.build.t]>)
+		<ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.UiBuildUtil.build.builder">builder</ref>(<ref class="LocalVariableDescriptor" to="napile.ui.UiBuildUtil.build.t">t</ref>)
 
-		return <LocalVariableDescriptor[napile.ui.UiBuildUtil.build.t]>t</LocalVariableDescriptor[napile.ui.UiBuildUtil.build.t]>
+		return <ref class="LocalVariableDescriptor" to="napile.ui.UiBuildUtil.build.t">t</ref>
 	}
 
-	@<MutableClassDescriptor[napile.annotation.Extension]>Extension</MutableClassDescriptor[napile.annotation.Extension]>
-	meth plus(val comp : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>, val member : <MutableClassDescriptor[napile.ui.Component]>Component</MutableClassDescriptor[napile.ui.Component]>)
+	@<ref class="MutableClassDescriptor" to="napile.annotation.Extension">Extension</ref>
+	meth plus(val comp : <ref class="MutableClassDescriptor" to="napile.ui.Component">Component</ref>, val member : <ref class="MutableClassDescriptor" to="napile.ui.Component">Component</ref>)
 	{
-		<CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.plus.comp]>comp</CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.plus.comp]>.<SimpleMethodDescriptorImpl[napile.ui.Component.add]>add</SimpleMethodDescriptorImpl[napile.ui.Component.add]>(<CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.plus.member]>member</CallParameterAsVariableDescriptorImpl[napile.ui.UiBuildUtil.plus.member]>)
+		<ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.UiBuildUtil.plus.comp">comp</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.ui.Component.add">add</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.UiBuildUtil.plus.member">member</ref>)
 	}
 }

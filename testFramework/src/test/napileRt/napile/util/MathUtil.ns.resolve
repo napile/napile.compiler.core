@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.util">util</ref>
 
 /~
  ~ Authors
@@ -22,5 +22,5 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  ~/
 util class MathUtil
 {
-	meth min(val a : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val b : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = if(<CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.a]>a</CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.a]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><=</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.b]>b</CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.b]>) <CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.a]>a</CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.a]> else <CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.b]>b</CallParameterAsVariableDescriptorImpl[napile.util.MathUtil.min.b]>
+	meth min(val a : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>, val b : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref> = if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.MathUtil.min.a">a</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo"><=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.MathUtil.min.b">b</ref>) <ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.MathUtil.min.a">a</ref> else <ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.MathUtil.min.b">b</ref>
 }

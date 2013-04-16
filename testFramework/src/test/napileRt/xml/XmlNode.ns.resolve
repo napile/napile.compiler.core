@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>
+package <ref class="PackageDescriptorImpl" to="xml">xml</ref>
 
 /**
  * @author VISTALL
  */
 abstract class XmlNode
 {
-	meth getName() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
+	meth getName() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 }

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<PackageDescriptorImpl[napile.module.extension.descriptors]>descriptors</PackageDescriptorImpl[napile.module.extension.descriptors]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.module">module</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension">extension</ref>.<ref class="PackageDescriptorImpl" to="napile.module.extension.descriptors">descriptors</ref>
 
-import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.annotation]>annotation</PackageDescriptorImpl[xml.annotation]>.<MutableClassDescriptor[xml.annotation.DomAttribute]>DomAttribute</MutableClassDescriptor[xml.annotation.DomAttribute]>
+import <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="PackageDescriptorImpl" to="xml.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="xml.annotation.DomAttribute">DomAttribute</ref>
 
 /~
  ~ Authors
  ~ * VISTALL
  ~/
-class SimpleFactoryExtensionWithId<T()> : <MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtension]>SimpleFactoryExtension</MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtension]><<TypeParameterDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.T]>T</TypeParameterDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.T]>>
+class SimpleFactoryExtensionWithId<T()> : <ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtension">SimpleFactoryExtension</ref><<ref class="TypeParameterDescriptorImpl" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId.T">T</ref>>
 {
-	@<MutableClassDescriptor[xml.annotation.DomAttribute]>DomAttribute</MutableClassDescriptor[xml.annotation.DomAttribute]>("id")
-	val id : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]> = ""
+	@<ref class="MutableClassDescriptor" to="xml.annotation.DomAttribute">DomAttribute</ref>("id")
+	val id : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = ""
 
-	this() : <MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtension]>SimpleFactoryExtension</MutableClassDescriptor[napile.module.extension.descriptors.SimpleFactoryExtension]><<TypeParameterDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.T]>T</TypeParameterDescriptorImpl[napile.module.extension.descriptors.SimpleFactoryExtensionWithId.T]>>()
+	this() : <ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtension">SimpleFactoryExtension</ref><<ref class="TypeParameterDescriptorImpl" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId.T">T</ref>>()
 }

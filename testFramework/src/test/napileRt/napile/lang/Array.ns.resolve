@@ -1,75 +1,75 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.Iterator]>Iterator</MutableClassDescriptor[napile.collection.Iterator]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.Iterable]>Iterable</MutableClassDescriptor[napile.collection.Iterable]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.Sizeable]>Sizeable</MutableClassDescriptor[napile.collection.Sizeable]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<MutableClassDescriptor[napile.util.TypeUtil]>TypeUtil</MutableClassDescriptor[napile.util.TypeUtil]>
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.Iterator">Iterator</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.Iterable">Iterable</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.Sizeable">Sizeable</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.reflect">reflect</ref>.<ref class="MutableClassDescriptor" to="napile.reflect.Type">Type</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.InheritImmutable">InheritImmutable</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.util">util</ref>.<ref class="MutableClassDescriptor" to="napile.util.TypeUtil">TypeUtil</ref>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.logging">logging</ref>.<ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>
 
 /**
  * @author VISTALL
  */
-final class Array<E> : <MutableClassDescriptor[napile.collection.Iterable]>Iterable</MutableClassDescriptor[napile.collection.Iterable]><<TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]>> & <MutableClassDescriptor[napile.collection.Sizeable]>Sizeable</MutableClassDescriptor[napile.collection.Sizeable]>
+final class Array<E> : <ref class="MutableClassDescriptor" to="napile.collection.Iterable">Iterable</ref><<ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref>> & <ref class="MutableClassDescriptor" to="napile.collection.Sizeable">Sizeable</ref>
 {
-	val length : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>
+	val length : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>
 
-	this(<VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
+	this(<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>)
 	{
-		<SimpleMethodDescriptorImpl[napile.lang.Array.init]>init</SimpleMethodDescriptorImpl[napile.lang.Array.init]>()
+		<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.init">init</ref>()
 
 		// dont do anything if is empty array
-		if(<CallParameterAsReferenceDescriptorImpl[napile.lang.Array.this.length]>length</CallParameterAsReferenceDescriptorImpl[napile.lang.Array.this.length]> <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> 0)
+		if(<ref class="CallParameterAsReferenceDescriptorImpl" to="napile.lang.Array.this.length">length</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">!=</ref> 0)
 		{
-			val defaultValue : <TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]> = <MutableClassDescriptor[napile.util.TypeUtil]>TypeUtil</MutableClassDescriptor[napile.util.TypeUtil]>.<SimpleMethodDescriptorImpl[napile.util.TypeUtil.getDefaultValue]>getDefaultValue</SimpleMethodDescriptorImpl[napile.util.TypeUtil.getDefaultValue]>(false);
-			for(c in 0<SimpleMethodDescriptorImpl[napile.lang.Int.rangeTo]>..</SimpleMethodDescriptorImpl[napile.lang.Int.rangeTo]><CallParameterAsReferenceDescriptorImpl[napile.lang.Array.this.length]>length</CallParameterAsReferenceDescriptorImpl[napile.lang.Array.this.length]>)
-				<SimpleMethodDescriptorImpl[napile.lang.Array.set]>set</SimpleMethodDescriptorImpl[napile.lang.Array.set]>(<LocalVariableDescriptor[napile.lang.Array.this.c]>c</LocalVariableDescriptor[napile.lang.Array.this.c]>, <LocalVariableDescriptor[napile.lang.Array.this.defaultValue]>defaultValue</LocalVariableDescriptor[napile.lang.Array.this.defaultValue]>)
+			val defaultValue : <ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref> = <ref class="MutableClassDescriptor" to="napile.util.TypeUtil">TypeUtil</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.util.TypeUtil.getDefaultValue">getDefaultValue</ref>(false);
+			for(c in 0<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.rangeTo">..</ref><ref class="CallParameterAsReferenceDescriptorImpl" to="napile.lang.Array.this.length">length</ref>)
+				<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.set">set</ref>(<ref class="LocalVariableDescriptor" to="napile.lang.Array.this.c">c</ref>, <ref class="LocalVariableDescriptor" to="napile.lang.Array.this.defaultValue">defaultValue</ref>)
 		}
 	}
 
-	override meth size() : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]> = <VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>
+	override meth size() : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref> = <ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>
 
 	native meth init()
 
-	@<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>
-	meth set(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val value : <TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]>) : <MutableClassDescriptor[napile.lang.Array]>this</MutableClassDescriptor[napile.lang.Array]>
+	@<ref class="MutableClassDescriptor" to="napile.annotation.ImmutableTarget">ImmutableTarget</ref>
+	meth set(val index : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>, val value : <ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Array">this</ref>
 	{
-		if(<CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> 0 <null>||</null> <CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>>=</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
-			throw <ConstructorDescriptor[napile.lang.ArrayIndexOutOfBoundsException.this]>ArrayIndexOutOfBoundsException</ConstructorDescriptor[napile.lang.ArrayIndexOutOfBoundsException.this]>(<CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.index]>.<SimpleMethodDescriptorImpl[napile.lang.Int.toString]>toString</SimpleMethodDescriptorImpl[napile.lang.Int.toString]>());
+		if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.set.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo"><</ref> 0 <ref to="null">||</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.set.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo">>=</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>)
+			throw <ref class="ConstructorDescriptor" to="napile.lang.ArrayIndexOutOfBoundsException.this">ArrayIndexOutOfBoundsException</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.set.index">index</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.toString">toString</ref>());
 
-		return <SimpleMethodDescriptorImpl[napile.lang.Array.set0]>set0</SimpleMethodDescriptorImpl[napile.lang.Array.set0]>(<CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.index]>, <CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.value]>value</CallParameterAsVariableDescriptorImpl[napile.lang.Array.set.value]>)
+		return <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.set0">set0</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.set.index">index</ref>, <ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.set.value">value</ref>)
 	}
 
-	local native meth set0(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>, val value : <TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]>) : <MutableClassDescriptor[napile.lang.Array]>this</MutableClassDescriptor[napile.lang.Array]>
+	local native meth set0(val index : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>, val value : <ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Array">this</ref>
 
-	meth get(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]>
+	meth get(val index : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref>
 	{
-		if(<CallParameterAsVariableDescriptorImpl[napile.lang.Array.get.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Array.get.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]><</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> 0 <null>||</null> <CallParameterAsVariableDescriptorImpl[napile.lang.Array.get.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Array.get.index]> <SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]>>=</SimpleMethodDescriptorImpl[napile.lang.Int.compareTo]> <VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
-			throw <ConstructorDescriptor[napile.lang.ArrayIndexOutOfBoundsException.this]>ArrayIndexOutOfBoundsException</ConstructorDescriptor[napile.lang.ArrayIndexOutOfBoundsException.this]>(<CallParameterAsVariableDescriptorImpl[napile.lang.Array.get.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Array.get.index]>.<SimpleMethodDescriptorImpl[napile.lang.Int.toString]>toString</SimpleMethodDescriptorImpl[napile.lang.Int.toString]>());
+		if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.get.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo"><</ref> 0 <ref to="null">||</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.get.index">index</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo">>=</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>)
+			throw <ref class="ConstructorDescriptor" to="napile.lang.ArrayIndexOutOfBoundsException.this">ArrayIndexOutOfBoundsException</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.get.index">index</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.toString">toString</ref>());
 
-		return <SimpleMethodDescriptorImpl[napile.lang.Array.get0]>get0</SimpleMethodDescriptorImpl[napile.lang.Array.get0]>(<CallParameterAsVariableDescriptorImpl[napile.lang.Array.get.index]>index</CallParameterAsVariableDescriptorImpl[napile.lang.Array.get.index]>)
+		return <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.get0">get0</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.get.index">index</ref>)
 	}
 
-	local native meth get0(val index : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]>
+	local native meth get0(val index : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref>
 
-	override meth iterator() : @<MutableClassDescriptor[napile.annotation.InheritImmutable]>InheritImmutable</MutableClassDescriptor[napile.annotation.InheritImmutable]> <MutableClassDescriptor[napile.collection.Iterator]>Iterator</MutableClassDescriptor[napile.collection.Iterator]><<TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]>> = <ConstructorDescriptor[napile.lang.ArrayIterator.this]>ArrayIterator</ConstructorDescriptor[napile.lang.ArrayIterator.this]><<TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]>>(<MutableClassDescriptor[napile.lang.Array]>this</MutableClassDescriptor[napile.lang.Array]>)
+	override meth iterator() : @<ref class="MutableClassDescriptor" to="napile.annotation.InheritImmutable">InheritImmutable</ref> <ref class="MutableClassDescriptor" to="napile.collection.Iterator">Iterator</ref><<ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref>> = <ref class="ConstructorDescriptor" to="napile.lang.ArrayIterator.this">ArrayIterator</ref><<ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref>>(<ref class="MutableClassDescriptor" to="napile.lang.Array">this</ref>)
 
-	override meth clone() : <MutableClassDescriptor[napile.lang.Array]>this</MutableClassDescriptor[napile.lang.Array]> = <MutableClassDescriptor[napile.lang.ArrayUtil]>ArrayUtil</MutableClassDescriptor[napile.lang.ArrayUtil]>.<SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOfRange]>copyOfRange</SimpleMethodDescriptorImpl[napile.lang.ArrayUtil.copyOfRange]>(<MutableClassDescriptor[napile.lang.Array]>this</MutableClassDescriptor[napile.lang.Array]>, 0, <VariableDescriptorImpl[napile.lang.Array.length]>length</VariableDescriptorImpl[napile.lang.Array.length]>)
+	override meth clone() : <ref class="MutableClassDescriptor" to="napile.lang.Array">this</ref> = <ref class="MutableClassDescriptor" to="napile.lang.ArrayUtil">ArrayUtil</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.ArrayUtil.copyOfRange">copyOfRange</ref>(<ref class="MutableClassDescriptor" to="napile.lang.Array">this</ref>, 0, <ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>)
 
-	override meth equals(val o : <MutableClassDescriptor[napile.lang.Any]>Any</MutableClassDescriptor[napile.lang.Any]>?) : <MutableClassDescriptor[napile.lang.Bool]>Bool</MutableClassDescriptor[napile.lang.Bool]>
+	override meth equals(val o : <ref class="MutableClassDescriptor" to="napile.lang.Any">Any</ref>?) : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>
 	{
-		if(<CallParameterAsVariableDescriptorImpl[napile.lang.Array.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.lang.Array.equals.o]> <null>is</null> <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<TypeParameterDescriptorImpl[napile.lang.Array.E]>E</TypeParameterDescriptorImpl[napile.lang.Array.E]>>)
+		if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.equals.o">o</ref> <ref to="null">is</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="TypeParameterDescriptorImpl" to="napile.lang.Array.E">E</ref>>)
 		{
-			if(<CallParameterAsVariableDescriptorImpl[napile.lang.Array.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.lang.Array.equals.o]>.<SimpleMethodDescriptorImpl[napile.lang.Array.size]>size</SimpleMethodDescriptorImpl[napile.lang.Array.size]>() <SimpleMethodDescriptorImpl[napile.lang.Int.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Int.equals]> <SimpleMethodDescriptorImpl[napile.lang.Array.size]>size</SimpleMethodDescriptorImpl[napile.lang.Array.size]>())
+			if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.equals.o">o</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.size">size</ref>() <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">!=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.size">size</ref>())
 			{
 				return false
 			}
 
-			for(i in 0<SimpleMethodDescriptorImpl[napile.lang.Int.rangeTo]>..</SimpleMethodDescriptorImpl[napile.lang.Int.rangeTo]><SimpleMethodDescriptorImpl[napile.lang.Array.size]>size</SimpleMethodDescriptorImpl[napile.lang.Array.size]>())
+			for(i in 0<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.rangeTo">..</ref><ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.size">size</ref>())
 			{
-				if(<SimpleMethodDescriptorImpl[napile.lang.Array.get]><CallParameterAsVariableDescriptorImpl[napile.lang.Array.equals.o]>o</CallParameterAsVariableDescriptorImpl[napile.lang.Array.equals.o]>[<LocalVariableDescriptor[napile.lang.Array.equals.i]>i</LocalVariableDescriptor[napile.lang.Array.equals.i]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]> <SimpleMethodDescriptorImpl[napile.lang.Any.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.Any.equals]> <SimpleMethodDescriptorImpl[napile.lang.Array.get]><MutableClassDescriptor[napile.lang.Array]>this</MutableClassDescriptor[napile.lang.Array]>[<LocalVariableDescriptor[napile.lang.Array.equals.i]>i</LocalVariableDescriptor[napile.lang.Array.equals.i]>]</SimpleMethodDescriptorImpl[napile.lang.Array.get]>)
+				if(<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.get"><ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Array.equals.o">o</ref>[<ref class="LocalVariableDescriptor" to="napile.lang.Array.equals.i">i</ref>]</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.equals">!=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.get"><ref class="MutableClassDescriptor" to="napile.lang.Array">this</ref>[<ref class="LocalVariableDescriptor" to="napile.lang.Array.equals.i">i</ref>]</ref>)
 				{
 					return false
 				}

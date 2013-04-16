@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * A {@code ThreadGroup} is a means of organizing {@link Thread}s into a
@@ -35,8 +35,8 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  */
 class ThreadGroup
 {
-	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
-	val parent : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>?
+	val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
+	val parent : <ref class="MutableClassDescriptor" to="napile.lang.ThreadGroup">ThreadGroup</ref>?
 
-	this(<VariableDescriptorImpl[napile.lang.ThreadGroup.name]>name</VariableDescriptorImpl[napile.lang.ThreadGroup.name]>, <VariableDescriptorImpl[napile.lang.ThreadGroup.parent]>parent</VariableDescriptorImpl[napile.lang.ThreadGroup.parent]> = null)
+	this(<ref class="VariableDescriptorImpl" to="napile.lang.ThreadGroup.name">name</ref>, <ref class="VariableDescriptorImpl" to="napile.lang.ThreadGroup.parent">parent</ref> = null)
 }

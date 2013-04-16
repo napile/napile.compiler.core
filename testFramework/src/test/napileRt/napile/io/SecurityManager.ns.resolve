@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.io">io</ref>
 
 /**
  * @author VISTALL
  */
 class SecurityManager
 {
-	static val INSTANCE : <MutableClassDescriptor[napile.io.SecurityManager]>SecurityManager</MutableClassDescriptor[napile.io.SecurityManager]>? = null
+	static val INSTANCE : <ref class="MutableClassDescriptor" to="napile.io.SecurityManager">SecurityManager</ref>? = null
 
-	meth checkRead(val path : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>)
+	meth checkRead(val path : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>)
 	{
 		//TODO [VISTALL]
 	}
 
-	meth checkWrite(val path : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>)
+	meth checkWrite(val path : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>)
 	{
 		//TODO [VISTALL]
 	}
 
-	meth checkWrite(val fd : <MutableClassDescriptor[napile.io.FileDescriptor]>FileDescriptor</MutableClassDescriptor[napile.io.FileDescriptor]>)
+	meth checkWrite(val fd : <ref class="MutableClassDescriptor" to="napile.io.FileDescriptor">FileDescriptor</ref>)
 	{
 		//TODO [VISTALL]
 	}

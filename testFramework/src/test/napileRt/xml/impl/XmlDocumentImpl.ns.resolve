@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.impl]>impl</PackageDescriptorImpl[xml.impl]>
+package <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="PackageDescriptorImpl" to="xml.impl">impl</ref>
 
-import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.IterableUtil]>IterableUtil</MutableClassDescriptor[napile.collection.IterableUtil]>
-import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<MutableClassDescriptor[xml.XmlDocument]>XmlDocument</MutableClassDescriptor[xml.XmlDocument]>
-import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>
+import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.collection">collection</ref>.<ref class="MutableClassDescriptor" to="napile.collection.IterableUtil">IterableUtil</ref>
+import <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="MutableClassDescriptor" to="xml.XmlDocument">XmlDocument</ref>
+import <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="MutableClassDescriptor" to="xml.XmlElement">XmlElement</ref>
 
 /**
  * @author VISTALL
  */
-class XmlDocumentImpl : <MutableClassDescriptor[xml.XmlDocument]>XmlDocument</MutableClassDescriptor[xml.XmlDocument]>
+class XmlDocumentImpl : <ref class="MutableClassDescriptor" to="xml.XmlDocument">XmlDocument</ref>
 {
-	local val elements: <MutableClassDescriptor[napile.lang.Array]>Array</MutableClassDescriptor[napile.lang.Array]><<MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>>
+	local val elements: <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="xml.XmlElement">XmlElement</ref>>
 
-	this(<VariableDescriptorImpl[xml.impl.XmlDocumentImpl.elements]>elements</VariableDescriptorImpl[xml.impl.XmlDocumentImpl.elements]>)
+	this(<ref class="VariableDescriptorImpl" to="xml.impl.XmlDocumentImpl.elements">elements</ref>)
 
-	override meth get(val elementName : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>) : <MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>?
+	override meth get(val elementName : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>) : <ref class="MutableClassDescriptor" to="xml.XmlElement">XmlElement</ref>?
 	{
-		return <MutableClassDescriptor[napile.collection.IterableUtil]>IterableUtil</MutableClassDescriptor[napile.collection.IterableUtil]>.<SimpleMethodDescriptorImpl[napile.collection.IterableUtil.select]>select</SimpleMethodDescriptorImpl[napile.collection.IterableUtil.select]>(<VariableDescriptorImpl[xml.impl.XmlDocumentImpl.elements]>elements</VariableDescriptorImpl[xml.impl.XmlDocumentImpl.elements]>, {(a) -> <CallParameterAsVariableDescriptorImpl[xml.impl.XmlDocumentImpl.get.@noname.a]>a</CallParameterAsVariableDescriptorImpl[xml.impl.XmlDocumentImpl.get.@noname.a]>.<SimpleMethodDescriptorImpl[xml.XmlElement.getName]>getName</SimpleMethodDescriptorImpl[xml.XmlElement.getName]>() <SimpleMethodDescriptorImpl[napile.lang.String.equals]>==</SimpleMethodDescriptorImpl[napile.lang.String.equals]> <CallParameterAsVariableDescriptorImpl[xml.impl.XmlDocumentImpl.get.elementName]>elementName</CallParameterAsVariableDescriptorImpl[xml.impl.XmlDocumentImpl.get.elementName]>})
+		return <ref class="MutableClassDescriptor" to="napile.collection.IterableUtil">IterableUtil</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.collection.IterableUtil.select">select</ref>(<ref class="VariableDescriptorImpl" to="xml.impl.XmlDocumentImpl.elements">elements</ref>, {(a) -> <ref class="CallParameterAsVariableDescriptorImpl" to="xml.impl.XmlDocumentImpl.get.@noname.a">a</ref>.<ref class="SimpleMethodDescriptorImpl" to="xml.XmlElement.getName">getName</ref>() <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.equals">==</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="xml.impl.XmlDocumentImpl.get.elementName">elementName</ref>})
 	}
 }

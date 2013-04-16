@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * @author VISTALL
  */
 class Application
 {
-	static meth exit(val code : <MutableClassDescriptor[napile.lang.Int]>Int</MutableClassDescriptor[napile.lang.Int]>) : <MutableClassDescriptor[napile.lang.Null]>Null</MutableClassDescriptor[napile.lang.Null]> = <MutableClassDescriptor[napile.lang.Runtime]>Runtime</MutableClassDescriptor[napile.lang.Runtime]>.<VariableDescriptorImpl[napile.lang.Runtime.INSTANCE]>INSTANCE</VariableDescriptorImpl[napile.lang.Runtime.INSTANCE]>.<SimpleMethodDescriptorImpl[napile.lang.Runtime.exit]>exit</SimpleMethodDescriptorImpl[napile.lang.Runtime.exit]>(<CallParameterAsVariableDescriptorImpl[napile.lang.Application.exit.code]>code</CallParameterAsVariableDescriptorImpl[napile.lang.Application.exit.code]>)
+	static meth exit(val code : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref>) : <ref class="MutableClassDescriptor" to="napile.lang.Null">Null</ref> = <ref class="MutableClassDescriptor" to="napile.lang.Runtime">Runtime</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Runtime.INSTANCE">INSTANCE</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Runtime.exit">exit</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Application.exit.code">code</ref>)
 }

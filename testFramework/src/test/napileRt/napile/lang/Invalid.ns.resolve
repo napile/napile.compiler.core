@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /~
  ~ Authors
@@ -22,9 +22,9 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  ~/
 final class Invalid
 {
-	local static val INSTANCE : <MutableClassDescriptor[napile.lang.Invalid]>Invalid</MutableClassDescriptor[napile.lang.Invalid]> = <ConstructorDescriptor[napile.lang.Invalid.this]>Invalid</ConstructorDescriptor[napile.lang.Invalid.this]>()
+	local static val INSTANCE : <ref class="MutableClassDescriptor" to="napile.lang.Invalid">Invalid</ref> = <ref class="ConstructorDescriptor" to="napile.lang.Invalid.this">Invalid</ref>()
 
 	local this()
 
-	override meth toString() : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]> = "invalid"
+	override meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = "invalid"
 }

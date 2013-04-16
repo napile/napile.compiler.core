@@ -1,15 +1,15 @@
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * @author VISTALL
  */
 class ThreadState
 {
-	static val NEW : <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]> = <ConstructorDescriptor[napile.lang.ThreadState.this]>ThreadState</ConstructorDescriptor[napile.lang.ThreadState.this]>()
+	static val NEW : <ref class="MutableClassDescriptor" to="napile.lang.ThreadState">ThreadState</ref> = <ref class="ConstructorDescriptor" to="napile.lang.ThreadState.this">ThreadState</ref>()
 
-	static val STARTED : <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]> = <ConstructorDescriptor[napile.lang.ThreadState.this]>ThreadState</ConstructorDescriptor[napile.lang.ThreadState.this]>()
+	static val STARTED : <ref class="MutableClassDescriptor" to="napile.lang.ThreadState">ThreadState</ref> = <ref class="ConstructorDescriptor" to="napile.lang.ThreadState.this">ThreadState</ref>()
 
-	static val FINISHED : <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]> = <ConstructorDescriptor[napile.lang.ThreadState.this]>ThreadState</ConstructorDescriptor[napile.lang.ThreadState.this]>()
+	static val FINISHED : <ref class="MutableClassDescriptor" to="napile.lang.ThreadState">ThreadState</ref> = <ref class="ConstructorDescriptor" to="napile.lang.ThreadState.this">ThreadState</ref>()
 
 	this()
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
+package <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.lang">lang</ref>
 
 /**
  * A {@code Thread} is a concurrent unit of execution. It has its own call stack
@@ -47,17 +47,17 @@ package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<P
  */
 class Thread
 {
-	local static var threadOrdinalNum : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> = 0.<SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>toLong</SimpleMethodDescriptorImpl[napile.lang.Int.toLong]>()
+	local static var threadOrdinalNum : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref> = 0.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.toLong">toLong</ref>()
 
-	static meth getNextThreadId() : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]> = <SimpleMethodDescriptorImpl[napile.lang.Long.inc]>++</SimpleMethodDescriptorImpl[napile.lang.Long.inc]> <VariableDescriptorImpl[napile.lang.Thread.threadOrdinalNum]>threadOrdinalNum</VariableDescriptorImpl[napile.lang.Thread.threadOrdinalNum]>
+	static meth getNextThreadId() : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref> = <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Long.inc">++</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Thread.threadOrdinalNum">threadOrdinalNum</ref>
 
-	static var systemThreadGroup : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>
-	static var mainThreadGroup : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>
+	static var systemThreadGroup : <ref class="MutableClassDescriptor" to="napile.lang.ThreadGroup">ThreadGroup</ref>
+	static var mainThreadGroup : <ref class="MutableClassDescriptor" to="napile.lang.ThreadGroup">ThreadGroup</ref>
 
 	static this()
 	{
-		<VariableDescriptorImpl[napile.lang.Thread.systemThreadGroup]>systemThreadGroup</VariableDescriptorImpl[napile.lang.Thread.systemThreadGroup]> <null>=</null> <ConstructorDescriptor[napile.lang.ThreadGroup.this]>ThreadGroup</ConstructorDescriptor[napile.lang.ThreadGroup.this]>("system")
-		<VariableDescriptorImpl[napile.lang.Thread.mainThreadGroup]>mainThreadGroup</VariableDescriptorImpl[napile.lang.Thread.mainThreadGroup]> <null>=</null> <ConstructorDescriptor[napile.lang.ThreadGroup.this]>ThreadGroup</ConstructorDescriptor[napile.lang.ThreadGroup.this]>("main", <VariableDescriptorImpl[napile.lang.Thread.systemThreadGroup]>systemThreadGroup</VariableDescriptorImpl[napile.lang.Thread.systemThreadGroup]>)
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.systemThreadGroup">systemThreadGroup</ref> <ref to="null">=</ref> <ref class="ConstructorDescriptor" to="napile.lang.ThreadGroup.this">ThreadGroup</ref>("system")
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.mainThreadGroup">mainThreadGroup</ref> <ref to="null">=</ref> <ref class="ConstructorDescriptor" to="napile.lang.ThreadGroup.this">ThreadGroup</ref>("main", <ref class="VariableDescriptorImpl" to="napile.lang.Thread.systemThreadGroup">systemThreadGroup</ref>)
 	}
 
 	local val target : {}
@@ -65,37 +65,37 @@ class Thread
 	local var state
 	{
 		local set
-	} = <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]>.<VariableDescriptorImpl[napile.lang.ThreadState.NEW]>NEW</VariableDescriptorImpl[napile.lang.ThreadState.NEW]>
+	} = <ref class="MutableClassDescriptor" to="napile.lang.ThreadState">ThreadState</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.ThreadState.NEW">NEW</ref>
 
 	/**
 	 * Thread's ID
 	 */
-	local val threadId : <MutableClassDescriptor[napile.lang.Long]>Long</MutableClassDescriptor[napile.lang.Long]>
-	val name : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>
-	val group : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>
+	local val threadId : <ref class="MutableClassDescriptor" to="napile.lang.Long">Long</ref>
+	val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
+	val group : <ref class="MutableClassDescriptor" to="napile.lang.ThreadGroup">ThreadGroup</ref>
 
-	this(val threadName : <MutableClassDescriptor[napile.lang.String]>String</MutableClassDescriptor[napile.lang.String]>? = null, val threadGroup : <MutableClassDescriptor[napile.lang.ThreadGroup]>ThreadGroup</MutableClassDescriptor[napile.lang.ThreadGroup]>? = null, <VariableDescriptorImpl[napile.lang.Thread.target]>target</VariableDescriptorImpl[napile.lang.Thread.target]> = {})
+	this(val threadName : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null, val threadGroup : <ref class="MutableClassDescriptor" to="napile.lang.ThreadGroup">ThreadGroup</ref>? = null, <ref class="VariableDescriptorImpl" to="napile.lang.Thread.target">target</ref> = {})
 	{
-		<VariableDescriptorImpl[napile.lang.Thread.threadId]>threadId</VariableDescriptorImpl[napile.lang.Thread.threadId]> <null>=</null> <SimpleMethodDescriptorImpl[napile.lang.Thread.getNextThreadId]>getNextThreadId</SimpleMethodDescriptorImpl[napile.lang.Thread.getNextThreadId]>()
-		<VariableDescriptorImpl[napile.lang.Thread.name]>name</VariableDescriptorImpl[napile.lang.Thread.name]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.lang.Thread.this.threadName]>threadName</CallParameterAsVariableDescriptorImpl[napile.lang.Thread.this.threadName]> <null>?:</null> "Thread: " <SimpleMethodDescriptorImpl[napile.lang.String.plus]>+</SimpleMethodDescriptorImpl[napile.lang.String.plus]> <VariableDescriptorImpl[napile.lang.Thread.threadId]>threadId</VariableDescriptorImpl[napile.lang.Thread.threadId]>
-		<VariableDescriptorImpl[napile.lang.Thread.group]>group</VariableDescriptorImpl[napile.lang.Thread.group]> <null>=</null> <CallParameterAsVariableDescriptorImpl[napile.lang.Thread.this.threadGroup]>threadGroup</CallParameterAsVariableDescriptorImpl[napile.lang.Thread.this.threadGroup]> <null>?:</null> <VariableDescriptorImpl[napile.lang.Thread.mainThreadGroup]>mainThreadGroup</VariableDescriptorImpl[napile.lang.Thread.mainThreadGroup]>
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.threadId">threadId</ref> <ref to="null">=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Thread.getNextThreadId">getNextThreadId</ref>()
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.name">name</ref> <ref to="null">=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Thread.this.threadName">threadName</ref> <ref to="null">?:</ref> "Thread: " <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Thread.threadId">threadId</ref>
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.group">group</ref> <ref to="null">=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Thread.this.threadGroup">threadGroup</ref> <ref to="null">?:</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Thread.mainThreadGroup">mainThreadGroup</ref>
 	}
 
 	local meth run()
 	{
-		<VariableDescriptorImpl[napile.lang.Thread.target]>target</VariableDescriptorImpl[napile.lang.Thread.target]>()
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.target">target</ref>()
 
-		<VariableDescriptorImpl[napile.lang.Thread.state]>state</VariableDescriptorImpl[napile.lang.Thread.state]> <null>=</null> <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]>.<VariableDescriptorImpl[napile.lang.ThreadState.FINISHED]>FINISHED</VariableDescriptorImpl[napile.lang.ThreadState.FINISHED]>
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.state">state</ref> <ref to="null">=</ref> <ref class="MutableClassDescriptor" to="napile.lang.ThreadState">ThreadState</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.ThreadState.FINISHED">FINISHED</ref>
 	}
 
 	meth start()
 	{
-		if(<VariableDescriptorImpl[napile.lang.Thread.state]>state</VariableDescriptorImpl[napile.lang.Thread.state]> <SimpleMethodDescriptorImpl[napile.lang.ThreadState.equals]>!=</SimpleMethodDescriptorImpl[napile.lang.ThreadState.equals]> <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]>.<VariableDescriptorImpl[napile.lang.ThreadState.NEW]>NEW</VariableDescriptorImpl[napile.lang.ThreadState.NEW]>)
-			throw <ConstructorDescriptor[napile.lang.IllegalStateException.this]>IllegalStateException</ConstructorDescriptor[napile.lang.IllegalStateException.this]>()
+		if(<ref class="VariableDescriptorImpl" to="napile.lang.Thread.state">state</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.ThreadState.equals">!=</ref> <ref class="MutableClassDescriptor" to="napile.lang.ThreadState">ThreadState</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.ThreadState.NEW">NEW</ref>)
+			throw <ref class="ConstructorDescriptor" to="napile.lang.IllegalStateException.this">IllegalStateException</ref>()
 
-		<VariableDescriptorImpl[napile.lang.Thread.state]>state</VariableDescriptorImpl[napile.lang.Thread.state]> <null>=</null> <MutableClassDescriptor[napile.lang.ThreadState]>ThreadState</MutableClassDescriptor[napile.lang.ThreadState]>.<VariableDescriptorImpl[napile.lang.ThreadState.STARTED]>STARTED</VariableDescriptorImpl[napile.lang.ThreadState.STARTED]>
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.state">state</ref> <ref to="null">=</ref> <ref class="MutableClassDescriptor" to="napile.lang.ThreadState">ThreadState</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.ThreadState.STARTED">STARTED</ref>
 
-		<SimpleMethodDescriptorImpl[napile.lang.Thread.start0]>start0</SimpleMethodDescriptorImpl[napile.lang.Thread.start0]>()
+		<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Thread.start0">start0</ref>()
 	}
 
 	local native meth start0();
