@@ -1,0 +1,63 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package napile.io
+
+/**
+ * @author VISTALL
+ */
+class File
+{
+	val path : String
+	{
+		local set
+	}
+
+	local var properPath : Array<Byte>? = null
+
+	this(val cName : String)
+	{
+		path = fixSlashes(cName)
+	}
+
+	meth exists() : Bool
+	{
+		if(path.count == 0)
+			return false
+
+		SecurityManager.INSTANCE?.checkRead(path)
+
+		return existsImpl(properPath(true))
+	}
+
+	local native meth existsImpl(val array : Array<Byte>) : Bool
+
+	local meth fixSlashes(val cName : String) : String
+	{
+		//TODO [VISTALL]
+		return cName
+	}
+
+	covered meth properPath(val internal : Bool) : Array<Byte>
+	{
+		if (properPath != null)
+			return properPath!!
+
+		//TODO [VISTALL]
+		properPath = path.getBytes()
+		return properPath!!
+	}
+}

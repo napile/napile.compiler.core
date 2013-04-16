@@ -1,0 +1,43 @@
+package napile.lang
+
+/**
+ * @author VISTALL
+ */
+final class StringBuilder
+{
+	local var array : Array<Char> = Array<Char>(10)
+	local var count : Int = 0
+
+	this()
+
+	meth plus(val value : Any?) : this
+	{
+		var str = if(value is String) value as String else value.toString()
+
+		var newCount = str.size() + count
+		if(newCount > array.length)
+			expandCapacity(newCount)
+
+		str.getChars(0, str.size(), array, count)
+
+		count = newCount;
+
+		return this
+	}
+
+	meth expandCapacity(val minimumCapacity : Int)
+	{
+		var newCapacity = (array.length + 1) * 2;
+		if (newCapacity < 0)
+			newCapacity = Int.MAX_VALUE;
+		else if (minimumCapacity > newCapacity)
+			newCapacity = minimumCapacity;
+
+		array = ArrayUtil.copyOf(array, newCapacity);
+	}
+
+	override meth toString() : String
+	{
+		return String(array, 0, count);
+	}
+}

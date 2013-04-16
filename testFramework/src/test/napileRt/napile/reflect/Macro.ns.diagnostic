@@ -1,0 +1,13 @@
+package napile.reflect
+
+/**
+ * @author VISTALL
+ */
+class Macro : MethodLike
+{
+	local this(
+			val owner : Class<Any>?,
+			val name : String,
+			val modifiers : Array<Modifier>,
+			val annotations : Array<Any>) : MethodLike(owner, name, modifiers, annotations)
+}

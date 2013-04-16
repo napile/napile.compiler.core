@@ -1,0 +1,12 @@
+package napile.module.extension
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+class Extension
+{
+	val name : String
+
+	this(name)
+}

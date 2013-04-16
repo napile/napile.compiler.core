@@ -1,0 +1,18 @@
+package napile.reflect
+
+/**
+ * @author VISTALL
+ */
+util class ReflectUtil
+{
+	/**
+	 * @throw ClassNotFoundException
+	*/
+	meth findClass(val name : String) : Class<Any>
+	{
+		//TODO [VISTALL] get class-loader and then get by name, when they ill implemented
+		return findClass0(name)
+	}
+
+	native meth findClass0(val name : String) : Class<Any>
+}

@@ -1,0 +1,38 @@
+package napile.lang
+
+/**
+ * @author VISTALL
+ */
+class Multi
+{
+	local val data : Array<Any?>
+
+	this(val length : Int)
+	{
+		data = Array<Any?>(length)
+	}
+
+	meth set(val index : Int, val value : Any?)
+	{
+		data[index] = value
+	}
+
+	meth get(val index : Int) : Any? = data[index]
+
+	override meth toString() : String
+	{
+		var i = 0
+		var b = StringBuilder()
+		b += "["
+
+		for (c in data)
+		{
+			if(i != 0)
+				b += ", "
+			i ++
+			b += c.toString()
+		}
+		b += "]"
+		return b.toString()
+	}
+}

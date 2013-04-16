@@ -1,0 +1,10 @@
+package napile.ui.render
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+abstract class UiRender
+{
+
+}

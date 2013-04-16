@@ -1,0 +1,18 @@
+package napile.reflect
+
+import napile.annotation.Immutable
+/**
+ * @author VISTALL
+ */
+abstract class Member : AnnotationOwner
+{
+	final val ownerClass : Class<Any>?
+
+	final val name : String
+
+	final val modifiers : @Immutable Array<Modifier>
+
+	covered this(ownerClass, name, modifiers, val annotations : Array<Any>) : AnnotationOwner(annotations)
+
+	meth isStatic() : Bool = ArrayUtil.contains(modifiers, Modifier.STATIC)
+}

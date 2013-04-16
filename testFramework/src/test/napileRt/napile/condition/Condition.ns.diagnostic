@@ -1,0 +1,8 @@
+package napile.condition
+
+/**
+ * @author VISTALL
+ */
+abstract class Condition<E>
+{
+}

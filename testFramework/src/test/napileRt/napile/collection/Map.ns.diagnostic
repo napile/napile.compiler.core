@@ -1,0 +1,17 @@
+package napile.collection
+
+import napile.annotation.ImmutableTarget
+import napile.annotation.InheritImmutable
+
+/**
+ * @author VISTALL
+ */
+abstract class Map<K, V> : Sizeable
+{
+	@ImmutableTarget
+	meth put(val key : K, val value : V)
+
+	meth get(val key : K) : V
+
+	meth entrySet() : @InheritImmutable Set<[val key : K, val value : V]>
+}

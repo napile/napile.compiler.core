@@ -135,12 +135,16 @@ public class NapileTestCase extends TestCase
 		if(genResults)
 		{
 			File file = getResultFile(path, ext);
+			if(file.exists())
+			{
+				file.delete();
+			}
 
 			FileUtil.writeToFile(file, orig);
 		}
 		else
 		{
-			assertEquals("Failed to test: " + path, orig, getResultData(path, ext));
+			assertEquals("Failed to test: " + path, getResultData(path, ext), orig);
 		}
 	}
 }

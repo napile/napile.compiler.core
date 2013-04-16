@@ -1,0 +1,50 @@
+package napile.collection
+
+import napile.annotation.ImmutableTarget
+import napile.annotation.InheritImmutable
+
+/**
+ * @author VISTALL
+ */
+class ArrayList<E> : List<E>
+{
+	local var data : Array<E>
+	local var size : Int = 0
+
+	this(val predefinedSize : Int = 10)
+	{
+		data = Array<E>(predefinedSize)
+	}
+
+	@ImmutableTarget
+	override meth add(val e : E) : Bool
+	{
+		ensureCapacity(size + 1);
+		data[size++] = e;
+		return true;
+	}
+
+	override meth set(val index : Int, val e : E)
+	{
+		data[index] = e
+	}
+
+	override meth get(val index : Int) : E = data[index]
+
+	local meth ensureCapacity(val minCapacity : Int)
+	{
+		var oldCapacity = data.length;
+		if (minCapacity > oldCapacity)
+		{
+			var newCapacity = (oldCapacity * 3) / 2 + 1;
+			if (newCapacity < minCapacity)
+				newCapacity = minCapacity;
+
+			data = ArrayUtil.copyOf(data, newCapacity);
+		}
+	}
+
+	override meth iterator() : @InheritImmutable Iterator<E> = ListIterator<E>(this)
+
+	override meth size() = size
+}

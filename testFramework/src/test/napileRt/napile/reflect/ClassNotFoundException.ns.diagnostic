@@ -1,0 +1,9 @@
+package napile.reflect
+
+/**
+ * @author VISTALL
+ */
+class ClassNotFoundException : Exception
+{
+	this(val message : String? = null) : this(message)
+}

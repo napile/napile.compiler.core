@@ -1,0 +1,28 @@
+package napile.lang
+
+import napile.annotation.DefaultValue
+
+/**
+ * @author VISTALL
+ */
+@DefaultValue('<info msg="">\0</info>')
+final class Char : Number
+{
+	local this()
+
+	native override meth toByte() : Byte
+
+	native override meth toShort() : Short
+
+	native override meth toInt() : Int
+
+	native override meth toLong() : Long
+
+	native override meth toFloat() : Float
+
+	native override meth toDouble() : Double
+
+	override native meth equals(val o : Any?) : Bool
+
+	override native meth toString() : String
+}

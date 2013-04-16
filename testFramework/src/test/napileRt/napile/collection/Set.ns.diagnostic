@@ -1,0 +1,8 @@
+package napile.collection
+
+/**
+ * @author VISTALL
+ */
+abstract class Set<E> : Collection<E>
+{
+}

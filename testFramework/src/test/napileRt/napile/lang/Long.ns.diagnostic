@@ -1,0 +1,91 @@
+package napile.lang
+
+import napile.condition.CompareResult
+import napile.annotation.DefaultValue
+
+/**
+ * @author VISTALL
+ */
+@DefaultValue(0.toLong())
+final class Long : Number
+{
+	static val MIN_VALUE : Long = 0x8000000000000000
+	static val MAX_VALUE : Long = 0x7FFFFFFFFFFFFFFF
+
+	local this()
+
+	/*meth rangeTo(val value : Long) : Array<Long>
+	{
+		var array = Array<Long>(value - this - 1)
+
+		var index = 0
+		var me = this
+		while (index != array.length)
+			array[index ++] = me ++
+
+		return array
+	}   */
+
+	override native meth toByte() : Byte
+
+	override native meth toShort() : Short
+
+	override native meth toInt() : Int
+
+	override meth toLong() : Long = this
+
+	override native meth toFloat() : Float
+
+	override native meth toDouble() : Double
+
+	native meth plus() : Long
+
+	native meth minus() : Long
+
+	native meth inc() : Long
+
+	native meth dec() : Long
+
+	// bit operators
+	native meth bitNot() : Long
+
+	native meth bitXor(val value : Long) : Long
+
+	native meth bitOr(val value : Long) : Long
+
+	native meth bitAnd(val value : Long) : Long
+
+	native meth bitShiftLeft(val value : Long) : Long
+
+	native meth bitShiftRight(val value : Long) : Long
+
+	native meth bitShiftRightZ(val value : Long) : Long
+
+	native meth plus(val value : Byte) : Long
+
+	native meth plus(val value : Short) : Long
+
+	native meth plus(val value : Int) : Long
+
+	native meth plus(val value : Long) : Long
+
+	native meth times(val value : Long) : Long
+
+	native meth minus(val value : Long) : Long
+
+	native meth mod(val value : Long) : Long
+
+	native meth div(val value : Long) : Long
+
+	native meth compareTo(val value : Byte) : CompareResult
+
+	native meth compareTo(val value : Short) : CompareResult
+
+	native meth compareTo(val value : Int) : CompareResult
+
+	native meth compareTo(val value : Long) : CompareResult
+
+	override native meth equals(val o : Any?) : Bool
+
+	override native meth toString() : String
+}

@@ -1,0 +1,24 @@
+package napile.collection
+
+import napile.annotation.ImmutableTarget
+
+/**
+ * @author VISTALL
+ */
+class ListIterator<E> : Iterator<E>
+{
+	local val list : List<E>
+	local var index : Int = 0
+
+	this(list)
+
+	override meth hasNext() : Bool = list.size() != index
+
+	override meth next() : E = list[index ++]
+
+	@ImmutableTarget
+	override meth remove()
+	{
+		throw UnsupportedOperationException()
+	}
+}

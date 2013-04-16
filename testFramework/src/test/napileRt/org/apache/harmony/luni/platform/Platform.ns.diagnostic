@@ -1,0 +1,9 @@
+package org.apache.harmony.luni.platform
+
+/**
+ * @author VISTALL
+ */
+class Platform
+{
+	static meth getFileSystem() : IFileSystem = OSFileSystem.INSTANCE
+}

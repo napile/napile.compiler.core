@@ -1,0 +1,154 @@
+package napile.lang
+
+import napile.annotation.DefaultValue
+import napile.collection.Sizeable
+import napile.annotation.Immutable
+
+/~
+ ~ Authors
+ ~  * VISTALL
+ ~/
+@DefaultValue("")
+final class String : Sizeable
+{
+	local val array : @Immutable Array<Char>
+	local val count : Int
+	local val offset : Int
+
+	this(val oldArray : @Immutable Array<Char>)
+	{
+		count = oldArray.length
+		offset = 0
+		array = oldArray
+	}
+
+	this(array, offset, count)
+
+	meth getChars(val srcOffset : Int, val srcEnd : Int, val desc : Array<Char>, val descOffset : Int)
+	{
+		ArrayUtil.copy(array, offset + srcOffset, desc, descOffset, srcEnd - srcOffset)
+	}
+
+	meth toArray() : Array<Char> = ArrayUtil.copyOfRange(array, offset, offset + count)
+
+	meth getBytes() : Array<Byte>
+	{
+		//TODO [VISTALL] stub
+		var byteArray = Array<Byte>(count)
+		var i = offset
+		while (i < count)
+			byteArray[i] = array[i ++].toByte()
+		return byteArray
+	}
+
+	meth startsWith(val prefix : String) : Bool = startsWith(prefix, 0);
+
+	meth endsWith(val suffix : String) : Bool = startsWith(suffix, count - suffix.count);
+
+	meth indexOf(val str : String) : Int = indexOf(str, 0)
+
+	meth indexOf(val str : String, val fromIndex : Int) : Int = indexOf(array, offset, count, str.array, str.offset, str.count, fromIndex)
+
+	meth contains(val s : String) : Bool = indexOf(s) > -1;
+
+	meth plus(val a : Any?) : String
+	{
+		var c = StringBuilder();
+		c += this
+		c += a
+		return c.toString()
+	}
+
+	override meth size() : Int = count
+
+	override meth equals(val o : Any?) : Bool
+	{
+		if (fullyEquals(o))
+			return true
+
+		if (o is String)
+		{
+			var n = count;
+			if (n == o.count)
+			{
+				var v1 = array
+				var v2 = o.array
+				var i = offset
+				var j = o.offset
+				while (n-- != 0)
+				{
+					if (v1[i++] != v2[j++])
+						return false
+				}
+
+				return true
+			}
+		}
+		return false
+	}
+
+	override meth toString() : String = String(array, offset, count)
+
+	static meth indexOf(val source : Array<Char>,
+						val sourceOffset : Int,
+						val sourceCount : Int,
+						val target : Array<Char>,
+						val targetOffset : Int,
+						val targetCount : Int,
+						val fromIndex : Int) : Int
+	{
+		if (fromIndex >= sourceCount)
+			return if(targetCount == 0)  sourceCount else -1;
+
+		if (fromIndex < 0)
+			fromIndex = 0;
+
+		if (targetCount == 0)
+			return fromIndex;
+
+		var first  = target[targetOffset];
+		var max = sourceOffset + (sourceCount - targetCount);
+
+		var i = sourceOffset + fromIndex;
+		while(i <= max)
+		{
+			if (source[i] != first)
+				while (++i <= max && source[i] != first);
+
+			if (i <= max)
+			{
+				var j = i + 1;
+				var end = j + targetCount - 1;
+				var k = targetOffset + 1;
+				while (j < end && source[j] == target[k])
+				{
+					j++
+					k++
+				}
+
+				if (j == end)
+					return i - sourceOffset;
+			}
+			i++
+		}
+		return -1;
+	}
+
+	local meth startsWith(val prefix : String, val toffset : Int) : Bool
+	{
+		var ta = array;
+		var to = offset + toffset;
+		var pa = prefix.array;
+		var po = prefix.offset;
+		var pc = prefix.count;
+
+		if (toffset < 0 || (toffset > count - pc))
+			return false;
+
+		while (--pc >= 0)
+			if (ta[to++] != pa[po++])
+				return false;
+
+		return true;
+	}
+}

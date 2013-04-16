@@ -1,0 +1,12 @@
+package napile.annotation
+
+/**
+ * @author VISTALL
+ */
+@Annotation(null)
+final class Deprecated
+{
+	val message : String?
+
+	this(message = null)
+}

@@ -1,0 +1,32 @@
+package napile.reflect
+
+import napile.collection.ArrayList
+import napile.collection.List
+import napile.annotation.Immutable
+
+/**
+ * @author VISTALL
+ */
+class AnnotationOwner
+{
+	final val annotations : @Immutable Array<Any>
+
+	covered this(annotations)
+
+	meth findAnnotation<A>() : A?
+	{
+		for(a in annotations)
+			if (a is A)
+				return a
+		return null
+	}
+
+	meth findAnnotations<A>() : List<A>
+	{
+		val list = ArrayList<A>(2)
+		for (a in annotations)
+			if(a is A)
+				list.add(a)
+		return list
+	}
+}

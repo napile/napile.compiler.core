@@ -1,0 +1,50 @@
+/*
+ * Copyright 2010-2013 napile.org
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package napile.asm
+
+import napile.asm.members.AsmType
+import napile.reflect.Type
+import napile.asm.members.AsmAnnotation
+import napile.asm.members.typeConstructor.AsmClassType
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+util class AsmUtil
+{
+	/~
+	 ~ Return : asm type equivalent of `T` type
+	 ~/
+	meth toAsmType<T>() : AsmType = toAsmType(typeOf(T))
+
+	/~
+	 ~ Return : asm type equivalent of `type`
+	 ~/
+	meth toAsmType(val type : Type<Any?>) : AsmType
+	{
+		val parameters = Array<AsmType>(type.parameters.size())
+
+		var i = 0
+		for(c in type.parameters)
+			parameters[i ++] = toAsmType(c)
+
+		val annotations = Array<AsmAnnotation>(0)
+		//TODO [VISTALL] no annotations - currently
+		return AsmType(annotations, AsmClassType(type.constructorClass.name), parameters, type.nullable)
+	}
+}

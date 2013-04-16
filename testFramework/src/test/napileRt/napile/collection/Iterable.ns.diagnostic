@@ -1,0 +1,11 @@
+package napile.collection
+
+import napile.annotation.InheritImmutable
+
+/**
+ * @author VISTALL
+ */
+abstract class Iterable<E>
+{
+	meth iterator() : @InheritImmutable Iterator<E>
+}

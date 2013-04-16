@@ -1,0 +1,10 @@
+package napile.annotation
+
+/**
+ * @author VISTALL
+ */
+@Annotation(null)
+final class ImmutableTarget
+{
+	this()
+}

@@ -1,0 +1,9 @@
+package napile.io
+
+/**
+ * @author VISTALL
+ */
+class IOException : Exception
+{
+	this(val message : String? = null) : Exception(message)
+}

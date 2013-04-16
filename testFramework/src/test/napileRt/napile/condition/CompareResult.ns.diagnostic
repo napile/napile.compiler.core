@@ -1,0 +1,15 @@
+package napile.condition
+
+/**
+ * @author VISTALL
+ */
+class CompareResult
+{
+	enum val GREATER : CompareResult()
+
+	enum val EQUAL : CompareResult()
+
+	enum val LOWER : CompareResult()
+
+	this()
+}

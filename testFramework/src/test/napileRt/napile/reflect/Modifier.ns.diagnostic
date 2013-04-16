@@ -1,0 +1,39 @@
+package napile.reflect
+
+/**
+ * @author VISTALL
+ */
+class Modifier
+{
+	/**
+	 * access modifier
+	*/
+	static val LOCAL : Modifier = Modifier()
+
+	/**
+	 * access modifier
+	*/
+	static val HERITABLE : Modifier = Modifier()
+
+	/**
+	 * access modifier
+	*/
+	static val COVERED : Modifier = Modifier()
+
+	/**
+	 * variable modifier
+	*/
+	static val MUTABLE : Modifier = Modifier()
+
+	static val STATIC : Modifier = Modifier()
+
+	static val ABSTRACT : Modifier = Modifier()
+
+	static val FINAL : Modifier = Modifier()
+
+	static val NATIVE : Modifier = Modifier()
+
+	static val UTIL : Modifier = Modifier()
+
+	local this()
+}

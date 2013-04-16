@@ -20,13 +20,13 @@ public class DiagnosticTest extends NapileMassTestCase
 		List<Diagnostic> myDiagnostics = new ArrayList<Diagnostic>();
 		for(Diagnostic diagnostic : diagnostics)
 		{
-			if(diagnostic.getPsiFile() == file)
+			if(diagnostic.getPsiFile() == file && diagnostic.isValid())
 			{
 				myDiagnostics.add(diagnostic);
 			}
 		}
 
-		return file.getText();
+		return new DiagnosticTextBuilder(myDiagnostics, file.getText()).getText();
 	}
 
 	@Override

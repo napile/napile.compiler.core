@@ -1,0 +1,18 @@
+package napile.module.extension
+
+import napile.annotation.Immutable
+
+/~
+ ~ Authors
+ ~ * VISTALL
+ ~/
+class Extensions
+{
+	val forId : String
+
+	val extensions : @Immutable Array<Extension> = getExtensions()
+
+	this(forId)
+
+	local native meth getExtensions() : Array<Extension>
+}

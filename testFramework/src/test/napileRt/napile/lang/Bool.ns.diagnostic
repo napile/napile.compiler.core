@@ -1,0 +1,21 @@
+package napile.lang
+
+import napile.annotation.DefaultValue
+
+/**
+ * @author VISTALL
+ */
+@DefaultValue(Bool.FALSE)
+final class Bool
+{
+	// enum val ?
+	static val TRUE : Bool = Bool()
+
+	static val FALSE : Bool = Bool()
+
+	local this()
+
+	meth not() : Bool = if(this) FALSE else TRUE
+
+	override meth toString() = if(this == TRUE) "true" else "false"
+}

@@ -1,0 +1,12 @@
+package napile.annotation
+
+/**
+ * @author VISTALL
+ */
+@Annotation
+final class VarArgs
+{
+	val length : Int?
+
+	this(length = null)
+}

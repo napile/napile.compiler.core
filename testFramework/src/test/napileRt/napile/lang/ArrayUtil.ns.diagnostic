@@ -1,0 +1,52 @@
+package napile.lang
+
+import napile.annotation.Extension
+import napile.util.MathUtil
+
+/**
+ * @author VISTALL
+ */
+util class ArrayUtil
+{
+	@Extension
+	meth copyOf<E>(val oldArray : Array<E>, val newSize : Int) : Array<E>
+	{
+		var c1 = Array<E>(newSize)
+		copy(oldArray, 0, c1, 0, MathUtil.min(oldArray.length, newSize));
+		return c1
+	}
+
+	@Extension
+	meth copyOfRange<E>(val original : Array<E>, val from : Int, val to : Int) : Array<E>
+	{
+		var newLength = to - from;
+
+		var c = Array<E>(newLength)
+		if(newLength == 0)
+			return c
+
+		copy(original, from, c, 0, to)
+
+		return c
+	}
+
+	@Extension
+	meth copy<E>(val src : Array<E>, val srcOffset : Int, val desc : Array<E>, val descOffset : Int, val length : Int)
+	{
+		var i = 0
+		while (i < length)
+		{
+			desc[descOffset + i] = src[srcOffset + i]
+			i++
+		}
+	}
+
+	@Extension
+	meth contains<E>(val src : Array<E>, val object : E) : Bool
+	{
+		for(e in src)
+			if(e == object)
+				return true;
+		return false;
+	}
+}

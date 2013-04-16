@@ -1,0 +1,12 @@
+package napile.annotation
+
+import napile.condition.Condition
+
+/**
+ * @author VISTALL
+ */
+@Annotation
+final class Annotation
+{
+	this(val cond : Condition<Any>? = null)
+}
