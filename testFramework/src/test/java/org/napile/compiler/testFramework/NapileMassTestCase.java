@@ -16,23 +16,43 @@
 
 package org.napile.compiler.testFramework;
 
+import java.io.File;
+
 import org.napile.compiler.lang.psi.NapileFile;
 
 /**
  * @author VISTALL
- * @since 15:39/14.04.13
+ * @since 14:33/16.04.13
  */
-public class ParsingTest extends NapileMassTestCase
+public abstract class NapileMassTestCase extends NapileTestCase
 {
-	@Override
-	public String getExpectedText(NapileFile file) throws Exception
+	public abstract String getExpectedText(NapileFile file) throws Exception;
+
+	public abstract String getResultExt();
+
+	public void testAll() throws Exception
 	{
-		return new PsiTreeDebugBuilder().setShowErrorElements(true).setShowWhiteSpaces(true).psiToString(file);
+		for(NapileFile file : environment.getSourceFiles())
+		{
+			try
+			{
+				doTestFile(file);
+			}
+			catch(Exception e)
+			{
+				throw e;
+			}
+		}
+	}
+
+	public void doTestFile(NapileFile file) throws Exception
+	{
+		assertTest(getExpectedText(file), file.getVirtualFile().getPath(), getResultExt());
 	}
 
 	@Override
-	public String getResultExt()
+	protected File getResultFile(String path, String ext)
 	{
-		return "parsing";
+		return new File(path + "." + ext);
 	}
 }

@@ -44,8 +44,9 @@ import junit.framework.TestCase;
 public class NapileTestCase extends TestCase
 {
 	private final File testDir = new File("testFramework/src/test/napileRt");
-	private JetCoreEnvironment environment;
+	protected JetCoreEnvironment environment;
 	protected boolean genResults;
+	protected AnalyzeExhaust analyzeExhaust;
 
 	public NapileTestCase()
 	{
@@ -79,6 +80,8 @@ public class NapileTestCase extends TestCase
 				return AnalyzerFacade.analyzeFiles(environment.getProject(), environment.makeAnalyzeContext(), Predicates.<NapileFile>alwaysTrue());
 			}
 		}, environment.getSourceFiles());
+
+		analyzeExhaust = analyzerWithCompilerReport.getAnalyzeExhaust();
 	}
 
 	@Nullable
@@ -93,9 +96,33 @@ public class NapileTestCase extends TestCase
 		return (NapileFile) PsiManager.getInstance(environment.getProject()).findFile(fileByPath);
 	}
 
-	protected String getResultData(String path, String prefix) throws Exception
+	@NotNull
+	protected NapileFile getPsiFile() throws Exception
 	{
-		File file = new File(testDir, path + "." + prefix + ".result");
+		final NapileFile psiFile = getPsiFile(getTestFileName());
+		if(psiFile == null)
+		{
+			throw new IllegalArgumentException("Psi is null");
+		}
+		return psiFile;
+	}
+
+	@NotNull
+	protected String getTestFileName()
+	{
+		String testName = getName();
+		testName = testName.substring(4, testName.length()).replace("$", "/");
+		return testName;
+	}
+
+	protected File getResultFile(String path, String ext)
+	{
+		return new File(testDir, path + "." + ext);
+	}
+
+	protected String getResultData(String path, String ext) throws Exception
+	{
+		File file = getResultFile(path, ext);
 		if(!file.exists())
 		{
 			return null;
@@ -103,17 +130,17 @@ public class NapileTestCase extends TestCase
 		return FileUtil.loadFile(file);
 	}
 
-	protected void assertMe(String orig, String path, String prefix) throws Exception
+	protected void assertTest(String orig, String path, String ext) throws Exception
 	{
 		if(genResults)
 		{
-			File file = new File(testDir, path + "." + prefix + ".result");
+			File file = getResultFile(path, ext);
 
 			FileUtil.writeToFile(file, orig);
 		}
 		else
 		{
-			assertEquals(orig, getResultData(path, prefix));
+			assertEquals("Failed to test: " + path, orig, getResultData(path, ext));
 		}
 	}
 }
