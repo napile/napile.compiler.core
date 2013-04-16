@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.impl]>impl</PackageDescriptorImpl[xml.impl]></null>
+package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.impl]>impl</PackageDescriptorImpl[xml.impl]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.IterableUtil]>IterableUtil</MutableClassDescriptor[napile.collection.IterableUtil]>
 import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<MutableClassDescriptor[xml.XmlDocument]>XmlDocument</MutableClassDescriptor[xml.XmlDocument]>

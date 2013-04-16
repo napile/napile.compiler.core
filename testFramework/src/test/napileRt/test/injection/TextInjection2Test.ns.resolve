@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[test]>test</PackageDescriptorImpl[test]>.<PackageDescriptorImpl[test.injection]>injection</PackageDescriptorImpl[test.injection]></null>
+package <PackageDescriptorImpl[test]>test</PackageDescriptorImpl[test]>.<PackageDescriptorImpl[test.injection]>injection</PackageDescriptorImpl[test.injection]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.Logger]>Logger</MutableClassDescriptor[napile.logging.Logger]>
 

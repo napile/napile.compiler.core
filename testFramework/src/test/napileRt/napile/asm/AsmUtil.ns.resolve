@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.asm]>asm</PackageDescriptorImpl[napile.asm]>.<PackageDescriptorImpl[napile.asm.members]>members</PackageDescriptorImpl[napile.asm.members]>.<MutableClassDescriptor[napile.asm.members.AsmType]>AsmType</MutableClassDescriptor[napile.asm.members.AsmType]>
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Deprecated]>Deprecated</MutableClassDescriptor[napile.annotation.Deprecated]>
 

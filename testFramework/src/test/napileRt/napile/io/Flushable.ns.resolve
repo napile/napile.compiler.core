@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
 
 /**
  * Defines an interface for classes that can (or need to) be flushed, typically

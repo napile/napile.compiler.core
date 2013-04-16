@@ -26,7 +26,7 @@ import org.napile.asm.resolve.name.Name;
  * @author VISTALL
  * @since 11:41/16.02.13
  */
-public interface NapilePackage extends NapileReferenceExpression
+public interface NapilePackage extends NapileElement
 {
 	NapileSimpleNameExpression[] getAllExpressions();
 

@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.io]>io</PackageDescriptorImpl[napile.io]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]>
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.nio]>nio</PackageDescriptorImpl[napile.nio]>.<PackageDescriptorImpl[napile.nio.channels]>channels</PackageDescriptorImpl[napile.nio.channels]>.<MutableClassDescriptor[napile.nio.channels.FileChannel]>FileChannel</MutableClassDescriptor[napile.nio.channels.FileChannel]>

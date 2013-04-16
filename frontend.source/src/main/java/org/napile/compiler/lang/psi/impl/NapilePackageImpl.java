@@ -22,9 +22,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileNodes;
+import org.napile.compiler.lang.psi.NapileElementImpl;
 import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
-import org.napile.compiler.lang.psi.NapileReferenceExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiReference;
@@ -34,7 +34,7 @@ import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 /**
  * @author abreslav
  */
-public class NapilePackageImpl extends NapileReferenceExpressionImpl implements NapilePackage
+public class NapilePackageImpl extends NapileElementImpl implements NapilePackage
 {
 	public NapilePackageImpl(@NotNull ASTNode node)
 	{

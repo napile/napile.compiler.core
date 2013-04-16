@@ -1,4 +1,4 @@
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<MutableClassDescriptor[napile.module.Module]>Module</MutableClassDescriptor[napile.module.Module]>
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>

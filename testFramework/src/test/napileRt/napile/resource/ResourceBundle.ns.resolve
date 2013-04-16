@@ -1,4 +1,4 @@
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.resource]>resource</PackageDescriptorImpl[napile.resource]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.resource]>resource</PackageDescriptorImpl[napile.resource]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.VarArgs]>VarArgs</MutableClassDescriptor[napile.annotation.VarArgs]>
 /**

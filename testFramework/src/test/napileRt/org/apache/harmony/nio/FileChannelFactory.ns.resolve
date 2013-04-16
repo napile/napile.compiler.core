@@ -1,4 +1,4 @@
-<null>package <PackageDescriptorImpl[org]>org</PackageDescriptorImpl[org]>.<PackageDescriptorImpl[org.apache]>apache</PackageDescriptorImpl[org.apache]>.<PackageDescriptorImpl[org.apache.harmony]>harmony</PackageDescriptorImpl[org.apache.harmony]>.<PackageDescriptorImpl[org.apache.harmony.nio]>nio</PackageDescriptorImpl[org.apache.harmony.nio]></null>
+package <PackageDescriptorImpl[org]>org</PackageDescriptorImpl[org]>.<PackageDescriptorImpl[org.apache]>apache</PackageDescriptorImpl[org.apache]>.<PackageDescriptorImpl[org.apache.harmony]>harmony</PackageDescriptorImpl[org.apache.harmony]>.<PackageDescriptorImpl[org.apache.harmony.nio]>nio</PackageDescriptorImpl[org.apache.harmony.nio]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.nio]>nio</PackageDescriptorImpl[napile.nio]>.<PackageDescriptorImpl[napile.nio.channels]>channels</PackageDescriptorImpl[napile.nio.channels]>.<MutableClassDescriptor[napile.nio.channels.FileChannel]>FileChannel</MutableClassDescriptor[napile.nio.channels.FileChannel]>
 

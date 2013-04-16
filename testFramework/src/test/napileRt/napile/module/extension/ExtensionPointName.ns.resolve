@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.Immutable]>Immutable</MutableClassDescriptor[napile.annotation.Immutable]>
 

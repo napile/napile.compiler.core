@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>.<PackageDescriptorImpl[napile.ui.render]>render</PackageDescriptorImpl[napile.ui.render]>.<MutableClassDescriptor[napile.ui.render.UiRender]>UiRender</MutableClassDescriptor[napile.ui.render.UiRender]>
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>.<PackageDescriptorImpl[napile.util.listeners]>listeners</PackageDescriptorImpl[napile.util.listeners]>.<MutableClassDescriptor[napile.util.listeners.VariableChangeEvent]>VariableChangeEvent</MutableClassDescriptor[napile.util.listeners.VariableChangeEvent]>

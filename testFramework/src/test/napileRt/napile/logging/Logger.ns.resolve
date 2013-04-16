@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Class]>Class</MutableClassDescriptor[napile.reflect.Class]>
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<PackageDescriptorImpl[napile.logging.impl]>impl</PackageDescriptorImpl[napile.logging.impl]>.<MutableClassDescriptor[napile.logging.impl.LoggerImpl]>LoggerImpl</MutableClassDescriptor[napile.logging.impl.LoggerImpl]>

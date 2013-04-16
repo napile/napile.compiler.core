@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<PackageDescriptorImpl[napile.logging.impl]>impl</PackageDescriptorImpl[napile.logging.impl]>.<PackageDescriptorImpl[napile.logging.impl.handlers]>handlers</PackageDescriptorImpl[napile.logging.impl.handlers]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<PackageDescriptorImpl[napile.logging.impl]>impl</PackageDescriptorImpl[napile.logging.impl]>.<PackageDescriptorImpl[napile.logging.impl.handlers]>handlers</PackageDescriptorImpl[napile.logging.impl.handlers]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.LoggingHandler]>LoggingHandler</MutableClassDescriptor[napile.logging.LoggingHandler]>
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>.<MutableClassDescriptor[napile.logging.LoggingMessage]>LoggingMessage</MutableClassDescriptor[napile.logging.LoggingMessage]>

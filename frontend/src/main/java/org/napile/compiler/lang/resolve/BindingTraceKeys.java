@@ -73,7 +73,7 @@ public interface BindingTraceKeys
 	 * A scope where type of expression has been resolved
 	 */
 	WritableSlice<NapileTypeReference, JetScope> TYPE_RESOLUTION_SCOPE = Slices.createSimpleSlice();
-	WritableSlice<NapileExpression, JetScope> RESOLUTION_SCOPE = Slices.createSimpleSlice();
+	WritableSlice<NapileElement, JetScope> RESOLUTION_SCOPE = Slices.createSimpleSlice();
 
 	/**
 	 * Collected during analyze, used in IDE in auto-cast completion

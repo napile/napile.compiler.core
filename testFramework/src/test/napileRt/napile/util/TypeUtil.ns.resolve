@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.util]>util</PackageDescriptorImpl[napile.util]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.reflect]>reflect</PackageDescriptorImpl[napile.reflect]>.<MutableClassDescriptor[napile.reflect.Type]>Type</MutableClassDescriptor[napile.reflect.Type]>
 

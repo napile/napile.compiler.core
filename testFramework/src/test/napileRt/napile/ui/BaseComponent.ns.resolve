@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.ArrayList]>ArrayList</MutableClassDescriptor[napile.collection.ArrayList]>
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.List]>List</MutableClassDescriptor[napile.collection.List]>

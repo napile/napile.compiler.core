@@ -1,4 +1,4 @@
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.lang]>lang</PackageDescriptorImpl[napile.lang]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.collection]>collection</PackageDescriptorImpl[napile.collection]>.<MutableClassDescriptor[napile.collection.Iterator]>Iterator</MutableClassDescriptor[napile.collection.Iterator]>
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.annotation]>annotation</PackageDescriptorImpl[napile.annotation]>.<MutableClassDescriptor[napile.annotation.ImmutableTarget]>ImmutableTarget</MutableClassDescriptor[napile.annotation.ImmutableTarget]>

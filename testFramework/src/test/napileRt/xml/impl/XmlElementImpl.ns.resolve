@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.impl]>impl</PackageDescriptorImpl[xml.impl]></null>
+package <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.impl]>impl</PackageDescriptorImpl[xml.impl]>
 
 import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<MutableClassDescriptor[xml.XmlElement]>XmlElement</MutableClassDescriptor[xml.XmlElement]>
 

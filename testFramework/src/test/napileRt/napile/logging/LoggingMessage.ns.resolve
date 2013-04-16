@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.logging]>logging</PackageDescriptorImpl[napile.logging]>
 
 /**
  * @author VISTALL

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<PackageDescriptorImpl[napile.module.extension.descriptors]>descriptors</PackageDescriptorImpl[napile.module.extension.descriptors]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.module]>module</PackageDescriptorImpl[napile.module]>.<PackageDescriptorImpl[napile.module.extension]>extension</PackageDescriptorImpl[napile.module.extension]>.<PackageDescriptorImpl[napile.module.extension.descriptors]>descriptors</PackageDescriptorImpl[napile.module.extension.descriptors]>
 
 import <PackageDescriptorImpl[xml]>xml</PackageDescriptorImpl[xml]>.<PackageDescriptorImpl[xml.annotation]>annotation</PackageDescriptorImpl[xml.annotation]>.<MutableClassDescriptor[xml.annotation.DomAttribute]>DomAttribute</MutableClassDescriptor[xml.annotation.DomAttribute]>
 

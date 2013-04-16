@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-<null>package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.web]>web</PackageDescriptorImpl[napile.web]></null>
+package <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.web]>web</PackageDescriptorImpl[napile.web]>
 
 import <PackageDescriptorImpl[napile]>napile</PackageDescriptorImpl[napile]>.<PackageDescriptorImpl[napile.ui]>ui</PackageDescriptorImpl[napile.ui]>.<MutableClassDescriptor[napile.ui.RootPanel]>RootPanel</MutableClassDescriptor[napile.ui.RootPanel]>
 
