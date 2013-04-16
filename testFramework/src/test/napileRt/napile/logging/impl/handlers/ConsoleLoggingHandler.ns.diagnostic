@@ -44,7 +44,7 @@ class ConsoleLoggingHandler : LoggingHandler
 			message.exception!!.printStackTrace(b)
 		}
 
-		b += "<info msg="">\n</info>"
+		b += "<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>"
 
 		writeBytes(message, b.toString())
 	}

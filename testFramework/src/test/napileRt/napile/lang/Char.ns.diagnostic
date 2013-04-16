@@ -5,7 +5,7 @@ import napile.annotation.DefaultValue
 /**
  * @author VISTALL
  */
-@DefaultValue('<info msg="">\0</info>')
+@DefaultValue('<VALID_STRING_ESCAPE>\0</VALID_STRING_ESCAPE>')
 final class Char : Number
 {
 	local this()

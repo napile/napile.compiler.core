@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.napile.compiler.lang.diagnostics.Diagnostic;
-import org.napile.compiler.lang.diagnostics.rendering.DefaultErrorMessages;
 import com.intellij.openapi.util.TextRange;
 
 /**
@@ -62,12 +61,10 @@ public class DiagnosticTextBuilder
 
 		for(Diagnostic diagnostic : diagnostics)
 		{
-			String type = diagnostic.getSeverity().name().toLowerCase();
-
-			for(TextRange textRange : diagnostic.getTextRanges())
+		for(TextRange textRange : diagnostic.getTextRanges())
 			{
-				initIndex(textRange.getStartOffset(), "<" + type + " msg=\"" + DefaultErrorMessages.RENDERER.render(diagnostic) + "\">");
-				initIndex(textRange.getEndOffset(), "</" + type + ">");
+				initIndex(textRange.getStartOffset(), "<" + diagnostic.getFactory().getName()+ ">");
+				initIndex(textRange.getEndOffset(), "</" + diagnostic.getFactory().getName() + ">");
 			}
 		}
 

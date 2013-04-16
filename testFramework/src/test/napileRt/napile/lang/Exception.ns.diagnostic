@@ -27,12 +27,12 @@ class Exception
 			b += message
 		}
 
-		b += "<info msg="">\n</info>"
+		b += "<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>"
 		for(i in stack)
 		{
-			b += "<info msg="">\t</info>at "
+			b += "<VALID_STRING_ESCAPE>\t</VALID_STRING_ESCAPE>at "
 			b += i
-			b += "<info msg="">\n</info>"
+			b += "<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>"
 		}
 	}
 
