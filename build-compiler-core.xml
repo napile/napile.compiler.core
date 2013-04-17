@@ -16,7 +16,7 @@
 		<delete dir="${build.dir}" />
 	</target>
 
-	<target name="make">
+	<target name="make" depends="clean">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.dist.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
