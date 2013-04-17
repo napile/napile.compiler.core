@@ -61,7 +61,7 @@ public class DiagnosticTextBuilder
 
 		for(Diagnostic diagnostic : diagnostics)
 		{
-		for(TextRange textRange : diagnostic.getTextRanges())
+			for(TextRange textRange : diagnostic.getTextRanges())
 			{
 				initIndex(textRange.getStartOffset(), "<" + diagnostic.getFactory().getName()+ ">");
 				initIndex(textRange.getEndOffset(), "</" + diagnostic.getFactory().getName() + ">");
