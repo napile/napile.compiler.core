@@ -42,14 +42,14 @@ import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.processors.AnonymClassResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileType;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Predicate;
@@ -71,7 +71,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitAnonymClassExpression(final NapileAnonymClassExpression expression, final ExpressionTypingContext context)
+	public NapileTypeInfo visitAnonymClassExpression(final NapileAnonymClassExpression expression, final ExpressionTypingContext context)
 	{
 		ClassDescriptor classDescriptor = context.trace.get(BindingTraceKeys.CLASS, expression.getAnonymClass());
 		if(classDescriptor == null)
@@ -81,25 +81,25 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitAnonymMethodExpression(NapileAnonymMethodExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitAnonymMethodExpression(NapileAnonymMethodExpression expression, ExpressionTypingContext context)
 	{
 		NapileAnonymMethod functionLiteral = expression.getAnonymMethod();
 		NapileBlockExpression bodyExpression = functionLiteral.getBodyExpression();
 		if(bodyExpression == null)
 			return null;
 
-		JetType expectedType = context.expectedType;
+		NapileType expectedType = context.expectedType;
 		boolean functionTypeExpected = expectedType != TypeUtils.NO_EXPECTED_TYPE && expectedType.getConstructor() instanceof MethodTypeConstructor;
 
 		SimpleMethodDescriptorImpl functionDescriptor = createFunctionDescriptor(expression, context, functionTypeExpected);
 
 		List<CallParameterDescriptor> valueParameters = functionDescriptor.getValueParameters();
-		Map<Name, JetType> parameterTypes = new LinkedHashMap<Name, JetType>(valueParameters.size());
+		Map<Name, NapileType> parameterTypes = new LinkedHashMap<Name, NapileType>(valueParameters.size());
 		for(CallParameterDescriptor valueParameter : valueParameters)
 			parameterTypes.put(valueParameter.getName(), valueParameter.getType());
 
-		JetType returnType = TypeUtils.NO_EXPECTED_TYPE;
-		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, context.trace, false);
+		NapileType returnType = TypeUtils.NO_EXPECTED_TYPE;
+		NapileScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(context.scope, functionDescriptor, context.trace, false);
 		NapileTypeReference returnTypeRef = functionLiteral.getReturnTypeRef();
 		TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(context.trace);
 		if(returnTypeRef != null)
@@ -127,21 +127,21 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 						slice != BindingTraceKeys.TRACE_DELTAS_CACHE);
 			}
 		}, true);
-		JetType safeReturnType = returnType == null ? ErrorUtils.createErrorType("<return type>") : returnType;
+		NapileType safeReturnType = returnType == null ? ErrorUtils.createErrorType("<return type>") : returnType;
 		functionDescriptor.setReturnType(safeReturnType);
 
 		boolean hasDeclaredValueParameters = functionLiteral.getCallParameterList() != null;
 		if(!hasDeclaredValueParameters && functionTypeExpected)
 		{
 
-			JetType expectedReturnType = ((MethodTypeConstructor) expectedType.getConstructor()).getReturnType();
+			NapileType expectedReturnType = ((MethodTypeConstructor) expectedType.getConstructor()).getReturnType();
 			if(TypeUtils.isEqualFqName(expectedReturnType, NapileLangPackage.NULL))
 			{
 				functionDescriptor.setReturnType(TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL));
-				return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(null, functionDescriptor.getReturnType(), parameterTypes, context.scope), context.scope), expression, context, context.dataFlowInfo);
+				return DataFlowUtils.checkType(new NapileTypeImpl(new MethodTypeConstructorImpl(null, functionDescriptor.getReturnType(), parameterTypes, context.scope), context.scope), expression, context, context.dataFlowInfo);
 			}
 		}
-		return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(null, safeReturnType, parameterTypes, context.scope), context.scope), expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(new NapileTypeImpl(new MethodTypeConstructorImpl(null, safeReturnType, parameterTypes, context.scope), context.scope), expression, context, context.dataFlowInfo);
 	}
 
 	private SimpleMethodDescriptorImpl createFunctionDescriptor(NapileAnonymMethodExpression expression, ExpressionTypingContext context, boolean functionTypeExpected)
@@ -186,7 +186,7 @@ public class ClosureExpressionsTypingVisitor extends ExpressionTypingVisitor
 				NapileCallParameterAsVariable propertyParameter = (NapileCallParameterAsVariable) declaredParameter;
 				NapileTypeReference typeReference = propertyParameter.getTypeReference();
 
-				JetType type;
+				NapileType type;
 				if(typeReference != null)
 				{
 					type = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);

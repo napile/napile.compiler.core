@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.resolve.calls.autocasts;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -25,12 +25,12 @@ import org.napile.compiler.lang.types.JetType;
 public class DataFlowValue
 {
 	private final boolean stableIdentifier;
-	private final JetType type;
+	private final NapileType type;
 	private final Object id;
 	private final Nullability immanentNullability;
 
 	// Use DataFlowValueFactory
-	public DataFlowValue(Object id, JetType type, boolean stableIdentifier, Nullability immanentNullability)
+	public DataFlowValue(Object id, NapileType type, boolean stableIdentifier, Nullability immanentNullability)
 	{
 		this.stableIdentifier = stableIdentifier;
 		this.type = type;
@@ -55,7 +55,7 @@ public class DataFlowValue
 	}
 
 	@NotNull
-	public JetType getType()
+	public NapileType getType()
 	{
 		return type;
 	}

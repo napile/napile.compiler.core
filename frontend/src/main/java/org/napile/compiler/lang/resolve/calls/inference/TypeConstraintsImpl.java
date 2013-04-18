@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve.calls.inference;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.google.common.collect.Sets;
 
 /**
@@ -27,14 +27,14 @@ import com.google.common.collect.Sets;
  */
 public class TypeConstraintsImpl implements TypeConstraints
 {
-	private final Set<JetType> upperBounds = Sets.newLinkedHashSet();
+	private final Set<NapileType> upperBounds = Sets.newLinkedHashSet();
 
 	public TypeConstraintsImpl()
 	{
 
 	}
 
-	public void addBound(@NotNull JetType type)
+	public void addBound(@NotNull NapileType type)
 	{
 		upperBounds.add(type);
 	}
@@ -48,7 +48,7 @@ public class TypeConstraintsImpl implements TypeConstraints
 
 	@NotNull
 	@Override
-	public Set<JetType> getUpperBounds()
+	public Set<NapileType> getUpperBounds()
 	{
 		return upperBounds;
 	}
@@ -57,7 +57,7 @@ public class TypeConstraintsImpl implements TypeConstraints
 	/*package*/ TypeConstraintsImpl copy()
 	{
 		TypeConstraintsImpl typeConstraints = new TypeConstraintsImpl();
-		for(JetType upperBound : upperBounds)
+		for(NapileType upperBound : upperBounds)
 		{
 			typeConstraints.upperBounds.add(upperBound);
 		}

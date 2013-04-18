@@ -35,9 +35,9 @@ import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.lang.ASTNode;
 
@@ -48,23 +48,23 @@ public class ExpressionTypingContext
 {
 
 	@NotNull
-	public static ExpressionTypingContext newContext(@NotNull ExpressionTypingServices expressionTypingServices, @NotNull BindingTrace trace, @NotNull JetScope scope, @NotNull DataFlowInfo dataFlowInfo, @NotNull JetType expectedType, boolean namespacesAllowed)
+	public static ExpressionTypingContext newContext(@NotNull ExpressionTypingServices expressionTypingServices, @NotNull BindingTrace trace, @NotNull NapileScope scope, @NotNull DataFlowInfo dataFlowInfo, @NotNull NapileType expectedType, boolean namespacesAllowed)
 	{
 		return newContext(expressionTypingServices, new HashMap<NapilePattern, DataFlowInfo>(), new HashMap<NapilePattern, List<VariableDescriptor>>(), new LabelResolver(), trace, scope, dataFlowInfo, expectedType, namespacesAllowed);
 	}
 
 	@NotNull
-	public static ExpressionTypingContext newContext(@NotNull ExpressionTypingServices expressionTypingServices, @NotNull Map<NapilePattern, DataFlowInfo> patternsToDataFlowInfo, @NotNull Map<NapilePattern, List<VariableDescriptor>> patternsToBoundVariableLists, @NotNull LabelResolver labelResolver, @NotNull BindingTrace trace, @NotNull JetScope scope, @NotNull DataFlowInfo dataFlowInfo, @NotNull JetType expectedType, boolean namespacesAllowed)
+	public static ExpressionTypingContext newContext(@NotNull ExpressionTypingServices expressionTypingServices, @NotNull Map<NapilePattern, DataFlowInfo> patternsToDataFlowInfo, @NotNull Map<NapilePattern, List<VariableDescriptor>> patternsToBoundVariableLists, @NotNull LabelResolver labelResolver, @NotNull BindingTrace trace, @NotNull NapileScope scope, @NotNull DataFlowInfo dataFlowInfo, @NotNull NapileType expectedType, boolean namespacesAllowed)
 	{
 		return new ExpressionTypingContext(expressionTypingServices, patternsToDataFlowInfo, patternsToBoundVariableLists, labelResolver, trace, scope, dataFlowInfo, expectedType, namespacesAllowed);
 	}
 
 	public final ExpressionTypingServices expressionTypingServices;
 	public final BindingTrace trace;
-	public final JetScope scope;
+	public final NapileScope scope;
 
 	public final DataFlowInfo dataFlowInfo;
-	public final JetType expectedType;
+	public final NapileType expectedType;
 
 	public final Map<NapilePattern, DataFlowInfo> patternsToDataFlowInfo;
 	public final Map<NapilePattern, List<VariableDescriptor>> patternsToBoundVariableLists;
@@ -75,7 +75,7 @@ public class ExpressionTypingContext
 
 	private CompileTimeConstantResolver compileTimeConstantResolver;
 
-	private ExpressionTypingContext(@NotNull ExpressionTypingServices expressionTypingServices, @NotNull Map<NapilePattern, DataFlowInfo> patternsToDataFlowInfo, @NotNull Map<NapilePattern, List<VariableDescriptor>> patternsToBoundVariableLists, @NotNull LabelResolver labelResolver, @NotNull BindingTrace trace, @NotNull JetScope scope, @NotNull DataFlowInfo dataFlowInfo, @NotNull JetType expectedType, boolean namespacesAllowed)
+	private ExpressionTypingContext(@NotNull ExpressionTypingServices expressionTypingServices, @NotNull Map<NapilePattern, DataFlowInfo> patternsToDataFlowInfo, @NotNull Map<NapilePattern, List<VariableDescriptor>> patternsToBoundVariableLists, @NotNull LabelResolver labelResolver, @NotNull BindingTrace trace, @NotNull NapileScope scope, @NotNull DataFlowInfo dataFlowInfo, @NotNull NapileType expectedType, boolean namespacesAllowed)
 	{
 		this.expressionTypingServices = expressionTypingServices;
 		this.trace = trace;
@@ -105,7 +105,7 @@ public class ExpressionTypingContext
 	}
 
 	@NotNull
-	public ExpressionTypingContext replaceExpectedType(@Nullable JetType newExpectedType)
+	public ExpressionTypingContext replaceExpectedType(@Nullable NapileType newExpectedType)
 	{
 		if(newExpectedType == null)
 			return replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
@@ -123,7 +123,7 @@ public class ExpressionTypingContext
 	}
 
 	@NotNull
-	public ExpressionTypingContext replaceScope(@NotNull JetScope newScope)
+	public ExpressionTypingContext replaceScope(@NotNull NapileScope newScope)
 	{
 		if(newScope == scope)
 			return this;
@@ -174,7 +174,7 @@ public class ExpressionTypingContext
 	}
 
 	@NotNull
-	public OverloadResolutionResults<MethodDescriptor> resolveExactSignature(@NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull List<JetType> parameterTypes)
+	public OverloadResolutionResults<MethodDescriptor> resolveExactSignature(@NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull List<NapileType> parameterTypes)
 	{
 		return expressionTypingServices.getCallResolver().resolveExactSignature(scope, receiver, name, parameterTypes);
 	}

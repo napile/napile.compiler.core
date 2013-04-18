@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.injection.lexer.InjectionLexer;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
@@ -84,7 +84,7 @@ public abstract class CodeInjection implements ParserDefinition, UserDataHolder
 	}
 
 	@NotNull
-	public abstract JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope);
+	public abstract NapileType getReturnType(@Nullable NapileType expectType, @NotNull BindingTrace bindingTrace, @NotNull NapileScope napileScope);
 
 	@NotNull
 	@Override

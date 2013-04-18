@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.resolve.scopes.receivers;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -29,7 +29,7 @@ public interface ReceiverDescriptor
 	{
 		@NotNull
 		@Override
-		public JetType getType()
+		public NapileType getType()
 		{
 			throw new UnsupportedOperationException("NO_RECEIVER.getType()");
 		}
@@ -54,7 +54,7 @@ public interface ReceiverDescriptor
 	};
 
 	@NotNull
-	JetType getType();
+	NapileType getType();
 
 	boolean exists();
 

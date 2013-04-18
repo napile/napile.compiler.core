@@ -37,18 +37,18 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public abstract class WritableScopeWithImports extends JetScopeAdapter implements WritableScope
+public abstract class WritableScopeWithImports extends NapileScopeAdapter implements WritableScope
 {
 
 	@NotNull
 	private final String debugName;
 
 	@Nullable
-	private List<JetScope> imports;
+	private List<NapileScope> imports;
 	private WritableScope currentIndividualImportScope;
 	protected final RedeclarationHandler redeclarationHandler;
 
-	public WritableScopeWithImports(@NotNull JetScope scope, @NotNull RedeclarationHandler redeclarationHandler, @NotNull String debugName)
+	public WritableScopeWithImports(@NotNull NapileScope scope, @NotNull RedeclarationHandler redeclarationHandler, @NotNull String debugName)
 	{
 		super(scope);
 		this.redeclarationHandler = redeclarationHandler;
@@ -95,17 +95,17 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 
 
 	@NotNull
-	protected final List<JetScope> getImports()
+	protected final List<NapileScope> getImports()
 	{
 		if(imports == null)
 		{
-			imports = new ArrayList<JetScope>();
+			imports = new ArrayList<NapileScope>();
 		}
 		return imports;
 	}
 
 	@Override
-	public void importScope(@NotNull JetScope imported)
+	public void importScope(@NotNull NapileScope imported)
 	{
 		if(imported == this)
 		{
@@ -127,7 +127,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 		// Imported scopes come with their receivers
 		// Example: class member resolution scope imports a scope of it's class object
 		//          members of the class object must be able to find it as an implicit receiver
-		for(JetScope scope : getImports())
+		for(NapileScope scope : getImports())
 		{
 			ReceiverDescriptor definedReceiver = scope.getImplicitReceiver();
 			if(definedReceiver.exists())
@@ -144,7 +144,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 		checkMayRead();
 
 		Set<VariableDescriptor> properties = Sets.newLinkedHashSet();
-		for(JetScope imported : getImports())
+		for(NapileScope imported : getImports())
 		{
 			properties.addAll(imported.getVariables(name));
 		}
@@ -157,7 +157,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 		checkMayRead();
 
 		// Meaningful lookup goes here
-		for(JetScope imported : getImports())
+		for(NapileScope imported : getImports())
 		{
 			VariableDescriptor importedDescriptor = imported.getLocalVariable(name);
 			if(importedDescriptor != null)
@@ -179,7 +179,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 			return Collections.emptySet();
 		}
 		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
-		for(JetScope imported : getImports())
+		for(NapileScope imported : getImports())
 		{
 			result.addAll(imported.getMethods(name));
 		}
@@ -191,7 +191,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 	{
 		checkMayRead();
 
-		for(JetScope imported : getImports())
+		for(NapileScope imported : getImports())
 		{
 			ClassifierDescriptor importedClassifier = imported.getClassifier(name);
 			if(importedClassifier != null)
@@ -207,7 +207,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 	{
 		checkMayRead();
 
-		for(JetScope imported : getImports())
+		for(NapileScope imported : getImports())
 		{
 			ClassDescriptor importedClassifier = imported.getClass(name);
 			if(importedClassifier != null)
@@ -222,7 +222,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 	{
 		checkMayRead();
 
-		for(JetScope imported : getImports())
+		for(NapileScope imported : getImports())
 		{
 			ClassDescriptor objectDescriptor = imported.getObjectDescriptor(name);
 			if(objectDescriptor != null)
@@ -238,7 +238,7 @@ public abstract class WritableScopeWithImports extends JetScopeAdapter implement
 	{
 		checkMayRead();
 
-		for(JetScope imported : getImports())
+		for(NapileScope imported : getImports())
 		{
 			PackageDescriptor importedDescriptor = imported.getPackage(name);
 			if(importedDescriptor != null)

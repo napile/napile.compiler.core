@@ -35,7 +35,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 /**
  * @author abreslav
  */
-public abstract class JetScopeImpl implements JetScope
+public abstract class NapileScopeImpl implements NapileScope
 {
 	@Override
 	public ClassDescriptor getClass(@NotNull FqName name)

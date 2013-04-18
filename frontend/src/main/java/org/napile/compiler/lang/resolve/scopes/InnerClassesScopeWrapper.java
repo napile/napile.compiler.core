@@ -36,16 +36,16 @@ import com.google.common.collect.Collections2;
  */
 public class InnerClassesScopeWrapper extends AbstractScopeAdapter
 {
-	private final JetScope actualScope;
+	private final NapileScope actualScope;
 
-	public InnerClassesScopeWrapper(JetScope actualScope)
+	public InnerClassesScopeWrapper(NapileScope actualScope)
 	{
 		this.actualScope = actualScope;
 	}
 
 	@NotNull
 	@Override
-	protected JetScope getWorkerScope()
+	protected NapileScope getWorkerScope()
 	{
 		return actualScope;
 	}

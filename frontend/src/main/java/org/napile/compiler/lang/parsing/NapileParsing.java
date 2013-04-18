@@ -39,7 +39,7 @@ import com.intellij.util.Consumer;
  * @author max
  * @author abreslav
  */
-public class JetParsing extends AbstractJetParsing
+public class NapileParsing extends AbstractNapileParsing
 {
 	// TODO: token sets to constants, including derived methods
 	public static final Map<String, IElementType> MODIFIER_KEYWORD_MAP = new HashMap<String, IElementType>();
@@ -76,16 +76,16 @@ public class JetParsing extends AbstractJetParsing
 	private static final TokenSet NAMESPACE_NAME_RECOVERY_SET = TokenSet.create(NapileTokens.DOT, NapileTokens.EOL_OR_SEMICOLON);
 	/*package*/ static final TokenSet TYPE_REF_FIRST = TokenSet.create(NapileTokens.LBRACKET, NapileTokens.IDENTIFIER, NapileTokens.METH_KEYWORD, NapileTokens.LPAR, NapileTokens.THIS_KEYWORD, NapileTokens.HASH);
 
-	public static JetParsing createForTopLevel(SemanticWhitespaceAwarePsiBuilder builder)
+	public static NapileParsing createForTopLevel(SemanticWhitespaceAwarePsiBuilder builder)
 	{
-		JetParsing jetParsing = new JetParsing(builder);
-		jetParsing.myExpressionParsing = new JetExpressionParsing(builder, jetParsing);
+		NapileParsing jetParsing = new NapileParsing(builder);
+		jetParsing.myExpressionParsing = new NapileExpressionParsing(builder, jetParsing);
 		return jetParsing;
 	}
 
-	private JetExpressionParsing myExpressionParsing;
+	private NapileExpressionParsing myExpressionParsing;
 
-	private JetParsing(SemanticWhitespaceAwarePsiBuilder builder)
+	private NapileParsing(SemanticWhitespaceAwarePsiBuilder builder)
 	{
 		super(builder);
 	}
@@ -948,7 +948,7 @@ public class JetParsing extends AbstractJetParsing
 		PsiBuilder.Marker reference = mark();
 		while(true)
 		{
-			if(expect(NapileTokens.IDENTIFIER, "Expecting type name", TokenSet.orSet(JetExpressionParsing.EXPRESSION_FIRST, JetExpressionParsing.EXPRESSION_FOLLOW)))
+			if(expect(NapileTokens.IDENTIFIER, "Expecting type name", TokenSet.orSet(NapileExpressionParsing.EXPRESSION_FIRST, NapileExpressionParsing.EXPRESSION_FOLLOW)))
 			{
 				reference.done(REFERENCE_EXPRESSION);
 			}
@@ -1281,12 +1281,12 @@ public class JetParsing extends AbstractJetParsing
 	}
 
 	@Override
-	protected JetParsing create(SemanticWhitespaceAwarePsiBuilder builder)
+	protected NapileParsing create(SemanticWhitespaceAwarePsiBuilder builder)
 	{
 		return createForTopLevel(builder);
 	}
 
-	public JetExpressionParsing getExpressionParser()
+	public NapileExpressionParsing getExpressionParser()
 	{
 		return myExpressionParsing;
 	}

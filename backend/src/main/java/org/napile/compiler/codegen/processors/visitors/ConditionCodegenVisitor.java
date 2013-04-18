@@ -42,7 +42,7 @@ import org.napile.compiler.lang.psi.NapileWhenConditionWithExpression;
 import org.napile.compiler.lang.psi.NapileWhenEntry;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author VISTALL
@@ -60,7 +60,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 	{
 		gen.gen(expression.getLeftHandSide(), TypeTransformer.toAsmType(gen.bindingTrace, gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression.getLeftHandSide()), gen.classNode));
 
-		JetType rightType = gen.bindingTrace.safeGet(BindingTraceKeys.TYPE, expression.getTypeRef());
+		NapileType rightType = gen.bindingTrace.safeGet(BindingTraceKeys.TYPE, expression.getTypeRef());
 
 		InstructionAdapter marker = gen.marker(expression.getOperationReference());
 
@@ -136,7 +136,7 @@ public class ConditionCodegenVisitor extends CodegenVisitor
 	public StackValue visitWhenExpression(NapileWhenExpression expression, StackValue data)
 	{
 		InstructionAdapter instructs = gen.instructs;
-		JetType expType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
+		NapileType expType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
 		NapileExpression subjectExpression = expression.getSubjectExpression();
 		if(subjectExpression != null)

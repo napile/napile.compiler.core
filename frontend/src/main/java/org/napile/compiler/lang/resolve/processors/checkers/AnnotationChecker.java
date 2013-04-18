@@ -35,7 +35,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author VISTALL
@@ -84,7 +84,7 @@ public class AnnotationChecker
 
 	private void checkRepeatable(@NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor)
 	{
-		JetType type = annotationDescriptor.getType();
+		NapileType type = annotationDescriptor.getType();
 
 		ClassDescriptor classDescriptor = (ClassDescriptor) type.getConstructor().getDeclarationDescriptor();
 

@@ -18,7 +18,7 @@ package org.napile.compiler.lang.descriptors;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.types.NamespaceType;
 
 /**
@@ -27,7 +27,7 @@ import org.napile.compiler.lang.types.NamespaceType;
 public interface PackageDescriptor extends Annotated, Named, FqNamed, NamespaceDescriptorParent
 {
 	@NotNull
-	JetScope getMemberScope();
+	NapileScope getMemberScope();
 
 	@NotNull
 	NamespaceType getNamespaceType();

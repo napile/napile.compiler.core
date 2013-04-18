@@ -40,16 +40,16 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeEntry;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.MultiTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.SelfTypeConstructorImpl;
@@ -85,16 +85,16 @@ public class TypeResolver
 	}
 
 	@NotNull
-	public JetType resolveType(@NotNull final JetScope scope, @NotNull final NapileTypeReference typeReference, BindingTrace trace, boolean checkBounds)
+	public NapileType resolveType(@NotNull final NapileScope scope, @NotNull final NapileTypeReference typeReference, BindingTrace trace, boolean checkBounds)
 	{
-		JetType cachedType = trace.get(BindingTraceKeys.TYPE, typeReference);
+		NapileType cachedType = trace.get(BindingTraceKeys.TYPE, typeReference);
 		if(cachedType != null)
 			return cachedType;
 
 		final List<AnnotationDescriptor> annotations = annotationResolver.bindAnnotations(scope, typeReference, trace);
 
 		NapileTypeElement typeElement = typeReference.getTypeElement();
-		JetType type = resolveTypeElement(scope, annotations, typeElement, false, trace, checkBounds);
+		NapileType type = resolveTypeElement(scope, annotations, typeElement, false, trace, checkBounds);
 		trace.record(BindingTraceKeys.TYPE, typeReference, type);
 		trace.record(BindingTraceKeys.TYPE_RESOLUTION_SCOPE, typeReference, scope);
 
@@ -102,10 +102,10 @@ public class TypeResolver
 	}
 
 	@NotNull
-	private JetType resolveTypeElement(final JetScope scope, final List<AnnotationDescriptor> annotations, NapileTypeElement typeElement, final boolean nullable, final BindingTrace trace, final boolean checkBounds)
+	private NapileType resolveTypeElement(final NapileScope scope, final List<AnnotationDescriptor> annotations, NapileTypeElement typeElement, final boolean nullable, final BindingTrace trace, final boolean checkBounds)
 	{
 
-		final JetType[] result = new JetType[1];
+		final NapileType[] result = new NapileType[1];
 		if(typeElement != null)
 		{
 			typeElement.accept(new NapileVisitorVoid()
@@ -133,14 +133,14 @@ public class TypeResolver
 
 						trace.record(BindingTraceKeys.REFERENCE_TARGET, referenceExpression, typeParameterDescriptor);
 
-						JetScope scopeForTypeParameter = getScopeForTypeParameter(typeParameterDescriptor, checkBounds);
+						NapileScope scopeForTypeParameter = getScopeForTypeParameter(typeParameterDescriptor, checkBounds);
 						if(scopeForTypeParameter instanceof ErrorUtils.ErrorScope)
 						{
 							result[0] = ErrorUtils.createErrorType("?");
 						}
 						else
 						{
-							result[0] = new JetTypeImpl(annotations, typeParameterDescriptor.getTypeConstructor(), nullable, Collections.<JetType>emptyList(), scopeForTypeParameter);
+							result[0] = new NapileTypeImpl(annotations, typeParameterDescriptor.getTypeConstructor(), nullable, Collections.<NapileType>emptyList(), scopeForTypeParameter);
 						}
 
 						resolveTypes(scope, type.getTypeArguments(), trace, checkBounds);
@@ -151,7 +151,7 @@ public class TypeResolver
 
 						trace.record(BindingTraceKeys.REFERENCE_TARGET, referenceExpression, classifierDescriptor);
 						TypeConstructor typeConstructor = classifierDescriptor.getTypeConstructor();
-						List<JetType> arguments = resolveTypes(scope, type.getTypeArguments(), trace, checkBounds);
+						List<NapileType> arguments = resolveTypes(scope, type.getTypeArguments(), trace, checkBounds);
 						List<TypeParameterDescriptor> parameters = typeConstructor.getParameters();
 						int expectedArgumentCount = parameters.size();
 						int actualArgumentCount = arguments.size();
@@ -174,14 +174,14 @@ public class TypeResolver
 							}
 							else
 							{
-								result[0] = new JetTypeImpl(annotations, typeConstructor, nullable, arguments, classDescriptor.getMemberScope(arguments));
+								result[0] = new NapileTypeImpl(annotations, typeConstructor, nullable, arguments, classDescriptor.getMemberScope(arguments));
 								if(checkBounds)
 								{
 									TypeSubstitutor substitutor = TypeSubstitutor.create(result[0]);
 									for(int i = 0, parametersSize = parameters.size(); i < parametersSize; i++)
 									{
 										TypeParameterDescriptor parameter = parameters.get(i);
-										JetType argument = arguments.get(i);
+										NapileType argument = arguments.get(i);
 										NapileTypeReference typeReference = type.getTypeArguments().get(i);
 
 										if(typeReference != null)
@@ -199,22 +199,22 @@ public class TypeResolver
 				public void visitMethodType(NapileMethodType type)
 				{
 					NapileCallParameter[] parameters = type.getParameters();
-					Map<Name, JetType> parameterTypes = new LinkedHashMap<Name, JetType>(parameters.length);
+					Map<Name, NapileType> parameterTypes = new LinkedHashMap<Name, NapileType>(parameters.length);
 					int i = 1;
 					for(NapileElement parameter : parameters)
 					{
 						if(parameter instanceof NapileCallParameterAsVariable)
 						{
 							Name name = ((NapileCallParameterAsVariable) parameter).getNameAsName();
-							JetType jetType = resolveType(scope, ((NapileCallParameterAsVariable) parameter).getTypeReference(), trace, checkBounds);
+							NapileType napileType = resolveType(scope, ((NapileCallParameterAsVariable) parameter).getTypeReference(), trace, checkBounds);
 
-							parameterTypes.put(name == null ? Name.identifier("p" + i) : name, jetType);
+							parameterTypes.put(name == null ? Name.identifier("p" + i) : name, napileType);
 						}
 						i++;
 					}
 
 					NapileTypeReference returnTypeRef = type.getReturnTypeRef();
-					JetType returnType;
+					NapileType returnType;
 					if(returnTypeRef != null)
 						returnType = resolveType(scope, returnTypeRef, trace, checkBounds);
 					else
@@ -237,7 +237,7 @@ public class TypeResolver
 					}
 
 					MethodTypeConstructor methodTypeConstructor = new MethodTypeConstructorImpl(expectedName, returnType, parameterTypes, scope);
-					result[0] = new JetTypeImpl(annotations, methodTypeConstructor, false, Collections.<JetType>emptyList(), scope);
+					result[0] = new NapileTypeImpl(annotations, methodTypeConstructor, false, Collections.<NapileType>emptyList(), scope);
 				}
 
 				@Override
@@ -249,7 +249,7 @@ public class TypeResolver
 					for(int i = 0; i < variables.length; i++)
 					{
 						NapileVariable variable = variables[i];
-						JetType type = null;
+						NapileType type = null;
 						NapileTypeReference typeReference = variable.getType();
 						if(typeReference != null)
 							type = resolveType(scope, typeReference, trace, true);
@@ -263,7 +263,7 @@ public class TypeResolver
 						variableDescriptors.add(entry);
 					}
 
-					result[0] = new JetTypeImpl(annotations, new MultiTypeConstructorImpl(variableDescriptors, scope), nullable, Collections.<JetType>emptyList(), scope);
+					result[0] = new NapileTypeImpl(annotations, new MultiTypeConstructorImpl(variableDescriptors, scope), nullable, Collections.<NapileType>emptyList(), scope);
 				}
 
 				@Override
@@ -283,7 +283,7 @@ public class TypeResolver
 
 					trace.record(BindingTraceKeys.REFERENCE_TARGET, type.getThisExpression(), classDescriptor);
 
-					result[0] = new JetTypeImpl(annotations, new SelfTypeConstructorImpl(classDescriptor), nullable, Collections.<JetType>emptyList(), scope);
+					result[0] = new NapileTypeImpl(annotations, new SelfTypeConstructorImpl(classDescriptor), nullable, Collections.<NapileType>emptyList(), scope);
 				}
 			});
 		}
@@ -295,7 +295,7 @@ public class TypeResolver
 		return result[0];
 	}
 
-	private JetScope getScopeForTypeParameter(final TypeParameterDescriptor typeParameterDescriptor, boolean checkBounds)
+	private NapileScope getScopeForTypeParameter(final TypeParameterDescriptor typeParameterDescriptor, boolean checkBounds)
 	{
 		if(checkBounds)
 		{
@@ -303,10 +303,10 @@ public class TypeResolver
 		}
 		else
 		{
-			return new LazyScopeAdapter(new LazyValue<JetScope>()
+			return new LazyScopeAdapter(new LazyValue<NapileScope>()
 			{
 				@Override
-				protected JetScope compute()
+				protected NapileScope compute()
 				{
 					return typeParameterDescriptor.getUpperBoundsAsType().getMemberScope();
 				}
@@ -314,9 +314,9 @@ public class TypeResolver
 		}
 	}
 
-	public List<JetType> resolveTypes(JetScope scope, List<? extends NapileTypeReference> argumentElements, BindingTrace trace, boolean checkBounds)
+	public List<NapileType> resolveTypes(NapileScope scope, List<? extends NapileTypeReference> argumentElements, BindingTrace trace, boolean checkBounds)
 	{
-		final List<JetType> arguments = new ArrayList<JetType>(argumentElements.size());
+		final List<NapileType> arguments = new ArrayList<NapileType>(argumentElements.size());
 		for(NapileTypeReference argumentElement : argumentElements)
 			arguments.add(resolveType(scope, argumentElement, trace, checkBounds));
 
@@ -324,7 +324,7 @@ public class TypeResolver
 	}
 
 	@Nullable
-	public ClassifierDescriptor resolveClass(JetScope scope, NapileUserType userType, BindingTrace trace)
+	public ClassifierDescriptor resolveClass(NapileScope scope, NapileUserType userType, BindingTrace trace)
 	{
 		Collection<? extends DeclarationDescriptor> descriptors = qualifiedExpressionResolver.lookupDescriptorsForUserType(userType, scope, trace);
 		for(DeclarationDescriptor descriptor : descriptors)

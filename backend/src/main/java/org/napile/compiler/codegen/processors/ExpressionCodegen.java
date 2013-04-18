@@ -68,7 +68,7 @@ import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.editor.Document;
@@ -585,7 +585,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 						else
 							receiver = generateThisOrOuter((ClassDescriptor) variableDescriptor.getContainingDeclaration(), false);
 					}
-					JetType receiverType = bindingTrace.get(BindingTraceKeys.EXPRESSION_TYPE, r);
+					NapileType receiverType = bindingTrace.get(BindingTraceKeys.EXPRESSION_TYPE, r);
 					receiver.put(receiverType != null && !isSuper ? TypeTransformer.toAsmType(bindingTrace, receiverType, classNode) : AsmConstants.ANY_TYPE, instructs, this);
 				}
 			}
@@ -668,7 +668,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 		if(constructorDescriptor instanceof ConstructorDescriptor)
 		{
 			//noinspection ConstantConditions
-			JetType expressionType = bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
+			NapileType expressionType = bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
 			type = TypeTransformer.toAsmType(bindingTrace, expressionType, classNode);
 
@@ -814,7 +814,7 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	{
 		if(descriptor instanceof VariableDescriptor)
 		{
-			final JetType outType = ((VariableDescriptor) descriptor).getType();
+			final NapileType outType = ((VariableDescriptor) descriptor).getType();
 
 			return StackValue.local(target, index, TypeTransformer.toAsmType(bindingTrace, outType, classNode));
 		}
@@ -1125,12 +1125,12 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	@NotNull
 	public TypeNode expressionType(NapileExpression expr)
 	{
-		JetType type = bindingTrace.get(BindingTraceKeys.EXPRESSION_TYPE, expr);
+		NapileType type = bindingTrace.get(BindingTraceKeys.EXPRESSION_TYPE, expr);
 		return type == null ? StackValue.none().getType() : TypeTransformer.toAsmType(bindingTrace, type, classNode);
 	}
 
 	@NotNull
-	public TypeNode toAsmType(@NotNull JetType type)
+	public TypeNode toAsmType(@NotNull NapileType type)
 	{
 		return TypeTransformer.toAsmType(bindingTrace, type, classNode);
 	}

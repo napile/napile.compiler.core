@@ -25,10 +25,10 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.constants.stringLexer.StringEscapesTokenTypes;
 import org.napile.compiler.lang.resolve.constants.stringLexer.StringLiteralLexer;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
@@ -51,7 +51,7 @@ public class CompileTimeConstantResolver
 	}
 
 	@NotNull
-	public CompileTimeConstant<?> getIntegerValue(@NotNull String text, @NotNull JetType expectedType)
+	public CompileTimeConstant<?> getIntegerValue(@NotNull String text, @NotNull NapileType expectedType)
 	{
 		IntConstantFactory factory = null;
 
@@ -119,9 +119,9 @@ public class CompileTimeConstantResolver
 	}
 
 	@NotNull
-	public CompileTimeConstant<?> getFloatValue(@NotNull String text, @NotNull JetType expectedType)
+	public CompileTimeConstant<?> getFloatValue(@NotNull String text, @NotNull NapileType expectedType)
 	{
-		if(noExpectedType(expectedType) || JetTypeChecker.INSTANCE.isSubtypeOf(TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.DOUBLE, false), expectedType))
+		if(noExpectedType(expectedType) || NapileTypeChecker.INSTANCE.isSubtypeOf(TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.DOUBLE, false), expectedType))
 		{
 			try
 			{
@@ -132,7 +132,7 @@ public class CompileTimeConstantResolver
 				return OUT_OF_RANGE;
 			}
 		}
-		else if(JetTypeChecker.INSTANCE.isSubtypeOf(TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.FLOAT, false), expectedType))
+		else if(NapileTypeChecker.INSTANCE.isSubtypeOf(TypeUtils.getTypeOfClassOrErrorType(expectedType.getMemberScope(), NapileLangPackage.FLOAT, false), expectedType))
 		{
 			try
 			{
@@ -164,7 +164,7 @@ public class CompileTimeConstantResolver
 	}
 
 	@NotNull
-	public CompileTimeConstant<?> getCharValue(PsiElement psiElement, @NotNull String text, @NotNull JetType expectedType)
+	public CompileTimeConstant<?> getCharValue(PsiElement psiElement, @NotNull String text, @NotNull NapileType expectedType)
 	{
 		markEscapes(text, psiElement, NapileTokens.CHARACTER_LITERAL);
 
@@ -178,7 +178,7 @@ public class CompileTimeConstantResolver
 	}
 
 	@NotNull
-	public CompileTimeConstant<?> getStringValue(PsiElement psiElement, @NotNull String text, @NotNull JetType expectedType)
+	public CompileTimeConstant<?> getStringValue(PsiElement psiElement, @NotNull String text, @NotNull NapileType expectedType)
 	{
 		markEscapes(text, psiElement, NapileTokens.STRING_LITERAL);
 
@@ -222,7 +222,7 @@ public class CompileTimeConstantResolver
 	}
 
 	@NotNull
-	public CompileTimeConstant<?> getNullValue(@NotNull JetType expectedType)
+	public CompileTimeConstant<?> getNullValue(@NotNull NapileType expectedType)
 	{
 		if(noExpectedType(expectedType) || expectedType.isNullable())
 		{
@@ -231,7 +231,7 @@ public class CompileTimeConstantResolver
 		return new ErrorValue("Null can not be a value of a non-null type " + expectedType);
 	}
 
-	private boolean noExpectedType(JetType expectedType)
+	private boolean noExpectedType(NapileType expectedType)
 	{
 		return expectedType == TypeUtils.NO_EXPECTED_TYPE ||
 				TypeUtils.isEqualFqName(expectedType, NapileLangPackage.NULL) ||

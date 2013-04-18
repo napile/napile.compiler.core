@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.resolve.scopes.receivers;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * This represents the receiver of hasNext and next() in for-loops
@@ -27,7 +27,7 @@ import org.napile.compiler.lang.types.JetType;
  */
 public class TransientReceiver extends AbstractReceiverDescriptor
 {
-	public TransientReceiver(@NotNull JetType type)
+	public TransientReceiver(@NotNull NapileType type)
 	{
 		super(type);
 	}

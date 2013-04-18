@@ -34,7 +34,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * @author abreslav
  */
-public class JetExpressionParsing extends AbstractJetParsing
+public class NapileExpressionParsing extends AbstractNapileParsing
 {
 	private static final TokenSet WHEN_CONDITION_RECOVERY_SET = TokenSet.create(NapileTokens.RBRACE, NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS, NapileTokens.ELSE_KEYWORD);
 	private static final TokenSet WHEN_CONDITION_RECOVERY_SET_WITH_ARROW = TokenSet.create(NapileTokens.RBRACE, NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS, NapileTokens.ELSE_KEYWORD, NapileTokens.ARROW, NapileTokens.DOT);
@@ -107,7 +107,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 				{
 
 					@Override
-					public void parseHigherPrecedence(JetExpressionParsing parser)
+					public void parseHigherPrecedence(NapileExpressionParsing parser)
 					{
 						throw new IllegalStateException("Don't call this method");
 					}
@@ -116,14 +116,14 @@ public class JetExpressionParsing extends AbstractJetParsing
 		COLON_AS(NapileTokens.COLON, NapileTokens.AS_KEYWORD, NapileTokens.AS_SAFE)
 				{
 					@Override
-					public NapileNode parseRightHandSide(IElementType operation, JetExpressionParsing parser)
+					public NapileNode parseRightHandSide(IElementType operation, NapileExpressionParsing parser)
 					{
 						parser.parsing.parseTypeRef();
 						return BINARY_WITH_TYPE;
 					}
 
 					@Override
-					public void parseHigherPrecedence(JetExpressionParsing parser)
+					public void parseHigherPrecedence(NapileExpressionParsing parser)
 					{
 						parser.parsePrefixExpression();
 					}
@@ -137,7 +137,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		IN_OR_IS(NapileTokens.IN_KEYWORD, NapileTokens.NOT_IN, NapileTokens.IS_KEYWORD, NapileTokens.NOT_IS)
 				{
 					@Override
-					public NapileNode parseRightHandSide(IElementType operation, JetExpressionParsing parser)
+					public NapileNode parseRightHandSide(IElementType operation, NapileExpressionParsing parser)
 					{
 						if(operation == NapileTokens.IS_KEYWORD || operation == NapileTokens.NOT_IS)
 						{
@@ -174,7 +174,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 			this.operations = TokenSet.create(operations);
 		}
 
-		public void parseHigherPrecedence(JetExpressionParsing parser)
+		public void parseHigherPrecedence(NapileExpressionParsing parser)
 		{
 			assert higher != null;
 			parser.parseBinaryExpression(higher);
@@ -185,7 +185,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 		 * @param parser    the parser object
 		 * @return node type of the result
 		 */
-		public NapileNode parseRightHandSide(IElementType operation, JetExpressionParsing parser)
+		public NapileNode parseRightHandSide(IElementType operation, NapileExpressionParsing parser)
 		{
 			parseHigherPrecedence(parser);
 			return BINARY_EXPRESSION;
@@ -232,10 +232,10 @@ public class JetExpressionParsing extends AbstractJetParsing
 	}
 
 
-	private final JetParsing parsing;
+	private final NapileParsing parsing;
 	private final CodeInjectionParser codeInjectionParser;
 
-	public JetExpressionParsing(SemanticWhitespaceAwarePsiBuilder builder, JetParsing jetParsing)
+	public NapileExpressionParsing(SemanticWhitespaceAwarePsiBuilder builder, NapileParsing jetParsing)
 	{
 		super(builder);
 		parsing = jetParsing;
@@ -612,7 +612,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 		if(expect(NapileTokens.LPAR, "'(' expected"))
 		{
-			parsing.parseTypeRef(JetParsing.TYPE_PARAMETER_GT_RECOVERY_SET);
+			parsing.parseTypeRef(NapileParsing.TYPE_PARAMETER_GT_RECOVERY_SET);
 
 			expect(NapileTokens.RPAR, "') expected");
 		}
@@ -1002,7 +1002,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 
 				paramsFound = preferParamsToExpressions ? rollbackOrDrop(rollbackMarker, NapileTokens.ARROW, "An -> is expected", NapileTokens.RBRACE) : rollbackOrDropAt(rollbackMarker, NapileTokens.ARROW);
 			}
-			if(!paramsFound && atSet(JetParsing.TYPE_REF_FIRST))
+			if(!paramsFound && atSet(NapileParsing.TYPE_REF_FIRST))
 			{
 				// Try to parse a type DOT valueParameterList ARROW
 				//   {A.(b) -> ...}
@@ -1787,7 +1787,7 @@ public class JetExpressionParsing extends AbstractJetParsing
 	}
 
 	@Override
-	protected JetParsing create(SemanticWhitespaceAwarePsiBuilder builder)
+	protected NapileParsing create(SemanticWhitespaceAwarePsiBuilder builder)
 	{
 		return parsing.create(builder);
 	}

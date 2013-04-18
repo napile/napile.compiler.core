@@ -27,7 +27,7 @@ import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
@@ -36,11 +36,11 @@ import com.intellij.lang.ASTNode;
 /**
  * @author abreslav
  */
-public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo, ExpressionTypingContext> implements ExpressionTypingInternals
+public class ExpressionTypingVisitorDispatcher extends NapileVisitor<NapileTypeInfo, ExpressionTypingContext> implements ExpressionTypingInternals
 {
 
 	@Override
-	public JetTypeInfo visitIdeTemplate(NapileIdeTemplate expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitIdeTemplate(NapileIdeTemplate expression, ExpressionTypingContext data)
 	{
 		return basic.visitIdeTemplate(expression, data);
 	}
@@ -79,7 +79,7 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	}
 
 	@Override
-	public JetTypeInfo getSelectorReturnTypeInfo(@NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull NapileExpression selectorExpression, @NotNull ExpressionTypingContext context)
+	public NapileTypeInfo getSelectorReturnTypeInfo(@NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull NapileExpression selectorExpression, @NotNull ExpressionTypingContext context)
 	{
 		return basic.getSelectorReturnTypeInfo(receiver, callOperationNode, selectorExpression, context);
 	}
@@ -92,26 +92,26 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 
 	@Override
 	@NotNull
-	public final JetTypeInfo safeGetTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context)
+	public final NapileTypeInfo safeGetTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context)
 	{
-		JetTypeInfo typeInfo = getTypeInfo(expression, context);
+		NapileTypeInfo typeInfo = getTypeInfo(expression, context);
 		if(typeInfo.getType() != null)
 		{
 			return typeInfo;
 		}
-		return JetTypeInfo.create(ErrorUtils.createErrorType("Type for " + expression.getText()), context.dataFlowInfo);
+		return NapileTypeInfo.create(ErrorUtils.createErrorType("Type for " + expression.getText()), context.dataFlowInfo);
 	}
 
 	@Override
 	@NotNull
-	public final JetTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context)
+	public final NapileTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context)
 	{
 		return getTypeInfo(expression, context, this);
 	}
 
 	@NotNull
 	@Override
-	public final JetTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, boolean isStatement)
+	public final NapileTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, boolean isStatement)
 	{
 		if(!isStatement)
 			return getTypeInfo(expression, context);
@@ -134,7 +134,7 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	}
 
 	@NotNull
-	private JetTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, NapileVisitor<JetTypeInfo, ExpressionTypingContext> visitor)
+	private NapileTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, NapileVisitor<NapileTypeInfo, ExpressionTypingContext> visitor)
 	{
 		if(context.trace.safeGet(BindingTraceKeys.PROCESSED, expression))
 		{
@@ -143,21 +143,21 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 			{
 				dataFlowInfo = context.dataFlowInfo;
 			}
-			return JetTypeInfo.create(context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression), dataFlowInfo);
+			return NapileTypeInfo.create(context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression), dataFlowInfo);
 		}
-		JetTypeInfo result;
+		NapileTypeInfo result;
 		try
 		{
 			result = expression.accept(visitor, context);
 			// Some recursive definitions (object expressions) must put their types in the cache manually:
 			if(context.trace.safeGet(BindingTraceKeys.PROCESSED, expression))
 			{
-				return JetTypeInfo.create(context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression), result.getDataFlowInfo());
+				return NapileTypeInfo.create(context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression), result.getDataFlowInfo());
 			}
 
 			if(result.getType() instanceof DeferredType)
 			{
-				result = JetTypeInfo.create(((DeferredType) result.getType()).getActualType(), result.getDataFlowInfo());
+				result = NapileTypeInfo.create(((DeferredType) result.getType()).getActualType(), result.getDataFlowInfo());
 			}
 			if(result.getType() != null)
 			{
@@ -167,7 +167,7 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 		catch(ReenteringLazyValueComputationException e)
 		{
 			context.trace.report(TYPECHECKER_HAS_RUN_INTO_RECURSIVE_PROBLEM.on(expression));
-			result = JetTypeInfo.create(null, context.dataFlowInfo);
+			result = NapileTypeInfo.create(null, context.dataFlowInfo);
 		}
 
 		if(!context.trace.get(BindingTraceKeys.PROCESSED, expression) && !(expression instanceof NapileReferenceExpression))
@@ -185,13 +185,13 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public JetTypeInfo visitAnonymMethodExpression(NapileAnonymMethodExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitAnonymMethodExpression(NapileAnonymMethodExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(closures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitAnonymClassExpression(NapileAnonymClassExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitAnonymClassExpression(NapileAnonymClassExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(closures, data);
 	}
@@ -199,55 +199,55 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public JetTypeInfo visitThrowExpression(NapileThrowExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitThrowExpression(NapileThrowExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitReturnExpression(NapileReturnExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitReturnExpression(NapileReturnExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitContinueExpression(NapileContinueExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitContinueExpression(NapileContinueExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitIfExpression(NapileIfExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitIfExpression(NapileIfExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitTryExpression(NapileTryExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitTryExpression(NapileTryExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitForExpression(NapileForExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitForExpression(NapileForExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitWhileExpression(NapileWhileExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitWhileExpression(NapileWhileExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitDoWhileExpression(NapileDoWhileExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitDoWhileExpression(NapileDoWhileExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
 
 	@Override
-	public JetTypeInfo visitBreakExpression(NapileBreakExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitBreakExpression(NapileBreakExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(controlStructures, data);
 	}
@@ -255,13 +255,13 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public JetTypeInfo visitIsExpression(NapileIsExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitIsExpression(NapileIsExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(patterns, data);
 	}
 
 	@Override
-	public JetTypeInfo visitWhenExpression(NapileWhenExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitWhenExpression(NapileWhenExpression expression, ExpressionTypingContext data)
 	{
 		return expression.accept(patterns, data);
 	}
@@ -269,7 +269,7 @@ public class ExpressionTypingVisitorDispatcher extends NapileVisitor<JetTypeInfo
 	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public JetTypeInfo visitJetElement(NapileElement element, ExpressionTypingContext data)
+	public NapileTypeInfo visitJetElement(NapileElement element, ExpressionTypingContext data)
 	{
 		return element.accept(basic, data);
 	}

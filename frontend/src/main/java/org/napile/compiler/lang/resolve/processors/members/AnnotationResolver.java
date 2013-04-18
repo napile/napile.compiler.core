@@ -39,10 +39,10 @@ import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 
 /**
@@ -60,7 +60,7 @@ public class AnnotationResolver
 	}
 
 	@NotNull
-	public List<AnnotationDescriptor> bindAnnotations(@NotNull JetScope scope, @NotNull NapileModifierListOwner modifierListOwner, BindingTrace trace)
+	public List<AnnotationDescriptor> bindAnnotations(@NotNull NapileScope scope, @NotNull NapileModifierListOwner modifierListOwner, BindingTrace trace)
 	{
 		NapileModifierList modifierList = modifierListOwner.getModifierList();
 		if(modifierList == null)
@@ -69,7 +69,7 @@ public class AnnotationResolver
 	}
 
 	@NotNull
-	public List<AnnotationDescriptor> bindAnnotations(@NotNull JetScope scope, @NotNull NapileAnnotationOwner annotationOwner, BindingTrace trace)
+	public List<AnnotationDescriptor> bindAnnotations(@NotNull NapileScope scope, @NotNull NapileAnnotationOwner annotationOwner, BindingTrace trace)
 	{
 		List<NapileAnnotation> annotations = annotationOwner.getAnnotations();
 		if(annotations.isEmpty())
@@ -95,7 +95,7 @@ public class AnnotationResolver
 		Collection<NapileAnnotation> annotations = trace.getKeys(BindingTraceKeys.ANNOTATION_SCOPE);
 		for(NapileAnnotation annotation : annotations)
 		{
-			JetScope scope = trace.safeGet(BindingTraceKeys.ANNOTATION_SCOPE, annotation);
+			NapileScope scope = trace.safeGet(BindingTraceKeys.ANNOTATION_SCOPE, annotation);
 			AnnotationDescriptor annotationDescriptor = trace.safeGet(BindingTraceKeys.ANNOTATION, annotation);
 
 			resolveAnnotation(scope, annotation, annotationDescriptor, trace);
@@ -103,7 +103,7 @@ public class AnnotationResolver
 	}
 
 	@SuppressWarnings("unchecked")
-	public void resolveAnnotation(@NotNull JetScope scope, @NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor, BindingTrace trace)
+	public void resolveAnnotation(@NotNull NapileScope scope, @NotNull NapileAnnotation annotation, @NotNull AnnotationDescriptor annotationDescriptor, BindingTrace trace)
 	{
 		if(annotationDescriptor.getType() != null)
 		{
@@ -113,7 +113,7 @@ public class AnnotationResolver
 		OverloadResolutionResults<? extends MethodDescriptor> results = callResolver.resolveFunctionCall(trace, scope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, annotation), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 		if(results.isSuccess())
 		{
-			JetType annotationType = results.getResultingDescriptor().getReturnType();
+			NapileType annotationType = results.getResultingDescriptor().getReturnType();
 			annotationDescriptor.setAnnotationType(annotationType);
 			annotationDescriptor.setResolvedCall((ResolvedCall<ConstructorDescriptor>) results.getResultingCall());
 		}

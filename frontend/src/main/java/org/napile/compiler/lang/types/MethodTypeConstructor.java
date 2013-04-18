@@ -32,8 +32,8 @@ public interface MethodTypeConstructor extends TypeConstructor
 	Name getExpectedName();
 
 	@NotNull
-	JetType getReturnType();
+	NapileType getReturnType();
 
 	@NotNull
-	Map<Name, JetType> getParameterTypes();
+	Map<Name, NapileType> getParameterTypes();
 }

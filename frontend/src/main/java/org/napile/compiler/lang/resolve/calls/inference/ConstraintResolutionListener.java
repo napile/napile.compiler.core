@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve.calls.inference;
 import java.util.Set;
 
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -35,7 +35,7 @@ public interface ConstraintResolutionListener
 		}
 
 		@Override
-		public void constraintsForKnownType(JetType type, BoundsOwner typeValue)
+		public void constraintsForKnownType(NapileType type, BoundsOwner typeValue)
 		{
 		}
 
@@ -57,7 +57,7 @@ public interface ConstraintResolutionListener
 
 	void constraintsForUnknown(TypeParameterDescriptor typeParameterDescriptor, BoundsOwner typeValue);
 
-	void constraintsForKnownType(JetType type, BoundsOwner typeValue);
+	void constraintsForKnownType(NapileType type, BoundsOwner typeValue);
 
 	void done(ConstraintSystemSolution solution, Set<TypeParameterDescriptor> typeParameterDescriptors);
 

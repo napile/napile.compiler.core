@@ -31,7 +31,7 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.google.common.collect.Maps;
 
 /**
@@ -64,11 +64,11 @@ public class DebugConstraintResolutionListener implements ConstraintResolutionLi
 	}
 
 	@Override
-	public void constraintsForKnownType(JetType type, BoundsOwner typeValue)
+	public void constraintsForKnownType(NapileType type, BoundsOwner typeValue)
 	{
 		if(!ResolutionDebugInfo.isResolutionDebugEnabled())
 			return;
-		Map<JetType, BoundsOwner> map = debugInfo.getByKey(BOUNDS_FOR_KNOWNS, candidateCall);
+		Map<NapileType, BoundsOwner> map = debugInfo.getByKey(BOUNDS_FOR_KNOWNS, candidateCall);
 		if(map == null)
 		{
 			map = Maps.newLinkedHashMap();

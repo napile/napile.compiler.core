@@ -66,17 +66,17 @@ import org.napile.compiler.lang.resolve.calls.inference.ConstraintsUtil;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.processors.TypeResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileType;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.util.slicedmap.WritableSlice;
 import com.google.common.base.Function;
@@ -92,7 +92,7 @@ import com.intellij.psi.PsiElement;
  */
 public class CallResolver
 {
-	private final JetTypeChecker typeChecker = JetTypeChecker.INSTANCE;
+	private final NapileTypeChecker typeChecker = NapileTypeChecker.INSTANCE;
 
 	@NotNull
 	private OverloadingConflictResolver overloadingConflictResolver;
@@ -154,7 +154,7 @@ public class CallResolver
 	}
 
 	@NotNull
-	public OverloadResolutionResults<MethodDescriptor> resolveFunctionCall(@NotNull BindingTrace trace, @NotNull JetScope scope, @NotNull Call call, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo)
+	public OverloadResolutionResults<MethodDescriptor> resolveFunctionCall(@NotNull BindingTrace trace, @NotNull NapileScope scope, @NotNull Call call, @NotNull NapileType expectedType, @NotNull DataFlowInfo dataFlowInfo)
 	{
 		return resolveFunctionCall(BasicResolutionContext.create(trace, scope, call, expectedType, dataFlowInfo));
 	}
@@ -218,7 +218,7 @@ public class CallResolver
 					return checkArgumentTypesAndFail(context); // No type there
 				functionReference = new NapileFakeReferenceImpl(typeReference);
 
-				JetType constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
+				NapileType constructedType = typeResolver.resolveType(context.scope, typeReference, context.trace, true);
 				DeclarationDescriptor declarationDescriptor = constructedType.getConstructor().getDeclarationDescriptor();
 
 				if(declarationDescriptor != null)
@@ -246,7 +246,7 @@ public class CallResolver
 			else if(calleeExpression != null)
 			{
 				// Here we handle the case where the callee expression must be something of type function, e.g. (foo.bar())(1, 2)
-				JetType calleeType = expressionTypingServices.safeGetType(context.scope, calleeExpression, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace); // We are actually expecting a function, but there seems to be no easy way of expressing this
+				NapileType calleeType = expressionTypingServices.safeGetType(context.scope, calleeExpression, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace); // We are actually expecting a function, but there seems to be no easy way of expressing this
 
 				if(!(calleeType.getConstructor() instanceof MethodTypeConstructor))
 				{
@@ -412,7 +412,7 @@ public class CallResolver
 			{
 				resolvedCall.setResultingSubstitutor(constraintSystemWithoutExpectedTypeConstraint.getResultingSubstitutor());
 			}
-			List<JetType> argumentTypes = checkValueArgumentTypes(context, resolvedCall, context.trace).argumentTypes;
+			List<NapileType> argumentTypes = checkValueArgumentTypes(context, resolvedCall, context.trace).argumentTypes;
 
 			tracing.typeInferenceFailed(context.trace, InferenceErrorData.create(descriptor, constraintSystem, argumentTypes, context.expectedType), constraintSystemWithoutExpectedTypeConstraint);
 			resolvedCall.addStatus(ResolutionStatus.TYPE_INFERENCE_ERROR);
@@ -657,7 +657,7 @@ public class CallResolver
 		{
 			if(AnnotationUtils.hasAnnotation(candidate, NapileAnnotationPackage.IMMUTABLE_TARGET))
 			{
-				JetType type = candidateCall.getThisObject().getType();
+				NapileType type = candidateCall.getThisObject().getType();
 				if(AnnotationUtils.hasAnnotation(type, NapileAnnotationPackage.IMMUTABLE))
 					return true;
 
@@ -682,7 +682,7 @@ public class CallResolver
 	{
 		if(expression == null)
 			return false;
-		JetType type = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
+		NapileType type = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
 		return type != null && AnnotationUtils.hasAnnotation(type, fqName);
 	}
 
@@ -778,7 +778,7 @@ public class CallResolver
 		{
 			// Explicit type arguments passed
 
-			List<JetType> typeArguments = new ArrayList<JetType>();
+			List<NapileType> typeArguments = new ArrayList<NapileType>();
 			for(NapileTypeReference typeReference : jetTypeArguments)
 				typeArguments.add(typeResolver.resolveType(context.scope, typeReference, context.trace, true));
 
@@ -788,7 +788,7 @@ public class CallResolver
 
 				checkGenericBoundsInAFunctionCall(jetTypeArguments, typeArguments, candidate, context.trace);
 
-				Map<TypeConstructor, JetType> substitutionContext = MethodDescriptorUtil.createSubstitutionContext((MethodDescriptor) candidate, typeArguments);
+				Map<TypeConstructor, NapileType> substitutionContext = MethodDescriptorUtil.createSubstitutionContext((MethodDescriptor) candidate, typeArguments);
 				candidateCall.setResultingSubstitutor(TypeSubstitutor.create(substitutionContext));
 
 				List<TypeParameterDescriptor> typeParameters = candidateCall.getCandidateDescriptor().getTypeParameters();
@@ -885,7 +885,7 @@ public class CallResolver
 		{
 			ValueArgumentsCheckingResult checkingResult = checkAllValueArguments(context);
 			ResolutionStatus argumentsStatus = checkingResult.status;
-			List<JetType> argumentTypes = checkingResult.argumentTypes;
+			List<NapileType> argumentTypes = checkingResult.argumentTypes;
 			context.tracing.typeInferenceFailed(context.trace, InferenceErrorData.create(candidate, constraintSystemWithRightTypeParameters, argumentTypes, context.expectedType), constraintSystemWithRightTypeParameters);
 			return ResolutionStatus.TYPE_INFERENCE_ERROR.combine(argumentsStatus);
 		}
@@ -894,10 +894,10 @@ public class CallResolver
 	private boolean addConstraintForValueArgument(ValueArgument valueArgument, @NotNull CallParameterDescriptor parameterDescriptor, @NotNull TypeSubstitutor substitutor, @NotNull ConstraintSystem constraintSystem, @NotNull ResolutionContext context)
 	{
 
-		JetType effectiveExpectedType = parameterDescriptor.getType();
+		NapileType effectiveExpectedType = parameterDescriptor.getType();
 		TemporaryBindingTrace traceForUnknown = TemporaryBindingTrace.create(context.trace);
 		NapileExpression argumentExpression = valueArgument.getArgumentExpression();
-		JetType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(parameterDescriptor.getType(), null), context.dataFlowInfo, traceForUnknown) : null;
+		NapileType type = argumentExpression != null ? expressionTypingServices.getType(context.scope, argumentExpression, substitutor.substitute(parameterDescriptor.getType(), null), context.dataFlowInfo, traceForUnknown) : null;
 		constraintSystem.addSupertypeConstraint(effectiveExpectedType, type, ConstraintPosition.getValueParameterPosition(parameterDescriptor.getIndex()));
 		//todo no return
 		if(type == null || ErrorUtils.isErrorType(type))
@@ -987,7 +987,7 @@ public class CallResolver
 		if(receiverParameter.exists() && receiverArgument.exists())
 		{
 			boolean safeAccess = isExplicitReceiver && !implicitInvokeCheck && candidateCall.isSafeCall();
-			JetType receiverArgumentType = receiverArgument.getType();
+			NapileType receiverArgumentType = receiverArgument.getType();
 			AutoCastServiceImpl autoCastService = new AutoCastServiceImpl(context.dataFlowInfo, context.candidateCall.getTrace());
 			if(!safeAccess && !receiverParameter.getType().isNullable() && !autoCastService.isNotNull(receiverArgument))
 			{
@@ -997,7 +997,7 @@ public class CallResolver
 			}
 			else
 			{
-				JetType effectiveReceiverArgumentType = safeAccess ? TypeUtils.makeNotNullable(receiverArgumentType) : receiverArgumentType;
+				NapileType effectiveReceiverArgumentType = safeAccess ? TypeUtils.makeNotNullable(receiverArgumentType) : receiverArgumentType;
 				if(!TypeUtils.dependsOnTypeParameters(receiverParameter.getType(), candidateCall.getCandidateDescriptor().getTypeParameters()) && !typeChecker.isSubtypeOf(effectiveReceiverArgumentType, receiverParameter.getType()))
 				{
 					context.tracing.wrongReceiverType(context.candidateCall.getTrace(), receiverParameter, receiverArgument);
@@ -1014,10 +1014,10 @@ public class CallResolver
 
 	private static class ValueArgumentsCheckingResult
 	{
-		public final List<JetType> argumentTypes;
+		public final List<NapileType> argumentTypes;
 		public final ResolutionStatus status;
 
-		private ValueArgumentsCheckingResult(@NotNull ResolutionStatus status, @NotNull List<JetType> argumentTypes)
+		private ValueArgumentsCheckingResult(@NotNull ResolutionStatus status, @NotNull List<NapileType> argumentTypes)
 		{
 			this.status = status;
 			this.argumentTypes = argumentTypes;
@@ -1033,7 +1033,7 @@ public class CallResolver
 	{
 		ResolutionStatus resultStatus = ResolutionStatus.SUCCESS;
 		DataFlowInfo dataFlowInfo = context.dataFlowInfo;
-		List<JetType> argumentTypes = Lists.newArrayList();
+		List<NapileType> argumentTypes = Lists.newArrayList();
 		for(Map.Entry<CallParameterDescriptor, ResolvedValueArgument> entry : candidateCall.getValueArguments().entrySet())
 		{
 			CallParameterDescriptor parameterDescriptor = entry.getKey();
@@ -1046,13 +1046,13 @@ public class CallResolver
 				if(expression == null)
 					continue;
 
-				JetType expectedType = parameterDescriptor.getType();
+				NapileType expectedType = parameterDescriptor.getType();
 				if(TypeUtils.dependsOnTypeParameters(expectedType, candidateCall.getCandidateDescriptor().getTypeParameters()))
 				{
 					expectedType = TypeUtils.NO_EXPECTED_TYPE;
 				}
-				JetTypeInfo typeInfo = expressionTypingServices.getTypeInfo(context.scope, expression, expectedType, dataFlowInfo, trace);
-				JetType type = typeInfo.getType();
+				NapileTypeInfo typeInfo = expressionTypingServices.getTypeInfo(context.scope, expression, expectedType, dataFlowInfo, trace);
+				NapileType type = typeInfo.getType();
 				argumentTypes.add(type);
 				dataFlowInfo = dataFlowInfo.and(typeInfo.getDataFlowInfo());
 				if(type == null || ErrorUtils.isErrorType(type))
@@ -1240,22 +1240,22 @@ public class CallResolver
 		}
 	}
 
-	private void checkGenericBoundsInAFunctionCall(List<? extends NapileTypeReference> jetTypeArguments, List<JetType> typeArguments, CallableDescriptor functionDescriptor, BindingTrace trace)
+	private void checkGenericBoundsInAFunctionCall(List<? extends NapileTypeReference> jetTypeArguments, List<NapileType> typeArguments, CallableDescriptor functionDescriptor, BindingTrace trace)
 	{
-		Map<TypeConstructor, JetType> context = Maps.newHashMap();
+		Map<TypeConstructor, NapileType> context = Maps.newHashMap();
 
 		List<TypeParameterDescriptor> typeParameters = functionDescriptor.getOriginal().getTypeParameters();
 		for(int i = 0, typeParametersSize = typeParameters.size(); i < typeParametersSize; i++)
 		{
 			TypeParameterDescriptor typeParameter = typeParameters.get(i);
-			JetType typeArgument = typeArguments.get(i);
+			NapileType typeArgument = typeArguments.get(i);
 			context.put(typeParameter.getTypeConstructor(), typeArgument);
 		}
 		TypeSubstitutor substitutor = TypeSubstitutor.create(context);
 		for(int i = 0, typeParametersSize = typeParameters.size(); i < typeParametersSize; i++)
 		{
 			TypeParameterDescriptor typeParameterDescriptor = typeParameters.get(i);
-			JetType typeArgument = typeArguments.get(i);
+			NapileType typeArgument = typeArguments.get(i);
 			NapileTypeReference typeReference = jetTypeArguments.get(i);
 			if(typeReference != null)
 			{
@@ -1265,7 +1265,7 @@ public class CallResolver
 	}
 
 	@NotNull
-	public OverloadResolutionResults<MethodDescriptor> resolveExactSignature(@NotNull JetScope scope, @NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull List<JetType> parameterTypes)
+	public OverloadResolutionResults<MethodDescriptor> resolveExactSignature(@NotNull NapileScope scope, @NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull List<NapileType> parameterTypes)
 	{
 		List<ResolutionCandidate<MethodDescriptor>> candidates = findCandidatesByExactSignature(scope, receiver, name, parameterTypes);
 
@@ -1280,7 +1280,7 @@ public class CallResolver
 		return computeResultAndReportErrors(trace, TracingStrategy.EMPTY, calls, Collections.<ResolvedCallWithTrace<MethodDescriptor>>emptySet());
 	}
 
-	private List<ResolutionCandidate<MethodDescriptor>> findCandidatesByExactSignature(JetScope scope, ReceiverDescriptor receiver, Name name, List<JetType> parameterTypes)
+	private List<ResolutionCandidate<MethodDescriptor>> findCandidatesByExactSignature(NapileScope scope, ReceiverDescriptor receiver, Name name, List<NapileType> parameterTypes)
 	{
 		List<ResolutionCandidate<MethodDescriptor>> result = Lists.newArrayList();
 		if(receiver.exists())
@@ -1304,7 +1304,7 @@ public class CallResolver
 		}
 	}
 
-	private static boolean lookupExactSignature(Collection<ResolutionCandidate<MethodDescriptor>> candidates, List<JetType> parameterTypes, List<ResolutionCandidate<MethodDescriptor>> result)
+	private static boolean lookupExactSignature(Collection<ResolutionCandidate<MethodDescriptor>> candidates, List<NapileType> parameterTypes, List<ResolutionCandidate<MethodDescriptor>> result)
 	{
 		boolean found = false;
 		for(ResolutionCandidate<MethodDescriptor> resolvedCall : candidates)
@@ -1321,7 +1321,7 @@ public class CallResolver
 		return found;
 	}
 
-	private static boolean checkValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull List<JetType> parameterTypes)
+	private static boolean checkValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull List<NapileType> parameterTypes)
 	{
 		List<CallParameterDescriptor> valueParameters = methodDescriptor.getValueParameters();
 		if(valueParameters.size() != parameterTypes.size())
@@ -1329,7 +1329,7 @@ public class CallResolver
 		for(int i = 0; i < valueParameters.size(); i++)
 		{
 			CallParameterDescriptor valueParameter = valueParameters.get(i);
-			JetType expectedType = parameterTypes.get(i);
+			NapileType expectedType = parameterTypes.get(i);
 			if(!TypeUtils.equalTypes(expectedType, valueParameter.getType()))
 				return false;
 		}

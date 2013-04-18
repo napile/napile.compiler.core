@@ -23,7 +23,7 @@ import org.napile.compiler.lang.psi.NapileElement;
 /**
  * @author abreslav
  */
-public class ReturnNoValueInstruction extends AbstractJumpInstruction implements JetElementInstruction
+public class ReturnNoValueInstruction extends AbstractJumpInstruction implements NapileElementInstruction
 {
 
 	private final NapileElement element;

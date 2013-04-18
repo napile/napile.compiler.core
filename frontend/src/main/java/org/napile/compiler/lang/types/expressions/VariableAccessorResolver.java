@@ -45,10 +45,10 @@ import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.CallMaker;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.util.slicedmap.WritableSlice;
@@ -76,7 +76,7 @@ public class VariableAccessorResolver
 		{
 			NapileDotQualifiedExpressionImpl dotQualifiedExpression = ((NapileDotQualifiedExpressionImpl) exp);
 
-			JetType receiverType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
+			NapileType receiverType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
 			if(receiverType != null && receiverType.getConstructor() instanceof MultiTypeConstructor)
 				return null;
 
@@ -84,7 +84,7 @@ public class VariableAccessorResolver
 			{
 				nameExpression = (NapileSimpleNameExpression) dotQualifiedExpression.getSelectorExpression();
 				name = Name.identifier(nameExpression.getReferencedName() + AsmConstants.ANONYM_SPLITTER + "set");
-				JetType type = context.trace.get(EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
+				NapileType type = context.trace.get(EXPRESSION_TYPE, dotQualifiedExpression.getReceiverExpression());
 				if(type == null)
 					return null;
 				receiverDescriptor = new ExpressionReceiver(dotQualifiedExpression.getReceiverExpression(), type);
@@ -102,7 +102,7 @@ public class VariableAccessorResolver
 		return new Object[] {name, receiverDescriptor, nameExpression};
 	}
 
-	public static VariableDescriptor resolveSetterForReferenceParameter(@NotNull NapileSimpleNameExpression expression, @NotNull ExpressionTypingServices expressionTypingServices, BindingTrace originTrace, JetScope scope)
+	public static VariableDescriptor resolveSetterForReferenceParameter(@NotNull NapileSimpleNameExpression expression, @NotNull ExpressionTypingServices expressionTypingServices, BindingTrace originTrace, NapileScope scope)
 	{
 		ExpressionTypingContext context = ExpressionTypingContext.newContext(expressionTypingServices, originTrace, scope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false);
 

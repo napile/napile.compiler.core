@@ -19,7 +19,7 @@ package org.napile.compiler.lang.psi.impl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.parsing.JetExpressionParsing;
+import org.napile.compiler.lang.parsing.NapileExpressionParsing;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.IfNotParsed;
 import org.napile.compiler.lang.psi.NapileCallExpression;
@@ -133,7 +133,7 @@ public class NapileSimpleNameExpressionImpl extends NapileReferenceExpressionImp
 		PsiElement element = findChildByType(REFERENCE_TOKENS);
 		if(element == null)
 		{
-			element = findChildByType(JetExpressionParsing.ALL_OPERATIONS);
+			element = findChildByType(NapileExpressionParsing.ALL_OPERATIONS);
 		}
 
 		if(element != null)

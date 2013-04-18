@@ -50,11 +50,11 @@ import com.intellij.psi.PsiManager;
 /**
  * @author yole
  */
-public class JetCoreEnvironment
+public class NapileCoreEnvironment
 {
 	private final Disposable parentDisposable;
 	private final CoreApplicationEnvironment applicationEnvironment;
-	private final JetCoreProjectEnvironment projectEnvironment;
+	private final NapileCoreProjectEnvironment projectEnvironment;
 
 	private final List<NapileFile> sourceFiles = new ArrayList<NapileFile>();
 
@@ -62,7 +62,7 @@ public class JetCoreEnvironment
 
 	private boolean initialized = false;
 
-	public JetCoreEnvironment(Disposable parentDisposable, @NotNull CompilerConfiguration configuration)
+	public NapileCoreEnvironment(Disposable parentDisposable, @NotNull CompilerConfiguration configuration)
 	{
 		this.parentDisposable = parentDisposable;
 		this.configuration = configuration.copy();
@@ -80,7 +80,7 @@ public class JetCoreEnvironment
 
 		addExplicitExtension(FileTypeFileViewProviders.INSTANCE, NXmlFileType.INSTANCE, new NXmlFileViewProviderFactory());
 
-		projectEnvironment = new JetCoreProjectEnvironment(parentDisposable, applicationEnvironment);
+		projectEnvironment = new NapileCoreProjectEnvironment(parentDisposable, applicationEnvironment);
 
 
 		final MockProject project = projectEnvironment.getProject();

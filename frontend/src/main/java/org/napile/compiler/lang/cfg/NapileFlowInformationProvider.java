@@ -40,7 +40,7 @@ import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.util.RunUtil;
 import com.google.common.collect.Lists;
@@ -54,7 +54,7 @@ import com.intellij.psi.util.PsiTreeUtil;
  *
  * TODO [VISTALL] rework about variables
  */
-public class JetFlowInformationProvider
+public class NapileFlowInformationProvider
 {
 
 	private final NapileDeclaration subroutine;
@@ -62,12 +62,12 @@ public class JetFlowInformationProvider
 	private final PseudocodeVariablesData pseudocodeVariablesData;
 	private BindingTrace trace;
 
-	public JetFlowInformationProvider(@NotNull NapileDeclaration declaration, @NotNull BindingTrace trace)
+	public NapileFlowInformationProvider(@NotNull NapileDeclaration declaration, @NotNull BindingTrace trace)
 	{
 
 		subroutine = declaration;
 		this.trace = trace;
-		pseudocode = new JetControlFlowProcessor(trace).generatePseudocode(declaration);
+		pseudocode = new NapileControlFlowProcessor(trace).generatePseudocode(declaration);
 		pseudocodeVariablesData = new PseudocodeVariablesData(pseudocode, trace);
 	}
 
@@ -127,9 +127,9 @@ public class JetFlowInformationProvider
 				@Override
 				public void visitInstruction(Instruction instruction)
 				{
-					if(instruction instanceof JetElementInstruction)
+					if(instruction instanceof NapileElementInstruction)
 					{
-						JetElementInstruction elementInstruction = (JetElementInstruction) instruction;
+						NapileElementInstruction elementInstruction = (NapileElementInstruction) instruction;
 						returnedExpressions.add(elementInstruction.getElement());
 					}
 					else
@@ -141,7 +141,7 @@ public class JetFlowInformationProvider
 		}
 	}
 
-	public void checkDefiniteReturn(final @NotNull JetType expectedReturnType)
+	public void checkDefiniteReturn(final @NotNull NapileType expectedReturnType)
 	{
 		assert subroutine instanceof NapileDeclarationWithBody;
 		NapileDeclarationWithBody function = (NapileDeclarationWithBody) subroutine;
@@ -209,9 +209,9 @@ public class JetFlowInformationProvider
 		Collection<NapileElement> unreachableElements = Lists.newArrayList();
 		for(Instruction deadInstruction : pseudocode.getDeadInstructions())
 		{
-			if(deadInstruction instanceof JetElementInstruction && !(deadInstruction instanceof ReadUnitValueInstruction))
+			if(deadInstruction instanceof NapileElementInstruction && !(deadInstruction instanceof ReadUnitValueInstruction))
 			{
-				unreachableElements.add(((JetElementInstruction) deadInstruction).getElement());
+				unreachableElements.add(((NapileElementInstruction) deadInstruction).getElement());
 			}
 		}
 		// This is needed in order to highlight only '1 < 2' and not '1', '<' and '2' as well

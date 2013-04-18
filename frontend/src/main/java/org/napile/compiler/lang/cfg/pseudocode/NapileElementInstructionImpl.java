@@ -22,8 +22,19 @@ import org.napile.compiler.lang.psi.NapileElement;
 /**
  * @author abreslav
  */
-public interface JetElementInstruction extends Instruction
+public abstract class NapileElementInstructionImpl extends InstructionImpl implements NapileElementInstruction
 {
+	protected final NapileElement element;
+
+	public NapileElementInstructionImpl(@NotNull NapileElement element)
+	{
+		this.element = element;
+	}
+
 	@NotNull
-	NapileElement getElement();
+	@Override
+	public NapileElement getElement()
+	{
+		return element;
+	}
 }

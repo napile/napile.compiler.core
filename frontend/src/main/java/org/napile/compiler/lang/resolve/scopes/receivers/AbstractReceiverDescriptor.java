@@ -17,23 +17,23 @@
 package org.napile.compiler.lang.resolve.scopes.receivers;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
  */
 public abstract class AbstractReceiverDescriptor implements ReceiverDescriptor
 {
-	protected final JetType receiverType;
+	protected final NapileType receiverType;
 
-	public AbstractReceiverDescriptor(@NotNull JetType receiverType)
+	public AbstractReceiverDescriptor(@NotNull NapileType receiverType)
 	{
 		this.receiverType = receiverType;
 	}
 
 	@Override
 	@NotNull
-	public JetType getType()
+	public NapileType getType()
 	{
 		return receiverType;
 	}

@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author VISTALL
@@ -45,7 +45,7 @@ public class MultiTypeEntryVariableDescriptorImpl extends VariableDescriptorImpl
 		this.index = index;
 	}
 
-	public MultiTypeEntryVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic, boolean mutable, int index)
+	public MultiTypeEntryVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull NapileType outType, @NotNull Kind kind, boolean isStatic, boolean mutable, int index)
 	{
 		super(containingDeclaration, annotations, modality, visibility, expectedThisObject, name, outType, kind, isStatic, mutable, false);
 		this.index = index;

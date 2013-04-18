@@ -157,7 +157,7 @@ public class CompilerProcessor
 			File outputDir = arguments.outputDir != null ? new File(arguments.outputDir) : null;
 
 			boolean noErrors;
-			JetCoreEnvironment environment = new JetCoreEnvironment(rootDisposable, configuration);
+			NapileCoreEnvironment environment = new NapileCoreEnvironment(rootDisposable, configuration);
 			noErrors = AnalyzeProcessor.compileBunchOfSources(environment, outputDir);
 
 			return noErrors ? OK : COMPILATION_ERROR;

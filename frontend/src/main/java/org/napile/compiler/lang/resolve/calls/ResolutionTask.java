@@ -45,11 +45,11 @@ import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import com.google.common.collect.Sets;
 import com.intellij.lang.ASTNode;
@@ -68,7 +68,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 	/*package*/ final NapileReferenceExpression reference;
 	private DescriptorCheckStrategy checkingStrategy;
 
-	public ResolutionTask(@NotNull Collection<ResolutionCandidate<D>> candidates, @NotNull NapileReferenceExpression reference, BindingTrace trace, JetScope scope, Call call, JetType expectedType, DataFlowInfo dataFlowInfo)
+	public ResolutionTask(@NotNull Collection<ResolutionCandidate<D>> candidates, @NotNull NapileReferenceExpression reference, BindingTrace trace, NapileScope scope, Call call, NapileType expectedType, DataFlowInfo dataFlowInfo)
 	{
 		super(trace, scope, call, expectedType, dataFlowInfo);
 		this.candidates = candidates;
@@ -226,7 +226,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		}
 
 		@Override
-		public void unsafeCall(@NotNull BindingTrace trace, @NotNull JetType type, boolean isCallForImplicitInvoke)
+		public void unsafeCall(@NotNull BindingTrace trace, @NotNull NapileType type, boolean isCallForImplicitInvoke)
 		{
 			ASTNode callOperationNode = call.getCallOperationNode();
 			if(callOperationNode != null && !isCallForImplicitInvoke)
@@ -260,7 +260,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 		}
 
 		@Override
-		public void unnecessarySafeCall(@NotNull BindingTrace trace, @NotNull JetType type)
+		public void unnecessarySafeCall(@NotNull BindingTrace trace, @NotNull NapileType type)
 		{
 			ASTNode callOperationNode = call.getCallOperationNode();
 			assert callOperationNode != null;
@@ -312,7 +312,7 @@ public class ResolutionTask<D extends CallableDescriptor, F extends D> extends R
 			boolean successfulWithoutExpectedTypeConstraint = systemWithoutExpectedTypeConstraint.isSuccessful();
 			if(constraintSystem.hasExpectedTypeMismatch() || successfulWithoutExpectedTypeConstraint)
 			{
-				JetType returnType = data.descriptor.getReturnType();
+				NapileType returnType = data.descriptor.getReturnType();
 				assert returnType != null;
 				if(successfulWithoutExpectedTypeConstraint)
 				{

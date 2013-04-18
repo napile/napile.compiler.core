@@ -33,7 +33,7 @@ public class IntersectionTypeConstructor extends AbstractTypeConstructorImpl imp
 	private final List<AnnotationDescriptor> annotations;
 	private final int hashCode;
 
-	public IntersectionTypeConstructor(@NotNull List<AnnotationDescriptor> annotations, @NotNull Collection<JetType> typesToIntersect)
+	public IntersectionTypeConstructor(@NotNull List<AnnotationDescriptor> annotations, @NotNull Collection<NapileType> typesToIntersect)
 	{
 		super(typesToIntersect);
 		this.annotations = annotations;
@@ -47,7 +47,7 @@ public class IntersectionTypeConstructor extends AbstractTypeConstructorImpl imp
 	}
 
 	@Override
-	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
+	public <A, R> R accept(NapileType type, TypeConstructorVisitor<A, R> visitor, A arg)
 	{
 		return visitor.visitType(type, this, arg);
 	}
@@ -58,7 +58,7 @@ public class IntersectionTypeConstructor extends AbstractTypeConstructorImpl imp
 		return makeDebugNameForIntersectionType(getSupertypes());
 	}
 
-	private static String makeDebugNameForIntersectionType(Collection<? extends JetType> resultingTypes)
+	private static String makeDebugNameForIntersectionType(Collection<? extends NapileType> resultingTypes)
 	{
 		StringBuilder debugName = new StringBuilder("{");
 		debugName.append(StringUtil.join(resultingTypes, " & "));

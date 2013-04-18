@@ -17,32 +17,32 @@
 package org.napile.compiler.lang.types.checker;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import com.google.common.collect.BiMap;
 
 /**
  * @author abreslav
  */
-public class JetTypeChecker
+public class NapileTypeChecker
 {
-	public static final JetTypeChecker INSTANCE = new JetTypeChecker();
+	public static final NapileTypeChecker INSTANCE = new NapileTypeChecker();
 
-	private JetTypeChecker()
+	private NapileTypeChecker()
 	{
 	}
 
-	public boolean isSubtypeOf(@NotNull JetType subtype, @NotNull JetType supertype)
+	public boolean isSubtypeOf(@NotNull NapileType subtype, @NotNull NapileType supertype)
 	{
 		return TYPE_CHECKER.isSubtypeOf(subtype, supertype);
 	}
 
-	public boolean equalTypes(@NotNull JetType a, @NotNull JetType b)
+	public boolean equalTypes(@NotNull NapileType a, @NotNull NapileType b)
 	{
 		return TYPE_CHECKER.equalTypes(a, b);
 	}
 
-	public boolean equalTypes(@NotNull JetType a, @NotNull JetType b, @NotNull final BiMap<TypeConstructor, TypeConstructor> equalityAxioms)
+	public boolean equalTypes(@NotNull NapileType a, @NotNull NapileType b, @NotNull final BiMap<TypeConstructor, TypeConstructor> equalityAxioms)
 	{
 		return new TypeCheckingProcedure(new TypeCheckerTypingConstraints()
 		{
@@ -68,7 +68,7 @@ public class JetTypeChecker
 	private static class TypeCheckerTypingConstraints implements TypingConstraints
 	{
 		@Override
-		public boolean assertEqualTypes(@NotNull JetType a, @NotNull JetType b, @NotNull TypeCheckingProcedure typeCheckingProcedure)
+		public boolean assertEqualTypes(@NotNull NapileType a, @NotNull NapileType b, @NotNull TypeCheckingProcedure typeCheckingProcedure)
 		{
 			return typeCheckingProcedure.equalTypes(a, b);
 			//            return TypeUtils.equalTypes(a, b);
@@ -81,13 +81,13 @@ public class JetTypeChecker
 		}
 
 		@Override
-		public boolean assertSubtype(@NotNull JetType subtype, @NotNull JetType supertype, @NotNull TypeCheckingProcedure typeCheckingProcedure)
+		public boolean assertSubtype(@NotNull NapileType subtype, @NotNull NapileType supertype, @NotNull TypeCheckingProcedure typeCheckingProcedure)
 		{
 			return typeCheckingProcedure.isSubtypeOf(subtype, supertype);
 		}
 
 		@Override
-		public boolean noCorrespondingSupertype(@NotNull JetType subtype, @NotNull JetType supertype)
+		public boolean noCorrespondingSupertype(@NotNull NapileType subtype, @NotNull NapileType supertype)
 		{
 			return false; // type checking fails
 		}

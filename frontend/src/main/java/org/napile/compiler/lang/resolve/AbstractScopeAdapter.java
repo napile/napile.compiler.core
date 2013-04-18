@@ -28,7 +28,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 
 /**
@@ -36,10 +36,10 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
  *
  * @author abreslav
  */
-public abstract class AbstractScopeAdapter implements JetScope
+public abstract class AbstractScopeAdapter implements NapileScope
 {
 	@NotNull
-	protected abstract JetScope getWorkerScope();
+	protected abstract NapileScope getWorkerScope();
 
 	@NotNull
 	@Override

@@ -23,25 +23,25 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructorVisitor;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import org.napile.compiler.render.DescriptorRenderer;
 
 /**
  * @author abreslav
  */
-public final class JetTypeImpl extends AnnotatedImpl implements JetType
+public final class NapileTypeImpl extends AnnotatedImpl implements NapileType
 {
 	private final TypeConstructor constructor;
-	private final List<JetType> arguments;
+	private final List<NapileType> arguments;
 	private final boolean nullable;
-	private final JetScope memberScope;
+	private final NapileScope memberScope;
 
-	public JetTypeImpl(List<AnnotationDescriptor> annotations, TypeConstructor constructor, boolean nullable, @NotNull List<JetType> arguments, JetScope memberScope)
+	public NapileTypeImpl(List<AnnotationDescriptor> annotations, TypeConstructor constructor, boolean nullable, @NotNull List<NapileType> arguments, NapileScope memberScope)
 	{
 		super(annotations);
 
@@ -56,14 +56,14 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 		this.memberScope = memberScope;
 	}
 
-	public JetTypeImpl(TypeConstructor constructor, JetScope memberScope)
+	public NapileTypeImpl(TypeConstructor constructor, NapileScope memberScope)
 	{
-		this(Collections.<AnnotationDescriptor>emptyList(), constructor, false, Collections.<JetType>emptyList(), memberScope);
+		this(Collections.<AnnotationDescriptor>emptyList(), constructor, false, Collections.<NapileType>emptyList(), memberScope);
 	}
 
-	public JetTypeImpl(@NotNull ClassDescriptor classDescriptor)
+	public NapileTypeImpl(@NotNull ClassDescriptor classDescriptor)
 	{
-		this(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>emptyList(), classDescriptor.getMemberScope(Collections.<JetType>emptyList()));
+		this(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<NapileType>emptyList(), classDescriptor.getMemberScope(Collections.<NapileType>emptyList()));
 	}
 
 	@NotNull
@@ -75,7 +75,7 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 
 	@NotNull
 	@Override
-	public List<JetType> getArguments()
+	public List<NapileType> getArguments()
 	{
 		return arguments;
 	}
@@ -88,7 +88,7 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 
 	@NotNull
 	@Override
-	public JetScope getMemberScope()
+	public NapileScope getMemberScope()
 	{
 		if(memberScope == null)
 		{
@@ -112,9 +112,9 @@ public final class JetTypeImpl extends AnnotatedImpl implements JetType
 		if(o == null || getClass() != o.getClass())
 			return false;
 
-		JetTypeImpl type = (JetTypeImpl) o;
+		NapileTypeImpl type = (NapileTypeImpl) o;
 
-		return JetTypeChecker.INSTANCE.equalTypes(this, type);
+		return NapileTypeChecker.INSTANCE.equalTypes(this, type);
 	}
 
 	@Override

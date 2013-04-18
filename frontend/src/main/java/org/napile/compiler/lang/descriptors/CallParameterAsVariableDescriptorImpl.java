@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.google.common.collect.Lists;
 
 /**
@@ -32,13 +32,13 @@ public class CallParameterAsVariableDescriptorImpl extends AbstractCallParameter
 {
 	private final boolean ref;
 
-	public CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable, boolean ref)
+	public CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable NapileType outType, @NotNull Modality modality, boolean mutable, boolean ref)
 	{
 		super(containingDeclaration, index, annotations, name, outType, modality, mutable);
 		this.ref = ref;
 	}
 
-	protected CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable, boolean ref)
+	protected CallParameterAsVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull CallParameterDescriptor original, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable NapileType outType, @NotNull Modality modality, boolean mutable, boolean ref)
 	{
 		super(containingDeclaration, original, annotations, name, modality, mutable);
 		this.ref = ref;

@@ -25,19 +25,19 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
  */
 public abstract class AbstractVariableDescriptorImpl extends DeclarationDescriptorNonRootImpl implements VariableDescriptor
 {
-	private JetType outType;
+	private NapileType outType;
 	private final boolean isStatic;
 	private final boolean mutable;
 	private final Modality modality;
 
-	public AbstractVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean isStatic, boolean mutable)
+	public AbstractVariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable NapileType outType, @NotNull Modality modality, boolean isStatic, boolean mutable)
 	{
 		super(containingDeclaration, annotations, name);
 
@@ -61,7 +61,7 @@ public abstract class AbstractVariableDescriptorImpl extends DeclarationDescript
 
 	@NotNull
 	@Override
-	public JetType getType()
+	public NapileType getType()
 	{
 		return outType;
 	}
@@ -79,7 +79,7 @@ public abstract class AbstractVariableDescriptorImpl extends DeclarationDescript
 		return mutable;
 	}
 
-	public void setOutType(@NotNull JetType type)
+	public void setOutType(@NotNull NapileType type)
 	{
 		assert this.outType == null;
 		outType = type;
@@ -141,7 +141,7 @@ public abstract class AbstractVariableDescriptorImpl extends DeclarationDescript
 
 	@NotNull
 	@Override
-	public JetType getReturnType()
+	public NapileType getReturnType()
 	{
 		return getType();
 	}

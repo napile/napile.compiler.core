@@ -24,7 +24,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
@@ -48,13 +48,13 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 
 	private final WritableScope staticScope;
 
-	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope outerScope, ClassKind kind, Name name, @NotNull List<AnnotationDescriptor> annotationDescriptors, boolean isStatic)
+	public MutableClassDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileScope outerScope, ClassKind kind, Name name, @NotNull List<AnnotationDescriptor> annotationDescriptors, boolean isStatic)
 	{
 		super(containingDeclaration, kind, annotationDescriptors, isStatic);
 
 		RedeclarationHandler redeclarationHandler = RedeclarationHandler.DO_NOTHING;
 
-		setScopeForMemberLookup(new WritableScopeImpl(JetScope.EMPTY, this, redeclarationHandler, "MemberLookup").changeLockLevel(WritableScope.LockLevel.BOTH));
+		setScopeForMemberLookup(new WritableScopeImpl(NapileScope.EMPTY, this, redeclarationHandler, "MemberLookup").changeLockLevel(WritableScope.LockLevel.BOTH));
 		this.scopeForSupertypeResolution = new WritableScopeImpl(outerScope, this, redeclarationHandler, "SupertypeResolution").changeLockLevel(WritableScope.LockLevel.BOTH);
 		this.staticScope = new WritableScopeImpl(outerScope, this, redeclarationHandler, "StatisScope").changeLockLevel(WritableScope.LockLevel.BOTH);
 		this.scopeForMemberResolution = new WritableScopeImpl(scopeForSupertypeResolution, this, redeclarationHandler, "MemberResolution").changeLockLevel(WritableScope.LockLevel.BOTH);
@@ -77,7 +77,7 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 
 	@NotNull
 	@Override
-	public JetScope getStaticOuterScope()
+	public NapileScope getStaticOuterScope()
 	{
 		return staticScope;
 	}
@@ -145,13 +145,13 @@ public class MutableClassDescriptor extends MutableClassDescriptorLite
 	}
 
 	@NotNull
-	public JetScope getScopeForSupertypeResolution()
+	public NapileScope getScopeForSupertypeResolution()
 	{
 		return scopeForSupertypeResolution;
 	}
 
 	@NotNull
-	public JetScope getScopeForMemberResolution()
+	public NapileScope getScopeForMemberResolution()
 	{
 		return scopeForMemberResolution;
 	}

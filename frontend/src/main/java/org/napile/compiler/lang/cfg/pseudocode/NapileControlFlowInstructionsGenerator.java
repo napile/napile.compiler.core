@@ -26,8 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.cfg.BlockInfo;
 import org.napile.compiler.lang.cfg.BreakableBlockInfo;
 import org.napile.compiler.lang.cfg.GenerationTrigger;
-import org.napile.compiler.lang.cfg.JetControlFlowBuilder;
-import org.napile.compiler.lang.cfg.JetControlFlowBuilderAdapter;
+import org.napile.compiler.lang.cfg.NapileControlFlowBuilder;
+import org.napile.compiler.lang.cfg.NapileControlFlowBuilderAdapter;
 import org.napile.compiler.lang.cfg.Label;
 import org.napile.compiler.lang.cfg.LoopInfo;
 import org.napile.compiler.lang.psi.NapileAnonymMethod;
@@ -41,27 +41,27 @@ import org.napile.compiler.lang.psi.NapileVariable;
 /**
  * @author abreslav
  */
-public class JetControlFlowInstructionsGenerator extends JetControlFlowBuilderAdapter
+public class NapileControlFlowInstructionsGenerator extends NapileControlFlowBuilderAdapter
 {
 
 	private final Stack<BreakableBlockInfo> loopInfo = new Stack<BreakableBlockInfo>();
 	private final Map<NapileElement, BreakableBlockInfo> elementToBlockInfo = new HashMap<NapileElement, BreakableBlockInfo>();
 	private int labelCount = 0;
 
-	private final Stack<JetControlFlowInstructionsGeneratorWorker> builders = new Stack<JetControlFlowInstructionsGeneratorWorker>();
+	private final Stack<NapileControlFlowInstructionsGeneratorWorker> builders = new Stack<NapileControlFlowInstructionsGeneratorWorker>();
 
 	private final Stack<BlockInfo> allBlocks = new Stack<BlockInfo>();
 
 	private void pushBuilder(NapileElement scopingElement, NapileElement subroutine)
 	{
-		JetControlFlowInstructionsGeneratorWorker worker = new JetControlFlowInstructionsGeneratorWorker(scopingElement, subroutine);
+		NapileControlFlowInstructionsGeneratorWorker worker = new NapileControlFlowInstructionsGeneratorWorker(scopingElement, subroutine);
 		builders.push(worker);
 		builder = worker;
 	}
 
-	private JetControlFlowInstructionsGeneratorWorker popBuilder(@NotNull NapileElement element)
+	private NapileControlFlowInstructionsGeneratorWorker popBuilder(@NotNull NapileElement element)
 	{
-		JetControlFlowInstructionsGeneratorWorker worker = builders.pop();
+		NapileControlFlowInstructionsGeneratorWorker worker = builders.pop();
 		if(!builders.isEmpty())
 		{
 			builder = builders.peek();
@@ -92,17 +92,17 @@ public class JetControlFlowInstructionsGenerator extends JetControlFlowBuilderAd
 	public Pseudocode exitSubroutine(@NotNull NapileDeclaration subroutine)
 	{
 		super.exitSubroutine(subroutine);
-		JetControlFlowInstructionsGeneratorWorker worker = popBuilder(subroutine);
+		NapileControlFlowInstructionsGeneratorWorker worker = popBuilder(subroutine);
 		if(!builders.empty())
 		{
-			JetControlFlowInstructionsGeneratorWorker builder = builders.peek();
+			NapileControlFlowInstructionsGeneratorWorker builder = builders.peek();
 			LocalDeclarationInstruction instruction = new LocalDeclarationInstruction(subroutine, worker.getPseudocode());
 			builder.add(instruction);
 		}
 		return worker.getPseudocode();
 	}
 
-	private class JetControlFlowInstructionsGeneratorWorker implements JetControlFlowBuilder
+	private class NapileControlFlowInstructionsGeneratorWorker implements NapileControlFlowBuilder
 	{
 
 		private final PseudocodeImpl pseudocode;
@@ -110,7 +110,7 @@ public class JetControlFlowInstructionsGenerator extends JetControlFlowBuilderAd
 		private final Label sink;
 		private final NapileElement returnSubroutine;
 
-		private JetControlFlowInstructionsGeneratorWorker(@NotNull NapileElement scopingElement, @NotNull NapileElement returnSubroutine)
+		private NapileControlFlowInstructionsGeneratorWorker(@NotNull NapileElement scopingElement, @NotNull NapileElement returnSubroutine)
 		{
 			this.pseudocode = new PseudocodeImpl(scopingElement);
 			this.error = pseudocode.createLabel("error");

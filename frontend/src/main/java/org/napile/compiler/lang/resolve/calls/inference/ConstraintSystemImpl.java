@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
@@ -42,7 +42,7 @@ import com.google.common.collect.Sets;
 public class ConstraintSystemImpl implements ConstraintSystem
 {
 
-	public static final JetType DONT_CARE = ErrorUtils.createErrorTypeWithCustomDebugName("DONT_CARE");
+	public static final NapileType DONT_CARE = ErrorUtils.createErrorTypeWithCustomDebugName("DONT_CARE");
 
 	private final Map<TypeParameterDescriptor, TypeConstraintsImpl> typeParameterConstraints = Maps.newLinkedHashMap();
 	private final Set<ConstraintPosition> errorConstraintPositions = Sets.newHashSet();
@@ -56,19 +56,19 @@ public class ConstraintSystemImpl implements ConstraintSystem
 		this.currentSubstitutor = createTypeSubstitutorWithDefaultForUnknownTypeParameter(DONT_CARE);
 	}
 
-	private TypeSubstitutor createTypeSubstitutorWithDefaultForUnknownTypeParameter(@Nullable final JetType defaultTypeProjection)
+	private TypeSubstitutor createTypeSubstitutorWithDefaultForUnknownTypeParameter(@Nullable final NapileType defaultTypeProjection)
 	{
 		return TypeSubstitutor.create(new TypeSubstitution()
 		{
 			@Override
-			public JetType get(TypeConstructor key)
+			public NapileType get(TypeConstructor key)
 			{
 				DeclarationDescriptor declarationDescriptor = key.getDeclarationDescriptor();
 				if(declarationDescriptor instanceof TypeParameterDescriptor)
 				{
 					TypeParameterDescriptor descriptor = (TypeParameterDescriptor) declarationDescriptor;
 
-					JetType value = ConstraintsUtil.getValue(getTypeConstraints(descriptor));
+					NapileType value = ConstraintsUtil.getValue(getTypeConstraints(descriptor));
 					if(value != null && !TypeUtils.dependsOnTypeParameterConstructors(value, Collections.singleton(DONT_CARE.getConstructor())))
 					{
 						return value;
@@ -160,18 +160,18 @@ public class ConstraintSystemImpl implements ConstraintSystem
 	}
 
 	@Override
-	public void addSubtypingConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition)
+	public void addSubtypingConstraint(@NotNull NapileType subjectType, @Nullable NapileType constrainingType, @NotNull ConstraintPosition constraintPosition)
 	{
 		addConstraint(subjectType, constrainingType, constraintPosition);
 	}
 
 	@Override
-	public void addSupertypeConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition)
+	public void addSupertypeConstraint(@NotNull NapileType subjectType, @Nullable NapileType constrainingType, @NotNull ConstraintPosition constraintPosition)
 	{
 		addConstraint(subjectType, constrainingType, constraintPosition);
 	}
 
-	private void addConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition)
+	private void addConstraint(@NotNull NapileType subjectType, @Nullable NapileType constrainingType, @NotNull ConstraintPosition constraintPosition)
 	{
 		if(constrainingType == null || (ErrorUtils.isErrorType(constrainingType) && constrainingType != DONT_CARE))
 		{
@@ -202,12 +202,12 @@ public class ConstraintSystemImpl implements ConstraintSystem
 			}
 		}
 
-		JetType correspondingSupertype = TypeCheckingProcedure.findCorrespondingSupertype(subjectType, constrainingType);
+		NapileType correspondingSupertype = TypeCheckingProcedure.findCorrespondingSupertype(subjectType, constrainingType);
 		if(correspondingSupertype != null)
 			subjectType = correspondingSupertype;
 
-		List<JetType> subjectArguments = subjectType.getArguments();
-		List<JetType> constrainingArguments = constrainingType.getArguments();
+		List<NapileType> subjectArguments = subjectType.getArguments();
+		List<NapileType> constrainingArguments = constrainingType.getArguments();
 		if(subjectArguments.size() != constrainingArguments.size())
 			return;
 

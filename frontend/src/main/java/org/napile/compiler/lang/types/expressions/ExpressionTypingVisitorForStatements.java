@@ -38,8 +38,8 @@ import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.OverloadResolutionResultsUtil;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileType;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -65,7 +65,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Nullable
-	private JetType checkAssignmentType(@Nullable JetType assignmentType, @NotNull NapileBinaryExpression expression, @NotNull ExpressionTypingContext context)
+	private NapileType checkAssignmentType(@Nullable NapileType assignmentType, @NotNull NapileBinaryExpression expression, @NotNull ExpressionTypingContext context)
 	{
 		if(assignmentType != null && !TypeUtils.isEqualFqName(assignmentType, NapileLangPackage.NULL) && context.expectedType != TypeUtils.NO_EXPECTED_TYPE &&
 				TypeUtils.equalTypes(context.expectedType, assignmentType))
@@ -77,7 +77,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitAnonymClass(NapileAnonymClass declaration, ExpressionTypingContext context)
+	public NapileTypeInfo visitAnonymClass(NapileAnonymClass declaration, ExpressionTypingContext context)
 	{
 		//TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), declaration);
 
@@ -85,7 +85,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitVariable(NapileVariable property, ExpressionTypingContext context)
+	public NapileTypeInfo visitVariable(NapileVariable property, ExpressionTypingContext context)
 	{
 		VariableDescriptor propertyDescriptor = context.expressionTypingServices.getDescriptorResolver().resolveLocalVariableDescriptor(scope.getContainingDeclaration(), scope, property, context.dataFlowInfo, context.trace);
 		NapileExpression initializer = property.getInitializer();
@@ -104,7 +104,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitClass(NapileClass klass, ExpressionTypingContext context)
+	public NapileTypeInfo visitClass(NapileClass klass, ExpressionTypingContext context)
 	{
 		//TopDownAnalyzer.processClassOrObject(context.expressionTypingServices.getProject(), context.trace, scope, scope.getContainingDeclaration(), klass);
 		ClassDescriptor classDescriptor = context.trace.get(BindingTraceKeys.CLASS, klass);
@@ -116,17 +116,17 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitDeclaration(NapileDeclaration dcl, ExpressionTypingContext context)
+	public NapileTypeInfo visitDeclaration(NapileDeclaration dcl, ExpressionTypingContext context)
 	{
 		return DataFlowUtils.checkStatementType(dcl, context, context.dataFlowInfo);
 	}
 
 	@Override
-	public JetTypeInfo visitBinaryExpression(NapileBinaryExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitBinaryExpression(NapileBinaryExpression expression, ExpressionTypingContext context)
 	{
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
 		IElementType operationType = operationSign.getReferencedNameElementType();
-		JetType result;
+		NapileType result;
 		if(operationType == NapileTokens.EQ)
 			result = visitAssignment(expression, context);
 		else if(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.containsKey(operationType))
@@ -139,7 +139,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		return DataFlowUtils.checkType(result, expression, context, context.dataFlowInfo);
 	}
 
-	protected JetType visitAssignmentOperation(NapileBinaryExpression expression, ExpressionTypingContext contextWithExpectedType)
+	protected NapileType visitAssignmentOperation(NapileBinaryExpression expression, ExpressionTypingContext contextWithExpectedType)
 	{
 		NapileExpression right = expression.getRight();
 		if(right == null)
@@ -155,7 +155,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		if(left == null)
 			return null;
 
-		JetType leftType = facade.getTypeInfo(left, context).getType();
+		NapileType leftType = facade.getTypeInfo(left, context).getType();
 		if(leftType == null)
 		{
 			facade.getTypeInfo(right, context);
@@ -169,7 +169,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 		Name counterpartName = OperatorConventions.BINARY_OPERATION_NAMES.get(OperatorConventions.ASSIGNMENT_OPERATION_COUNTERPARTS.get(operationType));
 		TemporaryBindingTrace binaryOperationTrace = TemporaryBindingTrace.create(context.trace);
 		OverloadResolutionResults<MethodDescriptor> binaryOperationDescriptors = basic.getResolutionResultsForBinaryCall(scope, counterpartName, context.replaceBindingTrace(binaryOperationTrace), expression, receiver);
-		JetType binaryOperationType = OverloadResolutionResultsUtil.getResultType(binaryOperationDescriptors);
+		NapileType binaryOperationType = OverloadResolutionResultsUtil.getResultType(binaryOperationDescriptors);
 
 		if(binaryOperationType != null)
 		{
@@ -190,7 +190,7 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Nullable
-	protected JetType visitAssignment(NapileBinaryExpression expression, ExpressionTypingContext contextWithExpectedType)
+	protected NapileType visitAssignment(NapileBinaryExpression expression, ExpressionTypingContext contextWithExpectedType)
 	{
 		ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
 		NapileExpression left = NapilePsiUtil.deparenthesize(expression.getLeft());
@@ -200,12 +200,12 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 			NapileArrayAccessExpressionImpl arrayAccessExpression = (NapileArrayAccessExpressionImpl) left;
 			if(right == null)
 				return null;
-			JetType assignmentType = basic.resolveArrayAccessSetMethod(arrayAccessExpression, right, context.replaceScope(scope), context.trace);
+			NapileType assignmentType = basic.resolveArrayAccessSetMethod(arrayAccessExpression, right, context.replaceScope(scope), context.trace);
 			basic.checkLValue(context.trace, arrayAccessExpression);
 			return checkAssignmentType(assignmentType, expression, contextWithExpectedType);
 		}
 
-		JetType leftType = facade.getTypeInfo(left, context).getType();
+		NapileType leftType = facade.getTypeInfo(left, context).getType();
 		if(right != null)
 			facade.getTypeInfo(right, context);
 		if(leftType != null)
@@ -214,62 +214,62 @@ public class ExpressionTypingVisitorForStatements extends ExpressionTypingVisito
 	}
 
 	@Override
-	public JetTypeInfo visitExpression(NapileExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitExpression(NapileExpression expression, ExpressionTypingContext context)
 	{
 		return facade.getTypeInfo(expression, context);
 	}
 
 	@Override
-	public JetTypeInfo visitJetElement(NapileElement element, ExpressionTypingContext context)
+	public NapileTypeInfo visitJetElement(NapileElement element, ExpressionTypingContext context)
 	{
 		context.trace.report(UNSUPPORTED.on(element, "in a block"));
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		return NapileTypeInfo.create(null, context.dataFlowInfo);
 	}
 
 	@Override
-	public JetTypeInfo visitWhileExpression(NapileWhileExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitWhileExpression(NapileWhileExpression expression, ExpressionTypingContext context)
 	{
 		return controlStructures.visitWhileExpression(expression, context, true);
 	}
 
 	@Override
-	public JetTypeInfo visitDoWhileExpression(NapileDoWhileExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitDoWhileExpression(NapileDoWhileExpression expression, ExpressionTypingContext context)
 	{
 		return controlStructures.visitDoWhileExpression(expression, context, true);
 	}
 
 	@Override
-	public JetTypeInfo visitForExpression(NapileForExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitForExpression(NapileForExpression expression, ExpressionTypingContext context)
 	{
 		return controlStructures.visitForExpression(expression, context, true);
 	}
 
 	@Override
-	public JetTypeInfo visitIfExpression(NapileIfExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitIfExpression(NapileIfExpression expression, ExpressionTypingContext context)
 	{
 		return controlStructures.visitIfExpression(expression, context, true);
 	}
 
 	@Override
-	public JetTypeInfo visitWhenExpression(final NapileWhenExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitWhenExpression(final NapileWhenExpression expression, ExpressionTypingContext context)
 	{
 		return patterns.visitWhenExpression(expression, context, true);
 	}
 
 	@Override
-	public JetTypeInfo visitBlockExpression(NapileBlockExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitBlockExpression(NapileBlockExpression expression, ExpressionTypingContext context)
 	{
 		return basic.visitBlockExpression(expression, context, true);
 	}
 
 	@Override
-	public JetTypeInfo visitParenthesizedExpression(NapileParenthesizedExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitParenthesizedExpression(NapileParenthesizedExpression expression, ExpressionTypingContext context)
 	{
 		return basic.visitParenthesizedExpression(expression, context, true);
 	}
 
 	@Override
-	public JetTypeInfo visitUnaryExpression(NapileUnaryExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitUnaryExpression(NapileUnaryExpression expression, ExpressionTypingContext context)
 	{
 		return basic.visitUnaryExpression(expression, context, true);
 	}

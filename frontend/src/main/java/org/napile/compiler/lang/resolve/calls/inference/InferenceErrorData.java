@@ -21,7 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 
 /**
@@ -31,10 +31,10 @@ public class InferenceErrorData
 {
 	public final CallableDescriptor descriptor;
 	public final ConstraintSystem constraintSystem;
-	public final JetType expectedType;
-	public final List<JetType> valueArgumentsTypes;
+	public final NapileType expectedType;
+	public final List<NapileType> valueArgumentsTypes;
 
-	private InferenceErrorData(@NotNull CallableDescriptor descriptor, @NotNull ConstraintSystem constraintSystem, @Nullable List<JetType> valueArgumentsTypes, @Nullable JetType expectedType)
+	private InferenceErrorData(@NotNull CallableDescriptor descriptor, @NotNull ConstraintSystem constraintSystem, @Nullable List<NapileType> valueArgumentsTypes, @Nullable NapileType expectedType)
 	{
 		this.descriptor = descriptor;
 		this.constraintSystem = constraintSystem;
@@ -42,7 +42,7 @@ public class InferenceErrorData
 		this.expectedType = expectedType;
 	}
 
-	public static InferenceErrorData create(@NotNull CallableDescriptor descriptor, @NotNull ConstraintSystem constraintSystem, @NotNull List<JetType> valueArgumentsTypes, @Nullable JetType expectedType)
+	public static InferenceErrorData create(@NotNull CallableDescriptor descriptor, @NotNull ConstraintSystem constraintSystem, @NotNull List<NapileType> valueArgumentsTypes, @Nullable NapileType expectedType)
 	{
 		return new InferenceErrorData(descriptor, constraintSystem, valueArgumentsTypes, expectedType != TypeUtils.NO_EXPECTED_TYPE ? expectedType : null);
 	}

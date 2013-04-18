@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.google.common.collect.Lists;
 
 /**
@@ -33,7 +33,7 @@ public class CallParameterAsReferenceDescriptorImpl extends AbstractCallParamete
 {
 	private final VariableDescriptor referenceProperty;
 
-	public CallParameterAsReferenceDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull VariableDescriptor referenceProperty)
+	public CallParameterAsReferenceDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable NapileType outType, @NotNull VariableDescriptor referenceProperty)
 	{
 		super(containingDeclaration, index, annotations, name, outType, Modality.FINAL, false);
 		this.referenceProperty = referenceProperty;

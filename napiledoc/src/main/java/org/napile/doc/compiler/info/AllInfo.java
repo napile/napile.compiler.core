@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.napile.compiler.analyzer.AnalyzeExhaust;
-import org.napile.compiler.common.JetCoreEnvironment;
+import org.napile.compiler.common.NapileCoreEnvironment;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 
@@ -32,7 +32,7 @@ public class AllInfo
 {
 	public final Map<String, PackageInfo> packages = new TreeMap<String, PackageInfo>();
 
-	public AllInfo(JetCoreEnvironment environment, AnalyzeExhaust analyzeExhaust)
+	public AllInfo(NapileCoreEnvironment environment, AnalyzeExhaust analyzeExhaust)
 	{
 		for(NapileFile napileFile : environment.getSourceFiles())
 		{

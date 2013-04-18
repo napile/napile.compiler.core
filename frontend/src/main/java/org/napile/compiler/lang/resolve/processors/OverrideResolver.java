@@ -42,9 +42,9 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import org.napile.compiler.util.CommonSuppliers;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -129,7 +129,7 @@ public class OverrideResolver
 			return;
 		}
 
-		for(JetType supertype : classDescriptor.getTypeConstructor().getSupertypes())
+		for(NapileType supertype : classDescriptor.getTypeConstructor().getSupertypes())
 		{
 			ClassDescriptor superclass = (ClassDescriptor) supertype.getConstructor().getDeclarationDescriptor();
 			if(superclass instanceof MutableClassDescriptor)
@@ -329,14 +329,14 @@ public class OverrideResolver
 	private static List<CallableMemberDescriptor> getCallableMembersFromSupertypes(ClassDescriptor classDescriptor)
 	{
 		Set<CallableMemberDescriptor> r = Sets.newLinkedHashSet();
-		for(JetType supertype : classDescriptor.getTypeConstructor().getSupertypes())
+		for(NapileType supertype : classDescriptor.getTypeConstructor().getSupertypes())
 		{
 			r.addAll(getCallableMembersFromType(supertype.getMemberScope()));
 		}
 		return new ArrayList<CallableMemberDescriptor>(r);
 	}
 
-	private static List<CallableMemberDescriptor> getCallableMembersFromType(JetScope scope)
+	private static List<CallableMemberDescriptor> getCallableMembersFromType(NapileScope scope)
 	{
 		List<CallableMemberDescriptor> r = Lists.newArrayList();
 		for(DeclarationDescriptor decl : scope.getAllDescriptors())
@@ -453,7 +453,7 @@ public class OverrideResolver
 	public static Multimap<CallableMemberDescriptor, CallableMemberDescriptor> collectSuperMethods(MutableClassDescriptor classDescriptor)
 	{
 		Set<CallableMemberDescriptor> inheritedFunctions = Sets.newLinkedHashSet();
-		for(JetType supertype : classDescriptor.getSupertypes())
+		for(NapileType supertype : classDescriptor.getSupertypes())
 		{
 			for(DeclarationDescriptor descriptor : supertype.getMemberScope().getAllDescriptors())
 			{
@@ -525,7 +525,7 @@ public class OverrideResolver
 						finalOverriddenError = true;
 					}
 
-					if(!OverridingUtil.isReturnTypeOkForOverride(JetTypeChecker.INSTANCE, overridden, declared) && !typeMismatchError)
+					if(!OverridingUtil.isReturnTypeOkForOverride(NapileTypeChecker.INSTANCE, overridden, declared) && !typeMismatchError)
 					{
 						trace.report(RETURN_TYPE_MISMATCH_ON_OVERRIDE.on(member, declared, overridden));
 						typeMismatchError = true;
@@ -571,7 +571,7 @@ public class OverrideResolver
 	{
 		CallableMemberDescriptor invisibleOverride = null;
 		outer:
-		for(JetType supertype : declaringClass.getTypeConstructor().getSupertypes())
+		for(NapileType supertype : declaringClass.getTypeConstructor().getSupertypes())
 		{
 			Set<CallableMemberDescriptor> all = Sets.newLinkedHashSet();
 			all.addAll(supertype.getMemberScope().getMethods(declared.getName()));

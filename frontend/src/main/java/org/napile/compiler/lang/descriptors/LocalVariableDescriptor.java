@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -31,7 +31,7 @@ import org.napile.compiler.lang.types.TypeSubstitutor;
 @Deprecated
 public class LocalVariableDescriptor extends AbstractVariableDescriptorImpl
 {
-	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType type, Modality modality, boolean mutable)
+	public LocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable NapileType type, Modality modality, boolean mutable)
 	{
 		super(containingDeclaration, annotations, name, type, modality, false, mutable);
 	}

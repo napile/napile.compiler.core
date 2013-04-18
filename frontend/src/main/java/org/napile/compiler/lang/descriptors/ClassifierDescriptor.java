@@ -20,8 +20,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 
 /**
@@ -33,13 +33,13 @@ public interface ClassifierDescriptor extends DeclarationDescriptorNonRoot
 	TypeConstructor getTypeConstructor();
 
 	@NotNull
-	JetType getDefaultType();
+	NapileType getDefaultType();
 
 	@NotNull
-	JetScope getStaticOuterScope();
+	NapileScope getStaticOuterScope();
 
 	@NotNull
-	Collection<JetType> getSupertypes();
+	Collection<NapileType> getSupertypes();
 
 	@NotNull
 	Set<ConstructorDescriptor> getConstructors();

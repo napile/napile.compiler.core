@@ -28,7 +28,7 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptorVisitor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.google.common.collect.Lists;
 
 /**
@@ -83,7 +83,7 @@ public class AutoCastUtils
 				//                }
 				DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(receiver.getExpression(), receiver.getType(), bindingTrace);
 				List<ReceiverDescriptor> result = Lists.newArrayList();
-				for(JetType possibleType : dataFlowInfo.getPossibleTypes(dataFlowValue))
+				for(NapileType possibleType : dataFlowInfo.getPossibleTypes(dataFlowValue))
 				{
 					result.add(new AutoCastReceiver(receiver, possibleType, dataFlowValue.isStableIdentifier()));
 				}
@@ -96,7 +96,7 @@ public class AutoCastUtils
 	{
 		assert receiver.exists();
 		List<ReceiverDescriptor> result = Lists.newArrayList();
-		for(JetType possibleType : dataFlowInfo.getPossibleTypes(DataFlowValueFactory.INSTANCE.createDataFlowValue(receiver)))
+		for(NapileType possibleType : dataFlowInfo.getPossibleTypes(DataFlowValueFactory.INSTANCE.createDataFlowValue(receiver)))
 		{
 			result.add(new AutoCastReceiver(receiver, possibleType, true));
 		}

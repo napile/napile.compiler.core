@@ -25,8 +25,8 @@ import org.napile.compiler.injection.text.lang.lexer.TextLexer;
 import org.napile.compiler.injection.text.lang.lexer.TextParser;
 import org.napile.compiler.injection.text.lang.lexer.TextTokens;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
@@ -68,9 +68,9 @@ public class TextCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
-	public JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope)
+	public NapileType getReturnType(@Nullable NapileType expectType, @NotNull BindingTrace bindingTrace, @NotNull NapileScope napileScope)
 	{
-		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.STRING);
+		return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.STRING);
 	}
 
 	@NotNull

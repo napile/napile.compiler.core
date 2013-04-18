@@ -19,8 +19,8 @@ package org.napile.compiler.lang.resolve.calls;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -28,12 +28,12 @@ import org.napile.compiler.lang.types.JetType;
 public abstract class ResolutionContext
 {
 	/*package*/ final BindingTrace trace;
-	/*package*/ final JetScope scope;
+	/*package*/ final NapileScope scope;
 	/*package*/ final Call call;
-	/*package*/ final JetType expectedType;
+	/*package*/ final NapileType expectedType;
 	/*package*/ final DataFlowInfo dataFlowInfo;
 
-	protected ResolutionContext(BindingTrace trace, JetScope scope, Call call, JetType expectedType, DataFlowInfo dataFlowInfo)
+	protected ResolutionContext(BindingTrace trace, NapileScope scope, Call call, NapileType expectedType, DataFlowInfo dataFlowInfo)
 	{
 		this.trace = trace;
 		this.scope = scope;

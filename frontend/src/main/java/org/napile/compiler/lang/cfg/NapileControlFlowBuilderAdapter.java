@@ -31,11 +31,11 @@ import org.napile.compiler.lang.psi.NapileVariable;
 /**
  * @author abreslav
  */
-public class JetControlFlowBuilderAdapter implements JetControlFlowBuilder
+public class NapileControlFlowBuilderAdapter implements NapileControlFlowBuilder
 {
 	protected
 	@Nullable
-	JetControlFlowBuilder builder;
+	NapileControlFlowBuilder builder;
 
 	@Override
 	public void read(@NotNull NapileElement element)

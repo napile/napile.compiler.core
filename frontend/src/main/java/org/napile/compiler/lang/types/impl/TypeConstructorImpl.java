@@ -27,7 +27,7 @@ import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
@@ -37,14 +37,14 @@ import org.napile.compiler.lang.types.TypeConstructorVisitor;
 public class TypeConstructorImpl extends AnnotatedImpl implements TypeConstructor
 {
 	private final List<TypeParameterDescriptor> parameters;
-	private final Collection<JetType> supertypes;
+	private final Collection<NapileType> supertypes;
 	private final String debugName;
 	private final boolean sealed;
 
 	@Nullable
 	private final ClassifierDescriptor classifierDescriptor;
 
-	public TypeConstructorImpl(@Nullable ClassifierDescriptor classifierDescriptor, @NotNull List<AnnotationDescriptor> annotations, boolean sealed, @NotNull String debugName, @NotNull List<? extends TypeParameterDescriptor> parameters, @NotNull Collection<JetType> supertypes)
+	public TypeConstructorImpl(@Nullable ClassifierDescriptor classifierDescriptor, @NotNull List<AnnotationDescriptor> annotations, boolean sealed, @NotNull String debugName, @NotNull List<? extends TypeParameterDescriptor> parameters, @NotNull Collection<NapileType> supertypes)
 	{
 		super(annotations);
 		this.classifierDescriptor = classifierDescriptor;
@@ -63,7 +63,7 @@ public class TypeConstructorImpl extends AnnotatedImpl implements TypeConstructo
 
 	@Override
 	@NotNull
-	public Collection<JetType> getSupertypes()
+	public Collection<NapileType> getSupertypes()
 	{
 		return supertypes;
 	}
@@ -88,7 +88,7 @@ public class TypeConstructorImpl extends AnnotatedImpl implements TypeConstructo
 	}
 
 	@Override
-	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
+	public <A, R> R accept(NapileType type, TypeConstructorVisitor<A, R> visitor, A arg)
 	{
 		return visitor.visitType(type, this, arg);
 	}

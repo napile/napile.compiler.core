@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve.calls.inference;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -34,5 +34,5 @@ public interface ConstraintSystemSolution
 	TypeSubstitutor getSubstitutor();
 
 	@Nullable
-	JetType getValue(TypeParameterDescriptor typeParameterDescriptor);
+	NapileType getValue(TypeParameterDescriptor typeParameterDescriptor);
 }

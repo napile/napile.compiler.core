@@ -30,7 +30,7 @@ import com.intellij.psi.tree.TokenSet;
 /**
  * @author abreslav
  */
-abstract class AbstractJetParsing
+abstract class AbstractNapileParsing
 {
 	private static final Map<String, NapileKeywordToken> SOFT_KEYWORD_TEXTS = new HashMap<String, NapileKeywordToken>();
 
@@ -55,7 +55,7 @@ abstract class AbstractJetParsing
 
 	private final SemanticWhitespaceAwarePsiBuilder myBuilder;
 
-	public AbstractJetParsing(SemanticWhitespaceAwarePsiBuilder builder)
+	public AbstractNapileParsing(SemanticWhitespaceAwarePsiBuilder builder)
 	{
 		this.myBuilder = builder;
 	}
@@ -403,9 +403,9 @@ abstract class AbstractJetParsing
 		return myBuilder.newlineBeforeCurrentToken() || eof();
 	}
 
-	protected abstract JetParsing create(SemanticWhitespaceAwarePsiBuilder builder);
+	protected abstract NapileParsing create(SemanticWhitespaceAwarePsiBuilder builder);
 
-	protected JetParsing createTruncatedBuilder(int eofPosition)
+	protected NapileParsing createTruncatedBuilder(int eofPosition)
 	{
 		return create(new TruncatedSemanticWhitespaceAwarePsiBuilder(myBuilder, eofPosition));
 	}

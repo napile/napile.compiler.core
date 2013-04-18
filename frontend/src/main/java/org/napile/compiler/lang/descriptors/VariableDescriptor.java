@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.descriptors;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -30,7 +30,7 @@ public interface VariableDescriptor extends CallableMemberDescriptor
 	boolean isEnumValue();
 
 	@NotNull
-	JetType getType();
+	NapileType getType();
 
 	@Override
 	@NotNull

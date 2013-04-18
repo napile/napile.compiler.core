@@ -21,7 +21,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 
 /**
  * This is a fake type assigned to namespace expressions. Only member lookup is
@@ -29,13 +29,13 @@ import org.napile.compiler.lang.resolve.scopes.JetScope;
  *
  * @author abreslav
  */
-public class NamespaceType implements JetType
+public class NamespaceType implements NapileType
 {
 	private final Name name;
 	@NotNull
-	private final JetScope memberScope;
+	private final NapileScope memberScope;
 
-	public NamespaceType(@NotNull Name name, @NotNull JetScope memberScope)
+	public NamespaceType(@NotNull Name name, @NotNull NapileScope memberScope)
 	{
 		this.name = name;
 		this.memberScope = memberScope;
@@ -43,7 +43,7 @@ public class NamespaceType implements JetType
 
 	@NotNull
 	@Override
-	public JetScope getMemberScope()
+	public NapileScope getMemberScope()
 	{
 		return memberScope;
 	}
@@ -68,7 +68,7 @@ public class NamespaceType implements JetType
 
 	@NotNull
 	@Override
-	public List<JetType> getArguments()
+	public List<NapileType> getArguments()
 	{
 		throwException();
 		return null;

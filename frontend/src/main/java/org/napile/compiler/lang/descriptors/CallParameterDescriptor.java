@@ -20,7 +20,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.Annotated;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -53,7 +53,7 @@ public interface CallParameterDescriptor extends VariableDescriptor, Annotated
 
 	@Override
 	@NotNull
-	JetType getType();
+	NapileType getType();
 
 	@NotNull
 	@Override

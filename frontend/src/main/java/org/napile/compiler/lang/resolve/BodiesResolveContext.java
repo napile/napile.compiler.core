@@ -34,7 +34,7 @@ import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 
 /**
  * @author Nikolay Krasko
@@ -86,7 +86,7 @@ public interface BodiesResolveContext
 		}
 
 		@Override
-		public Map<NapileDeclaration, JetScope> getDeclaringScopes()
+		public Map<NapileDeclaration, NapileScope> getDeclaringScopes()
 		{
 			return Collections.emptyMap();
 		}
@@ -118,7 +118,7 @@ public interface BodiesResolveContext
 
 	Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> getMethods();
 
-	Map<NapileDeclaration, JetScope> getDeclaringScopes();
+	Map<NapileDeclaration, NapileScope> getDeclaringScopes();
 
 	void setTopDownAnalysisParameters(TopDownAnalysisParameters parameters);
 

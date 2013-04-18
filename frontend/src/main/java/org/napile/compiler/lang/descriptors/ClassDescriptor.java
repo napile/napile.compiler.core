@@ -19,9 +19,9 @@ package org.napile.compiler.lang.descriptors;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -31,7 +31,7 @@ public interface ClassDescriptor extends ClassifierDescriptor, DeclarationDescri
 {
 
 	@NotNull
-	JetScope getMemberScope(List<JetType> typeArguments);
+	NapileScope getMemberScope(List<NapileType> typeArguments);
 
 
 	@Override
@@ -43,7 +43,7 @@ public interface ClassDescriptor extends ClassifierDescriptor, DeclarationDescri
 	 */
 	@NotNull
 	@Override
-	JetType getDefaultType();
+	NapileType getDefaultType();
 
 	@NotNull
 	@Override

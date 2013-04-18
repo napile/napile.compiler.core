@@ -47,12 +47,12 @@ import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemImpl;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintsUtil;
 import org.napile.compiler.lang.resolve.processors.QualifiedExpressionResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.NamespaceType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.openapi.project.Project;
@@ -70,7 +70,7 @@ public class ExpressionTypingUtils
 	}
 
 	@Nullable
-	protected static ExpressionReceiver getExpressionReceiver(@NotNull NapileExpression expression, @Nullable JetType type)
+	protected static ExpressionReceiver getExpressionReceiver(@NotNull NapileExpression expression, @Nullable NapileType type)
 	{
 		if(type == null)
 			return null;
@@ -97,17 +97,17 @@ public class ExpressionTypingUtils
 		return scope;
 	}
 
-	public static boolean isBoolean(@NotNull JetType type)
+	public static boolean isBoolean(@NotNull NapileType type)
 	{
 		return TypeUtils.isEqualFqName(type, NapileLangPackage.BOOL);
 	}
 
-	public static boolean ensureBooleanResult(NapileExpression operationSign, Name name, JetType resultType, ExpressionTypingContext context)
+	public static boolean ensureBooleanResult(NapileExpression operationSign, Name name, NapileType resultType, ExpressionTypingContext context)
 	{
 		return ensureBooleanResultWithCustomSubject(operationSign, resultType, "'" + name + "'", context);
 	}
 
-	public static boolean ensureBooleanResultWithCustomSubject(NapileExpression operationSign, JetType resultType, String subjectName, ExpressionTypingContext context)
+	public static boolean ensureBooleanResultWithCustomSubject(NapileExpression operationSign, NapileType resultType, String subjectName, ExpressionTypingContext context)
 	{
 		if(resultType != null)
 		{
@@ -122,31 +122,31 @@ public class ExpressionTypingUtils
 	}
 
 	@Nullable
-	public static JetType getDefaultType(IElementType constantType, JetScope jetScope)
+	public static NapileType getDefaultType(IElementType constantType, NapileScope napileScope)
 	{
 		if(constantType == NapileNodes.INTEGER_CONSTANT)
 		{
-			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.INT, false);
+			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.INT, false);
 		}
 		else if(constantType == NapileNodes.FLOAT_CONSTANT)
 		{
-			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.DOUBLE, false);
+			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.DOUBLE, false);
 		}
 		else if(constantType == NapileNodes.BOOLEAN_CONSTANT)
 		{
-			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.BOOL, false);
+			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.BOOL, false);
 		}
 		else if(constantType == NapileNodes.CHARACTER_CONSTANT)
 		{
-			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.CHAR, false);
+			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.CHAR, false);
 		}
 		else if(constantType == NapileNodes.STRING_CONSTANT)
 		{
-			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.STRING, false);
+			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.STRING, false);
 		}
 		else if(constantType == NapileNodes.NULL)
 		{
-			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, false);
+			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.NULL, false);
 		}
 		else
 		{
@@ -176,7 +176,7 @@ public class ExpressionTypingUtils
 	}
 
 	@NotNull
-	public static NapileExpression createStubExpressionOfNecessaryType(@NotNull Project project, @NotNull JetType type, @NotNull BindingTrace trace)
+	public static NapileExpression createStubExpressionOfNecessaryType(@NotNull Project project, @NotNull NapileType type, @NotNull BindingTrace trace)
 	{
 		NapileExpression expression = NapilePsiFactory.createExpression(project, "e");
 		trace.record(PROCESSED, expression);
@@ -192,7 +192,7 @@ public class ExpressionTypingUtils
 	 * @param scope
 	 * @return
 	 */
-	public static List<CallableDescriptor> canFindSuitableCall(@NotNull FqName callableFQN, @NotNull Project project, @NotNull NapileExpression receiverExpression, @NotNull JetType receiverType, @NotNull JetScope scope)
+	public static List<CallableDescriptor> canFindSuitableCall(@NotNull FqName callableFQN, @NotNull Project project, @NotNull NapileExpression receiverExpression, @NotNull NapileType receiverType, @NotNull NapileScope scope)
 	{
 
 		NapileImportDirective importDirective = NapilePsiFactory.createImportDirective(project, callableFQN.getFqName());
@@ -223,7 +223,7 @@ public class ExpressionTypingUtils
 		*/
 	public static boolean checkIsExtensionCallable(@NotNull ReceiverDescriptor expectedReceiver, @NotNull CallableDescriptor receiverArgument)
 	{
-		JetType type = expectedReceiver.getType();
+		NapileType type = expectedReceiver.getType();
 
 		if(type instanceof NamespaceType)
 		{
@@ -235,14 +235,14 @@ public class ExpressionTypingUtils
 			return true;
 		if(type.isNullable())
 		{
-			JetType notNullableType = TypeUtils.makeNotNullable(type);
+			NapileType notNullableType = TypeUtils.makeNotNullable(type);
 			if(checkReceiverResolution(expectedReceiver, notNullableType, receiverArgument))
 				return true;
 		}
 		return false;
 	}
 
-	private static boolean checkReceiverResolution(@NotNull ReceiverDescriptor expectedReceiver, @NotNull JetType receiverType, @NotNull CallableDescriptor receiverArgument)
+	private static boolean checkReceiverResolution(@NotNull ReceiverDescriptor expectedReceiver, @NotNull NapileType receiverType, @NotNull CallableDescriptor receiverArgument)
 	{
 		ConstraintSystem constraintSystem = new ConstraintSystemImpl();
 		for(TypeParameterDescriptor typeParameterDescriptor : receiverArgument.getTypeParameters())

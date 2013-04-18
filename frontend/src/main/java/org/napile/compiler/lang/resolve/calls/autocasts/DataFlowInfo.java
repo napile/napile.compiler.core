@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.util.CommonSuppliers;
 import com.google.common.collect.ImmutableMap;
@@ -65,15 +65,15 @@ public class DataFlowInfo
 		}
 	};
 
-	public static DataFlowInfo EMPTY = new DataFlowInfo(ImmutableMap.<DataFlowValue, Nullability>of(), Multimaps.newListMultimap(Collections.<DataFlowValue, Collection<JetType>>emptyMap(), CommonSuppliers.<JetType>getArrayListSupplier()));
+	public static DataFlowInfo EMPTY = new DataFlowInfo(ImmutableMap.<DataFlowValue, Nullability>of(), Multimaps.newListMultimap(Collections.<DataFlowValue, Collection<NapileType>>emptyMap(), CommonSuppliers.<NapileType>getArrayListSupplier()));
 
 	private final ImmutableMap<DataFlowValue, Nullability> nullabilityInfo;
 	/**
 	 * Also immutable
 	 */
-	private final ListMultimap<DataFlowValue, JetType> typeInfo;
+	private final ListMultimap<DataFlowValue, NapileType> typeInfo;
 
-	private DataFlowInfo(ImmutableMap<DataFlowValue, Nullability> nullabilityInfo, ListMultimap<DataFlowValue, JetType> typeInfo)
+	private DataFlowInfo(ImmutableMap<DataFlowValue, Nullability> nullabilityInfo, ListMultimap<DataFlowValue, NapileType> typeInfo)
 	{
 		this.nullabilityInfo = nullabilityInfo;
 		this.typeInfo = typeInfo;
@@ -100,21 +100,21 @@ public class DataFlowInfo
 	}
 
 	@NotNull
-	public List<JetType> getPossibleTypes(DataFlowValue key)
+	public List<NapileType> getPossibleTypes(DataFlowValue key)
 	{
-		JetType originalType = key.getType();
-		List<JetType> types = typeInfo.get(key);
+		NapileType originalType = key.getType();
+		List<NapileType> types = typeInfo.get(key);
 		Nullability nullability = getNullability(key);
 		if(nullability.canBeNull())
 		{
 			return types;
 		}
-		List<JetType> enrichedTypes = Lists.newArrayListWithCapacity(types.size());
+		List<NapileType> enrichedTypes = Lists.newArrayListWithCapacity(types.size());
 		if(originalType.isNullable())
 		{
 			enrichedTypes.add(TypeUtils.makeNotNullable(originalType));
 		}
-		for(JetType type : types)
+		for(NapileType type : types)
 		{
 			if(type.isNullable())
 			{
@@ -155,9 +155,9 @@ public class DataFlowInfo
 	}
 
 	@NotNull
-	public DataFlowInfo establishSubtyping(@NotNull DataFlowValue[] values, @NotNull JetType type)
+	public DataFlowInfo establishSubtyping(@NotNull DataFlowValue[] values, @NotNull NapileType type)
 	{
-		ListMultimap<DataFlowValue, JetType> newTypeInfo = copyTypeInfo();
+		ListMultimap<DataFlowValue, NapileType> newTypeInfo = copyTypeInfo();
 		Map<DataFlowValue, Nullability> newNullabilityInfo = Maps.newHashMap(nullabilityInfo);
 		boolean changed = false;
 		for(DataFlowValue value : values)
@@ -175,9 +175,9 @@ public class DataFlowInfo
 		return new DataFlowInfo(ImmutableMap.copyOf(newNullabilityInfo), newTypeInfo);
 	}
 
-	private ListMultimap<DataFlowValue, JetType> copyTypeInfo()
+	private ListMultimap<DataFlowValue, NapileType> copyTypeInfo()
 	{
-		ListMultimap<DataFlowValue, JetType> newTypeInfo = Multimaps.newListMultimap(Maps.<DataFlowValue, Collection<JetType>>newHashMap(), CommonSuppliers.<JetType>getArrayListSupplier());
+		ListMultimap<DataFlowValue, NapileType> newTypeInfo = Multimaps.newListMultimap(Maps.<DataFlowValue, Collection<NapileType>>newHashMap(), CommonSuppliers.<NapileType>getArrayListSupplier());
 		newTypeInfo.putAll(typeInfo);
 		return newTypeInfo;
 	}
@@ -201,7 +201,7 @@ public class DataFlowInfo
 			}
 		}
 
-		ListMultimap<DataFlowValue, JetType> newTypeInfo = copyTypeInfo();
+		ListMultimap<DataFlowValue, NapileType> newTypeInfo = copyTypeInfo();
 		newTypeInfo.putAll(other.typeInfo);
 		return new DataFlowInfo(ImmutableMap.copyOf(nullabilityMapBuilder), newTypeInfo);
 	}
@@ -219,17 +219,17 @@ public class DataFlowInfo
 			builder.put(key, thisFlags.or(otherFlags));
 		}
 
-		ListMultimap<DataFlowValue, JetType> newTypeInfo = Multimaps.newListMultimap(Maps.<DataFlowValue, Collection<JetType>>newHashMap(), CommonSuppliers.<JetType>getArrayListSupplier());
+		ListMultimap<DataFlowValue, NapileType> newTypeInfo = Multimaps.newListMultimap(Maps.<DataFlowValue, Collection<NapileType>>newHashMap(), CommonSuppliers.<NapileType>getArrayListSupplier());
 
 		Set<DataFlowValue> keys = Sets.newHashSet(typeInfo.keySet());
 		keys.retainAll(other.typeInfo.keySet());
 
 		for(DataFlowValue key : keys)
 		{
-			Collection<JetType> thisTypes = typeInfo.get(key);
-			Collection<JetType> otherTypes = other.typeInfo.get(key);
+			Collection<NapileType> thisTypes = typeInfo.get(key);
+			Collection<NapileType> otherTypes = other.typeInfo.get(key);
 
-			Collection<JetType> newTypes = Sets.newHashSet(thisTypes);
+			Collection<NapileType> newTypes = Sets.newHashSet(thisTypes);
 			newTypes.retainAll(otherTypes);
 
 			newTypeInfo.putAll(key, newTypes);

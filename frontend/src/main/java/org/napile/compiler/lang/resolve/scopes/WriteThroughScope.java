@@ -42,7 +42,7 @@ public class WriteThroughScope extends WritableScopeWithImports
 	private final WritableScope writableWorker;
 	private Collection<DeclarationDescriptor> allDescriptors;
 
-	public WriteThroughScope(@NotNull JetScope outerScope, @NotNull WritableScope scope, @NotNull RedeclarationHandler redeclarationHandler, @NotNull String debugName)
+	public WriteThroughScope(@NotNull NapileScope outerScope, @NotNull WritableScope scope, @NotNull RedeclarationHandler redeclarationHandler, @NotNull String debugName)
 	{
 		super(outerScope, redeclarationHandler, debugName);
 		this.writableWorker = scope;
@@ -281,7 +281,7 @@ public class WriteThroughScope extends WritableScopeWithImports
 	}
 
 	@Override
-	public void importScope(@NotNull JetScope imported)
+	public void importScope(@NotNull NapileScope imported)
 	{
 		checkMayWrite();
 
@@ -308,7 +308,7 @@ public class WriteThroughScope extends WritableScopeWithImports
 			allDescriptors.addAll(writableWorker.getAllDescriptors());
 			allDescriptors.addAll(getWorkerScope().getAllDescriptors());
 
-			for(JetScope imported : getImports())
+			for(NapileScope imported : getImports())
 			{
 				allDescriptors.addAll(imported.getAllDescriptors());
 			}
@@ -317,7 +317,7 @@ public class WriteThroughScope extends WritableScopeWithImports
 	}
 
 	@NotNull
-	public JetScope getOuterScope()
+	public NapileScope getOuterScope()
 	{
 		checkMayRead();
 

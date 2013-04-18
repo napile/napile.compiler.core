@@ -17,9 +17,9 @@
 package org.napile.compiler.lang.resolve.constants;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -42,7 +42,7 @@ public class ErrorValue implements CompileTimeConstant<Void>
 
 	@NotNull
 	@Override
-	public JetType getType(@NotNull JetScope jetScope)
+	public NapileType getType(@NotNull NapileScope napileScope)
 	{
 		return ErrorUtils.createErrorType(message);
 	}

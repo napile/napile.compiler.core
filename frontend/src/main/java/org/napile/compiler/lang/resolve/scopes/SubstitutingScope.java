@@ -39,16 +39,16 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public class SubstitutingScope implements JetScope
+public class SubstitutingScope implements NapileScope
 {
 
-	private final JetScope workerScope;
+	private final NapileScope workerScope;
 	private final TypeSubstitutor substitutor;
 
 	private Map<DeclarationDescriptor, DeclarationDescriptor> substitutedDescriptors = null;
 	private Collection<DeclarationDescriptor> allDescriptors = null;
 
-	public SubstitutingScope(JetScope workerScope, @NotNull TypeSubstitutor substitutor)
+	public SubstitutingScope(NapileScope workerScope, @NotNull TypeSubstitutor substitutor)
 	{
 		this.workerScope = workerScope;
 		this.substitutor = substitutor;

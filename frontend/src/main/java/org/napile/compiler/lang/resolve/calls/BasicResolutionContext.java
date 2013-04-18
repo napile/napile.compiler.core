@@ -20,8 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.Call;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -29,12 +29,12 @@ import org.napile.compiler.lang.types.JetType;
 public class BasicResolutionContext extends ResolutionContext
 {
 	@NotNull
-	public static BasicResolutionContext create(@NotNull BindingTrace trace, @NotNull JetScope scope, @NotNull Call call, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo)
+	public static BasicResolutionContext create(@NotNull BindingTrace trace, @NotNull NapileScope scope, @NotNull Call call, @NotNull NapileType expectedType, @NotNull DataFlowInfo dataFlowInfo)
 	{
 		return new BasicResolutionContext(trace, scope, call, expectedType, dataFlowInfo);
 	}
 
-	private BasicResolutionContext(BindingTrace trace, JetScope scope, Call call, JetType expectedType, DataFlowInfo dataFlowInfo)
+	private BasicResolutionContext(BindingTrace trace, NapileScope scope, Call call, NapileType expectedType, DataFlowInfo dataFlowInfo)
 	{
 		super(trace, scope, call, expectedType, dataFlowInfo);
 	}

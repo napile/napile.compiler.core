@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import com.google.common.collect.Sets;
 
@@ -45,7 +45,7 @@ public abstract class AbstractCallParameterDescriptorImpl extends AbstractVariab
 
 	protected final CallParameterDescriptor original;
 
-	public AbstractCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable JetType outType, @NotNull Modality modality, boolean mutable)
+	public AbstractCallParameterDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, int index, @NotNull List<AnnotationDescriptor> annotations, @NotNull Name name, @Nullable NapileType outType, @NotNull Modality modality, boolean mutable)
 	{
 		super(containingDeclaration, annotations, name, outType, modality, false, mutable);
 		this.original = this;

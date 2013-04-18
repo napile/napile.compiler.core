@@ -23,26 +23,25 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 /**
  * @author udalov
  */
-public class JetTypeInfo
+public class NapileTypeInfo
 {
-
 	@NotNull
-	public static JetTypeInfo create(@Nullable JetType type, @NotNull DataFlowInfo dataFlowInfo)
+	public static NapileTypeInfo create(@Nullable NapileType type, @NotNull DataFlowInfo dataFlowInfo)
 	{
-		return new JetTypeInfo(type, dataFlowInfo);
+		return new NapileTypeInfo(type, dataFlowInfo);
 	}
 
-	private final JetType type;
+	private final NapileType type;
 	private final DataFlowInfo dataFlowInfo;
 
-	private JetTypeInfo(@Nullable JetType type, @NotNull DataFlowInfo dataFlowInfo)
+	private NapileTypeInfo(@Nullable NapileType type, @NotNull DataFlowInfo dataFlowInfo)
 	{
 		this.type = type;
 		this.dataFlowInfo = dataFlowInfo;
 	}
 
 	@Nullable
-	public JetType getType()
+	public NapileType getType()
 	{
 		return type;
 	}

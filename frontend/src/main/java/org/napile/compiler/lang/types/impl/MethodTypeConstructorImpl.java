@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
@@ -35,10 +35,10 @@ import org.napile.compiler.lang.types.TypeConstructorVisitor;
 public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl implements MethodTypeConstructor
 {
 	private final Name name;
-	private final JetType returnType;
-	private final Map<Name, JetType> parameterTypes;
+	private final NapileType returnType;
+	private final Map<Name, NapileType> parameterTypes;
 
-	public MethodTypeConstructorImpl(@Nullable Name name, @NotNull JetType returnType, Map<Name, JetType> parameterTypes, @NotNull JetScope scope)
+	public MethodTypeConstructorImpl(@Nullable Name name, @NotNull NapileType returnType, Map<Name, NapileType> parameterTypes, @NotNull NapileScope scope)
 	{
 		super(scope, new FqName("napile.lang.AnonymContext"));
 		this.name = name;
@@ -47,7 +47,7 @@ public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl imple
 	}
 
 	@Override
-	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
+	public <A, R> R accept(NapileType type, TypeConstructorVisitor<A, R> visitor, A arg)
 	{
 		return visitor.visitMethodType(type, this, arg);
 	}
@@ -61,14 +61,14 @@ public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl imple
 
 	@NotNull
 	@Override
-	public JetType getReturnType()
+	public NapileType getReturnType()
 	{
 		return returnType;
 	}
 
 	@NotNull
 	@Override
-	public Map<Name, JetType> getParameterTypes()
+	public Map<Name, NapileType> getParameterTypes()
 	{
 		return parameterTypes;
 	}
@@ -85,12 +85,12 @@ public class MethodTypeConstructorImpl extends AbstractTypeConstructorImpl imple
 		if(parameterTypes.size() != oConstructor.getParameterTypes().size())
 			return false;
 
-		Iterator<Map.Entry<Name, JetType>> it1 = parameterTypes.entrySet().iterator();
-		Iterator<Map.Entry<Name, JetType>> it2 = oConstructor.getParameterTypes().entrySet().iterator();
+		Iterator<Map.Entry<Name, NapileType>> it1 = parameterTypes.entrySet().iterator();
+		Iterator<Map.Entry<Name, NapileType>> it2 = oConstructor.getParameterTypes().entrySet().iterator();
 		while(it1.hasNext() && it2.hasNext())
 		{
-			Map.Entry<Name, JetType> entry1 = it1.next();
-			Map.Entry<Name, JetType> entry2 = it2.next();
+			Map.Entry<Name, NapileType> entry1 = it1.next();
+			Map.Entry<Name, NapileType> entry2 = it2.next();
 
 			if(!entry1.getValue().equals(entry2.getValue()))
 				return false;

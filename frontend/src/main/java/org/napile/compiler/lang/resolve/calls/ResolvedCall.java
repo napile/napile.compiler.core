@@ -27,7 +27,7 @@ import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.intellij.openapi.util.Pair;
 
 /**
@@ -81,7 +81,7 @@ public interface ResolvedCall<D extends CallableDescriptor>
 	 * What's substituted for type parameters
 	 */
 	@NotNull
-	Map<TypeParameterDescriptor, JetType> getTypeArguments();
+	Map<TypeParameterDescriptor, NapileType> getTypeArguments();
 
 	@Nullable
 	ConstraintSystem getConstraintSystem();

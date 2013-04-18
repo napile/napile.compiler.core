@@ -32,8 +32,8 @@ import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author VISTALL
@@ -78,7 +78,7 @@ public class AnonymClassResolver
 	}
 
 	@NotNull
-	public MutableClassDescriptor resolveAnonymClass(@NotNull DeclarationDescriptor owner, @NotNull final JetScope scope, @NotNull final BindingTrace bindingTrace, @NotNull NapileAnonymClass anonymClass)
+	public MutableClassDescriptor resolveAnonymClass(@NotNull DeclarationDescriptor owner, @NotNull final NapileScope scope, @NotNull final BindingTrace bindingTrace, @NotNull NapileAnonymClass anonymClass)
 	{
 		final MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(owner, scope, ClassKind.ANONYM_CLASS, anonymClass.getNameAsSafeName(), Collections.<AnnotationDescriptor>emptyList(), false);
 
@@ -92,7 +92,7 @@ public class AnonymClassResolver
 
 		bindingTrace.record(BindingTraceKeys.CLASS, anonymClass, mutableClassDescriptor);
 
-		for(JetType type : descriptorResolver.resolveSupertypes(mutableClassDescriptor.getScopeForSupertypeResolution(), anonymClass, bindingTrace))
+		for(NapileType type : descriptorResolver.resolveSupertypes(mutableClassDescriptor.getScopeForSupertypeResolution(), anonymClass, bindingTrace))
 			mutableClassDescriptor.addSupertype(type);
 
 		mutableClassDescriptor.setVisibility(Visibility.PUBLIC);

@@ -34,7 +34,7 @@ import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 
 /**
  * A storage for the part of {@see TopDownAnalysisContext} collected during headers analysis that will be used during resolution of
@@ -51,7 +51,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	private final Map<NapileEnumValue, MutableClassDescriptor> enumValues;
 	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> methods;
 	private final Map<NapileFile, PackageDescriptor> packages;
-	private final Map<NapileDeclaration, JetScope> declaringScopes;
+	private final Map<NapileDeclaration, NapileScope> declaringScopes;
 
 	private
 	@NotNull
@@ -114,7 +114,7 @@ public class CachedBodiesResolveContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileDeclaration, JetScope> getDeclaringScopes()
+	public Map<NapileDeclaration, NapileScope> getDeclaringScopes()
 	{
 		return declaringScopes;
 	}

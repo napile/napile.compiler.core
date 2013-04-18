@@ -47,15 +47,15 @@ import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.processors.members.TypeParameterResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.types.DeferredType;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
 import org.napile.compiler.util.lazy.LazyValue;
@@ -115,33 +115,33 @@ public class DescriptorResolver
 
 	public void resolveSupertypesForMutableClassDescriptor(@NotNull NapileSuperListOwner superListOwner, @NotNull MutableClassDescriptor descriptor, BindingTrace trace)
 	{
-		for(JetType supertype : resolveSupertypes(descriptor.getScopeForSupertypeResolution(), superListOwner, trace))
+		for(NapileType supertype : resolveSupertypes(descriptor.getScopeForSupertypeResolution(), superListOwner, trace))
 			descriptor.addSupertype(supertype);
 	}
 
-	public List<JetType> resolveSupertypes(@NotNull JetScope scope, @NotNull NapileSuperListOwner superListOwner, BindingTrace trace)
+	public List<NapileType> resolveSupertypes(@NotNull NapileScope scope, @NotNull NapileSuperListOwner superListOwner, BindingTrace trace)
 	{
 		if(NapileLangPackage.ANY.equals(NapilePsiUtil.getFQName(superListOwner)))  // master object dont have super classes
 			return Collections.emptyList();
 
-		List<JetType> result = Lists.newArrayList();
+		List<NapileType> result = Lists.newArrayList();
 		List<? extends NapileTypeReference> delegationSpecifiers = superListOwner.getSuperTypes();
 		if(delegationSpecifiers.isEmpty())
 			result.add(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.ANY, false));
 		else
 		{
-			Collection<JetType> supertypes = resolveDelegationSpecifiers(scope, delegationSpecifiers, typeResolver, trace, false);
+			Collection<NapileType> supertypes = resolveDelegationSpecifiers(scope, delegationSpecifiers, typeResolver, trace, false);
 			result.addAll(supertypes);
 		}
 		return result;
 	}
 
-	public Collection<JetType> resolveDelegationSpecifiers(JetScope extensibleScope, List<? extends NapileTypeReference> delegationSpecifiers, @NotNull TypeResolver resolver, BindingTrace trace, boolean checkBounds)
+	public Collection<NapileType> resolveDelegationSpecifiers(NapileScope extensibleScope, List<? extends NapileTypeReference> delegationSpecifiers, @NotNull TypeResolver resolver, BindingTrace trace, boolean checkBounds)
 	{
 		if(delegationSpecifiers.isEmpty())
 			return Collections.emptyList();
 
-		Collection<JetType> result = new ArrayList<JetType>(delegationSpecifiers.size());
+		Collection<NapileType> result = new ArrayList<NapileType>(delegationSpecifiers.size());
 		for(NapileTypeReference typeReference : delegationSpecifiers)
 		{
 			result.add(resolver.resolveType(extensibleScope, typeReference, trace, checkBounds));
@@ -157,7 +157,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMethod method, final BindingTrace trace)
+	public SimpleMethodDescriptor resolveMethodDescriptor(DeclarationDescriptor containingDescriptor, final NapileScope scope, final NapileNamedMethod method, final BindingTrace trace)
 	{
 		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.bindAnnotations(scope, method, trace), NapilePsiUtil.safeName(method.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(method), method.hasModifier(NapileTokens.NATIVE_KEYWORD), false);
 		WritableScope innerScope = new WritableScopeImpl(scope, methodDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
@@ -172,7 +172,7 @@ public class DescriptorResolver
 
 		final NapileExpression bodyExpression = method.getBodyExpression();
 		NapileTypeReference returnTypeRef = method.getReturnTypeRef();
-		JetType returnType;
+		NapileType returnType;
 		if(returnTypeRef != null)
 			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, false);
 		else if(method.hasBlockBody())
@@ -181,10 +181,10 @@ public class DescriptorResolver
 		{
 			if(bodyExpression != null)
 			{
-				returnType = DeferredType.create(trace, new LazyValueWithDefault<JetType>(ErrorUtils.createErrorType("Recursive dependency"))
+				returnType = DeferredType.create(trace, new LazyValueWithDefault<NapileType>(ErrorUtils.createErrorType("Recursive dependency"))
 				{
 					@Override
-					protected JetType compute()
+					protected NapileType compute()
 					{
 						return expressionTypingServices.inferFunctionReturnType(scope, method, methodDescriptor, trace);
 					}
@@ -205,7 +205,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public SimpleMethodDescriptor resolveMacroDescriptor(DeclarationDescriptor containingDescriptor, final JetScope scope, final NapileNamedMacro macro, final BindingTrace trace)
+	public SimpleMethodDescriptor resolveMacroDescriptor(DeclarationDescriptor containingDescriptor, final NapileScope scope, final NapileNamedMacro macro, final BindingTrace trace)
 	{
 		final SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(containingDescriptor, annotationResolver.bindAnnotations(scope, macro, trace), NapilePsiUtil.safeName(macro.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(macro), false, true);
 		WritableScope innerScope = new WritableScopeImpl(scope, methodDescriptor, new TraceBasedRedeclarationHandler(trace), "Function descriptor header scope");
@@ -220,7 +220,7 @@ public class DescriptorResolver
 
 		final NapileExpression bodyExpression = macro.getBodyExpression();
 		NapileTypeReference returnTypeRef = macro.getReturnTypeRef();
-		JetType returnType;
+		NapileType returnType;
 		if(returnTypeRef != null)
 			returnType = typeResolver.resolveType(innerScope, returnTypeRef, trace, false);
 		else if(macro.hasBlockBody())
@@ -229,10 +229,10 @@ public class DescriptorResolver
 		{
 			if(bodyExpression != null)
 			{
-				returnType = DeferredType.create(trace, new LazyValueWithDefault<JetType>(ErrorUtils.createErrorType("Recursive dependency"))
+				returnType = DeferredType.create(trace, new LazyValueWithDefault<NapileType>(ErrorUtils.createErrorType("Recursive dependency"))
 				{
 					@Override
-					protected JetType compute()
+					protected NapileType compute()
 					{
 						return expressionTypingServices.inferFunctionReturnType(scope, macro, methodDescriptor, trace);
 					}
@@ -268,7 +268,7 @@ public class DescriptorResolver
 			{
 				NapileTypeReference typeReference = ((NapileCallParameterAsVariable) parameter).getTypeReference();
 	
-				JetType type;
+				NapileType type;
 				if(typeReference == null)
 				{
 					trace.report(VALUE_PARAMETER_WITH_NO_TYPE_ANNOTATION.on(((NapileCallParameterAsVariable) parameter)));
@@ -289,7 +289,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public CallParameterDescriptor resolveCallParameterDescriptor(JetScope scope, DeclarationDescriptor declarationDescriptor, NapileCallParameterAsVariable parameter, int index, JetType type, BindingTrace trace)
+	public CallParameterDescriptor resolveCallParameterDescriptor(NapileScope scope, DeclarationDescriptor declarationDescriptor, NapileCallParameterAsVariable parameter, int index, NapileType type, BindingTrace trace)
 	{
 		AbstractCallParameterDescriptorImpl descriptor = new CallParameterAsVariableDescriptorImpl(declarationDescriptor, index, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), parameter.isMutable(), parameter.isRef());
 
@@ -300,12 +300,12 @@ public class DescriptorResolver
 		return descriptor;
 	}
 
-	private CallParameterDescriptor resolveCallParameterAsReferenceDescriptor(JetScope scope, DeclarationDescriptor declarationDescriptor, NapileCallParameterAsReference parameter, int index, BindingTrace trace)
+	private CallParameterDescriptor resolveCallParameterAsReferenceDescriptor(NapileScope scope, DeclarationDescriptor declarationDescriptor, NapileCallParameterAsReference parameter, int index, BindingTrace trace)
 	{
 		NapileSimpleNameExpression ref = parameter.getReferenceExpression();
 
 		VariableDescriptor variableDescriptor = null;
-		JetType type = null;
+		NapileType type = null;
 		if(ref == null)
 			type = ErrorUtils.createErrorType("Reference expected");
 		else
@@ -335,7 +335,7 @@ public class DescriptorResolver
 		return descriptor;
 	}
 
-	private void resolveCallParameterDefaultValue(JetScope scope, NapileCallParameter parameter, BindingTrace trace, AbstractCallParameterDescriptorImpl descriptor)
+	private void resolveCallParameterDefaultValue(NapileScope scope, NapileCallParameter parameter, BindingTrace trace, AbstractCallParameterDescriptorImpl descriptor)
 	{
 		NapileExpression defaultValue = parameter.getDefaultValue();
 		if(defaultValue != null)
@@ -349,16 +349,16 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptor resolveLocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull JetScope scope, @NotNull NapileCallParameterAsVariable parameter, BindingTrace trace)
+	public VariableDescriptor resolveLocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileScope scope, @NotNull NapileCallParameterAsVariable parameter, BindingTrace trace)
 	{
-		JetType type = resolveParameterType(scope, parameter, trace);
+		NapileType type = resolveParameterType(scope, parameter, trace);
 		return resolveLocalVariableDescriptor(containingDeclaration, parameter, type, trace, scope);
 	}
 
-	private JetType resolveParameterType(JetScope scope, NapileCallParameterAsVariable parameter, BindingTrace trace)
+	private NapileType resolveParameterType(NapileScope scope, NapileCallParameterAsVariable parameter, BindingTrace trace)
 	{
 		NapileTypeReference typeReference = parameter.getTypeReference();
-		JetType type;
+		NapileType type;
 		if(typeReference != null)
 		{
 			type = typeResolver.resolveType(scope, typeReference, trace, true);
@@ -372,7 +372,7 @@ public class DescriptorResolver
 		return type;
 	}
 
-	public VariableDescriptor resolveLocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileCallParameterAsVariable parameter, @NotNull JetType type, BindingTrace trace, JetScope scope)
+	public VariableDescriptor resolveLocalVariableDescriptor(@NotNull DeclarationDescriptor containingDeclaration, @NotNull NapileCallParameterAsVariable parameter, @NotNull NapileType type, BindingTrace trace, NapileScope scope)
 	{
 		VariableDescriptor variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.bindAnnotations(scope, parameter, trace), NapilePsiUtil.safeName(parameter.getName()), type, Modality.resolve(parameter), parameter.isMutable());
 		trace.record(BindingTraceKeys.VALUE_PARAMETER, parameter, variableDescriptor);
@@ -380,25 +380,25 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptor resolveLocalVariableDescriptor(DeclarationDescriptor containingDeclaration, JetScope scope, NapileVariable variable, DataFlowInfo dataFlowInfo, BindingTrace trace)
+	public VariableDescriptor resolveLocalVariableDescriptor(DeclarationDescriptor containingDeclaration, NapileScope scope, NapileVariable variable, DataFlowInfo dataFlowInfo, BindingTrace trace)
 	{
 		AbstractVariableDescriptorImpl variableDescriptor = resolveLocalVariableDescriptorWithType(containingDeclaration, variable, null, trace, scope);
 
-		JetType type = getVariableType(scope, variable, dataFlowInfo, false, trace); // For a local variable the type must not be deferred
+		NapileType type = getVariableType(scope, variable, dataFlowInfo, false, trace); // For a local variable the type must not be deferred
 		variableDescriptor.setOutType(type);
 
 		return variableDescriptor;
 	}
 
 	@NotNull
-	public AbstractVariableDescriptorImpl resolveLocalVariableDescriptorWithType(DeclarationDescriptor containingDeclaration, NapileVariable variable, JetType type, BindingTrace trace, @NotNull JetScope scope)
+	public AbstractVariableDescriptorImpl resolveLocalVariableDescriptorWithType(DeclarationDescriptor containingDeclaration, NapileVariable variable, NapileType type, BindingTrace trace, @NotNull NapileScope scope)
 	{
 		AbstractVariableDescriptorImpl variableDescriptor = new LocalVariableDescriptor(containingDeclaration, annotationResolver.bindAnnotations(scope, variable, trace), NapilePsiUtil.safeName(variable.getName()), type, Modality.resolve(variable), variable.isMutable());
 		trace.record(BindingTraceKeys.VARIABLE, variable, variableDescriptor);
 		return variableDescriptor;
 	}
 
-	public JetScope getPropertyDeclarationInnerScope(@NotNull JetScope outerScope, @NotNull List<? extends TypeParameterDescriptor> typeParameters, BindingTrace trace)
+	public NapileScope getPropertyDeclarationInnerScope(@NotNull NapileScope outerScope, @NotNull List<? extends TypeParameterDescriptor> typeParameters, BindingTrace trace)
 	{
 		WritableScopeImpl result = new WritableScopeImpl(outerScope, outerScope.getContainingDeclaration(), new TraceBasedRedeclarationHandler(trace), "Property declaration inner scope");
 		for(TypeParameterDescriptor typeParameterDescriptor : typeParameters)
@@ -408,7 +408,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable variable, BindingTrace trace)
+	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull NapileScope scope, NapileVariable variable, BindingTrace trace)
 	{
 		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, variable, trace), Modality.resolve(variable), Visibility.PUBLIC, NapilePsiUtil.safeName(variable.getName()), CallableMemberDescriptor.Kind.DECLARATION, resolveStatic(variable), variable.isMutable(), false);
 
@@ -425,9 +425,9 @@ public class DescriptorResolver
 			typeParameterResolver.postResolving(variable, writableScope, typeParameterDescriptors, trace);
 		}
 
-		JetScope propertyScope = getPropertyDeclarationInnerScope(scope, typeParameterDescriptors, trace);
+		NapileScope propertyScope = getPropertyDeclarationInnerScope(scope, typeParameterDescriptors, trace);
 
-		JetType type = getVariableType(propertyScope, variable, DataFlowInfo.EMPTY, true, trace);
+		NapileType type = getVariableType(propertyScope, variable, DataFlowInfo.EMPTY, true, trace);
 
 		variableDescriptor.setType(type, typeParameterDescriptors, DescriptorUtils.getExpectedThisObjectIfNeeded(containingDeclaration));
 
@@ -439,7 +439,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, @NotNull NapileEnumValue enumValue, @NotNull MutableClassDescriptor m, BindingTrace trace)
+	public VariableDescriptor resolveVariableDescriptor(@NotNull MutableClassDescriptor containingDeclaration, @NotNull NapileScope scope, @NotNull NapileEnumValue enumValue, @NotNull MutableClassDescriptor m, BindingTrace trace)
 	{
 		VariableDescriptorImpl variableDescriptor = new VariableDescriptorImpl(containingDeclaration, annotationResolver.bindAnnotations(scope, enumValue, trace), Modality.resolve(enumValue), Visibility.resolve(enumValue), NapilePsiUtil.safeName(enumValue.getName()), CallableMemberDescriptor.Kind.DECLARATION, true, false, true);
 
@@ -464,7 +464,7 @@ public class DescriptorResolver
 		return variableDescriptor;
 	}
 
-	public void resolveVariableAccessors(@NotNull MutableClassDescriptor containingDeclaration, @NotNull JetScope scope, NapileVariable variable, BindingTrace trace, VariableDescriptorImpl variableDescriptor)
+	public void resolveVariableAccessors(@NotNull MutableClassDescriptor containingDeclaration, @NotNull NapileScope scope, NapileVariable variable, BindingTrace trace, VariableDescriptorImpl variableDescriptor)
 	{
 		VariableAccessorDescriptor set = null;
 		VariableAccessorDescriptor get = null;
@@ -532,7 +532,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	private JetType getVariableType(@NotNull final JetScope scope, @NotNull final NapileVariable property, @NotNull final DataFlowInfo dataFlowInfo, boolean allowDeferred, final BindingTrace trace)
+	private NapileType getVariableType(@NotNull final NapileScope scope, @NotNull final NapileVariable property, @NotNull final DataFlowInfo dataFlowInfo, boolean allowDeferred, final BindingTrace trace)
 	{
 		NapileTypeReference propertyTypeRef = property.getType();
 
@@ -546,10 +546,10 @@ public class DescriptorResolver
 			else
 			{
 				// TODO : a risk of a memory leak
-				LazyValue<JetType> lazyValue = new LazyValueWithDefault<JetType>(ErrorUtils.createErrorType("Recursive dependency"))
+				LazyValue<NapileType> lazyValue = new LazyValueWithDefault<NapileType>(ErrorUtils.createErrorType("Recursive dependency"))
 				{
 					@Override
-					protected JetType compute()
+					protected NapileType compute()
 					{
 						return expressionTypingServices.safeGetType(scope, initializer, TypeUtils.NO_EXPECTED_TYPE, dataFlowInfo, trace);
 					}
@@ -571,7 +571,7 @@ public class DescriptorResolver
 	}
 
 	@NotNull
-	public ConstructorDescriptor resolveConstructorDescriptor(@NotNull JetScope scope, @NotNull ClassDescriptor classDescriptor, @NotNull NapileConstructor constructor, BindingTrace trace)
+	public ConstructorDescriptor resolveConstructorDescriptor(@NotNull NapileScope scope, @NotNull ClassDescriptor classDescriptor, @NotNull NapileConstructor constructor, BindingTrace trace)
 	{
 		ConstructorDescriptor constructorDescriptor = new ConstructorDescriptor(classDescriptor, annotationResolver.bindAnnotations(scope, constructor, trace), resolveStatic(constructor));
 		constructorDescriptor.setReturnType(classDescriptor.getDefaultType());
@@ -585,7 +585,7 @@ public class DescriptorResolver
 		return constructorDescriptor.initialize(classDescriptor.getTypeConstructor().getParameters(), resolveCallParameters(constructorDescriptor, parameterScope, constructor.getCallParameters(), trace), Visibility.resolve(constructor));
 	}
 
-	public void checkBounds(@NotNull NapileTypeReference typeReference, @NotNull JetType type, BindingTrace trace)
+	public void checkBounds(@NotNull NapileTypeReference typeReference, @NotNull NapileType type, BindingTrace trace)
 	{
 		if(ErrorUtils.isErrorType(type))
 			return;
@@ -595,7 +595,7 @@ public class DescriptorResolver
 			return;
 
 		List<TypeParameterDescriptor> parameters = type.getConstructor().getParameters();
-		List<JetType> arguments = type.getArguments();
+		List<NapileType> arguments = type.getArguments();
 		assert parameters.size() == arguments.size();
 
 		List<? extends NapileTypeReference> jetTypeArguments = typeElement.getTypeArguments();
@@ -609,7 +609,7 @@ public class DescriptorResolver
 			if(jetTypeArgument == null)
 				continue;
 
-			JetType typeArgument = arguments.get(i);
+			NapileType typeArgument = arguments.get(i);
 			checkBounds(jetTypeArgument, typeArgument, trace);
 
 			TypeParameterDescriptor typeParameterDescriptor = parameters.get(i);
@@ -617,12 +617,12 @@ public class DescriptorResolver
 		}
 	}
 
-	public void checkBounds(@NotNull NapileTypeReference jetTypeArgument, @NotNull JetType typeArgument, @NotNull TypeParameterDescriptor typeParameterDescriptor, @NotNull TypeSubstitutor substitutor, BindingTrace trace)
+	public void checkBounds(@NotNull NapileTypeReference jetTypeArgument, @NotNull NapileType typeArgument, @NotNull TypeParameterDescriptor typeParameterDescriptor, @NotNull TypeSubstitutor substitutor, BindingTrace trace)
 	{
-		for(JetType bound : typeParameterDescriptor.getUpperBounds())
+		for(NapileType bound : typeParameterDescriptor.getUpperBounds())
 		{
-			JetType substitutedBound = substitutor.safeSubstitute(bound);
-			if(!JetTypeChecker.INSTANCE.isSubtypeOf(typeArgument, substitutedBound))
+			NapileType substitutedBound = substitutor.safeSubstitute(bound);
+			if(!NapileTypeChecker.INSTANCE.isSubtypeOf(typeArgument, substitutedBound))
 				trace.report(UPPER_BOUND_VIOLATED.on(jetTypeArgument, substitutedBound, typeArgument));
 			else
 			{
@@ -660,7 +660,7 @@ public class DescriptorResolver
 									CallParameterDescriptor p1 = l1.get(i);
 									CallParameterDescriptor p2 = l2.get(i);
 
-									if(!JetTypeChecker.INSTANCE.isSubtypeOf(p2.getType(), p1.getType()))
+									if(!NapileTypeChecker.INSTANCE.isSubtypeOf(p2.getType(), p1.getType()))
 										break loop;
 								}
 								find = true;

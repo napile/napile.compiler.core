@@ -39,7 +39,7 @@ import org.napile.compiler.lang.psi.NapileEnumValue;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.collect.Maps;
 
@@ -53,7 +53,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	private final Map<NapileAnonymClass, MutableClassDescriptor> objects = Maps.newLinkedHashMap();
 	private final Map<NapileFile, PackageDescriptor> packages = Maps.newHashMap();
 
-	private final Map<NapileDeclaration, JetScope> declaringScopes = Maps.newHashMap();
+	private final Map<NapileDeclaration, NapileScope> declaringScopes = Maps.newHashMap();
 	private final Map<NapileConstructor, ConstructorDescriptor> constructors = Maps.newLinkedHashMap();
 	private final Map<NapileNamedMethodOrMacro, SimpleMethodDescriptor> methods = new ConcurrentHashMap<NapileNamedMethodOrMacro, SimpleMethodDescriptor>();
 	private final Map<NapileVariable, VariableDescriptor> variables = Maps.newLinkedHashMap();
@@ -159,7 +159,7 @@ public class TopDownAnalysisContext implements BodiesResolveContext
 	}
 
 	@Override
-	public Map<NapileDeclaration, JetScope> getDeclaringScopes()
+	public Map<NapileDeclaration, NapileScope> getDeclaringScopes()
 	{
 		return declaringScopes;
 	}

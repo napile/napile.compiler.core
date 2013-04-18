@@ -21,7 +21,7 @@ import java.io.File;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.common.AnalyzeProcessor;
 import org.napile.compiler.common.CompilerConfigurationKeys;
-import org.napile.compiler.common.JetCoreEnvironment;
+import org.napile.compiler.common.NapileCoreEnvironment;
 import org.napile.compiler.common.messages.MessageCollector;
 import org.napile.compiler.config.CompilerConfiguration;
 import org.napile.doc.compiler.generator.AllClassesFrameGenerator;
@@ -58,7 +58,7 @@ public class DocProcessor
 
 		configuration.put(CompilerConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.PLAIN_TEXT_TO_SYSTEM_ERR);
 
-		JetCoreEnvironment environment = new JetCoreEnvironment(Disposer.newDisposable(), configuration);
+		NapileCoreEnvironment environment = new NapileCoreEnvironment(Disposer.newDisposable(), configuration);
 		environment.addSources(dir);
 
 		AnalyzeExhaust analyzeExhaust = AnalyzeProcessor.analyze(environment);

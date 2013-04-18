@@ -29,7 +29,7 @@ import org.napile.compiler.lang.psi.NapileThisExpression;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.openapi.util.Pair;
 
@@ -45,7 +45,7 @@ public class DataFlowValueFactory
 	}
 
 	@NotNull
-	public DataFlowValue createDataFlowValue(@NotNull NapileExpression expression, @NotNull JetType type, @NotNull BindingTrace bindingTrace)
+	public DataFlowValue createDataFlowValue(@NotNull NapileExpression expression, @NotNull NapileType type, @NotNull BindingTrace bindingTrace)
 	{
 		if(expression instanceof NapileConstantExpression)
 		{
@@ -63,7 +63,7 @@ public class DataFlowValueFactory
 	@NotNull
 	public DataFlowValue createDataFlowValue(@NotNull ThisReceiverDescriptor receiver)
 	{
-		JetType type = receiver.getType();
+		NapileType type = receiver.getType();
 		return new DataFlowValue(receiver, type, true, getImmanentNullability(type));
 	}
 
@@ -74,7 +74,7 @@ public class DataFlowValueFactory
 		return new DataFlowValue(variableDescriptor, type, isStableVariable(variableDescriptor), getImmanentNullability(type));
 	}  */
 
-	private Nullability getImmanentNullability(JetType type)
+	private Nullability getImmanentNullability(NapileType type)
 	{
 		return type.isNullable() ? Nullability.UNKNOWN : Nullability.NOT_NULL;
 	}

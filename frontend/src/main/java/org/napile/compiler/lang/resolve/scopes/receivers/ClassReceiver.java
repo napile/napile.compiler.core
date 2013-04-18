@@ -18,7 +18,7 @@ package org.napile.compiler.lang.resolve.scopes.receivers;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -41,7 +41,7 @@ public class ClassReceiver implements ThisReceiverDescriptor
 
 	@NotNull
 	@Override
-	public JetType getType()
+	public NapileType getType()
 	{
 		return classDescriptor.getDefaultType();
 	}

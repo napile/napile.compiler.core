@@ -39,7 +39,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.Importer;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -86,17 +86,17 @@ public class ImportsResolver
 		this.qualifiedExpressionResolver = qualifiedExpressionResolver;
 	}
 
-	public void processTypeImports(@NotNull JetScope rootScope)
+	public void processTypeImports(@NotNull NapileScope rootScope)
 	{
 		processImports(true, rootScope);
 	}
 
-	public void processMembersImports(@NotNull JetScope rootScope)
+	public void processMembersImports(@NotNull NapileScope rootScope)
 	{
 		processImports(false, rootScope);
 	}
 
-	private void processImports(boolean onlyClasses, @NotNull JetScope rootScope)
+	private void processImports(boolean onlyClasses, @NotNull NapileScope rootScope)
 	{
 		for(NapileFile file : context.getPackages().keySet())
 		{
@@ -105,12 +105,12 @@ public class ImportsResolver
 		}
 	}
 
-	private void processImportsInFile(boolean classes, WritableScope scope, List<NapileImportDirective> directives, JetScope rootScope)
+	private void processImportsInFile(boolean classes, WritableScope scope, List<NapileImportDirective> directives, NapileScope rootScope)
 	{
 		processImportsInFile(classes, scope, directives, rootScope, trace, qualifiedExpressionResolver, project);
 	}
 
-	public static void processImportsInFile(boolean onlyClasses, @NotNull WritableScope namespaceScope, @NotNull List<NapileImportDirective> importDirectives, @NotNull JetScope rootScope, @NotNull BindingTrace trace, @NotNull QualifiedExpressionResolver qualifiedExpressionResolver, @NotNull Project project)
+	public static void processImportsInFile(boolean onlyClasses, @NotNull WritableScope namespaceScope, @NotNull List<NapileImportDirective> importDirectives, @NotNull NapileScope rootScope, @NotNull BindingTrace trace, @NotNull QualifiedExpressionResolver qualifiedExpressionResolver, @NotNull Project project)
 	{
 
 		Importer.DelayedImporter delayedImporter = new Importer.DelayedImporter(namespaceScope);

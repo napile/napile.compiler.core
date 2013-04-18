@@ -42,12 +42,12 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.processors.TypeResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.util.Pair;
 
@@ -104,14 +104,14 @@ public class TypeParameterResolver
 		return typeParameterDescriptor;
 	}
 
-	public void postResolving(@NotNull NapileTypeParameterListOwner declaration, @NotNull JetScope scope, @NotNull List<TypeParameterDescriptor> parameters, @NotNull BindingTrace trace)
+	public void postResolving(@NotNull NapileTypeParameterListOwner declaration, @NotNull NapileScope scope, @NotNull List<TypeParameterDescriptor> parameters, @NotNull BindingTrace trace)
 	{
 		resolveGenericBounds(declaration, scope, parameters, trace);
 
 		resolveConstructors(declaration, scope, parameters, trace);
 	}
 
-	private void resolveConstructors(@NotNull NapileTypeParameterListOwner declaration, JetScope scope, List<TypeParameterDescriptor> parameters, BindingTrace trace)
+	private void resolveConstructors(@NotNull NapileTypeParameterListOwner declaration, NapileScope scope, List<TypeParameterDescriptor> parameters, BindingTrace trace)
 	{
 		NapileTypeParameter[] typeParameters = declaration.getTypeParameters();
 		for(int i = 0; i < parameters.size(); i++)
@@ -136,9 +136,9 @@ public class TypeParameterResolver
 		}
 	}
 
-	private void resolveGenericBounds(@NotNull NapileTypeParameterListOwner declaration, JetScope scope, List<TypeParameterDescriptor> parameters, BindingTrace trace)
+	private void resolveGenericBounds(@NotNull NapileTypeParameterListOwner declaration, NapileScope scope, List<TypeParameterDescriptor> parameters, BindingTrace trace)
 	{
-		List<Pair<NapileTypeReference, JetType>> deferredUpperBoundCheckerTasks = Lists.newArrayList();
+		List<Pair<NapileTypeReference, NapileType>> deferredUpperBoundCheckerTasks = Lists.newArrayList();
 
 		NapileTypeParameter[] typeParameters = declaration.getTypeParameters();
 		for(int i = 0; i < typeParameters.length; i++)
@@ -148,9 +148,9 @@ public class TypeParameterResolver
 
 			for(NapileTypeReference extendsBound : jetTypeParameter.getSuperTypes())
 			{
-				JetType type = typeResolver.resolveType(scope, extendsBound, trace, false);
+				NapileType type = typeResolver.resolveType(scope, extendsBound, trace, false);
 				((TypeParameterDescriptorImpl) typeParameterDescriptor).addUpperBound(type);
-				deferredUpperBoundCheckerTasks.add(new Pair<NapileTypeReference, JetType>(extendsBound, type));
+				deferredUpperBoundCheckerTasks.add(new Pair<NapileTypeReference, NapileType>(extendsBound, type));
 			}
 		}
 
@@ -161,13 +161,13 @@ public class TypeParameterResolver
 			((TypeParameterDescriptorImpl) typeParameterDescriptor).setInitialized();
 		}
 
-		for(Pair<NapileTypeReference, JetType> checkerTask : deferredUpperBoundCheckerTasks)
+		for(Pair<NapileTypeReference, NapileType> checkerTask : deferredUpperBoundCheckerTasks)
 			checkUpperBoundType(checkerTask.getFirst(), checkerTask.getSecond(), trace);
 	}
 
-	private static void checkUpperBoundType(NapileTypeReference upperBound, JetType upperBoundType, BindingTrace trace)
+	private static void checkUpperBoundType(NapileTypeReference upperBound, NapileType upperBoundType, BindingTrace trace)
 	{
-		if(!TypeUtils.canHaveSubtypes(JetTypeChecker.INSTANCE, upperBoundType))
+		if(!TypeUtils.canHaveSubtypes(NapileTypeChecker.INSTANCE, upperBoundType))
 		{
 			trace.report(FINAL_UPPER_BOUND.on(upperBound, upperBoundType));
 		}

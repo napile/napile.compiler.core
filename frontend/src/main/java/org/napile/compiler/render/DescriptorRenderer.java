@@ -34,7 +34,7 @@ import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeEntry;
@@ -122,17 +122,17 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return keyword.getValue();
 	}
 
-	public String renderType(JetType type)
+	public String renderType(NapileType type)
 	{
 		return renderType(type, false);
 	}
 
-	public String renderTypeWithShortNames(JetType type)
+	public String renderTypeWithShortNames(NapileType type)
 	{
 		return renderType(type, true);
 	}
 
-	protected String renderType(JetType type, boolean shortNamesOnly)
+	protected String renderType(NapileType type, boolean shortNamesOnly)
 	{
 		if(type == null)
 			return escape("[NULL]");
@@ -148,7 +148,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			return renderDefaultType(type, shortNamesOnly);
 	}
 
-	protected String renderDefaultType(JetType type, boolean shortNamesOnly)
+	protected String renderDefaultType(NapileType type, boolean shortNamesOnly)
 	{
 		StringBuilder sb = new StringBuilder();
 		ClassifierDescriptor cd = type.getConstructor().getDeclarationDescriptor();
@@ -192,9 +192,9 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return sb.toString();
 	}
 
-	protected void appendTypes(StringBuilder result, List<JetType> types, boolean shortNamesOnly)
+	protected void appendTypes(StringBuilder result, List<NapileType> types, boolean shortNamesOnly)
 	{
-		for(Iterator<JetType> iterator = types.iterator(); iterator.hasNext(); )
+		for(Iterator<NapileType> iterator = types.iterator(); iterator.hasNext(); )
 		{
 			result.append(renderType(iterator.next(), shortNamesOnly));
 			if(iterator.hasNext())
@@ -204,7 +204,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		}
 	}
 
-	private String renderMultiType(JetType type, final boolean shortNamesOnly)
+	private String renderMultiType(NapileType type, final boolean shortNamesOnly)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
@@ -226,15 +226,15 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 		return sb.toString();
 	}
 
-	protected String renderMethodType(JetType type, final boolean shortNamesOnly)
+	protected String renderMethodType(NapileType type, final boolean shortNamesOnly)
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
 		sb.append("(");
-		sb.append(StringUtil.join(((MethodTypeConstructor) type.getConstructor()).getParameterTypes().entrySet(), new Function<Map.Entry<Name, JetType>, String>()
+		sb.append(StringUtil.join(((MethodTypeConstructor) type.getConstructor()).getParameterTypes().entrySet(), new Function<Map.Entry<Name, NapileType>, String>()
 		{
 			@Override
-			public String fun(Map.Entry<Name, JetType> nameJetTypeEntry)
+			public String fun(Map.Entry<Name, NapileType> nameJetTypeEntry)
 			{
 				return nameJetTypeEntry.getKey() + " : " + renderType(nameJetTypeEntry.getValue(), shortNamesOnly);
 			}
@@ -393,7 +393,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 
 		protected Void visitVariableDescriptor(VariableDescriptor descriptor, StringBuilder builder, boolean skipValVar)
 		{
-			JetType type = descriptor.getType();
+			NapileType type = descriptor.getType();
 
 			renderModality(descriptor.getModality(), builder);
 			String typeString = renderPropertyPrefixAndComputeTypeString(descriptor, builder, skipValVar, Collections.<TypeParameterDescriptor>emptyList(), type);
@@ -402,7 +402,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			return null;
 		}
 
-		private String renderPropertyPrefixAndComputeTypeString(@NotNull VariableDescriptor descriptor, @NotNull StringBuilder builder, boolean skipVar,  @NotNull List<TypeParameterDescriptor> typeParameters, @Nullable JetType outType)
+		private String renderPropertyPrefixAndComputeTypeString(@NotNull VariableDescriptor descriptor, @NotNull StringBuilder builder, boolean skipVar,  @NotNull List<TypeParameterDescriptor> typeParameters, @Nullable NapileType outType)
 		{
 			String typeString = lt() + "no type>";
 			if(!skipVar)
@@ -481,7 +481,7 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			{
 				if(typeParameter.getUpperBounds().size() > 1)
 				{
-					for(JetType upperBound : typeParameter.getUpperBounds())
+					for(NapileType upperBound : typeParameter.getUpperBounds())
 					{
 						builder.append(", ");
 						builder.append(typeParameter.getName());
@@ -554,16 +554,16 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 				renderTypeParameters(descriptor.getTypeConstructor().getParameters(), builder);
 			}
 
-			Collection<? extends JetType> supertypes = descriptor.getTypeConstructor().getSupertypes();
+			Collection<? extends NapileType> supertypes = descriptor.getTypeConstructor().getSupertypes();
 			if(supertypes.isEmpty() || supertypes.size() == 1 && TypeUtils.isEqualFqName(supertypes.iterator().next(), NapileLangPackage.ANY))
 			{
 			}
 			else
 			{
 				builder.append(" : ");
-				for(Iterator<? extends JetType> iterator = supertypes.iterator(); iterator.hasNext(); )
+				for(Iterator<? extends NapileType> iterator = supertypes.iterator(); iterator.hasNext(); )
 				{
-					JetType supertype = iterator.next();
+					NapileType supertype = iterator.next();
 					builder.append(renderType(supertype));
 					if(iterator.hasNext())
 					{
@@ -593,12 +593,12 @@ public class DescriptorRenderer implements Renderer<DeclarationDescriptor>
 			if(!descriptor.getUpperBounds().isEmpty())
 			{
 				builder.append(" : ");
-				builder.append(StringUtil.join(descriptor.getUpperBounds(), new Function<JetType, String>()
+				builder.append(StringUtil.join(descriptor.getUpperBounds(), new Function<NapileType, String>()
 				{
 					@Override
-					public String fun(JetType jetType)
+					public String fun(NapileType napileType)
 					{
-						return renderType(jetType);
+						return renderType(napileType);
 					}
 				}, " & "));
 			}

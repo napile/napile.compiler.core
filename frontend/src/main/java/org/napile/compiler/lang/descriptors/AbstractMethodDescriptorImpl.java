@@ -30,7 +30,7 @@ import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
 import org.napile.compiler.lang.types.DescriptorSubstitutor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -43,7 +43,7 @@ public abstract class AbstractMethodDescriptorImpl extends DeclarationDescriptor
 
 	protected List<TypeParameterDescriptor> typeParameters;
 	protected List<CallParameterDescriptor> unsubstitutedValueParameters = Collections.emptyList();
-	protected JetType unsubstitutedReturnType;
+	protected NapileType unsubstitutedReturnType;
 	protected ReceiverDescriptor expectedThisObject;
 
 	protected Modality modality;
@@ -72,7 +72,7 @@ public abstract class AbstractMethodDescriptorImpl extends DeclarationDescriptor
 		this.isNative = isNative;
 	}
 
-	public AbstractMethodDescriptorImpl initialize(@NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<CallParameterDescriptor> unsubstitutedValueParameters, @Nullable JetType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
+	public AbstractMethodDescriptorImpl initialize(@NotNull ReceiverDescriptor expectedThisObject, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull List<CallParameterDescriptor> unsubstitutedValueParameters, @Nullable NapileType unsubstitutedReturnType, @Nullable Modality modality, @NotNull Visibility visibility)
 	{
 		this.typeParameters = Lists.newArrayList(typeParameters);
 		this.unsubstitutedValueParameters = unsubstitutedValueParameters;
@@ -93,7 +93,7 @@ public abstract class AbstractMethodDescriptorImpl extends DeclarationDescriptor
 		return this;
 	}
 
-	public void setReturnType(@NotNull JetType unsubstitutedReturnType)
+	public void setReturnType(@NotNull NapileType unsubstitutedReturnType)
 	{
 		this.unsubstitutedReturnType = unsubstitutedReturnType;
 	}
@@ -166,7 +166,7 @@ public abstract class AbstractMethodDescriptorImpl extends DeclarationDescriptor
 
 	@Nullable
 	@Override
-	public JetType getReturnType()
+	public NapileType getReturnType()
 	{
 		return unsubstitutedReturnType;
 	}
@@ -205,7 +205,7 @@ public abstract class AbstractMethodDescriptorImpl extends DeclarationDescriptor
 		ReceiverDescriptor substitutedExpectedThis = NO_RECEIVER;
 		if(expectedThisObject.exists())
 		{
-			JetType substitutedType = substitutor.substitute(expectedThisObject.getType(), newOwner);
+			NapileType substitutedType = substitutor.substitute(expectedThisObject.getType(), newOwner);
 			if(substitutedType == null)
 				return null;
 
@@ -216,7 +216,7 @@ public abstract class AbstractMethodDescriptorImpl extends DeclarationDescriptor
 		if(substitutedValueParameters == null)
 			return null;
 
-		JetType substitutedReturnType = MethodDescriptorUtil.getSubstitutedReturnType(this, newOwner, substitutor);
+		NapileType substitutedReturnType = MethodDescriptorUtil.getSubstitutedReturnType(this, newOwner, substitutor);
 		if(substitutedReturnType == null)
 			return null;
 

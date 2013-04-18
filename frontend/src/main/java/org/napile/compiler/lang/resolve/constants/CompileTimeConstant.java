@@ -18,8 +18,8 @@ package org.napile.compiler.lang.resolve.constants;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -29,5 +29,5 @@ public interface CompileTimeConstant<T>
 	T getValue();
 
 	@Nullable
-	JetType getType(@NotNull JetScope jetScope);
+	NapileType getType(@NotNull NapileScope napileScope);
 }

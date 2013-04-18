@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.types.checker;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 
 /**
@@ -25,11 +25,11 @@ import org.napile.compiler.lang.types.TypeConstructor;
  */
 public interface TypingConstraints
 {
-	boolean assertEqualTypes(@NotNull JetType a, @NotNull JetType b, @NotNull TypeCheckingProcedure typeCheckingProcedure);
+	boolean assertEqualTypes(@NotNull NapileType a, @NotNull NapileType b, @NotNull TypeCheckingProcedure typeCheckingProcedure);
 
 	boolean assertEqualTypeConstructors(@NotNull TypeConstructor a, @NotNull TypeConstructor b);
 
-	boolean assertSubtype(@NotNull JetType subtype, @NotNull JetType supertype, @NotNull TypeCheckingProcedure typeCheckingProcedure);
+	boolean assertSubtype(@NotNull NapileType subtype, @NotNull NapileType supertype, @NotNull TypeCheckingProcedure typeCheckingProcedure);
 
-	boolean noCorrespondingSupertype(@NotNull JetType subtype, @NotNull JetType supertype);
+	boolean noCorrespondingSupertype(@NotNull NapileType subtype, @NotNull NapileType supertype);
 }

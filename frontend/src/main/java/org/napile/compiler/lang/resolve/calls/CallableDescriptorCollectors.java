@@ -32,9 +32,9 @@ import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.AnnotationUtils;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeEntry;
 import org.napile.compiler.lang.types.TypeConstructor;
@@ -51,21 +51,21 @@ public class CallableDescriptorCollectors
 
 		@NotNull
 		@Override
-		public Collection<MethodDescriptor> getNonExtensionsByName(JetScope scope, Name name)
+		public Collection<MethodDescriptor> getNonExtensionsByName(NapileScope scope, Name name)
 		{
 			return fromScope(scope, name);
 		}
 
 		@NotNull
 		@Override
-		public Collection<MethodDescriptor> getMembersByName(@NotNull JetType receiverType, Name name)
+		public Collection<MethodDescriptor> getMembersByName(@NotNull NapileType receiverType, Name name)
 		{
 			return fromScope(receiverType.getMemberScope(), name);
 		}
 
 		@NotNull
 		@Override
-		public Collection<MethodDescriptor> getNonMembersByName(JetScope scope, Name name)
+		public Collection<MethodDescriptor> getNonMembersByName(NapileScope scope, Name name)
 		{
 			Collection<MethodDescriptor> methodsByName = scope.getMethods(name);
 			List<MethodDescriptor> extensionList = new ArrayList<MethodDescriptor>(methodsByName.size());
@@ -75,7 +75,7 @@ public class CallableDescriptorCollectors
 			return extensionList;
 		}
 
-		private Collection<MethodDescriptor> fromScope(JetScope scope, Name name)
+		private Collection<MethodDescriptor> fromScope(NapileScope scope, Name name)
 		{
 			Collection<MethodDescriptor> methodDescriptors = scope.getMethods(name);
 			Collection<ConstructorDescriptor> constructorDescriptors = Collections.emptyList();
@@ -103,7 +103,7 @@ public class CallableDescriptorCollectors
 
 		@NotNull
 		@Override
-		public Collection<VariableDescriptor> getNonExtensionsByName(JetScope scope, Name name)
+		public Collection<VariableDescriptor> getNonExtensionsByName(NapileScope scope, Name name)
 		{
 			VariableDescriptor descriptor = scope.getLocalVariable(name);
 			if(descriptor == null)
@@ -114,7 +114,7 @@ public class CallableDescriptorCollectors
 
 		@NotNull
 		@Override
-		public Collection<VariableDescriptor> getMembersByName(@NotNull JetType receiverType, Name name)
+		public Collection<VariableDescriptor> getMembersByName(@NotNull NapileType receiverType, Name name)
 		{
 			TypeConstructor typeConstructor = receiverType.getConstructor();
 			if(typeConstructor instanceof MultiTypeConstructor)
@@ -129,7 +129,7 @@ public class CallableDescriptorCollectors
 
 		@NotNull
 		@Override
-		public Collection<VariableDescriptor> getNonMembersByName(JetScope scope, Name name)
+		public Collection<VariableDescriptor> getNonMembersByName(NapileScope scope, Name name)
 		{
 			return Collections.emptyList();
 		}

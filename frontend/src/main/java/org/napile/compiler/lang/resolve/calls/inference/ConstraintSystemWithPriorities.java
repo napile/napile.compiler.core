@@ -27,14 +27,14 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.types.CommonSupertypes;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import org.napile.compiler.lang.types.checker.TypeCheckingProcedure;
 import org.napile.compiler.lang.types.checker.TypingConstraints;
 import com.google.common.collect.Maps;
@@ -55,7 +55,7 @@ public class ConstraintSystemWithPriorities
 		}
 	};
 
-	public static TypeSubstitutor makeConstantSubstitutor(Collection<TypeParameterDescriptor> typeParameterDescriptors, final JetType type)
+	public static TypeSubstitutor makeConstantSubstitutor(Collection<TypeParameterDescriptor> typeParameterDescriptors, final NapileType type)
 	{
 		final Set<TypeConstructor> constructors = Sets.newHashSet();
 		for(TypeParameterDescriptor typeParameterDescriptor : typeParameterDescriptors)
@@ -66,7 +66,7 @@ public class ConstraintSystemWithPriorities
 		return TypeSubstitutor.create(new TypeSubstitution()
 		{
 			@Override
-			public JetType get(TypeConstructor key)
+			public NapileType get(TypeConstructor key)
 			{
 				if(constructors.contains(key))
 				{
@@ -92,12 +92,12 @@ public class ConstraintSystemWithPriorities
 
 	//==========================================================================================================================================================
 
-	private final Map<JetType, TypeValue> knownTypes = Maps.newLinkedHashMap(); // linked - for easier debugging
+	private final Map<NapileType, TypeValue> knownTypes = Maps.newLinkedHashMap(); // linked - for easier debugging
 	private final Map<TypeParameterDescriptor, TypeValue> unknownTypes = Maps.newLinkedHashMap(); // linked - for easier debugging
 	private final Set<TypeValue> unsolvedUnknowns = Sets.newLinkedHashSet(); // linked - for easier debugging
 	private final PriorityQueue<SubtypingConstraint> constraintQueue = new PriorityQueue<SubtypingConstraint>(10, SUBTYPING_CONSTRAINT_ORDER);
 
-	private final JetTypeChecker typeChecker = JetTypeChecker.INSTANCE;
+	private final NapileTypeChecker typeChecker = NapileTypeChecker.INSTANCE;
 	private final TypeCheckingProcedure constraintExpander;
 	private final ConstraintResolutionListener listener;
 
@@ -108,7 +108,7 @@ public class ConstraintSystemWithPriorities
 	}
 
 	@NotNull
-	private TypeValue getTypeValueFor(@NotNull JetType type)
+	private TypeValue getTypeValueFor(@NotNull NapileType type)
 	{
 		DeclarationDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
 		if(declarationDescriptor instanceof TypeParameterDescriptor)
@@ -167,7 +167,7 @@ public class ConstraintSystemWithPriorities
 		return new TypeCheckingProcedure(new TypeConstraintBuilderAdapter(new TypingConstraints()
 		{
 			@Override
-			public boolean assertEqualTypes(@NotNull JetType a, @NotNull JetType b, @NotNull TypeCheckingProcedure typeCheckingProcedure)
+			public boolean assertEqualTypes(@NotNull NapileType a, @NotNull NapileType b, @NotNull TypeCheckingProcedure typeCheckingProcedure)
 			{
 				TypeValue aValue = getTypeValueFor(a);
 				TypeValue bValue = getTypeValueFor(b);
@@ -183,7 +183,7 @@ public class ConstraintSystemWithPriorities
 			}
 
 			@Override
-			public boolean assertSubtype(@NotNull JetType subtype, @NotNull JetType supertype, @NotNull TypeCheckingProcedure typeCheckingProcedure)
+			public boolean assertSubtype(@NotNull NapileType subtype, @NotNull NapileType supertype, @NotNull TypeCheckingProcedure typeCheckingProcedure)
 			{
 				TypeValue subtypeValue = getTypeValueFor(subtype);
 				TypeValue supertypeValue = getTypeValueFor(supertype);
@@ -196,7 +196,7 @@ public class ConstraintSystemWithPriorities
 			}
 
 			@Override
-			public boolean noCorrespondingSupertype(@NotNull JetType subtype, @NotNull JetType supertype)
+			public boolean noCorrespondingSupertype(@NotNull NapileType subtype, @NotNull NapileType supertype)
 			{
 				// If some of the types is an unknown, the constraint must be generated, and we should carry on
 				// otherwise there can be no solution, and we should fail
@@ -217,7 +217,7 @@ public class ConstraintSystemWithPriorities
 		}, listener));
 	}
 
-	private boolean assignValueTo(TypeValue unknown, JetType value)
+	private boolean assignValueTo(TypeValue unknown, NapileType value)
 	{
 		if(unknown.hasValue())
 		{
@@ -312,7 +312,7 @@ public class ConstraintSystemWithPriorities
 	}
 
 	@NotNull
-	public ConstraintSystemSolution solve(@NotNull JetScope jetScope)
+	public ConstraintSystemSolution solve(@NotNull NapileScope napileScope)
 	{
 		Solution solution = new Solution();
 		// At this point we only have type values, no bounds added for them, no values computed for unknown types
@@ -353,7 +353,7 @@ public class ConstraintSystemWithPriorities
 
 		for(TypeValue unknown : Sets.newLinkedHashSet(unsolvedUnknowns))
 		{
-			if(!computeValueFor(unknown, jetScope))
+			if(!computeValueFor(unknown, napileScope))
 			{
 				listener.error("Not enough data to compute value for ", unknown);
 				solution.registerError("Not enough data to compute value for " + unknown + ". Please, specify type arguments explicitly");
@@ -378,7 +378,7 @@ public class ConstraintSystemWithPriorities
 		{
 			TypeParameterDescriptor typeParameterDescriptor = entry.getKey();
 			TypeValue unknown = entry.getValue();
-			for(JetType upperBound : typeParameterDescriptor.getUpperBounds())
+			for(NapileType upperBound : typeParameterDescriptor.getUpperBounds())
 			{
 				constraintsToEnsureAfterInference.add(PARAMETER_BOUND.assertSubtyping(unknown.getOriginalType(), getTypeValueFor(upperBound).getOriginalType()));
 				//                unknown.addUpperBound(new TypeValue(upperBound));
@@ -395,10 +395,10 @@ public class ConstraintSystemWithPriorities
 
 		for(SubtypingConstraint constraint : constraintsToEnsureAfterInference)
 		{
-			JetType substitutedSubtype = solution.getSubstitutor().substitute(constraint.getSubtype(), null); // TODO
+			NapileType substitutedSubtype = solution.getSubstitutor().substitute(constraint.getSubtype(), null); // TODO
 			if(substitutedSubtype == null)
 				continue;
-			JetType substitutedSupertype = solution.getSubstitutor().substitute(constraint.getSupertype(), null); // TODO
+			NapileType substitutedSupertype = solution.getSubstitutor().substitute(constraint.getSupertype(), null); // TODO
 			if(substitutedSupertype == null)
 				continue;
 
@@ -426,7 +426,7 @@ public class ConstraintSystemWithPriorities
 
 	private final Set<TypeValue> beingComputed = Sets.newHashSet();
 
-	public boolean computeValueFor(TypeValue unknown, JetScope jetScope)
+	public boolean computeValueFor(TypeValue unknown, NapileScope napileScope)
 	{
 		assert !unknown.isKnown();
 		if(beingComputed.contains(unknown))
@@ -442,9 +442,9 @@ public class ConstraintSystemWithPriorities
 				Set<TypeValue> upperBounds = unknown.getUpperBounds();
 				if(!lowerBounds.isEmpty())
 				{
-					Set<JetType> types = getTypes(lowerBounds);
+					Set<NapileType> types = getTypes(lowerBounds);
 
-					JetType commonSupertype = CommonSupertypes.commonSupertype(types);
+					NapileType commonSupertype = CommonSupertypes.commonSupertype(types);
 					for(TypeValue upperBound : upperBounds)
 					{
 						if(!typeChecker.isSubtypeOf(commonSupertype, upperBound.getType()))
@@ -458,8 +458,8 @@ public class ConstraintSystemWithPriorities
 				}
 				else if(!upperBounds.isEmpty())
 				{
-					Set<JetType> types = getTypes(upperBounds);
-					JetType intersect = TypeUtils.intersect(typeChecker, types, jetScope);
+					Set<NapileType> types = getTypes(upperBounds);
+					NapileType intersect = TypeUtils.intersect(typeChecker, types, napileScope);
 
 					if(intersect == null)
 						return false;
@@ -479,9 +479,9 @@ public class ConstraintSystemWithPriorities
 		return true;
 	}
 
-	private static Set<JetType> getTypes(Set<TypeValue> lowerBounds)
+	private static Set<NapileType> getTypes(Set<TypeValue> lowerBounds)
 	{
-		Set<JetType> types = Sets.newHashSet();
+		Set<NapileType> types = Sets.newHashSet();
 		for(TypeValue lowerBound : lowerBounds)
 		{
 			types.add(lowerBound.getType());
@@ -517,11 +517,11 @@ public class ConstraintSystemWithPriorities
 			return;
 		try
 		{
-			JetType resultingType = typeValue.getType();
-			JetType type = solution.getSubstitutor().substitute(resultingType, null); // TODO
+			NapileType resultingType = typeValue.getType();
+			NapileType type = solution.getSubstitutor().substitute(resultingType, null); // TODO
 			for(TypeValue upperBound : typeValue.getUpperBounds())
 			{
-				JetType boundingType = solution.getSubstitutor().substitute(upperBound.getType(), null);
+				NapileType boundingType = solution.getSubstitutor().substitute(upperBound.getType(), null);
 				if(!typeChecker.isSubtypeOf(type, boundingType))
 				{ // TODO
 					solution.registerError("Constraint violation: " + type + " is not a subtype of " + boundingType);
@@ -530,7 +530,7 @@ public class ConstraintSystemWithPriorities
 			}
 			for(TypeValue lowerBound : typeValue.getLowerBounds())
 			{
-				JetType boundingType = solution.getSubstitutor().substitute(lowerBound.getType(), null);
+				NapileType boundingType = solution.getSubstitutor().substitute(lowerBound.getType(), null);
 				if(!typeChecker.isSubtypeOf(boundingType, type))
 				{
 					solution.registerError("Constraint violation: " + boundingType + " is not a subtype of " + type);
@@ -573,7 +573,7 @@ public class ConstraintSystemWithPriorities
 		private final TypeSubstitutor typeSubstitutor = TypeSubstitutor.create(new TypeSubstitution()
 		{
 			@Override
-			public JetType get(TypeConstructor key)
+			public NapileType get(TypeConstructor key)
 			{
 				DeclarationDescriptor declarationDescriptor = key.getDeclarationDescriptor();
 				if(declarationDescriptor instanceof TypeParameterDescriptor)
@@ -583,7 +583,7 @@ public class ConstraintSystemWithPriorities
 					if(!unknownTypes.containsKey(descriptor))
 						return null;
 
-					JetType value = getValue(descriptor);
+					NapileType value = getValue(descriptor);
 					if(value == null)
 					{
 						return null;
@@ -630,7 +630,7 @@ public class ConstraintSystemWithPriorities
 		}
 
 		@Override
-		public JetType getValue(TypeParameterDescriptor typeParameterDescriptor)
+		public NapileType getValue(TypeParameterDescriptor typeParameterDescriptor)
 		{
 			TypeValue typeVariable = getTypeVariable(typeParameterDescriptor);
 			return typeVariable.hasValue() ? typeVariable.getType() : null;
@@ -656,7 +656,7 @@ public class ConstraintSystemWithPriorities
 		}
 
 		@Override
-		public boolean assertEqualTypes(@NotNull JetType a, @NotNull JetType b, @NotNull TypeCheckingProcedure typeCheckingProcedure)
+		public boolean assertEqualTypes(@NotNull NapileType a, @NotNull NapileType b, @NotNull TypeCheckingProcedure typeCheckingProcedure)
 		{
 			boolean result = delegate.assertEqualTypes(a, b, typeCheckingProcedure);
 			if(!result)
@@ -678,7 +678,7 @@ public class ConstraintSystemWithPriorities
 		}
 
 		@Override
-		public boolean assertSubtype(@NotNull JetType subtype, @NotNull JetType supertype, @NotNull TypeCheckingProcedure typeCheckingProcedure)
+		public boolean assertSubtype(@NotNull NapileType subtype, @NotNull NapileType supertype, @NotNull TypeCheckingProcedure typeCheckingProcedure)
 		{
 			boolean result = delegate.assertSubtype(subtype, supertype, typeCheckingProcedure);
 			if(!result)
@@ -689,7 +689,7 @@ public class ConstraintSystemWithPriorities
 		}
 
 		@Override
-		public boolean noCorrespondingSupertype(@NotNull JetType subtype, @NotNull JetType supertype)
+		public boolean noCorrespondingSupertype(@NotNull NapileType subtype, @NotNull NapileType supertype)
 		{
 			boolean result = delegate.noCorrespondingSupertype(subtype, supertype);
 			if(!result)

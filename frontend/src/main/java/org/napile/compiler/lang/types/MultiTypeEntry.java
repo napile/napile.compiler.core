@@ -43,11 +43,11 @@ public class MultiTypeEntry
 	@Nullable
 	public final Name name;
 	@NotNull
-	public final JetType type;
+	public final NapileType type;
 
 	public final VariableDescriptor descriptor;
 
-	public MultiTypeEntry(int index, @Nullable Boolean mutable, @Nullable Name name, @NotNull JetType type)
+	public MultiTypeEntry(int index, @Nullable Boolean mutable, @Nullable Name name, @NotNull NapileType type)
 	{
 		this.index = index;
 		this.mutable = mutable;

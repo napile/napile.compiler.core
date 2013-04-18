@@ -24,8 +24,8 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 
 /**
  * @author abreslav
@@ -33,19 +33,19 @@ import org.napile.compiler.lang.types.impl.JetTypeImpl;
 public class CommonSupertypes
 {
 	@NotNull
-	public static JetType commonSupertype(@NotNull Collection<JetType> types)
+	public static NapileType commonSupertype(@NotNull Collection<NapileType> types)
 	{
-		Collection<JetType> typeSet = new HashSet<JetType>(types);
+		Collection<NapileType> typeSet = new HashSet<NapileType>(types);
 		assert !typeSet.isEmpty();
 
-		final JetScope jetScope = TypeUtils.getChainedScope(types);
+		final NapileScope napileScope = TypeUtils.getChainedScope(types);
 
 		// If any of the types is nullable, the result must be nullable
 		// This also removed Nothing and Nothing? because they are subtypes of everything else
 		boolean nullable = false;
-		for(Iterator<JetType> iterator = typeSet.iterator(); iterator.hasNext(); )
+		for(Iterator<NapileType> iterator = typeSet.iterator(); iterator.hasNext(); )
 		{
-			JetType type = iterator.next();
+			NapileType type = iterator.next();
 			assert type != null;
 			if(TypeUtils.isEqualFqName(type, NapileLangPackage.NULL))
 			{
@@ -56,7 +56,7 @@ public class CommonSupertypes
 
 		// Everything deleted => it's Nothing or Nothing?
 		if(typeSet.isEmpty())
-			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, nullable);
+			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.NULL, nullable);
 
 		if(typeSet.size() == 1)
 		{
@@ -64,13 +64,13 @@ public class CommonSupertypes
 		}
 
 		// constructor of the supertype -> all of its instantiations occurring as supertypes
-		Map<TypeConstructor, Set<JetType>> commonSupertypes = computeCommonRawSupertypes(typeSet);
+		Map<TypeConstructor, Set<NapileType>> commonSupertypes = computeCommonRawSupertypes(typeSet);
 		if(commonSupertypes.isEmpty())
-			return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, nullable);
+			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.NULL, nullable);
 		while(commonSupertypes.size() > 1)
 		{
-			Set<JetType> merge = new HashSet<JetType>();
-			for(Set<JetType> supertypes : commonSupertypes.values())
+			Set<NapileType> merge = new HashSet<NapileType>();
+			for(Set<NapileType> supertypes : commonSupertypes.values())
 			{
 				merge.addAll(supertypes);
 			}
@@ -79,25 +79,25 @@ public class CommonSupertypes
 		assert !commonSupertypes.isEmpty() : commonSupertypes + " <- " + types;
 
 		// constructor of the supertype -> all of its instantiations occurring as supertypes
-		Map.Entry<TypeConstructor, Set<JetType>> entry = commonSupertypes.entrySet().iterator().next();
+		Map.Entry<TypeConstructor, Set<NapileType>> entry = commonSupertypes.entrySet().iterator().next();
 
 		// Reconstructing type arguments if possible
-		JetType result = computeSupertypeProjections(entry.getKey(), entry.getValue());
+		NapileType result = computeSupertypeProjections(entry.getKey(), entry.getValue());
 		return TypeUtils.makeNullableIfNeeded(result, nullable);
 	}
 
 	// Raw supertypes are superclasses w/o type arguments
 	// @return TypeConstructor -> all instantiations of this constructor occurring as supertypes
 	@NotNull
-	private static Map<TypeConstructor, Set<JetType>> computeCommonRawSupertypes(@NotNull Collection<JetType> types)
+	private static Map<TypeConstructor, Set<NapileType>> computeCommonRawSupertypes(@NotNull Collection<NapileType> types)
 	{
 		assert !types.isEmpty();
 
-		final Map<TypeConstructor, Set<JetType>> constructorToAllInstances = new HashMap<TypeConstructor, Set<JetType>>();
+		final Map<TypeConstructor, Set<NapileType>> constructorToAllInstances = new HashMap<TypeConstructor, Set<NapileType>>();
 		Set<TypeConstructor> commonSuperclasses = null;
 
 		List<TypeConstructor> order = null;
-		for(JetType type : types)
+		for(NapileType type : types)
 		{
 			Set<TypeConstructor> visited = new HashSet<TypeConstructor>();
 
@@ -106,21 +106,21 @@ public class CommonSupertypes
 				public LinkedList<TypeConstructor> list = new LinkedList<TypeConstructor>();
 
 				@Override
-				public void beforeChildren(JetType current)
+				public void beforeChildren(NapileType current)
 				{
 					TypeConstructor constructor = current.getConstructor();
 
-					Set<JetType> instances = constructorToAllInstances.get(constructor);
+					Set<NapileType> instances = constructorToAllInstances.get(constructor);
 					if(instances == null)
 					{
-						instances = new HashSet<JetType>();
+						instances = new HashSet<NapileType>();
 						constructorToAllInstances.put(constructor, instances);
 					}
 					instances.add(current);
 				}
 
 				@Override
-				public void afterChildren(JetType current)
+				public void afterChildren(NapileType current)
 				{
 					list.addFirst(current.getConstructor());
 				}
@@ -144,7 +144,7 @@ public class CommonSupertypes
 		assert order != null;
 
 		Set<TypeConstructor> notSource = new HashSet<TypeConstructor>();
-		Map<TypeConstructor, Set<JetType>> result = new HashMap<TypeConstructor, Set<JetType>>();
+		Map<TypeConstructor, Set<NapileType>> result = new HashMap<TypeConstructor, Set<NapileType>>();
 		for(TypeConstructor superConstructor : order)
 		{
 			if(!commonSuperclasses.contains(superConstructor))
@@ -165,7 +165,7 @@ public class CommonSupertypes
 	// constructor - type constructor of a supertype to be instantiated
 	// types - instantiations of constructor occurring as supertypes of classes we are trying to intersect
 	@NotNull
-	private static JetType computeSupertypeProjections(@NotNull TypeConstructor constructor, @NotNull Set<JetType> types)
+	private static NapileType computeSupertypeProjections(@NotNull TypeConstructor constructor, @NotNull Set<NapileType> types)
 	{
 		// we assume that all the given types are applications of the same type constructor
 
@@ -177,34 +177,34 @@ public class CommonSupertypes
 		}
 
 		List<TypeParameterDescriptor> parameters = constructor.getParameters();
-		List<JetType> newProjections = new ArrayList<JetType>();
+		List<NapileType> newProjections = new ArrayList<NapileType>();
 		for(int i = 0, parametersSize = parameters.size(); i < parametersSize; i++)
 		{
 			TypeParameterDescriptor parameterDescriptor = parameters.get(i);
-			Set<JetType> typeProjections = new HashSet<JetType>();
-			for(JetType type : types)
+			Set<NapileType> typeProjections = new HashSet<NapileType>();
+			for(NapileType type : types)
 				typeProjections.add(type.getArguments().get(i));
 			newProjections.add(computeSupertypeProjection(parameterDescriptor, typeProjections));
 		}
 
 		boolean nullable = false;
-		for(JetType type : types)
+		for(NapileType type : types)
 		{
 			nullable |= type.isNullable();
 		}
 
 		// TODO : attributes?
-		JetScope newScope = JetScope.EMPTY;
+		NapileScope newScope = NapileScope.EMPTY;
 		DeclarationDescriptor declarationDescriptor = constructor.getDeclarationDescriptor();
 		if(declarationDescriptor instanceof ClassDescriptor)
 		{
 			newScope = ((ClassDescriptor) declarationDescriptor).getMemberScope(newProjections);
 		}
-		return new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), constructor, nullable, newProjections, newScope);
+		return new NapileTypeImpl(Collections.<AnnotationDescriptor>emptyList(), constructor, nullable, newProjections, newScope);
 	}
 
 	@NotNull
-	private static JetType computeSupertypeProjection(@NotNull TypeParameterDescriptor parameterDescriptor, @NotNull Set<JetType> typeProjections)
+	private static NapileType computeSupertypeProjection(@NotNull TypeParameterDescriptor parameterDescriptor, @NotNull Set<NapileType> typeProjections)
 	{
 		if(typeProjections.size() == 1)
 		{
@@ -217,19 +217,19 @@ public class CommonSupertypes
 	private static void markAll(@NotNull TypeConstructor typeConstructor, @NotNull Set<TypeConstructor> markerSet)
 	{
 		markerSet.add(typeConstructor);
-		for(JetType type : typeConstructor.getSupertypes())
+		for(NapileType type : typeConstructor.getSupertypes())
 		{
 			markAll(type.getConstructor(), markerSet);
 		}
 	}
 
-	private static <R> R dfs(@NotNull JetType current, @NotNull Set<TypeConstructor> visited, @NotNull DfsNodeHandler<R> handler)
+	private static <R> R dfs(@NotNull NapileType current, @NotNull Set<TypeConstructor> visited, @NotNull DfsNodeHandler<R> handler)
 	{
 		doDfs(current, visited, handler);
 		return handler.result();
 	}
 
-	private static void doDfs(@NotNull JetType current, @NotNull Set<TypeConstructor> visited, @NotNull DfsNodeHandler<?> handler)
+	private static void doDfs(@NotNull NapileType current, @NotNull Set<TypeConstructor> visited, @NotNull DfsNodeHandler<?> handler)
 	{
 		if(!visited.add(current.getConstructor()))
 		{
@@ -238,14 +238,14 @@ public class CommonSupertypes
 		handler.beforeChildren(current);
 		//        Map<TypeConstructor, TypeProjection> substitutionContext = TypeUtils.buildSubstitutionContext(current);
 		TypeSubstitutor substitutor = TypeSubstitutor.create(current);
-		for(JetType supertype : current.getConstructor().getSupertypes())
+		for(NapileType supertype : current.getConstructor().getSupertypes())
 		{
 			TypeConstructor supertypeConstructor = supertype.getConstructor();
 			if(visited.contains(supertypeConstructor))
 			{
 				continue;
 			}
-			JetType substitutedSupertype = substitutor.safeSubstitute(supertype);
+			NapileType substitutedSupertype = substitutor.safeSubstitute(supertype);
 			dfs(substitutedSupertype, visited, handler);
 		}
 		handler.afterChildren(current);
@@ -254,12 +254,12 @@ public class CommonSupertypes
 	private static class DfsNodeHandler<R>
 	{
 
-		public void beforeChildren(JetType current)
+		public void beforeChildren(NapileType current)
 		{
 
 		}
 
-		public void afterChildren(JetType current)
+		public void afterChildren(NapileType current)
 		{
 
 		}

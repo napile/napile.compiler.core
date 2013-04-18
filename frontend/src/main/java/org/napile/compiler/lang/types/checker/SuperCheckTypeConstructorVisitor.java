@@ -28,7 +28,7 @@ import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.Modality;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeEntry;
@@ -40,7 +40,7 @@ import org.napile.compiler.lang.types.TypeConstructorVisitor;
  * @author VISTALL
  * @since 11:40/28.12.12
  */
-public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<JetType, Boolean>
+public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<NapileType, Boolean>
 {
 	private final TypeCheckingProcedure typeCheckingProcedure;
 	private final TypingConstraints constraints;
@@ -52,12 +52,12 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 	}
 
 	@Override
-	public Boolean visitType(JetType subTemp, TypeConstructor t, JetType superType)
+	public Boolean visitType(NapileType subTemp, TypeConstructor t, NapileType superType)
 	{
-		return superType.accept(new TypeConstructorVisitor<JetType, Boolean>()
+		return superType.accept(new TypeConstructorVisitor<NapileType, Boolean>()
 		{
 			@Override
-			public Boolean visitSelfType(JetType superType, SelfTypeConstructor superConstructor, JetType subType)
+			public Boolean visitSelfType(NapileType superType, SelfTypeConstructor superConstructor, NapileType subType)
 			{
 				ClassifierDescriptor subTypeClass = subType.getConstructor().getDeclarationDescriptor();
 				//FIXME [VISTALL] correct?
@@ -68,9 +68,9 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 			}
 
 			@Override
-			public Boolean visitType(JetType superType, TypeConstructor superConstructor, JetType subType)
+			public Boolean visitType(NapileType superType, TypeConstructor superConstructor, NapileType subType)
 			{
-				@Nullable JetType closestSupertype = TypeCheckingProcedure.findCorrespondingSupertype(subType, superType);
+				@Nullable NapileType closestSupertype = TypeCheckingProcedure.findCorrespondingSupertype(subType, superType);
 				if(closestSupertype == null)
 					return constraints.noCorrespondingSupertype(subType, superType); // if this returns true, there still isn't any supertype to continue with
 
@@ -80,32 +80,32 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 	}
 
 	@Override
-	public Boolean visitSelfType(JetType subType, SelfTypeConstructor subConstructor, JetType superType)
+	public Boolean visitSelfType(NapileType subType, SelfTypeConstructor subConstructor, NapileType superType)
 	{
-		return superType.accept(new TypeConstructorVisitor<JetType, Boolean>()
+		return superType.accept(new TypeConstructorVisitor<NapileType, Boolean>()
 		{
 			@Override
-			public Boolean visitMethodType(JetType type, MethodTypeConstructor t, JetType arg)
+			public Boolean visitMethodType(NapileType type, MethodTypeConstructor t, NapileType arg)
 			{
 				return false; // this cant be cast to method type
 			}
 
 			@Override
-			public Boolean visitMultiType(JetType type, MultiTypeConstructor t, JetType arg)
+			public Boolean visitMultiType(NapileType type, MultiTypeConstructor t, NapileType arg)
 			{
 				return false; // this cant be cast to multi type
 			}
 
 			@Override
-			public Boolean visitType(JetType superType, TypeConstructor superTypeConstructor, JetType subConstructor)
+			public Boolean visitType(NapileType superType, TypeConstructor superTypeConstructor, NapileType subConstructor)
 			{
-				JetType subUnwrapType = subConstructor.getConstructor().getDeclarationDescriptor().getDefaultType();
+				NapileType subUnwrapType = subConstructor.getConstructor().getDeclarationDescriptor().getDefaultType();
 
 				return typeCheckingProcedure.isSubtypeOf(subUnwrapType, superType);
 			}
 
 			@Override
-			public Boolean visitSelfType(JetType superType, SelfTypeConstructor superTypeConstructor, JetType subConstructor)
+			public Boolean visitSelfType(NapileType superType, SelfTypeConstructor superTypeConstructor, NapileType subConstructor)
 			{
 				ClassDescriptor subDesc = (ClassDescriptor) subConstructor.getConstructor().getDeclarationDescriptor();
 				ClassDescriptor supeDesc = superTypeConstructor.getDeclarationDescriptor();
@@ -116,35 +116,35 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 	}
 
 	@Override
-	public Boolean visitMethodType(JetType subType, MethodTypeConstructor subConstructor, JetType superType)
+	public Boolean visitMethodType(NapileType subType, MethodTypeConstructor subConstructor, NapileType superType)
 	{
-		return superType.accept(new TypeConstructorVisitor<JetType, Boolean>()
+		return superType.accept(new TypeConstructorVisitor<NapileType, Boolean>()
 		{
 			@Override
-			public Boolean visitSelfType(JetType type, SelfTypeConstructor t, JetType arg)
+			public Boolean visitSelfType(NapileType type, SelfTypeConstructor t, NapileType arg)
 			{
 				return false;
 			}
 
 			@Override
-			public Boolean visitMultiType(JetType type, MultiTypeConstructor t, JetType arg)
+			public Boolean visitMultiType(NapileType type, MultiTypeConstructor t, NapileType arg)
 			{
 				return false;
 			}
 
 			@Override
-			public Boolean visitMethodType(JetType superType, MethodTypeConstructor superTypeConstructor, JetType subType)
+			public Boolean visitMethodType(NapileType superType, MethodTypeConstructor superTypeConstructor, NapileType subType)
 			{
 				MethodTypeConstructor multiTypeConstructor = (MethodTypeConstructor) subType.getConstructor();
 				if(multiTypeConstructor.getParameterTypes().size() != superTypeConstructor.getParameterTypes().size())
 					return false;
 
-				Iterator<Map.Entry<Name, JetType>> subIterator = multiTypeConstructor.getParameterTypes().entrySet().iterator();
-				Iterator<Map.Entry<Name, JetType>> superIterator = superTypeConstructor.getParameterTypes().entrySet().iterator();
+				Iterator<Map.Entry<Name, NapileType>> subIterator = multiTypeConstructor.getParameterTypes().entrySet().iterator();
+				Iterator<Map.Entry<Name, NapileType>> superIterator = superTypeConstructor.getParameterTypes().entrySet().iterator();
 				while(subIterator.hasNext())
 				{
-					Map.Entry<Name, JetType> subEntry = subIterator.next();
-					Map.Entry<Name, JetType> superEntry = superIterator.next();
+					Map.Entry<Name, NapileType> subEntry = subIterator.next();
+					Map.Entry<Name, NapileType> superEntry = superIterator.next();
 					if(!typeCheckingProcedure.isSubtypeOf(subEntry.getValue(), superEntry.getValue()))
 						return false;
 				}
@@ -152,10 +152,10 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 			}
 
 			@Override
-			public Boolean visitType(JetType superType, TypeConstructor superTypeConstructor, JetType subType)
+			public Boolean visitType(NapileType superType, TypeConstructor superTypeConstructor, NapileType subType)
 			{
 				MethodTypeConstructor multiTypeConstructor = (MethodTypeConstructor) subType.getConstructor();
-				JetType multiType = multiTypeConstructor.getSupertypes().isEmpty() ? null : multiTypeConstructor.getSupertypes().iterator().next();
+				NapileType multiType = multiTypeConstructor.getSupertypes().isEmpty() ? null : multiTypeConstructor.getSupertypes().iterator().next();
 
 				return multiType != null && typeCheckingProcedure.isSubtypeOf(multiType, superType);
 			}
@@ -163,24 +163,24 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 	}
 
 	@Override
-	public Boolean visitMultiType(JetType subType, MultiTypeConstructor subConstructor, JetType superType)
+	public Boolean visitMultiType(NapileType subType, MultiTypeConstructor subConstructor, NapileType superType)
 	{
-		return superType.accept(new TypeConstructorVisitor<JetType, Boolean>()
+		return superType.accept(new TypeConstructorVisitor<NapileType, Boolean>()
 		{
 			@Override
-			public Boolean visitSelfType(JetType type, SelfTypeConstructor t, JetType arg)
+			public Boolean visitSelfType(NapileType type, SelfTypeConstructor t, NapileType arg)
 			{
 				return false;
 			}
 
 			@Override
-			public Boolean visitMethodType(JetType type, MethodTypeConstructor t, JetType arg)
+			public Boolean visitMethodType(NapileType type, MethodTypeConstructor t, NapileType arg)
 			{
 				return false;
 			}
 
 			@Override
-			public Boolean visitMultiType(JetType superType, MultiTypeConstructor superTypeConstructor, JetType subType)
+			public Boolean visitMultiType(NapileType superType, MultiTypeConstructor superTypeConstructor, NapileType subType)
 			{
 				MultiTypeConstructor multiTypeConstructor = (MultiTypeConstructor) subType.getConstructor();
 				if(superTypeConstructor.getEntries().size() != multiTypeConstructor.getEntries().size())
@@ -203,22 +203,22 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 			}
 
 			@Override
-			public Boolean visitType(JetType superType, TypeConstructor superTypeConstructor, JetType subType)
+			public Boolean visitType(NapileType superType, TypeConstructor superTypeConstructor, NapileType subType)
 			{
 				MultiTypeConstructor multiTypeConstructor = (MultiTypeConstructor) subType.getConstructor();
-				JetType multiType = multiTypeConstructor.getSupertypes().isEmpty() ? null : multiTypeConstructor.getSupertypes().iterator().next();
+				NapileType multiType = multiTypeConstructor.getSupertypes().isEmpty() ? null : multiTypeConstructor.getSupertypes().iterator().next();
 
 				return multiType != null && typeCheckingProcedure.isSubtypeOf(multiType, superType);
 			}
 		}, subType);
 	}
 
-	private boolean checkSubtypeForTheSameConstructor(@NotNull JetType subtype, @NotNull JetType supertype)
+	private boolean checkSubtypeForTheSameConstructor(@NotNull NapileType subtype, @NotNull NapileType supertype)
 	{
 		TypeConstructor constructor = subtype.getConstructor();
 
-		List<JetType> subArguments = subtype.getArguments();
-		List<JetType> superArguments = supertype.getArguments();
+		List<NapileType> subArguments = subtype.getArguments();
+		List<NapileType> superArguments = supertype.getArguments();
 		if(subArguments.size() != superArguments.size())
 			return false;
 
@@ -228,9 +228,9 @@ public class SuperCheckTypeConstructorVisitor extends TypeConstructorVisitor<Jet
 		List<TypeParameterDescriptor> parameters = constructor.getParameters();
 		for(int i = 0; i < parameters.size(); i++)
 		{
-			JetType subArgument = subArguments.get(i);
+			NapileType subArgument = subArguments.get(i);
 
-			JetType superArgument = superArguments.get(i);
+			NapileType superArgument = superArguments.get(i);
 
 			//if(superArgument.isNullable() && !subArgument.isNullable())
 			//	return false;

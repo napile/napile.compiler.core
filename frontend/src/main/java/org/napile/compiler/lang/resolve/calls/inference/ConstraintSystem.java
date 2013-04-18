@@ -21,7 +21,7 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -48,7 +48,7 @@ public interface ConstraintSystem
 	 * For example, for {@code "fun <T> id(t: T) {}"} to infer <tt>T</tt> in invocation <tt>"id(1)"</tt>
 	 * should be generated a constraint <tt>"T is a supertype of Int"</tt> where T is a subject type, and Int is a constraining type.
 	 */
-	void addSupertypeConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition);
+	void addSupertypeConstraint(@NotNull NapileType subjectType, @Nullable NapileType constrainingType, @NotNull ConstraintPosition constraintPosition);
 
 	/**
 	 * Adds a constraint that subject type is a subtype of constraining type. <p/>
@@ -57,7 +57,7 @@ public interface ConstraintSystem
 	 * For example, for {@code "fun <T> create() : T"} to infer <tt>T</tt> in invocation <tt>"val i: Int = create()"</tt>
 	 * should be generated a constraint <tt>"T is a subtype of Int"</tt> where T is a subject type, and Int is a constraining type.
 	 */
-	void addSubtypingConstraint(@NotNull JetType subjectType, @Nullable JetType constrainingType, @NotNull ConstraintPosition constraintPosition);
+	void addSubtypingConstraint(@NotNull NapileType subjectType, @Nullable NapileType constrainingType, @NotNull ConstraintPosition constraintPosition);
 
 	/**
 	 * Returns <tt>true</tt> if constraint system has a solution (has no contradiction and has enough information to infer each registered type variable).

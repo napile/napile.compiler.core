@@ -30,11 +30,11 @@ import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitution;
@@ -49,7 +49,7 @@ public class MethodDescriptorUtil
 	{
 
 		@Override
-		public JetType get(TypeConstructor key)
+		public NapileType get(TypeConstructor key)
 		{
 			return null;
 		}
@@ -67,12 +67,12 @@ public class MethodDescriptorUtil
 		}
 	});
 
-	public static Map<TypeConstructor, JetType> createSubstitutionContext(@NotNull MethodDescriptor methodDescriptor, List<JetType> typeArguments)
+	public static Map<TypeConstructor, NapileType> createSubstitutionContext(@NotNull MethodDescriptor methodDescriptor, List<NapileType> typeArguments)
 	{
 		if(methodDescriptor.getTypeParameters().isEmpty())
 			return Collections.emptyMap();
 
-		Map<TypeConstructor, JetType> result = new HashMap<TypeConstructor, JetType>();
+		Map<TypeConstructor, NapileType> result = new HashMap<TypeConstructor, NapileType>();
 
 		int typeArgumentsSize = typeArguments.size();
 		List<TypeParameterDescriptor> typeParameters = methodDescriptor.getTypeParameters();
@@ -80,7 +80,7 @@ public class MethodDescriptorUtil
 		for(int i = 0; i < typeArgumentsSize; i++)
 		{
 			TypeParameterDescriptor typeParameterDescriptor = typeParameters.get(i);
-			JetType typeArgument = typeArguments.get(i);
+			NapileType typeArgument = typeArguments.get(i);
 			result.put(typeParameterDescriptor.getTypeConstructor(), typeArgument);
 		}
 		return result;
@@ -95,7 +95,7 @@ public class MethodDescriptorUtil
 		{
 			CallParameterDescriptor unsubstitutedValueParameter = unsubstitutedValueParameters.get(i);
 			// TODO : Lazy?
-			JetType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType(), newOwner);
+			NapileType substitutedType = substitutor.substitute(unsubstitutedValueParameter.getType(), newOwner);
 			if(substitutedType == null)
 				return null;
 			result.add(new CallParameterAsVariableDescriptorImpl(substitutedDescriptor, unsubstitutedValueParameter, unsubstitutedValueParameter.getAnnotations(), unsubstitutedValueParameter.getName(), substitutedType, unsubstitutedValueParameter.getModality(), false, false));
@@ -104,13 +104,13 @@ public class MethodDescriptorUtil
 	}
 
 	@Nullable
-	public static JetType getSubstitutedReturnType(@NotNull MethodDescriptor methodDescriptor, @NotNull DeclarationDescriptor ownerDescriptor, TypeSubstitutor substitutor)
+	public static NapileType getSubstitutedReturnType(@NotNull MethodDescriptor methodDescriptor, @NotNull DeclarationDescriptor ownerDescriptor, TypeSubstitutor substitutor)
 	{
 		return substitutor.substitute(methodDescriptor.getReturnType(), ownerDescriptor);
 	}
 
 	@NotNull
-	public static JetScope getMethodInnerScope(@NotNull JetScope outerScope, @NotNull MethodDescriptor descriptor, @NotNull BindingTrace trace, boolean variableAccessor)
+	public static NapileScope getMethodInnerScope(@NotNull NapileScope outerScope, @NotNull MethodDescriptor descriptor, @NotNull BindingTrace trace, boolean variableAccessor)
 	{
 		WritableScope parameterScope = new WritableScopeImpl(outerScope, descriptor, new TraceBasedRedeclarationHandler(trace), "Function inner scope");
 		for(TypeParameterDescriptor typeParameter : descriptor.getTypeParameters())
@@ -141,7 +141,7 @@ public class MethodDescriptorUtil
 		return parameterScope;
 	}
 
-	public static void initializeFromFunctionType(@NotNull AbstractMethodDescriptorImpl functionDescriptor, @NotNull JetType functionType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Modality modality, @NotNull Visibility visibility)
+	public static void initializeFromFunctionType(@NotNull AbstractMethodDescriptorImpl functionDescriptor, @NotNull NapileType functionType, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Modality modality, @NotNull Visibility visibility)
 	{
 		assert functionType.getConstructor() instanceof MethodTypeConstructor;
 
@@ -154,25 +154,25 @@ public class MethodDescriptorUtil
 	}
 
 	@Nullable
-	public static SimpleMethodDescriptor createDescriptorFromType(@NotNull Name name, @NotNull JetType jetType, @NotNull DeclarationDescriptor owner)
+	public static SimpleMethodDescriptor createDescriptorFromType(@NotNull Name name, @NotNull NapileType napileType, @NotNull DeclarationDescriptor owner)
 	{
-		if(!(jetType.getConstructor() instanceof MethodTypeConstructor))
+		if(!(napileType.getConstructor() instanceof MethodTypeConstructor))
 			return null;
 
 		SimpleMethodDescriptorImpl methodDescriptor = new SimpleMethodDescriptorImpl(owner, Collections.<AnnotationDescriptor>emptyList(), name, CallableMemberDescriptor.Kind.DECLARATION, false, false, false);
-		methodDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptor>emptyList(), getValueParameters(methodDescriptor, jetType), ((MethodTypeConstructor) jetType.getConstructor()).getReturnType(), Modality.FINAL, Visibility.PUBLIC);
+		methodDescriptor.initialize(ReceiverDescriptor.NO_RECEIVER, Collections.<TypeParameterDescriptor>emptyList(), getValueParameters(methodDescriptor, napileType), ((MethodTypeConstructor) napileType.getConstructor()).getReturnType(), Modality.FINAL, Visibility.PUBLIC);
 		return methodDescriptor;
 	}
 
 	@NotNull
-	public static List<CallParameterDescriptor> getValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull JetType type)
+	public static List<CallParameterDescriptor> getValueParameters(@NotNull MethodDescriptor methodDescriptor, @NotNull NapileType type)
 	{
 		assert type.getConstructor() instanceof MethodTypeConstructor;
 
-		Map<Name, JetType> parameterTypes = ((MethodTypeConstructor) type.getConstructor()).getParameterTypes();
+		Map<Name, NapileType> parameterTypes = ((MethodTypeConstructor) type.getConstructor()).getParameterTypes();
 		List<CallParameterDescriptor> valueParameters = new ArrayList<CallParameterDescriptor>(parameterTypes.size());
 		int i = 0;
-		for(Map.Entry<Name, JetType> entry : parameterTypes.entrySet())
+		for(Map.Entry<Name, NapileType> entry : parameterTypes.entrySet())
 		{
 			CallParameterAsVariableDescriptorImpl valueParameterDescriptor = new CallParameterAsVariableDescriptorImpl(methodDescriptor, i, Collections.<AnnotationDescriptor>emptyList(), entry.getKey(), entry.getValue(), Modality.FINAL, false, false);
 			valueParameters.add(valueParameterDescriptor);

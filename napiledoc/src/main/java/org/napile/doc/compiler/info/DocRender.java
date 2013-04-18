@@ -23,7 +23,7 @@ import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.PackageDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.doc.compiler.Arguments;
 
@@ -44,7 +44,7 @@ public class DocRender extends DescriptorRenderer.HtmlDescriptorRenderer
 	}
 
 	@Override
-	protected String renderDefaultType(JetType type, boolean shortNamesOnly)
+	protected String renderDefaultType(NapileType type, boolean shortNamesOnly)
 	{
 		StringBuilder sb = new StringBuilder();
 		ClassifierDescriptor cd = type.getConstructor().getDeclarationDescriptor();

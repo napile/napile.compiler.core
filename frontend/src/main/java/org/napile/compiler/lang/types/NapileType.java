@@ -14,31 +14,33 @@
  * limitations under the License.
  */
 
-/*
- * @author max
- */
-package org.napile.compiler.lang.parsing;
+package org.napile.compiler.lang.types;
+
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiParser;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.tree.IElementType;
+import org.napile.compiler.lang.descriptors.annotations.Annotated;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 
-public class JetParser implements PsiParser
+/**
+ * @author abreslav
+ * @see JetTypeChecker#isSubtypeOf(NapileType, NapileType)
+ */
+public interface NapileType extends Annotated
 {
-	public JetParser(Project project)
-	{
+	@NotNull
+	TypeConstructor getConstructor();
 
-	}
+	@NotNull
+	List<NapileType> getArguments();
+
+	boolean isNullable();
+
+	@NotNull
+	NapileScope getMemberScope();
 
 	@Override
-	@NotNull
-	public ASTNode parse(IElementType iElementType, PsiBuilder psiBuilder)
-	{
-		JetParsing jetParsing = JetParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(psiBuilder));
-		jetParsing.parseFile();
-		return psiBuilder.getTreeBuilt();
-	}
+	boolean equals(Object other);
+
+	<A, R> R accept(@NotNull TypeConstructorVisitor<A, R> visitor, A arg);
 }

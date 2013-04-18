@@ -18,7 +18,7 @@ package org.napile.compiler.lang.resolve.scopes.receivers;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -28,7 +28,7 @@ public class ExpressionReceiver extends AbstractReceiverDescriptor implements Re
 
 	private final NapileExpression expression;
 
-	public ExpressionReceiver(@NotNull NapileExpression expression, @NotNull JetType type)
+	public ExpressionReceiver(@NotNull NapileExpression expression, @NotNull NapileType type)
 	{
 		super(type);
 		this.expression = expression;

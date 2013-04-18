@@ -35,12 +35,12 @@ public class DescriptorSubstitutor
 	@NotNull
 	public static TypeSubstitutor substituteTypeParameters(@NotNull List<TypeParameterDescriptor> typeParameters, @NotNull final TypeSubstitutor originalSubstitutor, @NotNull DeclarationDescriptor newContainingDeclaration, @NotNull List<TypeParameterDescriptor> result)
 	{
-		final Map<TypeConstructor, JetType> mutableSubstitution = Maps.newHashMap();
+		final Map<TypeConstructor, NapileType> mutableSubstitution = Maps.newHashMap();
 		TypeSubstitutor substitutor = TypeSubstitutor.create(new TypeSubstitution()
 		{
 
 			@Override
-			public JetType get(TypeConstructor key)
+			public NapileType get(TypeConstructor key)
 			{
 				if(originalSubstitutor.inRange(key))
 				{
@@ -73,7 +73,7 @@ public class DescriptorSubstitutor
 
 			mutableSubstitution.put(descriptor.getTypeConstructor(), substituted.getDefaultType());
 
-			for(JetType upperBound : descriptor.getUpperBounds())
+			for(NapileType upperBound : descriptor.getUpperBounds())
 			{
 				substituted.getUpperBounds().add(substitutor.substitute(upperBound, null));
 			}

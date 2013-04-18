@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
@@ -36,16 +36,16 @@ public class TypeCheckingProcedure
 	// This method returns the supertype of the first parameter that has the same constructor
 	// as the second parameter, applying the substitution of type arguments to it
 	@Nullable
-	public static JetType findCorrespondingSupertype(@NotNull JetType subtype, @NotNull JetType supertype)
+	public static NapileType findCorrespondingSupertype(@NotNull NapileType subtype, @NotNull NapileType supertype)
 	{
 		TypeConstructor constructor = subtype.getConstructor();
 		if(constructor.equals(supertype.getConstructor()))
 		{
 			return subtype;
 		}
-		for(JetType immediateSupertype : constructor.getSupertypes())
+		for(NapileType immediateSupertype : constructor.getSupertypes())
 		{
-			JetType correspondingSupertype = findCorrespondingSupertype(immediateSupertype, supertype);
+			NapileType correspondingSupertype = findCorrespondingSupertype(immediateSupertype, supertype);
 			if(correspondingSupertype != null)
 			{
 				return TypeSubstitutor.create(subtype).safeSubstitute(correspondingSupertype);
@@ -63,7 +63,7 @@ public class TypeCheckingProcedure
 		superCheckTypeConstructorVisitor = new SuperCheckTypeConstructorVisitor(this, constraints);
 	}
 
-	public boolean equalTypes(@NotNull JetType type1, @NotNull JetType type2)
+	public boolean equalTypes(@NotNull NapileType type1, @NotNull NapileType type2)
 	{
 		if(type1.isNullable() != type2.isNullable())
 		{
@@ -84,8 +84,8 @@ public class TypeCheckingProcedure
 			return false;
 		}
 
-		List<JetType> type1Arguments = type1.getArguments();
-		List<JetType> type2Arguments = type2.getArguments();
+		List<NapileType> type1Arguments = type1.getArguments();
+		List<NapileType> type2Arguments = type2.getArguments();
 		if(type1Arguments.size() != type2Arguments.size())
 		{
 			return false;
@@ -93,8 +93,8 @@ public class TypeCheckingProcedure
 
 		for(int i = 0; i < type1Arguments.size(); i++)
 		{
-			JetType typeProjection1 = type1Arguments.get(i);
-			JetType typeProjection2 = type2Arguments.get(i);
+			NapileType typeProjection1 = type1Arguments.get(i);
+			NapileType typeProjection2 = type2Arguments.get(i);
 
 			if(!constraints.assertEqualTypes(typeProjection1, typeProjection2, this))
 			{
@@ -105,7 +105,7 @@ public class TypeCheckingProcedure
 	}
 
 
-	public boolean isSubtypeOf(@NotNull JetType subTypeOriginal, @NotNull JetType superTypeOriginal)
+	public boolean isSubtypeOf(@NotNull NapileType subTypeOriginal, @NotNull NapileType superTypeOriginal)
 	{
 		if(ErrorUtils.isErrorType(subTypeOriginal) || ErrorUtils.isErrorType(superTypeOriginal))
 			return true;

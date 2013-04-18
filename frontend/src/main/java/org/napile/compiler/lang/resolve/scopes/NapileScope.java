@@ -35,9 +35,9 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 /**
  * @author abreslav
  */
-public interface JetScope extends DescriptorWithParent
+public interface NapileScope extends DescriptorWithParent
 {
-	JetScope EMPTY = new JetScopeImpl()
+	NapileScope EMPTY = new NapileScopeImpl()
 	{
 		@NotNull
 		@Override

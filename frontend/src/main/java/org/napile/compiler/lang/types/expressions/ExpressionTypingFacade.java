@@ -18,7 +18,7 @@ package org.napile.compiler.lang.types.expressions;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileExpression;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 
 /**
  * @author abreslav
@@ -26,11 +26,11 @@ import org.napile.compiler.lang.types.JetTypeInfo;
 public interface ExpressionTypingFacade
 {
 	@NotNull
-	JetTypeInfo safeGetTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context);
+	NapileTypeInfo safeGetTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context);
 
 	@NotNull
-	JetTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context);
+	NapileTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context);
 
 	@NotNull
-	JetTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, boolean isStatement);
+	NapileTypeInfo getTypeInfo(@NotNull NapileExpression expression, ExpressionTypingContext context, boolean isStatement);
 }

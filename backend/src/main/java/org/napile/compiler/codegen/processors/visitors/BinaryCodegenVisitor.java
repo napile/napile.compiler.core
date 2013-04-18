@@ -51,7 +51,7 @@ import org.napile.compiler.lang.psi.NapilePostfixExpression;
 import org.napile.compiler.lang.psi.NapilePrefixExpression;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
@@ -232,7 +232,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 	public StackValue genSure(@NotNull NapilePostfixExpression expression, @NotNull StackValue receiver)
 	{
 		NapileExpression baseExpression = expression.getBaseExpression();
-		JetType type = gen.bindingTrace.get(BindingTraceKeys.EXPRESSION_TYPE, baseExpression);
+		NapileType type = gen.bindingTrace.get(BindingTraceKeys.EXPRESSION_TYPE, baseExpression);
 		StackValue base = gen.genQualified(receiver, baseExpression);
 		if(type != null && type.isNullable())
 		{
@@ -358,11 +358,11 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 		NapileExpression left = expression.getLeft();
 		NapileExpression right = expression.getRight();
 
-		JetType leftJetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, left);
-		TypeNode leftType = TypeTransformer.toAsmType(gen.bindingTrace, leftJetType, gen.classNode);
+		NapileType leftNapileType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, left);
+		TypeNode leftType = TypeTransformer.toAsmType(gen.bindingTrace, leftNapileType, gen.classNode);
 
-		JetType rightJetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, right);
-		TypeNode rightType = TypeTransformer.toAsmType(gen.bindingTrace, rightJetType, gen.classNode);
+		NapileType rightNapileType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, right);
+		TypeNode rightType = TypeTransformer.toAsmType(gen.bindingTrace, rightNapileType, gen.classNode);
 
 		gen.gen(left, leftType);
 
@@ -417,7 +417,7 @@ public class BinaryCodegenVisitor extends CodegenVisitor
 	public StackValue genElvis(@NotNull NapileBinaryExpression expression)
 	{
 		final TypeNode exprType = gen.expressionType(expression);
-		JetType type = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression.getLeft());
+		NapileType type = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression.getLeft());
 		final TypeNode leftType = TypeTransformer.toAsmType(gen.bindingTrace, type, gen.classNode);
 
 		gen.gen(expression.getLeft(), leftType);

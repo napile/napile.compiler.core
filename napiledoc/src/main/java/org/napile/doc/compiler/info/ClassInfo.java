@@ -28,7 +28,7 @@ import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.psi.NapileVariable;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.Function;
 
@@ -64,10 +64,10 @@ public class ClassInfo extends NamedDocableInfo<NapileClass>
 	{
 		ClassDescriptor classDescriptor = bindingTrace.get(BindingTraceKeys.CLASS, element);
 
-		return StringUtil.join(classDescriptor.getSupertypes(), new Function<JetType, String>()
+		return StringUtil.join(classDescriptor.getSupertypes(), new Function<NapileType, String>()
 		{
 			@Override
-			public String fun(JetType type)
+			public String fun(NapileType type)
 			{
 				return DocRender.DOC_RENDER.renderTypeWithShortNames(type);
 			}

@@ -34,7 +34,7 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileThrowExpression;
 import org.napile.compiler.lang.psi.NapileTryExpression;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author VISTALL
@@ -50,9 +50,9 @@ public class TryThrowCodegenVisitor extends CodegenVisitor
 	@Override
 	public StackValue visitTryExpression(NapileTryExpression expression, StackValue data)
 	{
-		JetType jetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
+		NapileType napileType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
-		TypeNode expectedAsmType = TypeTransformer.toAsmType(gen.bindingTrace, jetType, gen.classNode);
+		TypeNode expectedAsmType = TypeTransformer.toAsmType(gen.bindingTrace, napileType, gen.classNode);
 
 		final int tryStartIndex = gen.instructs.size();
 

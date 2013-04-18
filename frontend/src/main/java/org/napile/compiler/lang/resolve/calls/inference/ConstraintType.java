@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve.calls.inference;
 import java.text.MessageFormat;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * A specific type for subtype constraint of types.
@@ -44,7 +44,7 @@ public enum ConstraintType implements Comparable<ConstraintType>
 	}
 
 	@NotNull
-	public SubtypingConstraint assertSubtyping(@NotNull JetType subtype, @NotNull JetType supertype)
+	public SubtypingConstraint assertSubtyping(@NotNull NapileType subtype, @NotNull NapileType supertype)
 	{
 		return new SubtypingConstraint(this, subtype, supertype);
 	}

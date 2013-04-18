@@ -19,7 +19,7 @@ package org.napile.compiler.lang.resolve.calls.inference;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author svtk
@@ -27,7 +27,7 @@ import org.napile.compiler.lang.types.JetType;
 public interface TypeConstraints
 {
 	@NotNull
-	Set<JetType> getUpperBounds();
+	Set<NapileType> getUpperBounds();
 
 	boolean isEmpty();
 }

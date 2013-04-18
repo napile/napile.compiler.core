@@ -37,9 +37,9 @@ import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintPosition;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintsUtil;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import org.napile.compiler.render.DescriptorRenderer;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
@@ -106,11 +106,11 @@ public class Renderers
 		}
 	};
 
-	public static final Renderer<JetType> RENDER_TYPE = new Renderer<JetType>()
+	public static final Renderer<NapileType> RENDER_TYPE = new Renderer<NapileType>()
 	{
 		@NotNull
 		@Override
-		public String render(@NotNull JetType type)
+		public String render(@NotNull NapileType type)
 		{
 			return DescriptorRenderer.TEXT.renderType(type);
 		}
@@ -229,12 +229,12 @@ public class Renderers
 		for(CallableDescriptor substitutedDescriptor : substitutedDescriptors)
 		{
 			final Collection<ConstraintPosition> errorPositions = Sets.newHashSet();
-			List<JetType> valueArgumentTypes = Lists.newArrayList();
+			List<NapileType> valueArgumentTypes = Lists.newArrayList();
 			for(CallParameterDescriptor parameterDescriptor : substitutedDescriptor.getValueParameters())
 			{
 				valueArgumentTypes.add(parameterDescriptor.getType());
-				JetType actualType = inferenceErrorData.valueArgumentsTypes.get(parameterDescriptor.getIndex());
-				if(!JetTypeChecker.INSTANCE.isSubtypeOf(actualType, parameterDescriptor.getType()))
+				NapileType actualType = inferenceErrorData.valueArgumentsTypes.get(parameterDescriptor.getIndex());
+				if(!NapileTypeChecker.INSTANCE.isSubtypeOf(actualType, parameterDescriptor.getType()))
 				{
 					errorPositions.add(ConstraintPosition.getValueParameterPosition(parameterDescriptor.getIndex()));
 				}
@@ -302,9 +302,9 @@ public class Renderers
 		result.text(newText().normal("Type parameter bound for ").strong(typeParameterDescriptor.getName()).normal(" in ")).table(newTable().
 				descriptor(inferenceErrorData.descriptor));
 
-		JetType type = ConstraintsUtil.getValue(inferenceErrorData.constraintSystem.getTypeConstraints(typeParameterDescriptor));
-		JetType upperBound = typeParameterDescriptor.getUpperBoundsAsType();
-		JetType substitute = inferenceErrorData.constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
+		NapileType type = ConstraintsUtil.getValue(inferenceErrorData.constraintSystem.getTypeConstraints(typeParameterDescriptor));
+		NapileType upperBound = typeParameterDescriptor.getUpperBoundsAsType();
+		NapileType substitute = inferenceErrorData.constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
 
 		result.text(newText().normal(" is not satisfied: inferred type ").error(type).normal(" is not a subtype of ").strong(substitute));
 		return result;

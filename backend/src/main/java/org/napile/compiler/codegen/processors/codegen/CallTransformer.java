@@ -42,7 +42,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.TypeConstraints;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -63,7 +63,7 @@ public class CallTransformer
 
 		List<TypeNode> typeArguments = new ArrayList<TypeNode>(fd.getTypeParameters().size());
 
-		for(JetType type : resolvedCall.getTypeArguments().values())
+		for(NapileType type : resolvedCall.getTypeArguments().values())
 			typeArguments.add(TypeTransformer.toAsmType(bindingTrace, type, classNode));
 
 		ConstraintSystem constraintSystem = resolvedCall.getConstraintSystem();

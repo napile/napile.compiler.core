@@ -17,7 +17,7 @@
 package org.napile.doc.lang.lexer;
 
 import org.napile.compiler.lang.NapileLanguage;
-import org.napile.compiler.lang.parsing.JetParsing;
+import org.napile.compiler.lang.parsing.NapileParsing;
 import org.napile.compiler.lang.parsing.SemanticWhitespaceAwarePsiBuilderImpl;
 import org.napile.doc.lang.psi.impl.NapileDocLineImpl;
 import com.intellij.lang.ASTNode;
@@ -44,7 +44,7 @@ public interface NapileDocNodes
 			final Project project = chameleon.getPsi().getProject();
 
 			final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, NapileLanguage.INSTANCE, chameleon.getChars());
-			JetParsing jetParsing = JetParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(builder));
+			NapileParsing jetParsing = NapileParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(builder));
 
 			jetParsing.getExpressionParser().parseExpression();
 

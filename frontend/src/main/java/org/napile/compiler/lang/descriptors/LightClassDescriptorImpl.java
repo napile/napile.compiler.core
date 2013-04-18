@@ -25,11 +25,11 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
@@ -43,7 +43,7 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 {
 	private TypeConstructor typeConstructor;
 
-	private JetScope memberDeclarations;
+	private NapileScope memberDeclarations;
 	private Set<ConstructorDescriptor> constructors;
 
 	private ReceiverDescriptor implicitReceiver;
@@ -57,7 +57,7 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 		this.isStatic = isStatic;
 	}
 
-	public final LightClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<JetType> supertypes, @NotNull JetScope memberDeclarations, @NotNull Set<ConstructorDescriptor> constructors)
+	public final LightClassDescriptorImpl initialize(boolean sealed, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull Collection<NapileType> supertypes, @NotNull NapileScope memberDeclarations, @NotNull Set<ConstructorDescriptor> constructors)
 	{
 		this.typeConstructor = new TypeConstructorImpl(this, getAnnotations(), sealed, getName().getName(), typeParameters, supertypes);
 		this.memberDeclarations = memberDeclarations;
@@ -81,20 +81,20 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 
 	@Override
 	@NotNull
-	public JetScope getMemberScope(List<JetType> typeArguments)
+	public NapileScope getMemberScope(List<NapileType> typeArguments)
 	{
 		assert typeArguments.size() == typeConstructor.getParameters().size() : typeArguments;
 		if(typeConstructor.getParameters().isEmpty())
 		{
 			return memberDeclarations;
 		}
-		Map<TypeConstructor, JetType> substitutionContext = SubstitutionUtils.buildSubstitutionContext(typeConstructor.getParameters(), typeArguments);
+		Map<TypeConstructor, NapileType> substitutionContext = SubstitutionUtils.buildSubstitutionContext(typeConstructor.getParameters(), typeArguments);
 		return new SubstitutingScope(memberDeclarations, TypeSubstitutor.create(substitutionContext));
 	}
 
 	@NotNull
 	@Override
-	public JetType getDefaultType()
+	public NapileType getDefaultType()
 	{
 		return TypeUtils.makeUnsubstitutedType(this, memberDeclarations);
 	}
@@ -115,7 +115,7 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 
 	@NotNull
 	@Override
-	public Collection<JetType> getSupertypes()
+	public Collection<NapileType> getSupertypes()
 	{
 		return Collections.emptyList();
 	}
@@ -166,8 +166,8 @@ public class LightClassDescriptorImpl extends DeclarationDescriptorNonRootImpl i
 
 	@NotNull
 	@Override
-	public JetScope getStaticOuterScope()
+	public NapileScope getStaticOuterScope()
 	{
-		return JetScope.EMPTY;
+		return NapileScope.EMPTY;
 	}
 }

@@ -35,10 +35,10 @@ import org.napile.compiler.lang.resolve.AnnotationUtils;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import com.intellij.openapi.util.Pair;
 
 /**
@@ -102,13 +102,13 @@ public class CallTransformer<D extends CallableDescriptor, F extends D>
 						break extensionLabel;
 					}
 
-					JetType parameterType = parameterDescriptor.getType();
+					NapileType parameterType = parameterDescriptor.getType();
 					if(SubstitutionUtils.hasUnsubstitutedTypeParameters(parameterType))
 					{
 						parameterType = TypeSubstitutor.DEFAULT_TYPE_FOR_TYPE_PARAMETERS.substitute(parameterType, null);
 					}
 
-					if(JetTypeChecker.INSTANCE.isSubtypeOf(receiverDescriptor.getType(), parameterType))
+					if(NapileTypeChecker.INSTANCE.isSubtypeOf(receiverDescriptor.getType(), parameterType))
 					{
 						Call call = new DelegatingCall(task.call)
 						{

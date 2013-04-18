@@ -26,14 +26,14 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.LazyScopeAdapter;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
+import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
 import org.napile.compiler.render.DescriptorRenderer;
 import org.napile.compiler.util.lazy.LazyValue;
@@ -49,10 +49,10 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 
 	private Set<ConstructorDescriptor> constructorDescriptors = new HashSet<ConstructorDescriptor>(0);
 
-	private final Set<JetType> upperBounds;
-	private JetType upperBoundsAsType;
+	private final Set<NapileType> upperBounds;
+	private NapileType upperBoundsAsType;
 	private final TypeConstructor typeConstructor;
-	private JetType defaultType;
+	private NapileType defaultType;
 
 	private boolean initialized = false;
 
@@ -101,24 +101,24 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 		constructorDescriptor.setReturnType(getDefaultType());
 	}
 
-	public void addUpperBound(@NotNull JetType bound)
+	public void addUpperBound(@NotNull NapileType bound)
 	{
 		checkUninitialized();
 		upperBounds.add(bound);
 	}
 
 	@Deprecated
-	public void addDefaultUpperBound(JetScope jetScope)
+	public void addDefaultUpperBound(NapileScope napileScope)
 	{
 		checkUninitialized();
 
 		if(upperBounds.isEmpty())
-			upperBounds.add(TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY, true));
+			upperBounds.add(TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.ANY, true));
 	}
 
 	@Override
 	@NotNull
-	public Set<JetType> getUpperBounds()
+	public Set<NapileType> getUpperBounds()
 	{
 		checkInitialized();
 		return upperBounds;
@@ -126,7 +126,7 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 
 	@Override
 	@NotNull
-	public JetType getUpperBoundsAsType()
+	public NapileType getUpperBoundsAsType()
 	{
 		checkInitialized();
 		if(upperBoundsAsType == null)
@@ -134,11 +134,11 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 			assert upperBounds != null : "Upper bound list is null in " + getName();
 			assert upperBounds.size() > 0 : "Upper bound list is empty in " + getName();
 
-			final JetScope jetScope = TypeUtils.getChainedScope(upperBounds);
+			final NapileScope napileScope = TypeUtils.getChainedScope(upperBounds);
 
-			upperBoundsAsType = TypeUtils.intersect(JetTypeChecker.INSTANCE, upperBounds, jetScope);
+			upperBoundsAsType = TypeUtils.intersect(NapileTypeChecker.INSTANCE, upperBounds, napileScope);
 			if(upperBoundsAsType == null)
-				upperBoundsAsType = TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, false);
+				upperBoundsAsType = TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.NULL, false);
 		}
 		return upperBoundsAsType;
 	}
@@ -181,15 +181,15 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 
 	@NotNull
 	@Override
-	public JetType getDefaultType()
+	public NapileType getDefaultType()
 	{
 		//checkInitialized();
 		if(defaultType == null)
 		{
-			defaultType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), getTypeConstructor(), false, Collections.<JetType>emptyList(), new LazyScopeAdapter(new LazyValue<JetScope>()
+			defaultType = new NapileTypeImpl(Collections.<AnnotationDescriptor>emptyList(), getTypeConstructor(), false, Collections.<NapileType>emptyList(), new LazyScopeAdapter(new LazyValue<NapileScope>()
 			{
 				@Override
-				protected JetScope compute()
+				protected NapileScope compute()
 				{
 					return getUpperBoundsAsType().getMemberScope();
 				}
@@ -200,14 +200,14 @@ public class TypeParameterDescriptorImpl extends DeclarationDescriptorNonRootImp
 
 	@NotNull
 	@Override
-	public JetScope getStaticOuterScope()
+	public NapileScope getStaticOuterScope()
 	{
-		return JetScope.EMPTY;
+		return NapileScope.EMPTY;
 	}
 
 	@NotNull
 	@Override
-	public Collection<JetType> getSupertypes()
+	public Collection<NapileType> getSupertypes()
 	{
 		return Collections.emptySet();
 	}

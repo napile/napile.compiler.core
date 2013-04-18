@@ -26,7 +26,7 @@ import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.T
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TableRenderer.TableRow;
 import org.napile.compiler.lang.diagnostics.rendering.TabledDescriptorRenderer.TextRenderer.TextElement;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintPosition;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.render.DescriptorRenderer;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -59,10 +59,10 @@ public class TabledDescriptorRenderer
 
 		public static class FunctionArgumentsRow implements TableRow
 		{
-			public final List<JetType> argumentTypes;
+			public final List<NapileType> argumentTypes;
 			public final Predicate<ConstraintPosition> isErrorPosition;
 
-			public FunctionArgumentsRow(List<JetType> argumentTypes, Predicate<ConstraintPosition> isErrorPosition)
+			public FunctionArgumentsRow(List<NapileType> argumentTypes, Predicate<ConstraintPosition> isErrorPosition)
 			{
 				this.argumentTypes = argumentTypes;
 				this.isErrorPosition = isErrorPosition;
@@ -77,12 +77,12 @@ public class TabledDescriptorRenderer
 			return this;
 		}
 
-		public TableRenderer functionArgumentTypeList(@NotNull List<JetType> argumentTypes)
+		public TableRenderer functionArgumentTypeList(@NotNull List<NapileType> argumentTypes)
 		{
 			return functionArgumentTypeList(argumentTypes, Predicates.<ConstraintPosition>alwaysFalse());
 		}
 
-		public TableRenderer functionArgumentTypeList(@NotNull List<JetType> argumentTypes, @NotNull Predicate<ConstraintPosition> isErrorPosition)
+		public TableRenderer functionArgumentTypeList(@NotNull List<NapileType> argumentTypes, @NotNull Predicate<ConstraintPosition> isErrorPosition)
 		{
 			rows.add(new FunctionArgumentsRow(argumentTypes, isErrorPosition));
 			return this;
@@ -245,7 +245,7 @@ public class TabledDescriptorRenderer
 		}
 	}
 
-	private void renderFunctionArguments(@NotNull List<JetType> argumentTypes, StringBuilder result)
+	private void renderFunctionArguments(@NotNull List<NapileType> argumentTypes, StringBuilder result)
 	{
 		if(argumentTypes.isEmpty())
 		{
@@ -254,9 +254,9 @@ public class TabledDescriptorRenderer
 		}
 
 		result.append("(");
-		for(Iterator<JetType> iterator = argumentTypes.iterator(); iterator.hasNext(); )
+		for(Iterator<NapileType> iterator = argumentTypes.iterator(); iterator.hasNext(); )
 		{
-			JetType argumentType = iterator.next();
+			NapileType argumentType = iterator.next();
 			String renderedArgument = Renderers.RENDER_TYPE.render(argumentType);
 
 			result.append(renderedArgument);

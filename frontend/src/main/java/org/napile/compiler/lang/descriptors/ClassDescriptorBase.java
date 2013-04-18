@@ -22,9 +22,9 @@ import java.util.Map;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotatedImpl;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
@@ -36,9 +36,9 @@ import org.napile.compiler.lang.types.TypeUtils;
 public abstract class ClassDescriptorBase extends AnnotatedImpl implements ClassDescriptor
 {
 
-	protected JetType defaultType;
+	protected NapileType defaultType;
 
-	protected abstract JetScope getScopeForMemberLookup();
+	protected abstract NapileScope getScopeForMemberLookup();
 
 	private final boolean isStatic;
 
@@ -63,14 +63,14 @@ public abstract class ClassDescriptorBase extends AnnotatedImpl implements Class
 
 	@NotNull
 	@Override
-	public JetScope getMemberScope(List<JetType> typeArguments)
+	public NapileScope getMemberScope(List<NapileType> typeArguments)
 	{
 		assert typeArguments.size() == getTypeConstructor().getParameters().size();
 		if(typeArguments.isEmpty())
 			return getScopeForMemberLookup();
 
 		List<TypeParameterDescriptor> typeParameters = getTypeConstructor().getParameters();
-		Map<TypeConstructor, JetType> substitutionContext = SubstitutionUtils.buildSubstitutionContext(typeParameters, typeArguments);
+		Map<TypeConstructor, NapileType> substitutionContext = SubstitutionUtils.buildSubstitutionContext(typeParameters, typeArguments);
 
 		// Unsafe substitutor is OK, because no recursion can hurt us upon a trivial substitution:
 		// all the types are written explicitly in the code already, they can not get infinite.
@@ -92,7 +92,7 @@ public abstract class ClassDescriptorBase extends AnnotatedImpl implements Class
 
 	@NotNull
 	@Override
-	public JetType getDefaultType()
+	public NapileType getDefaultType()
 	{
 		if(defaultType == null)
 		{

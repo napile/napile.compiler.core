@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
 /**
@@ -36,7 +36,7 @@ public interface CallableDescriptor extends DeclarationDescriptorWithVisibility,
 	List<TypeParameterDescriptor> getTypeParameters();
 
 	@NotNull
-	JetType getReturnType();
+	NapileType getReturnType();
 
 	@NotNull
 	@Override

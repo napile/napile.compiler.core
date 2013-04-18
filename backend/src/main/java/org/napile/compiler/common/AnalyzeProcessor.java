@@ -49,7 +49,7 @@ public class AnalyzeProcessor
 	}
 
 
-	public static boolean compileBunchOfSources(JetCoreEnvironment environment, @Nullable File outputDir)
+	public static boolean compileBunchOfSources(NapileCoreEnvironment environment, @Nullable File outputDir)
 	{
 		GenerationState generationState = analyzeAndGenerate(environment);
 		if(generationState == null)
@@ -68,7 +68,7 @@ public class AnalyzeProcessor
 	}
 
 	@Nullable
-	public static GenerationState analyzeAndGenerate(JetCoreEnvironment environment)
+	public static GenerationState analyzeAndGenerate(NapileCoreEnvironment environment)
 	{
 		AnalyzeExhaust exhaust = analyze(environment);
 
@@ -81,7 +81,7 @@ public class AnalyzeProcessor
 	}
 
 	@Nullable
-	public static AnalyzeExhaust analyze(final JetCoreEnvironment environment)
+	public static AnalyzeExhaust analyze(final NapileCoreEnvironment environment)
 	{
 		AnalyzerWithCompilerReport analyzerWithCompilerReport = new AnalyzerWithCompilerReport(environment.getConfiguration().get(CompilerConfigurationKeys.MESSAGE_COLLECTOR_KEY));
 
@@ -99,7 +99,7 @@ public class AnalyzeProcessor
 	}
 
 	@NotNull
-	private static GenerationState generate(final JetCoreEnvironment environment, AnalyzeExhaust exhaust)
+	private static GenerationState generate(final NapileCoreEnvironment environment, AnalyzeExhaust exhaust)
 	{
 		Project project = environment.getProject();
 		Progress backendProgress = new Progress()

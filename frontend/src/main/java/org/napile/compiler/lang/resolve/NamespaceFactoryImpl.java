@@ -40,7 +40,7 @@ import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
@@ -68,7 +68,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 	}
 
 	@NotNull
-	public PackageDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull NapileFile file, @NotNull JetScope outerScope, @NotNull RedeclarationHandler handler)
+	public PackageDescriptorImpl createNamespaceDescriptorPathIfNeeded(@NotNull NapileFile file, @NotNull NapileScope outerScope, @NotNull RedeclarationHandler handler)
 	{
 		NapilePackage filePackage = file.getPackage();
 
@@ -177,7 +177,7 @@ public class NamespaceFactoryImpl implements NamespaceFactory
 		namespaceDescriptor = new PackageDescriptorImpl(owner, Collections.<AnnotationDescriptor>emptyList(), // TODO: annotations
 				name);
 
-		WritableScopeImpl scope = new WritableScopeImpl(JetScope.EMPTY, namespaceDescriptor, handler, "Namespace member scope");
+		WritableScopeImpl scope = new WritableScopeImpl(NapileScope.EMPTY, namespaceDescriptor, handler, "Namespace member scope");
 		scope.changeLockLevel(WritableScope.LockLevel.BOTH);
 
 		namespaceDescriptor.initialize(scope);

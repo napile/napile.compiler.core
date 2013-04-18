@@ -32,7 +32,7 @@ import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileMethod;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitution;
 import org.napile.compiler.lang.types.TypeSubstitutor;
@@ -80,9 +80,9 @@ public class DescriptorUtils
 
 			@NotNull
 			@Override
-			public JetType safeSubstitute(@NotNull JetType type)
+			public NapileType safeSubstitute(@NotNull NapileType type)
 			{
-				JetType substituted = substitute(type, null);
+				NapileType substituted = substitute(type, null);
 				if(substituted == null)
 				{
 					return ErrorUtils.createErrorType("Substitution failed");
@@ -92,7 +92,7 @@ public class DescriptorUtils
 
 			@Nullable
 			@Override
-			public JetType substitute(@NotNull JetType type, DeclarationDescriptor ownerDescriptor)
+			public NapileType substitute(@NotNull NapileType type, DeclarationDescriptor ownerDescriptor)
 			{
 				return super.substitute(type, ownerDescriptor);
 			}
@@ -222,9 +222,9 @@ public class DescriptorUtils
 	}
 
 	@NotNull
-	public static JetType getFunctionExpectedReturnType(@NotNull MethodDescriptor descriptor, @NotNull NapileElement function)
+	public static NapileType getFunctionExpectedReturnType(@NotNull MethodDescriptor descriptor, @NotNull NapileElement function)
 	{
-		JetType expectedType;
+		NapileType expectedType;
 		if(function instanceof NapileMethod)
 		{
 			if(((NapileMethod) function).getReturnTypeRef() != null || ((NapileMethod) function).hasBlockBody())
@@ -265,14 +265,14 @@ public class DescriptorUtils
 		return isSubtypeOfClass(subClass.getDefaultType(), superClass.getOriginal());
 	}
 
-	private static boolean isSubtypeOfClass(@NotNull JetType type, @NotNull DeclarationDescriptor superClass)
+	private static boolean isSubtypeOfClass(@NotNull NapileType type, @NotNull DeclarationDescriptor superClass)
 	{
 		DeclarationDescriptor descriptor = type.getConstructor().getDeclarationDescriptor();
 		if(descriptor != null && superClass == descriptor.getOriginal())
 		{
 			return true;
 		}
-		for(JetType superType : type.getConstructor().getSupertypes())
+		for(NapileType superType : type.getConstructor().getSupertypes())
 		{
 			if(isSubtypeOfClass(superType, superClass))
 			{
@@ -282,23 +282,23 @@ public class DescriptorUtils
 		return false;
 	}
 
-	public static void addSuperTypes(JetType type, Set<JetType> set)
+	public static void addSuperTypes(NapileType type, Set<NapileType> set)
 	{
 		set.add(type);
 
-		for(JetType jetType : type.getConstructor().getSupertypes())
+		for(NapileType napileType : type.getConstructor().getSupertypes())
 		{
-			addSuperTypes(jetType, set);
+			addSuperTypes(napileType, set);
 		}
 	}
 
 	public static boolean isSubclassOf(@NotNull ClassDescriptor classDescriptor, @NotNull FqName fqName)
 	{
-		Set<JetType> set = new HashSet<JetType>();
+		Set<NapileType> set = new HashSet<NapileType>();
 		addSuperTypes(classDescriptor.getDefaultType(), set);
 
-		for(JetType jetType : set)
-			if(TypeUtils.isEqualFqName(jetType, fqName))
+		for(NapileType napileType : set)
+			if(TypeUtils.isEqualFqName(napileType, fqName))
 				return true;
 		return false;
 	}

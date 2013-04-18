@@ -22,22 +22,22 @@ package org.napile.compiler.lang.types;
  */
 public abstract class TypeConstructorVisitor<A, R>
 {
-	public R visitType(JetType type, TypeConstructor t, A arg)
+	public R visitType(NapileType type, TypeConstructor t, A arg)
 	{
 		throw new UnsupportedOperationException(t + " " + arg);
 	}
 
-	public R visitSelfType(JetType type, SelfTypeConstructor t, A arg)
+	public R visitSelfType(NapileType type, SelfTypeConstructor t, A arg)
 	{
 		return visitType(type, t, arg);
 	}
 
-	public R visitMethodType(JetType type, MethodTypeConstructor t, A arg)
+	public R visitMethodType(NapileType type, MethodTypeConstructor t, A arg)
 	{
 		return visitType(type, t, arg);
 	}
 
-	public R visitMultiType(JetType type, MultiTypeConstructor t, A arg)
+	public R visitMultiType(NapileType type, MultiTypeConstructor t, A arg)
 	{
 		return visitType(type, t, arg);
 	}

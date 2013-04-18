@@ -32,7 +32,7 @@ import com.google.common.collect.Multimap;
 /**
  * @author abreslav
  */
-public interface WritableScope extends JetScope
+public interface WritableScope extends NapileScope
 {
 	enum LockLevel
 	{
@@ -72,7 +72,7 @@ public interface WritableScope extends JetScope
 	@NotNull
 	Multimap<Name, DeclarationDescriptor> getDeclaredDescriptorsAccessibleBySimpleName();
 
-	void importScope(@NotNull JetScope imported);
+	void importScope(@NotNull NapileScope imported);
 
 	void setImplicitReceiver(@NotNull ReceiverDescriptor implicitReceiver);
 

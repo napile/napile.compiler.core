@@ -26,8 +26,8 @@ import org.napile.compiler.injection.protobuf.lang.lexer.PbMergingLexer;
 import org.napile.compiler.injection.protobuf.lang.parser.PbParser;
 import org.napile.compiler.injection.protobuf.lang.psi.PbPsiCreator;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
@@ -66,9 +66,9 @@ public class ProtobufCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
-	public JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope)
+	public NapileType getReturnType(@Nullable NapileType expectType, @NotNull BindingTrace bindingTrace, @NotNull NapileScope napileScope)
 	{
-		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY);
+		return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.ANY);
 	}
 
 	@Override

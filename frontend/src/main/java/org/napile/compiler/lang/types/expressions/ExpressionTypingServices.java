@@ -47,13 +47,13 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.processors.AnonymClassResolver;
 import org.napile.compiler.lang.resolve.processors.DescriptorResolver;
 import org.napile.compiler.lang.resolve.processors.TypeResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.types.CommonSupertypes;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileType;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
@@ -147,9 +147,9 @@ public class ExpressionTypingServices
 	}
 
 	@NotNull
-	public JetType safeGetType(@NotNull JetScope scope, @NotNull NapileExpression expression, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo, @NotNull BindingTrace trace)
+	public NapileType safeGetType(@NotNull NapileScope scope, @NotNull NapileExpression expression, @NotNull NapileType expectedType, @NotNull DataFlowInfo dataFlowInfo, @NotNull BindingTrace trace)
 	{
-		JetType type = getType(scope, expression, expectedType, dataFlowInfo, trace);
+		NapileType type = getType(scope, expression, expectedType, dataFlowInfo, trace);
 		if(type != null)
 		{
 			return type;
@@ -158,19 +158,19 @@ public class ExpressionTypingServices
 	}
 
 	@NotNull
-	public JetTypeInfo getTypeInfo(@NotNull final JetScope scope, @NotNull NapileExpression expression, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo, @NotNull BindingTrace trace)
+	public NapileTypeInfo getTypeInfo(@NotNull final NapileScope scope, @NotNull NapileExpression expression, @NotNull NapileType expectedType, @NotNull DataFlowInfo dataFlowInfo, @NotNull BindingTrace trace)
 	{
 		ExpressionTypingContext context = ExpressionTypingContext.newContext(this, trace, scope, dataFlowInfo, expectedType, false);
 		return getExpressionTypingFacade().getTypeInfo(expression, context);
 	}
 
 	@Nullable
-	public JetType getType(@NotNull final JetScope scope, @NotNull NapileExpression expression, @NotNull JetType expectedType, @NotNull DataFlowInfo dataFlowInfo, @NotNull BindingTrace trace)
+	public NapileType getType(@NotNull final NapileScope scope, @NotNull NapileExpression expression, @NotNull NapileType expectedType, @NotNull DataFlowInfo dataFlowInfo, @NotNull BindingTrace trace)
 	{
 		return getTypeInfo(scope, expression, expectedType, dataFlowInfo, trace).getType();
 	}
 
-	public JetType getTypeWithNamespaces(@NotNull final JetScope scope, @NotNull NapileExpression expression, @NotNull BindingTrace trace)
+	public NapileType getTypeWithNamespaces(@NotNull final NapileScope scope, @NotNull NapileExpression expression, @NotNull BindingTrace trace)
 	{
 		ExpressionTypingContext context = ExpressionTypingContext.newContext(this, trace, scope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, true);
 		return getExpressionTypingFacade().getTypeInfo(expression, context).getType();
@@ -178,17 +178,17 @@ public class ExpressionTypingServices
 	}
 
 	@NotNull
-	public JetType inferFunctionReturnType(@NotNull JetScope outerScope, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull BindingTrace trace)
+	public NapileType inferFunctionReturnType(@NotNull NapileScope outerScope, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull BindingTrace trace)
 	{
-		Map<NapileExpression, JetType> typeMap = collectReturnedExpressionsWithTypes(trace, outerScope, function, methodDescriptor);
-		Collection<JetType> types = typeMap.values();
+		Map<NapileExpression, NapileType> typeMap = collectReturnedExpressionsWithTypes(trace, outerScope, function, methodDescriptor);
+		Collection<NapileType> types = typeMap.values();
 		return types.isEmpty() ? TypeUtils.getTypeOfClassOrErrorType(outerScope, NapileLangPackage.NULL, false) : CommonSupertypes.commonSupertype(types);
 	}
 
 
 	/////////////////////////////////////////////////////////
 
-	public void checkFunctionReturnType(@NotNull JetScope functionInnerScope, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull DataFlowInfo dataFlowInfo, @Nullable JetType expectedReturnType, BindingTrace trace)
+	public void checkFunctionReturnType(@NotNull NapileScope functionInnerScope, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull DataFlowInfo dataFlowInfo, @Nullable NapileType expectedReturnType, BindingTrace trace)
 	{
 		if(expectedReturnType == null)
 		{
@@ -224,7 +224,7 @@ public class ExpressionTypingServices
 	}
 
 	@NotNull
-	public JetTypeInfo getBlockReturnedType(@NotNull JetScope outerScope, @NotNull NapileBlockExpression expression, @NotNull CoercionStrategy coercionStrategyForLastExpression, ExpressionTypingContext context, BindingTrace trace)
+	public NapileTypeInfo getBlockReturnedType(@NotNull NapileScope outerScope, @NotNull NapileBlockExpression expression, @NotNull CoercionStrategy coercionStrategyForLastExpression, ExpressionTypingContext context, BindingTrace trace)
 	{
 		NapileElement[] blocks = expression.getStatements();
 
@@ -233,7 +233,7 @@ public class ExpressionTypingServices
 		WritableScope scope = new WritableScopeImpl(outerScope, containingDescriptor, new TraceBasedRedeclarationHandler(context.trace), "getBlockReturnedType");
 		scope.changeLockLevel(WritableScope.LockLevel.BOTH);
 
-		JetTypeInfo r;
+		NapileTypeInfo r;
 		if(blocks.length == 0)
 		{
 			r = DataFlowUtils.checkType(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), expression, context, context.dataFlowInfo);
@@ -247,11 +247,11 @@ public class ExpressionTypingServices
 		return r;
 	}
 
-	private Map<NapileExpression, JetType> collectReturnedExpressionsWithTypes(final @NotNull BindingTrace trace, JetScope outerScope, final NapileDeclarationWithBody function, MethodDescriptor methodDescriptor)
+	private Map<NapileExpression, NapileType> collectReturnedExpressionsWithTypes(final @NotNull BindingTrace trace, NapileScope outerScope, final NapileDeclarationWithBody function, MethodDescriptor methodDescriptor)
 	{
 		NapileExpression bodyExpression = function.getBodyExpression();
 		assert bodyExpression != null;
-		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(outerScope, methodDescriptor, trace, false);
+		NapileScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(outerScope, methodDescriptor, trace, false);
 		getExpressionTypingFacade().getTypeInfo(bodyExpression, ExpressionTypingContext.newContext(this, trace, functionInnerScope, DataFlowInfo.EMPTY, TypeUtils.NO_EXPECTED_TYPE, false), !function.hasBlockBody());
 		//todo function literals
 		final Collection<NapileExpression> returnedExpressions = Lists.newArrayList();
@@ -285,10 +285,10 @@ public class ExpressionTypingServices
 		{
 			returnedExpressions.add(bodyExpression);
 		}
-		Map<NapileExpression, JetType> typeMap = new HashMap<NapileExpression, JetType>();
+		Map<NapileExpression, NapileType> typeMap = new HashMap<NapileExpression, NapileType>();
 		for(NapileExpression returnedExpression : returnedExpressions)
 		{
-			JetType cachedType = trace.get(BindingTraceKeys.EXPRESSION_TYPE, returnedExpression);
+			NapileType cachedType = trace.get(BindingTraceKeys.EXPRESSION_TYPE, returnedExpression);
 			trace.record(BindingTraceKeys.STATEMENT, returnedExpression, false);
 			if(cachedType != null)
 			{
@@ -304,17 +304,17 @@ public class ExpressionTypingServices
 
 	/*package*/
 	@SuppressWarnings("SuspiciousMethodCalls")
-	JetTypeInfo getBlockReturnedTypeWithWritableScope(@NotNull WritableScope scope, @NotNull List<? extends NapileElement> block, @NotNull CoercionStrategy coercionStrategyForLastExpression, ExpressionTypingContext context, BindingTrace trace)
+	NapileTypeInfo getBlockReturnedTypeWithWritableScope(@NotNull WritableScope scope, @NotNull List<? extends NapileElement> block, @NotNull CoercionStrategy coercionStrategyForLastExpression, ExpressionTypingContext context, BindingTrace trace)
 	{
 		if(block.isEmpty())
 		{
-			return JetTypeInfo.create(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), context.dataFlowInfo);
+			return NapileTypeInfo.create(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), context.dataFlowInfo);
 		}
 
 		ExpressionTypingInternals blockLevelVisitor = ExpressionTypingVisitorDispatcher.createForBlock(scope, this);
 		ExpressionTypingContext newContext = createContext(context, trace, scope, context.dataFlowInfo, TypeUtils.NO_EXPECTED_TYPE);
 
-		JetTypeInfo result = JetTypeInfo.create(null, context.dataFlowInfo);
+		NapileTypeInfo result = NapileTypeInfo.create(null, context.dataFlowInfo);
 		for(Iterator<? extends NapileElement> iterator = block.iterator(); iterator.hasNext(); )
 		{
 			final NapileElement statement = iterator.next();
@@ -387,7 +387,7 @@ public class ExpressionTypingServices
 						{
 							// ExpressionTypingVisitorForStatements should return only null or Unit for declarations and assignments
 							assert result.getType() == null || TypeUtils.isEqualFqName(result.getType(), NapileLangPackage.NULL);
-							result = JetTypeInfo.create(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), newContext.dataFlowInfo);
+							result = NapileTypeInfo.create(TypeUtils.getTypeOfClassOrErrorType(scope, NapileLangPackage.NULL), newContext.dataFlowInfo);
 						}
 					}
 				}
@@ -407,7 +407,7 @@ public class ExpressionTypingServices
 		return result;
 	}
 
-	private ExpressionTypingContext createContext(ExpressionTypingContext oldContext, BindingTrace trace, WritableScope scope, DataFlowInfo dataFlowInfo, JetType expectedType)
+	private ExpressionTypingContext createContext(ExpressionTypingContext oldContext, BindingTrace trace, WritableScope scope, DataFlowInfo dataFlowInfo, NapileType expectedType)
 	{
 		return ExpressionTypingContext.newContext(this, oldContext.patternsToDataFlowInfo, oldContext.patternsToBoundVariableLists, oldContext.labelResolver, trace, scope, dataFlowInfo, expectedType, oldContext.namespacesAllowed);
 	}

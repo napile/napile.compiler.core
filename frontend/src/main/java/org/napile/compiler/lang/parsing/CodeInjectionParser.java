@@ -28,9 +28,9 @@ import com.intellij.psi.tree.IElementType;
  */
 public class CodeInjectionParser implements NapileTokens
 {
-	private final AbstractJetParsing parent;
+	private final AbstractNapileParsing parent;
 
-	public CodeInjectionParser(@NotNull AbstractJetParsing parent)
+	public CodeInjectionParser(@NotNull AbstractNapileParsing parent)
 	{
 		this.parent = parent;
 	}

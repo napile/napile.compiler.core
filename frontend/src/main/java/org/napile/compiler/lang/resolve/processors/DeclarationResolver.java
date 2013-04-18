@@ -39,7 +39,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTraceUtil;
 import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -85,7 +85,7 @@ public class DeclarationResolver
 		this.trace = trace;
 	}
 
-	public void process(@NotNull JetScope rootScope)
+	public void process(@NotNull NapileScope rootScope)
 	{
 		resolveDeclarations();
 
@@ -106,7 +106,7 @@ public class DeclarationResolver
 		}
 	}
 
-	public void resolveInsideDeclarations(@NotNull NapileDeclarationContainer<NapileDeclaration> declarationOwner, final @NotNull JetScope scope, final @NotNull MutableClassDescriptor ownerDescription)
+	public void resolveInsideDeclarations(@NotNull NapileDeclarationContainer<NapileDeclaration> declarationOwner, final @NotNull NapileScope scope, final @NotNull MutableClassDescriptor ownerDescription)
 	{
 		for(NapileDeclaration declaration : declarationOwner.getDeclarations())
 		{

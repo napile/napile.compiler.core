@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.types;
-
-import java.util.List;
+package org.napile.compiler.lang.resolve.scopes;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.descriptors.annotations.Annotated;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.AbstractScopeAdapter;
 
 /**
  * @author abreslav
- * @see JetTypeChecker#isSubtypeOf(JetType, JetType)
  */
-public interface JetType extends Annotated
+public class NapileScopeAdapter extends AbstractScopeAdapter
 {
 	@NotNull
-	TypeConstructor getConstructor();
+	private final NapileScope workerScope;
+
+	public NapileScopeAdapter(@NotNull NapileScope workerScope)
+	{
+		this.workerScope = workerScope;
+	}
 
 	@NotNull
-	List<JetType> getArguments();
-
-	boolean isNullable();
-
-	@NotNull
-	JetScope getMemberScope();
-
 	@Override
-	boolean equals(Object other);
-
-	<A, R> R accept(@NotNull TypeConstructorVisitor<A, R> visitor, A arg);
+	protected final NapileScope getWorkerScope()
+	{
+		return workerScope;
+	}
 }

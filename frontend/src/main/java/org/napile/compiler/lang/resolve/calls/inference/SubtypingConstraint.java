@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.resolve.calls.inference;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -25,10 +25,10 @@ import org.napile.compiler.lang.types.JetType;
 public class SubtypingConstraint
 {
 	private final ConstraintType type;
-	private final JetType subtype;
-	private final JetType supertype;
+	private final NapileType subtype;
+	private final NapileType supertype;
 
-	public SubtypingConstraint(@NotNull ConstraintType type, @NotNull JetType subtype, @NotNull JetType supertype)
+	public SubtypingConstraint(@NotNull ConstraintType type, @NotNull NapileType subtype, @NotNull NapileType supertype)
 	{
 		this.type = type;
 		this.subtype = subtype;
@@ -36,13 +36,13 @@ public class SubtypingConstraint
 	}
 
 	@NotNull
-	public JetType getSubtype()
+	public NapileType getSubtype()
 	{
 		return subtype;
 	}
 
 	@NotNull
-	public JetType getSupertype()
+	public NapileType getSupertype()
 	{
 		return supertype;
 	}

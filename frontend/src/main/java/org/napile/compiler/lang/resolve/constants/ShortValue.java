@@ -19,8 +19,8 @@ package org.napile.compiler.lang.resolve.constants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.google.common.base.Function;
 
@@ -54,9 +54,9 @@ public class ShortValue implements CompileTimeConstant<Short>
 
 	@Nullable
 	@Override
-	public JetType getType(@NotNull JetScope jetScope)
+	public NapileType getType(@NotNull NapileScope napileScope)
 	{
-		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.SHORT, false);
+		return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.SHORT, false);
 	}
 
 	@Override

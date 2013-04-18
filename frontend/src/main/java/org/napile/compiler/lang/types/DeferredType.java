@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.lazy.LazyValue;
 import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
@@ -30,19 +30,19 @@ import org.napile.compiler.util.lazy.ReenteringLazyValueComputationException;
 /**
  * @author abreslav
  */
-public class DeferredType implements JetType
+public class DeferredType implements NapileType
 {
 
-	public static DeferredType create(BindingTrace trace, LazyValue<JetType> lazyValue)
+	public static DeferredType create(BindingTrace trace, LazyValue<NapileType> lazyValue)
 	{
 		DeferredType deferredType = new DeferredType(lazyValue);
 		trace.record(BindingTraceKeys.DEFERRED_TYPE, new Box<DeferredType>(deferredType));
 		return deferredType;
 	}
 
-	private final LazyValue<JetType> lazyValue;
+	private final LazyValue<NapileType> lazyValue;
 
-	private DeferredType(LazyValue<JetType> lazyValue)
+	private DeferredType(LazyValue<NapileType> lazyValue)
 	{
 		this.lazyValue = lazyValue;
 	}
@@ -52,14 +52,14 @@ public class DeferredType implements JetType
 		return lazyValue.isComputed();
 	}
 
-	public JetType getActualType()
+	public NapileType getActualType()
 	{
 		return lazyValue.get();
 	}
 
 	@Override
 	@NotNull
-	public JetScope getMemberScope()
+	public NapileScope getMemberScope()
 	{
 		return getActualType().getMemberScope();
 	}
@@ -73,7 +73,7 @@ public class DeferredType implements JetType
 
 	@Override
 	@NotNull
-	public List<JetType> getArguments()
+	public List<NapileType> getArguments()
 	{
 		return getActualType().getArguments();
 	}

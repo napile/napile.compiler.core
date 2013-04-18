@@ -18,12 +18,12 @@ package org.napile.compiler.lang.types.expressions;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.psi.NapileVisitor;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 
 /**
  * @author abreslav
  */
-/*package*/ abstract class ExpressionTypingVisitor extends NapileVisitor<JetTypeInfo, ExpressionTypingContext>
+/*package*/ abstract class ExpressionTypingVisitor extends NapileVisitor<NapileTypeInfo, ExpressionTypingContext>
 {
 
 	protected final ExpressionTypingInternals facade;

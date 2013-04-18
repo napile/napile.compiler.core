@@ -46,7 +46,7 @@ import org.napile.compiler.lang.psi.NapileLinkMethodExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.intellij.psi.PsiElement;
 
 /**
@@ -63,7 +63,7 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 	@Override
 	public StackValue visitLinkMethodExpression(NapileLinkMethodExpression expression, StackValue data)
 	{
-		JetType jetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
+		NapileType napileType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
 		MethodDescriptor target = (MethodDescriptor) gen.bindingTrace.safeGet(BindingTraceKeys.REFERENCE_TARGET, expression.getTarget());
 
@@ -93,13 +93,13 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 
 		gen.marker(expression).putAnonym(Collections.<IntIntPair>emptyList(), new CodeInfo(adapter));
 
-		return StackValue.onStack(TypeTransformer.toAsmType(gen.bindingTrace, jetType, gen.classNode));
+		return StackValue.onStack(TypeTransformer.toAsmType(gen.bindingTrace, napileType, gen.classNode));
 	}
 
 	@Override
 	public StackValue visitDoubleArrowExpression(NapileDoubleArrowExpression expression, StackValue data)
 	{
-		JetType jetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
+		NapileType napileType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
 
 		MethodDescriptor methodDescriptor = (MethodDescriptor) gen.bindingTrace.safeGet(BindingTraceKeys.REFERENCE_TARGET, expression.getArrow());
@@ -129,7 +129,7 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 		adapter.returnValues(1);
 
 		gen.marker(expression).putAnonym(Collections.<IntIntPair>emptyList(), new CodeInfo(adapter));
-		return StackValue.onStack(TypeTransformer.toAsmType(gen.bindingTrace, jetType, gen.classNode));
+		return StackValue.onStack(TypeTransformer.toAsmType(gen.bindingTrace, napileType, gen.classNode));
 	}
 
 	@Override
@@ -186,8 +186,8 @@ public class ClosureCodegenVisitor extends CodegenVisitor
 
 		gen.marker(expression).putAnonym(pairs, new CodeInfo(adapter));
 
-		JetType jetType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
+		NapileType napileType = gen.bindingTrace.safeGet(BindingTraceKeys.EXPRESSION_TYPE, expression);
 
-		return StackValue.onStack(gen.toAsmType(jetType));
+		return StackValue.onStack(gen.toAsmType(napileType));
 	}
 }

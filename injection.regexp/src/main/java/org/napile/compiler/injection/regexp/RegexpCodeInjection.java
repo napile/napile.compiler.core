@@ -14,8 +14,8 @@ import org.napile.compiler.injection.regexp.lang.parser.RegExpParser;
 import org.napile.compiler.injection.regexp.lang.parser.RegExpTokens;
 import org.napile.compiler.injection.regexp.lang.psi.impl.*;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
@@ -59,9 +59,9 @@ public class RegexpCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
-	public JetType getReturnType(@Nullable JetType expectType, @NotNull BindingTrace bindingTrace, @NotNull JetScope jetScope)
+	public NapileType getReturnType(@Nullable NapileType expectType, @NotNull BindingTrace bindingTrace, @NotNull NapileScope napileScope)
 	{
-		return TypeUtils.getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY);
+		return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.ANY);
 	}
 
 	@Override

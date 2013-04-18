@@ -28,9 +28,9 @@ import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.SubstitutingScope;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.MultiTypeConstructorImpl;
 import com.intellij.openapi.progress.ProcessCanceledException;
@@ -46,15 +46,15 @@ public class TypeSubstitutor
 	public static class MapToTypeSubstitutionAdapter implements TypeSubstitution
 	{
 		@NotNull
-		private final Map<TypeConstructor, JetType> substitutionContext;
+		private final Map<TypeConstructor, NapileType> substitutionContext;
 
-		public MapToTypeSubstitutionAdapter(@NotNull Map<TypeConstructor, JetType> substitutionContext)
+		public MapToTypeSubstitutionAdapter(@NotNull Map<TypeConstructor, NapileType> substitutionContext)
 		{
 			this.substitutionContext = substitutionContext;
 		}
 
 		@Override
-		public JetType get(TypeConstructor key)
+		public NapileType get(TypeConstructor key)
 		{
 			return substitutionContext.get(key);
 		}
@@ -88,20 +88,20 @@ public class TypeSubstitutor
 	/**
 	 * No assertion for immediate recursion
 	 */
-	public static TypeSubstitutor createUnsafe(@NotNull Map<TypeConstructor, JetType> substitutionContext)
+	public static TypeSubstitutor createUnsafe(@NotNull Map<TypeConstructor, NapileType> substitutionContext)
 	{
-		Map<TypeConstructor, JetType> cleanContext = substitutionContext;
+		Map<TypeConstructor, NapileType> cleanContext = substitutionContext;
 		return create(new MapToTypeSubstitutionAdapter(cleanContext));
 	}
 
-	public static TypeSubstitutor create(@NotNull Map<TypeConstructor, JetType> substitutionContext)
+	public static TypeSubstitutor create(@NotNull Map<TypeConstructor, NapileType> substitutionContext)
 	{
-		Map<TypeConstructor, JetType> cleanContext = substitutionContext;
+		Map<TypeConstructor, NapileType> cleanContext = substitutionContext;
 		//SubstitutionUtils.assertNotImmediatelyRecursive(cleanContext);
 		return createUnsafe(cleanContext);
 	}
 
-	public static TypeSubstitutor create(@NotNull JetType context)
+	public static TypeSubstitutor create(@NotNull NapileType context)
 	{
 		return create(SubstitutionUtils.buildSubstitutionContext(context));
 	}
@@ -134,19 +134,19 @@ public class TypeSubstitutor
 	}
 
 	@NotNull
-	public JetType safeSubstitute(@NotNull JetType type)
+	public NapileType safeSubstitute(@NotNull NapileType type)
 	{
 		return unsafeSubstitute(type, null, 0);
 	}
 
 	@Nullable
-	public JetType substitute(@NotNull JetType type, @Nullable DeclarationDescriptor ownerDescriptor)
+	public NapileType substitute(@NotNull NapileType type, @Nullable DeclarationDescriptor ownerDescriptor)
 	{
 		return unsafeSubstitute(type, ownerDescriptor, 0);
 	}
 
 	@NotNull
-	private JetType unsafeSubstitute(@NotNull JetType type, @Nullable final DeclarationDescriptor ownerDescriptor, final int recursionDepth)// throws SubstitutionException
+	private NapileType unsafeSubstitute(@NotNull NapileType type, @Nullable final DeclarationDescriptor ownerDescriptor, final int recursionDepth)// throws SubstitutionException
 	{
 		assertRecursionDepth(recursionDepth, type, substitution);
 		// The type is within the substitution range, i.e. T or T?
@@ -154,12 +154,12 @@ public class TypeSubstitutor
 		if(ErrorUtils.isErrorType(type))
 			return type;
 
-		return type.accept(new TypeConstructorVisitor<Object, JetType>()
+		return type.accept(new TypeConstructorVisitor<Object, NapileType>()
 		{
 			@Override
-			public JetType visitType(JetType type, TypeConstructor t, Object arg)
+			public NapileType visitType(NapileType type, TypeConstructor t, Object arg)
 			{
-				JetType replacement = substitution.get(t);
+				NapileType replacement = substitution.get(t);
 
 				if(replacement != null)
 				{
@@ -170,63 +170,63 @@ public class TypeSubstitutor
 				else
 				{
 					// The type is not within the substitution range, i.e. Foo, Bar<T> etc.
-					List<JetType> substitutedArguments = substituteTypeArguments(type.getConstructor().getParameters(), ownerDescriptor, type.getArguments(), recursionDepth);
+					List<NapileType> substitutedArguments = substituteTypeArguments(type.getConstructor().getParameters(), ownerDescriptor, type.getArguments(), recursionDepth);
 
-					return new JetTypeImpl(type.getAnnotations(), t, type.isNullable(), substitutedArguments, new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this));
+					return new NapileTypeImpl(type.getAnnotations(), t, type.isNullable(), substitutedArguments, new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this));
 				}
 			}
 
 			@Override
-			public JetType visitSelfType(JetType type, SelfTypeConstructor t, Object arg)
+			public NapileType visitSelfType(NapileType type, SelfTypeConstructor t, Object arg)
 			{
 				ClassDescriptor classDescriptor = t.getDeclarationDescriptor();
 
-				JetType defaultType = classDescriptor.getDefaultType();
+				NapileType defaultType = classDescriptor.getDefaultType();
 
-				return new JetTypeImpl(type.getAnnotations(), classDescriptor.getTypeConstructor(), false, defaultType.getArguments(), new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this));
+				return new NapileTypeImpl(type.getAnnotations(), classDescriptor.getTypeConstructor(), false, defaultType.getArguments(), new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this));
 			}
 
 			@Override
-			public JetType visitMethodType(JetType type, MethodTypeConstructor t, Object arg)
+			public NapileType visitMethodType(NapileType type, MethodTypeConstructor t, Object arg)
 			{
-				JetType subReturnType = unsafeSubstitute(t.getReturnType(), ownerDescriptor, recursionDepth);
-				Map<Name, JetType> parameters = new LinkedHashMap<Name, JetType>(t.getParameterTypes().size());
-				for(Map.Entry<Name, JetType> entry : t.getParameterTypes().entrySet())
+				NapileType subReturnType = unsafeSubstitute(t.getReturnType(), ownerDescriptor, recursionDepth);
+				Map<Name, NapileType> parameters = new LinkedHashMap<Name, NapileType>(t.getParameterTypes().size());
+				for(Map.Entry<Name, NapileType> entry : t.getParameterTypes().entrySet())
 					parameters.put(entry.getKey(), unsafeSubstitute(entry.getValue(), ownerDescriptor, recursionDepth));
-				JetScope scope = new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this);
-				return new JetTypeImpl(type.getAnnotations(), new MethodTypeConstructorImpl(t.getExpectedName(), subReturnType, parameters, scope), type.isNullable(), type.getArguments(), scope);
+				NapileScope scope = new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this);
+				return new NapileTypeImpl(type.getAnnotations(), new MethodTypeConstructorImpl(t.getExpectedName(), subReturnType, parameters, scope), type.isNullable(), type.getArguments(), scope);
 			}
 
 			@Override
-			public JetType visitMultiType(JetType type, MultiTypeConstructor t, Object arg)
+			public NapileType visitMultiType(NapileType type, MultiTypeConstructor t, Object arg)
 			{
 				List<MultiTypeEntry> list = new ArrayList<MultiTypeEntry>(t.getEntries().size());
 				for(MultiTypeEntry entry : t.getEntries())
 					list.add(new MultiTypeEntry(entry.index, entry.mutable,entry.name, unsafeSubstitute(entry.type, ownerDescriptor, recursionDepth)));
 
-				JetScope scope = new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this);
-				return new JetTypeImpl(type.getAnnotations(), new MultiTypeConstructorImpl(list, scope), type.isNullable(), type.getArguments(), scope);
+				NapileScope scope = new SubstitutingScope(type.getMemberScope(), TypeSubstitutor.this);
+				return new NapileTypeImpl(type.getAnnotations(), new MultiTypeConstructorImpl(list, scope), type.isNullable(), type.getArguments(), scope);
 			}
 		}, TypeUtils.NO_EXPECTED_TYPE);
 	}
 
-	private List<JetType> substituteTypeArguments(List<TypeParameterDescriptor> typeParameters, DeclarationDescriptor ownerDescriptor, List<JetType> typeArguments, int recursionDepth)
+	private List<NapileType> substituteTypeArguments(List<TypeParameterDescriptor> typeParameters, DeclarationDescriptor ownerDescriptor, List<NapileType> typeArguments, int recursionDepth)
 	{
 		if(typeArguments.isEmpty())
 			return Collections.emptyList();
-		List<JetType> substitutedArguments = new ArrayList<JetType>(typeArguments.size());
+		List<NapileType> substitutedArguments = new ArrayList<NapileType>(typeArguments.size());
 		for(int i = 0; i < typeParameters.size(); i++)
 		{
-			JetType typeArgument = typeArguments.get(i);
+			NapileType typeArgument = typeArguments.get(i);
 
-			JetType substitutedTypeArgument = unsafeSubstitute(typeArgument, ownerDescriptor, recursionDepth + 1);
+			NapileType substitutedTypeArgument = unsafeSubstitute(typeArgument, ownerDescriptor, recursionDepth + 1);
 
 			substitutedArguments.add(substitutedTypeArgument);
 		}
 		return substitutedArguments;
 	}
 
-	private static void assertRecursionDepth(int recursionDepth, JetType projection, TypeSubstitution substitution)
+	private static void assertRecursionDepth(int recursionDepth, NapileType projection, TypeSubstitution substitution)
 	{
 		if(recursionDepth > MAX_RECURSION_DEPTH)
 		{

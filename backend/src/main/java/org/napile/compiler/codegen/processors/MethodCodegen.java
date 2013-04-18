@@ -42,7 +42,7 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.openapi.util.Pair;
 
@@ -64,7 +64,7 @@ public class MethodCodegen
 			{
 				final NapileTypeReference typeReference = specifier.getTypeReference();
 
-				JetType type = bindingTrace.safeGet(BindingTraceKeys.TYPE, typeReference);
+				NapileType type = bindingTrace.safeGet(BindingTraceKeys.TYPE, typeReference);
 
 				adapter.localGet(0);
 
@@ -92,7 +92,7 @@ public class MethodCodegen
 
 			for(NapileTypeReference typeReference : napileClass.getSuperTypes())
 			{
-				JetType type = bindingTrace.safeGet(BindingTraceKeys.TYPE, typeReference);
+				NapileType type = bindingTrace.safeGet(BindingTraceKeys.TYPE, typeReference);
 
 				final ClassifierDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
 				if(declarationDescriptor instanceof ClassDescriptor && ((ClassDescriptor) declarationDescriptor).isTraited())

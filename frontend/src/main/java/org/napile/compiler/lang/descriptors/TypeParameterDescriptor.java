@@ -19,7 +19,7 @@ package org.napile.compiler.lang.descriptors;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 
@@ -31,10 +31,10 @@ public interface TypeParameterDescriptor extends ClassifierDescriptor
 	//TODO [VISTALL] move it to getSupertypes()
 	@NotNull
 	@Deprecated
-	Set<JetType> getUpperBounds();
+	Set<NapileType> getUpperBounds();
 
 	@NotNull
-	JetType getUpperBoundsAsType();
+	NapileType getUpperBoundsAsType();
 
 	@NotNull
 	@Override

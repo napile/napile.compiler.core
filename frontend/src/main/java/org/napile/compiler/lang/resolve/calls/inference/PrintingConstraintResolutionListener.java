@@ -20,7 +20,7 @@ import java.util.Set;
 
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.calls.ResolutionDebugInfo;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -36,7 +36,7 @@ public class PrintingConstraintResolutionListener implements ConstraintResolutio
 	}
 
 	@Override
-	public void constraintsForKnownType(JetType type, BoundsOwner typeValue)
+	public void constraintsForKnownType(NapileType type, BoundsOwner typeValue)
 	{
 		println("Constraints for " + type);
 		printTypeValue(typeValue);

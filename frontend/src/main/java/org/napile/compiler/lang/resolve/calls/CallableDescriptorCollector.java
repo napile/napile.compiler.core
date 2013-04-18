@@ -21,8 +21,8 @@ import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author svtk
@@ -30,11 +30,11 @@ import org.napile.compiler.lang.types.JetType;
 public interface CallableDescriptorCollector<D extends CallableDescriptor>
 {
 	@NotNull
-	Collection<D> getNonExtensionsByName(JetScope scope, Name name);
+	Collection<D> getNonExtensionsByName(NapileScope scope, Name name);
 
 	@NotNull
-	Collection<D> getMembersByName(@NotNull JetType receiver, Name name);
+	Collection<D> getMembersByName(@NotNull NapileType receiver, Name name);
 
 	@NotNull
-	Collection<D> getNonMembersByName(JetScope scope, Name name);
+	Collection<D> getNonMembersByName(NapileScope scope, Name name);
 }

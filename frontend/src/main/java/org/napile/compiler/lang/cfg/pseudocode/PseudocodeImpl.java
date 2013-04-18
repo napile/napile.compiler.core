@@ -272,9 +272,9 @@ public class PseudocodeImpl implements Pseudocode
 		mutableInstructionList.add(instruction);
 		instruction.setOwner(this);
 
-		if(instruction instanceof JetElementInstruction)
+		if(instruction instanceof NapileElementInstruction)
 		{
-			JetElementInstruction elementInstruction = (JetElementInstruction) instruction;
+			NapileElementInstruction elementInstruction = (NapileElementInstruction) instruction;
 			representativeInstructions.put(elementInstruction.getElement(), instruction);
 		}
 	}

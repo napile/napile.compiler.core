@@ -26,16 +26,16 @@ import org.napile.compiler.util.lazy.LazyValue;
 public class LazyScopeAdapter extends AbstractScopeAdapter
 {
 
-	private final LazyValue<JetScope> scope;
+	private final LazyValue<NapileScope> scope;
 
-	public LazyScopeAdapter(LazyValue<JetScope> scope)
+	public LazyScopeAdapter(LazyValue<NapileScope> scope)
 	{
 		this.scope = scope;
 	}
 
 	@NotNull
 	@Override
-	protected JetScope getWorkerScope()
+	protected NapileScope getWorkerScope()
 	{
 		return scope.get();
 	}

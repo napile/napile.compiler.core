@@ -22,7 +22,7 @@ import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 import com.intellij.lang.ASTNode;
 
 /**
@@ -32,7 +32,7 @@ import com.intellij.lang.ASTNode;
 {
 
 	@NotNull
-	JetTypeInfo getSelectorReturnTypeInfo(@NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull NapileExpression selectorExpression, @NotNull ExpressionTypingContext context);
+	NapileTypeInfo getSelectorReturnTypeInfo(@NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull NapileExpression selectorExpression, @NotNull ExpressionTypingContext context);
 
 	boolean checkInExpression(NapileElement callElement, @NotNull NapileSimpleNameExpression operationSign, @Nullable NapileExpression left, @NotNull NapileExpression right, ExpressionTypingContext context);
 

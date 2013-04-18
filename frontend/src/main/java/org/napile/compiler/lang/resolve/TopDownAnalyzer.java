@@ -39,7 +39,7 @@ import org.napile.compiler.lang.resolve.processors.OverrideResolver;
 import org.napile.compiler.lang.resolve.processors.TypeHierarchyResolver;
 import org.napile.compiler.lang.resolve.processors.checkers.AnnotationChecker;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import com.intellij.openapi.project.Project;
@@ -150,7 +150,7 @@ public class TopDownAnalyzer
 		this.annotationChecker = annotationChecker;
 	}
 
-	public void doProcess(JetScope outerScope, DescriptorBuilder owner, Collection<? extends NapileFile> declarations)
+	public void doProcess(NapileScope outerScope, DescriptorBuilder owner, Collection<? extends NapileFile> declarations)
 	{
 		//        context.enableDebugOutput();
 		context.debug("Enter");
@@ -193,7 +193,7 @@ public class TopDownAnalyzer
 
 	public void analyzeFiles(@NotNull Project project, @NotNull AnalyzeContext analyzeContext)
 	{
-		final WritableScope scope = new WritableScopeImpl(JetScope.EMPTY, moduleDescriptor, new TraceBasedRedeclarationHandler(trace), "Root scope in analyzeNamespace");
+		final WritableScope scope = new WritableScopeImpl(NapileScope.EMPTY, moduleDescriptor, new TraceBasedRedeclarationHandler(trace), "Root scope in analyzeNamespace");
 
 		scope.changeLockLevel(WritableScope.LockLevel.BOTH);
 

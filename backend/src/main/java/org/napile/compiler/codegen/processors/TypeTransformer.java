@@ -35,7 +35,7 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MethodTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeEntry;
@@ -48,27 +48,27 @@ import org.napile.compiler.lang.types.SelfTypeConstructor;
 public class TypeTransformer
 {
 	@NotNull
-	public static TypeNode toAsmType(BindingTrace bindingTrace, @NotNull JetType jetType, ClassNode classNode)
+	public static TypeNode toAsmType(BindingTrace bindingTrace, @NotNull NapileType napileType, ClassNode classNode)
 	{
 		TypeConstructorNode typeConstructorNode = null;
-		ClassifierDescriptor owner = jetType.getConstructor().getDeclarationDescriptor();
-		if(jetType.getConstructor() instanceof SelfTypeConstructor)
+		ClassifierDescriptor owner = napileType.getConstructor().getDeclarationDescriptor();
+		if(napileType.getConstructor() instanceof SelfTypeConstructor)
 			typeConstructorNode = new ThisTypeNode();
-		else if(jetType.getConstructor() instanceof MethodTypeConstructor)
+		else if(napileType.getConstructor() instanceof MethodTypeConstructor)
 		{
-			MethodTypeConstructor methodTypeConstructor = (MethodTypeConstructor)jetType.getConstructor();
+			MethodTypeConstructor methodTypeConstructor = (MethodTypeConstructor) napileType.getConstructor();
 			typeConstructorNode = new MethodTypeNode();
 
 			MethodTypeNode methodTypeNode = (MethodTypeNode) typeConstructorNode;
 
 			methodTypeNode.name = methodTypeConstructor.getExpectedName();
 			methodTypeNode.returnType = toAsmType(bindingTrace, methodTypeConstructor.getReturnType(), classNode);
-			for(Map.Entry<Name, JetType> entry : methodTypeConstructor.getParameterTypes().entrySet())
+			for(Map.Entry<Name, NapileType> entry : methodTypeConstructor.getParameterTypes().entrySet())
 				methodTypeNode.parameters.add(new MethodParameterNode(Modifier.EMPTY, entry.getKey(), toAsmType(bindingTrace, entry.getValue(), classNode)));
 		}
-		else if(jetType.getConstructor() instanceof MultiTypeConstructor)
+		else if(napileType.getConstructor() instanceof MultiTypeConstructor)
 		{
-			MultiTypeConstructor multiTypeConstructor = (MultiTypeConstructor) jetType.getConstructor();
+			MultiTypeConstructor multiTypeConstructor = (MultiTypeConstructor) napileType.getConstructor();
 
 			typeConstructorNode = new MultiTypeNode();
 
@@ -86,13 +86,13 @@ public class TypeTransformer
 		else if(owner instanceof TypeParameterDescriptor)
 			typeConstructorNode = new TypeParameterValueTypeNode(owner.getName());
 		else
-			throw new RuntimeException("invalid " + jetType.getConstructor());
+			throw new RuntimeException("invalid " + napileType.getConstructor());
 
-		TypeNode typeNode = new TypeNode(jetType.isNullable(), typeConstructorNode);
-		for(JetType argument : jetType.getArguments())
+		TypeNode typeNode = new TypeNode(napileType.isNullable(), typeConstructorNode);
+		for(NapileType argument : napileType.getArguments())
 			typeNode.arguments.add(toAsmType(bindingTrace, argument, classNode));
 
-		AnnotationCodegen.gen(bindingTrace, jetType, typeNode, classNode);
+		AnnotationCodegen.gen(bindingTrace, napileType, typeNode, classNode);
 
 		return typeNode;
 	}

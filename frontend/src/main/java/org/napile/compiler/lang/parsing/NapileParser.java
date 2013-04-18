@@ -14,28 +14,25 @@
  * limitations under the License.
  */
 
-package org.napile.compiler.lang.resolve.scopes;
+/*
+ * @author max
+ */
+package org.napile.compiler.lang.parsing;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.resolve.AbstractScopeAdapter;
+import com.intellij.lang.ASTNode;
+import com.intellij.lang.PsiBuilder;
+import com.intellij.lang.PsiParser;
+import com.intellij.psi.tree.IElementType;
 
-/**
- * @author abreslav
- */
-public class JetScopeAdapter extends AbstractScopeAdapter
+public class NapileParser implements PsiParser
 {
-	@NotNull
-	private final JetScope workerScope;
-
-	public JetScopeAdapter(@NotNull JetScope workerScope)
-	{
-		this.workerScope = workerScope;
-	}
-
-	@NotNull
 	@Override
-	protected final JetScope getWorkerScope()
+	@NotNull
+	public ASTNode parse(IElementType iElementType, PsiBuilder psiBuilder)
 	{
-		return workerScope;
+		NapileParsing jetParsing = NapileParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(psiBuilder));
+		jetParsing.parseFile();
+		return psiBuilder.getTreeBuilt();
 	}
 }

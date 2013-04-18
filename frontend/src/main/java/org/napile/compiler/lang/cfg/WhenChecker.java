@@ -26,8 +26,8 @@ import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileWhenExpression;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author svtk
@@ -39,7 +39,7 @@ public class WhenChecker
 		NapileExpression subjectExpression = expression.getSubjectExpression();
 		if(subjectExpression == null)
 			return false;
-		JetType type = trace.get(BindingTraceKeys.EXPRESSION_TYPE, subjectExpression);
+		NapileType type = trace.get(BindingTraceKeys.EXPRESSION_TYPE, subjectExpression);
 		if(type == null)
 			return false;
 		DeclarationDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
@@ -49,7 +49,7 @@ public class WhenChecker
 		if(classDescriptor.getModality().isOverridable())
 			return false;
 
-		JetScope memberScope = classDescriptor.getMemberScope(Collections.<JetType>emptyList());
+		NapileScope memberScope = classDescriptor.getMemberScope(Collections.<NapileType>emptyList());
 		Collection<ClassDescriptor> objectDescriptors = memberScope.getObjectDescriptors();
 		return false;
 	}

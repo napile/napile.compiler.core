@@ -39,9 +39,9 @@ import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemSolution
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemWithPriorities;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintType;
 import org.napile.compiler.lang.resolve.scopes.ChainedScope;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
+import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -54,7 +54,7 @@ import com.intellij.util.Processor;
  */
 public class TypeUtils
 {
-	public static final JetType NO_EXPECTED_TYPE = new JetType()
+	public static final NapileType NO_EXPECTED_TYPE = new NapileType()
 	{
 		@NotNull
 		@Override
@@ -65,7 +65,7 @@ public class TypeUtils
 
 		@NotNull
 		@Override
-		public List<JetType> getArguments()
+		public List<NapileType> getArguments()
 		{
 			throw new UnsupportedOperationException(); // TODO
 		}
@@ -78,7 +78,7 @@ public class TypeUtils
 
 		@NotNull
 		@Override
-		public JetScope getMemberScope()
+		public NapileScope getMemberScope()
 		{
 			throw new UnsupportedOperationException(); // TODO
 		}
@@ -103,19 +103,19 @@ public class TypeUtils
 	};
 
 	@NotNull
-	public static JetType makeNullable(@NotNull JetType type)
+	public static NapileType makeNullable(@NotNull NapileType type)
 	{
 		return makeNullableAsSpecified(type, true);
 	}
 
 	@NotNull
-	public static JetType makeNotNullable(@NotNull JetType type)
+	public static NapileType makeNotNullable(@NotNull NapileType type)
 	{
 		return makeNullableAsSpecified(type, false);
 	}
 
 	@NotNull
-	public static JetType makeNullableAsSpecified(@NotNull JetType type, boolean nullable)
+	public static NapileType makeNullableAsSpecified(@NotNull NapileType type, boolean nullable)
 	{
 		if(type.isNullable() == nullable)
 		{
@@ -125,20 +125,20 @@ public class TypeUtils
 		{
 			return type;
 		}
-		return new JetTypeImpl(type.getAnnotations(), type.getConstructor(), nullable, type.getArguments(), type.getMemberScope());
+		return new NapileTypeImpl(type.getAnnotations(), type.getConstructor(), nullable, type.getArguments(), type.getMemberScope());
 	}
 
-	public static boolean isIntersectionEmpty(@NotNull JetType typeA, @NotNull JetType typeB)
+	public static boolean isIntersectionEmpty(@NotNull NapileType typeA, @NotNull NapileType typeB)
 	{
-		return intersect(JetTypeChecker.INSTANCE, Sets.newLinkedHashSet(Lists.newArrayList(typeA, typeB)), new ChainedScope(null, typeA.getMemberScope(), typeB.getMemberScope())) == null;
+		return intersect(NapileTypeChecker.INSTANCE, Sets.newLinkedHashSet(Lists.newArrayList(typeA, typeB)), new ChainedScope(null, typeA.getMemberScope(), typeB.getMemberScope())) == null;
 	}
 
 	@Nullable
-	public static JetType intersect(@NotNull JetTypeChecker typeChecker, @NotNull Set<JetType> types, @NotNull JetScope jetScope)
+	public static NapileType intersect(@NotNull NapileTypeChecker typeChecker, @NotNull Set<NapileType> types, @NotNull NapileScope napileScope)
 	{
 		if(types.isEmpty())
 		{
-			return getTypeOfClassOrErrorType(jetScope, NapileLangPackage.ANY, true);
+			return getTypeOfClassOrErrorType(napileScope, NapileLangPackage.ANY, true);
 		}
 
 		if(types.size() == 1)
@@ -150,8 +150,8 @@ public class TypeUtils
 		//   made nullable is they all were nullable
 		boolean allNullable = true;
 		boolean nothingTypePresent = false;
-		List<JetType> nullabilityStripped = Lists.newArrayList();
-		for(JetType type : types)
+		List<NapileType> nullabilityStripped = Lists.newArrayList();
+		for(NapileType type : types)
 		{
 			nothingTypePresent |= isEqualFqName(type, NapileLangPackage.NULL);
 			allNullable &= type.isNullable();
@@ -160,21 +160,21 @@ public class TypeUtils
 
 		if(nothingTypePresent)
 		{
-			return getTypeOfClassOrErrorType(jetScope, NapileLangPackage.NULL, allNullable);
+			return getTypeOfClassOrErrorType(napileScope, NapileLangPackage.NULL, allNullable);
 		}
 
 		// Now we remove types that have subtypes in the list
-		List<JetType> resultingTypes = Lists.newArrayList();
+		List<NapileType> resultingTypes = Lists.newArrayList();
 		outer:
-		for(JetType type : nullabilityStripped)
+		for(NapileType type : nullabilityStripped)
 		{
 			if(!canHaveSubtypes(typeChecker, type))
 			{
-				for(JetType other : nullabilityStripped)
+				for(NapileType other : nullabilityStripped)
 				{
 					// It makes sense to check for subtyping (other <: type), despite that
 					// type is not supposed to be open, for there're enums
-					if(!TypeUnifier.mayBeEqual(type, other, jetScope) &&
+					if(!TypeUnifier.mayBeEqual(type, other, napileScope) &&
 							!typeChecker.isSubtypeOf(type, other) &&
 							!typeChecker.isSubtypeOf(other, type))
 					{
@@ -185,7 +185,7 @@ public class TypeUtils
 			}
 			else
 			{
-				for(JetType other : nullabilityStripped)
+				for(NapileType other : nullabilityStripped)
 				{
 					if(!type.equals(other) && typeChecker.isSubtypeOf(other, type))
 					{
@@ -206,15 +206,15 @@ public class TypeUtils
 		List<AnnotationDescriptor> noAnnotations = Collections.<AnnotationDescriptor>emptyList();
 		TypeConstructor constructor = new IntersectionTypeConstructor(noAnnotations, resultingTypes);
 
-		JetScope[] scopes = new JetScope[resultingTypes.size()];
+		NapileScope[] scopes = new NapileScope[resultingTypes.size()];
 		int i = 0;
-		for(JetType type : resultingTypes)
+		for(NapileType type : resultingTypes)
 		{
 			scopes[i] = type.getMemberScope();
 			i++;
 		}
 
-		return new JetTypeImpl(noAnnotations, constructor, allNullable, Collections.<JetType>emptyList(), new ChainedScope(null, scopes)); // TODO : check intersectibility, don't use a chanied scope
+		return new NapileTypeImpl(noAnnotations, constructor, allNullable, Collections.<NapileType>emptyList(), new ChainedScope(null, scopes)); // TODO : check intersectibility, don't use a chanied scope
 	}
 
 	private static class TypeUnifier
@@ -229,12 +229,12 @@ public class TypeUtils
 			}
 		}
 
-		public static boolean mayBeEqual(@NotNull JetType type, @NotNull JetType other, @NotNull JetScope jetScope)
+		public static boolean mayBeEqual(@NotNull NapileType type, @NotNull NapileType other, @NotNull NapileScope napileScope)
 		{
-			return unify(type, other, jetScope);
+			return unify(type, other, napileScope);
 		}
 
-		private static boolean unify(JetType withParameters, JetType expected, @NotNull JetScope jetScope)
+		private static boolean unify(NapileType withParameters, NapileType expected, @NotNull NapileScope napileScope)
 		{
 			ConstraintSystemWithPriorities constraintSystem = new ConstraintSystemWithPriorities(ConstraintResolutionListener.DO_NOTHING);
 			// T -> how T is used
@@ -256,25 +256,25 @@ public class TypeUtils
 			}
 			constraintSystem.addSubtypingConstraint(ConstraintType.VALUE_ARGUMENT.assertSubtyping(withParameters, expected));
 
-			ConstraintSystemSolution solution = constraintSystem.solve(jetScope);
+			ConstraintSystemSolution solution = constraintSystem.solve(napileScope);
 			return solution.getStatus().isSuccessful();
 		}
 
-		private static void processAllTypeParameters(JetType type, Processor<TypeParameterUsage> result)
+		private static void processAllTypeParameters(NapileType type, Processor<TypeParameterUsage> result)
 		{
 			ClassifierDescriptor descriptor = type.getConstructor().getDeclarationDescriptor();
 			if(descriptor instanceof TypeParameterDescriptor)
 			{
 				result.process(new TypeParameterUsage((TypeParameterDescriptor) descriptor));
 			}
-			for(JetType projection : type.getArguments())
+			for(NapileType projection : type.getArguments())
 			{
 				processAllTypeParameters(projection, result);
 			}
 		}
 	}
 
-	public static boolean canHaveSubtypes(JetTypeChecker typeChecker, JetType type)
+	public static boolean canHaveSubtypes(NapileTypeChecker typeChecker, NapileType type)
 	{
 		if(type.isNullable())
 		{
@@ -286,13 +286,13 @@ public class TypeUtils
 		}
 
 		List<TypeParameterDescriptor> parameters = type.getConstructor().getParameters();
-		List<JetType> arguments = type.getArguments();
+		List<NapileType> arguments = type.getArguments();
 		for(int i = 0, parametersSize = parameters.size(); i < parametersSize; i++)
 		{
 			TypeParameterDescriptor parameterDescriptor = parameters.get(i);
-			JetType typeProjection = arguments.get(i);
+			NapileType typeProjection = arguments.get(i);
 
-			JetType argument = typeProjection;
+			NapileType argument = typeProjection;
 
 		/*	switch(parameterDescriptor.getVariance())
 			{
@@ -356,9 +356,9 @@ public class TypeUtils
 		return false;
 	}
 
-	private static boolean lowerThanBound(JetTypeChecker typeChecker, JetType argument, TypeParameterDescriptor parameterDescriptor)
+	private static boolean lowerThanBound(NapileTypeChecker typeChecker, NapileType argument, TypeParameterDescriptor parameterDescriptor)
 	{
-		for(JetType bound : parameterDescriptor.getUpperBounds())
+		for(NapileType bound : parameterDescriptor.getUpperBounds())
 		{
 			if(typeChecker.isSubtypeOf(argument, bound))
 			{
@@ -371,7 +371,7 @@ public class TypeUtils
 		return false;
 	}
 
-	public static JetType makeNullableIfNeeded(JetType type, boolean nullable)
+	public static NapileType makeNullableIfNeeded(NapileType type, boolean nullable)
 	{
 		if(nullable)
 		{
@@ -381,20 +381,20 @@ public class TypeUtils
 	}
 
 	@NotNull
-	public static JetType makeUnsubstitutedType(ClassDescriptor classDescriptor, JetScope unsubstitutedMemberScope)
+	public static NapileType makeUnsubstitutedType(ClassDescriptor classDescriptor, NapileScope unsubstitutedMemberScope)
 	{
 		if(ErrorUtils.isError(classDescriptor))
 		{
 			return ErrorUtils.createErrorType("Unsubstituted type for " + classDescriptor);
 		}
-		List<JetType> arguments = getDefaultTypeProjections(classDescriptor.getTypeConstructor().getParameters());
-		return new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, arguments, unsubstitutedMemberScope);
+		List<NapileType> arguments = getDefaultTypeProjections(classDescriptor.getTypeConstructor().getParameters());
+		return new NapileTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, arguments, unsubstitutedMemberScope);
 	}
 
 	@NotNull
-	public static List<JetType> getDefaultTypeProjections(List<TypeParameterDescriptor> parameters)
+	public static List<NapileType> getDefaultTypeProjections(List<TypeParameterDescriptor> parameters)
 	{
-		List<JetType> result = new ArrayList<JetType>(parameters.size());
+		List<NapileType> result = new ArrayList<NapileType>(parameters.size());
 		for(TypeParameterDescriptor parameterDescriptor : parameters)
 		{
 			result.add(parameterDescriptor.getDefaultType());
@@ -403,9 +403,9 @@ public class TypeUtils
 	}
 
 	@NotNull
-	public static List<JetType> getDefaultTypes(List<TypeParameterDescriptor> parameters)
+	public static List<NapileType> getDefaultTypes(List<TypeParameterDescriptor> parameters)
 	{
-		List<JetType> result = Lists.newArrayList();
+		List<NapileType> result = Lists.newArrayList();
 		for(TypeParameterDescriptor parameterDescriptor : parameters)
 		{
 			result.add(parameterDescriptor.getDefaultType());
@@ -413,28 +413,28 @@ public class TypeUtils
 		return result;
 	}
 
-	private static void collectImmediateSupertypes(@NotNull JetType type, @NotNull Collection<JetType> result)
+	private static void collectImmediateSupertypes(@NotNull NapileType type, @NotNull Collection<NapileType> result)
 	{
 		TypeSubstitutor substitutor = TypeSubstitutor.create(type);
-		for(JetType supertype : type.getConstructor().getSupertypes())
+		for(NapileType supertype : type.getConstructor().getSupertypes())
 		{
 			result.add(substitutor.substitute(supertype, null));
 		}
 	}
 
 	@NotNull
-	public static List<JetType> getImmediateSupertypes(@NotNull JetType type)
+	public static List<NapileType> getImmediateSupertypes(@NotNull NapileType type)
 	{
-		List<JetType> result = Lists.newArrayList();
+		List<NapileType> result = Lists.newArrayList();
 		collectImmediateSupertypes(type, result);
 		return result;
 	}
 
-	private static void collectAllSupertypes(@NotNull JetType type, @NotNull Set<JetType> result)
+	private static void collectAllSupertypes(@NotNull NapileType type, @NotNull Set<NapileType> result)
 	{
-		List<JetType> immediateSupertypes = getImmediateSupertypes(type);
+		List<NapileType> immediateSupertypes = getImmediateSupertypes(type);
 		result.addAll(immediateSupertypes);
-		for(JetType supertype : immediateSupertypes)
+		for(NapileType supertype : immediateSupertypes)
 		{
 			collectAllSupertypes(supertype, result);
 		}
@@ -442,14 +442,14 @@ public class TypeUtils
 
 
 	@NotNull
-	public static Set<JetType> getAllSupertypes(@NotNull JetType type)
+	public static Set<NapileType> getAllSupertypes(@NotNull NapileType type)
 	{
-		Set<JetType> result = Sets.newLinkedHashSet();
+		Set<NapileType> result = Sets.newLinkedHashSet();
 		collectAllSupertypes(type, result);
 		return result;
 	}
 
-	public static boolean equalClasses(@NotNull JetType type1, @NotNull JetType type2)
+	public static boolean equalClasses(@NotNull NapileType type1, @NotNull NapileType type2)
 	{
 		DeclarationDescriptor declarationDescriptor1 = type1.getConstructor().getDeclarationDescriptor();
 		if(declarationDescriptor1 == null)
@@ -461,7 +461,7 @@ public class TypeUtils
 	}
 
 	@Nullable
-	public static ClassDescriptor getClassDescriptor(@NotNull JetType type)
+	public static ClassDescriptor getClassDescriptor(@NotNull NapileType type)
 	{
 		DeclarationDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
 		if(declarationDescriptor instanceof ClassDescriptor)
@@ -472,7 +472,7 @@ public class TypeUtils
 	}
 
 	@NotNull
-	public static JetType substituteParameters(@NotNull ClassDescriptor clazz, @NotNull List<JetType> actualTypeParameters)
+	public static NapileType substituteParameters(@NotNull ClassDescriptor clazz, @NotNull List<NapileType> actualTypeParameters)
 	{
 		List<TypeParameterDescriptor> clazzTypeParameters = clazz.getTypeConstructor().getParameters();
 
@@ -481,7 +481,7 @@ public class TypeUtils
 			throw new IllegalArgumentException("type parameter counts do not match: " + clazz + ", " + actualTypeParameters);
 		}
 
-		Map<TypeConstructor, JetType> substitutions = Maps.newHashMap();
+		Map<TypeConstructor, NapileType> substitutions = Maps.newHashMap();
 
 		for(int i = 0; i < clazzTypeParameters.size(); ++i)
 		{
@@ -492,37 +492,37 @@ public class TypeUtils
 		return TypeSubstitutor.create(substitutions).substitute(clazz.getDefaultType(), null);
 	}
 
-	private static void addAllClassDescriptors(@NotNull JetType type, @NotNull Set<ClassDescriptor> set)
+	private static void addAllClassDescriptors(@NotNull NapileType type, @NotNull Set<ClassDescriptor> set)
 	{
 		ClassDescriptor cd = getClassDescriptor(type);
 		if(cd != null)
 		{
 			set.add(cd);
 		}
-		for(JetType projection : type.getArguments())
+		for(NapileType projection : type.getArguments())
 		{
 			addAllClassDescriptors(projection, set);
 		}
 	}
 
 	@NotNull
-	public static List<ClassDescriptor> getAllClassDescriptors(@NotNull JetType type)
+	public static List<ClassDescriptor> getAllClassDescriptors(@NotNull NapileType type)
 	{
 		Set<ClassDescriptor> classDescriptors = new HashSet<ClassDescriptor>();
 		addAllClassDescriptors(type, classDescriptors);
 		return new ArrayList<ClassDescriptor>(classDescriptors);
 	}
 
-	public static boolean equalTypes(@NotNull JetType a, @NotNull JetType b)
+	public static boolean equalTypes(@NotNull NapileType a, @NotNull NapileType b)
 	{
-		return JetTypeChecker.INSTANCE.isSubtypeOf(a, b) && JetTypeChecker.INSTANCE.isSubtypeOf(b, a);
+		return NapileTypeChecker.INSTANCE.isSubtypeOf(a, b) && NapileTypeChecker.INSTANCE.isSubtypeOf(b, a);
 	}
 
-	public static boolean typeConstructorUsedInType(@NotNull TypeConstructor key, @NotNull JetType value)
+	public static boolean typeConstructorUsedInType(@NotNull TypeConstructor key, @NotNull NapileType value)
 	{
 		if(value.getConstructor() == key)
 			return true;
-		for(JetType projection : value.getArguments())
+		for(NapileType projection : value.getArguments())
 		{
 			if(typeConstructorUsedInType(key, projection))
 			{
@@ -532,7 +532,7 @@ public class TypeUtils
 		return false;
 	}
 
-	public static boolean dependsOnTypeParameters(@NotNull JetType type, @NotNull Collection<TypeParameterDescriptor> typeParameters)
+	public static boolean dependsOnTypeParameters(@NotNull NapileType type, @NotNull Collection<TypeParameterDescriptor> typeParameters)
 	{
 		return dependsOnTypeParameterConstructors(type, Collections2.transform(typeParameters, new Function<TypeParameterDescriptor, TypeConstructor>()
 		{
@@ -545,11 +545,11 @@ public class TypeUtils
 		}));
 	}
 
-	public static boolean dependsOnTypeParameterConstructors(@NotNull JetType type, @NotNull Collection<TypeConstructor> typeParameterConstructors)
+	public static boolean dependsOnTypeParameterConstructors(@NotNull NapileType type, @NotNull Collection<TypeConstructor> typeParameterConstructors)
 	{
 		if(typeParameterConstructors.contains(type.getConstructor()))
 			return true;
-		for(JetType typeProjection : type.getArguments())
+		for(NapileType typeProjection : type.getArguments())
 		{
 			if(dependsOnTypeParameterConstructors(typeProjection, typeParameterConstructors))
 			{
@@ -560,30 +560,30 @@ public class TypeUtils
 	}
 
 	@NotNull
-	public static JetType getTypeOfClassOrErrorType(@NotNull JetScope jetScope, @NotNull FqName name)
+	public static NapileType getTypeOfClassOrErrorType(@NotNull NapileScope napileScope, @NotNull FqName name)
 	{
-		return getTypeOfClassOrErrorType(jetScope, name, false);
+		return getTypeOfClassOrErrorType(napileScope, name, false);
 	}
 
 	@NotNull
-	public static JetType getTypeOfClassOrErrorType(@NotNull JetScope jetScope, @NotNull FqName name, boolean nullable)
+	public static NapileType getTypeOfClassOrErrorType(@NotNull NapileScope napileScope, @NotNull FqName name, boolean nullable)
 	{
-		ClassDescriptor classifierDescriptor = jetScope.getClass(name);
-		if(classifierDescriptor == null || jetScope instanceof ErrorUtils.ErrorScope)
+		ClassDescriptor classifierDescriptor = napileScope.getClass(name);
+		if(classifierDescriptor == null || napileScope instanceof ErrorUtils.ErrorScope)
 			return ErrorUtils.createErrorType(name.getFqName());
 		else
 		{
-			jetScope = classifierDescriptor.getMemberScope(Collections.<JetType>emptyList());
-			if(jetScope instanceof ErrorUtils.ErrorScope)
+			napileScope = classifierDescriptor.getMemberScope(Collections.<NapileType>emptyList());
+			if(napileScope instanceof ErrorUtils.ErrorScope)
 				return ErrorUtils.createErrorType(name.getFqName());
 
-			return new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classifierDescriptor.getTypeConstructor(), nullable, Collections.<JetType>emptyList(), jetScope);
+			return new NapileTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classifierDescriptor.getTypeConstructor(), nullable, Collections.<NapileType>emptyList(), napileScope);
 		}
 	}
 
-	public static boolean isEqualFqName(@NotNull JetType jetType, @NotNull FqName name)
+	public static boolean isEqualFqName(@NotNull NapileType napileType, @NotNull FqName name)
 	{
-		return isEqualFqName(jetType.getConstructor(), name);
+		return isEqualFqName(napileType.getConstructor(), name);
 	}
 
 	public static boolean isEqualFqName(@NotNull TypeConstructor constructor, @NotNull FqName name)
@@ -595,18 +595,18 @@ public class TypeUtils
 			return DescriptorUtils.getFQName(classifierDescriptor).equals(name);
 	}
 
-	public static JetScope getChainedScope(Collection<JetType> set)
+	public static NapileScope getChainedScope(Collection<NapileType> set)
 	{
-		List<JetScope> list = new ArrayList<JetScope>(set.size());
-		for(JetType bound : set)
+		List<NapileScope> list = new ArrayList<NapileScope>(set.size());
+		for(NapileType bound : set)
 			list.add(bound.getMemberScope());
-		return new ChainedScope(null, list.toArray(new JetScope[list.size()]));
+		return new ChainedScope(null, list.toArray(new NapileScope[list.size()]));
 	}
 
 	@Nullable
-	public static FqName getFqName(@NotNull JetType jetType)
+	public static FqName getFqName(@NotNull NapileType napileType)
 	{
-		ClassifierDescriptor classifierDescriptor = jetType.getConstructor().getDeclarationDescriptor();
+		ClassifierDescriptor classifierDescriptor = napileType.getConstructor().getDeclarationDescriptor();
 		if(classifierDescriptor == null)
 			return null;
 		else

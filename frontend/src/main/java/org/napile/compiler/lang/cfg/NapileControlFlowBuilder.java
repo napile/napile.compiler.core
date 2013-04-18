@@ -31,7 +31,7 @@ import org.napile.compiler.lang.psi.NapileVariable;
 /**
  * @author abreslav
  */
-public interface JetControlFlowBuilder
+public interface NapileControlFlowBuilder
 {
 	void read(@NotNull NapileElement element);
 

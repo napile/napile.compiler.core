@@ -26,8 +26,8 @@ import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 
 /**
@@ -36,15 +36,15 @@ import org.napile.compiler.lang.types.TypeConstructor;
  */
 public abstract class AbstractTypeConstructorImpl implements TypeConstructor
 {
-	private final Collection<JetType> superTypes;
+	private final Collection<NapileType> superTypes;
 
-	protected AbstractTypeConstructorImpl(JetScope scope, FqName baseClass)
+	protected AbstractTypeConstructorImpl(NapileScope scope, FqName baseClass)
 	{
 		ClassDescriptor classDescriptor = scope.getClass(baseClass);
-		superTypes = classDescriptor != null ? Collections.singletonList(classDescriptor.getDefaultType()) : Collections.<JetType>emptyList();
+		superTypes = classDescriptor != null ? Collections.singletonList(classDescriptor.getDefaultType()) : Collections.<NapileType>emptyList();
 	}
 
-	protected AbstractTypeConstructorImpl(Collection<JetType> superTypes)
+	protected AbstractTypeConstructorImpl(Collection<NapileType> superTypes)
 	{
 		this.superTypes = superTypes;
 	}
@@ -76,7 +76,7 @@ public abstract class AbstractTypeConstructorImpl implements TypeConstructor
 
 	@Override
 	@NotNull
-	public final Collection<? extends JetType> getSupertypes()
+	public final Collection<? extends NapileType> getSupertypes()
 	{
 		return superTypes;
 	}

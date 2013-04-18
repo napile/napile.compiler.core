@@ -25,9 +25,9 @@ import org.napile.compiler.lang.resolve.calls.OverloadResolutionResults;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstant;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.types.DeferredType;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.util.Box;
 import org.napile.compiler.util.slicedmap.BasicWritableSlice;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
@@ -43,11 +43,11 @@ import com.intellij.psi.PsiElement;
 public interface BindingTraceKeys
 {
 	WritableSlice<NapileAnnotation, AnnotationDescriptor> ANNOTATION = Slices.createSimpleSlice();
-	WritableSlice<NapileAnnotation, JetScope> ANNOTATION_SCOPE = new BasicWritableSlice<NapileAnnotation, JetScope>(RewritePolicy.DO_NOTHING, true);
+	WritableSlice<NapileAnnotation, NapileScope> ANNOTATION_SCOPE = new BasicWritableSlice<NapileAnnotation, NapileScope>(RewritePolicy.DO_NOTHING, true);
 
 	WritableSlice<NapileExpression, CompileTimeConstant<?>> COMPILE_TIME_VALUE = Slices.createSimpleSlice();
-	WritableSlice<NapileTypeReference, JetType> TYPE = Slices.createSimpleSlice();
-	WritableSlice<NapileExpression, JetType> EXPRESSION_TYPE = new BasicWritableSlice<NapileExpression, JetType>(RewritePolicy.DO_NOTHING);
+	WritableSlice<NapileTypeReference, NapileType> TYPE = Slices.createSimpleSlice();
+	WritableSlice<NapileExpression, NapileType> EXPRESSION_TYPE = new BasicWritableSlice<NapileExpression, NapileType>(RewritePolicy.DO_NOTHING);
 	WritableSlice<NapileExpression, DataFlowInfo> EXPRESSION_DATA_FLOW_INFO = new BasicWritableSlice<NapileExpression, DataFlowInfo>(RewritePolicy.DO_NOTHING);
 
 	WritableSlice<NapileReferenceExpression, DeclarationDescriptor> REFERENCE_TARGET = new BasicWritableSlice<NapileReferenceExpression, DeclarationDescriptor>(RewritePolicy.DO_NOTHING);
@@ -67,13 +67,13 @@ public interface BindingTraceKeys
 	WritableSlice<NapileExpression, ResolvedCall<MethodDescriptor>> INDEXED_LVALUE_GET = Slices.createSimpleSlice();
 	WritableSlice<NapileExpression, ResolvedCall<MethodDescriptor>> INDEXED_LVALUE_SET = Slices.createSimpleSlice();
 
-	WritableSlice<NapileExpression, JetType> AUTOCAST = Slices.createSimpleSlice();
+	WritableSlice<NapileExpression, NapileType> AUTOCAST = Slices.createSimpleSlice();
 
 	/**
 	 * A scope where type of expression has been resolved
 	 */
-	WritableSlice<NapileTypeReference, JetScope> TYPE_RESOLUTION_SCOPE = Slices.createSimpleSlice();
-	WritableSlice<NapileElement, JetScope> RESOLUTION_SCOPE = Slices.createSimpleSlice();
+	WritableSlice<NapileTypeReference, NapileScope> TYPE_RESOLUTION_SCOPE = Slices.createSimpleSlice();
+	WritableSlice<NapileElement, NapileScope> RESOLUTION_SCOPE = Slices.createSimpleSlice();
 
 	/**
 	 * Collected during analyze, used in IDE in auto-cast completion

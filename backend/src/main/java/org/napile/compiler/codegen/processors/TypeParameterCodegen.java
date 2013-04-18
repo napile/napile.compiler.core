@@ -12,7 +12,7 @@ import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author VISTALL
@@ -25,7 +25,7 @@ public class TypeParameterCodegen
 		for(TypeParameterDescriptor typeParameterDescriptor : typeParameters)
 		{
 			TypeParameterNode typeParameterNode = new TypeParameterNode(typeParameterDescriptor.getName());
-			for(JetType superType : typeParameterDescriptor.getUpperBounds())
+			for(NapileType superType : typeParameterDescriptor.getUpperBounds())
 				typeParameterNode.supers.add(TypeTransformer.toAsmType(bindingTrace, superType, classNode));
 
 			for(ConstructorDescriptor constructorDescriptor : typeParameterDescriptor.getConstructors())

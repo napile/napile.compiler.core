@@ -21,7 +21,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.cfg.JetFlowInformationProvider;
+import org.napile.compiler.lang.cfg.NapileFlowInformationProvider;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.SimpleMethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableAccessorDescriptor;
@@ -30,7 +30,7 @@ import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
 import org.napile.compiler.lang.resolve.TopDownAnalysisParameters;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
 
@@ -76,7 +76,7 @@ public class ControlFlowAnalyzer
 			SimpleMethodDescriptor functionDescriptor = entry.getValue();
 			if(!bodiesResolveContext.completeAnalysisNeeded(function))
 				continue;
-			final JetType expectedReturnType = !function.hasBlockBody() && !function.hasDeclaredReturnType() ? TypeUtils.NO_EXPECTED_TYPE : functionDescriptor.getReturnType();
+			final NapileType expectedReturnType = !function.hasBlockBody() && !function.hasDeclaredReturnType() ? TypeUtils.NO_EXPECTED_TYPE : functionDescriptor.getReturnType();
 			checkMethod(function, expectedReturnType);
 		}
 
@@ -113,13 +113,13 @@ public class ControlFlowAnalyzer
 	private void checkClassLike(NapileClassLike klass)
 	{
 		// A pseudocode of class initialization corresponds to a class
-		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider((NapileDeclaration) klass, trace);
+		NapileFlowInformationProvider flowInformationProvider = new NapileFlowInformationProvider((NapileDeclaration) klass, trace);
 		flowInformationProvider.markUninitializedVariables(topDownAnalysisParameters.isDeclaredLocally());
 	}
 
-	private void checkMethod(NapileDeclarationWithBody function, final @NotNull JetType expectedReturnType)
+	private void checkMethod(NapileDeclarationWithBody function, final @NotNull NapileType expectedReturnType)
 	{
-		JetFlowInformationProvider flowInformationProvider = new JetFlowInformationProvider(function, trace);
+		NapileFlowInformationProvider flowInformationProvider = new NapileFlowInformationProvider(function, trace);
 
 		flowInformationProvider.checkMethodReferenceParameters();
 

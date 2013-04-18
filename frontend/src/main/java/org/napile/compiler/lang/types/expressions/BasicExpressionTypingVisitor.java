@@ -70,15 +70,15 @@ import org.napile.compiler.lang.resolve.constants.FloatValue;
 import org.napile.compiler.lang.resolve.constants.IntValue;
 import org.napile.compiler.lang.resolve.constants.LongValue;
 import org.napile.compiler.lang.resolve.constants.ShortValue;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
 import org.napile.compiler.lang.types.*;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
-import org.napile.compiler.lang.types.impl.JetTypeImpl;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
+import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.MultiTypeConstructorImpl;
 import com.google.common.collect.Lists;
@@ -99,16 +99,16 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitSimpleNameExpression(NapileSimpleNameExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitSimpleNameExpression(NapileSimpleNameExpression expression, ExpressionTypingContext context)
 	{
-		JetTypeInfo typeInfo = getSelectorReturnTypeInfo(ReceiverDescriptor.NO_RECEIVER, null, expression, context);
-		JetType type = DataFlowUtils.checkType(typeInfo.getType(), expression, context);
+		NapileTypeInfo typeInfo = getSelectorReturnTypeInfo(ReceiverDescriptor.NO_RECEIVER, null, expression, context);
+		NapileType type = DataFlowUtils.checkType(typeInfo.getType(), expression, context);
 		ExpressionTypingUtils.checkWrappingInRef(expression, context);
-		return JetTypeInfo.create(type, typeInfo.getDataFlowInfo());
+		return NapileTypeInfo.create(type, typeInfo.getDataFlowInfo());
 	}
 
 	@Nullable
-	private JetType lookupNamespaceOrClassObject(NapileSimpleNameExpression expression, Name referencedName, ExpressionTypingContext context)
+	private NapileType lookupNamespaceOrClassObject(NapileSimpleNameExpression expression, Name referencedName, ExpressionTypingContext context)
 	{
 		ClassifierDescriptor classifier = context.scope.getClassifier(referencedName);
 		if(classifier != null)
@@ -120,7 +120,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 			return DataFlowUtils.checkType(classifier.getDefaultType(), expression, context);
 		}
-		JetType[] result = new JetType[1];
+		NapileType[] result = new NapileType[1];
 		TemporaryBindingTrace temporaryTrace = TemporaryBindingTrace.create(context.trace);
 		if(furtherNameLookup(expression, referencedName, result, context.replaceBindingTrace(temporaryTrace)))
 		{
@@ -138,7 +138,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		return result[0];
 	}
 
-	protected boolean furtherNameLookup(@NotNull NapileSimpleNameExpression expression, @NotNull Name referencedName, @NotNull JetType[] result, ExpressionTypingContext context)
+	protected boolean furtherNameLookup(@NotNull NapileSimpleNameExpression expression, @NotNull Name referencedName, @NotNull NapileType[] result, ExpressionTypingContext context)
 	{
 		if(context.namespacesAllowed)
 		{
@@ -167,28 +167,28 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitParenthesizedExpression(NapileParenthesizedExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitParenthesizedExpression(NapileParenthesizedExpression expression, ExpressionTypingContext context)
 	{
 		return visitParenthesizedExpression(expression, context, false);
 	}
 
-	public JetTypeInfo visitParenthesizedExpression(NapileParenthesizedExpression expression, ExpressionTypingContext context, boolean isStatement)
+	public NapileTypeInfo visitParenthesizedExpression(NapileParenthesizedExpression expression, ExpressionTypingContext context, boolean isStatement)
 	{
 		NapileExpression innerExpression = expression.getExpression();
 		if(innerExpression == null)
 		{
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 		}
-		JetTypeInfo typeInfo = facade.getTypeInfo(innerExpression, context.replaceScope(context.scope), isStatement);
+		NapileTypeInfo typeInfo = facade.getTypeInfo(innerExpression, context.replaceScope(context.scope), isStatement);
 		return DataFlowUtils.checkType(typeInfo.getType(), expression, context, typeInfo.getDataFlowInfo());
 	}
 
 	@Override
-	public JetTypeInfo visitLabelExpression(NapileLabelExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitLabelExpression(NapileLabelExpression expression, ExpressionTypingContext context)
 	{
 		NapileExpression blockExpression = expression.getBody();
 		if(blockExpression == null)
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 
 		context.labelResolver.enterLabeledElement(Name.identifier(expression.getLabelName()), expression);
 
@@ -196,11 +196,11 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		context.labelResolver.exitLabeledElement(expression);
 
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		return NapileTypeInfo.create(null, context.dataFlowInfo);
 	}
 
 	@Override
-	public JetTypeInfo visitClassOfExpression(NapileClassOfExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitClassOfExpression(NapileClassOfExpression expression, ExpressionTypingContext context)
 	{
 		NapileTypeReference typeReference = expression.getTypeReference();
 		if(typeReference == null)
@@ -211,18 +211,18 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			context.trace.report(Errors.NAPILE_LANG_CLASS_IMPORT_EXPECTED.on(expression));
 
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 		}
 
-		JetType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
+		NapileType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
 
-		JetType returnType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>singletonList(targetType), classDescriptor.getMemberScope(Collections.singletonList(targetType)));
+		NapileType returnType = new NapileTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<NapileType>singletonList(targetType), classDescriptor.getMemberScope(Collections.singletonList(targetType)));
 
 		return DataFlowUtils.checkType(returnType, expression, context, context.dataFlowInfo);
 	}
 
 	@Override
-	public JetTypeInfo visitTypeOfExpression(NapileTypeOfExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitTypeOfExpression(NapileTypeOfExpression expression, ExpressionTypingContext context)
 	{
 		NapileTypeReference typeReference = expression.getTypeReference();
 		if(typeReference == null)
@@ -233,42 +233,42 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			context.trace.report(Errors.NAPILE_LANG_TYPE_IMPORT_EXPECTED.on(expression));
 
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 		}
 
-		JetType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
+		NapileType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, true);
 
-		JetType returnType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>singletonList(targetType), classDescriptor.getMemberScope(Collections.singletonList(targetType)));
+		NapileType returnType = new NapileTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<NapileType>singletonList(targetType), classDescriptor.getMemberScope(Collections.singletonList(targetType)));
 
 		return DataFlowUtils.checkType(returnType, expression, context, context.dataFlowInfo);
 	}
 
 	@Override
-	public JetTypeInfo visitArrayOfExpression(NapileArrayOfExpression arrayExpression, ExpressionTypingContext context)
+	public NapileTypeInfo visitArrayOfExpression(NapileArrayOfExpression arrayExpression, ExpressionTypingContext context)
 	{
 		ClassDescriptor classDescriptor = context.scope.getClass(NapileLangPackage.ARRAY);
 		if(classDescriptor == null)
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 
 		NapileExpression[] expressions = arrayExpression.getValues();
-		Set<JetType> types = new HashSet<JetType>(expressions.length);
+		Set<NapileType> types = new HashSet<NapileType>(expressions.length);
 		for(NapileExpression exp : expressions)
 			types.add(context.expressionTypingServices.safeGetType(context.scope, exp, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace));
 
-		JetType typeArgument = TypeUtils.intersect(JetTypeChecker.INSTANCE, types, context.scope);
-		JetType returnType = new JetTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<JetType>singletonList(typeArgument), classDescriptor.getMemberScope(Collections.singletonList(typeArgument)));
+		NapileType typeArgument = TypeUtils.intersect(NapileTypeChecker.INSTANCE, types, context.scope);
+		NapileType returnType = new NapileTypeImpl(Collections.<AnnotationDescriptor>emptyList(), classDescriptor.getTypeConstructor(), false, Collections.<NapileType>singletonList(typeArgument), classDescriptor.getMemberScope(Collections.singletonList(typeArgument)));
 
 		return DataFlowUtils.checkType(returnType, arrayExpression, context, context.dataFlowInfo);
 	}
 
 	@Override
-	public JetTypeInfo visitInjectionExpression(NapileInjectionExpression expression, final ExpressionTypingContext context)
+	public NapileTypeInfo visitInjectionExpression(NapileInjectionExpression expression, final ExpressionTypingContext context)
 	{
 		CodeInjection codeInjection = expression.getCodeInjection();
 		if(codeInjection == null)
 		{
 			context.trace.report(Errors.UNKNOWN_INJECTION.on(expression));
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 		}
 
 		PsiElement block = expression.getBlock();
@@ -292,27 +292,27 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitMultiTypeExpression(NapileMultiTypeExpression expression, final ExpressionTypingContext context)
+	public NapileTypeInfo visitMultiTypeExpression(NapileMultiTypeExpression expression, final ExpressionTypingContext context)
 	{
 		NapileExpression[] expressions = expression.getExpressions();
 		if(expressions.length == 0)
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 
 		List<MultiTypeEntry> list = new ArrayList<MultiTypeEntry>(expressions.length);
 		for(int i = 0; i < expressions.length; i++)
 		{
 			NapileExpression exp = expressions[i];
 
-			JetType type = context.expressionTypingServices.safeGetType(context.scope, exp, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace);
+			NapileType type = context.expressionTypingServices.safeGetType(context.scope, exp, TypeUtils.NO_EXPECTED_TYPE, context.dataFlowInfo, context.trace);
 
 			list.add(new MultiTypeEntry(i, null, null, type));
 		}
 
-		return DataFlowUtils.checkType(new JetTypeImpl(new MultiTypeConstructorImpl(list, context.scope), context.scope), expression, context, context.dataFlowInfo);
+		return DataFlowUtils.checkType(new NapileTypeImpl(new MultiTypeConstructorImpl(list, context.scope), context.scope), expression, context, context.dataFlowInfo);
 	}
 
 	@Override
-	public JetTypeInfo visitConstantExpression(NapileConstantExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitConstantExpression(NapileConstantExpression expression, ExpressionTypingContext context)
 	{
 		IElementType elementType = expression.getElementType();
 		String text = expression.getText();
@@ -350,7 +350,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			ErrorValue errorValue = (ErrorValue) value;
 			context.trace.report(ERROR_COMPILE_TIME_VALUE.on(expression, errorValue.getMessage()));
-			return JetTypeInfo.create(ExpressionTypingUtils.getDefaultType(elementType, context.scope), context.dataFlowInfo);
+			return NapileTypeInfo.create(ExpressionTypingUtils.getDefaultType(elementType, context.scope), context.dataFlowInfo);
 		}
 		else
 		{
@@ -361,15 +361,15 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitBinaryWithTypeRHSExpression(NapileBinaryExpressionWithTypeRHS expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitBinaryWithTypeRHSExpression(NapileBinaryExpressionWithTypeRHS expression, ExpressionTypingContext context)
 	{
 		NapileExpression left = expression.getLeft();
 		NapileTypeReference right = expression.getRight();
-		JetType result = null;
+		NapileType result = null;
 		DataFlowInfo dataFlowInfo = context.dataFlowInfo;
 		if(right != null)
 		{
-			JetType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, right, context.trace, true);
+			NapileType targetType = context.expressionTypingServices.getTypeResolver().resolveType(context.scope, right, context.trace, true);
 			IElementType operationType = expression.getOperationSign().getReferencedNameElementType();
 
 			boolean tryWithNoExpectedType = true;
@@ -377,7 +377,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			{
 				TemporaryBindingTrace temporaryTraceWithExpectedType = TemporaryBindingTrace.create(context.trace);
 				ExpressionTypingContext contextWithTemporaryTrace = context.replaceBindingTrace(temporaryTraceWithExpectedType).replaceExpectedType(targetType);
-				JetTypeInfo typeInfo = facade.getTypeInfo(left, contextWithTemporaryTrace);
+				NapileTypeInfo typeInfo = facade.getTypeInfo(left, contextWithTemporaryTrace);
 				if(typeInfo.getType() != null && checkBinaryWithTypeRHS(expression, contextWithTemporaryTrace, targetType, typeInfo.getType()))
 				{
 					temporaryTraceWithExpectedType.commit();
@@ -389,7 +389,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			if(tryWithNoExpectedType)
 			{
 				ExpressionTypingContext contextWithNoExpectedType = context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
-				JetTypeInfo typeInfo = facade.getTypeInfo(left, contextWithNoExpectedType);
+				NapileTypeInfo typeInfo = facade.getTypeInfo(left, contextWithNoExpectedType);
 				if(typeInfo.getType() != null)
 				{
 					checkBinaryWithTypeRHS(expression, contextWithNoExpectedType, targetType, typeInfo.getType());
@@ -411,13 +411,13 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		return DataFlowUtils.checkType(result, expression, context, dataFlowInfo);
 	}
 
-	private boolean checkBinaryWithTypeRHS(NapileBinaryExpressionWithTypeRHS expression, ExpressionTypingContext context, @NotNull JetType targetType, JetType actualType)
+	private boolean checkBinaryWithTypeRHS(NapileBinaryExpressionWithTypeRHS expression, ExpressionTypingContext context, @NotNull NapileType targetType, NapileType actualType)
 	{
 		NapileSimpleNameExpression operationSign = expression.getOperationSign();
 		IElementType operationType = operationSign.getReferencedNameElementType();
 		if(operationType == NapileTokens.COLON)
 		{
-			if(targetType != TypeUtils.NO_EXPECTED_TYPE && !JetTypeChecker.INSTANCE.isSubtypeOf(actualType, targetType))
+			if(targetType != TypeUtils.NO_EXPECTED_TYPE && !NapileTypeChecker.INSTANCE.isSubtypeOf(actualType, targetType))
 			{
 				context.trace.report(TYPE_MISMATCH.on(expression.getLeft(), targetType, actualType));
 				return false;
@@ -436,12 +436,12 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 	}
 
-	private void checkForCastImpossibility(NapileBinaryExpressionWithTypeRHS expression, JetType actualType, JetType targetType, ExpressionTypingContext context)
+	private void checkForCastImpossibility(NapileBinaryExpressionWithTypeRHS expression, NapileType actualType, NapileType targetType, ExpressionTypingContext context)
 	{
 		if(actualType == null || targetType == TypeUtils.NO_EXPECTED_TYPE)
 			return;
 
-		JetTypeChecker typeChecker = JetTypeChecker.INSTANCE;
+		NapileTypeChecker typeChecker = NapileTypeChecker.INSTANCE;
 		if(!typeChecker.isSubtypeOf(targetType, actualType))
 		{
 			if(typeChecker.isSubtypeOf(actualType, targetType))
@@ -474,7 +474,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	 * Check if assignment from ActualType to TargetType is erased.
 	 * It is an error in "is" statement and warning in "as".
 	 */
-	public static boolean isCastErased(JetType actualType, JetType targetType, JetTypeChecker typeChecker)
+	public static boolean isCastErased(NapileType actualType, NapileType targetType, NapileTypeChecker typeChecker)
 	{
 
 		if(!(targetType.getConstructor().getDeclarationDescriptor() instanceof ClassDescriptor))
@@ -490,15 +490,15 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 
 		{
-			Multimap<TypeConstructor, JetType> typeSubstitutionMap = SubstitutionUtils.buildDeepSubstitutionMultimap(targetType);
+			Multimap<TypeConstructor, NapileType> typeSubstitutionMap = SubstitutionUtils.buildDeepSubstitutionMultimap(targetType);
 
 			for(int i = 0; i < actualType.getConstructor().getParameters().size(); ++i)
 			{
-				JetType actualTypeParameter = actualType.getArguments().get(i);
+				NapileType actualTypeParameter = actualType.getArguments().get(i);
 				TypeParameterDescriptor subjectTypeParameterDescriptor = actualType.getConstructor().getParameters().get(i);
 
-				Collection<JetType> subst = typeSubstitutionMap.get(subjectTypeParameterDescriptor.getTypeConstructor());
-				for(JetType proj : subst)
+				Collection<NapileType> subst = typeSubstitutionMap.get(subjectTypeParameterDescriptor.getTypeConstructor());
+				for(NapileType proj : subst)
 				{
 					//if (!proj.getType().equals(actualTypeParameter.getType())) {
 					if(!typeChecker.isSubtypeOf(actualTypeParameter, proj))
@@ -543,9 +543,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitThisExpression(NapileThisExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitThisExpression(NapileThisExpression expression, ExpressionTypingContext context)
 	{
-		JetType result = null;
+		NapileType result = null;
 		ReceiverDescriptor thisReceiver = resolveToReceiver(expression, context, false);
 
 		if(thisReceiver != null)
@@ -564,18 +564,18 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitSuperExpression(NapileSuperExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitSuperExpression(NapileSuperExpression expression, ExpressionTypingContext context)
 	{
 		if(!context.namespacesAllowed)
 		{
 			context.trace.report(SUPER_IS_NOT_AN_EXPRESSION.on(expression, expression.getText()));
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 		}
-		JetType result = null;
+		NapileType result = null;
 
 		ReceiverDescriptor thisReceiver = resolveToReceiver(expression, context, true);
 		if(thisReceiver == null)
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 
 		if(!thisReceiver.exists())
 		{
@@ -583,8 +583,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 		else
 		{
-			JetType thisType = thisReceiver.getType();
-			Collection<? extends JetType> supertypes = thisType.getConstructor().getSupertypes();
+			NapileType thisType = thisReceiver.getType();
+			Collection<? extends NapileType> supertypes = thisType.getConstructor().getSupertypes();
 			TypeSubstitutor substitutor = TypeSubstitutor.create(thisType);
 
 			NapileTypeReference superTypeQualifier = expression.getSuperTypeQualifier();
@@ -593,7 +593,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				NapileTypeElement typeElement = superTypeQualifier.getTypeElement();
 
 				DeclarationDescriptor classifierCandidate = null;
-				JetType supertype = null;
+				NapileType supertype = null;
 				PsiElement redundantTypeArguments = null;
 				if(typeElement instanceof NapileUserType)
 				{
@@ -625,7 +625,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				{
 					ClassDescriptor superclass = (ClassDescriptor) classifierCandidate;
 
-					for(JetType declaredSupertype : supertypes)
+					for(NapileType declaredSupertype : supertypes)
 					{
 						if(declaredSupertype.getConstructor().equals(superclass.getTypeConstructor()))
 						{
@@ -655,7 +655,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				else
 				{
 					// supertypes may be empty when all the supertypes are error types (are not resolved, for example)
-					JetType type = supertypes.isEmpty() ? TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, false) : supertypes.iterator().next();
+					NapileType type = supertypes.isEmpty() ? TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.ANY, false) : supertypes.iterator().next();
 					result = substitutor.substitute(type, null);
 				}
 			}
@@ -703,29 +703,29 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitBlockExpression(NapileBlockExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitBlockExpression(NapileBlockExpression expression, ExpressionTypingContext context)
 	{
 		return visitBlockExpression(expression, context, false);
 	}
 
-	public JetTypeInfo visitBlockExpression(NapileBlockExpression expression, ExpressionTypingContext context, boolean isStatement)
+	public NapileTypeInfo visitBlockExpression(NapileBlockExpression expression, ExpressionTypingContext context, boolean isStatement)
 	{
 		return context.expressionTypingServices.getBlockReturnedType(context.scope, expression, isStatement ? CoercionStrategy.COERCION_TO_UNIT : CoercionStrategy.NO_COERCION, context, context.trace);
 	}
 
 	@Override
-	public JetTypeInfo visitLinkMethodExpression(NapileLinkMethodExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitLinkMethodExpression(NapileLinkMethodExpression expression, ExpressionTypingContext context)
 	{
 		NapileSimpleNameExpression target = expression.getTarget();
 		if(target == null)
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 
 		NapileTypeList typeList = expression.getTypeList();
-		List<JetType> parameterTypes = Collections.emptyList();
+		List<NapileType> parameterTypes = Collections.emptyList();
 		if(typeList != null)
 		{
 			List<? extends NapileTypeReference> typeReferences = typeList.getTypeList();
-			parameterTypes = new ArrayList<JetType>(typeReferences.size());
+			parameterTypes = new ArrayList<NapileType>(typeReferences.size());
 			for(NapileTypeReference typeReference : typeReferences)
 				parameterTypes.add(context.expressionTypingServices.getTypeResolver().resolveType(context.scope, typeReference, context.trace, false));
 		}
@@ -755,7 +755,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					context.trace.record(BindingTraceKeys.REFERENCE_TARGET, children[i], context.scope.getPackage(packages.get(i)));
 
 				context.trace.record(BindingTraceKeys.REFERENCE_TARGET, children[children.length - 1], classDescriptor);
-				methodDescriptors = classDescriptor.getMemberScope(Collections.<JetType>emptyList()).getMethods(target.getReferencedNameAsName());
+				methodDescriptors = classDescriptor.getMemberScope(Collections.<NapileType>emptyList()).getMethods(target.getReferencedNameAsName());
 			}
 		}
 
@@ -764,55 +764,55 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		if(method != null)
 		{
-			Map<Name, JetType> valueParameters = new LinkedHashMap<Name, JetType>(method.getValueParameters().size());
+			Map<Name, NapileType> valueParameters = new LinkedHashMap<Name, NapileType>(method.getValueParameters().size());
 			for(CallParameterDescriptor parameterDescriptor : method.getValueParameters())
 				valueParameters.put(parameterDescriptor.getName(), parameterDescriptor.getType());
 
-			return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(method.getName(), method.getReturnType(), valueParameters, context.scope), context.scope), expression, context, context.dataFlowInfo);
+			return DataFlowUtils.checkType(new NapileTypeImpl(new MethodTypeConstructorImpl(method.getName(), method.getReturnType(), valueParameters, context.scope), context.scope), expression, context, context.dataFlowInfo);
 		}
 		else
 		{
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 		}
 	}
 
 	@Override
-	public JetTypeInfo visitDoubleArrowExpression(NapileDoubleArrowExpression expression, ExpressionTypingContext data)
+	public NapileTypeInfo visitDoubleArrowExpression(NapileDoubleArrowExpression expression, ExpressionTypingContext data)
 	{
 		final NapileExpression targetExpression = expression.getTargetExpression();
 		if(targetExpression == null)
 		{
-			return JetTypeInfo.create(ErrorUtils.createErrorType("No target expression"), data.dataFlowInfo);
+			return NapileTypeInfo.create(ErrorUtils.createErrorType("No target expression"), data.dataFlowInfo);
 		}
 
-		final JetType type = data.expressionTypingServices.getType(data.scope, targetExpression, TypeUtils.NO_EXPECTED_TYPE, data.dataFlowInfo, data.trace);
+		final NapileType type = data.expressionTypingServices.getType(data.scope, targetExpression, TypeUtils.NO_EXPECTED_TYPE, data.dataFlowInfo, data.trace);
 		if(type == null)
 		{
-			return JetTypeInfo.create(ErrorUtils.createErrorType("Wrong expression"), data.dataFlowInfo);
+			return NapileTypeInfo.create(ErrorUtils.createErrorType("Wrong expression"), data.dataFlowInfo);
 		}
 
 		final TypeConstructor constructor = data.expectedType.getConstructor();
 		if(!(constructor instanceof MethodTypeConstructor))
 		{
-			return JetTypeInfo.create(ErrorUtils.createErrorType("Wrong left type"), data.dataFlowInfo);
+			return NapileTypeInfo.create(ErrorUtils.createErrorType("Wrong left type"), data.dataFlowInfo);
 		}
 
 		final MethodTypeConstructor expectedMethodTypeConstructor = (MethodTypeConstructor) constructor;
 		final Name expectedName = expectedMethodTypeConstructor.getExpectedName();
 		if(expectedName == null)
 		{
-			return JetTypeInfo.create(ErrorUtils.createErrorType("Method name expected"), data.dataFlowInfo);
+			return NapileTypeInfo.create(ErrorUtils.createErrorType("Method name expected"), data.dataFlowInfo);
 		}
 
 		final ClassifierDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
 		if(declarationDescriptor instanceof ClassDescriptor)
 		{
-			final Collection<MethodDescriptor> methods = ((ClassDescriptor) declarationDescriptor).getMemberScope(Collections.<JetType>emptyList()).getMethods(expectedName);
+			final Collection<MethodDescriptor> methods = ((ClassDescriptor) declarationDescriptor).getMemberScope(Collections.<NapileType>emptyList()).getMethods(expectedName);
 
 			final MethodDescriptor method = findMethod(methods, expectedMethodTypeConstructor.getParameterTypes().values(), expression.getArrow(), data);
 			if(method != null)
 			{
-				return DataFlowUtils.checkType(new JetTypeImpl(new MethodTypeConstructorImpl(expectedName, expectedMethodTypeConstructor.getReturnType(), expectedMethodTypeConstructor.getParameterTypes(), data.scope), data.scope), expression, data, data.dataFlowInfo);
+				return DataFlowUtils.checkType(new NapileTypeImpl(new MethodTypeConstructorImpl(expectedName, expectedMethodTypeConstructor.getReturnType(), expectedMethodTypeConstructor.getParameterTypes(), data.scope), data.scope), expression, data, data.dataFlowInfo);
 			}
 		}
 		else
@@ -820,10 +820,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			data.trace.report(Errors.UNRESOLVED_REFERENCE.on(expression.getArrow(), expectedName.getName()));
 		}
 
-		return JetTypeInfo.create(null, data.dataFlowInfo);
+		return NapileTypeInfo.create(null, data.dataFlowInfo);
 	}
 
-	private MethodDescriptor findMethod(Collection<MethodDescriptor> methodDescriptors, Collection<JetType> parameterTypes, NapileReferenceExpression target, ExpressionTypingContext context)
+	private MethodDescriptor findMethod(Collection<MethodDescriptor> methodDescriptors, Collection<NapileType> parameterTypes, NapileReferenceExpression target, ExpressionTypingContext context)
 	{
 		if(!parameterTypes.isEmpty())
 		{
@@ -835,15 +835,15 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					continue;
 
 				Iterator<CallParameterDescriptor> it1 = parameters.iterator();
-				Iterator<JetType> it2 = parameterTypes.iterator();
+				Iterator<NapileType> it2 = parameterTypes.iterator();
 
 				boolean find = true;
 
 				while(it1.hasNext() && it1.hasNext())
 				{
 					CallParameterDescriptor parameterDescriptor = it1.next();
-					JetType parameterType = it2.next();
-					if(!JetTypeChecker.INSTANCE.equalTypes(parameterDescriptor.getType(), parameterType))
+					NapileType parameterType = it2.next();
+					if(!NapileTypeChecker.INSTANCE.equalTypes(parameterDescriptor.getType(), parameterType))
 						find = false;
 				}
 
@@ -877,15 +877,15 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitQualifiedExpression(NapileQualifiedExpressionImpl expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitQualifiedExpression(NapileQualifiedExpressionImpl expression, ExpressionTypingContext context)
 	{
 		NapileExpression selectorExpression = expression.getSelectorExpression();
 		NapileExpression receiverExpression = expression.getReceiverExpression();
 		ExpressionTypingContext contextWithNoExpectedType = context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
-		JetTypeInfo receiverTypeInfo = facade.getTypeInfo(receiverExpression, contextWithNoExpectedType.replaceNamespacesAllowed(true));
-		JetType receiverType = receiverTypeInfo.getType();
+		NapileTypeInfo receiverTypeInfo = facade.getTypeInfo(receiverExpression, contextWithNoExpectedType.replaceNamespacesAllowed(true));
+		NapileType receiverType = receiverTypeInfo.getType();
 		if(selectorExpression == null)
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 		if(receiverType == null)
 			receiverType = ErrorUtils.createErrorType("Type for " + expression.getText());
 
@@ -896,8 +896,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			propagateConstantValues(expression, context, (NapileSimpleNameExpression) selectorExpression);
 		}
 
-		JetTypeInfo selectorReturnTypeInfo = getSelectorReturnTypeInfo(new ExpressionReceiver(receiverExpression, receiverType), expression.getOperationTokenNode(), selectorExpression, context);
-		JetType selectorReturnType = selectorReturnTypeInfo.getType();
+		NapileTypeInfo selectorReturnTypeInfo = getSelectorReturnTypeInfo(new ExpressionReceiver(receiverExpression, receiverType), expression.getOperationTokenNode(), selectorExpression, context);
+		NapileType selectorReturnType = selectorReturnTypeInfo.getType();
 
 		//TODO move further
 		if(expression.getOperationSign() == NapileTokens.SAFE_ACCESS)
@@ -990,7 +990,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Nullable
-	private JetType getVariableType(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull ExpressionTypingContext context, @NotNull boolean[] result)
+	private NapileType getVariableType(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull ExpressionTypingContext context, @NotNull boolean[] result)
 	{
 		TemporaryBindingTrace traceForVariable = TemporaryBindingTrace.create(context.trace);
 		OverloadResolutionResults<VariableDescriptor> resolutionResult = context.replaceBindingTrace(traceForVariable).resolveSimpleProperty(receiver, callOperationNode, nameExpression);
@@ -1005,8 +1005,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		ExpressionTypingContext newContext = receiver.exists() ? context.replaceScope(receiver.getType().getMemberScope()) : context;
 		TemporaryBindingTrace traceForNamespaceOrClassObject = TemporaryBindingTrace.create(context.trace);
-		JetType jetType = lookupNamespaceOrClassObject(nameExpression, nameExpression.getReferencedNameAsName(), newContext.replaceBindingTrace(traceForNamespaceOrClassObject));
-		if(jetType != null)
+		NapileType napileType = lookupNamespaceOrClassObject(nameExpression, nameExpression.getReferencedNameAsName(), newContext.replaceBindingTrace(traceForNamespaceOrClassObject));
+		if(napileType != null)
 		{
 			traceForNamespaceOrClassObject.commit();
 
@@ -1017,14 +1017,14 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				context.trace.record(NON_DEFAULT_EXPRESSION_DATA_FLOW, nameExpression, context.dataFlowInfo);
 			}
 			result[0] = true;
-			return jetType;
+			return napileType;
 		}
 		result[0] = false;
 		return null;
 	}
 
 	@NotNull
-	public JetTypeInfo getSelectorReturnTypeInfo(@NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull NapileExpression selectorExpression, @NotNull ExpressionTypingContext context)
+	public NapileTypeInfo getSelectorReturnTypeInfo(@NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull NapileExpression selectorExpression, @NotNull ExpressionTypingContext context)
 	{
 		if(selectorExpression instanceof NapileCallExpression)
 		{
@@ -1038,8 +1038,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) selectorExpression;
 			NapileExpression newReceiverExpression = qualifiedExpression.getReceiverExpression();
-			JetTypeInfo newReceiverTypeInfo = getSelectorReturnTypeInfo(receiver, callOperationNode, newReceiverExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
-			JetType newReceiverType = newReceiverTypeInfo.getType();
+			NapileTypeInfo newReceiverTypeInfo = getSelectorReturnTypeInfo(receiver, callOperationNode, newReceiverExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
+			NapileType newReceiverType = newReceiverTypeInfo.getType();
 			DataFlowInfo newReceiverDataFlowInfo = newReceiverTypeInfo.getDataFlowInfo();
 			NapileExpression newSelectorExpression = qualifiedExpression.getSelectorExpression();
 			if(newReceiverType != null && newSelectorExpression != null)
@@ -1051,21 +1051,21 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			context.trace.report(ILLEGAL_SELECTOR.on(selectorExpression, selectorExpression.getText()));
 		}
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		return NapileTypeInfo.create(null, context.dataFlowInfo);
 	}
 
 	@NotNull
-	private JetTypeInfo getSimpleNameExpressionTypeInfo(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull ExpressionTypingContext context)
+	private NapileTypeInfo getSimpleNameExpressionTypeInfo(@NotNull NapileSimpleNameExpression nameExpression, @NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull ExpressionTypingContext context)
 	{
 		TemporaryBindingTrace traceForVariable = TemporaryBindingTrace.create(context.trace);
 
 		boolean[] result = new boolean[1];
 
-		JetType type = getVariableType(nameExpression, receiver, callOperationNode, context.replaceBindingTrace(traceForVariable), result);
+		NapileType type = getVariableType(nameExpression, receiver, callOperationNode, context.replaceBindingTrace(traceForVariable), result);
 		if(result[0])
 		{
 			traceForVariable.commit();
-			return JetTypeInfo.create(type, context.dataFlowInfo);
+			return NapileTypeInfo.create(type, context.dataFlowInfo);
 		}
 
 		Call call = CallMaker.makeCall(nameExpression, receiver, callOperationNode, nameExpression, Collections.<ValueArgument>emptyList());
@@ -1077,15 +1077,15 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			boolean hasValueParameters = methodDescriptor == null || methodDescriptor.getValueParameters().size() > 0;
 			context.trace.report(FUNCTION_CALL_EXPECTED.on(nameExpression, nameExpression, hasValueParameters));
 			type = methodDescriptor != null ? methodDescriptor.getReturnType() : null;
-			return JetTypeInfo.create(type, context.dataFlowInfo);
+			return NapileTypeInfo.create(type, context.dataFlowInfo);
 		}
 
 		traceForVariable.commit();
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		return NapileTypeInfo.create(null, context.dataFlowInfo);
 	}
 
 	@NotNull
-	private JetTypeInfo getCallExpressionTypeInfo(@NotNull NapileCallExpression callExpression, @NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull ExpressionTypingContext context)
+	private NapileTypeInfo getCallExpressionTypeInfo(@NotNull NapileCallExpression callExpression, @NotNull ReceiverDescriptor receiver, @Nullable ASTNode callOperationNode, @NotNull ExpressionTypingContext context)
 	{
 
 		boolean[] result = new boolean[1];
@@ -1104,9 +1104,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			}
 			if(methodDescriptor == null)
 			{
-				return JetTypeInfo.create(null, context.dataFlowInfo);
+				return NapileTypeInfo.create(null, context.dataFlowInfo);
 			}
-			JetType type = methodDescriptor.getReturnType();
+			NapileType type = methodDescriptor.getReturnType();
 
 			DataFlowInfo dataFlowInfo = context.dataFlowInfo;
 			NapileValueArgumentList argumentList = callExpression.getValueArgumentList();
@@ -1130,23 +1130,23 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 				if(declarationDescriptor instanceof VariableDescriptor)
 					VariableAccessorResolver.resolveGetter((NapileSimpleNameExpression) calleeExpression, ReceiverDescriptor.NO_RECEIVER, context);
 			}
-			return JetTypeInfo.create(type, dataFlowInfo);
+			return NapileTypeInfo.create(type, dataFlowInfo);
 		}
 
 		NapileExpression calleeExpression = callExpression.getCalleeExpression();
 		if(calleeExpression instanceof NapileSimpleNameExpression && callExpression.getTypeArgumentList() == null)
 		{
 			TemporaryBindingTrace traceForVariable = TemporaryBindingTrace.create(context.trace);
-			JetType type = getVariableType((NapileSimpleNameExpression) calleeExpression, receiver, callOperationNode, context.replaceBindingTrace(traceForVariable), result);
+			NapileType type = getVariableType((NapileSimpleNameExpression) calleeExpression, receiver, callOperationNode, context.replaceBindingTrace(traceForVariable), result);
 			if(result[0])
 			{
 				traceForVariable.commit();
 				context.trace.report(FUNCTION_EXPECTED.on((NapileReferenceExpression) calleeExpression, calleeExpression, type != null ? type : ErrorUtils.createErrorType("")));
-				return JetTypeInfo.create(null, context.dataFlowInfo);
+				return NapileTypeInfo.create(null, context.dataFlowInfo);
 			}
 		}
 		traceForFunction.commit();
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		return NapileTypeInfo.create(null, context.dataFlowInfo);
 	}
 
 	private static void checkSuper(@NotNull ReceiverDescriptor receiverDescriptor, @NotNull OverloadResolutionResults<? extends CallableDescriptor> results, @NotNull BindingTrace trace, @NotNull NapileExpression expression)
@@ -1165,23 +1165,23 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitCallExpression(NapileCallExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitCallExpression(NapileCallExpression expression, ExpressionTypingContext context)
 	{
-		JetTypeInfo expressionTypeInfo = getCallExpressionTypeInfo(expression, ReceiverDescriptor.NO_RECEIVER, null, context);
+		NapileTypeInfo expressionTypeInfo = getCallExpressionTypeInfo(expression, ReceiverDescriptor.NO_RECEIVER, null, context);
 		return DataFlowUtils.checkType(expressionTypeInfo.getType(), expression, context, expressionTypeInfo.getDataFlowInfo());
 	}
 
 	@Override
-	public JetTypeInfo visitUnaryExpression(NapileUnaryExpression expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitUnaryExpression(NapileUnaryExpression expression, ExpressionTypingContext context)
 	{
 		return visitUnaryExpression(expression, context, false);
 	}
 
-	public JetTypeInfo visitUnaryExpression(NapileUnaryExpression expression, ExpressionTypingContext context, boolean isStatement)
+	public NapileTypeInfo visitUnaryExpression(NapileUnaryExpression expression, ExpressionTypingContext context, boolean isStatement)
 	{
 		NapileExpression baseExpression = expression.getBaseExpression();
 		if(baseExpression == null)
-			return JetTypeInfo.create(null, context.dataFlowInfo);
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
 
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
 
@@ -1192,8 +1192,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			return visitExclExclExpression(expression, context);
 
 		// Type check the base expression
-		JetTypeInfo typeInfo = facade.getTypeInfo(baseExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
-		JetType type = typeInfo.getType();
+		NapileTypeInfo typeInfo = facade.getTypeInfo(baseExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
+		NapileType type = typeInfo.getType();
 		if(type == null)
 			return typeInfo;
 		DataFlowInfo dataFlowInfo = typeInfo.getDataFlowInfo();
@@ -1203,7 +1203,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		if(name == null)
 		{
 			context.trace.report(UNSUPPORTED.on(operationSign, "visitUnaryExpression"));
-			return JetTypeInfo.create(null, dataFlowInfo);
+			return NapileTypeInfo.create(null, dataFlowInfo);
 		}
 
 		// a[i]++/-- takes special treatment because it is actually let j = i, arr = a in arr.set(j, a.get(j).inc())
@@ -1220,18 +1220,18 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 
 		if(!resolutionResults.isSuccess())
 		{
-			return JetTypeInfo.create(null, dataFlowInfo);
+			return NapileTypeInfo.create(null, dataFlowInfo);
 		}
 
 		// Computing the return type
-		JetType returnType = resolutionResults.getResultingDescriptor().getReturnType();
-		JetType result;
+		NapileType returnType = resolutionResults.getResultingDescriptor().getReturnType();
+		NapileType result;
 		if(operationType == NapileTokens.PLUSPLUS || operationType == NapileTokens.MINUSMINUS)
 		{
 			VariableAccessorResolver.resolveSetterForUnaryCalL(expression, context);
 
-			JetType receiverType = receiver.getType();
-			if(!JetTypeChecker.INSTANCE.isSubtypeOf(returnType, receiverType))
+			NapileType receiverType = receiver.getType();
+			if(!NapileTypeChecker.INSTANCE.isSubtypeOf(returnType, receiverType))
 				context.trace.report(RESULT_TYPE_MISMATCH.on(operationSign, name.getName(), receiverType, returnType));
 			else
 			{
@@ -1246,14 +1246,14 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		return DataFlowUtils.checkType(result, expression, context, dataFlowInfo);
 	}
 
-	private JetTypeInfo visitExclExclExpression(@NotNull NapileUnaryExpression expression, @NotNull ExpressionTypingContext context)
+	private NapileTypeInfo visitExclExclExpression(@NotNull NapileUnaryExpression expression, @NotNull ExpressionTypingContext context)
 	{
 		NapileExpression baseExpression = expression.getBaseExpression();
 		assert baseExpression != null;
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
 		assert operationSign.getReferencedNameElementType() == NapileTokens.EXCLEXCL;
 
-		JetType expectedType;
+		NapileType expectedType;
 		if(context.expectedType != TypeUtils.NO_EXPECTED_TYPE)
 		{
 			expectedType = TypeUtils.makeNullable(context.expectedType);
@@ -1262,8 +1262,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			expectedType = TypeUtils.NO_EXPECTED_TYPE;
 		}
-		JetTypeInfo typeInfo = facade.getTypeInfo(baseExpression, context.replaceExpectedType(expectedType));
-		JetType type = typeInfo.getType();
+		NapileTypeInfo typeInfo = facade.getTypeInfo(baseExpression, context.replaceExpectedType(expectedType));
+		NapileType type = typeInfo.getType();
 		if(type == null)
 		{
 			return typeInfo;
@@ -1278,17 +1278,17 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(baseExpression, type, context.trace);
 			dataFlowInfo = dataFlowInfo.disequate(value, new DataFlowValue(new Object(), TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.NULL, true), false, Nullability.NULL));
 		}
-		return JetTypeInfo.create(TypeUtils.makeNotNullable(type), dataFlowInfo);
+		return NapileTypeInfo.create(TypeUtils.makeNotNullable(type), dataFlowInfo);
 	}
 
 	private boolean isKnownToBeNotNull(NapileExpression expression, ExpressionTypingContext context)
 	{
-		JetType type = context.trace.get(EXPRESSION_TYPE, expression);
+		NapileType type = context.trace.get(EXPRESSION_TYPE, expression);
 		assert type != null : "This method is only supposed to be called when the type is not null";
 		if(!type.isNullable())
 			return true;
-		List<JetType> possibleTypes = context.dataFlowInfo.getPossibleTypes(DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, type, context.trace));
-		for(JetType possibleType : possibleTypes)
+		List<NapileType> possibleTypes = context.dataFlowInfo.getPossibleTypes(DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, type, context.trace));
+		for(NapileType possibleType : possibleTypes)
 		{
 			if(!possibleType.isNullable())
 			{
@@ -1321,7 +1321,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitBinaryExpression(NapileBinaryExpression expression, ExpressionTypingContext contextWithExpectedType)
+	public NapileTypeInfo visitBinaryExpression(NapileBinaryExpression expression, ExpressionTypingContext contextWithExpectedType)
 	{
 		ExpressionTypingContext context = contextWithExpectedType.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
@@ -1329,7 +1329,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		NapileExpression left = expression.getLeft();
 		NapileExpression right = expression.getRight();
 
-		JetType result = null;
+		NapileType result = null;
 		IElementType operationType = operationSign.getReferencedNameElementType();
 		if(operationType == NapileTokens.IDENTIFIER)
 		{
@@ -1353,7 +1353,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 		else if(OperatorConventions.COMPARISON_OPERATIONS.contains(operationType))
 		{
-			JetType compareToReturnType = getTypeForBinaryCall(context.scope, OperatorConventions.COMPARE_TO, context, expression);
+			NapileType compareToReturnType = getTypeForBinaryCall(context.scope, OperatorConventions.COMPARE_TO, context, expression);
 			if(compareToReturnType != null)
 			{
 				if(TypeUtils.isEqualFqName(compareToReturnType, NapileConditionPackage.COMPARE_RESULT))
@@ -1364,7 +1364,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 		else
 		{
-			JetType booleanType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.BOOL, false);
+			NapileType booleanType = TypeUtils.getTypeOfClassOrErrorType(context.scope, NapileLangPackage.BOOL, false);
 			if(OperatorConventions.EQUALS_OPERATIONS.contains(operationType))
 			{
 				if(right != null)
@@ -1398,17 +1398,17 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			else if(OperatorConventions.IN_OPERATIONS.contains(operationType))
 			{
 				if(right == null)
-					return JetTypeInfo.create(ErrorUtils.createErrorType("No right argument"), context.dataFlowInfo);
+					return NapileTypeInfo.create(ErrorUtils.createErrorType("No right argument"), context.dataFlowInfo);
 				checkInExpression(expression, expression.getOperationReference(), expression.getLeft(), expression.getRight(), context);
 				result = booleanType;
 			}
 			else if(OperatorConventions.BOOLEAN_OPERATIONS.contains(operationType))
 			{
-				JetType leftType = facade.getTypeInfo(left, context.replaceScope(context.scope)).getType();
+				NapileType leftType = facade.getTypeInfo(left, context.replaceScope(context.scope)).getType();
 				WritableScopeImpl leftScope = ExpressionTypingUtils.newWritableScopeImpl(context, "Left scope of && or ||");
 				DataFlowInfo flowInfoLeft = DataFlowUtils.extractDataFlowInfoFromCondition(left, operationType == NapileTokens.ANDAND, context);  // TODO: This gets computed twice: here and in extractDataFlowInfoFromCondition() for the whole condition
 				WritableScopeImpl rightScope = operationType == NapileTokens.ANDAND ? leftScope : ExpressionTypingUtils.newWritableScopeImpl(context, "Right scope of && or ||");
-				JetType rightType = right == null ? null : facade.getTypeInfo(right, context.replaceDataFlowInfo(flowInfoLeft).replaceScope(rightScope)).getType();
+				NapileType rightType = right == null ? null : facade.getTypeInfo(right, context.replaceDataFlowInfo(flowInfoLeft).replaceScope(rightScope)).getType();
 				if(leftType != null && !ExpressionTypingUtils.isBoolean(leftType))
 				{
 					context.trace.report(TYPE_MISMATCH.on(left, booleanType, leftType));
@@ -1421,8 +1421,8 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 			}
 			else if(operationType == NapileTokens.ELVIS)
 			{
-				JetType leftType = facade.getTypeInfo(left, context.replaceScope(context.scope)).getType();
-				JetType rightType = right == null ? null : facade.getTypeInfo(right, contextWithExpectedType.replaceScope(context.scope)).getType();
+				NapileType leftType = facade.getTypeInfo(left, context.replaceScope(context.scope)).getType();
+				NapileType rightType = right == null ? null : facade.getTypeInfo(right, contextWithExpectedType.replaceScope(context.scope)).getType();
 				if(leftType != null)
 				{
 					if(!leftType.isNullable())
@@ -1432,7 +1432,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 					if(rightType != null)
 					{
 						DataFlowUtils.checkType(TypeUtils.makeNullableAsSpecified(leftType, rightType.isNullable()), left, contextWithExpectedType);
-						return JetTypeInfo.create(TypeUtils.makeNullableAsSpecified(CommonSupertypes.commonSupertype(Arrays.asList(leftType, rightType)), rightType.isNullable()), context.dataFlowInfo);
+						return NapileTypeInfo.create(TypeUtils.makeNullableAsSpecified(CommonSupertypes.commonSupertype(Arrays.asList(leftType, rightType)), rightType.isNullable()), context.dataFlowInfo);
 					}
 				}
 			}
@@ -1449,7 +1449,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		Name name = Name.identifier("contains");
 		ExpressionReceiver receiver = ExpressionTypingUtils.safeGetExpressionReceiver(facade, right, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
 		OverloadResolutionResults<MethodDescriptor> resolutionResult = context.resolveCallWithGivenName(CallMaker.makeCallWithExpressions(callElement, receiver, null, operationSign, Collections.singletonList(left)), operationSign, name);
-		JetType containsType = OverloadResolutionResultsUtil.getResultType(resolutionResult);
+		NapileType containsType = OverloadResolutionResultsUtil.getResultType(resolutionResult);
 		ExpressionTypingUtils.ensureBooleanResult(operationSign, name, containsType, context);
 		return resolutionResult.isSuccess();
 	}
@@ -1460,10 +1460,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		NapileExpression right = expression.getRight();
 
 		// TODO : duplicated effort for == and !=
-		JetType leftType = facade.getTypeInfo(left, context).getType();
+		NapileType leftType = facade.getTypeInfo(left, context).getType();
 		if(leftType != null && right != null)
 		{
-			JetType rightType = facade.getTypeInfo(right, context).getType();
+			NapileType rightType = facade.getTypeInfo(right, context).getType();
 
 			if(rightType != null)
 			{
@@ -1493,7 +1493,7 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		}
 
 		NapileSimpleNameExpression operationSign = expression.getOperationReference();
-		JetType type = facade.getTypeInfo(expr, context).getType();
+		NapileType type = facade.getTypeInfo(expr, context).getType();
 		DataFlowValue value = DataFlowValueFactory.INSTANCE.createDataFlowValue(expr, type, context.trace);
 		Nullability nullability = context.dataFlowInfo.getNullability(value);
 
@@ -1516,17 +1516,17 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		context.trace.report(SENSELESS_COMPARISON.on(expression, expression, expressionIsAlways));
 	}
 
-	protected JetType visitAssignmentOperation(NapileBinaryExpression expression, ExpressionTypingContext context)
+	protected NapileType visitAssignmentOperation(NapileBinaryExpression expression, ExpressionTypingContext context)
 	{
 		return assignmentIsNotAnExpressionError(expression, context);
 	}
 
-	protected JetType visitAssignment(NapileBinaryExpression expression, ExpressionTypingContext context)
+	protected NapileType visitAssignment(NapileBinaryExpression expression, ExpressionTypingContext context)
 	{
 		return assignmentIsNotAnExpressionError(expression, context);
 	}
 
-	private JetType assignmentIsNotAnExpressionError(NapileBinaryExpression expression, ExpressionTypingContext context)
+	private NapileType assignmentIsNotAnExpressionError(NapileBinaryExpression expression, ExpressionTypingContext context)
 	{
 		facade.checkStatementType(expression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
 		context.trace.report(ASSIGNMENT_IN_EXPRESSION_CONTEXT.on(expression));
@@ -1534,48 +1534,48 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}
 
 	@Override
-	public JetTypeInfo visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, ExpressionTypingContext context)
+	public NapileTypeInfo visitArrayAccessExpression(NapileArrayAccessExpressionImpl expression, ExpressionTypingContext context)
 	{
-		JetType type = resolveArrayAccessGetMethod(expression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
+		NapileType type = resolveArrayAccessGetMethod(expression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
 		DataFlowUtils.checkType(type, expression, context);
-		return JetTypeInfo.create(type, context.dataFlowInfo);
+		return NapileTypeInfo.create(type, context.dataFlowInfo);
 	}
 
 	@Nullable
-	public JetType getTypeForBinaryCall(JetScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression)
+	public NapileType getTypeForBinaryCall(NapileScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression)
 	{
 		ExpressionReceiver receiver = ExpressionTypingUtils.safeGetExpressionReceiver(facade, binaryExpression.getLeft(), context.replaceScope(scope));
 		return OverloadResolutionResultsUtil.getResultType(getResolutionResultsForBinaryCall(scope, name, context, binaryExpression, receiver));
 	}
 
 	@NotNull
-	public OverloadResolutionResults<MethodDescriptor> getResolutionResultsForBinaryCall(JetScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression, ReceiverDescriptor receiver)
+	public OverloadResolutionResults<MethodDescriptor> getResolutionResultsForBinaryCall(NapileScope scope, Name name, ExpressionTypingContext context, NapileBinaryExpression binaryExpression, ReceiverDescriptor receiver)
 	{
 		return context.replaceScope(scope).resolveCallWithGivenName(CallMaker.makeCall(receiver, binaryExpression), binaryExpression.getOperationReference(), name);
 	}
 
 	@Override
-	public JetTypeInfo visitDeclaration(NapileDeclaration dcl, ExpressionTypingContext context)
+	public NapileTypeInfo visitDeclaration(NapileDeclaration dcl, ExpressionTypingContext context)
 	{
 		context.trace.report(DECLARATION_IN_ILLEGAL_CONTEXT.on(dcl));
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		return NapileTypeInfo.create(null, context.dataFlowInfo);
 	}
 
 	@Override
-	public JetTypeInfo visitJetElement(NapileElement element, ExpressionTypingContext context)
+	public NapileTypeInfo visitJetElement(NapileElement element, ExpressionTypingContext context)
 	{
 		context.trace.report(UNSUPPORTED.on(element, getClass().getCanonicalName()));
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		return NapileTypeInfo.create(null, context.dataFlowInfo);
 	}
 
 	@Nullable
-	JetType resolveArrayAccessSetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult)
+	NapileType resolveArrayAccessSetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult)
 	{
 		return resolveArrayAccessSpecialMethod(arrayAccessExpression, rightHandSide, context, traceForResolveResult, false);
 	}
 
 	@Nullable
-	JetType resolveArrayAccessGetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull ExpressionTypingContext context)
+	NapileType resolveArrayAccessGetMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @NotNull ExpressionTypingContext context)
 	{
 		return resolveArrayAccessSpecialMethod(arrayAccessExpression, null, context, context.trace, true);
 	}
@@ -1641,9 +1641,9 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	}   */
 
 	@Nullable
-	private JetType resolveArrayAccessSpecialMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @Nullable NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult, boolean isGet)
+	private NapileType resolveArrayAccessSpecialMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @Nullable NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult, boolean isGet)
 	{
-		JetType arrayType = facade.getTypeInfo(arrayAccessExpression.getArrayExpression(), context).getType();
+		NapileType arrayType = facade.getTypeInfo(arrayAccessExpression.getArrayExpression(), context).getType();
 		if(arrayType == null)
 			return null;
 

@@ -19,25 +19,25 @@ package org.napile.compiler.lang.descriptors.annotations;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
  */
 public class AnnotationDescriptor
 {
-	private JetType annotationType;
+	private NapileType annotationType;
 
 	private ResolvedCall<ConstructorDescriptor> resolvedCall;
 
 	private Annotated owner;
 
-	public JetType getType()
+	public NapileType getType()
 	{
 		return annotationType;
 	}
 
-	public void setAnnotationType(@NotNull JetType annotationType)
+	public void setAnnotationType(@NotNull NapileType annotationType)
 	{
 		this.annotationType = annotationType;
 	}

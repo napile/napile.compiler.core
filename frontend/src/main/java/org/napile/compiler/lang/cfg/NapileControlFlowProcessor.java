@@ -27,7 +27,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.compiler.lang.cfg.pseudocode.JetControlFlowInstructionsGenerator;
+import org.napile.compiler.lang.cfg.pseudocode.NapileControlFlowInstructionsGenerator;
 import org.napile.compiler.lang.cfg.pseudocode.LocalDeclarationInstruction;
 import org.napile.compiler.lang.cfg.pseudocode.Pseudocode;
 import org.napile.compiler.lang.cfg.pseudocode.PseudocodeImpl;
@@ -43,7 +43,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
 import org.napile.compiler.lang.resolve.constants.BoolValue;
 import org.napile.compiler.lang.resolve.constants.CompileTimeConstantResolver;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.expressions.OperatorConventions;
 import com.google.common.collect.Lists;
 import com.intellij.psi.PsiElement;
@@ -53,15 +53,15 @@ import com.intellij.psi.tree.IElementType;
  * @author abreslav
  * @author svtk
  */
-public class JetControlFlowProcessor
+public class NapileControlFlowProcessor
 {
 
-	private final JetControlFlowBuilder builder;
+	private final NapileControlFlowBuilder builder;
 	private final BindingTrace trace;
 
-	public JetControlFlowProcessor(BindingTrace trace)
+	public NapileControlFlowProcessor(BindingTrace trace)
 	{
-		this.builder = new JetControlFlowInstructionsGenerator();
+		this.builder = new NapileControlFlowInstructionsGenerator();
 		this.trace = trace;
 	}
 
@@ -731,7 +731,7 @@ public class JetControlFlowProcessor
 			builder.read(expression);
 			if(trace.safeGet(BindingTraceKeys.PROCESSED, expression))
 			{
-				JetType type = trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
+				NapileType type = trace.get(BindingTraceKeys.EXPRESSION_TYPE, expression);
 				if(type != null && false)
 				{
 					builder.jumpToError(expression);

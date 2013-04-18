@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.MultiTypeConstructor;
 import org.napile.compiler.lang.types.MultiTypeEntry;
 import org.napile.compiler.lang.types.TypeConstructorVisitor;
@@ -35,14 +35,14 @@ public class MultiTypeConstructorImpl extends AbstractTypeConstructorImpl implem
 {
 	private final List<MultiTypeEntry> entries;
 
-	public MultiTypeConstructorImpl(@NotNull List<MultiTypeEntry> entries, @NotNull JetScope scope)
+	public MultiTypeConstructorImpl(@NotNull List<MultiTypeEntry> entries, @NotNull NapileScope scope)
 	{
 		super(scope, NapileLangPackage.MULTI);
 		this.entries = entries;
 	}
 
 	@Override
-	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
+	public <A, R> R accept(NapileType type, TypeConstructorVisitor<A, R> visitor, A arg)
 	{
 		return visitor.visitMultiType(type, this, arg);
 	}

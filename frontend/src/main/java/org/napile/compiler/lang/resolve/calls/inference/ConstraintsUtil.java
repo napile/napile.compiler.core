@@ -25,10 +25,10 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -40,22 +40,22 @@ public class ConstraintsUtil
 {
 
 	@NotNull
-	public static Set<JetType> getValues(@Nullable TypeConstraints typeConstraints)
+	public static Set<NapileType> getValues(@Nullable TypeConstraints typeConstraints)
 	{
-		Set<JetType> values = Sets.newLinkedHashSet();
+		Set<NapileType> values = Sets.newLinkedHashSet();
 		if(typeConstraints != null && !typeConstraints.isEmpty())
 		{
 			if(!typeConstraints.getUpperBounds().isEmpty())
 			{
 				//todo subTypeOfUpperBounds
-				JetType subTypeOfUpperBounds = typeConstraints.getUpperBounds().iterator().next(); //todo
+				NapileType subTypeOfUpperBounds = typeConstraints.getUpperBounds().iterator().next(); //todo
 				if(values.isEmpty())
 				{
 					values.add(subTypeOfUpperBounds);
 				}
-				for(JetType value : values)
+				for(NapileType value : values)
 				{
-					if(!JetTypeChecker.INSTANCE.isSubtypeOf(value, subTypeOfUpperBounds))
+					if(!NapileTypeChecker.INSTANCE.isSubtypeOf(value, subTypeOfUpperBounds))
 					{
 						values.add(subTypeOfUpperBounds);
 						break;
@@ -67,7 +67,7 @@ public class ConstraintsUtil
 	}
 
 	@Nullable
-	public static JetType getValue(@Nullable TypeConstraints typeConstraints)
+	public static NapileType getValue(@Nullable TypeConstraints typeConstraints)
 	{
 		//todo all checks
 		//todo variance dependance
@@ -76,7 +76,7 @@ public class ConstraintsUtil
 			//todo assert typeConstraints != null;
 			return null;
 		}
-		Set<JetType> values = getValues(typeConstraints);
+		Set<NapileType> values = getValues(typeConstraints);
 		if(values.size() == 1)
 		{
 			return values.iterator().next();
@@ -106,12 +106,12 @@ public class ConstraintsUtil
 		if(firstConflictingParameter == null)
 			return Collections.emptyList();
 
-		Collection<JetType> conflictingTypes = getValues(constraintSystem.getTypeConstraints(firstConflictingParameter));
+		Collection<NapileType> conflictingTypes = getValues(constraintSystem.getTypeConstraints(firstConflictingParameter));
 
-		ArrayList<Map<TypeConstructor, JetType>> substitutionContexts = Lists.newArrayList();
-		for(JetType type : conflictingTypes)
+		ArrayList<Map<TypeConstructor, NapileType>> substitutionContexts = Lists.newArrayList();
+		for(NapileType type : conflictingTypes)
 		{
-			Map<TypeConstructor, JetType> context = Maps.newLinkedHashMap();
+			Map<TypeConstructor, NapileType> context = Maps.newLinkedHashMap();
 			context.put(firstConflictingParameter.getTypeConstructor(), type);
 			substitutionContexts.add(context);
 		}
@@ -121,14 +121,14 @@ public class ConstraintsUtil
 			if(typeParameter == firstConflictingParameter)
 				continue;
 
-			JetType safeType = getSafeValue(constraintSystem, typeParameter);
-			for(Map<TypeConstructor, JetType> context : substitutionContexts)
+			NapileType safeType = getSafeValue(constraintSystem, typeParameter);
+			for(Map<TypeConstructor, NapileType> context : substitutionContexts)
 			{
 				context.put(typeParameter.getTypeConstructor(), safeType);
 			}
 		}
 		Collection<TypeSubstitutor> typeSubstitutors = Lists.newArrayList();
-		for(Map<TypeConstructor, JetType> context : substitutionContexts)
+		for(Map<TypeConstructor, NapileType> context : substitutionContexts)
 		{
 			typeSubstitutors.add(TypeSubstitutor.create(context));
 		}
@@ -136,10 +136,10 @@ public class ConstraintsUtil
 	}
 
 	@NotNull
-	public static JetType getSafeValue(@NotNull ConstraintSystem constraintSystem, @NotNull TypeParameterDescriptor typeParameter)
+	public static NapileType getSafeValue(@NotNull ConstraintSystem constraintSystem, @NotNull TypeParameterDescriptor typeParameter)
 	{
 		TypeConstraints constraints = constraintSystem.getTypeConstraints(typeParameter);
-		JetType type = getValue(constraints);
+		NapileType type = getValue(constraints);
 		if(type != null)
 		{
 			return type;
@@ -152,13 +152,13 @@ public class ConstraintsUtil
 	{
 		TypeConstraints typeConstraints = constraintSystem.getTypeConstraints(typeParameter);
 		assert typeConstraints != null;
-		JetType type = getValue(typeConstraints);
-		JetType upperBound = typeParameter.getUpperBoundsAsType();
-		JetType substitute = constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
+		NapileType type = getValue(typeConstraints);
+		NapileType upperBound = typeParameter.getUpperBoundsAsType();
+		NapileType substitute = constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
 
 		if(type != null)
 		{
-			if(substitute == null || !JetTypeChecker.INSTANCE.isSubtypeOf(type, substitute))
+			if(substitute == null || !NapileTypeChecker.INSTANCE.isSubtypeOf(type, substitute))
 			{
 				return false;
 			}
@@ -170,13 +170,13 @@ public class ConstraintsUtil
 	{
 		for(TypeParameterDescriptor typeVariable : constraintSystem.getTypeVariables())
 		{
-			JetType type = getValue(constraintSystem.getTypeConstraints(typeVariable));
-			JetType upperBound = typeVariable.getUpperBoundsAsType();
-			JetType substitutedType = constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
+			NapileType type = getValue(constraintSystem.getTypeConstraints(typeVariable));
+			NapileType upperBound = typeVariable.getUpperBoundsAsType();
+			NapileType substitutedType = constraintSystem.getResultingSubstitutor().substitute(upperBound, null);
 
 			if(type != null)
 			{
-				if(substitutedType == null || !JetTypeChecker.INSTANCE.isSubtypeOf(type, substitutedType))
+				if(substitutedType == null || !NapileTypeChecker.INSTANCE.isSubtypeOf(type, substitutedType))
 				{
 					return false;
 				}

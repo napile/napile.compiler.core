@@ -43,11 +43,11 @@ import org.napile.compiler.lang.resolve.TopDownAnalysisContext;
 import org.napile.compiler.lang.resolve.TraceBasedRedeclarationHandler;
 import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.processors.members.TypeParameterResolver;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.RedeclarationHandler;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WriteThroughScope;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.SubstitutionUtils;
 import org.napile.compiler.lang.types.TypeConstructor;
 import com.google.common.collect.Lists;
@@ -122,7 +122,7 @@ public class TypeHierarchyResolver
 		this.annotationResolver = annotationResolver;
 	}
 
-	public void process(@NotNull JetScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends NapileFile> napileFiles)
+	public void process(@NotNull NapileScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends NapileFile> napileFiles)
 	{
 		collectDescriptors(outerScope, owner, napileFiles);
 
@@ -144,17 +144,17 @@ public class TypeHierarchyResolver
 		checkBoundsInTypes(); // Check bounds in the types used in generic bounds and supertype lists
 	}
 
-	private void collectDescriptors(@NotNull JetScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends NapileFile> files)
+	private void collectDescriptors(@NotNull NapileScope outerScope, @NotNull DescriptorBuilder owner, @NotNull Collection<? extends NapileFile> files)
 	{
 		for(NapileFile file : files)
 		{
-			file.accept(new NapileTreeVisitor<Pair<DescriptorBuilder, JetScope>>()
+			file.accept(new NapileTreeVisitor<Pair<DescriptorBuilder, NapileScope>>()
 			{
 				@Override
-				public Void visitNapileFile(NapileFile file, Pair<DescriptorBuilder, JetScope> pair)
+				public Void visitNapileFile(NapileFile file, Pair<DescriptorBuilder, NapileScope> pair)
 				{
 					//final DescriptorBuilder builder = pair.getFirst();
-					final JetScope scope = pair.getSecond();
+					final NapileScope scope = pair.getSecond();
 
 					PackageDescriptorImpl packageDescriptor = namespaceFactory.createNamespaceDescriptorPathIfNeeded(file, scope, RedeclarationHandler.DO_NOTHING);
 					context.getPackages().put(file, packageDescriptor);
@@ -163,15 +163,15 @@ public class TypeHierarchyResolver
 					namespaceScope.changeLockLevel(WritableScope.LockLevel.BOTH);
 					context.getPackageScope().put(file, namespaceScope);
 
-					file.acceptChildren(this, new Pair<DescriptorBuilder, JetScope>(packageDescriptor.getBuilder(), namespaceScope));
+					file.acceptChildren(this, new Pair<DescriptorBuilder, NapileScope>(packageDescriptor.getBuilder(), namespaceScope));
 					return null;
 				}
 
 				@Override
-				public Void visitClass(NapileClass declaration, Pair<DescriptorBuilder, JetScope> pair)
+				public Void visitClass(NapileClass declaration, Pair<DescriptorBuilder, NapileScope> pair)
 				{
 					final DescriptorBuilder builder = pair.getFirst();
-					final JetScope scope = pair.getSecond();
+					final NapileScope scope = pair.getSecond();
 
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(builder.getOwnerForChildren(), scope, ClassKind.CLASS, NapilePsiUtil.safeName(declaration.getName()), annotationResolver.bindAnnotations(scope, declaration, trace), NapilePsiUtil.isStatic(declaration));
 
@@ -179,15 +179,15 @@ public class TypeHierarchyResolver
 
 					builder.addClassifierDescriptor(mutableClassDescriptor);
 
-					declaration.acceptChildren(this, new Pair<DescriptorBuilder, JetScope>(mutableClassDescriptor.getBuilder(), mutableClassDescriptor.getScopeForMemberResolution()));
+					declaration.acceptChildren(this, new Pair<DescriptorBuilder, NapileScope>(mutableClassDescriptor.getBuilder(), mutableClassDescriptor.getScopeForMemberResolution()));
 					return null;
 				}
 
 				@Override
-				public Void visitEnumValue(NapileEnumValue value, Pair<DescriptorBuilder, JetScope> pair)
+				public Void visitEnumValue(NapileEnumValue value, Pair<DescriptorBuilder, NapileScope> pair)
 				{
 					final DescriptorBuilder builder = pair.getFirst();
-					final JetScope scope = pair.getSecond();
+					final NapileScope scope = pair.getSecond();
 
 					MutableClassDescriptor mutableClassDescriptor = new MutableClassDescriptor(builder.getOwnerForChildren(), scope, ClassKind.CLASS, value.getNameAsSafeName(), annotationResolver.bindAnnotations(scope, value, trace), true);
 
@@ -201,10 +201,10 @@ public class TypeHierarchyResolver
 
 					trace.record(BindingTraceKeys.CLASS, value, mutableClassDescriptor);
 
-					value.acceptChildren(this, new Pair<DescriptorBuilder, JetScope>(mutableClassDescriptor.getBuilder(), mutableClassDescriptor.getScopeForMemberResolution()));
+					value.acceptChildren(this, new Pair<DescriptorBuilder, NapileScope>(mutableClassDescriptor.getBuilder(), mutableClassDescriptor.getScopeForMemberResolution()));
 					return null;
 				}
-			}, new Pair<DescriptorBuilder, JetScope>(owner, outerScope));
+			}, new Pair<DescriptorBuilder, NapileScope>(owner, outerScope));
 		}
 	}
 
@@ -300,7 +300,7 @@ public class TypeHierarchyResolver
 		{
 			return;
 		}
-		for(JetType supertype : mutableClassDescriptor.getSupertypes())
+		for(NapileType supertype : mutableClassDescriptor.getSupertypes())
 		{
 			DeclarationDescriptor declarationDescriptor = supertype.getConstructor().getDeclarationDescriptor();
 			if(declarationDescriptor instanceof MutableClassDescriptor)
@@ -323,9 +323,9 @@ public class TypeHierarchyResolver
 				ClassDescriptor subclassOfCurrent = currentPath.get(currentPath.size() - 1);
 				assert subclassOfCurrent instanceof MutableClassDescriptor;
 				// Disconnect the loop
-				for(Iterator<JetType> iterator = subclassOfCurrent.getSupertypes().iterator(); iterator.hasNext(); )
+				for(Iterator<NapileType> iterator = subclassOfCurrent.getSupertypes().iterator(); iterator.hasNext(); )
 				{
-					JetType type = iterator.next();
+					NapileType type = iterator.next();
 					if(type.getConstructor() == currentClass.getTypeConstructor())
 					{
 						iterator.remove();
@@ -338,7 +338,7 @@ public class TypeHierarchyResolver
 
 		beingProcessed.add(currentClass);
 		currentPath.add(currentClass);
-		for(JetType supertype : Lists.newArrayList(currentClass.getSupertypes()))
+		for(NapileType supertype : Lists.newArrayList(currentClass.getSupertypes()))
 		{
 			DeclarationDescriptor declarationDescriptor = supertype.getConstructor().getDeclarationDescriptor();
 			if(declarationDescriptor instanceof MutableClassDescriptor)
@@ -367,7 +367,7 @@ public class TypeHierarchyResolver
 				NapileClass napileClass = (NapileClass) psiElement;
 				for(NapileTypeReference typeReference : napileClass.getSuperTypes())
 				{
-					JetType supertype = trace.get(BindingTraceKeys.TYPE, typeReference);
+					NapileType supertype = trace.get(BindingTraceKeys.TYPE, typeReference);
 					if(supertype != null && supertype.getConstructor() == superclass.getTypeConstructor())
 						elementToMark = typeReference;
 				}
@@ -380,7 +380,7 @@ public class TypeHierarchyResolver
 					NapileTypeReference typeReference = delegationSpecifier.getTypeReference();
 					if(typeReference == null)
 						continue;
-					JetType supertype = trace.get(BindingTraceKeys.TYPE, typeReference);
+					NapileType supertype = trace.get(BindingTraceKeys.TYPE, typeReference);
 					if(supertype != null && supertype.getConstructor() == superclass.getTypeConstructor())
 						elementToMark = typeReference;
 				}
@@ -412,10 +412,10 @@ public class TypeHierarchyResolver
 	{
 		for(MutableClassDescriptor mutableClassDescriptor : topologicalOrder)
 		{
-			Multimap<TypeConstructor, JetType> multimap = SubstitutionUtils.buildDeepSubstitutionMultimap(mutableClassDescriptor.getDefaultType());
-			for(Map.Entry<TypeConstructor, Collection<JetType>> entry : multimap.asMap().entrySet())
+			Multimap<TypeConstructor, NapileType> multimap = SubstitutionUtils.buildDeepSubstitutionMultimap(mutableClassDescriptor.getDefaultType());
+			for(Map.Entry<TypeConstructor, Collection<NapileType>> entry : multimap.asMap().entrySet())
 			{
-				Collection<JetType> projections = entry.getValue();
+				Collection<NapileType> projections = entry.getValue();
 				if(projections.size() > 1)
 				{
 					TypeConstructor typeConstructor = entry.getKey();
@@ -424,8 +424,8 @@ public class TypeHierarchyResolver
 					TypeParameterDescriptor typeParameterDescriptor = (TypeParameterDescriptor) declarationDescriptor;
 
 					// Immediate arguments of supertypes cannot be projected
-					Set<JetType> conflictingTypes = Sets.newLinkedHashSet();
-					for(JetType projection : projections)
+					Set<NapileType> conflictingTypes = Sets.newLinkedHashSet();
+					for(NapileType projection : projections)
 					{
 						conflictingTypes.add(projection);
 					}
@@ -501,7 +501,7 @@ public class TypeHierarchyResolver
 			return;
 		}
 
-		JetType type = trace.get(BindingTraceKeys.TYPE, typeReference);
+		NapileType type = trace.get(BindingTraceKeys.TYPE, typeReference);
 		if(type != null)
 		{
 			descriptorResolver.checkBounds(typeReference, type, trace);

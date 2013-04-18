@@ -26,11 +26,11 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.roots.PackageIndex;
 import com.intellij.openapi.vfs.VirtualFile;
 
-public class JetCoreProjectEnvironment extends CoreProjectEnvironment
+public class NapileCoreProjectEnvironment extends CoreProjectEnvironment
 {
 	private final PackageIndex myPackageIndex;
 
-	public JetCoreProjectEnvironment(Disposable parentDisposable, CoreApplicationEnvironment applicationEnvironment)
+	public NapileCoreProjectEnvironment(Disposable parentDisposable, CoreApplicationEnvironment applicationEnvironment)
 	{
 		super(parentDisposable, applicationEnvironment);
 

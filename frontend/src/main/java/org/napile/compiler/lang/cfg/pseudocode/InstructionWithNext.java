@@ -25,7 +25,7 @@ import org.napile.compiler.lang.psi.NapileElement;
 /**
  * @author abreslav
  */
-public abstract class InstructionWithNext extends JetElementInstructionImpl
+public abstract class InstructionWithNext extends NapileElementInstructionImpl
 {
 	private Instruction next;
 

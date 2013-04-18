@@ -76,7 +76,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	@Nullable
 	private ReceiverDescriptor implicitReceiver;
 
-	public WritableScopeImpl(@NotNull JetScope scope, @NotNull DeclarationDescriptor owner, @NotNull RedeclarationHandler redeclarationHandler, @NotNull String debugName)
+	public WritableScopeImpl(@NotNull NapileScope scope, @NotNull DeclarationDescriptor owner, @NotNull RedeclarationHandler redeclarationHandler, @NotNull String debugName)
 	{
 		super(scope, redeclarationHandler, debugName);
 		this.ownerDeclarationDescriptor = owner;
@@ -90,7 +90,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 	}
 
 	@Override
-	public void importScope(@NotNull JetScope imported)
+	public void importScope(@NotNull NapileScope imported)
 	{
 		checkMayWrite();
 		super.importScope(imported);
@@ -154,7 +154,7 @@ public class WritableScopeImpl extends WritableScopeWithImports
 			changeLockLevel(LockLevel.READING);
 
 			allDescriptors.addAll(getWorkerScope().getAllDescriptors());
-			for(JetScope imported : getImports())
+			for(NapileScope imported : getImports())
 			{
 				allDescriptors.addAll(imported.getAllDescriptors());
 			}

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 
 /**
@@ -42,15 +42,15 @@ public class RunUtil
 
 		CallParameterDescriptor parameterDescriptor = methodDescriptor.getValueParameters().get(0);
 
-		JetType jetType = parameterDescriptor.getReturnType();
+		NapileType napileType = parameterDescriptor.getReturnType();
 
-		if(!TypeUtils.isEqualFqName(jetType, NapileLangPackage.ARRAY))
+		if(!TypeUtils.isEqualFqName(napileType, NapileLangPackage.ARRAY))
 			return false;
 
-		if(jetType.getArguments().size() != 1)
+		if(napileType.getArguments().size() != 1)
 			return false;
 
-		JetType arg = jetType.getArguments().get(0);
+		NapileType arg = napileType.getArguments().get(0);
 		if(!TypeUtils.isEqualFqName(arg, NapileLangPackage.STRING))
 			return false;
 

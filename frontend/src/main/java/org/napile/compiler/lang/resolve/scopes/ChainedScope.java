@@ -36,13 +36,13 @@ import com.google.common.collect.Sets;
 /**
  * @author abreslav
  */
-public class ChainedScope implements JetScope
+public class ChainedScope implements NapileScope
 {
 	private final DeclarationDescriptor containingDeclaration;
-	private final JetScope[] scopeChain;
+	private final NapileScope[] scopeChain;
 	private Collection<DeclarationDescriptor> allDescriptors;
 
-	public ChainedScope(DeclarationDescriptor containingDeclaration, JetScope... scopes)
+	public ChainedScope(DeclarationDescriptor containingDeclaration, NapileScope... scopes)
 	{
 		this.containingDeclaration = containingDeclaration;
 		scopeChain = scopes.clone();
@@ -51,7 +51,7 @@ public class ChainedScope implements JetScope
 	@Override
 	public ClassDescriptor getClass(@NotNull FqName fqName)
 	{
-		for(JetScope scope : scopeChain)
+		for(NapileScope scope : scopeChain)
 		{
 			ClassDescriptor classifier = scope.getClass(fqName);
 			if(classifier != null)
@@ -63,7 +63,7 @@ public class ChainedScope implements JetScope
 	@Override
 	public ClassifierDescriptor getClassifier(@NotNull Name name)
 	{
-		for(JetScope scope : scopeChain)
+		for(NapileScope scope : scopeChain)
 		{
 			ClassifierDescriptor classifier = scope.getClassifier(name);
 			if(classifier != null)
@@ -75,7 +75,7 @@ public class ChainedScope implements JetScope
 	@Override
 	public ClassDescriptor getObjectDescriptor(@NotNull Name name)
 	{
-		for(JetScope scope : scopeChain)
+		for(NapileScope scope : scopeChain)
 		{
 			ClassDescriptor objectDescriptor = scope.getObjectDescriptor(name);
 			if(objectDescriptor != null)
@@ -89,7 +89,7 @@ public class ChainedScope implements JetScope
 	public Set<ClassDescriptor> getObjectDescriptors()
 	{
 		Set<ClassDescriptor> objectDescriptors = Sets.newHashSet();
-		for(JetScope scope : scopeChain)
+		for(NapileScope scope : scopeChain)
 		{
 			objectDescriptors.addAll(scope.getObjectDescriptors());
 		}
@@ -99,9 +99,9 @@ public class ChainedScope implements JetScope
 	@Override
 	public PackageDescriptor getPackage(@NotNull Name name)
 	{
-		for(JetScope jetScope : scopeChain)
+		for(NapileScope napileScope : scopeChain)
 		{
-			PackageDescriptor namespace = jetScope.getPackage(name);
+			PackageDescriptor namespace = napileScope.getPackage(name);
 			if(namespace != null)
 			{
 				return namespace;
@@ -115,9 +115,9 @@ public class ChainedScope implements JetScope
 	public Set<VariableDescriptor> getVariables(@NotNull Name name)
 	{
 		Set<VariableDescriptor> properties = Sets.newLinkedHashSet();
-		for(JetScope jetScope : scopeChain)
+		for(NapileScope napileScope : scopeChain)
 		{
-			properties.addAll(jetScope.getVariables(name));
+			properties.addAll(napileScope.getVariables(name));
 		}
 		return properties;
 	}
@@ -125,9 +125,9 @@ public class ChainedScope implements JetScope
 	@Override
 	public VariableDescriptor getLocalVariable(@NotNull Name name)
 	{
-		for(JetScope jetScope : scopeChain)
+		for(NapileScope napileScope : scopeChain)
 		{
-			VariableDescriptor variable = jetScope.getLocalVariable(name);
+			VariableDescriptor variable = napileScope.getLocalVariable(name);
 			if(variable != null)
 			{
 				return variable;
@@ -146,9 +146,9 @@ public class ChainedScope implements JetScope
 		}
 
 		Set<MethodDescriptor> result = Sets.newLinkedHashSet();
-		for(JetScope jetScope : scopeChain)
+		for(NapileScope napileScope : scopeChain)
 		{
-			result.addAll(jetScope.getMethods(name));
+			result.addAll(napileScope.getMethods(name));
 		}
 		return result;
 	}
@@ -163,9 +163,9 @@ public class ChainedScope implements JetScope
 	@Override
 	public void getImplicitReceiversHierarchy(@NotNull List<ReceiverDescriptor> result)
 	{
-		for(JetScope jetScope : scopeChain)
+		for(NapileScope napileScope : scopeChain)
 		{
-			jetScope.getImplicitReceiversHierarchy(result);
+			napileScope.getImplicitReceiversHierarchy(result);
 		}
 	}
 
@@ -183,7 +183,7 @@ public class ChainedScope implements JetScope
 		if(allDescriptors == null)
 		{
 			allDescriptors = Sets.newHashSet();
-			for(JetScope scope : scopeChain)
+			for(NapileScope scope : scopeChain)
 			{
 				allDescriptors.addAll(scope.getAllDescriptors());
 			}

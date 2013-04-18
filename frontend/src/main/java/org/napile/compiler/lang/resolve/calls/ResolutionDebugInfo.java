@@ -24,7 +24,7 @@ import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.resolve.calls.inference.BoundsOwner;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystemSolution;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.util.slicedmap.BasicWritableSlice;
 import org.napile.compiler.util.slicedmap.MutableSlicedMap;
 import org.napile.compiler.util.slicedmap.ReadOnlySlice;
@@ -47,7 +47,7 @@ public class ResolutionDebugInfo
 	public static final WritableSlice<ResolvedCall<? extends CallableDescriptor>, StringBuilder> ERRORS = Slices.createSimpleSlice();
 	public static final WritableSlice<ResolvedCall<? extends CallableDescriptor>, StringBuilder> LOG = Slices.createSimpleSlice();
 	public static final WritableSlice<ResolvedCall<? extends CallableDescriptor>, Map<TypeParameterDescriptor, BoundsOwner>> BOUNDS_FOR_UNKNOWNS = Slices.createSimpleSlice();
-	public static final WritableSlice<ResolvedCall<? extends CallableDescriptor>, Map<JetType, BoundsOwner>> BOUNDS_FOR_KNOWNS = Slices.createSimpleSlice();
+	public static final WritableSlice<ResolvedCall<? extends CallableDescriptor>, Map<NapileType, BoundsOwner>> BOUNDS_FOR_KNOWNS = Slices.createSimpleSlice();
 	public static final WritableSlice<ResolvedCall<? extends CallableDescriptor>, ConstraintSystemSolution> SOLUTION = Slices.createSimpleSlice();
 	public static final WritableSlice<ResolvedCall<? extends CallableDescriptor>, Collection<TypeParameterDescriptor>> UNKNOWNS = Slices.createSimpleSlice();
 

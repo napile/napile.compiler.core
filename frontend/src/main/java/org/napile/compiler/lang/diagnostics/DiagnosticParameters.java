@@ -17,7 +17,7 @@
 package org.napile.compiler.lang.diagnostics;
 
 import org.napile.compiler.lang.psi.NapileClass;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.lang.psi.NapileVariable;
 
@@ -28,6 +28,6 @@ public interface DiagnosticParameters
 {
 	DiagnosticParameter<NapileKeywordToken> MODIFIER = new DiagnosticParameterImpl<NapileKeywordToken>("MODIFIER");
 	DiagnosticParameter<NapileClass> CLASS = new DiagnosticParameterImpl<NapileClass>("CLASS");
-	DiagnosticParameter<JetType> TYPE = new DiagnosticParameterImpl<JetType>("TYPE");
+	DiagnosticParameter<NapileType> TYPE = new DiagnosticParameterImpl<NapileType>("TYPE");
 	DiagnosticParameter<NapileVariable> PROPERTY = new DiagnosticParameterImpl<NapileVariable>("TYPE");
 }

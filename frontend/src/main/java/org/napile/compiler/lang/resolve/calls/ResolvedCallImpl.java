@@ -29,7 +29,7 @@ import org.napile.compiler.lang.descriptors.VariableDescriptor;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import com.google.common.collect.Maps;
 import com.intellij.openapi.util.Pair;
@@ -72,8 +72,8 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 	private final ExplicitReceiverKind explicitReceiverKind;
 	private final boolean isSafeCall;
 
-	private final Map<TypeParameterDescriptor, JetType> typeArguments = Maps.newLinkedHashMap();
-	private final Map<CallParameterDescriptor, JetType> autoCasts = Maps.newHashMap();
+	private final Map<TypeParameterDescriptor, NapileType> typeArguments = Maps.newLinkedHashMap();
+	private final Map<CallParameterDescriptor, NapileType> autoCasts = Maps.newHashMap();
 	private final Map<CallParameterDescriptor, ResolvedValueArgument> valueArguments = Maps.newLinkedHashMap();
 	private boolean someArgumentHasNoType = false;
 	private TemporaryBindingTrace trace;
@@ -162,7 +162,7 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 		}
 	}
 
-	public void recordTypeArgument(@NotNull TypeParameterDescriptor typeParameter, @NotNull JetType typeArgument)
+	public void recordTypeArgument(@NotNull TypeParameterDescriptor typeParameter, @NotNull NapileType typeArgument)
 	{
 		assert !typeArguments.containsKey(typeParameter) : typeParameter + " -> " + typeArgument;
 		typeArguments.put(typeParameter, typeArgument);
@@ -186,7 +186,7 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 		valueArguments.put(valueParameter, valueArgument);
 	}
 
-	public void autoCastValueArgument(@NotNull CallParameterDescriptor parameter, @NotNull JetType target)
+	public void autoCastValueArgument(@NotNull CallParameterDescriptor parameter, @NotNull NapileType target)
 	{
 		assert !autoCasts.containsKey(parameter);
 		autoCasts.put(parameter, target);
@@ -255,7 +255,7 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements ResolvedC
 
 	@NotNull
 	@Override
-	public Map<TypeParameterDescriptor, JetType> getTypeArguments()
+	public Map<TypeParameterDescriptor, NapileType> getTypeArguments()
 	{
 		return typeArguments;
 	}

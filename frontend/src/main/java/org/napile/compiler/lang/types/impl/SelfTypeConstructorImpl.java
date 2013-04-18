@@ -20,7 +20,7 @@ import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
 import org.napile.compiler.lang.types.TypeConstructorVisitor;
 
@@ -46,7 +46,7 @@ public class SelfTypeConstructorImpl extends AbstractTypeConstructorImpl impleme
 	}
 
 	@Override
-	public <A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg)
+	public <A, R> R accept(NapileType type, TypeConstructorVisitor<A, R> visitor, A arg)
 	{
 		return visitor.visitSelfType(type, this, arg);
 	}

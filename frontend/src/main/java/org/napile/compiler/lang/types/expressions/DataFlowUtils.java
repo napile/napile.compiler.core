@@ -37,10 +37,10 @@ import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValue;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowValueFactory;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
-import org.napile.compiler.lang.types.JetTypeInfo;
+import org.napile.compiler.lang.types.NapileType;
+import org.napile.compiler.lang.types.NapileTypeInfo;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.openapi.util.Ref;
 import com.intellij.psi.tree.IElementType;
@@ -102,10 +102,10 @@ public class DataFlowUtils
 					if(right == null)
 						return;
 
-					JetType lhsType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, left);
+					NapileType lhsType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, left);
 					if(lhsType == null)
 						return;
-					JetType rhsType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, right);
+					NapileType rhsType = context.trace.get(BindingTraceKeys.EXPRESSION_TYPE, right);
 					if(rhsType == null)
 						return;
 
@@ -167,24 +167,24 @@ public class DataFlowUtils
 	}
 
 	@NotNull
-	public static JetTypeInfo checkType(@Nullable JetType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, @NotNull DataFlowInfo dataFlowInfo)
+	public static NapileTypeInfo checkType(@Nullable NapileType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, @NotNull DataFlowInfo dataFlowInfo)
 	{
-		return JetTypeInfo.create(checkType(expressionType, expression, context), dataFlowInfo);
+		return NapileTypeInfo.create(checkType(expressionType, expression, context), dataFlowInfo);
 	}
 
 	@Nullable
-	public static JetType checkType(@Nullable JetType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context)
+	public static NapileType checkType(@Nullable NapileType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context)
 	{
 		if(expressionType == null || context.expectedType == null || context.expectedType == TypeUtils.NO_EXPECTED_TYPE ||
-				JetTypeChecker.INSTANCE.isSubtypeOf(expressionType, context.expectedType))
+				NapileTypeChecker.INSTANCE.isSubtypeOf(expressionType, context.expectedType))
 		{
 			return expressionType;
 		}
 
 		DataFlowValue dataFlowValue = DataFlowValueFactory.INSTANCE.createDataFlowValue(expression, expressionType, context.trace);
-		for(JetType possibleType : context.dataFlowInfo.getPossibleTypes(dataFlowValue))
+		for(NapileType possibleType : context.dataFlowInfo.getPossibleTypes(dataFlowValue))
 		{
-			if(JetTypeChecker.INSTANCE.isSubtypeOf(possibleType, context.expectedType))
+			if(NapileTypeChecker.INSTANCE.isSubtypeOf(possibleType, context.expectedType))
 			{
 				if(dataFlowValue.isStableIdentifier())
 				{
@@ -202,13 +202,13 @@ public class DataFlowUtils
 	}
 
 	@NotNull
-	public static JetTypeInfo checkStatementType(@NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, @NotNull DataFlowInfo dataFlowInfo)
+	public static NapileTypeInfo checkStatementType(@NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, @NotNull DataFlowInfo dataFlowInfo)
 	{
-		return JetTypeInfo.create(checkStatementType(expression, context), dataFlowInfo);
+		return NapileTypeInfo.create(checkStatementType(expression, context), dataFlowInfo);
 	}
 
 	@Nullable
-	public static JetType checkStatementType(@NotNull NapileExpression expression, @NotNull ExpressionTypingContext context)
+	public static NapileType checkStatementType(@NotNull NapileExpression expression, @NotNull ExpressionTypingContext context)
 	{
 		if(context.expectedType != TypeUtils.NO_EXPECTED_TYPE &&
 				!TypeUtils.isEqualFqName(context.expectedType, NapileLangPackage.NULL) &&
@@ -221,13 +221,13 @@ public class DataFlowUtils
 	}
 
 	@NotNull
-	public static JetTypeInfo checkImplicitCast(@Nullable JetType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, boolean isStatement, DataFlowInfo dataFlowInfo)
+	public static NapileTypeInfo checkImplicitCast(@Nullable NapileType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, boolean isStatement, DataFlowInfo dataFlowInfo)
 	{
-		return JetTypeInfo.create(checkImplicitCast(expressionType, expression, context, isStatement), dataFlowInfo);
+		return NapileTypeInfo.create(checkImplicitCast(expressionType, expression, context, isStatement), dataFlowInfo);
 	}
 
 	@Nullable
-	public static JetType checkImplicitCast(@Nullable JetType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, boolean isStatement)
+	public static NapileType checkImplicitCast(@Nullable NapileType expressionType, @NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, boolean isStatement)
 	{
 		if(expressionType != null && context.expectedType == TypeUtils.NO_EXPECTED_TYPE && !isStatement &&
 				(TypeUtils.isEqualFqName(expressionType, NapileLangPackage.NULL) || TypeUtils.isEqualFqName(expressionType, NapileLangPackage.ANY)))
@@ -238,10 +238,10 @@ public class DataFlowUtils
 	}
 
 	@NotNull
-	public static JetTypeInfo illegalStatementType(@NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, @NotNull ExpressionTypingInternals facade)
+	public static NapileTypeInfo illegalStatementType(@NotNull NapileExpression expression, @NotNull ExpressionTypingContext context, @NotNull ExpressionTypingInternals facade)
 	{
 		facade.checkStatementType(expression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
 		context.trace.report(EXPRESSION_EXPECTED.on(expression, expression));
-		return JetTypeInfo.create(null, context.dataFlowInfo);
+		return NapileTypeInfo.create(null, context.dataFlowInfo);
 	}
 }

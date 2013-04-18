@@ -33,12 +33,12 @@ import org.napile.compiler.lang.psi.NapileReferenceExpression;
 import org.napile.compiler.lang.psi.NapileSuperExpression;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.calls.autocasts.AutoCastServiceImpl;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ExpressionReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
 import org.napile.compiler.lang.types.NamespaceType;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.progress.ProgressIndicatorProvider;
@@ -83,7 +83,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 	public static <D extends CallableDescriptor, F extends D> List<ResolutionTask<D, F>> computePrioritizedTasks(@NotNull BasicResolutionContext context, @NotNull Name name, @NotNull NapileReferenceExpression functionReference, @NotNull List<CallableDescriptorCollector<? extends D>> callableDescriptorCollectors)
 	{
 		ReceiverDescriptor explicitReceiver = context.call.getExplicitReceiver();
-		final JetScope scope;
+		final NapileScope scope;
 		if(explicitReceiver.exists() && explicitReceiver.getType() instanceof NamespaceType)
 		{
 			scope = explicitReceiver.getType().getMemberScope();
@@ -115,7 +115,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 		return result.getTasks();
 	}
 
-	private static <D extends CallableDescriptor, F extends D> void doComputeTasks(@NotNull JetScope scope, @NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull ResolutionTaskHolder<D, F> result, @NotNull BasicResolutionContext context, @NotNull CallableDescriptorCollector<? extends D> callableDescriptorCollector)
+	private static <D extends CallableDescriptor, F extends D> void doComputeTasks(@NotNull NapileScope scope, @NotNull ReceiverDescriptor receiver, @NotNull Name name, @NotNull ResolutionTaskHolder<D, F> result, @NotNull BasicResolutionContext context, @NotNull CallableDescriptorCollector<? extends D> callableDescriptorCollector)
 	{
 
 		ProgressIndicatorProvider.checkCanceled();
@@ -198,7 +198,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 		}
 	}
 
-	public static <D extends CallableDescriptor> Collection<ResolutionCandidate<D>> convertWithImpliedThis(JetScope scope, Collection<ReceiverDescriptor> receiverParameters, Collection<? extends D> descriptors)
+	public static <D extends CallableDescriptor> Collection<ResolutionCandidate<D>> convertWithImpliedThis(NapileScope scope, Collection<ReceiverDescriptor> receiverParameters, Collection<? extends D> descriptors)
 	{
 		Collection<ResolutionCandidate<D>> result = Lists.newArrayList();
 		for(ReceiverDescriptor receiverParameter : receiverParameters)
@@ -216,7 +216,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 		return result;
 	}
 
-	private static <D extends CallableDescriptor> boolean setImpliedThis(@NotNull JetScope scope, ResolutionCandidate<D> candidate)
+	private static <D extends CallableDescriptor> boolean setImpliedThis(@NotNull NapileScope scope, ResolutionCandidate<D> candidate)
 	{
 		ReceiverDescriptor expectedThisObject = candidate.getDescriptor().getExpectedThisObject();
 		if(!expectedThisObject.exists())
@@ -225,7 +225,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 		scope.getImplicitReceiversHierarchy(receivers);
 		for(ReceiverDescriptor receiver : receivers)
 		{
-			if(JetTypeChecker.INSTANCE.isSubtypeOf(receiver.getType(), expectedThisObject.getType()))
+			if(NapileTypeChecker.INSTANCE.isSubtypeOf(receiver.getType(), expectedThisObject.getType()))
 			{
 				// TODO : Autocasts & nullability
 				candidate.setThisObject(expectedThisObject);

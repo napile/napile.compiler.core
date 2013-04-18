@@ -37,10 +37,10 @@ import org.napile.compiler.lang.resolve.calls.CallResolver;
 import org.napile.compiler.lang.resolve.calls.autocasts.DataFlowInfo;
 import org.napile.compiler.lang.resolve.processors.checkers.DeclarationsChecker;
 import org.napile.compiler.lang.resolve.processors.checkers.ModifiersChecker;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.DeferredType;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.expressions.ExpressionTypingServices;
 import org.napile.compiler.lang.types.expressions.VariableAccessorResolver;
@@ -158,7 +158,7 @@ public class BodyResolver
 			resolveDelegationSpecifierList(entry.getKey(), entry.getValue(), entry.getValue().getScopeForSupertypeResolution(), true);
 	}
 
-	public void resolveDelegationSpecifierList(final NapileDelegationSpecifierListOwner owner, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull JetScope jetScope, boolean canSuperTraitedClass)
+	public void resolveDelegationSpecifierList(final NapileDelegationSpecifierListOwner owner, @NotNull final DeclarationDescriptor declarationDescriptor, final @NotNull NapileScope napileScope, boolean canSuperTraitedClass)
 	{
 		if(!context.completeAnalysisNeeded(owner))
 			return;
@@ -171,7 +171,7 @@ public class BodyResolver
 				continue;
 			}
 
-			JetType type = trace.get(BindingTraceKeys.TYPE, typeReference);
+			NapileType type = trace.get(BindingTraceKeys.TYPE, typeReference);
 			if(type == null)
 			{
 				continue;
@@ -179,7 +179,7 @@ public class BodyResolver
 
 			if(!canSuperTraitedClass)
 			{
-				callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+				callResolver.resolveFunctionCall(trace, napileScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 			}
 			else
 			{
@@ -196,17 +196,17 @@ public class BodyResolver
 					continue;
 				}
 
-				callResolver.resolveFunctionCall(trace, jetScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
+				callResolver.resolveFunctionCall(trace, napileScope, CallMaker.makeCall(ReceiverDescriptor.NO_RECEIVER, null, call), TypeUtils.NO_EXPECTED_TYPE, DataFlowInfo.EMPTY);
 			}
 		}
 	}
 
-	public void resolvePropertyInitializer(NapileVariable property, VariableDescriptor propertyDescriptor, NapileExpression initializer, JetScope scope)
+	public void resolvePropertyInitializer(NapileVariable property, VariableDescriptor propertyDescriptor, NapileExpression initializer, NapileScope scope)
 	{
 		//JetFlowInformationProvider flowInformationProvider = context.getDescriptorResolver().computeFlowData(property, initializer); // TODO : flow JET-15
-		JetType expectedTypeForInitializer = property.getType() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;
-		JetScope propertyDeclarationInnerScope = descriptorResolver.getPropertyDeclarationInnerScope(scope, propertyDescriptor.getTypeParameters(), trace);
-		JetType type = expressionTypingServices.getType(propertyDeclarationInnerScope, initializer, expectedTypeForInitializer, DataFlowInfo.EMPTY, trace);
+		NapileType expectedTypeForInitializer = property.getType() != null ? propertyDescriptor.getType() : TypeUtils.NO_EXPECTED_TYPE;
+		NapileScope propertyDeclarationInnerScope = descriptorResolver.getPropertyDeclarationInnerScope(scope, propertyDescriptor.getTypeParameters(), trace);
+		NapileType type = expressionTypingServices.getType(propertyDeclarationInnerScope, initializer, expectedTypeForInitializer, DataFlowInfo.EMPTY, trace);
 		//
 		//        JetType expectedType = propertyDescriptor.getInType();
 		//        if (expectedType == null) {
@@ -230,7 +230,7 @@ public class BodyResolver
 
 			computeDeferredType(propertyDescriptor.getReturnType());
 
-			JetScope declaringScope = this.context.getDeclaringScopes().get(variable);
+			NapileScope declaringScope = this.context.getDeclaringScopes().get(variable);
 
 			NapileExpression initializer = variable.getInitializer();
 			if(initializer != null)
@@ -255,7 +255,7 @@ public class BodyResolver
 
 			computeDeferredType(descriptor.getReturnType());
 
-			JetScope declaringScope = this.context.getDeclaringScopes().get(declaration);
+			NapileScope declaringScope = this.context.getDeclaringScopes().get(declaration);
 			assert declaringScope != null;
 
 			resolveBody(trace, declaration, descriptor, declaringScope, false);
@@ -266,25 +266,25 @@ public class BodyResolver
 			NapileConstructor declaration = entry.getKey();
 			ConstructorDescriptor descriptor = entry.getValue();
 
-			JetScope declaringScope = context.getDeclaringScopes().get(declaration);
+			NapileScope declaringScope = context.getDeclaringScopes().get(declaration);
 			assert declaringScope != null;
 
 			resolveBody(trace, declaration, descriptor, declaringScope, false);
 		}
 	}
 
-	public void resolveBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull JetScope declaringScope, boolean variableAccessor)
+	public void resolveBody(@NotNull BindingTrace trace, @NotNull NapileDeclarationWithBody function, @NotNull MethodDescriptor methodDescriptor, @NotNull NapileScope declaringScope, boolean variableAccessor)
 	{
 		if(!context.completeAnalysisNeeded(function))
 			return;
 
 		NapileExpression bodyExpression = function.getBodyExpression();
-		JetScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(declaringScope, methodDescriptor, trace, variableAccessor);
+		NapileScope functionInnerScope = MethodDescriptorUtil.getMethodInnerScope(declaringScope, methodDescriptor, trace, variableAccessor);
 		if(bodyExpression != null)
 			expressionTypingServices.checkFunctionReturnType(functionInnerScope, function, methodDescriptor, DataFlowInfo.EMPTY, null, trace);
 	}
 
-	private static void computeDeferredType(JetType type)
+	private static void computeDeferredType(NapileType type)
 	{
 		// handle type inference loop: function or property body contains a reference to itself
 		// fun f() = { f() }

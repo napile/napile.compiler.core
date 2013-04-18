@@ -37,12 +37,12 @@ public interface TypeConstructor extends Annotated
 
 	@NotNull
 	@ReadOnly
-	Collection<? extends JetType> getSupertypes();
+	Collection<? extends NapileType> getSupertypes();
 
 	boolean isSealed();
 
 	@Nullable
 	ClassifierDescriptor getDeclarationDescriptor();
 
-	<A, R> R accept(JetType type, TypeConstructorVisitor<A, R> visitor, A arg);
+	<A, R> R accept(NapileType type, TypeConstructorVisitor<A, R> visitor, A arg);
 }

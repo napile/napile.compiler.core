@@ -31,10 +31,10 @@ import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptorImpl;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeSubstitutor;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
@@ -144,9 +144,9 @@ public class OverridingUtil
 		return isOverridableByImpl(superDescriptor, subDescriptor, true);
 	}
 
-	private static List<JetType> compiledValueParameters(CallableDescriptor callableDescriptor)
+	private static List<NapileType> compiledValueParameters(CallableDescriptor callableDescriptor)
 	{
-		ArrayList<JetType> parameters = new ArrayList<JetType>(callableDescriptor.getValueParameters().size());
+		ArrayList<NapileType> parameters = new ArrayList<NapileType>(callableDescriptor.getValueParameters().size());
 		for(CallParameterDescriptor parameterDescriptor : callableDescriptor.getValueParameters())
 		{
 			parameters.add(parameterDescriptor.getType());
@@ -172,8 +172,8 @@ public class OverridingUtil
 			return OverrideCompatibilityInfo.valueParameterNumberMismatch();
 		}
 
-		List<JetType> superValueParameters = compiledValueParameters(superDescriptor);
-		List<JetType> subValueParameters = compiledValueParameters(subDescriptor);
+		List<NapileType> superValueParameters = compiledValueParameters(superDescriptor);
+		List<NapileType> subValueParameters = compiledValueParameters(subDescriptor);
 
 		if(forOverride)
 		{
@@ -181,10 +181,10 @@ public class OverridingUtil
 			{
 				for(int i = 0; i < superValueParameters.size(); ++i)
 				{
-					JetType superValueParameterType = getUpperBound(superValueParameters.get(i));
-					JetType subValueParameterType = getUpperBound(subValueParameters.get(i));
+					NapileType superValueParameterType = getUpperBound(superValueParameters.get(i));
+					NapileType subValueParameterType = getUpperBound(subValueParameters.get(i));
 					// TODO: compare erasure
-					if(!JetTypeChecker.INSTANCE.equalTypes(superValueParameterType, subValueParameterType))
+					if(!NapileTypeChecker.INSTANCE.equalTypes(superValueParameterType, subValueParameterType))
 					{
 						return OverrideCompatibilityInfo.typeParameterNumberMismatch();
 					}
@@ -212,7 +212,7 @@ public class OverridingUtil
 				TypeParameterDescriptor superTypeParameter = superTypeParameters.get(i);
 				TypeParameterDescriptor subTypeParameter = subTypeParameters.get(i);
 
-				if(!JetTypeChecker.INSTANCE.equalTypes(superTypeParameter.getUpperBoundsAsType(), subTypeParameter.getUpperBoundsAsType(), axioms))
+				if(!NapileTypeChecker.INSTANCE.equalTypes(superTypeParameter.getUpperBoundsAsType(), subTypeParameter.getUpperBoundsAsType(), axioms))
 				{
 					return OverrideCompatibilityInfo.boundsMismatch(superTypeParameter, subTypeParameter);
 				}
@@ -220,11 +220,11 @@ public class OverridingUtil
 
 			for(int i = 0, unsubstitutedValueParametersSize = superValueParameters.size(); i < unsubstitutedValueParametersSize; i++)
 			{
-				JetType superValueParameter = superValueParameters.get(i);
-				JetType subValueParameter = subValueParameters.get(i);
+				NapileType superValueParameter = superValueParameters.get(i);
+				NapileType subValueParameter = subValueParameters.get(i);
 
 				boolean bothErrors = ErrorUtils.isErrorType(superValueParameter) && ErrorUtils.isErrorType(subValueParameter);
-				if(!bothErrors && !JetTypeChecker.INSTANCE.equalTypes(superValueParameter, subValueParameter, axioms))
+				if(!bothErrors && !NapileTypeChecker.INSTANCE.equalTypes(superValueParameter, subValueParameter, axioms))
 				{
 					return OverrideCompatibilityInfo.valueParameterTypeMismatch(superValueParameter, subValueParameter, OverrideCompatibilityInfo.Result.INCOMPATIBLE);
 				}
@@ -235,10 +235,10 @@ public class OverridingUtil
 
 			for(int i = 0; i < superValueParameters.size(); ++i)
 			{
-				JetType superValueParameterType = getUpperBound(superValueParameters.get(i));
-				JetType subValueParameterType = getUpperBound(subValueParameters.get(i));
+				NapileType superValueParameterType = getUpperBound(superValueParameters.get(i));
+				NapileType subValueParameterType = getUpperBound(subValueParameters.get(i));
 				// TODO: compare erasure
-				if(!JetTypeChecker.INSTANCE.equalTypes(superValueParameterType, subValueParameterType))
+				if(!NapileTypeChecker.INSTANCE.equalTypes(superValueParameterType, subValueParameterType))
 				{
 					return OverrideCompatibilityInfo.valueParameterTypeMismatch(superValueParameterType, subValueParameterType, OverrideCompatibilityInfo.Result.INCOMPATIBLE);
 				}
@@ -250,7 +250,7 @@ public class OverridingUtil
 		return OverrideCompatibilityInfo.success();
 	}
 
-	private static JetType getUpperBound(JetType type)
+	private static NapileType getUpperBound(NapileType type)
 	{
 		if(type.getConstructor().getDeclarationDescriptor() instanceof ClassDescriptor)
 		{
@@ -267,11 +267,11 @@ public class OverridingUtil
 		}
 	}
 
-	public static boolean isReturnTypeOkForOverride(@NotNull JetTypeChecker typeChecker, @NotNull CallableDescriptor superDescriptor, @NotNull CallableDescriptor subDescriptor)
+	public static boolean isReturnTypeOkForOverride(@NotNull NapileTypeChecker typeChecker, @NotNull CallableDescriptor superDescriptor, @NotNull CallableDescriptor subDescriptor)
 	{
 		List<TypeParameterDescriptor> superTypeParameters = superDescriptor.getTypeParameters();
 		List<TypeParameterDescriptor> subTypeParameters = subDescriptor.getTypeParameters();
-		Map<TypeConstructor, JetType> substitutionContext = Maps.newHashMap();
+		Map<TypeConstructor, NapileType> substitutionContext = Maps.newHashMap();
 		for(int i = 0, typeParametersSize = superTypeParameters.size(); i < typeParametersSize; i++)
 		{
 			TypeParameterDescriptor superTypeParameter = superTypeParameters.get(i);
@@ -281,7 +281,7 @@ public class OverridingUtil
 
 		// This code compares return types, but they are not a part of the signature, so this code does not belong here
 		TypeSubstitutor typeSubstitutor = TypeSubstitutor.create(substitutionContext);
-		JetType substitutedSuperReturnType = typeSubstitutor.substitute(superDescriptor.getReturnType(), null);
+		NapileType substitutedSuperReturnType = typeSubstitutor.substitute(superDescriptor.getReturnType(), null);
 		assert substitutedSuperReturnType != null;
 		if(!typeChecker.isSubtypeOf(subDescriptor.getReturnType(), substitutedSuperReturnType))
 		{
@@ -377,7 +377,7 @@ public class OverridingUtil
 		}
 
 		@NotNull
-		public static OverrideCompatibilityInfo valueParameterTypeMismatch(JetType superValueParameter, JetType subValueParameter, Result result)
+		public static OverrideCompatibilityInfo valueParameterTypeMismatch(NapileType superValueParameter, NapileType subValueParameter, Result result)
 		{
 			return new OverrideCompatibilityInfo(result, "valueParameterTypeMismatch"); // TODO
 		}
@@ -389,7 +389,7 @@ public class OverridingUtil
 		}
 
 		@NotNull
-		public static OverrideCompatibilityInfo returnTypeMismatch(JetType substitutedSuperReturnType, JetType unsubstitutedSubReturnType)
+		public static OverrideCompatibilityInfo returnTypeMismatch(NapileType substitutedSuperReturnType, NapileType unsubstitutedSubReturnType)
 		{
 			return new OverrideCompatibilityInfo(Result.CONFLICT, "returnTypeMismatch: " +
 					unsubstitutedSubReturnType +

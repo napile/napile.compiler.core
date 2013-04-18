@@ -28,7 +28,7 @@ public interface TypeSubstitution
 	TypeSubstitution EMPTY = new TypeSubstitution()
 	{
 		@Override
-		public JetType get(TypeConstructor key)
+		public NapileType get(TypeConstructor key)
 		{
 			return null;
 		}
@@ -49,7 +49,7 @@ public interface TypeSubstitution
 	TypeSubstitution DEFAULT_TYPE_FOR_TYPE_PARAMETERS = new TypeSubstitution()
 	{
 		@Override
-		public JetType get(TypeConstructor key)
+		public NapileType get(TypeConstructor key)
 		{
 			DeclarationDescriptor declarationDescriptor = key.getDeclarationDescriptor();
 			if(declarationDescriptor instanceof TypeParameterDescriptor)
@@ -71,7 +71,7 @@ public interface TypeSubstitution
 	};
 
 	@Nullable
-	JetType get(TypeConstructor key);
+	NapileType get(TypeConstructor key);
 
 	boolean isEmpty();
 }

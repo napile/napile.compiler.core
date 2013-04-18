@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.analyzer.AnalyzerFacade;
-import org.napile.compiler.common.JetCoreEnvironment;
+import org.napile.compiler.common.NapileCoreEnvironment;
 import org.napile.compiler.common.messages.AnalyzerWithCompilerReport;
 import org.napile.compiler.common.messages.CompilerMessageLocation;
 import org.napile.compiler.common.messages.CompilerMessageSeverity;
@@ -44,7 +44,7 @@ import junit.framework.TestCase;
 public abstract class NapileTestCase extends TestCase
 {
 	private final File testDir = new File("testFramework/src/test/napileRt");
-	protected JetCoreEnvironment environment;
+	protected NapileCoreEnvironment environment;
 	protected boolean genResults;
 	protected AnalyzeExhaust analyzeExhaust;
 
@@ -60,7 +60,7 @@ public abstract class NapileTestCase extends TestCase
 
 		CompilerConfiguration configuration = new CompilerConfiguration();
 
-		environment = new JetCoreEnvironment(Disposer.newDisposable(), configuration);
+		environment = new NapileCoreEnvironment(Disposer.newDisposable(), configuration);
 		environment.addSources(testDir);
 
 		AnalyzerWithCompilerReport analyzerWithCompilerReport = new AnalyzerWithCompilerReport(new MessageCollector()

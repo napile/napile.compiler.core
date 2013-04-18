@@ -28,7 +28,7 @@ import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.calls.inference.ConstraintSystem;
 import org.napile.compiler.lang.resolve.calls.inference.InferenceErrorData;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -94,12 +94,12 @@ import org.napile.compiler.lang.types.JetType;
 		}
 
 		@Override
-		public void unsafeCall(@NotNull BindingTrace trace, @NotNull JetType type, boolean isCallForImplicitInvoke)
+		public void unsafeCall(@NotNull BindingTrace trace, @NotNull NapileType type, boolean isCallForImplicitInvoke)
 		{
 		}
 
 		@Override
-		public void unnecessarySafeCall(@NotNull BindingTrace trace, @NotNull JetType type)
+		public void unnecessarySafeCall(@NotNull BindingTrace trace, @NotNull NapileType type)
 		{
 		}
 
@@ -161,9 +161,9 @@ import org.napile.compiler.lang.types.JetType;
 
 	void instantiationOfAbstractClass(@NotNull BindingTrace trace);
 
-	void unsafeCall(@NotNull BindingTrace trace, @NotNull JetType type, boolean isCallForImplicitInvoke);
+	void unsafeCall(@NotNull BindingTrace trace, @NotNull NapileType type, boolean isCallForImplicitInvoke);
 
-	void unnecessarySafeCall(@NotNull BindingTrace trace, @NotNull JetType type);
+	void unnecessarySafeCall(@NotNull BindingTrace trace, @NotNull NapileType type);
 
 	void danglingFunctionLiteralArgumentSuspected(@NotNull BindingTrace trace, @NotNull List<NapileExpression> functionLiteralArguments);
 

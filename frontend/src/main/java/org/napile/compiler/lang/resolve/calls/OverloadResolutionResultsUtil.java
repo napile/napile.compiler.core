@@ -21,7 +21,7 @@ import java.util.Collection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.google.common.collect.Lists;
 
 /**
@@ -39,7 +39,7 @@ public class OverloadResolutionResultsUtil
 	}
 
 	@Nullable
-	public static <D extends CallableDescriptor> JetType getResultType(OverloadResolutionResults<D> results)
+	public static <D extends CallableDescriptor> NapileType getResultType(OverloadResolutionResults<D> results)
 	{
 		if(results.isSuccess())
 		{

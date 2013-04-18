@@ -60,7 +60,7 @@ public class NapileParserDefinition implements ParserDefinition
 	@Override
 	public PsiParser createParser(Project project)
 	{
-		return new JetParser(project);
+		return new NapileParser();
 	}
 
 	@Override

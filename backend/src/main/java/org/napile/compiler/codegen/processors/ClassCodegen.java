@@ -44,7 +44,7 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.intellij.openapi.util.Pair;
 
 /**
@@ -95,7 +95,7 @@ public class ClassCodegen extends NapileVisitorVoid
 		constructorsAdapters.put(Boolean.FALSE, new InstructionAdapter()); //instance
 		constructorsAdapters.put(Boolean.TRUE, new InstructionAdapter()); //static
 
-		for(JetType superType : classDescriptor.getSupertypes())
+		for(NapileType superType : classDescriptor.getSupertypes())
 			classNode.supers.add(TypeTransformer.toAsmType(bindingTrace, superType, classNode));
 
 		NapileDeclaration[] declarations = classLike.getDeclarations();
@@ -243,7 +243,7 @@ public class ClassCodegen extends NapileVisitorVoid
 
 		ClassDescriptor classDescriptor = bindingTrace.safeGet(BindingTraceKeys.CLASS, value);
 		ClassNode innerClassNode = new ClassNode(Modifier.list(Modifier.STATIC, Modifier.FINAL), classFqName);
-		for(JetType superType : classDescriptor.getSupertypes())
+		for(NapileType superType : classDescriptor.getSupertypes())
 			innerClassNode.supers.add(TypeTransformer.toAsmType(bindingTrace, superType, classNode));
 
 		MethodNode enumClassConstructorNode = MethodNode.constructor(Modifier.list(Modifier.LOCAL));

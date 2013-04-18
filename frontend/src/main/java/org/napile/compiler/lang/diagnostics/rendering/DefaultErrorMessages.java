@@ -31,7 +31,7 @@ import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.lexer.NapileKeywordToken;
 import org.napile.compiler.render.DescriptorRenderer;
 
@@ -272,17 +272,17 @@ public class DefaultErrorMessages
 		MAP.put(CANNOT_CHECK_FOR_ERASED, "Cannot check for instance of erased type: {0}", RENDER_TYPE);
 		MAP.put(UNCHECKED_CAST, "Unchecked cast: {0} to {1}", RENDER_TYPE, RENDER_TYPE);
 
-		MAP.put(INCONSISTENT_TYPE_PARAMETER_VALUES, "Type parameter {0} of ''{1}'' has inconsistent values: {2}", NAME, NAME, new Renderer<Collection<JetType>>()
+		MAP.put(INCONSISTENT_TYPE_PARAMETER_VALUES, "Type parameter {0} of ''{1}'' has inconsistent values: {2}", NAME, NAME, new Renderer<Collection<NapileType>>()
 		{
 			@NotNull
 			@Override
-			public String render(@NotNull Collection<JetType> types)
+			public String render(@NotNull Collection<NapileType> types)
 			{
 				StringBuilder builder = new StringBuilder();
-				for(Iterator<JetType> iterator = types.iterator(); iterator.hasNext(); )
+				for(Iterator<NapileType> iterator = types.iterator(); iterator.hasNext(); )
 				{
-					JetType jetType = iterator.next();
-					builder.append(jetType);
+					NapileType napileType = iterator.next();
+					builder.append(napileType);
 					if(iterator.hasNext())
 					{
 						builder.append(", ");
@@ -320,11 +320,11 @@ public class DefaultErrorMessages
 
 		MAP.put(CONFLICTING_OVERLOADS, "{1} is already defined in ''{0}''", DescriptorRenderer.TEXT, TO_STRING);
 
-		MAP.put(FUNCTION_EXPECTED, "Expression ''{0}''{1} cannot be invoked as a function", ELEMENT_TEXT, new Renderer<JetType>()
+		MAP.put(FUNCTION_EXPECTED, "Expression ''{0}''{1} cannot be invoked as a function", ELEMENT_TEXT, new Renderer<NapileType>()
 		{
 			@NotNull
 			@Override
-			public String render(@NotNull JetType type)
+			public String render(@NotNull NapileType type)
 			{
 				if(ErrorUtils.isErrorType(type))
 					return "";

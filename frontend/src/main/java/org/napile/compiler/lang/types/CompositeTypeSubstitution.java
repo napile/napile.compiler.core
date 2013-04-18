@@ -31,11 +31,11 @@ public class CompositeTypeSubstitution implements TypeSubstitution
 	}
 
 	@Override
-	public JetType get(TypeConstructor key)
+	public NapileType get(TypeConstructor key)
 	{
 		for(TypeSubstitution substitution : inner)
 		{
-			JetType value = substitution.get(key);
+			NapileType value = substitution.get(key);
 			if(value != null)
 				return value;
 		}

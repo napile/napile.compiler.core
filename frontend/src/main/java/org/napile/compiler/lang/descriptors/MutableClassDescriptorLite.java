@@ -24,12 +24,12 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ClassReceiver;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.ErrorUtils;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeConstructor;
 import org.napile.compiler.lang.types.TypeUtils;
 import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
@@ -42,7 +42,7 @@ import com.google.common.collect.Lists;
 public abstract class MutableClassDescriptorLite extends ClassDescriptorBase implements WithDeferredResolve
 {
 	private List<TypeParameterDescriptor> typeParameters;
-	private Collection<JetType> supertypes = Lists.newArrayList();
+	private Collection<NapileType> supertypes = Lists.newArrayList();
 
 	private TypeConstructor typeConstructor;
 
@@ -51,7 +51,7 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 
 	private final ClassKind kind;
 
-	private JetScope scopeForMemberLookup;
+	private NapileScope scopeForMemberLookup;
 
 	private ClassReceiver implicitReceiver;
 
@@ -111,7 +111,7 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 		return typeConstructor;
 	}
 
-	public void setScopeForMemberLookup(JetScope scopeForMemberLookup)
+	public void setScopeForMemberLookup(NapileScope scopeForMemberLookup)
 	{
 		this.scopeForMemberLookup = scopeForMemberLookup;
 	}
@@ -132,7 +132,7 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 
 	@NotNull
 	@Override
-	public JetScope getScopeForMemberLookup()
+	public NapileScope getScopeForMemberLookup()
 	{
 		return scopeForMemberLookup;
 	}
@@ -170,13 +170,13 @@ public abstract class MutableClassDescriptorLite extends ClassDescriptorBase imp
 
 	@NotNull
 	@Override
-	public Collection<JetType> getSupertypes()
+	public Collection<NapileType> getSupertypes()
 	{
 		return supertypes;
 	}
 
 
-	public void addSupertype(@NotNull JetType supertype)
+	public void addSupertype(@NotNull NapileType supertype)
 	{
 		if(!ErrorUtils.isErrorType(supertype))
 		{

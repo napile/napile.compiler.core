@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.resolve.scopes.receivers.AbstractReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptorVisitor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 
 /**
  * @author abreslav
@@ -30,7 +30,7 @@ public class AutoCastReceiver extends AbstractReceiverDescriptor
 	private final ReceiverDescriptor original;
 	private final boolean canCast;
 
-	public AutoCastReceiver(@NotNull ReceiverDescriptor original, @NotNull JetType castTo, boolean canCast)
+	public AutoCastReceiver(@NotNull ReceiverDescriptor original, @NotNull NapileType castTo, boolean canCast)
 	{
 		super(castTo);
 		this.original = original;

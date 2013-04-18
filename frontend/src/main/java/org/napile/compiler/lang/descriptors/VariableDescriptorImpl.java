@@ -28,7 +28,7 @@ import org.napile.compiler.lang.resolve.OverridingUtil;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.TransientReceiver;
 import org.napile.compiler.lang.types.DescriptorSubstitutor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeSubstitutor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -63,13 +63,13 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 		this(null, containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable, isEnumValue);
 	}
 
-	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull JetType outType, @NotNull Kind kind, boolean isStatic, boolean mutable, boolean isEnumValue)
+	public VariableDescriptorImpl(@NotNull DeclarationDescriptor containingDeclaration, @NotNull List<AnnotationDescriptor> annotations, @NotNull Modality modality, @NotNull Visibility visibility, @NotNull ReceiverDescriptor expectedThisObject, @NotNull Name name, @NotNull NapileType outType, @NotNull Kind kind, boolean isStatic, boolean mutable, boolean isEnumValue)
 	{
 		this(containingDeclaration, annotations, modality, visibility, name, kind, isStatic, mutable, isEnumValue);
 		setType(outType, Collections.<TypeParameterDescriptor>emptyList(), expectedThisObject);
 	}
 
-	public void setType(@NotNull JetType outType, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor expectedThisObject)
+	public void setType(@NotNull NapileType outType, @NotNull List<? extends TypeParameterDescriptor> typeParameters, @NotNull ReceiverDescriptor expectedThisObject)
 	{
 		setOutType(outType);
 
@@ -115,8 +115,8 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 		List<TypeParameterDescriptor> substitutedTypeParameters = Lists.newArrayList();
 		TypeSubstitutor substitutor = DescriptorSubstitutor.substituteTypeParameters(getTypeParameters(), originalSubstitutor, substitutedDescriptor, substitutedTypeParameters);
 
-		JetType originalOutType = getType();
-		JetType outType = substitutor.substitute(originalOutType, newOwner);
+		NapileType originalOutType = getType();
+		NapileType outType = substitutor.substitute(originalOutType, newOwner);
 		if(outType == null)
 		{
 			return null; // TODO : tell the user that the property was projected out
@@ -125,7 +125,7 @@ public class VariableDescriptorImpl extends AbstractVariableDescriptorImpl imple
 		ReceiverDescriptor substitutedExpectedThisObject;
 		if(expectedThisObject.exists())
 		{
-			JetType substitutedExpectedThisObjectType = substitutor.substitute(getExpectedThisObject().getType(), newOwner);
+			NapileType substitutedExpectedThisObjectType = substitutor.substitute(getExpectedThisObject().getType(), newOwner);
 			substitutedExpectedThisObject = new TransientReceiver(substitutedExpectedThisObjectType);
 		}
 		else

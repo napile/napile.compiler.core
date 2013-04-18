@@ -27,7 +27,7 @@ import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.descriptors.annotations.AnnotationDescriptor;
-import org.napile.compiler.lang.resolve.scopes.JetScope;
+import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.types.error.ErrorSimpleMethodDescriptorImpl;
 import org.napile.compiler.lang.types.impl.TypeConstructorImpl;
@@ -41,7 +41,7 @@ public class ErrorUtils
 	private static final ModuleDescriptor ERROR_MODULE = new ModuleDescriptor(Name.special("<ERROR MODULE>"));
 
 
-	public static class ErrorScope implements JetScope
+	public static class ErrorScope implements NapileScope
 	{
 		private final String debugMessage;
 
@@ -167,15 +167,15 @@ public class ErrorUtils
 
 	static
 	{
-		ERROR_CLASS.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), Collections.<JetType>emptyList(), createErrorScope("ERROR_CLASS"), Collections.<ConstructorDescriptor>emptySet());
+		ERROR_CLASS.initialize(true, Collections.<TypeParameterDescriptor>emptyList(), Collections.<NapileType>emptyList(), createErrorScope("ERROR_CLASS"), Collections.<ConstructorDescriptor>emptySet());
 	}
 
-	public static JetScope createErrorScope(String debugMessage)
+	public static NapileScope createErrorScope(String debugMessage)
 	{
 		return new ErrorScope(debugMessage);
 	}
 
-	private static final JetType ERROR_PROPERTY_TYPE = createErrorType("<ERROR PROPERTY TYPE>");
+	private static final NapileType ERROR_PROPERTY_TYPE = createErrorType("<ERROR PROPERTY TYPE>");
 	private static final VariableDescriptor ERROR_PROPERTY = new VariableDescriptorImpl(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), Modality.OPEN, Visibility.PUBLIC, ReceiverDescriptor.NO_RECEIVER, Name.special("<ERROR PROPERTY>"), ERROR_PROPERTY_TYPE, CallableMemberDescriptor.Kind.DECLARATION, false, false, false);
 	private static final Set<VariableDescriptor> ERROR_PROPERTY_GROUP = Collections.singleton(ERROR_PROPERTY);
 
@@ -189,31 +189,31 @@ public class ErrorUtils
 		return function;
 	}
 
-	private static final JetType ERROR_PARAMETER_TYPE = createErrorType("<ERROR VALUE_PARAMETER TYPE>");
+	private static final NapileType ERROR_PARAMETER_TYPE = createErrorType("<ERROR VALUE_PARAMETER TYPE>");
 
 	@NotNull
-	public static JetType createErrorType(String debugMessage)
+	public static NapileType createErrorType(String debugMessage)
 	{
 		return createErrorType(debugMessage, createErrorScope(debugMessage));
 	}
 
-	private static JetType createErrorType(String debugMessage, JetScope memberScope)
+	private static NapileType createErrorType(String debugMessage, NapileScope memberScope)
 	{
 		return createErrorTypeWithCustomDebugName(memberScope, "[ERROR : " + debugMessage + "]");
 	}
 
 	@NotNull
-	public static JetType createErrorTypeWithCustomDebugName(String debugName)
+	public static NapileType createErrorTypeWithCustomDebugName(String debugName)
 	{
 		return createErrorTypeWithCustomDebugName(createErrorScope(debugName), debugName);
 	}
 
-	private static JetType createErrorTypeWithCustomDebugName(JetScope memberScope, String debugName)
+	private static NapileType createErrorTypeWithCustomDebugName(NapileScope memberScope, String debugName)
 	{
-		return new ErrorTypeImpl(new TypeConstructorImpl(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), false, debugName, Collections.<TypeParameterDescriptorImpl>emptyList(), Collections.<JetType>emptyList()), memberScope);
+		return new ErrorTypeImpl(new TypeConstructorImpl(ERROR_CLASS, Collections.<AnnotationDescriptor>emptyList(), false, debugName, Collections.<TypeParameterDescriptorImpl>emptyList(), Collections.<NapileType>emptyList()), memberScope);
 	}
 
-	public static JetType createWrongVarianceErrorType(JetType value)
+	public static NapileType createWrongVarianceErrorType(NapileType value)
 	{
 		return createErrorType(value + " is not allowed here", value.getMemberScope());
 	}
@@ -228,7 +228,7 @@ public class ErrorUtils
 		return typeConstructor == ERROR_CLASS.getTypeConstructor();
 	}
 
-	public static boolean isErrorType(@NotNull JetType type)
+	public static boolean isErrorType(@NotNull NapileType type)
 	{
 		return type != TypeUtils.NO_EXPECTED_TYPE && !(type instanceof NamespaceType) &&
 				((type instanceof DeferredType && (((DeferredType) type).getActualType() == null || isErrorType(((DeferredType) type).getActualType()))) ||
@@ -236,7 +236,7 @@ public class ErrorUtils
 						isError(type.getConstructor()));
 	}
 
-	public static boolean containsErrorType(@Nullable JetType type)
+	public static boolean containsErrorType(@Nullable NapileType type)
 	{
 		if(type == null)
 			return false;
@@ -244,7 +244,7 @@ public class ErrorUtils
 			return false;
 		if(isErrorType(type))
 			return true;
-		for(JetType projection : type.getArguments())
+		for(NapileType projection : type.getArguments())
 		{
 			if(containsErrorType(projection))
 				return true;
@@ -257,14 +257,14 @@ public class ErrorUtils
 		return candidate == getErrorClass() || candidate.getContainingDeclaration() == getErrorClass() || candidate == ERROR_MODULE;
 	}
 
-	private static class ErrorTypeImpl implements JetType
+	private static class ErrorTypeImpl implements NapileType
 	{
 
 		private final TypeConstructor constructor;
 
-		private final JetScope memberScope;
+		private final NapileScope memberScope;
 
-		private ErrorTypeImpl(TypeConstructor constructor, JetScope memberScope)
+		private ErrorTypeImpl(TypeConstructor constructor, NapileScope memberScope)
 		{
 			this.constructor = constructor;
 			this.memberScope = memberScope;
@@ -279,7 +279,7 @@ public class ErrorUtils
 
 		@NotNull
 		@Override
-		public List<JetType> getArguments()
+		public List<NapileType> getArguments()
 		{
 			return Collections.emptyList();
 		}
@@ -292,7 +292,7 @@ public class ErrorUtils
 
 		@NotNull
 		@Override
-		public JetScope getMemberScope()
+		public NapileScope getMemberScope()
 		{
 			return memberScope;
 		}

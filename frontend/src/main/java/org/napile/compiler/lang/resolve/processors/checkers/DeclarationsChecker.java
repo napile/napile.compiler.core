@@ -41,7 +41,7 @@ import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
 import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
 import org.napile.compiler.lang.resolve.BodiesResolveContext;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.SelfTypeConstructor;
 import com.intellij.psi.PsiCompiledElement;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -117,11 +117,11 @@ public class DeclarationsChecker
 	{
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType jetType = trace.get(BindingTraceKeys.TYPE, typeReference);
-			if(jetType == null)
+			NapileType napileType = trace.get(BindingTraceKeys.TYPE, typeReference);
+			if(napileType == null)
 				continue;
 
-			ClassifierDescriptor classifierDescriptor = jetType.getConstructor().getDeclarationDescriptor();
+			ClassifierDescriptor classifierDescriptor = napileType.getConstructor().getDeclarationDescriptor();
 			if(classifierDescriptor instanceof ClassDescriptor)
 			{
 				if(((ClassDescriptor) classifierDescriptor).getModality() == Modality.FINAL)
@@ -134,17 +134,17 @@ public class DeclarationsChecker
 
 	private void checkSuperListForDuplicates(@NotNull List<? extends NapileTypeReference> typeReferences)
 	{
-		List<JetType> list = new ArrayList<JetType>(typeReferences.size());
+		List<NapileType> list = new ArrayList<NapileType>(typeReferences.size());
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType jetType = trace.get(BindingTraceKeys.TYPE, typeReference);
-			if(jetType == null)
+			NapileType napileType = trace.get(BindingTraceKeys.TYPE, typeReference);
+			if(napileType == null)
 				continue;
 
-			if(list.contains(jetType))
+			if(list.contains(napileType))
 				trace.report(Errors.SUPERTYPE_APPEARS_TWICE.on(typeReference));
 			else
-				list.add(jetType);
+				list.add(napileType);
 		}
 	}
 
@@ -152,9 +152,9 @@ public class DeclarationsChecker
 	{
 		for(NapileTypeReference typeReference : typeReferences)
 		{
-			JetType jetType = trace.safeGet(BindingTraceKeys.TYPE, typeReference);
+			NapileType napileType = trace.safeGet(BindingTraceKeys.TYPE, typeReference);
 
-			ClassifierDescriptor classifierDescriptor = jetType.getConstructor().getDeclarationDescriptor();
+			ClassifierDescriptor classifierDescriptor = napileType.getConstructor().getDeclarationDescriptor();
 			if(classifierDescriptor instanceof ClassDescriptor && !classifierDescriptor.getConstructors().isEmpty())
 				trace.report(Errors.TRAITED_CLASS_CANT_EXTEND_CLASS_WITH_CONSTRUCTORS.on(typeReference));
 		}
@@ -169,11 +169,11 @@ public class DeclarationsChecker
 
 		assert parent != null;
 
-		Map<NapileTypeReference, JetType> classSpecifiers = makeTypeListBySuperList(parent.getSuperTypes());
-		Map<NapileTypeReference, JetType> constructorSpecifiers = makeTypeList(constructor.getDelegationSpecifiers());
+		Map<NapileTypeReference, NapileType> classSpecifiers = makeTypeListBySuperList(parent.getSuperTypes());
+		Map<NapileTypeReference, NapileType> constructorSpecifiers = makeTypeList(constructor.getDelegationSpecifiers());
 
 		boolean thisCall = false;
-		for(Map.Entry<NapileTypeReference, JetType> constructorEntry : constructorSpecifiers.entrySet())
+		for(Map.Entry<NapileTypeReference, NapileType> constructorEntry : constructorSpecifiers.entrySet())
 		{
 			if(constructorEntry.getValue().getConstructor() instanceof SelfTypeConstructor)
 			{
@@ -188,7 +188,7 @@ public class DeclarationsChecker
 		}
 
 		if(!thisCall)
-			for(Map.Entry<NapileTypeReference, JetType> classEntry : classSpecifiers.entrySet())
+			for(Map.Entry<NapileTypeReference, NapileType> classEntry : classSpecifiers.entrySet())
 			{
 				if(!constructorSpecifiers.values().contains(classEntry.getValue()))
 					trace.report(Errors.MISSED_SUPER_CALL.on(constructor.getNameIdentifier(), classEntry.getValue()));
@@ -196,12 +196,12 @@ public class DeclarationsChecker
 	}
 
 	@NotNull
-	private Map<NapileTypeReference, JetType> makeTypeListBySuperList(@NotNull List<? extends NapileTypeReference> list)
+	private Map<NapileTypeReference, NapileType> makeTypeListBySuperList(@NotNull List<? extends NapileTypeReference> list)
 	{
-		Map<NapileTypeReference, JetType> types = new LinkedHashMap<NapileTypeReference, JetType>(list.size());
+		Map<NapileTypeReference, NapileType> types = new LinkedHashMap<NapileTypeReference, NapileType>(list.size());
 		for(NapileTypeReference typeReference : list)
 		{
-			JetType type = trace.safeGet(BindingTraceKeys.TYPE, typeReference);
+			NapileType type = trace.safeGet(BindingTraceKeys.TYPE, typeReference);
 			ClassifierDescriptor constructorDescriptor = type.getConstructor().getDeclarationDescriptor();
 			// traited class don't have constructors
 			if(constructorDescriptor instanceof ClassDescriptor && ((ClassDescriptor) constructorDescriptor).isTraited())
@@ -213,12 +213,12 @@ public class DeclarationsChecker
 	}
 
 	@NotNull
-	private Map<NapileTypeReference, JetType> makeTypeList(@NotNull List<NapileDelegationToSuperCall> list)
+	private Map<NapileTypeReference, NapileType> makeTypeList(@NotNull List<NapileDelegationToSuperCall> list)
 	{
-		Map<NapileTypeReference, JetType> types = new LinkedHashMap<NapileTypeReference, JetType>(list.size());
+		Map<NapileTypeReference, NapileType> types = new LinkedHashMap<NapileTypeReference, NapileType>(list.size());
 		for(NapileDelegationToSuperCall delegationSpecifier : list)
 		{
-			JetType type = trace.get(BindingTraceKeys.TYPE, delegationSpecifier.getTypeReference());
+			NapileType type = trace.get(BindingTraceKeys.TYPE, delegationSpecifier.getTypeReference());
 			types.put(delegationSpecifier.getTypeReference(), type);
 		}
 

@@ -29,9 +29,9 @@ import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.OverridingUtil;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import org.napile.compiler.lang.types.TypeUtils;
-import org.napile.compiler.lang.types.checker.JetTypeChecker;
+import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 
 /**
  * @author abreslav
@@ -205,19 +205,19 @@ public class OverloadingConflictResolver
 		return !f.getOriginal().getTypeParameters().isEmpty();
 	}
 
-	private boolean typeMoreSpecific(@NotNull JetType specific, @NotNull JetType general)
+	private boolean typeMoreSpecific(@NotNull NapileType specific, @NotNull NapileType general)
 	{
-		return JetTypeChecker.INSTANCE.isSubtypeOf(specific, general) || numericTypeMoreSpecific(specific, general);
+		return NapileTypeChecker.INSTANCE.isSubtypeOf(specific, general) || numericTypeMoreSpecific(specific, general);
 	}
 
-	private boolean numericTypeMoreSpecific(@NotNull JetType specific, @NotNull JetType general)
+	private boolean numericTypeMoreSpecific(@NotNull NapileType specific, @NotNull NapileType general)
 	{
-		JetType _double = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.DOUBLE, false);
-		JetType _float = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.FLOAT, false);
-		JetType _long = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.LONG, false);
-		JetType _int = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.INT, false);
-		JetType _byte = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.BYTE, false);
-		JetType _short = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.SHORT, false);
+		NapileType _double = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.DOUBLE, false);
+		NapileType _float = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.FLOAT, false);
+		NapileType _long = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.LONG, false);
+		NapileType _int = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.INT, false);
+		NapileType _byte = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.BYTE, false);
+		NapileType _short = TypeUtils.getTypeOfClassOrErrorType(specific.getMemberScope(), NapileLangPackage.SHORT, false);
 
 		if(TypeUtils.equalTypes(specific, _double) && TypeUtils.equalTypes(general, _float))
 			return true;

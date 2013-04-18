@@ -20,7 +20,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.descriptors.TypeParameterDescriptor;
-import org.napile.compiler.lang.types.JetType;
+import org.napile.compiler.lang.types.NapileType;
 import com.google.common.collect.Sets;
 
 /**
@@ -32,8 +32,8 @@ public class TypeValue implements BoundsOwner
 	private final Set<TypeValue> lowerBounds = Sets.newLinkedHashSet();
 
 	private final TypeParameterDescriptor typeParameterDescriptor; // Null for known types
-	private final JetType originalType;
-	private JetType value; // For an unknown - the value found by constraint resolution, for a known - just it's value
+	private final NapileType originalType;
+	private NapileType value; // For an unknown - the value found by constraint resolution, for a known - just it's value
 
 	// Unknown type
 	public TypeValue(@NotNull TypeParameterDescriptor typeParameterDescriptor)
@@ -43,7 +43,7 @@ public class TypeValue implements BoundsOwner
 	}
 
 	// Known type
-	public TypeValue(@NotNull JetType knownType)
+	public TypeValue(@NotNull NapileType knownType)
 	{
 		this.typeParameterDescriptor = null;
 		this.originalType = knownType;
@@ -75,13 +75,13 @@ public class TypeValue implements BoundsOwner
 	}
 
 	@NotNull
-	public JetType getType()
+	public NapileType getType()
 	{
 		return value;
 	}
 
 	@NotNull
-	public JetType getOriginalType()
+	public NapileType getOriginalType()
 	{
 		return originalType;
 	}
@@ -96,7 +96,7 @@ public class TypeValue implements BoundsOwner
 		lowerBounds.add(bound);
 	}
 
-	public void setValue(@NotNull JetType value)
+	public void setValue(@NotNull NapileType value)
 	{
 		this.value = value;
 	}

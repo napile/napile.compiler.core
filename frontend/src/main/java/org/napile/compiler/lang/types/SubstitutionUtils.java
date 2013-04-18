@@ -34,7 +34,7 @@ import com.google.common.collect.Multimap;
 public class SubstitutionUtils
 {
 	@NotNull
-	public static Map<TypeConstructor, JetType> buildSubstitutionContext(@NotNull JetType context)
+	public static Map<TypeConstructor, NapileType> buildSubstitutionContext(@NotNull NapileType context)
 	{
 		return buildSubstitutionContext(context.getConstructor().getParameters(), context.getArguments());
 	}
@@ -43,9 +43,9 @@ public class SubstitutionUtils
 	 * Builds a context with all the supertypes' parameters substituted
 	 */
 	@NotNull
-	public static TypeSubstitutor buildDeepSubstitutor(@NotNull JetType type)
+	public static TypeSubstitutor buildDeepSubstitutor(@NotNull NapileType type)
 	{
-		Map<TypeConstructor, JetType> substitution = Maps.newHashMap();
+		Map<TypeConstructor, NapileType> substitution = Maps.newHashMap();
 		TypeSubstitutor typeSubstitutor = TypeSubstitutor.create(substitution);
 		// we use the mutability of the map here
 		fillInDeepSubstitutor(type, typeSubstitutor, substitution, null);
@@ -53,10 +53,10 @@ public class SubstitutionUtils
 	}
 
 	@NotNull
-	public static Multimap<TypeConstructor, JetType> buildDeepSubstitutionMultimap(@NotNull JetType type)
+	public static Multimap<TypeConstructor, NapileType> buildDeepSubstitutionMultimap(@NotNull NapileType type)
 	{
-		Multimap<TypeConstructor, JetType> fullSubstitution = CommonSuppliers.newLinkedHashSetHashSetMultimap();
-		Map<TypeConstructor, JetType> substitution = Maps.newHashMap();
+		Multimap<TypeConstructor, NapileType> fullSubstitution = CommonSuppliers.newLinkedHashSetHashSetMultimap();
+		Map<TypeConstructor, NapileType> substitution = Maps.newHashMap();
 		TypeSubstitutor typeSubstitutor = TypeSubstitutor.create(substitution);
 		// we use the mutability of the map here
 		fillInDeepSubstitutor(type, typeSubstitutor, substitution, fullSubstitution);
@@ -64,10 +64,10 @@ public class SubstitutionUtils
 	}
 
 	// we use the mutability of the substitution map here
-	private static void fillInDeepSubstitutor(@NotNull JetType context, @NotNull TypeSubstitutor substitutor, @NotNull Map<TypeConstructor, JetType> substitution, @Nullable Multimap<TypeConstructor, JetType> fullSubstitution)
+	private static void fillInDeepSubstitutor(@NotNull NapileType context, @NotNull TypeSubstitutor substitutor, @NotNull Map<TypeConstructor, NapileType> substitution, @Nullable Multimap<TypeConstructor, NapileType> fullSubstitution)
 	{
 		List<TypeParameterDescriptor> parameters = context.getConstructor().getParameters();
-		List<JetType> arguments = context.getArguments();
+		List<NapileType> arguments = context.getArguments();
 
 		if(parameters.size() != arguments.size())
 		{
@@ -76,10 +76,10 @@ public class SubstitutionUtils
 
 		for(int i = 0; i < arguments.size(); i++)
 		{
-			JetType argument = arguments.get(i);
+			NapileType argument = arguments.get(i);
 			TypeParameterDescriptor typeParameterDescriptor = parameters.get(i);
 
-			JetType substitute = substitutor.substitute(argument, null);
+			NapileType substitute = substitutor.substitute(argument, null);
 			assert substitute != null;
 
 			substitution.put(typeParameterDescriptor.getTypeConstructor(), substitute);
@@ -90,21 +90,21 @@ public class SubstitutionUtils
 		}
 		if(TypeUtils.isEqualFqName(context, NapileLangPackage.NULL))
 			return;
-		for(JetType supertype : context.getConstructor().getSupertypes())
+		for(NapileType supertype : context.getConstructor().getSupertypes())
 		{
 			fillInDeepSubstitutor(supertype, substitutor, substitution, fullSubstitution);
 		}
 	}
 
 	@NotNull
-	public static Map<TypeConstructor, JetType> buildSubstitutionContext(@NotNull List<TypeParameterDescriptor> parameters, @NotNull List<JetType> contextArguments)
+	public static Map<TypeConstructor, NapileType> buildSubstitutionContext(@NotNull List<TypeParameterDescriptor> parameters, @NotNull List<NapileType> contextArguments)
 	{
-		Map<TypeConstructor, JetType> parameterValues = new HashMap<TypeConstructor, JetType>();
+		Map<TypeConstructor, NapileType> parameterValues = new HashMap<TypeConstructor, NapileType>();
 		fillInSubstitutionContext(parameters, contextArguments, parameterValues);
 		return parameterValues;
 	}
 
-	private static void fillInSubstitutionContext(List<TypeParameterDescriptor> parameters, List<JetType> contextArguments, Map<TypeConstructor, JetType> parameterValues)
+	private static void fillInSubstitutionContext(List<TypeParameterDescriptor> parameters, List<NapileType> contextArguments, Map<TypeConstructor, NapileType> parameterValues)
 	{
 		if(parameters.size() != contextArguments.size())
 		{
@@ -113,19 +113,19 @@ public class SubstitutionUtils
 		for(int i = 0, parametersSize = parameters.size(); i < parametersSize; i++)
 		{
 			TypeParameterDescriptor parameter = parameters.get(i);
-			JetType value = contextArguments.get(i);
+			NapileType value = contextArguments.get(i);
 			parameterValues.put(parameter.getTypeConstructor(), value);
 		}
 	}
 
-	public static boolean hasUnsubstitutedTypeParameters(JetType type)
+	public static boolean hasUnsubstitutedTypeParameters(NapileType type)
 	{
 		if(type.getConstructor().getDeclarationDescriptor() instanceof TypeParameterDescriptor)
 		{
 			return true;
 		}
 
-		for(JetType proj : type.getArguments())
+		for(NapileType proj : type.getArguments())
 		{
 			if(hasUnsubstitutedTypeParameters(proj))
 			{
@@ -136,7 +136,7 @@ public class SubstitutionUtils
 		return false;
 	}
 
-	public static void assertNotImmediatelyRecursive(Map<TypeConstructor, JetType> context)
+	public static void assertNotImmediatelyRecursive(Map<TypeConstructor, NapileType> context)
 	{
 		// Make sure we never replace a T with "Foo<T>" or something similar,
 		// because the substitution will not terminate in this case
@@ -144,10 +144,10 @@ public class SubstitutionUtils
 		//    T -> Foo<T1>
 		//    T -> Bar<T>
 
-		for(Map.Entry<TypeConstructor, JetType> entry : context.entrySet())
+		for(Map.Entry<TypeConstructor, NapileType> entry : context.entrySet())
 		{
 			TypeConstructor key = entry.getKey();
-			JetType value = entry.getValue();
+			NapileType value = entry.getValue();
 			if(TypeUtils.typeConstructorUsedInType(key, value))
 			{
 				throw new IllegalStateException("Immediately recursive substitution: " + context + "\nProblematic parameter: " + key + " -> " + value);
