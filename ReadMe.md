@@ -28,11 +28,12 @@ class Main
 
  * Need [IntelliJ IDEA 12.1 EAP](http://confluence.jetbrains.com/display/IDEADEV/IDEA+12.1+EAP)
  * Downloaded sources of
-    * [napile.compiler](https://github.com/napile-lang/napile.compiler) - base source, compiler + IDEA plugin
+    * [napile.compiler.core](https://github.com/napile-lang/napile.compiler.core) - base source, compiler
+    * [idea.napile-lang](https://github.com/napile-lang/idea.napile-lang) - IDEA Plugin
     * [napile.classpath.draft](https://github.com/napile-lang/napile.classpath.draft) - draft classlib in napile
     * [napile.jvm](https://github.com/napile-lang/napile.jvm) - only for running, and bytecode improvements
     * [napile.asm](https://github.com/napile-lang/napile.asm) - only for bytecode improvements
-
+ * Report issue at [bugtracker](http://napile.myjetbrains.com/)
 # Help & Development
 
 I am working on napile itself. I have free time. But my expirence in some futures is small(ex: VM on C++).
