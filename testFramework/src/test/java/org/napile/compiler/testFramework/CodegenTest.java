@@ -17,9 +17,6 @@
 package org.napile.compiler.testFramework;
 
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.codegen.CompilationErrorHandler;
-import org.napile.compiler.codegen.GenerationState;
-import org.napile.compiler.codegen.Progress;
 import org.napile.compiler.codegen.processors.BindingTraceKeys2;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
@@ -30,13 +27,13 @@ import org.napile.compiler.lang.psi.NapileFile;
  */
 public class CodegenTest extends NapileMassTestCase
 {
-	private GenerationState generationState;
+	private TestGenerationState generationState;
 
 	@Override
 	public void testAll() throws Exception
 	{
-		generationState = new GenerationState(environment.getProject(), Progress.DEAF, analyzeExhaust, environment.getSourceFiles());
-		generationState.compileAndGenerate(CompilationErrorHandler.THROW_EXCEPTION);
+		generationState = new TestGenerationState(analyzeExhaust, environment.getSourceFiles());
+		generationState.compileAndGenerate();
 
 		super.testAll();
 	}
