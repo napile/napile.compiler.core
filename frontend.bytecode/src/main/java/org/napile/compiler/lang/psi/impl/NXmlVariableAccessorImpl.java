@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi.impl;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.psi.NXmlParentedElementBase;
@@ -26,6 +27,7 @@ import org.napile.compiler.lang.psi.NapileCallParameter;
 import org.napile.compiler.lang.psi.NapileCallParameterList;
 import org.napile.compiler.lang.psi.NapileExpression;
 import org.napile.compiler.lang.psi.NapileModifierList;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileVariableAccessor;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
@@ -58,6 +60,13 @@ public class NXmlVariableAccessorImpl extends NXmlParentedElementBase implements
 		setMirrorCheckingType(element, null);
 
 		elementType = mirror.getAccessorElementType();
+	}
+
+	@NotNull
+	@Override
+	public FqName getFqName()
+	{
+		return NapilePsiUtil.getFQNameImpl(this);
 	}
 
 	@Nullable

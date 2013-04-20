@@ -16,7 +16,8 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileDeclaration;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
@@ -30,24 +31,25 @@ import com.intellij.util.io.StringRef;
  */
 public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedStub<NapileClass>
 {
-	private final StringRef qualifiedName;
+	private final FqName fqName;
 	private final StringRef name;
 
-	public NapilePsiClassStub(StubElement parent, @Nullable final String qualifiedName, String name)
+	public NapilePsiClassStub(StubElement parent, @NotNull final FqName fqName, String name)
 	{
-		this(parent, StringRef.fromString(qualifiedName), StringRef.fromString(name));
+		this(parent, fqName, StringRef.fromString(name));
 	}
 
-	public NapilePsiClassStub(StubElement parent, StringRef qualifiedName, StringRef name)
+	public NapilePsiClassStub(StubElement parent, @NotNull FqName fqName, StringRef name)
 	{
 		super(parent, NapileStubElementTypes.CLASS);
-		this.qualifiedName = qualifiedName;
+		this.fqName = fqName;
 		this.name = name;
 	}
 
-	public String getQualifiedName()
+	@NotNull
+	public FqName getFqName()
 	{
-		return StringRef.toString(qualifiedName);
+		return fqName;
 	}
 
 	@Override
@@ -63,7 +65,7 @@ public class NapilePsiClassStub extends StubBase<NapileClass> implements NamedSt
 		builder.append("NapilePsiClassStub[");
 
 		builder.append("name=").append(getName());
-		builder.append(" fqn=").append(getQualifiedName());
+		builder.append(" fqn=").append(getFqName());
 		builder.append("]");
 
 		return builder.toString();

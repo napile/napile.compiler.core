@@ -69,7 +69,7 @@ public class NodeToStubBuilder extends DummyNodeVisitor<StubElement>
 		if(classNode.name.shortName().getName().contains(AsmConstants.ANONYM_SPLITTER))
 			return null;
 
-		NapilePsiClassStub classStub = new NapilePsiClassStub(a2, classNode.name.getFqName(), classNode.name.shortName().getName());
+		NapilePsiClassStub classStub = new NapilePsiClassStub(a2, classNode.name, classNode.name.shortName().getName());
 
 		for(AbstractMemberNode<?> memberNode : classNode.getMembers())
 		{

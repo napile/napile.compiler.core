@@ -1163,8 +1163,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 			if(containingFile instanceof NapileFile)
 			{
 				StringBuilder builder = new StringBuilder();
-				String packageName = ((NapileFile) containingFile).getPackageName();
-				if(packageName != null)
+				String packageName = ((NapileFile) containingFile).getPackage().getFqName().getFqName();
+				if(!packageName.isEmpty())
 					builder.append(packageName.replace(".", "/")).append("/");
 				builder.append(containingFile.getVirtualFile().getName());
 				path = builder.toString();

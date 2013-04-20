@@ -17,12 +17,11 @@
 package org.napile.compiler.lang.psi.stubs.elements;
 
 import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.NapileFile;
+import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.stubs.DefaultStubBuilder;
 import com.intellij.psi.stubs.StubElement;
-import com.intellij.util.io.StringRef;
 
 /**
  * @author Nikolay Krasko
@@ -35,7 +34,7 @@ public class NapileFileStubBuilder extends DefaultStubBuilder
 		if(!(file instanceof NapileFile))
 			return super.createStubForFile(file);
 
-		NapileFile jetFile = (NapileFile) file;
-		return new NapilePsiFileStub(jetFile, StringRef.fromString(jetFile.getPackageName()), false);
+		NapileFile napileFile = (NapileFile) file;
+		return new NapilePsiFileStub(napileFile, napileFile.getPackage().getFqName(), false);
 	}
 }

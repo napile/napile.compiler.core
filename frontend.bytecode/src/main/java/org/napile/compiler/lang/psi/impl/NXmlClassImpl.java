@@ -16,25 +16,30 @@
 
 package org.napile.compiler.lang.psi.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.compiler.lang.psi.*;
+import org.napile.compiler.lang.psi.NapileClass;
+import org.napile.compiler.lang.psi.NapileClassBody;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclaration;
+import org.napile.compiler.lang.psi.NapileElement;
+import org.napile.compiler.lang.psi.NapilePsiUtil;
+import org.napile.compiler.lang.psi.NapileTypeReference;
+import org.napile.compiler.lang.psi.NapileVisitor;
+import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.stubs.NapilePsiClassStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import org.napile.compiler.util.NXmlMirrorUtil;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.SourceTreeToPsiMap;
 import com.intellij.psi.impl.source.tree.TreeElement;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.util.PsiTreeUtil;
 
 /**
  * @author VISTALL
@@ -69,33 +74,6 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
 	}
 
-	@Nullable
-	@Override
-	public String getQualifiedName()
-	{
-		NapilePsiClassStub stub = getStub();
-		if(stub != null)
-		{
-			return stub.getQualifiedName();
-		}
-
-		List<String> parts = new ArrayList<String>();
-		NapileClassLike current = this;
-		while(current != null)
-		{
-			parts.add(current.getName());
-			current = PsiTreeUtil.getParentOfType(current, NapileClassLike.class);
-		}
-		NapileFile file = getContainingFile();
-		String fileQualifiedName = file.getPackage().getQualifiedName();
-		if(!fileQualifiedName.isEmpty())
-		{
-			parts.add(fileQualifiedName);
-		}
-		Collections.reverse(parts);
-		return StringUtil.join(parts, ".");
-	}
-
 	@NotNull
 	@Override
 	public NapileConstructor[] getConstructors()
@@ -103,6 +81,7 @@ public class NXmlClassImpl extends NXmlTypeParameterOwnerStub<NapilePsiClassStub
 		return getStub().getChildrenByType(NapileStubElementTypes.CONSTRUCTOR, NapileConstructor.ARRAY_FACTORY);
 	}
 
+	@NotNull
 	@Override
 	public FqName getFqName()
 	{

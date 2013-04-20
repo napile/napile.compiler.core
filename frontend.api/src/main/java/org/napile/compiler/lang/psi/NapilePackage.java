@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 
 /**
@@ -39,5 +40,6 @@ public interface NapilePackage extends NapileElement
 	@NotNull
 	Name getNameAsName();
 
-	String getQualifiedName();
+	@NotNull
+	FqName getFqName();
 }

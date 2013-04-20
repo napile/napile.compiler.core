@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi.impl;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileCallParameter;
@@ -144,5 +145,12 @@ public class NapileVariableAccessorImpl extends NapileDeclarationImpl implements
 	public <R, D> R accept(@NotNull NapileVisitor<R, D> visitor, D data)
 	{
 		return visitor.visitVariableAccessor(this, data);
+	}
+
+	@NotNull
+	@Override
+	public FqName getFqName()
+	{
+		return NapilePsiUtil.getFQNameImpl(this);
 	}
 }

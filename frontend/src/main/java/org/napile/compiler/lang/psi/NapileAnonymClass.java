@@ -52,6 +52,7 @@ public class NapileAnonymClass extends NapileElementImpl implements NapileClassL
 		return FQ_NAME.getFqName();
 	}
 
+	@NotNull
 	@Override
 	public FqName getFqName()
 	{

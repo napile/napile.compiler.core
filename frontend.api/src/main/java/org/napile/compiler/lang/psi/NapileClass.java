@@ -36,8 +36,6 @@ public interface NapileClass extends NapileNamedDeclaration, NapileTypeParameter
 		}
 	};
 
-	String getQualifiedName();
-
 	@NotNull
 	NapileConstructor[] getConstructors();
 }

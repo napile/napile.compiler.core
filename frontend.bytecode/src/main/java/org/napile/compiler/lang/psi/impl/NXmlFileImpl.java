@@ -25,6 +25,7 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.io.xml.in.AsmXmlFileReader;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.tree.members.ClassNode;
 import org.napile.compiler.NXmlFileType;
 import org.napile.compiler.NapileFileType;
@@ -173,20 +174,6 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile, StubBas
 		getMirror();
 
 		return packageImpl;
-	}
-
-	@Nullable
-	@Override
-	public String getPackageName()
-	{
-		return getPackage().getQualifiedName();
-	}
-
-	@Nullable
-	@Override
-	public NapileImportDirective findImportByAlias(@NotNull String name)
-	{
-		return null;
 	}
 
 	@NotNull
@@ -344,7 +331,7 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile, StubBas
 			// Must be corrupted classfile
 			LOGGER.info("Class file is corrupted: " + getVirtualFile().getPresentableUrl());
 
-			StubTree emptyTree = new StubTree(new NapilePsiFileStub(this, StringRef.fromString("unknown"), true));
+			StubTree emptyTree = new StubTree(new NapilePsiFileStub(this, FqName.ROOT, true));
 			setStubTree(emptyTree);
 			resetMirror();
 			return emptyTree;

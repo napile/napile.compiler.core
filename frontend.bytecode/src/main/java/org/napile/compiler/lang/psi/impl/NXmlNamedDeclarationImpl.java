@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi.impl;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.psi.NXmlStubElementBase;
@@ -110,6 +111,13 @@ public abstract class NXmlNamedDeclarationImpl<T extends NamedStub> extends NXml
 	public Name getNameAsSafeName()
 	{
 		return NapilePsiUtil.safeName(getName());
+	}
+
+	@NotNull
+	@Override
+	public FqName getFqName()
+	{
+		return NapilePsiUtil.getFQNameImpl(this);
 	}
 
 	@Override

@@ -22,7 +22,6 @@ package org.napile.compiler.lang.psi.impl;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.lexer.NapileNodes;
@@ -34,7 +33,6 @@ import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
-import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
@@ -89,37 +87,11 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 		return false;
 	}
 
-	@Nullable
-	@Override
-	public NapileImportDirective findImportByAlias(@NotNull String name)
-	{
-		for(NapileImportDirective directive : getImportDirectives())
-		{
-			if(name.equals(directive.getAliasName()))
-			{
-				return directive;
-			}
-		}
-		return null;
-	}
-
 	@NotNull
 	@Override
 	public NapilePackage getPackage()
 	{
 		return findChildByClass(NapilePackage.class);
-	}
-
-	@Nullable
-	@Override
-	public String getPackageName()
-	{
-		NapilePsiFileStub stub = (NapilePsiFileStub) getStub();
-		if(stub != null)
-			return stub.getPackageName();
-
-		NapilePackage statement = getPackage();
-		return statement.getQualifiedName();
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class AllInfo
 	{
 		for(NapileFile napileFile : environment.getSourceFiles())
 		{
-			String packageName = napileFile.getPackageName();
+			String packageName = napileFile.getPackageFqName();
 			if(packageName == null)  //FIXME [VISTALL] default package?
 				continue;
 

@@ -16,12 +16,10 @@
 
 package org.napile.compiler.lang.psi.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.*;
@@ -30,10 +28,8 @@ import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.navigation.ItemPresentationProviders;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.stubs.IStubElementType;
-import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 
 /**
@@ -94,12 +90,6 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 	}
 
 	@Override
-	public FqName getFqName()
-	{
-		return NapilePsiUtil.getFQName(this);
-	}
-
-	@Override
 	public NapileElement getSuperTypesElement()
 	{
 		return (NapileElement)findChildByType(NapileNodes.EXTEND_TYPE_LIST);
@@ -133,38 +123,11 @@ public class NapileClassImpl extends NapileTypeParameterListOwnerStub<NapilePsiC
 		}
 		if(another instanceof NapileClass)
 		{
-			String fq1 = getQualifiedName();
-			String fq2 = ((NapileClass) another).getQualifiedName();
+			FqName fq1 = getFqName();
+			FqName fq2 = ((NapileClass) another).getFqName();
 			return fq1 != null && fq2 != null && fq1.equals(fq2);
 		}
 		return false;
-	}
-
-	@Nullable
-	@Override
-	public String getQualifiedName()
-	{
-		NapilePsiClassStub stub = getStub();
-		if(stub != null)
-		{
-			return stub.getQualifiedName();
-		}
-
-		List<String> parts = new ArrayList<String>();
-		NapileClassLike current = this;
-		while(current != null)
-		{
-			parts.add(current.getName());
-			current = PsiTreeUtil.getParentOfType(current, NapileClassLike.class);
-		}
-		NapileFile file = getContainingFile();
-		String fileQualifiedName = file.getPackage().getQualifiedName();
-		if(!fileQualifiedName.isEmpty())
-		{
-			parts.add(fileQualifiedName);
-		}
-		Collections.reverse(parts);
-		return StringUtil.join(parts, ".");
 	}
 
 	@Override

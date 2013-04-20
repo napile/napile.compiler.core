@@ -18,6 +18,7 @@ package org.napile.compiler.lang.psi.stubs.elements;
 
 import java.io.IOException;
 
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import com.intellij.psi.StubBuilder;
@@ -61,14 +62,14 @@ public class NapileFileElementType extends IStubFileElementType<NapilePsiFileStu
 	@Override
 	public void serialize(final NapilePsiFileStub stub, final StubOutputStream dataStream) throws IOException
 	{
-		dataStream.writeName(stub.getPackageName());
+		dataStream.writeName(stub.getFqName().getFqName());
 		dataStream.writeBoolean(stub.isCompiled());
 	}
 
 	@Override
 	public NapilePsiFileStub deserialize(final StubInputStream dataStream, final StubElement parentStub) throws IOException
 	{
-		StringRef packName = dataStream.readName();
+		FqName packName = new FqName(StringRef.toString(dataStream.readName()));
 		boolean compiled = dataStream.readBoolean();
 		return new NapilePsiFileStub(null, packName, compiled);
 	}

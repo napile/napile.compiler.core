@@ -22,9 +22,7 @@ import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.ImportPath;
 import org.napile.asm.resolve.name.FqName;
-import org.napile.asm.resolve.name.FqNameUnsafe;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import com.intellij.lang.ASTNode;
@@ -96,92 +94,14 @@ public class NapilePsiUtil
 		return rootElements;
 	}
 
-	@Nullable
-	public static NapileNamedMethodOrMacro getSurroundingFunction(@Nullable PsiElement element)
-	{
-		while(element != null)
-		{
-			if(element instanceof NapileNamedMethodOrMacro)
-				return (NapileNamedMethodOrMacro) element;
-			if(element instanceof NapileClassLike || element instanceof NapileFile)
-				return null;
-			element = element.getParent();
-		}
-		return null;
-	}
-
-	private static FqName getFQName(NapilePackage header)
-	{
-		StringBuilder builder = new StringBuilder();
-		for(NapileSimpleNameExpression nameExpression : header.getParentNamespaceNames())
-		{
-			builder.append(nameExpression.getReferencedName());
-			builder.append(".");
-		}
-		builder.append(header.getName());
-		return new FqName(builder.toString());
-	}
-
-	public static FqName getFQName(NapileFile file)
-	{
-		return getFQName(file.getPackage());
-	}
-
-	@Nullable
-	public static FqName getFQName(NapileNamedDeclaration namedDeclaration)
-	{
-		Name name = namedDeclaration.getNameAsName();
-		if(name == null)
-		{
-			return null;
-		}
-
-		PsiElement parent = namedDeclaration.getParent();
-		if(parent instanceof NapileClassBody)
-		{
-			// One nesting to NapileClassBody doesn't affect to qualified name
-			parent = parent.getParent();
-		}
-
-		FqName firstPart = null;
-		if(parent instanceof NapileFile)
-		{
-			firstPart = getFQName((NapileFile) parent);
-		}
-		else if(parent instanceof NapileNamedMethodOrMacro || parent instanceof NapileClass || parent instanceof NapileAnonymClass)
-		{
-			firstPart = getFQName((NapileNamedDeclaration) parent);
-		}
-
-		if(firstPart == null)
-		{
-			return null;
-		}
-
-		return firstPart.child(name);
-	}
-
-	@Nullable
-	@IfNotParsed
-	public static ImportPath getImportPath(NapileImportDirective importDirective)
-	{
-		final NapileExpression importedReference = importDirective.getImportedReference();
-		if(importedReference == null)
-			return null;
-
-		final String text = importedReference.getText();
-		final String importPath = text.replaceAll(" ", "") + (importDirective.isAllUnder() ? ".*" : "");
-		if(!FqNameUnsafe.isValid(importPath))
-			return null;
-
-		return new ImportPath(importPath);
-	}
 
 	@NotNull
-	private static FqName makeFQName(@NotNull FqName prefix, @NotNull NapileClassLike jetClass)
+	@Deprecated
+	public static FqName getFQName(@NotNull NapileNamedDeclaration namedDeclaration)
 	{
-		return prefix.child(Name.identifier(jetClass.getName()));
+		return namedDeclaration.getFqName();
 	}
+
 
 	@Nullable
 	public static <T extends PsiElement> T getDirectParentOfTypeForBlock(@NotNull NapileBlockExpression block, @NotNull Class<T> aClass)
@@ -338,5 +258,39 @@ public class NapilePsiUtil
 				return true;
 		NapileModifierList modifierList = owner.getModifierList();
 		return modifierList != null && modifierList.hasModifier(NapileTokens.STATIC_KEYWORD);
+	}
+
+	@NotNull
+	public static FqName getFQNameImpl(NapileNamedDeclaration namedDeclaration)
+	{
+		Name name = namedDeclaration.getNameAsName();
+		if(name == null)
+		{
+			return FqName.ROOT;
+		}
+
+		PsiElement parent = namedDeclaration.getParent();
+		if(parent instanceof NapileClassBody)
+		{
+			// One nesting to NapileClassBody doesn't affect to qualified name
+			parent = parent.getParent();
+		}
+
+		FqName firstPart = null;
+		if(parent instanceof NapileFile)
+		{
+			firstPart = ((NapileFile) parent).getPackage().getFqName();
+		}
+		else if(parent instanceof NapileNamedMethodOrMacro || parent instanceof NapileClass || parent instanceof NapileAnonymClass)
+		{
+			firstPart = getFQNameImpl((NapileNamedDeclaration) parent);
+		}
+
+		if(firstPart == null)
+		{
+			return FqName.ROOT;
+		}
+
+		return firstPart.child(name);
 	}
 }

@@ -3,6 +3,7 @@ package org.napile.compiler.lang.psi.impl;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileToken;
 import org.napile.compiler.lang.psi.*;
@@ -39,6 +40,13 @@ public class NXmlVariableImpl extends NXmlParentedElementBase implements NapileV
 		returnType = new NXmlTypeReferenceImpl(this, mirror.getType());
 		mutable = mirror.isMutable();
 		nameIdentifier = new NXmlIdentifierImpl(this, mirror.getNameIdentifier());
+	}
+
+	@NotNull
+	@Override
+	public FqName getFqName()
+	{
+		return NapilePsiUtil.getFQNameImpl(this);
 	}
 
 	@Nullable

@@ -17,8 +17,6 @@
 package org.napile.compiler.lang.psi;
 
 import org.jetbrains.annotations.Nullable;
-import org.napile.asm.resolve.name.FqName;
-import org.napile.asm.resolve.name.Name;
 import com.intellij.psi.PsiNameIdentifierOwner;
 
 /**
@@ -27,12 +25,6 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 public interface NapileClassLike extends PsiNameIdentifierOwner, NapileDeclarationContainer<NapileDeclaration>, NapileModifierListOwner, NapileElement, NapileSuperListOwner
 {
 	NapileClassLike[] EMPTY_ARRAY = new NapileClassLike[0];
-
-	@Nullable
-	@Override
-	Name getNameAsName();
-
-	FqName getFqName();
 
 	@Nullable
 	NapileClassBody getBody();

@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.psi.NapileElementImpl;
@@ -101,8 +102,9 @@ public class NapilePackageImpl extends NapileElementImpl implements NapilePackag
 		return Name.identifier(last.getText());
 	}
 
-@Override
-	public String getQualifiedName()
+	@NotNull
+	@Override
+	public FqName getFqName()
 	{
 		StringBuilder builder = new StringBuilder();
 		for(NapileSimpleNameExpression e : getAllExpressions())
@@ -113,7 +115,7 @@ public class NapilePackageImpl extends NapileElementImpl implements NapilePackag
 			}
 			builder.append(e.getReferencedName());
 		}
-		return builder.toString();
+		return new FqName(builder.toString());
 	}
 }
 

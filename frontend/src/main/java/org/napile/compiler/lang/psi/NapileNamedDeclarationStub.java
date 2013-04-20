@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.asm.resolve.name.Name;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.doc.lang.psi.NapileDoc;
@@ -94,5 +95,12 @@ public abstract class NapileNamedDeclarationStub<T extends NamedStub> extends Na
 	{
 		PsiElement identifier = getNameIdentifier();
 		return identifier != null ? identifier.getTextRange().getStartOffset() : getTextRange().getStartOffset();
+	}
+
+	@NotNull
+	@Override
+	public final FqName getFqName()
+	{
+		return NapilePsiUtil.getFQNameImpl(this);
 	}
 }

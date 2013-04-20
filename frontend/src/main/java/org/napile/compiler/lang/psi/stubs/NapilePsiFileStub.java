@@ -16,33 +16,33 @@
 
 package org.napile.compiler.lang.psi.stubs;
 
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.psi.NapileClass;
 import org.napile.compiler.lang.psi.NapileFile;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.stubs.PsiFileStubImpl;
 import com.intellij.psi.tree.IStubFileElementType;
-import com.intellij.util.io.StringRef;
 
 /**
  * @author Nikolay Krasko
  */
 public class NapilePsiFileStub extends PsiFileStubImpl<NapileFile>
 {
-	private final StringRef packageName;
+	private final FqName fqName;
 	private final boolean compiled;
 	private final NapilePsiFromStubFactory stubFactory;
 
-	public NapilePsiFileStub(NapileFile jetFile, StringRef packageName, boolean compiled)
+	public NapilePsiFileStub(NapileFile jetFile, FqName fqName, boolean compiled)
 	{
 		super(jetFile);
-		this.packageName = packageName;
+		this.fqName = fqName;
 		this.compiled = compiled;
 		this.stubFactory = compiled ? new NXmlPsiFromStubFactory() : new SourcePsiFromStubFactory();
 	}
 
-	public String getPackageName()
+	public FqName getFqName()
 	{
-		return StringRef.toString(packageName);
+		return fqName;
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class NapilePsiFileStub extends PsiFileStubImpl<NapileFile>
 		builder.append("NapilePsiFileStub[");
 
 
-		builder.append("package=").append(getPackageName());
+		builder.append("package=").append(getFqName());
 		builder.append("compiled=").append(isCompiled());
 		builder.append("]");
 
