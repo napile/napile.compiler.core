@@ -95,7 +95,7 @@ public class NapileParsing extends AbstractNapileParsing
 		 *   : preamble class* [eof]
 		 *   ;
 		 */
-	void parseFile()
+	void parseFile(IElementType root)
 	{
 		PsiBuilder.Marker fileMarker = mark();
 
@@ -104,7 +104,7 @@ public class NapileParsing extends AbstractNapileParsing
 		while(!eof())
 			parseClass0();
 
-		fileMarker.done(NAPILE_FILE);
+		fileMarker.done(root);
 	}
 
 

@@ -32,7 +32,7 @@ public class NapileParser implements PsiParser
 	public ASTNode parse(IElementType iElementType, PsiBuilder psiBuilder)
 	{
 		NapileParsing jetParsing = NapileParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(psiBuilder));
-		jetParsing.parseFile();
+		jetParsing.parseFile(iElementType);
 		return psiBuilder.getTreeBuilt();
 	}
 }

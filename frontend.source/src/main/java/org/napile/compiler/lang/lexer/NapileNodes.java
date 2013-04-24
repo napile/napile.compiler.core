@@ -19,17 +19,14 @@
  */
 package org.napile.compiler.lang.lexer;
 
-import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.psi.*;
 import org.napile.compiler.lang.psi.impl.*;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
 
 public interface NapileNodes
 {
-	IFileElementType NAPILE_FILE = new IFileElementType(NapileLanguage.INSTANCE);
-
+	IElementType FILE = NapileStubElementTypes.FILE;
 	IElementType CLASS = NapileStubElementTypes.CLASS;
 	IElementType METHOD = NapileStubElementTypes.METHOD;
 	IElementType MACRO = NapileStubElementTypes.MACRO;

@@ -117,7 +117,7 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 	@Override
 	public IElementType getElementType()
 	{
-		return NapileNodes.NAPILE_FILE;
+		return NapileNodes.FILE;
 	}
 
 	@Override
