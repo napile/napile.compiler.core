@@ -20,11 +20,11 @@ import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="P
 
 class Immutable1Test
 {
-	static val array : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>> = arrayOf("test", "test2")
+	static val array : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>> = arrayOf('test', 'test2')
 
 	static meth test()
 	{
-		<ref class="VariableDescriptorImpl" to="test.immutableTest.Immutable1Test.array">array</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.set">set</ref>(0, "")
+		<ref class="VariableDescriptorImpl" to="test.immutableTest.Immutable1Test.array">array</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.set">set</ref>(0, '')
 
 		<ref class="VariableDescriptorImpl" to="test.immutableTest.Immutable1Test.array">array</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.iterator">iterator</ref>().<ref class="SimpleMethodDescriptorImpl" to="napile.collection.Iterator.remove">remove</ref>()
 	}

@@ -40,11 +40,11 @@ class ConsoleLoggingHandler : <ref class="MutableClassDescriptor" to="napile.log
 
 		if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.message">message</ref>.<ref class="VariableDescriptorImpl" to="napile.logging.LoggingMessage.exception">exception</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Exception.equals">!=</ref> null)
 		{
-			<ref class="LocalVariableDescriptor" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> " "
+			<ref class="LocalVariableDescriptor" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ' '
 			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.message">message</ref>.<ref class="VariableDescriptorImpl" to="napile.logging.LoggingMessage.exception">exception</ref><ref to="null">!!</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Exception.printStackTrace">printStackTrace</ref>(<ref class="LocalVariableDescriptor" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.b">b</ref>)
 		}
 
-		<ref class="LocalVariableDescriptor" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "\n"
+		<ref class="LocalVariableDescriptor" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '\n'
 
 		<ref class="SimpleMethodDescriptorImpl" to="napile.logging.impl.handlers.ConsoleLoggingHandler.writeBytes">writeBytes</ref>(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.message">message</ref>, <ref class="LocalVariableDescriptor" to="napile.logging.impl.handlers.ConsoleLoggingHandler.log.b">b</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.toString">toString</ref>())
 	}

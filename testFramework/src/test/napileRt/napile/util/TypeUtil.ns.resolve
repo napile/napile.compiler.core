@@ -35,7 +35,7 @@ util class TypeUtil
 			if(<ref class="LocalVariableDescriptor" to="napile.util.TypeUtil.getDefaultValue.def">def</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.equals">==</ref> null)
 			{
 				if(<ref class="CallParameterAsVariableDescriptorImpl" to="napile.util.TypeUtil.getDefaultValue.throwIfNotFound">throwIfNotFound</ref>)
-					throw <ref class="ConstructorDescriptor" to="napile.lang.IllegalArgumentException.this">IllegalArgumentException</ref>("cant find default value on type " <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> <ref class="LocalVariableDescriptor" to="napile.util.TypeUtil.getDefaultValue.type">type</ref>)
+					throw <ref class="ConstructorDescriptor" to="napile.lang.IllegalArgumentException.this">IllegalArgumentException</ref>('cant find default value on type ' <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> <ref class="LocalVariableDescriptor" to="napile.util.TypeUtil.getDefaultValue.type">type</ref>)
 				else
 					return <ref class="SimpleMethodDescriptorImpl" to="napile.util.TypeUtil.getInvalidNotNull">getInvalidNotNull</ref>()
 			}

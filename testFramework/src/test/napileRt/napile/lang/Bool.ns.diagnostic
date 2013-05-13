@@ -17,5 +17,5 @@ final class Bool
 
 	meth not() : Bool = if(this) FALSE else TRUE
 
-	override meth toString() = if(this == TRUE) "true" else "false"
+	override meth toString() = if(this == TRUE) 'true' else 'false'
 }

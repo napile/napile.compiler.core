@@ -33,12 +33,10 @@ public abstract class NapileQualifiedExpressionImpl extends NapileExpressionImpl
 		super(node);
 	}
 
-	@NotNull
+	@Nullable
 	public NapileExpression getReceiverExpression()
 	{
-		NapileExpression left = findChildByClass(NapileExpression.class);
-		assert left != null;
-		return left;
+		return findChildByClass(NapileExpression.class);
 	}
 
 	@Nullable

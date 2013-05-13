@@ -23,16 +23,16 @@ class Exception
 		<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Exception.getClass">getClass</ref>().<ref class="VariableDescriptorImpl" to="napile.reflect.Class.name">name</ref>
 		if(<ref class="VariableDescriptorImpl" to="napile.lang.Exception.message">message</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.equals">!=</ref> null)
 		{
-			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> " : "
+			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ' : '
 			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Exception.message">message</ref>
 		}
 
-		<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "\n"
+		<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '\n'
 		for(i in <ref class="VariableDescriptorImpl" to="napile.lang.Exception.stack">stack</ref>)
 		{
-			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "\tat "
+			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '\tat '
 			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="LocalVariableDescriptor" to="napile.lang.Exception.printStackTrace.i">i</ref>
-			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "\n"
+			<ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Exception.printStackTrace.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '\n'
 		}
 	}
 

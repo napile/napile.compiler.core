@@ -31,5 +31,5 @@ class Any
 
 	heritable meth clone() : <ref class="MutableClassDescriptor" to="napile.lang.Any">this</ref> = throw <ref class="ConstructorDescriptor" to="napile.lang.Exception.this">Exception</ref>()
 
-	meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.getClass">getClass</ref>().<ref class="VariableDescriptorImpl" to="napile.reflect.Class.name">name</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> "@" <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.hashCode">hashCode</ref>()
+	meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.getClass">getClass</ref>().<ref class="VariableDescriptorImpl" to="napile.reflect.Class.name">name</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> '@' <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.hashCode">hashCode</ref>()
 }

@@ -22,15 +22,15 @@ class StackTraceElement
 	{
 		val b = StringBuilder()
 		b += className
-		b += "."
+		b += '.'
 		b += methodName
-		b += "("
+		b += '('
 		b += fileName
-		b += "@"
+		b += '@'
 		b += line
-		b += ":"
+		b += ':'
 		b += column
-		b += ")"
+		b += ')'
 		return b.toString()
 	}
 }

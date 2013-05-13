@@ -29,12 +29,12 @@ util class MainCaller
 	meth main(val arg : Array<String>)
 	{
 		if(arg.length == 0)
-			throw VmStartupError("Class name - expected")
+			throw VmStartupError('Class name - expected')
 
 		val clazz = ReflectUtil.findClass(arg[0])
-		val mainMethod = clazz.findStaticMethod("main", arrayOf(toAsmType<Array<String>>()))
+		val mainMethod = clazz.findStaticMethod('main', arrayOf(toAsmType<Array<String>>()))
 		if(mainMethod == null)
-			throw VmStartupError("'static meth main(val arg : Array<String>)' method expected")
+			throw VmStartupError('\'static meth main(val arg : Array<String>)\' method expected')
 
 		val thread = Thread {
 			try

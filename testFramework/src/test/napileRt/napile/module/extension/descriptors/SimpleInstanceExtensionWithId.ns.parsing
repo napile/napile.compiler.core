@@ -108,7 +108,7 @@ NapileFileImpl: SimpleInstanceExtensionWithId.ns
               PsiElement(LPAR)('(')
               NapileValueArgument(VALUE_ARGUMENT)
                 NapileConstantExpressionImpl(STRING_CONSTANT)
-                  PsiElement(STRING_LITERAL)('"id"')
+                  PsiElement(STRING_LITERAL)(''id'')
               PsiElement(RPAR)(')')
         PsiWhiteSpace('\n\t')
         PsiElement(val)('val')
@@ -126,7 +126,7 @@ NapileFileImpl: SimpleInstanceExtensionWithId.ns
         PsiElement(EQ)('=')
         PsiWhiteSpace(' ')
         NapileConstantExpressionImpl(STRING_CONSTANT)
-          PsiElement(STRING_LITERAL)('""')
+          PsiElement(STRING_LITERAL)('''')
       PsiWhiteSpace('\n\n\t')
       CONSTRUCTOR
         MODIFIER_LIST('')

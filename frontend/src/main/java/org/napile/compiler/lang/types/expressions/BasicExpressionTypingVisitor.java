@@ -78,9 +78,9 @@ import org.napile.compiler.lang.resolve.scopes.receivers.ReceiverDescriptor;
 import org.napile.compiler.lang.resolve.scopes.receivers.ThisReceiverDescriptor;
 import org.napile.compiler.lang.types.*;
 import org.napile.compiler.lang.types.checker.NapileTypeChecker;
-import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 import org.napile.compiler.lang.types.impl.MethodTypeConstructorImpl;
 import org.napile.compiler.lang.types.impl.MultiTypeConstructorImpl;
+import org.napile.compiler.lang.types.impl.NapileTypeImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.intellij.lang.ASTNode;
@@ -332,12 +332,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			value = compileTimeConstantResolver.getBooleanValue(text);
 		}
-		else if(elementType == NapileNodes.CHARACTER_CONSTANT)
-		{
-			value = compileTimeConstantResolver.getCharValue(expression, text, context.expectedType);
-		}
 		else if(elementType == NapileNodes.STRING_CONSTANT)
+		{
 			value = compileTimeConstantResolver.getStringValue(expression, text, context.expectedType);
+		}
 		else if(elementType == NapileNodes.NULL)
 		{
 			value = compileTimeConstantResolver.getNullValue(context.expectedType);
@@ -881,6 +879,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	{
 		NapileExpression selectorExpression = expression.getSelectorExpression();
 		NapileExpression receiverExpression = expression.getReceiverExpression();
+		if(receiverExpression == null)
+		{
+			return NapileTypeInfo.create(null, context.dataFlowInfo);
+		}
 		ExpressionTypingContext contextWithNoExpectedType = context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE);
 		NapileTypeInfo receiverTypeInfo = facade.getTypeInfo(receiverExpression, contextWithNoExpectedType.replaceNamespacesAllowed(true));
 		NapileType receiverType = receiverTypeInfo.getType();
@@ -922,6 +924,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	private void propagateConstantValues(NapileQualifiedExpressionImpl expression, ExpressionTypingContext context, NapileSimpleNameExpression selectorExpression)
 	{
 		NapileExpression receiverExpression = expression.getReceiverExpression();
+		if(receiverExpression == null)
+		{
+			return;
+		}
 		CompileTimeConstant<?> receiverValue = context.trace.get(BindingTraceKeys.COMPILE_TIME_VALUE, receiverExpression);
 		CompileTimeConstant<?> wholeExpressionValue = context.trace.get(BindingTraceKeys.COMPILE_TIME_VALUE, expression);
 		DeclarationDescriptor declarationDescriptor = context.trace.get(BindingTraceKeys.REFERENCE_TARGET, selectorExpression);
@@ -1038,6 +1044,10 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		{
 			NapileQualifiedExpressionImpl qualifiedExpression = (NapileQualifiedExpressionImpl) selectorExpression;
 			NapileExpression newReceiverExpression = qualifiedExpression.getReceiverExpression();
+			if(newReceiverExpression == null)
+			{
+				return NapileTypeInfo.create(null, context.dataFlowInfo);
+			}
 			NapileTypeInfo newReceiverTypeInfo = getSelectorReturnTypeInfo(receiver, callOperationNode, newReceiverExpression, context.replaceExpectedType(TypeUtils.NO_EXPECTED_TYPE));
 			NapileType newReceiverType = newReceiverTypeInfo.getType();
 			DataFlowInfo newReceiverDataFlowInfo = newReceiverTypeInfo.getDataFlowInfo();
@@ -1303,8 +1313,12 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 		checkLValue(trace, expression, false);
 	}
 
-	private void checkLValue(BindingTrace trace, NapileExpression expressionWithParenthesis, boolean canBeThis)
+	private void checkLValue(BindingTrace trace, @Nullable NapileExpression expressionWithParenthesis, boolean canBeThis)
 	{
+		if(expressionWithParenthesis == null)
+		{
+			return;
+		}
 		NapileExpression expression = NapilePsiUtil.deparenthesize(expressionWithParenthesis);
 		if(expression instanceof NapileArrayAccessExpressionImpl)
 		{
@@ -1643,11 +1657,16 @@ public class BasicExpressionTypingVisitor extends ExpressionTypingVisitor
 	@Nullable
 	private NapileType resolveArrayAccessSpecialMethod(@NotNull NapileArrayAccessExpressionImpl arrayAccessExpression, @Nullable NapileExpression rightHandSide, @NotNull ExpressionTypingContext context, @NotNull BindingTrace traceForResolveResult, boolean isGet)
 	{
-		NapileType arrayType = facade.getTypeInfo(arrayAccessExpression.getArrayExpression(), context).getType();
+		final NapileExpression arrayExpression = arrayAccessExpression.getArrayExpression();
+		if(arrayExpression == null)
+		{
+			return null;
+		}
+		NapileType arrayType = facade.getTypeInfo(arrayExpression, context).getType();
 		if(arrayType == null)
 			return null;
 
-		ExpressionReceiver receiver = new ExpressionReceiver(arrayAccessExpression.getArrayExpression(), arrayType);
+		ExpressionReceiver receiver = new ExpressionReceiver(arrayExpression, arrayType);
 		if(!isGet)
 			assert rightHandSide != null;
 		OverloadResolutionResults<MethodDescriptor> results = context.resolveCallWithGivenName(isGet ? CallMaker.makeArrayGetCall(receiver, arrayAccessExpression, Call.CallType.ARRAY_GET_METHOD) : CallMaker.makeArraySetCall(receiver, arrayAccessExpression, rightHandSide, Call.CallType.ARRAY_SET_METHOD), arrayAccessExpression, Name.identifier(isGet ? "get" : "set"));

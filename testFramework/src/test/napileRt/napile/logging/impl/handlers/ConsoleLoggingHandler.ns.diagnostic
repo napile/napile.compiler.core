@@ -40,11 +40,11 @@ class ConsoleLoggingHandler : LoggingHandler
 
 		if(message.exception != null)
 		{
-			b += " "
+			b += ' '
 			message.exception!!.printStackTrace(b)
 		}
 
-		b += "<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>"
+		b += '<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>'
 
 		writeBytes(message, b.toString())
 	}

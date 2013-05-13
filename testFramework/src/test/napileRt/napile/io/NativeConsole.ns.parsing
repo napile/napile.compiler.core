@@ -39,7 +39,7 @@ NapileFileImpl: NativeConsole.ns
           PsiElement(LPAR)('(')
           NapileValueArgument(VALUE_ARGUMENT)
             NapileConstantExpressionImpl(STRING_CONSTANT)
-              PsiElement(STRING_LITERAL)('"Need rework"')
+              PsiElement(STRING_LITERAL)(''Need rework'')
           PsiElement(RPAR)(')')
       PsiWhiteSpace('\n')
       PsiElement(util)('util')

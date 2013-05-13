@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.compiler.lang.lexer.NapileNodes;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import com.google.common.collect.Lists;
@@ -60,12 +61,10 @@ public class NapileArrayAccessExpressionImpl extends NapileReferenceExpressionIm
 		return visitor.visitArrayAccessExpression(this, data);
 	}
 
-	@NotNull
+	@Nullable
 	public NapileExpression getArrayExpression()
 	{
-		NapileExpression baseExpression = findChildByClass(NapileExpression.class);
-		assert baseExpression != null;
-		return baseExpression;
+		return findChildByClass(NapileExpression.class);
 	}
 
 	@NotNull

@@ -5,7 +5,7 @@ import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="P
 /**
  * @author VISTALL
  */
-@<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>('\0')
+@<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>('\0'.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.toChar">toChar</ref>())
 final class Char : <ref class="MutableClassDescriptor" to="napile.lang.Number">Number</ref>
 {
 	local this()

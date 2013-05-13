@@ -210,7 +210,7 @@ NapileFileImpl: TypeUtil.ns
                                 NapileValueArgument(VALUE_ARGUMENT)
                                   NapileBinaryExpression(BINARY_EXPRESSION)
                                     NapileConstantExpressionImpl(STRING_CONSTANT)
-                                      PsiElement(STRING_LITERAL)('"cant find default value on type "')
+                                      PsiElement(STRING_LITERAL)(''cant find default value on type '')
                                     PsiWhiteSpace(' ')
                                     NapileSimpleNameExpressionImpl(OPERATION_REFERENCE)
                                       PsiElement(PLUS)('+')

@@ -26,5 +26,5 @@ final class Invalid
 
 	local this()
 
-	override meth toString() : String = "invalid"
+	override meth toString() : String = 'invalid'
 }

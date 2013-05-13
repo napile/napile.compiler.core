@@ -94,7 +94,7 @@ abstract class OutputStream : Closeable & Flushable
 	{
 		// avoid int overflow, check null buffer
 		if (offset > buffer.length || offset < 0 || count < 0 || count > buffer.length - offset)
-			throw IndexOutOfBoundsException(Module.getBundle().getString("luni.13"));
+			throw IndexOutOfBoundsException(Module.getBundle().getString('luni.13'));
 
 		var i = offset
 		while (i < offset + count)

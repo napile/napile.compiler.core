@@ -19,6 +19,7 @@ package org.napile.compiler.lang.resolve.constants;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.lang.diagnostics.Errors;
 import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.resolve.BindingTrace;
@@ -163,31 +164,35 @@ public class CompileTimeConstantResolver
 		throw new IllegalStateException("Must not happen. A boolean literal has text: " + text);
 	}
 
-	@NotNull
-	public CompileTimeConstant<?> getCharValue(PsiElement psiElement, @NotNull String text, @NotNull NapileType expectedType)
-	{
-		markEscapes(text, psiElement, NapileTokens.CHARACTER_LITERAL);
-
-		String c = StringUtil.unescapeStringCharacters(StringUtil.unquoteString(text));
-		if(c.length() != 1)
-		{
-			return new ErrorValue("Invalid char value \'" + c + "\'");
-		}
-
-		return new CharValue(c.charAt(0));
-	}
 
 	@NotNull
 	public CompileTimeConstant<?> getStringValue(PsiElement psiElement, @NotNull String text, @NotNull NapileType expectedType)
 	{
-		markEscapes(text, psiElement, NapileTokens.STRING_LITERAL);
+		markEscapes(text, psiElement);
 
-		return new StringValue(StringUtil.unescapeStringCharacters(StringUtil.unquoteString(text)));
+		FqName typeFqName = NapileLangPackage.STRING;
+		if(TypeUtils.isEqualFqName(expectedType, NapileLangPackage.CHAR))
+		{
+			typeFqName = NapileLangPackage.CHAR;
+			if(text.length() == 0 || text.length() > 1)
+			{
+				typeFqName = NapileLangPackage.STRING;
+			}
+		}
+
+		if(typeFqName == NapileLangPackage.CHAR)
+		{
+			return new CharValue(text.charAt(0));
+		}
+		else
+		{
+			return new StringValue(StringUtil.unescapeStringCharacters(StringUtil.unquoteString(text)));
+		}
 	}
 
-	private void markEscapes(String text, PsiElement psiElement, IElementType elementType)
+	private void markEscapes(String text, PsiElement psiElement)
 	{
-		StringLiteralLexer literalLexer = new StringLiteralLexer(elementType == NapileTokens.STRING_LITERAL ? '\"' : '\'', elementType);
+		StringLiteralLexer literalLexer = new StringLiteralLexer('\'', NapileTokens.STRING_LITERAL);
 		literalLexer.start(text);
 
 		while(true)

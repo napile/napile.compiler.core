@@ -72,7 +72,6 @@ public interface NapileNodes
 	NapileNode NULL = new NapileNode("NULL", NapileConstantExpressionImpl.class);
 	NapileNode BOOLEAN_CONSTANT = new NapileNode("BOOLEAN_CONSTANT", NapileConstantExpressionImpl.class);
 	NapileNode FLOAT_CONSTANT = new NapileNode("FLOAT_CONSTANT", NapileConstantExpressionImpl.class);
-	NapileNode CHARACTER_CONSTANT = new NapileNode("CHARACTER_CONSTANT", NapileConstantExpressionImpl.class);
 	NapileNode STRING_CONSTANT = new NapileNode("STRING_CONSTANT", NapileConstantExpressionImpl.class);
 	NapileNode INTEGER_CONSTANT = new NapileNode("INTEGER_CONSTANT", NapileConstantExpressionImpl.class);
 

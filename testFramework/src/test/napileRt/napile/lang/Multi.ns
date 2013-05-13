@@ -23,16 +23,16 @@ class Multi
 	{
 		var i = 0
 		var b = StringBuilder()
-		b += "["
+		b += '['
 
 		for (c in data)
 		{
 			if(i != 0)
-				b += ", "
+				b += ', '
 			i ++
 			b += c.toString()
 		}
-		b += "]"
+		b += ']'
 		return b.toString()
 	}
 }

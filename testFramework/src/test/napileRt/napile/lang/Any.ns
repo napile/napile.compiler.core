@@ -31,5 +31,5 @@ class Any
 
 	heritable meth clone() : this = throw Exception()
 
-	meth toString() : String = getClass().name + "@" + hashCode()
+	meth toString() : String = getClass().name + '@' + hashCode()
 }

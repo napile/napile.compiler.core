@@ -24,8 +24,8 @@ import xml.annotation.DomAttribute
  ~/
 class SimpleInstanceExtensionWithId<T()> : SimpleInstanceExtension<T>
 {
-	@DomAttribute("id")
-	val id : String = ""
+	@DomAttribute('id')
+	val id : String = ''
 
 	this() : SimpleInstanceExtension<T>()
 }

@@ -9,12 +9,12 @@ import napile.annotation.Lazy
 /**
  * @author VISTALL
  */
-@DomElement("class")
+@DomElement('class')
 class AsmClass
 {
-	@DomAttribute("name")
+	@DomAttribute('name')
 	@Lazy(LazyType.INJECTION)
-	lazy val name : String = "this is need rework"
+	lazy val name : String = 'this is need rework'
 
 	this()
 

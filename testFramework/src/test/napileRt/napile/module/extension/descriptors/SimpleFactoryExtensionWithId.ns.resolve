@@ -24,8 +24,8 @@ import <ref class="PackageDescriptorImpl" to="xml">xml</ref>.<ref class="Package
  ~/
 class SimpleFactoryExtensionWithId<T()> : <ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtension">SimpleFactoryExtension</ref><<ref class="TypeParameterDescriptorImpl" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId.T">T</ref>>
 {
-	@<ref class="MutableClassDescriptor" to="xml.annotation.DomAttribute">DomAttribute</ref>("id")
-	val id : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = ""
+	@<ref class="MutableClassDescriptor" to="xml.annotation.DomAttribute">DomAttribute</ref>('id')
+	val id : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = ''
 
 	this() : <ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtension">SimpleFactoryExtension</ref><<ref class="TypeParameterDescriptorImpl" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId.T">T</ref>>()
 }

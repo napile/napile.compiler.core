@@ -25,7 +25,7 @@ import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="P
  */
 abstract class LoggingHandler
 {
-	static val EP_NAME : <ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPointName">ExtensionPointName</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId">SimpleFactoryExtensionWithId</ref><<ref class="MutableClassDescriptor" to="napile.logging.LoggingHandler">LoggingHandler</ref>>> = <ref class="ConstructorDescriptor" to="napile.module.extension.ExtensionPointName.this">ExtensionPointName</ref>("napile.lang", "loggingHandler")
+	static val EP_NAME : <ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPointName">ExtensionPointName</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId">SimpleFactoryExtensionWithId</ref><<ref class="MutableClassDescriptor" to="napile.logging.LoggingHandler">LoggingHandler</ref>>> = <ref class="ConstructorDescriptor" to="napile.module.extension.ExtensionPointName.this">ExtensionPointName</ref>('napile.lang', 'loggingHandler')
 
 	this()
 

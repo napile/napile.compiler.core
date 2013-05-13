@@ -583,6 +583,10 @@ public class TypeUtils
 
 	public static boolean isEqualFqName(@NotNull NapileType napileType, @NotNull FqName name)
 	{
+		if(napileType == NO_EXPECTED_TYPE)
+		{
+			return false;
+		}
 		return isEqualFqName(napileType.getConstructor(), name);
 	}
 

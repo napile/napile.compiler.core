@@ -43,8 +43,8 @@ import org.napile.compiler.lang.psi.NapilePsiUtil;
 import org.napile.compiler.lang.psi.NapileQualifiedExpressionImpl;
 import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
 import org.napile.compiler.lang.psi.NapileUserType;
-import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import org.napile.compiler.lang.resolve.Importer;
 import org.napile.compiler.lang.resolve.TemporaryBindingTrace;
@@ -184,6 +184,10 @@ public class QualifiedExpressionResolver
 	{
 
 		NapileExpression receiverExpression = importedReference.getReceiverExpression();
+		if(receiverExpression == null)
+		{
+			return Collections.emptyList();
+		}
 		Collection<? extends DeclarationDescriptor> declarationDescriptors;
 		if(receiverExpression instanceof NapileQualifiedExpressionImpl)
 		{

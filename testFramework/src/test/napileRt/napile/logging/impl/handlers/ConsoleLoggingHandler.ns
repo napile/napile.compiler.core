@@ -40,11 +40,11 @@ class ConsoleLoggingHandler : LoggingHandler
 
 		if(message.exception != null)
 		{
-			b += " "
+			b += ' '
 			message.exception!!.printStackTrace(b)
 		}
 
-		b += "\n"
+		b += '\n'
 
 		writeBytes(message, b.toString())
 	}

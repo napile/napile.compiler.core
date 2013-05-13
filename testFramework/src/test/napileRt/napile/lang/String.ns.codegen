@@ -654,6 +654,21 @@
 			</instructions>
 		</code>
 	</method>
+	<method name="toChar">
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Char"/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<new-string val="e">
+					<position line="34" column="25" file="napile/lang/String.ns"/>
+				</new-string>
+				<return val="1"/>
+			</instructions>
+		</code>
+	</method>
 	<method name="getBytes">
 		<return_type>
 			<type nullable="false">
@@ -669,7 +684,7 @@
 			<instructions>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="37" column="31" file="napile/lang/String.ns"/>
+					<position line="39" column="31" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -679,7 +694,7 @@
 					</method>
 				</invoke-special>
 				<new-object>
-					<position line="37" column="19" file="napile/lang/String.ns"/>
+					<position line="39" column="19" file="napile/lang/String.ns"/>
 					<type nullable="false">
 						<class_type name="napile.lang.Array"/>
 						<type_arguments>
@@ -702,7 +717,7 @@
 				<local-put val="1"/>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="38" column="11" file="napile/lang/String.ns"/>
+					<position line="40" column="11" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.offset$get">
 						<return_type>
 							<type nullable="false">
@@ -713,11 +728,11 @@
 				</invoke-special>
 				<local-put val="2"/>
 				<local-get val="2">
-					<position line="39" column="10" file="napile/lang/String.ns"/>
+					<position line="41" column="10" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="39" column="14" file="napile/lang/String.ns"/>
+					<position line="41" column="14" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -807,14 +822,14 @@
 				</invoke-static>
 				<jump-if val="32"/>
 				<local-get val="1">
-					<position line="40" column="4" file="napile/lang/String.ns"/>
+					<position line="42" column="4" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="2">
-					<position line="40" column="14" file="napile/lang/String.ns"/>
+					<position line="42" column="14" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="40" column="19" file="napile/lang/String.ns"/>
+					<position line="42" column="19" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.array$get">
 						<return_type>
 							<type nullable="false">
@@ -842,11 +857,11 @@
 					</method>
 				</invoke-special>
 				<local-get val="2">
-					<position line="40" column="25" file="napile/lang/String.ns"/>
+					<position line="42" column="25" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="40" column="27" file="napile/lang/String.ns"/>
+					<position line="42" column="27" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -856,7 +871,7 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="2">
-					<position line="40" column="25" file="napile/lang/String.ns"/>
+					<position line="42" column="25" file="napile/lang/String.ns"/>
 				</local-put>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -875,7 +890,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="40" column="31" file="napile/lang/String.ns"/>
+					<position line="42" column="31" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Char.toByte">
 						<return_type>
 							<type nullable="false">
@@ -907,7 +922,7 @@
 				</invoke-virtual>
 				<jump val="7"/>
 				<local-get val="1">
-					<position line="41" column="10" file="napile/lang/String.ns"/>
+					<position line="43" column="10" file="napile/lang/String.ns"/>
 				</local-get>
 				<return val="1"/>
 			</instructions>
@@ -930,13 +945,13 @@
 			<instructions>
 				<local-get val="0"/>
 				<local-get val="1">
-					<position line="44" column="59" file="napile/lang/String.ns"/>
+					<position line="46" column="59" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="0">
-					<position line="44" column="67" file="napile/lang/String.ns"/>
+					<position line="46" column="67" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-special>
-					<position line="44" column="48" file="napile/lang/String.ns"/>
+					<position line="46" column="48" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.startsWith">
 						<return_type>
 							<type nullable="false">
@@ -978,11 +993,11 @@
 			<instructions>
 				<local-get val="0"/>
 				<local-get val="1">
-					<position line="46" column="57" file="napile/lang/String.ns"/>
+					<position line="48" column="57" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="46" column="65" file="napile/lang/String.ns"/>
+					<position line="48" column="65" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -992,10 +1007,10 @@
 					</method>
 				</invoke-special>
 				<local-get val="1">
-					<position line="46" column="73" file="napile/lang/String.ns"/>
+					<position line="48" column="73" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="46" column="80" file="napile/lang/String.ns"/>
+					<position line="48" column="80" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -1005,7 +1020,7 @@
 					</method>
 				</invoke-special>
 				<invoke-virtual>
-					<position line="46" column="71" file="napile/lang/String.ns"/>
+					<position line="48" column="71" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.minus">
 						<return_type>
 							<type nullable="false">
@@ -1022,7 +1037,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-special>
-					<position line="46" column="46" file="napile/lang/String.ns"/>
+					<position line="48" column="46" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.startsWith">
 						<return_type>
 							<type nullable="false">
@@ -1064,13 +1079,13 @@
 			<instructions>
 				<local-get val="0"/>
 				<local-get val="1">
-					<position line="48" column="49" file="napile/lang/String.ns"/>
+					<position line="50" column="49" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="0">
-					<position line="48" column="54" file="napile/lang/String.ns"/>
+					<position line="50" column="54" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="48" column="41" file="napile/lang/String.ns"/>
+					<position line="50" column="41" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.indexOf">
 						<return_type>
 							<type nullable="false">
@@ -1117,7 +1132,7 @@
 			<instructions>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="50" column="70" file="napile/lang/String.ns"/>
+					<position line="52" column="70" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.array$get">
 						<return_type>
 							<type nullable="false">
@@ -1146,7 +1161,7 @@
 				</invoke-special>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="50" column="77" file="napile/lang/String.ns"/>
+					<position line="52" column="77" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.offset$get">
 						<return_type>
 							<type nullable="false">
@@ -1157,7 +1172,7 @@
 				</invoke-special>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="50" column="85" file="napile/lang/String.ns"/>
+					<position line="52" column="85" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -1167,10 +1182,10 @@
 					</method>
 				</invoke-special>
 				<local-get val="1">
-					<position line="50" column="92" file="napile/lang/String.ns"/>
+					<position line="52" column="92" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="50" column="96" file="napile/lang/String.ns"/>
+					<position line="52" column="96" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.array$get">
 						<return_type>
 							<type nullable="false">
@@ -1198,10 +1213,10 @@
 					</method>
 				</invoke-special>
 				<local-get val="1">
-					<position line="50" column="103" file="napile/lang/String.ns"/>
+					<position line="52" column="103" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="50" column="107" file="napile/lang/String.ns"/>
+					<position line="52" column="107" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.offset$get">
 						<return_type>
 							<type nullable="false">
@@ -1211,10 +1226,10 @@
 					</method>
 				</invoke-special>
 				<local-get val="1">
-					<position line="50" column="115" file="napile/lang/String.ns"/>
+					<position line="52" column="115" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="50" column="119" file="napile/lang/String.ns"/>
+					<position line="52" column="119" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -1224,10 +1239,10 @@
 					</method>
 				</invoke-special>
 				<local-get val="2">
-					<position line="50" column="126" file="napile/lang/String.ns"/>
+					<position line="52" column="126" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-static>
-					<position line="50" column="62" file="napile/lang/String.ns"/>
+					<position line="52" column="62" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.indexOf">
 						<return_type>
 							<type nullable="false">
@@ -1304,10 +1319,10 @@
 			<instructions>
 				<local-get val="0"/>
 				<local-get val="1">
-					<position line="52" column="49" file="napile/lang/String.ns"/>
+					<position line="54" column="49" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="52" column="41" file="napile/lang/String.ns"/>
+					<position line="54" column="41" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.indexOf">
 						<return_type>
 							<type nullable="false">
@@ -1324,10 +1339,10 @@
 					</method>
 				</invoke-virtual>
 				<new-int val="1">
-					<position line="52" column="55" file="napile/lang/String.ns"/>
+					<position line="54" column="55" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="52" column="54" file="napile/lang/String.ns"/>
+					<position line="54" column="54" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.minus">
 						<return_type>
 							<type nullable="false">
@@ -1426,18 +1441,18 @@
 		<code max-locals="4">
 			<instructions>
 				<new-object>
-					<position line="56" column="11" file="napile/lang/String.ns"/>
+					<position line="58" column="11" file="napile/lang/String.ns"/>
 					<type nullable="false">
 						<class_type name="napile.lang.StringBuilder"/>
 					</type>
 				</new-object>
 				<local-put val="2"/>
 				<local-get val="2">
-					<position line="57" column="3" file="napile/lang/String.ns"/>
+					<position line="59" column="3" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="0"/>
 				<invoke-virtual>
-					<position line="57" column="5" file="napile/lang/String.ns"/>
+					<position line="59" column="5" file="napile/lang/String.ns"/>
 					<method name="napile.lang.StringBuilder.plus">
 						<return_type>
 							<type nullable="false">
@@ -1454,16 +1469,16 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="2">
-					<position line="57" column="3" file="napile/lang/String.ns"/>
+					<position line="59" column="3" file="napile/lang/String.ns"/>
 				</local-put>
 				<local-get val="2">
-					<position line="58" column="3" file="napile/lang/String.ns"/>
+					<position line="60" column="3" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="1">
-					<position line="58" column="8" file="napile/lang/String.ns"/>
+					<position line="60" column="8" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="58" column="5" file="napile/lang/String.ns"/>
+					<position line="60" column="5" file="napile/lang/String.ns"/>
 					<method name="napile.lang.StringBuilder.plus">
 						<return_type>
 							<type nullable="false">
@@ -1480,13 +1495,13 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="2">
-					<position line="58" column="3" file="napile/lang/String.ns"/>
+					<position line="60" column="3" file="napile/lang/String.ns"/>
 				</local-put>
 				<local-get val="2">
-					<position line="59" column="10" file="napile/lang/String.ns"/>
+					<position line="61" column="10" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="59" column="12" file="napile/lang/String.ns"/>
+					<position line="61" column="12" file="napile/lang/String.ns"/>
 					<method name="napile.lang.StringBuilder.toString">
 						<return_type>
 							<type nullable="false">
@@ -1509,7 +1524,7 @@
 			<instructions>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="62" column="31" file="napile/lang/String.ns"/>
+					<position line="64" column="31" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -1539,10 +1554,10 @@
 			<instructions>
 				<local-get val="0"/>
 				<local-get val="1">
-					<position line="66" column="19" file="napile/lang/String.ns"/>
+					<position line="68" column="19" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="66" column="7" file="napile/lang/String.ns"/>
+					<position line="68" column="7" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Any.fullyEquals">
 						<return_type>
 							<type nullable="false">
@@ -1569,7 +1584,7 @@
 				</invoke-static>
 				<jump-if val="7"/>
 				<invoke-static>
-					<position line="67" column="11" file="napile/lang/String.ns"/>
+					<position line="69" column="11" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.TRUE$get">
 						<return_type>
 							<type nullable="false">
@@ -1580,10 +1595,10 @@
 				</invoke-static>
 				<return val="1"/>
 				<local-get val="1">
-					<position line="69" column="7" file="napile/lang/String.ns"/>
+					<position line="71" column="7" file="napile/lang/String.ns"/>
 				</local-get>
 				<is>
-					<position line="69" column="9" file="napile/lang/String.ns"/>
+					<position line="71" column="9" file="napile/lang/String.ns"/>
 					<type nullable="false">
 						<class_type name="napile.lang.String"/>
 					</type>
@@ -1600,7 +1615,7 @@
 				<jump-if val="62"/>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="71" column="12" file="napile/lang/String.ns"/>
+					<position line="73" column="12" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -1611,13 +1626,13 @@
 				</invoke-special>
 				<local-put val="2"/>
 				<local-get val="2">
-					<position line="72" column="8" file="napile/lang/String.ns"/>
+					<position line="74" column="8" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="1">
-					<position line="72" column="13" file="napile/lang/String.ns"/>
+					<position line="74" column="13" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="72" column="15" file="napile/lang/String.ns"/>
+					<position line="74" column="15" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -1627,7 +1642,7 @@
 					</method>
 				</invoke-special>
 				<invoke-virtual>
-					<position line="72" column="10" file="napile/lang/String.ns"/>
+					<position line="74" column="10" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.equals">
 						<return_type>
 							<type nullable="false">
@@ -1655,7 +1670,7 @@
 				<jump-if val="62"/>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="74" column="14" file="napile/lang/String.ns"/>
+					<position line="76" column="14" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.array$get">
 						<return_type>
 							<type nullable="false">
@@ -1684,10 +1699,10 @@
 				</invoke-special>
 				<local-put val="3"/>
 				<local-get val="1">
-					<position line="75" column="14" file="napile/lang/String.ns"/>
+					<position line="77" column="14" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="75" column="16" file="napile/lang/String.ns"/>
+					<position line="77" column="16" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.array$get">
 						<return_type>
 							<type nullable="false">
@@ -1717,7 +1732,7 @@
 				<local-put val="4"/>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="76" column="13" file="napile/lang/String.ns"/>
+					<position line="78" column="13" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.offset$get">
 						<return_type>
 							<type nullable="false">
@@ -1728,10 +1743,10 @@
 				</invoke-special>
 				<local-put val="5"/>
 				<local-get val="1">
-					<position line="77" column="13" file="napile/lang/String.ns"/>
+					<position line="79" column="13" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="77" column="15" file="napile/lang/String.ns"/>
+					<position line="79" column="15" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.offset$get">
 						<return_type>
 							<type nullable="false">
@@ -1742,11 +1757,11 @@
 				</invoke-special>
 				<local-put val="6"/>
 				<local-get val="2">
-					<position line="78" column="12" file="napile/lang/String.ns"/>
+					<position line="80" column="12" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="78" column="13" file="napile/lang/String.ns"/>
+					<position line="80" column="13" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.dec">
 						<return_type>
 							<type nullable="false">
@@ -1756,13 +1771,13 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="2">
-					<position line="78" column="12" file="napile/lang/String.ns"/>
+					<position line="80" column="12" file="napile/lang/String.ns"/>
 				</local-put>
 				<new-int val="0">
-					<position line="78" column="19" file="napile/lang/String.ns"/>
+					<position line="80" column="19" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="78" column="16" file="napile/lang/String.ns"/>
+					<position line="80" column="16" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.equals">
 						<return_type>
 							<type nullable="false">
@@ -1779,7 +1794,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="78" column="16" file="napile/lang/String.ns"/>
+					<position line="80" column="16" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.not">
 						<return_type>
 							<type nullable="false">
@@ -1799,14 +1814,14 @@
 				</invoke-static>
 				<jump-if val="60"/>
 				<local-get val="3">
-					<position line="80" column="10" file="napile/lang/String.ns"/>
+					<position line="82" column="10" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="5">
-					<position line="80" column="13" file="napile/lang/String.ns"/>
+					<position line="82" column="13" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="80" column="14" file="napile/lang/String.ns"/>
+					<position line="82" column="14" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -1816,7 +1831,7 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="5">
-					<position line="80" column="13" file="napile/lang/String.ns"/>
+					<position line="82" column="13" file="napile/lang/String.ns"/>
 				</local-put>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -1835,14 +1850,14 @@
 					</method>
 				</invoke-virtual>
 				<local-get val="4">
-					<position line="80" column="21" file="napile/lang/String.ns"/>
+					<position line="82" column="21" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="6">
-					<position line="80" column="24" file="napile/lang/String.ns"/>
+					<position line="82" column="24" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="80" column="25" file="napile/lang/String.ns"/>
+					<position line="82" column="25" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -1852,7 +1867,7 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="6">
-					<position line="80" column="24" file="napile/lang/String.ns"/>
+					<position line="82" column="24" file="napile/lang/String.ns"/>
 				</local-put>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -1871,7 +1886,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="80" column="18" file="napile/lang/String.ns"/>
+					<position line="82" column="18" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Char.equals">
 						<return_type>
 							<type nullable="false">
@@ -1888,7 +1903,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="80" column="18" file="napile/lang/String.ns"/>
+					<position line="82" column="18" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.not">
 						<return_type>
 							<type nullable="false">
@@ -1908,7 +1923,7 @@
 				</invoke-static>
 				<jump-if val="59"/>
 				<invoke-static>
-					<position line="81" column="14" file="napile/lang/String.ns"/>
+					<position line="83" column="14" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.FALSE$get">
 						<return_type>
 							<type nullable="false">
@@ -1920,7 +1935,7 @@
 				<return val="1"/>
 				<jump val="32"/>
 				<invoke-static>
-					<position line="84" column="12" file="napile/lang/String.ns"/>
+					<position line="86" column="12" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.TRUE$get">
 						<return_type>
 							<type nullable="false">
@@ -1931,7 +1946,7 @@
 				</invoke-static>
 				<return val="1"/>
 				<invoke-static>
-					<position line="87" column="10" file="napile/lang/String.ns"/>
+					<position line="89" column="10" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.FALSE$get">
 						<return_type>
 							<type nullable="false">
@@ -1954,7 +1969,7 @@
 			<instructions>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="90" column="45" file="napile/lang/String.ns"/>
+					<position line="92" column="45" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.array$get">
 						<return_type>
 							<type nullable="false">
@@ -1983,7 +1998,7 @@
 				</invoke-special>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="90" column="52" file="napile/lang/String.ns"/>
+					<position line="92" column="52" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.offset$get">
 						<return_type>
 							<type nullable="false">
@@ -1994,7 +2009,7 @@
 				</invoke-special>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="90" column="60" file="napile/lang/String.ns"/>
+					<position line="92" column="60" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -2004,7 +2019,7 @@
 					</method>
 				</invoke-special>
 				<new-object>
-					<position line="90" column="38" file="napile/lang/String.ns"/>
+					<position line="92" column="38" file="napile/lang/String.ns"/>
 					<type nullable="false">
 						<class_type name="napile.lang.String"/>
 					</type>
@@ -2116,10 +2131,10 @@
 		<code max-locals="13">
 			<instructions>
 				<local-get val="6">
-					<position line="100" column="7" file="napile/lang/String.ns"/>
+					<position line="102" column="7" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="2">
-					<position line="100" column="20" file="napile/lang/String.ns"/>
+					<position line="102" column="20" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Int.compareTo">
@@ -2248,13 +2263,13 @@
 				</invoke-static>
 				<jump-if val="29"/>
 				<local-get val="5">
-					<position line="101" column="14" file="napile/lang/String.ns"/>
+					<position line="103" column="14" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="0">
-					<position line="101" column="29" file="napile/lang/String.ns"/>
+					<position line="103" column="29" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="101" column="26" file="napile/lang/String.ns"/>
+					<position line="103" column="26" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.equals">
 						<return_type>
 							<type nullable="false">
@@ -2281,14 +2296,14 @@
 				</invoke-static>
 				<jump-if val="26"/>
 				<local-get val="2">
-					<position line="101" column="33" file="napile/lang/String.ns"/>
+					<position line="103" column="33" file="napile/lang/String.ns"/>
 				</local-get>
 				<jump val="28"/>
 				<new-int val="1">
-					<position line="101" column="51" file="napile/lang/String.ns"/>
+					<position line="103" column="51" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="101" column="50" file="napile/lang/String.ns"/>
+					<position line="103" column="50" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.minus">
 						<return_type>
 							<type nullable="false">
@@ -2299,10 +2314,10 @@
 				</invoke-virtual>
 				<return val="1"/>
 				<local-get val="6">
-					<position line="103" column="7" file="napile/lang/String.ns"/>
+					<position line="105" column="7" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="0">
-					<position line="103" column="19" file="napile/lang/String.ns"/>
+					<position line="105" column="19" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
 					<method name="napile.lang.Int.compareTo">
@@ -2385,19 +2400,19 @@
 				</invoke-static>
 				<jump-if val="43"/>
 				<new-int val="0">
-					<position line="104" column="16" file="napile/lang/String.ns"/>
+					<position line="106" column="16" file="napile/lang/String.ns"/>
 				</new-int>
 				<local-put val="6">
-					<position line="104" column="4" file="napile/lang/String.ns"/>
+					<position line="106" column="4" file="napile/lang/String.ns"/>
 				</local-put>
 				<local-get val="5">
-					<position line="106" column="7" file="napile/lang/String.ns"/>
+					<position line="108" column="7" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="0">
-					<position line="106" column="22" file="napile/lang/String.ns"/>
+					<position line="108" column="22" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="106" column="19" file="napile/lang/String.ns"/>
+					<position line="108" column="19" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.equals">
 						<return_type>
 							<type nullable="false">
@@ -2424,14 +2439,14 @@
 				</invoke-static>
 				<jump-if val="50"/>
 				<local-get val="6">
-					<position line="107" column="11" file="napile/lang/String.ns"/>
+					<position line="109" column="11" file="napile/lang/String.ns"/>
 				</local-get>
 				<return val="1"/>
 				<local-get val="3">
-					<position line="109" column="16" file="napile/lang/String.ns"/>
+					<position line="111" column="16" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="4">
-					<position line="109" column="23" file="napile/lang/String.ns"/>
+					<position line="111" column="23" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -2451,16 +2466,16 @@
 				</invoke-virtual>
 				<local-put val="7"/>
 				<local-get val="1">
-					<position line="110" column="13" file="napile/lang/String.ns"/>
+					<position line="112" column="13" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="2">
-					<position line="110" column="29" file="napile/lang/String.ns"/>
+					<position line="112" column="29" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="5">
-					<position line="110" column="43" file="napile/lang/String.ns"/>
+					<position line="112" column="43" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="110" column="41" file="napile/lang/String.ns"/>
+					<position line="112" column="41" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.minus">
 						<return_type>
 							<type nullable="false">
@@ -2477,7 +2492,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="110" column="26" file="napile/lang/String.ns"/>
+					<position line="112" column="26" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.plus">
 						<return_type>
 							<type nullable="false">
@@ -2495,13 +2510,13 @@
 				</invoke-virtual>
 				<local-put val="8"/>
 				<local-get val="1">
-					<position line="112" column="11" file="napile/lang/String.ns"/>
+					<position line="114" column="11" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="6">
-					<position line="112" column="26" file="napile/lang/String.ns"/>
+					<position line="114" column="26" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="112" column="24" file="napile/lang/String.ns"/>
+					<position line="114" column="24" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.plus">
 						<return_type>
 							<type nullable="false">
@@ -2519,10 +2534,10 @@
 				</invoke-virtual>
 				<local-put val="9"/>
 				<local-get val="9">
-					<position line="113" column="9" file="napile/lang/String.ns"/>
+					<position line="115" column="9" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="8">
-					<position line="113" column="14" file="napile/lang/String.ns"/>
+					<position line="115" column="14" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Int.compareTo">
@@ -2651,10 +2666,10 @@
 				</invoke-static>
 				<jump-if val="209"/>
 				<local-get val="0">
-					<position line="115" column="8" file="napile/lang/String.ns"/>
+					<position line="117" column="8" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="9">
-					<position line="115" column="15" file="napile/lang/String.ns"/>
+					<position line="117" column="15" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -2673,10 +2688,10 @@
 					</method>
 				</invoke-virtual>
 				<local-get val="7">
-					<position line="115" column="21" file="napile/lang/String.ns"/>
+					<position line="117" column="21" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="115" column="18" file="napile/lang/String.ns"/>
+					<position line="117" column="18" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Char.equals">
 						<return_type>
 							<type nullable="false">
@@ -2693,7 +2708,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="115" column="18" file="napile/lang/String.ns"/>
+					<position line="117" column="18" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.not">
 						<return_type>
 							<type nullable="false">
@@ -2713,10 +2728,10 @@
 				</invoke-static>
 				<jump-if val="127"/>
 				<local-get val="9">
-					<position line="116" column="14" file="napile/lang/String.ns"/>
+					<position line="118" column="14" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="116" column="12" file="napile/lang/String.ns"/>
+					<position line="118" column="12" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -2726,13 +2741,13 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="9">
-					<position line="116" column="14" file="napile/lang/String.ns"/>
+					<position line="118" column="14" file="napile/lang/String.ns"/>
 				</local-put>
 				<local-get val="9">
-					<position line="116" column="14" file="napile/lang/String.ns"/>
+					<position line="118" column="14" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="8">
-					<position line="116" column="19" file="napile/lang/String.ns"/>
+					<position line="118" column="19" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Int.compareTo">
@@ -2861,10 +2876,10 @@
 				</invoke-static>
 				<jump-if val="123"/>
 				<local-get val="0">
-					<position line="116" column="26" file="napile/lang/String.ns"/>
+					<position line="118" column="26" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="9">
-					<position line="116" column="33" file="napile/lang/String.ns"/>
+					<position line="118" column="33" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -2883,10 +2898,10 @@
 					</method>
 				</invoke-virtual>
 				<local-get val="7">
-					<position line="116" column="39" file="napile/lang/String.ns"/>
+					<position line="118" column="39" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="116" column="36" file="napile/lang/String.ns"/>
+					<position line="118" column="36" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Char.equals">
 						<return_type>
 							<type nullable="false">
@@ -2903,7 +2918,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="116" column="36" file="napile/lang/String.ns"/>
+					<position line="118" column="36" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.not">
 						<return_type>
 							<type nullable="false">
@@ -2953,10 +2968,10 @@
 				<jump-if val="127"/>
 				<jump val="91"/>
 				<local-get val="9">
-					<position line="118" column="8" file="napile/lang/String.ns"/>
+					<position line="120" column="8" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="8">
-					<position line="118" column="13" file="napile/lang/String.ns"/>
+					<position line="120" column="13" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Int.compareTo">
@@ -3085,13 +3100,13 @@
 				</invoke-static>
 				<jump-if val="204"/>
 				<local-get val="9">
-					<position line="120" column="13" file="napile/lang/String.ns"/>
+					<position line="122" column="13" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="1">
-					<position line="120" column="17" file="napile/lang/String.ns"/>
+					<position line="122" column="17" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="120" column="15" file="napile/lang/String.ns"/>
+					<position line="122" column="15" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.plus">
 						<return_type>
 							<type nullable="false">
@@ -3109,13 +3124,13 @@
 				</invoke-virtual>
 				<local-put val="10"/>
 				<local-get val="10">
-					<position line="121" column="15" file="napile/lang/String.ns"/>
+					<position line="123" column="15" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="5">
-					<position line="121" column="19" file="napile/lang/String.ns"/>
+					<position line="123" column="19" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="121" column="17" file="napile/lang/String.ns"/>
+					<position line="123" column="17" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.plus">
 						<return_type>
 							<type nullable="false">
@@ -3132,10 +3147,10 @@
 					</method>
 				</invoke-virtual>
 				<new-int val="1">
-					<position line="121" column="33" file="napile/lang/String.ns"/>
+					<position line="123" column="33" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="121" column="31" file="napile/lang/String.ns"/>
+					<position line="123" column="31" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.minus">
 						<return_type>
 							<type nullable="false">
@@ -3153,13 +3168,13 @@
 				</invoke-virtual>
 				<local-put val="11"/>
 				<local-get val="4">
-					<position line="122" column="13" file="napile/lang/String.ns"/>
+					<position line="124" column="13" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="1">
-					<position line="122" column="28" file="napile/lang/String.ns"/>
+					<position line="124" column="28" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="122" column="26" file="napile/lang/String.ns"/>
+					<position line="124" column="26" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.plus">
 						<return_type>
 							<type nullable="false">
@@ -3177,10 +3192,10 @@
 				</invoke-virtual>
 				<local-put val="12"/>
 				<local-get val="10">
-					<position line="123" column="12" file="napile/lang/String.ns"/>
+					<position line="125" column="12" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="11">
-					<position line="123" column="16" file="napile/lang/String.ns"/>
+					<position line="125" column="16" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Int.compareTo">
@@ -3263,10 +3278,10 @@
 				</invoke-static>
 				<jump-if val="183"/>
 				<local-get val="0">
-					<position line="123" column="23" file="napile/lang/String.ns"/>
+					<position line="125" column="23" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="10">
-					<position line="123" column="30" file="napile/lang/String.ns"/>
+					<position line="125" column="30" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -3285,10 +3300,10 @@
 					</method>
 				</invoke-virtual>
 				<local-get val="3">
-					<position line="123" column="36" file="napile/lang/String.ns"/>
+					<position line="125" column="36" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="12">
-					<position line="123" column="43" file="napile/lang/String.ns"/>
+					<position line="125" column="43" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -3307,7 +3322,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="123" column="33" file="napile/lang/String.ns"/>
+					<position line="125" column="33" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Char.equals">
 						<return_type>
 							<type nullable="false">
@@ -3363,11 +3378,11 @@
 				</invoke-static>
 				<jump-if val="195"/>
 				<local-get val="10">
-					<position line="125" column="6" file="napile/lang/String.ns"/>
+					<position line="127" column="6" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="125" column="7" file="napile/lang/String.ns"/>
+					<position line="127" column="7" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -3377,14 +3392,14 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="10">
-					<position line="125" column="6" file="napile/lang/String.ns"/>
+					<position line="127" column="6" file="napile/lang/String.ns"/>
 				</local-put>
 				<local-get val="12">
-					<position line="126" column="6" file="napile/lang/String.ns"/>
+					<position line="128" column="6" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="126" column="7" file="napile/lang/String.ns"/>
+					<position line="128" column="7" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -3394,17 +3409,17 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="12">
-					<position line="126" column="6" file="napile/lang/String.ns"/>
+					<position line="128" column="6" file="napile/lang/String.ns"/>
 				</local-put>
 				<jump val="160"/>
 				<local-get val="10">
-					<position line="129" column="9" file="napile/lang/String.ns"/>
+					<position line="131" column="9" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="11">
-					<position line="129" column="14" file="napile/lang/String.ns"/>
+					<position line="131" column="14" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="129" column="11" file="napile/lang/String.ns"/>
+					<position line="131" column="11" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.equals">
 						<return_type>
 							<type nullable="false">
@@ -3431,13 +3446,13 @@
 				</invoke-static>
 				<jump-if val="204"/>
 				<local-get val="9">
-					<position line="130" column="13" file="napile/lang/String.ns"/>
+					<position line="132" column="13" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="1">
-					<position line="130" column="17" file="napile/lang/String.ns"/>
+					<position line="132" column="17" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="130" column="15" file="napile/lang/String.ns"/>
+					<position line="132" column="15" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.minus">
 						<return_type>
 							<type nullable="false">
@@ -3455,11 +3470,11 @@
 				</invoke-virtual>
 				<return val="1"/>
 				<local-get val="9">
-					<position line="132" column="4" file="napile/lang/String.ns"/>
+					<position line="134" column="4" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="132" column="5" file="napile/lang/String.ns"/>
+					<position line="134" column="5" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -3469,14 +3484,14 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="9">
-					<position line="132" column="4" file="napile/lang/String.ns"/>
+					<position line="134" column="4" file="napile/lang/String.ns"/>
 				</local-put>
 				<jump val="64"/>
 				<new-int val="1">
-					<position line="134" column="11" file="napile/lang/String.ns"/>
+					<position line="136" column="11" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
-					<position line="134" column="10" file="napile/lang/String.ns"/>
+					<position line="136" column="10" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.minus">
 						<return_type>
 							<type nullable="false">
@@ -3514,7 +3529,7 @@
 			<instructions>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="139" column="12" file="napile/lang/String.ns"/>
+					<position line="141" column="12" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.array$get">
 						<return_type>
 							<type nullable="false">
@@ -3544,7 +3559,7 @@
 				<local-put val="3"/>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="140" column="12" file="napile/lang/String.ns"/>
+					<position line="142" column="12" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.offset$get">
 						<return_type>
 							<type nullable="false">
@@ -3554,10 +3569,10 @@
 					</method>
 				</invoke-special>
 				<local-get val="2">
-					<position line="140" column="21" file="napile/lang/String.ns"/>
+					<position line="142" column="21" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="140" column="19" file="napile/lang/String.ns"/>
+					<position line="142" column="19" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.plus">
 						<return_type>
 							<type nullable="false">
@@ -3575,10 +3590,10 @@
 				</invoke-virtual>
 				<local-put val="4"/>
 				<local-get val="1">
-					<position line="141" column="12" file="napile/lang/String.ns"/>
+					<position line="143" column="12" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="141" column="19" file="napile/lang/String.ns"/>
+					<position line="143" column="19" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.array$get">
 						<return_type>
 							<type nullable="false">
@@ -3607,10 +3622,10 @@
 				</invoke-special>
 				<local-put val="5"/>
 				<local-get val="1">
-					<position line="142" column="12" file="napile/lang/String.ns"/>
+					<position line="144" column="12" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="142" column="19" file="napile/lang/String.ns"/>
+					<position line="144" column="19" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.offset$get">
 						<return_type>
 							<type nullable="false">
@@ -3621,10 +3636,10 @@
 				</invoke-special>
 				<local-put val="6"/>
 				<local-get val="1">
-					<position line="143" column="12" file="napile/lang/String.ns"/>
+					<position line="145" column="12" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-special>
-					<position line="143" column="19" file="napile/lang/String.ns"/>
+					<position line="145" column="19" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -3635,10 +3650,10 @@
 				</invoke-special>
 				<local-put val="7"/>
 				<local-get val="2">
-					<position line="145" column="7" file="napile/lang/String.ns"/>
+					<position line="147" column="7" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="0">
-					<position line="145" column="17" file="napile/lang/String.ns"/>
+					<position line="147" column="17" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
 					<method name="napile.lang.Int.compareTo">
@@ -3731,11 +3746,11 @@
 				</invoke-static>
 				<jump val="49"/>
 				<local-get val="2">
-					<position line="145" column="23" file="napile/lang/String.ns"/>
+					<position line="147" column="23" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="0"/>
 				<invoke-special>
-					<position line="145" column="33" file="napile/lang/String.ns"/>
+					<position line="147" column="33" file="napile/lang/String.ns"/>
 					<method name="napile.lang.String.count$get">
 						<return_type>
 							<type nullable="false">
@@ -3745,10 +3760,10 @@
 					</method>
 				</invoke-special>
 				<local-get val="7">
-					<position line="145" column="41" file="napile/lang/String.ns"/>
+					<position line="147" column="41" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="145" column="39" file="napile/lang/String.ns"/>
+					<position line="147" column="39" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.minus">
 						<return_type>
 							<type nullable="false">
@@ -3874,7 +3889,7 @@
 				</invoke-static>
 				<jump-if val="53"/>
 				<invoke-static>
-					<position line="146" column="11" file="napile/lang/String.ns"/>
+					<position line="148" column="11" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.FALSE$get">
 						<return_type>
 							<type nullable="false">
@@ -3885,10 +3900,10 @@
 				</invoke-static>
 				<return val="1"/>
 				<local-get val="7">
-					<position line="148" column="12" file="napile/lang/String.ns"/>
+					<position line="150" column="12" file="napile/lang/String.ns"/>
 				</local-get>
 				<invoke-virtual>
-					<position line="148" column="10" file="napile/lang/String.ns"/>
+					<position line="150" column="10" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.dec">
 						<return_type>
 							<type nullable="false">
@@ -3898,13 +3913,13 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="7">
-					<position line="148" column="12" file="napile/lang/String.ns"/>
+					<position line="150" column="12" file="napile/lang/String.ns"/>
 				</local-put>
 				<local-get val="7">
-					<position line="148" column="12" file="napile/lang/String.ns"/>
+					<position line="150" column="12" file="napile/lang/String.ns"/>
 				</local-get>
 				<new-int val="0">
-					<position line="148" column="18" file="napile/lang/String.ns"/>
+					<position line="150" column="18" file="napile/lang/String.ns"/>
 				</new-int>
 				<invoke-virtual>
 					<method name="napile.lang.Int.compareTo">
@@ -4033,14 +4048,14 @@
 				</invoke-static>
 				<jump-if val="94"/>
 				<local-get val="3">
-					<position line="149" column="8" file="napile/lang/String.ns"/>
+					<position line="151" column="8" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="4">
-					<position line="149" column="11" file="napile/lang/String.ns"/>
+					<position line="151" column="11" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="149" column="13" file="napile/lang/String.ns"/>
+					<position line="151" column="13" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -4050,7 +4065,7 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="4">
-					<position line="149" column="11" file="napile/lang/String.ns"/>
+					<position line="151" column="11" file="napile/lang/String.ns"/>
 				</local-put>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -4069,14 +4084,14 @@
 					</method>
 				</invoke-virtual>
 				<local-get val="5">
-					<position line="149" column="20" file="napile/lang/String.ns"/>
+					<position line="151" column="20" file="napile/lang/String.ns"/>
 				</local-get>
 				<local-get val="6">
-					<position line="149" column="23" file="napile/lang/String.ns"/>
+					<position line="151" column="23" file="napile/lang/String.ns"/>
 				</local-get>
 				<dup/>
 				<invoke-virtual>
-					<position line="149" column="25" file="napile/lang/String.ns"/>
+					<position line="151" column="25" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Int.inc">
 						<return_type>
 							<type nullable="false">
@@ -4086,7 +4101,7 @@
 					</method>
 				</invoke-virtual>
 				<local-put val="6">
-					<position line="149" column="23" file="napile/lang/String.ns"/>
+					<position line="151" column="23" file="napile/lang/String.ns"/>
 				</local-put>
 				<invoke-virtual>
 					<method name="napile.lang.Array.get">
@@ -4105,7 +4120,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="149" column="17" file="napile/lang/String.ns"/>
+					<position line="151" column="17" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Char.equals">
 						<return_type>
 							<type nullable="false">
@@ -4122,7 +4137,7 @@
 					</method>
 				</invoke-virtual>
 				<invoke-virtual>
-					<position line="149" column="17" file="napile/lang/String.ns"/>
+					<position line="151" column="17" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.not">
 						<return_type>
 							<type nullable="false">
@@ -4142,7 +4157,7 @@
 				</invoke-static>
 				<jump-if val="93"/>
 				<invoke-static>
-					<position line="150" column="12" file="napile/lang/String.ns"/>
+					<position line="152" column="12" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.FALSE$get">
 						<return_type>
 							<type nullable="false">
@@ -4154,7 +4169,7 @@
 				<return val="1"/>
 				<jump val="53"/>
 				<invoke-static>
-					<position line="152" column="10" file="napile/lang/String.ns"/>
+					<position line="154" column="10" file="napile/lang/String.ns"/>
 					<method name="napile.lang.Bool.TRUE$get">
 						<return_type>
 							<type nullable="false">

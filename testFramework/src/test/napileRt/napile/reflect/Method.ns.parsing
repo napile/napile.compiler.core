@@ -294,7 +294,7 @@ NapileFileImpl: Method.ns
                     PsiElement(LPAR)('(')
                     NapileValueArgument(VALUE_ARGUMENT)
                       NapileConstantExpressionImpl(STRING_CONSTANT)
-                        PsiElement(STRING_LITERAL)('"Use 'invoke' for instance method call"')
+                        PsiElement(STRING_LITERAL)(''Use \'invoke\' for instance method call'')
                     PsiElement(RPAR)(')')
           PsiWhiteSpace('\n\n\t\t')
           MODIFIER_LIST('')

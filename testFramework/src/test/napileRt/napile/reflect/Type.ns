@@ -41,18 +41,18 @@ class Type<E> : AnnotationOwner
 		builder += constructorClass.name
 		if(parameters.length > 0)
 		{
-			builder += "<"
+			builder += '<'
 			var i = 0
 			while(i < parameters.length)
 			{
 				if(i != 0)
-					builder += ", "
+					builder += ', '
 				builder += parameters[i ++]
 			}
-			builder += ">"
+			builder += '>'
 		}
 		if(nullable)
-			builder += "?"
+			builder += '?'
 		return builder.toString()
 	}
 }

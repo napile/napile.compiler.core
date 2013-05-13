@@ -21,7 +21,7 @@ import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="P
 /**
  * @author VISTALL
  */
-@<ref class="MutableClassDescriptor" to="napile.annotation.Deprecated">Deprecated</ref>("Need rework")
+@<ref class="MutableClassDescriptor" to="napile.annotation.Deprecated">Deprecated</ref>('Need rework')
 util class NativeConsole
 {
 	native meth write(val value : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>)

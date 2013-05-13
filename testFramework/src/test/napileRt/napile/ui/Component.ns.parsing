@@ -274,7 +274,7 @@ NapileFileImpl: Component.ns
                         PsiElement(LPAR)('(')
                         NapileValueArgument(VALUE_ARGUMENT)
                           NapileConstantExpressionImpl(STRING_CONSTANT)
-                            PsiElement(STRING_LITERAL)('"visible"')
+                            PsiElement(STRING_LITERAL)(''visible'')
                         PsiElement(COMMA)(',')
                         PsiWhiteSpace(' ')
                         NapileValueArgument(VALUE_ARGUMENT)

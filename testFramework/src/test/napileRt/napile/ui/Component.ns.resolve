@@ -44,7 +44,7 @@ abstract class Component
 
 			<ref class="LocalVariableDescriptor" to="napile.ui.Component.visible$set.value">value</ref> <ref to="null">=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.Component.visible$set.newValue">newValue</ref>
 
-			<ref class="VariableDescriptorImpl" to="napile.ui.Component.variableChangeListener">variableChangeListener</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.util.listeners.ListenerHolder.fire">fire</ref>(<ref class="ConstructorDescriptor" to="napile.util.listeners.VariableChangeEvent.this">VariableChangeEvent</ref><<ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>>("visible", <ref class="LocalVariableDescriptor" to="napile.ui.Component.visible$set.old">old</ref>, <ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.Component.visible$set.newValue">newValue</ref>))
+			<ref class="VariableDescriptorImpl" to="napile.ui.Component.variableChangeListener">variableChangeListener</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.util.listeners.ListenerHolder.fire">fire</ref>(<ref class="ConstructorDescriptor" to="napile.util.listeners.VariableChangeEvent.this">VariableChangeEvent</ref><<ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref>>('visible', <ref class="LocalVariableDescriptor" to="napile.ui.Component.visible$set.old">old</ref>, <ref class="CallParameterAsVariableDescriptorImpl" to="napile.ui.Component.visible$set.newValue">newValue</ref>))
 		}
 	} = false
 

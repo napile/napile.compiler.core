@@ -23,16 +23,16 @@ class Multi
 	{
 		var i = 0
 		var b = <ref class="ConstructorDescriptor" to="napile.lang.StringBuilder.this">StringBuilder</ref>()
-		<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "["
+		<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '['
 
 		for (c in <ref class="VariableDescriptorImpl" to="napile.lang.Multi.data">data</ref>)
 		{
 			if(<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.i">i</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">!=</ref> 0)
-				<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ", "
+				<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ', '
 			<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.i">i</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.inc">++</ref>
 			<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.c">c</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Any.toString">toString</ref>()
 		}
-		<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "]"
+		<ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ']'
 		return <ref class="LocalVariableDescriptor" to="napile.lang.Multi.toString.b">b</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.toString">toString</ref>()
 	}
 }

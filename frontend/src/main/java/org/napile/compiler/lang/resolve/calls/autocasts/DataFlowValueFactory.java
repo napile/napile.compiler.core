@@ -100,7 +100,12 @@ public class DataFlowValueFactory
 			{
 				return Pair.create(null, false);
 			}
-			Pair<Object, Boolean> receiverId = getIdForStableIdentifier(qualifiedExpression.getReceiverExpression(), bindingTrace, true);
+			final NapileExpression receiverExpression = qualifiedExpression.getReceiverExpression();
+			if(receiverExpression == null)
+			{
+				return Pair.create(null, false);
+			}
+			Pair<Object, Boolean> receiverId = getIdForStableIdentifier(receiverExpression, bindingTrace, true);
 			Pair<Object, Boolean> selectorId = getIdForStableIdentifier(selectorExpression, bindingTrace, allowNamespaces);
 			return receiverId.second ? selectorId : Pair.create(receiverId.first, false);
 		}

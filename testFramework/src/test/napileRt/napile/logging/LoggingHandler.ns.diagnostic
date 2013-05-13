@@ -25,7 +25,7 @@ import napile.module.extension.descriptors.SimpleFactoryExtensionWithId
  */
 abstract class LoggingHandler
 {
-	static val EP_NAME : ExtensionPointName<SimpleFactoryExtensionWithId<LoggingHandler>> = ExtensionPointName("napile.lang", "loggingHandler")
+	static val EP_NAME : ExtensionPointName<SimpleFactoryExtensionWithId<LoggingHandler>> = ExtensionPointName('napile.lang', 'loggingHandler')
 
 	this()
 

@@ -150,7 +150,7 @@ NapileFileImpl: TextInjection2Test.ns
             PsiElement(return)('return')
             PsiWhiteSpace(' ')
             NapileConstantExpressionImpl(STRING_CONSTANT)
-              PsiElement(STRING_LITERAL)('"callTo"')
+              PsiElement(STRING_LITERAL)(''callTo'')
           PsiWhiteSpace('\n\t')
           PsiElement(RBRACE)('}')
       PsiWhiteSpace('\n')

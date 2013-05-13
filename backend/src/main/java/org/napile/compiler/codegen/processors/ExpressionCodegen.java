@@ -53,12 +53,13 @@ import org.napile.compiler.codegen.processors.visitors.ClosureCodegenVisitor;
 import org.napile.compiler.codegen.processors.visitors.ConditionCodegenVisitor;
 import org.napile.compiler.codegen.processors.visitors.LoopCodegenVisitor;
 import org.napile.compiler.codegen.processors.visitors.TryThrowCodegenVisitor;
+import org.napile.compiler.codegen.transformer.CodegenTransformerManager;
 import org.napile.compiler.injection.CodeInjection;
 import org.napile.compiler.lang.NapileConstants;
 import org.napile.compiler.lang.descriptors.*;
 import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.AutoCastReceiver;
 import org.napile.compiler.lang.resolve.calls.DefaultValueArgument;
 import org.napile.compiler.lang.resolve.calls.ExpressionValueArgument;
@@ -399,7 +400,14 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 	public StackValue visitCallExpression(NapileCallExpression expression, StackValue receiver)
 	{
 		final NapileExpression callee = expression.getCalleeExpression();
+
 		assert callee != null;
+
+		final StackValue transformStackValue = CodegenTransformerManager.INSTANCE.doTransform(bindingTrace, expression);
+		if(transformStackValue != null)
+		{
+			return transformStackValue;
+		}
 
 		ResolvedCall<? extends CallableDescriptor> resolvedCall = bindingTrace.safeGet(BindingTraceKeys.RESOLVED_CALL, callee);
 
@@ -515,6 +523,8 @@ public class ExpressionCodegen extends NapileVisitor<StackValue, StackValue> imp
 				if(expression.getParent() instanceof NapileDotQualifiedExpressionImpl)
 				{
 					NapileExpression receiverExp = ((NapileDotQualifiedExpressionImpl) expression.getParent()).getReceiverExpression();
+
+					assert receiverExp != null;
 
 					StackValue newReceiver = receiverExp.accept(this, StackValue.none());
 					newReceiver.put(newReceiver.getType(), instructs, this);

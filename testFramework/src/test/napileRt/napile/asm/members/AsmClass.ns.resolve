@@ -9,12 +9,12 @@ import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="P
 /**
  * @author VISTALL
  */
-@<ref class="MutableClassDescriptor" to="xml.annotation.DomElement">DomElement</ref>("class")
+@<ref class="MutableClassDescriptor" to="xml.annotation.DomElement">DomElement</ref>('class')
 class AsmClass
 {
-	@<ref class="MutableClassDescriptor" to="xml.annotation.DomAttribute">DomAttribute</ref>("name")
+	@<ref class="MutableClassDescriptor" to="xml.annotation.DomAttribute">DomAttribute</ref>('name')
 	@<ref class="MutableClassDescriptor" to="napile.annotation.Lazy">Lazy</ref>(<ref class="MutableClassDescriptor" to="napile.annotation.LazyType">LazyType</ref>.<ref class="VariableDescriptorImpl" to="napile.annotation.LazyType.INJECTION">INJECTION</ref>)
-	lazy val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = "this is need rework"
+	lazy val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = 'this is need rework'
 
 	this()
 

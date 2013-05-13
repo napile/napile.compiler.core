@@ -23,16 +23,16 @@ class Exception
 		b += getClass().name
 		if(message != null)
 		{
-			b += " : "
+			b += ' : '
 			b += message
 		}
 
-		b += "\n"
+		b += '\n'
 		for(i in stack)
 		{
-			b += "\tat "
+			b += '\tat '
 			b += i
-			b += "\n"
+			b += '\n'
 		}
 	}
 

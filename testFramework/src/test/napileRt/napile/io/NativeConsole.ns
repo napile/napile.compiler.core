@@ -21,7 +21,7 @@ import napile.annotation.Deprecated
 /**
  * @author VISTALL
  */
-@Deprecated("Need rework")
+@Deprecated('Need rework')
 util class NativeConsole
 {
 	native meth write(val value : String)

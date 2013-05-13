@@ -27,9 +27,9 @@ import napile.collection.IterableUtil.select
  */
 abstract class Logger
 {
-	static val EP_NAME : ExtensionPointName<SimpleFactoryExtensionWithId<Logger>> = ExtensionPointName("napile.lang", "logger")
+	static val EP_NAME : ExtensionPointName<SimpleFactoryExtensionWithId<Logger>> = ExtensionPointName('napile.lang', 'logger')
 
-	static val System : Logger = Logger.getLogger("System");
+	static val System : Logger = Logger.getLogger('System');
 
 	static meth getLogger(val name : String) : Logger
 	{

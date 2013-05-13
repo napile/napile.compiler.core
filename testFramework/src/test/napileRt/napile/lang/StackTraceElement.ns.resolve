@@ -22,15 +22,15 @@ class StackTraceElement
 	{
 		val b = <ref class="ConstructorDescriptor" to="napile.lang.StringBuilder.this">StringBuilder</ref>()
 		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="VariableDescriptorImpl" to="napile.lang.StackTraceElement.className">className</ref>
-		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "."
+		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '.'
 		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="VariableDescriptorImpl" to="napile.lang.StackTraceElement.methodName">methodName</ref>
-		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "("
+		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '('
 		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="VariableDescriptorImpl" to="napile.lang.StackTraceElement.fileName">fileName</ref>
-		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "@"
+		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '@'
 		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="VariableDescriptorImpl" to="napile.lang.StackTraceElement.line">line</ref>
-		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ":"
+		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ':'
 		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="VariableDescriptorImpl" to="napile.lang.StackTraceElement.column">column</ref>
-		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ")"
+		<ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ')'
 		return <ref class="LocalVariableDescriptor" to="napile.lang.StackTraceElement.toString.b">b</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.toString">toString</ref>()
 	}
 }

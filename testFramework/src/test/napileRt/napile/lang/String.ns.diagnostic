@@ -8,7 +8,7 @@ import napile.annotation.Immutable
  ~ Authors
  ~  * VISTALL
  ~/
-@DefaultValue("")
+@DefaultValue('')
 final class String : Sizeable
 {
 	local val array : @Immutable Array<Char>
@@ -30,6 +30,8 @@ final class String : Sizeable
 	}
 
 	meth toArray() : Array<Char> = ArrayUtil.copyOfRange(array, offset, offset + count)
+
+	meth toChar() : Char = <TYPE_MISMATCH>'e'</TYPE_MISMATCH>
 
 	meth getBytes() : Array<Byte>
 	{

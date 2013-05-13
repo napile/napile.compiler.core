@@ -23,16 +23,16 @@ class Exception
 		b += getClass().name
 		if(message != null)
 		{
-			b += " : "
+			b += ' : '
 			b += message
 		}
 
-		b += "<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>"
+		b += '<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>'
 		for(i in stack)
 		{
-			b += "<VALID_STRING_ESCAPE>\t</VALID_STRING_ESCAPE>at "
+			b += '<VALID_STRING_ESCAPE>\t</VALID_STRING_ESCAPE>at '
 			b += i
-			b += "<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>"
+			b += '<VALID_STRING_ESCAPE>\n</VALID_STRING_ESCAPE>'
 		}
 	}
 

@@ -20,11 +20,11 @@ import napile.annotation.Immutable
 
 class Immutable1Test
 {
-	static val array : @Immutable Array<String> = arrayOf("test", "test2")
+	static val array : @Immutable Array<String> = arrayOf('test', 'test2')
 
 	static meth test()
 	{
-		array.set(0, "")
+		array.set(0, '')
 
 		array.iterator().remove()
 	}

@@ -22,7 +22,7 @@ class Method : MethodLike
 	meth invokeStatic(val arguments : Array<Any?>) : Array<Any?>
 	{
 		if (!isStatic())
-			throw IllegalArgumentException("Use 'invoke' for instance method call")
+			throw IllegalArgumentException('Use <VALID_STRING_ESCAPE>\'</VALID_STRING_ESCAPE>invoke<VALID_STRING_ESCAPE>\'</VALID_STRING_ESCAPE> for instance method call')
 
 		return invokeStatic0(arguments)
 	}

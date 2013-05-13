@@ -56,8 +56,8 @@ class Thread
 
 	static this()
 	{
-		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.systemThreadGroup">systemThreadGroup</ref> <ref to="null">=</ref> <ref class="ConstructorDescriptor" to="napile.lang.ThreadGroup.this">ThreadGroup</ref>("system")
-		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.mainThreadGroup">mainThreadGroup</ref> <ref to="null">=</ref> <ref class="ConstructorDescriptor" to="napile.lang.ThreadGroup.this">ThreadGroup</ref>("main", <ref class="VariableDescriptorImpl" to="napile.lang.Thread.systemThreadGroup">systemThreadGroup</ref>)
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.systemThreadGroup">systemThreadGroup</ref> <ref to="null">=</ref> <ref class="ConstructorDescriptor" to="napile.lang.ThreadGroup.this">ThreadGroup</ref>('system')
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.mainThreadGroup">mainThreadGroup</ref> <ref to="null">=</ref> <ref class="ConstructorDescriptor" to="napile.lang.ThreadGroup.this">ThreadGroup</ref>('main', <ref class="VariableDescriptorImpl" to="napile.lang.Thread.systemThreadGroup">systemThreadGroup</ref>)
 	}
 
 	local val target : {}
@@ -77,7 +77,7 @@ class Thread
 	this(val threadName : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>? = null, val threadGroup : <ref class="MutableClassDescriptor" to="napile.lang.ThreadGroup">ThreadGroup</ref>? = null, <ref class="VariableDescriptorImpl" to="napile.lang.Thread.target">target</ref> = {})
 	{
 		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.threadId">threadId</ref> <ref to="null">=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Thread.getNextThreadId">getNextThreadId</ref>()
-		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.name">name</ref> <ref to="null">=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Thread.this.threadName">threadName</ref> <ref to="null">?:</ref> "Thread: " <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Thread.threadId">threadId</ref>
+		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.name">name</ref> <ref to="null">=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Thread.this.threadName">threadName</ref> <ref to="null">?:</ref> 'Thread: ' <ref class="SimpleMethodDescriptorImpl" to="napile.lang.String.plus">+</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Thread.threadId">threadId</ref>
 		<ref class="VariableDescriptorImpl" to="napile.lang.Thread.group">group</ref> <ref to="null">=</ref> <ref class="CallParameterAsVariableDescriptorImpl" to="napile.lang.Thread.this.threadGroup">threadGroup</ref> <ref to="null">?:</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Thread.mainThreadGroup">mainThreadGroup</ref>
 	}
 

@@ -75,6 +75,6 @@ NapileFileImpl: Null.ns
         PsiElement(EQ)('=')
         PsiWhiteSpace(' ')
         NapileConstantExpressionImpl(STRING_CONSTANT)
-          PsiElement(STRING_LITERAL)('"null"')
+          PsiElement(STRING_LITERAL)(''null'')
       PsiWhiteSpace('\n')
       PsiElement(RBRACE)('}')

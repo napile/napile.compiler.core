@@ -44,7 +44,7 @@ abstract class Component
 
 			value = newValue
 
-			variableChangeListener.fire(VariableChangeEvent<Bool>("visible", old, newValue))
+			variableChangeListener.fire(VariableChangeEvent<Bool>('visible', old, newValue))
 		}
 	} = false
 

@@ -319,7 +319,7 @@ NapileFileImpl: OutputStream.ns
                             PsiElement(LPAR)('(')
                             NapileValueArgument(VALUE_ARGUMENT)
                               NapileConstantExpressionImpl(STRING_CONSTANT)
-                                PsiElement(STRING_LITERAL)('"luni.13"')
+                                PsiElement(STRING_LITERAL)(''luni.13'')
                             PsiElement(RPAR)(')')
                     PsiElement(RPAR)(')')
           PsiElement(SEMICOLON)(';')

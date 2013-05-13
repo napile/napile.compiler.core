@@ -8,7 +8,7 @@ import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="P
  ~ Authors
  ~  * VISTALL
  ~/
-@<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>("")
+@<ref class="MutableClassDescriptor" to="napile.annotation.DefaultValue">DefaultValue</ref>('')
 final class String : <ref class="MutableClassDescriptor" to="napile.collection.Sizeable">Sizeable</ref>
 {
 	local val array : @<ref class="MutableClassDescriptor" to="napile.annotation.Immutable">Immutable</ref> <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.Char">Char</ref>>
@@ -30,6 +30,8 @@ final class String : <ref class="MutableClassDescriptor" to="napile.collection.S
 	}
 
 	meth toArray() : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.Char">Char</ref>> = <ref class="MutableClassDescriptor" to="napile.lang.ArrayUtil">ArrayUtil</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.ArrayUtil.copyOfRange">copyOfRange</ref>(<ref class="VariableDescriptorImpl" to="napile.lang.String.array">array</ref>, <ref class="VariableDescriptorImpl" to="napile.lang.String.offset">offset</ref>, <ref class="VariableDescriptorImpl" to="napile.lang.String.offset">offset</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.plus">+</ref> <ref class="VariableDescriptorImpl" to="napile.lang.String.count">count</ref>)
+
+	meth toChar() : <ref class="MutableClassDescriptor" to="napile.lang.Char">Char</ref> = 'e'
 
 	meth getBytes() : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.Byte">Byte</ref>>
 	{

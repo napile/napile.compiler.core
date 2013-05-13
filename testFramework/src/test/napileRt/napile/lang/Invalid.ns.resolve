@@ -26,5 +26,5 @@ final class Invalid
 
 	local this()
 
-	override meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = "invalid"
+	override meth toString() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref> = 'invalid'
 }

@@ -35,7 +35,7 @@ util class TypeUtil
 			if(def == null)
 			{
 				if(throwIfNotFound)
-					throw IllegalArgumentException("cant find default value on type " + type)
+					throw IllegalArgumentException('cant find default value on type ' + type)
 				else
 					return getInvalidNotNull()
 			}

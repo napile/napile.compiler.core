@@ -5,7 +5,7 @@ import napile.annotation.DefaultValue
 /**
  * @author VISTALL
  */
-@DefaultValue('\0')
+@DefaultValue('\0'.toChar())
 final class Char : Number
 {
 	local this()

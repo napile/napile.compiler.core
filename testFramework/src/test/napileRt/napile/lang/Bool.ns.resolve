@@ -17,5 +17,5 @@ final class Bool
 
 	meth not() : <ref class="MutableClassDescriptor" to="napile.lang.Bool">Bool</ref> = if(<ref class="MutableClassDescriptor" to="napile.lang.Bool">this</ref>) <ref class="VariableDescriptorImpl" to="napile.lang.Bool.FALSE">FALSE</ref> else <ref class="VariableDescriptorImpl" to="napile.lang.Bool.TRUE">TRUE</ref>
 
-	override meth toString() = if(<ref class="MutableClassDescriptor" to="napile.lang.Bool">this</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Bool.equals">==</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Bool.TRUE">TRUE</ref>) "true" else "false"
+	override meth toString() = if(<ref class="MutableClassDescriptor" to="napile.lang.Bool">this</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Bool.equals">==</ref> <ref class="VariableDescriptorImpl" to="napile.lang.Bool.TRUE">TRUE</ref>) 'true' else 'false'
 }

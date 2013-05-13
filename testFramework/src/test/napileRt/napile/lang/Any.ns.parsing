@@ -442,7 +442,7 @@ NapileFileImpl: Any.ns
               PsiElement(PLUS)('+')
             PsiWhiteSpace(' ')
             NapileConstantExpressionImpl(STRING_CONSTANT)
-              PsiElement(STRING_LITERAL)('"@"')
+              PsiElement(STRING_LITERAL)(''@'')
           PsiWhiteSpace(' ')
           NapileSimpleNameExpressionImpl(OPERATION_REFERENCE)
             PsiElement(PLUS)('+')

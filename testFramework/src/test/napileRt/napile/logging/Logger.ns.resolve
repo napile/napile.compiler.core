@@ -27,9 +27,9 @@ import <ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="P
  */
 abstract class Logger
 {
-	static val EP_NAME : <ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPointName">ExtensionPointName</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId">SimpleFactoryExtensionWithId</ref><<ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>>> = <ref class="ConstructorDescriptor" to="napile.module.extension.ExtensionPointName.this">ExtensionPointName</ref>("napile.lang", "logger")
+	static val EP_NAME : <ref class="MutableClassDescriptor" to="napile.module.extension.ExtensionPointName">ExtensionPointName</ref><<ref class="MutableClassDescriptor" to="napile.module.extension.descriptors.SimpleFactoryExtensionWithId">SimpleFactoryExtensionWithId</ref><<ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>>> = <ref class="ConstructorDescriptor" to="napile.module.extension.ExtensionPointName.this">ExtensionPointName</ref>('napile.lang', 'logger')
 
-	static val System : <ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref> = <ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.logging.Logger.getLogger">getLogger</ref>("System");
+	static val System : <ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref> = <ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.logging.Logger.getLogger">getLogger</ref>('System');
 
 	static meth getLogger(val name : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>) : <ref class="MutableClassDescriptor" to="napile.logging.Logger">Logger</ref>
 	{

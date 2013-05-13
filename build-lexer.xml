@@ -41,18 +41,18 @@
 	</macrodef>
 
 	<target name="napile-lexer">
-		<flex flexfile="${home}/compiler/frontend.source/src/main/java/org/napile/compiler/lang/lexer/_NapileLexer.flex" destdir="${home}/compiler/frontend.source/src/main/java/org/napile/compiler/lang/lexer/"/>
+		<flex flexfile="${home}/frontend.source/src/main/java/org/napile/compiler/lang/lexer/_NapileLexer.flex" destdir="${home}/frontend.source/src/main/java/org/napile/compiler/lang/lexer/"/>
 	</target>
 	<target name="napile-doc-lexer">
-		<flex flexfile="${home}/compiler/frontend.doc/src/main/java/org/napile/doc/lang/lexer/_NapileDocLexer.flex" destdir="${home}/compiler/frontend.doc/src/main/java/org/napile/doc/lang/lexer/"/>
+		<flex flexfile="${home}/frontend.doc/src/main/java/org/napile/doc/lang/lexer/_NapileDocLexer.flex" destdir="${home}/frontend.doc/src/main/java/org/napile/doc/lang/lexer/"/>
 	</target>
 	<target name="protobuf-lexer">
-		<flex flexfile="${home}/compiler/injection.protobuff/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/_ProtobufLexer.flex" destdir="${home}/compiler/injection.protobuf/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/"/>
+		<flex flexfile="${home}/injection.protobuff/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/_ProtobufLexer.flex" destdir="${home}/injection.protobuf/src/main/java/org/napile/compiler/injection/protobuf/lang/lexer/"/>
 	</target>
 	<target name="regexp-lexer">
-		<flex flexfile="${home}/compiler/injection.regexp/src/main/java/org/napile/compiler/injection/regexp/lang/lexer/_RegExpLexer.flex" destdir="${home}/compiler/injection.regexp/src/main/java/org/napile/compiler/injection/regexp/lang/lexer/"/>
+		<flex flexfile="${home}/injection.regexp/src/main/java/org/napile/injection/regexp/lang/lexer/_RegExpLexer.flex" destdir="${home}/injection.regexp/src/main/java/org/napile/compiler/injection/regexp/lang/lexer/"/>
 	</target>
 	<target name="text-lexer">
-		<flex flexfile="${home}/compiler/injection.text/src/main/java/org/napile/compiler/injection/text/lang/lexer/_TextLexer.flex" destdir="${home}/compiler/injection.text/src/main/java/org/napile/compiler/injection/text/lang/lexer/"/>
+		<flex flexfile="${home}/injection.text/src/main/java/org/napile/compiler/injection/text/lang/lexer/_TextLexer.flex" destdir="${home}/injection.text/src/main/java/org/napile/compiler/injection/text/lang/lexer/"/>
 	</target>
 </project>

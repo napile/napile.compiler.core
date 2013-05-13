@@ -29,6 +29,6 @@ class TextInjection2Test
 
 	static meth callTo() : <ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>
 	{
-		return "callTo"
+		return 'callTo'
 	}
 }

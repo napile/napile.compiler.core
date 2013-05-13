@@ -52,7 +52,7 @@ public class StringValue implements CompileTimeConstant<String>
 	@Override
 	public String toString()
 	{
-		return "\"" + value + "\"";
+		return "\'" + value + "\'";
 	}
 
 	@Override

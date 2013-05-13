@@ -10,5 +10,5 @@ final class Null
 
 	local this()
 
-	override meth toString() = "null"
+	override meth toString() = 'null'
 }

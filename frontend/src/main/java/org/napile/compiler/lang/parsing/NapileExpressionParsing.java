@@ -41,7 +41,7 @@ public class NapileExpressionParsing extends AbstractNapileParsing
 
 	private static final TokenSet TYPE_ARGUMENT_LIST_STOPPERS = TokenSet.create
 	(
-			NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.METH_KEYWORD,
+			NapileTokens.INTEGER_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.PACKAGE_KEYWORD, NapileTokens.AS_KEYWORD, NapileTokens.CLASS_KEYWORD, NapileTokens.THIS_KEYWORD, NapileTokens.VAR_KEYWORD, NapileTokens.VAL_KEYWORD, NapileTokens.METH_KEYWORD,
 			NapileTokens.FOR_KEYWORD, NapileTokens.NULL_KEYWORD, NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.IS_KEYWORD, NapileTokens.THROW_KEYWORD, NapileTokens.RETURN_KEYWORD, NapileTokens.BREAK_KEYWORD, NapileTokens.CONTINUE_KEYWORD,
 			NapileTokens.ANONYM_KEYWORD, NapileTokens.IF_KEYWORD, NapileTokens.TRY_KEYWORD, NapileTokens.ELSE_KEYWORD, NapileTokens.WHILE_KEYWORD, NapileTokens.DO_KEYWORD, NapileTokens.WHEN_KEYWORD, NapileTokens.RBRACKET, NapileTokens.RBRACE, NapileTokens.RPAR, NapileTokens.PLUSPLUS, NapileTokens.MINUSMINUS, NapileTokens.EXCLEXCL,
 
@@ -65,7 +65,7 @@ public class NapileExpressionParsing extends AbstractNapileParsing
 			NapileTokens.DOUBLE_ARROW, // expression targeting
 
 			// literal constant
-			NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.INTEGER_LITERAL, NapileTokens.CHARACTER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.NULL_KEYWORD,
+			NapileTokens.TRUE_KEYWORD, NapileTokens.FALSE_KEYWORD, NapileTokens.INTEGER_LITERAL, NapileTokens.STRING_LITERAL, NapileTokens.FLOAT_LITERAL, NapileTokens.NULL_KEYWORD,
 
 			NapileTokens.LBRACE, // functionLiteral
 
@@ -638,8 +638,6 @@ public class NapileExpressionParsing extends AbstractNapileParsing
 			parseOneTokenExpression(BOOLEAN_CONSTANT);
 		else if(at(NapileTokens.INTEGER_LITERAL))
 			parseOneTokenExpression(INTEGER_CONSTANT);
-		else if(at(NapileTokens.CHARACTER_LITERAL))
-			parseOneTokenExpression(CHARACTER_CONSTANT);
 		else if(at(NapileTokens.FLOAT_LITERAL))
 			parseOneTokenExpression(FLOAT_CONSTANT);
 		else if(at(NapileTokens.STRING_LITERAL))

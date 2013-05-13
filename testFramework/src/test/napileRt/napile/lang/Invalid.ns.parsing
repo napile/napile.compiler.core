@@ -112,6 +112,6 @@ NapileFileImpl: Invalid.ns
         PsiElement(EQ)('=')
         PsiWhiteSpace(' ')
         NapileConstantExpressionImpl(STRING_CONSTANT)
-          PsiElement(STRING_LITERAL)('"invalid"')
+          PsiElement(STRING_LITERAL)(''invalid'')
       PsiWhiteSpace('\n')
       PsiElement(RBRACE)('}')

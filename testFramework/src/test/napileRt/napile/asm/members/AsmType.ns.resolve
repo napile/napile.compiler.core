@@ -57,18 +57,18 @@ class AsmType
 		<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.constructor">constructor</ref>
 		if(<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo">></ref> 0)
 		{
-			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "<"
+			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '<'
 			var i = 0
 			while(<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.i">i</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.compareTo"><</ref> <ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref>)
 			{
 				if(<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.i">i</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">!=</ref> 0)
-					<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ", "
+					<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ', '
 				<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.get"><ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.parameters">parameters</ref>[<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.i">i</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.inc">++</ref>]</ref>
 			}
-			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> ">"
+			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '>'
 		}
 		if(<ref class="VariableDescriptorImpl" to="napile.asm.members.AsmType.nullable">nullable</ref>)
-			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> "?"
+			<ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.plus">+=</ref> '?'
 		return <ref class="LocalVariableDescriptor" to="napile.asm.members.AsmType.toString.builder">builder</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.lang.StringBuilder.toString">toString</ref>()
 	}
 }

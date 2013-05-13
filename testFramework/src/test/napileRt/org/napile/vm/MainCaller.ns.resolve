@@ -29,12 +29,12 @@ util class MainCaller
 	meth main(val arg : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>>)
 	{
 		if(<ref class="CallParameterAsVariableDescriptorImpl" to="org.napile.vm.MainCaller.main.arg">arg</ref>.<ref class="VariableDescriptorImpl" to="napile.lang.Array.length">length</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.lang.Int.equals">==</ref> 0)
-			throw <ref class="ConstructorDescriptor" to="org.napile.vm.VmStartupError.this">VmStartupError</ref>("Class name - expected")
+			throw <ref class="ConstructorDescriptor" to="org.napile.vm.VmStartupError.this">VmStartupError</ref>('Class name - expected')
 
 		val clazz = <ref class="MutableClassDescriptor" to="napile.reflect.ReflectUtil">ReflectUtil</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.reflect.ReflectUtil.findClass">findClass</ref>(<ref class="SimpleMethodDescriptorImpl" to="napile.lang.Array.get"><ref class="CallParameterAsVariableDescriptorImpl" to="org.napile.vm.MainCaller.main.arg">arg</ref>[0]</ref>)
-		val mainMethod = <ref class="LocalVariableDescriptor" to="org.napile.vm.MainCaller.main.clazz">clazz</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.reflect.Class.findStaticMethod">findStaticMethod</ref>("main", arrayOf(<ref class="SimpleMethodDescriptorImpl" to="napile.asm.AsmUtil.toAsmType">toAsmType</ref><<ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>>>()))
+		val mainMethod = <ref class="LocalVariableDescriptor" to="org.napile.vm.MainCaller.main.clazz">clazz</ref>.<ref class="SimpleMethodDescriptorImpl" to="napile.reflect.Class.findStaticMethod">findStaticMethod</ref>('main', arrayOf(<ref class="SimpleMethodDescriptorImpl" to="napile.asm.AsmUtil.toAsmType">toAsmType</ref><<ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>>>()))
 		if(<ref class="LocalVariableDescriptor" to="org.napile.vm.MainCaller.main.mainMethod">mainMethod</ref> <ref class="SimpleMethodDescriptorImpl" to="napile.reflect.Method.equals">==</ref> null)
-			throw <ref class="ConstructorDescriptor" to="org.napile.vm.VmStartupError.this">VmStartupError</ref>("'static meth main(val arg : Array<String>)' method expected")
+			throw <ref class="ConstructorDescriptor" to="org.napile.vm.VmStartupError.this">VmStartupError</ref>('\'static meth main(val arg : Array<String>)\' method expected')
 
 		val thread = <ref class="ConstructorDescriptor" to="napile.lang.Thread.this">Thread</ref> {
 			try

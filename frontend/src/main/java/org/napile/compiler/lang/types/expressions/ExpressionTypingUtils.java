@@ -136,10 +136,6 @@ public class ExpressionTypingUtils
 		{
 			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.BOOL, false);
 		}
-		else if(constantType == NapileNodes.CHARACTER_CONSTANT)
-		{
-			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.CHAR, false);
-		}
 		else if(constantType == NapileNodes.STRING_CONSTANT)
 		{
 			return TypeUtils.getTypeOfClassOrErrorType(napileScope, NapileLangPackage.STRING, false);

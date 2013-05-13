@@ -29,6 +29,6 @@ class TextInjection2Test
 
 	static meth callTo() : String
 	{
-		return "callTo"
+		return 'callTo'
 	}
 }

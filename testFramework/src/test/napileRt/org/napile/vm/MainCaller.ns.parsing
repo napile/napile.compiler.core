@@ -150,7 +150,7 @@ NapileFileImpl: MainCaller.ns
                     PsiElement(LPAR)('(')
                     NapileValueArgument(VALUE_ARGUMENT)
                       NapileConstantExpressionImpl(STRING_CONSTANT)
-                        PsiElement(STRING_LITERAL)('"Class name - expected"')
+                        PsiElement(STRING_LITERAL)(''Class name - expected'')
                     PsiElement(RPAR)(')')
           PsiWhiteSpace('\n\n\t\t')
           VARIABLE
@@ -202,7 +202,7 @@ NapileFileImpl: MainCaller.ns
                   PsiElement(LPAR)('(')
                   NapileValueArgument(VALUE_ARGUMENT)
                     NapileConstantExpressionImpl(STRING_CONSTANT)
-                      PsiElement(STRING_LITERAL)('"main"')
+                      PsiElement(STRING_LITERAL)(''main'')
                   PsiElement(COMMA)(',')
                   PsiWhiteSpace(' ')
                   NapileValueArgument(VALUE_ARGUMENT)
@@ -259,7 +259,7 @@ NapileFileImpl: MainCaller.ns
                     PsiElement(LPAR)('(')
                     NapileValueArgument(VALUE_ARGUMENT)
                       NapileConstantExpressionImpl(STRING_CONSTANT)
-                        PsiElement(STRING_LITERAL)('"'static meth main(val arg : Array<String>)' method expected"')
+                        PsiElement(STRING_LITERAL)(''\'static meth main(val arg : Array<String>)\' method expected'')
                     PsiElement(RPAR)(')')
           PsiWhiteSpace('\n\n\t\t')
           VARIABLE
