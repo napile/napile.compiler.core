@@ -4216,17 +4216,6 @@
 		<code max-locals="3">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.collection.Sizeable.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<local-get val="1">
 					<position line="20" column="11" file="napile/lang/String.ns"/>
 				</local-get>
@@ -4383,17 +4372,6 @@
 		</parameters>
 		<code max-locals="5">
 			<instructions>
-				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.collection.Sizeable.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
 				<local-get val="0"/>
 				<local-get val="1"/>
 				<invoke-special>

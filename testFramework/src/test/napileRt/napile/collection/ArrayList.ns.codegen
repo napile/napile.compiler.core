@@ -199,6 +199,21 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="12" column="25" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.collection.ArrayList.size">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="add">
 		<annotations>
@@ -988,28 +1003,6 @@
 		</parameters>
 		<code max-locals="3">
 			<instructions>
-				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.collection.List.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
-				<new-int val="0">
-					<position line="12" column="25" file="napile/collection/ArrayList.ns"/>
-				</new-int>
-				<put-to-variable>
-					<variable name="napile.collection.ArrayList.size">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<local-get val="1">
 					<position line="16" column="19" file="napile/collection/ArrayList.ns"/>

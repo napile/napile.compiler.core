@@ -99,28 +99,6 @@
 		<code max-locals="3">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="xml.XmlNode.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
-				<invoke-special>
-					<method name="xml.XmlElementHolder.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<local-get val="1"/>
 				<invoke-virtual>
 					<method name="xml.XmlElement.name$set">

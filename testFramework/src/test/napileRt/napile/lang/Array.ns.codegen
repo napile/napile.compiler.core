@@ -1345,28 +1345,6 @@
 		<code max-locals="6">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.collection.Iterable.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.collection.Sizeable.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<local-get val="1"/>
 				<invoke-virtual>
 					<method name="napile.lang.Array.length$set">
@@ -1438,7 +1416,7 @@
 						</return_type>
 					</method>
 				</invoke-static>
-				<jump-if val="38"/>
+				<jump-if val="32"/>
 				<invoke-static>
 					<position line="26" column="52" file="napile/lang/Array.ns"/>
 					<method name="napile.lang.Bool.FALSE$get">
@@ -1547,7 +1525,7 @@
 						</return_type>
 					</method>
 				</invoke-static>
-				<jump-if val="38"/>
+				<jump-if val="32"/>
 				<local-get val="4"/>
 				<invoke-virtual>
 					<method name="napile.collection.Iterator.next">
@@ -1588,7 +1566,7 @@
 						</parameters>
 					</method>
 				</invoke-virtual>
-				<jump val="26"/>
+				<jump val="20"/>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

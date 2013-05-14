@@ -85,6 +85,21 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="29" column="16" file="napile/ui/Component.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.ui.Component.x">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="y$get">
 		<modifiers>
@@ -161,6 +176,21 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="31" column="16" file="napile/ui/Component.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.ui.Component.y">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="width$get">
 		<modifiers>
@@ -237,6 +267,21 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="33" column="20" file="napile/ui/Component.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.ui.Component.width">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="height$get">
 		<modifiers>
@@ -313,6 +358,21 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="35" column="21" file="napile/ui/Component.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.ui.Component.height">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="enabled$get">
 		<modifiers>
@@ -389,6 +449,28 @@
 				<class_type name="napile.lang.Bool"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="37" column="23" file="napile/ui/Component.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.ui.Component.enabled">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="visible$get">
 		<modifiers>
@@ -559,6 +641,28 @@
 				<class_type name="napile.lang.Bool"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="49" column="6" file="napile/ui/Component.ns"/>
+					<method name="napile.lang.Bool.FALSE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Bool"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.ui.Component.visible">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="variableChangeListener$get">
 		<return_type>
@@ -676,6 +780,44 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-object>
+					<position line="51" column="74" file="napile/ui/Component.ns"/>
+					<type nullable="false">
+						<class_type name="napile.util.listeners.ListenerHolder"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.util.listeners.VariableChangeEvent"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.lang.Any"/>
+									</type>
+								</type_arguments>
+							</type>
+						</type_arguments>
+					</type>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.ui.Component.variableChangeListener">
+						<type nullable="false">
+							<class_type name="napile.util.listeners.ListenerHolder"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.util.listeners.VariableChangeEvent"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="add">
 		<modifiers>
@@ -722,120 +864,6 @@
 		</return_type>
 		<code max-locals="2">
 			<instructions>
-				<local-get val="0"/>
-				<new-int val="0">
-					<position line="29" column="16" file="napile/ui/Component.ns"/>
-				</new-int>
-				<put-to-variable>
-					<variable name="napile.ui.Component.x">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<new-int val="0">
-					<position line="31" column="16" file="napile/ui/Component.ns"/>
-				</new-int>
-				<put-to-variable>
-					<variable name="napile.ui.Component.y">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<new-int val="0">
-					<position line="33" column="20" file="napile/ui/Component.ns"/>
-				</new-int>
-				<put-to-variable>
-					<variable name="napile.ui.Component.width">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<new-int val="0">
-					<position line="35" column="21" file="napile/ui/Component.ns"/>
-				</new-int>
-				<put-to-variable>
-					<variable name="napile.ui.Component.height">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<invoke-static>
-					<position line="37" column="23" file="napile/ui/Component.ns"/>
-					<method name="napile.lang.Bool.FALSE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Bool"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.ui.Component.enabled">
-						<type nullable="false">
-							<class_type name="napile.lang.Bool"/>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<invoke-static>
-					<position line="49" column="6" file="napile/ui/Component.ns"/>
-					<method name="napile.lang.Bool.FALSE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Bool"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.ui.Component.visible">
-						<type nullable="false">
-							<class_type name="napile.lang.Bool"/>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<new-object>
-					<position line="51" column="74" file="napile/ui/Component.ns"/>
-					<type nullable="false">
-						<class_type name="napile.util.listeners.ListenerHolder"/>
-						<type_arguments>
-							<type nullable="false">
-								<class_type name="napile.util.listeners.VariableChangeEvent"/>
-								<type_arguments>
-									<type nullable="false">
-										<class_type name="napile.lang.Any"/>
-									</type>
-								</type_arguments>
-							</type>
-						</type_arguments>
-					</type>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.ui.Component.variableChangeListener">
-						<type nullable="false">
-							<class_type name="napile.util.listeners.ListenerHolder"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.util.listeners.VariableChangeEvent"/>
-									<type_arguments>
-										<type nullable="false">
-											<class_type name="napile.lang.Any"/>
-										</type>
-									</type_arguments>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

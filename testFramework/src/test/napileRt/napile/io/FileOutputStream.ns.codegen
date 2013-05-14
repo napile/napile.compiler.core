@@ -82,6 +82,27 @@
 				<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<invoke-static>
+					<position line="39" column="41" file="napile/io/FileOutputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.Platform.getFileSystem">
+						<return_type>
+							<type nullable="false">
+								<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-static-variable>
+					<variable name="napile.io.FileOutputStream.fileSystem">
+						<type nullable="false">
+							<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="channel$get">
 		<modifiers>
@@ -1934,17 +1955,6 @@
 		</parameters>
 		<code max-locals="4">
 			<instructions>
-				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.io.OutputStream.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
 				<invoke-static>
 					<position line="64" column="19" file="napile/io/FileOutputStream.ns"/>
 					<method name="napile.io.SecurityManager.INSTANCE$get">
@@ -2081,7 +2091,7 @@
 						</return_type>
 					</method>
 				</invoke-static>
-				<jump-if val="22"/>
+				<jump-if val="19"/>
 				<invoke-static>
 					<position line="67" column="81" file="napile/io/FileOutputStream.ns"/>
 					<method name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND$get">
@@ -2092,7 +2102,7 @@
 						</return_type>
 					</method>
 				</invoke-static>
-				<jump val="23"/>
+				<jump val="20"/>
 				<invoke-static>
 					<position line="67" column="107" file="napile/io/FileOutputStream.ns"/>
 					<method name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY$get">
@@ -2191,7 +2201,7 @@
 						</return_type>
 					</method>
 				</invoke-static>
-				<jump-if val="36"/>
+				<jump-if val="33"/>
 				<invoke-static>
 					<position line="68" column="91" file="napile/io/FileOutputStream.ns"/>
 					<method name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND$get">
@@ -2202,7 +2212,7 @@
 						</return_type>
 					</method>
 				</invoke-static>
-				<jump val="37"/>
+				<jump val="34"/>
 				<invoke-static>
 					<position line="68" column="117" file="napile/io/FileOutputStream.ns"/>
 					<method name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY$get">
@@ -2283,17 +2293,6 @@
 		</parameters>
 		<code max-locals="3">
 			<instructions>
-				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.io.OutputStream.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
 				<local-get val="0"/>
 				<local-get val="1"/>
 				<invoke-virtual>
@@ -2418,37 +2417,6 @@
 				</pop>
 				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<invoke-static>
-					<position line="39" column="41" file="napile/io/FileOutputStream.ns"/>
-					<method name="org.apache.harmony.luni.platform.Platform.getFileSystem">
-						<return_type>
-							<type nullable="false">
-								<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-static-variable>
-					<variable name="napile.io.FileOutputStream.fileSystem">
-						<type nullable="false">
-							<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

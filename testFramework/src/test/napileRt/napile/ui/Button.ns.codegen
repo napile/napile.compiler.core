@@ -103,6 +103,34 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-object>
+					<position line="27" column="51" file="napile/ui/Button.ns"/>
+					<type nullable="false">
+						<class_type name="napile.util.listeners.ListenerHolder"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.ui.ClickEvent"/>
+							</type>
+						</type_arguments>
+					</type>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.ui.Button.clickListener">
+						<type nullable="false">
+							<class_type name="napile.util.listeners.ListenerHolder"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.ui.ClickEvent"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="this">
 		<return_type>
@@ -157,30 +185,6 @@
 					</method>
 				</invoke-special>
 				<pop/>
-				<local-get val="0"/>
-				<new-object>
-					<position line="27" column="51" file="napile/ui/Button.ns"/>
-					<type nullable="false">
-						<class_type name="napile.util.listeners.ListenerHolder"/>
-						<type_arguments>
-							<type nullable="false">
-								<class_type name="napile.ui.ClickEvent"/>
-							</type>
-						</type_arguments>
-					</type>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.ui.Button.clickListener">
-						<type nullable="false">
-							<class_type name="napile.util.listeners.ListenerHolder"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.ui.ClickEvent"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

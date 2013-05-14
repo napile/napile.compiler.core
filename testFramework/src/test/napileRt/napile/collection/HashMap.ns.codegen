@@ -124,6 +124,44 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="29" column="29" file="napile/collection/HashMap.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="K"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="predefinedSize">
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.keys">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<type_parameter_value_type name="K"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="values$get">
 		<return_type>
@@ -216,6 +254,44 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="30" column="31" file="napile/collection/HashMap.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<type_parameter_value_type name="V"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="predefinedSize">
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.values">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<type_parameter_value_type name="V"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="size$get">
 		<modifiers>
@@ -292,6 +368,21 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="32" column="25" file="napile/collection/HashMap.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.collection.HashMap.size">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="entrySet">
 		<return_type>
@@ -1093,96 +1184,6 @@
 		</return_type>
 		<code max-locals="2">
 			<instructions>
-				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.collection.Map.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
-				<new-int val="10">
-					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
-				</new-int>
-				<new-object>
-					<position line="29" column="29" file="napile/collection/HashMap.ns"/>
-					<type nullable="false">
-						<class_type name="napile.collection.ArrayList"/>
-						<type_arguments>
-							<type nullable="false">
-								<type_parameter_value_type name="K"/>
-							</type>
-						</type_arguments>
-					</type>
-					<parameters>
-						<parameter name="predefinedSize">
-							<type nullable="false">
-								<class_type name="napile.lang.Int"/>
-							</type>
-						</parameter>
-					</parameters>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.collection.HashMap.keys">
-						<type nullable="false">
-							<class_type name="napile.collection.List"/>
-							<type_arguments>
-								<type nullable="false">
-									<type_parameter_value_type name="K"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<new-int val="10">
-					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
-				</new-int>
-				<new-object>
-					<position line="30" column="31" file="napile/collection/HashMap.ns"/>
-					<type nullable="false">
-						<class_type name="napile.collection.ArrayList"/>
-						<type_arguments>
-							<type nullable="false">
-								<type_parameter_value_type name="V"/>
-							</type>
-						</type_arguments>
-					</type>
-					<parameters>
-						<parameter name="predefinedSize">
-							<type nullable="false">
-								<class_type name="napile.lang.Int"/>
-							</type>
-						</parameter>
-					</parameters>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.collection.HashMap.values">
-						<type nullable="false">
-							<class_type name="napile.collection.List"/>
-							<type_arguments>
-								<type nullable="false">
-									<type_parameter_value_type name="V"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<new-int val="0">
-					<position line="32" column="25" file="napile/collection/HashMap.ns"/>
-				</new-int>
-				<put-to-variable>
-					<variable name="napile.collection.HashMap.size">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

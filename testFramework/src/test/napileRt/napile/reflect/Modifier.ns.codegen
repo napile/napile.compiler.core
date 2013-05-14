@@ -82,6 +82,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="11" column="32" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.LOCAL">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="HERITABLE$get">
 		<modifiers>
@@ -156,6 +173,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="16" column="36" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.HERITABLE">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="COVERED$get">
 		<modifiers>
@@ -230,6 +264,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="21" column="34" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.COVERED">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="MUTABLE$get">
 		<modifiers>
@@ -304,6 +355,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="26" column="34" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.MUTABLE">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="STATIC$get">
 		<modifiers>
@@ -378,6 +446,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="28" column="33" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.STATIC">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="ABSTRACT$get">
 		<modifiers>
@@ -452,6 +537,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="30" column="35" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.ABSTRACT">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="FINAL$get">
 		<modifiers>
@@ -526,6 +628,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="32" column="32" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.FINAL">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="NATIVE$get">
 		<modifiers>
@@ -600,6 +719,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="34" column="33" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.NATIVE">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="UTIL$get">
 		<modifiers>
@@ -674,6 +810,23 @@
 				<class_type name="napile.reflect.Modifier"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="36" column="31" file="napile/reflect/Modifier.ns"/>
+					<type nullable="false">
+						<class_type name="napile.reflect.Modifier"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.reflect.Modifier.UTIL">
+						<type nullable="false">
+							<class_type name="napile.reflect.Modifier"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="this">
 		<modifiers>
@@ -688,137 +841,6 @@
 			<instructions>
 				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-object>
-					<position line="11" column="32" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.LOCAL">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="16" column="36" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.HERITABLE">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="21" column="34" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.COVERED">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="26" column="34" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.MUTABLE">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="28" column="33" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.STATIC">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="30" column="35" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.ABSTRACT">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="32" column="32" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.FINAL">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="34" column="33" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.NATIVE">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="36" column="31" file="napile/reflect/Modifier.ns"/>
-					<type nullable="false">
-						<class_type name="napile.reflect.Modifier"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.reflect.Modifier.UTIL">
-						<type nullable="false">
-							<class_type name="napile.reflect.Modifier"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

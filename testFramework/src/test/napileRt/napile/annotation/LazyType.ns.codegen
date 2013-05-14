@@ -20,6 +20,22 @@
 				<class_type name="napile.annotation.LazyType$SIMPLE"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.annotation.LazyType$SIMPLE"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.annotation.LazyType.SIMPLE">
+						<type nullable="false">
+							<class_type name="napile.annotation.LazyType$SIMPLE"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="SIMPLE$get">
 		<modifiers>
@@ -93,6 +109,22 @@
 				<class_type name="napile.annotation.LazyType$INJECTION"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.annotation.LazyType$INJECTION"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.annotation.LazyType.INJECTION">
+						<type nullable="false">
+							<class_type name="napile.annotation.LazyType$INJECTION"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="INJECTION$get">
 		<modifiers>
@@ -166,44 +198,6 @@
 			<instructions>
 				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-object>
-					<type nullable="false">
-						<class_type name="napile.annotation.LazyType$SIMPLE"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.annotation.LazyType.SIMPLE">
-						<type nullable="false">
-							<class_type name="napile.annotation.LazyType$SIMPLE"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<type nullable="false">
-						<class_type name="napile.annotation.LazyType$INJECTION"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.annotation.LazyType.INJECTION">
-						<type nullable="false">
-							<class_type name="napile.annotation.LazyType$INJECTION"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

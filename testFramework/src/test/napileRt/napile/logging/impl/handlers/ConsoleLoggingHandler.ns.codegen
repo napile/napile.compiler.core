@@ -75,6 +75,44 @@
 				<class_type name="napile.io.FileOutputStream"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="30" column="51" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.io.FileDescriptor.systemOut$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="30" column="19" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.FileOutputStream"/>
+					</type>
+					<parameters>
+						<parameter name="fd">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.info">
+						<type nullable="false">
+							<class_type name="napile.io.FileOutputStream"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="error$get">
 		<return_type>
@@ -142,6 +180,44 @@
 				<class_type name="napile.io.FileOutputStream"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="31" column="52" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<method name="napile.io.FileDescriptor.systemErr$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<new-object>
+					<position line="31" column="20" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
+					<type nullable="false">
+						<class_type name="napile.io.FileOutputStream"/>
+					</type>
+					<parameters>
+						<parameter name="fd">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<class_type name="napile.io.FileDescriptor"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.error">
+						<type nullable="false">
+							<class_type name="napile.io.FileOutputStream"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="log">
 		<return_type>
@@ -665,74 +741,6 @@
 					</method>
 				</invoke-special>
 				<pop/>
-				<local-get val="0"/>
-				<invoke-static>
-					<position line="30" column="51" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
-					<method name="napile.io.FileDescriptor.systemOut$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.io.FileDescriptor"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<new-object>
-					<position line="30" column="19" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
-					<type nullable="false">
-						<class_type name="napile.io.FileOutputStream"/>
-					</type>
-					<parameters>
-						<parameter name="fd">
-							<modifiers>
-								<final/>
-							</modifiers>
-							<type nullable="false">
-								<class_type name="napile.io.FileDescriptor"/>
-							</type>
-						</parameter>
-					</parameters>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.info">
-						<type nullable="false">
-							<class_type name="napile.io.FileOutputStream"/>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<invoke-static>
-					<position line="31" column="52" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
-					<method name="napile.io.FileDescriptor.systemErr$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.io.FileDescriptor"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<new-object>
-					<position line="31" column="20" file="napile/logging/impl/handlers/ConsoleLoggingHandler.ns"/>
-					<type nullable="false">
-						<class_type name="napile.io.FileOutputStream"/>
-					</type>
-					<parameters>
-						<parameter name="fd">
-							<modifiers>
-								<final/>
-							</modifiers>
-							<type nullable="false">
-								<class_type name="napile.io.FileDescriptor"/>
-							</type>
-						</parameter>
-					</parameters>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.logging.impl.handlers.ConsoleLoggingHandler.error">
-						<type nullable="false">
-							<class_type name="napile.io.FileOutputStream"/>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

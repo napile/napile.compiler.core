@@ -85,6 +85,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="1">
+					<position line="23" column="28" file="test/injection/TextInjectionTest.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="test.injection.TextInjectionTest.MY_VAR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="main">
 		<modifiers>
@@ -238,46 +252,6 @@
 						</return_type>
 					</method>
 				</invoke-static>
-				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-int val="1">
-					<position line="23" column="28" file="test/injection/TextInjectionTest.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="test.injection.TextInjectionTest.MY_VAR">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-			</instructions>
-		</code>
-	</method>
-	<method name="this">
-		<modifiers>
-			<heritable/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<this_type/>
-			</type>
-		</return_type>
-		<code max-locals="1">
-			<instructions>
-				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>
 		</code>

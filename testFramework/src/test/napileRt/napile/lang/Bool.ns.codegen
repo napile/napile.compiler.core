@@ -116,6 +116,23 @@
 				<class_type name="napile.lang.Bool"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="12" column="27" file="napile/lang/Bool.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Bool"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.Bool.TRUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="FALSE$get">
 		<modifiers>
@@ -190,6 +207,23 @@
 				<class_type name="napile.lang.Bool"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="14" column="28" file="napile/lang/Bool.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Bool"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.Bool.FALSE">
+						<type nullable="false">
+							<class_type name="napile.lang.Bool"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="not">
 		<return_type>
@@ -305,46 +339,6 @@
 			<instructions>
 				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-object>
-					<position line="12" column="27" file="napile/lang/Bool.ns"/>
-					<type nullable="false">
-						<class_type name="napile.lang.Bool"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.lang.Bool.TRUE">
-						<type nullable="false">
-							<class_type name="napile.lang.Bool"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="14" column="28" file="napile/lang/Bool.ns"/>
-					<type nullable="false">
-						<class_type name="napile.lang.Bool"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.lang.Bool.FALSE">
-						<type nullable="false">
-							<class_type name="napile.lang.Bool"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

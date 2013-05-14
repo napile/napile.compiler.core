@@ -133,47 +133,6 @@
 				</type_arguments>
 			</type>
 		</return_type>
-	</variable>
-	<method name="log">
-		<modifiers>
-			<abstract/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<parameters>
-			<parameter name="message">
-				<type nullable="false">
-					<class_type name="napile.logging.LoggingMessage"/>
-				</type>
-			</parameter>
-		</parameters>
-		<code max-locals="1"/>
-	</method>
-	<method name="this">
-		<return_type>
-			<type nullable="false">
-				<this_type/>
-			</type>
-		</return_type>
-		<code max-locals="2">
-			<instructions>
-				<local-get val="0"/>
-				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
 		<code max-locals="0">
 			<instructions>
 				<new-string val="napile.lang">
@@ -233,6 +192,37 @@
 						</type>
 					</variable>
 				</put-to-static-variable>
+			</instructions>
+		</code>
+	</variable>
+	<method name="log">
+		<modifiers>
+			<abstract/>
+		</modifiers>
+		<return_type>
+			<type nullable="false">
+				<class_type name="napile.lang.Null"/>
+			</type>
+		</return_type>
+		<parameters>
+			<parameter name="message">
+				<type nullable="false">
+					<class_type name="napile.logging.LoggingMessage"/>
+				</type>
+			</parameter>
+		</parameters>
+		<code max-locals="1"/>
+	</method>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
 			</instructions>
 		</code>
 	</method>

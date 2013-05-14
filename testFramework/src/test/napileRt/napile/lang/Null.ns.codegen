@@ -83,6 +83,23 @@
 				<class_type name="napile.lang.Null"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="9" column="32" file="napile/lang/Null.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Null"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.Null.INSTANCE">
+						<type nullable="true">
+							<class_type name="napile.lang.Null"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="toString">
 		<return_type>
@@ -112,33 +129,6 @@
 			<instructions>
 				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-object>
-					<position line="9" column="32" file="napile/lang/Null.ns"/>
-					<type nullable="false">
-						<class_type name="napile.lang.Null"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.lang.Null.INSTANCE">
-						<type nullable="true">
-							<class_type name="napile.lang.Null"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

@@ -33,17 +33,20 @@ import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
 import org.napile.compiler.lang.descriptors.CallParameterAsReferenceDescriptorImpl;
 import org.napile.compiler.lang.descriptors.CallParameterDescriptor;
 import org.napile.compiler.lang.descriptors.CallableDescriptor;
-import org.napile.compiler.lang.descriptors.ClassDescriptor;
-import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.ConstructorDescriptor;
 import org.napile.compiler.lang.descriptors.MethodDescriptor;
 import org.napile.compiler.lang.descriptors.VariableDescriptor;
-import org.napile.compiler.lang.psi.*;
-import org.napile.compiler.lang.resolve.BindingTraceKeys;
+import org.napile.compiler.lang.psi.NapileCallParameter;
+import org.napile.compiler.lang.psi.NapileCallParameterAsReference;
+import org.napile.compiler.lang.psi.NapileConstructor;
+import org.napile.compiler.lang.psi.NapileDeclarationWithBody;
+import org.napile.compiler.lang.psi.NapileDelegationSpecifierListOwner;
+import org.napile.compiler.lang.psi.NapileDelegationToSuperCall;
+import org.napile.compiler.lang.psi.NapileExpression;
+import org.napile.compiler.lang.psi.NapileNamedMethodOrMacro;
 import org.napile.compiler.lang.resolve.BindingTrace;
+import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.calls.ResolvedCall;
-import org.napile.compiler.lang.types.NapileType;
-import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.openapi.util.Pair;
 
 /**
@@ -62,48 +65,17 @@ public class MethodCodegen
 			ResolvedCall<? extends CallableDescriptor> call = bindingTrace.get(BindingTraceKeys.RESOLVED_CALL, specifier.getCalleeExpression());
 			if(call == null)
 			{
-				final NapileTypeReference typeReference = specifier.getTypeReference();
-
-				NapileType type = bindingTrace.safeGet(BindingTraceKeys.TYPE, typeReference);
-
-				adapter.localGet(0);
-
-				adapter.invokeSpecial(AsmNodeUtil.constructorRef(TypeUtils.getFqName(type)), false);
-
-				adapter.pop(); //FIXME [VISTALL] this is needed?
+				continue;
 			}
-			else
-			{
-				adapter.localGet(0);
+			adapter.localGet(0);
 
-				ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, ExpressionCodegenContext.empty(), adapter);
+			ExpressionCodegen generator = new ExpressionCodegen(bindingTrace, constructorDescriptor, classNode, ExpressionCodegenContext.empty(), adapter);
 
-				CallableMethod method = CallTransformer.transformToCallable(bindingTrace, classNode, call, false, false, false);
+			CallableMethod method = CallTransformer.transformToCallable(bindingTrace, classNode, call, false, false, false);
 
-				generator.invokeMethodWithArguments(method, specifier, StackValue.none());
+			generator.invokeMethodWithArguments(method, specifier, StackValue.none());
 
-				adapter.pop(); //FIXME [VISTALL] this is needed?
-			}
-		}
-
-		if(owner instanceof NapileConstructor)
-		{
-			NapileClass napileClass = (NapileClass) owner.getParent().getParent();
-
-			for(NapileTypeReference typeReference : napileClass.getSuperTypes())
-			{
-				NapileType type = bindingTrace.safeGet(BindingTraceKeys.TYPE, typeReference);
-
-				final ClassifierDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
-				if(declarationDescriptor instanceof ClassDescriptor && ((ClassDescriptor) declarationDescriptor).isTraited())
-				{
-					adapter.localGet(0);
-
-					adapter.invokeSpecial(AsmNodeUtil.constructorRef(TypeUtils.getFqName(type)), false);
-
-					adapter.pop(); //FIXME [VISTALL] this is needed?
-				}
-			}
+			adapter.pop(); //FIXME [VISTALL] this is needed?
 		}
 	}
 

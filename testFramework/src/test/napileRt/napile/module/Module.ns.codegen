@@ -299,6 +299,52 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="0"/>
+				<invoke-special>
+					<position line="16" column="59" file="napile/module/Module.ns"/>
+					<method name="napile.module.Module.getExtensionPoints">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Array"/>
+								<type_arguments>
+									<type nullable="false">
+										<class_type name="napile.module.extension.ExtensionPoint"/>
+									</type>
+								</type_arguments>
+							</type>
+						</return_type>
+					</method>
+				</invoke-special>
+				<put-to-variable>
+					<variable name="napile.module.Module.extensionPoints">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.module.extension.ExtensionPoint"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="getExtensionPoints">
 		<modifiers>
@@ -418,48 +464,6 @@
 					</method>
 				</invoke-virtual>
 				<pop/>
-				<local-get val="0"/>
-				<local-get val="0"/>
-				<invoke-special>
-					<position line="16" column="59" file="napile/module/Module.ns"/>
-					<method name="napile.module.Module.getExtensionPoints">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Array"/>
-								<type_arguments>
-									<type nullable="false">
-										<class_type name="napile.module.extension.ExtensionPoint"/>
-									</type>
-								</type_arguments>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<put-to-variable>
-					<variable name="napile.module.Module.extensionPoints">
-						<type nullable="false">
-							<annotations>
-								<annotation>
-									<code max-locals="0">
-										<instructions>
-											<new-object>
-												<type nullable="false">
-													<class_type name="napile.annotation.Immutable"/>
-												</type>
-											</new-object>
-										</instructions>
-									</code>
-								</annotation>
-							</annotations>
-							<class_type name="napile.lang.Array"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.module.extension.ExtensionPoint"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

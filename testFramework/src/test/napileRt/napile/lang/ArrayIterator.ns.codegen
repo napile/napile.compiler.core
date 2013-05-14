@@ -98,6 +98,21 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="11" column="26" file="napile/lang/ArrayIterator.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.lang.ArrayIterator.index">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="array$get">
 		<return_type>
@@ -432,17 +447,6 @@
 		<code max-locals="3">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.collection.Iterator.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<local-get val="1"/>
 				<invoke-special>
 					<method name="napile.lang.ArrayIterator.array$set">
@@ -466,17 +470,6 @@
 					</method>
 				</invoke-special>
 				<pop/>
-				<local-get val="0"/>
-				<new-int val="0">
-					<position line="11" column="26" file="napile/lang/ArrayIterator.ns"/>
-				</new-int>
-				<put-to-variable>
-					<variable name="napile.lang.ArrayIterator.index">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

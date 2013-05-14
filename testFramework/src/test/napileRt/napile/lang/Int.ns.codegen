@@ -109,6 +109,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="-2147483648">
+					<position line="12" column="31" file="napile/lang/Int.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="napile.lang.Int.MIN_VALUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="MAX_VALUE$get">
 		<modifiers>
@@ -183,6 +197,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="2147483647">
+					<position line="13" column="31" file="napile/lang/Int.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="napile.lang.Int.MAX_VALUE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="rangeTo">
 		<return_type>
@@ -779,52 +807,7 @@
 		<code max-locals="2">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.lang.Number.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-int val="-2147483648">
-					<position line="12" column="31" file="napile/lang/Int.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="napile.lang.Int.MIN_VALUE">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="2147483647">
-					<position line="13" column="31" file="napile/lang/Int.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="napile.lang.Int.MAX_VALUE">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

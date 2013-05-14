@@ -130,19 +130,6 @@ public class ClassCodegen extends NapileVisitorVoid
 			classNode.addMember(methodNode);
 		}
 
-		if(classDescriptor.isTraited())
-		{
-			adapter = constructorsAdapters.get(Boolean.FALSE);
-			MethodNode methodNode = MethodNode.constructor(Modifier.HERITABLE);
-
-			adapter.visitLocalVariable("this");
-
-			adapter.localGet(0);
-			adapter.returnValues(1);
-
-			methodNode.code = new CodeInfo(adapter);
-			classNode.addMember(methodNode);
-		}
 		return classNode;
 	}
 
@@ -208,10 +195,13 @@ public class ClassCodegen extends NapileVisitorVoid
 			NapileExpression initializer = variable.getInitializer();
 			if(initializer != null)
 			{
-				InstructionAdapter adapter = constructorsAdapters.get(variableDescriptor.isStatic());
+				InstructionAdapter adapter = new InstructionAdapter();
 
 				if(!variableDescriptor.isStatic())
+				{
+					adapter.visitLocalVariable("this");
 					adapter.localGet(0);
+				}
 
 				// if var has lazy modifier - need put null
 				if(variable.hasModifier(NapileTokens.LAZY_KEYWORD))
@@ -220,6 +210,8 @@ public class ClassCodegen extends NapileVisitorVoid
 					new ExpressionCodegen(bindingTrace, null, classNode, context.clone(), adapter).gen(initializer, type);
 
 				StackValue.variable(initializer, bindingTrace, classNode, variableDescriptor).store(type, adapter, PositionMarker.EMPTY);
+
+				variableNode.code = new CodeInfo(adapter);
 			}
 		}
 	}
@@ -262,10 +254,11 @@ public class ClassCodegen extends NapileVisitorVoid
 
 		classNode.addMember(innerClassNode);
 
-		InstructionAdapter adapter = constructorsAdapters.get(Boolean.TRUE);
+		InstructionAdapter adapter = new InstructionAdapter();
 
 		adapter.newObject(type, Collections.<MethodParameterNode>emptyList());
 		adapter.putToStaticVar(new VariableRef(FqNameGenerator.getFqName(variableDescriptor, bindingTrace), type));
+		variableNode.code = new CodeInfo(adapter);
 	}
 
 	@Override

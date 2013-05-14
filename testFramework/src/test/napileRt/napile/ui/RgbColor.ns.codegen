@@ -19,6 +19,22 @@
 				<class_type name="napile.ui.RgbColor$RED"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.ui.RgbColor$RED"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.ui.RgbColor.RED">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor$RED"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="RED$get">
 		<modifiers>
@@ -127,6 +143,22 @@
 				<class_type name="napile.ui.RgbColor$GREEN"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.ui.RgbColor$GREEN"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.ui.RgbColor.GREEN">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor$GREEN"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="GREEN$get">
 		<modifiers>
@@ -235,6 +267,22 @@
 				<class_type name="napile.ui.RgbColor$BLUE"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.ui.RgbColor$BLUE"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.ui.RgbColor.BLUE">
+						<type nullable="false">
+							<class_type name="napile.ui.RgbColor$BLUE"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="BLUE$get">
 		<modifiers>
@@ -617,17 +665,6 @@
 		<code max-locals="5">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.ui.Color.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<local-get val="1"/>
 				<invoke-virtual>
 					<method name="napile.ui.RgbColor.red$set">
@@ -686,56 +723,6 @@
 				<pop/>
 				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-object>
-					<type nullable="false">
-						<class_type name="napile.ui.RgbColor$RED"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.ui.RgbColor.RED">
-						<type nullable="false">
-							<class_type name="napile.ui.RgbColor$RED"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<type nullable="false">
-						<class_type name="napile.ui.RgbColor$GREEN"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.ui.RgbColor.GREEN">
-						<type nullable="false">
-							<class_type name="napile.ui.RgbColor$GREEN"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<type nullable="false">
-						<class_type name="napile.ui.RgbColor$BLUE"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.ui.RgbColor.BLUE">
-						<type nullable="false">
-							<class_type name="napile.ui.RgbColor$BLUE"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

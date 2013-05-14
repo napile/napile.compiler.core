@@ -149,6 +149,21 @@
 				<class_type name="napile.lang.String"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-string val="">
+					<position line="28" column="20" file="napile/module/extension/descriptors/SimpleInstanceExtensionWithId.ns"/>
+				</new-string>
+				<put-to-variable>
+					<variable name="napile.module.extension.descriptors.SimpleInstanceExtensionWithId.id">
+						<type nullable="false">
+							<class_type name="napile.lang.String"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="this">
 		<type-parameters>
@@ -190,17 +205,6 @@
 					</method>
 				</invoke-special>
 				<pop/>
-				<local-get val="0"/>
-				<new-string val="">
-					<position line="28" column="20" file="napile/module/extension/descriptors/SimpleInstanceExtensionWithId.ns"/>
-				</new-string>
-				<put-to-variable>
-					<variable name="napile.module.extension.descriptors.SimpleInstanceExtensionWithId.id">
-						<type nullable="false">
-							<class_type name="napile.lang.String"/>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

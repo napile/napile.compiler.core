@@ -135,17 +135,6 @@
 		<code max-locals="2">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.lang.Number.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>
 		</code>

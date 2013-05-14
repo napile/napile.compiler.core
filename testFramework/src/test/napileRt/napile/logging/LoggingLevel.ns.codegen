@@ -19,6 +19,22 @@
 				<class_type name="napile.logging.LoggingLevel$INFO"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.logging.LoggingLevel$INFO"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.logging.LoggingLevel.INFO">
+						<type nullable="false">
+							<class_type name="napile.logging.LoggingLevel$INFO"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="INFO$get">
 		<modifiers>
@@ -92,6 +108,22 @@
 				<class_type name="napile.logging.LoggingLevel$WARN"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.logging.LoggingLevel$WARN"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.logging.LoggingLevel.WARN">
+						<type nullable="false">
+							<class_type name="napile.logging.LoggingLevel$WARN"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="WARN$get">
 		<modifiers>
@@ -165,6 +197,22 @@
 				<class_type name="napile.logging.LoggingLevel$ERROR"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<type nullable="false">
+						<class_type name="napile.logging.LoggingLevel$ERROR"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.logging.LoggingLevel.ERROR">
+						<type nullable="false">
+							<class_type name="napile.logging.LoggingLevel$ERROR"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="ERROR$get">
 		<modifiers>
@@ -241,56 +289,6 @@
 			<instructions>
 				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-object>
-					<type nullable="false">
-						<class_type name="napile.logging.LoggingLevel$INFO"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.logging.LoggingLevel.INFO">
-						<type nullable="false">
-							<class_type name="napile.logging.LoggingLevel$INFO"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<type nullable="false">
-						<class_type name="napile.logging.LoggingLevel$WARN"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.logging.LoggingLevel.WARN">
-						<type nullable="false">
-							<class_type name="napile.logging.LoggingLevel$WARN"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<type nullable="false">
-						<class_type name="napile.logging.LoggingLevel$ERROR"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.logging.LoggingLevel.ERROR">
-						<type nullable="false">
-							<class_type name="napile.logging.LoggingLevel$ERROR"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

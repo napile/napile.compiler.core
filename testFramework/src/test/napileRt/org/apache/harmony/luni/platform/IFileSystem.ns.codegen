@@ -83,6 +83,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="1">
+					<position line="29" column="38" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SHARED_LOCK_TYPE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="EXCLUSIVE_LOCK_TYPE$get">
 		<modifiers>
@@ -157,6 +171,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="2">
+					<position line="31" column="41" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.EXCLUSIVE_LOCK_TYPE">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="SEEK_SET$get">
 		<modifiers>
@@ -231,6 +259,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="1">
+					<position line="33" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_SET">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="SEEK_CUR$get">
 		<modifiers>
@@ -305,6 +347,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="2">
+					<position line="35" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_CUR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="SEEK_END$get">
 		<modifiers>
@@ -379,6 +435,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="4">
+					<position line="37" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_END">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_RDONLY$get">
 		<modifiers>
@@ -453,6 +523,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="0">
+					<position line="39" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDONLY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_WRONLY$get">
 		<modifiers>
@@ -527,6 +611,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="1">
+					<position line="41" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_RDWR$get">
 		<modifiers>
@@ -601,6 +699,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="16">
+					<position line="43" column="28" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWR">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_RDWRSYNC$get">
 		<modifiers>
@@ -675,6 +787,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="32">
+					<position line="45" column="32" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWRSYNC">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_APPEND$get">
 		<modifiers>
@@ -749,6 +875,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="256">
+					<position line="47" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_CREAT$get">
 		<modifiers>
@@ -823,6 +963,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="4096">
+					<position line="49" column="29" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_CREAT">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_EXCL$get">
 		<modifiers>
@@ -897,6 +1051,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="65536">
+					<position line="51" column="28" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_EXCL">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_NOCTTY$get">
 		<modifiers>
@@ -971,6 +1139,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="1048576">
+					<position line="53" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NOCTTY">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_NONBLOCK$get">
 		<modifiers>
@@ -1045,6 +1227,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="16777216">
+					<position line="55" column="32" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NONBLOCK">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="O_TRUNC$get">
 		<modifiers>
@@ -1119,6 +1315,20 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-int val="268435456">
+					<position line="57" column="29" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
+				</new-int>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_TRUNC">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="read">
 		<modifiers>
@@ -1836,185 +2046,5 @@
 			</parameter>
 		</parameters>
 		<code max-locals="1"/>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-int val="1">
-					<position line="29" column="38" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.SHARED_LOCK_TYPE">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="2">
-					<position line="31" column="41" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.EXCLUSIVE_LOCK_TYPE">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="1">
-					<position line="33" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_SET">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="2">
-					<position line="35" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_CUR">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="4">
-					<position line="37" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.SEEK_END">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="0">
-					<position line="39" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDONLY">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="1">
-					<position line="41" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_WRONLY">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="16">
-					<position line="43" column="28" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWR">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="32">
-					<position line="45" column="32" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_RDWRSYNC">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="256">
-					<position line="47" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_APPEND">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="4096">
-					<position line="49" column="29" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_CREAT">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="65536">
-					<position line="51" column="28" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_EXCL">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="1048576">
-					<position line="53" column="30" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NOCTTY">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="16777216">
-					<position line="55" column="32" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_NONBLOCK">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-int val="268435456">
-					<position line="57" column="29" file="org/apache/harmony/luni/platform/IFileSystem.ns"/>
-				</new-int>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.IFileSystem.O_TRUNC">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-			</instructions>
-		</code>
-	</method>
-	<method name="this">
-		<modifiers>
-			<heritable/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<this_type/>
-			</type>
-		</return_type>
-		<code max-locals="1">
-			<instructions>
-				<local-get val="0"/>
-				<return val="1"/>
-			</instructions>
-		</code>
 	</method>
 </class>

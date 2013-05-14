@@ -28,20 +28,4 @@
 		</parameters>
 		<code max-locals="1"/>
 	</method>
-	<method name="this">
-		<modifiers>
-			<heritable/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<this_type/>
-			</type>
-		</return_type>
-		<code max-locals="1">
-			<instructions>
-				<local-get val="0"/>
-				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
 </class>

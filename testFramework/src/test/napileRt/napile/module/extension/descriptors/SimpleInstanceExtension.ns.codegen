@@ -85,6 +85,25 @@
 				<type_parameter_value_type name="T"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<local-get val="0"/>
+				<new-object>
+					<position line="30" column="17" file="napile/module/extension/descriptors/SimpleInstanceExtension.ns"/>
+					<type nullable="false">
+						<type_parameter_value_type name="T"/>
+					</type>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.module.extension.descriptors.SimpleInstanceExtension.impl">
+						<type nullable="false">
+							<type_parameter_value_type name="T"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="this">
 		<type-parameters>
@@ -104,21 +123,6 @@
 		</return_type>
 		<code max-locals="2">
 			<instructions>
-				<local-get val="0"/>
-				<local-get val="0"/>
-				<new-object>
-					<position line="30" column="17" file="napile/module/extension/descriptors/SimpleInstanceExtension.ns"/>
-					<type nullable="false">
-						<type_parameter_value_type name="T"/>
-					</type>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.module.extension.descriptors.SimpleInstanceExtension.impl">
-						<type nullable="false">
-							<type_parameter_value_type name="T"/>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

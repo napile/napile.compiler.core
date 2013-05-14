@@ -100,6 +100,44 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="29" column="40" file="napile/ui/BaseComponent.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.ui.Component"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="predefinedSize">
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.ui.BaseComponent.members">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.ui.Component"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="add">
 		<return_type>
@@ -216,40 +254,6 @@
 					</method>
 				</invoke-special>
 				<pop/>
-				<local-get val="0"/>
-				<new-int val="10">
-					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
-				</new-int>
-				<new-object>
-					<position line="29" column="40" file="napile/ui/BaseComponent.ns"/>
-					<type nullable="false">
-						<class_type name="napile.collection.ArrayList"/>
-						<type_arguments>
-							<type nullable="false">
-								<class_type name="napile.ui.Component"/>
-							</type>
-						</type_arguments>
-					</type>
-					<parameters>
-						<parameter name="predefinedSize">
-							<type nullable="false">
-								<class_type name="napile.lang.Int"/>
-							</type>
-						</parameter>
-					</parameters>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.ui.BaseComponent.members">
-						<type nullable="false">
-							<class_type name="napile.collection.List"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.ui.Component"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

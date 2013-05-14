@@ -175,6 +175,70 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
+				</new-int>
+				<new-object>
+					<position line="28" column="54" file="napile/util/listeners/ListenerHolder.ns"/>
+					<type nullable="false">
+						<class_type name="napile.collection.ArrayList"/>
+						<type_arguments>
+							<type nullable="false">
+								<method_type>
+									<return_type>
+										<type nullable="false">
+											<class_type name="napile.lang.Null"/>
+										</type>
+									</return_type>
+									<parameters>
+										<parameter name="e">
+											<type nullable="false">
+												<type_parameter_value_type name="E"/>
+											</type>
+										</parameter>
+									</parameters>
+								</method_type>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="predefinedSize">
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.util.listeners.ListenerHolder.listeners">
+						<type nullable="false">
+							<class_type name="napile.collection.List"/>
+							<type_arguments>
+								<type nullable="false">
+									<method_type>
+										<return_type>
+											<type nullable="false">
+												<class_type name="napile.lang.Null"/>
+											</type>
+										</return_type>
+										<parameters>
+											<parameter name="e">
+												<type nullable="false">
+													<type_parameter_value_type name="E"/>
+												</type>
+											</parameter>
+										</parameters>
+									</method_type>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="plus">
 		<return_type>
@@ -431,66 +495,6 @@
 		</return_type>
 		<code max-locals="2">
 			<instructions>
-				<local-get val="0"/>
-				<new-int val="10">
-					<position line="14" column="34" file="napile/collection/ArrayList.ns"/>
-				</new-int>
-				<new-object>
-					<position line="28" column="54" file="napile/util/listeners/ListenerHolder.ns"/>
-					<type nullable="false">
-						<class_type name="napile.collection.ArrayList"/>
-						<type_arguments>
-							<type nullable="false">
-								<method_type>
-									<return_type>
-										<type nullable="false">
-											<class_type name="napile.lang.Null"/>
-										</type>
-									</return_type>
-									<parameters>
-										<parameter name="e">
-											<type nullable="false">
-												<type_parameter_value_type name="E"/>
-											</type>
-										</parameter>
-									</parameters>
-								</method_type>
-							</type>
-						</type_arguments>
-					</type>
-					<parameters>
-						<parameter name="predefinedSize">
-							<type nullable="false">
-								<class_type name="napile.lang.Int"/>
-							</type>
-						</parameter>
-					</parameters>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.util.listeners.ListenerHolder.listeners">
-						<type nullable="false">
-							<class_type name="napile.collection.List"/>
-							<type_arguments>
-								<type nullable="false">
-									<method_type>
-										<return_type>
-											<type nullable="false">
-												<class_type name="napile.lang.Null"/>
-											</type>
-										</return_type>
-										<parameters>
-											<parameter name="e">
-												<type nullable="false">
-													<type_parameter_value_type name="E"/>
-												</type>
-											</parameter>
-										</parameters>
-									</method_type>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

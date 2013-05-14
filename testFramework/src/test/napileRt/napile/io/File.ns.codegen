@@ -179,6 +179,33 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<position line="29" column="40" file="napile/io/File.ns"/>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.io.File.properPath">
+						<type nullable="true">
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.lang.Byte"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="exists">
 		<return_type>
@@ -707,29 +734,6 @@
 		</parameters>
 		<code max-locals="3">
 			<instructions>
-				<local-get val="0"/>
-				<invoke-static>
-					<position line="29" column="40" file="napile/io/File.ns"/>
-					<method name="napile.lang.Null.INSTANCE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Null"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.io.File.properPath">
-						<type nullable="true">
-							<class_type name="napile.lang.Array"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.lang.Byte"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<local-get val="0"/>
 				<local-get val="1">

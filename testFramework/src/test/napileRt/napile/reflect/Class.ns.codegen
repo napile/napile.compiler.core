@@ -280,6 +280,45 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.reflect.Class.variables">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.reflect.Variable"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="constructors$get">
 		<return_type>
@@ -542,6 +581,45 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.reflect.Class.constructors">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.reflect.Constructor"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="methods$get">
 		<return_type>
@@ -804,6 +882,45 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.reflect.Class.methods">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.reflect.Method"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="macros$get">
 		<return_type>
@@ -1066,6 +1183,45 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.reflect.Class.macros">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.reflect.Macro"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="superClasses$get">
 		<return_type>
@@ -1368,6 +1524,50 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.reflect.Class.superClasses">
+						<type nullable="false">
+							<annotations>
+								<annotation>
+									<code max-locals="0">
+										<instructions>
+											<new-object>
+												<type nullable="false">
+													<class_type name="napile.annotation.Immutable"/>
+												</type>
+											</new-object>
+										</instructions>
+									</code>
+								</annotation>
+							</annotations>
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.reflect.Class"/>
+									<type_arguments>
+										<type nullable="false">
+											<class_type name="napile.lang.Any"/>
+										</type>
+									</type_arguments>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="getVariables">
 		<modifiers>
@@ -2810,186 +3010,6 @@
 					</method>
 				</invoke-special>
 				<pop/>
-				<local-get val="0"/>
-				<invoke-static>
-					<method name="napile.lang.Null.INSTANCE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Null"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.reflect.Class.variables">
-						<type nullable="false">
-							<annotations>
-								<annotation>
-									<code max-locals="0">
-										<instructions>
-											<new-object>
-												<type nullable="false">
-													<class_type name="napile.annotation.Immutable"/>
-												</type>
-											</new-object>
-										</instructions>
-									</code>
-								</annotation>
-							</annotations>
-							<class_type name="napile.lang.Array"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.reflect.Variable"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<invoke-static>
-					<method name="napile.lang.Null.INSTANCE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Null"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.reflect.Class.constructors">
-						<type nullable="false">
-							<annotations>
-								<annotation>
-									<code max-locals="0">
-										<instructions>
-											<new-object>
-												<type nullable="false">
-													<class_type name="napile.annotation.Immutable"/>
-												</type>
-											</new-object>
-										</instructions>
-									</code>
-								</annotation>
-							</annotations>
-							<class_type name="napile.lang.Array"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.reflect.Constructor"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<invoke-static>
-					<method name="napile.lang.Null.INSTANCE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Null"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.reflect.Class.methods">
-						<type nullable="false">
-							<annotations>
-								<annotation>
-									<code max-locals="0">
-										<instructions>
-											<new-object>
-												<type nullable="false">
-													<class_type name="napile.annotation.Immutable"/>
-												</type>
-											</new-object>
-										</instructions>
-									</code>
-								</annotation>
-							</annotations>
-							<class_type name="napile.lang.Array"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.reflect.Method"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<invoke-static>
-					<method name="napile.lang.Null.INSTANCE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Null"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.reflect.Class.macros">
-						<type nullable="false">
-							<annotations>
-								<annotation>
-									<code max-locals="0">
-										<instructions>
-											<new-object>
-												<type nullable="false">
-													<class_type name="napile.annotation.Immutable"/>
-												</type>
-											</new-object>
-										</instructions>
-									</code>
-								</annotation>
-							</annotations>
-							<class_type name="napile.lang.Array"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.reflect.Macro"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<invoke-static>
-					<method name="napile.lang.Null.INSTANCE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Null"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.reflect.Class.superClasses">
-						<type nullable="false">
-							<annotations>
-								<annotation>
-									<code max-locals="0">
-										<instructions>
-											<new-object>
-												<type nullable="false">
-													<class_type name="napile.annotation.Immutable"/>
-												</type>
-											</new-object>
-										</instructions>
-									</code>
-								</annotation>
-							</annotations>
-							<class_type name="napile.lang.Array"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.reflect.Class"/>
-									<type_arguments>
-										<type nullable="false">
-											<class_type name="napile.lang.Any"/>
-										</type>
-									</type_arguments>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

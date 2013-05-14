@@ -83,6 +83,23 @@
 				<class_type name="org.apache.harmony.luni.platform.OSFileSystem"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="28" column="39" file="org/apache/harmony/luni/platform/OSFileSystem.ns"/>
+					<type nullable="false">
+						<class_type name="org.apache.harmony.luni.platform.OSFileSystem"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="org.apache.harmony.luni.platform.OSFileSystem.INSTANCE">
+						<type nullable="false">
+							<class_type name="org.apache.harmony.luni.platform.OSFileSystem"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="transfer">
 		<return_type>
@@ -1632,45 +1649,7 @@
 		<code max-locals="2">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="org.apache.harmony.luni.platform.IFileSystem.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<new-object>
-					<position line="28" column="39" file="org/apache/harmony/luni/platform/OSFileSystem.ns"/>
-					<type nullable="false">
-						<class_type name="org.apache.harmony.luni.platform.OSFileSystem"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="org.apache.harmony.luni.platform.OSFileSystem.INSTANCE">
-						<type nullable="false">
-							<class_type name="org.apache.harmony.luni.platform.OSFileSystem"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

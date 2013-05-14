@@ -110,6 +110,47 @@
 				</type_arguments>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="10">
+					<position line="8" column="46" file="napile/lang/StringBuilder.ns"/>
+				</new-int>
+				<new-object>
+					<position line="8" column="34" file="napile/lang/StringBuilder.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.Array"/>
+						<type_arguments>
+							<type nullable="false">
+								<class_type name="napile.lang.Char"/>
+							</type>
+						</type_arguments>
+					</type>
+					<parameters>
+						<parameter name="length">
+							<modifiers>
+								<final/>
+							</modifiers>
+							<type nullable="false">
+								<class_type name="napile.lang.Int"/>
+							</type>
+						</parameter>
+					</parameters>
+				</new-object>
+				<put-to-variable>
+					<variable name="napile.lang.StringBuilder.array">
+						<type nullable="false">
+							<class_type name="napile.lang.Array"/>
+							<type_arguments>
+								<type nullable="false">
+									<class_type name="napile.lang.Char"/>
+								</type>
+							</type_arguments>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="count$get">
 		<modifiers>
@@ -186,6 +227,21 @@
 				<class_type name="napile.lang.Int"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<new-int val="0">
+					<position line="9" column="26" file="napile/lang/StringBuilder.ns"/>
+				</new-int>
+				<put-to-variable>
+					<variable name="napile.lang.StringBuilder.count">
+						<type nullable="false">
+							<class_type name="napile.lang.Int"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="plus">
 		<return_type>
@@ -1038,54 +1094,6 @@
 		</return_type>
 		<code max-locals="2">
 			<instructions>
-				<local-get val="0"/>
-				<new-int val="10">
-					<position line="8" column="46" file="napile/lang/StringBuilder.ns"/>
-				</new-int>
-				<new-object>
-					<position line="8" column="34" file="napile/lang/StringBuilder.ns"/>
-					<type nullable="false">
-						<class_type name="napile.lang.Array"/>
-						<type_arguments>
-							<type nullable="false">
-								<class_type name="napile.lang.Char"/>
-							</type>
-						</type_arguments>
-					</type>
-					<parameters>
-						<parameter name="length">
-							<modifiers>
-								<final/>
-							</modifiers>
-							<type nullable="false">
-								<class_type name="napile.lang.Int"/>
-							</type>
-						</parameter>
-					</parameters>
-				</new-object>
-				<put-to-variable>
-					<variable name="napile.lang.StringBuilder.array">
-						<type nullable="false">
-							<class_type name="napile.lang.Array"/>
-							<type_arguments>
-								<type nullable="false">
-									<class_type name="napile.lang.Char"/>
-								</type>
-							</type_arguments>
-						</type>
-					</variable>
-				</put-to-variable>
-				<local-get val="0"/>
-				<new-int val="0">
-					<position line="9" column="26" file="napile/lang/StringBuilder.ns"/>
-				</new-int>
-				<put-to-variable>
-					<variable name="napile.lang.StringBuilder.count">
-						<type nullable="false">
-							<class_type name="napile.lang.Int"/>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

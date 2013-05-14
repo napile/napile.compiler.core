@@ -249,17 +249,6 @@
 		<code max-locals="3">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="xml.XmlDocument.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<local-get val="1"/>
 				<invoke-special>
 					<method name="xml.impl.XmlDocumentImpl.elements$set">

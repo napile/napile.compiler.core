@@ -82,6 +82,27 @@
 				<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<invoke-static>
+					<position line="13" column="41" file="napile/io/FileInputStream.ns"/>
+					<method name="org.apache.harmony.luni.platform.Platform.getFileSystem">
+						<return_type>
+							<type nullable="false">
+								<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-static-variable>
+					<variable name="napile.io.FileInputStream.fileSystem">
+						<type nullable="false">
+							<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="fd$get">
 		<return_type>
@@ -1272,17 +1293,6 @@
 		<code max-locals="3">
 			<instructions>
 				<local-get val="0"/>
-				<invoke-special>
-					<method name="napile.io.InputStream.this">
-						<return_type>
-							<type nullable="false">
-								<this_type/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-special>
-				<pop/>
-				<local-get val="0"/>
 				<new-object>
 					<position line="21" column="8" file="napile/io/FileInputStream.ns"/>
 					<type nullable="false">
@@ -1551,37 +1561,6 @@
 				</pop>
 				<local-get val="0"/>
 				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
-		<code max-locals="0">
-			<instructions>
-				<invoke-static>
-					<position line="13" column="41" file="napile/io/FileInputStream.ns"/>
-					<method name="org.apache.harmony.luni.platform.Platform.getFileSystem">
-						<return_type>
-							<type nullable="false">
-								<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-static-variable>
-					<variable name="napile.io.FileInputStream.fileSystem">
-						<type nullable="false">
-							<class_type name="org.apache.harmony.luni.platform.IFileSystem"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 			</instructions>
 		</code>
 	</method>

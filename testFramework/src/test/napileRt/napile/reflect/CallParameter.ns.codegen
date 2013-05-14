@@ -139,6 +139,27 @@
 				<class_type name="napile.asm.members.AsmType"/>
 			</type>
 		</return_type>
+		<code max-locals="1">
+			<instructions>
+				<local-get val="0"/>
+				<invoke-static>
+					<method name="napile.lang.Null.INSTANCE$get">
+						<return_type>
+							<type nullable="false">
+								<class_type name="napile.lang.Null"/>
+							</type>
+						</return_type>
+					</method>
+				</invoke-static>
+				<put-to-variable>
+					<variable name="napile.reflect.CallParameter.type">
+						<type nullable="false">
+							<class_type name="napile.asm.members.AsmType"/>
+						</type>
+					</variable>
+				</put-to-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="getReturnType">
 		<modifiers>
@@ -282,23 +303,6 @@
 					</method>
 				</invoke-special>
 				<pop/>
-				<local-get val="0"/>
-				<invoke-static>
-					<method name="napile.lang.Null.INSTANCE$get">
-						<return_type>
-							<type nullable="false">
-								<class_type name="napile.lang.Null"/>
-							</type>
-						</return_type>
-					</method>
-				</invoke-static>
-				<put-to-variable>
-					<variable name="napile.reflect.CallParameter.type">
-						<type nullable="false">
-							<class_type name="napile.asm.members.AsmType"/>
-						</type>
-					</variable>
-				</put-to-variable>
 				<local-get val="0"/>
 				<return val="1"/>
 			</instructions>

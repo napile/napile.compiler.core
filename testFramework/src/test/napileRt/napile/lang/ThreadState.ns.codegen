@@ -82,6 +82,23 @@
 				<class_type name="napile.lang.ThreadState"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="8" column="33" file="napile/lang/ThreadState.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.ThreadState"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.ThreadState.NEW">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="STARTED$get">
 		<modifiers>
@@ -156,6 +173,23 @@
 				<class_type name="napile.lang.ThreadState"/>
 			</type>
 		</return_type>
+		<code max-locals="0">
+			<instructions>
+				<new-object>
+					<position line="10" column="37" file="napile/lang/ThreadState.ns"/>
+					<type nullable="false">
+						<class_type name="napile.lang.ThreadState"/>
+					</type>
+				</new-object>
+				<put-to-static-variable>
+					<variable name="napile.lang.ThreadState.STARTED">
+						<type nullable="false">
+							<class_type name="napile.lang.ThreadState"/>
+						</type>
+					</variable>
+				</put-to-static-variable>
+			</instructions>
+		</code>
 	</variable>
 	<method name="FINISHED$get">
 		<modifiers>
@@ -230,57 +264,8 @@
 				<class_type name="napile.lang.ThreadState"/>
 			</type>
 		</return_type>
-	</variable>
-	<method name="this">
-		<return_type>
-			<type nullable="false">
-				<this_type/>
-			</type>
-		</return_type>
-		<code max-locals="2">
-			<instructions>
-				<local-get val="0"/>
-				<return val="1"/>
-			</instructions>
-		</code>
-	</method>
-	<method name="static">
-		<modifiers>
-			<static/>
-		</modifiers>
-		<return_type>
-			<type nullable="false">
-				<class_type name="napile.lang.Null"/>
-			</type>
-		</return_type>
 		<code max-locals="0">
 			<instructions>
-				<new-object>
-					<position line="8" column="33" file="napile/lang/ThreadState.ns"/>
-					<type nullable="false">
-						<class_type name="napile.lang.ThreadState"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.lang.ThreadState.NEW">
-						<type nullable="false">
-							<class_type name="napile.lang.ThreadState"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
-				<new-object>
-					<position line="10" column="37" file="napile/lang/ThreadState.ns"/>
-					<type nullable="false">
-						<class_type name="napile.lang.ThreadState"/>
-					</type>
-				</new-object>
-				<put-to-static-variable>
-					<variable name="napile.lang.ThreadState.STARTED">
-						<type nullable="false">
-							<class_type name="napile.lang.ThreadState"/>
-						</type>
-					</variable>
-				</put-to-static-variable>
 				<new-object>
 					<position line="12" column="38" file="napile/lang/ThreadState.ns"/>
 					<type nullable="false">
@@ -294,6 +279,19 @@
 						</type>
 					</variable>
 				</put-to-static-variable>
+			</instructions>
+		</code>
+	</variable>
+	<method name="this">
+		<return_type>
+			<type nullable="false">
+				<this_type/>
+			</type>
+		</return_type>
+		<code max-locals="2">
+			<instructions>
+				<local-get val="0"/>
+				<return val="1"/>
 			</instructions>
 		</code>
 	</method>
