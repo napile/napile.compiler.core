@@ -33,8 +33,6 @@ import org.napile.asm.tree.members.MethodNode;
 import org.napile.asm.tree.members.MethodParameterNode;
 import org.napile.asm.tree.members.TypeParameterNode;
 import org.napile.asm.tree.members.VariableNode;
-import org.napile.asm.tree.members.bytecode.Instruction;
-import org.napile.asm.tree.members.bytecode.impl.NewObjectInstruction;
 import org.napile.asm.tree.members.types.TypeNode;
 import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.asm.tree.members.types.constructors.MethodTypeNode;
@@ -388,14 +386,7 @@ public class NodeToStringBuilder
 
 				builder.append("@");
 
-				TypeNode typeNode = null;
-				for(Instruction instruction : annotationNode.code.instructions)
-				{
-					if(instruction instanceof NewObjectInstruction)
-					{
-						typeNode = ((NewObjectInstruction) instruction).value;
-					}
-				}
+				TypeNode typeNode = annotationNode.type;
 
 				if(typeNode == null)
 					throw new IllegalArgumentException();
