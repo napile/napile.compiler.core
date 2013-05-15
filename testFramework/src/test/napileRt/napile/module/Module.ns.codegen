@@ -155,8 +155,12 @@
 										<class_type name="napile.annotation.Immutable"/>
 									</type>
 								</new-object>
+								<return val="1"/>
 							</instructions>
 						</code>
+						<type nullable="false">
+							<class_type name="napile.annotation.Immutable"/>
+						</type>
 					</annotation>
 				</annotations>
 				<class_type name="napile.lang.Array"/>
@@ -182,8 +186,12 @@
 													<class_type name="napile.annotation.Immutable"/>
 												</type>
 											</new-object>
+											<return val="1"/>
 										</instructions>
 									</code>
+									<type nullable="false">
+										<class_type name="napile.annotation.Immutable"/>
+									</type>
 								</annotation>
 							</annotations>
 							<class_type name="napile.lang.Array"/>
@@ -220,8 +228,12 @@
 											<class_type name="napile.annotation.Immutable"/>
 										</type>
 									</new-object>
+									<return val="1"/>
 								</instructions>
 							</code>
+							<type nullable="false">
+								<class_type name="napile.annotation.Immutable"/>
+							</type>
 						</annotation>
 					</annotations>
 					<class_type name="napile.lang.Array"/>
@@ -249,8 +261,12 @@
 													<class_type name="napile.annotation.Immutable"/>
 												</type>
 											</new-object>
+											<return val="1"/>
 										</instructions>
 									</code>
+									<type nullable="false">
+										<class_type name="napile.annotation.Immutable"/>
+									</type>
 								</annotation>
 							</annotations>
 							<class_type name="napile.lang.Array"/>
@@ -287,8 +303,12 @@
 										<class_type name="napile.annotation.Immutable"/>
 									</type>
 								</new-object>
+								<return val="1"/>
 							</instructions>
 						</code>
+						<type nullable="false">
+							<class_type name="napile.annotation.Immutable"/>
+						</type>
 					</annotation>
 				</annotations>
 				<class_type name="napile.lang.Array"/>
@@ -330,8 +350,12 @@
 													<class_type name="napile.annotation.Immutable"/>
 												</type>
 											</new-object>
+											<return val="1"/>
 										</instructions>
 									</code>
+									<type nullable="false">
+										<class_type name="napile.annotation.Immutable"/>
+									</type>
 								</annotation>
 							</annotations>
 							<class_type name="napile.lang.Array"/>

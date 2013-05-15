@@ -305,8 +305,12 @@
 														<class_type name="napile.annotation.InheritImmutable"/>
 													</type>
 												</new-object>
+												<return val="1"/>
 											</instructions>
 										</code>
+										<type nullable="false">
+											<class_type name="napile.annotation.InheritImmutable"/>
+										</type>
 									</annotation>
 								</annotations>
 								<class_type name="napile.collection.Iterator"/>

@@ -36,8 +36,12 @@
 							</parameter>
 						</parameters>
 					</new-object>
+					<return val="1"/>
 				</instructions>
 			</code>
+			<type nullable="false">
+				<class_type name="napile.annotation.Annotation"/>
+			</type>
 		</annotation>
 	</annotations>
 	<extends>

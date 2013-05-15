@@ -126,8 +126,12 @@
 								<class_type name="napile.annotation.Extension"/>
 							</type>
 						</new-object>
+						<return val="1"/>
 					</instructions>
 				</code>
+				<type nullable="false">
+					<class_type name="napile.annotation.Extension"/>
+				</type>
 			</annotation>
 		</annotations>
 		<return_type>

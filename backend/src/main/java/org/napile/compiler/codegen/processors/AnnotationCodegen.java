@@ -60,6 +60,8 @@ public class AnnotationCodegen
 
 		callableMethod.newObject(gen.instructs, gen, null, type);
 
-		return new AnnotationNode(new CodeInfo(gen.instructs), ArrayUtil.EMPTY_STRING_ARRAY); //TODO [VISTALL]
+		gen.instructs.returnValues(1);
+
+		return new AnnotationNode(type, new CodeInfo(gen.instructs), ArrayUtil.EMPTY_STRING_ARRAY); //TODO [VISTALL]
 	}
 }

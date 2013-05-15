@@ -140,8 +140,12 @@
 								</parameter>
 							</parameters>
 						</new-object>
+						<return val="1"/>
 					</instructions>
 				</code>
+				<type nullable="false">
+					<class_type name="xml.annotation.DomAttribute"/>
+				</type>
 			</annotation>
 		</annotations>
 		<return_type>

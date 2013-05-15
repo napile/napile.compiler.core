@@ -37,8 +37,12 @@
 							</parameter>
 						</parameters>
 					</new-object>
+					<return val="1"/>
 				</instructions>
 			</code>
+			<type nullable="false">
+				<class_type name="napile.annotation.DefaultValue"/>
+			</type>
 		</annotation>
 	</annotations>
 	<extends>
