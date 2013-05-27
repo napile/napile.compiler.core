@@ -19,7 +19,7 @@
     <orderEntry type="module" module-name="frontend" />
     <orderEntry type="module" module-name="backend" />
     <orderEntry type="library" name="dom4j" level="project" />
-    <orderEntry type="library" name="intellij-core" level="project" />
+    <orderEntry type="library" name="cosulo-core" level="project" />
     <orderEntry type="library" name="java2napile.runtime" level="project" />
     <orderEntry type="library" name="javax.inject" level="project" />
     <orderEntry type="library" name="napile.asm" level="project" />

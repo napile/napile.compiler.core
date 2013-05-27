@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="intellij-core" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="cosulo-core" level="project" />
     <orderEntry type="library" name="javax.inject" level="project" />
     <orderEntry type="library" exported="" name="napile.asm" level="project" />
     <orderEntry type="library" exported="" name="dom4j" level="project" />

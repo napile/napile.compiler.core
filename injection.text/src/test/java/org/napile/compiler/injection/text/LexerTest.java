@@ -31,7 +31,7 @@ public class LexerTest
 
 		TextCodeInjection injection = new TextCodeInjection();
 
-		Lexer textLexer = injection.createLexer(null);
+		Lexer textLexer = injection.createLexer(null, null);
 		textLexer.start(str);
 
 		IElementType token = null;

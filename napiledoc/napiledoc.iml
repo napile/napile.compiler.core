@@ -11,7 +11,7 @@
     <orderEntry type="module" module-name="frontend" />
     <orderEntry type="module" module-name="frontend.doc" />
     <orderEntry type="module" module-name="backend" />
-    <orderEntry type="library" name="intellij-core" level="project" />
+    <orderEntry type="library" name="cosulo-core" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

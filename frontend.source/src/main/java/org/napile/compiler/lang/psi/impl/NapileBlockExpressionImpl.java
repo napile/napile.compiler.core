@@ -22,28 +22,20 @@ import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.NapileBlockExpression;
 import org.napile.compiler.lang.psi.NapileElement;
 import org.napile.compiler.lang.psi.NapileExpressionImpl;
-import org.napile.compiler.lang.psi.NapileModifiableBlockHelper;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiModifiableCodeBlock;
 
 /**
  * @author max
  */
-public class NapileBlockExpressionImpl extends NapileExpressionImpl implements PsiModifiableCodeBlock, NapileBlockExpression
+public class NapileBlockExpressionImpl extends NapileExpressionImpl implements NapileBlockExpression
 {
 	public NapileBlockExpressionImpl(@NotNull ASTNode node)
 	{
 		super(node);
-	}
-
-	@Override
-	public boolean shouldChangeModificationCount(PsiElement place)
-	{
-		return NapileModifiableBlockHelper.shouldChangeModificationCount(place);
 	}
 
 	@Override

@@ -19,23 +19,17 @@ import java.io.File;
 
 import org.jetbrains.annotations.NotNull;
 import com.intellij.core.CoreApplicationEnvironment;
-import com.intellij.core.CorePackageIndex;
 import com.intellij.core.CoreProjectEnvironment;
 import com.intellij.mock.MockFileIndexFacade;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.roots.PackageIndex;
 import com.intellij.openapi.vfs.VirtualFile;
 
 public class NapileCoreProjectEnvironment extends CoreProjectEnvironment
 {
-	private final PackageIndex myPackageIndex;
-
 	public NapileCoreProjectEnvironment(Disposable parentDisposable, CoreApplicationEnvironment applicationEnvironment)
 	{
 		super(parentDisposable, applicationEnvironment);
 
-		myPackageIndex = new CorePackageIndex();
-		myProject.registerService(PackageIndex.class, myPackageIndex);
 	}
 
 	public void addJarToClassPath(File path)
@@ -52,8 +46,6 @@ public class NapileCoreProjectEnvironment extends CoreProjectEnvironment
 	public void addSourcesToClasspath(@NotNull VirtualFile root)
 	{
 		assert root.isDirectory();
-
-		((CorePackageIndex) myPackageIndex).addToClasspath(root);
 		((MockFileIndexFacade) myFileIndexFacade).addLibraryRoot(root);
 	}
 }

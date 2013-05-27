@@ -29,6 +29,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.UserDataHolder;
@@ -88,7 +89,7 @@ public abstract class CodeInjection implements ParserDefinition, UserDataHolder
 
 	@NotNull
 	@Override
-	public Lexer createLexer(Project project)
+	public Lexer createLexer(Project project, Module module)
 	{
 		final IElementType sharpElementTypeInfo = getSharpElementType();
 		if(sharpElementTypeInfo == null)

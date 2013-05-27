@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="intellij-core" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="cosulo-core" level="project" />
     <orderEntry type="module" module-name="frontend" exported="" />
   </component>
 </module>

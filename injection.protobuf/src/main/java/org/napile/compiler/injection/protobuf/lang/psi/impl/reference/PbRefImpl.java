@@ -8,6 +8,7 @@ import static org.napile.compiler.injection.protobuf.lang.psi.PbPsiEnums.Referen
 
 import java.io.File;
 
+import org.consulo.psi.PsiPackageManager;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.protobuf.lang.PbTokenTypes;
 import org.napile.compiler.injection.protobuf.lang.psi.PbPsiElementVisitor;
@@ -24,11 +25,11 @@ import org.napile.compiler.injection.protobuf.lang.psi.utils.PbPsiUtil;
 import org.napile.compiler.injection.protobuf.lang.resolve.PbResolveUtil;
 import org.napile.compiler.injection.protobuf.util.PbFileUtil;
 import org.napile.compiler.injection.protobuf.util.PbTextUtil;
+import com.intellij.core.CoreModuleExtension;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
@@ -309,6 +310,7 @@ public class PbRefImpl extends PbPsiElementImpl implements PbRef
 		return !(getParent() instanceof PbRef);
 	}
 
+	@Override
 	public PsiElement getReferenceNameElement()
 	{
 		switch(getRefKind())
@@ -326,6 +328,7 @@ public class PbRefImpl extends PbPsiElementImpl implements PbRef
 		return null;
 	}
 
+	@Override
 	public ReferenceKind getRefKind()
 	{
 		//todo caching kind
@@ -408,6 +411,7 @@ public class PbRefImpl extends PbPsiElementImpl implements PbRef
 		return null;
 	}
 
+	@Override
 	public CompletionKind getCompletionKind()
 	{
 		//todo complete
@@ -417,6 +421,7 @@ public class PbRefImpl extends PbPsiElementImpl implements PbRef
 	public static class ExperimentalResolver implements ResolveCache.Resolver
 	{
 
+		@Override
 		public PsiElement resolve(PsiReference refElement, boolean b)
 		{
 			final PbRefImpl ref = (PbRefImpl) refElement;
@@ -465,8 +470,8 @@ public class PbRefImpl extends PbPsiElementImpl implements PbRef
 				case PACKAGE:
 				{
 					String qualifiedName = PbPsiUtil.getQualifiedReferenceText(ref);
-					JavaPsiFacade facade = JavaPsiFacade.getInstance(ref.getManager().getProject());
-					return facade.findPackage(qualifiedName);
+					PsiPackageManager facade = PsiPackageManager.getInstance(ref.getManager().getProject());
+					return facade.findPackage(qualifiedName, CoreModuleExtension.class);
 				}
 				case MESSAGE_OR_GROUP:
 				case MESSAGE_OR_ENUM_OR_GROUP:

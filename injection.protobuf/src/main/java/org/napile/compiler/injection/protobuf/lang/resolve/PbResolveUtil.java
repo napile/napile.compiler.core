@@ -1,17 +1,20 @@
 package org.napile.compiler.injection.protobuf.lang.resolve;
 
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.PsiElement;
+import static org.napile.compiler.injection.protobuf.lang.psi.PbPsiEnums.ReferenceKind;
 
-import static org.napile.compiler.injection.protobuf.lang.psi.PbPsiEnums.*;
-
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.psi.PsiPackage;
-import org.napile.compiler.injection.protobuf.lang.psi.api.*;
+import org.consulo.psi.PsiPackage;
+import org.napile.compiler.injection.protobuf.lang.psi.api.PbFile;
 import org.napile.compiler.injection.protobuf.lang.psi.api.block.PbBlock;
-import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.*;
+import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbEnumDef;
+import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbExtendDef;
+import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbFieldDef;
+import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbGroupDef;
+import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbMessageDef;
 import org.napile.compiler.injection.protobuf.lang.psi.api.reference.PbRef;
 import org.napile.compiler.injection.protobuf.lang.psi.utils.PbPsiUtil;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiNamedElement;
 
 /**
  * @author Nikolay Matveev

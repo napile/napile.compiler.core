@@ -5,13 +5,9 @@ import static org.napile.compiler.injection.protobuf.lang.PbElementTypes.WHITE_S
 
 import java.util.ArrayList;
 
+import org.consulo.psi.PsiPackage;
+import org.consulo.psi.PsiPackageManager;
 import org.jetbrains.annotations.NotNull;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiErrorElement;
-import com.intellij.psi.PsiPackage;
-import com.intellij.psi.tree.IElementType;
 import org.napile.compiler.injection.protobuf.lang.psi.api.PbFile;
 import org.napile.compiler.injection.protobuf.lang.psi.api.PbPsiElement;
 import org.napile.compiler.injection.protobuf.lang.psi.api.auxiliary.PbBlockHolder;
@@ -21,6 +17,11 @@ import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbFieldDe
 import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbGroupDef;
 import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbImportDef;
 import org.napile.compiler.injection.protobuf.lang.psi.api.reference.PbRef;
+import com.intellij.core.CoreModuleExtension;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiErrorElement;
+import com.intellij.psi.tree.IElementType;
 
 /**
  * @author Nikolay Matveev
@@ -119,7 +120,7 @@ public abstract class PbPsiUtil
 
 	public static PsiElement getRootScope(final PsiElement element)
 	{
-		return JavaPsiFacade.getInstance(element.getManager().getProject()).findPackage("");
+		return PsiPackageManager.getInstance(element.getManager().getProject()).findPackage("", CoreModuleExtension.class);
 	}
 
 	public static PsiElement getUpperScope(final PsiElement element)
@@ -130,8 +131,8 @@ public abstract class PbPsiUtil
 		}
 		if(element instanceof PbFile)
 		{
-			JavaPsiFacade facade = JavaPsiFacade.getInstance(element.getManager().getProject());
-			return facade.findPackage(((PbFile) element).getPackageName());
+			PsiPackageManager facade = PsiPackageManager.getInstance(element.getManager().getProject());
+			return facade.findPackage(((PbFile) element).getPackageName(), CoreModuleExtension.class);
 		}
 		if(element instanceof PbPsiElement)
 		{
@@ -142,8 +143,8 @@ public abstract class PbPsiUtil
 			}
 			if(scope instanceof PbFile)
 			{
-				JavaPsiFacade facade = JavaPsiFacade.getInstance(scope.getManager().getProject());
-				return facade.findPackage(((PbFile) scope).getPackageName());
+				PsiPackageManager facade = PsiPackageManager.getInstance(scope.getManager().getProject());
+				return facade.findPackage(((PbFile) scope).getPackageName(), CoreModuleExtension.class);
 			}
 			return scope;
 		}
