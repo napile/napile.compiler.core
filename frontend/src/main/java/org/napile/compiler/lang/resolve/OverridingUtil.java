@@ -305,7 +305,7 @@ public class OverridingUtil
 
 	private static void getOverriddenDeclarations(CallableMemberDescriptor descriptor, Map<ClassDescriptor, CallableMemberDescriptor> r)
 	{
-		if(descriptor.getKind().isReal())
+		if(descriptor.getKind().isReal() || descriptor.getKind() == CallableMemberDescriptor.Kind.CREATED_BY_PLUGIN)
 		{
 			r.put((ClassDescriptor) descriptor.getContainingDeclaration(), descriptor);
 		}

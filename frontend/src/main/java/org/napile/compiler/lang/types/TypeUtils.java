@@ -28,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.napile.asm.lib.NapileLangPackage;
 import org.napile.asm.resolve.name.FqName;
+import org.napile.asm.tree.members.types.TypeNode;
+import org.napile.asm.tree.members.types.constructors.ClassTypeNode;
 import org.napile.compiler.lang.descriptors.ClassDescriptor;
 import org.napile.compiler.lang.descriptors.ClassifierDescriptor;
 import org.napile.compiler.lang.descriptors.DeclarationDescriptor;
@@ -42,11 +44,13 @@ import org.napile.compiler.lang.resolve.scopes.ChainedScope;
 import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.types.checker.NapileTypeChecker;
 import org.napile.compiler.lang.types.impl.NapileTypeImpl;
+import org.napile.compiler.plugin.NodeVisitorAdapter;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.intellij.openapi.util.Pair;
 import com.intellij.util.Processor;
 
 /**
@@ -615,5 +619,31 @@ public class TypeUtils
 			return null;
 		else
 			return DescriptorUtils.getFQName(classifierDescriptor).toSafe();
+	}
+
+	public static NapileType toCompilerType(@NotNull final NapileScope scope, @NotNull TypeNode typeNode)
+	{
+		final Pair<TypeConstructor, NapileScope> accept = typeNode.typeConstructorNode.accept(new NodeVisitorAdapter<Void, Pair<TypeConstructor, NapileScope>>()
+		{
+			@Override
+			public Pair<TypeConstructor, NapileScope> visitClassTypeNode(ClassTypeNode classTypeNode, Void a2)
+			{
+				final ClassDescriptor aClass = scope.getClass(classTypeNode.className);
+				return aClass == null ? null : new Pair<TypeConstructor, NapileScope>(aClass.getTypeConstructor(), aClass.getMemberScope(Collections.<NapileType>emptyList()));
+			}
+		}, null);
+
+		if(accept == null)
+		{
+			return ErrorUtils.createErrorType("'" + typeNode + "' is not resolved");
+		}
+
+		List<NapileType> parameters = typeNode.arguments.isEmpty() ? Collections.<NapileType>emptyList() : new ArrayList<NapileType>(typeNode.arguments.size());
+		for(TypeNode temp : typeNode.arguments)
+		{
+			parameters.add(toCompilerType(scope, temp));
+		}
+
+		return new NapileTypeImpl(Collections.<AnnotationDescriptor>emptyList(), accept.getFirst(), typeNode.nullable, parameters, accept.getSecond());
 	}
 }

@@ -12,9 +12,17 @@
 		</fileset>
 	</path>
 
+	<path id="antClasspath">
+		<fileset dir="libAnt">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
 	<target name="clean">
 		<delete dir="${build.dir}" />
 	</target>
+
+	<taskdef classpathref="antClasspath" name="javac2" classname="com.intellij.ant.Javac2" />
 
 	<target name="make" depends="clean">
 		<mkdir dir="${build.dir}"/>
@@ -24,7 +32,7 @@
 
 	<target name="compile.compiler" depends="make">
 		<mkdir dir="${build.classes.dir}/compiler" />
-		<javac destdir="${build.classes.dir}/compiler" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
+		<javac2 destdir="${build.classes.dir}/compiler" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
 			<classpath refid="classpath"/>
 			<src>
 				<dirset dir="backend/src" />
@@ -35,7 +43,8 @@
 				<dirset dir="frontend.source/src/main/java" />
 				<dirset dir="injection.api/src/main/java" />
 			</src>
-		</javac>
+		</javac2>
+
 	</target>
 
 	<target name="jar.compiler" depends="compile.compiler">
@@ -58,7 +67,7 @@
 		<sequential>
 			<delete dir="${build.classes.dir}/@{name}" />
 			<mkdir dir="${build.classes.dir}/@{name}" />
-			<javac destdir="${build.classes.dir}/@{name}" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
+			<javac2 destdir="${build.classes.dir}/@{name}" optimize="off" debug="on" source="1.6" target="1.6" encoding="UTF-8" nowarn="off">
 				<classpath refid="classpath"/>
 				<classpath>
 					<fileset dir="${build.dist.dir}">
@@ -69,7 +78,7 @@
 					<dirset dir="@{name}/src/main/java" />
 					<dirset dir="@{name}.backend/src/main/java" erroronmissingdir="false"/>
 				</src>
-			</javac>
+			</javac2>
 
 			<tstamp>
 				<format property="build.tstamp" pattern="HH:mm dd.MM.yyyy "/>

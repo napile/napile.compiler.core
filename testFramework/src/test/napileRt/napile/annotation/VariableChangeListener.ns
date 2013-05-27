@@ -1,0 +1,7 @@
+package napile.annotation
+
+@napile.annotation.Annotation
+class VariableChangeListener
+{
+	this()
+}

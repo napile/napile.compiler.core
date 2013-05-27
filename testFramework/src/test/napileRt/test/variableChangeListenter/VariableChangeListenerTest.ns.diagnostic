@@ -1,0 +1,10 @@
+package test.variableChangeListener
+
+class VariableChangeListenerTest
+{
+	static meth main(val arg : Array<String>)
+	{
+		val a = VariableChangeListenerTester()
+		a.variableChangeListener += {}
+	}
+}

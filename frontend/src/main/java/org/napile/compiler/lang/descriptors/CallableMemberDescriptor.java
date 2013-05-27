@@ -38,6 +38,7 @@ public interface CallableMemberDescriptor extends CallableDescriptor, Declaratio
 	enum Kind
 	{
 		DECLARATION,
+		CREATED_BY_PLUGIN,
 		FAKE_OVERRIDE,
 		DELEGATION;
 

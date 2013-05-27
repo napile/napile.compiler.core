@@ -85,7 +85,7 @@ public class BindingTraceUtil
 		}
 	};
 
-	/*package*/ static final ReadOnlySlice<DeclarationDescriptor, PsiElement> DESCRIPTOR_TO_DECLARATION = Slices.<DeclarationDescriptor, PsiElement>sliceBuilder().setKeyNormalizer(DECLARATION_DESCRIPTOR_NORMALIZER).setDebugName("DESCRIPTOR_TO_DECLARATION").build();
+	public static final ReadOnlySlice<DeclarationDescriptor, PsiElement> DESCRIPTOR_TO_DECLARATION = Slices.<DeclarationDescriptor, PsiElement>sliceBuilder().setKeyNormalizer(DECLARATION_DESCRIPTOR_NORMALIZER).setDebugName("DESCRIPTOR_TO_DECLARATION").build();
 
 	@Nullable
 	public static PsiElement resolveToDeclarationPsiElement(@NotNull BindingTrace bindingTrace, @Nullable NapileReferenceExpression referenceExpression)
@@ -204,6 +204,10 @@ public class BindingTraceUtil
 	@Nullable
 	public static PsiElement callableDescriptorToDeclaration(@NotNull BindingTrace context, @NotNull CallableMemberDescriptor callable)
 	{
+		if(callable.getKind() == CallableMemberDescriptor.Kind.CREATED_BY_PLUGIN)
+		{
+			return context.get(BindingTraceKeys.CREATED_BY_PLUGIN, callable);
+		}
 		if(callable.getKind() != CallableMemberDescriptor.Kind.DECLARATION)
 		{
 			Set<? extends CallableMemberDescriptor> overriddenDescriptors = callable.getOverriddenDescriptors();

@@ -42,6 +42,8 @@ import org.napile.compiler.lang.resolve.processors.members.AnnotationResolver;
 import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScope;
 import org.napile.compiler.lang.resolve.scopes.WritableScopeImpl;
+import org.napile.compiler.plugin.CompilerPlugin;
+import org.napile.compiler.plugin.CompilerPluginManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
@@ -156,14 +158,21 @@ public class TopDownAnalyzer
 		context.debug("Enter");
 
 		typeHierarchyResolver.process(outerScope, owner, declarations);
+
 		declarationResolver.process(outerScope);
+
+		annotationResolver.resolveBindAnnotations(trace); // check declarations annotations
+
+		for(CompilerPlugin compilerPlugin : CompilerPluginManager.INSTANCE.getPlugins())
+		{
+			compilerPlugin.process(outerScope, trace, context, declarations);
+		}
+
 		overrideResolver.process();
 
 		lockScopes();
 
 		overloadResolver.process();
-
-		annotationResolver.resolveBindAnnotations(trace); // check declarations annotations
 
 		bodyResolver.resolveBodies(context);
 

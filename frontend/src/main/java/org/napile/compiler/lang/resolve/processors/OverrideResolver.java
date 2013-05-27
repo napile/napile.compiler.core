@@ -492,7 +492,11 @@ public class OverrideResolver
 		NapileNamedDeclaration member = (NapileNamedDeclaration) BindingTraceUtil.descriptorToDeclaration(trace, declared);
 		if(member == null)
 		{
-			if(declared.getKind() != CallableMemberDescriptor.Kind.DELEGATION)
+			if(declared.getKind() == CallableMemberDescriptor.Kind.CREATED_BY_PLUGIN)
+			{
+				return;
+			}
+			else if(declared.getKind() != CallableMemberDescriptor.Kind.DELEGATION)
 			{
 				throw new IllegalStateException("decriptor is not resolved to declaration" +
 						" and it is not delegate: " + declared + ", DELEGATED: " +
@@ -612,6 +616,11 @@ public class OverrideResolver
 
 	public void checkOverridesForParameters(CallableMemberDescriptor declared)
 	{
+		if(declared.getKind() == CallableMemberDescriptor.Kind.CREATED_BY_PLUGIN)
+		{
+			return;
+		}
+
 		boolean fakeOverride = declared.getKind() == CallableMemberDescriptor.Kind.FAKE_OVERRIDE;
 		if(!fakeOverride)
 		{
@@ -622,6 +631,7 @@ public class OverrideResolver
 				return;
 			}
 		}
+
 
 		// Let p1 be a parameter of the overriding function
 		// Let p2 be a parameter of the function being overridden

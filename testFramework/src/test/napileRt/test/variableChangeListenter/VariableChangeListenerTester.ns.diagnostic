@@ -1,0 +1,9 @@
+package test.variableChangeListener
+
+class VariableChangeListenerTester
+{
+	@napile.annotation.VariableChangeListener
+	var myVar : Int = 0
+
+	this()
+}

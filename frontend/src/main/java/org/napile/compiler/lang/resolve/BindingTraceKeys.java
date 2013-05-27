@@ -131,17 +131,19 @@ public interface BindingTraceKeys
 	WritableSlice<PsiElement, VariableAccessorDescriptor> VARIABLE_SET_ACCESSOR = Slices.<PsiElement, VariableAccessorDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
 	WritableSlice<NapileCallParameterAsVariable, VariableDescriptor> VALUE_PARAMETER = Slices.<NapileCallParameterAsVariable, VariableDescriptor>sliceBuilder().setOpposite((WritableSlice) BindingTraceUtil.DESCRIPTOR_TO_DECLARATION).build();
 
+	WritableSlice<DeclarationDescriptor, PsiElement> CREATED_BY_PLUGIN = Slices.createSimpleSlice();
+
 	WritableSlice[] DECLARATIONS_TO_DESCRIPTORS = new WritableSlice[]
 	{
 			PACKAGE,
 			CLASS,
-			VARIABLE_GET_ACCESSOR,
-			VARIABLE_SET_ACCESSOR,
 			TYPE_PARAMETER,
 			METHOD,
 			CONSTRUCTOR,
 			VARIABLE,
-			VALUE_PARAMETER
+			VALUE_PARAMETER,
+			VARIABLE_GET_ACCESSOR,
+			VARIABLE_SET_ACCESSOR
 	};
 
 
