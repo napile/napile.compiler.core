@@ -31,6 +31,7 @@ import org.napile.compiler.lang.types.TypeUtils;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
 import com.intellij.lexer.MergingLexerAdapter;
@@ -94,8 +95,9 @@ public class TextCodeInjection extends CodeInjection
 		return TextTokens.RBRACE;
 	}
 
+	@NotNull
 	@Override
-	public PsiParser createParser(Project project)
+	public PsiParser createParser(Project project, @NotNull LanguageVersion languageVersion)
 	{
 		return new TextParser();
 	}

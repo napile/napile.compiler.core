@@ -19,15 +19,16 @@ package org.napile.doc.lang.parsing;
 import java.io.Reader;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.napile.doc.lang.lexer.NapileDocNode;
 import org.napile.doc.lang.lexer._NapileDocLexer;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
@@ -43,17 +44,19 @@ public class NapileDocParserDefinition implements ParserDefinition
 {
 	@NotNull
 	@Override
-	public Lexer createLexer(@NotNull Project project, Module module)
+	public Lexer createLexer(@Nullable Project project, @NotNull LanguageVersion languageVersion)
 	{
 		return new FlexAdapter(new _NapileDocLexer((Reader)null));
 	}
 
+	@NotNull
 	@Override
-	public PsiParser createParser(Project project)
+	public PsiParser createParser(Project project, @NotNull LanguageVersion languageVersion)
 	{
 		return new NapileDocParser();
 	}
 
+	@NotNull
 	@Override
 	public IFileElementType getFileNodeType()
 	{

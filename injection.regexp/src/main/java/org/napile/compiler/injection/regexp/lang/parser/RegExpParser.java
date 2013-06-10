@@ -20,6 +20,7 @@ import java.util.EnumSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
@@ -39,8 +40,9 @@ public class RegExpParser implements PsiParser
 		myCapabilities = capabilities;
 	}
 
+	@Override
 	@NotNull
-	public ASTNode parse(IElementType root, PsiBuilder builder)
+	public ASTNode parse(@NotNull IElementType root, @NotNull PsiBuilder builder, @NotNull LanguageVersion languageVersion)
 	{
 		//        builder.setDebugMode(true);
 		final PsiBuilder.Marker rootMarker = builder.mark();

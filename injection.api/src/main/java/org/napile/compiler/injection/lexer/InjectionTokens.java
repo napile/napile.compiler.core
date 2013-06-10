@@ -44,7 +44,7 @@ public interface InjectionTokens
 		{
 			final Project project = chameleon.getPsi().getProject();
 
-			final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, NapileLanguage.INSTANCE, chameleon.getChars());
+			final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, NapileLanguage.INSTANCE, Language.UNKNOWN_VERSION, chameleon.getChars());
 			NapileParsing jetParsing = NapileParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(builder));
 
 			jetParsing.getExpressionParser().parseExpression();

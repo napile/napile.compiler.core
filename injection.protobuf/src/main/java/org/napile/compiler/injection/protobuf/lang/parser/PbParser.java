@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.protobuf.lang.parser.parsing.CompilationUnit;
 import org.napile.compiler.injection.protobuf.lang.parser.util.PbPatchedPsiBuilder;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
@@ -16,7 +17,7 @@ public class PbParser implements PsiParser
 {
 	@NotNull
 	@Override
-	public ASTNode parse(IElementType root, PsiBuilder builder)
+	public ASTNode parse(@NotNull IElementType root, @NotNull PsiBuilder builder, @NotNull LanguageVersion languageVersion)
 	{
 		builder.setDebugMode(true);
 		PsiBuilder.Marker rootMarker = builder.mark();

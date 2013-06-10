@@ -27,9 +27,9 @@ import org.napile.compiler.lang.resolve.scopes.NapileScope;
 import org.napile.compiler.lang.types.NapileType;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.UserDataHolder;
@@ -89,7 +89,7 @@ public abstract class CodeInjection implements ParserDefinition, UserDataHolder
 
 	@NotNull
 	@Override
-	public Lexer createLexer(Project project, Module module)
+	public Lexer createLexer(Project project, @NotNull LanguageVersion languageVersion)
 	{
 		final IElementType sharpElementTypeInfo = getSharpElementType();
 		if(sharpElementTypeInfo == null)
@@ -99,6 +99,7 @@ public abstract class CodeInjection implements ParserDefinition, UserDataHolder
 		return new InjectionLexer(getBaseLexer(), sharpElementTypeInfo, getLbraceElementTypeInfo(), getRbraceElementTypeInfo());
 	}
 
+	@NotNull
 	@Override
 	public final IFileElementType getFileNodeType()
 	{

@@ -21,18 +21,18 @@ package org.napile.compiler.lang.parsing;
 
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.lang.NapileLanguage;
-import org.napile.compiler.lang.lexer.NapileNode;
 import org.napile.compiler.lang.lexer.NapileLexer;
-import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
+import org.napile.compiler.lang.lexer.NapileNode;
+import org.napile.compiler.lang.lexer.NapileTokens;
 import org.napile.compiler.lang.psi.impl.NapileFileImpl;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementType;
-import org.napile.compiler.lang.lexer.NapileTokens;
+import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.LanguageParserDefinitions;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiParser;
 import com.intellij.lexer.Lexer;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
@@ -53,17 +53,19 @@ public class NapileParserDefinition implements ParserDefinition
 
 	@Override
 	@NotNull
-	public Lexer createLexer(Project project, Module module)
+	public Lexer createLexer(Project project, @NotNull LanguageVersion languageVersion)
 	{
 		return new NapileLexer();
 	}
 
+	@NotNull
 	@Override
-	public PsiParser createParser(Project project)
+	public PsiParser createParser(Project project, @NotNull LanguageVersion languageVersion)
 	{
 		return new NapileParser();
 	}
 
+	@NotNull
 	@Override
 	public IFileElementType getFileNodeType()
 	{

@@ -21,6 +21,7 @@ package org.napile.compiler.lang.parsing;
 
 import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
@@ -29,7 +30,7 @@ public class NapileParser implements PsiParser
 {
 	@Override
 	@NotNull
-	public ASTNode parse(IElementType iElementType, PsiBuilder psiBuilder)
+	public ASTNode parse(@NotNull IElementType iElementType, @NotNull PsiBuilder psiBuilder, @NotNull LanguageVersion languageVersion)
 	{
 		NapileParsing jetParsing = NapileParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(psiBuilder));
 		jetParsing.parseFile(iElementType);
