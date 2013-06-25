@@ -81,21 +81,21 @@ public class ProtobufCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
-	public TokenSet getWhitespaceTokens()
+	public TokenSet getWhitespaceTokens(@NotNull LanguageVersion languageVersion)
 	{
 		return PbTokenTypes.WHITE_SPACES;
 	}
 
 	@NotNull
 	@Override
-	public TokenSet getCommentTokens()
+	public TokenSet getCommentTokens(@NotNull LanguageVersion languageVersion)
 	{
 		return PbTokenTypes.COMMENTS;
 	}
 
 	@NotNull
 	@Override
-	public TokenSet getStringLiteralElements()
+	public TokenSet getStringLiteralElements(@NotNull LanguageVersion languageVersion)
 	{
 		return PbTokenTypes.STRING_LITERALS;
 	}

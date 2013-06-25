@@ -74,21 +74,21 @@ public class NapileParserDefinition implements ParserDefinition
 
 	@Override
 	@NotNull
-	public TokenSet getWhitespaceTokens()
+	public TokenSet getWhitespaceTokens(@NotNull LanguageVersion languageVersion)
 	{
 		return NapileTokens.WHITESPACES;
 	}
 
 	@Override
 	@NotNull
-	public TokenSet getCommentTokens()
+	public TokenSet getCommentTokens(@NotNull LanguageVersion languageVersion)
 	{
 		return NapileTokens.COMMENTS;
 	}
 
 	@Override
 	@NotNull
-	public TokenSet getStringLiteralElements()
+	public TokenSet getStringLiteralElements(@NotNull LanguageVersion languageVersion)
 	{
 		return NapileTokens.STRINGS;
 	}

@@ -74,7 +74,7 @@ public class RegexpCodeInjection extends CodeInjection
 
 	@NotNull
 	@Override
-	public TokenSet getWhitespaceTokens()
+	public TokenSet getWhitespaceTokens(@NotNull LanguageVersion languageVersion)
 	{
 		// trick to hide quote tokens from parser... should actually go into the lexer
 		return TokenSet.create(RegExpTokens.QUOTE_BEGIN, RegExpTokens.QUOTE_END, TokenType.WHITE_SPACE);
@@ -82,14 +82,14 @@ public class RegexpCodeInjection extends CodeInjection
 
 	@Override
 	@NotNull
-	public TokenSet getStringLiteralElements()
+	public TokenSet getStringLiteralElements(@NotNull LanguageVersion languageVersion)
 	{
 		return TokenSet.EMPTY;
 	}
 
 	@Override
 	@NotNull
-	public TokenSet getCommentTokens()
+	public TokenSet getCommentTokens(@NotNull LanguageVersion languageVersion)
 	{
 		return COMMENT_TOKENS;
 	}

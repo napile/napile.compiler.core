@@ -37,12 +37,14 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
 		super(node);
 	}
 
+	@Override
 	@NotNull
 	public Language getLanguage()
 	{
 		return RegExpLanguage.INSTANCE;
 	}
 
+	@Override
 	@NotNull
 	@SuppressWarnings({
 			"ConstantConditions",
@@ -53,11 +55,13 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
 		return super.getNode();
 	}
 
+	@Override
 	public String toString()
 	{
 		return getClass().getSimpleName() + ": <" + getText() + ">";
 	}
 
+	@Override
 	public void accept(@NotNull PsiElementVisitor visitor)
 	{
 		if(visitor instanceof RegExpElementVisitor)
@@ -75,6 +79,7 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
 		visitor.visitRegExpElement(this);
 	}
 
+	@Override
 	public PsiElement replace(@NotNull PsiElement psiElement) throws IncorrectOperationException
 	{
 		final ASTNode node = psiElement.getNode();
@@ -83,11 +88,13 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
 		return psiElement;
 	}
 
+	@Override
 	public void delete() throws IncorrectOperationException
 	{
 		getNode().getTreeParent().removeChild(getNode());
 	}
 
+	@Override
 	public final String getUnescapedText()
 	{
 		return getText();
@@ -104,6 +111,6 @@ public abstract class RegExpElementImpl extends ASTWrapperPsiElement implements 
 		}
 		final IElementType elementType = astNode.getElementType();
 		final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(context.getLanguage());
-		return parserDefinition.getStringLiteralElements().contains(elementType);
+		return parserDefinition.getStringLiteralElements(context.getLanguageVersion()).contains(elementType);
 	}
 }
