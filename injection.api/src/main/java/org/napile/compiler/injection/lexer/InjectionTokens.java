@@ -16,6 +16,7 @@
 
 package org.napile.compiler.injection.lexer;
 
+import com.intellij.util.LanguageVersionUtil;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.parsing.NapileParsing;
 import org.napile.compiler.lang.parsing.SemanticWhitespaceAwarePsiBuilderImpl;
@@ -44,7 +45,7 @@ public interface InjectionTokens
 		{
 			final Project project = chameleon.getPsi().getProject();
 
-			final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, NapileLanguage.INSTANCE, Language.UNKNOWN_VERSION, chameleon.getChars());
+			final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, NapileLanguage.INSTANCE, LanguageVersionUtil.findDefaultVersion(NapileLanguage.INSTANCE), chameleon.getChars());
 			NapileParsing jetParsing = NapileParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(builder));
 
 			jetParsing.getExpressionParser().parseExpression();

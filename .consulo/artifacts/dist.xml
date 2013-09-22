@@ -1,0 +1,31 @@
+<component name="ArtifactManager">
+  <artifact name="dist">
+    <output-path>$PROJECT_DIR$/out/artifacts/dist</output-path>
+    <root id="root">
+      <element id="zip-archive" name="napile.compiler.core.jar">
+        <element id="module-output" name="injection.api" />
+        <element id="module-output" name="frontend.source" />
+        <element id="module-output" name="frontend.doc" />
+        <element id="module-output" name="frontend.bytecode" />
+        <element id="module-output" name="frontend.api" />
+        <element id="module-output" name="frontend" />
+        <element id="module-output" name="backend" />
+        <element id="module-output" name="napilec" />
+        <element id="module-output" name="napiledoc" />
+      </element>
+      <element id="zip-archive" name="injection.protobuf.jar">
+        <element id="module-output" name="injection.protobuf" />
+      </element>
+      <element id="zip-archive" name="injection.regexp.jar">
+        <element id="module-output" name="injection.regexp" />
+      </element>
+      <element id="zip-archive" name="injection.text.jar">
+        <element id="module-output" name="injection.text.backend" />
+        <element id="module-output" name="injection.text" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/napiledoc/lib/commons-collections-3.2.1.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/napiledoc/lib/commons-lang3-3.1.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/napiledoc/lib/velocity-2.0dev.jar" />
+    </root>
+  </artifact>
+</component>

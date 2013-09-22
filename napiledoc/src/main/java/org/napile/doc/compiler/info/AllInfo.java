@@ -19,6 +19,7 @@ package org.napile.doc.compiler.info;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.analyzer.AnalyzeExhaust;
 import org.napile.compiler.common.NapileCoreEnvironment;
 import org.napile.compiler.lang.psi.NapileClass;
@@ -36,17 +37,18 @@ public class AllInfo
 	{
 		for(NapileFile napileFile : environment.getSourceFiles())
 		{
-			String packageName = napileFile.getPackageFqName();
-			if(packageName == null)  //FIXME [VISTALL] default package?
-				continue;
+			FqName fqName = napileFile.getPackageFqName();
 
-			PackageInfo packageInfo = packages.get(packageName);
+			String fqNameAsString = fqName.getFqName();
+			PackageInfo packageInfo = packages.get(fqNameAsString);
 			if(packageInfo == null)
-				packages.put(packageName, packageInfo = new PackageInfo(analyzeExhaust.getBindingTrace(), napileFile));
+			{
+				packages.put(fqNameAsString, packageInfo = new PackageInfo(analyzeExhaust.getBindingTrace(), napileFile));
+			}
 
 			for(NapileClass napileClass : napileFile.getDeclarations())
 			{
-				ClassInfo classInfo = new ClassInfo(analyzeExhaust.getBindingTrace(), napileClass, packageName);
+				ClassInfo classInfo = new ClassInfo(analyzeExhaust.getBindingTrace(), napileClass, fqNameAsString);
 				packageInfo.getClasses().put(classInfo.getName(), classInfo);
 			}
 		}

@@ -22,6 +22,7 @@ package org.napile.compiler.lang.psi.impl;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
 import org.napile.compiler.NapileFileType;
 import org.napile.compiler.lang.NapileLanguage;
 import org.napile.compiler.lang.lexer.NapileNodes;
@@ -33,6 +34,7 @@ import org.napile.compiler.lang.psi.NapilePackage;
 import org.napile.compiler.lang.psi.NapileTreeVisitor;
 import org.napile.compiler.lang.psi.NapileVisitor;
 import org.napile.compiler.lang.psi.NapileVisitorVoid;
+import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.lang.psi.stubs.elements.NapileStubElementTypes;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
@@ -136,6 +138,20 @@ public class NapileFileImpl extends PsiFileBase implements NapileFile
 	public void accept(@NotNull NapileVisitorVoid visitor)
 	{
 		visitor.visitNapileFile(this);
+	}
+
+	@NotNull
+	@Override
+	public FqName getPackageFqName()
+	{
+		NapilePsiFileStub stub = (NapilePsiFileStub) getStub();
+		if(stub != null)
+		{
+			return stub.getFqName();
+		}
+
+		NapilePackage statement = getPackage();
+		return statement.getFqName();
 	}
 
 	@Override

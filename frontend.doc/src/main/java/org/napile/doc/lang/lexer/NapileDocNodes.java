@@ -16,18 +16,18 @@
 
 package org.napile.doc.lang.lexer;
 
-import org.napile.compiler.lang.NapileLanguage;
-import org.napile.compiler.lang.parsing.NapileParsing;
-import org.napile.compiler.lang.parsing.SemanticWhitespaceAwarePsiBuilderImpl;
-import org.napile.doc.lang.psi.impl.NapileDocLineImpl;
 import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilderFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.impl.source.tree.LazyParseablePsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.ILazyParseableElementType;
+import com.intellij.util.LanguageVersionUtil;
+import org.napile.compiler.lang.NapileLanguage;
+import org.napile.compiler.lang.parsing.NapileParsing;
+import org.napile.compiler.lang.parsing.SemanticWhitespaceAwarePsiBuilderImpl;
+import org.napile.doc.lang.psi.impl.NapileDocLineImpl;
 
 /**
  * @author VISTALL
@@ -44,7 +44,7 @@ public interface NapileDocNodes
 		{
 			final Project project = chameleon.getPsi().getProject();
 
-			final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, NapileLanguage.INSTANCE, Language.UNKNOWN_VERSION, chameleon.getChars());
+			final PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, null, NapileLanguage.INSTANCE, LanguageVersionUtil.findDefaultVersion(NapileLanguage.INSTANCE), chameleon.getChars());
 			NapileParsing jetParsing = NapileParsing.createForTopLevel(new SemanticWhitespaceAwarePsiBuilderImpl(builder));
 
 			jetParsing.getExpressionParser().parseExpression();

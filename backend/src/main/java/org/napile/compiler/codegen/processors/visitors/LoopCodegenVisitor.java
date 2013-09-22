@@ -16,27 +16,16 @@
 
 package org.napile.compiler.codegen.processors.visitors;
 
+import com.intellij.openapi.util.Comparing;
+import org.jetbrains.annotations.NotNull;
+import org.napile.compiler.codegen.processors.ExpressionCodegen;
+import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
+import org.napile.compiler.codegen.processors.visitors.loopCodegen.*;
+import org.napile.compiler.lang.psi.*;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
-
-import org.jetbrains.annotations.NotNull;
-import org.napile.compiler.codegen.processors.ExpressionCodegen;
-import org.napile.compiler.codegen.processors.visitors.loopCodegen.DoWhileLoopCodegen;
-import org.napile.compiler.codegen.processors.visitors.loopCodegen.ForLoopCodegen;
-import org.napile.compiler.codegen.processors.visitors.loopCodegen.LabelLoopCodegen;
-import org.napile.compiler.codegen.processors.visitors.loopCodegen.LoopCodegen;
-import org.napile.compiler.codegen.processors.visitors.loopCodegen.WhileLoopCodegen;
-import org.napile.compiler.codegen.processors.codegen.stackValue.StackValue;
-import org.napile.compiler.lang.psi.NapileBreakExpression;
-import org.napile.compiler.lang.psi.NapileContinueExpression;
-import org.napile.compiler.lang.psi.NapileDoWhileExpression;
-import org.napile.compiler.lang.psi.NapileForExpression;
-import org.napile.compiler.lang.psi.NapileLabelExpression;
-import org.napile.compiler.lang.psi.NapileLoopExpression;
-import org.napile.compiler.lang.psi.NapileSimpleNameExpression;
-import org.napile.compiler.lang.psi.NapileWhileExpression;
-import com.intellij.openapi.util.Comparing;
 
 /**
  * @author VISTALL

@@ -42,7 +42,7 @@ public class PackageInfo extends DocableInfo<NapileFile>
 	@Override
 	public String getName()
 	{
-		return element.getPackageFqName();
+		return element.getPackageFqName().getFqName();
 	}
 
 	@NotNull

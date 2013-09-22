@@ -19,6 +19,7 @@ package org.napile.compiler.lang.psi;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.napile.asm.resolve.name.FqName;
 import com.intellij.psi.impl.PsiFileEx;
 import com.intellij.psi.impl.source.PsiFileWithStubSupport;
 
@@ -30,6 +31,9 @@ public interface NapileFile extends NapileDeclarationContainer<NapileClass>, Psi
 {
 	@NotNull
 	NapilePackage getPackage();
+
+	@NotNull
+	FqName getPackageFqName();
 
 	@NotNull
 	List<NapileImportDirective> getImportDirectives();

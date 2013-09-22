@@ -1,0 +1,22 @@
+<component name="libraryTable">
+  <library name="consulo-core">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/annotations.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/asm-all-4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/cli-parser-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/consulo-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dom4j2.0dev.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-14.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java2napile.runtime-0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javax.inject.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/napile.asm-0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/parboiled-core-1.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/parboiled-java-1.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pegdown-1.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/picocontainer.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/trove4j.jar!/" />
+    </CLASSES>
+    <DOCUMENTATION />
+    <SOURCES />
+  </library>
+</component>
