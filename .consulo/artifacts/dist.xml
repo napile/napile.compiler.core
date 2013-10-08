@@ -5,7 +5,6 @@
       <element id="zip-archive" name="napile.compiler.core.jar">
         <element id="module-output" name="injection.api" />
         <element id="module-output" name="frontend.source" />
-        <element id="module-output" name="frontend.doc" />
         <element id="module-output" name="frontend.bytecode" />
         <element id="module-output" name="frontend.api" />
         <element id="module-output" name="frontend" />
