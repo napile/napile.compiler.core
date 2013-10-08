@@ -23,13 +23,19 @@ import org.napile.compiler.lang.resolve.BindingTraceKeys;
 import org.napile.compiler.lang.resolve.DescriptorUtils;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import junit.framework.Test;
 
 /**
  * @author VISTALL
  * @since 16:22/16.04.13
  */
-public class ResolveTest extends NapileMassTestCase
+public class ResolveMassiveTest extends AbstractMassiveTestSuite
 {
+	public static Test suite()
+	{
+		return new ResolveMassiveTest();
+	}
+
 	@Override
 	public String getExpectedText(NapileFile file) throws Exception
 	{
@@ -58,7 +64,6 @@ public class ResolveTest extends NapileMassTestCase
 		{
 			final DeclarationDescriptor declarationDescriptor = analyzeExhaust.getBindingTrace().get(BindingTraceKeys.REFERENCE_TARGET, (NapileReferenceExpression) element);
 
-			String ref = null;
 			if(declarationDescriptor == null)
 			{
 				builder.append("<ref to=\"null\">");

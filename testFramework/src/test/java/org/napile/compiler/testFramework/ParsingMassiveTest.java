@@ -17,13 +17,19 @@
 package org.napile.compiler.testFramework;
 
 import org.napile.compiler.lang.psi.NapileFile;
+import junit.framework.Test;
 
 /**
  * @author VISTALL
  * @since 15:39/14.04.13
  */
-public class ParsingTest extends NapileMassTestCase
+public class ParsingMassiveTest extends AbstractMassiveTestSuite
 {
+	public static Test suite()
+	{
+		return new ParsingMassiveTest();
+	}
+
 	@Override
 	public String getExpectedText(NapileFile file) throws Exception
 	{
