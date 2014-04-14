@@ -1,0 +1,10 @@
+package <ref class="PackageDescriptorImpl" to="test">test</ref>.<ref class="PackageDescriptorImpl" to="test.variableChangeListener">variableChangeListener</ref>
+
+class VariableChangeListenerTest
+{
+	static meth main(val arg : <ref class="MutableClassDescriptor" to="napile.lang.Array">Array</ref><<ref class="MutableClassDescriptor" to="napile.lang.String">String</ref>>)
+	{
+		val a = <ref class="ConstructorDescriptor" to="test.variableChangeListener.VariableChangeListenerTester.this">VariableChangeListenerTester</ref>()
+		<ref class="LocalVariableDescriptor" to="test.variableChangeListener.VariableChangeListenerTest.main.a">a</ref>.<ref class="VariableDescriptorImpl" to="test.variableChangeListener.VariableChangeListenerTester.variableChangeListener">variableChangeListener</ref> <ref class="ErrorSimpleMethodDescriptorImpl" to="<ERROR METHOD>">+=</ref> {}
+	}
+}

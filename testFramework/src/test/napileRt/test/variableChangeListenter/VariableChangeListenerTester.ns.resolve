@@ -1,0 +1,9 @@
+package <ref class="PackageDescriptorImpl" to="test">test</ref>.<ref class="PackageDescriptorImpl" to="test.variableChangeListener">variableChangeListener</ref>
+
+class VariableChangeListenerTester
+{
+	@<ref class="PackageDescriptorImpl" to="napile">napile</ref>.<ref class="PackageDescriptorImpl" to="napile.annotation">annotation</ref>.<ref class="MutableClassDescriptor" to="napile.annotation.VariableChangeListener">VariableChangeListener</ref>
+	var myVar : <ref class="MutableClassDescriptor" to="napile.lang.Int">Int</ref> = 0
+
+	this()
+}

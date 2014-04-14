@@ -21,3 +21,4 @@ gh-pages
 *.class
 /testFramework/testProject/.idea/workspace.xml
 /consulo-plugin-runner/dep
+/.consulo/workspace.xml
