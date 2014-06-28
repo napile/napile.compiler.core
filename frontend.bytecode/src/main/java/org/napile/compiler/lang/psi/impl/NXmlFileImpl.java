@@ -302,11 +302,6 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile, StubBas
 	}
 
 	@Override
-	public void subtreeChanged()
-	{
-	}
-
-	@Override
 	public void checkSetName(String s) throws IncorrectOperationException
 	{
 	}

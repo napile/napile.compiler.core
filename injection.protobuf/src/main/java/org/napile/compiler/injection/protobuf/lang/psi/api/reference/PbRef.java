@@ -1,15 +1,15 @@
 package org.napile.compiler.injection.protobuf.lang.psi.api.reference;
 
+import org.napile.compiler.injection.protobuf.lang.psi.PbPsiEnums;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiQualifiedReference;
 import com.intellij.psi.PsiReference;
-import org.napile.compiler.injection.protobuf.lang.psi.PbPsiEnums;
 
 /**
  * @author Nikolay Matveev
  *         Date: Mar 30, 2010
  */
-public interface PbRef extends PsiReference, PsiQualifiedReference
+public interface PbRef extends PsiElement, PsiReference, PsiQualifiedReference
 {
 
 	String getReferenceName();

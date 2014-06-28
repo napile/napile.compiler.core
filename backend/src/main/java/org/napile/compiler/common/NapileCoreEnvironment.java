@@ -37,6 +37,7 @@ import com.intellij.core.CoreApplicationEnvironment;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.mock.MockApplication;
 import com.intellij.mock.MockProject;
+import com.intellij.mock.MockPsiDocumentManager;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeExtension;
@@ -44,6 +45,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.FileTypeFileViewProviders;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 
@@ -81,6 +83,7 @@ public class NapileCoreEnvironment
 		addExplicitExtension(FileTypeFileViewProviders.INSTANCE, NXmlFileType.INSTANCE, new NXmlFileViewProviderFactory());
 
 		projectEnvironment = new NapileCoreProjectEnvironment(parentDisposable, applicationEnvironment);
+		projectEnvironment.registerProjectComponent(PsiDocumentManager.class, new MockPsiDocumentManager());
 
 
 		final MockProject project = projectEnvironment.getProject();
