@@ -203,14 +203,6 @@
           </library>
         </orderEntry>
       </module>
-      <module name="consulo-plugin-runner" dirurl="file://$PROJECT_DIR$/consulo-plugin-runner">
-        <extension id="consulo-plugin" sdk-module-name="" sdk-name="Consulo 1.SNAPSHOT" />
-        <extension id="java" sdk-module-name="" sdk-name="1.6" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$" />
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="module-extension-sdk" extension-id="consulo-plugin" />
-        <orderEntry type="sourceFolder" forTests="false" />
-      </module>
     </modules>
   </component>
 </project>
