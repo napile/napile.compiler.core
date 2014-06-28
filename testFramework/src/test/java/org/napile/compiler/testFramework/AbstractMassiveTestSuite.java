@@ -122,6 +122,6 @@ public abstract class AbstractMassiveTestSuite extends TestSuite
 		{
 			return null;
 		}
-		return FileUtil.loadFile(file);
+		return FileUtil.loadFile(file, true);
 	}
 }
