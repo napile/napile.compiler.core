@@ -37,7 +37,7 @@ public class NXmlFileType implements FileType
 		@Override
 		protected Icon compute()
 		{
-			return AllIcons.FileTypes.JavaClass;
+			return AllIcons.FileTypes.Any_type;
 		}
 	};
 

@@ -8,7 +8,6 @@ import static org.napile.compiler.injection.protobuf.lang.psi.PbPsiEnums.Referen
 
 import java.io.File;
 
-import org.consulo.psi.PsiPackageManager;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.protobuf.lang.PbTokenTypes;
 import org.napile.compiler.injection.protobuf.lang.psi.PbPsiElementVisitor;
@@ -25,7 +24,6 @@ import org.napile.compiler.injection.protobuf.lang.psi.utils.PbPsiUtil;
 import org.napile.compiler.injection.protobuf.lang.resolve.PbResolveUtil;
 import org.napile.compiler.injection.protobuf.util.PbFileUtil;
 import org.napile.compiler.injection.protobuf.util.PbTextUtil;
-import com.intellij.core.CoreModuleExtension;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.TextRange;
@@ -467,12 +465,12 @@ public class PbRefImpl extends PbPsiElementImpl implements PbRef
 						return null;
 					}
 				}
-				case PACKAGE:
+				/*case PACKAGE:
 				{
 					String qualifiedName = PbPsiUtil.getQualifiedReferenceText(ref);
 					PsiPackageManager facade = PsiPackageManager.getInstance(ref.getManager().getProject());
 					return facade.findPackage(qualifiedName, CoreModuleExtension.class);
-				}
+				}    */
 				case MESSAGE_OR_GROUP:
 				case MESSAGE_OR_ENUM_OR_GROUP:
 				case MESSAGE_OR_PACKAGE_OR_GROUP:

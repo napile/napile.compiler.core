@@ -1,6 +1,6 @@
 <component name="libraryTable">
   <library name="napile-help.libs">
-    <CLASSES>
+    <binaries>
       <root url="jar://$PROJECT_DIR$/lib/cli-parser-1.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/dom4j2.0dev.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/java2napile.runtime-0.1.jar!/" />
@@ -9,8 +9,6 @@
       <root url="jar://$PROJECT_DIR$/lib/parboiled-core-1.1.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/parboiled-java-1.1.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/pegdown-1.2.1.jar!/" />
-    </CLASSES>
-    <DOCUMENTATION />
-    <SOURCES />
+    </binaries>
   </library>
 </component>

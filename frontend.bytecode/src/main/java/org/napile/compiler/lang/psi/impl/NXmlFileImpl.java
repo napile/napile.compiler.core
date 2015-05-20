@@ -40,7 +40,6 @@ import org.napile.compiler.lang.psi.NapileVisitorVoid;
 import org.napile.compiler.lang.psi.impl.file.NXmlFileViewProvider;
 import org.napile.compiler.lang.psi.stubs.NapilePsiFileStub;
 import org.napile.compiler.util.NodeToStringBuilder;
-import com.intellij.ide.caches.FileContent;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.FileASTNode;
 import com.intellij.openapi.application.ApplicationManager;
@@ -414,12 +413,6 @@ public class NXmlFileImpl extends NXmlElementBase implements NapileFile, StubBas
 		{
 			mirrorElement = null;
 		}
-	}
-
-	@Override
-	public PsiFile cacheCopy(FileContent fileContent)
-	{
-		return this;
 	}
 
 	@Override

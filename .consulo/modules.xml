@@ -2,208 +2,227 @@
 <project version="4">
   <component name="ModuleManager">
     <modules>
-      <module name="backend" dirurl="file://$PROJECT_DIR$/backend">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="frontend" exported="" />
+      <module name="backend" dirurl="file://$PROJECT_DIR$/backend" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="frontend" exported="" />
+        </module-layer>
       </module>
-      <module name="frontend" dirurl="file://$PROJECT_DIR$/frontend">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="frontend.bytecode" exported="" />
-        <orderEntry type="module" module-name="frontend.api" exported="" />
-        <orderEntry type="module" module-name="frontend.source" exported="" />
-        <orderEntry type="module" module-name="injection.api" exported="" />
-        <orderEntry type="module-library">
-          <library>
-            <CLASSES>
-              <root url="jar://$MODULE_DIR$/../testFramework/libTest/junit-4.10.jar!/" />
-            </CLASSES>
-            <DOCUMENTATION />
-            <SOURCES />
-          </library>
-        </orderEntry>
-        <orderEntry type="library" exploded="" name="consulo-core" level="project" />
-        <orderEntry type="library" exploded="" name="napile-help.libs" level="project" />
+      <module name="frontend" dirurl="file://$PROJECT_DIR$/frontend" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="frontend.bytecode" exported="" />
+          <orderEntry type="module" module-name="frontend.api" exported="" />
+          <orderEntry type="module" module-name="frontend.source" exported="" />
+          <orderEntry type="module" module-name="injection.api" exported="" />
+          <orderEntry type="module-library">
+            <library>
+              <binaries>
+                <root url="jar://$MODULE_DIR$/../testFramework/libTest/junit-4.10.jar!/" />
+              </binaries>
+            </library>
+          </orderEntry>
+          <orderEntry type="library" exploded="" name="consulo-core" level="project" />
+          <orderEntry type="library" exploded="" name="napile-help.libs" level="project" />
+        </module-layer>
       </module>
-      <module name="frontend.api" dirurl="file://$PROJECT_DIR$/frontend.api">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="frontend" />
+      <module name="frontend.api" dirurl="file://$PROJECT_DIR$/frontend.api" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="frontend" />
+        </module-layer>
       </module>
-      <module name="frontend.bytecode" dirurl="file://$PROJECT_DIR$/frontend.bytecode">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-          <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
-          <content-folder type="TEST" url="file://$MODULE_DIR$/rsc/test/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="frontend" />
+      <module name="frontend.bytecode" dirurl="file://$PROJECT_DIR$/frontend.bytecode" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="TEST" url="file://$MODULE_DIR$/rsc/test/java" />
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+            <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="frontend" />
+        </module-layer>
       </module>
-      <module name="frontend.source" dirurl="file://$PROJECT_DIR$/frontend.source">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-          <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="frontend" />
-        <orderEntry type="module" module-name="injection.api" />
+      <module name="frontend.source" dirurl="file://$PROJECT_DIR$/frontend.source" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+            <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="frontend" />
+          <orderEntry type="module" module-name="injection.api" />
+        </module-layer>
       </module>
-      <module name="injection.api" dirurl="file://$PROJECT_DIR$/injection.api">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="frontend" exported="" />
+      <module name="injection.api" dirurl="file://$PROJECT_DIR$/injection.api" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="frontend" exported="" />
+        </module-layer>
       </module>
-      <module name="injection.protobuf" dirurl="file://$PROJECT_DIR$/injection.protobuf">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="injection.api" />
+      <module name="injection.protobuf" dirurl="file://$PROJECT_DIR$/injection.protobuf" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="injection.api" />
+        </module-layer>
       </module>
-      <module name="injection.regexp" dirurl="file://$PROJECT_DIR$/injection.regexp">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="injection.api" />
+      <module name="injection.regexp" dirurl="file://$PROJECT_DIR$/injection.regexp" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="injection.api" />
+        </module-layer>
       </module>
-      <module name="injection.text" dirurl="file://$PROJECT_DIR$/injection.text">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-          <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="injection.api" />
+      <module name="injection.text" dirurl="file://$PROJECT_DIR$/injection.text" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+            <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="injection.api" />
+        </module-layer>
       </module>
-      <module name="injection.text.backend" dirurl="file://$PROJECT_DIR$/injection.text.backend">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="backend" />
-        <orderEntry type="module" module-name="frontend" />
-        <orderEntry type="module" module-name="injection.api" />
-        <orderEntry type="module" module-name="injection.text" />
+      <module name="injection.text.backend" dirurl="file://$PROJECT_DIR$/injection.text.backend" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="backend" />
+          <orderEntry type="module" module-name="frontend" />
+          <orderEntry type="module" module-name="injection.api" />
+          <orderEntry type="module" module-name="injection.text" />
+        </module-layer>
       </module>
-      <module name="injector-generator" dirurl="file://$PROJECT_DIR$/injector-generator">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="frontend" />
-        <orderEntry type="module" module-name="backend" />
+      <module name="injector-generator" dirurl="file://$PROJECT_DIR$/injector-generator" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="frontend" />
+          <orderEntry type="module" module-name="backend" />
+        </module-layer>
       </module>
-      <module name="napile.compiler.core" dirurl="file://$PROJECT_DIR$">
-        <extension id="java" sdk-module-name="" sdk-name="1.6" language-level-module-name="" language-level-name="JDK_1_6" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="EXCLUDED" url="file://$MODULE_DIR$/build" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
+      <module name="napile.compiler.core" dirurl="file://$PROJECT_DIR$" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="" sdk-name="1.6" language-level-module-name="" language-level-name="JDK_1_6" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="EXCLUDED" url="file://$MODULE_DIR$/build" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+        </module-layer>
       </module>
-      <module name="napilec" dirurl="file://$PROJECT_DIR$/napilec">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/napile" />
-          <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="backend" />
-        <orderEntry type="module" module-name="injection.protobuf" />
+      <module name="napilec" dirurl="file://$PROJECT_DIR$/napilec" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/napile" />
+            <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="backend" />
+          <orderEntry type="module" module-name="injection.protobuf" />
+        </module-layer>
       </module>
-      <module name="napiledoc" dirurl="file://$PROJECT_DIR$/napiledoc">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
-          <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/rsc/main/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="backend" />
-        <orderEntry type="module-library">
-          <library>
-            <CLASSES>
-              <root url="jar://$MODULE_DIR$/lib/commons-collections-3.2.1.jar!/" />
-            </CLASSES>
-            <DOCUMENTATION />
-            <SOURCES />
-          </library>
-        </orderEntry>
-        <orderEntry type="module-library">
-          <library>
-            <CLASSES>
-              <root url="jar://$MODULE_DIR$/lib/commons-lang3-3.1.jar!/" />
-            </CLASSES>
-            <DOCUMENTATION />
-            <SOURCES />
-          </library>
-        </orderEntry>
-        <orderEntry type="module-library">
-          <library>
-            <CLASSES>
-              <root url="jar://$MODULE_DIR$/lib/velocity-2.0dev.jar!/" />
-            </CLASSES>
-            <DOCUMENTATION />
-            <SOURCES />
-          </library>
-        </orderEntry>
+      <module name="napiledoc" dirurl="file://$PROJECT_DIR$/napiledoc" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/rsc/main/java" />
+            <content-folder type="PRODUCTION" url="file://$MODULE_DIR$/src/main/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="backend" />
+          <orderEntry type="module-library">
+            <library>
+              <binaries>
+                <root url="jar://$MODULE_DIR$/lib/commons-collections-3.2.1.jar!/" />
+              </binaries>
+            </library>
+          </orderEntry>
+          <orderEntry type="module-library">
+            <library>
+              <binaries>
+                <root url="jar://$MODULE_DIR$/lib/commons-lang3-3.1.jar!/" />
+              </binaries>
+            </library>
+          </orderEntry>
+          <orderEntry type="module-library">
+            <library>
+              <binaries>
+                <root url="jar://$MODULE_DIR$/lib/velocity-2.0dev.jar!/" />
+              </binaries>
+            </library>
+          </orderEntry>
+        </module-layer>
       </module>
-      <module name="testFramework" dirurl="file://$PROJECT_DIR$/testFramework">
-        <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
-        <content url="file://$MODULE_DIR$">
-          <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
-        </content>
-        <orderEntry type="module-extension-sdk" extension-id="java" />
-        <orderEntry type="sourceFolder" forTests="false" />
-        <orderEntry type="module" module-name="frontend" />
-        <orderEntry type="module" module-name="backend" />
-        <orderEntry type="module" module-name="injection.protobuf" />
-        <orderEntry type="module" module-name="injection.regexp" />
-        <orderEntry type="module" module-name="injection.text" />
-        <orderEntry type="module" module-name="injection.text.backend" />
-        <orderEntry type="module-library">
-          <library>
-            <CLASSES>
-              <root url="jar://$MODULE_DIR$/libTest/junit-4.10.jar!/" />
-            </CLASSES>
-            <DOCUMENTATION />
-            <SOURCES />
-          </library>
-        </orderEntry>
+      <module name="testFramework" dirurl="file://$PROJECT_DIR$/testFramework" current-layer="Default">
+        <module-layer name="Default">
+          <extension id="java" sdk-module-name="napile.compiler.core" sdk-name="" language-level-module-name="napile.compiler.core" language-level-name="" special-dir-location="MODULE_DIR" />
+          <content url="file://$MODULE_DIR$">
+            <content-folder type="TEST" url="file://$MODULE_DIR$/src/test/java" />
+          </content>
+          <orderEntry type="module-extension-sdk" extension-id="java" />
+          <orderEntry type="sourceFolder" />
+          <orderEntry type="module" module-name="frontend" />
+          <orderEntry type="module" module-name="backend" />
+          <orderEntry type="module" module-name="injection.protobuf" />
+          <orderEntry type="module" module-name="injection.regexp" />
+          <orderEntry type="module" module-name="injection.text" />
+          <orderEntry type="module" module-name="injection.text.backend" />
+          <orderEntry type="module-library">
+            <library>
+              <binaries>
+                <root url="jar://$MODULE_DIR$/libTest/junit-4.10.jar!/" />
+              </binaries>
+            </library>
+          </orderEntry>
+        </module-layer>
       </module>
     </modules>
   </component>
 </project>
-

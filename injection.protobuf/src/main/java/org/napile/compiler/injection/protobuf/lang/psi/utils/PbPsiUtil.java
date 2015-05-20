@@ -6,18 +6,14 @@ import static org.napile.compiler.injection.protobuf.lang.PbElementTypes.WHITE_S
 import java.util.ArrayList;
 
 import org.consulo.psi.PsiPackage;
-import org.consulo.psi.PsiPackageManager;
 import org.jetbrains.annotations.NotNull;
 import org.napile.compiler.injection.protobuf.lang.psi.api.PbFile;
-import org.napile.compiler.injection.protobuf.lang.psi.api.PbPsiElement;
 import org.napile.compiler.injection.protobuf.lang.psi.api.auxiliary.PbBlockHolder;
-import org.napile.compiler.injection.protobuf.lang.psi.api.block.PbBlock;
 import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbExtendDef;
 import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbFieldDef;
 import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbGroupDef;
 import org.napile.compiler.injection.protobuf.lang.psi.api.declaration.PbImportDef;
 import org.napile.compiler.injection.protobuf.lang.psi.api.reference.PbRef;
-import com.intellij.core.CoreModuleExtension;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiErrorElement;
@@ -120,7 +116,8 @@ public abstract class PbPsiUtil
 
 	public static PsiElement getRootScope(final PsiElement element)
 	{
-		return PsiPackageManager.getInstance(element.getManager().getProject()).findPackage("", CoreModuleExtension.class);
+		return element;
+		//return PsiPackageManager.getInstance(element.getManager().getProject()).findPackage("", CoreModuleExtension.class);
 	}
 
 	public static PsiElement getUpperScope(final PsiElement element)
@@ -129,7 +126,7 @@ public abstract class PbPsiUtil
 		{
 			return ((PsiPackage) element).getParentPackage();
 		}
-		if(element instanceof PbFile)
+	/*	if(element instanceof PbFile)
 		{
 			PsiPackageManager facade = PsiPackageManager.getInstance(element.getManager().getProject());
 			return facade.findPackage(((PbFile) element).getPackageName(), CoreModuleExtension.class);
@@ -148,7 +145,7 @@ public abstract class PbPsiUtil
 			}
 			return scope;
 		}
-		assert false;
+		assert false; */
 		return null;
 	}
 
